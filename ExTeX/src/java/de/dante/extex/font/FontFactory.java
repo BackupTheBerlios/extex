@@ -36,7 +36,7 @@ import de.dante.extex.font.exception.FontMapNotFoundException;
 import de.dante.extex.font.exception.FontNotFoundException;
 import de.dante.extex.font.exception.FontReadException;
 import de.dante.extex.font.type.ModifiableFount;
-import de.dante.extex.font.type.afm.AFMReader;
+import de.dante.extex.font.type.afm.AfmFont;
 import de.dante.extex.font.type.efm.EFMFount;
 import de.dante.extex.font.type.other.NullFont;
 import de.dante.extex.font.type.tfm.TFMFont;
@@ -63,7 +63,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class FontFactory implements Serializable {
 
@@ -168,6 +168,7 @@ public class FontFactory implements Serializable {
      * @return Returns the new font instance.
      * @throws ConfigurationException from the resourcefinder.
      * @throws FontException if a font-error occured.
+     * @deprecated use getInstance(FountKey) instead
      */
     public Font getInstance(final String name, final Dimen size,
             final Count scale, final Glue letterspaced,
@@ -185,8 +186,7 @@ public class FontFactory implements Serializable {
 
             Document doc = loadEFMDocument(name);
 
-            fount = loadFontClass(name, size, scale, letterspaced, ligatures,
-                    kerning, doc);
+            fount = loadFontClass(key, doc);
 
             // store fount
             fountmap.put(key, fount);
@@ -200,19 +200,48 @@ public class FontFactory implements Serializable {
     }
 
     /**
-     * @param name          the fontname
-     * @param size          the size
-     * @param scale         the scale
-     * @param letterspaced  use lettersspaced
-     * @param ligatures     use ligatures
-     * @param kerning       use kerning
+     * Return a new instance.
+     *
+     * If the name ist empty or null, then the <code>NullFont</code>
+     * are returned.
+     *
+     * @param key           the fount key
+     * @return Returns the new font instance.
+     * @throws ConfigurationException from the resourcefinder.
+     * @throws FontException if a font-error occured.
+     */
+    public Font getInstance(final FountKey key) throws ConfigurationException,
+            FontException {
+
+        if (key.getName() == null || key.getName().trim().length() == 0) {
+            return new NullFont();
+        }
+
+        ModifiableFount fount = (ModifiableFount) (fountmap.get(key));
+        if (fount == null) {
+
+            Document doc = loadEFMDocument(key.getName());
+
+            fount = loadFontClass(key, doc);
+
+            // store fount
+            fountmap.put(key, fount);
+        }
+        if (fount instanceof EFMFount) {
+            if (((EFMFount) fount).isVirtual()) {
+                return new VirtualFontImpl(fount);
+            }
+        }
+        return new FontImpl(fount);
+    }
+
+    /**
+     * @param key          the fontkey
      * @param doc           the xml-doc
      * @return Returns the fount
      * @throws ConfigurationException from the resourcefinder.
      */
-    private ModifiableFount loadFontClass(final String name, final Dimen size,
-            final Count scale, final Glue letterspaced,
-            final boolean ligatures, final boolean kerning, final Document doc)
+    private ModifiableFount loadFontClass(final FountKey key, final Document doc)
             throws ConfigurationException {
 
         String classname = getFontClass(doc);
@@ -220,12 +249,9 @@ public class FontFactory implements Serializable {
 
         try {
             fount = (ModifiableFount) (Class.forName(classname).getConstructor(
-                    new Class[]{Document.class, String.class, Dimen.class,
-                            Count.class, Glue.class, Boolean.class,
-                            Boolean.class, ResourceFinder.class})
-                    .newInstance(new Object[]{doc, name, size, scale,
-                            letterspaced, new Boolean(ligatures),
-                            new Boolean(kerning), finder}));
+                    new Class[]{Document.class, FountKey.class,
+                            ResourceFinder.class, FontFactory.class})
+                    .newInstance(new Object[]{doc, key, finder, this}));
         } catch (IllegalArgumentException e) {
             throw new ConfigurationInstantiationException(e);
         } catch (SecurityException e) {
@@ -251,33 +277,24 @@ public class FontFactory implements Serializable {
      * are returned.
      *
      * @param tfm           the tfm-font
-     * @param size          the size
-     * @param scale         the scale-factor in 1000
-     * @param letterspaced  the letterspaced
-     * @param ligatures     ligatures on/off
-     * @param kerning       lerning on/off
+     * @param key           the fount key
      * @return Returns the new font instance.
      * @throws ConfigurationException from the resourcefinder.
      * @throws FontException if a font-error occured.
      */
-    public Font getInstance(final TFMFont tfm, final Dimen size,
-            final Count scale, final Glue letterspaced,
-            final boolean ligatures, final boolean kerning)
+    public Font getInstance(final TFMFont tfm, final FountKey key)
             throws ConfigurationException, FontException {
 
         if (tfm == null) {
             return new NullFont();
         }
 
-        FountKey key = new FountKey(tfm.getFontname(), size, scale,
-                letterspaced, ligatures, kerning);
         ModifiableFount fount = (ModifiableFount) (fountmap.get(key));
         if (fount == null) {
 
             Document doc = new Document(tfm.getFontMetric());
 
-            fount = loadFontClass(tfm.getFontname(), size, scale, letterspaced,
-                    ligatures, kerning, doc);
+            fount = loadFontClass(key, doc);
 
             // store fount
             fountmap.put(key, fount);
@@ -293,26 +310,18 @@ public class FontFactory implements Serializable {
      * are returned.
      *
      * @param vf            the vf-font
-     * @param size          the size
-     * @param scale         the scale-factor in 1000
-     * @param letterspaced  the letterspaced
-     * @param ligatures     ligatures on/off
-     * @param kerning       lerning on/off
+     * @param key           the fount key
      * @return Returns the new font instance.
      * @throws ConfigurationException from the resourcefinder.
      * @throws FontException if a font-error occured.
      */
-    public Font getInstance(final VFFont vf, final Dimen size,
-            final Count scale, final Glue letterspaced,
-            final boolean ligatures, final boolean kerning)
+    public Font getInstance(final VFFont vf, final FountKey key)
             throws ConfigurationException, FontException {
 
         if (vf == null) {
             return new NullFont();
         }
 
-        FountKey key = new FountKey(vf.getFontname(), size, scale,
-                letterspaced, ligatures, kerning);
         ModifiableFount fount = (ModifiableFount) (fountmap.get(key));
         if (fount == null) {
 
@@ -564,7 +573,7 @@ public class FontFactory implements Serializable {
                         if (afmfile != null) {
 
                             try {
-                                AFMReader afmreader = new AFMReader(afmfile,
+                                AfmFont afmreader = new AfmFont(afmfile,
                                         name
                                         /*+ ".pfb"*/, "10");
 

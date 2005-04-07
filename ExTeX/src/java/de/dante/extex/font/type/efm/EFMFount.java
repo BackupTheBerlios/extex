@@ -21,6 +21,7 @@ package de.dante.extex.font.type.efm;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +31,9 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 
+import de.dante.extex.font.FontFactory;
 import de.dante.extex.font.FontFile;
+import de.dante.extex.font.FountKey;
 import de.dante.extex.font.Glyph;
 import de.dante.extex.font.GlyphImpl;
 import de.dante.extex.font.Kerning;
@@ -38,6 +41,9 @@ import de.dante.extex.font.Ligature;
 import de.dante.extex.font.exception.FontException;
 import de.dante.extex.font.type.BoundingBox;
 import de.dante.extex.font.type.ModifiableFount;
+import de.dante.extex.font.type.efm.commands.EfmChar;
+import de.dante.extex.font.type.efm.commands.EfmRule;
+import de.dante.extex.font.type.efm.commands.EfmSpecial;
 import de.dante.extex.font.type.efm.exception.FontConfigReadException;
 import de.dante.extex.font.type.efm.exception.FontNoFontGroupException;
 import de.dante.extex.font.type.efm.exception.FontWrongFileExtensionException;
@@ -53,7 +59,7 @@ import de.dante.util.resource.ResourceFinder;
  * Abstract class for a efm-font.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public abstract class EFMFount implements ModifiableFount, Serializable {
 
@@ -98,42 +104,49 @@ public abstract class EFMFount implements ModifiableFount, Serializable {
     private boolean virtual;
 
     /**
+     * commands for each glyph
+     */
+    private Map commands;
+
+    /**
      * permille factor for scale factor
      */
     private static final int PERMILLE_FACTOR = 1000;
 
     /**
+     * the font factroy
+     */
+    private FontFactory fontfactory;
+
+    /**
      * Creates a new object.
      * @param   doc         the efm-document
-     * @param   fontname    the fontname
-     * @param   size        the size of the font
-     * @param   sf          the scale factor in 1000
-     * @param   ls          the letterspaced
-     * @param   lig         ligature on/off
-     * @param   kern        kerning on/off
+     * @param   key         the fontkey
      * @param   filefinder  the fileFinder-object
+     * @param   ff          the font factory
      * @throws FontException if an error occurs.
      * @throws ConfigurationException from the configsystem.
      */
-    public EFMFount(final Document doc, final String fontname,
-            final Dimen size, final Count sf, final Glue ls, final Boolean lig,
-            final Boolean kern, final ResourceFinder filefinder)
+    public EFMFount(final Document doc, final FountKey key,
+            final ResourceFinder filefinder, final FontFactory ff)
             throws FontException, ConfigurationException {
 
         super();
-        if (fontname != null) {
-            name = fontname;
+        if (key.getName() != null) {
+            name = key.getName();
         }
-        Count scalefactor = sf;
-        // scale factor = 0 -> 1000
-        if (sf == null || sf.getValue() == 0) {
-            scalefactor = new Count(PERMILLE_FACTOR);
-        }
-        letterspaced = ls;
-        ligatures = lig.booleanValue();
-        kerning = kern.booleanValue();
+        fontfactory = ff;
+        commands = new HashMap();
 
-        loadFont(doc, filefinder, size, scalefactor);
+        // scale factor = 0 -> 1000
+        if (key.getScale() == null || key.getScale().getValue() == 0) {
+            key.setScale(new Count(PERMILLE_FACTOR));
+        }
+        letterspaced = key.getLetterspaced();
+        ligatures = key.isLigatures();
+        kerning = key.isKerning();
+
+        loadFont(doc, key, filefinder);
     }
 
     /**
@@ -149,14 +162,13 @@ public abstract class EFMFount implements ModifiableFount, Serializable {
     /**
      * load the Font
      * @param   doc         the efm-document
+     * @param   key         the fount key
      * @param   fileFinder  the fileFinder
-     * @param   size        the fontsize
-     * @param   sf          the scale factor
      * @throws FontException if a error is thrown.
      * @throws ConfigurationException from the configsystem.
      */
-    private void loadFont(final Document doc, final ResourceFinder fileFinder,
-            final Dimen size, final Count sf) throws FontException,
+    private void loadFont(final Document doc, final FountKey key,
+            final ResourceFinder fileFinder) throws FontException,
             ConfigurationException {
 
         try {
@@ -208,12 +220,16 @@ public abstract class EFMFount implements ModifiableFount, Serializable {
             }
 
             // calculate em
-            if (size == null) {
-                actualsize = new Dimen((long) (designsize.getValue()
-                        * sf.getValue() / PERMILLE_FACTOR * empr / PROZ100));
+            if (key.getSize() == null) {
+                actualsize = new Dimen(
+                        (long) (designsize.getValue()
+                                * key.getScale().getValue() / PERMILLE_FACTOR
+                                * empr / PROZ100));
             } else {
-                actualsize = new Dimen((long) (size.getValue() * sf.getValue()
-                        / PERMILLE_FACTOR * empr / PROZ100));
+                actualsize = new Dimen(
+                        (long) (key.getSize().getValue()
+                                * key.getScale().getValue() / PERMILLE_FACTOR
+                                * empr / PROZ100));
             }
 
             // get ex
@@ -262,8 +278,8 @@ public abstract class EFMFount implements ModifiableFount, Serializable {
 
                 for (int i = 0; i < glyphlist.size(); i++) {
                     e = (Element) glyphlist.get(i);
-                    String key = e.getAttributeValue("ID");
-                    if (key != null) {
+                    String akey = e.getAttributeValue("ID");
+                    if (akey != null) {
                         Glyph gv = new GlyphImpl();
                         gv.setNumber(e.getAttributeValue("glyph-number"));
                         gv.setName(e.getAttributeValue("glyph-name"));
@@ -329,8 +345,15 @@ public abstract class EFMFount implements ModifiableFount, Serializable {
                                 gv.addLigature(lv);
                             }
                         }
-                        glyphmap.put(key, gv);
+                        glyphmap.put(akey, gv);
                         glyphname.put(gv.getName(), key);
+                        // commands
+                        if (virtual) {
+                            Element cmd = e.getChild("commands");
+                            if (cmd != null) {
+                                addCommands(akey, cmd);
+                            }
+                        }
                     }
                 }
             }
@@ -338,6 +361,31 @@ public abstract class EFMFount implements ModifiableFount, Serializable {
         } catch (JDOMException e) {
             throw new FontConfigReadException(e.getMessage());
         }
+    }
+
+    /**
+     * Add the commands from the element.
+     * @param key   the key for the map
+     * @param cmd   the command element
+     * @throws FontException if a font error is occured.
+     */
+    private void addCommands(final String key, final Element cmd)
+            throws FontException {
+
+        ArrayList clist = new ArrayList();
+        List childs = cmd.getChildren();
+        for (int i = 0; i < childs.size(); i++) {
+            Element e = (Element) childs.get(i);
+            if ("char".equals(e.getName())) {
+                clist.add(new EfmChar(e, designsize));
+            } else if ("rule".equals(e.getName())) {
+                clist.add(new EfmRule(e, designsize));
+            } else if ("special".equals(e.getName())) {
+                clist.add(new EfmSpecial(e));
+            }
+            // ignore the rest
+        }
+        commands.put(key, clist);
     }
 
     /**
@@ -450,7 +498,7 @@ public abstract class EFMFount implements ModifiableFount, Serializable {
     /**
      * Default unitsperem
      */
-    private static final int DEFAULTUNITSPEREM = 1000;
+    public static final int DEFAULTUNITSPEREM = 1000;
 
     /**
      * units per em
@@ -662,6 +710,7 @@ public abstract class EFMFount implements ModifiableFount, Serializable {
 
         return designsize;
     }
+
     /**
      * Returns the virtual.
      * @return Returns the virtual.
@@ -669,5 +718,28 @@ public abstract class EFMFount implements ModifiableFount, Serializable {
     public boolean isVirtual() {
 
         return virtual;
+    }
+
+    /**
+     * Returns the commands for a glyph or <code>null</code>, if no commands
+     * exists.
+     * @param uc    the unicodechar
+     * @return Returns the commands for a glyph.
+     */
+    public ArrayList getCommands(final UnicodeChar uc) {
+
+        if (uc != null) {
+            return (ArrayList) commands.get(String.valueOf(uc.getCodePoint()));
+        }
+        return null;
+    }
+
+    /**
+     * Returns the fontfactory.
+     * @return Returns the fontfactory.
+     */
+    public FontFactory getFontfactory() {
+
+        return fontfactory;
     }
 }

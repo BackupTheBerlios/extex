@@ -21,12 +21,10 @@ package de.dante.extex.font.type.efm;
 
 import org.jdom.Document;
 
+import de.dante.extex.font.FontFactory;
+import de.dante.extex.font.FountKey;
 import de.dante.extex.font.exception.FontException;
 import de.dante.extex.font.type.ModifiableFount;
-import de.dante.extex.interpreter.type.count.Count;
-import de.dante.extex.interpreter.type.dimen.Dimen;
-import de.dante.extex.interpreter.type.glue.Glue;
-import de.dante.util.GeneralException;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.resource.ResourceFinder;
 
@@ -35,7 +33,7 @@ import de.dante.util.resource.ResourceFinder;
  * (create from a TFM-file).
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class EFMType1TFMMathextFount extends EFMType1TFMNOFount
         implements
@@ -52,23 +50,17 @@ public class EFMType1TFMMathextFount extends EFMType1TFMNOFount
     /**
      * Creates a new object.
      * @param   doc         the efm-document
-     * @param   fontname    the fontname
-     * @param   size        the emsize of the font
-     * @param   sf          the scale factor
-     * @param   ls          the letterspaced
-     * @param   lig         ligature on/off
-     * @param   kern        kerning on/off
+     * @param   key         the fount key
      * @param   filefinder  the ResourceFinder-object
-     * @throws GeneralException ...
-     * @throws ConfigurationException ...
-     * @throws FontException ...
+     * @param   ff          the font factory
+     * @throws ConfigurationException from the config system.
+     * @throws FontException if a font error occurs.
      */
-    public EFMType1TFMMathextFount(final Document doc, final String fontname,
-            final Dimen size, final Count sf, final Glue ls, final Boolean lig,
-            final Boolean kern, final ResourceFinder filefinder)
-            throws GeneralException, ConfigurationException, FontException {
+    public EFMType1TFMMathextFount(final Document doc, final FountKey key,
+            final ResourceFinder filefinder, final FontFactory ff)
+            throws ConfigurationException, FontException {
 
-        super(doc, fontname, size, sf, ls, lig, kern, filefinder);
+        super(doc, key, filefinder, ff);
     }
 
     /**

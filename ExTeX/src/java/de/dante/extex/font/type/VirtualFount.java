@@ -27,7 +27,7 @@ import de.dante.util.UnicodeChar;
  * Virtual Fount Interface
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface VirtualFount {
 
@@ -37,6 +37,7 @@ public interface VirtualFount {
      * @param uc        the character
      * @return Returns the virt. char node.
      */
-    VirtualCharNode getVirtualCharNode(TypesettingContext context, UnicodeChar uc);
+    VirtualCharNode getVirtualCharNode(TypesettingContext context,
+            UnicodeChar uc);
 
 }

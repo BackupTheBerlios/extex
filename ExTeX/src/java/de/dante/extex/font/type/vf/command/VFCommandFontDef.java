@@ -25,6 +25,7 @@ import java.util.Map;
 import org.jdom.Element;
 
 import de.dante.extex.font.FontFactory;
+import de.dante.extex.font.FountKey;
 import de.dante.extex.font.exception.FontException;
 import de.dante.extex.font.exception.FontNotFoundException;
 import de.dante.extex.font.type.PlFormat;
@@ -107,7 +108,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class VFCommandFontDef extends VFCommand implements PlFormat {
 
@@ -208,16 +209,18 @@ public class VFCommandFontDef extends VFCommand implements PlFormat {
             tfmfont = fontfactory.readTFMFont(fontname);
 
             if (tfmfont != null) {
-                f = fontfactory.getInstance(tfmfont, fds, scale, new Glue(0),
-                        true, true);
+                FountKey key = new FountKey(tfmfont.getFontname(), fds, scale,
+                        new Glue(0), true, true);
+                f = fontfactory.getInstance(tfmfont, key);
             } else {
                 // try vf-font
                 vffont = fontfactory.readVFFont(fontname);
                 if (vffont == null) {
                     throw new FontNotFoundException(fontname);
                 }
-                f = fontfactory.getInstance(vffont, fds, scale, new Glue(0),
-                        true, true);
+                FountKey key = new FountKey(vffont.getFontname(), fds, scale,
+                        new Glue(0), true, true);
+                f = fontfactory.getInstance(vffont, key);
             }
 
             fontmap.put(new Integer(fontnumbers), f);

@@ -29,7 +29,7 @@ import de.dante.extex.interpreter.type.glue.Glue;
  * Font-key-class.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class FountKey implements Serializable {
@@ -37,17 +37,17 @@ public class FountKey implements Serializable {
     /**
      * The name of the font
      */
-    private final String name;
+    private String name;
 
     /**
      * The size of the font
      */
-    private final Dimen size;
+    private Dimen size;
 
     /**
      * The scale factor of the font.
      */
-    private final Count scale;
+    private Count scale;
 
     /**
      * The glue for letterspace
@@ -85,11 +85,138 @@ public class FountKey implements Serializable {
     }
 
     /**
+     * Create a new object.
+     * @param n     the name
+     */
+    public FountKey(final String n) {
+
+        this(n, null, null, new Glue(0), false, false);
+    }
+
+    /**
+     * Create a new object.
+     * @param n     the name
+     * @param s     the size
+     */
+    public FountKey(final String n, final Dimen s) {
+
+        this(n, s, null, new Glue(0), false, false);
+    }
+
+    /**
      * @see java.lang.Object#toString()
      */
     public String toString() {
 
         return name + size + scale + letterspaced + String.valueOf(ligatures)
                 + String.valueOf(kerning);
+    }
+
+    /**
+     * Returns the kerning.
+     * @return Returns the kerning.
+     */
+    public boolean isKerning() {
+
+        return kerning;
+    }
+
+    /**
+     * Set the kerning.
+     * @param k The kerning to set.
+     */
+    public void setKerning(final boolean k) {
+
+        kerning = k;
+    }
+
+    /**
+     * Returns the letterspaced.
+     * @return Returns the letterspaced.
+     */
+    public Glue getLetterspaced() {
+
+        return letterspaced;
+    }
+
+    /**
+     * Set the letterspaced.
+     * @param l The letterspaced to set.
+     */
+    public void setLetterspaced(final Glue l) {
+
+        letterspaced = l;
+    }
+
+    /**
+     * Returns the ligatures.
+     * @return Returns the ligatures.
+     */
+    public boolean isLigatures() {
+
+        return ligatures;
+    }
+
+    /**
+     * Set the ligatures.
+     * @param l The ligatures to set.
+     */
+    public void setLigatures(final boolean l) {
+
+        ligatures = l;
+    }
+
+    /**
+     * Returns the name.
+     * @return Returns the name.
+     */
+    public String getName() {
+
+        return name;
+    }
+
+    /**
+     * Returns the scale.
+     * @return Returns the scale.
+     */
+    public Count getScale() {
+
+        return scale;
+    }
+
+    /**
+     * Returns the size.
+     * @return Returns the size.
+     */
+    public Dimen getSize() {
+
+        return size;
+    }
+
+    /**
+     * Set the name.
+     * @param n The name to set.
+     */
+    public void setName(final String n) {
+
+        name = n;
+    }
+
+    /**
+     * Set the scale.
+     * @param s The scale to set.
+     */
+    public void setScale(final Count s) {
+
+        scale = s;
+    }
+
+    /**
+     * Set the size.
+     * @param s The size to set.
+     */
+    public void setSize(final Dimen s) {
+
+        size = s;
     }
 }

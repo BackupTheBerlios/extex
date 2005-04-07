@@ -55,7 +55,7 @@ import de.dante.util.file.random.RandomAccessR;
  * @see <a href="package-summary.html#VFformat">VF-Format</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class VFFont
         implements
@@ -64,6 +64,11 @@ public class VFFont
             FontMetric,
             PlFormat {
 
+    /**
+     * units per em (default-value)
+     */
+    public static final int UNITS_PER_EM_DEFAULT = 1000;
+    
     /**
      * fontname
      */
@@ -193,7 +198,7 @@ public class VFFont
     /**
      * @see de.dante.extex.font.type.FontMetric#getFontMetric()
      */
-    public Element getFontMetric() {
+    public Element getFontMetric() throws FontException {
 
         // create efm-file
         Element root = new Element("fontgroup");

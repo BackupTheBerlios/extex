@@ -20,12 +20,13 @@
 package de.dante.extex.format.dvi;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
+import org.jdom.Element;
+
 import de.dante.extex.font.FontFactory;
+import de.dante.extex.font.Glyph;
 import de.dante.extex.font.exception.FontException;
-import de.dante.extex.font.type.PlWriter;
 import de.dante.extex.font.type.tfm.TFMFixWord;
 import de.dante.extex.format.dvi.command.DviBOP;
 import de.dante.extex.format.dvi.command.DviChar;
@@ -49,11 +50,17 @@ import de.dante.extex.format.dvi.command.DviXXX;
 import de.dante.extex.format.dvi.command.DviY;
 import de.dante.extex.format.dvi.command.DviZ;
 import de.dante.extex.format.dvi.exception.DviException;
+import de.dante.extex.format.dvi.exception.DviGlyphNotFoundException;
+import de.dante.extex.format.dvi.exception.DviMissingFontException;
+import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.font.Font;
+import de.dante.util.UnicodeChar;
+import de.dante.util.Unit;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.file.random.RandomAccessR;
 
 /**
- * DVI to PL converter.
+ * DVI to EFM converter.
  *
  * <p>
  * Commands are taken from DVItype 3.4.
@@ -62,25 +69,15 @@ import de.dante.util.file.random.RandomAccessR;
  * @see <a href="package-summary.html#DVIformat">DVI-Format</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
 
-public class DviPl implements DviInterpreter, DviExecuteCommand {
+public class DviEfm implements DviInterpreter, DviExecuteCommand {
 
     /**
-     * page counter
+     * show all elements (move, fnt, )
      */
-    private int page = 0;
-
-    /**
-     * the fontfactory
-     */
-    private FontFactory fontfactory;
-
-    /**
-     * the map for all sub fonts.
-     */
-    private Map fontmap;
+    private static final boolean SHOWALL = true;
 
     /**
      * the dvi stack
@@ -93,28 +90,68 @@ public class DviPl implements DviInterpreter, DviExecuteCommand {
     private DviValues val;
 
     /**
-     * the weriter for pl
+     * dvi element
      */
-    private PlWriter out;
+    private Element dvi;
+
+    //    /**
+    //     * the fontfactory
+    //     */
+    //    private FontFactory fontfactory;
+
+    /**
+     * the map for all sub fonts.
+     */
+    private Map fontmap;
 
     /**
      * Create a new object.
      *
+     * @param element   the dvi element
      * @param ff        the fontfactroy
+     * @param fm        the font map
      */
-    public DviPl(final PlWriter plout, final FontFactory ff) {
+    public DviEfm(final Element element, final FontFactory ff, final Map fm) {
 
-        out = plout;
-        fontfactory = ff;
-        fontmap = new HashMap();
+        dvi = element;
+        // fontfactory = ff;
         val = new DviValues();
         stack = new DviStack();
+        fontmap = fm;
     }
 
     /**
-     * the mag
+     * Returns the font from the fontmap.
+     * @return Returns the font from the fontmap.
+     * @throws DviMissingFontException if the font is not found.
      */
-    private int mag;
+    private Font getFont() throws DviMissingFontException {
+
+        if (val.getF() == -1) {
+            return null;
+        }
+        Font font = (Font) fontmap.get(new Integer(val.getF()));
+        if (font == null) {
+            throw new DviMissingFontException(String.valueOf(val.getF()));
+        }
+        return font;
+    }
+
+    /**
+     * Add h,v values to the element
+     * @param element   the element
+     */
+    private void addHV(final Element element) {
+
+        TFMFixWord h = new TFMFixWord();
+        TFMFixWord v = new TFMFixWord();
+        h.setValue(val.getH());
+        v.setValue(val.getV());
+        element.setAttribute("h", h.toStringComma());
+        element.setAttribute("v", v.toStringComma());
+        element.setAttribute("h-fw", String.valueOf(h.getValue()));
+        element.setAttribute("v-fw", String.valueOf(v.getValue()));
+    }
 
     /**
      * @see de.dante.extex.format.dvi.DVIInterpreter#interpret(
@@ -203,12 +240,18 @@ public class DviPl implements DviInterpreter, DviExecuteCommand {
     }
 
     /**
-     * Set the fontmap.
-     * @param fontm The fontmap to set.
+     * Create a new move element and add the value
+     * @param attr  the attribute name
+     * @param fw    the fixword value
+     * @return Returns the new move element.
      */
-    public void setFontmap(Map fontm) {
+    private Element addMove(final String attr, final TFMFixWord fw) {
 
-        fontmap = fontm;
+        Element element = new Element("move");
+
+        element.setAttribute(attr, fw.toStringComma());
+        element.setAttribute(attr + "-fw", String.valueOf(fw.getValue()));
+        return element;
     }
 
     /**
@@ -228,7 +271,27 @@ public class DviPl implements DviInterpreter, DviExecuteCommand {
     public void execute(final DviChar command) throws DviException,
             FontException, ConfigurationException {
 
-        out.plopen("SETCHAR").addChar((short) command.getCh()).plclose();
+        Element element = new Element("char");
+        element.setAttribute("id", String.valueOf(command.getCh()));
+        Font font = getFont();
+        if (font != null) {
+            element.setAttribute("font", font.getFontName());
+            element.setAttribute("fontsize", Unit.getDimenAsPTString(font
+                    .getDesignSize()));
+        }
+        Glyph g = font.getGlyph(new UnicodeChar(command.getCh()));
+        if (g == null) {
+            throw new DviGlyphNotFoundException(String.valueOf(command.getCh()));
+        }
+        // TODO UWE stimmt dies mit der Breite???
+        Dimen width = g.getWidth();
+        element.setAttribute("width", Unit.getDimenAsPTString(width,
+                TFMFixWord.FRACTIONDIGITS));
+        addHV(element);
+        dvi.addContent(element);
+        if (!command.isPut()) {
+            val.addH((int) width.getValue());
+        }
     }
 
     /**
@@ -237,6 +300,12 @@ public class DviPl implements DviInterpreter, DviExecuteCommand {
      */
     public void execute(final DviDown command) throws DviException,
             FontException, ConfigurationException {
+
+        if (SHOWALL) {
+            TFMFixWord fw = new TFMFixWord();
+            fw.setValue(command.getValue());
+            dvi.addContent(addMove("down", fw));
+        }
 
         val.addV(command.getValue());
     }
@@ -269,8 +338,15 @@ public class DviPl implements DviInterpreter, DviExecuteCommand {
             FontException, ConfigurationException {
 
         val.setF(command.getFont());
-        out.plopen("SELECTFONT").addDec(command.getFont()).plclose();
-
+        if (SHOWALL) {
+            Element element = new Element("font");
+            element.setAttribute("id", String.valueOf(command.getFont()));
+            Font font = getFont();
+            if (font != null) {
+                element.setAttribute("font", font.getFontName());
+            }
+            dvi.addContent(element);
+        }
     }
 
     /**
@@ -282,7 +358,10 @@ public class DviPl implements DviInterpreter, DviExecuteCommand {
 
         DviValues v = stack.pop();
         val.setValues(v);
-        out.plopen("POP").plclose();
+        if (SHOWALL) {
+            Element element = new Element("pop");
+            dvi.addContent(element);
+        }
     }
 
     /**
@@ -292,6 +371,7 @@ public class DviPl implements DviInterpreter, DviExecuteCommand {
     public void execute(final DviNOP command) throws DviException,
             FontException, ConfigurationException {
 
+        // do nothing
     }
 
     /**
@@ -332,7 +412,10 @@ public class DviPl implements DviInterpreter, DviExecuteCommand {
             FontException, ConfigurationException {
 
         stack.push(val);
-        out.plopen("PUSH").plclose();
+        if (SHOWALL) {
+            Element element = new Element("push");
+            dvi.addContent(element);
+        }
     }
 
     /**
@@ -342,6 +425,11 @@ public class DviPl implements DviInterpreter, DviExecuteCommand {
     public void execute(final DviRight command) throws DviException,
             FontException, ConfigurationException {
 
+        if (SHOWALL) {
+            TFMFixWord fw = new TFMFixWord();
+            fw.setValue(command.getValue());
+            dvi.addContent(addMove("right", fw));
+        }
         val.addH(command.getValue());
     }
 
@@ -352,16 +440,20 @@ public class DviPl implements DviInterpreter, DviExecuteCommand {
     public void execute(final DviRule command) throws DviException,
             FontException, ConfigurationException {
 
-        if (!command.isPut()) {
-            val.addH(command.getWidth());
-        }
         TFMFixWord w = new TFMFixWord();
         TFMFixWord h = new TFMFixWord();
         w.setValue(command.getWidth());
         h.setValue(command.getHeight());
-
-        out.plopen("SETRULE").addReal(h).addReal(w).plclose();
-
+        Element element = new Element("rule");
+        element.setAttribute("width", w.toStringComma());
+        element.setAttribute("hight", h.toStringComma());
+        element.setAttribute("width-fw", String.valueOf(w.getValue()));
+        element.setAttribute("hight-fw", String.valueOf(h.getValue()));
+        addHV(element);
+        dvi.addContent(element);
+        if (!command.isPut()) {
+            val.addH(command.getWidth());
+        }
     }
 
     /**
@@ -371,19 +463,21 @@ public class DviPl implements DviInterpreter, DviExecuteCommand {
     public void execute(final DviW command) throws DviException, FontException,
             ConfigurationException {
 
+        if (SHOWALL) {
+            TFMFixWord fw = new TFMFixWord();
+            if (command.isW0()) {
+                fw.setValue(val.getW());
+            } else {
+                fw.setValue(command.getValue());
+            }
+            dvi.addContent(addMove("right", fw));
+        }
+
         // calculate
         if (!command.isW0()) {
             val.setW(command.getValue());
         }
         val.addH(val.getW());
-
-        TFMFixWord fw = new TFMFixWord();
-        if (command.isW0()) {
-            fw.setValue(val.getW());
-        } else {
-            fw.setValue(command.getValue());
-        }
-        out.plopen("MOVERIGHT").addReal(fw).plclose();
     }
 
     /**
@@ -393,19 +487,20 @@ public class DviPl implements DviInterpreter, DviExecuteCommand {
     public void execute(final DviX command) throws DviException, FontException,
             ConfigurationException {
 
+        if (SHOWALL) {
+            TFMFixWord fw = new TFMFixWord();
+            if (command.isX0()) {
+                fw.setValue(val.getX());
+            } else {
+                fw.setValue(command.getValue());
+            }
+            dvi.addContent(addMove("right", fw));
+        }
+
         if (!command.isX0()) {
             val.setX(command.getValue());
         }
         val.addH(val.getX());
-
-        TFMFixWord fw = new TFMFixWord();
-        if (command.isX0()) {
-            fw.setValue(val.getX());
-        } else {
-            fw.setValue(command.getValue());
-        }
-        out.plopen("MOVERIGHT").addReal(fw).plclose();
-
     }
 
     /**
@@ -415,7 +510,9 @@ public class DviPl implements DviInterpreter, DviExecuteCommand {
     public void execute(final DviXXX command) throws DviException,
             FontException, ConfigurationException {
 
-        out.plopen("SPECIAL").addStr(command.getXXXString()).plclose();
+        Element element = new Element("special");
+        element.setAttribute("xxx", command.getXXXString());
+        dvi.addContent(element);
     }
 
     /**
@@ -425,19 +522,20 @@ public class DviPl implements DviInterpreter, DviExecuteCommand {
     public void execute(final DviY command) throws DviException, FontException,
             ConfigurationException {
 
+        if (SHOWALL) {
+            TFMFixWord fw = new TFMFixWord();
+            if (command.isY0()) {
+                fw.setValue(val.getY());
+            } else {
+                fw.setValue(command.getValue());
+            }
+            dvi.addContent(addMove("down", fw));
+        }
+
         if (!command.isY0()) {
             val.setY(command.getValue());
         }
         val.addV(val.getY());
-
-        TFMFixWord fw = new TFMFixWord();
-        if (command.isY0()) {
-            fw.setValue(val.getY());
-        } else {
-            fw.setValue(command.getValue());
-        }
-        out.plopen("MOVEDOWN").addReal(fw).plclose();
-
     }
 
     /**
@@ -447,17 +545,19 @@ public class DviPl implements DviInterpreter, DviExecuteCommand {
     public void execute(final DviZ command) throws DviException, FontException,
             ConfigurationException {
 
+        if (SHOWALL) {
+            TFMFixWord fw = new TFMFixWord();
+            if (command.isZ0()) {
+                fw.setValue(val.getZ());
+            } else {
+                fw.setValue(command.getValue());
+            }
+            dvi.addContent(addMove("down", fw));
+        }
+
         if (!command.isZ0()) {
             val.setZ(command.getValue());
         }
         val.addV(val.getZ());
-
-        TFMFixWord fw = new TFMFixWord();
-        if (command.isZ0()) {
-            fw.setValue(val.getZ());
-        } else {
-            fw.setValue(command.getValue());
-        }
-        out.plopen("MOVEDOWN").addReal(fw).plclose();
     }
 }

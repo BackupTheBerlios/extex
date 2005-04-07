@@ -33,6 +33,7 @@ import de.dante.extex.font.type.tfm.TFMFixWord;
 import de.dante.extex.font.type.tfm.TFMFont;
 import de.dante.extex.font.type.vf.exception.VFDviException;
 import de.dante.extex.font.type.vf.exception.VFWrongCodeException;
+import de.dante.extex.format.dvi.DviEfm;
 import de.dante.extex.format.dvi.DviPl;
 import de.dante.extex.format.dvi.DviXml;
 import de.dante.util.file.random.RandomAccessInputArray;
@@ -99,7 +100,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 
 public class VFCommandCharacterPackets extends VFCommand implements PlFormat {
@@ -304,8 +305,9 @@ public class VFCommandCharacterPackets extends VFCommand implements PlFormat {
     /**
      * Add glyph to the element
      * @param element   the element
+     * @throws FontException if a font-error occurs.
      */
-    public void addGlyph(final Element element) {
+    public void addGlyph(final Element element) throws FontException {
 
         // read the char from ther master-tfm
         int bc = mastertfm.getLengths().getBc();
@@ -325,6 +327,18 @@ public class VFCommandCharacterPackets extends VFCommand implements PlFormat {
             element.setAttribute("glyph-name", ciw.getGlyphname().substring(1));
         }
         ciw.addGlyph(glyph);
+
+        try {
+            RandomAccessR arar = new RandomAccessInputArray(dvi);
+
+            Element cmd = new Element("commands");
+            DviEfm dviefm = new DviEfm(cmd, fontfactory, fontmap);
+            dviefm.interpret(arar);
+            arar.close();
+            glyph.addContent(cmd);
+        } catch (Exception e) {
+            throw new VFDviException(e.getMessage());
+        }
         element.addContent(glyph);
     }
 }

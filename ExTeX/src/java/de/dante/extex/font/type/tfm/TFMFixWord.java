@@ -31,7 +31,7 @@ import java.util.Locale;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class TFMFixWord implements Serializable {
 
@@ -179,7 +179,7 @@ public class TFMFixWord implements Serializable {
     /**
      * FRACTIONDIGITS
      */
-    private static final int FRACTIONDIGITS = 6;
+    public static final int FRACTIONDIGITS = 6;
 
     /**
      * Returns the value as Sting in untis with comma (0.00000...).
@@ -192,6 +192,15 @@ public class TFMFixWord implements Serializable {
         nf.setGroupingUsed(false);
         return nf.format((double) value * TFMConstants.CONST_1000
                 / FIXWORDDENOMINATOR);
+    }
+
+    /**
+     * Returns the value as double in untis.
+     * @return Returns the value as double in untis.
+     */
+    public double toDouble() {
+
+        return (double) value * TFMConstants.CONST_1000 / FIXWORDDENOMINATOR;
     }
 
     /**

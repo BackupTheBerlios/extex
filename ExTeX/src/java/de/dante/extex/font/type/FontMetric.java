@@ -21,18 +21,21 @@ package de.dante.extex.font.type;
 
 import org.jdom.Element;
 
+import de.dante.extex.font.exception.FontException;
+
 /**
  * This interface get the EFM-<code>Element</code>
  * from some other fontsmetric-classes.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface FontMetric {
 
     /**
      * Return the FontMetrix-Element for this font.
+     * @throws FontException if a font-error occours
      * @return the fontmetrix as XML-Element
      */
-    Element getFontMetric();
+    Element getFontMetric() throws FontException;
 }
