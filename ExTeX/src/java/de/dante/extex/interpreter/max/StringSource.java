@@ -30,9 +30,15 @@ import de.dante.util.configuration.ConfigurationException;
  * This class provides a token source which is fed from a sting.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class StringSource extends Moritz {
+
+    /**
+     * The field <tt>context</tt> contains the processing context. Here nearly
+     * all relevant information can be found.
+     */
+    private Context context = null;
 
     /**
      * Creates a new object.
@@ -76,10 +82,11 @@ public class StringSource extends Moritz {
     }
 
     /**
-     * @see de.dante.extex.interpreter.TokenSource#execute(de.dante.extex.scanner.Token, Context, Typesetter)
+     * @see de.dante.extex.interpreter.TokenSource#execute(
+     *      de.dante.extex.scanner.Token, Context, Typesetter)
      */
-    public void execute(final Token token, Context context, Typesetter typesetter)
-            throws InterpreterException {
+    public void execute(final Token token, final Context context,
+            final Typesetter typesetter) throws InterpreterException {
 
         // TODO gene: unimplemented
         throw new RuntimeException("unimplemented");
@@ -90,7 +97,6 @@ public class StringSource extends Moritz {
      */
     public Context getContext() {
 
-        // TODO gene: unimplemented
-        throw new RuntimeException("unimplemented");
+        return context;
     }
 }

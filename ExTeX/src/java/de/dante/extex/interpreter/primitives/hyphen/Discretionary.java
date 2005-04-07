@@ -65,7 +65,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Discretionary extends AbstractCode {
 
@@ -73,7 +73,7 @@ public class Discretionary extends AbstractCode {
      * TODO gene: missing JavaDoc.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.14 $
+     * @version $Revision: 1.15 $
      */
     private class Manager implements ListManager {
 
@@ -113,7 +113,6 @@ public class Discretionary extends AbstractCode {
          */
         public DocumentWriter getDocumentWriter() {
 
-            // TODO gene: getDocumentWriter unimplemented
             return null;
         }
 
@@ -122,7 +121,6 @@ public class Discretionary extends AbstractCode {
          */
         public LigatureBuilder getLigatureBuilder() {
 
-            // TODO gene: getLigatureBuilder unimplemented
             return null;
         }
 
@@ -131,7 +129,6 @@ public class Discretionary extends AbstractCode {
          */
         public TypesetterOptions getOptions() {
 
-            // TODO gene: getOptions unimplemented
             return null;
         }
 
@@ -140,7 +137,6 @@ public class Discretionary extends AbstractCode {
          */
         public ParagraphBuilder getParagraphBuilder() {
 
-            // TODO gene: getParagraphBuilder unimplemented
             return null;
         }
 

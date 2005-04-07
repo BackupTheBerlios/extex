@@ -44,10 +44,11 @@ import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This class provides means to traverse a node recursively and report all
+ * characters contained.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class NodeTraverser implements NodeVisitor {
 
@@ -90,8 +91,9 @@ public class NodeTraverser implements NodeVisitor {
         try {
             return (UnicodeChar) node.visit(this, null);
         } catch (GeneralException e) {
-            //TODO gene: this should not happen unimplemented
-            throw new RuntimeException("unimplemented");
+            // This should not happen since none of the visitor methods throws
+            // an exception.
+            throw new RuntimeException(e);
         }
     }
 
