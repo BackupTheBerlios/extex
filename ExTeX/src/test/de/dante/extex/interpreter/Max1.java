@@ -33,6 +33,7 @@ import de.dante.extex.scanner.stream.impl32.TokenStreamStringImpl;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Mode;
+import de.dante.extex.typesetter.OutputRoutine;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
@@ -51,7 +52,7 @@ import de.dante.util.configuration.ConfigurationFactory;
 
 /**
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.54 $
+ * @version $Revision: 1.55 $
  */
 public class Max1 extends TestCase {
 
@@ -273,6 +274,14 @@ public class Max1 extends TestCase {
          *      de.dante.extex.typesetter.TypesetterOptions)
          */
         public void setOptions(final TypesetterOptions options) {
+
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.Typesetter#setOutputRoutine(
+         *      de.dante.extex.typesetter.OutputRoutine)
+         */
+        public void setOutputRoutine(final OutputRoutine output) {
 
         }
 

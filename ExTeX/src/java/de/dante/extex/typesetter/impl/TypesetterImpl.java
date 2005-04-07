@@ -33,6 +33,7 @@ import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Mode;
+import de.dante.extex.typesetter.OutputRoutine;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
@@ -59,7 +60,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.62 $
+ * @version $Revision: 1.63 $
  */
 public class TypesetterImpl
         implements
@@ -101,6 +102,11 @@ public class TypesetterImpl
      * The field <tt>options</tt> contains the context for accessing parameters.
      */
     private TypesetterOptions options;
+
+    /**
+     * The field <tt>outputRoutine</tt> contains the output routine.
+     */
+    private OutputRoutine outputRoutine;
 
     /**
      * The field <tt>pageBuilder</tt> contains the current page builder.
@@ -425,6 +431,7 @@ public class TypesetterImpl
         documentWriter = writer;
         pageBuilder.setDocumentWriter(writer);
     }
+
     /**
      * @see de.dante.extex.typesetter.Typesetter#setOptions(
      *      de.dante.extex.typesetter.TypesetterOptions)
@@ -433,6 +440,15 @@ public class TypesetterImpl
 
         this.options = options;
         pageBuilder.setOptions(options);
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.Typesetter#setOutputRoutine(
+     *      de.dante.extex.typesetter.OutputRoutine)
+     */
+    public void setOutputRoutine(final OutputRoutine output) {
+
+        this.outputRoutine = output;
     }
 
     /**
