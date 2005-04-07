@@ -34,11 +34,18 @@ import de.dante.util.UnicodeChar;
  * <p>
  *  The basic data structure to store hyphenation patterns is a tree with
  *  arbitrary branching factor. The path from the root to a node determines the
- *  word under which a hyphenation code ist stored.
+ *  word under which a hyphenation code is stored.
  * </p>
  * <p>
  *  The hyphenation code is a vector of characters. They are used as a means to
  *  store short numbers.
+ * </p>
+ * <p>
+ *  The code stored in a node of the hyphen tree represents the superposition of
+ *  all codes having an initial sequence in common with the current sequence.
+ *  Thus the superposition has to be stores when a new pattern is added. At
+ *  runtime it is only necessary to retrieve a single code sequence for each
+ *  position of the word.
  * </p>
  *
  * TODO gene: missing JavaDoc (incomplete).
@@ -47,7 +54,7 @@ import de.dante.util.UnicodeChar;
  * or right word boundary.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 class HyphenTree implements Serializable {
 
@@ -181,7 +188,9 @@ class HyphenTree implements Serializable {
      */
     public HyphenTree getNext(final UnicodeChar uc) {
 
-        return (HyphenTree) this.nextTree.get(uc);
+        return (this.nextTree != null
+                ? (HyphenTree) this.nextTree.get(uc)
+                : null);
     }
 
     /**
