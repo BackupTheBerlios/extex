@@ -57,7 +57,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public class GlueComponent implements Serializable, FixedGlueComponent {
 
@@ -535,13 +535,15 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
     }
 
     /**
-     * Setter for the value in terms of the internal representation.
+     * Setter for the value in terms of the internal representation. The order
+     * is reset to 0.
      *
      * @param theValue the new value
      */
     public void set(final long theValue) {
 
         this.value = theValue;
+        this.order = 0;
     }
 
     /**
