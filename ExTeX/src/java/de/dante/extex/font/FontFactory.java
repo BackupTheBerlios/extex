@@ -63,7 +63,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class FontFactory implements Serializable {
 
@@ -573,9 +573,7 @@ public class FontFactory implements Serializable {
                         if (afmfile != null) {
 
                             try {
-                                AfmFont afmreader = new AfmFont(afmfile,
-                                        name
-                                        /*+ ".pfb"*/, "10");
+                                AfmFont afmreader = new AfmFont(afmfile, name);
 
                                 doc = new Document(afmreader.getFontMetric());
                             } catch (IOException e) {
