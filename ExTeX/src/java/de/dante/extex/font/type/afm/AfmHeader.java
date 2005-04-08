@@ -19,14 +19,18 @@
 
 package de.dante.extex.font.type.afm;
 
+import org.jdom.Element;
+
+import de.dante.util.XMLConvertible;
+
 /**
  * AFM-Header.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
-public class AfmHeader {
+public class AfmHeader implements XMLConvertible {
 
     /**
      * The Postscript font name.
@@ -46,7 +50,7 @@ public class AfmHeader {
     /**
      * The weight of the font: normal, bold, etc.
      */
-    private String weight;
+    private String weight = "";
 
     /**
      * The italic angle of the font, usually 0.0 or negative.
@@ -61,7 +65,7 @@ public class AfmHeader {
     /**
      * The character set of the font.
      */
-    private String characterset;
+    private String characterset = "";
 
     /**
      * not init
@@ -142,6 +146,7 @@ public class AfmHeader {
      */
     public AfmHeader() {
 
+        super();
     }
 
     /**
@@ -482,5 +487,36 @@ public class AfmHeader {
     public void setXheight(final int x) {
 
         xheight = x;
+    }
+
+    /**
+     * @see de.dante.util.XMLConvertible#toXML()
+     */
+    public Element toXML() {
+
+        Element element = new Element("header");
+        element.setAttribute("name", fontname);
+        element.setAttribute("fullname", fullname);
+        element.setAttribute("familyname", familyname);
+        element.setAttribute("weight", weight);
+        element.setAttribute("italicangle", String.valueOf(italicangle));
+        element.setAttribute("isfixedpitch", String.valueOf(isfixedpitch));
+        element.setAttribute("characterset", characterset);
+        element.setAttribute("llx", String.valueOf(llx));
+        element.setAttribute("lly", String.valueOf(lly));
+        element.setAttribute("urx", String.valueOf(urx));
+        element.setAttribute("ury", String.valueOf(ury));
+        element.setAttribute("underlineposition", String
+                .valueOf(underlineposition));
+        element.setAttribute("underlinethickness", String
+                .valueOf(underlinethickness));
+        element.setAttribute("encodingscheme", encodingscheme);
+        element.setAttribute("capheight", String.valueOf(capheight));
+        element.setAttribute("xheight", String.valueOf(xheight));
+        element.setAttribute("ascender", String.valueOf(ascender));
+        element.setAttribute("descender", String.valueOf(descender));
+        element.setAttribute("stdhw", String.valueOf(stdhw));
+        element.setAttribute("stdvw", String.valueOf(stdvw));
+        return element;
     }
 }

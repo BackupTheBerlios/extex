@@ -38,14 +38,15 @@ import de.dante.extex.font.type.afm.exception.AfmMissingEndFontMetricsException;
 import de.dante.extex.font.type.afm.exception.AfmMissingEndKernPairsException;
 import de.dante.extex.font.type.afm.exception.AfmMissingStartCharMetricsException;
 import de.dante.extex.font.type.afm.exception.AfmNoBoundingBoxFoundException;
+import de.dante.util.XMLConvertible;
 
 /**
  * This class read a AFM-file and create a efm-element.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class AfmFont implements FontMetric, Serializable {
+public class AfmFont implements FontMetric, Serializable, XMLConvertible {
 
     /**
      * the fontname
@@ -496,5 +497,93 @@ public class AfmFont implements FontMetric, Serializable {
     public String getFontname() {
 
         return fontname;
+    }
+
+    /**
+     * @see de.dante.util.XMLConvertible#toXML()
+     */
+    public Element toXML() {
+
+        Element root = new Element("afm");
+        root.setAttribute("name", fontname);
+        root.addContent(header.toXML());
+        for (int i = 0; i < afmCharMetrics.size(); i++) {
+
+            // create  glyph
+            Element glyph = new Element("glyph");
+
+            // get the AFMCharMertix-object
+            AfmCharMetric cm = (AfmCharMetric) afmCharMetrics.get(i);
+
+            // create attributes
+            if (cm.getC() >= 0) {
+                glyph.setAttribute("ID", String.valueOf(cm.getC()));
+            } else {
+                glyph.setAttribute("ID", "notdef_" + cm.getN());
+            }
+            glyph.setAttribute("glyph-number", String.valueOf(cm.getC()));
+            glyph.setAttribute("glyph-name", cm.getN());
+
+            if (cm.getWx() != AfmHeader.NOTINIT) {
+                glyph.setAttribute("width", String.valueOf(cm.getWx()));
+            } else {
+                // calculate with from bbox
+                if (cm.getBllx() != AfmHeader.NOTINIT) {
+                    glyph.setAttribute("width", String.valueOf(cm.getBllx()
+                            + cm.getBurx()));
+                }
+            }
+
+            if (cm.getBllx() != AfmHeader.NOTINIT) {
+                if (cm.getBlly() < 0) {
+                    glyph.setAttribute("depth", String.valueOf(-cm.getBlly()));
+                } else {
+                    glyph.setAttribute("depth", "0");
+                }
+                if (cm.getBury() > 0) {
+                    glyph.setAttribute("height", String.valueOf(cm.getBury()));
+                } else {
+                    glyph.setAttribute("height", "0");
+                }
+            }
+            glyph.setAttribute("italic", String
+                    .valueOf(header.getItalicangle()));
+
+            // kerning
+            String glyphname = glyph.getAttributeValue("glyph-name");
+            AfmKernPairs kp;
+
+            for (int k = 0; k < afmKerningPairs.size(); k++) {
+                kp = (AfmKernPairs) afmKerningPairs.get(k);
+                if (kp.getCharpre().equals(glyphname)) {
+                    Element kerning = new Element("kerning");
+                    kerning.setAttribute("glyph-name", kp.getCharpost());
+                    kerning.setAttribute("glyph-id", getIDforName(kp
+                            .getCharpost()));
+                    kerning.setAttribute("size", kp.getKerningsize());
+                    glyph.addContent(kerning);
+                }
+            }
+
+            // ligature
+            if (cm.getL() != null) {
+                Iterator iterator = cm.getL().keySet().iterator();
+                while (iterator.hasNext()) {
+                    String key = (String) iterator.next();
+                    Element lig = new Element("ligature");
+                    lig.setAttribute("letter", key);
+                    lig.setAttribute("letter-id", getIDforName(key));
+                    String value = (String) cm.getL().get(key);
+                    lig.setAttribute("lig", value);
+                    lig.setAttribute("lig-id", getIDforName(value));
+                    glyph.addContent(lig);
+                }
+            }
+
+            // add to fontseg
+            root.addContent(glyph);
+        }
+
+        return root;
     }
 }
