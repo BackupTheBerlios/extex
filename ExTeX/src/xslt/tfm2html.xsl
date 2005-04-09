@@ -3,7 +3,7 @@
    Umwandlung der tfm-xml-Ausgabe nach HTML
    
    @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
-   @version $Revision: 1.1 $
+   @version $Revision: 1.2 $
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:output method="html" indent="yes" encoding="ISO-8859-1" doctype-public 
@@ -39,7 +39,7 @@
             <li>Xeroxfacecode <xsl:value-of select="@xeroxfacecode"/> </li>
         </ol>
     </xsl:template>
-    <xsl:template match="charinfo"> <h2>Übersicht</h2> <table border="1"> 
+    <xsl:template match="charinfo"> <h2>Übersicht</h2> <table border="1" class="tabel_ueb"> 
         <tbody> <xsl:for-each select="char[position() mod $cols = 1]"> 
         <tr><xsl:variable name="rowy" 
         select=".|following-sibling::char[position() &lt; $cols]"/><xsl:variable 
@@ -63,13 +63,13 @@
                     <xsl:value-of select="@id"/>
                 </xsl:element>
             </td>
-            <td width="95%" class="td_cahr_rh">
+            <td width="95%" class="td_char_rh">
                 <xsl:value-of select="@char"/>
             </td>
         </tr>
         <tr>
-            <td class="td_cahr_r"></td>
-            <td class="td_cahr_l">
+            <td class="td_char_r"></td>
+            <td class="td_char_l">
                 <table width="100%" class="tab_width">
                     <tr>
                         <th width="25%">width</th>

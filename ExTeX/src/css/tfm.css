@@ -2,19 +2,122 @@
    CSS-Datei für tfm-html-Ausgabe
    
    @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
-   @version $Revision: 1.1 $
+   @author <a href="mailto:Rolf.Niepraschk@ptb.de">Rolf Niepraschk</a>
+   @version $Revision: 1.2 $
 */
 
+a:link { color:blue; font-weight:bold; text-decoration:underline; }
+a:visited { color:black; font-weight:bold; text-decoration:underline; }
+a:active { color:white; font-weight:bold; text-decoration:none; }
+
+body {
+        margin:0px;
+        padding:0px;
+        color:#000;
+        background-color:#edb;
+        font-family:sans-serif;
+        text-align: center;
+}
+
+ol   { 
+        text-align: left 
+}
+
 .td_char_lh {
-	font-weight: bold;
-	text-align:center;
+        background-color: #db9; 
+        font-weight: bold;
+        text-align:center;
+}
+
+.gustav {
+        font-weight: normal;
+        text-align:center;
+        font-family: serif;
+        font-style:italic;
+        /* padding-left: 1em; */
+        /* background-color: #FFF; */
+        background-color: #db9;
+        font-size: 250%; 
 }
 
 .td_char_rh {
-	font-weight: bold;
-	text-align:left;
+        font-weight: normal;
+        text-align:left;
+        font-family: sans-serif;
+        font-style:italic;
+        padding-left: 1em;
+        background-color: #db9; 
+       /* font-size: 150%; */
 }
 
-th {
-	text-align:left;
+th { 
+        font-weight: bold; 
+        text-align: center; 
+        /*background-color: #000;
+        background-color: #db9;
+        color: #FFF;*/
+} 
+
+td { text-align: center; }
+
+
+/* --> unnötig. RN 
+
+.tab_kern th { color: blue; font-weight: bold; text-align: center;
+               font-family: sans-serif;
+          }
+         
+.tab_width th { color: red; font-weight: bold; text-align: center;
+               font-family: sans-serif;
+          }
+          
+.tab_lig th { color: green; font-weight: bold; text-align: center;
+               font-family: sans-serif;
+          }
+
+*/          
+         
+.tab_char { 
+        border: thin solid gray;
+        border-spacing: 0.2em;
+        text-align: center;
+      }
+      
+.tabel_ueb { 
+        border: thin solid gray; width:100%;
+        border-spacing: 0.2em;
+        text-align: center;
+      }
+.tabel_ueb td { 
+           border: thin solid gray; 
+           background-color: #db9; 
+           font-family: sans-serif;
+           font-weight: bold;
+           text-align: center;
+         }
+
+h1        { background-color: #db9; /* gainsboro */
+                  text-align: center;
+                  font-family: sans-serif;
+                  color: black;
+                }
+
+h2        { background-color: #db9; 
+                  text-align: center;
+                  font-family: sans-serif;
+                  color: black;
+                }
+
+h3        { background-color: #db9; 
+                  text-align: center;
+                  font-family: sans-serif;
+                  color: black;
+                }
+
+ol ol {
+        list-style-type:lower-alpha;
+}
+
+ol ol ol {
+        list-style-type:decimal;
 }
