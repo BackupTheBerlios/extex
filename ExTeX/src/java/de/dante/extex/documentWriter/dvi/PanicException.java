@@ -21,13 +21,12 @@
  * Panic exception in dvi writer.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 package de.dante.extex.documentWriter.dvi;
 
 import de.dante.util.GeneralException;
-import de.dante.util.framework.i18n.Localizer;
 
 public class PanicException extends GeneralException {
 
