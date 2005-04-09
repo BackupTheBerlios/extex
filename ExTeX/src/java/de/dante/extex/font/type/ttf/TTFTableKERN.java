@@ -21,7 +21,6 @@ package de.dante.extex.font.type.ttf;
 
 import java.io.IOException;
 
-import org.apache.batik.util.XMLConstants;
 import org.jdom.Element;
 
 import de.dante.util.XMLConvertible;
@@ -43,7 +42,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class TTFTableKERN extends AbstractTTFTable
         implements
@@ -138,7 +137,7 @@ public class TTFTableKERN extends AbstractTTFTable
     /**
      * Abstract class for all kerntables
      */
-    public abstract static class KernSubtable implements XMLConstants {
+    public abstract static class KernSubtable {
 
         /**
          * Returns the number of kerning pairs.

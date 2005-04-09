@@ -22,26 +22,18 @@ package de.dante.extex.documentWriter.pdf;
 import java.awt.Color;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.List;
-import java.util.Map;
-import java.util.Vector;
+import java.nio.channels.ClosedChannelException;
 
-import org.apache.fop.apps.FOPException;
-import org.apache.fop.fonts.FontDescriptor;
-import org.apache.fop.fonts.FontReader;
-import org.apache.fop.fonts.Typeface;
-import org.apache.fop.pdf.PDFDocument;
-import org.apache.fop.pdf.PDFFilterList;
-import org.apache.fop.pdf.PDFFont;
-import org.apache.fop.pdf.PDFPage;
-import org.apache.fop.pdf.PDFResources;
-import org.apache.fop.pdf.PDFStream;
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.Rectangle;
+import com.lowagie.text.pdf.BaseFont;
+import com.lowagie.text.pdf.PdfContentByte;
+import com.lowagie.text.pdf.PdfWriter;
 
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.documentWriter.DocumentWriterOptions;
 import de.dante.extex.documentWriter.SingleDocumentStream;
-import de.dante.extex.font.FontFile;
-import de.dante.extex.font.Glyph;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.typesetter.type.Node;
@@ -68,17 +60,16 @@ import de.dante.extex.typesetter.type.node.SpaceNode;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
 import de.dante.extex.typesetter.type.node.WhatsItNode;
 import de.dante.util.GeneralException;
+import de.dante.util.UnicodeChar;
 import de.dante.util.Unit;
 import de.dante.util.configuration.Configuration;
 
 /**
  * Implementation of a pdf document writer.
  *
- * @author <a href="mailto:Rolf.Niepraschk@ptb.de">Rolf Niepraschk</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.19 $
- * @see org.apache.fop.render.pdf.PDFRenderer
- * @see org.apache.fop.svg.PDFGraphics2D
+ * @author <a href="mailto:Rolf.Niepraschk@ptb.de">Rolf Niepraschk</a>
+ * @version $Revision: 1.20 $
  */
 public class PdfDocumentWriter
         implements
@@ -87,470 +78,14 @@ public class PdfDocumentWriter
             NodeVisitor {
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#setParameter(java.lang.String,
-     *      java.lang.String)
+     * width A4 in bp
      */
-    public void setParameter(final String name, final String value) {
-
-        // TODO Auto-generated method stub
-
-    }
-
-    // -------------------------------------------------
+    private static final int WIDTH_A4_BP = 595;
 
     /**
-     * NodeVisitor for debug.
+     * height A$ in bp
      */
-    private class DebugVisitor implements NodeVisitor {
-
-        /**
-         * TODO: missing JavaDoc
-         *
-         * @param node ...
-         * @return ...
-         */
-        private String metric(final Node node) {
-
-            return " (wd=" + node.getWidth().toString() + "  ht="
-                    + node.getHeight().toString() + "  dp="
-                    + node.getDepth().toString() + ")";
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitAdjust(AdjustNode, java.lang.Object)
-         */
-        public Object visitAdjust(final AdjustNode node, final Object value) {
-
-            StringBuffer sb = (StringBuffer) value;
-            sb.append("Adjust");
-            sb.append(metric(node));
-            return null;
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitAfterMath(AfterMathNode, java.lang.Object)
-         */
-        public Object visitAfterMath(final AfterMathNode node,
-                final Object value) {
-
-            StringBuffer sb = (StringBuffer) value;
-            sb.append("AfterMath");
-            sb.append(metric(node));
-            return null;
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitAlignedLeaders(AlignedLeadersNode, java.lang.Object)
-         */
-        public Object visitAlignedLeaders(final AlignedLeadersNode node,
-                final Object value) {
-
-            StringBuffer sb = (StringBuffer) value;
-            sb.append("AlignedLeaders");
-            sb.append(metric(node));
-            return null;
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitBeforeMath(BeforeMathNode, java.lang.Object)
-         */
-        public Object visitBeforeMath(final BeforeMathNode node,
-                final Object value) {
-
-            StringBuffer sb = (StringBuffer) value;
-            sb.append("BeforeMath");
-            sb.append(metric(node));
-            return null;
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitCenteredLeaders(CenteredLeadersNode, java.lang.Object)
-         */
-        public Object visitCenteredLeaders(final CenteredLeadersNode node,
-                final Object value) {
-
-            StringBuffer sb = (StringBuffer) value;
-            sb.append("CenterLeaders");
-            sb.append(metric(node));
-            return null;
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitChar(CharNode, java.lang.Object)
-         */
-        public Object visitChar(final CharNode node, final Object value) {
-
-            StringBuffer sb = (StringBuffer) value;
-            CharNode cnode = (CharNode) node;
-            Font font = null;
-            FontFile file = null;
-            Glyph glyph = null;
-
-            font = cnode.getTypesettingContext().getFont();
-
-            if (font != null) {
-                glyph = font.getGlyph(cnode.getCharacter());
-            }
-
-            sb.append(" " + cnode.getCharacter() + " [Nb="
-                    + ((glyph != null) ? glyph.getNumber() : "??") + "] ");
-            sb.append("Char");
-            sb.append(metric(node));
-
-            if (glyph != null) {
-                file = glyph.getExternalFile();
-            }
-
-            sb.append(" filename="
-                    + ((file != null) ? "" + file.getFile() : "??"));
-
-            /*
-             System.out.println("-----------------------------------------");
-             System.out.println("Glyph : " + node.getCharacter() + " : "
-             + glyph.getName() + " " + glyph.getNumber() + "  aus "
-             + glyph.getExternalFile());
-             System.out.println("-----------------------------------------");
-             */
-
-            return null;
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitDiscretionary(DiscretionaryNode, java.lang.Object)
-         */
-        public Object visitDiscretionary(final DiscretionaryNode node,
-                final Object value) {
-
-            StringBuffer sb = (StringBuffer) value;
-            sb.append("Discretionary");
-            sb.append(metric(node));
-            return null;
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitExpandedLeaders(ExpandedLeadersNode, java.lang.Object)
-         */
-        public Object visitExpandedLeaders(final ExpandedLeadersNode node,
-                final Object value) {
-
-            StringBuffer sb = (StringBuffer) value;
-            sb.append("ExpandedLeaders");
-            sb.append(metric(node));
-            return null;
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitGlue(GlueNode, java.lang.Object)
-         */
-        public Object visitGlue(final GlueNode node, final Object value) {
-
-            StringBuffer sb = (StringBuffer) value;
-            sb.append("Glue");
-            sb.append(metric(node));
-            return null;
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitHorizontalList(HorizontalListNode, java.lang.Object)
-         */
-        public Object visitHorizontalList(final HorizontalListNode node,
-                final Object value) {
-
-            StringBuffer sb = (StringBuffer) value;
-            sb.append("HorizontalList");
-            sb.append(metric(node));
-            return null;
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitInsertion(InsertionNode, java.lang.Object)
-         */
-        public Object visitInsertion(final InsertionNode node,
-                final Object value) {
-
-            StringBuffer sb = (StringBuffer) value;
-            sb.append("Insertion");
-            sb.append(metric(node));
-            return null;
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitKern(KernNode, java.lang.Object)
-         */
-        public Object visitKern(final KernNode node, final Object value) {
-
-            StringBuffer sb = (StringBuffer) value;
-            sb.append("Kern");
-            sb.append(metric(node));
-            return null;
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitLigature(LigatureNode, java.lang.Object)
-         */
-        public Object visitLigature(final LigatureNode node, final Object value) {
-
-            StringBuffer sb = (StringBuffer) value;
-            sb.append("Ligature");
-            sb.append(metric(node));
-            return null;
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitMark(MarkNode, java.lang.Object)
-         */
-        public Object visitMark(final MarkNode node, final Object value) {
-
-            StringBuffer sb = (StringBuffer) value;
-            sb.append("Mark");
-            sb.append(metric(node));
-            return null;
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitPenalty(PenaltyNode, java.lang.Object)
-         */
-        public Object visitPenalty(final PenaltyNode node, final Object value) {
-
-            StringBuffer sb = (StringBuffer) value;
-            sb.append("Penalty");
-            sb.append(metric(node));
-            return null;
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitRule(RuleNode, java.lang.Object)
-         */
-        public Object visitRule(final RuleNode node, final Object value) {
-
-            StringBuffer sb = (StringBuffer) value;
-            sb.append("Rule");
-            sb.append(metric(node));
-            return null;
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitSpace(SpaceNode, java.lang.Object)
-         */
-        public Object visitSpace(final SpaceNode node, final Object value) {
-
-            StringBuffer sb = (StringBuffer) value;
-            sb.append("Space");
-            sb.append(metric(node));
-            return null;
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitVerticalList(VerticalListNode, java.lang.Object)
-         */
-        public Object visitVerticalList(final VerticalListNode node,
-                final Object value) {
-
-            StringBuffer sb = (StringBuffer) value;
-            sb.append("VerticalList");
-            sb.append(metric(node));
-            return null;
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitWhatsIt(WhatsItNode, java.lang.Object)
-         */
-        public Object visitWhatsIt(final WhatsItNode node, final Object value) {
-
-            StringBuffer sb = (StringBuffer) value;
-            sb.append("Whatsit");
-            sb.append(metric(node));
-            return null;
-        }
-
-    }
-
-    // ---------------------------------------------------------------------------
-    /**
-     * State
-     */
-    private static class State {
-
-        public State() {
-
-            super();
-        }
-    }
-
-    /**
-     * in horizontal mode
-     */
-    private static final State HORIOZONTAL = new State();
-
-    /**
-     * The field <tt>uniqueCounter</tt> contains the ...
-     */
-    private static int uniqueCounter = 1;
-
-    /**
-     * in vertical mode
-     */
-    private static final State VERTICAL = new State();
-
-    // TeX primitives should set the papersize in any way:
-    // o \paperwidth   / \paperheight,
-    // o \pdfpagewidth / \pdfpageheight <-- pdfTeX
-    // o \mediawidth   / \mediaheight   <-- VTeX
-    private static final int WIDTH_A4 = 595; // "bp"
-
-    private static final int HEIGHT_A4 = 842; // "bp"
-
-    private static final int LAST_BASE_FONT = 14;
-
-    private static final int BUFFER_SIZE = 256;
-
-    private static final int ONE_INCH_IN_BP = 72;
-
-    private static final int MARKER_RADIUS = 5;
-
-    private static final float THIN_LINE = 0.3f;
-
-    private static final float THICK_LINE = 0.6f;
-
-    private static final float DASH_LEN = 0.3f;
-
-    private static final float DASH_DISTANCE = 0.3f;
-
-    private static final float DUMMY_HEIGHT = -1.5f;
-
-    private static final int UNIQUE_MASK = 0xffff;
-
-    private static final int NOT_FOUND = -1;
-
-    /**
-     * The internal font number (e.g. /F7) for the basefont "Times-Roman".
-     * The value must be in the range from 1 to 14.
-     */
-    private static final int TIMESROMAN_ID = 1;
-
-    /**
-     * The internal font number (e.g. /F7) for the basefont "Times-Bold".
-     * The value must be in the range from 1 to 14.
-     */
-    private static final int TIMESBOLD_ID = 2;
-
-    /**
-     * The internal font number (e.g. /F7) for the basefont "Times-Italic".
-     * The value must be in the range from 1 to 14.
-     */
-    private static final int TIMESITALIC_ID = 3;
-
-    /**
-     * The internal font number (e.g. /F7) for the basefont "Times-BoldItalic".
-     * The value must be in the range from 1 to 14.
-     */
-    private static final int TIMESBOLDITALIC_ID = 4;
-
-    /**
-     * The internal font number (e.g. /F7) for the basefont "Helvetica".
-     * The value must be in the range from 1 to 14.
-     */
-    private static final int HELVETICA_ID = 5;
-
-    /**
-     * The internal font number (e.g. /F7) for the basefont "Helvetica-Bold".
-     * The value must be in the range from 1 to 14.
-     */
-    private static final int HELVETICABOLD_ID = 6;
-
-    /**
-     * The internal font number (e.g. /F7) for the basefont "Helvetica-Oblique".
-     * The value must be in the range from 1 to 14.
-     */
-    private static final int HELVETICAOBLIQUE_ID = 7;
-
-    /**
-     * The internal font number (e.g. /F7) for the basefont "Helvetica-BoldOblique".
-     * The value must be in the range from 1 to 14.
-     */
-    private static final int HELVETICABOLDOBLIQUE_ID = 8;
-
-    /**
-     * The internal font number (e.g. /F7) for the basefont "Courier".
-     * The value must be in the range from 1 to 14.
-     */
-    private static final int COURIER_ID = 9;
-
-    /**
-     * The internal font number (e.g. /F7) for the basefont "Courier-Bold".
-     * The value must be in the range from 1 to 14.
-     */
-    private static final int COURIERBOLD_ID = 10;
-
-    /**
-     * The internal font number (e.g. /F7) for the basefont "Courier-Oblique".
-     * The value must be in the range from 1 to 14.
-     */
-    private static final int COURIEROBLIQUE_ID = 11;
-
-    /**
-     * The internal font number (e.g. /F7) for the basefont "Courier-BoldOblique".
-     * The value must be in the range from 1 to 14.
-     */
-    private static final int COURIERBOLDOBLIQUE_ID = 12;
-
-    /**
-     * The internal font number (e.g. /F7) for the basefont "Symbol".
-     * The value must be in the range from 1 to 14.
-     */
-    private static final int SYMBOL_ID = 13;
-
-    /**
-     * The internal font number (e.g. /F7) for the basefont "ZapfDingbats".
-     * The value must be in the range from 1 to 14.
-     */
-    private static final int ZAPFDINGBATS_ID = 14;
-
-    /**
-     * The field <tt>cfg</tt> ...
-     */
-    private Configuration cfg = null;
-
-    /**
-     * pdfstream
-     */
-    private PDFStream cs = null;
-
-    /**
-     * currentpage
-     */
-    private PDFPage currentPage = null;
-
-    private final boolean debug = true;
-
-    private final boolean embedBaseFonts = true;
-
-    private Vector fontNameList = new Vector();
-
-    /**
-     * fontinfo
-     */
-    //private FontInfo fontInfo = null;
-    /**
-     * fontstate
-     */
-    //private FontState fontState = null;
-    /**
-     * x,y ...
-     */
-    private Dimen lastX = new Dimen(), lastY = new Dimen(),
-            currentX = new Dimen(), currentY = new Dimen(),
-            lastDP = new Dimen();
-
-    /**
-     * onlyStroke
-     */
-    private boolean onlyStroke;
-
-    /**
-     * operators
-     */
-    private PDFOperators op = null;
+    private static final int HEIGHT_A4_BP = 842;
 
     /**
      * The field <tt>out</tt> ...
@@ -558,226 +93,63 @@ public class PdfDocumentWriter
     private OutputStream out = null;
 
     /**
-     * pdfdoc
-     */
-    private PDFDocument pdfDoc = null;
-
-    /**
-     * pdfresource
-     */
-    private PDFResources pdfResources = null;
-
-    /**
      * The field <tt>shippedPages</tt> ...
      */
     private int shippedPages = 0;
 
     /**
-     * the current mode
+     * documentwriter options
      */
-    private State state = VERTICAL;
+    private DocumentWriterOptions docoptions;
+
+    /**
+     * the pdf-dokument
+     */
+    private Document document;
+
+    /**
+     * the pdf writer
+     */
+    private PdfWriter writer;
+
+    /**
+     * the pdf content
+     */
+    private PdfContentByte cb;
 
     /**
      * Creates a new object.
-     * @param theCfg the configuration
+     * @param cfg       the configuration
+     * @param options   the options
      */
-    public PdfDocumentWriter(final Configuration theCfg,
+    public PdfDocumentWriter(final Configuration cfg,
             final DocumentWriterOptions options) {
 
         super();
-        this.cfg = theCfg;
-    }
+        docoptions = options;
 
-    /**
-     * Adds the base font structures to the pdf document.
-     */
-    private void addBaseFonts() {
-
-        String name;
-        int nb;
-
-        for (int i = 0; i < LAST_BASE_FONT; i++) {
-            name = (String) fontNameList.elementAt(i);
-            if (name != null) {
-                name = name.replaceAll("-", "");
-                nb = i + 1;
-                try {
-                    Class clazz = Class.forName("org.apache.fop.fonts.base14."
-                            + name);
-                    Typeface font = (Typeface) clazz.newInstance();
-                    debugFont(font, nb);
-                    PDFFont pdfFont = pdfDoc.getFactory().makeFont("F" + nb,
-                            font.getFontName(), font.getEncoding(), font, null);
-                    pdfDoc.getResources().addFont(pdfFont);
-                } catch (Exception e) { // Correct the Exection type.
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    /**
-     * Embeds fonts to the pdf document. It must exist a
-     * metric file with file name 'fop-&quot;fontname&quot;.xml':<p>
-     *
-     * Example (from a Type1-based pfm file):<p>
-     * <code> java -cp lib/fop.jar \ </code><br>
-     * <code> org.apache.fop.fonts.apps.PFMReader cmr12.pfm fop-cmr12.xml</code><p>
-     *
-     *   Note: The flag entry was wrong (&quot;0&quot;). Should be &quot;34&quot;
-     *   in this case.
-     *   And the embed entry was empty:
-     *   '&lt;embed file=&quot;file:font/cmr12.pfb&quot;/&gt;' added.<p>
-     *
-     * Example (from a TTF file):<p>
-     *
-     * <code> java -cp lib/fop.jar org.apache.fop.fonts.apps.TTFReader \</code><br>
-     * <code> -enc ansi cmtt12.ttf fop-cmtt12.xml </code><p>
-     *
-     *   Note: The parameter '-enc ansi' is required because only single byte
-     *   fonts are supported this time.
-     *   '&lt;embed file=&quot;file:font/cmtt12.ttf&quot;/&gt;' added.<p>
-     *
-     * (How works embedding of font subsets? RN)<p>
-     *
-     * @param full If true, embeds also base14 fonts.
-     */
-    private void addEmbedFonts(final boolean full) {
-
-        for (int i = (full) ? 0 : LAST_BASE_FONT; i < fontNameList.size(); i++) {
-            String name = (String) fontNameList.elementAt(i);
-            if (name != null) {
-                FontReader reader = null;
-                int nb = i + 1;
-                try {
-                    reader = new FontReader("file:src/font/fop-" + name
-                            + ".xml");
-                } catch (FOPException e) {
-                    e.printStackTrace();
-                }
-                Typeface font = reader.getFont();
-                debugFont(font, nb);
-                // Prepend a prefix to the Adobe names.
-                if (i < LAST_BASE_FONT) {
-                    name = uniquePrefix() + "+" + name;
-                }
-                PDFFont pdfFont = pdfDoc.getFactory().makeFont("F" + nb, name,
-                        font.getEncoding(), font, (FontDescriptor) font);
-                pdfDoc.getResources().addFont(pdfFont);
-            }
-        }
-    }
-
-    private void addFonts() {
-
-        if (embedBaseFonts) {
-            addEmbedFonts(true);
-        } else {
-            addBaseFonts();
-            addEmbedFonts(false);
-        }
-    }
-
-    /**
-     * beginPdfDocument Opens/setups the document
-     * @throws IOException ...
-     */
-    private void beginPdfDocument() throws IOException {
-
-        Map filterMap = new java.util.HashMap();
-        List filterList = new java.util.ArrayList();
-
-        pdfDoc = new PDFDocument("");
-
-        //filterList.add("flate");
-        filterList.add("null");
-        filterMap.put(PDFFilterList.DEFAULT_FILTER, filterList);
-        filterMap.put(PDFFilterList.CONTENT_FILTER, filterList);
-        filterMap.put(PDFFilterList.IMAGE_FILTER, filterList);
-        filterMap.put(PDFFilterList.JPEG_FILTER, filterList);
-        filterMap.put(PDFFilterList.FONT_FILTER, filterList);
-        pdfDoc.setFilterMap(filterMap);
-
-        pdfDoc.getInfo().setProducer("ExTeX-0.00");
-        pdfDoc.getInfo().setCreator("LaTeX with hyperref");
-        pdfDoc.getInfo().setTitle("Allerlei Probiererei");
-        pdfDoc.getInfo().setAuthor("Rolf");
-        pdfDoc.getInfo().setSubject("ExTeX-Entwicklung");
-        pdfDoc.getInfo().setKeywords("TeX, Java");
-        pdfDoc.getInfo().setCreationDate(null); // current system date
-
-        op = new PDFOperators();
-
-        pdfDoc.outputHeader(this.out);
-
+        //        if (cfg != null) {
+        //            String tmp = cfg.getAttribute("encoding");
+        //            if (tmp != null && !tmp.equals("")) {
+        //                encoding = tmp;
+        //            }
+        //        }
     }
 
     /**
      * @see de.dante.extex.documentWriter.DocumentWriter#close()
-     * @throws IOException ...
      */
     public void close() throws IOException {
 
-        endPdfDocument();
-    }
-
-    private void debugFont(final Typeface font, final int nb) {
-
-        if (debug) {
-            boolean isEmbeddable;
-
-            if (font instanceof FontDescriptor) {
-                isEmbeddable = ((FontDescriptor) font).isEmbeddable();
-            } else {
-                isEmbeddable = false;
+        if (out != null) {
+            if (document != null) {
+                document.close();
             }
-
-            System.out.println("Font /F" + nb + ": " + font.getFontName()
-                    + " (" + font.getFontType().getName() + ", kerning: "
-                    + font.hasKerningInfo() + ", embeddable: " + isEmbeddable
-                    + ")");
+            out.close();
+            out = null;
+        } else {
+            throw new ClosedChannelException();
         }
-    }
-
-    /**
-     * debug
-     * @param node The node which will be debugged.
-     */
-    private void debugNode(final Node node) {
-
-        if (debug) {
-            StringBuffer sb = new StringBuffer(BUFFER_SIZE);
-            try {
-                node.visit(new DebugVisitor(), sb);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            System.out.println(sb.toString());
-        }
-    }
-
-    /**
-     * endPdfDocument Close the document
-     * @throws IOException ...
-     */
-    private void endPdfDocument() throws IOException {
-
-        cs.add("BT\n"); // Begin Text
-        cs.add("20 0 0 -20 0 0 Tm\n"); // Text transformation matrix
-        cs.add("3.6 -8.0 TD\n"); // Move
-        cs.add("/F" + getFontNumber("Helvetica-BoldOblique") + "\n");
-        cs.add("1 Tf (Fridolin (Helvetica-BoldOblique; base14)) Tj \n");
-        cs.add("0.0 -1.0 TD\n"); // Move
-        cs.add("/F" + getFontNumber("cmr12") + "\n");
-        cs.add("1 Tf (HUGO  (cmr12; Type1)) Tj \n");
-        cs.add("0.0 -1.0 TD\n"); // Move
-        cs.add("/F" + getFontNumber("cmtt12") + "\n");
-        cs.add("1 Tf (GUSTAV (cmtt12; TTF)) Tj \n");
-        cs.add("ET\n"); // End Text
-
-        addFonts();
-
-        pdfDoc.outputTrailer(this.out); // Calls also output(...).
     }
 
     /**
@@ -786,58 +158,6 @@ public class PdfDocumentWriter
     public String getExtension() {
 
         return "pdf";
-    }
-
-    private int getFontNumber(final String name) {
-
-        if (fontNameList.isEmpty()) { // Preserve space for the base fonts.
-            for (int i = 0; i < LAST_BASE_FONT; i++) {
-                fontNameList.addElement(null);
-            }
-        }
-
-        int idx = fontNameList.indexOf(name);
-
-        if (idx == NOT_FOUND) {
-            if (name.equals("Times-Roman")) {
-                idx = TIMESROMAN_ID - 1;
-            } else if (name.equals("Times-Bold")) {
-                idx = TIMESBOLD_ID - 1;
-            } else if (name.equals("Times-Italic")) {
-                idx = TIMESITALIC_ID - 1;
-            } else if (name.equals("Times-BoldItalic")) {
-                idx = TIMESBOLDITALIC_ID - 1;
-            } else if (name.equals("Helvetica")) {
-                idx = HELVETICA_ID - 1;
-            } else if (name.equals("Helvetica-Bold")) {
-                idx = HELVETICABOLD_ID - 1;
-            } else if (name.equals("Helvetica-Oblique")) {
-                idx = HELVETICAOBLIQUE_ID - 1;
-            } else if (name.equals("Helvetica-BoldOblique")) {
-                idx = HELVETICABOLDOBLIQUE_ID - 1;
-            } else if (name.equals("Courier")) {
-                idx = COURIER_ID - 1;
-            } else if (name.equals("Courier-Bold")) {
-                idx = COURIERBOLD_ID - 1;
-            } else if (name.equals("Courier-Oblique")) {
-                idx = COURIEROBLIQUE_ID - 1;
-            } else if (name.equals("Courier-BoldOblique")) {
-                idx = COURIERBOLDOBLIQUE_ID - 1;
-            } else if (name.equals("Symbol")) {
-                idx = SYMBOL_ID - 1;
-            } else if (name.equals("ZapfDingbats")) {
-                idx = ZAPFDINGBATS_ID - 1;
-            }
-
-            if (idx > NOT_FOUND) {
-                fontNameList.setElementAt(name, idx);
-            } else {
-                fontNameList.addElement(name);
-                idx = fontNameList.size() - 1;
-            }
-        }
-
-        return ++idx;
     }
 
     /**
@@ -849,473 +169,489 @@ public class PdfDocumentWriter
     }
 
     /**
-     * Draws a marker at the position 1in from the left and 1in from top.
-     */
-    private void markOrigin() {
-
-        cs.add(op.gSave());
-        cs.add(op.lineWidth(THICK_LINE));
-        cs.add(op.strokeColor(Color.RED));
-        cs.add(op.circle(ONE_INCH_IN_BP, ONE_INCH_IN_BP, MARKER_RADIUS));
-        cs.add(op.moveTo(ONE_INCH_IN_BP - MARKER_RADIUS, ONE_INCH_IN_BP));
-        cs.add(op.rLineTo(MARKER_RADIUS, 0));
-        cs.add(op.moveTo(ONE_INCH_IN_BP, ONE_INCH_IN_BP - MARKER_RADIUS));
-        cs.add(op.rLineTo(0, MARKER_RADIUS));
-        cs.add(op.stroke());
-        cs.add(op.gRestore());
-    }
-
-    /**
-     * newPage Creates and setups a new page
-     * @param pageWD    the page width in bp
-     * @param pageHT    the page height in bp
-     * @throws IOException ...
-     */
-    private void newPage(final int pageWD, final int pageHT) throws IOException {
-
-        if (pdfDoc == null) {
-            beginPdfDocument();
-        } else {
-            pdfDoc.output(this.out);
-        }
-
-        currentPage = pdfDoc.getFactory().makePage(pdfDoc.getResources(),
-                pageWD, pageHT);
-        pdfDoc.addObject(currentPage);
-
-        cs = pdfDoc.getFactory().makeStream(PDFFilterList.CONTENT_FILTER, true);
-        currentPage.setContents(cs);
-
-        // Transform origin at bottom left to origin at top left
-        cs.add(op.concat(1, 0, 0, -1, 0, pageHT));
-
-        lastX.set(Dimen.ONE_INCH);
-        lastY.set(Dimen.ONE_INCH);
-        lastDP.set(0L);
-    }
-
-    /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#setOutputStream(java.io.Writer)
+     * @see de.dante.extex.documentWriter.DocumentWriter#setOutputStream(java.io.OutputStream)
      */
     public void setOutputStream(final OutputStream outStream) {
 
-        this.out = outStream;
+        out = outStream;
     }
 
     /**
-     * Sets the current position.
-     * @param   node A single node.
+     * @see de.dante.extex.documentWriter.DocumentWriter#setParameter(
+     *      java.lang.String,
+     *      java.lang.String)
      */
-    private void setPosition(final Node node) {
+    public void setParameter(final String name, final String value) {
 
-        if (state == HORIOZONTAL) {
-            currentX.add(node.getWidth());
+    }
+
+    /**
+     * paperwidth
+     */
+    private Dimen paperwidth = new Dimen();
+
+    /**
+     * paperheight
+     */
+    private Dimen paperheight = new Dimen();
+
+    /**
+     * current x position
+     */
+    private Dimen currentX = new Dimen();
+
+    /**
+     * current y postition
+     */
+    private Dimen currentY = new Dimen();
+
+    /**
+     * @see de.dante.extex.documentWriter.DocumentWriter#shipout(
+     *      de.dante.extex.typesetter.type.NodeList)
+     */
+    public void shipout(final NodeList nodes) throws IOException,
+            GeneralException {
+
+        try {
+
+            if (writer == null) {
+                // create a pdf document
+                document = new Document();
+                writer = PdfWriter.getInstance(document, out);
+                document.open();
+            } else {
+                document.newPage();
+                shippedPages++;
+            }
+
+            // TeX primitives should set the papersize in any way:
+            // o \paperwidth   / \paperheight,
+            // o \pdfpagewidth / \pdfpageheight <-- pdfTeX
+            // o \mediawidth   / \mediaheight   <-- VTeX
+            Unit.setDimenFromCM(paperwidth, WIDTH_A4_BP);
+            Unit.setDimenFromCM(paperheight, HEIGHT_A4_BP);
+            if (docoptions != null) {
+                Dimen w = (Dimen) docoptions.getDimenOption("paperwidth");
+                Dimen h = (Dimen) docoptions.getDimenOption("paperheight");
+                if (!(h.getValue() == 0 || w.getValue() == 0)) {
+                    paperheight.set(h);
+                    paperwidth.set(w);
+                }
+            }
+
+            // set page size and margin
+            Rectangle pagesize = createRectangle(paperwidth, paperheight);
+            document.setPageSize(pagesize);
+            document.setMargins(0, 0, 0, 0);
+
+            // set start point
+            currentX.set(Dimen.ONE_INCH);
+            currentY.set(Dimen.ONE_INCH);
+
+            // Changes the default coordinate system so that the origin
+            // is in the upper left corner instead of the lower left corner.
+            cb = writer.getDirectContent();
+            cb.concatCTM(1f, 0f, 0f, -1f, 0f, pagesize.height());
+
+            // -------------------------------------
+            cb.setColorStroke(Color.RED);
+            cb.moveTo(0, 0);
+            cb.lineTo(0, pagesize.height());
+            cb.stroke();
+            cb.setColorStroke(Color.GREEN);
+            cb.moveTo(0, 0);
+            cb.lineTo(pagesize.width(), 0);
+            cb.stroke();
+            cb.setColorStroke(Color.BLUE);
+            cb.moveTo(pagesize.width(), 0);
+            cb.lineTo(pagesize.width(), pagesize.height());
+            cb.stroke();
+            cb.setColorStroke(Color.YELLOW);
+            cb.moveTo(0, pagesize.height());
+            cb.lineTo(pagesize.width(), pagesize.height());
+            cb.stroke();
+
+            //            BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA,
+            //                    BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+            //            cb.beginText();
+            //            cb.setColorFill(Color.CYAN);
+            //            cb.setFontAndSize(bf, 12);
+            //            cb
+            //                    .showTextAligned(PdfContentByte.ALIGN_LEFT, "\u003A", 100,
+            //                            100, 0);
+            //            cb.endText();
+
+            // -----------------------------
+
+            nodes.visit(this, nodes);
+
+        } catch (DocumentException e) {
+            // TODO delete after test
+            e.printStackTrace();
+            throw new GeneralException(e.getMessage());
+        }
+    }
+
+    private void drawNode(final Node node) {
+
+        cb.setLineWidth(0.1f);
+        if (node instanceof VerticalListNode) {
+            cb.setColorStroke(Color.RED);
+        } else if (node instanceof HorizontalListNode) {
+            cb.setColorStroke(Color.YELLOW);
         } else {
-            currentY.add(node.getHeight());
-            currentY.add(node.getDepth());
+            cb.setColorStroke(Color.GREEN);
         }
+        float cx = (float) Unit.getDimenAsBP(currentX);
+        float cy = (float) Unit.getDimenAsBP(currentY);
+        float w = (float) Unit.getDimenAsBP(node.getWidth());
+        float h = (float) Unit.getDimenAsBP(node.getHeight());
+        float d = (float) Unit.getDimenAsBP(node.getDepth());
+        cb.moveTo(cx, cy);
+        cb.lineTo(cx + w, cy);
+        cb.stroke();
+        cb.moveTo(cx, cy);
+        cb.lineTo(cx, cy - h);
+        cb.stroke();
+        cb.moveTo(cx + w, cy);
+        cb.lineTo(cx + w, cy - h);
+        cb.stroke();
+        cb.moveTo(cx + w, cy - h);
+        cb.lineTo(cx, cy - h);
+        cb.stroke();
+
     }
 
     /**
-     * shipout
-     * @param   nodes   the nodelist
-     * @throws IOException ...
-     * @throws GeneralException ...
+     * Create a new <code>Rectangle</code>.
+     * @param w the width as Dimen
+     * @param h the height as Dimen
+     * @return Returns the new Rectangle
      */
-    public void shipout(final NodeList nodes)
-            throws IOException,
-                GeneralException {
+    private Rectangle createRectangle(final Dimen w, final Dimen h) {
 
-        newPage(WIDTH_A4, HEIGHT_A4);
-        shippedPages = pdfDoc.getPages().getCount();
-        markOrigin();
-        nodes.visit(this, null);
+        return new Rectangle((float) Unit.getDimenAsBP(w), (float) Unit
+                .getDimenAsBP(h));
     }
 
-    /**
-     * Draws a colored box with the dimensions of the node.
-     * @param  node   A single node
-     * @param  operators A buffer preset with some PDF operators.
-     */
-    private void showNode(final Node node, final StringBuffer operators) {
+    //    /**
+    //     * return the node element
+    //     * @param node      the node
+    //     * @return Returns the node-element
+    //     */
+    //    private Element getNodeElement(final Node node) {
+    //
+    //        Element element = null;
+    //        try {
+    //            Object o = node.visit(this, node);
+    //            if (o != null) {
+    //                if (o instanceof Element) {
+    //                    element = (Element) o;
+    //                }
+    //            }
+    //        } catch (GeneralException e) {
+    //            e.printStackTrace();
+    //        }
+    //        return element;
+    //    }
 
-        Dimen wd = new Dimen(node.getWidth());
-        Dimen ht = new Dimen(node.getHeight());
-        Dimen dp = new Dimen(node.getDepth());
-
-        onlyStroke = false;
-
-        cs.add(op.gSave());
-        cs.add(operators.toString());
-        cs.add(op.lineWidth(THIN_LINE));
-
-        float rX = (float) Unit.getDimenAsBP(currentX);
-        float rY = (float) Unit.getDimenAsBP(currentY)
-                - (float) Unit.getDimenAsBP(ht);
-        float rWD = (float) Unit.getDimenAsBP(wd);
-        float rHT = (float) Unit.getDimenAsBP(ht)
-                + (float) Unit.getDimenAsBP(dp);
-
-        if (rHT <= 0.0) {
-            rHT = DUMMY_HEIGHT;
-        }
-
-        cs.add(op.addRectangle(rX, rY, rWD, rHT));
-
-        if (onlyStroke) {
-            cs.add(op.stroke());
-        } else {
-            cs.add(op.fillStroke());
-        }
-
-        if (!dp.le(Dimen.ZERO_PT)) { // baseline
-            rY = (float) Unit.getDimenAsBP(currentY);
-            cs.add(op.gSave());
-            cs.add(op.setLineDash(DASH_LEN, DASH_DISTANCE));
-            cs.add(op.moveTo(rX, rY));
-            cs.add(op.rLineTo(rWD, 0f));
-            cs.add(op.stroke());
-            cs.add(op.gRestore());
-        }
-        cs.add(op.gRestore());
-    }
+    // ----------------------------------------------
+    // ----------------------------------------------
+    // ----------------------------------------------
+    // ----------------------------------------------
 
     /**
-     * Create a quasiunique prefix for fontname
-     * @return The prefix
-     * @see org.apache.fop.fonts.MultiByteFont#MultiByteFont()
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitAdjust(AdjustNode,
+     * java.lang.Object)
      */
-    private String uniquePrefix() {
+    public Object visitAdjust(final AdjustNode node, final Object value2) {
 
-        int cnt = 0;
-        synchronized (this.getClass()) {
-            cnt = uniqueCounter++;
-        }
-        int ctm = (int) (System.currentTimeMillis() & UNIQUE_MASK);
-        return new String(cnt + "E" + Integer.toHexString(ctm));
-    }
-
-    /**
-     * adjust
-     * @param node     the value
-     * @param value    the next value
-     * @return null
-     */
-    public Object visitAdjust(final AdjustNode node, final Object value) {
-
-        debugNode(node);
-        setPosition(node);
+        //        Element element = new Element("adjust");
+        //        addNodeAttributes(node, element);
+        //        return element;
         return null;
     }
 
     /**
-     * aftermath
-     * @param node     the value
-     * @param value    the next value
-     * @return null
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitAfterMath(AfterMathNode,
+     * java.lang.Object)
      */
-    public Object visitAfterMath(final AfterMathNode node, final Object value) {
+    public Object visitAfterMath(final AfterMathNode node, final Object value2) {
 
-        debugNode(node);
-        setPosition(node);
+        //        Element element = new Element("aftermath");
+        //        addNodeAttributes(node, element);
+        //        return element;
         return null;
     }
 
     /**
-     * alignedleader
-     * @param node     the value
-     * @param value    the next value
-     * @return null
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitAlignedLeaders(AlignedLeadersNode,
+     * java.lang.Object)
      */
     public Object visitAlignedLeaders(final AlignedLeadersNode node,
-            final Object value) {
+            final Object value2) {
 
-        debugNode(node);
-        setPosition(node);
+        //        Element element = new Element("alignedleaders");
+        //        addNodeAttributes(node, element);
+        //        return element;
         return null;
     }
 
     /**
-     * beforemath
-     * @param node     the value
-     * @param value    the next value
-     * @return null
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitBeforeMath(BeforeMathNode,
+     * java.lang.Object)
      */
-    public Object visitBeforeMath(final BeforeMathNode node, final Object value) {
+    public Object visitBeforeMath(final BeforeMathNode node, final Object value2) {
 
-        debugNode(node);
-        setPosition(node);
+        //        Element element = new Element("beforemath");
+        //        addNodeAttributes(node, element);
+        //        return element;
         return null;
     }
 
     /**
-     * centerleaders
-     * @param node     the value
-     * @param value    the next value
-     * @return null
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitCenteredLeaders(CenteredLeadersNode,
+     * java.lang.Object)
      */
     public Object visitCenteredLeaders(final CenteredLeadersNode node,
             final Object value) {
 
-        debugNode(node);
-        setPosition(node);
+        //        Element element = new Element("centeredleaders");
+        //        addNodeAttributes(node, element);
+        //        return element;
         return null;
     }
 
     /**
-     * char
-     * @param node     the value
-     * @param value    the next value
-     * @return null
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitChar(CharNode,
+     * java.lang.Object)
      */
-    public Object visitChar(final CharNode node, final Object value) {
+    public Object visitChar(final CharNode node, final Object value)
+            throws GeneralException {
 
-        StringBuffer operators = new StringBuffer(BUFFER_SIZE);
-        operators.append(op.fillColor(Color.GREEN));
-        showNode(node, operators);
-        debugNode(node);
-        setPosition(node);
+        try {
+            UnicodeChar uc = node.getCharacter();
+            Font font = node.getTypesettingContext().getFont();
+            //        de.dante.extex.interpreter.context.Color color = node
+            //                .getTypesettingContext().getColor();
+
+            BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA,
+                    BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+            cb.beginText();
+            cb.setColorFill(Color.BLACK);
+            cb.setFontAndSize(bf, (float) Unit.getDimenAsPT(font
+                    .getActualSize()));
+            float cy = (float) (Unit.getDimenAsBP(currentY) - Unit
+                    .getDimenAsBP(node.getWidth()));
+            cb.showTextAligned(PdfContentByte.ALIGN_LEFT, uc.toString(),
+                    (float) Unit.getDimenAsBP(currentX), cy, 0);
+            cb.endText();
+
+            drawNode(node);
+
+            currentX.add(node.getWidth());
+        } catch (DocumentException e) {
+            throw new GeneralException(e.getMessage());
+        } catch (IOException e) {
+            throw new GeneralException(e.getMessage());
+        }
         return null;
     }
 
     /**
-     * discretionary
-     * @param node     the value
-     * @param value    the next value
-     * @return null
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitDiscretionary(DiscretionaryNode,
+     * java.lang.Object)
      */
     public Object visitDiscretionary(final DiscretionaryNode node,
             final Object value) {
 
-        debugNode(node);
-        setPosition(node);
+        //        Element element = new Element("discretionary");
+        //        addNodeAttributes(nod
         return null;
     }
 
     /**
-     * expandleaders
-     * @param node     the value
-     * @param value    the next value
-     * @return null
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitExpandedLeaders(ExpandedLeadersNode,
+     * java.lang.Object)
      */
     public Object visitExpandedLeaders(final ExpandedLeadersNode node,
             final Object value) {
 
-        debugNode(node);
-        setPosition(node);
+        //        Element element = new Element("expandedleaders");
+        //        addNodeAttributes(node, element);
+        //        return element;
         return null;
     }
 
     /**
-     * glue
-     * @param node     the value
-     * @param value    the next value
-     * @return null
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitGlue(GlueNode,
+     * java.lang.Object)
      */
     public Object visitGlue(final GlueNode node, final Object value) {
 
-        StringBuffer operators = new StringBuffer(BUFFER_SIZE);
-        operators.append(op.fillColor(Color.BLUE));
-        showNode(node, operators);
-        debugNode(node);
-        if (debug) {
-            if (state == HORIOZONTAL) {
-                System.out.println("==> hor. glue");
-            } else {
-                System.out.println("==> ver. glue");
-            }
-        }
-        setPosition(node);
+        currentX.add(node.getWidth());
+        currentY.add(node.getHeight());
+        currentY.add(node.getDepth());
         return null;
     }
 
     /**
-     * horizontal list
-     * @param nodes    the value
-     * @param value    the next value
-     * @return null
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitHorizontalList(HorizontalListNode,
+     * java.lang.Object)
      */
-    public Object visitHorizontalList(final HorizontalListNode nodes,
-            final Object value) {
+    public Object visitHorizontalList(final HorizontalListNode node,
+            final Object value) throws GeneralException {
 
-        State oldstate = state;
-        state = HORIOZONTAL;
+        Dimen saveX = new Dimen(currentX);
+        Dimen saveY = new Dimen(currentY);
 
-        Dimen ht = new Dimen(nodes.getHeight());
-        Dimen dp = new Dimen(nodes.getDepth());
-
-        currentX.set(lastX);
-        currentY.set(lastY);
-        currentY.add(lastDP);
-        currentY.add(ht);
-        lastDP.set(dp);
-
-        debugNode(nodes);
-
-        NodeIterator it = nodes.iterator();
+        NodeIterator it = node.iterator();
         while (it.hasNext()) {
-            Node anode = it.next();
-            try {
-                anode.visit(this, null);
-            } catch (Exception e) {
-                e.printStackTrace(); // TODO: handle exception
-            }
-
+            Node newnode = it.next();
+            newnode.visit(this, node);
         }
-        setPosition(nodes);
-        lastY = currentY;
-        state = oldstate;
-        return null;
-    }
-
-    /**
-     * insertion
-     * @param node     the value
-     * @param value    the next value
-     * @return null
-     */
-    public Object visitInsertion(final InsertionNode node, final Object value) {
-
-        debugNode(node);
-        setPosition(node);
-        return null;
-    }
-
-    /**
-     * kern
-     * @param node     the value
-     * @param value    the next value
-     * @return null
-     */
-    public Object visitKern(final KernNode node, final Object value) {
-
-        debugNode(node);
-        setPosition(node);
-        return null;
-    }
-
-    /**
-     * ligature
-     * @param node     the value
-     * @param value    the next value
-     * @return null
-     */
-    public Object visitLigature(final LigatureNode node, final Object value) {
-
-        debugNode(node);
-        setPosition(node);
-        return null;
-    }
-
-    /**
-     * mark
-     * @param node     the value
-     * @param value    the next value
-     * @return null
-     */
-    public Object visitMark(final MarkNode node, final Object value) {
-
-        debugNode(node);
-        setPosition(node);
-        return null;
-    }
-
-    /**
-     * penalty
-     * @param node     the value
-     * @param value    the next value
-     * @return null
-     */
-    public Object visitPenalty(final PenaltyNode node, final Object value) {
-
-        debugNode(node);
-        setPosition(node);
-        return null;
-    }
-
-    /**
-     * rule
-     * @param node     the value
-     * @param value    the next value
-     * @return null
-     */
-    public Object visitRule(final RuleNode node, final Object value) {
-
-        debugNode(node);
-        setPosition(node);
-        return null;
-    }
-
-    /**
-     * space
-     * @param node     the value
-     * @param value    the next value
-     * @return null
-     */
-    public Object visitSpace(final SpaceNode node, final Object value) {
-
-        StringBuffer operators = new StringBuffer(BUFFER_SIZE);
-        operators.append(op.fillColor(Color.YELLOW));
-        showNode(node, operators);
-        setPosition(node);
-        return null;
-    }
-
-    /**
-     * verticallist
-     * @param nodes    the value
-     * @param value    the next value
-     * @return null
-     */
-    public Object visitVerticalList(final VerticalListNode nodes,
-            final Object value) {
-
-        StringBuffer operators = new StringBuffer(BUFFER_SIZE);
-
-        State oldstate = state;
-        state = VERTICAL;
-
-        Dimen ht = new Dimen(nodes.getHeight());
-        Dimen saveX = new Dimen(lastX);
-        Dimen saveY = new Dimen(lastY);
-
-        currentX.set(lastX);
-        currentY.set(lastY);
-        currentY.add(ht);
-
-        operators.append(op.fillColor(Color.LIGHT_GRAY));
-
-        showNode(nodes, operators);
-        debugNode(nodes);
-
         currentX.set(saveX);
         currentY.set(saveY);
 
-        NodeIterator it = nodes.iterator();
-        while (it.hasNext()) {
-            Node anode = it.next();
-            try {
-                anode.visit(this, null);
-            } catch (Exception e) {
-                e.printStackTrace(); // TODO: handle exception
-            }
-        }
+        drawNode(node);
 
-        state = oldstate;
+        currentX.add(node.getWidth());
         return null;
     }
 
     /**
-     * whatsit
-     * @param nde     the value
-     * @param value    the next value
-     * @return null
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitInsertion(InsertionNode,
+     * java.lang.Object)
      */
-    public Object visitWhatsIt(final WhatsItNode nde, final Object value) {
+    public Object visitInsertion(final InsertionNode node, final Object value) {
 
-        Node node = (Node) nde;
-        debugNode(node);
-        setPosition(node);
+        //        Element element = new Element("insertion");
+        //        addNodeAttributes(node, element);
+        //        return element;
+        return null;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitKern(KernNode,
+     * java.lang.Object)
+     */
+    public Object visitKern(final KernNode node, final Object value) {
+
+        //        Element element = new Element("kern");
+        //        addNodeAttributes(node, element);
+        //        return element;
+        return null;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitLigature(LigatureNode,
+     * java.lang.Object)
+     */
+    public Object visitLigature(final LigatureNode node, final Object value) {
+
+        //        Element element = new Element("ligature");
+        //        addNodeAttributes(node, element);
+        //        Node first = node.getLeft();
+        //        Node second = node.getRight();
+        //        if (first != null) {
+        //            Element e = getNodeElement(first);
+        //            if (e != null) {
+        //                element.addContent(e);
+        //            }
+        //        }
+        //        if (second != null) {
+        //            Element e = getNodeElement(second);
+        //            if (e != null) {
+        //                element.addContent(e);
+        //            }
+        //        }
+        //        return element;
+        return null;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitMark(MarkNode,
+     * java.lang.Object)
+     */
+    public Object visitMark(final MarkNode node, final Object value) {
+
+        //        Element element = new Element("mark");
+        //        addNodeAttributes(node, element);
+        //        return element;
+        return null;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitPenalty(PenaltyNode,
+     * java.lang.Object)
+     */
+    public Object visitPenalty(final PenaltyNode node, final Object value) {
+
+        //        Element element = new Element("penalty");
+        //        addNodeAttributes(node, element);
+        //        element.setAttribute("penalty", String.valueOf(node.getPenalty()));
+        //        return element;
+        return null;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitRule(RuleNode,
+     * java.lang.Object)
+     */
+    public Object visitRule(final RuleNode node, final Object value) {
+
+        //        Element element = new Element("rule");
+        //        addNodeAttributes(node, element);
+        //        return element;
+        return null;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitSpace(SpaceNode,
+     * java.lang.Object)
+     */
+    public Object visitSpace(final SpaceNode node, final Object value) {
+
+        //        Element element = new Element("space");
+        //        addNodeAttributes(node, element);
+        //        return element;
+        return null;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitVerticalList(VerticalListNode,
+     * java.lang.Object)
+     */
+    public Object visitVerticalList(final VerticalListNode node,
+            final Object value) throws GeneralException {
+
+        Dimen saveX = new Dimen(currentX);
+        Dimen saveY = new Dimen(currentY);
+
+        NodeIterator it = node.iterator();
+        while (it.hasNext()) {
+            Node newnode = it.next();
+            newnode.visit(this, node);
+        }
+        currentX.set(saveX);
+        currentY.set(saveY);
+
+        drawNode(node);
+
+        currentY.add(node.getDepth());
+        currentY.add(node.getHeight());
+        return null;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitWhatsIt(WhatsItNode,
+     * java.lang.Object)
+     */
+    public Object visitWhatsIt(final WhatsItNode node, final Object value) {
+
+        //        Element element = new Element("whatsit");
+        //        addNodeAttributes(node, element);
+        //        return element;
         return null;
     }
 }

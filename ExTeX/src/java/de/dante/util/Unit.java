@@ -28,7 +28,7 @@ import de.dante.extex.interpreter.type.glue.GlueComponent;
  * This class implements a converter e.g for dimen values.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public final class Unit {
 
@@ -156,6 +156,16 @@ public final class Unit {
     public static Dimen createDimenFromCM(final double cm) {
 
         return new Dimen((long) (cm * (DEN << SHIFT)) / MULCM);
+    }
+
+    /**
+     * Set the <code>Dimen</code>-value from a BP-value
+     * @param d     the dimen
+     * @param bp    the bp-value
+     */
+    public static void setDimenFromCM(final Dimen d, final float bp) {
+
+        d.setValue((long) ((bp * (DEN << SHIFT)) / MULBP));
     }
 
     /**
