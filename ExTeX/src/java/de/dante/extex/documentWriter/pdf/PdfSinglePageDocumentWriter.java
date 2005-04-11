@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group
+ * Copyright (C) 2005 The ExTeX Group
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -32,6 +32,8 @@ import com.lowagie.text.pdf.PdfWriter;
 
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.documentWriter.DocumentWriterOptions;
+import de.dante.extex.documentWriter.MultipleDocumentStream;
+import de.dante.extex.documentWriter.OutputStreamFactory;
 import de.dante.extex.documentWriter.SingleDocumentStream;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.type.NodeList;
@@ -44,10 +46,12 @@ import de.dante.util.configuration.Configuration;
  * Implementation of a pdf document writer.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @author <a href="mailto:Rolf.Niepraschk@ptb.de">Rolf Niepraschk</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.1 $
  */
-public class PdfDocumentWriter implements DocumentWriter, SingleDocumentStream {
+public class PdfSinglePageDocumentWriter
+        implements
+            DocumentWriter,
+            MultipleDocumentStream {
 
     /**
      * width A4 in bp
@@ -60,9 +64,9 @@ public class PdfDocumentWriter implements DocumentWriter, SingleDocumentStream {
     private static final int HEIGHT_A4_BP = 842;
 
     /**
-     * the output
+     * the output factroy
      */
-    private OutputStream out = null;
+    private OutputStreamFactory outFactory = null;
 
     /**
      * the number of page which are shipped out
@@ -94,7 +98,7 @@ public class PdfDocumentWriter implements DocumentWriter, SingleDocumentStream {
      * @param cfg       the configuration
      * @param options   the options
      */
-    public PdfDocumentWriter(final Configuration cfg,
+    public PdfSinglePageDocumentWriter(final Configuration cfg,
             final DocumentWriterOptions options) {
 
         super();
@@ -113,15 +117,7 @@ public class PdfDocumentWriter implements DocumentWriter, SingleDocumentStream {
      */
     public void close() throws IOException {
 
-        if (out != null) {
-            if (document != null) {
-                document.close();
-            }
-            out.close();
-            out = null;
-        } else {
-            throw new ClosedChannelException();
-        }
+        // do nothing
     }
 
     /**
@@ -141,11 +137,12 @@ public class PdfDocumentWriter implements DocumentWriter, SingleDocumentStream {
     }
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#setOutputStream(java.io.OutputStream)
+     * @see de.dante.extex.documentWriter.MultipleDocumentStream#setOutputStreamFactory(
+     *      de.dante.extex.documentWriter.OutputStreamFactory)
      */
-    public void setOutputStream(final OutputStream outStream) {
+    public void setOutputStreamFactory(final OutputStreamFactory writerFactory) {
 
-        out = outStream;
+        outFactory = writerFactory;
     }
 
     /**
@@ -191,17 +188,15 @@ public class PdfDocumentWriter implements DocumentWriter, SingleDocumentStream {
 
         try {
 
-            if (writer == null) {
-                // create a pdf document
-                document = new Document();
-                writer = PdfWriter.getInstance(document, out);
-                document.open();
-                cb = writer.getDirectContent();
-                visitor = new PdfNodeVisitor(cb, currentX, currentY);
-            } else {
-                document.newPage();
-                shippedPages++;
-            }
+            // get the output from the factory
+            OutputStream out = outFactory.getOutputStream();
+
+            // create a pdf document
+            document = new Document();
+            writer = PdfWriter.getInstance(document, out);
+            document.open();
+            cb = writer.getDirectContent();
+            visitor = new PdfNodeVisitor(cb, currentX, currentY);
 
             // TeX primitives should set the papersize in any way:
             // o \paperwidth   / \paperheight,
@@ -262,6 +257,10 @@ public class PdfDocumentWriter implements DocumentWriter, SingleDocumentStream {
             // -----------------------------
 
             nodes.visit(visitor, nodes);
+
+            // close the page output
+            out.close();
+            shippedPages++;
 
         } catch (DocumentException e) {
             // TODO delete after test
