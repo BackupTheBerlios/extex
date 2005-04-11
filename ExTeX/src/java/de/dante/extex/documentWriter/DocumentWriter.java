@@ -16,10 +16,12 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.documentWriter;
 
 import java.io.IOException;
 
+import de.dante.extex.documentWriter.exception.DocumentWriterException;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.util.GeneralException;
 
@@ -29,7 +31,7 @@ import de.dante.util.GeneralException;
  * after the production of the output.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public interface DocumentWriter {
 
@@ -58,18 +60,19 @@ public interface DocumentWriter {
      *
      * @param nodes the nodes to send
      *
-     * @throws GeneralException in case of an error
-     * @throws IOException in case that a writing operation fails
+     * @throws DocumentWriterException in case of an error
      */
-    void shipout(NodeList nodes) throws GeneralException, IOException;
+    void shipout(NodeList nodes)
+            throws DocumentWriterException,
+                GeneralException,
+                IOException;
 
     /**
      * This method is invoked upon the end of the processing.
      *
-     * @throws GeneralException in case of an error
-     * @throws IOException in case that a writing operation fails
+     * @throws DocumentWriterException in case of an error
      */
-    void close() throws GeneralException, IOException;
+    void close() throws DocumentWriterException, GeneralException, IOException;
 
     /**
      * Setter for a named parameter.
