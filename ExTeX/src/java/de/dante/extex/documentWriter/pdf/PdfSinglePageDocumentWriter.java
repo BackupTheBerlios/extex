@@ -22,7 +22,6 @@ package de.dante.extex.documentWriter.pdf;
 import java.awt.Color;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.channels.ClosedChannelException;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
@@ -34,7 +33,8 @@ import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.documentWriter.DocumentWriterOptions;
 import de.dante.extex.documentWriter.MultipleDocumentStream;
 import de.dante.extex.documentWriter.OutputStreamFactory;
-import de.dante.extex.documentWriter.SingleDocumentStream;
+import de.dante.extex.documentWriter.exception.DocumentWriterException;
+import de.dante.extex.documentWriter.exception.DocumentWriterIOException;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.NodeVisitor;
@@ -46,7 +46,7 @@ import de.dante.util.configuration.Configuration;
  * Implementation of a pdf document writer.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class PdfSinglePageDocumentWriter
         implements
@@ -115,7 +115,7 @@ public class PdfSinglePageDocumentWriter
     /**
      * @see de.dante.extex.documentWriter.DocumentWriter#close()
      */
-    public void close() throws IOException {
+    public void close() throws DocumentWriterIOException {
 
         // do nothing
     }
@@ -183,8 +183,7 @@ public class PdfSinglePageDocumentWriter
      * @see de.dante.extex.documentWriter.DocumentWriter#shipout(
      *      de.dante.extex.typesetter.type.NodeList)
      */
-    public void shipout(final NodeList nodes) throws IOException,
-            GeneralException {
+    public void shipout(final NodeList nodes) throws DocumentWriterException {
 
         try {
 
@@ -262,10 +261,12 @@ public class PdfSinglePageDocumentWriter
             out.close();
             shippedPages++;
 
+        } catch (GeneralException e) {
+            throw new DocumentWriterException(e);
         } catch (DocumentException e) {
-            // TODO delete after test
-            e.printStackTrace();
-            throw new GeneralException(e.getMessage());
+            throw new DocumentWriterException(e);
+        } catch (IOException e) {
+            throw new DocumentWriterIOException(e);
         }
     }
 

@@ -22,7 +22,6 @@ package de.dante.extex.documentWriter.svg;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.channels.ClosedChannelException;
 
 import org.jdom.DocType;
 import org.jdom.Document;
@@ -33,6 +32,9 @@ import org.jdom.output.XMLOutputter;
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.documentWriter.DocumentWriterOptions;
 import de.dante.extex.documentWriter.SingleDocumentStream;
+import de.dante.extex.documentWriter.exception.DocumentWriterClosedChannelException;
+import de.dante.extex.documentWriter.exception.DocumentWriterException;
+import de.dante.extex.documentWriter.exception.DocumentWriterIOException;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.typesetter.type.Node;
@@ -71,7 +73,7 @@ import de.dante.util.configuration.Configuration;
  * TODO incomplete !!!
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class SVGDocumentWriter
         implements
@@ -158,7 +160,7 @@ public class SVGDocumentWriter
     /**
      * @see de.dante.extex.documentWriter.DocumentWriter#close()
      */
-    public void close() throws IOException {
+    public void close() throws DocumentWriterException {
 
         if (out != null) {
             // write to xml-file
@@ -178,12 +180,16 @@ public class SVGDocumentWriter
             doc.setDocType(new DocType("svg", "//W3C//DTD SVG 1.1//EN",
                     "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"));
             doc.setRootElement(root);
-            xmlout.output(doc, bout);
-            bout.close();
-            out.close();
+            try {
+                xmlout.output(doc, bout);
+                bout.close();
+                out.close();
+            } catch (IOException e) {
+                throw new DocumentWriterIOException(e);
+            }
             out = null;
         } else {
-            throw new ClosedChannelException();
+            throw new DocumentWriterClosedChannelException("closed channel");
         }
     }
 
@@ -244,7 +250,7 @@ public class SVGDocumentWriter
      * @see de.dante.extex.documentWriter.DocumentWriter#shipout(
      *      de.dante.extex.typesetter.type.NodeList)
      */
-    public void shipout(final NodeList nodes) throws IOException,
+    public void shipout(final NodeList nodes) throws DocumentWriterException,
             GeneralException {
 
         if (shippedPages == 0) {
@@ -446,7 +452,8 @@ public class SVGDocumentWriter
      * java.lang.Object)
      */
     public Object visitHorizontalList(final HorizontalListNode node,
-            final Object value) throws GeneralException {
+            final Object value) throws DocumentWriterException,
+            GeneralException {
 
         Element rect = new Element("rect", SVGNAMESPACE);
 
@@ -608,7 +615,8 @@ public class SVGDocumentWriter
      * java.lang.Object)
      */
     public Object visitVerticalList(final VerticalListNode node,
-            final Object value) throws GeneralException {
+            final Object value) throws DocumentWriterException,
+            GeneralException {
 
         Element rect = new Element("rect", SVGNAMESPACE);
 

@@ -19,21 +19,22 @@
 
 package de.dante.extex.documentWriter.exception;
 
-
 /**
- * DocumentWriter: IOException.
+ * DocumentWriter: clodes channel.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public class DocumentWriterIOException extends DocumentWriterException {
+public class DocumentWriterClosedChannelException
+        extends
+            DocumentWriterIOException {
 
     /**
      * Creates a new object.
      *
      * @param message the error message
      */
-    public DocumentWriterIOException(final String message) {
+    public DocumentWriterClosedChannelException(final String message) {
 
         super(message);
     }
@@ -44,7 +45,8 @@ public class DocumentWriterIOException extends DocumentWriterException {
      * @param message the message
      * @param cause the cause
      */
-    public DocumentWriterIOException(final String message, final Throwable cause) {
+    public DocumentWriterClosedChannelException(final String message,
+            final Throwable cause) {
 
         super(message, cause);
     }
@@ -54,7 +56,7 @@ public class DocumentWriterIOException extends DocumentWriterException {
      *
      * @param cause the cause
      */
-    public DocumentWriterIOException(final Throwable cause) {
+    public DocumentWriterClosedChannelException(final Throwable cause) {
 
         super(cause);
     }

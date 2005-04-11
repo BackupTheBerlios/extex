@@ -22,7 +22,6 @@ package de.dante.extex.documentWriter.xml;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.channels.ClosedChannelException;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -33,6 +32,9 @@ import com.ibm.icu.text.DecimalFormat;
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.documentWriter.DocumentWriterOptions;
 import de.dante.extex.documentWriter.SingleDocumentStream;
+import de.dante.extex.documentWriter.exception.DocumentWriterClosedChannelException;
+import de.dante.extex.documentWriter.exception.DocumentWriterException;
+import de.dante.extex.documentWriter.exception.DocumentWriterIOException;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeIterator;
@@ -66,7 +68,7 @@ import de.dante.util.configuration.Configuration;
  * This is a xml implementation of a document writer.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class XMLDocumentWriter
         implements
@@ -209,7 +211,7 @@ public class XMLDocumentWriter
     /**
      * @see de.dante.extex.documentWriter.DocumentWriter#close()
      */
-    public void close() throws IOException {
+    public void close() throws DocumentWriterException {
 
         if (out != null) {
             // write to xml-file
@@ -220,12 +222,16 @@ public class XMLDocumentWriter
             xmlout.setTrimAllWhite(trimallwhitespace);
             BufferedOutputStream bout = new BufferedOutputStream(out);
             Document doc = new Document(root);
-            xmlout.output(doc, bout);
-            bout.close();
-            out.close();
+            try {
+                xmlout.output(doc, bout);
+                bout.close();
+                out.close();
+            } catch (IOException e) {
+                throw new DocumentWriterIOException(e);
+            }
             out = null;
         } else {
-            throw new ClosedChannelException();
+            throw new DocumentWriterClosedChannelException("clodes channel");
         }
     }
 
@@ -331,7 +337,7 @@ public class XMLDocumentWriter
      * @see de.dante.extex.documentWriter.DocumentWriter#shipout(
      *      de.dante.extex.typesetter.type.NodeList)
      */
-    public void shipout(final NodeList nodes) throws IOException,
+    public void shipout(final NodeList nodes) throws DocumentWriterException,
             GeneralException {
 
         // try {
@@ -500,7 +506,8 @@ public class XMLDocumentWriter
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitAlignedLeaders(AlignedLeadersNode,
      * java.lang.Object)
      */
-    public Object visitAlignedLeaders(final AlignedLeadersNode node, final Object value2) {
+    public Object visitAlignedLeaders(final AlignedLeadersNode node,
+            final Object value2) {
 
         Element element = new Element("alignedleaders");
         addNodeAttributes(node, element);
@@ -522,7 +529,8 @@ public class XMLDocumentWriter
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitCenteredLeaders(CenteredLeadersNode,
      * java.lang.Object)
      */
-    public Object visitCenteredLeaders(final CenteredLeadersNode node, final Object value) {
+    public Object visitCenteredLeaders(final CenteredLeadersNode node,
+            final Object value) {
 
         Element element = new Element("centeredleaders");
         addNodeAttributes(node, element);
@@ -560,7 +568,8 @@ public class XMLDocumentWriter
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitDiscretionary(DiscretionaryNode,
      * java.lang.Object)
      */
-    public Object visitDiscretionary(final DiscretionaryNode node, final Object value) {
+    public Object visitDiscretionary(final DiscretionaryNode node,
+            final Object value) {
 
         Element element = new Element("discretionary");
         addNodeAttributes(node, element);
@@ -571,7 +580,8 @@ public class XMLDocumentWriter
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitExpandedLeaders(ExpandedLeadersNode,
      * java.lang.Object)
      */
-    public Object visitExpandedLeaders(final ExpandedLeadersNode node, final Object value) {
+    public Object visitExpandedLeaders(final ExpandedLeadersNode node,
+            final Object value) {
 
         Element element = new Element("expandedleaders");
         addNodeAttributes(node, element);
@@ -596,8 +606,8 @@ public class XMLDocumentWriter
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitHorizontalList(HorizontalListNode,
      * java.lang.Object)
      */
-    public Object visitHorizontalList(final HorizontalListNode node, final Object value)
-            throws GeneralException {
+    public Object visitHorizontalList(final HorizontalListNode node,
+            final Object value) throws GeneralException {
 
         Element element = new Element("horizontallist");
         addNodeAttributes(node, element);
@@ -718,8 +728,8 @@ public class XMLDocumentWriter
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitVerticalList(VerticalListNode,
      * java.lang.Object)
      */
-    public Object visitVerticalList(final VerticalListNode node, final Object value)
-            throws GeneralException {
+    public Object visitVerticalList(final VerticalListNode node,
+            final Object value) throws GeneralException {
 
         Element element = new Element("verticallist");
         addNodeAttributes(node, element);

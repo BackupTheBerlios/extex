@@ -22,7 +22,6 @@ package de.dante.extex.documentWriter.pdf;
 import java.awt.Color;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.channels.ClosedChannelException;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
@@ -33,6 +32,10 @@ import com.lowagie.text.pdf.PdfWriter;
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.documentWriter.DocumentWriterOptions;
 import de.dante.extex.documentWriter.SingleDocumentStream;
+import de.dante.extex.documentWriter.exception.DocumentWriterClosedChannelException;
+import de.dante.extex.documentWriter.exception.DocumentWriterException;
+import de.dante.extex.documentWriter.exception.DocumentWriterIOException;
+import de.dante.extex.documentWriter.pdf.exception.DocumentWriterPdfDocumentException;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.NodeVisitor;
@@ -45,7 +48,7 @@ import de.dante.util.configuration.Configuration;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:Rolf.Niepraschk@ptb.de">Rolf Niepraschk</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class PdfDocumentWriter implements DocumentWriter, SingleDocumentStream {
 
@@ -111,16 +114,20 @@ public class PdfDocumentWriter implements DocumentWriter, SingleDocumentStream {
     /**
      * @see de.dante.extex.documentWriter.DocumentWriter#close()
      */
-    public void close() throws IOException {
+    public void close() throws DocumentWriterException {
 
         if (out != null) {
             if (document != null) {
                 document.close();
             }
-            out.close();
+            try {
+                out.close();
+            } catch (IOException e) {
+                new DocumentWriterIOException(e);
+            }
             out = null;
         } else {
-            throw new ClosedChannelException();
+            throw new DocumentWriterClosedChannelException("closed channel");
         }
     }
 
@@ -186,8 +193,7 @@ public class PdfDocumentWriter implements DocumentWriter, SingleDocumentStream {
      * @see de.dante.extex.documentWriter.DocumentWriter#shipout(
      *      de.dante.extex.typesetter.type.NodeList)
      */
-    public void shipout(final NodeList nodes) throws IOException,
-            GeneralException {
+    public void shipout(final NodeList nodes) throws DocumentWriterException {
 
         try {
 
@@ -262,11 +268,10 @@ public class PdfDocumentWriter implements DocumentWriter, SingleDocumentStream {
             // -----------------------------
 
             nodes.visit(visitor, nodes);
-
+        } catch (GeneralException e) {
+            throw new DocumentWriterException(e);
         } catch (DocumentException e) {
-            // TODO delete after test
-            e.printStackTrace();
-            throw new GeneralException(e.getMessage());
+            throw new DocumentWriterPdfDocumentException(e);
         }
     }
 

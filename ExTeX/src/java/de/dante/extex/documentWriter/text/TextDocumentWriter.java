@@ -21,11 +21,13 @@ package de.dante.extex.documentWriter.text;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.channels.ClosedChannelException;
 
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.documentWriter.DocumentWriterOptions;
 import de.dante.extex.documentWriter.SingleDocumentStream;
+import de.dante.extex.documentWriter.exception.DocumentWriterClosedChannelException;
+import de.dante.extex.documentWriter.exception.DocumentWriterException;
+import de.dante.extex.documentWriter.exception.DocumentWriterIOException;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeIterator;
 import de.dante.extex.typesetter.type.NodeList;
@@ -56,7 +58,7 @@ import de.dante.util.configuration.Configuration;
  * This is a text dummy implementation of a document writer (very simple).
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class TextDocumentWriter
         implements
@@ -88,13 +90,17 @@ public class TextDocumentWriter
     /**
      * @see de.dante.extex.documentWriter.DocumentWriter#close()
      */
-    public void close() throws IOException {
+    public void close() throws DocumentWriterIOException {
 
         if (out != null) {
-            out.close();
+            try {
+                out.close();
+            } catch (IOException e) {
+                throw new DocumentWriterIOException(e);
+            }
             out = null;
         } else {
-            throw new ClosedChannelException();
+            throw new DocumentWriterClosedChannelException("clodes channel");
         }
     }
 
@@ -119,7 +125,8 @@ public class TextDocumentWriter
      * @param nodes the nodelist
      * @throws IOException ...
      */
-    private void processNodes(final NodeList nodes) throws IOException {
+    private void processNodes(final NodeList nodes)
+            throws DocumentWriterException {
 
         NodeIterator it = nodes.iterator();
         showNode(nodes);
@@ -154,11 +161,15 @@ public class TextDocumentWriter
      * @see de.dante.extex.documentWriter.DocumentWriter#shipout(
      *      de.dante.extex.typesetter.type.NodeList)
      */
-    public void shipout(final NodeList nodes) throws IOException {
+    public void shipout(final NodeList nodes) throws DocumentWriterException {
 
-        processNodes(nodes);
-        out.write('\n');
-        out.flush();
+        try {
+            processNodes(nodes);
+            out.write('\n');
+            out.flush();
+        } catch (IOException e) {
+            throw new DocumentWriterIOException(e);
+        }
         shippedPages++;
     }
 
@@ -167,7 +178,7 @@ public class TextDocumentWriter
      * @param node the node
      * @throws IOException ...
      */
-    private void showNode(final Node node) throws IOException {
+    private void showNode(final Node node) throws DocumentWriterException {
 
         try {
             Object o = node.visit(this, node);
@@ -178,6 +189,9 @@ public class TextDocumentWriter
             }
         } catch (GeneralException e) {
             e.printStackTrace();
+
+        } catch (IOException e) {
+            throw new DocumentWriterIOException(e);
         }
     }
 
@@ -203,7 +217,8 @@ public class TextDocumentWriter
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitAlignedLeaders(AlignedLeadersNode,
      * java.lang.Object)
      */
-    public Object visitAlignedLeaders(final AlignedLeadersNode value, final Object value2) {
+    public Object visitAlignedLeaders(final AlignedLeadersNode value,
+            final Object value2) {
 
         return null;
     }
@@ -221,7 +236,8 @@ public class TextDocumentWriter
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitCenteredLeaders(CenteredLeadersNode,
      * java.lang.Object)
      */
-    public Object visitCenteredLeaders(final CenteredLeadersNode node, final Object value) {
+    public Object visitCenteredLeaders(final CenteredLeadersNode node,
+            final Object value) {
 
         return null;
     }
@@ -239,7 +255,8 @@ public class TextDocumentWriter
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitDiscretionary(DiscretionaryNode,
      * java.lang.Object)
      */
-    public Object visitDiscretionary(final DiscretionaryNode node, final Object value) {
+    public Object visitDiscretionary(final DiscretionaryNode node,
+            final Object value) {
 
         return null;
     }
@@ -248,7 +265,8 @@ public class TextDocumentWriter
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitExpandedLeaders(ExpandedLeadersNode,
      * java.lang.Object)
      */
-    public Object visitExpandedLeaders(final ExpandedLeadersNode node, final Object value) {
+    public Object visitExpandedLeaders(final ExpandedLeadersNode node,
+            final Object value) {
 
         return null;
     }
@@ -266,7 +284,8 @@ public class TextDocumentWriter
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitHorizontalList(HorizontalListNode,
      * java.lang.Object)
      */
-    public Object visitHorizontalList(final HorizontalListNode node, final Object value) {
+    public Object visitHorizontalList(final HorizontalListNode node,
+            final Object value) {
 
         return "\n";
     }
@@ -338,7 +357,8 @@ public class TextDocumentWriter
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitVerticalList(VerticalListNode,
      * java.lang.Object)
      */
-    public Object visitVerticalList(final VerticalListNode node, final Object value) {
+    public Object visitVerticalList(final VerticalListNode node,
+            final Object value) {
 
         return null;
     }

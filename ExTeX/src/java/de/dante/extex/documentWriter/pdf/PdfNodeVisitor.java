@@ -26,6 +26,9 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfContentByte;
 
+import de.dante.extex.documentWriter.exception.DocumentWriterException;
+import de.dante.extex.documentWriter.exception.DocumentWriterIOException;
+import de.dante.extex.documentWriter.pdf.exception.DocumentWriterPdfDocumentException;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.typesetter.type.Node;
@@ -58,7 +61,7 @@ import de.dante.util.Unit;
  * PDF NodeVisitor.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class PdfNodeVisitor implements NodeVisitor {
@@ -200,7 +203,7 @@ public class PdfNodeVisitor implements NodeVisitor {
      * java.lang.Object)
      */
     public Object visitChar(final CharNode node, final Object value)
-            throws GeneralException {
+            throws DocumentWriterException {
 
         try {
             UnicodeChar uc = node.getCharacter();
@@ -224,9 +227,9 @@ public class PdfNodeVisitor implements NodeVisitor {
 
             currentX.add(node.getWidth());
         } catch (DocumentException e) {
-            throw new GeneralException(e.getMessage());
+            throw new DocumentWriterPdfDocumentException(e);
         } catch (IOException e) {
-            throw new GeneralException(e.getMessage());
+            throw new DocumentWriterIOException(e);
         }
         return null;
     }
@@ -273,7 +276,8 @@ public class PdfNodeVisitor implements NodeVisitor {
      * java.lang.Object)
      */
     public Object visitHorizontalList(final HorizontalListNode node,
-            final Object value) throws GeneralException {
+            final Object value) throws DocumentWriterException,
+            GeneralException {
 
         Dimen saveX = new Dimen(currentX);
         Dimen saveY = new Dimen(currentY);
@@ -396,7 +400,8 @@ public class PdfNodeVisitor implements NodeVisitor {
      * java.lang.Object)
      */
     public Object visitVerticalList(final VerticalListNode node,
-            final Object value) throws GeneralException {
+            final Object value) throws DocumentWriterException,
+            GeneralException {
 
         Dimen saveX = new Dimen(currentX);
         Dimen saveY = new Dimen(currentY);

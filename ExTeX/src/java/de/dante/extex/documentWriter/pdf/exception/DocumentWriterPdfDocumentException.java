@@ -17,23 +17,24 @@
  *
  */
 
-package de.dante.extex.documentWriter.exception;
+package de.dante.extex.documentWriter.pdf.exception;
 
+import de.dante.extex.documentWriter.exception.DocumentWriterException;
 
 /**
- * DocumentWriter: IOException.
+ * DocumentWriter: Exception from the PDF-Document.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public class DocumentWriterIOException extends DocumentWriterException {
+public class DocumentWriterPdfDocumentException extends DocumentWriterException {
 
     /**
      * Creates a new object.
      *
      * @param message the error message
      */
-    public DocumentWriterIOException(final String message) {
+    public DocumentWriterPdfDocumentException(final String message) {
 
         super(message);
     }
@@ -44,7 +45,8 @@ public class DocumentWriterIOException extends DocumentWriterException {
      * @param message the message
      * @param cause the cause
      */
-    public DocumentWriterIOException(final String message, final Throwable cause) {
+    public DocumentWriterPdfDocumentException(final String message,
+            final Throwable cause) {
 
         super(message, cause);
     }
@@ -54,7 +56,7 @@ public class DocumentWriterIOException extends DocumentWriterException {
      *
      * @param cause the cause
      */
-    public DocumentWriterIOException(final Throwable cause) {
+    public DocumentWriterPdfDocumentException(final Throwable cause) {
 
         super(cause);
     }
