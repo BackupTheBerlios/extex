@@ -118,7 +118,7 @@ import de.dante.util.observer.Observer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.74 $
+ * @version $Revision: 1.75 $
  */
 public class ContextImpl
         implements
@@ -763,6 +763,14 @@ public class ContextImpl
      * @see de.dante.extex.interpreter.context.Context#getToks(java.lang.String)
      */
     public Tokens getToks(final String name) {
+
+        return group.getToks(name);
+    }
+
+    /**
+     * @see de.dante.extex.documentWriter.DocumentWriterOptions#getTokensOption(java.lang.String)
+     */
+    public Tokens getTokensOption(final String name) {
 
         return group.getToks(name);
     }

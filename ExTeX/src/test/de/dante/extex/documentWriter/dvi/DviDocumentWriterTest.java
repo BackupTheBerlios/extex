@@ -49,7 +49,7 @@ import de.dante.util.configuration.Configuration;
  * JUnit tests for class <code>DviDocumentWriter</code>.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 
 public class DviDocumentWriterTest extends TestCase {
@@ -255,6 +255,13 @@ public class DviDocumentWriterTest extends TestCase {
     }
 
     private class MockDocumentWriterOptions implements DocumentWriterOptions {
+        /**
+         * @see de.dante.extex.documentWriter.DocumentWriterOptions#getTokensOption(java.lang.String)
+         */
+        public Tokens getTokensOption(String name) {
+
+            return null;
+        }
         long magnification = 1000;
 
         public MockDocumentWriterOptions() {

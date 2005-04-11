@@ -20,6 +20,7 @@ package de.dante.extex.documentWriter;
 
 import de.dante.extex.interpreter.type.count.FixedCount;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
+import de.dante.extex.interpreter.type.tokens.Tokens;
 
 
 /**
@@ -28,7 +29,7 @@ import de.dante.extex.interpreter.type.dimen.FixedDimen;
  * processor. Only read access is provided.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface DocumentWriterOptions {
 
@@ -56,5 +57,14 @@ public interface DocumentWriterOptions {
      * @return the magnifactikon in sp.
      */
     long getMagnification();
+
+    /**
+     * Getter for a dimen register.
+     *
+     * @param name the name of the register
+     *
+     * @return the content of the dimen register
+     */
+    Tokens getTokensOption(String name);
 
 }
