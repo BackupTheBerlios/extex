@@ -42,11 +42,6 @@
   </Fonts>
 
   <!-- 
-    -  The section "Output" contains the specification for the output file.
-    -->
-  <Output encoding="ISO-8859-1"/>
- 
-  <!-- 
     -  The section "Scanner" contains the specification for the scanner, i.e. the
     -  token stream.
     -->
@@ -136,6 +131,12 @@
   </Typesetter>
 
   <!-- 
+    -  The section "Output" contains the specification for the output file.
+    -->
+  <Output encoding="ISO-8859-1"
+          format="{0}{1}{2,number,0000}{3}"/>
+ 
+  <!-- 
     -  The section "DocumentWriter" contains the specification for the backend.
     -  Here another level of indirection is introduced which allows us to select
     -  one of several backends programatically.
@@ -145,7 +146,7 @@
     <dvi  class="de.dante.extex.documentWriter.dvi.DviDocumentWriter"/>
     <out  class="de.dante.extex.documentWriter.dump.DumpDocumentWriter"
           tree="false"/>
-    <dump class="de.dante.extex.documentWriter.dump.DumpDocumentWriter"
+    <dump class="de.dante.extex.documentWriter.dump.MultiDumpDocumentWriter"
           tree="true"/>
     <text class="de.dante.extex.documentWriter.text.TextDocumentWriter"/>
     <xml  class="de.dante.extex.documentWriter.xml.XMLDocumentWriter"

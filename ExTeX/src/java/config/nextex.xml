@@ -42,11 +42,6 @@
   </Fonts>
 
   <!-- 
-    -  The section "Output" contains the specification for the output file.
-    -->
-  <Output encoding="ISO-8859-1"/>
- 
-  <!-- 
     -  The section "Scanner" contains the specification for the scanner, i.e. the
     -  token stream.
     -->
@@ -138,6 +133,12 @@
     </devel>
   </Typesetter>
 
+  <!-- 
+    -  The section "Output" contains the specification for the output file.
+    -->
+  <Output encoding="ISO-8859-1"
+          format="{0}{1}{2,number,0000}{3}"/>
+ 
   <!-- 
     -  The section "DocumentWriter" contains the specification for the backend.
     -  Here another level of indirection is introduced which allows us to select
