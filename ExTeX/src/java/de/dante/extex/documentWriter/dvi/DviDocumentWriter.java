@@ -51,6 +51,7 @@ import de.dante.extex.typesetter.type.node.PenaltyNode;
 import de.dante.extex.typesetter.type.node.RuleNode;
 import de.dante.extex.typesetter.type.node.SpaceNode;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
+import de.dante.extex.typesetter.type.node.VirtualCharNode;
 import de.dante.extex.typesetter.type.node.WhatsItNode;
 import de.dante.util.GeneralException;
 import de.dante.util.configuration.Configuration;
@@ -61,79 +62,13 @@ import de.dante.util.framework.i18n.Localizer;
  * This is a implementation of a dvi document writer.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class DviDocumentWriter
         implements
             DocumentWriter,
             SingleDocumentStream,
             Localizable {
-
-    // TODO: docu (TE)
-    /*
-     * TODO:
-     * - perhaps it is better to put the mode in the visitor-argument
-     * - handle first vertical box special
-     * (TE)
-     */
-
-    /**
-     * The constant <code>DEBUG</code> turn debug on or off.
-     *
-     */
-    private final boolean DEBUG = false;
-
-    /**
-     * Configuration of ExTeX.
-     *
-     */
-    private Configuration configuration = null;
-
-    /**
-     * DviWriter used to write the DviFile.
-     *
-     */
-    private DviWriter dviWriter = null;
-
-    /**
-     * Set iff we are at the beginning of the dvi-file.
-     *
-     */
-    private boolean isBeginDviFile = true;
-
-    /**
-     * Saves the current font.  Need the check if there is a font
-     * change needed.
-     *
-     */
-    private Font currentFont = null;
-
-    /**
-     * Visitor for the nodes.
-     *
-     */
-    private InspectableNodeVisitor visitor = null;
-
-    /**
-     * Options of the document writer.
-     *
-     */
-    private DocumentWriterOptions documentWriterOptions = null;
-
-    /**
-     * Current mode (<code>{@link
-     * de.dante.extex.typesetter.Mode#VERTICAL Mode.VERTICAL}</code>
-     * or <code>{@link de.dante.extex.typesetter.Mode#HORIZONTAL
-     * Mode.HORIZONTAL}</code>).
-     *
-     */
-    private Mode mode = Mode.VERTICAL;
-
-    /**
-     * Object for localize strings messages.
-     *
-     */
-    private Localizer localizer = null;
 
     /**
      * Internal <code>NodeVisitor</code> of this class.
@@ -167,33 +102,6 @@ public class DviDocumentWriter
             dviWriter = theDviWriter;
         }
 
-        public void setVisitor(final NodeVisitor theVisitor) {
-
-            // this method is needed for debugging
-
-            visitor = theVisitor;
-        }
-
-        private void writeNodes(final NodeList nodes) throws GeneralException {
-
-            NodeIterator iterator = nodes.iterator();
-
-            dviWriter.saveCurrentPositions();
-
-            dviWriter.writeHorizontalSpace(nodes.getMove());
-            dviWriter.writeVerticalSpace(nodes.getShift());
-            while (iterator.hasNext()) {
-                Node node = iterator.next();
-                node.visit(visitor, null);
-
-                // write next Nodes after this node in vertical list
-                if (mode == Mode.VERTICAL) {
-                    dviWriter.writeSpace(node.getHeight(), Mode.VERTICAL);
-                }
-            }
-            dviWriter.restoreCurrentPositions();
-        }
-
         private GeneralException confusion(final String node)
                 throws GeneralException {
 
@@ -211,6 +119,13 @@ public class DviDocumentWriter
 
         }
 
+        public void setVisitor(final NodeVisitor theVisitor) {
+
+            // this method is needed for debugging
+
+            visitor = theVisitor;
+        }
+
         public Object visitAdjust(final AdjustNode value, final Object value2)
                 throws GeneralException {
 
@@ -218,8 +133,8 @@ public class DviDocumentWriter
             throw new GeneralException("unimplemented");
         }
 
-        public Object visitAfterMath(final AfterMathNode value, final Object value2)
-                throws GeneralException {
+        public Object visitAfterMath(final AfterMathNode value,
+                final Object value2) throws GeneralException {
 
             // TODO unimplemented
             throw new GeneralException("unimplemented");
@@ -232,8 +147,8 @@ public class DviDocumentWriter
             throw new GeneralException("unimplemented");
         }
 
-        public Object visitBeforeMath(final BeforeMathNode node, final Object value2)
-                throws GeneralException {
+        public Object visitBeforeMath(final BeforeMathNode node,
+                final Object value2) throws GeneralException {
 
             // TODO unimplemented
             throw new GeneralException("unimplemented");
@@ -272,8 +187,7 @@ public class DviDocumentWriter
         }
 
         public Object visitDiscretionary(final DiscretionaryNode node,
-                                         final Object value)
-                throws GeneralException {
+                final Object value) throws GeneralException {
 
             // TODO unimplemented
             throw new GeneralException("unimplemented");
@@ -307,8 +221,8 @@ public class DviDocumentWriter
             return null;
         }
 
-        public Object visitInsertion(final InsertionNode node, final Object value)
-                throws GeneralException {
+        public Object visitInsertion(final InsertionNode node,
+                final Object value) throws GeneralException {
 
             throw confusion("insertion");
         }
@@ -357,8 +271,8 @@ public class DviDocumentWriter
             return null;
         }
 
-        public Object visitVerticalList(final VerticalListNode nodes, final Object value)
-                throws GeneralException {
+        public Object visitVerticalList(final VerticalListNode nodes,
+                final Object value) throws GeneralException {
 
             Mode oldMode = mode;
 
@@ -370,6 +284,16 @@ public class DviDocumentWriter
             return null;
         }
 
+        /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitVirtualChar(de.dante.extex.typesetter.type.node.VirtualCharNode, java.lang.Object)
+         */
+        public Object visitVirtualChar(final VirtualCharNode node,
+                final Object value) throws GeneralException {
+
+            // TODO visitVirtualChar unimplemented
+            return null;
+        }
+
         public Object visitWhatsIt(final WhatsItNode nde, final Object value)
                 throws GeneralException {
 
@@ -377,7 +301,93 @@ public class DviDocumentWriter
             return null;
         }
 
+        private void writeNodes(final NodeList nodes) throws GeneralException {
+
+            NodeIterator iterator = nodes.iterator();
+
+            dviWriter.saveCurrentPositions();
+
+            dviWriter.writeHorizontalSpace(nodes.getMove());
+            dviWriter.writeVerticalSpace(nodes.getShift());
+            while (iterator.hasNext()) {
+                Node node = iterator.next();
+                node.visit(visitor, null);
+
+                // write next Nodes after this node in vertical list
+                if (mode == Mode.VERTICAL) {
+                    dviWriter.writeSpace(node.getHeight(), Mode.VERTICAL);
+                }
+            }
+            dviWriter.restoreCurrentPositions();
+        }
+
     } // end class DviVisitor
+
+    /**
+     * Configuration of ExTeX.
+     *
+     */
+    private Configuration configuration = null;
+
+    /**
+     * Saves the current font.  Need the check if there is a font
+     * change needed.
+     *
+     */
+    private Font currentFont = null;
+
+    // TODO: docu (TE)
+    /*
+     * TODO:
+     * - perhaps it is better to put the mode in the visitor-argument
+     * - handle first vertical box special
+     * (TE)
+     */
+
+    /**
+     * The constant <code>DEBUG</code> turn debug on or off.
+     *
+     */
+    private final boolean DEBUG = false;
+
+    /**
+     * Options of the document writer.
+     *
+     */
+    private DocumentWriterOptions documentWriterOptions = null;
+
+    /**
+     * DviWriter used to write the DviFile.
+     *
+     */
+    private DviWriter dviWriter = null;
+
+    /**
+     * Set iff we are at the beginning of the dvi-file.
+     *
+     */
+    private boolean isBeginDviFile = true;
+
+    /**
+     * Object for localize strings messages.
+     *
+     */
+    private Localizer localizer = null;
+
+    /**
+     * Current mode (<code>{@link
+     * de.dante.extex.typesetter.Mode#VERTICAL Mode.VERTICAL}</code>
+     * or <code>{@link de.dante.extex.typesetter.Mode#HORIZONTAL
+     * Mode.HORIZONTAL}</code>).
+     *
+     */
+    private Mode mode = Mode.VERTICAL;
+
+    /**
+     * Visitor for the nodes.
+     *
+     */
+    private InspectableNodeVisitor visitor = null;
 
     /**
      * Creates a new instance.
@@ -406,6 +416,18 @@ public class DviDocumentWriter
     }
 
     /**
+     * Set the <code>Localizer</code> method here.
+     *
+     * @param theLocalizer a <code>Localizer</code> value
+     * @see de.dante.util.framework.i18n.Localizable#enableLocalization(
+     *      de.dante.util.framework.i18n.Localizer)
+     */
+    public void enableLocalization(final Localizer theLocalizer) {
+
+        localizer = theLocalizer;
+    }
+
+    /**
      * Getter for the extension associated with dvi output.
      *
      * @return normally "dvi"
@@ -413,6 +435,16 @@ public class DviDocumentWriter
     public String getExtension() {
 
         return "dvi";
+    }
+
+    /**
+     * Get the number of written pages until now.
+     *
+     * @return the number of written pages
+     */
+    public int getPages() {
+
+        return dviWriter.getPages();
     }
 
     /**
@@ -434,13 +466,15 @@ public class DviDocumentWriter
     }
 
     /**
-     * Get the number of written pages until now.
+     * Setter of an named parameter.  This Documentwriter supports no
+     * parameters yet.
      *
-     * @return the number of written pages
+     * @param name a <code>String</code> value
+     * @param value a <code>String</code> value
      */
-    public int getPages() {
+    public void setParameter(final String name, final String value) {
 
-        return dviWriter.getPages();
+        // there no paramters yet
     }
 
     /**
@@ -479,29 +513,5 @@ public class DviDocumentWriter
         if (error != null) {
             throw new GeneralException(error);
         }
-    }
-
-    /**
-     * Setter of an named parameter.  This Documentwriter supports no
-     * parameters yet.
-     *
-     * @param name a <code>String</code> value
-     * @param value a <code>String</code> value
-     */
-    public void setParameter(final String name, final String value) {
-
-        // there no paramters yet
-    }
-
-    /**
-     * Set the <code>Localizer</code> method here.
-     *
-     * @param theLocalizer a <code>Localizer</code> value
-     * @see de.dante.util.framework.i18n.Localizable#enableLocalization(
-     *      de.dante.util.framework.i18n.Localizer)
-     */
-    public void enableLocalization(final Localizer theLocalizer) {
-
-        localizer = theLocalizer;
     }
 }

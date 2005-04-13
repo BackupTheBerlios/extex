@@ -58,6 +58,7 @@ import de.dante.extex.typesetter.type.node.PenaltyNode;
 import de.dante.extex.typesetter.type.node.RuleNode;
 import de.dante.extex.typesetter.type.node.SpaceNode;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
+import de.dante.extex.typesetter.type.node.VirtualCharNode;
 import de.dante.extex.typesetter.type.node.WhatsItNode;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
@@ -68,7 +69,7 @@ import de.dante.util.configuration.Configuration;
  * This is a xml implementation of a document writer.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class XMLDocumentWriter
         implements
@@ -77,34 +78,34 @@ public class XMLDocumentWriter
             NodeVisitor {
 
     /**
-     * DIN-A4 width
-     */
-    private static final double DINA4WIDTH = 21.0d;
-
-    /**
      * DIN-A4 height
      */
     private static final double DINA4HEIGHT = 29.7d;
 
     /**
-     * The field <tt>out</tt> ...
+     * DIN-A4 width
      */
-    private OutputStream out = null;
+    private static final double DINA4WIDTH = 21.0d;
 
     /**
-     * The field <tt>shippedPages</tt> ...
+     * only for test
      */
-    private int shippedPages = 0;
+    private static final DecimalFormat format = new DecimalFormat("#0.00");
 
     /**
-     * the root Element
+     * current x position
      */
-    private Element root;
+    private Dimen currentX = new Dimen();
 
     /**
-     * the parent element
+     * current y postition
      */
-    private Element parent;
+    private Dimen currentY = new Dimen();
+
+    /**
+     * debug
+     */
+    private boolean debug = true;
 
     /**
      * documentwriter options
@@ -117,16 +118,6 @@ public class XMLDocumentWriter
     private String encoding = "ISO-8859-1";
 
     /**
-     * debug
-     */
-    private boolean debug = true;
-
-    /**
-     * show visible chars
-     */
-    private boolean showvisible = true;
-
-    /**
      * xml indent
      */
     private String indent = "   ";
@@ -137,14 +128,44 @@ public class XMLDocumentWriter
     private boolean newlines = true;
 
     /**
+     * The field <tt>out</tt> ...
+     */
+    private OutputStream out = null;
+
+    /**
+     * paperheight
+     */
+    private Dimen paperheight;
+
+    /**
+     * paperwidth
+     */
+    private Dimen paperwidth;
+
+    /**
+     * the parent element
+     */
+    private Element parent;
+
+    /**
+     * the root Element
+     */
+    private Element root;
+
+    /**
+     * The field <tt>shippedPages</tt> ...
+     */
+    private int shippedPages = 0;
+
+    /**
+     * show visible chars
+     */
+    private boolean showvisible = true;
+
+    /**
      * xml trimallwhitespace
      */
     private boolean trimallwhitespace = true;
-
-    /**
-     * use sp
-     */
-    private boolean usesp = true;
 
     /**
      * use bp
@@ -155,6 +176,11 @@ public class XMLDocumentWriter
      * use mm
      */
     private boolean usemm = true;
+
+    /**
+     * use sp
+     */
+    private boolean usesp = true;
 
     /**
      * Creates a new object.
@@ -209,6 +235,48 @@ public class XMLDocumentWriter
     }
 
     /**
+     * Add some Attributes to the node-element
+     * @param node      the node
+     * @param element   the element
+     */
+    private void addNodeAttributes(final Node node, final Element element) {
+
+        Dimen wd = new Dimen(node.getWidth());
+        Dimen ht = new Dimen(node.getHeight());
+        Dimen dp = new Dimen(node.getDepth());
+
+        Dimen move = new Dimen();
+        Dimen shift = new Dimen();
+
+        // --- nodelist
+        //        if (node instanceof AbstractNodeList) {
+        //            AbstractNodeList nodelist = (AbstractNodeList) node;
+        //            move = new Dimen(nodelist.getMove());
+        //            shift = new Dimen(nodelist.getShift());
+        //            setDimenLength(element, "move", move);
+        //            setDimenLength(element, "shift", shift);
+        //            setDimenLength(element, "targetwidth", nodelist.getTargetWidth());
+        //            setDimenLength(element, "targetheight", nodelist.getTargetHeight());
+        //            setDimenLength(element, "targetdepth", nodelist.getTargetDepth());
+        //            element.setAttribute("size", String.valueOf(nodelist.size()));
+        //        }
+
+        // TODO shift + move
+
+        // --------------------------------------------------------
+        setDimenLength(element, "x", currentX);
+        setDimenLength(element, "y", currentY);
+        setDimenLength(element, "width", wd);
+        setDimenLength(element, "height", ht);
+        setDimenLength(element, "depth", dp);
+
+        // ---- debug ----
+        if (debug) {
+            element.setText(node.toString());
+        }
+    }
+
+    /**
      * @see de.dante.extex.documentWriter.DocumentWriter#close()
      */
     public void close() throws DocumentWriterException {
@@ -244,11 +312,58 @@ public class XMLDocumentWriter
     }
 
     /**
+     * return the node element
+     * @param node      the node
+     * @return Returns the node-element
+     */
+    private Element getNodeElement(final Node node) {
+
+        Element element = null;
+        try {
+            Object o = node.visit(this, node);
+            if (o != null) {
+                if (o instanceof Element) {
+                    element = (Element) o;
+                }
+            }
+        } catch (GeneralException e) {
+            e.printStackTrace();
+        }
+        return element;
+    }
+
+    /**
      * @see de.dante.extex.documentWriter.DocumentWriter#getPages()
      */
     public int getPages() {
 
         return shippedPages;
+    }
+
+    /**
+     * Set the Attribute for an element with sp, bp, mm
+     * @param element   the element
+     * @param name      the attribute-name
+     * @param dimen     the dimen
+     */
+    private void setDimenLength(final Element element, final String name,
+            final Dimen dimen) {
+
+        Dimen d = dimen;
+        if (dimen == null) {
+            d = new Dimen();
+        }
+        if (usesp) {
+            element.setAttribute(name + "_sp", String.valueOf(d.getValue()));
+        }
+        if (usebp) {
+            element.setAttribute(name + "_bp", String.valueOf(Unit
+                    .getDimenAsBP(d)));
+        }
+        if (usemm) {
+            String s = format.format(Unit.getDimenAsMM(d));
+            element.setAttribute(name + "_mm", s);
+        }
     }
 
     //    /**
@@ -314,31 +429,12 @@ public class XMLDocumentWriter
     }
 
     /**
-     * paperwidth
-     */
-    private Dimen paperwidth;
-
-    /**
-     * paperheight
-     */
-    private Dimen paperheight;
-
-    /**
-     * current x position
-     */
-    private Dimen currentX = new Dimen();
-
-    /**
-     * current y postition
-     */
-    private Dimen currentY = new Dimen();
-
-    /**
      * @see de.dante.extex.documentWriter.DocumentWriter#shipout(
      *      de.dante.extex.typesetter.type.NodeList)
      */
-    public void shipout(final NodeList nodes) throws DocumentWriterException,
-            GeneralException {
+    public void shipout(final NodeList nodes)
+            throws DocumentWriterException,
+                GeneralException {
 
         // try {
         Element page = new Element("page");
@@ -379,100 +475,6 @@ public class XMLDocumentWriter
         //        } catch (Exception e) {
         //            e.printStackTrace();
         //        }
-    }
-
-    /**
-     * Set the Attribute for an element with sp, bp, mm
-     * @param element   the element
-     * @param name      the attribute-name
-     * @param dimen     the dimen
-     */
-    private void setDimenLength(final Element element, final String name,
-            final Dimen dimen) {
-
-        Dimen d = dimen;
-        if (dimen == null) {
-            d = new Dimen();
-        }
-        if (usesp) {
-            element.setAttribute(name + "_sp", String.valueOf(d.getValue()));
-        }
-        if (usebp) {
-            element.setAttribute(name + "_bp", String.valueOf(Unit
-                    .getDimenAsBP(d)));
-        }
-        if (usemm) {
-            String s = format.format(Unit.getDimenAsMM(d));
-            element.setAttribute(name + "_mm", s);
-        }
-    }
-
-    /**
-     * only for test
-     */
-    private static final DecimalFormat format = new DecimalFormat("#0.00");
-
-    /**
-     * return the node element
-     * @param node      the node
-     * @return Returns the node-element
-     */
-    private Element getNodeElement(final Node node) {
-
-        Element element = null;
-        try {
-            Object o = node.visit(this, node);
-            if (o != null) {
-                if (o instanceof Element) {
-                    element = (Element) o;
-                }
-            }
-        } catch (GeneralException e) {
-            e.printStackTrace();
-        }
-        return element;
-    }
-
-    /**
-     * Add some Attributes to the node-element
-     * @param node      the node
-     * @param element   the element
-     */
-    private void addNodeAttributes(final Node node, final Element element) {
-
-        Dimen wd = new Dimen(node.getWidth());
-        Dimen ht = new Dimen(node.getHeight());
-        Dimen dp = new Dimen(node.getDepth());
-
-        Dimen move = new Dimen();
-        Dimen shift = new Dimen();
-
-        // --- nodelist
-        //        if (node instanceof AbstractNodeList) {
-        //            AbstractNodeList nodelist = (AbstractNodeList) node;
-        //            move = new Dimen(nodelist.getMove());
-        //            shift = new Dimen(nodelist.getShift());
-        //            setDimenLength(element, "move", move);
-        //            setDimenLength(element, "shift", shift);
-        //            setDimenLength(element, "targetwidth", nodelist.getTargetWidth());
-        //            setDimenLength(element, "targetheight", nodelist.getTargetHeight());
-        //            setDimenLength(element, "targetdepth", nodelist.getTargetDepth());
-        //            element.setAttribute("size", String.valueOf(nodelist.size()));
-        //        }
-
-        // TODO shift + move
-
-        // --------------------------------------------------------
-        setDimenLength(element, "x", currentX);
-        setDimenLength(element, "y", currentY);
-        setDimenLength(element, "width", wd);
-        setDimenLength(element, "height", ht);
-        setDimenLength(element, "depth", dp);
-
-        // ---- debug ----
-        if (debug) {
-            element.setText(node.toString());
-        }
     }
 
     // ----------------------------------------------
@@ -753,6 +755,16 @@ public class XMLDocumentWriter
         currentY.add(node.getHeight());
 
         return element;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitVirtualChar(de.dante.extex.typesetter.type.node.VirtualCharNode, java.lang.Object)
+     */
+    public Object visitVirtualChar(final VirtualCharNode node,
+            final Object value) throws GeneralException {
+
+        // TODO visitVirtualChar unimplemented
+        return null;
     }
 
     /**

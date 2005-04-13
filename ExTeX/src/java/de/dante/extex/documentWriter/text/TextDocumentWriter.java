@@ -50,6 +50,7 @@ import de.dante.extex.typesetter.type.node.PenaltyNode;
 import de.dante.extex.typesetter.type.node.RuleNode;
 import de.dante.extex.typesetter.type.node.SpaceNode;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
+import de.dante.extex.typesetter.type.node.VirtualCharNode;
 import de.dante.extex.typesetter.type.node.WhatsItNode;
 import de.dante.util.GeneralException;
 import de.dante.util.configuration.Configuration;
@@ -58,7 +59,7 @@ import de.dante.util.configuration.Configuration;
  * This is a text dummy implementation of a document writer (very simple).
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class TextDocumentWriter
         implements
@@ -360,6 +361,16 @@ public class TextDocumentWriter
     public Object visitVerticalList(final VerticalListNode node,
             final Object value) {
 
+        return null;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitVirtualChar(de.dante.extex.typesetter.type.node.VirtualCharNode, java.lang.Object)
+     */
+    public Object visitVirtualChar(final VirtualCharNode node,
+            final Object value) throws GeneralException {
+
+        // TODO visitVirtualChar unimplemented
         return null;
     }
 

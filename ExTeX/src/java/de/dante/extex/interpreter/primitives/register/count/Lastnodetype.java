@@ -43,10 +43,9 @@ import de.dante.extex.typesetter.type.node.PenaltyNode;
 import de.dante.extex.typesetter.type.node.RuleNode;
 import de.dante.extex.typesetter.type.node.SpaceNode;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
+import de.dante.extex.typesetter.type.node.VirtualCharNode;
 import de.dante.extex.typesetter.type.node.WhatsItNode;
 import de.dante.util.GeneralException;
-
-
 
 /**
  * This class provides an implementation for the primitive <code>\lastnodetype</code>.
@@ -65,16 +64,16 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 
 public class Lastnodetype extends AbstractReadonlyCount {
+
     /**
      * Class for getting the type of a node.
      *
      */
     private static final NodetypeReader NODETYPE_READER = new NodetypeReader();
-
 
     // TODO: type 14 (unset) is missing (TE)
 
@@ -83,6 +82,7 @@ public class Lastnodetype extends AbstractReadonlyCount {
      *
      */
     static class NodetypeReader implements NodeVisitor {
+
         /**
          * Type number for an empty list.
          *
@@ -109,7 +109,6 @@ public class Lastnodetype extends AbstractReadonlyCount {
          */
         // TODO
         //private static final int NODETYPE_ALIGNEDLEADERS = 4444;
-
         /**
          * Type number for beforemath nodes.
          *
@@ -123,7 +122,6 @@ public class Lastnodetype extends AbstractReadonlyCount {
          */
         // TODO
         //private static final int NODETYPE_CENTEREDLEADERS = 4444;
-
         /**
          * Type number for char nodes.
          *
@@ -142,7 +140,6 @@ public class Lastnodetype extends AbstractReadonlyCount {
          */
         // TODO
         //private static final int NODETYPE_EXPANDEDLEADERS = 4444;
-
         /**
          * Type number for glue nodes.
          *
@@ -197,7 +194,6 @@ public class Lastnodetype extends AbstractReadonlyCount {
          */
         // TODO
         //private static final int NODETYPE_SPACE = 4444;
-
         /**
          * Type number for verticallist nodes.
          *
@@ -209,7 +205,6 @@ public class Lastnodetype extends AbstractReadonlyCount {
          *
          */
         private static final int NODETYPE_WHATSIT = 9;
-
 
         /**
          * Return type number for adjust nodes.  Both arguments are
@@ -223,11 +218,10 @@ public class Lastnodetype extends AbstractReadonlyCount {
          *     java.lang.Object)
          */
         public Object visitAdjust(final AdjustNode node, final Object arg)
-            throws GeneralException {
+                throws GeneralException {
 
             return new Integer(NODETYPE_ADJUST);
         }
-
 
         /**
          * Return type number for aftermath nodes.  Both arguments are
@@ -241,11 +235,10 @@ public class Lastnodetype extends AbstractReadonlyCount {
          *     java.lang.Object)
          */
         public Object visitAfterMath(final AfterMathNode node, final Object arg)
-            throws GeneralException {
+                throws GeneralException {
 
             return new Integer(NODETYPE_AFTERMATH);
         }
-
 
         /**
          * Return type number for alignedleaders nodes.  Both arguments are
@@ -258,14 +251,13 @@ public class Lastnodetype extends AbstractReadonlyCount {
          * @see de.dante.extex.typesetter.type.NodeVisitor#visitAlignedLeaders(AlignedLeadersNode,
          *     java.lang.Object)
          */
-        public Object visitAlignedLeaders(final AlignedLeadersNode node, final Object arg)
-            throws GeneralException {
+        public Object visitAlignedLeaders(final AlignedLeadersNode node,
+                final Object arg) throws GeneralException {
 
             //TODO unimplemented
             throw new RuntimeException("unimplemented");
             // return new Integer(NODETYPE_ALIGNEDLEADERS);
         }
-
 
         /**
          * Return type number for beforemath nodes.  Both arguments are
@@ -278,12 +270,11 @@ public class Lastnodetype extends AbstractReadonlyCount {
          * @see de.dante.extex.typesetter.type.NodeVisitor#visitBeforeMath(BeforeMathNode,
          *     java.lang.Object)
          */
-        public Object visitBeforeMath(final BeforeMathNode node, final Object arg)
-            throws GeneralException {
+        public Object visitBeforeMath(final BeforeMathNode node,
+                final Object arg) throws GeneralException {
 
             return new Integer(NODETYPE_BEFOREMATH);
         }
-
 
         /**
          * Return type number for centeredleaders nodes.  Both arguments are
@@ -296,14 +287,13 @@ public class Lastnodetype extends AbstractReadonlyCount {
          * @see de.dante.extex.typesetter.type.NodeVisitor#visitCenteredLeaders(CenteredLeadersNode,
          *     java.lang.Object)
          */
-        public Object visitCenteredLeaders(final CenteredLeadersNode node, final Object arg)
-            throws GeneralException {
+        public Object visitCenteredLeaders(final CenteredLeadersNode node,
+                final Object arg) throws GeneralException {
 
             //TODO unimplemented
             throw new RuntimeException("unimplemented");
             // return new Integer(NODETYPE_CENTEREDLEADERS);
         }
-
 
         /**
          * Return type number for char nodes.  Both arguments are
@@ -317,11 +307,10 @@ public class Lastnodetype extends AbstractReadonlyCount {
          *     java.lang.Object)
          */
         public Object visitChar(final CharNode node, final Object arg)
-            throws GeneralException {
+                throws GeneralException {
 
             return new Integer(NODETYPE_CHAR);
         }
-
 
         /**
          * Return type number for discretionary nodes.  Both arguments are
@@ -334,12 +323,11 @@ public class Lastnodetype extends AbstractReadonlyCount {
          * @see de.dante.extex.typesetter.type.NodeVisitor#visitDiscretionary(DiscretionaryNode,
          *     java.lang.Object)
          */
-        public Object visitDiscretionary(final DiscretionaryNode node, final Object arg)
-            throws GeneralException {
+        public Object visitDiscretionary(final DiscretionaryNode node,
+                final Object arg) throws GeneralException {
 
             return new Integer(NODETYPE_DISCRETIONARY);
         }
-
 
         /**
          * Return type number for expandedleaders nodes.  Both arguments are
@@ -352,14 +340,13 @@ public class Lastnodetype extends AbstractReadonlyCount {
          * @see de.dante.extex.typesetter.type.NodeVisitor#visitExpandedLeaders(ExpandedLeadersNode,
          *     java.lang.Object)
          */
-        public Object visitExpandedLeaders(final ExpandedLeadersNode node, final Object arg)
-            throws GeneralException {
+        public Object visitExpandedLeaders(final ExpandedLeadersNode node,
+                final Object arg) throws GeneralException {
 
             //TODO unimplemented
             throw new RuntimeException("unimplemented");
             //return new Integer(NODETYPE_EXPANDEDLEADERS);
         }
-
 
         /**
          * Return type number for glue nodes.  Both arguments are
@@ -373,11 +360,10 @@ public class Lastnodetype extends AbstractReadonlyCount {
          *     java.lang.Object)
          */
         public Object visitGlue(final GlueNode node, final Object arg)
-            throws GeneralException {
+                throws GeneralException {
 
             return new Integer(NODETYPE_GLUE);
         }
-
 
         /**
          * Return type number for horizontallist nodes.  Both arguments are
@@ -390,12 +376,11 @@ public class Lastnodetype extends AbstractReadonlyCount {
          * @see de.dante.extex.typesetter.type.NodeVisitor#visitHorizontalList(HorizontalListNode,
          *     java.lang.Object)
          */
-        public Object visitHorizontalList(final HorizontalListNode node, final Object arg)
-            throws GeneralException {
+        public Object visitHorizontalList(final HorizontalListNode node,
+                final Object arg) throws GeneralException {
 
             return new Integer(NODETYPE_HORIZONTALLIST);
         }
-
 
         /**
          * Return type number for insertion nodes.  Both arguments are
@@ -414,7 +399,6 @@ public class Lastnodetype extends AbstractReadonlyCount {
             return new Integer(NODETYPE_INSERTION);
         }
 
-
         /**
          * Return type number for kern nodes.  Both arguments are
          * not used.
@@ -427,11 +411,10 @@ public class Lastnodetype extends AbstractReadonlyCount {
          *     java.lang.Object)
          */
         public Object visitKern(final KernNode node, final Object arg)
-            throws GeneralException {
+                throws GeneralException {
 
             return new Integer(NODETYPE_KERN);
         }
-
 
         /**
          * Return type number for ligature nodes.  Both arguments are
@@ -445,11 +428,10 @@ public class Lastnodetype extends AbstractReadonlyCount {
          *     java.lang.Object)
          */
         public Object visitLigature(final LigatureNode node, final Object arg)
-            throws GeneralException {
+                throws GeneralException {
 
             return new Integer(NODETYPE_LIGATURE);
         }
-
 
         /**
          * Return type number for mark nodes.  Both arguments are
@@ -463,11 +445,10 @@ public class Lastnodetype extends AbstractReadonlyCount {
          *     java.lang.Object)
          */
         public Object visitMark(final MarkNode node, final Object arg)
-            throws GeneralException {
+                throws GeneralException {
 
             return new Integer(NODETYPE_MARK);
         }
-
 
         /**
          * Return type number for penalty nodes.  Both arguments are
@@ -481,11 +462,10 @@ public class Lastnodetype extends AbstractReadonlyCount {
          *     java.lang.Object)
          */
         public Object visitPenalty(final PenaltyNode node, final Object arg)
-            throws GeneralException {
+                throws GeneralException {
 
             return new Integer(NODETYPE_PENALTY);
         }
-
 
         /**
          * Return type number for rule nodes.  Both arguments are
@@ -499,11 +479,10 @@ public class Lastnodetype extends AbstractReadonlyCount {
          *     java.lang.Object)
          */
         public Object visitRule(final RuleNode node, final Object arg)
-            throws GeneralException {
+                throws GeneralException {
 
             return new Integer(NODETYPE_RULE);
         }
-
 
         /**
          * Return type number for SPACE nodes.  Both arguments are
@@ -517,13 +496,22 @@ public class Lastnodetype extends AbstractReadonlyCount {
          *     java.lang.Object)
          */
         public Object visitSpace(final SpaceNode node, final Object arg)
-            throws GeneralException {
+                throws GeneralException {
 
             //TODO unimplemented
             throw new RuntimeException("unimplemented");
             // return new Integer(NODETYPE_SPACE);
         }
 
+        /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitVirtualChar(de.dante.extex.typesetter.type.node.VirtualCharNode, java.lang.Object)
+         */
+        public Object visitVirtualChar(final VirtualCharNode node,
+                final Object value) throws GeneralException {
+
+            // TODO visitVirtualChar unimplemented
+            return null;
+        }
 
         /**
          * Return type number for verticallist nodes.  Both arguments are
@@ -536,12 +524,11 @@ public class Lastnodetype extends AbstractReadonlyCount {
          * @see de.dante.extex.typesetter.type.NodeVisitor#visitVerticalList(VerticalListNode,
          *     java.lang.Object)
          */
-        public Object visitVerticalList(final VerticalListNode node, final Object arg)
-            throws GeneralException {
+        public Object visitVerticalList(final VerticalListNode node,
+                final Object arg) throws GeneralException {
 
             return new Integer(NODETYPE_VERTICALLIST);
         }
-
 
         /**
          * Return type number for whatsit nodes.  Both arguments are
@@ -555,11 +542,10 @@ public class Lastnodetype extends AbstractReadonlyCount {
          *     java.lang.Object)
          */
         public Object visitWhatsIt(final WhatsItNode node, final Object arg)
-            throws GeneralException {
+                throws GeneralException {
 
             return new Integer(NODETYPE_WHATSIT);
         }
-
 
         /**
          * Returns the Node for an specified node.
@@ -568,8 +554,7 @@ public class Lastnodetype extends AbstractReadonlyCount {
          * @return the type of the node
          * @exception GeneralException if an error occurs
          */
-        public int getNodetype(final Node node)
-            throws GeneralException {
+        public int getNodetype(final Node node) throws GeneralException {
 
             if (node == null) {
                 return NODE_TYPE_EMPTY_LIST;
@@ -590,8 +575,7 @@ public class Lastnodetype extends AbstractReadonlyCount {
         super(name);
     }
 
-
-   /**
+    /**
      * @see de.dante.extex.interpreter.type.count.CountConvertible#convertCount(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource, Typesetter)

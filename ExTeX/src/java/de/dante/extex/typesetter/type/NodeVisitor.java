@@ -37,6 +37,7 @@ import de.dante.extex.typesetter.type.node.PenaltyNode;
 import de.dante.extex.typesetter.type.node.RuleNode;
 import de.dante.extex.typesetter.type.node.SpaceNode;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
+import de.dante.extex.typesetter.type.node.VirtualCharNode;
 import de.dante.extex.typesetter.type.node.WhatsItNode;
 import de.dante.util.GeneralException;
 
@@ -204,7 +205,7 @@ import de.dante.util.GeneralException;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface NodeVisitor {
 
@@ -468,6 +469,21 @@ public interface NodeVisitor {
      * @throws GeneralException in case of an error
      */
     Object visitVerticalList(VerticalListNode node, Object value)
+            throws GeneralException;
+
+    /**
+     * This method is called when a
+     * {@link de.dante.extex.typesetter.type.node.VirtualCharNode VirtualCharNode}
+     * has been encoutered.
+     *
+     * @param node the first parameter for the visitor is the node visited
+     * @param value the second parameter for the visitor
+     *
+     * @return the visitor specific value
+     *
+     * @throws GeneralException in case of an error
+     */
+    Object visitVirtualChar(VirtualCharNode node, Object value)
             throws GeneralException;
 
     /**

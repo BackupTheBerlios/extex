@@ -39,6 +39,7 @@ import de.dante.extex.typesetter.type.node.PenaltyNode;
 import de.dante.extex.typesetter.type.node.RuleNode;
 import de.dante.extex.typesetter.type.node.SpaceNode;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
+import de.dante.extex.typesetter.type.node.VirtualCharNode;
 import de.dante.extex.typesetter.type.node.WhatsItNode;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
@@ -48,14 +49,9 @@ import de.dante.util.UnicodeChar;
  * characters contained.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class NodeTraverser implements NodeVisitor {
-
-    /**
-     * The field <tt>pointer</tt> contains the pointer to the next item.
-     */
-    private int pointer = 0;
 
     /**
      * The field <tt>node</tt> contains the node to traverse.
@@ -66,6 +62,11 @@ public class NodeTraverser implements NodeVisitor {
      * The field <tt>nt</tt> contains the traverser for sub-nodes.
      */
     private NodeTraverser nt = null;
+
+    /**
+     * The field <tt>pointer</tt> contains the pointer to the next item.
+     */
+    private int pointer = 0;
 
     /**
      * Creates a new object.
@@ -322,8 +323,7 @@ public class NodeTraverser implements NodeVisitor {
      *      de.dante.extex.typesetter.type.node.VerticalListNode,
      *      java.lang.Object)
      */
-    public Object visitVerticalList(final VerticalListNode n,
-            final Object value) {
+    public Object visitVerticalList(final VerticalListNode n, final Object value) {
 
         if (nt != null) {
             UnicodeChar uc = nt.next();
@@ -339,6 +339,20 @@ public class NodeTraverser implements NodeVisitor {
             }
         }
         nt = null;
+        return null;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitChar(
+     *      de.dante.extex.typesetter.type.node.VirtualCharNode,
+     *      java.lang.Object)
+     */
+    public Object visitVirtualChar(final VirtualCharNode n, final Object value) {
+
+        if (pointer == 0) {
+            pointer++;
+            return n.getCharacter();
+        }
         return null;
     }
 

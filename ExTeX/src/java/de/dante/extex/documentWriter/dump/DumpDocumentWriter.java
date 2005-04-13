@@ -47,6 +47,7 @@ import de.dante.extex.typesetter.type.node.PenaltyNode;
 import de.dante.extex.typesetter.type.node.RuleNode;
 import de.dante.extex.typesetter.type.node.SpaceNode;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
+import de.dante.extex.typesetter.type.node.VirtualCharNode;
 import de.dante.extex.typesetter.type.node.WhatsItNode;
 import de.dante.util.GeneralException;
 import de.dante.util.configuration.Configuration;
@@ -58,7 +59,7 @@ import de.dante.util.framework.configuration.Configurable;
  * and as tool for testing.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public class DumpDocumentWriter
         implements
@@ -203,6 +204,18 @@ public class DumpDocumentWriter
          */
         public Object visitChar(final CharNode node, final Object oOut)
                 throws GeneralException {
+
+            write(node.getCharacter().getCodePoint());
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitChar(
+         *      de.dante.extex.typesetter.type.node.VirtualCharNode,
+         *      java.lang.Object)
+         */
+        public Object visitVirtualChar(final VirtualCharNode node,
+                final Object oOut) throws GeneralException {
 
             write(node.getCharacter().getCodePoint());
             return null;

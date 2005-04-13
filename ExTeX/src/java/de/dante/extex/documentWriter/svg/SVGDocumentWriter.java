@@ -59,6 +59,7 @@ import de.dante.extex.typesetter.type.node.PenaltyNode;
 import de.dante.extex.typesetter.type.node.RuleNode;
 import de.dante.extex.typesetter.type.node.SpaceNode;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
+import de.dante.extex.typesetter.type.node.VirtualCharNode;
 import de.dante.extex.typesetter.type.node.WhatsItNode;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
@@ -73,7 +74,7 @@ import de.dante.util.configuration.Configuration;
  * TODO incomplete !!!
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class SVGDocumentWriter
         implements
@@ -82,34 +83,35 @@ public class SVGDocumentWriter
             NodeVisitor {
 
     /**
-     * DIN-A4 width
-     */
-    private static final double DINA4WIDTH = 21.0d;
-
-    /**
      * DIN-A4 height
      */
     private static final double DINA4HEIGHT = 29.7d;
 
     /**
-     * The field <tt>out</tt> ...
+     * DIN-A4 width
      */
-    private OutputStream out = null;
+    private static final double DINA4WIDTH = 21.0d;
 
     /**
-     * The field <tt>shippedPages</tt> ...
+     * Naemspace for svg
      */
-    private int shippedPages = 0;
+    private static final Namespace SVGNAMESPACE = Namespace
+            .getNamespace("http://www.w3.org/2000/svg");
 
     /**
-     * the root Element
+     * current x position
      */
-    private Element root;
+    private Dimen currentX = new Dimen();
 
     /**
-     * the parent element
+     * current y postition
      */
-    private Element parent;
+    private Dimen currentY = new Dimen();
+
+    /**
+     * debug
+     */
+    private boolean debug = true;
 
     /**
      * documentwriter options
@@ -122,15 +124,34 @@ public class SVGDocumentWriter
     private String encoding = "ISO-8859-1";
 
     /**
-     * debug
+     * The field <tt>out</tt> ...
      */
-    private boolean debug = true;
+    private OutputStream out = null;
 
     /**
-     * Naemspace for svg
+     * paperheight
      */
-    private static final Namespace SVGNAMESPACE = Namespace
-            .getNamespace("http://www.w3.org/2000/svg");
+    private Dimen paperheight;
+
+    /**
+     * paperwidth
+     */
+    private Dimen paperwidth;
+
+    /**
+     * the parent element
+     */
+    private Element parent;
+
+    /**
+     * the root Element
+     */
+    private Element root;
+
+    /**
+     * The field <tt>shippedPages</tt> ...
+     */
+    private int shippedPages = 0;
 
     /**
      * Creates a new object.
@@ -210,6 +231,22 @@ public class SVGDocumentWriter
     }
 
     /**
+     * Set the Attribute for an element with sp, bp, mm
+     * @param element   the element
+     * @param name      the attribute-name
+     * @param dimen     the dimen
+     */
+    private void setDimenLength(final Element element, final String name,
+            final Dimen dimen) {
+
+        Dimen d = dimen;
+        if (dimen == null) {
+            d = new Dimen();
+        }
+        element.setAttribute(name, String.valueOf(Unit.getDimenAsMM(d)) + "mm");
+    }
+
+    /**
      * @see de.dante.extex.documentWriter.DocumentWriter#setOutputStream(java.io.OutputStream)
      */
     public void setOutputStream(final OutputStream outStream) {
@@ -227,31 +264,12 @@ public class SVGDocumentWriter
     }
 
     /**
-     * paperwidth
-     */
-    private Dimen paperwidth;
-
-    /**
-     * paperheight
-     */
-    private Dimen paperheight;
-
-    /**
-     * current x position
-     */
-    private Dimen currentX = new Dimen();
-
-    /**
-     * current y postition
-     */
-    private Dimen currentY = new Dimen();
-
-    /**
      * @see de.dante.extex.documentWriter.DocumentWriter#shipout(
      *      de.dante.extex.typesetter.type.NodeList)
      */
-    public void shipout(final NodeList nodes) throws DocumentWriterException,
-            GeneralException {
+    public void shipout(final NodeList nodes)
+            throws DocumentWriterException,
+                GeneralException {
 
         if (shippedPages == 0) {
             // TeX primitives should set the papersize in any way:
@@ -288,22 +306,6 @@ public class SVGDocumentWriter
             }
             shippedPages++;
         }
-    }
-
-    /**
-     * Set the Attribute for an element with sp, bp, mm
-     * @param element   the element
-     * @param name      the attribute-name
-     * @param dimen     the dimen
-     */
-    private void setDimenLength(final Element element, final String name,
-            final Dimen dimen) {
-
-        Dimen d = dimen;
-        if (dimen == null) {
-            d = new Dimen();
-        }
-        element.setAttribute(name, String.valueOf(Unit.getDimenAsMM(d)) + "mm");
     }
 
     // ----------------------------------------------
@@ -452,8 +454,9 @@ public class SVGDocumentWriter
      * java.lang.Object)
      */
     public Object visitHorizontalList(final HorizontalListNode node,
-            final Object value) throws DocumentWriterException,
-            GeneralException {
+            final Object value)
+            throws DocumentWriterException,
+                GeneralException {
 
         Element rect = new Element("rect", SVGNAMESPACE);
 
@@ -615,8 +618,9 @@ public class SVGDocumentWriter
      * java.lang.Object)
      */
     public Object visitVerticalList(final VerticalListNode node,
-            final Object value) throws DocumentWriterException,
-            GeneralException {
+            final Object value)
+            throws DocumentWriterException,
+                GeneralException {
 
         Element rect = new Element("rect", SVGNAMESPACE);
 
@@ -646,6 +650,16 @@ public class SVGDocumentWriter
         currentY.add(node.getDepth());
         currentY.add(node.getHeight());
 
+        return null;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitVirtualChar(de.dante.extex.typesetter.type.node.VirtualCharNode, java.lang.Object)
+     */
+    public Object visitVirtualChar(final VirtualCharNode node,
+            final Object value) throws GeneralException {
+
+        // TODO visitVirtualChar unimplemented
         return null;
     }
 

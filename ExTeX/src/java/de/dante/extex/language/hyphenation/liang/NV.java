@@ -45,6 +45,7 @@ import de.dante.extex.typesetter.type.node.PenaltyNode;
 import de.dante.extex.typesetter.type.node.RuleNode;
 import de.dante.extex.typesetter.type.node.SpaceNode;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
+import de.dante.extex.typesetter.type.node.VirtualCharNode;
 import de.dante.extex.typesetter.type.node.WhatsItNode;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
@@ -55,7 +56,7 @@ import de.dante.util.UnicodeChar;
  * &ldquo;normal&rdquo; cases do not apply.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 class NV implements NodeVisitor {
 
@@ -443,6 +444,17 @@ class NV implements NodeVisitor {
 
         nodes.add(node);
         return null;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitChar(
+     *      de.dante.extex.typesetter.type.node.VirtualCharNode,
+     *      java.lang.Object)
+     */
+    public Object visitVirtualChar(final VirtualCharNode node,
+            final Object oOut) throws GeneralException {
+
+        return visitChar(node, oOut);
     }
 
     /**
