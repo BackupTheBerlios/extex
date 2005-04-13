@@ -49,6 +49,8 @@ import java.util.regex.Pattern;
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.documentWriter.DocumentWriterFactory;
 import de.dante.extex.documentWriter.DocumentWriterOptions;
+import de.dante.extex.documentWriter.OutputStreamFactory;
+import de.dante.extex.documentWriter.exception.DocumentWriterException;
 import de.dante.extex.font.FontFactory;
 import de.dante.extex.font.exception.FontException;
 import de.dante.extex.interpreter.ErrorHandler;
@@ -613,7 +615,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.93 $
+ * @version $Revision: 1.94 $
  */
 public class ExTeX {
 
@@ -979,6 +981,7 @@ public class ExTeX {
         propertyDefault(PROP_LANG, "");
         propertyDefault(PROP_OUTPUT_TYPE, "");
         propertyDefault(PROP_OUTPUTDIR, ".");
+        propertyDefault(PROP_OUTPUTDIR_FALLBACK, ".");
         propertyDefault(PROP_PROGNAME, "ExTeX");
         propertyDefault(PROP_TEXINPUTS, "");
         propertyDefault(PROP_TOKEN_STREAM, "base");
@@ -1203,7 +1206,6 @@ public class ExTeX {
                 throw new ConfigurationUnsupportedEncodingException(properties
                         .getProperty(PROP_ENCODING), "???");
             }
-
         }
     }
 
@@ -1375,23 +1377,21 @@ public class ExTeX {
      *
      * @return the new document writer
      *
-     * @throws ConfigurationException in case that some kind of problems have
-     * been detected in the configuration
-     * @throws FileNotFoundException in case that the output file could not
-     * be opened
+     * @throws DocumentWriterException in case of an error
+     * @throws ConfigurationException in case of a configuration problem
      */
     protected DocumentWriter makeDocumentWriter(final Configuration config,
-            final String jobname, final OutputFactory outFactory,
+            final String jobname, final OutputStreamFactory outFactory,
             final DocumentWriterOptions options)
-            throws ConfigurationException,
-                FileNotFoundException {
+            throws DocumentWriterException,
+                ConfigurationException {
 
         DocumentWriterFactory factory = new DocumentWriterFactory(config);
         factory.enableLogging(logger);
-        DocumentWriter docWriter = factory.newInstance(properties
-                .getProperty(PROP_OUTPUT_TYPE), options, outStream, outFactory,
-                jobname);
-
+        DocumentWriter docWriter = factory.newInstance(//
+                properties.getProperty(PROP_OUTPUT_TYPE), //
+                options, //
+                outFactory);
         docWriter.setParameter("Creator", "ExTeX " + new Version().toString());
 
         return docWriter;
@@ -1641,7 +1641,9 @@ public class ExTeX {
             OutputFactory outFactory = new OutputFactory(//
                     config.getConfiguration("Output"), //
                     new String[]{properties.getProperty(PROP_OUTPUTDIR),
-                            properties.getProperty(PROP_OUTPUTDIR_FALLBACK)});
+                            properties.getProperty(PROP_OUTPUTDIR_FALLBACK)},
+                    jobname);
+            outFactory.setDefaultStream(outStream);
 
             ResourceFinder finder = (new ResourceFinderFactory())
                     .createResourceFinder(config.getConfiguration("Resource"),
@@ -1660,9 +1662,10 @@ public class ExTeX {
                     .getConfiguration("Interpreter"), finder,
                     tokenStreamFactory, fontFactory);
 
-            DocumentWriter docWriter = makeDocumentWriter(config
-                    .getConfiguration("DocumentWriter"), jobname, outFactory,
-                    (DocumentWriterOptions) interpreter.getContext());
+            DocumentWriter docWriter = makeDocumentWriter(//
+                    config.getConfiguration("DocumentWriter"), jobname,
+                    outFactory, (DocumentWriterOptions) interpreter
+                            .getContext());
 
             Typesetter typesetter = makeTypesetter(config
                     .getConfiguration("Typesetter"), docWriter, interpreter
@@ -1675,11 +1678,10 @@ public class ExTeX {
             interpreter.run();
 
             int pages = docWriter.getPages();
-            String outname = jobname + "." + docWriter.getExtension();
             logger.info(localizer.format((pages == 0
                     ? "ExTeX.NoPages"
-                    : pages == 1 ? "ExTeX.Page" : "ExTeX.Pages"), outname,
-                    Integer.toString(pages)));
+                    : pages == 1 ? "ExTeX.Page" : "ExTeX.Pages"), //
+                    outFactory.getDestination(), Integer.toString(pages)));
         } catch (ConfigurationException e) {
             logger.throwing(this.getClass().getName(), "run", e);
             throw new MainConfigurationException(e);
@@ -1728,6 +1730,9 @@ public class ExTeX {
                 String arg = args[i];
 
                 if (arg.startsWith("-")) {
+                    if (arg.startsWith("--")) {
+                        arg = arg.substring(1);
+                    }
                     if ("-".equals(arg)) {
                         runWithFile(args, i + 1);
                         onceMore = false;

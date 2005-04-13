@@ -24,7 +24,8 @@ import java.io.OutputStream;
 
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.documentWriter.DocumentWriterOptions;
-import de.dante.extex.documentWriter.SingleDocumentStream;
+import de.dante.extex.documentWriter.MultipleDocumentStream;
+import de.dante.extex.documentWriter.OutputStreamFactory;
 import de.dante.extex.documentWriter.exception.DocumentWriterException;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.type.NodeList;
@@ -58,12 +59,12 @@ import de.dante.util.framework.configuration.Configurable;
  * and as tool for testing.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.1 $
  */
-public class DumpDocumentWriter
+public class MultiDumpDocumentWriter
         implements
             DocumentWriter,
-            SingleDocumentStream,
+            MultipleDocumentStream,
             Configurable {
 
     /**
@@ -401,12 +402,14 @@ public class DumpDocumentWriter
      */
     private boolean tree = true;
 
+    private OutputStreamFactory outputStreamFactory;
+
     /**
      * Creates a new object.
      *
      * @param opts the dynamic access to the context
      */
-    public DumpDocumentWriter(final DocumentWriterOptions opts) {
+    public MultiDumpDocumentWriter(final DocumentWriterOptions opts) {
 
         super();
     }
@@ -416,10 +419,6 @@ public class DumpDocumentWriter
      */
     public void close() throws IOException {
 
-        if (out != null) {
-            out.close();
-            out = null;
-        }
     }
 
     /**
@@ -449,12 +448,11 @@ public class DumpDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#setOutputStream(
-     *      java.io.OutputStream)
+     * @see de.dante.extex.documentWriter.MultipleDocumentStream#setOutputStreamFactory(de.dante.extex.documentWriter.OutputStreamFactory)
      */
-    public void setOutputStream(final OutputStream outStream) {
+    public void setOutputStreamFactory(final OutputStreamFactory writerFactory) {
 
-        out = outStream;
+        outputStreamFactory = writerFactory;
     }
 
     /**
@@ -466,11 +464,13 @@ public class DumpDocumentWriter
     }
 
     /**
+     * @throws DocumentWriterException
      * @see de.dante.extex.documentWriter.DocumentWriter#shipout(
      *      de.dante.extex.typesetter.NodeList)
      */
     public void shipout(final NodeList nodes) throws DocumentWriterException {
 
+        out = outputStreamFactory.getOutputStream();
         try {
             if (tree) {
                 StringBuffer sb = new StringBuffer();
@@ -481,8 +481,11 @@ public class DumpDocumentWriter
                 nodes.visit(nodeVisitor, out);
                 out.write('\n');
             }
+            out.close();
         } catch (IOException e) {
             throw new DocumentWriterException(e);
+        } catch (DocumentWriterException e) {
+            throw e;
         } catch (GeneralException e) {
             Throwable ex = e.getCause();
             throw (ex instanceof DocumentWriterException //
@@ -490,6 +493,7 @@ public class DumpDocumentWriter
                     : new DocumentWriterException(e.getLocalizedMessage()));
         }
         shippedPages++;
+        out = null;
     }
 
 }

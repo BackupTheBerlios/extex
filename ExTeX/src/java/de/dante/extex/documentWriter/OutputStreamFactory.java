@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -16,24 +16,70 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.documentWriter;
 
 import java.io.OutputStream;
 
+import de.dante.extex.documentWriter.exception.DocumentWriterException;
 
 /**
  * This is the factory for new OutputStreams.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface OutputStreamFactory {
 
     /**
-     * Getter for a new OutputStream.
+     * Getter for the destination.
+     *
+     * @return the name of the dastination
+     */
+    String getDestination();
+
+    /**
+     * Getter for a new OutputStream of the default type.
      *
      * @return the new OutputStream
+     *
+     * @throws DocumentWriterException in case of an error
      */
-    OutputStream getOutputStream();
+    OutputStream getOutputStream() throws DocumentWriterException;
+
+    /**
+     * Getter for a new OutputStream.
+     *
+     * @param type the type of the stream to acquire. In general this should
+     *  correspond to the extension of a file of this type
+     *
+     * @return the new OutputStream
+     *
+     * @throws DocumentWriterException in case of an error
+     */
+    OutputStream getOutputStream(String type) throws DocumentWriterException;
+
+    /**
+     * Getter for a new OutputStream.
+     *
+     * @param name the name segment to characterize the stream externally.
+     *  This segment might be used as part of the output file. If the name is
+     *  <code>null</code> then it is treated as not given at all.
+     * @param type the type of the stream to acquire. In general this should
+     *  correspond to the extension of a file of this type
+     *
+     * @return the new OutputStream
+     *
+     * @throws DocumentWriterException in case of an error
+     */
+    OutputStream getOutputStream(String name, String type)
+            throws DocumentWriterException;
+
+    /**
+     * Setter for the extension.
+     *
+     * @param extension the default extension
+     */
+    void setExtension(String extension);
 
 }
