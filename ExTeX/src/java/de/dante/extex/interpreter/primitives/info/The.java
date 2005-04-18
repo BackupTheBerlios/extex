@@ -33,7 +33,6 @@ import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.CodeToken;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\the</code>.
@@ -58,7 +57,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class The extends AbstractCode implements ExpandableCode {
 
