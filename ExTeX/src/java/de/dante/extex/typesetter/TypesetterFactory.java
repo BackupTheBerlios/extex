@@ -22,6 +22,7 @@ package de.dante.extex.typesetter;
 import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.max.Max;
+import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.hyphenator.Hyphenator;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
@@ -48,7 +49,7 @@ import de.dante.util.framework.AbstractFactory;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class TypesetterFactory extends AbstractFactory {
 
@@ -78,10 +79,11 @@ public class TypesetterFactory extends AbstractFactory {
      * @return a new instance
      *
      * @throws ConfigurationException in case of an configuration error
+     * @throws TypesetterException in case of an error
      */
     private PageBuilder makePageBuilder(final Configuration config,
             final Context context, final Typesetter typesetter)
-            throws ConfigurationException {
+            throws ConfigurationException, TypesetterException {
 
         Configuration cfg = config.getConfiguration("PageBuilder");
         PageBuilder pageBuilder = (PageBuilder) createInstanceForConfiguration(cfg,
@@ -131,9 +133,10 @@ public class TypesetterFactory extends AbstractFactory {
      * @return a new typesetter
      *
      * @throws ConfigurationException in case of an configuration error
+     * @throws TypesetterException in case of another error
      */
     public Typesetter newInstance(final String type, final Context context)
-            throws ConfigurationException {
+            throws TypesetterException, ConfigurationException {
 
         Configuration cfg = selectConfiguration(type);
 
