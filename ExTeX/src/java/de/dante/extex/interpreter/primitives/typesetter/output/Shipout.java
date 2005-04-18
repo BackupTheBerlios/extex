@@ -38,6 +38,11 @@ import de.dante.util.GeneralException;
  *  box to the document writer.
  * </p>
  * <p>
+ *  In addition the count register <tt>\deadcyles</tt> is reset to 0.
+ *  This count register is used to break out of infinite loops when no material
+ *  is shipped out in the output routine.
+ * </p>
+ * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;shipout&rang;
@@ -53,7 +58,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Shipout extends AbstractCode {
 
@@ -68,7 +73,8 @@ public class Shipout extends AbstractCode {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Code#execute(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.type.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
@@ -83,6 +89,7 @@ public class Shipout extends AbstractCode {
         } catch (GeneralException e) {
             throw new InterpreterException(e);
         }
+        context.getCount("deadcyles").set(0);
     }
 
 }
