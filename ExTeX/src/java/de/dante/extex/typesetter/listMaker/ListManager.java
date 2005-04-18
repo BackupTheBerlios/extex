@@ -19,21 +19,30 @@
 
 package de.dante.extex.typesetter.listMaker;
 
-import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
-import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
+import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.node.CharNodeFactory;
+import de.dante.extex.typesetter.type.node.HorizontalListNode;
 
 /**
- * Interface for the Manager of a typesetter.
+ * Interface for the Manager of a list maker.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public interface ListManager {
+
+    /**
+     * Invoke the paragraph builder on a list of nodes.
+     *
+     * @param nodes the nodes to make a paragraph fom
+     *
+     * @return the vertical node list containing the lines of the paragraph
+     */
+    NodeList buildParagraph(HorizontalListNode nodes);
 
     /**
      * End the current paragraph.
@@ -50,25 +59,11 @@ public interface ListManager {
     CharNodeFactory getCharNodeFactory();
 
     /**
-     * Getter for the doument writer.
-     *
-     * @return the document writer
-     */
-    DocumentWriter getDocumentWriter();
-
-    /**
      * Getter for the options object.
      *
      * @return the options
      */
     TypesetterOptions getOptions();
-
-    /**
-     * Getter for the current paragraph builder.
-     *
-     * @return the current paragraph builder
-     */
-    ParagraphBuilder getParagraphBuilder();
 
     /**
      * Discart to top of the stack of list makers.
