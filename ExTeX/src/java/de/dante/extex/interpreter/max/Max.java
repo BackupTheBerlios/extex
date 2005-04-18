@@ -85,7 +85,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.66 $
+ * @version $Revision: 1.67 $
  */
 public class Max extends Moritz
         implements
@@ -529,7 +529,9 @@ public class Max extends Moritz
             }
             throw new LoaderException(e);
         }
+        //FontFactory fontFactory = newContext.getFontFactory();
         newContext.setFontFactory(context.getFontFactory());
+        //TODO gene: restore configuration and ResourceFinder
         newContext.setTokenFactory(context.getTokenFactory());
         // TODO gene: loadFormat() incomplete ???
         context = newContext;
