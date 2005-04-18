@@ -54,7 +54,7 @@ import de.dante.util.UnicodeChar;
  * or right word boundary.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 class HyphenTree implements Serializable {
 
@@ -94,26 +94,6 @@ class HyphenTree implements Serializable {
     }
 
     /**
-     * This method dumps a hyphenation tree to a logger.
-     *
-     * @param logger the target logger
-     * @param prefix the initial string prepended before any line of output
-     */
-    public void dump(final Logger logger, final String prefix) {
-
-        String p = prefix + "  ";
-        Iterator iter = nextTree.keySet().iterator();
-
-        while (iter.hasNext()) {
-            UnicodeChar key = (UnicodeChar) iter.next();
-            HyphenTree t = (HyphenTree) nextTree.get(key);
-            logger.info(prefix + "'" + key + "' "
-                    + t.getHyphenationCode().toString() + "\n");
-            t.dump(logger, p);
-        }
-    }
-
-    /**
      * The field <tt>hc</tt> contains the hyphenation code for the position
      * left of the character represented by this instance.
      */
@@ -133,6 +113,17 @@ class HyphenTree implements Serializable {
 
         super();
         this.hc = hc;
+    }
+
+    /**
+     * This method dumps a hyphenation tree to a logger.
+     *
+     * @param logger the target logger
+     * @param prefix the initial string prepended before any line of output
+     */
+    public void dump(final Logger logger, final String prefix) {
+
+        logger.info(toString());
     }
 
     /**
@@ -274,7 +265,6 @@ class HyphenTree implements Serializable {
         if (nextTree == null) {
             return;
         }
-        //TODO gene: check for off by one error
         Iterator iterator = nextTree.values().iterator();
         while (iterator.hasNext()) {
             HyphenTree t = (HyphenTree) iterator.next();
@@ -282,6 +272,52 @@ class HyphenTree implements Serializable {
                 superimpose(t.hc, 0, code);
             }
             t.superimposeAll(code);
+        }
+    }
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+
+        StringBuffer sb = new StringBuffer();
+        toString(sb, "");
+        return sb.toString();
+    }
+
+    /**
+     * Create a printable representation of the tree in a StringBuffer.
+     *
+     * @param sb the target string buffer
+     * @param prefix the prefix for each line
+     */
+    protected void toString(final StringBuffer sb, final String prefix) {
+
+        if (nextTree == null) {
+            return;
+        }
+        String p = prefix + "  ";
+        Iterator iter = nextTree.keySet().iterator();
+
+        while (iter.hasNext()) {
+            UnicodeChar key = (UnicodeChar) iter.next();
+            HyphenTree t = (HyphenTree) nextTree.get(key);
+            sb.append(prefix);
+            sb.append("'");
+            sb.append(key);
+            sb.append("' ");
+            char[] hyphenationCode = t.getHyphenationCode();
+            if (hyphenationCode == null) {
+                sb.append("nil");
+            } else {
+                sb.append("(");
+                for (int i = 0; i < hyphenationCode.length; i++) {
+                    sb.append(hyphenationCode[i]);
+                }
+                sb.append(")");
+            }
+            sb.append("\n");
+            t.toString(sb, p);
         }
     }
 }
