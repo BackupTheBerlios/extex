@@ -133,11 +133,24 @@
     </devel>
   </Typesetter>
 
-  <!-- 
+  <!--
     -  The section "Output" contains the specification for the output file.
+    -  The format attribute contains a format according to the MessageFormat
+    -  specification of Java.
+    -  {0} is replaced with the bease name of the output file. 
+    -  {1} is replaced with the name supplied or the empty string if null.
+    -  {2} is replaced with the number. This can be formatted freely.
+    -  {3} is replaced by the type preceeded by  period (.).
     -->
-  <Output encoding="ISO-8859-1"
-          format="{0}{1}{2,number,0000}{3}"/>
+  <Output default="default">
+    <default format="{0}{1}{2,number,0000}{3}"/>
+    <pdf format="{0}{1}{2,number,0000}.pdf"/>
+    <dvi format="{0}{1}{2,number,0000}.dvi"/>
+    <xml format="{0}{1}{2,number,0000}.xml"/>
+    <out format="{0}{1}{2,number,0000}.out"/>
+    <dump format="{0}{1}{2,number,0000}.out"/>
+    <text format="{0}{1}{2,number,0000}.txt"/>
+  </Output>
  
   <!-- 
     -  The section "DocumentWriter" contains the specification for the backend.
