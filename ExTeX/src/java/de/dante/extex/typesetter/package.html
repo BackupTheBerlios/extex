@@ -2,7 +2,7 @@
  <head>
   <title>ExTeX: Typesetter</title>
   <meta name="copyright" content="
-   Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+   Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
 
    This library is free software; you can redistribute it and/or modify it
    under the terms of the GNU Lesser General Public License as published by
@@ -19,13 +19,60 @@
    Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
   " />
   <meta name="author" content="Gerd Neugebauer" />
-  <meta name="author">Michael Niedermair" />
-  <meta name="version" content="$Revision: 1.5 $" />
+  <meta name="version" content="$Revision: 1.6 $" />
  </head>
  <body>
   This package contains the typesetter definitions for ExTeX. The typesetter
   has the aim of building lists of nodes and compute their optimal distribution.
 
+  <h1>The Way to the Document Writer</h1>
+  <p>In this section we want to see which instances are involved to
+  come to a page being sent to the
+  {@link de.dante.extex.documentWriter.DocumentWriter DocumentWriter}.
+  For this purpose we consider the sequence diagram in the figure below.</p>
+  <div class="Figure">
+   <img src="doc-files/SD_par.png" />
+   <br />
+   <caption>Sequence Diagram: A Page Break</caption>
+  </div>
+  <p>The start of out consideration is at the par primitive wich is
+  triggered in TeX explicitely or implicitely when two empty lines are
+  encountered. The primitive has a
+  {@link de.dante.extex.typesetter.Typesetter Typesetter} at hand and
+  forwards the message to this typesetter.
+  </p>
+
+  <p>The typesetter maintains a stack of 
+  {@link de.dante.extex.typesetter.listMaker.ListMaker ListMaker}s. If
+  the top of this stack is a horizontal list then it is closed first.
+  this leaves a vertical list
+  ({@link de.dante.extex.typesetter.listMaker.HorizontalListMaker HorizontalListMaker}).
+  The par message is propagated to the list maker at the top of the stack.
+  </p>
+
+  <p>The horizontal list maker instructs his manager &ndash; which is
+  also the typesetter &ndash; to build the paragraph. The typesetter
+  propagates this message to the
+  {@link de.dante.extex.typeseter.paragraphBuilder.ParagraphBuilder ParagraphBuilder}.
+  </p>
+
+  <p>When the contents is added to the topmost list maker &ndash;
+  which is the global vertical list &ndash; the page builder is
+  triggered. It tries to determine whether the page is full enough and
+  invokes the output routine
+  </p>
+
+  <p>The output routine is an implementation of the interface
+  {@link de.dante.extex.typesetter.OutputRoutine OutputRoutine}. The
+  TeX implementation for the output routine executes some tokens with
+  the help of an interpreter. In the course of this execution the
+  primitive <tt>\shipout</tt> can be used to send some material to the
+  document writer.
+  </p>
+
+  <p>The primitive asks the typesetter to perform the shipout. Thus
+  the material is finaly forwarded to the document writer.
+  </p>
 
  </body>
 </html>

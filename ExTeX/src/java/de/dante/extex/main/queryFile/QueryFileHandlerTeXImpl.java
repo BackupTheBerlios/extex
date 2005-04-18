@@ -32,7 +32,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * The value <tt>\relax</tt> is interpreted as no file name.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class QueryFileHandlerTeXImpl implements QueryFileHandler {
 
@@ -45,7 +45,8 @@ public class QueryFileHandlerTeXImpl implements QueryFileHandler {
     }
 
     /**
-     * @see de.dante.extex.main.queryFile.QueryFileHandler#query()
+     * @see de.dante.extex.main.queryFile.QueryFileHandler#query(
+     *      java.util.logging.Logger)
      */
     public String query(final Logger logger) {
 
@@ -71,9 +72,10 @@ public class QueryFileHandlerTeXImpl implements QueryFileHandler {
      * Read a line of characters from the standard input stream after a prompt
      * has been shown.
      * Leading spaces are ignored. At end of file an exception is thrown.
-     * @param localizer TODO
-     * @param logger TODO
-     * @param prompt TODO
+     *
+     * @param localizer the localizer
+     * @param logger the logger
+     * @param prompt the prompt to present before the input is allowed
      *
      * @return the line read or <code>null</code> to signal EOF
      *
