@@ -26,12 +26,12 @@ import de.dante.util.GeneralException;
  * interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class DocumentWriterException extends GeneralException {
 
     /**
-     * Creates a new object.
+     * Creates a new object. 
      *
      * @param message the error message
      */
