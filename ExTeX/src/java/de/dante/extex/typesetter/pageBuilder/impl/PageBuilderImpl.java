@@ -24,11 +24,8 @@ import java.io.IOException;
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.exception.ErrorLimitException;
 import de.dante.extex.interpreter.type.dimen.Dimen;
-import de.dante.extex.scanner.type.Catcode;
-import de.dante.extex.scanner.type.CatcodeException;
-import de.dante.extex.scanner.type.CodeToken;
+import de.dante.extex.typesetter.OutputRoutine;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
@@ -40,7 +37,7 @@ import de.dante.util.GeneralException;
  * This is a first reference implementation of a page builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class PageBuilderImpl implements PageBuilder {
 
@@ -67,10 +64,9 @@ public class PageBuilderImpl implements PageBuilder {
     private TypesetterOptions options = null;
 
     /**
-     * The field <tt>outputToken</tt> contains the token for retrieving the
-     * output routine.
+     * The field <tt>output</tt> contains the output routine.
      */
-    private CodeToken outputToken = null;
+    private OutputRoutine outputRoutine = null;
 
     /**
      * Creates a new object.
@@ -108,7 +104,12 @@ public class PageBuilderImpl implements PageBuilder {
 
         if (nodes.size() > 0) {
             try {
-                this.documentWriter.shipout(nodes);
+                if (this.outputRoutine != null) {
+                    this.outputRoutine.output(nodes, documentWriter);
+                } else {
+                    this.documentWriter.shipout(nodes);
+                }
+                nodes.clear();
             } catch (IOException e) {
                 throw new TypesetterException(e);
             } catch (GeneralException e) {
@@ -141,30 +142,12 @@ public class PageBuilderImpl implements PageBuilder {
     }
 
     /**
-     * TODO gene: missing JavaDoc
-     *
-     * @throws ErrorLimitException ...
-     * @throws GeneralException ...
-     */
-    private void invokeOutput() throws ErrorLimitException, GeneralException {
-
-    }
-
-    /**
      * @see de.dante.extex.typesetter.pageBuilder.PageBuilder#setContext(
      *      de.dante.extex.interpreter.context.Context)
      */
     public void setContext(final Context context) {
 
         this.context = context;
-
-        try {
-            this.outputToken = (CodeToken) context.getTokenFactory()
-                    .createToken(Catcode.ESCAPE, context.escapechar(), "");
-        } catch (CatcodeException e) {
-            //TODO gene: error unimplemented
-            throw new RuntimeException("unimplemented");
-        }
     }
 
     /**
@@ -188,7 +171,6 @@ public class PageBuilderImpl implements PageBuilder {
     public void setInterpreter(final Interpreter interpreter) {
 
         this.interpreter = interpreter;
-
     }
 
     /**
@@ -199,5 +181,14 @@ public class PageBuilderImpl implements PageBuilder {
     public void setOptions(final TypesetterOptions options) {
 
         this.options = options;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.pageBuilder.PageBuilder#setOutputRoutine(
+     *      de.dante.extex.typesetter.OutputRoutine)
+     */
+    public void setOutputRoutine(final OutputRoutine output) {
+
+        this.outputRoutine = output;
     }
 }

@@ -62,6 +62,7 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.observer.InteractionObserver;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.loader.LoaderException;
+import de.dante.extex.interpreter.output.TeXOutputRoutine;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.main.Version;
@@ -87,6 +88,7 @@ import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.extex.scanner.stream.TokenStreamOptions;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterFactory;
+import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.util.GeneralException;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationClassNotFoundException;
@@ -615,7 +617,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.94 $
+ * @version $Revision: 1.95 $
  */
 public class ExTeX {
 
@@ -1587,11 +1589,12 @@ public class ExTeX {
      * @return the new typesetter
      *
      * @throws ConfigurationException in case that some kind of problems have
-     * been detected in the configuration
+     *  been detected in the configuration
+     * @throws TypesetterException in case of an error
      */
     protected Typesetter makeTypesetter(final Configuration config,
             final DocumentWriter docWriter, final Context context)
-            throws ConfigurationException {
+            throws TypesetterException, ConfigurationException {
 
         TypesetterFactory factory = new TypesetterFactory(config);
         factory.enableLogging(logger);
@@ -1667,9 +1670,10 @@ public class ExTeX {
                     outFactory, (DocumentWriterOptions) interpreter
                             .getContext());
 
-            Typesetter typesetter = makeTypesetter(config
-                    .getConfiguration("Typesetter"), docWriter, interpreter
-                    .getContext());
+            Typesetter typesetter = makeTypesetter(//
+                    config.getConfiguration("Typesetter"), docWriter,
+                    interpreter.getContext());
+            typesetter.setOutputRoutine(new TeXOutputRoutine(interpreter));
             interpreter.setTypesetter(typesetter);
 
             loadFormat(interpreter, finder, properties.getProperty(PROP_FMT),

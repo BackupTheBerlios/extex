@@ -25,6 +25,7 @@ import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.typesetter.OutputRoutine;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
@@ -36,7 +37,7 @@ import de.dante.util.GeneralException;
  * This is a first reference implementation of a page builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class TrivialPageBuilder implements PageBuilder {
 
@@ -50,6 +51,11 @@ public class TrivialPageBuilder implements PageBuilder {
      * The field <tt>options</tt> contains the options to control the behaviour.
      */
     private TypesetterOptions options = null;
+
+    /**
+     * The field <tt>output</tt> contains the output routine.
+     */
+    private OutputRoutine outputRoutine = null;
 
     /**
      * Creates a new object.
@@ -87,7 +93,8 @@ public class TrivialPageBuilder implements PageBuilder {
 
         if (nodes.size() > 0) {
             try {
-                this.documentWriter.shipout(nodes);
+                documentWriter.shipout(nodes);
+                nodes.clear();
             } catch (IOException e) {
                 throw new TypesetterException(e);
             } catch (GeneralException e) {
@@ -138,7 +145,7 @@ public class TrivialPageBuilder implements PageBuilder {
      */
     public void setDocumentWriter(final DocumentWriter docWriter) {
 
-        this.documentWriter = docWriter;
+        documentWriter = docWriter;
     }
 
     /**
@@ -153,9 +160,22 @@ public class TrivialPageBuilder implements PageBuilder {
      * Setter for options.
      *
      * @param options the options to set
+     *
+     * @see de.dante.extex.typesetter.pageBuilder.PageBuilder#setOptions(
+     *      de.dante.extex.typesetter.TypesetterOptions)
      */
     public void setOptions(final TypesetterOptions options) {
 
         this.options = options;
     }
+
+    /**
+     * @see de.dante.extex.typesetter.pageBuilder.PageBuilder#setOutputRoutine(
+     *      de.dante.extex.typesetter.OutputRoutine)
+     */
+    public void setOutputRoutine(final OutputRoutine output) {
+
+        this.outputRoutine = output;
+    }
+
 }

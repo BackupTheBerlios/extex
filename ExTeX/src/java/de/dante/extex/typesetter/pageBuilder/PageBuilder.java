@@ -22,6 +22,7 @@ package de.dante.extex.typesetter.pageBuilder;
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.typesetter.OutputRoutine;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
@@ -31,7 +32,7 @@ import de.dante.extex.typesetter.type.node.VerticalListNode;
  * This interface describes the capabilities of a page builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public interface PageBuilder {
 
@@ -73,8 +74,10 @@ public interface PageBuilder {
      * Setter for the interpreter context
      *
      * @param context the interpreter context
+     *
+     * @throws TypesetterException in case of an error
      */
-    void setContext(Context context);
+    void setContext(Context context) throws TypesetterException;
 
     /**
      * Setter for the document writer.
@@ -83,6 +86,13 @@ public interface PageBuilder {
      * @param docWriter the new document writer to use
      */
     void setDocumentWriter(DocumentWriter docWriter);
+
+    /**
+     * Setter for the output routine.
+     *
+     * @param output the output routine
+     */
+    void setOutputRoutine(OutputRoutine output);
 
     /**
      * Setter for options.

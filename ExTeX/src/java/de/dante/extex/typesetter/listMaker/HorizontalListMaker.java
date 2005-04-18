@@ -47,7 +47,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class HorizontalListMaker extends AbstractListMaker {
 
@@ -171,30 +171,68 @@ public class HorizontalListMaker extends AbstractListMaker {
             }
         }
 
-        return getManager().getParagraphBuilder().build(list);
+        return getManager().buildParagraph(list);
     }
 
     /**
-     * Extract a word from nodes into a NodeList.
-     *
-     * @param start the start index
-     * @param list the target list
-     * @param size the length of the node list
-     *
-     * @return the index of the first node not considered
+     * @see de.dante.extex.typesetter.ListMaker#getLastNode()
      */
-    private int parseWord(final int start, final NodeList list, final int size) {
+    public Node getLastNode() {
 
-        for (int i = start; i < size; i++) {
-            Node n = nodes.get(i);
-            if (n instanceof CharNode) {
-                list.add(n);
-            } else {
-                return i;
-            }
+        return (nodes.empty() ? null : nodes.get(nodes.size() - 1));
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#getMode()
+     */
+    public Mode getMode() {
+
+        return Mode.HORIZONTAL;
+    }
+
+    /**
+     * Getter for nodes.
+     *
+     * @return the nodes.
+     */
+    protected HorizontalListNode getNodes() {
+
+        return this.nodes;
+    }
+
+    /**
+     * Add a character node to the list.
+     *
+     * @param context the interpreter context
+     * @param tc the typesetting context for the symbol
+     * @param symbol the symbol to add
+     *
+     * @see de.dante.extex.typesetter.ListMaker#add(
+     *      de.dante.extex.interpreter.context.TypesettingContext,
+     *      de.dante.util.UnicodeChar)
+     * @see "The TeXbook [p.76]"
+     */
+    public void letter(final Context context, final TypesettingContext tc,
+            final UnicodeChar symbol) {
+
+        CharNode c = getManager().getCharNodeFactory().newInstance(tc, symbol);
+        nodes.add(c);
+
+        int f = c.getSpaceFactor();
+
+        if (f != 0) {
+            spacefactor = (spacefactor < DEFAULT_SPACEFACTOR
+                    && f > DEFAULT_SPACEFACTOR //
+            ? DEFAULT_SPACEFACTOR : f);
         }
+    }
 
-        return size;
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#par()
+     */
+    public void par() throws TypesetterException {
+
+        getManager().endParagraph();
     }
 
     /**
@@ -230,37 +268,26 @@ public class HorizontalListMaker extends AbstractListMaker {
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#getLastNode()
-     */
-    public Node getLastNode() {
-
-        return (nodes.empty() ? null : nodes.get(nodes.size() - 1));
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#getMode()
-     */
-    public Mode getMode() {
-
-        return Mode.HORIZONTAL;
-    }
-
-    /**
-     * Getter for nodes.
+     * Extract a word from nodes into a NodeList.
      *
-     * @return the nodes.
+     * @param start the start index
+     * @param list the target list
+     * @param size the length of the node list
+     *
+     * @return the index of the first node not considered
      */
-    protected HorizontalListNode getNodes() {
+    private int parseWord(final int start, final NodeList list, final int size) {
 
-        return this.nodes;
-    }
+        for (int i = start; i < size; i++) {
+            Node n = nodes.get(i);
+            if (n instanceof CharNode) {
+                list.add(n);
+            } else {
+                return i;
+            }
+        }
 
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#par()
-     */
-    public void par() throws TypesetterException {
-
-        getManager().endParagraph();
+        return size;
     }
 
     /**
@@ -293,33 +320,6 @@ public class HorizontalListMaker extends AbstractListMaker {
                     "TTP.BadSpaceFactor", Long.toString(sf));
         }
         spacefactor = sf;
-    }
-
-    /**
-     * Add a character node to the list.
-     *
-     * @param context the interpreter context
-     * @param tc the typesetting context for the symbol
-     * @param symbol the symbol to add
-     *
-     * @see de.dante.extex.typesetter.ListMaker#add(
-     *      de.dante.extex.interpreter.context.TypesettingContext,
-     *      de.dante.util.UnicodeChar)
-     * @see "The TeXbook [p.76]"
-     */
-    public void letter(final Context context, final TypesettingContext tc,
-            final UnicodeChar symbol) {
-
-        CharNode c = getManager().getCharNodeFactory().newInstance(tc, symbol);
-        nodes.add(c);
-
-        int f = c.getSpaceFactor();
-
-        if (f != 0) {
-            spacefactor = (spacefactor < DEFAULT_SPACEFACTOR
-                    && f > DEFAULT_SPACEFACTOR //
-            ? DEFAULT_SPACEFACTOR : f);
-        }
     }
 
 }
