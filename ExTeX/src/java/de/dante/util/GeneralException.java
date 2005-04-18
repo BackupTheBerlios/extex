@@ -26,8 +26,28 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This is a base class for exceptions which carry an additional helping text
  * and a return code.
  *
+ * <h2>Exception-related rules</h2>
+ *
+ * <ul>
+ *  <li>Each component should define an exception hierarchy of its own.</li>
+ *  <li>No method should declare <tt>throws Exception</tt>. The exceptions
+ *    declared should be as specific as possible to allow a fine grained error
+ *    handling.</li>
+ *  <li>The outside interface of a component should only throw exceptions of
+ *    the component. Exceptions of underlying components should not be passed
+ *    through.</li>
+ *  <li>Exceptions should not carry text. Design exceptions for
+ *    internationalization. Sooner or later it will pay off.</li>
+ *  <li>Exceptions should be used for exceptional cases only. In the normal
+ *    course of a program execution no exception should be thrown. Exceptions
+ *    should not be abused for control flow in a program.</li>
+ *  <li>Exceptions need not to be optimized for speed. Since exceptions are
+ *    rarely used they can be slow.</li>
+ * </ul>
+ *
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class GeneralException extends Exception {
 

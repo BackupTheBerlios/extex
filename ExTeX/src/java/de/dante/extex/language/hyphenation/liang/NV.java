@@ -56,7 +56,7 @@ import de.dante.util.UnicodeChar;
  * &ldquo;normal&rdquo; cases do not apply.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 class NV implements NodeVisitor {
 
@@ -298,7 +298,7 @@ class NV implements NodeVisitor {
             final Object value) throws GeneralException {
 
         Count index = (Count) value;
-        index.set(process(node, (int) index.getValue()));
+        index.set(process(node, (int) (index.getValue())));
         return null;
     }
 
@@ -309,7 +309,8 @@ class NV implements NodeVisitor {
      * @param index the index in the hyphenation list
      *
      * @return the new index in the hyphenation list
-     * @throws HyphenationException
+     *
+     * @throws HyphenationException in case of an error
      */
     private int process(final LigatureNode node, final int index)
             throws HyphenationException {

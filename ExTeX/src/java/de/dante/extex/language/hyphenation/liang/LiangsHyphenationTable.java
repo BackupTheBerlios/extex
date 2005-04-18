@@ -114,7 +114,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class LiangsHyphenationTable extends BaseHyphenationTable {
 
@@ -148,14 +148,17 @@ public class LiangsHyphenationTable extends BaseHyphenationTable {
      * This methods allows the caller to add another pattern
      *
      * @param pattern a sequence of tokens alternatively of type other and
-     *  letter. The other tokens must be numbers.
+     *  letter. The other tokens must be numbers. The letter tokens period (.)
+     *  are interpreted as beginning of word or end of word marker.
      *
      * @throws IllegalValueHyphenationException in case that an other token
      *  does not carry a digit
-     * @throws IllegalTokenHyphenationException in case that ...
+     * @throws IllegalTokenHyphenationException in case that an illegal token
+     *  has been detected in the pattern
      * @throws DuplicateHyphenationException in case that a hyphenation pattern
      *  is tried to be added a second time
-     * @throws ImmutableHyphenationException in case that ...
+     * @throws ImmutableHyphenationException in case that the hyphenation
+     *  table is immutable; i.e. the compressed flag is set
      *
      * @see de.dante.extex.language.Language#addPattern(
      *      Tokens)

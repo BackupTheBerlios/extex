@@ -55,14 +55,28 @@ import de.dante.util.UnicodeChar;
 /**
  * This class provides an implementation for the primitive <code>\patterns</code>.
  *
- * <p>Example:</p>
- * <pre>
- * \patterns{.ach4 .ad4der .af1t}
- * </pre>
+ * <doc name="patterns">
+ * <h3>The Primitive <tt>\patterns</tt></h3>
+ * <p>
+ *  TODO missing documentation
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;patterns&rang;
+ *      &rarr; <tt>\patterns</tt> { &lang;patterns&rang; } </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \patterns{.ach4 .ad4der .af1t}  </pre>
+ * </p>
+ * </doc>
+ *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Patterns extends AbstractHyphenationCode {
 
@@ -71,12 +85,12 @@ public class Patterns extends AbstractHyphenationCode {
      * argument of the <tt>\pattern</tt> macro.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.15 $
+     * @version $Revision: 1.16 $
      */
     private class TV implements TokenVisitor {
 
         /**
-         * The field <tt>table</tt> contains the ...
+         * The field <tt>table</tt> contains the associated table.
          */
         private Language table;
 
