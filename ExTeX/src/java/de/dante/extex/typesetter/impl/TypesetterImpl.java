@@ -60,7 +60,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.63 $
+ * @version $Revision: 1.64 $
  */
 public class TypesetterImpl
         implements
@@ -106,7 +106,7 @@ public class TypesetterImpl
     /**
      * The field <tt>outputRoutine</tt> contains the output routine.
      */
-    private OutputRoutine outputRoutine;
+    private OutputRoutine outputRoutine = null;
 
     /**
      * The field <tt>pageBuilder</tt> contains the current page builder.
@@ -179,6 +179,15 @@ public class TypesetterImpl
             final Count spacefactor) throws TypesetterException {
 
         listMaker.addSpace(typesettingContext, null);
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.listMaker.ListManager#buildParagraph(
+     *      de.dante.extex.typesetter.type.node.HorizontalListNode)
+     */
+    public NodeList buildParagraph(final HorizontalListNode nodes) {
+
+        return this.paragraphBuilder.build(nodes);
     }
 
     /**
@@ -267,14 +276,6 @@ public class TypesetterImpl
     }
 
     /**
-     * @see de.dante.extex.typesetter.listMaker.ListManager#getDocumentWriter()
-     */
-    public DocumentWriter getDocumentWriter() {
-
-        return documentWriter;
-    }
-
-    /**
      * @see de.dante.extex.typesetter.ListMaker#getLastNode()
      */
     public Node getLastNode() {
@@ -317,14 +318,6 @@ public class TypesetterImpl
     public TypesetterOptions getOptions() {
 
         return options;
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.listMaker.ListManager#getParagraphBuilder()
-     */
-    public ParagraphBuilder getParagraphBuilder() {
-
-        return paragraphBuilder;
     }
 
     /**
@@ -449,6 +442,9 @@ public class TypesetterImpl
     public void setOutputRoutine(final OutputRoutine output) {
 
         this.outputRoutine = output;
+        if (this.pageBuilder != null) {
+            this.pageBuilder.setOutputRoutine(output);
+        }
     }
 
     /**
@@ -463,6 +459,7 @@ public class TypesetterImpl
 
         this.pageBuilder = pageBuilder;
         pageBuilder.setDocumentWriter(documentWriter);
+        pageBuilder.setOutputRoutine(this.outputRoutine);
         if (pageBuilder instanceof LogEnabled) {
             ((LogEnabled) pageBuilder).enableLogging(logger);
         }

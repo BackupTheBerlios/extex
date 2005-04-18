@@ -34,7 +34,6 @@ import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.listMaker.HorizontalListMaker;
 import de.dante.extex.typesetter.listMaker.ListManager;
-import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.node.CharNodeFactory;
 import de.dante.extex.typesetter.type.node.DiscretionaryNode;
@@ -65,7 +64,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Discretionary extends AbstractCode {
 
@@ -73,7 +72,7 @@ public class Discretionary extends AbstractCode {
      * TODO gene: missing JavaDoc.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.15 $
+     * @version $Revision: 1.16 $
      */
     private class Manager implements ListManager {
 
@@ -89,6 +88,15 @@ public class Discretionary extends AbstractCode {
 
             super();
             charNodeFactory = cnf;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.listMaker.ListManager#buildParagraph(de.dante.extex.typesetter.type.node.HorizontalListNode)
+         */
+        public NodeList buildParagraph(final HorizontalListNode nodes) {
+
+            // TODO gene: buildParagraph unimplemented
+            return null;
         }
 
         /**
@@ -128,14 +136,6 @@ public class Discretionary extends AbstractCode {
          * @see de.dante.extex.typesetter.listMaker.ListManager#getOptions()
          */
         public TypesetterOptions getOptions() {
-
-            return null;
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.listMaker.ListManager#getParagraphBuilder()
-         */
-        public ParagraphBuilder getParagraphBuilder() {
 
             return null;
         }
