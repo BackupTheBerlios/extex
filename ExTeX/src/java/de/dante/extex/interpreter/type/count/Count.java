@@ -41,10 +41,9 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Count implements Serializable, FixedCount {
-
     /**
      * The constant <tt>ONE</tt> contains the count register with the value 1.
      * This count register is in fact immutable.
@@ -168,6 +167,23 @@ public class Count implements Serializable, FixedCount {
     }
 
     /**
+     * @see de.dante.extex.interpreter.type.count.FixedCount#eq(
+     *      de.dante.extex.interpreter.type.count.FixedCount)
+     */
+    public boolean eq(final FixedCount count) {
+
+        return count.getValue() == value;
+    }
+    /**
+     * @see de.dante.extex.interpreter.type.count.FixedCount#ge(
+     *      de.dante.extex.interpreter.type.count.FixedCount)
+     */
+    public boolean ge(final FixedCount count) {
+
+        return value >= count.getValue();
+    }
+
+    /**
      * Getter for the localizer.
      * The localizer is initialized from the name of the Count class.
      *
@@ -187,6 +203,30 @@ public class Count implements Serializable, FixedCount {
 
         return value;
     }
+    /**
+     * @see de.dante.extex.interpreter.type.count.FixedCount#gt(
+     *      de.dante.extex.interpreter.type.count.FixedCount)
+     */
+    public boolean gt(final FixedCount count) {
+
+        return value > count.getValue();
+    }
+    /**
+     * @see de.dante.extex.interpreter.type.count.FixedCount#le(
+     *      de.dante.extex.interpreter.type.count.FixedCount)
+     */
+    public boolean le(final FixedCount count) {
+
+        return value <= count.getValue();
+    }
+    /**
+     * @see de.dante.extex.interpreter.type.count.FixedCount#lt(
+     *      de.dante.extex.interpreter.type.count.FixedCount)
+     */
+    public boolean lt(final FixedCount count) {
+
+        return value < count.getValue();
+    }
 
     /**
      * Multiply the value with a factor.
@@ -197,6 +237,14 @@ public class Count implements Serializable, FixedCount {
     public void multiply(final long factor) {
 
         value *= factor;
+    }
+    /**
+     * @see de.dante.extex.interpreter.type.count.FixedCount#ne(
+     *      de.dante.extex.interpreter.type.count.FixedCount)
+     */
+    public boolean ne(final FixedCount count) {
+
+        return value != count.getValue();
     }
 
     /**
