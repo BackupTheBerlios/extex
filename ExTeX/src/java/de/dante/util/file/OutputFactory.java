@@ -30,25 +30,29 @@ import java.util.Iterator;
 import java.util.Map;
 
 import de.dante.extex.documentWriter.OutputStreamFactory;
+import de.dante.extex.documentWriter.exception.DocumentWriterException;
 import de.dante.extex.documentWriter.exception.OutputStreamOpenException;
 import de.dante.util.configuration.Configuration;
-import de.dante.util.configuration.ConfigurationMissingAttributeException;
+import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationMissingException;
+import de.dante.util.framework.AbstractFactory;
 
 /**
  * This factory creates an output stream from a specification in the
  * configuration.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
-public class OutputFactory implements OutputStreamFactory {
+public class OutputFactory extends AbstractFactory
+        implements
+            OutputStreamFactory {
 
     /**
      * This class provides a mutable Integer.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.10 $
+     * @version $Revision: 1.11 $
      */
     private class Int {
 
@@ -113,11 +117,6 @@ public class OutputFactory implements OutputStreamFactory {
     private String basename;
 
     /**
-     * The field <tt>config</tt> contains the configuration for this factory.
-     */
-    private transient Configuration config;
-
-    /**
      * The field <tt>countMap</tt> contains the internal counter for file names.
      */
     private Map countMap = new HashMap();
@@ -134,14 +133,9 @@ public class OutputFactory implements OutputStreamFactory {
     private String destination;
 
     /**
-     * The field <tt>extension</tt> contains the default extension.
+     * The field <tt>defaultExtension</tt> contains the default extension.
      */
-    private String extension = null;
-
-    /**
-     * The field <tt>format</tt> contains the format for file name.
-     */
-    private String format;
+    private String defaultExtension = null;
 
     /**
      * The field <tt>outputDirectories</tt> contaoins the list of output
@@ -156,33 +150,20 @@ public class OutputFactory implements OutputStreamFactory {
      * @param outdirs the list of output directories
      * @param basename the base name of the main stream
      *
-     * @throws ConfigurationMissingException in case that the configuration
-     * argument is <code>null</code>
-     * @throws ConfigurationMissingAttributeException in case that the
-     * attribute for the default encoding is missing
+     * @throws ConfigurationException in case of an configuration error
      */
     public OutputFactory(final Configuration configuration,
             final String[] outdirs, final String basename)
-            throws ConfigurationMissingException,
-                ConfigurationMissingAttributeException {
+            throws ConfigurationException {
 
         super();
-        this.outputDirectories = outdirs;
-        this.basename = basename;
-        this.config = configuration;
-        this.destination = basename;
-        if (config == null) {
+        if (configuration == null) {
             throw new ConfigurationMissingException("Output");
         }
-        if (config.getAttribute(ENCODING_ATTRIBUTE) == null) {
-            throw new ConfigurationMissingAttributeException(
-                    ENCODING_ATTRIBUTE, config);
-        }
-        format = config.getAttribute(FORMAT_ATTRIBUTE);
-        if (format == null) {
-            throw new ConfigurationMissingAttributeException(FORMAT_ATTRIBUTE,
-                    config);
-        }
+        configure(configuration);
+        this.outputDirectories = outdirs;
+        this.basename = basename;
+        this.destination = basename;
     }
 
     /**
@@ -196,9 +177,9 @@ public class OutputFactory implements OutputStreamFactory {
     /**
      * @see de.dante.extex.documentWriter.OutputStreamFactory#getOutputStream()
      */
-    public OutputStream getOutputStream() throws OutputStreamOpenException {
+    public OutputStream getOutputStream() throws DocumentWriterException {
 
-        return getOutputStream(null, extension);
+        return getOutputStream(null, defaultExtension);
     }
 
     /**
@@ -206,7 +187,7 @@ public class OutputFactory implements OutputStreamFactory {
      *      java.lang.String)
      */
     public OutputStream getOutputStream(final String type)
-            throws OutputStreamOpenException {
+            throws DocumentWriterException {
 
         return getOutputStream(null, type);
     }
@@ -222,13 +203,20 @@ public class OutputFactory implements OutputStreamFactory {
      * @return a stream for the output or <code>null</code> if none could be
      * opened.
      *
-     * @throws OutputStreamOpenException in case of a problem
+     * @throws DocumentWriterException in case of an error
      *
      * @see de.dante.extex.documentWriter.OutputStreamFactory#getOutputStream(
      *      java.lang.String, java.lang.String)
      */
     public OutputStream getOutputStream(final String name, final String type)
-            throws OutputStreamOpenException {
+            throws DocumentWriterException {
+
+        String format;
+        try {
+            format = selectConfiguration(type).getAttribute(FORMAT_ATTRIBUTE);
+        } catch (ConfigurationException e) {
+            throw new DocumentWriterException(e);
+        }
 
         Int iCount = (Int) countMap.get(type);
         if (iCount == null) {
@@ -245,14 +233,14 @@ public class OutputFactory implements OutputStreamFactory {
                 return defaultStream;
             }
             isDefault = true;
-            filename = basename + (extension == null ? "" : "." + extension);
+            filename = basename + (type == null ? "" : "." + type);
             destination = filename;
         } else {
             filename = MessageFormat.format(format, //
                     new Object[]{basename, //
                             (name == null ? "" : name), //
-                            new Long(cnt),
-                            (extension == null ? "" : "." + extension)});
+                            new Long(cnt), //
+                            (type == null ? "" : "." + type)});
         }
 
         if (outputDirectories != null) {
@@ -266,7 +254,7 @@ public class OutputFactory implements OutputStreamFactory {
         }
 
         try {
-            Configuration cfg = config.getConfiguration(type);
+            Configuration cfg = getConfiguration().getConfiguration(type);
             Iterator iter = cfg.iterator(PATH_TAG);
             while (iter.hasNext()) {
                 OutputStream os = openOutputStream((String) (iter.next()),
@@ -323,11 +311,12 @@ public class OutputFactory implements OutputStreamFactory {
     }
 
     /**
-     * @see de.dante.extex.documentWriter.OutputStreamFactory#setExtension(java.lang.String)
+     * @see de.dante.extex.documentWriter.OutputStreamFactory#setExtension(
+     *      java.lang.String)
      */
     public void setExtension(String extension) {
 
-        this.extension = extension;
+        this.defaultExtension = extension;
     }
 
 }
