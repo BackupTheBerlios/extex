@@ -32,7 +32,7 @@ import de.dante.util.GeneralException;
  * @see "TeX -- The Program [138]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class RuleNode extends AbstractNode implements Node {
 
@@ -108,12 +108,13 @@ public class RuleNode extends AbstractNode implements Node {
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.Node#toText(java.lang.StringBuffer, java.lang.String)
+     * @see de.dante.extex.typesetter.type.Node#toText(
+     *      java.lang.StringBuffer,
+     *      java.lang.String)
      */
-    public void toText(StringBuffer sb, String prefix) {
+    public void toText(final StringBuffer sb, final String prefix) {
 
         // TODO gene: toText unimplemented
-
     }
 
     /**
