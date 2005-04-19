@@ -63,7 +63,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class FontFactory implements Serializable {
 
@@ -87,12 +87,12 @@ public class FontFactory implements Serializable {
     /**
      * the file finder
      */
-    private ResourceFinder finder;
+    private transient ResourceFinder finder;
 
     /**
      * Configuration for <tt>Type</tt>
      */
-    private Configuration cfgType;
+    private transient Configuration cfgType;
 
     /**
      * Creates a new object.
