@@ -43,7 +43,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * TODO gene: missing JavaDoc.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TeXOutputRoutine implements OutputRoutine {
 
@@ -88,18 +88,7 @@ public class TeXOutputRoutine implements OutputRoutine {
             throws GeneralException {
 
         Context context = interpreter.getContext();
-        if (!context.getBox(OUTPUT_BOX).isVoid()) {
-            throw new HelpingException(LocalizerFactory
-                    .getLocalizer(TeXOutputRoutine.class.getName()),
-                    "TTP.NonEmptyOutBox", context.esc("box"), OUTPUT_BOX);
-        }
-
         Count deadcyles = context.getCount("deadcyles");
-        deadcyles.add(1);
-        if (deadcyles.ge(context.getCount("maxdeadcycles"))) {
-            throw new InterpreterException(LocalizerFactory.getLocalizer(
-                    TeXOutputRoutine.class.getName()).format("TTP.TooMuchDead"));
-        }
 
         Tokens output = context.getToks("output");
         if (output.length() == 0) {
@@ -111,6 +100,20 @@ public class TeXOutputRoutine implements OutputRoutine {
             }
             return;
         }
+
+        deadcyles.add(1);
+        if (deadcyles.ge(context.getCount("maxdeadcycles"))) {
+            throw new InterpreterException(LocalizerFactory.getLocalizer(
+                    TeXOutputRoutine.class.getName()).format("TTP.TooMuchDead"));
+        }
+
+        Box box = context.getBox(OUTPUT_BOX);
+        if (box != null && !box.isVoid()) {
+            throw new HelpingException(LocalizerFactory
+                    .getLocalizer(TeXOutputRoutine.class.getName()),
+                    "TTP.NonEmptyOutBox", context.esc("box"), OUTPUT_BOX);
+        }
+
         context.setBox(OUTPUT_BOX, new Box(vlist), true);
         interpreter.push(rightBrace);
         interpreter.push(output);
@@ -121,7 +124,7 @@ public class TeXOutputRoutine implements OutputRoutine {
         }
         interpreter.executeGroup();
 
-        if (!context.getBox(OUTPUT_BOX).isVoid()) {
+        if (!box.isVoid()) {
             throw new HelpingException(LocalizerFactory
                     .getLocalizer(TeXOutputRoutine.class.getName()),
                     "TTP.NonEmptyOutBoxAfter", context.esc("box"), OUTPUT_BOX);
