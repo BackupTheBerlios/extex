@@ -166,7 +166,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  *   <dt><tt>&lang;file&rang;</tt></dt>
  *   <dd>
  *    This parameter contains the file to read from. A file name may
- *    not start with a backslash or a ampercent. It has no default.
+ *    not start with a backslash or a ampersand. It has no default.
  *   </dd>
  *   <dd>Property:
  *    <a href="#extex.file"><tt>extex.file</tt></a></dd>
@@ -253,7 +253,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  *
  *   <dt><a name="-ini"><tt>-ini</tt></a></dt>
  *   <dd>
- *    If set to <code>true</code> then act as initex. This coµmand line
+ *    If set to <code>true</code> then act as initex. This command line
  *    option is defined for compatibility to TeX only. In ExTeX it has no
  *    effect at all.
  *   </dd>
@@ -262,8 +262,9 @@ import de.dante.util.resource.ResourceFinderFactory;
  *   <dt><a name="-interaction"><tt>-interaction &lang;mode&rang;</tt></a></dt>
  *   <dd>
  *    This parameter contains the interaction mode. Possible values are
- *    the numbers 0..3 and the symbolic names batchmode (0), nonstopmode (1),
- *    scrollmode (2), and errorstopmode (3).
+ *    the numbers 0..3 and the symbolic names <tt>batchmode</tt> (0),
+ *    <tt>nonstopmode</tt> (1), <tt>scrollmode</tt> (2), and
+ *    <tt>errorstopmode</tt> (3).
  *   </dd>
  *   <dd>Property:
  *    <tt><a href="#extex.interaction">extex.interaction</a></tt></dd>
@@ -358,7 +359,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  *
  * <p>
  *  Settings can be stored in properties files. Those settings are the
- *  fallbacks if no corresponding command line arguments are found.
+ *  fallback if no corresponding command line arguments are found.
  * </p>
  * <p>
  *  The properties are stored in a file named <tt>.extex</tt>. It is
@@ -447,8 +448,9 @@ import de.dante.util.resource.ResourceFinderFactory;
  *   <dt><a name="extex.interaction"/><tt>extex.interaction</tt></dt>
  *   <dd>
  *    This parameter contains the interaction mode. possible values are
- *    the numbers 0..3 and the symbolic names batchmode (0), nonstopmode (1),
- *    scrollmode (2), and errorstopmode (3).
+ *    the numbers 0..3 and the symbolic names <tt>batchmode</tt> (0),
+ *    <tt>nonstopmode</tt> (1), <tt>scrollmode</tt> (2), and
+ *    <tt>errorstopmode</tt> (3).
  *   </dd>
  *   <dd>Command line:
  *    <a href="#-interaction"><tt>-interaction &lang;mode&rang;</tt></a></dd>
@@ -457,7 +459,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  *   <dt><a name="extex.jobname"/><tt>extex.jobname</tt></dt>
  *   <dd>
  *    This parameter contains the name of the job. It is overwritten
- *    if a file is given to read from. In this case the basename of
+ *    if a file is given to read from. In this case the base name of
  *    the input file is used instead.
  *   </dd>
  *   <dd>Command line:
@@ -481,7 +483,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  *
  *   <dt><a name="extex.nobanner"/><tt>extex.nobanner</tt></dt>
  *   <dd>
- *    This parameter contains a boolean indicating that the banner should be
+ *    This parameter contains a Boolean indicating that the banner should be
  *    suppressed.
  *   </dd>
  *
@@ -536,25 +538,25 @@ import de.dante.util.resource.ResourceFinderFactory;
  *
  *   <dt><a name="extex.trace.input.files"/><tt>extex.trace.input.files</tt></dt>
  *   <dd>
- *    This boolean parameter contains the indicator whether or not to trace the
+ *    This Boolean parameter contains the indicator whether or not to trace the
  *    search for input files.
  *   </dd>
  *
  *   <dt><a name="extex.trace.font.files"/><tt>extex.trace.font.filess</tt></dt>
  *   <dd>
- *    This boolean parameter contains the indicator whether or not to trace the
+ *    This Boolean parameter contains the indicator whether or not to trace the
  *    search for font files.
  *   </dd>
  *
  *   <dt><a name="extex.trace.macros"/><tt>extex.trace.macros</tt></dt>
  *   <dd>
- *    This boolean parameter contains the indicator whether or not to trace the
+ *    This Boolean parameter contains the indicator whether or not to trace the
  *    execution of macros.
  *   </dd>
  *
  *   <dt><a name="extex.trace.tokenizer"/><tt>extex.trace.tokenizer</tt></dt>
  *   <dd>
- *    This boolean parameter contains the indicator whether or not to trace the
+ *    This Boolean parameter contains the indicator whether or not to trace the
  *    work of the tokenizer.
  *   </dd>
  *
@@ -617,7 +619,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.96 $
+ * @version $Revision: 1.97 $
  */
 public class ExTeX {
 
@@ -705,7 +707,7 @@ public class ExTeX {
 
     /**
      * The field <tt>PROP_INI</tt> contains the name of the property for the
-     * boolean value indicating that some kind of emulations for iniTeX should
+     * Boolean value indicating that some kind of emulations for iniTeX should
      * be provided. Currently this has no effect in ExTeX.
      */
     private static final String PROP_INI = "extex.ini";
@@ -725,7 +727,7 @@ public class ExTeX {
 
     /**
      * The field <tt>PROP_JOBNAME_MASTER</tt> contains the name of the
-     * property for the jobname to be used with high priority.
+     * property for the job name to be used with high priority.
      */
     private static final String PROP_JOBNAME_MASTER = "extex.jobnameMaster";
 
@@ -737,7 +739,7 @@ public class ExTeX {
 
     /**
      * The field <tt>PROP_NO_BANNER</tt> contains the name of the property for
-     * the boolean value indicating whether or not to show a program banner.
+     * the Boolean value indicating whether or not to show a program banner.
      */
     private static final String PROP_NO_BANNER = "extex.nobanner";
 
@@ -781,28 +783,28 @@ public class ExTeX {
 
     /**
      * The field <tt>PROP_TRACE_FONT_FILES</tt> contains the name of the
-     * property for the boolean determining whether or not the searching for
+     * property for the Boolean determining whether or not the searching for
      * font files should produce tracing output.
      */
     private static final String PROP_TRACE_FONT_FILES = "extex.trace.font.files";
 
     /**
      * The field <tt>PROP_TRACE_INPUT_FILES</tt> contains the name of the
-     * property for the boolean determining whether or not the searching for
+     * property for the Boolean determining whether or not the searching for
      * input files should produce tracing output.
      */
     private static final String PROP_TRACE_INPUT_FILES = "extex.trace.input.files";
 
     /**
      * The field <tt>PROP_TRACE_MACROS</tt> contains the name of the
-     * property for the boolean determining whether or not the execution of
+     * property for the Boolean determining whether or not the execution of
      * macros should produce tracing output.
      */
     private static final String PROP_TRACE_MACROS = "extex.trace.macros";
 
     /**
      * The field <tt>PROP_TRACE_TOKENIZER</tt> contains the name of the
-     * property for the boolean determining whether or not the tokenizer
+     * property for the Boolean determining whether or not the tokenizer
      * should produce tracing output.
      */
     private static final String PROP_TRACE_TOKENIZER = "extex.trace.tokenizer";
@@ -1301,8 +1303,8 @@ public class ExTeX {
     }
 
     /**
-     * Log a throwable including its stack trace to the logger.
-     * @param e the throwable to log
+     * Log a Throwable including its stack trace to the logger.
+     * @param e the Throwable to log
      */
     protected void logInternalError(final Throwable e) {
 
@@ -1325,7 +1327,7 @@ public class ExTeX {
     }
 
     /**
-     * Creat a default font for the interpreter context.
+     * Create a default font for the interpreter context.
      *
      * @param config the configuration object for the font
      * @param fontFactory the font factory to request the font from
@@ -1373,9 +1375,9 @@ public class ExTeX {
      * Create a new document writer.
      *
      * @param config the configuration object for the document writer
-     * @param jobname the jobname to use
+     * @param jobname the job name to use
      * @param outFactory the output factory
-     * @param options the options tobe passed to the document writer
+     * @param options the options to be passed to the document writer
      *
      * @return the new document writer
      *
@@ -1583,7 +1585,7 @@ public class ExTeX {
      * Create a new typesetter.
      *
      * @param config the configuration object for the typesetter
-     * @param docWriter the document writer to be used as backend
+     * @param docWriter the document writer to be used as back end
      * @param context the interpreter context
      *
      * @return the new typesetter
