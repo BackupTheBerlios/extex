@@ -43,7 +43,7 @@ package de.dante.extex.interpreter;
  *  <tr>
  *   <td><b>global</b></td>
  *   <td><tt>\global</tt></td>
- *   <td>The global flag controls the sope of assignments like <tt>\def</tt>s.
+ *   <td>The global flag controls the scope of assignments like <tt>\def</tt>s.
  *   </td>
  *  </tr>
  *  <tr>
@@ -76,7 +76,7 @@ package de.dante.extex.interpreter;
  * </table>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public interface Flags {
 
