@@ -48,7 +48,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.46 $
+ * @version $Revision: 1.47 $
  */
 public interface TokenSource {
 
@@ -336,15 +336,16 @@ public interface TokenSource {
 
     /**
      * Scan the input stream for tokens making up an integer, this is a number
-     * optionally preceeded by a sign (+ or -). The number can be preceeded by
-     * optional whitespace. Whitespace is also ignored between the sign and the
-     * number. All non-whitespace characters must have the catcode OTHER.
+     * optionally preceded by a sign (+ or -). The number can be preceded by
+     * optional white space. White space is also ignored between the sign and
+     * the number. All non-whitespace characters must have the category code
+     * OTHER.
      *
      * <doc type="syntax" name="number">
      * <pre class="syntax">
      *   &lang;number&rang; </pre>
      * <p>
-     *  A number consists of a non-empty sequence of digits with catcode
+     *  A number consists of a non-empty sequence of digits with category code
      *  {@link de.dante.extex.scanner.type.Catcode#OTHER OTHER}. The number is
      *  optionally preceded by white space and a sign <tt>+</tt> or <tt>-</tt>.
      * </p>
