@@ -20,7 +20,6 @@
 package de.dante.extex.typesetter.pageBuilder;
 
 import de.dante.extex.documentWriter.DocumentWriter;
-import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.typesetter.OutputRoutine;
 import de.dante.extex.typesetter.TypesetterOptions;
@@ -32,7 +31,7 @@ import de.dante.extex.typesetter.type.node.VerticalListNode;
  * This interface describes the capabilities of a page builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public interface PageBuilder {
 
@@ -48,7 +47,7 @@ public interface PageBuilder {
      * This method is used when the page builder has received its last nodes.
      * It indicates that now the pages should be written out.
      * <p>
-     * Nevertheless some shipouts might come afterwards.
+     * Nevertheless some ship-outs might come afterwards.
      * </p>
      *
      * @param nodes the nodes to send
@@ -88,13 +87,6 @@ public interface PageBuilder {
     void setDocumentWriter(DocumentWriter docWriter);
 
     /**
-     * Setter for the output routine.
-     *
-     * @param output the output routine
-     */
-    void setOutputRoutine(OutputRoutine output);
-
-    /**
      * Setter for options.
      *
      * @param options the options to set
@@ -102,10 +94,10 @@ public interface PageBuilder {
     void setOptions(TypesetterOptions options);
 
     /**
-     * Setter for the interpreter.
+     * Setter for the output routine.
      *
-     * @param interpreter the interpreter to be used for running the
-     *  output routine in
+     * @param output the output routine
      */
-    void setInterpreter(Interpreter interpreter);
+    void setOutputRoutine(OutputRoutine output);
+
 }

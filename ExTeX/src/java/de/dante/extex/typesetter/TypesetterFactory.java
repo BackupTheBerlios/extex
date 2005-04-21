@@ -49,7 +49,7 @@ import de.dante.util.framework.AbstractFactory;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class TypesetterFactory extends AbstractFactory {
 
@@ -72,7 +72,7 @@ public class TypesetterFactory extends AbstractFactory {
      * configuration. The sub-configuration <code>PageBuilder</code> is used
      * to determine the requested properties.
      *
-     * @param config the conficguration to use
+     * @param config the configuration to use
      * @param context the interpreter context
      * @param typesetter the typesetter associated with it
      *
@@ -83,15 +83,13 @@ public class TypesetterFactory extends AbstractFactory {
      */
     private PageBuilder makePageBuilder(final Configuration config,
             final Context context, final Typesetter typesetter)
-            throws ConfigurationException, TypesetterException {
+            throws ConfigurationException,
+                TypesetterException {
 
         Configuration cfg = config.getConfiguration("PageBuilder");
-        PageBuilder pageBuilder = (PageBuilder) createInstanceForConfiguration(cfg,
-                PageBuilder.class);
+        PageBuilder pageBuilder = (PageBuilder) createInstanceForConfiguration(
+                cfg, PageBuilder.class);
         pageBuilder.setContext(context);
-        Interpreter interpreter = new Max(); //TODO gene: use cfg and factory
-        interpreter.setContext(context);
-        pageBuilder.setInterpreter(interpreter);
         //TODO gene: pageBuilder.setTypesetter(typesetter);
         return pageBuilder;
     }
@@ -136,7 +134,8 @@ public class TypesetterFactory extends AbstractFactory {
      * @throws TypesetterException in case of another error
      */
     public Typesetter newInstance(final String type, final Context context)
-            throws TypesetterException, ConfigurationException {
+            throws TypesetterException,
+                ConfigurationException {
 
         Configuration cfg = selectConfiguration(type);
 

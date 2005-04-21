@@ -37,7 +37,7 @@ import de.dante.util.GeneralException;
  * This is a first reference implementation of a page builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class TrivialPageBuilder implements PageBuilder {
 
@@ -146,14 +146,6 @@ public class TrivialPageBuilder implements PageBuilder {
     public void setDocumentWriter(final DocumentWriter docWriter) {
 
         documentWriter = docWriter;
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.pageBuilder.PageBuilder#setInterpreter(
-     *      de.dante.extex.interpreter.Interpreter)
-     */
-    public void setInterpreter(final Interpreter interpreter) {
-
     }
 
     /**
