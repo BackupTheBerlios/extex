@@ -48,7 +48,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.45 $
+ * @version $Revision: 1.46 $
  */
 public interface TokenSource {
 
@@ -65,7 +65,7 @@ public interface TokenSource {
      * processing. This normally means that the interpreter is forced to
      * terminate more or less gracefully.
      *
-     * @param context the interprester context
+     * @param context the interpreter context
      *
      * @throws InterpreterException in case of an error
      */
@@ -174,7 +174,7 @@ public interface TokenSource {
      * in the input stream and <code>false</code> is returned.
      * <p>
      * Spaces before the keyword are removed from the input stream. Those
-     * speces are not restored, even if the keyword is not found.
+     * spaces are not restored, even if the keyword is not found.
      * </p>
      * <p>
      * Space tokens after the keyword are removed from the input stream.
@@ -201,7 +201,7 @@ public interface TokenSource {
     Locator getLocator();
 
     /**
-     * Get the next token which has not the catcode
+     * Get the next token which has not the category code
      * {@link de.dante.extex.scanner.type.Catcode#SPACE SPACE}.
      *
      * @param context the interpreter context
@@ -321,8 +321,8 @@ public interface TokenSource {
 
     /**
      * Scan the input stream for tokens making up a character code, this is a
-     * sequence of digits with catcode <tt>OTHER</tt>. The number can be
-     * preceeded by optional whitespace. Alternate representations for an
+     * sequence of digits with category code <tt>OTHER</tt>. The number can be
+     * preceded by optional white space. Alternate representations for an
      * character code exist.
      *
      * @param context the interpreter context
@@ -346,7 +346,7 @@ public interface TokenSource {
      * <p>
      *  A number consists of a non-empty sequence of digits with catcode
      *  {@link de.dante.extex.scanner.type.Catcode#OTHER OTHER}. The number is
-     *  optionally precceded by whitespace and a sign <tt>+</tt> or <tt>-</tt>.
+     *  optionally preceded by white space and a sign <tt>+</tt> or <tt>-</tt>.
      * </p>
      * <p>
      *  Tokens are expanded while gathering the requested values.
@@ -354,7 +354,6 @@ public interface TokenSource {
      * </doc>
      *
      * @param context the interpreter context
-     *
      *
      * @return the value of the integer scanned
      *
@@ -366,9 +365,9 @@ public interface TokenSource {
                 MissingNumberException;
 
     /**
-     * Scan the input for the next token which has not the catcode SPACE.
+     * Scan the input for the next token which has not the category code SPACE.
      *
-     * @param context the interpreter contex
+     * @param context the interpreter context
      *
      * @return the next non-space token or <code>null</code> at EOF
      *
@@ -384,8 +383,8 @@ public interface TokenSource {
 
     /**
      * Scan the input stream for tokens making up a number, this is a sequence
-     * of digits with catcode <tt>OTHER</tt>. The number can be preceeded by
-     * optional whitespace. Alternate representations for an integer exist.
+     * of digits with category code <tt>OTHER</tt>. The number can be preceded
+     * by optional white space. Alternate representations for an integer exist.
      *
      * @param context the interpreter context
      *
@@ -397,8 +396,8 @@ public interface TokenSource {
 
     /**
      * Scan the input stream for tokens making up a number, i.e. a sequence of
-     * digits with catcode OTHER. The number can be preceeded by optional
-     * whitespace.
+     * digits with category code OTHER. The number can be preceded by optional
+     * white space.
      * <p>
      *  This method implements the generalization of several syntactic
      *  definitions from TeX:
@@ -419,7 +418,7 @@ public interface TokenSource {
      *
      * @return the value of the integer scanned
      *
-     * @throws InterpreterException in case of an error in an obeserver
+     * @throws InterpreterException in case of an error in an observer
      * @throws MissingNumberException in case that no number could be read
      */
     long scanNumber(Context context, Token token)
@@ -475,8 +474,8 @@ public interface TokenSource {
     Tokens scanTokens(Context context) throws InterpreterException;
 
     /**
-     * Get the next expanded token form the input streams between a leftbace
-     * character (usually <code>{</code>) and a rightbrace character
+     * Get the next expanded token form the input streams between a left brace
+     * character (usually <code>{</code>) and a right brace character
      * (usually <code>}</code>) and convert it to a <code>String</code>. If the
      * current input stream is at its end then the next one on the streamStack
      * is used until a token could be read. If all stream are at the end then
