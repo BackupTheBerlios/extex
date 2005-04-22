@@ -27,7 +27,7 @@ import de.dante.util.UnicodeChar;
 
 /**
  * The ligature node represents a ligature of several characters.
- * Ligatures can be build amoung characters from one common font only. The
+ * Ligatures can be build among characters from one common font only. The
  * information where and how to build ligatures comes from the font.
  * The original characters are contained in this node to be restored when
  * required.
@@ -36,7 +36,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class LigatureNode extends CharNode implements Node {
 
@@ -122,7 +122,7 @@ public class LigatureNode extends CharNode implements Node {
 
     /**
      * This method returns the printable representation.
-     * This is meant to produce a exaustive form as it is used in tracing
+     * This is meant to produce a exhaustive form as it is used in tracing
      * output to the log file.
      *
      * @return the printable representation
@@ -132,7 +132,6 @@ public class LigatureNode extends CharNode implements Node {
     public String toString() {
 
         return " (ligature " + left.toString() + "." + right.toString() + ")";
-        //TODO gene: toString() incomplete
     }
 
     /**
