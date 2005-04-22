@@ -27,14 +27,14 @@ import de.dante.extex.documentWriter.exception.DocumentWriterException;
  * This is the factory for new OutputStreams.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface OutputStreamFactory {
 
     /**
      * Getter for the destination.
      *
-     * @return the name of the dastination
+     * @return the name of the destination
      */
     String getDestination();
 
