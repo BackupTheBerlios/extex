@@ -25,10 +25,10 @@ import java.io.OutputStream;
  * This interface describes the ability of a DocumentWriter to produce a single
  * output document.
  *
- * @see 
+ * @see de.dante.extex.documentWriter.MultipleDocumentStream
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface SingleDocumentStream {
 
