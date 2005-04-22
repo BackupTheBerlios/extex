@@ -32,12 +32,12 @@ import de.dante.extex.typesetter.type.NodeList;
 import de.dante.util.UnicodeChar;
 
 /**
- * This interface describes the capabiliteis of a list maker.
+ * This interface describes the capabilities of a list maker.
  *
  * @see "TeX -- The Program [211]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.33 $
+ * @version $Revision: 1.34 $
  */
 public interface ListMaker {
 
@@ -65,8 +65,8 @@ public interface ListMaker {
      * Add a space node to the list.
      *
      * @param typesettingContext the typesetting context for the space
-     * @param spacefactor the spacefactor to use for this space or
-     * <code>null</code> to indicate that the default speacefactor should
+     * @param spacefactor the space factor to use for this space or
+     * <code>null</code> to indicate that the default space factor should
      * be used.
      *
      * @throws TypesetterException in case of an error
@@ -108,7 +108,7 @@ public interface ListMaker {
     Mode getMode();
 
     /**
-     * Notification method to deal the case that a left brace hs been
+     * Notification method to deal the case that a left brace has been
      * encountered.
      */
     void leftBrace();
@@ -128,7 +128,7 @@ public interface ListMaker {
 
     /**
      * Treat a math shift character.
-     * Usually this leads to entering or leaving math mode -- maybe after
+     * Usually this leads to entering or leaving math mode &ndash; maybe after
      * inspection of a following token.
      *
      * @param context the interpreter context
@@ -155,7 +155,7 @@ public interface ListMaker {
     void removeLastNode();
 
     /**
-     * Notification method to deal the case that a right brace hs been
+     * Notification method to deal the case that a right brace has been
      * encountered.
      *
      * @throws TypesetterException in case of an error
@@ -165,7 +165,7 @@ public interface ListMaker {
     /**
      * Setter for the previous depth parameter.
      *
-     * @param pd the prec depth parameter
+     * @param pd the previous depth parameter
      *
      * @throws TypesetterException in case of an error
      */
