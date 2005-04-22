@@ -36,7 +36,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface Hyphenator extends Serializable {
 
@@ -44,7 +44,7 @@ public interface Hyphenator extends Serializable {
      * Add a user hyphenation.
      *
      * @param word the word
-     * @param context the iterpreter context
+     * @param context the interpreter context
      *
      * @throws HyphenationException in case of an error
      */
@@ -61,16 +61,20 @@ public interface Hyphenator extends Serializable {
     void addPattern(Tokens pattern) throws HyphenationException;
 
     /**
-     * Return the value for lefthyphenmin
-     * @return  lefthyphenmin
+     * Return the value for the minimum number of characters before a
+     * hyphenation on the left hand side of a word.
+     *
+     * @return the value \lefthyphenmin
      *
      * @throws HyphenationException in case of an error
      */
     long getLeftHyphenmin() throws HyphenationException;
 
     /**
-     * Return the value for righthyphenmin
-     * @return  righthyphenmin
+     * Return the value for the minimum number of characters before a
+     * hyphenation on the right hand side of a word.
+     *
+     * @return the value \righthyphenmin
      *
      * @throws HyphenationException in case of an error
      */
@@ -79,11 +83,11 @@ public interface Hyphenator extends Serializable {
     /**
      * Insert the hyphenation marks for a horizontal list of nodes.
      *
-     * @param nodelist the horizonzal node list
+     * @param nodelist the horizontal node list
      * @param context the context
      * @param hyphen the tokens to be inserted for hyphens
      *
-     * @return a nodelist with hyphenation marks inserted
+     * @return a node list with hyphenation marks inserted
      *
      * @throws HyphenationException in case of an error
      */
@@ -102,7 +106,8 @@ public interface Hyphenator extends Serializable {
     boolean isHyphenActive() throws HyphenationException;
 
     /**
-     * Set the value for hyphenactive
+     * Set the value for hyphenactive.
+     *
      * @param active the new value
      *
      * @throws HyphenationException in case of an error
@@ -110,7 +115,9 @@ public interface Hyphenator extends Serializable {
     void setHyphenActive(boolean active) throws HyphenationException;
 
     /**
-     * Set the value for lefthyphenmin
+     * Set the value for the minimum number of characters before a
+     * hyphenation on the left hand side of a word.
+     *
      * @param left the new value
      *
      * @throws HyphenationException in case of an error
@@ -118,7 +125,9 @@ public interface Hyphenator extends Serializable {
     void setLeftHyphenmin(long left) throws HyphenationException;
 
     /**
-     * Set the value for righthyphenmin
+     * Set the value for the minimum number of characters before a
+     * hyphenation on the right hand side of a word.
+     *
      * @param right the new value
      *
      * @throws HyphenationException in case of an error
