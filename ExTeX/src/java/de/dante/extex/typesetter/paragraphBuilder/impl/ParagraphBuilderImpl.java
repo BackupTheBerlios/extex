@@ -31,7 +31,7 @@ import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.main.logging.LogFormatter;
-import de.dante.extex.typesetter.Discartable;
+import de.dante.extex.typesetter.Discardable;
 import de.dante.extex.typesetter.HyphenationEnabled;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.hyphenator.Hyphenator;
@@ -147,7 +147,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * Treat segments of a paragraph separated by forced breaks separately.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class ParagraphBuilderImpl
         implements
@@ -453,7 +453,7 @@ public class ParagraphBuilderImpl
             final NodeList nodes, final Glue wd) {
 
         int i = start;
-        while (++i < len && nodes.get(i) instanceof Discartable) {
+        while (++i < len && nodes.get(i) instanceof Discardable) {
             wd.add(nodes.get(i).getWidth());
         }
         return i - 1;
@@ -567,7 +567,7 @@ public class ParagraphBuilderImpl
                 node.addWidthTo(w);
 
             } else if (node instanceof GlueNode
-                    && !(nodes.get(i - 1) instanceof Discartable)) {
+                    && !(nodes.get(i - 1) instanceof Discardable)) {
 
                 node.addWidthTo(wd);
                 breakList.add(new BreakPoint(i, w, wd, 0));
@@ -722,7 +722,7 @@ public class ParagraphBuilderImpl
 
             int max = (i + 1 < a.length ? a[i + 1] : nodes.size());
             // skip discartable items at end of line
-            while (hi < max && nodes.get(hi) instanceof Discartable) {
+            while (hi < max && nodes.get(hi) instanceof Discardable) {
                 hi++;
             }
         }

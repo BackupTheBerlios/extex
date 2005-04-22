@@ -96,7 +96,7 @@ import de.dante.util.observer.Observer;
  * <li>For each new group a new instance of a {@link Group Group} is created
  * with the old one as next group.</li>
  * <li>If a group is closed then the next group is used as current group and
- * the formerly current group is discarted.</li>
+ * the formerly current group is discarded.</li>
  * <li>If a value has to be found in a group then the next chain has to be
  * traced down until the value is found. <br />An implementation variant might
  * want to insert the value found into the higher groups; all or some of them
@@ -105,7 +105,7 @@ import de.dante.util.observer.Observer;
  * <li>If a local value has to be stored then it can be stored in the local
  * group only.</li>
  * <li>If a global value has to be stored then the group chain has to be
- * traversed and the value has to be set in all approrpiate groups: There are
+ * traversed and the value has to be set in all appropriate groups: There are
  * several implementation variants
  * <ul>
  * <li>Clear the value in all groups and set it in the bottommost group.</li>
@@ -118,7 +118,7 @@ import de.dante.util.observer.Observer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.75 $
+ * @version $Revision: 1.76 $
  */
 public class ContextImpl
         implements
@@ -153,7 +153,7 @@ public class ContextImpl
 
     /**
      * The field <tt>afterassignment</tt> contains the token to be inserted
-     * after a assignemnt is completed or <code>null</code>.
+     * after an assignment is completed or <code>null</code>.
      */
     private Token afterassignment = null;
 
@@ -251,7 +251,7 @@ public class ContextImpl
 
     /**
      * The field <tt>magnificationMax</tt> contains the maximal allowed
-     * maginification value. This is initialized to MAGNIFICATION_MAX and
+     * magnification value. This is initialized to MAGNIFICATION_MAX and
      * may be overwritten from within the configuration.
      */
     private long magnificationMax = MAGNIFICATION_MAX;
