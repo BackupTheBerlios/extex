@@ -43,10 +43,10 @@ import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 
 /**
- * This class stores the values for hyphenations and
- * hypernates words. It uses Liang's algorithm as described in the TeX Book.
+ * This class stores the values for hyphenations and hyphenates words.
+ * It uses Liang's algorithm as described in the TeX Book.
  *
- * <h2>Liangs Algorithm</h2>
+ * <h2>Liang's Algorithm</h2>
  *
  * <p>
  *  The hyphenation in TeX is based on Liang's thesis.
@@ -57,7 +57,7 @@ import de.dante.util.UnicodeChar;
  * </p>
  * <p>
  *  This weighted hyphenation codes cna be represented by integers. The
- *  even integers denote the undesirable positions and the odd numers
+ *  even integers denote the undesirable positions and the odd numbers
  *  denote the optional hyphenation points.
  * </p>
  * <p>
@@ -66,7 +66,7 @@ import de.dante.util.UnicodeChar;
  *  position before the letter h, the second number to the position before
  *  the letter p, and so on. Thus this pattern indicates that a
  *  hyphenation point can be inserted between y and p. This leads to
- *  <tt>hy\-ph</tt> if written explicitely in TeX.
+ *  <tt>hy\-ph</tt> if written explicitly in TeX.
  * </p>
  * <p>
  *  The following table shows some more examples taken from the
@@ -114,7 +114,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class LiangsHyphenationTable extends BaseHyphenationTable {
 
