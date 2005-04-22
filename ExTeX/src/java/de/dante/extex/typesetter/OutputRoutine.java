@@ -25,12 +25,12 @@ import de.dante.util.GeneralException;
 
 /**
  * This interface describes the functionality provided by an output routine.
- * A output routne is not necessarily implemented by a program in the macro
- * language. Instead might as well be mplemented in Java or some other extension
- * language.
+ * A output routine is not necessarily implemented by a program in the macro
+ * language. Instead might as well be implemented in Java or some other
+ * extension language.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface OutputRoutine {
 
