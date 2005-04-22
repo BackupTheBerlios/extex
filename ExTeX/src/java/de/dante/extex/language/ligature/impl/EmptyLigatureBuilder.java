@@ -30,7 +30,7 @@ import de.dante.extex.typesetter.type.node.CharNode;
  * Nothing is inserted. This is just a noop.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class EmptyLigatureBuilder implements LigatureBuilder {
 
@@ -46,7 +46,7 @@ public class EmptyLigatureBuilder implements LigatureBuilder {
      * @see de.dante.extex.language.ligature.LigatureBuilder#insertLigatures(
      *      de.dante.extex.typesetter.NodeList, int)
      */
-    public int insertLigatures(final NodeList list, int start)
+    public int insertLigatures(final NodeList list, final int start)
             throws HyphenationException {
 
         int i = start;
