@@ -29,7 +29,7 @@ import de.dante.extex.language.hyphenation.exception.DuplicateHyphenationExcepti
 import de.dante.util.UnicodeChar;
 
 /**
- * <h2>Data Structures for Liangs Algorithm</h2>
+ * <h2>Data Structures for Liang's Algorithm</h2>
  *
  * <p>
  *  The basic data structure to store hyphenation patterns is a tree with
@@ -44,7 +44,7 @@ import de.dante.util.UnicodeChar;
  *  The code stored in a node of the hyphen tree represents the superposition of
  *  all codes having an initial sequence in common with the current sequence.
  *  Thus the superposition has to be stores when a new pattern is added. At
- *  runtime it is only necessary to retrieve a single code sequence for each
+ *  run time it is only necessary to retrieve a single code sequence for each
  *  position of the word.
  * </p>
  *
@@ -54,7 +54,7 @@ import de.dante.util.UnicodeChar;
  * or right word boundary.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 class HyphenTree implements Serializable {
 
@@ -173,7 +173,7 @@ class HyphenTree implements Serializable {
     /**
      * Getter for the next tree.
      *
-     * @param uc the unicode character to get the tree for
+     * @param uc the Unicode character to get the tree for
      *
      * @return the next tree
      */
@@ -226,9 +226,9 @@ class HyphenTree implements Serializable {
     }
 
     /**
-     * Setter for hc.
+     * Setter for hyphenation code.
      *
-     * @param code the hc to set
+     * @param code the hyphenation code to set
      */
     public void setCode(final char[] code) {
 
@@ -236,9 +236,9 @@ class HyphenTree implements Serializable {
     }
 
     /**
-     * Setter for hc.
+     * Setter for the hyphenation code with duplicate check.
      *
-     * @param code the hc to set
+     * @param code the hyphenation code to set
      *
      * @throws DuplicateHyphenationException in case that the hyphen code
      *  is already set
