@@ -67,7 +67,7 @@ import de.dante.util.observer.Observer;
  * classes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class MockContext implements Context, TypesetterOptions {
 
@@ -171,7 +171,7 @@ public class MockContext implements Context, TypesetterOptions {
      */
     public Code getCode(final CodeToken t) throws InterpreterException {
 
-        throw new RuntimeException("unimplemented");
+        return null;
     }
 
     /**
