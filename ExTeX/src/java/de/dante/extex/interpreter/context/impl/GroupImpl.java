@@ -60,7 +60,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.40 $
+ * @version $Revision: 1.41 $
  */
 public class GroupImpl implements Group, Tokenizer, Serializable {
 
@@ -250,7 +250,7 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
 
     /**
      * @see de.dante.extex.interpreter.context.impl.Group#afterGroup(
-     *      de.dante.extex.scanner.Token)
+     *      de.dante.extex.scanner.type.Token)
      */
     public void afterGroup(final Token t) {
 
@@ -733,7 +733,7 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
 
     /**
      * @see de.dante.extex.interpreter.context.impl.Group#setCode(
-     *      de.dante.extex.scanner.Token,
+     *      de.dante.extex.scanner.type.Token,
      *      de.dante.extex.interpreter.type.Code, boolean)
      */
     public void setCode(final Token token, final Code code, final boolean global) {

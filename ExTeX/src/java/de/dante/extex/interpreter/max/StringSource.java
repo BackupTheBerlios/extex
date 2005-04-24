@@ -30,7 +30,7 @@ import de.dante.util.configuration.ConfigurationException;
  * This class provides a token source which is fed from a sting.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class StringSource extends Moritz {
 
@@ -65,7 +65,7 @@ public class StringSource extends Moritz {
 
     /**
      * @see de.dante.extex.interpreter.max.Moritz#expand(
-     *      de.dante.extex.scanner.Token)
+     *      de.dante.extex.scanner.type.Token)
      */
     protected Token expand(final Token token) {
 
@@ -83,7 +83,7 @@ public class StringSource extends Moritz {
 
     /**
      * @see de.dante.extex.interpreter.TokenSource#execute(
-     *      de.dante.extex.scanner.Token, Context, Typesetter)
+     *      de.dante.extex.scanner.type.Token, Context, Typesetter)
      */
     public void execute(final Token token, final Context context,
             final Typesetter typesetter) throws InterpreterException {

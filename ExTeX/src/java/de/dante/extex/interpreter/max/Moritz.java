@@ -79,7 +79,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.61 $
+ * @version $Revision: 1.62 $
  */
 public abstract class Moritz
         implements
@@ -276,7 +276,7 @@ public abstract class Moritz
 
     /**
      * @see de.dante.extex.interpreter.TokenSource#execute(
-     *      de.dante.extex.scanner.Token, Context, Typesetter)
+     *      de.dante.extex.scanner.type.Token, Context, Typesetter)
      */
     public abstract void execute(final Token token, final Context context,
             final Typesetter typesetter)
@@ -608,7 +608,7 @@ public abstract class Moritz
      *
      * @throws InterpreterException in case of an error
      *
-     * @see de.dante.extex.interpreter.TokenSource#getOptionalEquals()
+     * @see de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
      */
     public void getOptionalEquals(final Context context)
             throws InterpreterException {
@@ -1019,7 +1019,7 @@ public abstract class Moritz
      *  end of file has been reached before an integer could be acquired
      *
      * @see de.dante.extex.interpreter.TokenSource#scanNumber(
-     *      de.dante.extex.scanner.Token)
+     *      de.dante.extex.scanner.type.Token)
      */
     public long scanNumber(final Context context, final Token token)
             throws InterpreterException,
