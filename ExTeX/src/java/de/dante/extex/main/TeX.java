@@ -19,8 +19,7 @@
 
 package de.dante.extex.main;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,25 +29,31 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.main.exception.MainException;
+import de.dante.extex.main.exception.MainIOException;
 import de.dante.extex.main.exception.MainMissingArgumentException;
 import de.dante.extex.main.exception.MainUnknownOptionException;
+import de.dante.extex.main.inputHandler.TeXInputReader;
 import de.dante.extex.main.logging.LogFormatter;
 import de.dante.extex.main.queryFile.QueryFileHandler;
+import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationFactory;
+import de.dante.util.configuration.ConfigurationUnsupportedEncodingException;
 import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
- * This is the command line interface to ExTeX. It does all the horrible things
- * necessary to interact with the user of the command line in nearly the same
- * way as TeX does.
+ * This is the command line interface to <logo>ExTeX</logo>.
+ * It does all the horrible things necessary to interact with the user of the
+ * command line in nearly the same way as <logo>TeX</logo> does.
  * <p>
  * The command line interface provides the following features:
  * </p>
  * <ul>
- * <li>Specifying format, input file and TeX code on the command line.</li>
+ * <li>Specifying format, input file and <logo>TeX</logo> code on the command
+ *  line.</li>
  * <li>Interacting with the user to get a input file.</li>
  * <li>Interacting with the user in case on an error</li>
  * </ul>
@@ -552,7 +557,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @version $Revision: 1.1 $
  */
-public class ExTeX extends de.dante.extex.ExTeX {
+public class TeX extends de.dante.extex.ExTeX {
 
     /**
      * The constant <tt>COPYRIGHT_YEAR</tt> contains the starting year of
@@ -569,138 +574,10 @@ public class ExTeX extends de.dante.extex.ExTeX {
     private static final String DOT_EXTEX = ".extex";
 
     /**
-     * The constant <tt>EXIT_INTERNAL_ERROR</tt> contains the exit code for
-     * internal errors.
-     */
-    private static final int EXIT_INTERNAL_ERROR = -666;
-
-    /**
-     * The constant <tt>EXIT_OK</tt> contains the exit code of the program for
-     * the success case.
-     */
-    private static final int EXIT_OK = 0;
-
-    /**
      * The constant <tt>VERSION</tt> contains the manually incremented version
      * string.
      */
     private static final String EXTEX_VERSION = new Version().toString();
-
-    /**
-     * The field <tt>PROP_CODE</tt> contains the name of the
-     * property for the TeX code to be inserted at the beginning of the job.
-     */
-    private static final String PROP_CODE = "extex.code";
-
-    /**
-     * The field <tt>PROP_CONFIG</tt> contains the name of the
-     * property for the configuration resource to use.
-     */
-    private static final String PROP_CONFIG = "extex.config";
-
-    /**
-     * The field <tt>PROP_FILE</tt> contains the name of the property for the
-     * input file to read.
-     */
-    private static final String PROP_FILE = "extex.file";
-
-    /**
-     * The field <tt>PROP_FMT</tt> contains the name of the property for the
-     * name of the format file to use.
-     */
-    private static final String PROP_FMT = "extex.fmt";
-
-    /**
-     * The field <tt>PROP_HALT_ON_ERROR</tt> contains the name of the property
-     * indicating whether the processing should stop at the first error.
-     */
-    private static final String PROP_HALT_ON_ERROR = "extex.halt.on.error";
-
-    /**
-     * The field <tt>PROP_INI</tt> contains the name of the property for the
-     * boolean value indicating that some kind of emulations for iniTeX should
-     * be provided. Currently this has no effect in ExTeX.
-     */
-    private static final String PROP_INI = "extex.ini";
-
-    /**
-     * The field <tt>PROP_INTERACTION</tt> contains the name of the
-     * property for the interaction mode.
-     */
-    private static final String PROP_INTERACTION = "extex.interaction";
-
-    /**
-     * The field <tt>PROP_JOBNAME</tt> contains the name of the
-     * property for the job name. The value can be overruled by the property
-     * named in <tt>PROP_JOBNAME_MASTER</tt>.
-     */
-    private static final String PROP_JOBNAME = "extex.jobname";
-
-    /**
-     * The field <tt>PROP_JOBNAME_MASTER</tt> contains the name of the
-     * property for the jobname to be used with high priority.
-     */
-    private static final String PROP_JOBNAME_MASTER = "extex.jobnameMaster";
-
-    /**
-     * The field <tt>PROP_LANG</tt> contains the name of the property for the
-     * language to use for messages.
-     */
-    private static final String PROP_LANG = "extex.lang";
-
-    /**
-     * The field <tt>PROP_OUTPUT_TYPE</tt> contains the name of the property for
-     * the output driver. This value is resolved by the
-     * {@link de.dante.extex.documentWriter.DocumentWriterFactory DocumentWriterFactory}
-     * to find the appropriate class.
-     */
-    private static final String PROP_OUTPUT_TYPE = "extex.output";
-
-    /**
-     * The field <tt>PROP_OUTPUTDIR</tt> contains the name of the
-     * property for the output directory.
-     */
-    private static final String PROP_OUTPUTDIR = "extex.outputdir";
-
-    /**
-     * The field <tt>PROP_PROGNAME</tt> contains the name of the
-     * property for the program name used in usage messages.
-     */
-    private static final String PROP_PROGNAME = "extex.progname";
-
-    /**
-     * The field <tt>PROP_TEXINPUTS</tt> contains the name of the
-     * property for the additional texinputs specification of directories.
-     */
-    private static final String PROP_TEXINPUTS = "extex.texinputs";
-
-    /**
-     * The field <tt>PROP_TRACE_FONT_FILES</tt> contains the name of the
-     * property for the boolean determining whether or not the searching for
-     * font files should produce tracing output.
-     */
-    private static final String PROP_TRACE_FONT_FILES = "extex.trace.font.files";
-
-    /**
-     * The field <tt>PROP_TRACE_INPUT_FILES</tt> contains the name of the
-     * property for the boolean determining whether or not the searching for
-     * input files should produce tracing output.
-     */
-    private static final String PROP_TRACE_INPUT_FILES = "extex.trace.input.files";
-
-    /**
-     * The field <tt>PROP_TRACE_MACROS</tt> contains the name of the
-     * property for the boolean determining whether or not the execution of
-     * macros should produce tracing output.
-     */
-    private static final String PROP_TRACE_MACROS = "extex.trace.macros";
-
-    /**
-     * The field <tt>PROP_TRACE_TOKENIZER</tt> contains the name of the
-     * property for the boolean determining whether or not the tokenizer
-     * should produce tracing output.
-     */
-    private static final String PROP_TRACE_TOKENIZER = "extex.trace.tokenizer";
 
     /**
      * The constant <tt>TRACE_MAP</tt> contains the mapping from single
@@ -713,25 +590,6 @@ public class ExTeX extends de.dante.extex.ExTeX {
         TRACE_MAP.put("f", PROP_TRACE_FONT_FILES);
         TRACE_MAP.put("M", PROP_TRACE_MACROS);
         TRACE_MAP.put("T", PROP_TRACE_TOKENIZER);
-    }
-
-    /**
-     * Log a Throwable including its stack trace to the logger.
-     *
-     * @param logger the target logger
-     * @param text the prefix text to log
-     * @param e the Throwable to log
-     */
-    private static void logException(final Logger logger, final String text,
-            final Throwable e) {
-
-        logger.severe(text == null ? "" : text);
-
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-        PrintWriter writer = new PrintWriter(os);
-        e.printStackTrace(writer);
-        writer.flush();
-        logger.fine(os.toString());
     }
 
     /**
@@ -750,18 +608,18 @@ public class ExTeX extends de.dante.extex.ExTeX {
      * </p>
      *
      * @param args the list of command line arguments
-     *
-     * @see #ExTeX(java.util.Properties,java.lang.String)
      */
     public static void main(final String[] args) {
 
         int status;
 
         try {
-            ExTeX extex = new ExTeX(System.getProperties(), DOT_EXTEX);
-            status = extex.run(args);
+            
+            TeX tex = new TeX(System.getProperties(), DOT_EXTEX);
+            status = tex.run(args);
+
         } catch (Throwable e) {
-            Logger logger = Logger.getLogger(ExTeX.class.getName());
+            Logger logger = Logger.getLogger(TeX.class.getName());
             logger.setUseParentHandlers(false);
             logger.setLevel(Level.ALL);
 
@@ -770,7 +628,7 @@ public class ExTeX extends de.dante.extex.ExTeX {
             consoleHandler.setLevel(Level.WARNING);
             logger.addHandler(consoleHandler);
 
-            Localizer localizer = LocalizerFactory.getLocalizer(ExTeX.class
+            Localizer localizer = LocalizerFactory.getLocalizer(TeX.class
                     .getName());
             logException(logger, //
                     localizer.format("ExTeX.SevereError", e.toString()), e);
@@ -778,6 +636,57 @@ public class ExTeX extends de.dante.extex.ExTeX {
         }
 
         System.exit(status);
+    }
+
+    /**
+     * Initialize the input streams. If the property <i>extex.file</i> is set
+     * and not the empty string, (e.g. from the command line) then this value
+     * is used as file name to read from. If the property <i>extex.code</i>
+     * is set and not the empty string (e.g. from the command line) then this
+     * value is used as initial input after the input file has been processed.
+     * Finally, if everything before failed then read input from the stdin
+     * stream.
+     * @param interpreter the interpreter context
+     *
+     * @throws ConfigurationException in case of a configuration error
+     * @throws MainIOException in case of an IO error
+     */
+    protected boolean initializeStreams(final Interpreter interpreter,
+            final Properties properties)
+            throws ConfigurationException,
+                MainIOException {
+
+        TokenStreamFactory factory = interpreter.getTokenStreamFactory();
+        boolean notInitialized = true;
+
+        try {
+            interpreter.addStream(factory.newInstance(new TeXInputReader(
+                    getLogger(), properties.getProperty(PROP_ENCODING))));
+            notInitialized = false;
+        } catch (UnsupportedEncodingException e) {
+            throw new ConfigurationUnsupportedEncodingException(properties
+                    .getProperty(PROP_ENCODING), "???");
+        }
+
+        super.initializeStreams(interpreter, properties);
+
+        String post = properties.getProperty(PROP_CODE);
+
+        if (post != null && !post.equals("")) {
+            interpreter.addStream(factory.newInstance(post));
+            notInitialized = false;
+        }
+
+        if (notInitialized) {
+            try {
+                interpreter.addStream(factory.newInstance(new TeXInputReader(
+                        getLogger(), properties.getProperty(PROP_ENCODING))));
+            } catch (UnsupportedEncodingException e) {
+                throw new ConfigurationUnsupportedEncodingException(properties
+                        .getProperty(PROP_ENCODING), "???");
+            }
+        }
+        return notInitialized;
     }
 
     /**
@@ -797,7 +706,7 @@ public class ExTeX extends de.dante.extex.ExTeX {
      *
      * @see de.dante.extex.ExTeX#ExTeX(java.util.Properties, java.lang.String)
      */
-    public ExTeX(final Properties theProperties, final String dotFile)
+    public TeX(final Properties theProperties, final String dotFile)
             throws MainException {
 
         super(theProperties, dotFile);
@@ -831,19 +740,13 @@ public class ExTeX extends de.dante.extex.ExTeX {
                         useArg(PROP_CONFIG, args, ++i);
                     } else if ("-copyright".startsWith(arg)) {
                         int year = Calendar.getInstance().get(Calendar.YEAR);
-                        getLogger()
-                                .info(
-                                        getLocalizer()
-                                                .format(
-                                                        "ExTeX.Copyright",
-                                                        (year <= COPYRIGHT_YEAR
-                                                                ? Integer
-                                                                        .toString(COPYRIGHT_YEAR)
-                                                                : Integer
-                                                                        .toString(COPYRIGHT_YEAR)
-                                                                        + "-"
-                                                                        + Integer
-                                                                                .toString(year))));
+                        String copyrightYear = (year <= COPYRIGHT_YEAR
+                                ? Integer.toString(COPYRIGHT_YEAR)
+                                : Integer.toString(COPYRIGHT_YEAR) + "-"
+                                        + Integer.toString(year));
+                        getLogger().info(
+                                getLocalizer().format("ExTeX.Copyright",
+                                        copyrightYear));
                         onceMore = false;
                     } else if ("-help".startsWith(arg)) {
                         getLogger().info(

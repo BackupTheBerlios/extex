@@ -51,10 +51,6 @@ for i in $LIBDIR/*.jar ; do
     LOCALCLASSPATH=$LOCALCLASSPATH$sep$i
 done
 
-#for i in tmp/ExTeX/*.jar ; do
-#    LOCALCLASSPATH=$LOCALCLASSPATH$sep$i
-#done
+exec java -classpath "$LOCALCLASSPATH" de.dante.extex.main.TeX $*
 
-exec java -classpath "$LOCALCLASSPATH" de.dante.extex.ExTeX $*
-  
 #
