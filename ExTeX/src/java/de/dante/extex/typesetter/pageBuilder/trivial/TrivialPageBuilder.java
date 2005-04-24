@@ -22,7 +22,6 @@ package de.dante.extex.typesetter.pageBuilder.trivial;
 import java.io.IOException;
 
 import de.dante.extex.documentWriter.DocumentWriter;
-import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.OutputRoutine;
@@ -37,7 +36,7 @@ import de.dante.util.GeneralException;
  * This is a first reference implementation of a page builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class TrivialPageBuilder implements PageBuilder {
 
