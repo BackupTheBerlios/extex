@@ -29,7 +29,7 @@ import de.dante.util.GeneralException;
  * This WhatsIt node writes some expanded tokens to an out file on shipping.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class WhatsItWriteNode extends WhatsItNode {
 
@@ -44,15 +44,17 @@ public class WhatsItWriteNode extends WhatsItNode {
     private Tokens tokens;
 
     /**
-     * The field <tt>writer</tt> contains the ...
+     * The field <tt>writer</tt> contains the writer used as target when the
+     * node is shipped out.
      */
     private TokensWriter writer;
 
     /**
      * Creates a new object.
+     *
      * @param key the key for the OutFile
      * @param tokens the tokens to write (after expansion)
-     * @param writer TODO
+     * @param writer the target writer
      */
     public WhatsItWriteNode(final String key, final Tokens tokens,
             final TokensWriter writer) {
@@ -65,7 +67,8 @@ public class WhatsItWriteNode extends WhatsItNode {
 
     /**
      * This method performs any action which are required to be executed at the
-     * time of shipping the node to the DocumentWriter.
+     * time of shipping the node to the DocumentWriter. In the case od this node
+     * this means that the tokens are expanded and written to an output writer.
      *
      * @param context the interpreter context
      * @param typesetter the typesetter

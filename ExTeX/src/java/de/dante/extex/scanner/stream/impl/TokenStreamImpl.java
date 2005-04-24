@@ -53,7 +53,7 @@ import de.dante.util.configuration.ConfigurationSyntaxException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.38 $
+ * @version $Revision: 1.39 $
  */
 public class TokenStreamImpl extends TokenStreamBaseImpl
         implements
@@ -64,7 +64,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
      * This is a type-safe class to represent state information.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.38 $
+     * @version $Revision: 1.39 $
      */
     private static final class State {
 
@@ -328,7 +328,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
 
     /**
      * @see de.dante.extex.scanner.stream.impl.TokenStreamBaseImpl#getNext(
-     *      de.dante.extex.scanner.TokenFactory,
+     *      de.dante.extex.scanner.type.TokenFactory,
      *      de.dante.extex.interpreter.Tokenizer)
      */
     protected Token getNext(final TokenFactory factory,

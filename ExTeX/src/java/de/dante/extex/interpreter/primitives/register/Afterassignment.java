@@ -43,7 +43,7 @@ import de.dante.extex.typesetter.Typesetter;
  *  <pre class="syntax">
  *    &lang;afterassignment&rang;
  *      &rarr; <tt>\afterassignment</tt> {@linkplain
- *         de.dante.extex.interpreter.TokenSource#getToken()
+ *         de.dante.extex.interpreter.TokenSource#getToken(Context)
  *         &lang;token&rang;} </pre>
  * </p>
  * <p>
@@ -58,7 +58,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Afterassignment extends AbstractCode {
 

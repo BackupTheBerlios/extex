@@ -29,7 +29,6 @@ import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.scanner.type.CodeToken;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
@@ -46,7 +45,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class Ifcase extends AbstractIf {
 
@@ -139,7 +138,7 @@ public class Ifcase extends AbstractIf {
      *  otherwise return <code>false</code> if a matching <tt>\fi</tt> has been
      *  found.
      *
-     * @throws InterpreterException in case of en error
+     * @throws InterpreterException in case of an error
      */
     private Tag skipToOrOrElseOrFi(final Context context,
             final TokenSource source) throws InterpreterException {
@@ -189,7 +188,7 @@ public class Ifcase extends AbstractIf {
      * This is an internal class for typesafe values.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.18 $
+     * @version $Revision: 1.19 $
      */
     protected static final class Tag {
 

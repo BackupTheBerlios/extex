@@ -40,7 +40,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class Glue implements Serializable, FixedGlue {
 
@@ -60,7 +60,7 @@ public class Glue implements Serializable, FixedGlue {
     private GlueComponent stretch = new GlueComponent(0);
 
     /**
-     * Creates a new object.
+     * Creates a new object with a fixed length.
      *
      * @param theLength the natural length
      */
@@ -71,7 +71,7 @@ public class Glue implements Serializable, FixedGlue {
     }
 
     /**
-     * Creates a new object.
+     * Creates a new object as copy of another glue.
      *
      * @param glue the glue to clone
      */
@@ -84,7 +84,7 @@ public class Glue implements Serializable, FixedGlue {
     }
 
     /**
-     * Creates a new object.
+     * Creates a new object from the three components.
      *
      * @param theLength the natural length
      * @param theStretch the stretch specification
@@ -100,7 +100,7 @@ public class Glue implements Serializable, FixedGlue {
     }
 
     /**
-     * Creates a new object.
+     * Creates a new object from a fixed length.
      *
      * @param theLength the naturallength in scaled point
      */
@@ -111,7 +111,7 @@ public class Glue implements Serializable, FixedGlue {
     }
 
     /**
-     * Creates a new object.
+     * Creates a new object by parsing a token source.
      *
      * @param source the source to read new tokens from
      * @param context the processing context
@@ -128,25 +128,23 @@ public class Glue implements Serializable, FixedGlue {
             if (code instanceof GlueConvertible) {
                 Glue g = ((GlueConvertible) code).convertGlue(context, source,
                         null);
-                this.length = new GlueComponent(g.getLength());
-                this.shrink = new GlueComponent(g.getShrink());
-                this.stretch = new GlueComponent(g.getStretch());
+                this.length = g.getLength().copy();
+                this.shrink = g.getShrink().copy();
+                this.stretch = g.getStretch().copy();
+                return;
             } else if (code == null) {
                 throw new UndefinedControlSequenceException(context.esc(t));
-            } else {
-                //TODO gene: unimplemented
-                throw new RuntimeException("unimplemented");
-            }
-        } else {
-            source.push(t);
-            this.length = new GlueComponent(context, source, false);
-            if (source.getKeyword(context, "plus")) {
-                this.stretch = new GlueComponent(context, source, true);
-            }
-            if (source.getKeyword(context, "minus")) {
-                this.shrink = new GlueComponent(context, source, true);
             }
         }
+        source.push(t);
+        this.length = new GlueComponent(context, source, false);
+        if (source.getKeyword(context, "plus")) {
+            this.stretch = new GlueComponent(context, source, true);
+        }
+        if (source.getKeyword(context, "minus")) {
+            this.shrink = new GlueComponent(context, source, true);
+        }
+        return;
     }
 
     /**

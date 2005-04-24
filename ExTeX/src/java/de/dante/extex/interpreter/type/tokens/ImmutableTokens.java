@@ -28,7 +28,7 @@ import de.dante.extex.scanner.type.Token;
  * it has been created.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class ImmutableTokens extends Tokens {
 
@@ -43,7 +43,7 @@ public class ImmutableTokens extends Tokens {
 
     /**
      * @see de.dante.extex.interpreter.type.tokens.Tokens#add(
-     *      de.dante.extex.scanner.Token)
+     *      de.dante.extex.scanner.type.Token)
      */
     public void add(final Token t) {
 

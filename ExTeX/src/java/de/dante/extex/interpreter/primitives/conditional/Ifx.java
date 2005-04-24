@@ -39,14 +39,14 @@ import de.dante.extex.typesetter.Typesetter;
  *  <pre class="syntax">
  *    &lang;ifx&rang;
  *      &rarr; <tt>\ifx</tt> {@linkplain
- *        de.dante.extex.interpreter.TokenSource#getToken()
+ *        de.dante.extex.interpreter.TokenSource#getToken(Context)
  *        &lang;token<sub>1</sub>&rang;} {@linkplain
- *        de.dante.extex.interpreter.TokenSource#getToken()
+ *        de.dante.extex.interpreter.TokenSource#getToken(Context)
  *        &lang;token<sub>2</sub>&rang;}; &lang;true text&rang; <tt>\fi</tt>
  *      | <tt>\ifx</tt> {@linkplain
- *        de.dante.extex.interpreter.TokenSource#getToken()
+ *        de.dante.extex.interpreter.TokenSource#getToken(Context)
  *        &lang;token<sub>1</sub>&rang;} {@linkplain
- *        de.dante.extex.interpreter.TokenSource#getToken()
+ *        de.dante.extex.interpreter.TokenSource#getToken(Context)
  *        &lang;token<sub>2</sub>&rang;} &lang;true text&rang; <tt>\else</tt> &lang;false text&rang; <tt>\fi</tt> </pre>
  * </p>
  * <p>
@@ -57,7 +57,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class Ifx extends AbstractIf {
 

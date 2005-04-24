@@ -33,7 +33,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class VerticalListNode extends AbstractNodeList implements NodeList {
 
@@ -92,7 +92,7 @@ public class VerticalListNode extends AbstractNodeList implements NodeList {
 
     /**
      * @see de.dante.extex.typesetter.type.Node#visit(
-     *      de.dante.extex.typesetter.NodeVisitor,
+     *      de.dante.extex.typesetter.type.NodeVisitor,
      *      java.lang.Object)
      */
     public Object visit(final NodeVisitor visitor, final Object value)
@@ -103,7 +103,7 @@ public class VerticalListNode extends AbstractNodeList implements NodeList {
 
     /**
      * @see de.dante.extex.typesetter.type.node.AbstractNodeList#updateDimensions(
-     *      de.dante.extex.typesetter.Node)
+     *      de.dante.extex.typesetter.type.Node)
      */
     protected void updateDimensions(final Node node) {
 

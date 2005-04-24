@@ -30,7 +30,7 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * the surrounding material.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class MiddleNoad extends AbstractNoad {
 
@@ -53,7 +53,7 @@ public class MiddleNoad extends AbstractNoad {
     /**
      *
      * @see de.dante.extex.typesetter.type.noad.Noad#typeset(
-     *      de.dante.extex.typesetter.NodeList,
+     *      de.dante.extex.typesetter.type.NodeList,
      *      de.dante.extex.typesetter.type.noad.util.MathContext,
      *      de.dante.extex.typesetter.TypesetterOptions)
      */

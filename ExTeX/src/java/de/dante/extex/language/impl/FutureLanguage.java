@@ -33,7 +33,7 @@ import de.dante.util.UnicodeChar;
  * loading or the creation should be performed.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class FutureLanguage implements Language {
 
@@ -124,7 +124,7 @@ public class FutureLanguage implements Language {
      * @see de.dante.extex.language.hyphenation.Hyphenator#hyphenate(
      *      de.dante.extex.typesetter.type.node.HorizontalListNode,
      *      de.dante.extex.interpreter.context.Context,
-     *      UnicodeChar)
+     *      de.dante.util.UnicodeChar)
      */
     public HorizontalListNode hyphenate(final HorizontalListNode nodelist,
             final TypesetterOptions context, final UnicodeChar hyphen)

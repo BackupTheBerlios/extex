@@ -27,7 +27,6 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.file.InFile;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
 import de.dante.util.configuration.ConfigurationException;
 
 /**
@@ -46,7 +45,7 @@ import de.dante.util.configuration.ConfigurationException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class Openin extends AbstractFileCode {
 

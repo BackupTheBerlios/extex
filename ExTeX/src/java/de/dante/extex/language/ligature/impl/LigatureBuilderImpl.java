@@ -38,7 +38,7 @@ import de.dante.util.UnicodeChar;
  * font.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class LigatureBuilderImpl implements LigatureBuilder {
 
@@ -52,7 +52,7 @@ public class LigatureBuilderImpl implements LigatureBuilder {
 
     /**
      * @see de.dante.extex.language.ligature.LigatureBuilder#insertLigatures(
-     *      de.dante.extex.typesetter.NodeList, int)
+     *      de.dante.extex.typesetter.type.NodeList, int)
      */
     public int insertLigatures(final NodeList list, final int start)
             throws HyphenationException {

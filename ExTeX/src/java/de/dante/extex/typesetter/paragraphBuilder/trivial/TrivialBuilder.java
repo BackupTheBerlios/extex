@@ -55,7 +55,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
 
@@ -183,7 +183,7 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
 
     /**
      * @see de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder#build(
-     *      de.dante.extex.interpreter.type.node.HorizontalListNode)
+     *      de.dante.extex.typesetter.type.node.HorizontalListNode)
      */
     public NodeList build(final HorizontalListNode nodes) {
 

@@ -22,9 +22,13 @@ package de.dante.extex.interpreter.primitives.typesetter;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.primitives.register.box.AbstractBox;
+import de.dante.extex.language.Language;
+import de.dante.extex.typesetter.ParagraphObserver;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.type.NodeList;
 
 /**
  * This class provides an implementation for the primitive <code>\\</code>.
@@ -48,9 +52,54 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Setlanguage extends AbstractBox {
+
+    /**
+     * TODO gene: missing JavaDoc.
+     *
+     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+     * @version $Revision: 1.5 $
+     */
+    private class ParObserver implements ParagraphObserver {
+
+        /**
+         * The field <tt>context</tt> contains the ...
+         */
+        private Context context;
+
+        /**
+         * The field <tt>language</tt> contains the ...
+         */
+        private Language language;
+
+        /**
+         * Creates a new object.
+         *
+         * @param context the context
+         */
+        public ParObserver(final Context context) {
+
+            super();
+            this.context = context;
+            language = context.getTypesettingContext().getLanguage();
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.ParagraphObserver#atParagraph(
+         *      de.dante.extex.typesetter.type.NodeList)
+         */
+        public void atParagraph(final NodeList nodes) {
+
+            TypesettingContext tc = context.getTypesettingContext();
+            /*
+            context.getT
+            tc = new TypesettingContext(tc);
+            context.setTypesettingContext(language);
+            */
+        }
+    }
 
     /**
      * Creates a new object.
@@ -73,7 +122,8 @@ public class Setlanguage extends AbstractBox {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        //TODO gene: execute() unimplemented
+        typesetter.afterParagraph(new ParObserver(context));
+        //TODO gene: change the language
         throw new RuntimeException("unimplemented");
     }
 

@@ -60,7 +60,7 @@ import de.dante.util.framework.configuration.Configurable;
  * and as tool for testing.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class MultiDumpDocumentWriter
         implements
@@ -477,9 +477,8 @@ public class MultiDumpDocumentWriter
     }
 
     /**
-     * @throws DocumentWriterException
      * @see de.dante.extex.documentWriter.DocumentWriter#shipout(
-     *      de.dante.extex.typesetter.NodeList)
+     *      de.dante.extex.typesetter.type.NodeList)
      */
     public void shipout(final NodeList nodes) throws DocumentWriterException {
 

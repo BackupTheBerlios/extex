@@ -49,7 +49,7 @@ import de.dante.util.configuration.Configuration;
  * JUnit tests for class <code>DviDocumentWriter</code>.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 
 public class DviDocumentWriterTest extends TestCase {
@@ -129,7 +129,7 @@ public class DviDocumentWriterTest extends TestCase {
      * NoOutputStreamException},
      * if there is no OutputStream set before {@link
      *   de.dante.extex.documentWriter.DocumentWriter#shipout(
-     *   de.dante.extex.typesetter.NodeList) shipout()}.
+     *   de.dante.extex.typesetter.type.NodeList) shipout()}.
      *
      * @exception Exception if an error occurs
      */

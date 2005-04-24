@@ -47,7 +47,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
         implements
@@ -134,7 +134,7 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
     }
 
     /**
-     * @see de.dante.extex.scanner.stream.impl32.TokenStreamBaseImpl#getNext(de.dante.extex.scanner.TokenFactory,
+     * @see de.dante.extex.scanner.stream.impl32.TokenStreamBaseImpl#getNext(de.dante.extex.scanner.type.TokenFactory,
      *      de.dante.extex.interpreter.Tokenizer)
      */
     public Token getNext(final TokenFactory factory, final Tokenizer tokenizer)
@@ -697,7 +697,7 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
      * ...
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.9 $
+     * @version $Revision: 1.10 $
      */
     private static class State {
 

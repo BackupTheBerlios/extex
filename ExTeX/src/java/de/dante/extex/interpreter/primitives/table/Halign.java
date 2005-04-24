@@ -74,7 +74,7 @@ import de.dante.util.configuration.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class Halign extends AbstractAlign implements Boxable {
 
@@ -103,22 +103,10 @@ public class Halign extends AbstractAlign implements Boxable {
             typesetter.add(getNodes(context, source, typesetter));
         } catch (InterpreterException e) {
             throw e;
-        } catch (GeneralException e) {
-            throw new InterpreterException(e);
         }
     }
 
     /**
-     * Getter for the box representation.
-     *
-     * @param context the interpreter context
-     * @param source the token source
-     * @param typesetter the typesetter
-     *
-     * @return a box containing the nodes generated
-     *
-     * @throws GeneralException in case of an error
-     *
      * @see de.dante.extex.interpreter.type.box.Boxable#getBox(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
@@ -140,9 +128,6 @@ public class Halign extends AbstractAlign implements Boxable {
      * @return the list of nodes gathered
      *
      * @throws InterpreterException in case of an error
-     * @throws EofException in case that an enof of file has occurred
-     * @throws MissingLeftBraceException in case that the mandatory left
-     *  brace was missing
      */
     private NodeList getNodes(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {

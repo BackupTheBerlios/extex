@@ -30,7 +30,7 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * @see "TTP [689]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class ChoiceNoad implements Noad {
 
@@ -136,7 +136,7 @@ public class ChoiceNoad implements Noad {
     /**
      * @see "TTP [731]"
      * @see de.dante.extex.typesetter.type.noad.Noad#typeset(
-     *      de.dante.extex.typesetter.NodeList,
+     *      de.dante.extex.typesetter.type.NodeList,
      *      de.dante.extex.typesetter.type.noad.util.MathContext,
      *      de.dante.extex.typesetter.TypesetterOptions)
      */

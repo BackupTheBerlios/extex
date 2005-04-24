@@ -26,7 +26,7 @@ package de.dante.extex.typesetter.type;
  * react on the type of some object. Consider a tree composed of different
  * types of nodes all implementing a same base interface and some of them
  * having extensions of the interface. This is the situation for
- * {@link de.dante.extex.typesetter.type.Mathclass Mathclass}es for which
+ * {@link de.dante.extex.typesetter.type.MathClass Mathclass}es for which
  * several types exist.
  * </p>
  * <p>
@@ -114,7 +114,7 @@ package de.dante.extex.typesetter.type;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface MathClassVisitor {
 

@@ -50,7 +50,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class ErrorHandlerImpl
         implements
@@ -117,7 +117,7 @@ public class ErrorHandlerImpl
     /**
      * @see de.dante.extex.interpreter.ErrorHandler#handleError(
      *      de.dante.util.GeneralException,
-     *      de.dante.extex.scanner.Token,
+     *      de.dante.extex.scanner.type.Token,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.interpreter.context.Context)
      */

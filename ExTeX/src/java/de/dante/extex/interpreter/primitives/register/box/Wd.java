@@ -51,7 +51,7 @@ import de.dante.util.GeneralException;
  *      &rarr; <tt>\wd</tt> {@linkplain
  *        de.dante.extex.interpreter.TokenSource#scanNumber()
  *        &lang;8-bit&nbsp;number&rang;} {@linkplain
- *        de.dante.extex.interpreter.TokenSource#getOptionalEquals()
+ *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
  *        &lang;equals&rang;} {@linkplain
  *        de.dante.extex.interpreter.type.dimen#Dimen(Context,TokenSource)
  *        &lang;dimen&rang;} </pre>
@@ -70,7 +70,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class Wd extends Setbox
         implements

@@ -33,7 +33,7 @@ import de.dante.extex.typesetter.type.NodeList;
  * received.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class DumpTypesetter extends TypesetterImpl {
 
@@ -47,7 +47,7 @@ public class DumpTypesetter extends TypesetterImpl {
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#add(
-     *      de.dante.extex.typesetter.Node)
+     *      de.dante.extex.typesetter.type.Node)
      */
     public void add(final Node node) throws TypesetterException {
 

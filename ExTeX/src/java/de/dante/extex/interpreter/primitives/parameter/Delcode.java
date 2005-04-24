@@ -44,7 +44,7 @@ import de.dante.util.UnicodeChar;
  *      &rarr; <tt>\delcode</tt> {@linkplain
  *        de.dante.extex.interpreter.TokenSource#scanNumber()
  *        &lang;8-bit&nbsp;number&rang;} {@linkplain
- *        de.dante.extex.interpreter.TokenSource#getOptionalEquals()
+ *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
  *        &lang;equals&rang;} {@linkplain
  *        de.dante.extex.interpreter.TokenSource#scanNumber()
  *        &lang;8-bit&nbsp;number&rang;}  </pre>
@@ -57,7 +57,7 @@ import de.dante.util.UnicodeChar;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Delcode extends AbstractAssignment {
 

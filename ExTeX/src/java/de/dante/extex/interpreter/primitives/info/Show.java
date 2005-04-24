@@ -49,7 +49,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *  <pre class="syntax">
  *    &lang;show&rang;
  *       &rarr; <tt>\show</tt> {@linkplain
- *           de.dante.extex.interpreter.TokenSource#getToken()
+ *           de.dante.extex.interpreter.TokenSource#getToken(Context)
  *           &lang;token&rang;} </pre>
  * </p>
  * <p>
@@ -60,7 +60,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class Show extends AbstractCode implements LogEnabled {
 

@@ -34,7 +34,7 @@ import de.dante.util.GeneralException;
  * @see "TeX -- The Program [141]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class MarkNode extends AbstractNode implements Node {
     /**
@@ -118,7 +118,7 @@ public class MarkNode extends AbstractNode implements Node {
 
     /**
      * @see de.dante.extex.typesetter.type.Node#visit(
-     *      de.dante.extex.typesetter.NodeVisitor,
+     *      de.dante.extex.typesetter.type.NodeVisitor,
      *      java.lang.Object)
      */
     public Object visit(final NodeVisitor visitor, final Object value)

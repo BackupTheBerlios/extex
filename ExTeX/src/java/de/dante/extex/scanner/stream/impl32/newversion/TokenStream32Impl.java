@@ -53,7 +53,7 @@ import de.dante.util.file.InputLineDecoder;
  * This class implements a 32 bit token stream.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class TokenStream32Impl extends AbstractTokenStreamImpl
         implements
@@ -225,7 +225,7 @@ public class TokenStream32Impl extends AbstractTokenStreamImpl
 
     /**
      * @see de.dante.extex.scanner.stream.impl.TokenStreamBaseImpl#getNext(
-     *      de.dante.extex.scanner.TokenFactory,
+     *      de.dante.extex.scanner.type.TokenFactory,
      *      de.dante.extex.interpreter.Tokenizer)
      */
     protected Token getNext(final TokenFactory factory,

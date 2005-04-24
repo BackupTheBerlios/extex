@@ -49,7 +49,7 @@ import de.dante.util.UnicodeChar;
  * characters contained.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class NodeTraverser implements NodeVisitor {
 
@@ -343,7 +343,7 @@ public class NodeTraverser implements NodeVisitor {
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitChar(
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitVirtualChar(
      *      de.dante.extex.typesetter.type.node.VirtualCharNode,
      *      java.lang.Object)
      */

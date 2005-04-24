@@ -41,7 +41,7 @@ import de.dante.extex.typesetter.Typesetter;
  *      &rarr; <tt>\dimendef</tt> {@linkplain
  *        de.dante.extex.interpreter.TokenSource#getControlSequence(Context)
  *        &lang;control sequence&rang;} {@linkplain
- *        de.dante.extex.interpreter.TokenSource#getOptionalEquals()
+ *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
  *        &lang;equals&rang;} {@linkplain
  *        de.dante.extex.interpreter.TokenSource#scanNumber()
  *        &lang;8-bit&nbsp;number&rang;} </pre>
@@ -69,7 +69,7 @@ import de.dante.extex.typesetter.Typesetter;
  * "#<i>name</i>" or "dimen#<i>name</i>".
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Dimendef extends AbstractDimen {
 

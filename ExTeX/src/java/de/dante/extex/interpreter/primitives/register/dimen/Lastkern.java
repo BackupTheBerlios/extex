@@ -34,7 +34,6 @@ import de.dante.extex.scanner.type.CatcodeException;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.node.KernNode;
-import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive
@@ -54,7 +53,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Lastkern extends AbstractCode
         implements

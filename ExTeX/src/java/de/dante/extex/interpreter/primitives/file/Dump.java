@@ -22,7 +22,6 @@ package de.dante.extex.interpreter.primitives.file;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.NotSerializableException;
 import java.io.OutputStream;
 import java.util.Calendar;
 import java.util.logging.Logger;
@@ -73,7 +72,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
 public class Dump extends AbstractCode implements LogEnabled {
 

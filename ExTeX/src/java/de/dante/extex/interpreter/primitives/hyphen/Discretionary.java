@@ -64,7 +64,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class Discretionary extends AbstractCode {
 
@@ -72,7 +72,7 @@ public class Discretionary extends AbstractCode {
      * TODO gene: missing JavaDoc.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.17 $
+     * @version $Revision: 1.18 $
      */
     private class Manager implements ListManager {
 
@@ -148,8 +148,7 @@ public class Discretionary extends AbstractCode {
          */
         public ListMaker pop() throws TypesetterException {
 
-            // TODO gene: pop unimplemented
-            return null;
+            throw new RuntimeException("unimplemented");
         }
 
         /**
@@ -158,7 +157,7 @@ public class Discretionary extends AbstractCode {
          */
         public void push(final ListMaker listMaker) throws TypesetterException {
 
-            // TODO gene: push unimplemented
+            throw new RuntimeException("unimplemented");
         }
     }
 

@@ -28,7 +28,7 @@ import de.dante.util.UnicodeChar;
  * This class provides a container for a mathematical glyph.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class MathGlyph implements Noad {
 
@@ -174,7 +174,7 @@ public class MathGlyph implements Noad {
 
     /**
      * @see de.dante.extex.typesetter.type.noad.Noad#typeset(
-     *      de.dante.extex.typesetter.NodeList,
+     *      de.dante.extex.typesetter.type.NodeList,
      *      de.dante.extex.typesetter.type.noad.util.MathContext,
      *      de.dante.extex.typesetter.TypesetterOptions)
      */

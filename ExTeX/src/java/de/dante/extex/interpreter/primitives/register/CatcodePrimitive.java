@@ -53,7 +53,7 @@ import de.dante.util.UnicodeChar;
  *      &rarr; <tt>\catcode</tt> {@linkplain
  *          de.dante.extex.interpreter.TokenSource#scanNumber()
  *          &lang;8-bit&nbsp;number&rang;} {@linkplain
- *          de.dante.extex.interpreter.TokenSource#getOptionalEquals()
+ *          de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
  *          &lang;equals&rang;} {@linkplain
  *          de.dante.extex.interpreter.TokenSource#scanNumber()
  *          &lang;4-bit&nbsp;number&rang;} </pre>
@@ -67,7 +67,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class CatcodePrimitive extends AbstractAssignment {
 

@@ -44,7 +44,7 @@ import de.dante.util.UnicodeChar;
  *      &rarr; <tt>\chardef</tt> {@linkplain
  *        de.dante.extex.interpreter.TokenSource#getControlSequence(Context)
  *        &lang;control sequence&rang;} {@linkplain
- *        de.dante.extex.interpreter.TokenSource#getOptionalEquals()
+ *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
  *        &lang;equals&rang;} {@linkplain
  *        de.dante.extex.interpreter.TokenSource#scanNumber()
  *        &lang;8-bit&nbsp;number&rang;}  </pre>
@@ -60,7 +60,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Chardef extends AbstractAssignment {
 

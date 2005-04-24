@@ -40,7 +40,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * large, and a small math glyph.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class MathDelimiter {
 
@@ -230,7 +230,7 @@ public class MathDelimiter {
      * @param context the typesetting options
      *
      * @see de.dante.extex.typesetter.type.noad.Noad#typeset(
-     *      de.dante.extex.typesetter.NodeList,
+     *      de.dante.extex.typesetter.type.NodeList,
      *      de.dante.extex.typesetter.type.noad.util.MathContext,
      *      de.dante.extex.typesetter.TypesetterOptions)
      */

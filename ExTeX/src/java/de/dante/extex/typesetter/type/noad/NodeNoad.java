@@ -28,7 +28,7 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * This noad contains a node which is passed through the math apparatus.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class NodeNoad implements Noad {
 
@@ -102,7 +102,7 @@ public class NodeNoad implements Noad {
 
     /**
      * @see de.dante.extex.typesetter.type.noad.Noad#typeset(
-     *      de.dante.extex.typesetter.NodeList,
+     *      de.dante.extex.typesetter.type.NodeList,
      *      de.dante.extex.typesetter.type.noad.util.MathContext,
      *      de.dante.extex.typesetter.TypesetterOptions)
      */
