@@ -19,6 +19,9 @@
 
 package de.dante.extex.typesetter.listMaker;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
@@ -26,6 +29,7 @@ import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.language.Language;
 import de.dante.extex.typesetter.Mode;
+import de.dante.extex.typesetter.ParagraphObserver;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.exception.TypesetterHelpingException;
@@ -47,7 +51,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class HorizontalListMaker extends AbstractListMaker {
 
@@ -77,6 +81,11 @@ public class HorizontalListMaker extends AbstractListMaker {
     private long spacefactor = DEFAULT_SPACEFACTOR;
 
     /**
+     * The field <tt>afterParagraphObservers</tt> contains the ...
+     */
+    private List afterParagraphObservers = new ArrayList();
+
+    /**
      * Creates a new object.
      *
      * @param manager the manager to ask for global changes
@@ -88,7 +97,7 @@ public class HorizontalListMaker extends AbstractListMaker {
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#add(
-     *      de.dante.extex.typesetter.Node)
+     *      de.dante.extex.typesetter.type.Node)
      */
     public void add(final Node c) throws TypesetterException {
 
@@ -145,6 +154,15 @@ public class HorizontalListMaker extends AbstractListMaker {
         }
 
         add(new SpaceNode(space));
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#afterParagraph(
+     *      de.dante.extex.typesetter.ParagraphObserver)
+     */
+    public void afterParagraph(final ParagraphObserver observer) {
+
+        afterParagraphObservers.add(observer);
     }
 
     /**
@@ -232,6 +250,12 @@ public class HorizontalListMaker extends AbstractListMaker {
      */
     public void par() throws TypesetterException {
 
+        // Note: the observers have to be runn in reverse order to restore
+        // the language properly.
+        for (int i = afterParagraphObservers.size() - 1; i >= 0; i--) {
+            ((ParagraphObserver) afterParagraphObservers.get(i))
+                    .atParagraph(nodes);
+        }
         getManager().endParagraph();
     }
 

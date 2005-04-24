@@ -46,7 +46,7 @@ import de.dante.extex.typesetter.type.node.VerticalListNode;
  * @see "TTP [770]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class HAlignListMaker extends RestrictedHorizontalListMaker
         implements
@@ -56,7 +56,7 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
      * This inner class is a container for the cell information in an alignment.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.9 $
+     * @version $Revision: 1.10 $
      */
     protected class Cell {
 
@@ -343,7 +343,7 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
     /**
      * @see de.dante.extex.typesetter.ListMaker#tab(
      *      Context,
-     *      TokenSource, de.dante.extex.scanner.Token)
+     *      TokenSource, de.dante.extex.scanner.type.Token)
      */
     public void tab(final Context context, final TokenSource source,
             final Token token) throws TypesetterException {

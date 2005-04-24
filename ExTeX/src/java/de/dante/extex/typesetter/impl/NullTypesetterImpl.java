@@ -30,6 +30,7 @@ import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.OutputRoutine;
+import de.dante.extex.typesetter.ParagraphObserver;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
@@ -48,7 +49,7 @@ import de.dante.util.configuration.Configuration;
  * interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class NullTypesetterImpl implements Typesetter {
 
@@ -59,10 +60,9 @@ public class NullTypesetterImpl implements Typesetter {
 
         super();
     }
-
     /**
      * @see de.dante.extex.typesetter.ListMaker#add(
-     *     de.dante.extex.typesetter.Node)
+     *     de.dante.extex.typesetter.type.Node)
      */
     public void add(final Node c) throws TypesetterException {
 
@@ -87,6 +87,15 @@ public class NullTypesetterImpl implements Typesetter {
             final Count spacefactor) throws TypesetterException {
 
         // nothing to do
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#afterParagraph(ParagraphObserver)
+     */
+    public void afterParagraph(final ParagraphObserver observer) {
+
+        // TODO gene: afterParagraph unimplemented
+
     }
 
     /**
@@ -191,7 +200,9 @@ public class NullTypesetterImpl implements Typesetter {
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#mathShift(
-     *      Context, TokenSource, de.dante.extex.scanner.Token)
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.scanner.type.Token)
      */
     public void mathShift(final Context context, final TokenSource source,
             final Token t) throws TypesetterException {
@@ -299,7 +310,7 @@ public class NullTypesetterImpl implements Typesetter {
 
     /**
      * @see de.dante.extex.typesetter.Typesetter#shipout(
-     *     de.dante.extex.typesetter.NodeList)
+     *     de.dante.extex.typesetter.type.NodeList)
      */
     public void shipout(final NodeList nodes) {
 
@@ -308,8 +319,8 @@ public class NullTypesetterImpl implements Typesetter {
 
     /**
      * @see de.dante.extex.typesetter.Typesetter#subscriptMark(
-     *      Context,
-     *      TokenSource, de.dante.extex.scanner.Token)
+     *      de.dante.extex.interpreter.context.Context,
+     *      TokenSource, de.dante.extex.scanner.type.Token)
      */
     public void subscriptMark(final Context context, final TokenSource source,
             final Token t) throws TypesetterException {
@@ -318,8 +329,8 @@ public class NullTypesetterImpl implements Typesetter {
 
     /**
      * @see de.dante.extex.typesetter.Typesetter#superscriptMark(
-     *      Context,
-     *      TokenSource, de.dante.extex.scanner.Token)
+     *      de.dante.extex.interpreter.context.Context,
+     *      TokenSource, de.dante.extex.scanner.type.Token)
      */
     public void superscriptMark(final Context context,
             final TokenSource source, final Token t) throws TypesetterException {
@@ -328,8 +339,8 @@ public class NullTypesetterImpl implements Typesetter {
 
     /**
      * @see de.dante.extex.typesetter.Typesetter#tab(
-     *      Context,
-     *      TokenSource, de.dante.extex.scanner.Token)
+     *      de.dante.extex.interpreter.context.Context,
+     *      TokenSource, de.dante.extex.scanner.type.Token)
      */
     public void tab(final Context context, final TokenSource source,
             final Token t) throws TypesetterException {
@@ -338,9 +349,9 @@ public class NullTypesetterImpl implements Typesetter {
 
     /**
      * @see de.dante.extex.typesetter.Typesetter#letter(
-     *      Context,
+     *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.context.TypesettingContext,
-     *      de.dante.extex.scanner.Token)
+     *      de.dante.extex.scanner.type.Token)
      */
     public void treatLetter(final TypesettingContext context, final Token t)
             throws GeneralException {

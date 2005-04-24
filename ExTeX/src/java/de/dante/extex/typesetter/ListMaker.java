@@ -37,7 +37,7 @@ import de.dante.util.UnicodeChar;
  * @see "TeX -- The Program [211]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.34 $
+ * @version $Revision: 1.35 $
  */
 public interface ListMaker {
 
@@ -73,6 +73,13 @@ public interface ListMaker {
      */
     void addSpace(TypesettingContext typesettingContext, Count spacefactor)
             throws TypesetterException;
+
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param observer ...
+     */
+    void afterParagraph(ParagraphObserver observer);
 
     /**
      * Close the node list. This means that everything is done to ship the

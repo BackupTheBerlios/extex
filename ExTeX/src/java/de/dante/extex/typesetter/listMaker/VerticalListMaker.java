@@ -26,6 +26,7 @@ import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Mode;
+import de.dante.extex.typesetter.ParagraphObserver;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.Node;
@@ -38,7 +39,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class VerticalListMaker extends AbstractListMaker {
 
@@ -68,7 +69,7 @@ public class VerticalListMaker extends AbstractListMaker {
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#add(
-     *      de.dante.extex.typesetter.Node)
+     *      de.dante.extex.typesetter.type.Node)
      */
     public void add(final Node n) throws TypesetterException {
 
@@ -92,6 +93,15 @@ public class VerticalListMaker extends AbstractListMaker {
     public void addSpace(final TypesettingContext typesettingContext,
             final Count spacefactor) throws TypesetterException {
 
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#afterParagraph(ParagraphObserver)
+     */
+    public void afterParagraph(final ParagraphObserver observer) {
+
+        //TODO gene: unimplemented
+        throw new RuntimeException("unimplemented");
     }
 
     /**
@@ -120,6 +130,21 @@ public class VerticalListMaker extends AbstractListMaker {
     }
 
     /**
+     * @see de.dante.extex.typesetter.ListMaker#letter(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.context.TypesettingContext,
+     *      de.dante.util.UnicodeChar)
+     */
+    public void letter(final Context context, final TypesettingContext font,
+            final UnicodeChar symbol) throws TypesetterException {
+
+        ListManager man = getManager();
+        ListMaker hlist = new HorizontalListMaker(man);
+        hlist.letter(context, font, symbol);
+        man.push(hlist);
+    }
+
+    /**
      * <tt>\par</tt> s are silently ignored in vertical mode.
      *
      * @see de.dante.extex.typesetter.ListMaker#par()
@@ -144,21 +169,6 @@ public class VerticalListMaker extends AbstractListMaker {
     public void setPrevDepth(final Dimen pd) throws TypesetterException {
 
         prevDepth.set(pd);
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#letter(
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.context.TypesettingContext,
-     *      de.dante.util.UnicodeChar)
-     */
-    public void letter(final Context context, final TypesettingContext font,
-            final UnicodeChar symbol) throws TypesetterException {
-
-        ListManager man = getManager();
-        ListMaker hlist = new HorizontalListMaker(man);
-        hlist.letter(context, font, symbol);
-        man.push(hlist);
     }
 
 }

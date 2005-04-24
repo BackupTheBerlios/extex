@@ -34,6 +34,7 @@ import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.OutputRoutine;
+import de.dante.extex.typesetter.ParagraphObserver;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
@@ -52,7 +53,7 @@ import de.dante.util.configuration.ConfigurationFactory;
 
 /**
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.55 $
+ * @version $Revision: 1.56 $
  */
 public class Max1 extends TestCase {
 
@@ -101,6 +102,13 @@ public class Max1 extends TestCase {
                 final Count spacefactor) throws TypesetterException {
 
             sb.append(" ");
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.ListMaker#afterParagraph(ParagraphObserver)
+         */
+        public void afterParagraph(final ParagraphObserver observer) {
+
         }
 
         /**
@@ -204,7 +212,7 @@ public class Max1 extends TestCase {
 
         /**
          * @see de.dante.extex.typesetter.ListMaker#mathShift(
-         *      Context, TokenSource, de.dante.extex.scanner.Token)
+         *      Context, TokenSource, de.dante.extex.scanner.type.Token)
          */
         public void mathShift(final Context context, final TokenSource source,
                 final Token t) throws TypesetterException {
@@ -331,7 +339,7 @@ public class Max1 extends TestCase {
 
         /**
          * @see de.dante.extex.typesetter.Typesetter#shipout(
-         *      de.dante.extex.typesetter.NodeList)
+         *      de.dante.extex.typesetter.type.NodeList)
          */
         public void shipout(final NodeList nodes) {
 
@@ -341,7 +349,7 @@ public class Max1 extends TestCase {
         /**
          * @see de.dante.extex.typesetter.Typesetter#subscriptMark(
          *      Context,
-         *      TokenSource, de.dante.extex.scanner.Token)
+         *      TokenSource, de.dante.extex.scanner.type.Token)
          */
         public void subscriptMark(final Context context,
                 final TokenSource source, final Token t)
@@ -352,7 +360,7 @@ public class Max1 extends TestCase {
         /**
          * @see de.dante.extex.typesetter.Typesetter#superscriptMark(
          *      Context,
-         *      TokenSource, de.dante.extex.scanner.Token)
+         *      TokenSource, de.dante.extex.scanner.type.Token)
          */
         public void superscriptMark(final Context context,
                 final TokenSource source, final Token t)
@@ -363,7 +371,7 @@ public class Max1 extends TestCase {
         /**
          * @see de.dante.extex.typesetter.Typesetter#tab(
          *      Context,
-         *      TokenSource, de.dante.extex.scanner.Token)
+         *      TokenSource, de.dante.extex.scanner.type.Token)
          */
         public void tab(final Context context, final TokenSource source,
                 final Token t) throws TypesetterException {
@@ -398,7 +406,7 @@ public class Max1 extends TestCase {
          * @see de.dante.extex.typesetter.Typesetter#letter(
          *      Context,
          *      de.dante.extex.interpreter.context.TypesettingContext,
-         *      de.dante.extex.scanner.Token)
+         *      de.dante.extex.scanner.type.Token)
          */
         public void treatLetter(final TypesettingContext context, final Token t)
                 throws GeneralException {

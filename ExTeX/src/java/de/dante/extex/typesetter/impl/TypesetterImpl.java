@@ -34,6 +34,7 @@ import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.OutputRoutine;
+import de.dante.extex.typesetter.ParagraphObserver;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
@@ -60,7 +61,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.64 $
+ * @version $Revision: 1.65 $
  */
 public class TypesetterImpl
         implements
@@ -68,7 +69,6 @@ public class TypesetterImpl
             ListManager,
             Localizable,
             LogEnabled {
-
     /**
      * The field <tt>charNodeFactory</tt> contains the factory to produce glyph
      * nodes.
@@ -132,7 +132,7 @@ public class TypesetterImpl
 
     /**
      * Creates a new object and initializes it to receive material.
-     * To make it fully functionalit is required that the paragraph builder
+     * To make it fully functionality is required that the paragraph builder
      * and the ligature builder are provided before they are used.
      */
     public TypesetterImpl() {
@@ -144,7 +144,7 @@ public class TypesetterImpl
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#add(
-     *     de.dante.extex.typesetter.Node)
+     *     de.dante.extex.typesetter.type.Node)
      */
     public void add(final Node node) throws TypesetterException {
 
@@ -179,6 +179,15 @@ public class TypesetterImpl
             final Count spacefactor) throws TypesetterException {
 
         listMaker.addSpace(typesettingContext, null);
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#afterParagraph(
+     *      ParagraphObserver)
+     */
+    public void afterParagraph(final ParagraphObserver observer) {
+
+        listMaker.afterParagraph(observer);
     }
 
     /**
@@ -339,7 +348,7 @@ public class TypesetterImpl
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#letter(
-     *      Context,
+     *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.context.TypesettingContext,
      *      de.dante.util.UnicodeChar)
      */
@@ -353,7 +362,7 @@ public class TypesetterImpl
      * @see de.dante.extex.typesetter.ListMaker#mathShift(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.scanner.Token)
+     *      de.dante.extex.scanner.type.Token)
      */
     public void mathShift(final Context context, final TokenSource source,
             final Token t) throws TypesetterException {
@@ -517,7 +526,7 @@ public class TypesetterImpl
      * @see de.dante.extex.typesetter.ListMaker#subscriptMark(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.scanner.Token)
+     *      de.dante.extex.scanner.type.Token)
      */
     public void subscriptMark(final Context context, final TokenSource source,
             final Token t) throws TypesetterException {
@@ -529,7 +538,7 @@ public class TypesetterImpl
      * @see de.dante.extex.typesetter.Typesetter#superscriptMark(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.scanner.Token)
+     *      de.dante.extex.scanner.type.Token)
      */
     public void superscriptMark(final Context context,
             final TokenSource source, final Token t) throws TypesetterException {
@@ -540,7 +549,7 @@ public class TypesetterImpl
     /**
      * @see de.dante.extex.typesetter.Typesetter#tab(
      *      Context,
-     *      TokenSource, de.dante.extex.scanner.Token)
+     *      TokenSource, de.dante.extex.scanner.type.Token)
      */
     public void tab(final Context context, final TokenSource source,
             final Token t) throws TypesetterException {

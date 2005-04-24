@@ -36,6 +36,7 @@ import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.Mode;
+import de.dante.extex.typesetter.ParagraphObserver;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.exception.TypesetterHelpingException;
@@ -66,7 +67,7 @@ import de.dante.util.UnicodeChar;
  * This is the list maker for the inline math formulae.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class MathListMaker extends AbstractListMaker implements NoadConsumer {
 
@@ -75,7 +76,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      * It is used to store to the stack and restore the state from the stack.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.12 $
+     * @version $Revision: 1.13 $
      */
     private class MathMemento {
 
@@ -171,7 +172,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
     /**
      * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#add(
      *      de.dante.extex.typesetter.type.MathClass,
-     *      de.dante.extex.typesetter.type.MathGlyph)
+     *      de.dante.extex.typesetter.type.noad.MathGlyph)
      */
     public void add(final MathClass mclass, final MathGlyph mg)
             throws TypesetterException {
@@ -198,7 +199,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#add(
+     * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#add(
      *      de.dante.extex.typesetter.type.noad.Noad)
      */
     public void add(final Noad noad) throws TypesetterException {
@@ -208,7 +209,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#add(
-     *      de.dante.extex.typesetter.Node)
+     *      de.dante.extex.typesetter.type.Node)
      */
     public void add(final Node node) throws TypesetterException {
 
@@ -239,6 +240,15 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
     public void addSpace(final TypesettingContext typesettingContext,
             final Count spacefactor) throws TypesetterException {
 
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#afterParagraph(ParagraphObserver)
+     */
+    public void afterParagraph(final ParagraphObserver observer) {
+
+        //TODO gene: unimplemented
+        throw new RuntimeException("unimplemented");
     }
 
     /**
@@ -364,7 +374,9 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#mathShift(
-     *      Context, TokenSource, de.dante.extex.scanner.Token)
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.scanner.type.Token)
      */
     public void mathShift(final Context context, final TokenSource source,
             final Token t) throws TypesetterException {
@@ -468,8 +480,9 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#subscriptMark(
-     *      Context,
-     *      TokenSource, de.dante.extex.scanner.Token)
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.scanner.type.Token)
      */
     public void subscriptMark(final Context context, final TokenSource source,
             final Token token) throws TypesetterException {
@@ -489,8 +502,9 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#superscriptMark(
-     *      Context,
-     *      TokenSource, de.dante.extex.scanner.Token)
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.scanner.type.Token)
      */
     public void superscriptMark(final Context context,
             final TokenSource source, final Token token)

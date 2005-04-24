@@ -36,7 +36,7 @@ import de.dante.extex.typesetter.type.node.CharNodeFactory;
  *
  * @see "TeX -- The Program [211]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public interface Typesetter extends ListMaker {
 
@@ -98,7 +98,8 @@ public interface Typesetter extends ListMaker {
      * box.
      *
      * @param listMaker the list maker
-     * @throws TypesetterException TODO
+     *
+     * @throws TypesetterException in case of an error
      */
     void push(ListMaker listMaker) throws TypesetterException;
 
