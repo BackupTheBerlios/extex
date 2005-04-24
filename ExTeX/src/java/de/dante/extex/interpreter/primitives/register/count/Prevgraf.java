@@ -19,8 +19,14 @@
 
 package de.dante.extex.interpreter.primitives.register.count;
 
+import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.exception.helping.ArithmeticOverflowException;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
+import de.dante.extex.interpreter.type.count.Count;
+import de.dante.extex.typesetter.Typesetter;
 
 /**
  * This class provides an implementation for the primitive <code>\prevgraf</code>.
@@ -44,7 +50,7 @@ import de.dante.extex.interpreter.context.Context;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Prevgraf extends CountPrimitive {
 
@@ -66,6 +72,98 @@ public class Prevgraf extends CountPrimitive {
     protected String getKey(final Context context, final TokenSource source) {
 
         return getName();
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.arithmetic.Advanceable#advance(
+     *      de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource)
+     */
+    public void advance(final Flags prefix, final Context context,
+            final TokenSource source) throws InterpreterException {
+
+        String key = getKey(context, source);
+        source.getKeyword(context, "by");
+
+        long value = Count.scanCount(context, source, null)
+                + context.getCount(key).getValue();
+
+        if (value < 0) {
+            throw new HelpingException(getLocalizer(), "TTP.BadPrevGraf",
+                    printableControlSequence(context), Long.toString(value));
+        }
+        context.setCount(key, value, prefix.isGlobal());
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.AbstractAssignment#assign(
+     *      de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public void assign(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws InterpreterException {
+
+        String key = getKey(context, source);
+        source.getOptionalEquals(context);
+
+        long value = Count.scanCount(context, source, typesetter);
+        if (value < 0) {
+            throw new HelpingException(getLocalizer(), "TTP.BadPrevGraf",
+                    printableControlSequence(context), Long.toString(value));
+        }
+        context.setCount(key, value, prefix.isGlobal());
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.arithmetic.Divideable#divide(
+     *      de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource)
+     */
+    public void divide(final Flags prefix, final Context context,
+            final TokenSource source) throws InterpreterException {
+
+        String key = getKey(context, source);
+        source.getKeyword(context, "by");
+
+        long value = Count.scanCount(context, source, null);
+
+        if (value == 0) {
+            throw new ArithmeticOverflowException(
+                    printableControlSequence(context));
+        }
+
+        value = context.getCount(key).getValue() / value;
+        if (value < 0) {
+            throw new HelpingException(getLocalizer(), "TTP.BadPrevGraf",
+                    printableControlSequence(context), Long.toString(value));
+        }
+        context.setCount(key, value, prefix.isGlobal());
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.arithmetic.Multiplyable#multiply(
+     *      de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource)
+     */
+    public void multiply(final Flags prefix, final Context context,
+            final TokenSource source) throws InterpreterException {
+
+        String key = getKey(context, source);
+        source.getKeyword(context, "by");
+
+        long value = Count.scanCount(context, source, null);
+        value *= context.getCount(key).getValue();
+        if (value < 0) {
+            throw new HelpingException(getLocalizer(), "TTP.BadPrevGraf",
+                    printableControlSequence(context), Long.toString(value));
+        }
+        context.setCount(key, value, prefix.isGlobal());
     }
 
 }
