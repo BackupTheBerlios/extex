@@ -18,6 +18,7 @@
  */
 package de.dante.extex.typesetter;
 
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.typesetter.type.NodeList;
 
 
@@ -26,7 +27,7 @@ import de.dante.extex.typesetter.type.NodeList;
  * to be invoked when a paragraph is complete.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface ParagraphObserver {
 
@@ -34,6 +35,7 @@ public interface ParagraphObserver {
      * Callback to be invoked when a paragraph is complete.
      *
      * @param nodes the nodes of the paragraph
+     * @throws InterpreterException in case of an error
      */
-    void atParagraph(NodeList nodes);
+    void atParagraph(NodeList nodes) throws InterpreterException;
 }
