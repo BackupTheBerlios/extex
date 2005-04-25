@@ -37,7 +37,7 @@ import de.dante.util.UnicodeChar;
  * @see "TeX -- The Program [211]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.35 $
+ * @version $Revision: 1.36 $
  */
 public interface ListMaker {
 
@@ -75,9 +75,9 @@ public interface ListMaker {
             throws TypesetterException;
 
     /**
-     * TODO gene: missing JavaDoc
+     * Register an observer to be invoked at the end of the paragraph.
      *
-     * @param observer ...
+     * @param observer the observer to register
      */
     void afterParagraph(ParagraphObserver observer);
 
