@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -30,7 +30,7 @@ import java.util.ResourceBundle;
  * This factory provides means to get a localizer.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public final class LocalizerFactory {
 
@@ -39,7 +39,7 @@ public final class LocalizerFactory {
      * delived by this factory.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.6 $
+     * @version $Revision: 1.7 $
      */
     private static class BasicLocalizer implements Localizer {
 
@@ -155,6 +155,28 @@ public final class LocalizerFactory {
                 final Object c, final Object d) {
 
             return MessageFormat.format(format(fmt), new Object[]{a, b, c, d});
+        }
+
+        /**
+         * Apply the given argument to the format string stored in the resource
+         * bundle under the given key. The argument object's value of toString()
+         * replaces the substring <tt>'{0}'</tt>,<tt>'{1}'</tt>,<tt>'{2}'</tt>,
+         * and <tt>'{3}'</tt> in the format.
+         *
+         * @param fmt the key in the resource bundle to search for
+         * @param a the Object used for the substring <tt>{0}</tt>
+         * @param b the Object used for the substring <tt>{1}</tt>
+         * @param c the Object used for the substring <tt>{2}</tt>
+         * @param d the Object used for the substring <tt>{3}</tt>
+         * @param e the Object used for the substring <tt>{4}</tt>
+         *
+         * @return the expanded format string
+         */
+        public String format(final String fmt, final Object a, final Object b,
+                final Object c, final Object d, final Object e) {
+
+            return MessageFormat.format(format(fmt),
+                    new Object[]{a, b, c, d, e});
         }
 
         /**
