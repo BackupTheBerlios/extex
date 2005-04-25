@@ -34,9 +34,10 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class PenaltyNode extends AbstractNode implements Node, Discardable {
+
     /**
      * The field <tt>penalty</tt> contains the penalty value of this node.
      */
@@ -80,34 +81,29 @@ public class PenaltyNode extends AbstractNode implements Node, Discardable {
      * This is meant to produce a exaustive form as it is used in tracing
      * output to the log file.
      *
-     * @return the printable representation
+     * @param sb the output string buffer
+     * @param prefix the prefix string inserted at the beginning of each line
      *
      * @see "TeX -- The Program [194]"
-     */
-    public String toString() {
-
-        StringBuffer sb = new StringBuffer();
-        toString(sb, "");
-        return sb.toString();
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.type.Node#toString(java.lang.StringBuffer,
+     * @see de.dante.extex.typesetter.type.Node#toString(
+     *      java.lang.StringBuffer,
      *      java.lang.String)
      */
     public void toString(final StringBuffer sb, final String prefix) {
 
-        sb.append(getLocalizer().format("PenaltyNode.Text",
+        sb.append(getLocalizer().format("String.Format",
                 Long.toString(penalty)));
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.Node#toText(java.lang.StringBuffer, java.lang.String)
+     * @see de.dante.extex.typesetter.type.Node#toText(
+     *      java.lang.StringBuffer,
+     *      java.lang.String)
      */
-    public void toText(StringBuffer sb, String prefix) {
+    public void toText(final StringBuffer sb, final String prefix) {
 
-        // TODO gene: toText unimplemented
-        throw new RuntimeException("unimplemented");
+        sb.append(getLocalizer().format("Text.Format",
+                Long.toString(penalty)));
     }
 
     /**

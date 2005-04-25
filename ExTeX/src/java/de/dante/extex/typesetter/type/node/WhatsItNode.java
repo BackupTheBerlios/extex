@@ -29,9 +29,10 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class WhatsItNode extends AbstractNode {
+
     /**
      * Creates a new object.
      */
@@ -41,36 +42,12 @@ public class WhatsItNode extends AbstractNode {
     }
 
     /**
-     * This method returns the printable representation.
-     * This is meant to produce an exhaustive form as it is used in tracing
-     * output to the log file.
-     *
-     * @return the printable representation
-     *
-     * @see java.lang.Object#toString()
-     */
-    public String toString() {
-
-        return "whatsit";
-    }
-
-    /**
      * @see de.dante.extex.typesetter.type.Node#toString(java.lang.StringBuffer,
      *      java.lang.String)
      */
     public void toString(final StringBuffer sb, final String prefix) {
 
-        sb.append("whatsit");
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.type.Node#toText(
-     *      java.lang.StringBuffer, java.lang.String)
-     */
-    public void toText(final StringBuffer sb, final String prefix) {
-
-        // TODO gene: toText unimplemented
-
+        sb.append("(whatsit )");
     }
 
     /**

@@ -33,7 +33,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class VerticalListNode extends AbstractNodeList implements NodeList {
 
@@ -66,7 +66,7 @@ public class VerticalListNode extends AbstractNodeList implements NodeList {
      */
     public void spread(final FixedDimen size) {
 
-        //TODO gene: unimplemented
+        //TODO gene: spread() unimplemented
         throw new RuntimeException("unimplemented");
     }
 

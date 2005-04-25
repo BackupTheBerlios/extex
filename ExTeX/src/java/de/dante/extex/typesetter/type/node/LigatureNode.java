@@ -36,7 +36,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class LigatureNode extends CharNode implements Node {
 
@@ -125,13 +125,19 @@ public class LigatureNode extends CharNode implements Node {
      * This is meant to produce a exhaustive form as it is used in tracing
      * output to the log file.
      *
-     * @return the printable representation
+     * @param sb the output string buffer
+     * @param prefix the prefix string inserted at the beginning of each line
      *
      * @see "TeX -- The Program [193]"
+     * @see de.dante.extex.typesetter.type.Node#toString(
+     *      java.lang.StringBuffer,
+     *      java.lang.String)
      */
-    public String toString() {
+    public void toString(final StringBuffer sb, final String prefix) {
 
-        return " (ligature " + left.toString() + "." + right.toString() + ")";
+        super.toString(sb, prefix);
+        sb.append(getLocalizer().format("String.Format", left.toString(),
+                right.toString()));
     }
 
     /**

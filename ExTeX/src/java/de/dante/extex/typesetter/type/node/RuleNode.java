@@ -32,12 +32,12 @@ import de.dante.util.GeneralException;
  * @see "TeX -- The Program [138]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class RuleNode extends AbstractNode implements Node {
 
     /**
-     * The field <tt>context</tt> the typographic context.
+     * The field <tt>context</tt> the typesetting context.
      */
     private TypesettingContext context;
 
@@ -69,22 +69,6 @@ public class RuleNode extends AbstractNode implements Node {
     }
 
     /**
-     * This method returns the printable representation.
-     * This is meant to produce a exaustive form as it is used in tracing
-     * output to the log file.
-     *
-     * @return the printable representation
-     *
-     * @see "TeX -- The Program [187]"
-     */
-    public String toString() {
-
-        StringBuffer sb = new StringBuffer();
-        toString(sb, "");
-        return sb.toString();
-    }
-
-    /**
      * This method puts the printable representation into the string buffer.
      * This is meant to produce a short form only as it is used in error
      * messages to the user.
@@ -92,9 +76,9 @@ public class RuleNode extends AbstractNode implements Node {
      * @param sb the output string buffer
      * @param prefix the prefix string inserted at the beginning of each line
      *
+     * @see "TeX -- The Program [187]"
      * @see de.dante.extex.typesetter.type.Node#toString(java.lang.StringBuffer,
      *      java.lang.String)
-     * @see "TeX -- The Program [187]"
      */
     public void toString(final StringBuffer sb, final String prefix) {
 
@@ -104,7 +88,7 @@ public class RuleNode extends AbstractNode implements Node {
         String d = (x == null ? "*" : x.toString());
         x = getWidth();
         String w = (x == null ? "*" : x.toString());
-        sb.append(getLocalizer().format("RuleNode.Text", h, d, w));
+        sb.append(getLocalizer().format("String.Format", h, d, w));
     }
 
     /**
@@ -114,7 +98,13 @@ public class RuleNode extends AbstractNode implements Node {
      */
     public void toText(final StringBuffer sb, final String prefix) {
 
-        // TODO gene: toText unimplemented
+        Dimen x = getHeight();
+        String h = (x == null ? "*" : x.toString());
+        x = getDepth();
+        String d = (x == null ? "*" : x.toString());
+        x = getWidth();
+        String w = (x == null ? "*" : x.toString());
+        sb.append(getLocalizer().format("Text.Format", h, d, w));
     }
 
     /**

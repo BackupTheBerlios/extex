@@ -29,7 +29,7 @@ import de.dante.extex.typesetter.type.NodeVisitor;
 import de.dante.util.GeneralException;
 
 /**
- * This node represents a TeX "glue" node.
+ * This node represents a <logo>TeX</logo> "glue" node.
  * <p>
  * For the document writer it acts like a kern node. The width contains
  * the distance to add.
@@ -43,15 +43,9 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class GlueNode extends AbstractNode implements Node, Discardable {
-
-    /**
-     * The field <tt>DEVELOP</tt> contains the indicator that the development
-     * is not finished.
-     */
-    private static final boolean DEVELOP = true;
 
     /**
      * The field <tt>size</tt> contains the glue specification for this node.
@@ -77,6 +71,16 @@ public class GlueNode extends AbstractNode implements Node, Discardable {
     public void addWidthTo(final Glue glue) {
 
         glue.add(this.size);
+    }
+
+    /**
+     * Getter for size.
+     *
+     * @return the size
+     */
+    protected FixedGlue getSize() {
+
+        return this.size;
     }
 
     /**
@@ -112,42 +116,20 @@ public class GlueNode extends AbstractNode implements Node, Discardable {
     }
 
     /**
-     * @see java.lang.Object#toString()
-     */
-    public String toString() {
-
-        StringBuffer sb = new StringBuffer();
-        toString(sb, "");
-        return sb.toString();
-    }
-
-    /**
+     * This method puts the printable representation into the string buffer.
+     * This is meant to produce a short form only as it is used in error
+     * messages to the user.
+     *
+     * @param sb the output string buffer
+     * @param prefix the prefix string inserted at the beginning of each line
+     *
+     * @see "TeX -- The Program [189]"
      * @see de.dante.extex.typesetter.type.Node#toString(java.lang.StringBuffer,
      *      java.lang.String)
      */
     public void toString(final StringBuffer sb, final String prefix) {
 
-        sb.append("\\glue ");
-        sb.append(this.size.toString());
-        if (DEVELOP && !getWidth().eq(size.getLength())) {
-            sb.append(" [");
-            sb.append(getWidth().toString());
-            sb.append(']');
-        }
-    }
-
-    /**
-     * This method returns the printable representation.
-     * This is meant to produce an exhaustive form as it is used in tracing
-     * output to the log file.
-     *
-     * @return the printable representation
-     *
-     * @see "TeX -- The Program [186]"
-     */
-    public String toText() {
-
-        return " ";
+        sb.append(getLocalizer().format("String.Format", getSize().toString()));
     }
 
     /**
@@ -156,7 +138,7 @@ public class GlueNode extends AbstractNode implements Node, Discardable {
      */
     public void toText(final StringBuffer sb, final String prefix) {
 
-        sb.append(toText());
+        sb.append(getLocalizer().format("Text.Format", getSize().toString()));
     }
 
     /**

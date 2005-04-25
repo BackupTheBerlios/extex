@@ -20,24 +20,51 @@
 package de.dante.extex.typesetter.type.node;
 
 import de.dante.extex.typesetter.type.Node;
+import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.NodeVisitor;
 import de.dante.util.GeneralException;
 
 /**
- * This node is mean tto record an insertion.
+ * This node is meant to record an insertion.
  *
  * @see "TeX -- The Program [140]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class InsertionNode extends AbstractNode implements Node {
+
+    /**
+     * The field <tt>nodes</tt> contains the ...
+     */
+    private NodeList nodes;
+
+    /**
+     * The field <tt>floatCost</tt> contains the ...
+     */
+    private long floatCost = 0;
+
+    /**
+     * The field <tt>subtype</tt> contains the ...
+     */
+    private long subtype = 0;
+
     /**
      * Creates a new object.
+     *
+     * @param subtype ...
+     * @param nodes ...
      */
-    public InsertionNode() {
+    public InsertionNode(final long subtype, final NodeList nodes) {
 
         super();
+        this.subtype = subtype;
+        this.nodes = nodes;
+        if (nodes != null) {
+            setWidth(nodes.getWidth());
+            setHeight(nodes.getHeight());
+            setDepth(nodes.getDepth());
+        }
     }
 
     /**
@@ -45,33 +72,23 @@ public class InsertionNode extends AbstractNode implements Node {
      * This is meant to produce a exaustive form as it is used in tracing
      * output to the log file.
      *
-     * @return the printable representation
+     * @param sb the output string buffer
+     * @param prefix the prefix string inserted at the beginning of each line
      *
      * @see "TeX -- The Program [188]"
-     */
-    public String toString() {
-
-        StringBuffer sb = new StringBuffer();
-        toString(sb, "");
-        return sb.toString();
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.type.Node#toString(java.lang.StringBuffer,
+     * @see de.dante.extex.typesetter.type.Node#toString(
+     *      java.lang.StringBuffer,
      *      java.lang.String)
      */
     public void toString(final StringBuffer sb, final String prefix) {
 
-        sb.append("insert"); //TODO gene: toString() incomplete
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.type.Node#toText(java.lang.StringBuffer, java.lang.String)
-     */
-    public void toText(final StringBuffer sb, final String prefix) {
-
-        // TODO gene: toText unimplemented
-
+        sb.append(getLocalizer().format("String.Format",
+                Long.toString(subtype), //
+                getHeight().toString(), //
+                "???", //
+                getDepth().toString(), //
+                Long.toString(floatCost)));
+        nodes.toString(sb, prefix);
     }
 
     /**

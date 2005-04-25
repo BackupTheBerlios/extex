@@ -20,6 +20,7 @@
 package de.dante.extex.typesetter.type.node;
 
 import de.dante.extex.typesetter.type.Node;
+import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.NodeVisitor;
 import de.dante.util.GeneralException;
 
@@ -30,9 +31,14 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class AdjustNode extends AbstractNode implements Node {
+
+    /**
+     * The field <tt>nodes</tt> contains the ...
+     */
+    private NodeList nodes;
 
     /**
      * Creates a new object.
@@ -43,35 +49,31 @@ public class AdjustNode extends AbstractNode implements Node {
     }
 
     /**
-     * This method returns the printable representation.
-     * This is meant to produce a exaustive form as it is used in tracing
-     * output to the log file.
+     * This method puts the printable representation into the string buffer.
+     * This is meant to produce a short form only as it is used in error
+     * messages to the user.
      *
-     * @return the printable representation
+     * @param sb the output string buffer
+     * @param prefix the prefix string inserted at the beginning of each line
      *
      * @see "TeX -- The Program [197]"
-     */
-    public String toString() {
-
-        return "vadjust "; //TODO gene: toString() incomplete
-    }
-
-    /**
      * @see de.dante.extex.typesetter.type.Node#toString(java.lang.StringBuffer,
      *      java.lang.String)
      */
     public void toString(final StringBuffer sb, final String prefix) {
 
-        sb.append("vadjust "); //TODO gene: unimplemented
+        sb.append(getLocalizer().format("String.Format",
+                        getWidth().toString()));
+        nodes.toString(sb, prefix);
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.Node#toText(java.lang.StringBuffer, java.lang.String)
+     * @see de.dante.extex.typesetter.type.Node#toText(java.lang.StringBuffer,
+     *      java.lang.String)
      */
-    public void toText(StringBuffer sb, String prefix) {
+    public void toText(final StringBuffer sb, final String prefix) {
 
-        // TODO gene: toText unimplemented
-
+        sb.append(getLocalizer().format("Text.Format", getWidth().toString()));
     }
 
     /**

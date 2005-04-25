@@ -28,7 +28,7 @@ import de.dante.extex.typesetter.type.Node;
  * possible to insert arbitrary nodes into the typesetter tree.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ExtensionNode extends WhatsItNode implements Node {
 
@@ -73,7 +73,8 @@ public class ExtensionNode extends WhatsItNode implements Node {
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.node.AbstractNode#setDepth(de.dante.extex.interpreter.type.dimen.Dimen)
+     * @see de.dante.extex.typesetter.type.node.AbstractNode#setDepth(
+     *      de.dante.extex.interpreter.type.dimen.Dimen)
      */
     public void setDepth(final Dimen depth) {
 
@@ -81,7 +82,8 @@ public class ExtensionNode extends WhatsItNode implements Node {
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.node.AbstractNode#setHeight(de.dante.extex.interpreter.type.dimen.Dimen)
+     * @see de.dante.extex.typesetter.type.node.AbstractNode#setHeight(
+     *      de.dante.extex.interpreter.type.dimen.Dimen)
      */
     public void setHeight(final Dimen height) {
 
@@ -89,34 +91,12 @@ public class ExtensionNode extends WhatsItNode implements Node {
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.node.AbstractNode#setWidth(FixedDimen)
+     * @see de.dante.extex.typesetter.type.Node#setWidth(
+     *      de.dante.extex.interpreter.type.dimen.FixedDimen)
      */
     public void setWidth(final FixedDimen width) {
 
         this.extension.setWidth(width);
-    }
-
-    /**
-     * This method returns the printable representation.
-     * This is meant to produce a exaustive form as it is used in tracing
-     * output to the log file.
-     *
-     * @return the printable representation
-     *
-     * @see java.lang.Object#toString()
-     */
-    public String toString() {
-
-        return "extension";
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.type.Node#toString(java.lang.StringBuffer,
-     *      java.lang.String)
-     */
-    public void toString(final StringBuffer sb, final String prefix) {
-
-        sb.append("extension");
     }
 
 }

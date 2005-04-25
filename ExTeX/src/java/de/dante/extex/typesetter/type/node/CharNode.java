@@ -35,7 +35,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class CharNode extends AbstractNode implements Node {
 
@@ -139,28 +139,17 @@ public class CharNode extends AbstractNode implements Node {
     }
 
     /**
-     * This method returns the printable representation.
-     * This is meant to produce a exaustive form as it is used in tracing
-     * output to the log file.
-     *
-     * @return the printable representation
-     */
-    public String toString() {
-
-        return getLocalizer().format("CharNode.Text",
-                typesettingContext.getFont().getFontName(),
-                character.toString());
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.type.Node#toString(java.lang.StringBuffer,
+     * @see de.dante.extex.typesetter.type.Node#toString(
+     *      java.lang.StringBuffer,
      *      java.lang.String)
      */
     public void toString(final StringBuffer sb, final String prefix) {
 
-        sb.append(getLocalizer().format("CharNode.Text",
-                typesettingContext.getFont().getFontName(),
-                character.toString()));
+        Font font = typesettingContext.getFont();
+        sb.append(getLocalizer()
+                .format("String.Format",
+                        (font == null ? "*" : font.getFontName()),
+                        character.toString()));
         if (false) {
             sb.append(" (");
             sb.append(getHeight().toString());
@@ -172,12 +161,17 @@ public class CharNode extends AbstractNode implements Node {
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.Node#toText(java.lang.StringBuffer,
+     * @see de.dante.extex.typesetter.type.Node#toText(
+     *      java.lang.StringBuffer,
      *      java.lang.String)
      */
     public void toText(final StringBuffer sb, final String prefix) {
 
-        sb.append(this.character.toString());
+        Font font = typesettingContext.getFont();
+        sb.append(getLocalizer()
+                .format("String.Format",
+                        (font == null ? "*" : font.getFontName()),
+                        character.toString()));
     }
 
     /**

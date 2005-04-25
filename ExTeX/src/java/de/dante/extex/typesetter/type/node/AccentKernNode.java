@@ -29,7 +29,7 @@ import de.dante.extex.interpreter.type.dimen.Dimen;
  * @see "TeX -- The Program [155]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class AccentKernNode extends AbstractKernNode {
 
@@ -41,34 +41,6 @@ public class AccentKernNode extends AbstractKernNode {
     public AccentKernNode(final Dimen kern) {
 
         super(kern);
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.type.Node#toString(java.lang.StringBuffer,
-     *      java.lang.String)
-     */
-    public void toString(final StringBuffer sb, final String prefix) {
-
-        sb.append(getLocalizer().format("AccentKernNode.String",
-                getWidth().toString()));
-    }
-
-    /**
-     * This method puts the printable representation into the string buffer.
-     * This is meant to produce a short form only as it is used in error
-     * messages to the user.
-     *
-     * @param sb the output string buffer
-     * @param prefix the prefix string inserted at the beginning of each line
-     *
-     * @see de.dante.extex.typesetter.type.Node#toText(java.lang.StringBuffer,
-     *      java.lang.String)
-     * @see "TeX -- The Program [191]"
-     */
-    public void toText(final StringBuffer sb, final String prefix) {
-
-        sb.append(getLocalizer().format("AccentKernNode.Text",
-                getWidth().toString()));
     }
 
 }

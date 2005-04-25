@@ -31,7 +31,7 @@ import de.dante.util.GeneralException;
  * @see "TeX -- The Program [149]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class CenteredLeadersNode extends GlueNode implements Node {
 
@@ -63,17 +63,21 @@ public class CenteredLeadersNode extends GlueNode implements Node {
     }
 
     /**
-     * This method returns the printable representation.
-     * This is meant to produce a exaustive form as it is used in tracing
-     * output to the log file.
+     * This method puts the printable representation into the string buffer.
+     * This is meant to produce a short form only as it is used in error
+     * messages to the user.
      *
-     * @return the printable representation
+     * @param sb the output string buffer
+     * @param prefix the prefix string inserted at the beginning of each line
      *
      * @see "TeX -- The Program [190]"
+     * @see de.dante.extex.typesetter.type.Node#toString(java.lang.StringBuffer,
+     *      java.lang.String)
      */
-    public String toString() {
+    public void toString(final StringBuffer sb, final String prefix) {
 
-        return "cleaders "; //TODO gene: toString() incomplete
+        sb.append(getLocalizer().format("String.Format", getSize().toString()));
+        node.toString(sb, prefix);
     }
 
     /**

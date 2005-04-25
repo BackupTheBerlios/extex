@@ -31,7 +31,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class DiscretionaryNode extends AbstractNode implements Node {
 
@@ -106,25 +106,19 @@ public class DiscretionaryNode extends AbstractNode implements Node {
      * This is meant to produce a exaustive form as it is used in tracing
      * output to the log file.
      *
-     * @return the printable representation
+     * @param sb the target buffer
+     * @param prefix the prefix for each new line
      *
      * @see "TeX -- The Program [195]"
-     */
-    public String toString() {
-
-        StringBuffer sb = new StringBuffer();
-        toString(sb, "");
-        return sb.toString();
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.type.Node#toString(java.lang.StringBuffer,
+     * @see de.dante.extex.typesetter.type.Node#toString(
+     *      java.lang.StringBuffer,
      *      java.lang.String)
      */
     public void toString(final StringBuffer sb, final String prefix) {
 
         String pre = prefix + ".";
-        sb.append("\\discretionary{");
+        sb.append(getLocalizer().format("String.Format"));
+        sb.append("{");
         if (preBreak != null) {
             preBreak.toString(sb, pre);
         }
@@ -146,7 +140,7 @@ public class DiscretionaryNode extends AbstractNode implements Node {
      */
     public void toText(final StringBuffer sb, final String prefix) {
 
-        sb.append("-");
+        sb.append(getLocalizer().format("Text.Format"));
     }
 
     /**

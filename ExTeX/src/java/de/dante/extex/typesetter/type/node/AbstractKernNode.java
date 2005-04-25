@@ -29,7 +29,7 @@ import de.dante.util.GeneralException;
  * distinguishable for the sake of some fine differentiations in TeX.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public abstract class AbstractKernNode extends AbstractNode implements KernNode {
 
@@ -44,13 +44,30 @@ public abstract class AbstractKernNode extends AbstractNode implements KernNode 
     }
 
     /**
-     * @see java.lang.Object#toString()
+     * This method puts the printable representation into the string buffer.
+     * This is meant to produce a short form only as it is used in error
+     * messages to the user.
+     *
+     * @param sb the output string buffer
+     * @param prefix the prefix string inserted at the beginning of each line
+     *
+     * @see "TeX -- The Program [191]"
+     * @see de.dante.extex.typesetter.type.Node#toString(java.lang.StringBuffer,
+     *      java.lang.String)
      */
-    public String toString() {
+    public void toString(final StringBuffer sb, final String prefix) {
 
-        StringBuffer sb = new StringBuffer();
-        toString(sb, "");
-        return sb.toString();
+        sb.append(getLocalizer().format("String.Format",
+                        getWidth().toString()));
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.Node#toText(java.lang.StringBuffer,
+     *      java.lang.String)
+     */
+    public void toText(final StringBuffer sb, final String prefix) {
+
+        sb.append(getLocalizer().format("Text.Format", getWidth().toString()));
     }
 
     /**

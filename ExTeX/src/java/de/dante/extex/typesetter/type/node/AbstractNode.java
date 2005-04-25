@@ -34,7 +34,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This abstract class provides some methods common to all Nodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public abstract class AbstractNode implements Node {
 
@@ -92,7 +92,7 @@ public abstract class AbstractNode implements Node {
      *
      * @param move the move to set
      */
-    public void setMove(Dimen move) {
+    public void setMove(final Dimen move) {
 
         this.move = move;
     }
@@ -102,7 +102,7 @@ public abstract class AbstractNode implements Node {
      *
      * @param shift the shift to set
      */
-    public void setShift(Dimen shift) {
+    public void setShift(final Dimen shift) {
 
         this.shift = shift;
     }
@@ -220,13 +220,13 @@ public abstract class AbstractNode implements Node {
     /**
      * Getter for localizer.
      *
-     * @return the localizer.
+     * @return the localizer
      */
     protected Localizer getLocalizer() {
 
         if (this.localizer == null) {
-            this.localizer = LocalizerFactory
-                    .getLocalizer(Node.class.getName());
+            this.localizer = LocalizerFactory.getLocalizer(this.getClass()
+                    .getName());
         }
         return this.localizer;
     }
@@ -301,10 +301,36 @@ public abstract class AbstractNode implements Node {
      * @param theWidth the desired with
      * @param sum the total sum of the glues
      *
-     * @see de.dante.extex.typesetter.type.Node#spread(FixedDimen, FixedGlueComponent)
+     * @see de.dante.extex.typesetter.type.Node#spread(
+     *      de.dante.extex.interpreter.type.dimen.FixedDimen,
+     *      de.dante.extex.interpreter.type.glue.FixedGlueComponent)
      */
     public void spread(final FixedDimen theWidth, final FixedGlueComponent sum) {
 
+    }
+
+    /**
+     * This method returns the printable representation.
+     * This is meant to produce a exaustive form as it is used in tracing
+     * output to the log file.
+     *
+     * @return the printable representation
+     */
+    public String toString() {
+
+        StringBuffer sb = new StringBuffer();
+        toString(sb, "");
+        return sb.toString();
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.Node#toString(
+     *      java.lang.StringBuffer,
+     *      java.lang.String)
+     */
+    public void toString(final StringBuffer sb, final String prefix) {
+
+        sb.append(getLocalizer().format("String.Format"));
     }
 
     /**
@@ -330,5 +356,8 @@ public abstract class AbstractNode implements Node {
      * @see de.dante.extex.typesetter.type.Node#toText(java.lang.StringBuffer,
      *      java.lang.String)
      */
-    public abstract void toText(final StringBuffer sb, final String prefix);
+    public void toText(final StringBuffer sb, final String prefix) {
+
+        sb.append(getLocalizer().format("Text.Format"));
+    }
 }

@@ -25,11 +25,11 @@ import de.dante.extex.typesetter.type.NodeVisitor;
 import de.dante.util.GeneralException;
 
 /**
- * A space noad represents a simple space character.
+ * A space node represents a simple space character.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class SpaceNode extends GlueNode implements Node {
 
@@ -56,53 +56,29 @@ public class SpaceNode extends GlueNode implements Node {
     }
 
     /**
-     * Getter for size.
-     *
-     * @return the size.
-     *
-     * @deprecated the glue should not be exposed
-     */
-    public Glue getGlueWidth() {
-
-        return this.size;
-    }
-
-    /**
-     * This method returns the printable representation.
-     * This is meant to produce a exaustive form as it is used in tracing
-     * output to the log file.
-     *
-     * @return the printable representation
-     *
-     * @see java.lang.Object#toString()
-     */
-    public String toString() {
-
-        return " ";
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.type.Node#toString(java.lang.StringBuffer,
+     * @see de.dante.extex.typesetter.type.Node#toString(
+     *      java.lang.StringBuffer,
      *      java.lang.String)
      */
     public void toString(final StringBuffer sb, final String prefix) {
 
         if (!DEVELOP || getWidth().eq(size.getLength())) {
-            sb.append(getLocalizer().format("SpaceNode.Format", //
+            sb.append(getLocalizer().format("String.Format", //
                     size.toString()));
         } else {
-            sb.append(getLocalizer().format("SpaceNode.Format2", //
+            sb.append(getLocalizer().format("String.Format.develop", //
                     size.toString(), getWidth().toString()));
         }
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.Node#toText(java.lang.StringBuffer,
+     * @see de.dante.extex.typesetter.type.Node#toText(
+     *      java.lang.StringBuffer,
      *      java.lang.String)
      */
     public void toText(final StringBuffer sb, final String prefix) {
 
-        sb.append(" ");
+        sb.append(getLocalizer().format("Text.Format", size.toString()));
     }
 
     /**
