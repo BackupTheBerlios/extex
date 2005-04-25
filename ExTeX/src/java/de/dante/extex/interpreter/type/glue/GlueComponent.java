@@ -57,7 +57,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
 public class GlueComponent implements Serializable, FixedGlueComponent {
 
@@ -81,6 +81,11 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
      * TeX the program!
      */
     private static final int FLOAT_DIGITS = 17;
+
+    /**
+     * The constant <tt>MAX_ORDER</tt> contains the maximal allowed order.
+     */
+    private static final int MAX_ORDER = 3;
 
     /**
      * The constant <tt>MINUS_ONE_FIL</tt> contains the value of -1 fil.
@@ -312,20 +317,6 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
     }
 
     /**
-     * Compares the current instance with another GlueComponent for equality.
-     *
-     * @param d the other GlueComponent to compare to. If this parameter is
-     * <code>null</code> then the comparison fails.
-     *
-     * @return <code>false</code> iff <i>|this| == |d| and ord(this) == ord(d)</i>
-     */
-    public boolean ne(final FixedGlueComponent d) {
-
-        return (d != null && //
-        (value != d.getValue() || order != d.getOrder()));
-    }
-
-    /**
      * Compares the current instance with another GlueComponent.
      *
      * @param d the other GlueComponent to compare to
@@ -421,6 +412,20 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
     }
 
     /**
+     * Compares the current instance with another GlueComponent for equality.
+     *
+     * @param d the other GlueComponent to compare to. If this parameter is
+     * <code>null</code> then the comparison fails.
+     *
+     * @return <code>false</code> iff <i>|this| == |d| and ord(this) == ord(d)</i>
+     */
+    public boolean ne(final FixedGlueComponent d) {
+
+        return (d != null && //
+        (value != d.getValue() || order != d.getOrder()));
+    }
+
+    /**
      * Set the value and order from the data gathered by parsing a token source.
      *
      * @param context the interpreter context
@@ -498,6 +503,9 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
             (t != null && (t.equals('l') || t.equals('L'))); //
             t = source.getToken(context)) {
                 order++;
+            }
+            if (order > MAX_ORDER) {
+                throw new HelpingException(getMyLocalizer(), "TTP.IllegalFil");
             }
             source.push(t);
         } else if ((t = source.getToken(context)) != null) {
@@ -761,8 +769,8 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
                 toks.add(factory.createToken(Catcode.LETTER, 'l', ""));
             }
         } else {
-            throw new ImpossibleException("illegal order " + Long
-                    .toString(order));
+            throw new ImpossibleException("illegal order "
+                    + Long.toString(order));
         }
     }
 
