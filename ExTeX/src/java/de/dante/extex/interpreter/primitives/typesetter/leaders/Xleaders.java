@@ -34,9 +34,9 @@ import de.dante.extex.interpreter.type.box.RuleConvertible;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.scanner.type.CodeToken;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.node.ExpandedLeadersNode;
-import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive
@@ -61,7 +61,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Xleaders extends AbstractCode  {
 
@@ -119,7 +119,7 @@ public class Xleaders extends AbstractCode  {
 
         try {
             typesetter.add(new ExpandedLeadersNode(node, skip));
-        } catch (GeneralException e) {
+        } catch (TypesetterException e) {
             throw new InterpreterException(e);
         }
     }
