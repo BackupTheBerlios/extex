@@ -42,7 +42,7 @@ import de.dante.util.framework.AbstractFactory;
  * configuration.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class OutputFactory extends AbstractFactory
         implements
@@ -52,7 +52,7 @@ public class OutputFactory extends AbstractFactory
      * This class provides a mutable Integer.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.11 $
+     * @version $Revision: 1.12 $
      */
     private class Int {
 
@@ -272,7 +272,7 @@ public class OutputFactory extends AbstractFactory
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * This method tries to open a new output stream.
      *
      * @param dir the directory or <code>null</code>
      * @param filename the file name
@@ -314,7 +314,7 @@ public class OutputFactory extends AbstractFactory
      * @see de.dante.extex.documentWriter.OutputStreamFactory#setExtension(
      *      java.lang.String)
      */
-    public void setExtension(String extension) {
+    public void setExtension(final String extension) {
 
         this.defaultExtension = extension;
     }

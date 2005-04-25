@@ -37,10 +37,25 @@ import de.dante.util.framework.configuration.Configurable;
 import de.dante.util.framework.logger.LogEnabled;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This primitive initiates the loading of native code and implements the
+ * primitive <tt>\nativeload</tt>
+ *
+ * <doc name="nativeload">
+ * <h3>The Primitive <tt>\nativeload</tt></h3>
+ * <p>
+ *  TODO missing documentation
+ * </p>
+ * <p>
+ *  The general form of this primitive is
+ * <pre class="syntax">
+ *   &lang;nativeload&rang;
+ *       &rarr; \nativeload &lang;<i>type</i>&rang; &lang;<i>tokens</i>&rang; </pre>
+ * </p>
+ * </doc>
+ *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class NativeLoad extends AbstractCode
         implements
@@ -53,7 +68,7 @@ public class NativeLoad extends AbstractCode
      * inheritance in Java.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.2 $
+     * @version $Revision: 1.3 $
      */
     protected class Factory extends AbstractFactory {
 
