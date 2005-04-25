@@ -20,7 +20,6 @@
 package de.dante.extex.typesetter.type.noad;
 
 import de.dante.extex.interpreter.context.TypesettingContext;
-import de.dante.extex.interpreter.context.TypesettingContextImpl;
 import de.dante.extex.interpreter.primitives.register.font.NumberedFont;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.typesetter.TypesetterOptions;
@@ -32,7 +31,7 @@ import de.dante.extex.typesetter.type.node.CharNode;
  * This class provides a container for a mathamatical character.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class CharNoad extends AbstractNoad implements Noad {
 
@@ -71,7 +70,8 @@ public class CharNoad extends AbstractNoad implements Noad {
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.noad.Noad#toString(java.lang.StringBuffer)
+     * @see de.dante.extex.typesetter.type.noad.Noad#toString(
+     *      java.lang.StringBuffer)
      */
     public void toString(final StringBuffer sb) {
 
@@ -94,9 +94,7 @@ public class CharNoad extends AbstractNoad implements Noad {
             //gene: impossible
             throw new NullPointerException("font");
         }
-        //TODO gene: use factory?
-        TypesettingContext tc = new TypesettingContextImpl(context
-                .getTypesettingContext());
+        TypesettingContext tc = context.getTypesettingContext().copy();
         tc.setFont(font);
         list.addGlyph(new CharNode(tc, mg.getCharacter()));
     }
