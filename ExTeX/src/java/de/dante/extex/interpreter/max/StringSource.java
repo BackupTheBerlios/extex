@@ -30,7 +30,7 @@ import de.dante.util.configuration.ConfigurationException;
  * This class provides a token source which is fed from a sting.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class StringSource extends Moritz {
 
@@ -77,7 +77,7 @@ public class StringSource extends Moritz {
      */
     public void executeGroup() throws InterpreterException {
 
-        // TODO gene: unimplemented
+        // TODO gene: executeGroup() unimplemented
         throw new RuntimeException("unimplemented");
     }
 
@@ -88,7 +88,7 @@ public class StringSource extends Moritz {
     public void execute(final Token token, final Context context,
             final Typesetter typesetter) throws InterpreterException {
 
-        // TODO gene: unimplemented
+        // TODO gene: execute() unimplemented
         throw new RuntimeException("unimplemented");
     }
 
