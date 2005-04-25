@@ -45,7 +45,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class BaseHyphenationTable implements ModifiableLanguage {
 
@@ -176,30 +176,13 @@ public class BaseHyphenationTable implements ModifiableLanguage {
             final TypesetterOptions context, final UnicodeChar hyphen)
             throws HyphenationException {
 
-        if (!hyphenactive || nodelist.size() == 0) {
+        if (hyphen == null || !hyphenactive || nodelist.size() == 0) {
             return nodelist;
         }
 
-        Node n;
-        /*
-         Font font; // assumption all chars have the same font
-         n = nodelist.get(0);
-         if (n instanceof CharNode) {
-         font = ((CharNode) n).getTypesettingContext().getFont();
-         } else if (n instanceof LigatureNode) {
-         font = ((LigatureNode) n).getTypesettingContext().getFont();
-         } else {
-         //TODO gene: error: unimplemented
-         throw new RuntimeException("unimplemented");
-         }
-         UnicodeChar hc = font.getHyphenChar();
-         if (hc == null) {
-         return nodelist; //TODO gene: check
-         }
-         */
-
         TokenFactory factory = context.getTokenFactory();
         Tokens list = new Tokens();
+        Node n;
 
         try {
             for (int i = 0; i < nodelist.size(); i++) {
@@ -210,10 +193,8 @@ public class BaseHyphenationTable implements ModifiableLanguage {
                 } else if (n instanceof LigatureNode) {
                     list.add(factory.createToken(Catcode.OTHER,
                             ((LigatureNode) n).getCharacter(), "")); //TODO gene: check
-                } else {
-                    //TODO gene: ???
-                    return nodelist;
                 }
+                //other nodes are silently ignored
             }
         } catch (CatcodeException e) {
             throw new HyphenationException(e);
@@ -225,15 +206,16 @@ public class BaseHyphenationTable implements ModifiableLanguage {
         }
 
         HorizontalListNode nodes = new HorizontalListNode();
-        CharNodeFactory cnf = new CharNodeFactory();
+        CharNodeFactory nodeFactory = new CharNodeFactory();
         int i = 0;
         for (int j = 0; j < word.length(); j++) {
             Token t = word.get(j);
             if (t.equals(Catcode.OTHER, '-')) {
-                nodes.add(new DiscretionaryNode(null, new HorizontalListNode(
-                        cnf
-                                .newInstance(context.getTypesettingContext(),
-                                        hyphen)), null));
+                nodes.add(//
+                        new DiscretionaryNode(null, new HorizontalListNode(
+                                nodeFactory.newInstance(context
+                                        .getTypesettingContext(), hyphen)),
+                                null));
             } else {
                 nodes.add(nodelist.get(i++));
             }
