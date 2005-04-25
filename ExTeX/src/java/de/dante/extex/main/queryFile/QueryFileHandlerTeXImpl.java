@@ -32,7 +32,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * The value <tt>\relax</tt> is interpreted as no file name.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class QueryFileHandlerTeXImpl implements QueryFileHandler {
 
@@ -54,10 +54,10 @@ public class QueryFileHandlerTeXImpl implements QueryFileHandler {
                 .getLocalizer(QueryFileHandlerTeXImpl.class.getName());
         String file;
         try {
-            file = promptAndReadLine(localizer, logger, "CLI.PromptFile");
+            file = promptAndReadLine(localizer, logger, "TTP.PromptFile");
 
             while (file == null || "".equals(file)) {
-                file = promptAndReadLine(localizer, logger, "TTP.Prompt2");
+                file = promptAndReadLine(localizer, logger, "TTP.PromptFile2");
             }
 
         } catch (HelpingException e) {
