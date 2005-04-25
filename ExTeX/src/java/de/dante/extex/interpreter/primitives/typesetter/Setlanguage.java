@@ -22,18 +22,20 @@ package de.dante.extex.interpreter.primitives.typesetter;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.primitives.register.box.AbstractBox;
-import de.dante.extex.language.Language;
+import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.scanner.type.LeftBraceToken;
+import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.ParagraphObserver;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.NodeList;
 
 /**
- * This class provides an implementation for the primitive <code>\\</code>.
+ * This class provides an implementation for the primitive
+ * <code>\setlanguage</code>.
  *
- * <doc name="\\">
+ * <doc name="setlanguage">
  * <h3>The Primitive <tt>\\</tt></h3>
  * <p>
  *  TODO missing documentation
@@ -42,37 +44,45 @@ import de.dante.extex.typesetter.type.NodeList;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;setlanguage&rang;
- *       &rarr; <tt>\\</tt>  </pre>
+ *       &rarr; <tt>\setlanguage</tt> &lang;number&rang; </pre>
  * </p>
  * <p>
  *  Examples:
  *  <pre class="TeXSample">
- *    \\  </pre>
+ *    \setlanguage2  </pre>
  * </p>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Setlanguage extends AbstractBox {
 
     /**
-     * TODO gene: missing JavaDoc.
+     * This observer can be used to restore the value of the registers
+     * <tt>language</tt> and <tt>lang</tt> t the end of a paragraph.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.5 $
+     * @version $Revision: 1.6 $
      */
     private class ParObserver implements ParagraphObserver {
 
         /**
-         * The field <tt>context</tt> contains the ...
+         * The field <tt>context</tt> contains the interpreter context.
          */
         private Context context;
 
         /**
-         * The field <tt>language</tt> contains the ...
+         * The field <tt>language</tt> contains the value of the language
+         * register to restore.
          */
-        private Language language;
+        private long language;
+
+        /**
+         * The field <tt>toks</tt> contains the value of the register lang to
+         * restore.
+         */
+        private Tokens lang;
 
         /**
          * Creates a new object.
@@ -83,21 +93,19 @@ public class Setlanguage extends AbstractBox {
 
             super();
             this.context = context;
-            language = context.getTypesettingContext().getLanguage();
+            language = context.getCount("language").getValue();
+            lang = context.getToks("lang");
         }
 
         /**
          * @see de.dante.extex.typesetter.ParagraphObserver#atParagraph(
          *      de.dante.extex.typesetter.type.NodeList)
          */
-        public void atParagraph(final NodeList nodes) {
+        public void atParagraph(final NodeList nodes)
+                throws InterpreterException {
 
-            TypesettingContext tc = context.getTypesettingContext();
-            /*
-            context.getT
-            tc = new TypesettingContext(tc);
-            context.setTypesettingContext(language);
-            */
+            context.setCount("language", language, false);
+            context.setToks("lang", lang, false);
         }
     }
 
@@ -123,8 +131,18 @@ public class Setlanguage extends AbstractBox {
             throws InterpreterException {
 
         typesetter.afterParagraph(new ParObserver(context));
-        //TODO gene: change the language
-        throw new RuntimeException("unimplemented");
+
+        Token token = source.getToken(context);
+        source.push(token);
+
+        if (token instanceof LeftBraceToken) {
+            Tokens tokens = source.getTokens(context);
+            context.setToks("lang", tokens, false);
+        } else {
+            long no = source.scanInteger(context);
+            context.setCount("language", no, false);
+            context.setToks("lang", Tokens.EMPTY, false);
+        }
     }
 
 }
