@@ -147,7 +147,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * Treat segments of a paragraph separated by forced breaks separately.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class ParagraphBuilderImpl
         implements
@@ -484,7 +484,7 @@ public class ParagraphBuilderImpl
      * @param breakPoint the list of possible break points
      * @param line the starting line number
      * @param threshold the threshold for the penalties of a single line
-     * @param depth TODO gene: doc
+     * @param depth ...
      * @param pointIndex the index of the point
      * @param leftskip the skip for the left side
      * @param rightskip the skip for the right side
