@@ -28,7 +28,7 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * This noad contains a node which is passed through the math apparatus.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class NodeNoad implements Noad {
 
@@ -97,7 +97,7 @@ public class NodeNoad implements Noad {
      */
     public void toString(final StringBuffer sb, final int depth) {
 
-        node.toString(sb, ""); //TODO gene: toString() incomplete
+        node.toString(sb, "");
     }
 
     /**
