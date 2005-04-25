@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -28,37 +28,23 @@ import de.dante.extex.language.Language;
  * appearance of glyphs or other nodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public interface TypesettingContext extends Serializable {
 
     /**
-     * Setter for all components.
+     * Copy the current instance.
      *
-     * @param context the context to clone
+     * @return a copy of this instance
      */
-    void set(TypesettingContext context);
+    TypesettingContext copy();
 
     /**
-     * Setter for the font component.
+     * Getter for the color.
      *
-     * @param font the font to store
+     * @return the current color
      */
-    void setFont(Font font);
-
-    /**
-     * Getter for the font component.
-     *
-     * @return the font
-     */
-    Font getFont();
-
-    /**
-     * Setter for the writing direction.
-     *
-     * @param direction the new direction
-     */
-    void setDirection(Direction direction);
+    Color getColor();
 
     /**
      * Getter for the writing direction.
@@ -68,11 +54,11 @@ public interface TypesettingContext extends Serializable {
     Direction getDirection();
 
     /**
-     * Setter for the hyphenation table.
+     * Getter for the font component.
      *
-     * @param language the hyphenation table
+     * @return the font
      */
-    void setLanguage(Language language);
+    Font getFont();
 
     /**
      * Getter for the hyphenation table.
@@ -82,6 +68,13 @@ public interface TypesettingContext extends Serializable {
     Language getLanguage();
 
     /**
+     * Setter for all components.
+     *
+     * @param context the context to clone
+     */
+    void set(TypesettingContext context);
+
+    /**
      * Setter for the color.
      *
      * @param color the new color
@@ -89,10 +82,24 @@ public interface TypesettingContext extends Serializable {
     void setColor(Color color);
 
     /**
-     * Getter for the color.
+     * Setter for the writing direction.
      *
-     * @return the current color
+     * @param direction the new direction
      */
-    Color getColor();
+    void setDirection(Direction direction);
+
+    /**
+     * Setter for the font component.
+     *
+     * @param font the font to store
+     */
+    void setFont(Font font);
+
+    /**
+     * Setter for the hyphenation table.
+     *
+     * @param language the hyphenation table
+     */
+    void setLanguage(Language language);
 
 }

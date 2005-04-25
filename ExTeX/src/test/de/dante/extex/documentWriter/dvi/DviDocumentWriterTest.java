@@ -18,6 +18,7 @@
  */
 
 // created: 2004-09-31
+
 package de.dante.extex.documentWriter.dvi;
 
 import java.io.ByteArrayOutputStream;
@@ -49,14 +50,19 @@ import de.dante.util.configuration.Configuration;
  * JUnit tests for class <code>DviDocumentWriter</code>.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 
 public class DviDocumentWriterTest extends TestCase {
+
     private DocumentWriter documentWriter = null;
+
     private NodeList nodeList = null;
+
     private MockDocumentWriterOptions documentWriterOptions = null;
+
     private Configuration configuration = null;
+
     private OutputStream outputStream = null;
 
     /**
@@ -67,7 +73,9 @@ public class DviDocumentWriterTest extends TestCase {
      * @param exception a <code>Class</code> value
      * @exception Exception if an error occurs
      */
-    private void checkException(final Node node, final Class exception) throws Exception {
+    private void checkException(final Node node, final Class exception)
+            throws Exception {
+
         boolean gotException = false;
 
         nodeList.add(node);
@@ -84,12 +92,12 @@ public class DviDocumentWriterTest extends TestCase {
         assertTrue(gotException);
     }
 
-
     /**
      * Command line interface.
      * @param args the arguments
      */
     public static void main(final String[] args) {
+
         junit.textui.TestRunner.run(DviDocumentWriterTest.class);
     }
 
@@ -98,6 +106,7 @@ public class DviDocumentWriterTest extends TestCase {
      *
      */
     public DviDocumentWriterTest() {
+
         super();
     }
 
@@ -109,16 +118,16 @@ public class DviDocumentWriterTest extends TestCase {
      * @exception Exception if an error occurs
      */
     public void setUp() throws Exception {
+
         // TODO: do not use null for configuration (TE)
 
         documentWriterOptions = new MockDocumentWriterOptions();
         documentWriter = new DviDocumentWriter(configuration,
-                                               documentWriterOptions);
+                documentWriterOptions);
         nodeList = new VerticalListNode();
         outputStream = new ByteArrayOutputStream();
-        ((SingleDocumentStream)documentWriter).setOutputStream(outputStream);
+        ((SingleDocumentStream) documentWriter).setOutputStream(outputStream);
     }
-
 
     /**
      * Test if {@link
@@ -134,10 +143,11 @@ public class DviDocumentWriterTest extends TestCase {
      * @exception Exception if an error occurs
      */
     public void testNoOutputStream() throws Exception {
+
         boolean noOutputStream = false;
 
         documentWriter = new DviDocumentWriter(configuration,
-                                               documentWriterOptions);
+                documentWriterOptions);
         try {
             documentWriter.shipout(nodeList);
         } catch (GeneralException e) {
@@ -156,9 +166,9 @@ public class DviDocumentWriterTest extends TestCase {
      * @exception Exception if an error occurs
      */
     public void testEmptyList() throws Exception {
+
         documentWriter.shipout(nodeList);
     }
-
 
     /**
      * Test if a marknode throws a panic Exception.
@@ -166,9 +176,9 @@ public class DviDocumentWriterTest extends TestCase {
      * @exception Exception if an error occurs
      */
     public void testMarkNode() throws Exception {
+
         checkException(new MarkNode(Tokens.EMPTY, 0), PanicException.class);
     }
-
 
     /**
      * Test if a insertionnode throws a panic Exception.
@@ -176,9 +186,9 @@ public class DviDocumentWriterTest extends TestCase {
      * @exception Exception if an error occurs
      */
     public void testInsertionNode() throws Exception {
-        checkException(new InsertionNode(), PanicException.class);
-    }
 
+        checkException(new InsertionNode(42, null), PanicException.class);
+    }
 
     /**
      * Test valid nodes.
@@ -186,6 +196,7 @@ public class DviDocumentWriterTest extends TestCase {
      * @exception Exception if an error occurs
      */
     public void testValidNodes() throws Exception {
+
         // TODO: nodeList.add(new CharNode()); (TE)
         nodeList.add(new ExplicitKernNode(new Dimen(12346)));
         nodeList.add(new GlueNode(new Glue(1234)));
@@ -196,7 +207,6 @@ public class DviDocumentWriterTest extends TestCase {
         documentWriter.shipout(nodeList);
     }
 
-
     /**
      * Check the specified magnification.
      *
@@ -204,10 +214,11 @@ public class DviDocumentWriterTest extends TestCase {
      * @exception Exception if an error occurs
      */
     private void checkMagnification(long magnification) throws Exception {
+
         documentWriterOptions.setMagnification(magnification);
         documentWriter = new DviDocumentWriter(configuration,
-                                               documentWriterOptions);
-        ((SingleDocumentStream)documentWriter).setOutputStream(outputStream);
+                documentWriterOptions);
+        ((SingleDocumentStream) documentWriter).setOutputStream(outputStream);
         documentWriter.shipout(nodeList);
     }
 
@@ -217,31 +228,34 @@ public class DviDocumentWriterTest extends TestCase {
      * @exception Exception if an error occurs
      */
     public void testMagnification() throws Exception {
+
         boolean gotRangeException = false;
 
         checkMagnification(-1); // TODO
         checkMagnification(10);
         checkMagnification(100);
         checkMagnification(1000);
-        checkMagnification((2l<<30)-1); // test 2^30-1
+        checkMagnification((2l << 30) - 1); // test 2^30-1
 
         try {
-            checkMagnification(2l<<30); // test 2^30
+            checkMagnification(2l << 30); // test 2^30
         } catch (GeneralException e) {
             gotRangeException = true;
         }
         assertTrue(gotRangeException);
     }
 
-
     private class MockFixedCount implements FixedCount {
+
         private long value;
 
         public MockFixedCount(final long theValue) {
+
             value = theValue;
         }
 
         public long getValue() {
+
             return value;
         }
 
@@ -253,6 +267,7 @@ public class DviDocumentWriterTest extends TestCase {
             // TODO eq unimplemented
             return false;
         }
+
         /**
          * @see de.dante.extex.interpreter.type.count.FixedCount#ge(de.dante.extex.interpreter.type.count.FixedCount)
          */
@@ -261,6 +276,7 @@ public class DviDocumentWriterTest extends TestCase {
             // TODO ge unimplemented
             return false;
         }
+
         /**
          * @see de.dante.extex.interpreter.type.count.FixedCount#gt(de.dante.extex.interpreter.type.count.FixedCount)
          */
@@ -269,6 +285,7 @@ public class DviDocumentWriterTest extends TestCase {
             // TODO gt unimplemented
             return false;
         }
+
         /**
          * @see de.dante.extex.interpreter.type.count.FixedCount#le(de.dante.extex.interpreter.type.count.FixedCount)
          */
@@ -277,6 +294,7 @@ public class DviDocumentWriterTest extends TestCase {
             // TODO le unimplemented
             return false;
         }
+
         /**
          * @see de.dante.extex.interpreter.type.count.FixedCount#lt(de.dante.extex.interpreter.type.count.FixedCount)
          */
@@ -285,6 +303,7 @@ public class DviDocumentWriterTest extends TestCase {
             // TODO lt unimplemented
             return false;
         }
+
         /**
          * @see de.dante.extex.interpreter.type.count.FixedCount#ne(de.dante.extex.interpreter.type.count.FixedCount)
          */
@@ -295,15 +314,18 @@ public class DviDocumentWriterTest extends TestCase {
         }
 
         public void toString(final StringBuffer buffer) {
+
             buffer.append(toString());
         }
 
         public Tokens toToks(final Context context) throws InterpreterException {
+
             return new Tokens(context, value);
         }
     }
 
     private class MockDocumentWriterOptions implements DocumentWriterOptions {
+
         /**
          * @see de.dante.extex.documentWriter.DocumentWriterOptions#getTokensOption(java.lang.String)
          */
@@ -311,24 +333,30 @@ public class DviDocumentWriterTest extends TestCase {
 
             return null;
         }
+
         long magnification = 1000;
 
         public MockDocumentWriterOptions() {
+
         }
 
         public FixedCount getCountOption(final String count) {
+
             return new MockFixedCount(0);
         }
 
         public FixedDimen getDimenOption(final String dimen) {
+
             return null;
         }
 
         public void setMagnification(long theMagnification) {
+
             magnification = theMagnification;
         }
 
         public long getMagnification() {
+
             return magnification;
         }
     }
