@@ -25,6 +25,7 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.CantUseAfterException;
 import de.dante.extex.interpreter.exception.helping.EofException;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.ExpandableCode;
@@ -33,6 +34,7 @@ import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.CodeToken;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
  * This class provides an implementation for the primitive <code>\the</code>.
@@ -57,7 +59,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class The extends AbstractCode implements ExpandableCode {
 
@@ -101,8 +103,8 @@ public class The extends AbstractCode implements ExpandableCode {
             }
         }
 
-        throw new CantUseAfterException(cs.toString(),
-                printableControlSequence(context));
+        throw new HelpingException(getLocalizer(), "TTP.CantUseAfterThe", //
+                cs.toString(), printableControlSequence(context));
 
     }
 
