@@ -74,8 +74,6 @@ import de.dante.extex.main.observer.InteractionModeObserver;
 import de.dante.extex.main.observer.TokenObserver;
 import de.dante.extex.main.observer.TokenPushObserver;
 import de.dante.extex.main.observer.TraceObserver;
-import de.dante.extex.main.queryFile.QueryFileHandler;
-import de.dante.extex.main.queryFile.QueryFileHandlerTeXImpl;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.extex.scanner.stream.TokenStreamOptions;
@@ -322,7 +320,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.98 $
+ * @version $Revision: 1.99 $
  */
 public class ExTeX {
 
@@ -580,12 +578,6 @@ public class ExTeX {
     private Properties properties;
 
     /**
-     * The field <tt>queryFileHandler</tt> contains the instance of the handler
-     * to ask for a file name if none is given.
-     */
-    private QueryFileHandler queryFileHandler = new QueryFileHandlerTeXImpl();
-
-    /**
      * The field <tt>showBanner</tt> is a boolean indicating that it is
      * necessary to display the banner. This information is needed for the
      * cases where errors show up before the normal banner has been printed.
@@ -782,16 +774,6 @@ public class ExTeX {
     public String getProperty(final String key) {
 
         return this.properties.getProperty(key);
-    }
-
-    /**
-     * Getter for queryFileHandler.
-     *
-     * @return the queryFileHandler
-     */
-    public QueryFileHandler getQueryFileHandler() {
-
-        return this.queryFileHandler;
     }
 
     /**
@@ -1379,16 +1361,6 @@ public class ExTeX {
     protected void setProperty(final String key, final String value) {
 
         this.properties.setProperty(key, value);
-    }
-
-    /**
-     * Setter for queryFileHandler.
-     *
-     * @param queryFileHandler the queryFileHandler to set
-     */
-    public void setQueryFileHandler(final QueryFileHandler queryFileHandler) {
-
-        this.queryFileHandler = queryFileHandler;
     }
 
     /**

@@ -37,6 +37,7 @@ import de.dante.extex.main.exception.MainUnknownOptionException;
 import de.dante.extex.main.inputHandler.TeXInputReader;
 import de.dante.extex.main.logging.LogFormatter;
 import de.dante.extex.main.queryFile.QueryFileHandler;
+import de.dante.extex.main.queryFile.QueryFileHandlerTeXImpl;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationFactory;
@@ -555,7 +556,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TeX extends de.dante.extex.ExTeX {
 
@@ -639,6 +640,46 @@ public class TeX extends de.dante.extex.ExTeX {
     }
 
     /**
+     * The field <tt>queryFileHandler</tt> contains the instance of the handler
+     * to ask for a file name if none is given.
+     */
+    private QueryFileHandler queryFileHandler = null;
+
+    /**
+     * Creates a new object and initializes the properties from given
+     * properties and possibly from a user's properties in the file
+     * <tt>.extex</tt>.
+     * The user properties are loaded from the users home directory and the
+     * current directory.
+     *
+     * @param theProperties the properties to consider
+     * @param dotFile the name of the local configuration file. In the case
+     *            that this value is <code>null</code> no user properties
+     *            will be considered.
+     *
+     * @throws MainException in case of an IO Error during the reading of the
+     *             properties file
+     *
+     * @see de.dante.extex.ExTeX#ExTeX(java.util.Properties, java.lang.String)
+     */
+    public TeX(final Properties theProperties, final String dotFile)
+            throws MainException {
+
+        super(theProperties, dotFile);
+        setQueryFileHandler(new QueryFileHandlerTeXImpl());
+    }
+
+    /**
+     * Getter for queryFileHandler.
+     *
+     * @return the queryFileHandler
+     */
+    public QueryFileHandler getQueryFileHandler() {
+
+        return this.queryFileHandler;
+    }
+
+    /**
      * Initialize the input streams. If the property <i>extex.file</i> is set
      * and not the empty string, (e.g. from the command line) then this value
      * is used as file name to read from. If the property <i>extex.code</i>
@@ -687,29 +728,6 @@ public class TeX extends de.dante.extex.ExTeX {
             }
         }
         return notInitialized;
-    }
-
-    /**
-     * Creates a new object and initializes the properties from given
-     * properties and possibly from a user's properties in the file
-     * <tt>.extex</tt>.
-     * The user properties are loaded from the users home directory and the
-     * current directory.
-     *
-     * @param theProperties the properties to consider
-     * @param dotFile the name of the local configuration file. In the case
-     *            that this value is <code>null</code> no user properties
-     *            will be considered.
-     *
-     * @throws MainException in case of an IO Error during the reading of the
-     *             properties file
-     *
-     * @see de.dante.extex.ExTeX#ExTeX(java.util.Properties, java.lang.String)
-     */
-    public TeX(final Properties theProperties, final String dotFile)
-            throws MainException {
-
-        super(theProperties, dotFile);
     }
 
     /**
@@ -929,6 +947,16 @@ public class TeX extends de.dante.extex.ExTeX {
             setProperty(PROP_JOBNAME, "texput");
             setProperty(PROP_FILE, "");
         }
+    }
+
+    /**
+     * Setter for queryFileHandler.
+     *
+     * @param queryFileHandler the queryFileHandler to set
+     */
+    public void setQueryFileHandler(final QueryFileHandler queryFileHandler) {
+
+        this.queryFileHandler = queryFileHandler;
     }
 
     /**
