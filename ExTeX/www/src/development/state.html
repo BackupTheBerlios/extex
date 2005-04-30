@@ -11,30 +11,41 @@
     <h1>State of Implementation</h1>
     <p>
      The state of development is associated to the following component
-     diagram of &ExTeX;.
+     diagram of ExTeX.
     </p>
     <img src="../image/components.gif"
          alt="Component Diagram"
-         title="Component Diagram"/>
+         title="Component Diagram"
+         ismap usemap="#map" border="0"/>
+    <map name="map">
+      <area coords="2,67,185,224" href="#scanner">
+      <area coords="203,69,394,225" href="#interpreter">
+      <area coords="2,237,394,470" href="#typesetter">
+      <area coords="423,238,612,395" href="#font">
+      <area coords="424,70,612,226" href="#backend">
+      <area coords="0,479,608,520" href="#framework">
+      <area coords="468,414,579,457" href="#finder">
+      <area coords="245,0,355,43" href="#main">
+    </map>
 
-    <h2>Input Subsystem</h2>
+    <a name="scanner"><h2>Input Subsystem</h2></a>
     <p>
      The input subsystem is responsible for reading from an input
      stream and tokenizes it. Two implementations for the scanner are
-     fully functional. They provide a &TeX;-compatible and an extended
+     fully functional. They provide a TeX-compatible and an extended
      functionality. 
     </p>
     <p>
      The concept of an input filter should provide a hook to
      preprocess the input before it is seen by the scanner. This
-     component is not been started yet.
+     component is currently a dummy.
     </p>
 
-    <h2>Interpreter Subsystem</h2>
+    <a name="interpreter"><h2>Interpreter Subsystem</h2></a>
     <p>
-     The interpreter subsystem provides a &TeX;-compatible macro
+     The interpreter subsystem provides a TeX-compatible macro
      processor. This is based on a context which contains the state of
-     the whole engine &ndash; like the eqtable of &TeX;.
+     the whole engine &ndash; like the eqtable of TeX.
     </p>
     <p>
      The interpreter is nearly complete. Registers, conditionals,
@@ -44,19 +55,19 @@
     </p>
     <p>
      There are two implementation of the context. One with the
-     &TeX;-compatible set of registers and one with additional registers
+     TeX-compatible set of registers and one with additional registers
      &ndash; like real numbers. Those contexts are pretty stable. Onle
      the observability &nbsp; for tracing and debugging &nbsp; needs
      to be completed.
     </p>
     <p>
-     All primitives of &TeX; are present but not fully functional.
+     All primitives of TeX are present but not fully functional.
      Especially the primitives related to math typesetting and table
      typesetting need further attention. Some extensions from &eTeX;
      have already been implemented.
     </p>
 
-    <h2>Typesetting Subsystem</h2>
+    <a name="typesetter"><h2>Typesetting Subsystem</h2></a>
 
     <p>
      The typesetting subsystem is responsible of taking a stream of
@@ -69,7 +80,7 @@
      of several components has to be completed.
     </p>
 
-    <h2>Font Subsystem</h2>
+    <a name="font"><h2>Font Subsystem</h2></a>
 
     <p>
      The task of the font subsystem is to provide the information
@@ -79,7 +90,7 @@
      implemented. 
     </p>
 
-    <h2>Backend Subsystem</h2>
+    <a name="backend"><h2>Backend Subsystem</h2></a>
 
     <p>
      The backend subsystem takes the pages produced by the typesetter
@@ -96,12 +107,12 @@
      is not implemented at all.
     </p>
 
-    <h2>Framework</h2>
+    <a name="framework"><h2>Framework</h2></a>
 
     <p>
-     The implementation of &ExTeX; is based on a component framework.
+     The implementation of ExTeX is based on a component framework.
      This component framework provides means for managing the
-     lifecycle of a component &nbsp; especially the the creation in
+     lifecycle of a component &ndash; especially the creation in
      factories. This includes services like configuration and logging.
      The framework is inspired by the Apache Avalon framework.
     </p>
@@ -110,24 +121,26 @@
      provided. This part can be considered complete.
     </p>
 
-    <h2>Minor components</h2>
+    <a name="minor"><h2>Minor components</h2></a>
 
     <p>
-     There are several minor components in &ExTeX;. Some are described
+     There are several minor components in ExTeX. Some are described
      here. 
     </p>
+    <a name="finder"></a>
     <p>
      The start of processing consists of the finding of an input file.
-     This applies to &TeX; documents, formats, fonts, etc. The task of
+     This applies to TeX documents, formats, fonts, etc. The task of
      finding files of different kinds is accomplished by file finders.
      The interface and infrastructure is in place. Several
      implementations of file finders are present. They can be selected
      and combined in the configuration.
     </p>
+    <a name="main"></a>
     <p>
-     The components of &ExTeX; are tied together by a main program.
-     Currently a &TeX;-compatible command line main program is
-     provided with &ExTeX;. This main program is pretty complete.
+     The components of ExTeX are tied together by a main program.
+     Currently a TeX-compatible command line main program is
+     provided with ExTeX. This main program is pretty complete.
      Other main programs can be envisaged in the future.
     </p>
 
