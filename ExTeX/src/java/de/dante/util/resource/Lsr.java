@@ -21,12 +21,13 @@ package de.dante.util.resource;
 
 import java.io.File;
 import java.io.PrintStream;
+import java.util.Arrays;
 
 /**
  * This class creates the output of "ls -R".
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Lsr {
     /**
@@ -52,13 +53,14 @@ public class Lsr {
      */
     public void printLsr(final PrintStream printStream, final File directory) {
         File[] files = directory.listFiles();
+        Arrays.sort(files);
 
         if (files != null) {
             printStream.println(directory.toString() + ":");
             for (int i = 0; i < files.length; i++) {
-                if (files[i].isFile()) {
-                    printStream.println(files[i].toString());
-                }
+                //LS-R if (files[i].isFile()) {
+                printStream.println(files[i].getName());
+                //LS-R}
             }
             printStream.println();
             for (int i = 0; i < files.length; i++) {
@@ -86,7 +88,8 @@ public class Lsr {
      * @param args arguments to main function
      */
     public static void main(final String[] args) {
-        Lsr lsr = new Lsr(new File(System.getProperty("user.dir")));
+        //LS-R Lsr lsr = new Lsr(new File(System.getProperty("user.dir")));
+        Lsr lsr = new Lsr(new File("."));
 
         lsr.printLsr(System.out);
     }
