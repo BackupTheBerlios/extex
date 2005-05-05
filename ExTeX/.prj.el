@@ -1,6 +1,6 @@
 ; author: Sebastian Waschik
 ; created: 2004-07-26
-; RCS-ID: $Id: .prj.el,v 1.4 2004/10/30 17:31:44 plaicy Exp $
+; RCS-ID: $Id: .prj.el,v 1.5 2005/05/05 21:24:39 plaicy Exp $
 (jde-project-file-version "1.0")
 (jde-set-variables
  '(jde-project-name "ExTeX")
@@ -42,7 +42,7 @@
  '(jde-db-read-app-args t)
 
  ;; run
- '(jde-run-application-class "de.dante.extex.ExTeX")
+ '(jde-run-application-class "de.dante.extex.main.TeX")
  '(jde-run-working-directory ".")
  '(jde-run-read-app-args t)
 
