@@ -18,10 +18,11 @@ rem  You should have received a copy of the GNU Lesser General Public
 rem  License along with this library; if not, write to the Free Software
 rem  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 rem 
+rem  @author <a href="mailto:uwe.siart@tum.de">Uwe Siart</a>
 rem  @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
 rem 
 rem ---------------------------------------------------------------------------
-set EXTEXPATH=h:\extex
+set EXTEXPATH=e:\extex\eclipse\ExTeX
 set PATH=%EXTEXPATH%\util;%PATH%
 cd %EXTEXPATH%
 set CLASSPATH=.;%EXTEXPATH%\target\classes\;%EXTEXPATH%\src\de\dante\extex\config\;
