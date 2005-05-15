@@ -20,6 +20,7 @@
 package de.dante.extex.interpreter.type.box;
 
 import java.io.Serializable;
+import java.util.logging.Logger;
 
 import javax.naming.OperationNotSupportedException;
 
@@ -50,7 +51,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class Box implements BoxOrRule, Serializable {
 
@@ -67,6 +68,7 @@ public class Box implements BoxOrRule, Serializable {
 
     /**
      * Creates a new object.
+     *
      * @param context the processor context
      * @param source the source for new tokens
      * @param typesetter the typesetter stack
@@ -204,7 +206,7 @@ public class Box implements BoxOrRule, Serializable {
     }
 
     /**
-     * Checks whether the box is a hbox.
+     * Checks whether the box is a horizontal box.
      *
      * @return <tt>true</tt> iff the box is a hbox.
      */
@@ -214,7 +216,7 @@ public class Box implements BoxOrRule, Serializable {
     }
 
     /**
-     * Checks whether the box is a vbox.
+     * Checks whether the box is a vertical box.
      *
      * @return <tt>true</tt> iff the box is a vbox.
      */
@@ -326,7 +328,8 @@ public class Box implements BoxOrRule, Serializable {
     /**
      * Split off material from a vlist of a certain height.
      *
-     * @param height the heght of the material to cut off
+     * @param height the height of the material to cut off
+     * @param logger the logger or <code>null</code>
      *
      * @return a new vertical node list with the material
      *
@@ -334,15 +337,14 @@ public class Box implements BoxOrRule, Serializable {
      *
      * @see "TTP [977]"
      */
-    public VerticalListNode vsplit(final Dimen height)
+    public VerticalListNode vsplit(final Dimen height, final Logger logger)
             throws OperationNotSupportedException {
 
         if (!isVbox()) {
             throw new OperationNotSupportedException("vsplit");
         }
 
-        //TODO gene: vsplit unimplemented
-        throw new RuntimeException("unimplemented");
+        return ((VerticalListNode) nodes).split(height, logger, logger); //TODO gene
     }
 
 }

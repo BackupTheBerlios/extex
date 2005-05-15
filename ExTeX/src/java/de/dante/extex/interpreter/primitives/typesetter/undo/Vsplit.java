@@ -19,6 +19,8 @@
 
 package de.dante.extex.interpreter.primitives.typesetter.undo;
 
+import java.util.logging.Logger;
+
 import javax.naming.OperationNotSupportedException;
 
 import de.dante.extex.interpreter.Flags;
@@ -29,10 +31,12 @@ import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.primitives.register.box.AbstractBox;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.box.Boxable;
+import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.util.GeneralException;
+import de.dante.util.framework.logger.LogEnabled;
 
 /**
  * This class provides an implementation for the primitive <code>\vsplit</code>.
@@ -56,9 +60,14 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
-public class Vsplit extends AbstractBox implements Boxable {
+public class Vsplit extends AbstractBox implements Boxable, LogEnabled {
+
+    /**
+     * The field <tt>logger</tt> contains the target channel for the message.
+     */
+    private transient Logger logger = null;
 
     /**
      * Creates a new object.
@@ -68,6 +77,15 @@ public class Vsplit extends AbstractBox implements Boxable {
     public Vsplit(final String name) {
 
         super(name);
+    }
+
+    /**
+     * @see de.dante.util.framework.logger.LogEnabled#enableLogging(
+     *      java.util.logging.Logger)
+     */
+    public void enableLogging(final Logger theLogger) {
+
+        this.logger = theLogger;
     }
 
     /**
@@ -127,7 +145,10 @@ public class Vsplit extends AbstractBox implements Boxable {
                     printableControlSequence(context), context.esc("vbox"));
         }
         try {
-            return b.vsplit(ht);
+            return b.vsplit(ht, //
+                    (Count.ONE.le(context.getCount("tracingpages"))
+                            ? logger
+                            : null));
         } catch (OperationNotSupportedException e) {
             // just to be sure. This should not happen
             throw new HelpingException(getLocalizer(), "TTP.SplittingNonVbox",
