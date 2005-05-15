@@ -120,11 +120,13 @@
     -  one of several typesetters programatically.
     -->
   <Typesetter default="TeX">
-	<TeX class="de.dante.extex.typesetter.impl.TypesetterImpl">
+	<TeX class="de.dante.extex.typesetter.impl.TypesetterImpl"
+         direction="lr">
       <PageBuilder class="de.dante.extex.typesetter.pageBuilder.impl.PageBuilderImpl"/>
       <ParagraphBuilder class="de.dante.extex.typesetter.paragraphBuilder.impl.ParagraphBuilderImpl"/>
     </TeX>
-    <devel class="de.dante.extex.typesetter.impl.TypesetterImpl">
+    <devel class="de.dante.extex.typesetter.impl.TypesetterImpl"
+           direction="lr">
       <PageBuilder class="de.dante.extex.typesetter.pageBuilder.impl.PageBuilderImpl"/>
       <ParagraphBuilder class="de.dante.extex.typesetter.paragraphBuilder.trivial.TrivialBuilder"/>
     </devel>
