@@ -50,7 +50,7 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.51 $
+ * @version $Revision: 1.52 $
  */
 public interface Context
         extends
@@ -97,18 +97,6 @@ public interface Context
      * @return the escape character
      */
     char escapechar();
-
-    /**
-     * Expand some tokens.
-     *
-     * @param tokens the tokens to expand
-     * @param typesetter the typesetter to use
-     *
-     * @return the expanded tokens
-     *
-     * @throws GeneralException in case of an error
-     */
-    Tokens expand(Tokens tokens, Typesetter typesetter) throws GeneralException;
 
     /**
      * Getter for the afterassignment token.
@@ -276,11 +264,11 @@ public interface Context
 
     /**
      * Put a value onto the conditional stack.
-     *
      * @param locator the locator for the start of the if statement
      * @param value the value to push
+     * @param primitive TODO
      */
-    void pushConditional(Locator locator, boolean value);
+    void pushConditional(Locator locator, boolean value, String primitive);
 
     /**
      * Setter for the afterassignment token.

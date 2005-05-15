@@ -118,7 +118,7 @@ import de.dante.util.observer.Observer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.77 $
+ * @version $Revision: 1.78 $
  */
 public class ContextImpl
         implements
@@ -446,38 +446,6 @@ public class ContextImpl
         long esc = getCount("escapechar").getValue();
 
         return (esc >= 0 ? (char) esc : '\0');
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#expand(
-     *      de.dante.extex.interpreter.type.tokens.Tokens, Typesetter)
-     */
-    public Tokens expand(final Tokens tokens, final Typesetter typesetter)
-            throws GeneralException {
-
-        /*
-         Tokens result = new Tokens();
-         //TODO gene: use interface instead of implementation
-         TokenStreamBaseImpl stream = new TokenStreamBaseImpl(false, tokens);
-
-         while (!stream.isEof()) {
-         Token t = stream.get(null, null);
-
-         while (t instanceof CodeToken) {
-         Code code = getCode((CodeToken) t);
-         if (code instanceof ExpandableCode) {
-         ((ExpandableCode) code).expand(Flags.NONE, (Context) this,
-         (TokenStream) stream, typesetter);
-         t = stream.get(null, null);
-         }
-         }
-
-         }
-
-         return result;
-         */
-        // TODO gene: expand() unimplemented
-        throw new RuntimeException("unimplemented");
     }
 
     /**
@@ -876,14 +844,14 @@ public class ContextImpl
 
     /**
      * @see de.dante.extex.interpreter.context.Context#pushConditional(
-     *      de.dante.util.Locator, boolean)
+     *      de.dante.util.Locator, boolean, String)
      */
     public void pushConditional(final Locator locator,
-            final boolean isIfThenElse) {
+            final boolean isIfThenElse, final String primitive) {
 
         conditionalStack.add(isIfThenElse
-                ? new Conditional(locator)
-                : new ConditionalSwitch(locator));
+                ? new Conditional(locator, primitive)
+                : new ConditionalSwitch(locator, primitive));
     }
 
     /**
