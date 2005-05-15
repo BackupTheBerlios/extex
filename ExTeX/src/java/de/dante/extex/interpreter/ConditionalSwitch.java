@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,10 +22,10 @@ package de.dante.extex.interpreter;
 import de.dante.util.Locator;
 
 /**
- * This class represents a conditional for a \ifcase construct.
+ * This class represents a conditional for an \ifcase construct.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ConditionalSwitch extends Conditional {
 
@@ -33,10 +33,11 @@ public class ConditionalSwitch extends Conditional {
      * Creates a new object.
      *
      * @param locator the locator
+     * @param primitive the primitive which started this conditional
      */
-    public ConditionalSwitch(final Locator locator) {
+    public ConditionalSwitch(final Locator locator, final String primitive) {
 
-        super(locator);
+        super(locator, primitive);
     }
 
     /**

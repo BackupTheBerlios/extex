@@ -21,6 +21,7 @@ package de.dante.extex.interpreter;
 
 import java.io.Serializable;
 
+import de.dante.extex.scanner.type.Token;
 import de.dante.util.Locator;
 
 /**
@@ -28,7 +29,7 @@ import de.dante.util.Locator;
  * construct.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Conditional implements Serializable {
 
@@ -39,14 +40,21 @@ public class Conditional implements Serializable {
     private Locator locator;
 
     /**
+     * The field <tt>primitive</tt> contains the ...
+     */
+    private String primitive;
+
+    /**
      * Creates a new object.
      *
      * @param locator the locator
+     * @param primitive the primitive which started this conditional
      */
-    public Conditional(final Locator locator) {
+    public Conditional(final Locator locator, final String primitive) {
 
         super();
         this.locator = locator;
+        this.primitive = primitive;
     }
 
     /**
@@ -61,6 +69,16 @@ public class Conditional implements Serializable {
     }
 
     /**
+     * Getter for the primitive which started this conditional.
+     *
+     * @return the primitive
+     */
+    public String getPrimitive() {
+
+        return this.primitive;
+    }
+
+    /**
      * Getter for the value of the conditional.
      * If it has the value <code>true</code> then the conditional is one of the
      * if-then-else constructs. Otherwise it is a <tt>\ifcase</tt> construction.
@@ -71,5 +89,4 @@ public class Conditional implements Serializable {
 
         return true;
     }
-
 }
