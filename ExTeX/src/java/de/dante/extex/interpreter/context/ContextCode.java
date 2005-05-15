@@ -34,21 +34,9 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface ContextCode {
-
-    /**
-     * Expand some tokens.
-     *
-     * @param tokens the tokens to expand
-     * @param typesetter the typesetter to use
-     *
-     * @return the expanded tokens
-     *
-     * @throws GeneralException in case of an error
-     */
-    Tokens expand(Tokens tokens, Typesetter typesetter) throws GeneralException;
 
     /**
      * Convenience method to get the code assigned to a Token.

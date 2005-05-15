@@ -79,7 +79,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.62 $
+ * @version $Revision: 1.63 $
  */
 public abstract class Moritz
         implements
@@ -160,7 +160,7 @@ public abstract class Moritz
 
     /**
      * The field <tt>streamStack</tt> contains the stack of streams to read
-     * from except of the current one which is stored in the variable
+     * from &ndash; except of the current one which is stored in the variable
      * <code>stream</code>.
      */
     private ArrayList streamStack = new ArrayList();
@@ -192,6 +192,30 @@ public abstract class Moritz
     }
 
     /**
+     * @see de.dante.extex.interpreter.TokenSource#closeAllStreams(Context)
+     */
+    public void closeAllStreams(final Context context)
+            throws InterpreterException {
+
+        while (stream != null) {
+            closeStream(context);
+        }
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.TokenSource#closeNextFileStream(Context)
+     */
+    public void closeNextFileStream(final Context context)
+            throws InterpreterException {
+
+        while (stream != null) {
+            if (closeStream(context)) {
+                return;
+            }
+        }
+    }
+
+    /**
      * Close the topmost stream and pop another one to the top if one is left.
      * If the closed stream has been a file stream then the tokens from the
      * toks register <tt>everyeof</tt> is inserted into the token stream.
@@ -220,30 +244,6 @@ public abstract class Moritz
             return true;
         }
         return false;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.TokenSource#closeAllStreams(Context)
-     */
-    public void closeAllStreams(final Context context)
-            throws InterpreterException {
-
-        while (stream != null) {
-            closeStream(context);
-        }
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.TokenSource#closeNextFileStream(Context)
-     */
-    public void closeNextFileStream(final Context context)
-            throws InterpreterException {
-
-        while (stream != null) {
-            if (closeStream(context)) {
-                return;
-            }
-        }
     }
 
     /**
@@ -296,6 +296,19 @@ public abstract class Moritz
      */
     protected abstract Token expand(final Token token)
             throws InterpreterException;
+
+    /**
+     * @see de.dante.extex.interpreter.Interpreter#expand(
+     *      de.dante.extex.interpreter.type.tokens.Tokens,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public Tokens expand(final Tokens tokens, final Typesetter typesetter)
+            throws GeneralException {
+
+        Tokens result = new Tokens();
+        // TODO gene: expand unimplemented
+        throw new RuntimeException("unimplemented");
+    }
 
     /**
      * @see de.dante.extex.interpreter.TokenSource#getBox(
