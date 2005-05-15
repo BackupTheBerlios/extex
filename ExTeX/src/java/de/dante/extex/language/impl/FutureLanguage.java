@@ -33,7 +33,7 @@ import de.dante.util.UnicodeChar;
  * loading or the creation should be performed.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class FutureLanguage implements Language {
 
@@ -151,6 +151,20 @@ public class FutureLanguage implements Language {
         return load().isHyphenActive();
     }
 
+    /**
+     * @see de.dante.extex.language.word.WordTokenizer#skipNonWord(de.dante.extex.typesetter.type.NodeList, int)
+     */
+    public int skipNonWord(final NodeList list, final int start) throws HyphenationException {
+
+        return load().skipNonWord(list, start);
+    }
+    /**
+     * @see de.dante.extex.language.word.WordTokenizer#skipWord(de.dante.extex.typesetter.type.NodeList, int)
+     */
+    public int skipWord(final NodeList list, final int start) throws HyphenationException {
+
+        return load().skipWord(list, start);
+    }
     /**
      * Load or create a new instance if required.
      *

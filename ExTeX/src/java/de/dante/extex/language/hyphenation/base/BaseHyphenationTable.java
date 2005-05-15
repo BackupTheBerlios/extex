@@ -26,6 +26,7 @@ import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.language.ModifiableLanguage;
 import de.dante.extex.language.hyphenation.exception.HyphenationException;
 import de.dante.extex.language.ligature.LigatureBuilder;
+import de.dante.extex.language.word.WordTokenizer;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.CatcodeException;
 import de.dante.extex.scanner.type.Token;
@@ -45,7 +46,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class BaseHyphenationTable implements ModifiableLanguage {
 
@@ -78,6 +79,11 @@ public class BaseHyphenationTable implements ModifiableLanguage {
      * right side of a word before hyphenation is performed.
      */
     private long righthyphenmin = 0;
+
+    /**
+     * The field <tt>wordTokenizer</tt> contains the ...
+     */
+    private WordTokenizer wordTokenizer = null;
 
     /**
      * Creates a new object.
@@ -147,15 +153,6 @@ public class BaseHyphenationTable implements ModifiableLanguage {
     public long getLeftHyphenmin() throws HyphenationException {
 
         return lefthyphenmin;
-    }
-
-    /**
-     * @see de.dante.extex.language.ModifiableLanguage#setLigatureBuilder(
-     *      de.dante.extex.language.ligature.LigatureBuilder)
-     */
-    public void setLigatureBuilder(final LigatureBuilder builder) {
-
-        this.ligatureBuilder = builder;
     }
 
     /**
@@ -259,6 +256,15 @@ public class BaseHyphenationTable implements ModifiableLanguage {
     }
 
     /**
+     * @see de.dante.extex.language.ModifiableLanguage#setLigatureBuilder(
+     *      de.dante.extex.language.ligature.LigatureBuilder)
+     */
+    public void setLigatureBuilder(final LigatureBuilder builder) {
+
+        this.ligatureBuilder = builder;
+    }
+
+    /**
      * @see de.dante.extex.language.Language#setRightHyphenmin(long)
      */
     public void setRightHyphenmin(final long right) throws HyphenationException {
@@ -266,4 +272,35 @@ public class BaseHyphenationTable implements ModifiableLanguage {
         righthyphenmin = right;
     }
 
+    /**
+     * Setter for wordTokenizer.
+     *
+     * @param wordTokenizer the wordTokenizer to set
+     */
+    public void setWordTokenizer(final WordTokenizer wordTokenizer) {
+
+        this.wordTokenizer = wordTokenizer;
+    }
+
+    /**
+     * @see de.dante.extex.language.word.WordTokenizer#skipNonWord(
+     *      de.dante.extex.typesetter.type.NodeList,
+     *      int)
+     */
+    public int skipNonWord(final NodeList list, final int start)
+            throws HyphenationException {
+
+        return this.wordTokenizer.skipNonWord(list, start);
+    }
+
+    /**
+     * @see de.dante.extex.language.word.WordTokenizer#skipWord(
+     *      de.dante.extex.typesetter.type.NodeList,
+     *      int)
+     */
+    public int skipWord(final NodeList list, final int start)
+            throws HyphenationException {
+
+        return this.wordTokenizer.skipWord(list, start);
+    }
 }
