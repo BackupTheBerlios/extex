@@ -19,6 +19,7 @@
 
 package de.dante.extex.typesetter.type.node;
 
+import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.TokensWriter;
 import de.dante.extex.interpreter.type.tokens.Tokens;
@@ -29,7 +30,7 @@ import de.dante.util.GeneralException;
  * This WhatsIt node writes some expanded tokens to an out file on shipping.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class WhatsItWriteNode extends WhatsItNode {
 
@@ -50,18 +51,25 @@ public class WhatsItWriteNode extends WhatsItNode {
     private TokensWriter writer;
 
     /**
+     * The field <tt>interpreter</tt> contains the ...
+     */
+    private TokenSource source;
+
+    /**
      * Creates a new object.
      *
      * @param key the key for the OutFile
      * @param tokens the tokens to write (after expansion)
+     * @param source the interpreter for expansion
      * @param writer the target writer
      */
     public WhatsItWriteNode(final String key, final Tokens tokens,
-            final TokensWriter writer) {
+            final TokenSource source, final TokensWriter writer) {
 
         super();
         this.key = key;
         this.tokens = tokens;
+        this.source = source;
         this.writer = writer;
     }
 
@@ -81,8 +89,7 @@ public class WhatsItWriteNode extends WhatsItNode {
     public void atShipping(final Context context, final Typesetter typesetter)
             throws GeneralException {
 
-        Tokens toks = context.expand(tokens, typesetter);
-
+        Tokens toks = source.expand(tokens, typesetter);
         writer.write(key, toks, context);
     }
 
