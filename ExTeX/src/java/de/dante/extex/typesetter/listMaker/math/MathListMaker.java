@@ -67,7 +67,7 @@ import de.dante.util.UnicodeChar;
  * This is the list maker for the inline math formulae.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class MathListMaker extends AbstractListMaker implements NoadConsumer {
 
@@ -76,7 +76,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      * It is used to store to the stack and restore the state from the stack.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.14 $
+     * @version $Revision: 1.15 $
      */
     private class MathMemento {
 
@@ -274,6 +274,17 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
                 context);
         //TODO gene: ???
         return list;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#cr(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.context.TypesettingContext,
+     *      de.dante.util.UnicodeChar)
+     */
+    public void cr(final Context context, final TypesettingContext tc,
+            final UnicodeChar uc) throws TypesetterException {
+
     }
 
     /**

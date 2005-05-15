@@ -61,7 +61,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.65 $
+ * @version $Revision: 1.66 $
  */
 public class TypesetterImpl
         implements
@@ -69,6 +69,7 @@ public class TypesetterImpl
             ListManager,
             Localizable,
             LogEnabled {
+
     /**
      * The field <tt>charNodeFactory</tt> contains the factory to produce glyph
      * nodes.
@@ -216,6 +217,18 @@ public class TypesetterImpl
         NodeList nodes = listMaker.complete(context);
         pop();
         return nodes;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#cr(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.context.TypesettingContext,
+     *      de.dante.util.UnicodeChar)
+     */
+    public void cr(final Context context, final TypesettingContext tc,
+            final UnicodeChar uc) throws TypesetterException {
+
+        listMaker.cr(context, tc, uc);
     }
 
     /**

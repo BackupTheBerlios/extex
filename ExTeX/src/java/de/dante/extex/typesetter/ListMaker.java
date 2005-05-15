@@ -37,7 +37,7 @@ import de.dante.util.UnicodeChar;
  * @see "TeX -- The Program [211]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.36 $
+ * @version $Revision: 1.37 $
  */
 public interface ListMaker {
 
@@ -97,6 +97,18 @@ public interface ListMaker {
      * @throws TypesetterException in case of an error
      */
     NodeList complete(TypesetterOptions context) throws TypesetterException;
+
+    /**
+     * Process a carriage return.
+     *
+     * @param context the interpreter context
+     * @param tc the typesetting context
+     * @param uc the character
+     *
+     * @throws TypesetterException in case of an error
+     */
+    void cr(Context context, TypesettingContext tc, UnicodeChar uc)
+            throws TypesetterException;
 
     /**
      * Access the last node on the list.

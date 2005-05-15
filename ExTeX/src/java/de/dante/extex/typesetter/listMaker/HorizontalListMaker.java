@@ -52,7 +52,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class HorizontalListMaker extends AbstractListMaker {
 
@@ -69,6 +69,12 @@ public class HorizontalListMaker extends AbstractListMaker {
     private static final int SPACEFACTOR_THRESHOLD = 2000;
 
     /**
+     * The field <tt>afterParagraphObservers</tt> contains the observers to be
+     * invoked after the pargraph has been completed.
+     */
+    private List afterParagraphObservers = new ArrayList();
+
+    /**
      * The field <tt>nodes</tt> contains the node list encapsulated by this
      * class.
      */
@@ -80,11 +86,6 @@ public class HorizontalListMaker extends AbstractListMaker {
      * @see "TeX -- The Program [212]"
      */
     private long spacefactor = DEFAULT_SPACEFACTOR;
-
-    /**
-     * The field <tt>afterParagraphObservers</tt> contains the ...
-     */
-    private List afterParagraphObservers = new ArrayList();
 
     /**
      * Creates a new object.
@@ -191,6 +192,17 @@ public class HorizontalListMaker extends AbstractListMaker {
         }
 
         return getManager().buildParagraph(list);
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#cr(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.context.TypesettingContext,
+     *      de.dante.util.UnicodeChar)
+     */
+    public void cr(final Context context, final TypesettingContext tc,
+            final UnicodeChar uc) throws TypesetterException {
+
     }
 
     /**
