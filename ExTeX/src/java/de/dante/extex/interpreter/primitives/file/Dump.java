@@ -72,7 +72,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.30 $
+ * @version $Revision: 1.31 $
  */
 public class Dump extends AbstractCode implements LogEnabled {
 
@@ -116,7 +116,7 @@ public class Dump extends AbstractCode implements LogEnabled {
      * @param source the token source
      * @param typesetter the typesetter
      *
-     * @see "TeX -- The Program [1303,1304]"
+     * @see "TeX -- The Program [1303,1304, 1328]"
      * @see de.dante.extex.interpreter.type.Code#execute(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
@@ -131,12 +131,10 @@ public class Dump extends AbstractCode implements LogEnabled {
             throw new HelpingException(getLocalizer(), "TTP.DumpInGroup");
         }
 
-        //TODO gene: @see "TeX -- The Program [1328]"
-
         Tokens jobnameTokens = context.getToks("jobname");
         if (jobnameTokens == null) {
-            throw new InterpreterPanicException(getLocalizer(), "Dump.MissingJobname",
-                    printableControlSequence(context));
+            throw new InterpreterPanicException(getLocalizer(),
+                    "Dump.MissingJobname", printableControlSequence(context));
         }
         String jobname = jobnameTokens.toText();
         Calendar calendar = Calendar.getInstance();
