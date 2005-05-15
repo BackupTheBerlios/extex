@@ -320,7 +320,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.99 $
+ * @version $Revision: 1.100 $
  */
 public class ExTeX {
 
@@ -1067,9 +1067,7 @@ public class ExTeX {
 
     /**
      * Create a new interpreter.
-     *
      * @param config the configuration object for the interpreter
-     * @param finder the file finder for files opened by the interpreter
      * @param factory the factory for new token streams
      * @param fontFactory the font factory to request the default font from
      *
@@ -1081,8 +1079,7 @@ public class ExTeX {
      * @throws FontException in case of problems with the font itself
      */
     protected Interpreter makeInterpreter(final Configuration config,
-            final ResourceFinder finder, final TokenStreamFactory factory,
-            final FontFactory fontFactory)
+            final TokenStreamFactory factory, final FontFactory fontFactory)
             throws ConfigurationException,
                 GeneralException,
                 FontException {
@@ -1101,7 +1098,6 @@ public class ExTeX {
                     .getProperty(PROP_ERROR_HANDLER));
         }
         interpreter.setErrorHandler(errHandler);
-        interpreter.setResourceFinder(finder);
         Context context = interpreter.getContext();
         factory.setOptions((TokenStreamOptions) context);
         interpreter.setTokenStreamFactory(factory);
@@ -1264,14 +1260,14 @@ public class ExTeX {
                     .booleanValue()) {
                 finder.enableTracing(true);
             }
-            TokenStreamFactory tokenStreamFactory //
-            = makeTokenStreamFactory(config.getConfiguration("Scanner"), finder);
+            TokenStreamFactory tokenStreamFactory = makeTokenStreamFactory(
+                    config.getConfiguration("Scanner"), finder);
 
             FontFactory fontFactory = makeFontFactory(config
                     .getConfiguration("Fonts"));
 
-            Interpreter interpreter = makeInterpreter(config
-                    .getConfiguration("Interpreter"), finder,
+            Interpreter interpreter = makeInterpreter(//
+                    config.getConfiguration("Interpreter"), //
                     tokenStreamFactory, fontFactory);
 
             DocumentWriter docWriter = makeDocumentWriter(//
