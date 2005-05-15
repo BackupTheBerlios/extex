@@ -67,7 +67,7 @@ import de.dante.util.observer.Observer;
  * classes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class MockContext implements Context, TypesetterOptions {
 
@@ -440,9 +440,9 @@ public class MockContext implements Context, TypesetterOptions {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#pushConditional(de.dante.util.Locator, boolean)
+     * @see de.dante.extex.interpreter.context.Context#pushConditional(de.dante.util.Locator, boolean, String)
      */
-    public void pushConditional(final Locator locator, final boolean value) {
+    public void pushConditional(final Locator locator, final boolean value, String primitive) {
 
         throw new RuntimeException("unimplemented");
     }
