@@ -36,7 +36,7 @@ import de.dante.util.resource.ResourceFinder;
  * tries to find it via its super class.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class ResourceFinderImpl
         implements
@@ -67,7 +67,7 @@ public class ResourceFinderImpl
      *
      * @param theConfiguration the configuration to use
      *
-     * @throws ConfigurationException in case of an errorin the configuration
+     * @throws ConfigurationException in case of an error in the configuration
      */
     public ResourceFinderImpl(final Configuration theConfiguration)
             throws ConfigurationException {
