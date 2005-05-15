@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -50,7 +50,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class ErrorHandlerImpl
         implements
@@ -115,6 +115,48 @@ public class ErrorHandlerImpl
     }
 
     /**
+     * Special treatment of the debug case.
+     *
+     * @throws IOException in case of an error during IO. This is rather
+     *  unlikely.
+     * @throws HelpingException in case of EOF on terminal
+     *
+     * @see "TTP[1338]"
+     */
+    private void handleDebug() throws HelpingException, IOException {
+
+        for (;;) {
+            String line = promptAndReadLine(localizer
+                    .format("ErrorHandler.Prompt"));
+            logger.config(line);
+
+            if ("1".equals(line)) {
+
+            } else if ("2".equals(line)) {
+            } else if ("3".equals(line)) {
+            } else if ("4".equals(line)) {
+            } else if ("5".equals(line)) {
+            } else if ("6".equals(line)) {
+            } else if ("7".equals(line)) {
+            } else if ("8".equals(line)) {
+            } else if ("9".equals(line)) {
+            } else if ("10".equals(line)) {
+            } else if ("11".equals(line)) {
+            } else if ("12".equals(line)) {
+            } else if ("13".equals(line)) {
+            } else if ("14".equals(line)) {
+            } else if ("15".equals(line)) {
+            } else if ("16".equals(line)) {
+            } else if (line.startsWith("-")) {
+                return;
+            } else {
+                logger.config(localizer.format("ErrorHandler.DebugElsePrompt"));
+            }
+        }
+        // TODO gene: handleDebug unimplemented
+    }
+
+    /**
      * @see de.dante.extex.interpreter.ErrorHandler#handleError(
      *      de.dante.util.GeneralException,
      *      de.dante.extex.scanner.type.Token,
@@ -140,15 +182,19 @@ public class ErrorHandlerImpl
      * has been shown.
      * Leading spaces are ignored. At end of file an exception is thrown.
      *
+     * @param prompt the prompt to display
+     *
      * @return the line read or <code>null</code> to signal EOF
      *
      * @throws IOException in case of an error during IO. This is rather
-     * unlikely
+     *  unlikely.
      * @throws HelpingException in case of EOF on terminal
      */
-    protected String promptAndReadLine() throws IOException, HelpingException {
+    protected String promptAndReadLine(final String prompt)
+            throws IOException,
+                HelpingException {
 
-        logger.severe(localizer.format("ErrorHandler.Prompt"));
+        logger.severe(prompt);
 
         StringBuffer sb = new StringBuffer();
 
@@ -190,7 +236,7 @@ public class ErrorHandlerImpl
         if (locator == null) {
             return;
         }
-        String file = locator.getFilename();
+        String file = locator.getResourceName();
         StringBuffer sb = new StringBuffer();
 
         for (int i = locator.getLinePointer(); i > 0; i--) {
@@ -212,7 +258,7 @@ public class ErrorHandlerImpl
     }
 
     /**
-     * Interact with the user in case of an error
+     * Interact with the user in case of an error.
      *
      * @see de.dante.extex.interpreter.InteractionVisitor#visitErrorstopmode(
      *      java.lang.Object, java.lang.Object, java.lang.Object)
@@ -230,7 +276,8 @@ public class ErrorHandlerImpl
             boolean firstHelp = true;
 
             for (;;) {
-                String line = promptAndReadLine();
+                String line = promptAndReadLine(localizer
+                        .format("ErrorHandler.Prompt"));
                 logger.config(line);
 
                 if (line.equals("")) {
@@ -259,8 +306,9 @@ public class ErrorHandlerImpl
                             break;
                         case 'd':
                         case 'D':
-                            //TODO gene: support debug? TTP[84] TTP[1338]
-                            throw new RuntimeException("unimplemented");
+                            // TTP[84] TTP[1338]
+                            handleDebug();
+                            break;
                         case 'e':
                         case 'E':
                             // TTP[84]
@@ -273,8 +321,8 @@ public class ErrorHandlerImpl
                                 logger.info(localizer
                                         .format("ErrorHandler.scrollmode")
                                         + NL);
-                                return true;
                             }
+                            return true;
                         case 'i':
                         case 'I':
                             source.addStream(source.getTokenStreamFactory()
