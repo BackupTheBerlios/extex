@@ -42,7 +42,7 @@ import de.dante.util.StringList;
  * This class provides means to deal with configurations stored as XML files.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class ConfigurationXMLImpl implements Configuration, Serializable {
 
@@ -79,42 +79,43 @@ public class ConfigurationXMLImpl implements Configuration, Serializable {
      * the resource up to the last slash or the empty string if no slash is
      * contained.
      */
-    private String base = "";
+    private String base;
 
     /**
      * The field <tt>resource</tt> contains the name of the resource.
      */
-    private String resource = null;
+    private String resource;
 
     /**
      * The field <tt>root</tt> contains the root element for this configuration.
      */
-    private Element root = null;
+    private Element root;
 
     /**
      * Creates a new object with a given root element. This constructor is
      * private since it is meant for internal purposes only.
      *
-     * @param aRoot the new root element
-     * @param aBase the base for the resource
-     * @param aResource the name of the resource
+     * @param root the new root element
+     * @param base the base for the resource
+     * @param resource the name of the resource
      */
-    private ConfigurationXMLImpl(final Element aRoot, final String aBase,
-            final String aResource) {
+    private ConfigurationXMLImpl(final Element root, final String base,
+            final String resource) {
 
         super();
-        this.root = aRoot;
-        this.base = aBase;
-        this.resource = aResource;
+        this.root = root;
+        this.base = base;
+        this.resource = resource;
     }
 
     /**
-     * Creates a new object.
+     * Creates a new object and fills it with the configuration read from an
+     * input stream.
      * <p>
-     * The path given is the location of the XML file containing the
-     * configuration information. This path is used to determine the XML file
-     * utilizing the class loader for this class. Thus it is possible to place
-     * the XML file into a jar archive.
+     * The path given is the location of the XML resource (file) containing the
+     * configuration information. This path is used to determine the XML
+     * resource utilizing the class loader for this class.
+     * Thus it is possible to place the XML file into a jar archive.
      * </p>
      * <p>
      * Beside of the class loader a search is performed by appending
@@ -122,9 +123,9 @@ public class ConfigurationXMLImpl implements Configuration, Serializable {
      * sufficient to find the resource.
      * </p>
      *
-     * @param theStream the stream to read the configuration from.
-     * @param theResource the name of the resource to be used;
-     * i.e. the file name
+     * @param stream the stream to read the configuration from.
+     * @param resource the name of the resource to be used;
+     *  i.e. somethinf like the file name
      *
      * @throws ConfigurationInvalidResourceException in case that the given
      *  resource name is <code>null</code> or empty.
@@ -135,35 +136,14 @@ public class ConfigurationXMLImpl implements Configuration, Serializable {
      * @throws ConfigurationIOException in case of an IO exception while
      *  reading the resource.
      */
-    public ConfigurationXMLImpl(final InputStream theStream,
-            final String theResource)
+    public ConfigurationXMLImpl(final InputStream stream, final String resource)
             throws ConfigurationInvalidResourceException,
                 ConfigurationNotFoundException,
                 ConfigurationSyntaxException,
                 ConfigurationIOException {
 
         super();
-
-        if (theStream == null) {
-            throw new ConfigurationNotFoundException(theResource, null);
-        }
-
-        try {
-            DocumentBuilder builder = DocumentBuilderFactory.newInstance()
-                    .newDocumentBuilder();
-            root = builder.parse(theStream).getDocumentElement();
-        } catch (IOException e) {
-            throw new ConfigurationIOException(null, e);
-        } catch (ParserConfigurationException e) {
-            throw new ConfigurationSyntaxException(e.getLocalizedMessage(),
-                    theResource);
-        } catch (SAXException e) {
-            throw new ConfigurationSyntaxException(e.getLocalizedMessage(),
-                    theResource);
-        } catch (FactoryConfigurationError e) {
-            throw new ConfigurationSyntaxException(e.getLocalizedMessage(),
-                    theResource);
-        }
+        readConfiguration(stream, resource, "");
     }
 
     /**
@@ -197,11 +177,11 @@ public class ConfigurationXMLImpl implements Configuration, Serializable {
      *
      *
      *
-     * @param theResource the name of the resource to be used;
+     * @param resource the name of the resource to be used;
      * i.e. the file name
      *
      * @throws ConfigurationInvalidResourceException in case that the given
-     *  resource name is nullor empty
+     *  resource name is <code>null</code> or empty
      * @throws ConfigurationNotFoundException in case that the named path does
      *  not lead to a resource
      * @throws ConfigurationSyntaxException in case that the resource contains
@@ -209,7 +189,7 @@ public class ConfigurationXMLImpl implements Configuration, Serializable {
      * @throws ConfigurationIOException in case of an IO exception while
      *  reading the resource
      */
-    public ConfigurationXMLImpl(final String theResource)
+    public ConfigurationXMLImpl(final String resource)
             throws ConfigurationInvalidResourceException,
                 ConfigurationNotFoundException,
                 ConfigurationSyntaxException,
@@ -217,68 +197,16 @@ public class ConfigurationXMLImpl implements Configuration, Serializable {
 
         super();
 
-        if (theResource == null || theResource.equals("")) {
+        if (resource == null || resource.equals("")) {
             throw new ConfigurationInvalidResourceException();
         }
 
-        this.resource = theResource;
+        int i = resource.lastIndexOf("/");
 
-        int i = theResource.lastIndexOf("/");
-
-        if (i >= 0) {
-            this.base = theResource.substring(0, i + 1);
-        }
-
-        InputStream stream = findConfig(theResource);
-
-        if (stream == null) {
-            throw new ConfigurationNotFoundException(theResource, null);
-        }
-
-        try {
-            DocumentBuilder builder = DocumentBuilderFactory.newInstance()
-                    .newDocumentBuilder();
-            root = builder.parse(stream).getDocumentElement();
-        } catch (IOException e) {
-            throw new ConfigurationIOException(null, e);
-        } catch (ParserConfigurationException e) {
-            throw new ConfigurationSyntaxException(e.getLocalizedMessage(),
-                    theResource);
-        } catch (SAXException e) {
-            throw new ConfigurationSyntaxException(e.getLocalizedMessage(),
-                    theResource);
-        } catch (FactoryConfigurationError e) {
-            throw new ConfigurationSyntaxException(e.getLocalizedMessage(),
-                    theResource);
-        }
-    }
-
-    /**
-     * Search for a configuration file taking into account a list of prefixes
-     * (path) and postfixes (ext)
-     *
-     * @param name the base name of the configuration to find. The path
-     *  elements and extensions are attached in turn to build the complete
-     *  name.
-     *
-     * @return an input stream to the requested configuration or
-     * <code>null</code> if none could be opened.
-     */
-    private InputStream findConfig(final String name) {
-
-        ClassLoader classLoader = getClass().getClassLoader();
-
-        for (int pi = 0; pi < PATHS.length; pi++) {
-            for (int ei = 0; ei < EXTENSIONS.length; ei++) {
-                InputStream stream = classLoader.getResourceAsStream(PATHS[pi]
-                        + name + EXTENSIONS[ei]);
-
-                if (stream != null) {
-                    return stream;
-                }
-            }
-        }
-        return null;
+        readConfiguration(locateConfiguration(resource, //
+                getClass().getClassLoader()), //
+                resource, //
+                (i >= 0 ? resource.substring(0, i + 1) : ""));
     }
 
     /**
@@ -718,6 +646,81 @@ public class ConfigurationXMLImpl implements Configuration, Serializable {
     }
 
     /**
+     * Search for a configuration file taking into account a list of prefixes
+     * (path) and postfixes (ext)
+     *
+     * @param name the base name of the configuration to find. The path
+     *  elements and extensions are attached in turn to build the complete
+     *  name.
+     * @param classLoader the class loader to use for finding the resource
+     *
+     * @return an input stream to the requested configuration or
+     * <code>null</code> if none could be opened.
+     */
+    private InputStream locateConfiguration(final String name,
+            ClassLoader classLoader) {
+
+        for (int pi = 0; pi < PATHS.length; pi++) {
+            for (int ei = 0; ei < EXTENSIONS.length; ei++) {
+                InputStream stream = classLoader.getResourceAsStream(PATHS[pi]
+                        + name + EXTENSIONS[ei]);
+
+                if (stream != null) {
+                    return stream;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Read the configuration from a stream.
+     * @param stream the stream to read the configuration from.
+     * @param resource the name of the resource to be used;
+     *  i.e. somethinf like the file name
+     * @param base the new value for base
+     *
+     * @throws ConfigurationNotFoundException in case that the configuration
+     *  could not be found
+     * @throws ConfigurationIOException in case of an IO error during reading
+     * @throws ConfigurationSyntaxException in case of a syntax error in the
+     *  configuration XML
+     */
+    protected void readConfiguration(final InputStream stream,
+            final String resource, final String base)
+            throws ConfigurationNotFoundException,
+                ConfigurationIOException,
+                ConfigurationSyntaxException {
+
+        if (stream == null) {
+            throw new ConfigurationNotFoundException(resource, null);
+        }
+        this.resource = resource;
+        this.base = base;
+
+        try {
+            DocumentBuilder builder = DocumentBuilderFactory.newInstance()
+                    .newDocumentBuilder();
+            root = builder.parse(stream).getDocumentElement();
+        } catch (IOException e) {
+            throw new ConfigurationIOException(null, e);
+        } catch (ParserConfigurationException e) {
+            throw new ConfigurationSyntaxException(e.getLocalizedMessage(),
+                    resource);
+        } catch (SAXException e) {
+            throw new ConfigurationSyntaxException(e.getLocalizedMessage(),
+                    resource);
+        } catch (FactoryConfigurationError e) {
+            throw new ConfigurationSyntaxException(e.getLocalizedMessage(),
+                    resource);
+        }
+    }
+
+    /**
+     * Get the printable representation of this configuration.
+     * Something like an xpath expression describing the configuration is
+     * produced for this instance.
+     *
      * @see java.lang.Object#toString()
      */
     public String toString() {
