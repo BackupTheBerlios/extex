@@ -42,7 +42,7 @@ import de.dante.util.framework.AbstractFactory;
  * configuration.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class OutputFactory extends AbstractFactory
         implements
@@ -52,7 +52,7 @@ public class OutputFactory extends AbstractFactory
      * This class provides a mutable Integer.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.12 $
+     * @version $Revision: 1.13 $
      */
     private class Int {
 
@@ -128,7 +128,8 @@ public class OutputFactory extends AbstractFactory
     private OutputStream defaultStream = null;
 
     /**
-     * The field <tt>destination</tt> contains the ...
+     * The field <tt>destination</tt> contains the name of the destination. This
+     * is usally the file name &ndash; or at least the base without extension.
      */
     private String destination;
 

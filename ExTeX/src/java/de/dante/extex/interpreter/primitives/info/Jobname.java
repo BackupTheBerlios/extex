@@ -34,7 +34,10 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="jobname">
  * <h3>The Primitive <tt>\jobname</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The primitive <tt>\jobname</tt> expands to the name of the job currently
+ *  processed. The job name is usually the name of the first input file. If this
+ *  can not be determined &ndash; e.g. because the input is not coming from a
+ *  file &ndash; then the fallback <tt>texput</tt> is usd as default value.
  * </p>
  * <p>
  *  The formal description of this primitive is the following:
@@ -50,7 +53,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Jobname extends AbstractCode implements ExpandableCode {
 
