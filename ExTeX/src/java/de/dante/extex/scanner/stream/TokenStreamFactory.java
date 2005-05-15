@@ -120,7 +120,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public class TokenStreamFactory extends AbstractFactory implements Observable {
 
@@ -298,7 +298,7 @@ public class TokenStreamFactory extends AbstractFactory implements Observable {
         TokenStream stream;
         try {
             stream = (TokenStream) stringConstructor.newInstance(//
-                    new Object[]{configuration, options, line, "#"});
+                    new Object[]{configuration, options, line, ""});
 
             openStringObservers.update(this, line);
 
