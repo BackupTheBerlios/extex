@@ -22,19 +22,19 @@ package de.dante.util;
 import java.io.Serializable;
 
 /**
- * The locator is the container for the information about the name of a file
+ * The locator is the container for the information about the name of a resource
  * and the current line number.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Locator implements Serializable {
 
     /**
-     * The field <tt>filename</tt> contains the name of the file.
+     * The field <tt>resource</tt> contains the name of the resource.
      */
-    private String filename;
+    private String resource;
 
     /**
      * The field <tt>lineno</tt> contains the line number.
@@ -55,16 +55,16 @@ public class Locator implements Serializable {
     /**
      * Creates a new object.
      *
-     * @param fileName the file name
+     * @param resource the name of the resource; e.g. the file name
      * @param lineNo the line number
      * @param currentLine the current line of input
      * @param currentLinePointer the current position in the line of input
      */
-    public Locator(final String fileName, final int lineNo,
+    public Locator(final String resource, final int lineNo,
             final String currentLine, final int currentLinePointer) {
 
         super();
-        this.filename = fileName;
+        this.resource = resource;
         this.lineno = lineNo;
         this.line = currentLine;
         this.linePointer = currentLinePointer;
@@ -93,14 +93,15 @@ public class Locator implements Serializable {
     }
 
     /**
-     * Getter for the file name.
-     * The file name can be unset. in ths case <code>null</code> is returned.
+     * Getter for the resource name.
+     * The resource name can be unset. In this case <code>null</code> is
+     * returned.
      *
-     * @return the line file name or <code>null</code>
+     * @return the resource name or <code>null</code>
      */
-    public String getFilename() {
+    public String getResourceName() {
 
-        return filename;
+        return resource;
     }
 
     /**
@@ -113,4 +114,18 @@ public class Locator implements Serializable {
         return lineno;
     }
 
+    /**
+     * Return a printable representation of this instance.
+     * The result contains the file name and the line number separated by colon.
+     * This is the Unix style of presenting a file position.
+     * If the file name is null then it is treated as if it where the empty
+     * string.
+     *
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+
+        return (resource != null ? resource : "") + ":"
+                + Integer.toString(lineno);
+    }
 }
