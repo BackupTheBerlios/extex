@@ -33,7 +33,6 @@ import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.observer.Observable;
-import de.dante.util.resource.ResourceFinder;
 
 /**
  * This interface represents the outside view on an interpreter. It contains
@@ -43,7 +42,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public interface Interpreter extends TokenSource, Observable {
 
@@ -116,6 +115,14 @@ public interface Interpreter extends TokenSource, Observable {
                 InterpreterException;
 
     /**
+     * Setter for the context.
+     * Use with care!
+     *
+     * @param context the interpreter context
+     */
+    void setContext(Context context);
+
+    /**
      * Setter for the error handler.
      * The value of <code>null</code> can be used to delete the error handler
      * currently set.
@@ -130,14 +137,6 @@ public interface Interpreter extends TokenSource, Observable {
      * @param fontFactory the new font factory
      */
     void setFontFactory(FontFactory fontFactory);
-
-    /**
-     * Setter for the context.
-     * Use with care!
-     *
-     * @param context the interpreter context
-     */
-    void setContext(Context context);
 
     /**
      * Setter for the interaction mode.
@@ -156,13 +155,6 @@ public interface Interpreter extends TokenSource, Observable {
      * @throws GeneralException in case of an error
      */
     void setJobname(String jobname) throws GeneralException;
-
-    /**
-     * Setter for the resource finder for files handled by the interpreter.
-     *
-     * @param resourceFinder the new file finder
-     */
-    void setResourceFinder(ResourceFinder resourceFinder);
 
     /**
      * Setter for the token stream factory.
