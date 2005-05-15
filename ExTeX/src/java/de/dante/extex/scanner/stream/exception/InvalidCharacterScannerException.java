@@ -26,9 +26,14 @@ import de.dante.util.UnicodeChar;
  * This is thrown when an invalid character has been encountered.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class InvalidCharacterScannerException extends ScannerException {
+
+    /**
+     * The field <tt>invalid</tt> contains the invalid character.
+     */
+    private UnicodeChar invalid;
 
     /**
      * Creates a new object.
@@ -38,7 +43,7 @@ public class InvalidCharacterScannerException extends ScannerException {
     public InvalidCharacterScannerException(final UnicodeChar invalid) {
 
         super();
-        //TODO gene: incomplete
+        this.invalid = invalid;
     }
 
 }
