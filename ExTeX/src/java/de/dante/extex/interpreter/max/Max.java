@@ -27,6 +27,7 @@ import java.util.Iterator;
 import java.util.logging.Logger;
 
 import de.dante.extex.font.FontFactory;
+import de.dante.extex.interpreter.Conditional;
 import de.dante.extex.interpreter.ErrorHandler;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.FlagsImpl;
@@ -71,13 +72,14 @@ import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationMissingException;
 import de.dante.util.configuration.ConfigurationWrapperException;
+import de.dante.util.framework.configuration.Configurable;
+import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.logger.LogEnabled;
 import de.dante.util.observer.NotObservableException;
 import de.dante.util.observer.Observable;
 import de.dante.util.observer.Observer;
 import de.dante.util.observer.ObserverList;
 import de.dante.util.observer.SwitchObserver;
-import de.dante.util.resource.ResourceFinder;
 
 /**
  * This is a reference implementation for a <b>MA</b>cro e<b>X</b>pander. The
@@ -85,7 +87,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.68 $
+ * @version $Revision: 1.69 $
  */
 public class Max extends Moritz
         implements
@@ -126,6 +128,12 @@ public class Max extends Moritz
     private Calendar calendar = Calendar.getInstance();
 
     /**
+     * The field <tt>configuration</tt> contains the configuration for this
+     * interpreter.
+     */
+    private Configuration configuration = null;
+
+    /**
      * The field <tt>context</tt> contains the processing context. Here nearly
      * all relevant information can be found.
      */
@@ -142,7 +150,7 @@ public class Max extends Moritz
      * beginning of each run. It can be <code>null</code> to denote that
      * nothing should be inserted.
      */
-    private Configuration everyRun = null;
+    private String everyRun = null;
 
     /**
      * The field <tt>logger</tt> contains the logger or
@@ -212,10 +220,12 @@ public class Max extends Moritz
             throw new ConfigurationMissingException("Interpreter");
         }
 
+        this.configuration = configuration;
+
         maxErrors = configuration.getValueAsInteger("maxErrors", maxErrors);
 
         TokenFactory tokenFactory = configureTokenFactory(configuration);
-        configureContext(configuration);
+        makeContext(configuration);
         context.setTokenFactory(tokenFactory);
         configureHyhenation(configuration);
 
@@ -233,27 +243,11 @@ public class Max extends Moritz
             throw new ConfigurationWrapperException(e);
         }
 
-        everyRun = configuration.findConfiguration("everyjob");
-    }
-
-    /**
-     * Prepare the context according to its configuration.
-     *
-     * @param configuration the configuration
-     *
-     * @throws ConfigurationException in case of a configuration error
-     */
-    private void configureContext(final Configuration configuration)
-            throws ConfigurationException {
-
-        Configuration cfg = configuration.getConfiguration(CONTEXT_TAG);
-        if (cfg == null) {
-            throw new ConfigurationMissingException(CONTEXT_TAG, configuration
-                    .toString());
+        Configuration everyRunConfig = configuration
+                .findConfiguration("everyjob");
+        if (everyRunConfig != null) {
+            everyRun = everyRunConfig.getValue();
         }
-        ContextFactory contextFactory = new ContextFactory(cfg);
-        contextFactory.enableLogging(logger);
-        context = contextFactory.newInstance(null);
     }
 
     /**
@@ -270,8 +264,8 @@ public class Max extends Moritz
         factory.enableLogging(logger);
         Configuration cfg = configuration.findConfiguration(LANGUAGE_TAG);
         if (cfg == null) {
-            throw new ConfigurationMissingException(LANGUAGE_TAG,
-                    configuration.toString());
+            throw new ConfigurationMissingException(LANGUAGE_TAG, configuration
+                    .toString());
         }
         factory.configure(cfg);
         context.setLanguageManager(factory.newInstance(""));
@@ -313,11 +307,10 @@ public class Max extends Moritz
     private TokenFactory configureTokenFactory(final Configuration configuration)
             throws ConfigurationException {
 
-        TokenFactoryFactory tokenFactory2 = new TokenFactoryFactory(
-                configuration.getConfiguration("TokenFactory"));
-        tokenFactory2.enableLogging(logger);
-        TokenFactory tokenFactory = tokenFactory2.createInstance();
-        return tokenFactory;
+        TokenFactoryFactory factory = new TokenFactoryFactory(configuration
+                .getConfiguration("TokenFactory"));
+        factory.enableLogging(logger);
+        return factory.createInstance();
     }
 
     /**
@@ -529,12 +522,38 @@ public class Max extends Moritz
             }
             throw new LoaderException(e);
         }
-        //FontFactory fontFactory = newContext.getFontFactory();
+
+        if (newContext instanceof Configurable) {
+            try {
+                ((Configurable) newContext).configure(configuration);
+            } catch (ConfigurationException e) {
+                throw new LoaderException(e);
+            }
+        }
         newContext.setFontFactory(context.getFontFactory());
-        //TODO gene: restore configuration and ResourceFinder
         newContext.setTokenFactory(context.getTokenFactory());
         // TODO gene: loadFormat() incomplete ???
         context = newContext;
+    }
+
+    /**
+     * Prepare the context according to its configuration.
+     *
+     * @param configuration the configuration
+     *
+     * @throws ConfigurationException in case of a configuration error
+     */
+    private void makeContext(final Configuration configuration)
+            throws ConfigurationException {
+
+        Configuration cfg = configuration.getConfiguration(CONTEXT_TAG);
+        if (cfg == null) {
+            throw new ConfigurationMissingException(CONTEXT_TAG, configuration
+                    .toString());
+        }
+        ContextFactory contextFactory = new ContextFactory(cfg);
+        contextFactory.enableLogging(logger);
+        context = contextFactory.newInstance(null);
     }
 
     /**
@@ -588,9 +607,7 @@ public class Max extends Moritz
     /**
      * @see de.dante.extex.interpreter.Interpreter#run()
      */
-    public void run()
-            throws ConfigurationException,
-                InterpreterException {
+    public void run() throws ConfigurationException, InterpreterException {
 
         if (typesetter == null) {
             throw new NoTypesetterException(getClass().getName() + "#run()");
@@ -601,11 +618,8 @@ public class Max extends Moritz
                     + "#run()");
         }
 
-        if (everyRun != null) {
-            String toks = everyRun.getValue();
-            if (toks != null && toks.length() > 0) {
-                addStream(getTokenStreamFactory().newInstance(toks));
-            }
+        if (everyRun != null && everyRun.length() > 0) {
+            addStream(getTokenStreamFactory().newInstance(everyRun));
         }
 
         push(context.getToks("everyjob"));
@@ -614,7 +628,26 @@ public class Max extends Moritz
 
         typesetter.finish();
 
-        //TODO gene: TTP[1335]
+        // TTP [1335]
+        long groupLevel = context.getGroupLevel();
+        if (groupLevel != 0) {
+            Localizer localizer = getLocalizer();
+            String endPrimitive = localizer.format("TTP.EndPrimitive");
+            String message = localizer.format("TTP.EndGroup", context
+                    .esc(endPrimitive), Long.toString(groupLevel));
+            logger.warning(message);
+            throw new InterpreterException(message);
+        }
+        Conditional cond = context.popConditional();
+        if (cond != null) {
+            Localizer localizer = getLocalizer();
+            String endPrimitive = localizer.format("TTP.EndPrimitive");
+            String message = localizer.format("TTP.EndIf", context
+                    .esc(endPrimitive), cond.getPrimitive(), cond.getLocator()
+                    .toString());
+            logger.warning(message);
+            throw new InterpreterException(message);
+        }
     }
 
     /**
@@ -690,16 +723,6 @@ public class Max extends Moritz
     }
 
     /**
-     * Setter for the file finder.
-     *
-     * @param fileFinder the new file finder
-     */
-    public void setResourceFinder(final ResourceFinder fileFinder) {
-
-        //finder = fileFinder;
-    }
-
-    /**
      * @see de.dante.extex.interpreter.max.Moritz#setTokenStreamFactory(
      *      de.dante.extex.scanner.stream.TokenStreamFactory)
      */
@@ -707,8 +730,6 @@ public class Max extends Moritz
             throws ConfigurationException {
 
         super.setTokenStreamFactory(factory);
-        //        context.setStandardTokenStream(factory
-        //                .newInstance(new InputStreamReader(System.in)));
     }
 
     /**
@@ -767,8 +788,9 @@ public class Max extends Moritz
     public Object visitCr(final CrToken token, final Object ignore)
             throws GeneralException {
 
-        //TODO gene: unimplemented
-        throw new RuntimeException("unimplemented");
+        typesetter
+                .cr(context, context.getTypesettingContext(), token.getChar());
+        return null;
     }
 
     /**
