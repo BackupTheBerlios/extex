@@ -48,7 +48,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Inputfilename extends AbstractCode
         implements
@@ -76,7 +76,7 @@ public class Inputfilename extends AbstractCode
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String filename = source.getLocator().getFilename();
+        String filename = source.getLocator().getResourceName();
         source.push(new Tokens(context, filename == null ? "" : filename));
     }
 
@@ -91,7 +91,7 @@ public class Inputfilename extends AbstractCode
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String filename = source.getLocator().getFilename();
+        String filename = source.getLocator().getResourceName();
         source.push(new Tokens(context, filename == null ? "" : filename));
     }
 
@@ -103,7 +103,7 @@ public class Inputfilename extends AbstractCode
     public Tokens the(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        String filename = source.getLocator().getFilename();
+        String filename = source.getLocator().getResourceName();
         return new Tokens(context, filename == null ? "" : filename);
     }
 
