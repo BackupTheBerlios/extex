@@ -53,7 +53,7 @@ import de.dante.util.configuration.ConfigurationFactory;
 
 /**
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.56 $
+ * @version $Revision: 1.57 $
  */
 public class Max1 extends TestCase {
 
@@ -134,6 +134,17 @@ public class Max1 extends TestCase {
         public void configure(final Configuration config) {
 
             // nothing to do
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.ListMaker#cr(
+         *      de.dante.extex.interpreter.context.Context,
+         *      de.dante.extex.interpreter.context.TypesettingContext,
+         *      de.dante.util.UnicodeChar)
+         */
+        public void cr(final Context context, final TypesettingContext tc,
+                final UnicodeChar uc) throws TypesetterException {
+
         }
 
         /**
