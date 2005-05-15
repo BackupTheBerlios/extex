@@ -43,7 +43,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class GlueNode extends AbstractNode implements Node, Discardable {
 
@@ -69,6 +69,15 @@ public class GlueNode extends AbstractNode implements Node, Discardable {
      *      de.dante.extex.interpreter.type.glue.Glue)
      */
     public void addWidthTo(final Glue glue) {
+
+        glue.add(this.size);
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.Node#addHeightTo(
+     *      de.dante.extex.interpreter.type.glue.Glue)
+     */
+    public void addHeightTo(final Glue glue) {
 
         glue.add(this.size);
     }

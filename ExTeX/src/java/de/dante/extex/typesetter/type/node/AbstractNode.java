@@ -34,7 +34,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This abstract class provides some methods common to all Nodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public abstract class AbstractNode implements Node {
 
@@ -56,6 +56,11 @@ public abstract class AbstractNode implements Node {
     private Dimen height;
 
     /**
+     * The field <tt>localizer</tt> contains the localizer.
+     */
+    private Localizer localizer = null;
+
+    /**
      * The field <tt>move</tt> contains the offset of the reference point in
      * horizontal direction.
      */
@@ -66,51 +71,6 @@ public abstract class AbstractNode implements Node {
      * vertical direction.
      */
     private Dimen shift = new Dimen(0);
-
-    /**
-     * Getter for move.
-     *
-     * @return the move
-     */
-    public Dimen getMove() {
-
-        return this.move;
-    }
-
-    /**
-     * Getter for shift.
-     *
-     * @return the shift
-     */
-    public Dimen getShift() {
-
-        return this.shift;
-    }
-
-    /**
-     * Setter for move.
-     *
-     * @param move the move to set
-     */
-    public void setMove(final Dimen move) {
-
-        this.move = move;
-    }
-
-    /**
-     * Setter for shift.
-     *
-     * @param shift the shift to set
-     */
-    public void setShift(final Dimen shift) {
-
-        this.shift = shift;
-    }
-
-    /**
-     * The field <tt>localizer</tt> contains the localizer.
-     */
-    private Localizer localizer = null;
 
     /** This is the width of the node.
      *  The width is the extend of the node along the baseline.
@@ -156,6 +116,16 @@ public abstract class AbstractNode implements Node {
         this.width = new Dimen(aWidth);
         this.height = new Dimen(aHeight);
         this.depth = new Dimen(aDepth);
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.Node#addHeightTo(
+     *      de.dante.extex.interpreter.type.glue.Glue)
+     */
+    public void addHeightTo(final Glue glue) {
+
+        glue.add(height);
+        glue.add(depth);
     }
 
     /**
@@ -232,6 +202,26 @@ public abstract class AbstractNode implements Node {
     }
 
     /**
+     * Getter for move.
+     *
+     * @return the move
+     */
+    public Dimen getMove() {
+
+        return this.move;
+    }
+
+    /**
+     * Getter for shift.
+     *
+     * @return the shift
+     */
+    public Dimen getShift() {
+
+        return this.shift;
+    }
+
+    /**
      * @see de.dante.extex.typesetter.type.Node#getVerticalSize()
      */
     public Dimen getVerticalSize() {
@@ -283,6 +273,26 @@ public abstract class AbstractNode implements Node {
     public void setHeight(final Dimen aHeight) {
 
         height.set(aHeight);
+    }
+
+    /**
+     * Setter for move.
+     *
+     * @param move the move to set
+     */
+    public void setMove(final Dimen move) {
+
+        this.move = move;
+    }
+
+    /**
+     * Setter for shift.
+     *
+     * @param shift the shift to set
+     */
+    public void setShift(final Dimen shift) {
+
+        this.shift = shift;
     }
 
     /**
