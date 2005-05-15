@@ -35,7 +35,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class CharNode extends AbstractNode implements Node {
 
@@ -139,6 +139,7 @@ public class CharNode extends AbstractNode implements Node {
     }
 
     /**
+     * @see "TeX -- The Program [174]"
      * @see de.dante.extex.typesetter.type.Node#toString(
      *      java.lang.StringBuffer,
      *      java.lang.String)
@@ -161,6 +162,7 @@ public class CharNode extends AbstractNode implements Node {
     }
 
     /**
+     * @see "TeX -- The Program [174]"
      * @see de.dante.extex.typesetter.type.Node#toText(
      *      java.lang.StringBuffer,
      *      java.lang.String)
