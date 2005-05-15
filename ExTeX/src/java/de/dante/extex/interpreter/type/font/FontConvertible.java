@@ -28,7 +28,7 @@ import de.dante.extex.interpreter.exception.InterpreterException;
  *
  * <doc type="syntax" name="font">
  * <p>
- *  TODO missing documentation
+ *  TODO gene: missing documentation
  * </p>
  * <p>
  *  The formal description is the following:
@@ -51,7 +51,7 @@ import de.dante.extex.interpreter.exception.InterpreterException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public interface FontConvertible {
 

@@ -30,30 +30,38 @@ import de.dante.util.GeneralException;
  * @see "TeX -- The Program [140]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class InsertionNode extends AbstractNode implements Node {
 
     /**
-     * The field <tt>nodes</tt> contains the ...
+     * The field <tt>nodes</tt> contains the vertical list to be inserted.
+     *
+     * @see "TeX -- The Program [140]"
      */
     private NodeList nodes;
 
     /**
-     * The field <tt>floatCost</tt> contains the ...
+     * The field <tt>floatCost</tt> contains the penalty which is used when the
+     * insertion floats to the following page.
+     *
+     * @see "TeX -- The Program [140]"
      */
     private long floatCost = 0;
 
     /**
-     * The field <tt>subtype</tt> contains the ...
+     * The field <tt>subtype</tt> contains the register number for the
+     * associated registers.
      */
     private long subtype = 0;
 
     /**
      * Creates a new object.
      *
-     * @param subtype ...
+     * @param subtype the register number for the associated registers
      * @param nodes ...
+     *
+     * @see "TeX -- The Program [140]"
      */
     public InsertionNode(final long subtype, final NodeList nodes) {
 
