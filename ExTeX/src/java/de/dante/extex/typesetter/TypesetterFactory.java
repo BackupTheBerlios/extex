@@ -47,7 +47,7 @@ import de.dante.util.framework.AbstractFactory;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class TypesetterFactory extends AbstractFactory {
 
@@ -88,7 +88,6 @@ public class TypesetterFactory extends AbstractFactory {
         PageBuilder pageBuilder = (PageBuilder) createInstanceForConfiguration(
                 cfg, PageBuilder.class);
         pageBuilder.setContext(context);
-        //TODO gene: pageBuilder.setTypesetter(typesetter);
         return pageBuilder;
     }
 
