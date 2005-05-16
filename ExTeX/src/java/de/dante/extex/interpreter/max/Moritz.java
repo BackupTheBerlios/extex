@@ -26,6 +26,7 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.ErrorLimitException;
+import de.dante.extex.interpreter.exception.IllegalRegisterException;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
@@ -79,7 +80,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.63 $
+ * @version $Revision: 1.64 $
  */
 public abstract class Moritz
         implements
@@ -90,7 +91,7 @@ public abstract class Moritz
 
     /**
      * The constant <tt>MAX_CHAR_CODE</tt> contains the maximum value for a
-     * character code. In original TeX this value would be 255.
+     * character code. In original <logo>TeX</logo> this value would be 255.
      */
     private static final long MAX_CHAR_CODE = Long.MAX_VALUE;
 
@@ -100,8 +101,6 @@ public abstract class Moritz
      * <code>false</code> then only numbers are permitted.
      */
     private boolean extendedRegisterNames = false;
-
-    //TODO gene: find a good value
 
     /**
      * The field <tt>localizer</tt> contains the localizer to use.
@@ -144,6 +143,11 @@ public abstract class Moritz
      * pushed.
      */
     private ObserverList observersPush = new ObserverList();
+
+    /**
+     * The field <tt>registerMaxIndex</tt> contains the ...
+     */
+    private long registerMaxIndex = -1;
 
     /**
      * The field <tt>skipSpaces</tt> contains the indicator that space tokens
@@ -247,18 +251,48 @@ public abstract class Moritz
     }
 
     /**
+     * This method adapts the configurable settings according to the values from
+     * the given configuration.
+     * The following items are considered:
+     * <dl>
+     *  <dt><tt>ExtendedRegisterNames</tt></dt>
+     *  <dd>The value of this configuration contains a boolean value. If it is
+     *   <code>true</code> then extended register names are allowed. This means
+     *   that arbitray strings can be used instead of the simple numbers as
+     *   defined by <logo>TeX</logo>. This configuration is optional.
+     *  </dd>
+     *  <dt><tt>RegisterMax</tt></dt>
+     *  <dd>The value of this configuration contains a number. This number is
+     *   the highest register number. Attempts to use a higher number results
+     *   in an xception.
+     *  </dd>
+     * </dl>
+     *
+     * <p>Example</p>
+     * <pre>
+     *  &lt;interpreter&gt;
+     *    &lt;ExtendedRegisterNames&gt;true&lt;/ExtendedRegisterNames&gt;
+     *    &lt;RegisterMax&gt;255&lt;/RegisterMax&gt;
+     *  &lt;/interpreter&gt;
+     * </pre>
+     *
      * @see de.dante.util.framework.configuration.Configurable#configure(
      *      de.dante.util.configuration.Configuration)
      */
-    public void configure(final Configuration config)
+    public void configure(final Configuration configuration)
             throws ConfigurationException {
 
-        Configuration cfg = config.findConfiguration("ExtendedRegisterNames");
+        Configuration cfg = configuration
+                .findConfiguration("ExtendedRegisterNames");
         if (cfg != null) {
             extendedRegisterNames = Boolean.valueOf(cfg.getValue())
                     .booleanValue();
         }
 
+        cfg = configuration.findConfiguration("RegisterMax");
+        if (cfg != null) {
+            registerMaxIndex = Long.valueOf(cfg.getValue()).longValue();
+        }
     }
 
     /**
@@ -1191,7 +1225,11 @@ public abstract class Moritz
             return scanTokensAsString(context);
         }
 
-        return Long.toString(scanNumber(context, token));
+        long registerNumber = scanNumber(context, token);
+        if (registerMaxIndex >= 0 && registerNumber > registerMaxIndex) {
+            throw new IllegalRegisterException(Long.toString(registerNumber));
+        }
+        return Long.toString(registerNumber);
     }
 
     /**
