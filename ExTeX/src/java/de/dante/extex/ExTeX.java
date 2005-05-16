@@ -98,14 +98,14 @@ import de.dante.util.resource.ResourceFinder;
 import de.dante.util.resource.ResourceFinderFactory;
 
 /**
- * This is the programmatic interface to the ExTeX functionality.
+ * This is the programmatic interface to the <logo>ExTeX</logo> functionality.
  * A program may use this functionality to perform all necessary actions without
- * the burden of the traditional TeX command line interface.
+ * the burden of the traditional <logo>TeX</logo> command line interface.
  * <p>
  * The programmatic interface provides the following features:
  * </p>
  * <ul>
- * <li>Specifying format, input file and TeX code in properties.</li>
+ * <li>Specifying format, input file and <logo>TeX</logo> code in properties.</li>
  * </ul>
  *
  * <a name="settings"/><h3>Settings</h3>
@@ -127,8 +127,8 @@ import de.dante.util.resource.ResourceFinderFactory;
  * <dl>
  *   <dt><a name="extex.code"/><tt>extex.code</tt></a></dt>
  *   <dd>
- *    This parameter contains ExTeX code to be executed directly. The
- *    execution is performed after any code specified in an input file.
+ *    This parameter contains <logo>ExTeX</logo> code to be executed directly.
+ *    The execution is performed after any code specified in an input file.
  *    on the command line the code has to start with a backslash. This
  *    restriction does not hold for the property settings.
  *   </dd>
@@ -186,8 +186,8 @@ import de.dante.util.resource.ResourceFinderFactory;
  *   <dt><a name="extex.ini"/><tt>extex.ini</tt></dt>
  *   <dd>
  *    If set to <code>true</code> then act as initex. This command line
- *    option is defined for compatibility to TeX only. In ExTeX it has no
- *    effect at all.
+ *    option is defined for compatibility to <logo>TeX</logo> only. In
+ *   <logo>ExTeX</logo> it has no effect at all.
  *   </dd>
  *
  *   <dt><a name="extex.interaction"/><tt>extex.interaction</tt></dt>
@@ -307,10 +307,11 @@ import de.dante.util.resource.ResourceFinderFactory;
  * <a name="configuration"/><h3>Configuration Resources</h3>
  *
  * <p>
- *  The configuration of ExTeX is controlled by several configuration resources.
- *  The fallback for those configuration resources are contained in the ExTeX
- *  jar file. In this section we will describe how to overwrite the settings in
- *  the default configuration resource.
+ *  The configuration of <logo>ExTeX</logo> is controlled by several
+ *  configuration resources. The fallback for those configuration resources are
+ *  contained in the <logo>ExTeX</logo> jar file. In this section we will
+ *  describe how to overwrite the settings in the default configuration
+ *  resource.
  * </p>
  *
  * TODO gene: doc incomplete
@@ -320,21 +321,21 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.100 $
+ * @version $Revision: 1.101 $
  */
 public class ExTeX {
-
-    /**
-     * The field <tt>EXIT_NO_FORMAT</tt> contains the exit code when no format
-     * is found.
-     */
-    private static final int EXIT_NO_FORMAT = 42;
 
     /**
      * The constant <tt>EXIT_INTERNAL_ERROR</tt> contains the exit code for
      * internal errors.
      */
     protected static final int EXIT_INTERNAL_ERROR = -666;
+
+    /**
+     * The field <tt>EXIT_NO_FORMAT</tt> contains the exit code when no format
+     * is found.
+     */
+    private static final int EXIT_NO_FORMAT = 42;
 
     /**
      * The constant <tt>EXIT_OK</tt> contains the exit code of the program for
@@ -356,8 +357,8 @@ public class ExTeX {
     private static final String FORMAT_FALLBACK = "tex";
 
     /**
-     * The field <tt>PROP_CODE</tt> contains the name of the
-     * property for the TeX code to be inserted at the beginning of the job.
+     * The field <tt>PROP_CODE</tt> contains the name of the property for the
+     * <logo>TeX</logo> code to be inserted at the beginning of the job.
      */
     protected static final String PROP_CODE = "extex.code";
 
@@ -401,7 +402,7 @@ public class ExTeX {
     /**
      * The field <tt>PROP_INI</tt> contains the name of the property for the
      * Boolean value indicating that some kind of emulations for iniTeX should
-     * be provided. Currently this has no effect in ExTeX.
+     * be provided. Currently this has no effect in <logo>ExTeX</logo>.
      */
     protected static final String PROP_INI = "extex.ini";
 
@@ -590,7 +591,9 @@ public class ExTeX {
      * A detailed list of the properties supported can be found in section
      * <a href="#settings">Settings</a>.
      *
-     * @param theProperties the properties to start with
+     * @param theProperties the properties to start with. This object is
+     *  used and modified. The caller should provide a new instance if this is
+     *  not desirable.
      *
      * @throws MainException in case of an error
      */
@@ -765,6 +768,16 @@ public class ExTeX {
     }
 
     /**
+     * Getter for properties.
+     *
+     * @return the properties
+     */
+    protected Properties getProperties() {
+
+        return this.properties;
+    }
+
+    /**
      * Getter for a named property.
      *
      * @param key the property name
@@ -786,7 +799,7 @@ public class ExTeX {
      * @param interpreter the interpreter context
      * @param prop the properties
      *
-     * @return <code>true</code> if the stream heve not been initialized
+     * @return <code>true</code> if the stream have not been initialized
      *
      * @throws ConfigurationException in case of a configuration error
      * @throws MainIOException in case of an IO error
@@ -822,32 +835,6 @@ public class ExTeX {
         }
 
         return notInitialized;
-    }
-
-    /**
-     * Loads a properties file into the already existing properties.
-     * The values from the file overwrite existing values.
-     *
-     * @param arg the name of the resource to load
-     *
-     * @return <code>true</code> iff the resource has been loaded sucessfully
-     *
-     * @throws IOException just in case
-     */
-    protected boolean loadArgumentFile(final String arg) throws IOException {
-
-        InputStream is = getClass().getClassLoader().getResourceAsStream(
-                "config.extex." + arg);
-        if (is == null) {
-            try {
-                is = new FileInputStream(new File(".extexcfg", arg));
-            } catch (FileNotFoundException e) {
-                return false;
-            }
-        }
-        properties.load(is);
-
-        return true;
     }
 
     /**
@@ -1391,5 +1378,4 @@ public class ExTeX {
             showBanner = false;
         }
     }
-
 }
