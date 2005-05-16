@@ -32,7 +32,7 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * @see "TTP [683]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class FractionNoad extends AbstractNoad implements Noad {
 
@@ -67,6 +67,7 @@ public class FractionNoad extends AbstractNoad implements Noad {
 
     /**
      * Creates a new object.
+     *
      * @param denom the denominator
      * @param num the numerator
      * @param leftDelimiter the delimiter for the left side or
@@ -89,35 +90,29 @@ public class FractionNoad extends AbstractNoad implements Noad {
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.noad.AbstractNoad#stringName()
+     * @see "TTP [697]"
+     * @see de.dante.extex.typesetter.type.noad.AbstractNoad#toStringAdd(
+     *      java.lang.StringBuffer,
+     *      int)
      */
-    protected String stringName() {
+    public void toStringAdd(final StringBuffer sb, final int depth) {
 
-        return "fraction";
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.type.noad.Noad#toString(java.lang.StringBuffer)
-     */
-    public void toString(final StringBuffer sb) {
-
-        sb.append(stringName());
-        sb.append(", thickness ");
+        sb.append("fraction, thickness ");
         if (thickness == null) {
             sb.append("= default");
         } else {
             thickness.toString(sb);
         }
-        if (false) {
+        if (leftDelimiter != null) {
             sb.append(", left delimiter ");
             leftDelimiter.toString(sb);
         }
-        if (false) {
+        if (rightDelimiter != null) {
             sb.append(", right delimiter ");
             rightDelimiter.toString(sb);
         }
-        // TODO gene: unimplemented
-
+        toStringSubsidiaray(sb, numerator, depth, "\\");
+        toStringSubsidiaray(sb, denominator, depth, "/");
     }
 
     /**
@@ -130,7 +125,7 @@ public class FractionNoad extends AbstractNoad implements Noad {
     public void typeset(final NodeList list, final MathContext mathContext,
             final TypesetterOptions context) {
 
-        //TODO gene: unimplemented
+        //TODO gene: typeset() unimplemented
         throw new RuntimeException("unimplemented");
     }
 

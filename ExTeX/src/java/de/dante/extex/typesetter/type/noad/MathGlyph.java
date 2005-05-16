@@ -28,19 +28,19 @@ import de.dante.util.UnicodeChar;
  * This class provides a container for a mathematical glyph.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class MathGlyph implements Noad {
 
     /**
      * The constan <tt>CHARACTER_MASK</tt> contains the mask for the character
-     * value in the TeX encoding.
+     * value in the <logo>TeX</logo> encoding.
      */
     private static final int CHARACTER_MASK = 0xff;
 
     /**
      * The constant <tt>FAMILY_MASK</tt> contains the mask for the family in the
-     * TeX encoding.
+     * <logo>TeX</logo> encoding.
      */
     private static final int FAMILY_MASK = 0xf;
 
@@ -55,9 +55,9 @@ public class MathGlyph implements Noad {
     private int family;
 
     /**
-     * Creates a new object from a TeX encoded number.
+     * Creates a new object from a <logo>TeX</logo> encoded number.
      *
-     * @param code the TeX code
+     * @param code the <logo>TeX</logo> code
      */
     public MathGlyph(final int code) {
 
@@ -76,7 +76,6 @@ public class MathGlyph implements Noad {
         super();
         this.family = family;
         this.character = character;
-
     }
 
     /**
@@ -181,7 +180,7 @@ public class MathGlyph implements Noad {
     public void typeset(final NodeList list, final MathContext mathContext,
             final TypesetterOptions context) {
 
-        //TODO gene: unimplemented
+        //TODO gene: typeset() unimplemented
         throw new RuntimeException("unimplemented");
     }
 

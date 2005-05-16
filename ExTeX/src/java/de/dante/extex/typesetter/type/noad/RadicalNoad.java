@@ -28,7 +28,7 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * This noad represents mathematical material under a radical sign.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class RadicalNoad extends AbstractNucleusNoad {
 
@@ -54,11 +54,15 @@ public class RadicalNoad extends AbstractNucleusNoad {
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.noad.AbstractNoad#stringName()
+     * @see "TTP [696]"
+     * @see de.dante.extex.typesetter.type.noad.Noad#toStringAdd(
+     *      java.lang.StringBuffer,
+     *      int)
      */
-    protected String stringName() {
+    protected void toStringAdd(final StringBuffer sb, final int depth) {
 
-        return "radical";
+        sb.append("radical");
+        leftDelimiter.toString(sb);
     }
 
     /**
@@ -71,7 +75,7 @@ public class RadicalNoad extends AbstractNucleusNoad {
     public void typeset(final NodeList list, final MathContext mathContext,
             final TypesetterOptions context) {
 
-        //TODO gene: unimplemented
+        //TODO gene: typeset() unimplemented
         throw new RuntimeException("unimplemented");
     }
 

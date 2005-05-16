@@ -30,7 +30,7 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * @see "TTP [689]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class ChoiceNoad implements Noad {
 
@@ -106,31 +106,30 @@ public class ChoiceNoad implements Noad {
     }
 
     /**
-     * @see "TTP [695]"
-     * @see de.dante.extex.typesetter.type.noad.Noad#toString(java.lang.StringBuffer)
+     * @see de.dante.extex.typesetter.type.noad.Noad#toString(
+     *      java.lang.StringBuffer)
      */
     public void toString(final StringBuffer sb) {
 
-        sb.append("\\mathchoice");
-        sb.append(" D");
-        display.toString(sb);
-        sb.append(" T");
-        text.toString(sb);
-        sb.append(" S");
-        script.toString(sb);
-        sb.append(" s");
-        scriptScript.toString(sb);
-        //TODO gene: Check
-
+        toString(sb, Integer.MAX_VALUE);
     }
 
     /**
+     * @see "TTP [695]"
      * @see de.dante.extex.typesetter.type.noad.Noad#toString(
      *      java.lang.StringBuffer, int)
      */
     public void toString(final StringBuffer sb, final int depth) {
 
-        toString(sb);
+        sb.append("\\mathchoice");
+        sb.append("D");
+        display.toString(sb, depth);
+        sb.append("T");
+        text.toString(sb, depth);
+        sb.append("S");
+        script.toString(sb, depth);
+        sb.append("s");
+        scriptScript.toString(sb, depth);
     }
 
     /**

@@ -28,17 +28,17 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
 import de.dante.extex.typesetter.type.node.CharNode;
 
 /**
- * This class provides a container for a mathamatical character.
+ * This class provides a container for a mathematical character.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class CharNoad extends AbstractNoad implements Noad {
 
     /**
      * The field <tt>uc</tt> contains the character representation.
      */
-    private MathGlyph mg;
+    private MathGlyph glyph;
 
     /**
      * Creates a new object.
@@ -48,7 +48,7 @@ public class CharNoad extends AbstractNoad implements Noad {
     protected CharNoad(final MathGlyph character) {
 
         super();
-        this.mg = character;
+        this.glyph = character;
     }
 
     /**
@@ -58,15 +58,7 @@ public class CharNoad extends AbstractNoad implements Noad {
      */
     public MathGlyph getChar() {
 
-        return this.mg;
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.type.noad.AbstractNoad#stringName()
-     */
-    protected String stringName() {
-
-        return "mathchar";
+        return this.glyph;
     }
 
     /**
@@ -75,7 +67,7 @@ public class CharNoad extends AbstractNoad implements Noad {
      */
     public void toString(final StringBuffer sb) {
 
-        mg.toString(sb);
+        glyph.toString(sb);
     }
 
     /**
@@ -89,14 +81,14 @@ public class CharNoad extends AbstractNoad implements Noad {
 
         String type = mathContext.getStyle().getStyleName();
         Font font = context.getFont(NumberedFont.key(context, //
-                type, Integer.toString(mg.getFamily())));
+                type, Integer.toString(glyph.getFamily())));
         if (font == null) {
             //gene: impossible
             throw new NullPointerException("font");
         }
         TypesettingContext tc = context.getTypesettingContext().copy();
         tc.setFont(font);
-        list.addGlyph(new CharNode(tc, mg.getCharacter()));
+        list.addGlyph(new CharNode(tc, glyph.getCharacter()));
     }
 
 }

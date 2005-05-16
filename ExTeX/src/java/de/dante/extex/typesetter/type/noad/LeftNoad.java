@@ -16,13 +16,13 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.typesetter.type.noad;
 
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.type.MathDelimiter;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
-
 
 /**
  * This Noad carries a delimiter which is set on the left side of the math
@@ -32,24 +32,36 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * @see "TTP [687]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class LeftNoad extends AbstractNoad {
 
     /**
-     * The field <tt>left</tt> contains the left delimiter.
+     * The field <tt>delimiter</tt> contains the left delimiter.
      */
-    private MathDelimiter left;
+    private MathDelimiter delimiter;
 
     /**
      * Creates a new object.
      *
-     * @param left the glue
+     * @param delimiter the glue
      */
-    public LeftNoad(final MathDelimiter left) {
+    public LeftNoad(final MathDelimiter delimiter) {
 
         super();
-        this.left = left;
+        this.delimiter = delimiter;
+    }
+
+    /**
+     * @see "TTP [696]"
+     * @see de.dante.extex.typesetter.type.noad.AbstractNoad#toStringAdd(
+     *      java.lang.StringBuffer,
+     *      int)
+     */
+    public void toStringAdd(final StringBuffer sb, final int depth) {
+
+        sb.append("left");
+        delimiter.toString(sb);
     }
 
     /**
@@ -63,7 +75,7 @@ public class LeftNoad extends AbstractNoad {
     public void typeset(final NodeList list, final MathContext mathContext,
             final TypesetterOptions context) {
 
-        left.typeset(list, mathContext, context);
+        delimiter.typeset(list, mathContext, context);
     }
 
 }

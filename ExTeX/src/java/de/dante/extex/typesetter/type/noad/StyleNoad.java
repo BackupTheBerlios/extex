@@ -32,7 +32,7 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * processing.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public final class StyleNoad implements Noad, Serializable {
 
@@ -70,8 +70,8 @@ public final class StyleNoad implements Noad, Serializable {
     private String printName;
 
     /**
-     * The field <tt>style</tt> contains the TeX name for the style. It has the
-     * values <tt>textstyle</tt>, <tt>scriptstyle</tt>, or
+     * The field <tt>style</tt> contains the <logo>TeX</logo> name for the
+     * style. It has the values <tt>textstyle</tt>, <tt>scriptstyle</tt>, or
      * <tt>scriptscriptstyle</tt>.
      */
     private String style;
@@ -121,6 +121,8 @@ public final class StyleNoad implements Noad, Serializable {
     /**
      * Return the singleton constant object after the serialized instance
      * has been read back in.
+     * This is one of the magic methods of Java which is invoked when a
+     * serialized object is read back in.
      *
      * @return the one and only instance of this object
      *

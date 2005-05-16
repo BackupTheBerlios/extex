@@ -27,9 +27,29 @@ package de.dante.extex.typesetter.type.noad;
  * Noad will never arrive at the DocumentWriter.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public abstract class AbstractNoad implements Noad {
+
+    /**
+     * Print a noad to the string buffer preceeded by some prefix if the noad
+     * is not <code>null</code>.
+     *
+     * @param sb the target buffer
+     * @param noad the noad to print
+     * @param depth the recursion depth
+     * @param prefix the prefix to print before the noad
+     *
+     * @see "TTP [692]"
+     */
+    protected static void toStringSubsidiaray(final StringBuffer sb,
+            final Noad noad, final int depth, final String prefix) {
+
+        if (noad != null) {
+            sb.append(prefix);
+            noad.toString(sb, depth);
+        }
+    }
 
     /**
      * The field <tt>subscript</tt> contains the subscript noad.
@@ -91,20 +111,12 @@ public abstract class AbstractNoad implements Noad {
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.noad.AbstractNoad#stringName()
-     */
-    protected String stringName() {
-
-        return null;
-    }
-
-    /**
      * @see java.lang.Object#toString()
      */
     public String toString() {
 
         final StringBuffer sb = new StringBuffer();
-        toString(sb, 0xffff);
+        toString(sb, Integer.MAX_VALUE);
         return sb.toString();
     }
 
@@ -114,7 +126,7 @@ public abstract class AbstractNoad implements Noad {
      */
     public void toString(final StringBuffer sb) {
 
-        toString(sb, 0);
+        toString(sb, Integer.MAX_VALUE);
     }
 
     /**
@@ -128,16 +140,20 @@ public abstract class AbstractNoad implements Noad {
             sb.append(" {}");
         } else {
             sb.append('\\');
-            sb.append(stringName());
-            if (superscript != null) {
-                sb.append('^');
-                superscript.toString(sb, depth - 1);
-            }
-            if (subscript != null) {
-                sb.append('_');
-                subscript.toString(sb, depth - 1);
-            }
+            toStringAdd(sb, depth);
+            toStringSubsidiaray(sb, superscript, depth, "^");
+            toStringSubsidiaray(sb, subscript, depth, "_");
         }
+    }
+
+    /**
+     * Add some information in the middle of the default toString method.
+     *
+     * @param sb the target string buffer
+     * @param depth the recursion depth
+     */
+    protected void toStringAdd(final StringBuffer sb, final int depth) {
+
     }
 
 }

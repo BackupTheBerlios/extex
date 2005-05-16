@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -26,7 +26,7 @@ import de.dante.extex.typesetter.type.MathClassVisitor;
  * This class is a factory for CharNoades.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class NoadFactory {
 
@@ -34,7 +34,7 @@ public class NoadFactory {
      * Inner class for the visiting of a MathClass.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.3 $
+     * @version $Revision: 1.4 $
      */
     private static final class ClassVisitor implements MathClassVisitor {
 
@@ -48,10 +48,10 @@ public class NoadFactory {
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.MathClassVisitor#visitclosing(
+         * @see de.dante.extex.typesetter.type.MathClassVisitor#visitClosing(
          *      java.lang.Object)
          */
-        public Object visitclosing(final Object arg) {
+        public Object visitClosing(final Object arg) {
 
             return new CloseNoad((Noad) arg);
         }
@@ -62,7 +62,7 @@ public class NoadFactory {
          */
         public Object visitLarge(final Object arg) {
 
-            // TODO gene: unimplemented
+            // TODO gene: visitLarge() unimplemented
             throw new RuntimeException("unimplemented");
             //return null;
         }

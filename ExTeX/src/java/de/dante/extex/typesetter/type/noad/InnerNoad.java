@@ -30,7 +30,7 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * @see "TTP [682]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class InnerNoad extends AbstractNucleusNoad {
 
@@ -45,11 +45,14 @@ public class InnerNoad extends AbstractNucleusNoad {
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.noad.AbstractNoad#stringName()
+     * @see "TTP [696]"
+     * @see de.dante.extex.typesetter.type.noad.AbstractNoad#toStringAdd(
+     *      java.lang.StringBuffer,
+     *      int)
      */
-    protected String stringName() {
+    protected void toStringAdd(final StringBuffer sb, final int depth) {
 
-        return "mathinner";
+        sb.append("mathinner");
     }
 
     /**
@@ -61,7 +64,7 @@ public class InnerNoad extends AbstractNucleusNoad {
     public void typeset(final NodeList list, final MathContext mathContext,
             final TypesetterOptions context) {
 
-        //TODO gene: unimplemented
+        //TODO gene: typeset() unimplemented
         throw new RuntimeException("unimplemented");
     }
 

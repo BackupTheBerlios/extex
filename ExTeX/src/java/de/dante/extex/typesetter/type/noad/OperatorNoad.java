@@ -29,7 +29,7 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * @see "TTP [682]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class OperatorNoad extends AbstractNucleusNoad {
 
@@ -71,32 +71,19 @@ public class OperatorNoad extends AbstractNucleusNoad {
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.noad.AbstractNoad#stringName()
-     */
-    protected String stringName() {
-
-        return "mathop";
-    }
-
-    /**
      * @see "TTP [696]"
-     * @see de.dante.extex.typesetter.type.noad.Noad#toString(
-     *      java.lang.StringBuffer)
+     * @see de.dante.extex.typesetter.type.noad.Noad#toStringAdd(
+     *      java.lang.StringBuffer,
+     *      int)
      */
-    public void toString(final StringBuffer sb) {
+    protected void toStringAdd(final StringBuffer sb, final int depth) {
 
-        final char esc = '\\';
-        sb.append(esc);
         sb.append("mathop");
         if (limits == Boolean.TRUE) {
-            sb.append(esc);
-            sb.append("limits");
+            sb.append("\\limits");
         } else if (limits == Boolean.FALSE) {
-            sb.append(esc);
-            sb.append("nolimits");
+            sb.append("\\nolimits");
         }
-        //TODO gene: unimplemented
-        throw new RuntimeException("unimplemented");
     }
 
     /**
@@ -109,7 +96,7 @@ public class OperatorNoad extends AbstractNucleusNoad {
     public void typeset(final NodeList list, final MathContext mathContext,
             final TypesetterOptions context) {
 
-        //TODO gene: unimplemented
+        //TODO gene: typeset() unimplemented
         throw new RuntimeException("unimplemented");
     }
 
