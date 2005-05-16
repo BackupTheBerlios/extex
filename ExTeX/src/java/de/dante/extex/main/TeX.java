@@ -19,6 +19,11 @@
 
 package de.dante.extex.main;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -95,8 +100,8 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * <dl>
  *   <dt><tt>&lang;code&rang;</tt></dt>
  *   <dd>
- *    This parameter contains ExTeX code to be executed directly. The
- *    execution is performed after any code specified in an input file.
+ *    This parameter contains <logo>ExTeX</logo> code to be executed directly.
+ *    The execution is performed after any code specified in an input file.
  *    on the command line the code has to start with a backslash. This
  *    restriction does not hold for the property settings.
  *   </dd>
@@ -193,8 +198,8 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *   <dt><a name="-ini"><tt>-ini</tt></a></dt>
  *   <dd>
  *    If set to <code>true</code> then act as initex. This coµmand line
- *    option is defined for compatibility to TeX only. In ExTeX it has no
- *    effect at all.
+ *    option is defined for compatibility to <logo>TeX</logo> only. In
+ *   <logo>ExTeX</logo> it has no effect at all.
  *   </dd>
  *   <dd>Property: <tt><a href="#extex.ini">extex.ini</a></tt> </dd>
  *
@@ -312,8 +317,8 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * <dl>
  *   <dt><a name="extex.code"/><tt>extex.code</tt></a></dt>
  *   <dd>
- *    This parameter contains ExTeX code to be executed directly. The
- *    execution is performed after any code specified in an input file.
+ *    This parameter contains <logo>ExTeX</logo> code to be executed directly.
+ *    The execution is performed after any code specified in an input file.
  *    on the command line the code has to start with a backslash. This
  *    restriction does not hold for the property settings.
  *   </dd>
@@ -377,8 +382,8 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *   <dt><a name="extex.ini"/><tt>extex.ini</tt></dt>
  *   <dd>
  *    If set to <code>true</code> then act as initex. This command line
- *    option is defined for compatibility to TeX only. In ExTeX it has no
- *    effect at all.
+ *    option is defined for compatibility to <logo>TeX</logo> only. In
+ *   <logo>ExTeX</logo> it has no effect at all.
  *   </dd>
  *   <dd>Command line:
  *    <a href="#-ini"><tt>-ini</tt></a> </dd>
@@ -515,10 +520,11 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * <a name="configuration"/><h3>Configuration Resources</h3>
  *
  * <p>
- *  The configuration of ExTeX is controlled by several configuration resources.
- *  The fallback for those configuration resources are contained in the ExTeX
- *  jar file. In this section we will describe how to overwrite the settings in
- *  the default configuration resource.
+ *  The configuration of <logo>ExTeX</logo> is controlled by several
+ *  configuration resources. The fallback for those configuration resources are
+ *  contained in the <logo>ExTeX</logo> jar file. In this section we will
+ *  describe how to overwrite the settings in the default configuration
+ *  resource.
  * </p>
  *
  * TODO gene: doc incomplete
@@ -529,8 +535,8 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * <p>
  *  The direct invocation of the Java needs some settings to be preset.
- *  These settings are needed for ExTeX to run properly. The following
- *  premises are needed:
+ *  These settings are needed for <logo>ExTeX</logo> to run properly.
+ *  The following premises are needed:
  * </p>
  * <ul>
  *  <li>Java needs to be installed (see section
@@ -544,7 +550,8 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *  </li>
  * </ul>
  * <p>
- *  Now ExTeX can be invoked with the same parameters described above:
+ *  Now <logo>ExTeX</logo> can be invoked with the same parameters described
+ *  above:
  * </p>
  * <pre class="CLIsyntax">
  *   java de.dante.extex.ExTeX &lang;options&rang; &lang;file&rang; </pre>
@@ -556,7 +563,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class TeX extends de.dante.extex.ExTeX {
 
@@ -569,8 +576,8 @@ public class TeX extends de.dante.extex.ExTeX {
 
     /**
      * The field <tt>DOT_EXTEX</tt> contains the name of the user properties
-     * file. This file contains property settings which are read when ExTeX is
-     * started.
+     * file. This file contains property settings which are read when
+     * <logo>ExTeX</logo> is started.
      */
     private static final String DOT_EXTEX = ".extex";
 
@@ -595,7 +602,7 @@ public class TeX extends de.dante.extex.ExTeX {
 
     /**
      * This is the main method which is invoked to run the whole engine from
-     * the command line. It creates a new ExTeX object and invokes
+     * the command line. It creates a new <logo>ExTeX</logo> object and invokes
      * <tt>{@link #run(java.lang.String[]) run()}</tt> on it.
      * <p>
      * The return value is used as the exit status.
@@ -615,7 +622,7 @@ public class TeX extends de.dante.extex.ExTeX {
         int status;
 
         try {
-            
+
             TeX tex = new TeX(System.getProperties(), DOT_EXTEX);
             status = tex.run(args);
 
@@ -687,10 +694,18 @@ public class TeX extends de.dante.extex.ExTeX {
      * value is used as initial input after the input file has been processed.
      * Finally, if everything before failed then read input from the stdin
      * stream.
+     *
      * @param interpreter the interpreter context
+     * @param properties the controlling properties
+     *
+     * @return <code>true</code> if the stream have not been initialized
      *
      * @throws ConfigurationException in case of a configuration error
      * @throws MainIOException in case of an IO error
+     *
+     * @see de.dante.extex.ExTeX#initializeStreams(
+     *      de.dante.extex.interpreter.Interpreter,
+     *      java.util.Properties)
      */
     protected boolean initializeStreams(final Interpreter interpreter,
             final Properties properties)
@@ -709,7 +724,9 @@ public class TeX extends de.dante.extex.ExTeX {
                     .getProperty(PROP_ENCODING), "???");
         }
 
-        super.initializeStreams(interpreter, properties);
+        if (!super.initializeStreams(interpreter, properties)) {
+            notInitialized = false;
+        }
 
         String post = properties.getProperty(PROP_CODE);
 
@@ -731,9 +748,34 @@ public class TeX extends de.dante.extex.ExTeX {
     }
 
     /**
-     * This class provides access to the whole functionality of ExTeX on the
-     * command line. The exception is that this method does not call
-     * <code>{@link System#exit(int) System.exit()}</code>
+     * Loads a properties file into the already existing properties.
+     * The values from the file overwrite existing values.
+     *
+     * @param arg the name of the resource to load
+     *
+     * @return <code>true</code> iff the resource has been loaded sucessfully
+     *
+     * @throws IOException just in case
+     */
+    protected boolean loadArgumentFile(final String arg) throws IOException {
+
+        InputStream is = getClass().getResourceAsStream("config.extex." + arg);
+        if (is == null) {
+            try {
+                is = new FileInputStream(new File(".extexcfg", arg));
+            } catch (FileNotFoundException e) {
+                return false;
+            }
+        }
+        getProperties().load(is);
+
+        return true;
+    }
+
+    /**
+     * This class provides access to the whole functionality of
+     * <logo>ExTeX</logo> on the command line. The exception is that this
+     * method does not call <code>{@link System#exit(int) System.exit()}</code>
      * but returns the exit status as result.
      *
      * @param args the list of command line arguments
