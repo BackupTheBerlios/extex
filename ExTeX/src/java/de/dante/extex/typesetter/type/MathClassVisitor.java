@@ -114,7 +114,7 @@ package de.dante.extex.typesetter.type;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface MathClassVisitor {
 
@@ -134,7 +134,7 @@ public interface MathClassVisitor {
      *
      * @return the result
      */
-    Object visitclosing(Object arg);
+    Object visitClosing(Object arg);
 
     /**
      * Invoke the visitor method for a large operator.
