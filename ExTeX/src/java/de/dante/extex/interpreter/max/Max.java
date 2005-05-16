@@ -83,11 +83,11 @@ import de.dante.util.observer.SwitchObserver;
 
 /**
  * This is a reference implementation for a <b>MA</b>cro e<b>X</b>pander. The
- * macro expander is the core engine driving ExTeX.
+ * macro expander is the core engine driving <logo>ExTeX</logo>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.69 $
+ * @version $Revision: 1.70 $
  */
 public class Max extends Moritz
         implements
@@ -110,8 +110,8 @@ public class Max extends Moritz
 
     /**
      * The constant <tt>MAX_ERRORS_DEFAULT</tt> contains the default value for
-     * maximal allowed number of errors after which the ExTeX run is terminated
-     * automatically.
+     * maximal allowed number of errors after which the <logo>ExTeX</logo> run
+     * is terminated automatically.
      */
     private static final int MAX_ERRORS_DEFAULT = 100;
 
@@ -122,8 +122,8 @@ public class Max extends Moritz
     private static final int MINUTES_PER_HOUR = 60;
 
     /**
-     * The field <tt>calendar</tt> contains the time and date when ExTeX has
-     * been started.
+     * The field <tt>calendar</tt> contains the time and date when
+     * <logo>ExTeX</logo> has been started.
      */
     private Calendar calendar = Calendar.getInstance();
 
@@ -298,16 +298,16 @@ public class Max extends Moritz
     /**
      * Prepare the token factory according to its configuration.
      *
-     * @param configuration the configuration
+     * @param config the configuration
      *
      * @return the token factory
      *
      * @throws ConfigurationException in case of a configuration error
      */
-    private TokenFactory configureTokenFactory(final Configuration configuration)
+    private TokenFactory configureTokenFactory(final Configuration config)
             throws ConfigurationException {
 
-        TokenFactoryFactory factory = new TokenFactoryFactory(configuration
+        TokenFactoryFactory factory = new TokenFactoryFactory(config
                 .getConfiguration("TokenFactory"));
         factory.enableLogging(logger);
         return factory.createInstance();
@@ -532,23 +532,22 @@ public class Max extends Moritz
         }
         newContext.setFontFactory(context.getFontFactory());
         newContext.setTokenFactory(context.getTokenFactory());
-        // TODO gene: loadFormat() incomplete ???
         context = newContext;
     }
 
     /**
      * Prepare the context according to its configuration.
      *
-     * @param configuration the configuration
+     * @param config the configuration
      *
      * @throws ConfigurationException in case of a configuration error
      */
-    private void makeContext(final Configuration configuration)
+    private void makeContext(final Configuration config)
             throws ConfigurationException {
 
-        Configuration cfg = configuration.getConfiguration(CONTEXT_TAG);
+        Configuration cfg = config.getConfiguration(CONTEXT_TAG);
         if (cfg == null) {
-            throw new ConfigurationMissingException(CONTEXT_TAG, configuration
+            throw new ConfigurationMissingException(CONTEXT_TAG, config
                     .toString());
         }
         ContextFactory contextFactory = new ContextFactory(cfg);
@@ -743,7 +742,7 @@ public class Max extends Moritz
 
     /**
      * This visit method is invoked on an active token.
-     * In TeX this is e.g. ~.
+     * In <logo>TeX</logo> this is e.g. ~.
      *
      * @param token the first argument to pass is the token to expand.
      * @param ignore the second argument is ignored
@@ -795,7 +794,7 @@ public class Max extends Moritz
 
     /**
      * This visit method is invoked on an escape token.
-     * In TeX this normally means a control sequence.
+     * In <logo>TeX</logo> this normally means a control sequence.
      *
      * @param token the first argument to pass is the token to expand.
      * @param ignore the second argument is ignored
@@ -835,7 +834,7 @@ public class Max extends Moritz
      *
      * @throws GeneralException in case of an error
      *
-     * @see "TeX -- The Program [1063]"
+     * @see "<logo>TeX</logo> &ndash; The Program [1063]"
      * @see de.dante.extex.scanner.type.TokenVisitor#visitLeftBrace(
      *      de.dante.extex.scanner.LeftBraceToken, java.lang.Object)
      */
@@ -874,7 +873,7 @@ public class Max extends Moritz
 
     /**
      * This visit method is invoked on a macro parameter token.
-     * In TeX this normally is a <tt>#</tt>.
+     * In <logo>TeX</logo> this normally is a <tt>#</tt>.
      *
      * @param token the first argument to pass is the token to expand.
      * @param ignore the second argument is ignored
@@ -895,7 +894,7 @@ public class Max extends Moritz
 
     /**
      * This visit method is invoked on a math shift token.
-     * In TeX this normally is a <tt>$</tt>.
+     * In <logo>TeX</logo> this normally is a <tt>$</tt>.
      *
      *
      *
@@ -915,7 +914,7 @@ public class Max extends Moritz
      *
      * @throws GeneralException in case of an error
      *
-     * @see "TeX -- The Program [1137]"
+     * @see "<logo>TeX</logo> &ndash; The Program [1137]"
      * @see de.dante.extex.scanner.type.TokenVisitor#visitMathShift(
      *      de.dante.extex.scanner.MathShiftToken, java.lang.Object)
      */
@@ -958,7 +957,7 @@ public class Max extends Moritz
      *
      * @throws GeneralException in case of an error
      *
-     * @see "TeX -- The Program [1067]"
+     * @see "<logo>TeX</logo> &ndash; The Program [1067]"
      * @see de.dante.extex.scanner.type.TokenVisitor#visitRightBrace(
      *      de.dante.extex.scanner.RightBraceToken, java.lang.Object)
      */
@@ -992,7 +991,7 @@ public class Max extends Moritz
 
     /**
      * This visit method is invoked on a sub mark token.
-     * In TeX this normally is a <tt>_</tt>.
+     * In <logo>TeX</logo> this normally is a <tt>_</tt>.
      *
      * @param token the first argument to pass is the token to expand.
      * @param ignore the second argument is ignored
@@ -1013,7 +1012,7 @@ public class Max extends Moritz
 
     /**
      * This visit method is invoked on a sup mark token.
-     * In TeX this normally is a <tt>^</tt>.
+     * In <logo>TeX</logo> this normally is a <tt>^</tt>.
      *
      * @param token the first argument to pass is the token to expand.
      * @param ignore the second argument is ignored
@@ -1034,7 +1033,7 @@ public class Max extends Moritz
 
     /**
      * This visit method is invoked on a tab mark token.
-     * In TeX this normally is a <tt>&amp;</tt>.
+     * In <logo>TeX</logo> this normally is a <tt>&amp;</tt>.
      *
      * @param token the first argument to pass is the token to expand.
      * @param ignore the second argument is ignored

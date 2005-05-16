@@ -49,7 +49,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.49 $
+ * @version $Revision: 1.50 $
  */
 public interface TokenSource {
 
@@ -269,7 +269,7 @@ public interface TokenSource {
      *
      * @throws InterpreterException in case of an error
      *
-     * @see "TeX -- The Program [332]"
+     * @see "<logo>TeX</logo> &ndash; The Program [332]"
      */
     Token getToken(Context context) throws InterpreterException;
 
@@ -414,7 +414,7 @@ public interface TokenSource {
      * white space.
      * <p>
      *  This method implements the generalization of several syntactic
-     *  definitions from TeX:
+     *  definitions from <logo>TeX</logo>:
      * </p>
      *
      * <doc type="syntax" name="8-bit number">
@@ -423,7 +423,8 @@ public interface TokenSource {
      * <p>
      *  A number consists of a non-empty sequence of digits with category code
      *  {@link de.dante.extex.scanner.type.Catcode#OTHER OTHER}.
-     *  The check for a maximal value of 255 is not performed in ExTeX.
+     *  The check for a maximal value of 255 is not performed in
+     *  <logo>ExTeX</logo>.
      * </p>
      * </doc>
      *

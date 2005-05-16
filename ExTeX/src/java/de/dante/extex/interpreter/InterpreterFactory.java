@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -24,15 +24,18 @@ import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.framework.AbstractFactory;
 
 /**
- * Factory for the Interpreter.
+ * This class provides a factory for
+ * {@link de.dante.extex.interpreter.Interpreter Interpreter}s.
+ * The configuration and the logger are passed to the new instance if they are
+ * present and required.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class InterpreterFactory extends AbstractFactory {
 
     /**
-     * Creates a new object.
+     * Creates a new factory object.
      */
     public InterpreterFactory() {
 
@@ -41,6 +44,10 @@ public class InterpreterFactory extends AbstractFactory {
 
     /**
      * Creates a new object.
+     * Usually the newly created instance should be configured (see
+     * {@link AbstractFactory#configure(Configuration) configure}) and
+     * a logger should be attached
+     * (see @link AbstractFactory#enableLogging(Logger)).
      *
      * @param configuration the configuration object to use
      *
