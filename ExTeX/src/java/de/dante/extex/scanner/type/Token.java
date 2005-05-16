@@ -24,7 +24,7 @@ import de.dante.util.UnicodeChar;
 /**
  * This is the interface for a token. A token is a pair of catcode and value.
  * In most cases the value is a single character. Nevertheless it is also
- * possible to store a complete string in the value -- e.g. for control
+ * possible to store a complete string in the value &ndash; e.g. for control
  * sequence tokens.
  * <p>
  * Tokens are immutable. Thus no setters for the attributes are provided.
@@ -32,7 +32,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface Token {
 

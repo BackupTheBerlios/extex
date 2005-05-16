@@ -25,11 +25,11 @@ import de.dante.util.observer.Observer;
 
 /**
  * This observer reports that a certain file has been opened.
- * According to the behaviour of TeX it loggs an open brace and the name of
- * the file.
+ * According to the behaviour of <logo>TeX</logo> it loggs an open brace and the
+ * name of the file.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class FileOpenObserver implements Observer {
 

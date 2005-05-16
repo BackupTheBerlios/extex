@@ -34,10 +34,10 @@ import de.dante.util.UnicodeChar;
 /**
  * This interface describes the capabilities of a list maker.
  *
- * @see "TeX -- The Program [211]"
+ * @see "<logo>TeX</logo> &ndash; The Program [211]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.37 $
+ * @version $Revision: 1.38 $
  */
 public interface ListMaker {
 

@@ -23,13 +23,14 @@ import de.dante.extex.typesetter.type.NodeVisitor;
 import de.dante.util.GeneralException;
 
 /**
- * This node type represents the extension node from the perspective of TeX.
+ * This node type represents the extension node from the perspective of
+ * <logo>TeX</logo>.
  *
- * @see "TeX -- The Program [146]"
+ * @see "<logo>TeX</logo> &ndash; The Program [146]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class WhatsItNode extends AbstractNode {
 

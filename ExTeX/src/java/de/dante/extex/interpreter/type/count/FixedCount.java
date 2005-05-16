@@ -29,7 +29,7 @@ import de.dante.extex.interpreter.type.tokens.Tokens;
  * the value.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface FixedCount {
 
@@ -103,7 +103,7 @@ public interface FixedCount {
     /**
      * Determine the printable representation of the object.
      * The value returned is exactely the string which would be produced by
-     * TeX to print the Count.
+     * <logo>TeX</logo> to print the Count.
      *
      * @return the printable representation
      *
@@ -114,7 +114,7 @@ public interface FixedCount {
     /**
      * Determine the printable representation of the object.
      * The value returned is exactely the string which would be produced by
-     * TeX to print the Count.
+     * <logo>TeX</logo> to print the Count.
      *
      * @param sb the target string buffer
      *
@@ -125,7 +125,7 @@ public interface FixedCount {
     /**
      * Determine the printable representation of the object.
      * The value returned is exactely the string which would be produced by
-     * TeX to print the Count.
+     * <logo>TeX</logo> to print the Count.
      *
      * @param context the interpreter context
      *

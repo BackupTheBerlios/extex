@@ -41,13 +41,14 @@ import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
  * This class provides a link between the typesetter and the interpreter for the
- * output routine. In TeX the output routine is implemented in TeX's
- * macro language. In ExTeX the output routine is a Java class implementing a
- * defined interface. This class implements the interface required and forwards
- * the request for processing to the appropriate interpreter.
+ * output routine. In <logo>TeX</logo> the output routine is implemented in
+ * <logo>TeX</logo>'s macro language. In <logo>ExTeX</logo> the output routine
+ * is a Java class implementing a defined interface. This class implements the
+ * interface required and forwards the request for processing to the appropriate
+ * interpreter.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class TeXOutputRoutine implements OutputRoutine {
 

@@ -42,7 +42,13 @@ import de.dante.util.GeneralException;
  * <doc name="fontdimen">
  * <h3>The Primitive <tt>\fontdimen</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The primitive <tt>\fontdimen</tt> can be used to set a font dimension value.
+ *  Each font has an arbitrary number of dimen values which are addressed by
+ *  an numerical index in <logo>TeX</logo>. In <logo>ExTeX</logo> this has been
+ *  extended to arbitrary strings.
+ * </p>
+ * <p>
+ *  The primitive expands to the value in a right hand context.
  * </p>
  * <p>
  *  The formal description of this primitive is the following:
@@ -54,6 +60,7 @@ import de.dante.util.GeneralException;
  *      &lang;equals&rang;} {@linkplain
  *      de.dante.extex.interpreter.type.dimen#Dimen(Context,TokenSource)
  *      &lang;dimen&rang;}   </pre>
+ *  TODO gene: document Extension
  * </p>
  * <p>
  *  Examples:
@@ -61,14 +68,15 @@ import de.dante.util.GeneralException;
  *    \fontdimen13\ff=5pt  </pre>
  *  <pre class="TeXSample">
  *    \the\fontdimen13\ff  </pre>
+ *  <pre class="TeXSample">
+ *    \the\fontdimen{em}\ff=8pt  </pre>
  * </p>
  * </doc>
  *
- * TODO gene: document Extension
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class Fontdimen extends AbstractAssignment
         implements
@@ -119,7 +127,10 @@ public class Fontdimen extends AbstractAssignment
     }
 
     /**
-     * Get the key for the fontdimen.
+     * Get the key for the font dimen. According to <logo>TeX</logo> the key is
+     * an arbitrary number. In <logo>ExTeX</logo> this has been extended to take
+     * an expandable sequence of tokens enclosed in braces. The left brace acts
+     * as indicator that this extension is used.
      *
      * @param context the interpreter context
      * @param source the source for new tokens
@@ -144,7 +155,7 @@ public class Fontdimen extends AbstractAssignment
         }
         source.push(t);
         long idx = source.scanInteger(context);
-        return "#" + Long.toString(idx);
+        return Long.toString(idx);
     }
 
     /**

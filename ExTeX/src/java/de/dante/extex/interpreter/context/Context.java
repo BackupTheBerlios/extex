@@ -30,16 +30,13 @@ import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.muskip.Muskip;
-import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.language.Language;
 import de.dante.extex.language.LanguageManager;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.scanner.type.TokenFactory;
-import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
-import de.dante.util.GeneralException;
 import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.ConfigurationException;
@@ -50,7 +47,7 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.52 $
+ * @version $Revision: 1.53 $
  */
 public interface Context
         extends
@@ -108,8 +105,9 @@ public interface Context
     /**
      * Getter for the {@link de.dante.extex.interpreter.type.box.Box box}
      * register. Count registers are named, either with a number or an
-     * arbitrary string. The numbered registers where limited to 256 in TeX.
-     * This restriction does no longer hold for ExTeX.
+     * arbitrary string. The numbered registers where limited to 256 in
+     * <logo>TeX</logo>.
+     * This restriction does no longer hold for <logo>ExTeX</logo>.
      *
      * @param name the name or number of the count register
      *
@@ -266,7 +264,8 @@ public interface Context
      * Put a value onto the conditional stack.
      * @param locator the locator for the start of the if statement
      * @param value the value to push
-     * @param primitive TODO
+     * @param primitive the name of the primitive which triggered this
+     *  operation
      */
     void pushConditional(Locator locator, boolean value, String primitive);
 
@@ -281,7 +280,8 @@ public interface Context
      * Setter for the {@link de.dante.extex.interpreter.type.box.Box box}
      * register in the current group. Count registers are named, either with a
      * number or an arbitrary string. The numbered registers where limited to
-     * 256 in TeX. This restriction does no longer hold for ExTeX.
+     * 256 in <logo>TeX</logo>. This restriction does no longer hold for
+     * <logo>ExTeX</logo>.
      *
      * @param name the name or the number of the register
      * @param value the new value of the register

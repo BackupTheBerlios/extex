@@ -39,7 +39,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class VerticalListMaker extends AbstractListMaker {
 
@@ -50,10 +50,11 @@ public class VerticalListMaker extends AbstractListMaker {
 
     /**
      * This value contains the previous depth for baseline calculations. In
-     * contrast to TeX the value null is used to indicate that the next box on
-     * the vertical list should be extempt from the baseline calculations.
+     * contrast to <logo>TeX</logo> the value null is used to indicate that the
+     * next box on the vertical list should be extempt from the baseline
+     * calculations.
      *
-     * @see "TeX -- The Program [212]"
+     * @see "<logo>TeX</logo> &ndash; The Program [212]"
      */
     private Dimen prevDepth = new Dimen(-1000 * Dimen.ONE);
 

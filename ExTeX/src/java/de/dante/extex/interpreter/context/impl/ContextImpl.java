@@ -88,25 +88,26 @@ import de.dante.util.observer.Observer;
  * This is a reference implementation for an interpreter context.
  *
  * The groups are implemented as a linked list of single groups. In contrast to
- * the Knuthian implementation in TeX no undo stack is used.
+ * the Knuthian implementation in <logo>TeX</logo> no undo stack is used.
  * <p>
  * Several operations have to be dealt with:
  * </p>
  * <ul>
- * <li>For each new group a new instance of a {@link Group Group} is created
- * with the old one as next group.</li>
+ * <li>For each new group a new instance of a
+ *  {@link de.dante.extex.interpreter.context.impl.Group Group} is created
+ *  with the old one as next group.</li>
  * <li>If a group is closed then the next group is used as current group and
- * the formerly current group is discarded.</li>
+ *  the formerly current group is discarded.</li>
  * <li>If a value has to be found in a group then the next chain has to be
- * traced down until the value is found. <br />An implementation variant might
- * want to insert the value found into the higher groups; all or some of them
- * to speed up the next access. This optimization is currently not implemented.
+ *  traced down until the value is found. <br />An implementation variant might
+ *  want to insert the value found into the higher groups; all or some of them
+ *  to speed up the next access. This optimization is currently not implemented.
  * </li>
  * <li>If a local value has to be stored then it can be stored in the local
- * group only.</li>
+ *  group only.</li>
  * <li>If a global value has to be stored then the group chain has to be
- * traversed and the value has to be set in all appropriate groups: There are
- * several implementation variants
+ *  traversed and the value has to be set in all appropriate groups: There are
+ *  several implementation variants
  * <ul>
  * <li>Clear the value in all groups and set it in the bottommost group.</li>
  * <li>Set the value in all groups where it has a local value.</li>
@@ -118,7 +119,7 @@ import de.dante.util.observer.Observer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.78 $
+ * @version $Revision: 1.79 $
  */
 public class ContextImpl
         implements
@@ -480,7 +481,7 @@ public class ContextImpl
 
     /**
      * @see de.dante.extex.interpreter.context.Context#getCode(
-     *      de.dante.extex.scanner.CodeToken)
+     *      de.dante.extex.scanner.type.CodeToken)
      */
     public Code getCode(final CodeToken t) throws InterpreterException {
 
@@ -871,7 +872,7 @@ public class ContextImpl
     /**
      * @see de.dante.extex.interpreter.context.ContextCode#registerCodeChangeObserver(
      *      de.dante.extex.scanner.type.Token,
-     *      de.dante.extex.interpreter.context.observer.CodeChangeObserver)
+     *      de.dante.extex.interpreter.context.observer.CodeObserver)
      */
     public void registerCodeChangeObserver(final Token name,
             final CodeObserver observer) {
@@ -887,7 +888,7 @@ public class ContextImpl
     /**
      * @see de.dante.extex.interpreter.context.ContextCount#registerCountObserver(
      *      java.lang.String,
-     *      de.dante.extex.interpreter.context.observer.CountChangeObserver)
+     *      de.dante.extex.interpreter.context.observer.CountObserver)
      */
     public void registerCountObserver(final String name,
             final CountObserver observer) {
@@ -903,7 +904,7 @@ public class ContextImpl
     /**
      * @see de.dante.extex.interpreter.context.ContextDimen#registerDimenObserver(
      *      java.lang.String,
-     *      de.dante.extex.interpreter.context.observer.DimenChangeObserver)
+     *      de.dante.extex.interpreter.context.observer.DimenObserver)
      */
     public void registerDimenObserver(final String name,
             final DimenObserver observer) {
@@ -1074,7 +1075,7 @@ public class ContextImpl
     /**
      * @see de.dante.extex.interpreter.context.Context#setCatcode(
      *      de.dante.util.UnicodeChar,
-     *      de.dante.extex.scanner.Catcode, boolean)
+     *      de.dante.extex.scanner.type.Catcode, boolean)
      */
     public void setCatcode(final UnicodeChar c, final Catcode cc,
             final boolean global) {
@@ -1084,7 +1085,7 @@ public class ContextImpl
 
     /**
      * @see de.dante.extex.interpreter.context.Context#setCode(
-     *      de.dante.extex.scanner.CodeToken,
+     *      de.dante.extex.scanner.type.CodeToken,
      *      de.dante.extex.interpreter.type.Code, boolean)
      */
     public void setCode(final CodeToken t, final Code code, final boolean global)
@@ -1459,11 +1460,11 @@ public class ContextImpl
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.ContextCode#unregisterCodeChangeObserver(
+     * @see de.dante.extex.interpreter.context.ContextCode#unregisterCodeObserver(
      *      de.dante.extex.scanner.type.Token,
-     *      de.dante.extex.interpreter.context.observer.CodeChangeObserver)
+     *      de.dante.extex.interpreter.context.observer.CodeObserver)
      */
-    public void unregisterCodeChangeObserver(final Token name,
+    public void unregisterCodeObserver(final Token name,
             final CodeObserver observer) {
 
         List observerList = (List) changeCodeObservers.get(name);
@@ -1476,7 +1477,7 @@ public class ContextImpl
     /**
      * @see de.dante.extex.interpreter.context.ContextCount#unregisterCountObserver(
      *      java.lang.String,
-     *      de.dante.extex.interpreter.context.observer.CountChangeObserver)
+     *      de.dante.extex.interpreter.context.observer.CountObserver)
      */
     public void unregisterCountObserver(final String name,
             final CountObserver observer) {
@@ -1492,7 +1493,7 @@ public class ContextImpl
     /**
      * @see de.dante.extex.interpreter.context.ContextDimen#unregisterDimenObserver(
      *      java.lang.String,
-     *      de.dante.extex.interpreter.context.observer.DimenChangeObserver)
+     *      de.dante.extex.interpreter.context.observer.DimenObserver)
      */
     public void unregisterDimenObserver(final String name,
             final DimenObserver observer) {

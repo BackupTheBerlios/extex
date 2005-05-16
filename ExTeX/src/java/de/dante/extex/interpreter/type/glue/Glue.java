@@ -40,7 +40,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class Glue implements Serializable, FixedGlue {
 
@@ -341,10 +341,10 @@ public class Glue implements Serializable, FixedGlue {
     /**
      * Determine the printable representation of the object.
      * The value returned is exactely the string which would be produced by
-     * TeX to print the skip register.
+     * <logo>TeX</logo> to print the skip register.
      *
      * @return the string representation of this glue
-     * @see "TeX -- The Program [178,177]"
+     * @see "<logo>TeX</logo> &ndash; The Program [178,177]"
      */
     public String toString() {
 
@@ -363,7 +363,7 @@ public class Glue implements Serializable, FixedGlue {
     /**
      * Determine the printable representation of the object.
      * The value returned is exactely the string which would be produced by
-     * TeX to print the skip register.
+     * <logo>TeX</logo> to print the skip register.
      *
      * @param factory the factory to get the tokens from
      *
@@ -371,7 +371,7 @@ public class Glue implements Serializable, FixedGlue {
      *
      * @throws GeneralException in case of an error
      *
-     * @see "TeX -- The Program [178,177]"
+     * @see "<logo>TeX</logo> &ndash; The Program [178,177]"
      */
     public Tokens toToks(final TokenFactory factory) throws GeneralException {
 

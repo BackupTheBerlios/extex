@@ -26,10 +26,11 @@ import de.dante.util.observer.Observer;
 
 /**
  * This observer waits for update events when files are closed. According to the
- * reference in TeX a closing parenthesis is written to the log file.
+ * reference in <logo>TeX</logo> a closing parenthesis is written to the log
+ * file.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class FileCloseObserver implements Observer {
     /**

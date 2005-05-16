@@ -34,7 +34,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface ContextCode {
 
@@ -89,6 +89,6 @@ public interface ContextCode {
      * active character token.
      * @param observer the observer to receive the events
      */
-    void unregisterCodeChangeObserver(Token name, CodeObserver observer);
+    void unregisterCodeObserver(Token name, CodeObserver observer);
 
 }

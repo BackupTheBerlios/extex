@@ -39,7 +39,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class ToksParameter extends ToksPrimitive implements InitializableCode {
 
@@ -73,7 +73,7 @@ public class ToksParameter extends ToksPrimitive implements InitializableCode {
     /**
      * Return the key (the number) for the toks register.
      *
-     * @param source the source for the next tokens -- if required
+     * @param source the source for the next tokens &ndash; if required
      * @param context the interpreter context to use
      *
      * @return the key for the toks register

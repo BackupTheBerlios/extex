@@ -30,11 +30,11 @@ import de.dante.util.GeneralException;
  * the paragraph breaking or page breaking to control the algorithm. This node
  * should be ignored by the DocumentWriter.
  *
- * @see "TeX -- The Program [157]"
+ * @see "<logo>TeX</logo> &ndash; The Program [157]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class PenaltyNode extends AbstractNode implements Node, Discardable {
 
@@ -48,7 +48,7 @@ public class PenaltyNode extends AbstractNode implements Node, Discardable {
      *
      * @param thePenalty the penalty value
      *
-     * @see "TeX -- The Program [158]"
+     * @see "<logo>TeX</logo> &ndash; The Program [158]"
      */
     public PenaltyNode(final Count thePenalty) {
 
@@ -84,7 +84,7 @@ public class PenaltyNode extends AbstractNode implements Node, Discardable {
      * @param sb the output string buffer
      * @param prefix the prefix string inserted at the beginning of each line
      *
-     * @see "TeX -- The Program [194]"
+     * @see "<logo>TeX</logo> &ndash; The Program [194]"
      * @see de.dante.extex.typesetter.type.Node#toString(
      *      java.lang.StringBuffer,
      *      java.lang.String)

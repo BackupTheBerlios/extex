@@ -27,17 +27,17 @@ import de.dante.util.GeneralException;
 /**
  * This node is meant to record an insertion.
  *
- * @see "TeX -- The Program [140]"
+ * @see "<logo>TeX</logo> &ndash; The Program [140]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class InsertionNode extends AbstractNode implements Node {
 
     /**
      * The field <tt>nodes</tt> contains the vertical list to be inserted.
      *
-     * @see "TeX -- The Program [140]"
+     * @see "<logo>TeX</logo> &ndash; The Program [140]"
      */
     private NodeList nodes;
 
@@ -45,7 +45,7 @@ public class InsertionNode extends AbstractNode implements Node {
      * The field <tt>floatCost</tt> contains the penalty which is used when the
      * insertion floats to the following page.
      *
-     * @see "TeX -- The Program [140]"
+     * @see "<logo>TeX</logo> &ndash; The Program [140]"
      */
     private long floatCost = 0;
 
@@ -61,7 +61,7 @@ public class InsertionNode extends AbstractNode implements Node {
      * @param subtype the register number for the associated registers
      * @param nodes ...
      *
-     * @see "TeX -- The Program [140]"
+     * @see "<logo>TeX</logo> &ndash; The Program [140]"
      */
     public InsertionNode(final long subtype, final NodeList nodes) {
 
@@ -83,7 +83,7 @@ public class InsertionNode extends AbstractNode implements Node {
      * @param sb the output string buffer
      * @param prefix the prefix string inserted at the beginning of each line
      *
-     * @see "TeX -- The Program [188]"
+     * @see "<logo>TeX</logo> &ndash; The Program [188]"
      * @see de.dante.extex.typesetter.type.Node#toString(
      *      java.lang.StringBuffer,
      *      java.lang.String)

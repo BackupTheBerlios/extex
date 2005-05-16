@@ -32,7 +32,7 @@ import de.dante.extex.typesetter.Typesetter;
 /**
  * This class provides an implementation for the primitive
  * <code>\inputfilename</code>. This is an extension primitive not present in
- * TeX.
+ * <logo>TeX</logo>.
  *
  * <doc name="inputfilename">
  * <h3>The Primitive <tt>\inputfilename</tt></h3>
@@ -48,7 +48,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Inputfilename extends AbstractCode
         implements

@@ -28,10 +28,10 @@ import de.dante.util.GeneralException;
  * This node represents an centered leaders node as used by the primitive
  * <tt>\cleaders</tt>.
  *
- * @see "TeX -- The Program [149]"
+ * @see "<logo>TeX</logo> &ndash; The Program [149]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class CenteredLeadersNode extends GlueNode implements Node {
 
@@ -70,7 +70,7 @@ public class CenteredLeadersNode extends GlueNode implements Node {
      * @param sb the output string buffer
      * @param prefix the prefix string inserted at the beginning of each line
      *
-     * @see "TeX -- The Program [190]"
+     * @see "<logo>TeX</logo> &ndash; The Program [190]"
      * @see de.dante.extex.typesetter.type.Node#toString(java.lang.StringBuffer,
      *      java.lang.String)
      */

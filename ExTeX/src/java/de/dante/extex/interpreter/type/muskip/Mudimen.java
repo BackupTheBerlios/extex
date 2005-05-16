@@ -37,13 +37,13 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * math unints (mu).
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Mudimen implements Serializable {
 
     /**
      * The constant <tt>ONE</tt> contains the internal representation for 1mu.
-     * @see "TeX -- The Program [101]"
+     * @see "<logo>TeX</logo> &ndash; The Program [101]"
      */
     private static final long ONE = 1 << 16;
 
@@ -123,7 +123,7 @@ public class Mudimen implements Serializable {
      * Return the string representation of the instance.
      *
      * @return the string representation of this glue
-     * @see "TeX -- The Program [???]"
+     * @see "<logo>TeX</logo> &ndash; The Program [???]"
      */
     public String toString() {
 

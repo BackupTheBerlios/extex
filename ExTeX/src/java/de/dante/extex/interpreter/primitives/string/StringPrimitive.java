@@ -37,7 +37,7 @@ import de.dante.extex.typesetter.Typesetter;
  * <h3>The Primitive <tt>\string</tt></h3>
  * <p>
  *  This primitive takes the next unexpanded token. If this token is a control
- *  sequence -- and no active character -- then the value of <tt>escapechar</tt>
+ *  sequence &ndash; and no active character &ndash; then the value of <tt>escapechar</tt>
  *  followed by the characters from the name of the control sequence.
  *  Otherwise it is a single character token containing the character code of
  *  the token.
@@ -56,10 +56,10 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  *
- * @see "TeX -- the Program [69]"
+ * @see "<logo>TeX</logo> &ndash; the Program [69]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class StringPrimitive extends AbstractCode implements ExpandableCode {
 

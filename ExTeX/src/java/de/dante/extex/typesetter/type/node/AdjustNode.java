@@ -27,11 +27,11 @@ import de.dante.util.GeneralException;
 /**
  * TODO gene: missing JavaDoc.
  *
- * @see "TeX -- The Program [142]"
+ * @see "<logo>TeX</logo> &ndash; The Program [142]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class AdjustNode extends AbstractNode implements Node {
 
@@ -56,7 +56,7 @@ public class AdjustNode extends AbstractNode implements Node {
      * @param sb the output string buffer
      * @param prefix the prefix string inserted at the beginning of each line
      *
-     * @see "TeX -- The Program [197]"
+     * @see "<logo>TeX</logo> &ndash; The Program [197]"
      * @see de.dante.extex.typesetter.type.Node#toString(java.lang.StringBuffer,
      *      java.lang.String)
      */

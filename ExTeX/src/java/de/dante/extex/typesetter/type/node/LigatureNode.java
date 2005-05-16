@@ -32,11 +32,11 @@ import de.dante.util.UnicodeChar;
  * The original characters are contained in this node to be restored when
  * required.
  *
- * @see "TeX -- The Program [143]"
+ * @see "<logo>TeX</logo> &ndash; The Program [143]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class LigatureNode extends CharNode implements Node {
 
@@ -65,7 +65,7 @@ public class LigatureNode extends CharNode implements Node {
      * @param left the first node for the ligature
      * @param right the second node for the ligature
      *
-     * @see "TeX -- The Program [144]"
+     * @see "<logo>TeX</logo> &ndash; The Program [144]"
      */
     public LigatureNode(final TypesettingContext context, final UnicodeChar uc,
             final CharNode left, final CharNode right) {
@@ -128,7 +128,7 @@ public class LigatureNode extends CharNode implements Node {
      * @param sb the output string buffer
      * @param prefix the prefix string inserted at the beginning of each line
      *
-     * @see "TeX -- The Program [193]"
+     * @see "<logo>TeX</logo> &ndash; The Program [193]"
      * @see de.dante.extex.typesetter.type.Node#toString(
      *      java.lang.StringBuffer,
      *      java.lang.String)

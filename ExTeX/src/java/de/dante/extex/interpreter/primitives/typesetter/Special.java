@@ -56,15 +56,15 @@ import de.dante.util.GeneralException;
  *    \special{ps: \abc}  </pre>
  * </p>
  * <p>
- *  For several backend drivers for TeX a quasi-standard has emerged which uses
- *  a prefix ended by a colon to indicate the backend driver the special is
- *  targeted at.
+ *  For several backend drivers for <logo>TeX</logo> a quasi-standard has
+ *  emerged which uses a prefix ended by a colon to indicate the backend driver
+ *  the special is targeted at.
  * </p>
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Special extends AbstractCode {
 

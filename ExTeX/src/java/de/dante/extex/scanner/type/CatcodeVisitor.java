@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,13 +25,13 @@ package de.dante.extex.scanner.type;
  * This interface is used to implement the visitor pattern.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface CatcodeVisitor {
 
     /**
      * This visit method is invoked on an escape token.
-     * In TeX this normally means a control sequence.
+     * In <logo>TeX</logo> this normally means a control sequence.
      *
      * @param arg1 the first argument to pass
      * @param arg2 the second argument to pass
@@ -73,7 +73,7 @@ public interface CatcodeVisitor {
 
     /**
      * This visit method is invoked on a math shift token.
-     * In TeX this normally is a $.
+     * In <logo>TeX</logo> this normally is a $.
      *
      * @param arg1 the first argument to pass
      * @param arg2 the second argument to pass
@@ -88,7 +88,7 @@ public interface CatcodeVisitor {
 
     /**
      * This visit method is invoked on a tab mark token.
-     * In TeX this normally is a &.
+     * In <logo>TeX</logo> this normally is a &.
      *
      * @param arg1 the first argument to pass
      * @param arg2 the second argument to pass
@@ -115,7 +115,7 @@ public interface CatcodeVisitor {
 
     /**
      * This visit method is invoked on a macro parameter token.
-     * In TeX this normally is a #.
+     * In <logo>TeX</logo> this normally is a #.
      *
      * @param arg1 the first argument to pass
      * @param arg2 the second argument to pass
@@ -130,7 +130,7 @@ public interface CatcodeVisitor {
 
     /**
      * This visit method is invoked on a sup mark token.
-     * In TeX this normally is a ^.
+     * In <logo>TeX</logo> this normally is a ^.
      *
      * @param arg1 the first argument to pass
      * @param arg2 the second argument to pass
@@ -144,7 +144,7 @@ public interface CatcodeVisitor {
 
     /**
      * This visit method is invoked on a sub mark token.
-     * In TeX this normally is a _.
+     * In <logo>TeX</logo> this normally is a _.
      *
      * @param arg1 the first argument to pass
      * @param arg2 the second argument to pass
@@ -210,7 +210,7 @@ public interface CatcodeVisitor {
 
     /**
      * This visit method is invoked on an active token.
-     * In TeX this is e.g. ~.
+     * In <logo>TeX</logo> this is e.g. ~.
      *
      * @param arg1 the first argument to pass
      * @param arg2 the second argument to pass
@@ -224,7 +224,7 @@ public interface CatcodeVisitor {
 
     /**
      * This visit method is invoked on a comment token.
-     * In TeX this normally is a %.
+     * In <logo>TeX</logo> this normally is a %.
      *
      * @param arg1 the first argument to pass
      * @param arg2 the second argument to pass

@@ -24,10 +24,11 @@ import de.dante.extex.interpreter.type.dimen.Dimen;
 /**
  * This class provides the same functionality as
  * {@link de.dante.extex.typesetter.type.node.KernNode KernNode} but is
- * distinguishable for the sake of some fine differentiations in TeX.
+ * distinguishable for the sake of some fine differentiations in
+ * <logo>TeX</logo>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ImplicitKernNode extends AbstractKernNode {
 

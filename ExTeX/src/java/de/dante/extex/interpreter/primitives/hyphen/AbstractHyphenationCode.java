@@ -33,7 +33,7 @@ import de.dante.extex.language.Language;
  * <h2>Determining the Current Language</h2>
  *
  * <p>
- *  In TeX the language is determined by the count register named
+ *  In <logo>TeX</logo> the language is determined by the count register named
  *  <tt>language</tt>. This has the disadvantage that the language is named
  *  anonymously by an integer.
  * </p>
@@ -47,7 +47,7 @@ import de.dante.extex.language.Language;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public abstract class AbstractHyphenationCode extends AbstractCode {
 

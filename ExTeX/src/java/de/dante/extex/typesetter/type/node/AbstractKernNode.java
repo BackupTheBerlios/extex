@@ -26,10 +26,11 @@ import de.dante.util.GeneralException;
 /**
  * This class provides the same functionality as
  * {@link de.dante.extex.typesetter.type.node.KernNode KernNode} but is
- * distinguishable for the sake of some fine differentiations in TeX.
+ * distinguishable for the sake of some fine differentiations in
+ * <logo>TeX</logo>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public abstract class AbstractKernNode extends AbstractNode implements KernNode {
 
@@ -51,13 +52,14 @@ public abstract class AbstractKernNode extends AbstractNode implements KernNode 
      * @param sb the output string buffer
      * @param prefix the prefix string inserted at the beginning of each line
      *
-     * @see "TeX -- The Program [191]"
+     * @see "<logo>TeX</logo> &ndash; The Program [191]"
      * @see de.dante.extex.typesetter.type.Node#toString(java.lang.StringBuffer,
      *      java.lang.String)
      */
     public void toString(final StringBuffer sb, final String prefix) {
 
-        sb.append(getLocalizer().format("String.Format",
+        sb
+                .append(getLocalizer().format("String.Format",
                         getWidth().toString()));
     }
 

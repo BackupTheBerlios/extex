@@ -38,8 +38,8 @@ import de.dante.extex.typesetter.Typesetter;
  * <p>
  *  The primitive <tt>\javaload</tt> loads a java class and invokes its
  *  <tt>init()</tt> method. With this method it is possible to load
- *  larger extensions of ExTeX in one junk. There is no need to declare
- *  each single macro with <tt>\javadef</tt>.
+ *  larger extensions of <logo>ExTeX</logo> in one junk. There is no need to
+ *  declare each single macro with <tt>\javadef</tt>.
  * </p>
  * <p>
  *  The general form of this primitive is
@@ -79,7 +79,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *     <b>public</b> MyModule() {
  *       super();
- *       <i>// initialization code -- if required</i>
+ *       <i>// initialization code &ndash; if required</i>
  *     }
  *
  *     <b>public void</b> init(<b>final</b> Context context,
@@ -92,7 +92,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class JavaLoad extends AbstractCode implements Loader {
 

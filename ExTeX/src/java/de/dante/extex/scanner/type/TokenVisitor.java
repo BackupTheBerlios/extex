@@ -25,13 +25,13 @@ package de.dante.extex.scanner.type;
  * This interface is used to implement the visitor pattern.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface TokenVisitor {
 
     /**
      * This visit method is invoked on an active token.
-     * In TeX this is e.g. ~.
+     * In <logo>TeX</logo> this is e.g. ~.
      * @param token the active token to visit
      * @param arg the first argument to pass
      *
@@ -55,7 +55,7 @@ public interface TokenVisitor {
 
     /**
      * This visit method is invoked on an escape token.
-     * In TeX this normally means a control sequence.
+     * In <logo>TeX</logo> this normally means a control sequence.
      * @param token the control sequence token to visit
      * @param arg the first argument to pass
      *
@@ -92,7 +92,7 @@ public interface TokenVisitor {
 
     /**
      * This visit method is invoked on a macro parameter token.
-     * In TeX this normally is a #.
+     * In <logo>TeX</logo> this normally is a #.
      * @param token the macro param token to visit
      * @param arg the first argument to pass
      *
@@ -105,7 +105,7 @@ public interface TokenVisitor {
 
     /**
      * This visit method is invoked on a math shift token.
-     * In TeX this normally is a $.
+     * In <logo>TeX</logo> this normally is a $.
      * @param token the math shift token to visit
      * @param arg the first argument to pass
      *
@@ -154,7 +154,7 @@ public interface TokenVisitor {
 
     /**
      * This visit method is invoked on a sub mark token.
-     * In TeX this normally is a _.
+     * In <logo>TeX</logo> this normally is a _.
      * @param token the sub mark token to visit
      * @param arg the first argument to pass
      *
@@ -167,7 +167,7 @@ public interface TokenVisitor {
 
     /**
      * This visit method is invoked on a sup mark token.
-     * In TeX this normally is a ^.
+     * In <logo>TeX</logo> this normally is a ^.
      * @param token the sup mark token to visit
      * @param arg the first argument to pass
      *
@@ -180,7 +180,7 @@ public interface TokenVisitor {
 
     /**
      * This visit method is invoked on a tab mark token.
-     * In TeX this normally is a &.
+     * In <logo>TeX</logo> this normally is a &.
      * @param token the tab mark token to visit
      * @param arg the first argument to pass
      *

@@ -42,7 +42,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class SkipParameter extends SkipPrimitive {
 
@@ -59,7 +59,7 @@ public class SkipParameter extends SkipPrimitive {
     /**
      * Return the key (the number) for the skip register.
      *
-     * @param source the source for the next tokens -- if required
+     * @param source the source for the next tokens &ndash; if required
      * @param context the interpreter context to use
      *
      * @return the key for the skip register

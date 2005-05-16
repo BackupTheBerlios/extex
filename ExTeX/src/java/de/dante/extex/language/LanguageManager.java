@@ -37,7 +37,7 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface LanguageManager {
 
@@ -48,9 +48,9 @@ public interface LanguageManager {
      *  a new one is created or loaded.
      * </p>
      * <p>
-     *  The index in TeX is the language number as <code>String</code>. This
-     *  implementation does not have this restriction. The name can be any
-     *  string.
+     *  The index in <logo>TeX</logo> is the language number as
+     *  <code>String</code>. This implementation does not have this restriction.
+     *  The name can be any string.
      * </p>
      * <p>
      *  The proposal is to use a natural number for backward compatibility and

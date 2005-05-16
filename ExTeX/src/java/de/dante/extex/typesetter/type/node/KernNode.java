@@ -35,11 +35,11 @@ import de.dante.extex.typesetter.type.Node;
  *  vertical direction.
  * </p>
  *
- * @see "TeX -- The Program [155]"
+ * @see "<logo>TeX</logo> &ndash; The Program [155]"
  * @see de.dante.extex.typesetter.type.node.ImplicitKernNode
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface KernNode extends Node {
 

@@ -26,8 +26,8 @@ import de.dante.extex.interpreter.type.AbstractCode;
  * <doc name="relax">
  * <h3>The Primitive <tt>\relax</tt></h3>
  * <p>
- *  This primitive simply does nothing. It acts as a no-op for the TeX macro
- *  language.
+ *  This primitive simply does nothing. It acts as a no-op for the
+ *  <logo>TeX</logo> macro language.
  * </p>
  * <p>
  *  The formal description of this primitive is the following:
@@ -46,7 +46,7 @@ import de.dante.extex.interpreter.type.AbstractCode;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Relax extends AbstractCode {
 

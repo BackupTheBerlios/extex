@@ -67,7 +67,7 @@ import de.dante.util.UnicodeChar;
  * This is the list maker for the inline math formulae.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class MathListMaker extends AbstractListMaker implements NoadConsumer {
 
@@ -76,7 +76,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      * It is used to store to the stack and restore the state from the stack.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.15 $
+     * @version $Revision: 1.16 $
      */
     private class MathMemento {
 
@@ -261,18 +261,14 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      * @return the node list enclosed in this instance
      *
      * @see de.dante.extex.typesetter.ListMaker#complete(TypesetterOptions)
-     * @see "TeX -- The Program [719]"
+     * @see "<logo>TeX</logo> &ndash; The Program [719]"
      */
     public NodeList complete(final TypesetterOptions context)
             throws TypesetterException {
 
         HorizontalListNode list = new HorizontalListNode();
-
-        //System.err.println(noads.toString());
-
         noads.typeset(list, new MathContext(StyleNoad.TEXTSTYLE, context),
                 context);
-        //TODO gene: ???
         return list;
     }
 
@@ -412,7 +408,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      * @throws TypesetterException in case of an error
      *
      * @see de.dante.extex.typesetter.ListMaker#par()
-     * @see "TeX -- The Program [1047]"
+     * @see "<logo>TeX</logo> &ndash; The Program [1047]"
      */
     public void par() throws TypesetterException {
 

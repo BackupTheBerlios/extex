@@ -39,11 +39,11 @@ import de.dante.util.GeneralException;
  * accordingly.
  * </p>
  *
- * @see "TeX -- The Program [149]"
+ * @see "<logo>TeX</logo> &ndash; The Program [149]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class GlueNode extends AbstractNode implements Node, Discardable {
 
@@ -132,7 +132,7 @@ public class GlueNode extends AbstractNode implements Node, Discardable {
      * @param sb the output string buffer
      * @param prefix the prefix string inserted at the beginning of each line
      *
-     * @see "TeX -- The Program [189]"
+     * @see "<logo>TeX</logo> &ndash; The Program [189]"
      * @see de.dante.extex.typesetter.type.Node#toString(java.lang.StringBuffer,
      *      java.lang.String)
      */

@@ -60,7 +60,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.41 $
+ * @version $Revision: 1.42 $
  */
 public class GroupImpl implements Group, Tokenizer, Serializable {
 
@@ -719,7 +719,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     /**
      * @see de.dante.extex.interpreter.context.impl.Group#setCatcode(
      *      de.dante.util.UnicodeChar,
-     *      de.dante.extex.scanner.Catcode, boolean)
+     *      de.dante.extex.scanner.type.Catcode,
+     *      boolean)
      */
     public void setCatcode(final UnicodeChar uc, final Catcode code,
             final boolean global) {

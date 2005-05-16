@@ -80,7 +80,7 @@ import de.dante.extex.typesetter.type.node.RuleNode;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Hrule extends AbstractCode implements RuleConvertible {
 
@@ -114,7 +114,7 @@ public class Hrule extends AbstractCode implements RuleConvertible {
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
-     * @see "TeX -- The Program [463]"
+     * @see "<logo>TeX</logo> &ndash; The Program [463]"
      */
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)

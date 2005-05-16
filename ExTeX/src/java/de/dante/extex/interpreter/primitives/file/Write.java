@@ -58,7 +58,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class Write extends AbstractCode
         implements
@@ -91,7 +91,7 @@ public class Write extends AbstractCode
 
     /**
      * The field <tt>write18</tt> contains the indicator that the ancient
-     * write18 feature of TeX should be enabled.
+     * write18 feature of <logo>TeX</logo> should be enabled.
      */
     private boolean write18 = false;
 

@@ -32,7 +32,7 @@ import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
  * This class is used to dynamically define mathematical characters.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class MathcharCode extends Mathchar implements CountConvertible {
 
@@ -66,7 +66,7 @@ public class MathcharCode extends Mathchar implements CountConvertible {
             throws InterpreterException {
 
         NoadConsumer nc = getListMaker(context, typesetter);
-        insert(nc, mathchar);
+        insert(nc, mathchar.getValue());
     }
 
     /**

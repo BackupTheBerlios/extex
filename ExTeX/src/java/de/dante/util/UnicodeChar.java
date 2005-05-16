@@ -35,7 +35,7 @@ import com.ibm.icu.text.UTF16;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class UnicodeChar implements Serializable {
 
@@ -283,7 +283,7 @@ public class UnicodeChar implements Serializable {
     /**
      * Returns the lowercase character of this object.
      * <p>
-     * (this method does not use the TeX lccode!)
+     * (this method does not use the <logo>TeX</logo> lccode!)
      * </p>
      *
      * @return character in lowercase
@@ -306,7 +306,7 @@ public class UnicodeChar implements Serializable {
     /**
      * Returns the uppercase character of this object.
      * <p>
-     * (this method does not use the TeX uccode!)
+     * (this method does not use the <logo>TeX</logo> uccode!)
      * </p>
      *
      * @return character in uppercase

@@ -28,7 +28,7 @@ import de.dante.extex.interpreter.type.dimen.Dimen;
  * context.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface ContextDimen {
 
@@ -62,7 +62,8 @@ public interface ContextDimen {
      * Setter for the {@link de.dante.extex.interpreter.type.dimen.Dimen Dimen}
      * register in all requested groups. Dimen registers are named, either with
      * a number or an arbitrary string. The numbered registers where limited to
-     * 256 in TeX. This restriction does no longer hold for ExTeX.
+     * 256 in <logo>TeX</logo>. This restriction does no longer hold for
+     * <logo>ExTeX</logo>.
      *
      * @param name the name or the number of the register
      * @param value the new value of the register
@@ -78,7 +79,8 @@ public interface ContextDimen {
      * Setter for the {@link de.dante.extex.interpreter.type.dimen.Dimen Dimen}
      * register in all requested groups. Dimen registers are named, either with
      * a number or an arbitrary string. The numbered registers where limited to
-     * 256 in TeX. This restriction does no longer hold for ExTeX.
+     * 256 in <logo>TeX</logo>. This restriction does no longer hold for
+     * <logo>ExTeX</logo>.
      *
      * @param name the name or the number of the register
      * @param value the new value of the register

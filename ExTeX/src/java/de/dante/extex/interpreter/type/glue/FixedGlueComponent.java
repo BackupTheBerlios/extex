@@ -29,7 +29,7 @@ import de.dante.util.GeneralException;
  * which do not modify the value.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public interface FixedGlueComponent {
 
@@ -78,8 +78,9 @@ public interface FixedGlueComponent {
      * Determine the printable representation of the object and return it as a
      * list of Tokens.
      * The value returned is exactely the string which would be produced by
-     * TeX to print the Dimen. This means the result is expressed in pt and
-     * properly rounded to be read back in again without loss of information.
+     * <logo>TeX</logo> to print the Dimen. This means the result is expressed
+     * in pt and properly rounded to be read back in again without loss of
+     * information.
      *
      * @param factory the token factory to get the required tokens from
      *
@@ -87,7 +88,7 @@ public interface FixedGlueComponent {
      *
      * @throws GeneralException in case of an error
      *
-     * @see "TeX -- The Program [103]"
+     * @see "<logo>TeX</logo> &ndash; The Program [103]"
      * @see #toToks(Tokens, TokenFactory)
      * @see #toString()
      * @see #toString(StringBuffer)
@@ -99,15 +100,16 @@ public interface FixedGlueComponent {
      * Determine the printable representation of the object and return it as a
      * list of Tokens.
      * The value returned is exactely the string which would be produced by
-     * TeX to print the Dimen. This means the result is expressed in pt and
-     * properly rounded to be read back in again without loss of information.
+     * <logo>TeX</logo> to print the Dimen. This means the result is expressed
+     * in pt and properly rounded to be read back in again without loss of
+     * information.
      *
      * @param toks the tokens to append to
      * @param factory the token factory to get the required tokens from
      *
      * @throws GeneralException in case of an error
      *
-     * @see "TeX -- The Program [103]"
+     * @see "<logo>TeX</logo> &ndash; The Program [103]"
      * @see #toToks(TokenFactory)
      * @see #toString()
      * @see #toString(StringBuffer)

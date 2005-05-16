@@ -56,7 +56,7 @@ import de.dante.util.UnicodeChar;
  * &ldquo;normal&rdquo; cases do not apply.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 class NV implements NodeVisitor {
 
@@ -376,10 +376,10 @@ class NV implements NodeVisitor {
      * Hyphenate subsequent char nodes from a ligature.
      *
      * <p>
-     *  Note that TeX only consideres the first hyphenation point in a ligature.
-     *  The others are ignored. Nevertheless the ligature builder is applied
-     *  to the remaining characters. This might lead to other ligatures than
-     *  the ones encoded in the ligature node.
+     *  Note that <logo>TeX</logo> only consideres the first hyphenation point
+     *  in a ligature. The others are ignored. Nevertheless the ligature builder
+     *  is applied to the remaining characters. This might lead to other
+     *  ligatures than the ones encoded in the ligature node.
      * </p>
      *
      * @param list the node list to hyphenate

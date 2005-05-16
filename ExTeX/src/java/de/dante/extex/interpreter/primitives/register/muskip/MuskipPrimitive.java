@@ -43,7 +43,7 @@ import de.dante.extex.interpreter.exception.InterpreterException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class MuskipPrimitive extends MuskipParameter {
 
@@ -60,7 +60,7 @@ public class MuskipPrimitive extends MuskipParameter {
     /**
      * Return the key (the number) for the muskip register.
      * @param context the interpreter context to use
-     * @param source the source for the next tokens -- if required
+     * @param source the source for the next tokens &ndash; if required
      *
      * @return the key for the muskip register
      *

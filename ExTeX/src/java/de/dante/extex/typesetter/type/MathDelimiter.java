@@ -40,7 +40,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * large, and a small math glyph.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class MathDelimiter {
 
@@ -57,7 +57,7 @@ public class MathDelimiter {
 
     /**
      * The field <tt>CLASS_SHIFT</tt> contains the number of bits to shift the
-     * class rightwards in the TeX encoding of delimiters.
+     * class rightwards in the <logo>TeX</logo> encoding of delimiters.
      */
     private static final int CLASS_SHIFT = 24;
 
@@ -115,9 +115,9 @@ public class MathDelimiter {
     }
 
     /**
-     * Creates a new object from the TeX encoding.
+     * Creates a new object from the <logo>TeX</logo> encoding.
      * <p>
-     * The TeX encoding interprets the number as 27 bit hex number:
+     * The <logo>TeX</logo> encoding interprets the number as 27 bit hex number:
      * <tt>"csyylxx</tt>. Here the digits have the following meaning:
      * <dl>
      *  <dt>c</dt>
@@ -133,7 +133,7 @@ public class MathDelimiter {
      * </dl>
      * </p>
      *
-     * @param delcode the TeX encoding for the delimiter
+     * @param delcode the <logo>TeX</logo> encoding for the delimiter
      *
      * @throws GeneralException in case of a parameter out of range
      */
@@ -174,9 +174,10 @@ public class MathDelimiter {
     }
 
     /**
-     * Initialize the state of this instance from a TeX encoded delimiter code.
+     * Initialize the state of this instance from a <logo>TeX</logo> encoded
+     * delimiter code.
      *
-     * @param delcode the delimiter code in TeX encoding
+     * @param delcode the delimiter code in <logo>TeX</logo> encoding
      *
      * @throws HelpingException in case of an error
      */
@@ -237,7 +238,7 @@ public class MathDelimiter {
     public void typeset(final NodeList list, final MathContext mathContext,
             final TypesetterOptions context) {
 
-        //TODO gene: unimplemented
+        //TODO gene: typeset() unimplemented
         throw new RuntimeException("unimplemented");
     }
 

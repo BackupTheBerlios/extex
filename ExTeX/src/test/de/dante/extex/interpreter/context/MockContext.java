@@ -67,7 +67,7 @@ import de.dante.util.observer.Observer;
  * classes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class MockContext implements Context, TypesetterOptions {
 
@@ -766,9 +766,9 @@ public class MockContext implements Context, TypesetterOptions {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.ContextCode#unregisterCodeChangeObserver(de.dante.extex.scanner.type.Token, de.dante.extex.interpreter.context.observer.CodeObserver)
+     * @see de.dante.extex.interpreter.context.ContextCode#unregisterCodeObserver(de.dante.extex.scanner.type.Token, de.dante.extex.interpreter.context.observer.CodeObserver)
      */
-    public void unregisterCodeChangeObserver(final Token name,
+    public void unregisterCodeObserver(final Token name,
             final CodeObserver observer) {
 
         throw new RuntimeException("unimplemented");

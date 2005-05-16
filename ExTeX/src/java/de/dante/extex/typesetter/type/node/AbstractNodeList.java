@@ -32,7 +32,7 @@ import de.dante.extex.typesetter.type.NodeList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public abstract class AbstractNodeList extends AbstractNode implements NodeList {
 
@@ -332,7 +332,7 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
      * Provides a string representation of the current instance.
      *
      * @return the String representation of the object
-     * @see "TeX -- The Program [182]"
+     * @see "<logo>TeX</logo> &ndash; The Program [182]"
      */
     public String toText() {
 

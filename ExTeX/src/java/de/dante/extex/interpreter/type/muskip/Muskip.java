@@ -36,7 +36,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * The actual length is a multiple of math units (mu).
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class Muskip implements Serializable {
 
@@ -217,7 +217,7 @@ public class Muskip implements Serializable {
      * Return the string representation of the instance.
      *
      * @return the string representation of this glue
-     * @see "TeX -- The Program [???]"
+     * @see "<logo>TeX</logo> &ndash; The Program [???]"
      */
     public String toString() {
 

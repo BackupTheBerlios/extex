@@ -72,7 +72,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.31 $
+ * @version $Revision: 1.32 $
  */
 public class Dump extends AbstractCode implements LogEnabled {
 
@@ -116,7 +116,7 @@ public class Dump extends AbstractCode implements LogEnabled {
      * @param source the token source
      * @param typesetter the typesetter
      *
-     * @see "TeX -- The Program [1303,1304, 1328]"
+     * @see "<logo>TeX</logo> &ndash; The Program [1303,1304, 1328]"
      * @see de.dante.extex.interpreter.type.Code#execute(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,

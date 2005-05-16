@@ -36,7 +36,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  *
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class BoxParameter extends AbstractCode implements Code, Serializable {
 
@@ -70,7 +70,7 @@ public class BoxParameter extends AbstractCode implements Code, Serializable {
     /**
      * Return the key (the name of the primitive) for the register.
      *
-     * @param source the source for new tokens -- if required
+     * @param source the source for new tokens &ndash; if required
      * @param context the interpreter context to use
      *
      * @return the key for the box register

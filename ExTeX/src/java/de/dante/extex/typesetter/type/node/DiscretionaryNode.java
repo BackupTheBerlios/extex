@@ -27,11 +27,11 @@ import de.dante.util.GeneralException;
 /**
  * This node represents a glyph which can be broken if required.
  *
- * @see "TeX -- The Program [145]"
+ * @see "<logo>TeX</logo> &ndash; The Program [145]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class DiscretionaryNode extends AbstractNode implements Node {
 
@@ -109,7 +109,7 @@ public class DiscretionaryNode extends AbstractNode implements Node {
      * @param sb the target buffer
      * @param prefix the prefix for each new line
      *
-     * @see "TeX -- The Program [195]"
+     * @see "<logo>TeX</logo> &ndash; The Program [195]"
      * @see de.dante.extex.typesetter.type.Node#toString(
      *      java.lang.StringBuffer,
      *      java.lang.String)

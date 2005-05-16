@@ -31,7 +31,7 @@ import de.dante.util.UnicodeChar;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class OtherToken extends AbstractToken implements Token {
 
@@ -58,7 +58,7 @@ public class OtherToken extends AbstractToken implements Token {
      *
      * @return the string representation
      *
-     * @see "TeX -- The Program [298]"
+     * @see "<logo>TeX</logo> &ndash; The Program [298]"
      */
     public String toString() {
 

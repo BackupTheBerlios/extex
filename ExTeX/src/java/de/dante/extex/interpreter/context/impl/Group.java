@@ -46,15 +46,16 @@ import de.dante.util.observer.Observer;
 
 /**
  * This is the implementation of a group object. A group is the container for
- * all data which might have group local values. In contrast ton TeX the groups
- * are organized as linked objects. A new group contains just the values which
- * have local definitions. Thus the opening and closing of groups are rather
- * fast. The access to the value might be slow when many groups have to be
- * passed to find the one containing the value.
+ * all data which might have group local values. In contrast to
+ * <logo>TeX</logo> the groups are organized as linked objects.
+ * A new group contains just the values which have local definitions. Thus the
+ * opening and closing of groups are rather fast. The access to the value might
+ * be slow when many groups have to be passed to find the one containing the
+ * value.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public interface Group extends Tokenizer, Serializable {
 
@@ -83,8 +84,8 @@ public interface Group extends Tokenizer, Serializable {
     /**
      * Getter for the {@link de.dante.extex.interpreter.type.box.Box box}register.
      * Count registers are named, either with a number or an arbitrary string.
-     * The numbered registers where limited to 256 in TeX. This restriction
-     * does no longer hold for ExTeX.
+     * The numbered registers where limited to 256 in <logo>TeX</logo>. This
+     * restriction does no longer hold for <logo>ExTeX</logo>.
      *
      * @param name the name or number of the count register
      *
@@ -116,10 +117,12 @@ public interface Group extends Tokenizer, Serializable {
      * either be a string representing a number or an arbitrary string. In the
      * first case the behavior of the numbered count registers is emulated. The
      * other case can be used to store special count values.
-     *
-     * Note: The number of count registers is not limited to 256 as in TeX.
-     *
+     * <p>
+     * Note: The number of count registers is not limited to 256 as in
+     *  <logo>TeX</logo>.
+     * </p><p>
      * As a default value 0 is returned.
+     * </p>
      *
      * @param name the name of the count register
      *
@@ -142,10 +145,12 @@ public interface Group extends Tokenizer, Serializable {
      * either be a string representing a number or an arbitrary string. In the
      * first case the behavior of the numbered dimen registers is emulated. The
      * other case can be used to store special dimen values.
-     *
-     * Note: The number of dimen registers is not limited to 256 as in TeX.
-     *
+     * <p>
+     * Note: The number of dimen registers is not limited to 256 as in
+     *  <logo>TeX</logo>.
+     * </p><p>
      * As a default value 0 is returned.
+     * </p>
      *
      * @param name the name of the dimen register
      *
@@ -221,10 +226,12 @@ public interface Group extends Tokenizer, Serializable {
      * either be a string representing a number or an arbitrary string. In the
      * first case the behavior of the numbered muskip registers is emulated.
      * The other case can be used to store special muskip values.
-     *
-     * Note: The number of muskip registers is not limited to 256 as in TeX.
-     *
+     * <p>
+     * Note: The number of muskip registers is not limited to 256 as in
+     *  <logo>TeX</logo>.
+     * </p><p>
      * As a default value 0 is returned.
+     * </p>
      *
      * @param name the name of the count register
      *
@@ -272,10 +279,12 @@ public interface Group extends Tokenizer, Serializable {
      * either be a string representing a number or an arbitrary string. In the
      * first case the behavior of the numbered skip registers is emulated. The
      * other case can be used to store special skip values.
-     *
-     * Note: The number of skip registers is not limited to 256 as in TeX.
-     *
+     * <p>
+     * Note: The number of skip registers is not limited to 256 as in
+     *  <logo>TeX</logo>.
+     * </p><p>
      * As a default value 0 is returned.
+     * </p>
      *
      * @param name the name of the count register
      *
@@ -288,10 +297,12 @@ public interface Group extends Tokenizer, Serializable {
      * either be a string representing a number or an arbitrary string. In the
      * first case the behavior of the numbered toks registers is emulated. The
      * other case can be used to store special toks values.
-     *
-     * Note: The number of toks registers is not limited to 256 as in TeX.
-     *
+     * <p>
+     * Note: The number of toks registers is not limited to 256 as in
+     *  <logo>TeX</logo>.
+     * </p><p>
      * As a default value the empty toks register is returned.
+     * </p>
      *
      * @param name the name of the toks register
      *
@@ -304,8 +315,10 @@ public interface Group extends Tokenizer, Serializable {
      * either be a string representing a number or an arbitrary string. In the
      * first case the behavior of the numbered toks registers is emulated. The
      * other case can be used to store special toks values.
-     *
-     * Note: The number of toks registers is not limited to 256 as in TeX.
+     * <p>
+     * Note: The number of toks registers is not limited to 256 as in
+     *  <logo>TeX</logo>.
+     * </p>
      *
      * @param name the name of the toks register
      *
@@ -346,8 +359,8 @@ public interface Group extends Tokenizer, Serializable {
      * Setter for the {@link de.dante.extex.interpreter.type.box.Box box}
      * register in all requested groups. Count registers are named, either with
      * a number or an arbitrary string.
-     * The numbered registers where limited to 256 in
-     * TeX. This restriction does no longer hold for ExTeX.
+     * The numbered registers where limited to 256 in <logo>TeX</logo>.
+     * This restriction does no longer hold for <logo>ExTeX</logo>.
      *
      * @param name the name or the number of the register
      * @param value the new value of the register

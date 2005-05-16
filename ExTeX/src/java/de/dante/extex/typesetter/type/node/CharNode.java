@@ -31,11 +31,11 @@ import de.dante.util.UnicodeChar;
 /**
  * This is the Node which carries a single character.
  *
- * @see "TeX -- The Program [134]"
+ * @see "<logo>TeX</logo> &ndash; The Program [134]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class CharNode extends AbstractNode implements Node {
 
@@ -139,7 +139,7 @@ public class CharNode extends AbstractNode implements Node {
     }
 
     /**
-     * @see "TeX -- The Program [174]"
+     * @see "<logo>TeX</logo> &ndash; The Program [174]"
      * @see de.dante.extex.typesetter.type.Node#toString(
      *      java.lang.StringBuffer,
      *      java.lang.String)
@@ -162,7 +162,7 @@ public class CharNode extends AbstractNode implements Node {
     }
 
     /**
-     * @see "TeX -- The Program [174]"
+     * @see "<logo>TeX</logo> &ndash; The Program [174]"
      * @see de.dante.extex.typesetter.type.Node#toText(
      *      java.lang.StringBuffer,
      *      java.lang.String)

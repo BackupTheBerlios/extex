@@ -31,13 +31,14 @@ import de.dante.util.UnicodeChar;
  * </p>
  *
  * <p>
- *  Note that in contrast to TeX the escape character leading to this control
- *  sequence token is stord in the character code of the abstract base class.
+ *  Note that in contrast to <logo>TeX</logo> the escape character leading to
+ *  this control sequence token is stord in the character code of the abstract
+ *  base class.
  * </p>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class ControlSequenceToken extends AbstractToken implements CodeToken {
 
@@ -62,7 +63,7 @@ public class ControlSequenceToken extends AbstractToken implements CodeToken {
      * If the string is empty then a space character is used instead.
      *
      * @param esc the escape character
-     * @param name the name of the control sequence -- without the leading
+     * @param name the name of the control sequence &ndash; without the leading
      *  escape character token
      * @param namespace the namespace
      */

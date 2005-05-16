@@ -52,13 +52,13 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class HorizontalListMaker extends AbstractListMaker {
 
     /**
      * The constant <tt>DEFAULT_SPACEFACTOR</tt> contains the default value for
-     * the space factor. It is 1000 according to TeX.
+     * the space factor. It is 1000 according to <logo>TeX</logo>.
      */
     private static final int DEFAULT_SPACEFACTOR = 1000;
 
@@ -83,7 +83,7 @@ public class HorizontalListMaker extends AbstractListMaker {
     /**
      * The field <tt>spacefactor</tt> contains the current space factor.
      *
-     * @see "TeX -- The Program [212]"
+     * @see "<logo>TeX</logo> &ndash; The Program [212]"
      */
     private long spacefactor = DEFAULT_SPACEFACTOR;
 

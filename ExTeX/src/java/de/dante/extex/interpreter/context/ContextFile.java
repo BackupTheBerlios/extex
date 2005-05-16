@@ -27,7 +27,7 @@ import de.dante.extex.interpreter.type.file.OutFile;
  * context.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface ContextFile {
 
@@ -55,7 +55,8 @@ public interface ContextFile {
      * Setter for the {@link de.dante.extex.interpreter.type.file.InFile InFile}
      * register in all requested groups. InFile registers are named, either with
      * a number or an arbitrary string. The numbered registers where limited to
-     * 16 in TeX. This restriction does no longer hold for ExTeX.
+     * 16 in <logo>TeX</logo>. This restriction does no longer hold for
+     * <logo>ExTeX</logo>.
      *
      * @param name the name or the number of the file register
      * @param file the input file descriptor

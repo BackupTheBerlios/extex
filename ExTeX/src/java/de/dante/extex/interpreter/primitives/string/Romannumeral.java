@@ -59,10 +59,10 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  *
- * @see "TeX -- the Program [69]"
+ * @see "<logo>TeX</logo> &ndash; the Program [69]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Romannumeral extends AbstractCode implements ExpandableCode {
 

@@ -31,7 +31,7 @@ import java.lang.reflect.InvocationTargetException;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class ConfigurationFactory {
 
@@ -47,7 +47,7 @@ public class ConfigurationFactory {
      * {@link de.dante.util.configuration.Configuration Configuration}
      * object which is initialized from a named source. This source is usually
      * a file name but can be anything else, like a URL or a reference to a
-     * database -- depending on the underlying implementation.
+     * database &ndash; depending on the underlying implementation.
      *
      * @param source the source of the configration
      *

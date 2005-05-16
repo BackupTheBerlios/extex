@@ -26,17 +26,17 @@ import de.dante.extex.typesetter.type.NodeVisitor;
 import de.dante.util.GeneralException;
 
 /**
- * This node represents a TeX "math" node with the subtype "after".
+ * This node represents a <logo>TeX</logo> "math" node with the subtype "after".
  * <p>
  * For the document writer it acts like a glue or kern node. The width contains
  * the distance to add.
  * </p>
  *
- * @see "TeX -- The Program [147]"
+ * @see "<logo>TeX</logo> &ndash; The Program [147]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class AfterMathNode extends AbstractNode implements Node, Discardable {
 
@@ -56,7 +56,7 @@ public class AfterMathNode extends AbstractNode implements Node, Discardable {
      * @param sb the target buffer
      * @param prefix the prefix for each new line
      *
-     * @see "TeX -- The Program [192]"
+     * @see "<logo>TeX</logo> &ndash; The Program [192]"
      * @see de.dante.extex.typesetter.type.Node#toString(java.lang.StringBuffer,
      *      java.lang.String)
      */

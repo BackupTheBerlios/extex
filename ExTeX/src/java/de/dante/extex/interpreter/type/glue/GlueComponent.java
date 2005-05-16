@@ -57,7 +57,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
 public class GlueComponent implements Serializable, FixedGlueComponent {
 
@@ -78,7 +78,7 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
      * consider when producing a string representation of this type.
      *
      * Attention: Do not change this value unless you have read and understood
-     * TeX the program!
+     * <logo>TeX</logo> the program!
      */
     private static final int FLOAT_DIGITS = 17;
 
@@ -94,7 +94,7 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
 
     /**
      * The constant <tt>ONE</tt> contains the internal representation for 1pt.
-     * @see "TeX -- The Program [101]"
+     * @see "<logo>TeX</logo> &ndash; The Program [101]"
      */
     public static final long ONE = 1 << 16;
 
@@ -679,8 +679,9 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
      * Determine the printable representation of the object and return it as a
      * list of Tokens.
      * The value returned is exactely the string which would be produced by
-     * TeX to print the Dimen. This means the result is expressed in pt and
-     * properly rounded to be read back in again without loss of information.
+     * <logo>TeX</logo> to print the Dimen. This means the result is expressed
+     * in pt and properly rounded to be read back in again without loss of
+     * information.
      *
      * @param factory the token factory to get the required tokens from
      *
@@ -688,7 +689,7 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
      *
      * @throws CatcodeException in case of an error
      *
-     * @see "TeX -- The Program [103]"
+     * @see "<logo>TeX</logo> &ndash; The Program [103]"
      * @see #toToks(TokenFactory)
      * @see #toString()
      * @see #toString(StringBuffer)
@@ -704,15 +705,16 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
      * Determine the printable representation of the object and return it as a
      * list of Tokens.
      * The value returned is exactely the string which would be produced by
-     * TeX to print the Dimen. This means the result is expressed in pt and
-     * properly rounded to be read back in again without loss of information.
+     * <logo>TeX</logo> to print the Dimen. This means the result is expressed
+     * in pt and properly rounded to be read back in again without loss of
+     * information.
      *
      * @param toks the tokens to append to
      * @param factory the token factory to get the required tokens from
      *
      * @throws CatcodeException in case of an error
      *
-     * @see "TeX -- The Program [103]"
+     * @see "<logo>TeX</logo> &ndash; The Program [103]"
      * @see #toToks(TokenFactory)
      * @see #toString()
      * @see #toString(StringBuffer)

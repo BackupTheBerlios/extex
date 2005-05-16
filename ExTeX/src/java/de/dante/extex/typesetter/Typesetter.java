@@ -34,9 +34,9 @@ import de.dante.extex.typesetter.type.node.CharNodeFactory;
  * The typesetter acts as proxy. Most requests are simply forwarded to the
  * current list maker.
  *
- * @see "TeX -- The Program [211]"
+ * @see "<logo>TeX</logo> &ndash; The Program [211]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public interface Typesetter extends ListMaker {
 

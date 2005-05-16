@@ -38,7 +38,7 @@ import de.dante.util.framework.configuration.Configurable;
  * files.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public abstract class AbstractFileCode extends AbstractCode
         implements
@@ -101,7 +101,8 @@ public abstract class AbstractFileCode extends AbstractCode
 
     /**
      * The field <tt>strictTeX</tt> contains the boolean indicating whether or
-     * not to adhere strictly to the rules of TeX for file name parsing.
+     * not to adhere strictly to the rules of <logo>TeX</logo> for file name
+     * parsing.
      */
     private boolean strictTeX = false;
 

@@ -34,7 +34,7 @@ import de.dante.extex.typesetter.Typesetter;
  * context.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class NamedFont extends AbstractAssignment implements FontConvertible {
 
@@ -80,7 +80,7 @@ public class NamedFont extends AbstractAssignment implements FontConvertible {
     /**
      * Return the key (the number) for the font register.
      * @param context the interpreter context to use
-     * @param source the source for the next tokens -- if required
+     * @param source the source for the next tokens &ndash; if required
      *
      * @return the key for the font register
      *

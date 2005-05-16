@@ -49,7 +49,7 @@ import de.dante.util.UnicodeChar;
  *  TODO missing documentation
  * </p>
  * <p class="TeXbook">
- *  When TeX expands <tt>\csname</tt> it reads to the matching
+ *  When <logo>TeX</logo> expands <tt>\csname</tt> it reads to the matching
  *  <tt>\endcsname</tt>, expanding tokens as it goes;
  *  only character tokens should remain after this expansion has taken place.
  *  Then the ``expansion'' of the entire <tt>\csname...\endcsname</tt> text
@@ -70,7 +70,7 @@ import de.dante.util.UnicodeChar;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class Csname extends AbstractCode
         implements
