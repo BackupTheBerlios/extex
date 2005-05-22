@@ -25,7 +25,7 @@ package de.dante.util;
  * also a setter for the encapsulated boolean value.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Switch {
 
@@ -60,7 +60,7 @@ public class Switch {
      *
      * @param on the value to set.
      */
-    public void setOn(final boolean on) {
+    public void set(final boolean on) {
 
         this.value = on;
     }
