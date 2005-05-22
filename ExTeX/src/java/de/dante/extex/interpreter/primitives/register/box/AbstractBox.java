@@ -26,29 +26,41 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
-import de.dante.util.GeneralException;
 
 /**
  * This is the abstarct base class for primitives dealing with box registers.
  * It provides a method to get the key of a box register.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public abstract class AbstractBox extends AbstractCode implements Serializable {
 
     /**
      * Return the key (the number) for the box register.
      *
-     * @param name the name (number) of the register
+     *
+     * <doc type="syntax" name="box register name">
+     * <pre class="syntax">
+     *   &lang;box register name&rang; </pre>
+     * <p>
+     *  A box register name ...
+     * </p>
+     * </doc>
+     * TODO gene: doc incomplete
+     *
+     *
      * @param context the interpreter context to use
      * @param source the source for new tokens
      *
      * @return the key for the box register
-     * @throws InterpreterException TODO
+     *
+     * @throws InterpreterException in case of an error
      */
-    public static String getKey(final String name, final Context context,
+    public static String getKey(final Context context,
             final TokenSource source) throws InterpreterException {
+
+        String name = source.scanRegisterName(context);
 
         if (Namespace.SUPPORT_NAMESPACE_DIMEN) {
             return context.getNamespace() + "#box#" + name;
@@ -65,32 +77,6 @@ public abstract class AbstractBox extends AbstractCode implements Serializable {
     public AbstractBox(final String name) {
 
         super(name);
-    }
-
-    /**
-     * Return the key (the number) for the box register.
-     *
-     * @param context the interpreter context to use
-     * @param source the source for new tokens
-     *
-     * @return the key for the box register
-     *
-     * @throws GeneralException in case of an error
-     */
-    public String getKey(final Context context, final TokenSource source)
-            throws InterpreterException {
-
-        try {
-            String name = source.scanRegisterName(context);
-
-            if (Namespace.SUPPORT_NAMESPACE_DIMEN) {
-                return context.getNamespace() + "#box#" + name;
-            } else {
-                return "box#" + name;
-            }
-        } catch (GeneralException e) {
-            throw new InterpreterException(e);
-        }
     }
 
 }
