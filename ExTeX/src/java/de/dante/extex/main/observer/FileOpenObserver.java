@@ -16,12 +16,12 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.main.observer;
 
 import java.util.logging.Logger;
 
-import de.dante.util.observer.Observable;
-import de.dante.util.observer.Observer;
+import de.dante.extex.scanner.stream.observer.file.OpenFileObserver;
 
 /**
  * This observer reports that a certain file has been opened.
@@ -29,9 +29,9 @@ import de.dante.util.observer.Observer;
  * name of the file.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
-public class FileOpenObserver implements Observer {
+public class FileOpenObserver implements OpenFileObserver {
 
     /**
      * The field <tt>logger</tt> contains the current logger
@@ -44,17 +44,18 @@ public class FileOpenObserver implements Observer {
      * @param theLogger the logger to use
      */
     public FileOpenObserver(final Logger theLogger) {
+
         super();
         this.logger = theLogger;
     }
 
     /**
-     * @see de.dante.util.observer.Observer#update(
-     *      de.dante.util.observer.Observable, java.lang.Object)
+     * @see de.dante.extex.scanner.stream.observer.file.OpenFileObserver#update(
+     *      java.lang.String, java.lang.String)
      */
-    public void update(final Observable observable, final Object file) {
+    public void update(final String filename, final String filetype) {
 
-        logger.info("(" + file.toString());
+        logger.info("(" + filename);
     }
 
 }

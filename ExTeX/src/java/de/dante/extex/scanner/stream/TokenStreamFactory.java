@@ -25,19 +25,22 @@ import java.io.Reader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-import de.dante.util.GeneralException;
+import de.dante.extex.scanner.stream.observer.file.OpenFileObservable;
+import de.dante.extex.scanner.stream.observer.file.OpenFileObserver;
+import de.dante.extex.scanner.stream.observer.file.OpenFileObserverList;
+import de.dante.extex.scanner.stream.observer.reader.OpenReaderObservable;
+import de.dante.extex.scanner.stream.observer.reader.OpenReaderObserver;
+import de.dante.extex.scanner.stream.observer.reader.OpenReaderObserverList;
+import de.dante.extex.scanner.stream.observer.string.OpenStringObservable;
+import de.dante.extex.scanner.stream.observer.string.OpenStringObserver;
+import de.dante.extex.scanner.stream.observer.string.OpenStringObserverList;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationClassNotFoundException;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationInstantiationException;
 import de.dante.util.configuration.ConfigurationMissingAttributeException;
 import de.dante.util.configuration.ConfigurationNoSuchMethodException;
-import de.dante.util.configuration.ConfigurationWrapperException;
 import de.dante.util.framework.AbstractFactory;
-import de.dante.util.observer.NotObservableException;
-import de.dante.util.observer.Observable;
-import de.dante.util.observer.Observer;
-import de.dante.util.observer.ObserverList;
 import de.dante.util.resource.ResourceFinder;
 
 /**
@@ -120,9 +123,13 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
-public class TokenStreamFactory extends AbstractFactory implements Observable {
+public class TokenStreamFactory extends AbstractFactory
+        implements
+            OpenFileObservable,
+            OpenStringObservable,
+            OpenReaderObservable {
 
     /**
      * The constant <tt>CLASS_ATTRIBUTE</tt> contains the name of the
@@ -146,19 +153,19 @@ public class TokenStreamFactory extends AbstractFactory implements Observable {
      * The field <tt>openFileObservers</tt> contains the observers registered
      * for the "file" event
      */
-    private ObserverList openFileObservers = new ObserverList();
+    private OpenFileObserver openFileObservers = null;
 
     /**
      * The field <tt>openReaderObservers</tt> contains the observers registered
      * for the "reader" event.
      */
-    private ObserverList openReaderObservers = new ObserverList();
+    private OpenReaderObserver openReaderObservers = null;
 
     /**
      * The field <tt>openStringObservers</tt> contains the observers registered
      * for the "string" event.
      */
-    private ObserverList openStringObservers = new ObserverList();
+    private OpenStringObserver openStringObservers = null;
 
     /**
      * The field <tt>options</tt> contains the options for the token stream.
@@ -261,11 +268,10 @@ public class TokenStreamFactory extends AbstractFactory implements Observable {
 
         TokenStream stream;
         try {
+
             stream = (TokenStream) readerConstructor.newInstance(//
                     new Object[]{configuration, options, reader, Boolean.FALSE,
                             "*"});
-
-            openReaderObservers.update(this, reader);
 
         } catch (IllegalArgumentException e) {
             throw new ConfigurationInstantiationException(e);
@@ -275,11 +281,14 @@ public class TokenStreamFactory extends AbstractFactory implements Observable {
             throw new ConfigurationInstantiationException(e);
         } catch (InvocationTargetException e) {
             throw new ConfigurationInstantiationException(e);
-        } catch (GeneralException e) {
-            throw new ConfigurationWrapperException(e);
         }
 
         enableLogging(stream, getLogger());
+
+        if (openReaderObservers != null) {
+            openReaderObservers.update(reader);
+        }
+
         return stream;
     }
 
@@ -297,10 +306,9 @@ public class TokenStreamFactory extends AbstractFactory implements Observable {
 
         TokenStream stream;
         try {
+
             stream = (TokenStream) stringConstructor.newInstance(//
                     new Object[]{configuration, options, line, ""});
-
-            openStringObservers.update(this, line);
 
         } catch (IllegalArgumentException e) {
             throw new ConfigurationInstantiationException(e);
@@ -310,11 +318,14 @@ public class TokenStreamFactory extends AbstractFactory implements Observable {
             throw new ConfigurationInstantiationException(e);
         } catch (InvocationTargetException e) {
             throw new ConfigurationInstantiationException(e);
-        } catch (GeneralException e) {
-            throw new ConfigurationWrapperException(e);
         }
 
         enableLogging(stream, getLogger());
+
+        if (openStringObservers != null) {
+            openStringObservers.update(line);
+        }
+
         return stream;
     }
 
@@ -361,10 +372,8 @@ public class TokenStreamFactory extends AbstractFactory implements Observable {
                     .getTargetException());
         }
 
-        try {
-            openFileObservers.update(this, fileName);
-        } catch (GeneralException e) {
-            throw new ConfigurationWrapperException(e);
+        if (openFileObservers != null) {
+            openFileObservers.update(fileName, fileType);
         }
 
         enableLogging(stream, getLogger());
@@ -372,21 +381,33 @@ public class TokenStreamFactory extends AbstractFactory implements Observable {
     }
 
     /**
-     * @see de.dante.util.observer.Observable#registerObserver(java.lang.String,
-     *      de.dante.util.observer.Observer)
+     * @see de.dante.extex.scanner.stream.observer.file.OpenFileObservable#registerObserver(
+     *      de.dante.extex.scanner.stream.observer.file.OpenFileObserver)
      */
-    public void registerObserver(final String name, final Observer observer)
-            throws NotObservableException {
+    public void registerObserver(final OpenFileObserver observer) {
 
-        if ("file".equals(name)) {
-            openFileObservers.add(observer);
-        } else if ("string".equals(name)) {
-            openStringObservers.add(observer);
-        } else if ("reader".equals(name)) {
-            openReaderObservers.add(observer);
-        } else {
-            throw new NotObservableException(name);
-        }
+        openFileObservers = OpenFileObserverList.register(openFileObservers,
+                observer);
+    }
+
+    /**
+     * @see de.dante.extex.scanner.stream.observer.reader.OpenReaderObservable#registerObserver(
+     *      de.dante.extex.scanner.stream.observer.reader.OpenReaderObserver)
+     */
+    public void registerObserver(final OpenReaderObserver observer) {
+
+        openReaderObservers = OpenReaderObserverList.register(
+                openReaderObservers, observer);
+    }
+
+    /**
+     * @see de.dante.extex.scanner.stream.observer.string.OpenStringObservable#registerObserver(
+     *      de.dante.extex.scanner.stream.observer.string.OpenStringObserver)
+     */
+    public void registerObserver(final OpenStringObserver observer) {
+
+        openStringObservers = OpenStringObserverList.register(
+                openStringObservers, observer);
     }
 
     /**

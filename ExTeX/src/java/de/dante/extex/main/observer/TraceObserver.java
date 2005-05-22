@@ -21,17 +21,17 @@ package de.dante.extex.main.observer;
 
 import java.util.logging.Logger;
 
-import de.dante.util.observer.Observable;
-import de.dante.util.observer.Observer;
+import de.dante.extex.interpreter.observer.expand.ExpandObserver;
+import de.dante.extex.scanner.type.Token;
 
 /**
  * Observer for tracing macros. The macro is written to the log file preceeded
  * by a <tt>&gt;</tt> mark and a space character.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
-public class TraceObserver implements Observer {
+public class TraceObserver implements ExpandObserver {
 
     /**
      * The field <tt>logger</tt> contains the logger for output
@@ -50,12 +50,12 @@ public class TraceObserver implements Observer {
     }
 
     /**
-     * @see de.dante.util.observer.Observer#update(
-     *      de.dante.util.observer.Observable, java.lang.Object)
+     * This method is meant to be invoked just before a token is expanded.
+     *
+     * @param token the token to be expanded
      */
-    public void update(final Observable observable, final Object item) {
+    public void update(final Token token) {
 
-        logger.fine("> " + item.toString() + ".\n");
+        logger.fine("> " + token.toString() + ".\n");
     }
-
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -16,44 +16,24 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+package de.dante.extex.interpreter.observer.push;
 
-package de.dante.extex.main.observer;
-
-import java.util.logging.Logger;
-
-import de.dante.extex.interpreter.observer.pop.PopObserver;
 import de.dante.extex.scanner.type.Token;
 
+
 /**
- * Observer for tokens which are read from the token stream.
+ * This interface describes the ability to receive a notification just before
+ * a token is expanded.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.1 $
  */
-public class TokenObserver implements PopObserver {
+public interface PushObserver {
 
     /**
-     * The field <tt>logger</tt> contains the logger for output
-     */
-    private Logger logger;
-
-    /**
-     * Creates a new object.
+     * This method is meant to be invoked just before a token is expanded.
      *
-     * @param theLogger the logger for potential output
+     * @param token the token to be expanded
      */
-    public TokenObserver(final Logger theLogger) {
-
-        super();
-        this.logger = theLogger;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.observer.pop.PopObserver#update(
-     *      de.dante.extex.scanner.type.Token)
-     */
-    public void update(final Token token) {
-
-        logger.fine(token.toString() + "\n");
-    }
+    void update(Token token);
 }

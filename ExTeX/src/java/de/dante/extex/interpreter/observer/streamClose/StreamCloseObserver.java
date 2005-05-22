@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -16,46 +16,24 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
-package de.dante.extex.main.observer;
+package de.dante.extex.interpreter.observer.streamClose;
 
-import java.util.logging.Logger;
-
-import de.dante.extex.interpreter.observer.streamClose.StreamCloseObserver;
 import de.dante.extex.scanner.stream.TokenStream;
 
+
 /**
- * This observer waits for update events when files are closed. According to the
- * reference in <logo>TeX</logo> a closing parenthesis is written to the log
- * file.
+ * This interface describes the ability to receive a notification just before
+ * a stream is closed.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.1 $
  */
-public class FileCloseObserver implements StreamCloseObserver {
-    /**
-     * The field <tt>logger</tt> contains the logger for output
-     */
-    private Logger logger;
-
-    /**
-     * Creates a new object.
-     *
-     * @param theLogger the logger for potential output
-     */
-    public FileCloseObserver(final Logger theLogger) {
-        super();
-        this.logger = theLogger;
-    }
+public interface StreamCloseObserver {
 
     /**
      * This method is meant to be invoked just before a stream is closed.
      *
      * @param stream the stream to be closed
      */
-    public void update(final TokenStream stream) {
-
-        if (stream.isFileStream()) {
-            logger.info(")");
-        }
-    }
+    void update(TokenStream stream);
 }

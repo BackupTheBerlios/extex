@@ -33,6 +33,18 @@ import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.exception.helping.MissingLeftBraceException;
 import de.dante.extex.interpreter.exception.helping.MissingNumberException;
 import de.dante.extex.interpreter.exception.helping.UndefinedControlSequenceException;
+import de.dante.extex.interpreter.observer.eof.EofObservable;
+import de.dante.extex.interpreter.observer.eof.EofObserver;
+import de.dante.extex.interpreter.observer.eof.EofObserverList;
+import de.dante.extex.interpreter.observer.pop.PopObservable;
+import de.dante.extex.interpreter.observer.pop.PopObserver;
+import de.dante.extex.interpreter.observer.pop.PopObserverList;
+import de.dante.extex.interpreter.observer.push.PushObservable;
+import de.dante.extex.interpreter.observer.push.PushObserver;
+import de.dante.extex.interpreter.observer.push.PushObserverList;
+import de.dante.extex.interpreter.observer.streamClose.StreamCloseObservable;
+import de.dante.extex.interpreter.observer.streamClose.StreamCloseObserver;
+import de.dante.extex.interpreter.observer.streamClose.StreamCloseObserverList;
 import de.dante.extex.interpreter.primitives.register.toks.ToksParameter;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.CsConvertible;
@@ -64,9 +76,6 @@ import de.dante.util.framework.configuration.Configurable;
 import de.dante.util.framework.i18n.Localizable;
 import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.observer.NotObservableException;
-import de.dante.util.observer.Observable;
-import de.dante.util.observer.Observer;
-import de.dante.util.observer.ObserverList;
 
 /**
  * This class provides the layer above the input streams and the tokenizer. It
@@ -80,14 +89,17 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.64 $
+ * @version $Revision: 1.65 $
  */
 public abstract class Moritz
         implements
             TokenSource,
             Configurable,
             Localizable,
-            Observable {
+            StreamCloseObservable,
+            PopObservable,
+            PushObservable,
+            EofObservable {
 
     /**
      * The constant <tt>MAX_CHAR_CODE</tt> contains the maximum value for a
@@ -112,14 +124,14 @@ public abstract class Moritz
      * used for the observers which are registered to receive notifications when
      * a stream is closed.
      */
-    private ObserverList observersCloseStream = new ObserverList();
+    private StreamCloseObserverList observersCloseStream = null;
 
     /**
      * The field <tt>observersEOF</tt> contains the observer list is used for
      * the observers which are registered to receive a notification when all
      * streams are at their end. The argument is always <code>null</code>.
      */
-    private ObserverList observersEOF = new ObserverList();
+    private EofObserver observersEOF = null;
 
     /**
      * The field <tt>observersLogMessage</tt> contains the observer list is
@@ -134,7 +146,7 @@ public abstract class Moritz
      * token is about to be delivered. The argument is the token to be
      * delivered.
      */
-    private ObserverList observersPop = new ObserverList();
+    private PopObserver observersPop = null;
 
     /**
      * The field <tt>observersPush</tt> contains the observer list is used for
@@ -142,10 +154,12 @@ public abstract class Moritz
      * token is pushed back to the input stream. The argument is the token to be
      * pushed.
      */
-    private ObserverList observersPush = new ObserverList();
+    private PushObserver observersPush = null;
 
     /**
-     * The field <tt>registerMaxIndex</tt> contains the ...
+     * The field <tt>registerMaxIndex</tt> contains the maximal number for a
+     * register if they are  numeric. A negative value indicates that no
+     * restriction is imposed.
      */
     private long registerMaxIndex = -1;
 
@@ -233,12 +247,8 @@ public abstract class Moritz
     private boolean closeStream(final Context context)
             throws InterpreterException {
 
-        try {
-            observersCloseStream.update(this, stream);
-        } catch (InterpreterException e) {
-            throw e;
-        } catch (GeneralException e) {
-            throw new InterpreterException(e);
+        if (observersCloseStream != null) {
+            observersCloseStream.update(stream);
         }
         boolean isFile = stream.isFileStream();
         int last = streamStack.size() - 1;
@@ -359,9 +369,7 @@ public abstract class Moritz
         if (!(code instanceof Boxable)) {
             throw new HelpingException(localizer, "TTP.BoxExpected");
         }
-        Box box = ((Boxable) code).getBox(context, this, typesetter);
-
-        return box;
+        return ((Boxable) code).getBox(context, this, typesetter);
     }
 
     /**
@@ -525,8 +533,8 @@ public abstract class Moritz
      * @return the value of the integer scanned
      * @throws InterpreterException in case that no number is found or the
      *  end of file has been reached before an integer could be acquired
-     * @throws MissingNumberException 
-     *  in case that no number is found or the end of file has been
+     * @throws MissingNumberException in case that no number is found or
+     *  the end of file has been
      *  reached before an integer could be acquired
      */
     public long getNumber(final Token token)
@@ -687,7 +695,8 @@ public abstract class Moritz
      *
      * @throws InterpreterException in case of an error
      *
-     * @see de.dante.extex.interpreter.TokenSource#getToken(de.dante.extex.interpreter.context.Context)
+     * @see de.dante.extex.interpreter.TokenSource#getToken(
+     *      de.dante.extex.interpreter.context.Context)
      */
     public Token getToken(final Context context) throws InterpreterException {
 
@@ -703,8 +712,8 @@ public abstract class Moritz
                 while (stream != null) {
                     do {
                         t = stream.get(factory, tokenizer);
-                        if (t != null) {
-                            observersPop.update(this, t);
+                        if (t != null && observersPop != null) {
+                            observersPop.update(t);
                         }
                     } while (t != null && t instanceof SpaceToken);
 
@@ -726,7 +735,9 @@ public abstract class Moritz
                 while (stream != null) {
                     t = stream.get(factory, tokenizer);
                     if (t != null) {
-                        observersPop.update(this, t);
+                        if (observersPop != null) {
+                            observersPop.update(t);
+                        }
                         return t;
                     }
                     closeStream(context);
@@ -737,11 +748,8 @@ public abstract class Moritz
                 throw new InterpreterException(e);
             }
         }
-
-        try {
-            observersEOF.update(this, null);
-        } catch (GeneralException e) {
-            throw new InterpreterException(e);
+        if (observersEOF != null) {
+            observersEOF.update();
         }
         return null;
     }
@@ -805,12 +813,8 @@ public abstract class Moritz
      */
     public void push(final Token token) throws InterpreterException {
 
-        try {
-            observersPush.update(this, token);
-        } catch (InterpreterException e) {
-            throw e;
-        } catch (GeneralException e) {
-            throw new InterpreterException(e);
+        if (observersPush != null) {
+            observersPush.update(token);
         }
 
         if (stream == null) {
@@ -836,16 +840,13 @@ public abstract class Moritz
      */
     public void push(final Token[] tokens) throws InterpreterException {
 
-        try {
-            for (int i = tokens.length - 1; i >= 0; i--) {
+        for (int i = tokens.length - 1; i >= 0; i--) {
 
-                observersPush.update(this, tokens[i]);
-                stream.put(tokens[i]);
+            if (observersPush != null) {
+                observersPush.update(tokens[i]);
             }
-        } catch (InterpreterException e) {
-            throw e;
-        } catch (GeneralException e) {
-            throw new InterpreterException(e);
+
+            stream.put(tokens[i]);
         }
     }
 
@@ -879,72 +880,62 @@ public abstract class Moritz
             }
         }
 
-        try {
-            for (int i = tokens.length() - 1; i >= 0; i--) {
-                Token t = tokens.get(i);
-                observersPush.update(this, t);
-                stream.put(t);
+        for (int i = tokens.length() - 1; i >= 0; i--) {
+            Token t = tokens.get(i);
+            if (observersPush != null) {
+                observersPush.update(t);
             }
-        } catch (InterpreterException e) {
-            throw e;
-        } catch (GeneralException e) {
-            throw new InterpreterException(e);
+            stream.put(t);
         }
     }
 
     /**
-     * This method can be used to register observers for certain events.
+     * Add an observer for the eof event.
+     * This oberserver is triggered by an end of file on the token stream.
+     * This means that all tokens have been processed and all stream are at
+     * their end.
      *
-     * The following events are currently supported:
-     * <table>
-     *  <tr>
-     *   <th>Name</th>
-     *   <th>Description</th>
-     *  </tr>
-     *  <tr>
-     *   <td>pop</td>
-     *   <td>This observer is triggered by a pop operation on the token stream.
-     *    This means that a token has been extracted.
-     *   </td>
-     *  </tr>
-     *  <tr>
-     *   <td>push</td>
-     *   <td>This observer is triggered by a push operation on the token stream.
-     *    This means that a token has been placed on the current stream for
-     *    subsequent reading.
-     *   </td>
-     *  </tr>
-     *  <tr>
-     *   <td>EOF</td>
-     *   <td>This oberserver is triggered by an end of file on the token stream.
-     *    This means that all tokens have been processed and all stream are at
-     *    their end.
-     *   </td>
-     *  </tr>
-     *  <tr>
-     *   <td>close</td>
-     *   <td>This oberserver is triggered by a close on the token stream stack.
-     *   </td>
-     *  </tr>
-     * </table>
-     *
-     * @see de.dante.util.observer.Observable#registerObserver(java.lang.String,
-     *      de.dante.util.observer.Observer)
+     * @param observer the observer to add
      */
-    public void registerObserver(final String name, final Observer observer)
-            throws NotObservableException {
+    public void registerObserver(final EofObserver observer) {
 
-        if ("push".equals(name)) {
-            observersPush.add(observer);
-        } else if ("pop".equals(name)) {
-            observersPop.add(observer);
-        } else if ("EOF".equals(name)) {
-            observersEOF.add(observer);
-        } else if ("close".equals(name)) {
-            observersCloseStream.add(observer);
-        } else {
-            throw new NotObservableException(name);
-        }
+        observersEOF = EofObserverList.register(observersEOF, observer);
+    }
+
+    /**
+     * Add an observer for the pop event.
+     * This observer is triggered by a pop operation on the token stream.
+     * This means that a token has been extracted.
+     *
+     * @param observer the observer to add
+     */
+    public void registerObserver(final PopObserver observer) {
+
+        observersPop = PopObserverList.register(observersPop, observer);
+    }
+
+    /**
+     * Add an observer for the push event.
+     * This observer is triggered by a push operation on the token stream.
+     * This means that a token has been placed on the current stream for
+     * subsequent reading.
+     *
+     * @param observer the observer to add
+     */
+    public void registerObserver(final PushObserver observer) {
+
+        observersPush = PushObserverList.register(observersPush, observer);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.observer.streamClose.StreamCloseObservable#registerObserver(
+     *      de.dante.extex.interpreter.observer.streamClose.StreamCloseObserver)
+     */
+    public void registerObserver(final StreamCloseObserver observer) {
+
+        observersCloseStream = StreamCloseObserverList.register(
+                observersCloseStream, //
+                observer);
     }
 
     /**

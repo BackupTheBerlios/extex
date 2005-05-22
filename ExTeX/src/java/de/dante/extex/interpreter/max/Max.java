@@ -35,12 +35,25 @@ import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.ContextFactory;
+import de.dante.extex.interpreter.context.observer.afterGroup.SwitchObserver;
 import de.dante.extex.interpreter.exception.ErrorLimitException;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.CantUseInException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.loader.LoaderException;
 import de.dante.extex.interpreter.loader.SerialLoader;
+import de.dante.extex.interpreter.observer.error.ErrorObservable;
+import de.dante.extex.interpreter.observer.error.ErrorObserver;
+import de.dante.extex.interpreter.observer.error.ErrorObserverList;
+import de.dante.extex.interpreter.observer.expand.ExpandObservable;
+import de.dante.extex.interpreter.observer.expand.ExpandObserver;
+import de.dante.extex.interpreter.observer.expand.ExpandObserverList;
+import de.dante.extex.interpreter.observer.expandMacro.ExpandMacroObservable;
+import de.dante.extex.interpreter.observer.expandMacro.ExpandMacroObserver;
+import de.dante.extex.interpreter.observer.expandMacro.ExpandMacroObserverList;
+import de.dante.extex.interpreter.observer.load.LoadObservable;
+import de.dante.extex.interpreter.observer.load.LoadObserver;
+import de.dante.extex.interpreter.observer.load.LoadObserverList;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.PrefixCode;
@@ -75,11 +88,6 @@ import de.dante.util.configuration.ConfigurationWrapperException;
 import de.dante.util.framework.configuration.Configurable;
 import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.logger.LogEnabled;
-import de.dante.util.observer.NotObservableException;
-import de.dante.util.observer.Observable;
-import de.dante.util.observer.Observer;
-import de.dante.util.observer.ObserverList;
-import de.dante.util.observer.SwitchObserver;
 
 /**
  * This is a reference implementation for a <b>MA</b>cro e<b>X</b>pander. The
@@ -87,13 +95,16 @@ import de.dante.util.observer.SwitchObserver;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.70 $
+ * @version $Revision: 1.71 $
  */
 public class Max extends Moritz
         implements
             Interpreter,
             LogEnabled,
-            Observable,
+            ExpandObservable,
+            ExpandMacroObservable,
+            ErrorObservable,
+            LoadObservable,
             TokenVisitor {
 
     /**
@@ -170,20 +181,25 @@ public class Max extends Moritz
      * receive a notification when an error occurs. The argument is the
      * exception encountered.
      */
-    private ObserverList observersError = new ObserverList();
+    private ErrorObserver observersError = null;
 
     /**
      * This observer list is used for the observers which are registered to
      * receive a notification when a new token is about to be expanded. The
      * argument is the token to be expanded.
      */
-    private ObserverList observersExpand = new ObserverList();
+    private ExpandObserver observersExpand = null;
+
+    /**
+     * The field <tt>observersUndump</tt> contains the ...
+     */
+    private LoadObserver observersLoad = null;
 
     /**
      * This observer list is used for the observers which are registered to
      * receive a notification when a macro is expanded.
      */
-    private ObserverList observersMacro = new ObserverList();
+    private ExpandMacroObserver observersMacro = null;
 
     /**
      * This is the prefix for the next invocations.
@@ -339,23 +355,25 @@ public class Max extends Moritz
      */
     private void execute(final Switch onceMore) throws InterpreterException {
 
-        for (Token current = getToken(context); //
-        current != null && onceMore.isOn(); //
-        current = getToken(context)) {
-            try {
-                observersExpand.update(this, current);
-            } catch (InterpreterException e) {
-                throw e;
-            } catch (GeneralException e) {
-                throw new InterpreterException(e);
+        for (Token token = getToken(context); token != null; token = getToken(context)) {
+
+            if (observersExpand != null) {
+                observersExpand.update(token);
             }
             try {
-                current.visit(this, null);
+
+                token.visit(this, null);
+
             } catch (InterpreterException e) {
+
+                if (observersError != null) {
+                    observersError.update(e);
+                }
+
                 if (context.incrementErrorCount() > maxErrors) { // cf. TTP[82]
                     throw new ErrorLimitException(maxErrors);
                 } else if (errorHandler != null && //
-                        !errorHandler.handleError(e, current, this, context)) {
+                        !errorHandler.handleError(e, token, this, context)) {
                     throw e;
                 } else {
                     throw e;
@@ -364,6 +382,10 @@ public class Max extends Moritz
                 throw e;
             } catch (Exception e) {
                 throw new InterpreterException(e);
+            }
+
+            if (!onceMore.isOn()) {
+                return;
             }
         }
     }
@@ -375,13 +397,19 @@ public class Max extends Moritz
     public void execute(final Token token, final Context theContext,
             final Typesetter theTypesetter) throws InterpreterException {
 
+        if (observersExpand != null) {
+            observersExpand.update(token);
+        }
         try {
-
-            observersExpand.update(this, token);
 
             token.visit(this, null);
 
         } catch (InterpreterException e) {
+
+            if (observersError != null) {
+                observersError.update(e);
+            }
+
             if (theContext.incrementErrorCount() > maxErrors) { // cf. TTP[82]
                 throw new ErrorLimitException(maxErrors);
             } else if (errorHandler != null && //
@@ -414,14 +442,10 @@ public class Max extends Moritz
         Code code;
 
         while (t instanceof CodeToken) {
-            try {
-                observersMacro.update(this, t);
-                code = context.getCode((CodeToken) t);
-            } catch (InterpreterException e) {
-                throw e;
-            } catch (GeneralException e) {
-                throw new InterpreterException(e);
+            if (observersExpand != null) {
+                observersExpand.update(t);
             }
+            code = context.getCode((CodeToken) t);
             if (code instanceof ExpandableCode) {
                 ((ExpandableCode) code).expand(prefix, context, this,
                         typesetter);
@@ -533,6 +557,10 @@ public class Max extends Moritz
         newContext.setFontFactory(context.getFontFactory());
         newContext.setTokenFactory(context.getTokenFactory());
         context = newContext;
+
+        if (observersLoad != null) {
+            observersLoad.update(context);
+        }
     }
 
     /**
@@ -556,51 +584,44 @@ public class Max extends Moritz
     }
 
     /**
-     * This method can be used to register observers for certain events.
+     * Add an observer for the error event.
      *
-     * The following events are currently supported:
-     * <table>
-     *  <tr>
-     *   <th>Name</th>
-     *   <th>Description</th>
-     *  </tr>
-     *  <tr>
-     *   <td>error</td>
-     *   <td>in case of an error</td>
-     *  </tr>
-     *  <tr>
-     *   <td>expand</td>
-     *   <td>in case of an expansion</td>
-     *  </tr>
-     *  <tr>
-     *   <td>pop</td>
-     *   <td>inherited from the super class {@link Moritz Moritz}</td>
-     *  </tr>
-     *  <tr>
-     *   <td>push</td>
-     *   <td>inherited from the super class {@link Moritz Moritz}</td>
-     *  </tr>
-     *  <tr>
-     *   <td>EOF</td>
-     *   <td>inherited from the super class {@link Moritz Moritz}</td>
-     *  </tr>
-     * </table>
-     *
-     * @see de.dante.util.observer.Observable#registerObserver(java.lang.String,
-     *      de.dante.util.observer.Observer)
+     * @param observer the observer to add
      */
-    public void registerObserver(final String name, final Observer observer)
-            throws NotObservableException {
+    public void registerObserver(final ErrorObserver observer) {
 
-        if ("expand".equals(name)) {
-            observersExpand.add(observer);
-        } else if ("macro".equals(name)) {
-            observersExpand.add(observer);
-        } else if ("error".equals(name)) {
-            observersError.add(observer);
-        } else {
-            super.registerObserver(name, observer);
-        }
+        observersError = ErrorObserverList.register(observersError, observer);
+    }
+
+    /**
+     * Add an observer for the expand event.
+     *
+     * @param observer the observer to add
+     */
+    public void registerObserver(final ExpandMacroObserver observer) {
+
+        observersMacro = ExpandMacroObserverList.register(observersMacro,
+                observer);
+    }
+
+    /**
+     * Add an observer for the expand event.
+     *
+     * @param observer the observer to add
+     */
+    public void registerObserver(final ExpandObserver observer) {
+
+        observersExpand = ExpandObserverList
+                .register(observersExpand, observer);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.observer.load.LoadObservable#registerObserver(
+     *      de.dante.extex.interpreter.observer.undump.UndumpObserver)
+     */
+    public void registerObserver(final LoadObserver observer) {
+
+        observersLoad = LoadObserverList.register(observersLoad, observer);
     }
 
     /**
@@ -735,9 +756,9 @@ public class Max extends Moritz
      * @see de.dante.extex.interpreter.Interpreter#setTypesetter(
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void setTypesetter(final Typesetter theTypesetter) {
+    public void setTypesetter(final Typesetter typesetter) {
 
-        this.typesetter = theTypesetter;
+        this.typesetter = typesetter;
     }
 
     /**
@@ -809,8 +830,10 @@ public class Max extends Moritz
     public Object visitEscape(final ControlSequenceToken token,
             final Object ignore) throws GeneralException {
 
-        observersMacro.update(this, token);
         Code code = context.getCode(token);
+        if (observersMacro != null) {
+            observersMacro.update(token, code);
+        }
         if (code == null) {
             throw new HelpingException(getLocalizer(), "TTP.UndefinedToken", //
                     token.toString());
