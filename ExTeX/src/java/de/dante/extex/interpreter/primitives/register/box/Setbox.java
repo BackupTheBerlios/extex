@@ -48,13 +48,13 @@ import de.dante.extex.typesetter.Typesetter;
  * <p>
  *  Examples:
  *  <pre class="TeXSample">
- *    \setbox ...  </pre>
+ *    \setbox0\hbox{abc}  </pre>
  * </p>
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Setbox extends AbstractBox implements Code, Serializable {
 
