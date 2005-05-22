@@ -25,8 +25,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.logging.ConsoleHandler;
@@ -34,16 +36,33 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import de.dante.extex.ExTeX;
+import de.dante.extex.font.FontFactory;
+import de.dante.extex.font.exception.FontException;
 import de.dante.extex.interpreter.Interpreter;
+import de.dante.extex.interpreter.observer.expand.ExpandObservable;
+import de.dante.extex.interpreter.observer.expand.ExpandObserver;
+import de.dante.extex.interpreter.observer.pop.PopObservable;
+import de.dante.extex.interpreter.observer.pop.PopObserver;
+import de.dante.extex.interpreter.observer.push.PushObservable;
+import de.dante.extex.interpreter.observer.push.PushObserver;
+import de.dante.extex.interpreter.observer.streamClose.StreamCloseObservable;
+import de.dante.extex.interpreter.observer.streamClose.StreamCloseObserver;
 import de.dante.extex.main.exception.MainException;
 import de.dante.extex.main.exception.MainIOException;
 import de.dante.extex.main.exception.MainMissingArgumentException;
 import de.dante.extex.main.exception.MainUnknownOptionException;
 import de.dante.extex.main.inputHandler.TeXInputReader;
 import de.dante.extex.main.logging.LogFormatter;
+import de.dante.extex.main.observer.FileCloseObserver;
+import de.dante.extex.main.observer.TokenObserver;
+import de.dante.extex.main.observer.TokenPushObserver;
+import de.dante.extex.main.observer.TraceObserver;
 import de.dante.extex.main.queryFile.QueryFileHandler;
 import de.dante.extex.main.queryFile.QueryFileHandlerTeXImpl;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
+import de.dante.util.GeneralException;
+import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationFactory;
 import de.dante.util.configuration.ConfigurationUnsupportedEncodingException;
@@ -563,9 +582,9 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class TeX extends de.dante.extex.ExTeX {
+public class TeX extends ExTeX {
 
     /**
      * The constant <tt>COPYRIGHT_YEAR</tt> contains the starting year of
@@ -645,6 +664,16 @@ public class TeX extends de.dante.extex.ExTeX {
 
         System.exit(status);
     }
+
+    /**
+     * The field <tt>observers</tt> contains the observers.
+     * <p>
+     * NOTE: if weak references are used then the instances have to be kept
+     *       in some variables to avoid that the garbage collector does its
+     *       work.
+     * </p>
+     */
+    private List observers = new ArrayList();
 
     /**
      * The field <tt>queryFileHandler</tt> contains the instance of the handler
@@ -770,6 +799,52 @@ public class TeX extends de.dante.extex.ExTeX {
         getProperties().load(is);
 
         return true;
+    }
+
+    /**
+     * @see de.dante.extex.ExTeX#makeInterpreter(
+     *      de.dante.util.configuration.Configuration,
+     *      de.dante.extex.scanner.stream.TokenStreamFactory,
+     *      de.dante.extex.font.FontFactory)
+     */
+    protected Interpreter makeInterpreter(final Configuration config,
+            final TokenStreamFactory factory, final FontFactory fontFactory)
+            throws ConfigurationException,
+                GeneralException,
+                FontException {
+
+        Interpreter interpreter = super.makeInterpreter(config, factory,
+                fontFactory);
+        Logger logger = getLogger();
+
+        if (interpreter instanceof StreamCloseObservable) {
+            StreamCloseObserver observer = new FileCloseObserver(logger);
+            ((StreamCloseObservable) interpreter).registerObserver(observer);
+            observers.add(observer);
+        }
+        if (Boolean.valueOf(getProperties().getProperty(PROP_TRACE_TOKENIZER))
+                .booleanValue()) {
+
+            if (interpreter instanceof PopObservable) {
+                PopObserver observer = new TokenObserver(logger);
+                ((PopObservable) interpreter).registerObserver(observer);
+                observers.add(observer);
+            }
+            if (interpreter instanceof PushObservable) {
+                PushObserver observer = new TokenPushObserver(logger);
+                ((PushObservable) interpreter).registerObserver(observer);
+                observers.add(observer);
+            }
+        }
+        if (Boolean.valueOf(getProperties().getProperty(PROP_TRACE_MACROS))
+                .booleanValue()
+                && interpreter instanceof ExpandObservable) {
+            ExpandObserver observer = new TraceObserver(logger);
+            ((ExpandObservable) interpreter).registerObserver(observer);
+            observers.add(observer);
+        }
+
+        return interpreter;
     }
 
     /**
