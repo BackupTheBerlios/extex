@@ -78,7 +78,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Hbox extends AbstractCode implements Boxable {
 
@@ -152,7 +152,7 @@ public class Hbox extends AbstractCode implements Boxable {
      *
      * @return the complete Box
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      */
     private Box acquireBox(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
