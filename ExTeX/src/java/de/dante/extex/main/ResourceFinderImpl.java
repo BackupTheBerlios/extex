@@ -36,7 +36,7 @@ import de.dante.util.resource.ResourceFinder;
  * tries to find it via its super class.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class ResourceFinderImpl
         implements
@@ -127,17 +127,12 @@ public class ResourceFinderImpl
             logger.severe(localizer.format("CLI.PromptFile"));
             line = readLine();
 
-            if (line == null || line.equals("")) {
+            if (line == null) {
                 return null;
             }
-            if (line.charAt(0) == '\\') {
-                //TODO gene: make use of the line read
-                throw new RuntimeException("unimplemented");
-            } else {
-                InputStream stream = parent.findResource(line, type);
-                if (stream != null) {
-                    return stream;
-                }
+            InputStream stream = parent.findResource(line, type);
+            if (stream != null) {
+                return stream;
             }
         }
     }
