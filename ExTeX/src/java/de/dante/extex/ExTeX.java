@@ -68,12 +68,8 @@ import de.dante.extex.main.exception.MainException;
 import de.dante.extex.main.exception.MainIOException;
 import de.dante.extex.main.exception.MainUnknownInteractionException;
 import de.dante.extex.main.logging.LogFormatter;
-import de.dante.extex.main.observer.FileCloseObserver;
 import de.dante.extex.main.observer.FileOpenObserver;
 import de.dante.extex.main.observer.InteractionModeObserver;
-import de.dante.extex.main.observer.TokenObserver;
-import de.dante.extex.main.observer.TokenPushObserver;
-import de.dante.extex.main.observer.TraceObserver;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.extex.scanner.stream.TokenStreamOptions;
@@ -321,7 +317,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.101 $
+ * @version $Revision: 1.102 $
  */
 public class ExTeX {
 
@@ -476,6 +472,11 @@ public class ExTeX {
     protected static final String PROP_TOKEN_STREAM = "extex.token.stream";
 
     /**
+     * The field <tt>PROP_INTERNAL_STACKTRACE</tt> contains the ...
+     */
+    protected static final String PROP_INTERNAL_STACKTRACE = "extex.stacktrace.on.internal.error";
+
+    /**
      * The field <tt>PROP_TRACE_FONT_FILES</tt> contains the name of the
      * property for the Boolean determining whether or not the searching for
      * font files should produce tracing output.
@@ -535,12 +536,7 @@ public class ExTeX {
             final Throwable e) {
 
         logger.severe(text == null ? "" : text);
-
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-        PrintWriter writer = new PrintWriter(os);
-        e.printStackTrace(writer);
-        writer.flush();
-        logger.fine(os.toString());
+        logger.log(Level.FINE, "", e);
     }
 
     /**
@@ -625,6 +621,7 @@ public class ExTeX {
         propertyDefault(PROP_TRACE_MACROS, "");
         propertyDefault(PROP_TRACE_TOKENIZER, "");
         propertyDefault(PROP_TYPESETTER_TYPE, "");
+        propertyDefault(PROP_INTERNAL_STACKTRACE, "");
 
         showBanner = !Boolean.valueOf(properties.getProperty(PROP_NO_BANNER))
                 .booleanValue();
@@ -906,7 +903,10 @@ public class ExTeX {
      */
     protected void logInternalError(final Throwable e) {
 
-        e.printStackTrace();
+        if (Boolean.valueOf(properties.getProperty(PROP_INTERNAL_STACKTRACE))
+                .booleanValue()) {
+            e.printStackTrace();
+        }
 
         String msg = e.getLocalizedMessage();
         for (Throwable t = e; t != null && msg == null; t = t.getCause()) {
@@ -1054,6 +1054,7 @@ public class ExTeX {
 
     /**
      * Create a new interpreter.
+     *
      * @param config the configuration object for the interpreter
      * @param factory the factory for new token streams
      * @param fontFactory the font factory to request the default font from
@@ -1103,19 +1104,6 @@ public class ExTeX {
         context.getTypesettingContext().setLanguage(context.getLanguage("0"));
 
         initializeStreams(interpreter, properties);
-
-        //TODO gene: if weak references are used then the instances have to be kept in some variables:-(
-
-        interpreter.registerObserver("close", new FileCloseObserver(logger));
-        if (Boolean.valueOf(properties.getProperty(PROP_TRACE_TOKENIZER))
-                .booleanValue()) {
-            interpreter.registerObserver("pop", new TokenObserver(logger));
-            interpreter.registerObserver("push", new TokenPushObserver(logger));
-        }
-        if (Boolean.valueOf(properties.getProperty(PROP_TRACE_MACROS))
-                .booleanValue()) {
-            interpreter.registerObserver("macro", new TraceObserver(logger));
-        }
 
         return interpreter;
     }
@@ -1170,7 +1158,7 @@ public class ExTeX {
 
         factory.enableLogging(logger);
         factory.setResourceFinder(finder);
-        factory.registerObserver("file", new FileOpenObserver(logger));
+        factory.registerObserver(new FileOpenObserver(logger));
 
         return factory;
     }
