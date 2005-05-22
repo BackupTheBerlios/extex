@@ -17,7 +17,7 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.box;
+package de.dante.extex.interpreter.primitives.register.box;
 
 import de.dante.test.ExTeXLauncher;
 

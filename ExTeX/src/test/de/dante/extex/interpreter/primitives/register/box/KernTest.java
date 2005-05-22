@@ -17,7 +17,7 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.box;
+package de.dante.extex.interpreter.primitives.register.box;
 
 import java.util.Properties;
 
@@ -27,7 +27,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\kern</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.1 $
  */
 public class KernTest extends ExTeXLauncher {
 

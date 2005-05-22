@@ -17,7 +17,7 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.box;
+package de.dante.extex.interpreter.primitives.register.box;
 
 import de.dante.test.ExTeXLauncher;
 
@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\wd</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.1 $
  */
 public class WdTest extends ExTeXLauncher {
 
@@ -92,7 +92,7 @@ public class WdTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "0 \n");
+                "0 \n\n");
     }
 
     /**
@@ -114,7 +114,7 @@ public class WdTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "6.175pt \n"); // checked wih TeX
+                "6.175pt \n\n"); // checked wih TeX
     }
 
     /**
@@ -136,7 +136,7 @@ public class WdTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "18.52501pt \n"); // checked wih TeX
+                "18.52501pt \n\n"); // checked wih TeX
     }
 
     /**
@@ -158,6 +158,22 @@ public class WdTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "5.28589pt \n"); // checked wih TeX
+                "5.28589pt \n\n"); // checked wih TeX
     }
+
+    public void testWd21() throws Exception {
+
+        runCode(//--- input code ---
+                "\\catcode`{=1 "
+                + "\\catcode`}=2 "
+                + "\\count1=\\wd123 "
+                + "\\the\\count1"
+                + "\\end",
+                //--- log message ---
+                "",
+                //--- output channel ---
+                "0\n\n"); // checked wih TeX
+    }
+
+    
 }
