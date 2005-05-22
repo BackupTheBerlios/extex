@@ -29,6 +29,7 @@ import de.dante.extex.interpreter.context.observer.CountObserver;
 import de.dante.extex.interpreter.context.observer.DimenObserver;
 import de.dante.extex.interpreter.context.observer.InteractionObserver;
 import de.dante.extex.interpreter.context.observer.TokensObserver;
+import de.dante.extex.interpreter.context.observer.afterGroup.AfterGroupObserver;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.Code;
@@ -59,7 +60,6 @@ import de.dante.util.GeneralException;
 import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.ConfigurationException;
-import de.dante.util.observer.Observer;
 
 /**
  * This mock implementation of a context does nothing useful but provide dummy
@@ -67,7 +67,7 @@ import de.dante.util.observer.Observer;
  * classes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class MockContext implements Context, TypesetterOptions {
 
@@ -85,9 +85,9 @@ public class MockContext implements Context, TypesetterOptions {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.ContextGroup#afterGroup(de.dante.util.observer.Observer)
+     * @see de.dante.extex.interpreter.context.ContextGroup#afterGroup(AfterGroupObserver)
      */
-    public void afterGroup(final Observer observer) {
+    public void afterGroup(final AfterGroupObserver observer) {
 
         throw new RuntimeException("unimplemented");
     }

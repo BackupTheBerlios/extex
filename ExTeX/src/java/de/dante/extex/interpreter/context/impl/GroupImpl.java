@@ -29,6 +29,8 @@ import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.context.TypesettingContextImpl;
+import de.dante.extex.interpreter.context.observer.afterGroup.AfterGroupObserver;
+import de.dante.extex.interpreter.context.observer.afterGroup.AfterGroupObserverList;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.box.Box;
@@ -45,13 +47,8 @@ import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.CodeToken;
 import de.dante.extex.scanner.type.Token;
-import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.ConfigurationInstantiationException;
-import de.dante.util.observer.Observable;
-import de.dante.util.observer.Observer;
-import de.dante.util.observer.ObserverList;
 
 /**
  * This is a simple implementation for a group. The whole stack of groups is
@@ -60,7 +57,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.42 $
+ * @version $Revision: 1.43 $
  */
 public class GroupImpl implements Group, Tokenizer, Serializable {
 
@@ -108,7 +105,7 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
      * The field <tt>afterGroupObservers</tt> contains the listr of observers
      * to be invoked after the group has been closed.
      */
-    private transient ObserverList afterGroupObservers = new ObserverList();
+    private transient AfterGroupObserver afterGroupObservers = null;
 
     /**
      * The field <tt>boxMap</tt> contains the map for the boxes.
@@ -241,11 +238,12 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
 
     /**
      * @see de.dante.extex.interpreter.context.impl.Group#afterGroup(
-     *      de.dante.util.observer.Observer)
+     *      AfterGroupObserver)
      */
-    public void afterGroup(final Observer observer) {
+    public void afterGroup(final AfterGroupObserver observer) {
 
-        afterGroupObservers.add(observer);
+        afterGroupObservers = AfterGroupObserverList.register(
+                afterGroupObservers, observer);
     }
 
     /**
@@ -687,19 +685,12 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#runAfterGroup(
-     *      de.dante.util.observer.Observable,
-     *      de.dante.extex.typesetter.Typesetter)
+     * @see de.dante.extex.interpreter.context.impl.Group#runAfterGroup()
      */
-    public void runAfterGroup(final Observable observable,
-            final Typesetter typesetter) throws InterpreterException {
+    public void runAfterGroup() throws InterpreterException {
 
-        try {
-            afterGroupObservers.update(observable, typesetter);
-        } catch (InterpreterException e) {
-            throw e;
-        } catch (GeneralException e) {
-            throw new InterpreterException(e);
+        if (afterGroupObservers != null) {
+            afterGroupObservers.update();
         }
     }
 
