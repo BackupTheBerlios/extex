@@ -17,7 +17,7 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.register;
+package de.dante.extex.interpreter.type.dimen;
 
 import junit.framework.TestCase;
 import de.dante.extex.interpreter.Interpreter;
@@ -33,7 +33,7 @@ import de.dante.util.configuration.ConfigurationFactory;
  * Test cases for dimen registers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.1 $
  */
 public class DimenRegisterTest extends TestCase {
 
