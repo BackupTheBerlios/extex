@@ -70,7 +70,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class Wd extends Setbox
         implements
@@ -88,6 +88,29 @@ public class Wd extends Setbox
     public Wd(final String name) {
 
         super(name);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.count.CountConvertible#convertCount(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource, Typesetter)
+     */
+    public long convertCount(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
+
+        return convertDimen(context, source, typesetter);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.dimen.DimenConvertible#convertDimen(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource, Typesetter)
+     */
+    public long convertDimen(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
+
+        Box b = context.getBox(getKey(context, source));
+        return (b == null ? 0 : b.getWidth().getValue());
     }
 
     /**
@@ -139,29 +162,6 @@ public class Wd extends Setbox
         } catch (GeneralException e) {
             throw new InterpreterException(e);
         }
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.type.count.CountConvertible#convertCount(
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource, Typesetter)
-     */
-    public long convertCount(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws InterpreterException {
-
-        return convertDimen(context, source, typesetter);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.type.dimen.DimenConvertible#convertDimen(
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource, Typesetter)
-     */
-    public long convertDimen(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws InterpreterException {
-
-        Box b = context.getBox(getKey(context, source));
-        return (b == null ? 0 : b.getWidth().getValue());
     }
 
 }
