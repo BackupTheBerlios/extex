@@ -29,7 +29,7 @@ import java.util.logging.LogRecord;
  * This implementation simply uses the messages as delivered.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class LogFormatter extends Formatter {
 
@@ -61,7 +61,7 @@ public class LogFormatter extends Formatter {
 
         Throwable t = record.getThrown();
         if (t != null) {
-            return format(t);
+            return format(t, record.getMessage());
         }
 
         StringBuffer msg = new StringBuffer(record.getMessage());
@@ -74,9 +74,9 @@ public class LogFormatter extends Formatter {
                 msg.deleteCharAt(0);
             }
             /*
-        } else if (msg.charAt(0) != ' ') {
-            msg.insert(0, ' ');
-            */
+             } else if (msg.charAt(0) != ' ') {
+             msg.insert(0, ' ');
+             */
         }
         int idx = msg.lastIndexOf("\n");
         if (idx >= 0) {
@@ -98,12 +98,15 @@ public class LogFormatter extends Formatter {
      * Format any throwable into a printable format.
      *
      * @param t the throwable to log
+     * @param prefix the prefix to prepend before the stack trace
+     *
      * @return the printed stack trace
      */
-    private String format(final Throwable t) {
+    private String format(final Throwable t, final String prefix) {
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         PrintWriter writer = new PrintWriter(os);
+        writer.write(prefix);
         writer.write("\n");
         t.printStackTrace(writer);
         writer.write("\n");
