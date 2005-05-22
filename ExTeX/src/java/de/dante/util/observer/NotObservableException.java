@@ -26,7 +26,7 @@ import de.dante.util.GeneralException;
  * requested to be registered.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class NotObservableException extends GeneralException {
 
@@ -65,10 +65,20 @@ public class NotObservableException extends GeneralException {
      * Provides the message for this Exception.
      *
      * @return the message for this exception
+     *
+     * @see java.lang.Throwable#getLocalizedMessage()
      */
     public String getLocalizedMessage() {
 
         return getLocalizer().format("NotObservableException.Text",
                 super.getMessage());
+    }
+
+    /**
+     * @see java.lang.Throwable#getMessage()
+     */
+    public String getMessage() {
+
+        return getLocalizedMessage();
     }
 }
