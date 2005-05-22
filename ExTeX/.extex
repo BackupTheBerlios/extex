@@ -100,6 +100,11 @@ extex.fonts = src/font
 ##    shown in the banner and the version information.
 ##-----------------------------------------------------------------------------
 ##
+#extex.stacktrace.on.internal.error = true
+##    This parameter can be used to force a stacktrace on stdout if an
+##    internal error is encountered. This is handy for development.
+##-----------------------------------------------------------------------------
+##
 #extex.texinputs =
 ##    This parameter contains the additional directories for searching
 ##    TeX input files.
