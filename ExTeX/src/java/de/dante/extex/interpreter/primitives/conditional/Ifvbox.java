@@ -56,7 +56,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Ifvbox extends AbstractIf {
     /**
@@ -78,8 +78,7 @@ public class Ifvbox extends AbstractIf {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String key = AbstractBox.getKey(//
-                Long.toString(source.scanNumber(context)), context, source);
+        String key = AbstractBox.getKey(context, source);
         Box box = context.getBox(key);
         return (box != null && box.isVbox());
     }
