@@ -17,15 +17,15 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.parameter;
+package de.dante.extex.interpreter.primitives.math.delimiter;
 
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractAssignment;
-import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.type.MathDelimiter;
 import de.dante.util.UnicodeChar;
 
 /**
@@ -57,7 +57,7 @@ import de.dante.util.UnicodeChar;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.1 $
  */
 public class Delcode extends AbstractAssignment {
 
@@ -72,7 +72,8 @@ public class Delcode extends AbstractAssignment {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Code#execute(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.type.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
@@ -83,9 +84,8 @@ public class Delcode extends AbstractAssignment {
 
         UnicodeChar charCode = source.scanCharacterCode(context);
         source.getOptionalEquals(context);
-        Count sfCode = new Count(source.scanInteger(context));
-
-        context.setDelcode(charCode, sfCode, prefix.isGlobal());
+        MathDelimiter del = MathDelimiter.parse(context, source);
+        context.setDelcode(charCode, del, prefix.isGlobal());
     }
 
 }

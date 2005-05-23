@@ -108,7 +108,7 @@
   <define name="defaultskewchar"
           class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
   <define name="delcode"
-          class="de.dante.extex.interpreter.primitives.parameter.Delcode"/>
+          class="de.dante.extex.interpreter.primitives.math.delimiter.Delcode"/>
   <define name="delimiter"
           class="de.dante.extex.interpreter.primitives.math.delimiter.Delimiter"/>
   <define name="delimiterfactor"
