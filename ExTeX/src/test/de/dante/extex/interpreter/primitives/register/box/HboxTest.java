@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\hbox</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class HboxTest extends ExTeXLauncher {
 
@@ -40,8 +40,10 @@ public class HboxTest extends ExTeXLauncher {
     }
 
     /**
-     * Test case checking that a missing left brace directly after the macro
-     * token leads to an error.
+     * <testcase primitive="hbox">
+     *   Test case checking that a missing left brace directly after the macro
+     *   token leads to an error.
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -60,8 +62,10 @@ public class HboxTest extends ExTeXLauncher {
     }
 
     /**
-     * Test case checking that a missing left brace after a "to" specification
-     * leads to an error.
+     * <testcase primitive="hbox">
+     *   Test case checking that a missing left brace after a "to" specification
+     *   leads to an error.
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -80,27 +84,10 @@ public class HboxTest extends ExTeXLauncher {
     }
 
     /**
-     * Test case checking that a missing left brace after a "spread"
-     * specification leads to an error.
-     *
-     * @throws Exception in case of an error
-     */
-    public void testMissingBrace3() throws Exception {
-
-        runCode(//--- input code ---
-                "\\catcode`{=1"
-                + "\\catcode`}=2"
-                + ""
-                + "\\hbox spread 2pt a"
-                + "\\end ",
-                //--- log message ---
-                "Missing `{' inserted",
-                //--- output channel ---
-                "");
-    }
-
-    /**
-     * Test case checking that an outer macro in the preamble leads to an error.
+     * <testcase primitive="hbox">
+     *   Test case checking that an outer macro in the preamble leads to an
+     *   error.
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -116,5 +103,73 @@ public class HboxTest extends ExTeXLauncher {
                 //--- output channel ---
                 "");
     }
+
+    /**
+     * <testcase primitive="hbox">
+     *   Test case checking that a correct hbox passes its contents to the
+     *   typesetter.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testHbox1() throws Exception {
+
+        runCode(//--- input code ---
+                "\\catcode`{=1"
+                + "\\catcode`}=2 "
+                + "\\font\\fnt cmtt12 \\fnt"
+                + "\\hbox{abc}"
+                + "\\end ",
+                //--- log message ---
+                "",
+                //--- output channel ---
+                "abc\n\n");
+    }
+
+    /**
+     * <testcase primitive="hbox">
+     *   Test case checking that an outer macro in the preamble leads to an
+     *   error.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testHbox2() throws Exception {
+
+        runCode(//--- input code ---
+                "\\catcode`{=1"
+                + "\\catcode`}=2"
+                + ""
+                + "\\hbox{}",
+                //--- log message ---
+                "",
+                //--- output channel ---
+                "\n\n");
+    }
+
+    /**
+     * <testcase primitive="hbox">
+     *   Test case checking that a hbox containing "abc" in font cmtt12 has the
+     *   width 18.52501pt. This value has been computed with <logo>TeX</logo>.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testHbox3() throws Exception {
+
+        runCode(//--- input code ---
+                "\\catcode`{=1"
+                + "\\catcode`}=2"
+                + "\\relax"
+                + "\\font\\fnt cmtt12 \\fnt"
+                + "\\setbox1=\\hbox{abc} "
+                + "\\the\\wd1 "
+                + "\\end",
+                //--- log message ---
+                "",
+                //--- output channel ---
+                "18.52501pt \n\n"); // checked wih TeX
+    }
+
 
 }
