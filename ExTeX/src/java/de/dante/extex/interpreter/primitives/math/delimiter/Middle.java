@@ -50,7 +50,7 @@ import de.dante.extex.typesetter.type.MathDelimiter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Middle extends AbstractMathCode {
 
@@ -76,7 +76,7 @@ public class Middle extends AbstractMathCode {
             throws InterpreterException {
 
         NoadConsumer nc = getListMaker(context, typesetter);
-        MathDelimiter del = new MathDelimiter(context, source);
+        MathDelimiter del = MathDelimiter.parse(context, source);
         nc.left(del);
     }
 

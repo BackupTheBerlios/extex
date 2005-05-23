@@ -52,7 +52,7 @@ import de.dante.extex.typesetter.type.MathDelimiter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Atopwithdelims extends AbstractMathCode {
 
@@ -78,8 +78,8 @@ public class Atopwithdelims extends AbstractMathCode {
             throws InterpreterException {
 
         NoadConsumer nc = getListMaker(context, typesetter);
-        MathDelimiter del1 = new MathDelimiter(context, source);
-        MathDelimiter del2 = new MathDelimiter(context, source);
+        MathDelimiter del1 = MathDelimiter.parse(context, source);
+        MathDelimiter del2 = MathDelimiter.parse(context, source);
 
         nc.switchToFraction(del1, del2, Dimen.ZERO_PT);
     }

@@ -72,6 +72,7 @@ import de.dante.extex.scanner.type.TokenFactory;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
+import de.dante.extex.typesetter.type.MathDelimiter;
 import de.dante.util.GeneralException;
 import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
@@ -81,9 +82,6 @@ import de.dante.util.configuration.ConfigurationMissingException;
 import de.dante.util.framework.configuration.Configurable;
 import de.dante.util.framework.i18n.Localizable;
 import de.dante.util.framework.i18n.Localizer;
-import de.dante.util.observer.NotObservableException;
-import de.dante.util.observer.Observable;
-import de.dante.util.observer.Observer;
 
 /**
  * This is a reference implementation for an interpreter context.
@@ -120,7 +118,7 @@ import de.dante.util.observer.Observer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.80 $
+ * @version $Revision: 1.81 $
  */
 public class ContextImpl
         implements
@@ -378,17 +376,17 @@ public class ContextImpl
                 .getConfiguration(TYPESETTING_CONTEXT_TAG);
 
         /*
-        if (hyphenationManager instanceof Configurable) {
-            Configuration config = configuration
-                    .getConfiguration(HYPHENATION_MANAGER_TAG);
+         if (hyphenationManager instanceof Configurable) {
+         Configuration config = configuration
+         .getConfiguration(HYPHENATION_MANAGER_TAG);
 
-            if (config == null) {
-                throw new ConfigurationMissingException(
-                        HYPHENATION_MANAGER_TAG, configuration.toString());
-            }
-            ((Configurable) hyphenationManager).configure(config);
-        }
-        */
+         if (config == null) {
+         throw new ConfigurationMissingException(
+         HYPHENATION_MANAGER_TAG, configuration.toString());
+         }
+         ((Configurable) hyphenationManager).configure(config);
+         }
+         */
 
         if (typesettingConfig == null) {
             throw new ConfigurationMissingException(TYPESETTING_CONTEXT_TAG,
@@ -509,7 +507,7 @@ public class ContextImpl
      * @see de.dante.extex.interpreter.context.Context#getDelcode(
      *      de.dante.util.UnicodeChar)
      */
-    public Count getDelcode(final UnicodeChar c) {
+    public MathDelimiter getDelcode(final UnicodeChar c) {
 
         return group.getDelcode(c);
     }
@@ -691,11 +689,14 @@ public class ContextImpl
     }
 
     /**
+     * Getter for the parshape.
+     * The parshape is a feature of the context which does not interact with
+     * the grouping mechanism.
+     *
      * @see de.dante.extex.interpreter.context.Context#getParshape()
      */
     public ParagraphShape getParshape() {
 
-        //TODO gene: How does \parshape interact with groups?
         return this.parshape;
     }
 
@@ -1116,12 +1117,12 @@ public class ContextImpl
     /**
      * @see de.dante.extex.interpreter.context.Context#setDelcode(
      *      de.dante.util.UnicodeChar,
-     *      de.dante.extex.interpreter.type.count.Count, boolean)
+     *      MathDelimiter, boolean)
      */
-    public void setDelcode(final UnicodeChar c, final Count code,
+    public void setDelcode(final UnicodeChar c, final MathDelimiter delimiter,
             final boolean global) {
 
-        group.setDelcode(c, code, global);
+        group.setDelcode(c, delimiter, global);
     }
 
     /**

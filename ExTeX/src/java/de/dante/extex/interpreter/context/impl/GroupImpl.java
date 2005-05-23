@@ -47,6 +47,7 @@ import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.CodeToken;
 import de.dante.extex.scanner.type.Token;
+import de.dante.extex.typesetter.type.MathDelimiter;
 import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.ConfigurationInstantiationException;
 
@@ -57,14 +58,9 @@ import de.dante.util.configuration.ConfigurationInstantiationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.43 $
+ * @version $Revision: 1.44 $
  */
 public class GroupImpl implements Group, Tokenizer, Serializable {
-
-    /**
-     * The constant <tt>DELCODE_DEFAULT</tt> contains the default delcode.
-     */
-    private static final Count DELCODE_DEFAULT = new ImmutableCount(-1);
 
     /**
      * The constant <tt>INVALID_CHAR_CODE</tt> contains the code for an
@@ -377,18 +373,18 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
      * @see de.dante.extex.interpreter.context.impl.Group#getDelcode(
      *      de.dante.util.UnicodeChar)
      */
-    public Count getDelcode(final UnicodeChar c) {
+    public MathDelimiter getDelcode(final UnicodeChar c) {
 
-        Count delcode = (Count) (delcodeMap.get(c));
+        MathDelimiter delcode = (MathDelimiter) (delcodeMap.get(c));
 
         if (delcode != null) {
             return delcode;
         } else if (next != null) {
-            return next.getSfcode(c);
+            return next.getDelcode(c);
         }
 
         // Fallback for predefined delcodes
-        return DELCODE_DEFAULT;
+        return null;
 
     }
 
@@ -756,9 +752,9 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     /**
      * @see de.dante.extex.interpreter.context.impl.Group#setDelcode(
      *      de.dante.util.UnicodeChar,
-     *      de.dante.extex.interpreter.type.count.Count, boolean)
+     *      MathDelimiter, boolean)
      */
-    public void setDelcode(final UnicodeChar c, final Count code,
+    public void setDelcode(final UnicodeChar c, final MathDelimiter code,
             final boolean global) {
 
         delcodeMap.put(c, code);

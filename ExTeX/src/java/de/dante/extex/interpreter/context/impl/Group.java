@@ -40,6 +40,7 @@ import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.CodeToken;
 import de.dante.extex.scanner.type.Token;
+import de.dante.extex.typesetter.type.MathDelimiter;
 import de.dante.util.UnicodeChar;
 
 /**
@@ -53,7 +54,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
 public interface Group extends Tokenizer, Serializable {
 
@@ -136,7 +137,7 @@ public interface Group extends Tokenizer, Serializable {
      *
      * @return the delcode for the given character
      */
-    Count getDelcode(UnicodeChar uc);
+    MathDelimiter getDelcode(UnicodeChar uc);
 
     /**
      * Getter for the named dimen register in the current group. The name can
@@ -403,7 +404,7 @@ public interface Group extends Tokenizer, Serializable {
      * @param global the indicator for the scope; <code>true</code> means all
      *            groups; otherwise the current group is affected only
      */
-    void setDelcode(UnicodeChar uc, Count code, boolean global);
+    void setDelcode(UnicodeChar uc, MathDelimiter code, boolean global);
 
     /**
      * Setter for a dimen register in the requested groups.

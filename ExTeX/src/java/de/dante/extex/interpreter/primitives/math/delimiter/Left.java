@@ -39,7 +39,7 @@ import de.dante.extex.typesetter.type.MathDelimiter;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    &lang;span&rang;
+ *    &lang;left&rang;
  *       &rarr; <tt>\left</tt>  </pre>
  * </p>
  * <p>
@@ -50,7 +50,7 @@ import de.dante.extex.typesetter.type.MathDelimiter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Left extends AbstractMathCode {
 
@@ -76,7 +76,7 @@ public class Left extends AbstractMathCode {
             throws InterpreterException {
 
         NoadConsumer nc = getListMaker(context, typesetter);
-        MathDelimiter del = new MathDelimiter(context, source);
+        MathDelimiter del = MathDelimiter.parse(context, source);
         nc.left(del);
     }
 

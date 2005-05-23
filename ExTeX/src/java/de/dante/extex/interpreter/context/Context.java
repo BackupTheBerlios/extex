@@ -37,6 +37,7 @@ import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.scanner.type.TokenFactory;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
+import de.dante.extex.typesetter.type.MathDelimiter;
 import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.ConfigurationException;
@@ -47,7 +48,7 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.53 $
+ * @version $Revision: 1.54 $
  */
 public interface Context
         extends
@@ -122,7 +123,7 @@ public interface Context
      *
      * @return the delcode for the given character
      */
-    Count getDelcode(UnicodeChar c);
+    MathDelimiter getDelcode(UnicodeChar c);
 
     /**
      * Getter for a glue register.
@@ -307,11 +308,11 @@ public interface Context
      * Setter for the delimiter code mapping.
      *
      * @param c the character to which the delcode is assigned
-     * @param code the del code
+     * @param delimiter the delimiter code
      * @param global the indicator for the scope; <code>true</code> means all
      *            groups; otherwise the current group is affected only
      */
-    void setDelcode(UnicodeChar c, Count code, boolean global);
+    void setDelcode(UnicodeChar c, MathDelimiter delimiter, boolean global);
 
     /**
      * Setter for a glue register.
