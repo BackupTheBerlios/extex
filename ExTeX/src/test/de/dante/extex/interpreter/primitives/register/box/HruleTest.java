@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -27,7 +27,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\hrule</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class HruleTest extends ExTeXLauncher {
 
@@ -42,11 +42,13 @@ public class HruleTest extends ExTeXLauncher {
     }
 
     /**
-     * Test case checking that a \hrule can stand by itself.
+     * <testcase primitive="hbox">
+     *   Test case checking that a <tt>\hrule</tt> can stand by itself.
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
-    public void testMissingBrace1() throws Exception {
+    public void test1() throws Exception {
 
         Properties properties = System.getProperties();
         properties.setProperty("extex.output", "dump");
@@ -59,8 +61,8 @@ public class HruleTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "\\vbox(0.4pt+0.0pt)x0.0pt\n.\\rule(0.4pt+0.0pt)x0.0pt\n");
-        //TODO is this correct?
+                "\\vbox(0.4pt+0.0pt)x0.0pt\n.\\rule0.4pt+0.0ptx0.0pt\n");
+        //TODO gene: is this correct?
     }
 
 }
