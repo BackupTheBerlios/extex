@@ -19,12 +19,14 @@
 
 package de.dante.extex.interpreter.primitives.typesetter.box;
 
-import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.primitives.register.box.AbstractBox;
+import de.dante.extex.interpreter.type.box.Box;
+import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.type.Node;
+import de.dante.extex.typesetter.type.NodeList;
 
 /**
  * This class provides an implementation for the primitive <code>\vtop</code>.
@@ -35,22 +37,35 @@ import de.dante.extex.typesetter.Typesetter;
  *  TODO missing documentation
  * </p>
  * <p>
+ *  The contents of the toks register <tt>\everyvbox</tt> is inserted at the
+ *  beginning of the vertical material of the box.
+ * </p>
+ * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;vtop&rang;
- *       &rarr; <tt>\vtop</tt>  </pre>
+ *      &rarr; <tt>\vtop</tt> &lang;box specification&rang; <tt>{</tt> &lang;vertical material&rang; <tt>{</tt>
+ *
+ *    &lang;box specification&rang;
+ *      &rarr;
+ *         | <tt>to</tt> &lang;rule dimension&rang;
+ *         | <tt>spread</tt> &lang;rule dimension&rang;  </pre>
  * </p>
  * <p>
  *  Examples:
  *  <pre class="TeXSample">
- *    \vtop  </pre>
+ *    \vtop{abc}  </pre>
+ *  <pre class="TeXSample">
+ *    \vtop to 120pt{abc}  </pre>
+ *  <pre class="TeXSample">
+ *    \vtop spread 12pt{abc}  </pre>
  * </p>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
-public class Vtop extends AbstractBox {
+public class Vtop extends Vbox {
 
     /**
      * Creates a new object.
@@ -63,18 +78,26 @@ public class Vtop extends AbstractBox {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Code#execute(
-     *      de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.primitives.typesetter.box.Vbox#constructBox(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(final Flags prefix, final Context context,
-            final TokenSource source, final Typesetter typesetter)
-            throws InterpreterException {
+    protected Box constructBox(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
 
-        //TODO gene: execute() unimplemented
-        throw new RuntimeException("unimplemented");
+        Box box = acquireBox(context, source, typesetter);
+        NodeList nodes = box.getNodes();
+        Dimen depth = new Dimen(box.getDepth());
+        depth.add(box.getHeight());
+        if (nodes.size() > 0) {
+            Node top = nodes.get(0);
+            Dimen height = top.getHeight();
+            box.setHeight(height);
+            depth.subtract(height);
+            box.setDepth(depth);
+        }
+        return box;
     }
 
 }

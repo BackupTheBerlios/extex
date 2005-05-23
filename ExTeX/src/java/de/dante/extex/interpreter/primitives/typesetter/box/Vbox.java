@@ -32,6 +32,8 @@ import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.type.Node;
+import de.dante.extex.typesetter.type.NodeList;
 import de.dante.util.GeneralException;
 
 /**
@@ -78,7 +80,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Vbox extends AbstractCode implements Boxable {
 
@@ -124,20 +126,50 @@ public class Vbox extends AbstractCode implements Boxable {
         try {
             if (source.getKeyword(context, "to")) {
                 Dimen d = new Dimen(context, source);
-                box = acquireBox(context, source, typesetter);
+                box = constructBox(context, source, typesetter);
                 box.setHeight(d);
             } else if (source.getKeyword(context, "spread")) {
                 Dimen d = new Dimen(context, source);
-                box = acquireBox(context, source, typesetter);
+                box = constructBox(context, source, typesetter);
                 box.spreadHeight(d);
             } else {
-                box = acquireBox(context, source, typesetter);
+                box = constructBox(context, source, typesetter);
             }
         } catch (EofException e) {
             throw new EofException(printableControlSequence(context));
         } catch (MissingLeftBraceException e) {
             throw new MissingLeftBraceException(
                     printableControlSequence(context));
+        }
+        return box;
+    }
+
+    /**
+     * Acquire a Box and adjust its height and depth according to the rules
+     * required.
+     *
+     * @param context the interpreter context
+     * @param source the source for new tokens
+     * @param typesetter the typesetter
+     *
+     * @return the complete Box
+     *
+     * @throws InterpreterException in case of an error
+     */
+    protected Box constructBox(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
+
+        Box box = acquireBox(context, source, typesetter);
+        NodeList nodes = box.getNodes();
+        Dimen depth = new Dimen(box.getDepth());
+        depth.add(box.getHeight());
+        int size = nodes.size();
+        if (size > 0) {
+            Node top = nodes.get(size - 1);
+            Dimen height = top.getHeight();
+            box.setHeight(height);
+            depth.subtract(height);
+            box.setDepth(depth);
         }
         return box;
     }
@@ -154,7 +186,7 @@ public class Vbox extends AbstractCode implements Boxable {
      *
      * @throws InterpreterException in case of an error
      */
-    private Box acquireBox(final Context context, final TokenSource source,
+    protected Box acquireBox(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
         Tokens toks = context.getToks("everyvbox");
