@@ -24,6 +24,7 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.primitives.register.box.AbstractBox;
+import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.typesetter.Typesetter;
 
 /**
@@ -38,17 +39,17 @@ import de.dante.extex.typesetter.Typesetter;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;vadjust&rang;
- *       &rarr; <tt>\vadjust</tt>  </pre>
+ *       &rarr; <tt>\vadjust</tt> ... </pre>
  * </p>
  * <p>
  *  Examples:
  *  <pre class="TeXSample">
- *    \vadjust  </pre>
+ *    \vadjust{\kern2pt}  </pre>
  * </p>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Vadjust extends AbstractBox {
 
@@ -72,6 +73,8 @@ public class Vadjust extends AbstractBox {
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
+
+        Box b = new Box(context, source, typesetter, false, null);
 
         //TODO gene: execute() unimplemented
         throw new RuntimeException("unimplemented");
