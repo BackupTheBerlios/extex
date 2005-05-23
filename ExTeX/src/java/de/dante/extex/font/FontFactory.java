@@ -63,7 +63,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class FontFactory implements Serializable {
 
@@ -323,16 +323,16 @@ public class FontFactory implements Serializable {
         }
 
         ModifiableFount fount = (ModifiableFount) (fountmap.get(key));
-        if (fount == null) {
-
-            //                Document doc = new Document(vf.getFontMetric());
-            //    
-            //                fount = loadFontClass(vf.getFontname(), size, scale, letterspaced,
-            //                        ligatures, kerning, doc);
-            //    
-            //                // store fount
-            //                fountmap.put(key, fount);
-        }
+        //        if (fount == null) {
+        //
+        //                Document doc = new Document(vf.getFontMetric());
+        //
+        //                fount = loadFontClass(vf.getFontname(), size, scale, letterspaced,
+        //                        ligatures, kerning, doc);
+        //
+        //                // store fount
+        //                fountmap.put(key, fount);
+        //        }
         return new VirtualFontImpl(fount);
     }
 
@@ -401,6 +401,39 @@ public class FontFactory implements Serializable {
     private static final String AFMEXTENSION = "afm";
 
     /**
+     * the reader for psfont.map
+     */
+    private PSFontsMapReader psfm;
+
+    /**
+     * encoder factory
+     */
+    private EncFactory ef;
+
+    /**
+     * Returns the psfontmapreader.
+     * @throws FontException if a font-error occurs.
+     * @throws ConfigurationException from the config-system.
+     * @return Returns the psfm.
+     */
+    public PSFontsMapReader getPsfm() throws FontException,
+            ConfigurationException {
+
+        if (psfm == null) {
+            ef = new EncFactory(finder);
+
+            // psfonts.map
+            InputStream psin = finder.findResource("psfonts.map", "");
+
+            if (psin == null) {
+                throw new FontMapNotFoundException();
+            }
+            psfm = new PSFontsMapReader(psin);
+        }
+        return psfm;
+    }
+
+    /**
      * Read a tfm-font.
      *
      * @param name  the name of the tfm-file
@@ -420,23 +453,13 @@ public class FontFactory implements Serializable {
 
             if (fontfile != null) {
 
-                EncFactory ef = new EncFactory(finder);
-
-                // psfonts.map
-                InputStream psin = finder.findResource("psfonts.map", "");
-
-                if (psin == null) {
-                    throw new FontMapNotFoundException();
-                }
-
                 try {
-                    PSFontsMapReader psfm = new PSFontsMapReader(psin);
                     String fontname = name.replaceAll("\\.tfm|\\.TFM", "");
 
                     font = new TFMFont(new RandomAccessInputStream(fontfile),
                             fontname);
 
-                    font.setFontMapEncoding(psfm, ef);
+                    font.setFontMapEncoding(getPsfm(), ef);
 
                 } catch (IOException e) {
                     throw new FontIOException(e.getMessage());
@@ -466,23 +489,13 @@ public class FontFactory implements Serializable {
 
             if (fontfile != null) {
 
-                //                EncFactory ef = new EncFactory(finder);
-                //
-                //                // psfonts.map
-                //                InputStream psin = finder.findResource("psfonts.map", "");
-                //
-                //                if (psin == null) {
-                //                    throw new FontMapNotFoundException();
-                //                }
-
                 try {
-                    //                    PSFontsMapReader psfm = new PSFontsMapReader(psin);
                     String fontname = name.replaceAll("\\.vf|\\.VF", "");
 
                     font = new VFFont(new RandomAccessInputStream(fontfile),
                             fontname, this);
 
-                    //                    font.setFontMapEncoding(psfm, ef);
+                    //font.setFontMapEncoding(getPsfm(), ef);
 
                 } catch (IOException e) {
                     throw new FontIOException(e.getMessage());
@@ -534,30 +547,15 @@ public class FontFactory implements Serializable {
 
                     if (tfmfile != null) {
 
-                        EncFactory ef = new EncFactory(finder);
-
-                        // psfonts.map
-                        InputStream psin = finder.findResource("psfonts.map",
-                                "");
-
-                        if (psin == null) {
-                            throw new FontMapNotFoundException();
-                        }
-
                         try {
-                            PSFontsMapReader psfm = new PSFontsMapReader(psin);
                             String fontname = name.replaceAll("\\.tfm|\\.TFM",
                                     "");
 
-                            // // TFM-Reader
-                            // TFMReader tfmr = new TFMReader(tfmfile, fontname, psfm,
-                            // ef);
-                            // TFM-font
                             TFMFont font = new TFMFont(
                                     new RandomAccessInputStream(tfmfile),
                                     fontname);
 
-                            font.setFontMapEncoding(psfm, ef);
+                            font.setFontMapEncoding(getPsfm(), ef);
 
                             doc = new Document(font.getFontMetric());
 
@@ -592,4 +590,5 @@ public class FontFactory implements Serializable {
         }
         return doc;
     }
+
 }
