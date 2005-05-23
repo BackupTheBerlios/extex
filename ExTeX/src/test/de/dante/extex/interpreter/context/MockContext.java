@@ -56,6 +56,7 @@ import de.dante.extex.scanner.type.TokenFactoryImpl;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
+import de.dante.extex.typesetter.type.MathDelimiter;
 import de.dante.util.GeneralException;
 import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
@@ -67,7 +68,7 @@ import de.dante.util.configuration.ConfigurationException;
  * classes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class MockContext implements Context, TypesetterOptions {
 
@@ -193,7 +194,7 @@ public class MockContext implements Context, TypesetterOptions {
     /**
      * @see de.dante.extex.interpreter.context.Context#getDelcode(de.dante.util.UnicodeChar)
      */
-    public Count getDelcode(final UnicodeChar c) {
+    public MathDelimiter getDelcode(final UnicodeChar c) {
 
         throw new RuntimeException("unimplemented");
     }
@@ -535,9 +536,9 @@ public class MockContext implements Context, TypesetterOptions {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setDelcode(de.dante.util.UnicodeChar, de.dante.extex.interpreter.type.count.Count, boolean)
+     * @see de.dante.extex.interpreter.context.Context#setDelcode(de.dante.util.UnicodeChar, MathDelimiter, boolean)
      */
-    public void setDelcode(final UnicodeChar c, final Count code,
+    public void setDelcode(final UnicodeChar c, final MathDelimiter delimiter,
             final boolean global) {
 
         throw new RuntimeException("unimplemented");
