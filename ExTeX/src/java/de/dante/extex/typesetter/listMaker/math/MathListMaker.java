@@ -67,7 +67,7 @@ import de.dante.util.UnicodeChar;
  * This is the list maker for the inline math formulae.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class MathListMaker extends AbstractListMaker implements NoadConsumer {
 
@@ -76,7 +76,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      * It is used to store to the stack and restore the state from the stack.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.16 $
+     * @version $Revision: 1.17 $
      */
     private class MathMemento {
 
@@ -178,6 +178,16 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
             throws TypesetterException {
 
         add(noadFactory.getNoad(mclass, mg));
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#add(
+     *      de.dante.extex.typesetter.type.MathDelimiter)
+     */
+    public void add(final MathDelimiter del) throws TypesetterException {
+
+        //TODO gene: unimplemented
+        throw new RuntimeException("unimplemented");
     }
 
     /**

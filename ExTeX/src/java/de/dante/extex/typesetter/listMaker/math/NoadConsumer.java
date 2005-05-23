@@ -36,7 +36,7 @@ import de.dante.extex.typesetter.type.noad.Noad;
  * This is usually the case for math list makers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public interface NoadConsumer extends ListMaker {
 
@@ -49,6 +49,15 @@ public interface NoadConsumer extends ListMaker {
      * @throws TypesetterException in case of an error
      */
     void add(MathClass mclass, MathGlyph mg) throws TypesetterException;
+
+    /**
+     * Add a mathematical delimiter.
+     *
+     * @param del the delimiter
+     *
+     * @throws TypesetterException in case of an error
+     */
+    void add(MathDelimiter del) throws TypesetterException;
 
     /**
      * Add some math glue Noad to the internal list.
