@@ -19,21 +19,23 @@
 
 package de.dante.extex.typesetter.type;
 
+import java.io.Serializable;
+
 
 /**
  * This class provides the classification of mathematical characters.
  * In fact it is a finite enumeration which exposes the values as constants.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
-public abstract class MathClass {
+public abstract class MathClass implements Serializable {
 
     /**
      * This is a inner class for a binary operator.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.5 $
+     * @version $Revision: 1.6 $
      */
     private static final class BinaryMathClass extends MathClass {
 
@@ -62,7 +64,7 @@ public abstract class MathClass {
      * This is a inner class for closing.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.5 $
+     * @version $Revision: 1.6 $
      */
     private static final class ClosingMathClass extends MathClass {
 
@@ -91,7 +93,7 @@ public abstract class MathClass {
      * This is a inner class for large operators.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.5 $
+     * @version $Revision: 1.6 $
      */
     private static final class LargeMathClass extends MathClass {
 
@@ -120,7 +122,7 @@ public abstract class MathClass {
      * This is a inner class for opening.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.5 $
+     * @version $Revision: 1.6 $
      */
     private static final class OpeningMathClass extends MathClass {
 
@@ -149,7 +151,7 @@ public abstract class MathClass {
      * This is a inner class for ordinary characters.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.5 $
+     * @version $Revision: 1.6 $
      */
     private static final class OrdinaryMathClass extends MathClass {
 
@@ -178,7 +180,7 @@ public abstract class MathClass {
      * This is a inner class for punctation marks.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.5 $
+     * @version $Revision: 1.6 $
      */
     private static final class PunctationMathClass extends MathClass {
 
@@ -207,7 +209,7 @@ public abstract class MathClass {
      * This is a inner class for relation symbols.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.5 $
+     * @version $Revision: 1.6 $
      */
     private static final class RelationMathClass extends MathClass {
 
@@ -236,7 +238,7 @@ public abstract class MathClass {
      * This is a inner class for variable width characters.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.5 $
+     * @version $Revision: 1.6 $
      */
     private static final class VariableMathClass extends MathClass {
 
