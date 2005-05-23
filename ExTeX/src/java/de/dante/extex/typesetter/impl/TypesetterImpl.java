@@ -61,7 +61,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.66 $
+ * @version $Revision: 1.67 $
  */
 public class TypesetterImpl
         implements
@@ -283,8 +283,8 @@ public class TypesetterImpl
 
         par();
         pageBuilder.flush(listMaker.complete(options));
-        if (saveStack != null) {
-            //TODO gene: test that nothing is left behind
+        if (saveStack != null && saveStack.size() != 0) {
+            throw new InternalError("typesetter.saveStack.notEmpty");
         }
         pageBuilder.close();
     }
