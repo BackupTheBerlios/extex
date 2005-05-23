@@ -19,6 +19,8 @@
 
 package de.dante.extex.typesetter.type;
 
+import java.io.Serializable;
+
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
@@ -26,12 +28,12 @@ import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.exception.helping.MissingNumberException;
 import de.dante.extex.interpreter.primitives.math.delimiter.Delimiter;
+import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.scanner.type.CodeToken;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.type.noad.MathGlyph;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
-import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
@@ -40,9 +42,9 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * large, and a small math glyph.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
-public class MathDelimiter {
+public class MathDelimiter implements Serializable {
 
     /**
      * The constant <tt>CHAR_MASK</tt> contains the character mask.
@@ -62,6 +64,48 @@ public class MathDelimiter {
     private static final int CLASS_SHIFT = 24;
 
     /**
+     * Parse a math delimiter.
+     *
+     * @param context the interpreter context
+     * @param source the token source to read from
+     *
+     * @return the MathDelimiter acquired
+     *
+     * @throws InterpreterException in case of an error
+     */
+    public static MathDelimiter parse(final Context context,
+            final TokenSource source) throws InterpreterException {
+
+        Token t = source.getToken(context);
+        if (t == null) {
+            throw new EofException("???");
+        }
+        if ((t instanceof CodeToken)) {
+            Code code = context.getCode((CodeToken) t);
+            if (code instanceof Delimiter) {
+                long del = source.scanNumber(context);
+                return new MathDelimiter(del);
+            }
+        } else {
+            MathDelimiter del = context.getDelcode(t.getChar());
+            if (del != null) {
+                return del;
+            } else {
+                source.push(t);
+                try {
+                    return new MathDelimiter(source.scanNumber(context));
+                } catch (MissingNumberException e) {
+                    // fall through to error. the exception is remapped!
+                }
+            }
+        }
+
+        throw new HelpingException(LocalizerFactory
+                .getLocalizer(MathDelimiter.class.getName()),
+                "TTP.MissingDelim");
+    }
+
+    /**
      * The field <tt>largeChar</tt> contains the code of the large character.
      */
     private MathGlyph largeChar;
@@ -77,44 +121,6 @@ public class MathDelimiter {
     private MathGlyph smallChar;
 
     /**
-     * Creates a new object.
-     *
-     * @param context the interpreter context
-     * @param source the token source to read from
-     *
-     * @throws InterpreterException in case of an error
-     */
-    public MathDelimiter(final Context context, final TokenSource source)
-            throws InterpreterException {
-
-        super();
-        Token t = source.getToken(context);
-        try {
-            if (t == null) {
-                throw new EofException("???");
-            } else if (!(t instanceof CodeToken)) {
-                long del = context.getDelcode(t.getChar()).getValue();
-                if (del < 0) {
-                    source.push(t);
-                    del = source.scanNumber(context);
-                    init(del);
-                    return;
-                }
-            } else if (context.getCode((CodeToken) t) instanceof Delimiter) {
-                long del = source.scanNumber(context);
-                init(del);
-                return;
-
-            }
-        } catch (MissingNumberException e) {
-            // fall through to error. the exception is remapped!
-        }
-        throw new HelpingException(LocalizerFactory
-                .getLocalizer(MathDelimiter.class.getName()),
-                "TTP.MissingDelim");
-    }
-
-    /**
      * Creates a new object from the <logo>TeX</logo> encoding.
      * <p>
      * The <logo>TeX</logo> encoding interprets the number as 27 bit hex number:
@@ -123,11 +129,11 @@ public class MathDelimiter {
      *  <dt>c</dt>
      *  <dd>the math class of this delimiter. It has a range from 0 to 7.</dd>
      *  <dt>l</dt>
-     *  <dd>the family for the large character. it has a range from 0 to 15.</dd>
+     *  <dd>the family for the large character. It has a range from 0 to 15.</dd>
      *  <dt>xx</dt>
      *  <dd>the character code of the large character.</dd>
      *  <dt>s</dt>
-     *  <dd>the family for the small character. it has a range from 0 to 15.</dd>
+     *  <dd>the family for the small character. It has a range from 0 to 15.</dd>
      *  <dt>yy</dt>
      *  <dd>the character code of the small character.</dd>
      * </dl>
@@ -135,9 +141,9 @@ public class MathDelimiter {
      *
      * @param delcode the <logo>TeX</logo> encoding for the delimiter
      *
-     * @throws GeneralException in case of a parameter out of range
+     * @throws InterpreterException in case of a parameter out of range
      */
-    protected MathDelimiter(final long delcode) throws GeneralException {
+    protected MathDelimiter(final long delcode) throws InterpreterException {
 
         super();
         init(delcode);
@@ -195,6 +201,18 @@ public class MathDelimiter {
                 new UnicodeChar((int) ((delcode >> 12) & CHAR_MASK)));
         largeChar = new MathGlyph((int) ((delcode >> 8) & 0xf),
                 new UnicodeChar((int) (delcode & CHAR_MASK)));
+    }
+
+    /**
+     * Initialize the state of this instance.
+     *
+     * @param del the other delimiter
+     */
+    private void init(final MathDelimiter del) {
+
+        this.mathClass = del.getMathClass();
+        this.largeChar = del.getLargeChar();
+        this.smallChar = del.getSmallChar();
     }
 
     /**
