@@ -26,10 +26,11 @@ import java.util.logging.LogRecord;
 
 /**
  * This class provides a means to format the log entries.
- * This implementation simply uses the messages as delivered.
+ * This implementation makes provisions that the line length of 80 characters
+ * is honoured.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class LogFormatter extends Formatter {
 
@@ -59,58 +60,72 @@ public class LogFormatter extends Formatter {
      */
     public String format(final LogRecord record) {
 
-        Throwable t = record.getThrown();
-        if (t != null) {
-            return format(t, record.getMessage());
-        }
-
         StringBuffer msg = new StringBuffer(record.getMessage());
+        StringBuffer out = new StringBuffer();
+        int start = 0;
 
-        if (msg.length() == 0) {
-            return "";
+        for (int i = msg.indexOf("\n", start); i >= 0; i = msg.indexOf("\n",
+                start)) {
+            print(out, msg.subSequence(start, i + 1));
+            start = i + 1;
         }
-        if (col == 0) {
-            if (msg.charAt(0) == '\n' || msg.charAt(0) == '\r') {
-                msg.deleteCharAt(0);
-            }
-            /*
-             } else if (msg.charAt(0) != ' ') {
-             msg.insert(0, ' ');
-             */
-        }
-        int idx = msg.lastIndexOf("\n");
-        if (idx >= 0) {
-            col = msg.length() - idx - 1;
-        } else {
-            col += msg.length();
-        }
+        print(out, msg.subSequence(start, msg.length()));
 
-        if (col >= LINE_LENGTH) {
-            //TODO gene: improve formatting
-            msg.append('\n');
+        Throwable t = record.getThrown();
+
+        if (t != null) {
+
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            PrintWriter writer = new PrintWriter(os);
+            writer.write("\n");
+            t.printStackTrace(writer);
+            writer.write("\n");
+            writer.flush();
+            msg.append(os);
             col = 0;
         }
 
-        return msg.toString();
+        return out.toString();
     }
 
     /**
-     * Format any throwable into a printable format.
+     * Print a string which may contain a newline at most at the end.
      *
-     * @param t the throwable to log
-     * @param prefix the prefix to prepend before the stack trace
-     *
-     * @return the printed stack trace
+     * @param out the target buffer
+     * @param msg the message to process
      */
-    private String format(final Throwable t, final String prefix) {
+    private void print(final StringBuffer out, final CharSequence msg) {
 
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-        PrintWriter writer = new PrintWriter(os);
-        writer.write(prefix);
-        writer.write("\n");
-        t.printStackTrace(writer);
-        writer.write("\n");
-        writer.flush();
-        return os.toString();
+        if (msg.length() == 0) {
+            return;
+        }
+        boolean skip = false;
+
+        if (col == 0) {
+            char c = msg.charAt(0);
+            if (c == '\n' || c == '\r' || c == ' ') {
+                skip = true;
+            }
+        }
+
+        col += msg.length() + (skip ? 1 : 0);
+
+        if (col >= LINE_LENGTH) {
+            out.append('\n');
+            col = msg.length();
+            char c = msg.charAt(0);
+            if (c == '\n' || c == '\r' || c == ' ') {
+                skip = true;
+            }
+        }
+        if (skip) {
+            out.append(msg.subSequence(1, msg.length()));
+        } else {
+            out.append(msg);
+        }
+        if (msg.charAt(msg.length() - 1) == '\n') {
+            col = 0;
+        }
     }
+
 }
