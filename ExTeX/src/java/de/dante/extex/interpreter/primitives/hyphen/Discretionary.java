@@ -24,6 +24,7 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.exception.ImpossibleException;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
@@ -64,15 +65,16 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class Discretionary extends AbstractCode {
 
     /**
-     * TODO gene: missing JavaDoc.
+     * This inner class is used temporarily during the collection of the
+     * discretionary components.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.18 $
+     * @version $Revision: 1.19 $
      */
     private class Manager implements ListManager {
 
@@ -99,8 +101,7 @@ public class Discretionary extends AbstractCode {
          */
         public NodeList buildParagraph(final HorizontalListNode nodes) {
 
-            // TODO gene: buildParagraph unimplemented
-            return null;
+            throw new ImpossibleException("discretionary.buildParagraph");
         }
 
         /**
@@ -108,7 +109,7 @@ public class Discretionary extends AbstractCode {
          */
         public void endParagraph() throws TypesetterException {
 
-            // TODO gene: endParagraph unimplemented
+            throw new ImpossibleException("discretionary.endParagraph");
         }
 
         /**
