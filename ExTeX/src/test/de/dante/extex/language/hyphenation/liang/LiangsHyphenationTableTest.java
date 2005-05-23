@@ -31,7 +31,7 @@ import de.dante.extex.scanner.type.TokenFactoryImpl;
  * This class contains soem test cases fro liang's hyphenation table.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class LiangsHyphenationTableTest extends TestCase {
 
@@ -61,7 +61,7 @@ public class LiangsHyphenationTableTest extends TestCase {
         Tokens tokens = new Tokens();
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
-            if (Character.isSpace(c)) {
+            if (c == ' ') {
                 tokens.add(factory.createToken(Catcode.SPACE, ' ',
                         Namespace.DEFAULT_NAMESPACE));
             } else if (Character.isLetter(c) || c == '.') {
