@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,19 +19,31 @@
 
 package de.dante.extex.font;
 
-import java.io.File;
+import java.io.InputStream;
 
 /**
- * Font-file Interface
+ * Class for a pfb-font-file.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @version $Revision: 1.1 $
  */
-public interface FontFile {
+public class PfbFontStream extends AbstractFontStream implements FontStream {
 
     /**
-     * Return the <code>File</code> for the external fontfile
-     * @return  the external font-file
+     * Create a new object
+     * @param in  the external stream
      */
-    File getFile();
+    public PfbFontStream(final InputStream in) {
+
+        super(in);
+    }
+
+    /**
+     * Returns the String for the class
+     * @return Returns the string for the class
+     */
+    public String toString() {
+
+        return "PFB";
+    }
 }

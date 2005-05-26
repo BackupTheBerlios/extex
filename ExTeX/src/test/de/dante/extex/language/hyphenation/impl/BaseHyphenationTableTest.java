@@ -20,7 +20,8 @@
 package de.dante.extex.language.hyphenation.impl;
 
 import junit.framework.TestCase;
-import de.dante.extex.font.FontFile;
+import de.dante.extex.font.FontStream;
+import de.dante.extex.font.FountKey;
 import de.dante.extex.font.Glyph;
 import de.dante.extex.font.Kerning;
 import de.dante.extex.font.Ligature;
@@ -46,7 +47,7 @@ import de.dante.util.UnicodeChar;
  * TODO gene: missing JavaDoc.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class BaseHyphenationTableTest extends TestCase {
 
@@ -54,7 +55,7 @@ public class BaseHyphenationTableTest extends TestCase {
      * TODO gene: missing JavaDoc.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.2 $
+     * @version $Revision: 1.3 $
      */
     private class MockFont implements Font {
 
@@ -204,13 +205,22 @@ public class BaseHyphenationTableTest extends TestCase {
         public void setSkewChar(final UnicodeChar skew) {
 
         }
+        
+        /**
+         * @see de.dante.extex.font.type.Fount#getFontKey()
+         */
+        public FountKey getFontKey() {
+
+            return new FountKey("mockfont");// add by mgn
+        }
+
     }
 
     /**
      * This is a mock implementation of a glyph.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.2 $
+     * @version $Revision: 1.3 $
      */
     private class MockGlyph implements Glyph {
 
@@ -233,7 +243,7 @@ public class BaseHyphenationTableTest extends TestCase {
             return null;
         }
 
-        public FontFile getExternalFile() {
+        public FontStream getExternalFile() {
 
             return null;
         }
@@ -295,7 +305,7 @@ public class BaseHyphenationTableTest extends TestCase {
 
         }
 
-        public void setExternalFile(FontFile file) {
+        public void setExternalFile(FontStream file) {
 
         }
 
@@ -356,7 +366,7 @@ public class BaseHyphenationTableTest extends TestCase {
      * This mock implementation is for test purposes only.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.2 $
+     * @version $Revision: 1.3 $
      */
     private class MyMockContext extends MockContext {
 

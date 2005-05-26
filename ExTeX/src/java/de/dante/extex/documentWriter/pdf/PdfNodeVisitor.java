@@ -19,16 +19,14 @@
 
 package de.dante.extex.documentWriter.pdf;
 
-import java.awt.Color;
 import java.io.IOException;
 
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.pdf.BaseFont;
-import com.lowagie.text.pdf.PdfContentByte;
+import org.pdfbox.pdmodel.edit.PDPageContentStream;
+import org.pdfbox.pdmodel.font.PDFont;
+import org.pdfbox.pdmodel.font.PDType1Font;
 
 import de.dante.extex.documentWriter.exception.DocumentWriterException;
 import de.dante.extex.documentWriter.exception.DocumentWriterIOException;
-import de.dante.extex.documentWriter.pdf.exception.DocumentWriterPdfDocumentException;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.typesetter.type.Node;
@@ -62,15 +60,10 @@ import de.dante.util.Unit;
  * PDF NodeVisitor.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 
 public class PdfNodeVisitor implements NodeVisitor {
-
-    /**
-     * the pdf content
-     */
-    private PdfContentByte cb;
 
     /**
      * current x position
@@ -83,16 +76,26 @@ public class PdfNodeVisitor implements NodeVisitor {
     private Dimen currentY;
 
     /**
+     * paperheight in BP
+     */
+    private float phBP = PdfDocumentWriter.HEIGHT_A4_BP;
+
+    /**
+     * pdf content stream
+     */
+    private PDPageContentStream contentStream;
+
+    /**
      * Create a new object.
      *
-     * @param pdfcb     the pdf contentbyte
-     * @param cx        the currentx
-     * @param cy        the currenty
+     * @param cs     the pdf contenstream
+     * @param cx     the currentx
+     * @param cy     the currenty
      */
-    public PdfNodeVisitor(final PdfContentByte pdfcb, final Dimen cx,
+    public PdfNodeVisitor(final PDPageContentStream cs, final Dimen cx,
             final Dimen cy) {
 
-        cb = pdfcb;
+        contentStream = cs;
         currentX = cx;
         currentY = cy;
     }
@@ -102,34 +105,53 @@ public class PdfNodeVisitor implements NodeVisitor {
      *
      * @param node  the node
      */
-    private void drawNode(final Node node) {
+    private void drawNode(final Node node) /*throws PdfException*/{
 
-        cb.setLineWidth(0.1f);
-        if (node instanceof VerticalListNode) {
-            cb.setColorStroke(Color.RED);
-        } else if (node instanceof HorizontalListNode) {
-            cb.setColorStroke(Color.YELLOW);
-        } else {
-            cb.setColorStroke(Color.GREEN);
-        }
-        float cx = (float) Unit.getDimenAsBP(currentX);
-        float cy = (float) Unit.getDimenAsBP(currentY);
-        float w = (float) Unit.getDimenAsBP(node.getWidth());
-        float h = (float) Unit.getDimenAsBP(node.getHeight());
-        float d = (float) Unit.getDimenAsBP(node.getDepth());
-        cb.moveTo(cx, cy);
-        cb.lineTo(cx + w, cy);
-        cb.stroke();
-        cb.moveTo(cx, cy);
-        cb.lineTo(cx, cy - h);
-        cb.stroke();
-        cb.moveTo(cx + w, cy);
-        cb.lineTo(cx + w, cy - h);
-        cb.stroke();
-        cb.moveTo(cx + w, cy - h);
-        cb.lineTo(cx, cy - h);
-        cb.stroke();
+        //        cb.setLineWidth(0.1f);
+        //        if (node instanceof VerticalListNode) {
+        //            cb.setColorStroke(Color.RED);
+        //        } else if (node instanceof HorizontalListNode) {
+        //            cb.setColorStroke(Color.YELLOW);
+        //        } else {
+        //            cb.setColorStroke(Color.GREEN);
+        //        }
+        //        float cx = Unit.getDimenAsBP(currentX);
+        //        float cy = Unit.getDimenAsBP(currentY);
+        //        float w = Unit.getDimenAsBP(node.getWidth());
+        //        float h = Unit.getDimenAsBP(node.getHeight());
+        //        float d = Unit.getDimenAsBP(node.getDepth());
+        //        cb.moveTo(cx, phBP - cy);
+        //        cb.lineTo(cx + w, phBP - cy);
+        //        cb.stroke();
+        //        cb.moveTo(cx, phBP - cy);
+        //        cb.lineTo(cx, phBP - cy + h);
+        //        cb.stroke();
+        //        cb.moveTo(cx + w, phBP - cy);
+        //        cb.lineTo(cx + w, phBP - cy + h);
+        //        cb.stroke();
+        //        cb.moveTo(cx + w, phBP - cy + h);
+        //        cb.lineTo(cx, phBP - cy + h);
+        //        cb.stroke();
+        //        if (node.getDepth().getValue() != 0) {
+        //            cb.moveTo(cx, phBP - cy);
+        //            cb.lineTo(cx, phBP - cy - d);
+        //            cb.stroke();
+        //            cb.moveTo(cx, phBP - cy - d);
+        //            cb.lineTo(cx + w, phBP - cy - d);
+        //            cb.stroke();
+        //            cb.moveTo(cx + w, phBP - cy - d);
+        //            cb.lineTo(cx + w, phBP - cy);
+        //            cb.stroke();
+        //        }
+    }
 
+    /**
+     * Set the paperheight.
+     * @param ph The paperheight to set.
+     */
+    public void setPaperheight(final Dimen ph) {
+
+        phBP = Unit.getDimenAsBP(ph);
     }
 
     // -----------------------------------------
@@ -212,25 +234,47 @@ public class PdfNodeVisitor implements NodeVisitor {
             //        de.dante.extex.interpreter.context.Color color = node
             //                .getTypesettingContext().getColor();
 
-            BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA,
-                    BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
-            cb.beginText();
-            cb.setColorFill(Color.BLACK);
-            cb.setFontAndSize(bf, (float) Unit.getDimenAsPT(font
+            PDFont pdfont = PDType1Font.HELVETICA;
+
+            //            if (bf == null) {
+            //                bf = PdfEfmFont.createFont(font);
+            //                if (bf == null) {
+            //                    bf = new PdfType1Font("src/font/lmr12.afm", "Cp1252",
+            //                            PdfFont.EMBEDDED, null, null);
+            //                }
+            //                // bf.setSubset(false);
+            //            }
+            //PdfFont.createFont("src/font/lmr12.afm", "",
+            //    PdfFont.EMBEDDED);
+
+            contentStream.beginText();
+            contentStream.setFont(pdfont, (float) Unit.getDimenAsPT(font
                     .getActualSize()));
-            float cy = (float) (Unit.getDimenAsBP(currentY) - Unit
-                    .getDimenAsBP(node.getWidth()));
-            cb.showTextAligned(PdfContentByte.ALIGN_LEFT, uc.toString(),
-                    (float) Unit.getDimenAsBP(currentX), cy, 0);
-            cb.endText();
+            contentStream.moveTextPositionByAmount(Unit.getDimenAsBP(currentX),
+                    phBP - Unit.getDimenAsBP(currentY));
+            contentStream.drawString(uc.toString());
+            contentStream.endText();
+
+            //            cb.beginText();
+            //            cb.setColorFill(Color.BLACK);
+            //            cb.setFontAndSize(bf, (float) Unit.getDimenAsPT(font
+            //                    .getActualSize()));
+            //            cb.showTextAligned(PdfContentByte.ALIGN_LEFT, uc.toString(), Unit
+            //                    .getDimenAsBP(currentX),
+            //                    phBP - Unit.getDimenAsBP(currentY), 0);
+            //            cb.endText();
 
             drawNode(node);
 
             currentX.add(node.getWidth());
-        } catch (DocumentException e) {
-            throw new DocumentWriterPdfDocumentException(e);
+            //        } catch (DocumentException e) {
+            //            throw new DocumentWriterException(e);
         } catch (IOException e) {
             throw new DocumentWriterIOException(e);
+            //        } catch (FontException e) {
+            //            throw new DocumentWriterFontException(e);
+            //        } catch (PdfException e) {
+            //            throw new DocumentWriterPdfDocumentException(e);
         }
         return null;
     }
@@ -277,10 +321,9 @@ public class PdfNodeVisitor implements NodeVisitor {
      * java.lang.Object)
      */
     public Object visitHorizontalList(final HorizontalListNode node,
-            final Object value)
-            throws DocumentWriterException,
-                GeneralException {
+            final Object value) throws GeneralException {
 
+        //        try {
         Dimen saveX = new Dimen(currentX);
         Dimen saveY = new Dimen(currentY);
 
@@ -295,6 +338,9 @@ public class PdfNodeVisitor implements NodeVisitor {
         drawNode(node);
 
         currentX.add(node.getWidth());
+        //        } catch (PdfException e) {
+        //            throw new DocumentWriterPdfDocumentException(e);
+        //        }
         return null;
     }
 
@@ -402,10 +448,9 @@ public class PdfNodeVisitor implements NodeVisitor {
      * java.lang.Object)
      */
     public Object visitVerticalList(final VerticalListNode node,
-            final Object value)
-            throws DocumentWriterException,
-                GeneralException {
+            final Object value) throws GeneralException {
 
+        //        try {
         Dimen saveX = new Dimen(currentX);
         Dimen saveY = new Dimen(currentY);
 
@@ -421,11 +466,16 @@ public class PdfNodeVisitor implements NodeVisitor {
 
         currentY.add(node.getDepth());
         currentY.add(node.getHeight());
+        //        } catch (PdfException e) {
+        //            throw new DocumentWriterPdfDocumentException(e);
+        //        }
         return null;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitVirtualChar(de.dante.extex.typesetter.type.node.VirtualCharNode, java.lang.Object)
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitVirtualChar(
+     *      de.dante.extex.typesetter.type.node.VirtualCharNode,
+     *      java.lang.Object)
      */
     public Object visitVirtualChar(final VirtualCharNode node,
             final Object value) throws GeneralException {
@@ -445,5 +495,4 @@ public class PdfNodeVisitor implements NodeVisitor {
         //        return element;
         return null;
     }
-
 }

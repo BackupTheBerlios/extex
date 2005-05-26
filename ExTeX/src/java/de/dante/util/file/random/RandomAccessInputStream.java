@@ -29,7 +29,7 @@ import java.io.InputStream;
  * RandomAccess for a InputStream
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class RandomAccessInputStream implements RandomAccessR {
 
@@ -51,22 +51,22 @@ public class RandomAccessInputStream implements RandomAccessR {
     /**
      * Shift 8
      */
-    private static final int SHIFT8 = 8;
+    public static final int SHIFT8 = 8;
 
     /**
      * Shift 16
      */
-    private static final int SHIFT16 = 16;
+    public static final int SHIFT16 = 16;
 
     /**
      * Shift 24
      */
-    private static final int SHIFT24 = 24;
+    public static final int SHIFT24 = 24;
 
     /**
      * Shift 32
      */
-    private static final int SHIFT32 = 32;
+    public static final int SHIFT32 = 32;
 
     /**
      * Create a new object

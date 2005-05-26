@@ -19,14 +19,14 @@
 
 package de.dante.extex.font.type.efm;
 
-import java.io.File;
+import java.io.InputStream;
 
 import org.jdom.Document;
 
 import de.dante.extex.font.FontFactory;
-import de.dante.extex.font.FontFile;
+import de.dante.extex.font.FontStream;
 import de.dante.extex.font.FountKey;
-import de.dante.extex.font.PfbFontFile;
+import de.dante.extex.font.PfbFontStream;
 import de.dante.extex.font.exception.FontException;
 import de.dante.extex.font.type.ModifiableFount;
 import de.dante.util.configuration.ConfigurationException;
@@ -36,10 +36,8 @@ import de.dante.util.resource.ResourceFinder;
  * This class implements a efm-type1-font
  * (create from a AFM-file).
  *
- * TODO at the moment only one font per fontgroup
- *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class EFMType1AFMFount extends EFMFount implements ModifiableFount {
 
@@ -80,10 +78,10 @@ public class EFMType1AFMFount extends EFMFount implements ModifiableFount {
     }
 
     /**
-     * @see de.dante.extex.font.type.efm.EFMFount#getFontFile(java.io.File)
+     * @see de.dante.extex.font.type.efm.EFMFount#getFontStream(java.io.InputStream)
      */
-    protected FontFile getFontFile(final File file) {
+    protected FontStream createFontStream(final InputStream input) {
 
-        return new PfbFontFile(file);
+        return new PfbFontStream(input);
     }
 }

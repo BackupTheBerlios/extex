@@ -23,30 +23,30 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
 import org.jdom.Document;
 import org.jdom.output.XMLOutputter;
 
-import de.dante.extex.font.exception.FontException;
 import de.dante.extex.font.exception.FontMapNotFoundException;
 import de.dante.extex.font.type.tfm.TFMFont;
 import de.dante.extex.font.type.tfm.enc.EncFactory;
 import de.dante.extex.font.type.tfm.psfontsmap.PSFontsMapReader;
 import de.dante.util.configuration.Configuration;
-import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationFactory;
 import de.dante.util.file.random.RandomAccessInputStream;
 import de.dante.util.resource.ResourceFinder;
 import de.dante.util.resource.ResourceFinderFactory;
 
 /**
- * Convert a TFM-file to a EFM-file
+ * Convert a TFM-file to a EFM-file.
+ *
+ * It read the psfont.map file, to get the encoding
+ * and the name of the pfb-file.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public final class TFM2EFM {
 
@@ -65,12 +65,9 @@ public final class TFM2EFM {
     /**
      * main
      * @param args      the comandlinearguments
-     * @throws IOException ...
-     * @throws FontException ...
-     * @throws ConfigurationException ...
+     * @throws Exception if an error occurs.
      */
-    public static void main(final String[] args) throws IOException,
-            FontException, ConfigurationException {
+    public static void main(final String[] args) throws Exception {
 
         if (args.length != PARAMETER) {
             System.err

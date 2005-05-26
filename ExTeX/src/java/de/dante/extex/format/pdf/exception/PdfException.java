@@ -17,21 +17,20 @@
  *
  */
 
-package de.dante.extex.font.exception;
+package de.dante.extex.format.pdf.exception;
 
 /**
- * Font- IOException.
+ * Exception for all pdf errors.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-
-public class FontIOException extends FontException {
+public class PdfException extends Exception {
 
     /**
      * Create a new object.
      */
-    public FontIOException() {
+    public PdfException() {
 
         super();
     }
@@ -40,8 +39,17 @@ public class FontIOException extends FontException {
      * Create a new object.
      * @param message   the message
      */
-    public FontIOException(final String message) {
+    public PdfException(final String message) {
 
         super(message);
+    }
+
+    /**
+     * Create a new object.
+     * @param e the exception
+     */
+    public PdfException(final Exception e) {
+
+        super(e);
     }
 }

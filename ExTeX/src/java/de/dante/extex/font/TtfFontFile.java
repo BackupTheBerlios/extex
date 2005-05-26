@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,32 +19,31 @@
 
 package de.dante.extex.font;
 
-import java.io.File;
+import java.io.InputStream;
 
 /**
  * Class for a ttf-font-file.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class TtfFontFile extends AbstractFontFile implements FontFile {
+public class TtfFontFile extends AbstractFontStream implements FontStream {
 
     /**
      * Create a new object
-     * @param file  the external file
+     * @param in  the external stream
      */
-    public TtfFontFile(final File file) {
+    public TtfFontFile(final InputStream in) {
 
-        super(file);
+        super(in);
     }
 
     /**
-     * Return the String for the class
-     * @return the string for the class
+     * Returns the String for the class
+     * @return Returns the string for the class
      */
     public String toString() {
 
-        return "TTF: " + getFile().toString();
+        return "TTF";
     }
-
 }

@@ -23,7 +23,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import junit.framework.TestCase;
-import de.dante.extex.font.FontFile;
+import de.dante.extex.font.FontStream;
+import de.dante.extex.font.FountKey;
 import de.dante.extex.font.Glyph;
 import de.dante.extex.font.Kerning;
 import de.dante.extex.font.Ligature;
@@ -54,7 +55,7 @@ import de.dante.util.UnicodeChar;
  * This is the test class for NV.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class NVTest extends TestCase {
 
@@ -62,7 +63,7 @@ public class NVTest extends TestCase {
      * This is a mock implementation of a font.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.2 $
+     * @version $Revision: 1.3 $
      */
     private class MockFont implements Font {
 
@@ -238,13 +239,21 @@ public class NVTest extends TestCase {
         public void setSkewChar(final UnicodeChar skew) {
 
         }
+
+        /**
+         * @see de.dante.extex.font.type.Fount#getFontKey()
+         */
+        public FountKey getFontKey() {
+
+            return new FountKey("mockfont");// add by mgn
+        }
     }
 
     /**
      * This is a mock implementation of a glyph.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.2 $
+     * @version $Revision: 1.3 $
      */
     private class MockGlyph implements Glyph {
 
@@ -289,7 +298,7 @@ public class NVTest extends TestCase {
         /**
          * @see de.dante.extex.font.Glyph#getExternalFile()
          */
-        public FontFile getExternalFile() {
+        public FontStream getExternalFile() {
 
             return null;
         }
@@ -402,7 +411,7 @@ public class NVTest extends TestCase {
         /**
          * @see de.dante.extex.font.Glyph#setExternalFile(de.dante.extex.font.FontFile)
          */
-        public void setExternalFile(final FontFile file) {
+        public void setExternalFile(final FontStream file) {
 
         }
 

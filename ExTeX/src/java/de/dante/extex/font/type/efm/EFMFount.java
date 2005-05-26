@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,7 +19,7 @@
 
 package de.dante.extex.font.type.efm;
 
-import java.io.File;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,7 +32,7 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 
 import de.dante.extex.font.FontFactory;
-import de.dante.extex.font.FontFile;
+import de.dante.extex.font.FontStream;
 import de.dante.extex.font.FountKey;
 import de.dante.extex.font.Glyph;
 import de.dante.extex.font.GlyphImpl;
@@ -59,7 +59,7 @@ import de.dante.util.resource.ResourceFinder;
  * Abstract class for a efm-font.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public abstract class EFMFount implements ModifiableFount, Serializable {
 
@@ -71,7 +71,7 @@ public abstract class EFMFount implements ModifiableFount, Serializable {
     /**
      * the external fontfile
      */
-    private FontFile externalfile;
+    private FontStream externalstream;
 
     /**
      * The glue for letterspace
@@ -119,6 +119,11 @@ public abstract class EFMFount implements ModifiableFount, Serializable {
     private FontFactory fontfactory;
 
     /**
+     * the fount key
+     */
+    private FountKey fountkey;
+
+    /**
      * Creates a new object.
      * @param   doc         the efm-document
      * @param   key         the fontkey
@@ -132,6 +137,7 @@ public abstract class EFMFount implements ModifiableFount, Serializable {
             throws FontException, ConfigurationException {
 
         super();
+        fountkey = key;
         if (key.getName() != null) {
             name = key.getName();
         }
@@ -247,119 +253,127 @@ public abstract class EFMFount implements ModifiableFount, Serializable {
             getFontDimenValues(fontgroup);
 
             // get glyph-list
-            Element font = scanForElement(fontgroup, "font");
-            if (font != null) {
+            createGlyphList(key, fileFinder, fontgroup);
 
-                attr = font.getAttribute("checksum");
-                if (attr != null) {
-                    chechSum = attr.getIntValue();
+        } catch (JDOMException e) {
+            throw new FontConfigReadException(e.getMessage());
+        }
+    }
+
+    /**
+     * Create the GlyphList.
+     * @param key           the fount key
+     * @param fileFinder    the fileFinder
+     * @param fontgroup     the fontgroup
+     * @throws ConfigurationException from the configsystem.
+     * @throws FontException if a font-error occurs.
+     * @throws JDOMException from the jdom-system.
+     */
+    private void createGlyphList(final FountKey key,
+            final ResourceFinder fileFinder, final Element fontgroup)
+            throws ConfigurationException, FontException, JDOMException {
+
+        Attribute attr;
+        Element font = scanForElement(fontgroup, "font");
+        if (font != null) {
+
+            attr = font.getAttribute("checksum");
+            if (attr != null) {
+                chechSum = attr.getIntValue();
+            }
+            // boundingbox
+            // TODO boundingbox incomplete
+            boundingBox = null;
+
+            // exernal fontfile
+            String efile = font.getAttributeValue("filename");
+
+            if (efile != null) {
+                if (efile.endsWith(".ttf")) {
+                    efile = efile.replaceAll(".ttf", "");
+                    externalstream = createFontStream(fileFinder.findResource(
+                            efile, "ttf"));
+                } else if (efile.endsWith(".pfb")) {
+                    efile = efile.replaceAll(".pfb", "");
+                    externalstream = createFontStream(fileFinder.findResource(
+                            efile, "pfb"));
+                } else {
+                    throw new FontWrongFileExtensionException(efile);
                 }
-                // boundingbox
-                // TODO boundingbox incomplete
-                boundingBox = null;
+            }
 
-                // exernal fontfile
-                String efile = font.getAttributeValue("filename");
+            List glyphlist = font.getChildren("glyph");
+            Element e;
 
-                if (efile != null) {
-                    if (efile.endsWith(".ttf")) {
-                        efile = efile.replaceAll(".ttf", "");
-                        //  externalfile = getFontFile(fileFinder.findFile(efile,"ttf"));
-                    } else if (efile.endsWith(".pfb")) {
-                        efile = efile.replaceAll(".pfb", "");
-                        //  externalfile = getFontFile(fileFinder.findFile(efile,"pfb"));
+            for (int i = 0; i < glyphlist.size(); i++) {
+                e = (Element) glyphlist.get(i);
+                String akey = e.getAttributeValue("ID");
+                if (akey != null) {
+                    Glyph gv = new GlyphImpl();
+                    gv.setNumber(e.getAttributeValue("glyph-number"));
+                    gv.setName(e.getAttributeValue("glyph-name"));
+                    gv.setExternalFile(externalstream);
+                    if ("tfm".equals(type)) {
+                        gv.setWidth(new TFMFixWord(e
+                                .getAttributeValue("width-fw")), actualsize);
+                        gv.setDepth(new TFMFixWord(e
+                                .getAttributeValue("depth-fw")), actualsize);
+                        gv.setHeight(new TFMFixWord(e
+                                .getAttributeValue("height-fw")), actualsize);
+                        gv.setItalicCorrection(new TFMFixWord(e
+                                .getAttributeValue("italic-fw")), actualsize);
+
                     } else {
-                        throw new FontWrongFileExtensionException(efile);
+                        gv.setWidth(e.getAttributeValue("width"), actualsize,
+                                unitsperem);
+                        gv.setDepth(e.getAttributeValue("depth"), actualsize,
+                                unitsperem);
+                        gv.setHeight(e.getAttributeValue("height"), actualsize,
+                                unitsperem);
+                        gv.setItalicCorrection(e.getAttributeValue("italic"),
+                                actualsize, unitsperem);
                     }
-                }
-
-                List glyphlist = font.getChildren("glyph");
-                Element e;
-
-                for (int i = 0; i < glyphlist.size(); i++) {
-                    e = (Element) glyphlist.get(i);
-                    String akey = e.getAttributeValue("ID");
-                    if (akey != null) {
-                        Glyph gv = new GlyphImpl();
-                        gv.setNumber(e.getAttributeValue("glyph-number"));
-                        gv.setName(e.getAttributeValue("glyph-name"));
-                        gv.setExternalFile(externalfile);
-                        if ("tfm".equals(type)) {
-                            gv
-                                    .setWidth(new TFMFixWord(e
-                                            .getAttributeValue("width-fw")),
-                                            actualsize);
-                            gv
-                                    .setDepth(new TFMFixWord(e
-                                            .getAttributeValue("depth-fw")),
-                                            actualsize);
-                            gv.setHeight(new TFMFixWord(e
-                                    .getAttributeValue("height-fw")),
-                                    actualsize);
-                            gv.setItalicCorrection(new TFMFixWord(e
-                                    .getAttributeValue("italic-fw")),
-                                    actualsize);
-
-                        } else {
-                            gv.setWidth(e.getAttributeValue("width"),
+                    // kerning
+                    if (kerning) {
+                        List kerninglist = e.getChildren("kerning");
+                        for (int k = 0; k < kerninglist.size(); k++) {
+                            Element ekerning = (Element) kerninglist.get(k);
+                            Kerning kv = new Kerning();
+                            kv.setId(ekerning.getAttributeValue("glyph-id"));
+                            kv
+                                    .setName(ekerning
+                                            .getAttributeValue("glyph-name"));
+                            kv.setSize(ekerning.getAttributeValue("size"),
                                     actualsize, unitsperem);
-                            gv.setDepth(e.getAttributeValue("depth"),
-                                    actualsize, unitsperem);
-                            gv.setHeight(e.getAttributeValue("height"),
-                                    actualsize, unitsperem);
-                            gv.setItalicCorrection(e
-                                    .getAttributeValue("italic"), actualsize,
-                                    unitsperem);
+                            gv.addKerning(kv);
                         }
-                        // kerning
-                        if (kerning) {
-                            List kerninglist = e.getChildren("kerning");
-                            for (int k = 0; k < kerninglist.size(); k++) {
-                                Element ekerning = (Element) kerninglist.get(k);
-                                Kerning kv = new Kerning();
-                                kv
-                                        .setId(ekerning
-                                                .getAttributeValue("glyph-id"));
-                                kv.setName(ekerning
-                                        .getAttributeValue("glyph-name"));
-                                kv.setSize(ekerning.getAttributeValue("size"),
-                                        actualsize, unitsperem);
-                                gv.addKerning(kv);
-                            }
-                        }
+                    }
 
-                        // ligature
-                        if (ligatures) {
-                            List ligaturelist = e.getChildren("ligature");
-                            for (int k = 0; k < ligaturelist.size(); k++) {
-                                Element ligature = (Element) ligaturelist
-                                        .get(k);
-                                Ligature lv = new Ligature();
-                                lv.setLetter(ligature
-                                        .getAttributeValue("letter"));
-                                lv.setLetterid(ligature
-                                        .getAttributeValue("letter-id"));
-                                lv.setLig(ligature.getAttributeValue("lig"));
-                                lv.setLigid(ligature
-                                        .getAttributeValue("lig-id"));
-                                gv.addLigature(lv);
-                            }
+                    // ligature
+                    if (ligatures) {
+                        List ligaturelist = e.getChildren("ligature");
+                        for (int k = 0; k < ligaturelist.size(); k++) {
+                            Element ligature = (Element) ligaturelist.get(k);
+                            Ligature lv = new Ligature();
+                            lv.setLetter(ligature.getAttributeValue("letter"));
+                            lv.setLetterid(ligature
+                                    .getAttributeValue("letter-id"));
+                            lv.setLig(ligature.getAttributeValue("lig"));
+                            lv.setLigid(ligature.getAttributeValue("lig-id"));
+                            gv.addLigature(lv);
                         }
-                        glyphmap.put(akey, gv);
-                        glyphname.put(gv.getName(), key);
-                        // commands
-                        if (virtual) {
-                            Element cmd = e.getChild("commands");
-                            if (cmd != null) {
-                                addCommands(akey, cmd);
-                            }
+                    }
+                    glyphmap.put(akey, gv);
+                    glyphname.put(gv.getName(), key);
+                    // commands
+                    if (virtual) {
+                        Element cmd = e.getChild("commands");
+                        if (cmd != null) {
+                            addCommands(akey, cmd);
                         }
                     }
                 }
             }
-
-        } catch (JDOMException e) {
-            throw new FontConfigReadException(e.getMessage());
         }
     }
 
@@ -411,11 +425,20 @@ public abstract class EFMFount implements ModifiableFount, Serializable {
     }
 
     /**
-     * Return the FontFile
-     * @param file  the file
-     * @return  the FontFile
+     * Returns the external font stream.
+     * @return Returns the external font stream.
      */
-    protected abstract FontFile getFontFile(final File file);
+    public FontStream getFontStream() {
+
+        return externalstream;
+    }
+
+    /**
+     * Returns the FontStream
+     * @param input  the input
+     * @return  Returns the FontStream
+     */
+    protected abstract FontStream createFontStream(final InputStream input);
 
     /**
      * initsize for the hashmap
@@ -741,5 +764,22 @@ public abstract class EFMFount implements ModifiableFount, Serializable {
     public FontFactory getFontfactory() {
 
         return fontfactory;
+    }
+
+    /**
+     * @see de.dante.extex.font.type.Fount#getFontKey()
+     */
+    public FountKey getFontKey() {
+
+        return fountkey;
+    }
+
+    /**
+     * Returns the type.
+     * @return Returns the type.
+     */
+    public String getType() {
+
+        return type;
     }
 }

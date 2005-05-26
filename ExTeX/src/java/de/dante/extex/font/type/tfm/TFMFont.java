@@ -42,7 +42,7 @@ import de.dante.util.file.random.RandomAccessR;
  * @see <a href="package-summary.html#TFMformat">TFM-Format</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class TFMFont
         implements
@@ -446,11 +446,12 @@ public class TFMFont
 
             // encoding
 
-            if (psfenc != null && !"".equals(psfenc.getEncfile())) {
-                enctable = encfactory.getEncodingTable(psfenc.getEncfile());
-
+            if (psfenc != null) {
+                if (!"".equals(psfenc.getEncfile())) {
+                    enctable = encfactory.getEncodingTable(psfenc.getEncfile());
+                }
                 // filename
-                if (psfenc != null && psfenc.getPfbfile() != null) {
+                if (psfenc.getPfbfile() != null) {
                     pfbfilename = filenameWithoutPath(psfenc.getPfbfile());
                 }
                 // glyphname

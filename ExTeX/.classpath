@@ -1,18 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src/java"/>
-	<classpathentry kind="src" path="src/test"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/jdom.jar"/>
-	<classpathentry kind="lib" path="lib.develop/ant.jar"/>
-	<classpathentry kind="lib" path="lib.develop/junit.jar"/>
-	<classpathentry kind="lib" path="lib/js.jar"/>
-	<classpathentry kind="lib" path="lib/icu4j_2_8.jar"/>
-	<classpathentry kind="var" path="JAVA_HOME/lib/tools.jar"/>
-	<classpathentry kind="lib" path="lib/avalon-framework-4.1.4.jar"/>
-	<classpathentry kind="lib" path="lib/jel.jar"/>
-	<classpathentry kind="lib" path="lib.develop/jaxen-full.jar"/>
-	<classpathentry kind="lib" path="lib.develop/saxpath.jar"/>
-	<classpathentry kind="lib" path="lib/iText.jar"/>
+	<classpathentry kind="src" path="src/java">
+		<attributes>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" path="src/test">
+		<attributes>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+		<attributes>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/jdom.jar">
+		<attributes>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib.develop/ant.jar">
+		<attributes>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib.develop/junit.jar">
+		<attributes>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/js.jar">
+		<attributes>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/icu4j_2_8.jar">
+		<attributes>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="var" path="JAVA_HOME/lib/tools.jar">
+		<attributes>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/avalon-framework-4.1.4.jar">
+		<attributes>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/jel.jar">
+		<attributes>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib.develop/jaxen-full.jar">
+		<attributes>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib.develop/saxpath.jar">
+		<attributes>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/PDFBox.jar">
+		<attributes>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/log4j-1.2.9.jar">
+		<attributes>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

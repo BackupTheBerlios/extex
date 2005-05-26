@@ -20,18 +20,19 @@
 package de.dante.extex.font.exception;
 
 /**
- * Font- IOException.
+ * Font: NoExternalFile
+ * <p>e.g. pfb- or ttf-file is missing</p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
 
-public class FontIOException extends FontException {
+public class FontNoExternalFileException extends FontException {
 
     /**
      * Create a new object.
      */
-    public FontIOException() {
+    public FontNoExternalFileException() {
 
         super();
     }
@@ -40,7 +41,7 @@ public class FontIOException extends FontException {
      * Create a new object.
      * @param message   the message
      */
-    public FontIOException(final String message) {
+    public FontNoExternalFileException(final String message) {
 
         super(message);
     }

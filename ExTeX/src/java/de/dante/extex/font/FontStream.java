@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,32 +19,29 @@
 
 package de.dante.extex.font;
 
-import java.io.File;
+import java.io.InputStream;
+
+import de.dante.extex.font.exception.FontException;
+import de.dante.util.file.random.RandomAccessR;
 
 /**
- * Class for a pfb-font-file.
+ * Interface for the fontfile (e.g. the pfb-file).
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @version $Revision: 1.1 $
  */
-public class PfbFontFile extends AbstractFontFile implements FontFile {
+public interface FontStream {
 
     /**
-     * Create a new object
-     * @param file  the external file
+     * Returns the <code>InputStream</code> for the external fontfile.
+     * @return Returns the <code>InputStream</code> for the external fontfile.
      */
-    public PfbFontFile(final File file) {
-
-        super(file);
-    }
+    InputStream getStream();
 
     /**
-     * Return the String for the class
-     * @return the string for the class
+     * Returns the <code>RandomAccessR</code> fpr the external fontfile.
+     * @throws FontException in case of a font error.
+     * @return Returns the <code>RandomAccessR</code> fpr the external fontfile.
      */
-    public String toString() {
-
-        return "PFB: " + getFile().toString();
-    }
-
+    RandomAccessR getRandomAccessRead() throws FontException;
 }

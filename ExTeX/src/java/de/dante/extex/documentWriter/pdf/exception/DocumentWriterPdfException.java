@@ -17,31 +17,47 @@
  *
  */
 
-package de.dante.extex.font.exception;
+package de.dante.extex.documentWriter.pdf.exception;
+
+import de.dante.extex.documentWriter.exception.DocumentWriterException;
 
 /**
- * Font- IOException.
+ * DocumentWriter: Exception from the PDF-Document.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-
-public class FontIOException extends FontException {
+public class DocumentWriterPdfException extends DocumentWriterException {
 
     /**
-     * Create a new object.
+     * Creates a new object.
+     *
+     * @param message the error message
      */
-    public FontIOException() {
+    public DocumentWriterPdfException(final String message) {
 
-        super();
+        super(message);
     }
 
     /**
-     * Create a new object.
-     * @param message   the message
+     * Creates a new object.
+     *
+     * @param message the message
+     * @param cause the cause
      */
-    public FontIOException(final String message) {
+    public DocumentWriterPdfException(final String message,
+            final Throwable cause) {
 
-        super(message);
+        super(message, cause);
+    }
+
+    /**
+     * Creates a new object.
+     *
+     * @param cause the cause
+     */
+    public DocumentWriterPdfException(final Throwable cause) {
+
+        super(cause);
     }
 }

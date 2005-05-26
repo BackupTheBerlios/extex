@@ -19,6 +19,7 @@
 
 package de.dante.extex.typesetter.listMaker.math;
 
+import de.dante.extex.font.FountKey;
 import de.dante.extex.font.Glyph;
 import de.dante.extex.font.type.BoundingBox;
 import de.dante.extex.interpreter.type.dimen.Dimen;
@@ -34,7 +35,7 @@ import de.dante.util.UnicodeChar;
  * @see "TTP [700]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class MathFont implements Font {
 
@@ -196,5 +197,13 @@ public class MathFont implements Font {
     public String toString() {
 
         return this.font.toString();
+    }
+
+    /**
+     * @see de.dante.extex.font.type.Fount#getFontKey()
+     */
+    public FountKey getFontKey() {
+
+        return this.font.getFontKey(); // add by mgn
     }
 }

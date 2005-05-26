@@ -19,15 +19,8 @@
 
 package de.dante.extex.documentWriter.pdf;
 
-import java.awt.Color;
 import java.io.IOException;
 import java.io.OutputStream;
-
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Rectangle;
-import com.lowagie.text.pdf.PdfContentByte;
-import com.lowagie.text.pdf.PdfWriter;
 
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.documentWriter.DocumentWriterOptions;
@@ -46,7 +39,7 @@ import de.dante.util.configuration.Configuration;
  * Implementation of a pdf document writer.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class PdfSinglePageDocumentWriter
         implements
@@ -78,20 +71,15 @@ public class PdfSinglePageDocumentWriter
      */
     private DocumentWriterOptions docoptions;
 
-    /**
-     * the pdf-dokument
-     */
-    private Document document;
-
-    /**
-     * the pdf writer
-     */
-    private PdfWriter writer;
-
-    /**
-     * the pdf content
-     */
-    private PdfContentByte cb;
+    //    /**
+    //     * the pdf-dokument
+    //     */
+    //    private PdfDocument document;
+    //
+    //    /**
+    //     * the pdf content
+    //     */
+    //    private PdfContentByte cb;
 
     /**
      * Creates a new object.
@@ -191,11 +179,10 @@ public class PdfSinglePageDocumentWriter
             OutputStream out = outFactory.getOutputStream();
 
             // create a pdf document
-            document = new Document();
-            writer = PdfWriter.getInstance(document, out);
-            document.open();
-            cb = writer.getDirectContent();
-            visitor = new PdfNodeVisitor(cb, currentX, currentY);
+            //            document = new PdfDocument(out);
+            //            document.open();
+            //            cb = document.getDirectContent();
+            //            visitor = new PdfNodeVisitor(cb, currentX, currentY);
 
             // TeX primitives should set the papersize in any way:
             // o \paperwidth   / \paperheight,
@@ -213,9 +200,8 @@ public class PdfSinglePageDocumentWriter
             }
 
             // set page size and margin
-            Rectangle pagesize = createRectangle(paperwidth, paperheight);
-            document.setPageSize(pagesize);
-            document.setMargins(0, 0, 0, 0);
+            //            Rectangle pagesize = createRectangle(paperwidth, paperheight);
+            //            document.setPageSize(pagesize);
 
             // set start point
             currentX.set(Dimen.ONE_INCH);
@@ -223,25 +209,25 @@ public class PdfSinglePageDocumentWriter
 
             // Changes the default coordinate system so that the origin
             // is in the upper left corner instead of the lower left corner.
-            cb.concatCTM(1f, 0f, 0f, -1f, 0f, pagesize.height());
-
-            // -------------------------------------
-            cb.setColorStroke(Color.RED);
-            cb.moveTo(0, 0);
-            cb.lineTo(0, pagesize.height());
-            cb.stroke();
-            cb.setColorStroke(Color.GREEN);
-            cb.moveTo(0, 0);
-            cb.lineTo(pagesize.width(), 0);
-            cb.stroke();
-            cb.setColorStroke(Color.BLUE);
-            cb.moveTo(pagesize.width(), 0);
-            cb.lineTo(pagesize.width(), pagesize.height());
-            cb.stroke();
-            cb.setColorStroke(Color.YELLOW);
-            cb.moveTo(0, pagesize.height());
-            cb.lineTo(pagesize.width(), pagesize.height());
-            cb.stroke();
+            //            cb.concatCTM(1f, 0f, 0f, -1f, 0f, pagesize.height());
+            //
+            //            // -------------------------------------
+            //            cb.setColorStroke(Color.RED);
+            //            cb.moveTo(0, 0);
+            //            cb.lineTo(0, pagesize.height());
+            //            cb.stroke();
+            //            cb.setColorStroke(Color.GREEN);
+            //            cb.moveTo(0, 0);
+            //            cb.lineTo(pagesize.width(), 0);
+            //            cb.stroke();
+            //            cb.setColorStroke(Color.BLUE);
+            //            cb.moveTo(pagesize.width(), 0);
+            //            cb.lineTo(pagesize.width(), pagesize.height());
+            //            cb.stroke();
+            //            cb.setColorStroke(Color.YELLOW);
+            //            cb.moveTo(0, pagesize.height());
+            //            cb.lineTo(pagesize.width(), pagesize.height());
+            //            cb.stroke();
 
             //            BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA,
             //                    BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
@@ -263,24 +249,24 @@ public class PdfSinglePageDocumentWriter
 
         } catch (GeneralException e) {
             throw new DocumentWriterException(e);
-        } catch (DocumentException e) {
-            throw new DocumentWriterException(e);
+            //        } catch (PdfException e) {
+            //            throw new DocumentWriterPdfDocumentException(e);
         } catch (IOException e) {
             throw new DocumentWriterIOException(e);
         }
     }
 
-    /**
-     * Create a new <code>Rectangle</code>.
-     * @param w the width as Dimen
-     * @param h the height as Dimen
-     * @return Returns the new Rectangle
-     */
-    private Rectangle createRectangle(final Dimen w, final Dimen h) {
-
-        return new Rectangle((float) Unit.getDimenAsBP(w), (float) Unit
-                .getDimenAsBP(h));
-    }
+    //    /**
+    //     * Create a new <code>Rectangle</code>.
+    //     * @param w the width as Dimen
+    //     * @param h the height as Dimen
+    //     * @return Returns the new Rectangle
+    //     */
+    //    private Rectangle createRectangle(final Dimen w, final Dimen h) {
+    //
+    //        return new Rectangle((float) Unit.getDimenAsBP(w), (float) Unit
+    //                .getDimenAsBP(h));
+    //    }
 
     //    /**
     //     * return the node element
