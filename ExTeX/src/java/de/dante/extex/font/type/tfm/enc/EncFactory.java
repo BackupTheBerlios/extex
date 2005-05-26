@@ -32,7 +32,7 @@ import de.dante.util.resource.ResourceFinder;
  * Factory for enc-files.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class EncFactory implements Serializable {
 
@@ -49,7 +49,7 @@ public class EncFactory implements Serializable {
     /**
      * Resourcefinder
      */
-    private ResourceFinder finder;
+    private transient ResourceFinder finder;
 
     /**
      * Map
