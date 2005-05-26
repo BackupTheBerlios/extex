@@ -19,11 +19,13 @@
 
 package de.dante.extex.documentWriter.pdf;
 
+import java.awt.Color;
 import java.io.IOException;
 
 import org.pdfbox.pdmodel.edit.PDPageContentStream;
 import org.pdfbox.pdmodel.font.PDFont;
 import org.pdfbox.pdmodel.font.PDType1Font;
+import org.pdfbox.pdmodel.graphics.path.BasePath;
 
 import de.dante.extex.documentWriter.exception.DocumentWriterException;
 import de.dante.extex.documentWriter.exception.DocumentWriterIOException;
@@ -60,7 +62,7 @@ import de.dante.util.Unit;
  * PDF NodeVisitor.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 
 public class PdfNodeVisitor implements NodeVisitor {
@@ -105,44 +107,50 @@ public class PdfNodeVisitor implements NodeVisitor {
      *
      * @param node  the node
      */
-    private void drawNode(final Node node) /*throws PdfException*/{
+    private void drawNode(final Node node) throws DocumentWriterException {
 
-        //        cb.setLineWidth(0.1f);
-        //        if (node instanceof VerticalListNode) {
-        //            cb.setColorStroke(Color.RED);
-        //        } else if (node instanceof HorizontalListNode) {
-        //            cb.setColorStroke(Color.YELLOW);
-        //        } else {
-        //            cb.setColorStroke(Color.GREEN);
-        //        }
-        //        float cx = Unit.getDimenAsBP(currentX);
-        //        float cy = Unit.getDimenAsBP(currentY);
-        //        float w = Unit.getDimenAsBP(node.getWidth());
-        //        float h = Unit.getDimenAsBP(node.getHeight());
-        //        float d = Unit.getDimenAsBP(node.getDepth());
-        //        cb.moveTo(cx, phBP - cy);
-        //        cb.lineTo(cx + w, phBP - cy);
-        //        cb.stroke();
-        //        cb.moveTo(cx, phBP - cy);
-        //        cb.lineTo(cx, phBP - cy + h);
-        //        cb.stroke();
-        //        cb.moveTo(cx + w, phBP - cy);
-        //        cb.lineTo(cx + w, phBP - cy + h);
-        //        cb.stroke();
-        //        cb.moveTo(cx + w, phBP - cy + h);
-        //        cb.lineTo(cx, phBP - cy + h);
-        //        cb.stroke();
-        //        if (node.getDepth().getValue() != 0) {
-        //            cb.moveTo(cx, phBP - cy);
-        //            cb.lineTo(cx, phBP - cy - d);
-        //            cb.stroke();
-        //            cb.moveTo(cx, phBP - cy - d);
-        //            cb.lineTo(cx + w, phBP - cy - d);
-        //            cb.stroke();
-        //            cb.moveTo(cx + w, phBP - cy - d);
-        //            cb.lineTo(cx + w, phBP - cy);
-        //            cb.stroke();
-        //        }
+        try {
+            if (node instanceof VerticalListNode) {
+                contentStream.setStrokingColor(Color.RED);
+            } else if (node instanceof HorizontalListNode) {
+                contentStream.setStrokingColor(Color.YELLOW);
+            } else {
+                contentStream.setStrokingColor(Color.GREEN);
+            }
+            float cx = Unit.getDimenAsBP(currentX);
+            float cy = Unit.getDimenAsBP(currentY);
+            float w = Unit.getDimenAsBP(node.getWidth());
+            float h = Unit.getDimenAsBP(node.getHeight());
+            float d = Unit.getDimenAsBP(node.getDepth());
+            BasePath path = new BasePath();
+            path.setLineWidth(0.1f);
+            path.moveTo(cx, phBP - cy);
+            path.lineTo(cx + w, phBP - cy);
+            path.stroke();
+            path.moveTo(cx, phBP - cy);
+            path.lineTo(cx, phBP - cy + h);
+            path.stroke();
+            path.moveTo(cx + w, phBP - cy);
+            path.lineTo(cx + w, phBP - cy + h);
+            path.stroke();
+            path.moveTo(cx + w, phBP - cy + h);
+            path.lineTo(cx, phBP - cy + h);
+            path.stroke();
+            if (node.getDepth().getValue() != 0) {
+                path.moveTo(cx, phBP - cy);
+                path.lineTo(cx, phBP - cy - d);
+                path.stroke();
+                path.moveTo(cx, phBP - cy - d);
+                path.lineTo(cx + w, phBP - cy - d);
+                path.stroke();
+                path.moveTo(cx + w, phBP - cy - d);
+                path.lineTo(cx + w, phBP - cy);
+                path.stroke();
+            }
+            contentStream.drawPath(path);
+        } catch (IOException e) {
+            throw new DocumentWriterIOException(e);
+        }
     }
 
     /**
@@ -247,6 +255,7 @@ public class PdfNodeVisitor implements NodeVisitor {
             //PdfFont.createFont("src/font/lmr12.afm", "",
             //    PdfFont.EMBEDDED);
 
+            contentStream.setStrokingColor(Color.BLACK);
             contentStream.beginText();
             contentStream.setFont(pdfont, (float) Unit.getDimenAsPT(font
                     .getActualSize()));
@@ -254,15 +263,6 @@ public class PdfNodeVisitor implements NodeVisitor {
                     phBP - Unit.getDimenAsBP(currentY));
             contentStream.drawString(uc.toString());
             contentStream.endText();
-
-            //            cb.beginText();
-            //            cb.setColorFill(Color.BLACK);
-            //            cb.setFontAndSize(bf, (float) Unit.getDimenAsPT(font
-            //                    .getActualSize()));
-            //            cb.showTextAligned(PdfContentByte.ALIGN_LEFT, uc.toString(), Unit
-            //                    .getDimenAsBP(currentX),
-            //                    phBP - Unit.getDimenAsBP(currentY), 0);
-            //            cb.endText();
 
             drawNode(node);
 
