@@ -13,6 +13,13 @@
     </div>
    </div>
    <div class="info">
+    Developer Meeting
+    <div class="infoitems">
+     The &ExTeX; developers have scheduled a meeting for beginning of August
+     2005 in Groﬂ-Gerau (Germany).
+    </div>
+   </div>
+   <div class="info">
     EuroTeX 2005
     <div class="infoitems">
      &ExTeX; slides in <a href="&top;documentation">documentation</a>
