@@ -428,4 +428,16 @@
         </copy>
         </target>
 
+	<target name="onejar"
+            depends="compile"
+            description="Create one extex-jar-archive which include all other needed classes from all libs">
+	<mkdir dir="${target.lib}"/>
+        <java fork="true" classname="de.uni_hamburg.eggink.autojar.Autojar">
+             <arg value="-o"/>
+	     <arg value="${target.lib}/extexone.jar"/>
+             <arg value="-b"/>
+             <arg value="de/dante/extex/main/TeX.class"/>
+        </java>
+        </target>
+
 </project>
