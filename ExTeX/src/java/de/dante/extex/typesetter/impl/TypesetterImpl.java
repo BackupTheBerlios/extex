@@ -61,7 +61,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.67 $
+ * @version $Revision: 1.68 $
  */
 public class TypesetterImpl
         implements
@@ -539,24 +539,24 @@ public class TypesetterImpl
      * @see de.dante.extex.typesetter.ListMaker#subscriptMark(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.scanner.type.Token)
+     *      Typesetter, de.dante.extex.scanner.type.Token)
      */
     public void subscriptMark(final Context context, final TokenSource source,
-            final Token t) throws TypesetterException {
+            Typesetter typesetter, final Token t) throws TypesetterException {
 
-        listMaker.subscriptMark(context, source, t);
+        listMaker.subscriptMark(context, source, typesetter, t);
     }
 
     /**
      * @see de.dante.extex.typesetter.Typesetter#superscriptMark(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.scanner.type.Token)
+     *      Typesetter, de.dante.extex.scanner.type.Token)
      */
     public void superscriptMark(final Context context,
-            final TokenSource source, final Token t) throws TypesetterException {
+            final TokenSource source, Typesetter typesetter, final Token t) throws TypesetterException {
 
-        listMaker.superscriptMark(context, source, t);
+        listMaker.superscriptMark(context, source, typesetter, t);
     }
 
     /**

@@ -49,7 +49,7 @@ import de.dante.util.configuration.Configuration;
  * interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class NullTypesetterImpl implements Typesetter {
 
@@ -94,8 +94,6 @@ public class NullTypesetterImpl implements Typesetter {
      * @see de.dante.extex.typesetter.ListMaker#afterParagraph(ParagraphObserver)
      */
     public void afterParagraph(final ParagraphObserver observer) {
-
-        // TODO gene: afterParagraph unimplemented
 
     }
 
@@ -332,20 +330,20 @@ public class NullTypesetterImpl implements Typesetter {
     /**
      * @see de.dante.extex.typesetter.Typesetter#subscriptMark(
      *      de.dante.extex.interpreter.context.Context,
-     *      TokenSource, de.dante.extex.scanner.type.Token)
+     *      TokenSource, Typesetter, de.dante.extex.scanner.type.Token)
      */
     public void subscriptMark(final Context context, final TokenSource source,
-            final Token t) throws TypesetterException {
+            Typesetter typesetter, final Token t) throws TypesetterException {
 
     }
 
     /**
      * @see de.dante.extex.typesetter.Typesetter#superscriptMark(
      *      de.dante.extex.interpreter.context.Context,
-     *      TokenSource, de.dante.extex.scanner.type.Token)
+     *      TokenSource, Typesetter, de.dante.extex.scanner.type.Token)
      */
     public void superscriptMark(final Context context,
-            final TokenSource source, final Token t) throws TypesetterException {
+            final TokenSource source, Typesetter typesetter, final Token t) throws TypesetterException {
 
     }
 

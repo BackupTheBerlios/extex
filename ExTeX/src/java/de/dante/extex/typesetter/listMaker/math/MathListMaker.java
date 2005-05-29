@@ -37,15 +37,16 @@ import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.ParagraphObserver;
+import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.exception.TypesetterHelpingException;
 import de.dante.extex.typesetter.listMaker.AbstractListMaker;
 import de.dante.extex.typesetter.listMaker.ListManager;
-import de.dante.extex.typesetter.type.MathClass;
-import de.dante.extex.typesetter.type.MathDelimiter;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
+import de.dante.extex.typesetter.type.math.MathClass;
+import de.dante.extex.typesetter.type.math.MathDelimiter;
 import de.dante.extex.typesetter.type.noad.FractionNoad;
 import de.dante.extex.typesetter.type.noad.GlueNoad;
 import de.dante.extex.typesetter.type.noad.KernNoad;
@@ -67,7 +68,7 @@ import de.dante.util.UnicodeChar;
  * This is the list maker for the inline math formulae.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class MathListMaker extends AbstractListMaker implements NoadConsumer {
 
@@ -76,7 +77,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      * It is used to store to the stack and restore the state from the stack.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.17 $
+     * @version $Revision: 1.18 $
      */
     private class MathMemento {
 
@@ -462,10 +463,10 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
     /**
      * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#scanNoad(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
+     *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
-    public Noad scanNoad(final Context context, final TokenSource source)
-            throws TypesetterException {
+    public Noad scanNoad(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws TypesetterException {
 
         try {
             Token t = source.getToken(context);
@@ -476,7 +477,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
             if (t.isa(Catcode.LEFTBRACE)) {
                 source.executeGroup();
             } else {
-                source.execute(t, context, null); //TODO gene: provide typesetter argument
+                source.execute(t, context, typesetter);
             }
         } catch (TypesetterException e) {
             throw e;
@@ -500,12 +501,13 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      * @see de.dante.extex.typesetter.ListMaker#subscriptMark(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.scanner.type.Token)
+     *      Typesetter, de.dante.extex.scanner.type.Token)
      */
     public void subscriptMark(final Context context, final TokenSource source,
-            final Token token) throws TypesetterException {
+            final Typesetter typesetter, final Token token)
+            throws TypesetterException {
 
-        Noad sub = scanNoad(context, source);
+        Noad sub = scanNoad(context, source, typesetter);
         if (insertionPoint.size() == 0) {
             add(new MathList());
         }
@@ -522,13 +524,13 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      * @see de.dante.extex.typesetter.ListMaker#superscriptMark(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.scanner.type.Token)
+     *      Typesetter, de.dante.extex.scanner.type.Token)
      */
     public void superscriptMark(final Context context,
-            final TokenSource source, final Token token)
-            throws TypesetterException {
+            final TokenSource source, final Typesetter typesetter,
+            final Token token) throws TypesetterException {
 
-        Noad sup = scanNoad(context, source);
+        Noad sup = scanNoad(context, source, typesetter);
         if (insertionPoint.size() == 0) {
             add(new MathList());
         }

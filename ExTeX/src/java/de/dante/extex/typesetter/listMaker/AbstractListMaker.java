@@ -29,6 +29,7 @@ import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Mode;
+import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.exception.TypesetterHelpingException;
 import de.dante.extex.typesetter.listMaker.math.DisplaymathListMaker;
@@ -40,7 +41,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This abstract class provides some methods common to all ListMakers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public abstract class AbstractListMaker implements ListMaker {
 
@@ -147,10 +148,10 @@ public abstract class AbstractListMaker implements ListMaker {
      * @see de.dante.extex.typesetter.ListMaker#subscriptMark(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.scanner.type.Token)
+     *      Typesetter, de.dante.extex.scanner.type.Token)
      */
     public void subscriptMark(final Context context, final TokenSource source,
-            final Token token) throws TypesetterException {
+            Typesetter typesetter, final Token token) throws TypesetterException {
 
         throw new TypesetterException(new MissingMathException(token.toString()));
     }
@@ -159,10 +160,10 @@ public abstract class AbstractListMaker implements ListMaker {
      * @see de.dante.extex.typesetter.ListMaker#superscriptMark(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.scanner.type.Token)
+     *      Typesetter, de.dante.extex.scanner.type.Token)
      */
     public void superscriptMark(final Context context,
-            final TokenSource source, final Token token)
+            final TokenSource source, Typesetter typesetter, final Token token)
             throws TypesetterException {
 
         throw new TypesetterException(new MissingMathException(token.toString()));

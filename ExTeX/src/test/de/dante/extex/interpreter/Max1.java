@@ -53,7 +53,7 @@ import de.dante.util.configuration.ConfigurationFactory;
 
 /**
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.57 $
+ * @version $Revision: 1.58 $
  */
 public class Max1 extends TestCase {
 
@@ -360,10 +360,10 @@ public class Max1 extends TestCase {
         /**
          * @see de.dante.extex.typesetter.Typesetter#subscriptMark(
          *      Context,
-         *      TokenSource, de.dante.extex.scanner.type.Token)
+         *      TokenSource, Typesetter, de.dante.extex.scanner.type.Token)
          */
         public void subscriptMark(final Context context,
-                final TokenSource source, final Token t)
+                final TokenSource source, Typesetter typesetter, final Token t)
                 throws TypesetterException {
 
         }
@@ -371,10 +371,10 @@ public class Max1 extends TestCase {
         /**
          * @see de.dante.extex.typesetter.Typesetter#superscriptMark(
          *      Context,
-         *      TokenSource, de.dante.extex.scanner.type.Token)
+         *      TokenSource, Typesetter, de.dante.extex.scanner.type.Token)
          */
         public void superscriptMark(final Context context,
-                final TokenSource source, final Token t)
+                final TokenSource source, Typesetter typesetter, final Token t)
                 throws TypesetterException {
 
         }

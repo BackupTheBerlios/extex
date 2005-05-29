@@ -95,7 +95,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.71 $
+ * @version $Revision: 1.72 $
  */
 public class Max extends Moritz
         implements
@@ -1029,7 +1029,7 @@ public class Max extends Moritz
     public Object visitSubMark(final SubMarkToken token, final Object ignore)
             throws GeneralException {
 
-        typesetter.subscriptMark(context, this, token);
+        typesetter.subscriptMark(context, this, typesetter, token);
         return null;
     }
 
@@ -1050,7 +1050,7 @@ public class Max extends Moritz
     public Object visitSupMark(final SupMarkToken token, final Object ignore)
             throws GeneralException {
 
-        typesetter.superscriptMark(context, this, token);
+        typesetter.superscriptMark(context, this, typesetter, token);
         return null;
     }
 
