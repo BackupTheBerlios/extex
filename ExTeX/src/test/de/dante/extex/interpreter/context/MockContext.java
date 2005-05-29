@@ -56,7 +56,7 @@ import de.dante.extex.scanner.type.TokenFactoryImpl;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
-import de.dante.extex.typesetter.type.MathDelimiter;
+import de.dante.extex.typesetter.type.math.MathDelimiter;
 import de.dante.util.GeneralException;
 import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
@@ -68,7 +68,7 @@ import de.dante.util.configuration.ConfigurationException;
  * classes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class MockContext implements Context, TypesetterOptions {
 

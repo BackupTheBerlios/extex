@@ -20,15 +20,15 @@
 package de.dante.extex.typesetter.type.noad;
 
 import de.dante.extex.typesetter.TypesetterOptions;
-import de.dante.extex.typesetter.type.MathDelimiter;
 import de.dante.extex.typesetter.type.NodeList;
+import de.dante.extex.typesetter.type.math.MathDelimiter;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
 
 /**
  * This noad represents mathematical material under a radical sign.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class RadicalNoad extends AbstractNucleusNoad {
 

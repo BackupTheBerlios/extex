@@ -37,7 +37,7 @@ import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.scanner.type.TokenFactory;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
-import de.dante.extex.typesetter.type.MathDelimiter;
+import de.dante.extex.typesetter.type.math.MathDelimiter;
 import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.ConfigurationException;
@@ -48,7 +48,7 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.54 $
+ * @version $Revision: 1.55 $
  */
 public interface Context
         extends

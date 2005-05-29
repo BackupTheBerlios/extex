@@ -20,8 +20,8 @@
 package de.dante.extex.typesetter.type.noad;
 
 import de.dante.extex.typesetter.TypesetterOptions;
-import de.dante.extex.typesetter.type.MathDelimiter;
 import de.dante.extex.typesetter.type.NodeList;
+import de.dante.extex.typesetter.type.math.MathDelimiter;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
 
 /**
@@ -32,7 +32,7 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * @see "TTP [687]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class LeftNoad extends AbstractNoad {
 
