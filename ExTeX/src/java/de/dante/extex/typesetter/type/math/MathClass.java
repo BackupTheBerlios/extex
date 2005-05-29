@@ -17,17 +17,17 @@
  *
  */
 
-package de.dante.extex.typesetter.type;
+package de.dante.extex.typesetter.type.math;
 
+import java.io.ObjectStreamException;
 import java.io.Serializable;
-
 
 /**
  * This class provides the classification of mathematical characters.
  * In fact it is a finite enumeration which exposes the values as constants.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.1 $
  */
 public abstract class MathClass implements Serializable {
 
@@ -35,12 +35,25 @@ public abstract class MathClass implements Serializable {
      * This is a inner class for a binary operator.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.6 $
+     * @version $Revision: 1.1 $
      */
     private static final class BinaryMathClass extends MathClass {
 
         /**
-         * Append the printable representation of the  current instance to the
+         * Return the singleton constant object after the serialized instance
+         * has been read back in.
+         *
+         * @return the one and only instance of this object
+         *
+         * @throws ObjectStreamException never
+         */
+        protected Object readResolve() throws ObjectStreamException {
+
+            return MathClass.BINARY;
+        }
+
+        /**
+         * Append the printable representation of the current instance to the
          * string buffer.
          *
          * @param sb the target string buffer
@@ -51,7 +64,7 @@ public abstract class MathClass implements Serializable {
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.MathClass#visit(
+         * @see de.dante.extex.typesetter.type.math.MathClass#visit(
          *      MathClassVisitor, java.lang.Object)
          */
         public Object visit(final MathClassVisitor visitor, final Object arg) {
@@ -64,12 +77,25 @@ public abstract class MathClass implements Serializable {
      * This is a inner class for closing.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.6 $
+     * @version $Revision: 1.1 $
      */
     private static final class ClosingMathClass extends MathClass {
 
         /**
-         * Append the printable representation of the  current instance to the
+         * Return the singleton constant object after the serialized instance
+         * has been read back in.
+         *
+         * @return the one and only instance of this object
+         *
+         * @throws ObjectStreamException never
+         */
+        protected Object readResolve() throws ObjectStreamException {
+
+            return MathClass.CLOSING;
+        }
+
+        /**
+         * Append the printable representation of the current instance to the
          * string buffer.
          *
          * @param sb the target string buffer
@@ -80,7 +106,7 @@ public abstract class MathClass implements Serializable {
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.MathClass#visit(
+         * @see de.dante.extex.typesetter.type.math.MathClass#visit(
          *      MathClassVisitor, java.lang.Object)
          */
         public Object visit(final MathClassVisitor visitor, final Object arg) {
@@ -93,12 +119,25 @@ public abstract class MathClass implements Serializable {
      * This is a inner class for large operators.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.6 $
+     * @version $Revision: 1.1 $
      */
     private static final class LargeMathClass extends MathClass {
 
         /**
-         * Append the printable representation of the  current instance to the
+         * Return the singleton constant object after the serialized instance
+         * has been read back in.
+         *
+         * @return the one and only instance of this object
+         *
+         * @throws ObjectStreamException never
+         */
+        protected Object readResolve() throws ObjectStreamException {
+
+            return MathClass.LARGE;
+        }
+
+        /**
+         * Append the printable representation of the current instance to the
          * string buffer.
          *
          * @param sb the target string buffer
@@ -109,7 +148,7 @@ public abstract class MathClass implements Serializable {
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.MathClass#visit(
+         * @see de.dante.extex.typesetter.type.math.MathClass#visit(
          *      MathClassVisitor, java.lang.Object)
          */
         public Object visit(final MathClassVisitor visitor, final Object arg) {
@@ -122,12 +161,25 @@ public abstract class MathClass implements Serializable {
      * This is a inner class for opening.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.6 $
+     * @version $Revision: 1.1 $
      */
     private static final class OpeningMathClass extends MathClass {
 
         /**
-         * Append the printable representation of the  current instance to the
+         * Return the singleton constant object after the serialized instance
+         * has been read back in.
+         *
+         * @return the one and only instance of this object
+         *
+         * @throws ObjectStreamException never
+         */
+        protected Object readResolve() throws ObjectStreamException {
+
+            return MathClass.OPENING;
+        }
+
+        /**
+         * Append the printable representation of the current instance to the
          * string buffer.
          *
          * @param sb the target string buffer
@@ -138,7 +190,7 @@ public abstract class MathClass implements Serializable {
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.MathClass#visit(
+         * @see de.dante.extex.typesetter.type.math.MathClass#visit(
          *      MathClassVisitor, java.lang.Object)
          */
         public Object visit(final MathClassVisitor visitor, final Object arg) {
@@ -151,12 +203,25 @@ public abstract class MathClass implements Serializable {
      * This is a inner class for ordinary characters.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.6 $
+     * @version $Revision: 1.1 $
      */
     private static final class OrdinaryMathClass extends MathClass {
 
         /**
-         * Append the printable representation of the  current instance to the
+         * Return the singleton constant object after the serialized instance
+         * has been read back in.
+         *
+         * @return the one and only instance of this object
+         *
+         * @throws ObjectStreamException never
+         */
+        protected Object readResolve() throws ObjectStreamException {
+
+            return MathClass.ORDINARY;
+        }
+
+        /**
+         * Append the printable representation of the current instance to the
          * string buffer.
          *
          * @param sb the target string buffer
@@ -167,7 +232,7 @@ public abstract class MathClass implements Serializable {
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.MathClass#visit(
+         * @see de.dante.extex.typesetter.type.math.MathClass#visit(
          *      MathClassVisitor, java.lang.Object)
          */
         public Object visit(final MathClassVisitor visitor, final Object arg) {
@@ -180,12 +245,25 @@ public abstract class MathClass implements Serializable {
      * This is a inner class for punctation marks.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.6 $
+     * @version $Revision: 1.1 $
      */
     private static final class PunctationMathClass extends MathClass {
 
         /**
-         * Append the printable representation of the  current instance to the
+         * Return the singleton constant object after the serialized instance
+         * has been read back in.
+         *
+         * @return the one and only instance of this object
+         *
+         * @throws ObjectStreamException never
+         */
+        protected Object readResolve() throws ObjectStreamException {
+
+            return MathClass.PUNCTUATION;
+        }
+
+        /**
+         * Append the printable representation of the current instance to the
          * string buffer.
          *
          * @param sb the target string buffer
@@ -196,7 +274,7 @@ public abstract class MathClass implements Serializable {
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.MathClass#visit(
+         * @see de.dante.extex.typesetter.type.math.MathClass#visit(
          *      MathClassVisitor, java.lang.Object)
          */
         public Object visit(final MathClassVisitor visitor, final Object arg) {
@@ -209,12 +287,25 @@ public abstract class MathClass implements Serializable {
      * This is a inner class for relation symbols.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.6 $
+     * @version $Revision: 1.1 $
      */
     private static final class RelationMathClass extends MathClass {
 
         /**
-         * Append the printable representation of the  current instance to the
+         * Return the singleton constant object after the serialized instance
+         * has been read back in.
+         *
+         * @return the one and only instance of this object
+         *
+         * @throws ObjectStreamException never
+         */
+        protected Object readResolve() throws ObjectStreamException {
+
+            return MathClass.RELATION;
+        }
+
+        /**
+         * Append the printable representation of the current instance to the
          * string buffer.
          *
          * @param sb the target string buffer
@@ -225,7 +316,7 @@ public abstract class MathClass implements Serializable {
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.MathClass#visit(
+         * @see de.dante.extex.typesetter.type.math.MathClass#visit(
          *      MathClassVisitor, java.lang.Object)
          */
         public Object visit(final MathClassVisitor visitor, final Object arg) {
@@ -238,12 +329,25 @@ public abstract class MathClass implements Serializable {
      * This is a inner class for variable width characters.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.6 $
+     * @version $Revision: 1.1 $
      */
     private static final class VariableMathClass extends MathClass {
 
         /**
-         * Append the printable representation of the  current instance to the
+         * Return the singleton constant object after the serialized instance
+         * has been read back in.
+         *
+         * @return the one and only instance of this object
+         *
+         * @throws ObjectStreamException never
+         */
+        protected Object readResolve() throws ObjectStreamException {
+
+            return MathClass.VARIABLE;
+        }
+
+        /**
+         * Append the printable representation of the current instance to the
          * string buffer.
          *
          * @param sb the target string buffer
@@ -254,7 +358,7 @@ public abstract class MathClass implements Serializable {
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.MathClass#visit(
+         * @see de.dante.extex.typesetter.type.math.MathClass#visit(
          *      MathClassVisitor, java.lang.Object)
          */
         public Object visit(final MathClassVisitor visitor, final Object arg) {
@@ -327,35 +431,35 @@ public abstract class MathClass implements Serializable {
      * <table>
      *  <tr>
      *   <td>0</td>
-     *   <td>{@link de.dante.extex.typesetter.type.MathClass#ORDINARY ORDINARY}</td>
+     *   <td>{@link de.dante.extex.typesetter.type.math.MathClass#ORDINARY ORDINARY}</td>
      *  </tr>
      *  <tr>
      *   <td>1</td>
-     *   <td>{@link de.dante.extex.typesetter.type.MathClass#LARGE LARGE}</td>
+     *   <td>{@link de.dante.extex.typesetter.type.math.MathClass#LARGE LARGE}</td>
      *  </tr>
      *  <tr>
      *   <td>2</td>
-     *   <td>{@link de.dante.extex.typesetter.type.MathClass#BINARY BINARY}</td>
+     *   <td>{@link de.dante.extex.typesetter.type.math.MathClass#BINARY BINARY}</td>
      *  </tr>
      *  <tr>
      *   <td>3</td>
-     *   <td>{@link de.dante.extex.typesetter.type.MathClass#RELATION RELATION}</td>
+     *   <td>{@link de.dante.extex.typesetter.type.math.MathClass#RELATION RELATION}</td>
      *  </tr>
      *  <tr>
      *   <td>4</td>
-     *   <td>{@link de.dante.extex.typesetter.type.MathClass#OPENING OPENING}</td>
+     *   <td>{@link de.dante.extex.typesetter.type.math.MathClass#OPENING OPENING}</td>
      *  </tr>
      *  <tr>
      *   <td>5</td>
-     *   <td>{@link de.dante.extex.typesetter.type.MathClass#CLOSING CLOSING}</td>
+     *   <td>{@link de.dante.extex.typesetter.type.math.MathClass#CLOSING CLOSING}</td>
      *  </tr>
      *  <tr>
      *   <td>6</td>
-     *   <td>{@link de.dante.extex.typesetter.type.MathClass#PUNCTATION PUNCTATION}</td>
+     *   <td>{@link de.dante.extex.typesetter.type.math.MathClass#PUNCTATION PUNCTATION}</td>
      *  </tr>
      *  <tr>
      *   <td>7</td>
-     *   <td>{@link de.dante.extex.typesetter.type.MathClass#VARIABLE VARIABLE}</td>
+     *   <td>{@link de.dante.extex.typesetter.type.math.MathClass#VARIABLE VARIABLE}</td>
      *  </tr>
      * </table>
      *
@@ -379,7 +483,7 @@ public abstract class MathClass implements Serializable {
     }
 
     /**
-     * Append the printable representation of the  current instance to the
+     * Append the printable representation of the current instance to the
      * string buffer.
      *
      * @param sb the target string buffer
