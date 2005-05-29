@@ -582,14 +582,14 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class TeX extends ExTeX {
 
     /**
      * The constant <tt>COPYRIGHT_YEAR</tt> contains the starting year of
      * development for the copyright message. This number is fixed to be the
-     * year 2003.
+     * year 2003 and should no be modified.
      */
     private static final int COPYRIGHT_YEAR = 2003;
 
@@ -666,6 +666,11 @@ public class TeX extends ExTeX {
     }
 
     /**
+     * The field <tt>localizer</tt> contains the localizer.
+     */
+    private Localizer localizer;
+
+    /**
      * The field <tt>observers</tt> contains the observers.
      * <p>
      * NOTE: if weak references are used then the instances have to be kept
@@ -702,7 +707,18 @@ public class TeX extends ExTeX {
             throws MainException {
 
         super(theProperties, dotFile);
+        localizer = LocalizerFactory.getLocalizer(TeX.class.getName());
         setQueryFileHandler(new QueryFileHandlerTeXImpl());
+    }
+
+    /**
+     * Getter for localizer.
+     *
+     * @return the localizer
+     */
+    protected Localizer getLocalizer() {
+
+        return this.localizer;
     }
 
     /**
