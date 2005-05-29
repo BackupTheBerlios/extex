@@ -33,7 +33,7 @@ import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
-import de.dante.extex.typesetter.type.MathClass;
+import de.dante.extex.typesetter.type.math.MathClass;
 import de.dante.extex.typesetter.type.noad.MathGlyph;
 import de.dante.util.UnicodeChar;
 
@@ -64,7 +64,7 @@ import de.dante.util.UnicodeChar;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class Mathchar extends AbstractMathCode {
 
@@ -144,7 +144,7 @@ public class Mathchar extends AbstractMathCode {
             nc.add(mc, mg);
         } else {
             source.push(t);
-            insert(nc, new Count(context, source).getValue());
+            insert(nc, Count.scanCount(context, source, typesetter));
         }
     }
 

@@ -25,9 +25,10 @@ import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.muskip.Mudimen;
 import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.typesetter.ListMaker;
+import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.exception.TypesetterException;
-import de.dante.extex.typesetter.type.MathClass;
-import de.dante.extex.typesetter.type.MathDelimiter;
+import de.dante.extex.typesetter.type.math.MathClass;
+import de.dante.extex.typesetter.type.math.MathDelimiter;
 import de.dante.extex.typesetter.type.noad.MathGlyph;
 import de.dante.extex.typesetter.type.noad.Noad;
 
@@ -36,7 +37,7 @@ import de.dante.extex.typesetter.type.noad.Noad;
  * This is usually the case for math list makers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public interface NoadConsumer extends ListMaker {
 
@@ -126,15 +127,15 @@ public interface NoadConsumer extends ListMaker {
     /**
      * Process the input until a Noad is completed. A Noad is either a single
      * Noad or a list of Noades resulting from the processing of a block.
-     *
      * @param context the interpreter context
      * @param source the source for new tokens
+     * @param typesetter TODO
      *
      * @return the Noad read or <code>null</code> if none could be gathered
      *
      * @throws TypesetterException in case of an error
      */
-    Noad scanNoad(Context context, TokenSource source)
+    Noad scanNoad(Context context, TokenSource source, Typesetter typesetter)
             throws TypesetterException;
 
     /**

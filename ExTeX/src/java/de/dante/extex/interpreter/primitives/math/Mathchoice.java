@@ -51,7 +51,7 @@ import de.dante.extex.typesetter.type.noad.Noad;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Mathchoice extends AbstractMathCode {
 
@@ -77,10 +77,10 @@ public class Mathchoice extends AbstractMathCode {
             throws InterpreterException {
 
         NoadConsumer nc = getListMaker(context, typesetter);
-        Noad display = nc.scanNoad(context, source);
-        Noad text = nc.scanNoad(context, source);
-        Noad script = nc.scanNoad(context, source);
-        Noad scriptScript = nc.scanNoad(context, source);
+        Noad display = nc.scanNoad(context, source, typesetter);
+        Noad text = nc.scanNoad(context, source, typesetter);
+        Noad script = nc.scanNoad(context, source, typesetter);
+        Noad scriptScript = nc.scanNoad(context, source, typesetter);
         nc.add(new ChoiceNoad(display, text, script, scriptScript));
     }
 

@@ -50,7 +50,7 @@ import de.dante.extex.typesetter.type.noad.RelationNoad;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Mathrel extends AbstractMathCode {
 
@@ -76,7 +76,7 @@ public class Mathrel extends AbstractMathCode {
             throws InterpreterException {
 
         NoadConsumer nc = getListMaker(context, typesetter);
-        Noad noad = nc.scanNoad(context, source);
+        Noad noad = nc.scanNoad(context, source, typesetter);
         nc.add(new RelationNoad(noad));
     }
 
