@@ -33,10 +33,10 @@ import de.dante.util.resource.ResourceFinder;
 
 /**
  * This ResourceFinder queries the user for the name of the file to use and
- * tries to find it via its super class.
+ * tries to find it via its parent.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class ResourceFinderImpl
         implements
@@ -102,7 +102,8 @@ public class ResourceFinderImpl
     }
 
     /**
-     * @see de.dante.util.resource.ResourceFinder#findResource(java.lang.String,
+     * @see de.dante.util.resource.ResourceFinder#findResource(
+     *      java.lang.String,
      *      java.lang.String)
      */
     public InputStream findResource(final String name, final String type)
@@ -118,23 +119,19 @@ public class ResourceFinderImpl
         Localizer localizer = LocalizerFactory
                 .getLocalizer(ResourceFinderImpl.class.getName());
 
-        for (;;) {
-            if (!line.equals("")) {
-                logger.severe("\n! "
-                        + localizer.format("CLI.FileNotFound", name, type));
-            }
-
-            logger.severe(localizer.format("CLI.PromptFile"));
-            line = readLine();
-
-            if (line == null) {
-                return null;
-            }
-            InputStream stream = parent.findResource(line, type);
-            if (stream != null) {
-                return stream;
-            }
+        if (!line.equals("")) {
+            logger.severe("\n! "
+                    + localizer.format("CLI.FileNotFound", name, type));
         }
+
+        logger.severe(localizer.format("CLI.PromptFile"));
+        line = readLine();
+
+        if (line == null) {
+            return null;
+        }
+        InputStream stream = parent.findResource(line, type);
+        return stream;
     }
 
     /**
@@ -165,14 +162,14 @@ public class ResourceFinderImpl
     /**
      * Setter for the parent resource finder.
      *
-     * @param theParent the parent resource finder
+     * @param parent the parent resource finder
      *
      * @see de.dante.util.resource.RecursiveFinder#setParent(
      *      de.dante.util.resource.ResourceFinder)
      */
-    public void setParent(final ResourceFinder theParent) {
+    public void setParent(final ResourceFinder parent) {
 
-        this.parent = theParent;
+        this.parent = parent;
     }
 
 }
