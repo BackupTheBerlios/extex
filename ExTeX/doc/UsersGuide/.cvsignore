@@ -1,0 +1,7 @@
+*.dvi
+*.aux
+*.log
+*.blg
+*.toc
+*.out
+extex-users.pdf
