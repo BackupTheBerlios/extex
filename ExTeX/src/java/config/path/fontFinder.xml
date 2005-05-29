@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--
-  -  Copyright (C) 2004 The ExTeX Group
+  -  Copyright (C) 2004-2005 The ExTeX Group
   -
   -  This library is free software; you can redistribute it and/or modify it
   -  under the terms of the GNU Lesser General Public License as published by
@@ -24,24 +24,41 @@
       <extension>.efm</extension>
       <path>.</path>
       <path property="extex.fonts"/>
+      <path property="texinputs"/>
     </efm>
     <pfb>
       <extension>.pfb</extension>
       <path>.</path>
       <path property="extex.fonts"/>
+      <path property="texinputs"/>
     </pfb>
     <ttf>
       <extension>.ttf</extension>
       <path>.</path>
       <path property="extex.fonts"/>
+      <path property="texinputs"/>
     </ttf>
+    <vf>
+      <extension>.vf</extension>
+      <path>.</path>
+      <path property="extex.fonts"/>
+      <path property="texinputs"/>
+    </vf>
+    <tfm>
+      <extension>.tfm</extension>
+      <path>.</path>
+      <path property="extex.fonts"/>
+      <path property="texinputs"/>
+    </tfm>
     <default>
       <extension/>
       <path>.</path>
       <path property="extex.fonts"/>
+      <path property="texinputs"/>
     </default>
   </Finder>
   <Finder class="de.dante.util.resource.LsrFinder"
+          capacity="88888"
           default="default">
     <path property="extex.fonts"></path>
     <path property="texmf.path"></path>
