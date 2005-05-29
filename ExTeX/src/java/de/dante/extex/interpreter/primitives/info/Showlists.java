@@ -19,12 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.info;
 
+import java.util.logging.Logger;
+
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.primitives.register.box.AbstractBox;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.util.framework.logger.LogEnabled;
 
 /**
  * This class provides an implementation for the primitive <code>\showlists</code>.
@@ -48,9 +51,14 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
-public class Showlists extends AbstractBox {
+public class Showlists extends AbstractBox implements LogEnabled {
+
+    /**
+     * The field <tt>logger</tt> contains the logger to send information to.
+     */
+    private transient Logger logger;
 
     /**
      * Creates a new object.
@@ -60,6 +68,15 @@ public class Showlists extends AbstractBox {
     public Showlists(final String name) {
 
         super(name);
+    }
+
+    /**
+     * @see de.dante.util.framework.logger.LogEnabled#enableLogging(
+     *      java.util.logging.Logger)
+     */
+    public void enableLogging(final Logger logger) {
+
+        this.logger = logger;
     }
 
     /**
@@ -73,7 +90,8 @@ public class Showlists extends AbstractBox {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        //TODO gene: execute() unimplemented
+        logger.fine("\\showlists unimplemented");
+        //TODO gene: \showlists unimplemented
     }
 
 }
