@@ -36,9 +36,15 @@ import de.dante.util.framework.logger.LogEnabled;
  * This class provides a factory for ResourceFinders.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class ResourceFinderFactory {
+
+    /**
+     * The constant <tt>CLASS_ATTRIBUTE</tt> contains the name of the attribute
+     * containg the class name.
+     */
+    private static final String CLASS_ATTRIBUTE = "class";
 
     /**
      * Creates a new object.
@@ -69,9 +75,10 @@ public class ResourceFinderFactory {
         Iterator iterator = config.iterator("Finder");
         while (iterator.hasNext()) {
             Configuration cfg = (Configuration) iterator.next();
-            String classname = cfg.getAttribute("class");
+            String classname = cfg.getAttribute(CLASS_ATTRIBUTE);
             if (classname == null) {
-                throw new ConfigurationMissingAttributeException("class", cfg);
+                throw new ConfigurationMissingAttributeException(
+                        CLASS_ATTRIBUTE, cfg);
             }
 
             ResourceFinder finder;

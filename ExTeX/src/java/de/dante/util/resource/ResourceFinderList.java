@@ -27,11 +27,11 @@ import java.util.List;
 import de.dante.util.configuration.ConfigurationException;
 
 /**
- * This class provides a means to combine several file finders to be queried
+ * This class provides a means to combine several resource finders to be queried
  * as one.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class ResourceFinderList implements ResourceFinder, RecursiveFinder {
 
@@ -101,7 +101,7 @@ public class ResourceFinderList implements ResourceFinder, RecursiveFinder {
     }
 
     /**
-     * Setter for th parent resource finder.
+     * Setter for the parent resource finder.
      *
      * @param theParent the parent finder for recursive invocation
      *
