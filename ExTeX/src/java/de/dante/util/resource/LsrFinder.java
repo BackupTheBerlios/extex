@@ -26,12 +26,14 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 import de.dante.util.StringList;
@@ -45,16 +47,18 @@ import de.dante.util.configuration.ConfigurationWrapperException;
 import de.dante.util.framework.logger.LogEnabled;
 
 /**
- * This resource finder searches a file in a ls-R file as present in a texmf
- * tree. For this purpose the ls-R files found are read and stored internally.
+ * This resource finder searches a file in a <tt>ls-R</tt> file database as
+ * present in a texmf tree. For this purpose the <tt>ls-R</tt> file databases
+ * found are read and stored internally.
  *
  * <h2>Configuration</h2>
- *
- * TODO gene: doc incomplete
+ * The lsr finder can be configured to influence its actions.
+ * The following example shows a configuration for a lsr finder:
  *
  * <pre>
  * &lt;Finder class="de.dante.util.resource.LsrFinder"
  *          default="default"
+ *          capacity="1234567"
  *          trace="false"&gt;
  *   &lt;path property="extex.font.path"&gt;&lt;/path&gt;
  *   &lt;path property="texmf.path"&gt;&lt;/path&gt;
@@ -67,21 +71,69 @@ import de.dante.util.framework.logger.LogEnabled;
  * &lt;/Finder&gt;
  * </pre>
  *
+ * <p>
+ *  Whenever a resource is sought the first step is to ensure that the file
+ *  databases are read in. For this purpose the <tt>path</tt> tag is used.
+ *  The <tt>path</tt> tags name directories which may contain file databases.
+ *  The file databases have a fixed name <tt>ls-R</tt>.
+ * </p>
+ * <p>
+ *  <tt>path</tt> can carry the attribute <tt>property</tt>. In this case the
+ *  value is ignored and the value is taken from the property named in the
+ *  attribute. Otherwise the value of the tag is taken as path. The value taken
+ *  from the property can contain several paths. They are separated by the
+ *  separator specified for the platform. For instance on windows the separator
+ *  <tt>;</tt> is used and on Unix the seprator <tt>:</tt> is used.
+ * </p>
+ * <p>
+ *  To find a resource its type is used to find the appropriate
+ *  parameters for the search. If the sub-configuration with the name of the
+ *  type exists then this subconfiguration is used. For instance if the
+ *  resource <tt>tex</tt> with the type <tt>fmt</tt> is sought then the
+ *  sub-configuration <tt>fmt</tt> determines how to find this file.
+ * </p>
+ * <p>
+ *  If no sub-configuration of the given type is present then the attribute
+ *  <tt>default</tt> is used to find the default sub-configuration. In the
+ *  example given above this default configuration is called <tt>default</tt>.
+ *  Nevertheless it would also be possible to point the default configuration
+ *  to another existing configuration. The attribute <tt>default</tt> is
+ *  mandatory.
+ * </p>
+ * <p>
+ *  Each sub-configuration takes the <tt>extension</tt> in arbitrary number.
+ *  <tt>extension</tt> contains the extension appended after the resource name.
+ * </p>
+ * <p>
+ *  All combinations of resource name and extension are tried in turn to be
+ *  found in the file database.
+ *  If one combination leads to a readable file then an input stream to this
+ *  file is used.
+ * </p>
+ * <p>
+ *  The attribute <tt>trace</tt> can be used to force a tracing of the actions
+ *  in the log file. The tracing is performed only if a logger is present when
+ *  needed. The tracing flag can be overwritten at run-time.
+ *  The attribute <tt>trace</tt> is optional.
+ * </p>
+ * <p>
+ *  The attribute <tt>capacity</tt> can be used to configure the initial
+ *  capacity of the internal cache for the fle database. If this number is less
+ *  than one than an internal default is used. This value should be larger than
+ *  the number of files expected for best performance.
+ *  The attribute <tt>capacity</tt> is optional.
+ * </p>
+ *
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class LsrFinder
         implements
             ResourceFinder,
             LogEnabled,
             PropertyConfigurable {
-
-    /**
-     * The field <tt>INITIAL_LIST_SIZE</tt> contains the initial size of the
-     * list items in the cache.
-     */
-    private static final int INITIAL_LIST_SIZE = 2;
 
     /**
      * The field <tt>ATTR_DEFAULT</tt> contains the attribute name for the
@@ -102,6 +154,12 @@ public class LsrFinder
     private static final String EXTENSION_TAG = "extension";
 
     /**
+     * The field <tt>INITIAL_LIST_SIZE</tt> contains the initial size of the
+     * list items in the cache.
+     */
+    private static final int INITIAL_LIST_SIZE = 2;
+
+    /**
      * The field <tt>LSR_FILE_NAME</tt> contains the name of the ls-R file.
      */
     private static final String LSR_FILE_NAME = "ls-R";
@@ -111,6 +169,11 @@ public class LsrFinder
      * paths.
      */
     private static final String TAG_PATH = "path";
+
+    /**
+     * The field <tt>bundle</tt> contains the resource bundle for messages.
+     */
+    private ResourceBundle bundle = null;
 
     /**
      * The field <tt>cache</tt> contains the map for the ls-R entries.
@@ -141,6 +204,13 @@ public class LsrFinder
     private boolean trace = false;
 
     /**
+     * The field <tt>initialCapacity</tt> contains the initial capacity of the
+     * cache. If the value is less than 1 then the default of the unerling
+     * implementation is used.
+     */
+    private int initialCapacity = -1;
+
+    /**
      * Creates a new object.
      *
      * @param configuration the encapsulated configuration object
@@ -149,21 +219,30 @@ public class LsrFinder
 
         super();
         this.config = configuration;
-        String t = configuration.getAttribute("trace");
-        trace = (t != null && Boolean.valueOf(t).booleanValue());
+        String a = configuration.getAttribute("trace");
+        this.trace = (a != null && Boolean.valueOf(a).booleanValue());
+
+        a = configuration.getAttribute("capacity");
+        if (a != null && !"".equals(a)) {
+            try {
+                this.initialCapacity = Integer.parseInt(a);
+            } catch (NumberFormatException e) {
+                this.initialCapacity = -1;
+            }
+        }
     }
 
     /**
      * Setter for the logger.
      *
-     * @param alogger the new logger
+     * @param logger the new logger
      *
      * @see de.dante.util.framework.logger.LogEnabled#enableLogging(
      *      java.util.logging.Logger)
      */
-    public void enableLogging(final Logger alogger) {
+    public void enableLogging(final Logger logger) {
 
-        logger = alogger;
+        this.logger = logger;
     }
 
     /**
@@ -171,7 +250,7 @@ public class LsrFinder
      */
     public void enableTracing(final boolean flag) {
 
-        trace = flag;
+        this.trace = flag;
     }
 
     /**
@@ -181,14 +260,14 @@ public class LsrFinder
     public InputStream findResource(final String name, final String type)
             throws ConfigurationException {
 
-        if (cache == null) {
-            initialize();
+        boolean verbose = (trace && logger != null);
+
+        if (verbose) {
+            trace("Searching", name, type, null);
         }
 
-        Logger log = (trace ? logger : null);
-
-        if (log != null) {
-            log.fine("LsrFinder: Searching " + name + " [" + type + "]\n");
+        if (cache == null) {
+            initialize();
         }
 
         Configuration cfg = config.findConfiguration(type);
@@ -203,9 +282,8 @@ public class LsrFinder
                 return null;
             }
 
-            if (log != null) {
-                log.fine("LsrFinder: Type ``" + type
-                        + "' not found; Using default `" + t + "'.\n");
+            if (verbose) {
+                trace("ConfigurationNotFound", type, t, null);
             }
         }
 
@@ -218,23 +296,29 @@ public class LsrFinder
             }
             for (int i = 0; i < l.size(); i++) {
                 File file = (File) l.get(i);
-                if (log != null) {
-                    log.fine("LsrFinder: Trying " + file + "\n");
+                if (verbose) {
+                    trace("Try", file.toString(), null, null);
                 }
                 if (file != null && file.canRead()) {
                     try {
                         InputStream stream = new FileInputStream(file);
-                        if (log != null) {
-                            log.fine("LsrFinder: Found " + file.toString()
-                                    + "\n");
+                        if (verbose) {
+                            trace("Found", file.toString(), null, null);
                         }
                         return stream;
                     } catch (FileNotFoundException e) {
                         // ignore unreadable files
+                        if (verbose) {
+                            trace("FoundUnreadable", file.toString(), null,
+                                    null);
+                        }
                         continue;
                     }
                 }
             }
+        }
+        if (verbose) {
+            trace("Failed", name, null, null);
         }
         return null;
     }
@@ -246,12 +330,15 @@ public class LsrFinder
      */
     private void initialize() throws ConfigurationException {
 
+        boolean verbose = (trace && logger != null);
         Iterator it = config.iterator(TAG_PATH);
         if (!it.hasNext()) {
             throw new ConfigurationMissingException(TAG_PATH, config.toString());
         }
 
-        cache = new HashMap();
+        cache = (initialCapacity > 0
+                ? new HashMap(initialCapacity)
+                : new HashMap());
 
         while (it.hasNext()) {
             Configuration cfg = (Configuration) it.next();
@@ -260,9 +347,8 @@ public class LsrFinder
             if (pathProperty != null) {
                 name = properties.getProperty(pathProperty);
                 if (name == null) {
-                    if (logger != null) {
-                        logger.fine("LsrFinder: Property " + pathProperty
-                                + " is undefined.\n");
+                    if (verbose) {
+                        trace("UndefinedProperty", pathProperty, null, null);
                     }
                 } else {
                     StringListIterator sit = new StringList(name, System
@@ -294,36 +380,34 @@ public class LsrFinder
         File file = new File(path, LSR_FILE_NAME);
         if (!file.canRead()) {
             if (logger != null) {
-                logger.fine("LsrFinder: File " + file.toString()
-                        + " is not readable.\n");
+                trace("UnreadableLsr", file.toString(), null, null);
             }
             return;
         }
 
-        String directory = "";
-        File absoluteDirectory = new File(path);
+        File directory = new File(path);
         List list;
 
         try {
             BufferedReader in = new BufferedReader(new FileReader(file));
+            int len;
 
             for (String line = in.readLine(); line != null; line = in
                     .readLine()) {
-                int len = line.length();
+                len = line.length();
                 if (len == 0 || line.charAt(0) == '%') {
                     continue;
-                }
-                if (line.charAt(len - 1) == ':') {
-                    directory = line.substring((line.startsWith("./") ? 2 : 0),
-                            len - 1);
-                    absoluteDirectory = new File(path, directory);
+                } else if (line.charAt(len - 1) == ':') {
+                    directory = new File(path, //
+                            line.substring((line.startsWith("./") ? 2 : 0),
+                                    len - 1));
                 } else {
                     list = (List) cache.get(line);
                     if (list == null) {
                         list = new ArrayList(INITIAL_LIST_SIZE);
                         cache.put(line, list);
                     }
-                    list.add(new File(absoluteDirectory, line));
+                    list.add(new File(directory, line));
                 }
             }
             in.close();
@@ -335,9 +419,9 @@ public class LsrFinder
         }
 
         if (trace && logger != null) {
-            logger.fine("LsrFinder: Loaded cache file `" + file.toString()
-                    + "' in " + (System.currentTimeMillis() - start)
-                    + " ms, cache size=" + cache.size() + "\n");
+            trace("DatabaseLoaded", file.toString(), //
+                    Long.toString(System.currentTimeMillis() - start), //
+                    Integer.toString(cache.size()));
         }
     }
 
@@ -352,5 +436,24 @@ public class LsrFinder
     public void setProperties(final Properties prop) {
 
         properties = prop;
+    }
+
+    /**
+     * Produce an internationalized trace message.
+     *
+     * @param key the resource key for the message format
+     * @param arg the first argument to insert
+     * @param arg2 the second argument to insert
+     * @param arg3 the third argument to insert
+     */
+    private void trace(final String key, final String arg, final String arg2,
+            final String arg3) {
+
+        if (bundle == null) {
+            bundle = ResourceBundle.getBundle(LsrFinder.class.getName());
+        }
+
+        logger.fine(MessageFormat.format(bundle.getString(key), //
+                new Object[]{arg, arg2, arg3}));
     }
 }

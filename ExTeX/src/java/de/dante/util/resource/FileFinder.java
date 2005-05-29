@@ -23,8 +23,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.text.MessageFormat;
 import java.util.Iterator;
 import java.util.Properties;
+import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 import de.dante.util.StringList;
@@ -39,10 +41,12 @@ import de.dante.util.framework.logger.LogEnabled;
  * several extensions.
  *
  * <h2>Configuration</h2>
- * TODO document configuration
+ * The file finder can be configured to influence its actions.
+ * The following example shows a configuration for a file finder:
  *
  * <pre>
  * &lt;Finder class="de.dante.util.resource.FileFinder"
+ *         trace="false"
  *         default="default"&gt;
  *   &lt;tex&gt;
  *     &lt;path property="extex.texinputs"/&gt;
@@ -67,10 +71,56 @@ import de.dante.util.framework.logger.LogEnabled;
  * &lt;/Finder&gt;
  * </pre>
  *
+ * <p>
+ *  Whenever a resource is sought its type is used to find the appropriate
+ *  parameters for the search. If the sub-configuration with the name of the
+ *  type exists then this subconfiguration is used. For instance if the
+ *  resource <tt>tex</tt> with the type <tt>fmt</tt> is sought then the
+ *  sub-configuration <tt>fmt</tt> determines how to find this file.
+ * </p>
+ * <p>
+ *  If no sub-configuration of the given type is present then the attribute
+ *  <tt>default</tt> is used to find the default sub-configuration. In the
+ *  example given above this default configuration is called <tt>default</tt>.
+ *  Nevertheless it would also be possible to point the default configuration
+ *  to another existing configuration. The attribute <tt>default</tt> is
+ *  mandatory.
+ * </p>
+ * <p>
+ *  Each sub-configuration takes the tags <tt>path</tt> and <tt>extension</tt>
+ *  in arbitrary number.
+ *  <tt>path</tt> contains the path prepended before the resource name.
+ *  <tt>extension</tt> contains the extension appended after the resource name.
+ * </p>
+ * <p>
+ *  <tt>path</tt> can carry the attribute <tt>property</tt>. In this case the
+ *  value is ignored and the value is taken from the property named in the
+ *  attribute. Otherwise the value of the tag is taken as path. The value taken
+ *  from the property can contain several paths. They are separated by the
+ *  separator specified for the platform. For instance on windows the separator
+ *  <tt>;</tt> is used and on Unix the seprator <tt>:</tt> is used.
+ * </p>
+ * <p>
+ *  All combinations of path, resource name and extension are tried in turn.
+ *  If one combination leads to a readable file then an input stream to this
+ *  file is used.
+ * </p>
+ * <p>
+ *  The attribute <tt>trace</tt> can be used to force a tracing of the actions
+ *  in the log file. The tracing is performed only if a logger is present when
+ *  needed. The tracing flag can be overwritten at run-time.
+ *  The attribute <tt>trace</tt> is optional.
+ * </p>
+ *
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
-public class FileFinder implements ResourceFinder, LogEnabled, PropertyConfigurable {
+public class FileFinder
+        implements
+            ResourceFinder,
+            LogEnabled,
+            PropertyConfigurable {
 
     /**
      * The constant <tt>EXTENSION_TAG</tt> contains the name of the tag to get
@@ -83,6 +133,11 @@ public class FileFinder implements ResourceFinder, LogEnabled, PropertyConfigura
      * path information.
      */
     private static final String PATH_TAG = "path";
+
+    /**
+     * The field <tt>bundle</tt> contains the resource bundle for messages.
+     */
+    private transient ResourceBundle bundle = null;
 
     /**
      * The field <tt>config</tt> contains the configuration object on which this
@@ -157,28 +212,27 @@ public class FileFinder implements ResourceFinder, LogEnabled, PropertyConfigura
 
         InputStream stream;
         StringListIterator extIt = cfg.getValues(EXTENSION_TAG).getIterator();
+        boolean verbose = (trace && logger != null);
 
         while (extIt.hasNext()) {
             String ext = extIt.next();
             File file = new File(path, name + ext);
 
-            if (trace && logger != null) {
-                logger.fine("FileFinder: Try " + file.toString() + "\n");
+            if (verbose) {
+                trace("Try", file.toString(), null);
             }
             if (file.canRead()) {
                 try {
                     stream = new FileInputStream(file);
-                    if (trace && logger != null) {
-                        logger.fine("FileFinder: Found " + file.toString()
-                                + "\n");
+                    if (verbose) {
+                        trace("Found", file.toString(), null);
                     }
                     return stream;
                 } catch (FileNotFoundException e) {
                     // Ignore unreadable files.
                     // This should not happen since it has already been
                     // tested before.
-                    logger.fine("FileFinder: Not found " + file.toString()
-                            + "\n");
+                    trace("NotFound", file.toString(), null);
                 }
             }
         }
@@ -216,9 +270,9 @@ public class FileFinder implements ResourceFinder, LogEnabled, PropertyConfigura
     public InputStream findResource(final String name, final String type)
             throws ConfigurationException {
 
-        Logger log = (trace ? logger : null);
-        if (log != null) {
-            log.fine("FileFinder: Searching " + name + " [" + type + "]\n");
+        boolean verbose = (trace && logger != null);
+        if (verbose) {
+            trace("Searching", name, type);
         }
 
         InputStream stream = null;
@@ -231,9 +285,8 @@ public class FileFinder implements ResourceFinder, LogEnabled, PropertyConfigura
             }
             cfg = config.getConfiguration(t);
 
-            if (log != null) {
-                log.fine("FileFinder: `" + type
-                        + "' not found; Using default `" + t + "'.\n");
+            if (verbose) {
+                trace("ConfigurationNotFound", type, t);
             }
         }
 
@@ -242,18 +295,20 @@ public class FileFinder implements ResourceFinder, LogEnabled, PropertyConfigura
             Configuration c = (Configuration) iterator.next();
             String prop = c.getAttribute("property");
             if (prop != null) {
-                String path = properties.getProperty(prop);
+                String path = properties.getProperty(prop, null);
                 if (path != null) {
                     stream = find(name, new StringList(path, System
                             .getProperty("path.separator", ":")), cfg);
+                } else if (verbose) {
+                    trace("UndefinedProperty", prop, null);
                 }
             } else {
                 stream = find(name, c.getValue(), cfg);
             }
         }
 
-        if (log != null && stream == null) {
-            log.fine("FileFinder: Failed for " + name + "\n");
+        if (stream == null && verbose) {
+            trace("Failed", name, null);
         }
 
         return stream;
@@ -280,10 +335,28 @@ public class FileFinder implements ResourceFinder, LogEnabled, PropertyConfigura
     }
 
     /**
-     * @see de.dante.util.resource.PropertyConfigurable#setProperties(java.util.Properties)
+     * @see de.dante.util.resource.PropertyConfigurable#setProperties(
+     *      java.util.Properties)
      */
     public void setProperties(final Properties properties) {
 
         this.properties = properties;
+    }
+
+    /**
+     * Produce an internationalized trace message.
+     *
+     * @param key the resource key for the message format
+     * @param arg the first argument to insert
+     * @param arg2 the second argument to insert
+     */
+    private void trace(final String key, final String arg, final String arg2) {
+
+        if (bundle == null) {
+            bundle = ResourceBundle.getBundle(FileFinder.class.getName());
+        }
+
+        logger.fine(MessageFormat.format(bundle.getString(key), //
+                new Object[]{arg, arg2}));
     }
 }
