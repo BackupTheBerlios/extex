@@ -24,10 +24,11 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.primitives.math.AbstractMathCode;
+import de.dante.extex.interpreter.primitives.math.delimiter.AbstractTeXDelimter;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
-import de.dante.extex.typesetter.type.MathDelimiter;
+import de.dante.extex.typesetter.type.math.MathDelimiter;
 
 /**
  * This class provides an implementation for the primitive
@@ -52,9 +53,9 @@ import de.dante.extex.typesetter.type.MathDelimiter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
-public class Atopwithdelims extends AbstractMathCode {
+public class Atopwithdelims extends AbstractTeXDelimter {
 
     /**
      * Creates a new object.
@@ -78,8 +79,8 @@ public class Atopwithdelims extends AbstractMathCode {
             throws InterpreterException {
 
         NoadConsumer nc = getListMaker(context, typesetter);
-        MathDelimiter del1 = MathDelimiter.parse(context, source);
-        MathDelimiter del2 = MathDelimiter.parse(context, source);
+        MathDelimiter del1 = parseDelimiter(context, source);
+        MathDelimiter del2 = parseDelimiter(context, source);
 
         nc.switchToFraction(del1, del2, Dimen.ZERO_PT);
     }

@@ -44,12 +44,12 @@ import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
  * <p>
  *  Examples:
  *  <pre class="TeXSample">
- *    \over  </pre>
+ *    a \over b  </pre>
  * </p>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Over extends AbstractMathCode {
 
