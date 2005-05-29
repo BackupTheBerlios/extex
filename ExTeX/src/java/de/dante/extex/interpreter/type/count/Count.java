@@ -41,9 +41,10 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class Count implements Serializable, FixedCount {
+
     /**
      * The constant <tt>ONE</tt> contains the count register with the value 1.
      * This count register is in fact immutable.
@@ -62,6 +63,23 @@ public class Count implements Serializable, FixedCount {
      * This count register is in fact immutable.
      */
     public static final Count ZERO = new ImmutableCount(0);
+
+    /**
+     * parse a token stream for a count value.
+     *
+     * @param context the processor context
+     * @param source the source for new tokens
+     * @param typesetter the typesetter
+     *
+     * @return a new Count instance with the value acquired
+     *
+     * @throws InterpreterException in case of an error
+     */
+    public static Count parse(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
+
+        return new Count(scanCount(context, source, typesetter));
+    }
 
     /**
      * Scan the input stream for a count value.
@@ -104,21 +122,6 @@ public class Count implements Serializable, FixedCount {
     /**
      * Creates a new object.
      *
-     * @param context the processor context
-     * @param source the source for new tokens
-     *
-     * @throws InterpreterException in case of an error
-     */
-    public Count(final Context context, final TokenSource source)
-            throws InterpreterException {
-
-        super();
-        value = scanCount(context, source, null);
-    }
-
-    /**
-     * Creates a new object.
-     *
      * @param count the reference to be copied
      */
     public Count(final FixedCount count) {
@@ -130,12 +133,12 @@ public class Count implements Serializable, FixedCount {
     /**
      * Creates a new object.
      *
-     * @param aValue the value
+     * @param value the value
      */
-    public Count(final long aValue) {
+    public Count(final long value) {
 
         super();
-        this.value = aValue;
+        this.value = value;
     }
 
     /**
@@ -174,6 +177,7 @@ public class Count implements Serializable, FixedCount {
 
         return count.getValue() == value;
     }
+
     /**
      * @see de.dante.extex.interpreter.type.count.FixedCount#ge(
      *      de.dante.extex.interpreter.type.count.FixedCount)
@@ -203,6 +207,7 @@ public class Count implements Serializable, FixedCount {
 
         return value;
     }
+
     /**
      * @see de.dante.extex.interpreter.type.count.FixedCount#gt(
      *      de.dante.extex.interpreter.type.count.FixedCount)
@@ -211,6 +216,7 @@ public class Count implements Serializable, FixedCount {
 
         return value > count.getValue();
     }
+
     /**
      * @see de.dante.extex.interpreter.type.count.FixedCount#le(
      *      de.dante.extex.interpreter.type.count.FixedCount)
@@ -219,6 +225,7 @@ public class Count implements Serializable, FixedCount {
 
         return value <= count.getValue();
     }
+
     /**
      * @see de.dante.extex.interpreter.type.count.FixedCount#lt(
      *      de.dante.extex.interpreter.type.count.FixedCount)
@@ -238,6 +245,7 @@ public class Count implements Serializable, FixedCount {
 
         value *= factor;
     }
+
     /**
      * @see de.dante.extex.interpreter.type.count.FixedCount#ne(
      *      de.dante.extex.interpreter.type.count.FixedCount)
