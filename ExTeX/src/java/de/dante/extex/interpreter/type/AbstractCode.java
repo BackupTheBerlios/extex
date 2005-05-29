@@ -39,7 +39,7 @@ import de.dante.util.framework.i18n.Localizer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class AbstractCode implements Code, Localizable, Serializable {
 
@@ -169,7 +169,7 @@ public class AbstractCode implements Code, Localizable, Serializable {
     public Object readResolve() throws ObjectStreamException {
 
         //System.err.println(this.getClass().getName());
-        //TODO gene: unimplemented
+        //TODO gene: readResolve() unimplemented
         return this;
     }
 
