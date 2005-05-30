@@ -1,7 +1,7 @@
 /* XMLUtil.java                                                    NanoXML/Java
  *
- * $Revision: 1.1 $
- * $Date: 2004/08/01 19:53:14 $
+ * $Revision: 1.2 $
+ * $Date: 2005/05/30 15:41:07 $
  * $Name:  $
  *
  * This file is part of NanoXML 2 for Java.
@@ -38,7 +38,7 @@ import java.io.Reader;
  * Utility methods for NanoXML.
  *
  * @author Marc De Scheemaecker
- * @version $Name:  $, $Revision: 1.1 $
+ * @version $Name:  $, $Revision: 1.2 $
  */
 class XMLUtil
 {

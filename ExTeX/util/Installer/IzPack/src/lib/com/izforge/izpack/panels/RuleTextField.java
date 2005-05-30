@@ -1,5 +1,5 @@
 /*
- * $Id: RuleTextField.java,v 1.1 2004/08/01 19:53:14 gene Exp $
+ * $Id: RuleTextField.java,v 1.2 2005/05/30 15:41:05 gene Exp $
  * Copyright (C) 2002 Elmar Grom
  *
  * File :               RuleInputField.java
@@ -49,15 +49,15 @@ import javax.swing.text.PlainDocument;
 public class RuleTextField extends JTextField
 {
   /** Used to specify numeric input only */
-  public  static int     N       = 1;
+  public  static final int     N       = 1;
   /** Used to specify hexadecimal input only */
-  public  static int     H       = 2;
+  public  static final int     H       = 2;
   /** Used to specify alphabetic input only */
-  public  static int     A       = 3;
+  public  static final int     A       = 3;
   /** Used to specify open input (no restrictions) */
-  public  static int     O       = 4;
+  public  static final int     O       = 4;
   /** Used to specify alpha-numeric input only */
-  public  static int     AN      = 5;
+  public  static final int     AN      = 5;
 
   private int       columns;
   private int       editLength;

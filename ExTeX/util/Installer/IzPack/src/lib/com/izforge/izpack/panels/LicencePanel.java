@@ -1,5 +1,5 @@
 /*
- *  $Id: LicencePanel.java,v 1.1 2004/08/01 19:53:14 gene Exp $
+ *  $Id: LicencePanel.java,v 1.2 2005/05/30 15:41:05 gene Exp $
  *  IzPack
  *  Copyright (C) 2001-2004 Julien Ponge
  *
@@ -39,6 +39,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import com.izforge.izpack.gui.LabelFactory;
 import com.izforge.izpack.installer.InstallData;
 import com.izforge.izpack.installer.InstallerFrame;
 import com.izforge.izpack.installer.IzPanel;
@@ -82,7 +83,7 @@ public class LicencePanel extends IzPanel implements ActionListener
     // We put our components
 
     JLabel infoLabel =
-      new JLabel(
+      LabelFactory.create(
         parent.langpack.getString("LicencePanel.info"),
         parent.icons.getImageIcon("history"),
         JLabel.TRAILING);

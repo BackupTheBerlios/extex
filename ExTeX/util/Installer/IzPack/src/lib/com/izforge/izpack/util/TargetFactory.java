@@ -1,5 +1,5 @@
 /*
- * $Id: TargetFactory.java,v 1.1 2004/08/01 19:53:15 gene Exp $
+ * $Id: TargetFactory.java,v 1.2 2005/05/30 15:41:05 gene Exp $
  * IzPack
  * Copyright (C) 2002 by Elmar Grom
  *
@@ -76,8 +76,6 @@ public class TargetFactory
 
   /** Identifies Microsoft Windows. */
   public static final int    WINDOWS                     = 0;
-  /** Identifies Apple Macintosh operating systems. */
-  public static final int    MAC                         = 1;
   /** Identifies generic UNIX operating systems */
   public static final int    UNIX                        = 2;
   /** Used to report a non specific operating system. */
@@ -110,7 +108,7 @@ public class TargetFactory
       <li>UNIX
       <li>GENERIC
       </ul> */
-  public static final String [] LIBRARY_EXTENSION =
+  static final String [] LIBRARY_EXTENSION =
   {
     "dll",
     "so",
@@ -128,11 +126,11 @@ public class TargetFactory
       <li>UNIX
       <li>GENERIC
       </ul> */
-  public static final String [] CLASS_PREFIX =
+  static final String [] CLASS_PREFIX =
   {
     "Win_",
     "Mac_",
-    "UNIX_",
+    "Unix_",
     ""
   };
 
@@ -145,7 +143,7 @@ public class TargetFactory
       <li>NT
       <li>X
       </ul> */
-  public static final String [] CLASS_FLAVOR_PREFIX =
+  static final String [] CLASS_FLAVOR_PREFIX =
   {
     "",
     "NT_",
@@ -159,7 +157,7 @@ public class TargetFactory
       <li>X86
       <li>OTHER
       </ul> */
-  public static final String [] CLASS_ARCHITECTURE_PREFIX =
+  static final String [] CLASS_ARCHITECTURE_PREFIX =
   {
     "X86_",  // Intel X86 architecture
     "U_"     // unknown
@@ -178,7 +176,7 @@ public class TargetFactory
       <li>UNIX
       <li>GENERIC
       </ul> */
-  public static final String [] INSTALL_PATH_FRAGMENT =
+  static final String [] INSTALL_PATH_FRAGMENT =
   {
     "Program Files" + File.separator,
     "/Applications" + File.separator,
@@ -198,7 +196,7 @@ public class TargetFactory
       a real operating system/flavor combination exists are
       populated. For example, there is no such thing as
       <code>INSTALL_PATH_RESOURCE_KEY[UNIX][X]</code> */
-  public static final String [][] INSTALL_PATH_RESOURCE_KEY = 
+  static final String [][] INSTALL_PATH_RESOURCE_KEY = 
   {
     //      Standard                        NT                          X
     { "TargetPanel.dir.windows", "TargetPanel.dir.windows", "" },                         // Windows
@@ -224,9 +222,6 @@ public class TargetFactory
   private int                     architecture    = -1;
   /** represents the version number of the target system */
   private String                  version         = "";
-  /** lower case version of the string returned by 
-      System.getProperty ("os.name") */
-  private String                  osName          = "";
 
  /*--------------------------------------------------------------------------*/
  /**
@@ -246,17 +241,17 @@ public class TargetFactory
   *--------------------------------------------------------------------------*/
   private TargetFactory ()
   {
-    osName  = System.getProperty ("os.name").toLowerCase ();
     version = System.getProperty ("os.version");
 
     // ----------------------------------------------------
     // test for Windows
     // ----------------------------------------------------
-    if (osName.indexOf ("windows") > -1)
+    if (OsVersion.IS_WINDOWS)
     {
       os            = WINDOWS;
       osFlavor      = STANDARD;
       architecture  = X86;
+      String osName = OsVersion.OS_NAME.toLowerCase();
 
       if (osName.indexOf ("nt") > -1)
       {
@@ -274,16 +269,11 @@ public class TargetFactory
     // ----------------------------------------------------
     // test for Mac OS
     // ----------------------------------------------------
-    else if (osName.indexOf ("mac") > -1)
+    else if (OsVersion.IS_OSX)
     {
-      os            = MAC;
+      os            = X;
       osFlavor      = STANDARD;
       architecture  = OTHER;
-
-      if (osName.indexOf ("macosx") > -1)
-      {
-        osFlavor = X;
-      }
     }
     // ----------------------------------------------------
     // what's left should be unix
@@ -293,6 +283,7 @@ public class TargetFactory
       os            = UNIX;
       osFlavor      = STANDARD;
       architecture  = OTHER;
+      String osName = OsVersion.OS_NAME.toLowerCase();
 
       if (osName.indexOf ("x86") > -1)
       {
@@ -314,7 +305,7 @@ public class TargetFactory
       me = new TargetFactory ();
     }
 
-    return (me);
+    return me;
   }
  /*--------------------------------------------------------------------------*/
  /**
@@ -381,14 +372,14 @@ public class TargetFactory
     {
       actualName = packageName + CLASS_PREFIX [os] + CLASS_FLAVOR_PREFIX [osFlavor] + className;
       Class temp = Class.forName (actualName);
-      return (temp.newInstance ());
+      return temp.newInstance();
     }
     catch (Throwable exception1)
     {
       try
       {
         Class   temp   = Class.forName (packageName + CLASS_PREFIX [os] + className);
-        return (temp.newInstance ());
+        return temp.newInstance();
       }
       catch (Throwable exception2)
       {
@@ -396,11 +387,11 @@ public class TargetFactory
         {
           actualName = name;
           Class temp = Class.forName (actualName);
-          return (temp.newInstance ());
+          return temp.newInstance();
         }
         catch (Throwable exception3)
         {
-          throw (new Exception ("can not instantiate class " + name));
+          throw new Exception("can not instantiate class " + name);
         }
       }
     }
@@ -449,20 +440,20 @@ public class TargetFactory
       }
       catch (Throwable exception)
       {
-        throw (new Exception ("error in version string"));
+        throw new Exception("error in version string");
       }
 
       if (compare > target)
       {
-        return (true);
+        return true;
       }
       else if (target > compare)
       {
-        return (false);
+        return false;
       }
     }
 
-    return (false);
+    return false;
   }
  /*--------------------------------------------------------------------------*/
  /**
@@ -471,14 +462,13 @@ public class TargetFactory
   * @return    an index number for the OS
   *
   * @see       #WINDOWS
-  * @see       #MAC
   * @see       #UNIX
   * @see       #GENERIC
   */
  /*--------------------------------------------------------------------------*/
   public int getOS ()
   {
-    return (os);
+    return os;
   }
  /*--------------------------------------------------------------------------*/
  /**
@@ -494,7 +484,7 @@ public class TargetFactory
  /*--------------------------------------------------------------------------*/
   public int getOSFlavor ()
   {
-    return (osFlavor);
+    return osFlavor;
   }
  /*--------------------------------------------------------------------------*/
  /**
@@ -509,7 +499,7 @@ public class TargetFactory
  /*--------------------------------------------------------------------------*/
   public int getArchitecture ()
   {
-    return (architecture);
+    return architecture;
   }
  /*--------------------------------------------------------------------------*/
  /**
@@ -523,7 +513,7 @@ public class TargetFactory
  /*--------------------------------------------------------------------------*/
   public String getNativeLibraryExtension ()
   {
-    return (LIBRARY_EXTENSION [os]);
+    return LIBRARY_EXTENSION[os];
   }
  /*--------------------------------------------------------------------------*/
  /**
@@ -537,7 +527,6 @@ public class TargetFactory
   * method:
   * <br><br><ul>
   * <li><code>TargetPanel.dir.windows</code>
-  * <li><code>TargetPanel.dir.mac</code>
   * <li><code>TargetPanel.dir.macosx</code>
   * <li><code>TargetPanel.dir.unix</code>
   * <li><code>TargetPanel.dir</code> plus the all lower case version of
@@ -568,7 +557,7 @@ public class TargetFactory
   public String getDefaultInstallPath (String appName)
   {
     String      path        = null;
-    InputStream input       = null;
+    InputStream input;
     String      keyFragment = "/res/" + INSTALL_PATH_RESOURCE_KEY [GENERIC][STANDARD];
 
     // ----------------------------------------------------
@@ -585,9 +574,9 @@ public class TargetFactory
     // ----------------------------------------------------
     if (input == null)
     {
-  		String key  = osName.replace (' ', '_');         // avoid spaces in file names
+  		String key  = OsVersion.OS_NAME.toLowerCase().replace (' ', '_');         // avoid spaces in file names
       key         = keyFragment + key.toLowerCase ();  // for consistency among TargetPanel res files
-  		input       = getClass ().getResourceAsStream (key);
+  		input       = TargetFactory.class.getResourceAsStream (key);
     }
 
     // ----------------------------------------------------
@@ -596,7 +585,7 @@ public class TargetFactory
     // ----------------------------------------------------
     if (input == null)
     {
-      input = getClass ().getResourceAsStream (keyFragment);
+      input = TargetFactory.class.getResourceAsStream (keyFragment);
     }
 
     // ----------------------------------------------------
@@ -605,9 +594,9 @@ public class TargetFactory
     // ----------------------------------------------------
     if (input != null)
     {
-	    InputStreamReader streamReader  = null;
+	    InputStreamReader streamReader;
       BufferedReader    reader        = null;
-      String            line          = null;
+      String            line;
 
       try
       {
@@ -633,7 +622,8 @@ public class TargetFactory
       {
         try
         {
-          reader.close ();
+          if(reader != null)
+            reader.close ();
         }
         catch (Throwable exception)
         {
@@ -645,7 +635,7 @@ public class TargetFactory
     // if we were unable to obtain a path from a resource,
     // use the default for the traget operating system.
     // ----------------------------------------------------
-    if ((path == null) || (path.equals ("")))
+    if (path == null || path.equals(""))
     {
       path = "";
       
@@ -660,13 +650,84 @@ public class TargetFactory
       {
         String home = System.getProperty ("user.home");
         // take everything up to and including the first '\'
-        path        = home.substring (0, (home.indexOf (File.separatorChar) + 1));
+        path        = home.substring (0, home.indexOf(File.separatorChar) + 1);
       }
 
       path = path + INSTALL_PATH_FRAGMENT [os] + appName;
     }
 
-    return (path);
+    return path;
   }
+  
+  /**
+   * Gets an Prefix Alias for the current Platform.
+   * "Win_" on Windows Systems
+   * "Win_NT_" on WinNT4, 2000, XP
+   * Mac on Mac Mac_X on macosx and
+   * Unix_
+   * @return
+   */
+
+  public static String getCurrentOSPrefix()
+  {
+    String OSName      = System.getProperty ("os.name").toLowerCase (); 
+    String OSArch      = System.getProperty ("os.arch").toLowerCase ();     
+    int OS             = 0; 
+    int OSFlavor       = 0;
+    int OSarchitecture = 0;
+    // ----------------------------------------------------
+    // test for Windows
+    // ----------------------------------------------------
+    if (OSName.indexOf ("windows") > -1)
+    {
+      OS            = WINDOWS;
+      OSFlavor      = STANDARD;
+      OSarchitecture  = X86;
+
+      if (OSName.indexOf ("nt") > -1)
+      {
+        OSFlavor = NT;
+      }
+      else if (OSName.indexOf ("2000") > -1)
+      {
+        OSFlavor = NT;
+      }
+      else if (OSName.indexOf ("xp") > -1)
+      {
+        OSFlavor = NT;
+      }
+    }
+    // ----------------------------------------------------
+    // test for Mac OS
+    // ----------------------------------------------------
+    else if (OSName.indexOf ("mac") > -1)
+    {
+      OS            = GENERIC;
+      OSFlavor      = STANDARD;
+      OSarchitecture  = OTHER;
+
+      if (OSName.indexOf ("macosx") > -1)
+      {
+        OSFlavor = X;
+      }
+    }
+    // ----------------------------------------------------
+    // what's left should be unix
+    // ----------------------------------------------------
+    else
+    {
+      OS            = UNIX;
+      OSFlavor      = STANDARD;
+      OSarchitecture  = OTHER;
+
+      if( OSArch.indexOf( "86" ) > -1 )
+      {
+        OSarchitecture  = X86;
+      }
+    }
+    
+    return( CLASS_PREFIX [OS] + CLASS_FLAVOR_PREFIX [OSFlavor] );
+  }
+
 }
 /*---------------------------------------------------------------------------*/

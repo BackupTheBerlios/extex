@@ -1,5 +1,5 @@
 /*
- *  $Id: HTMLInfoPanel.java,v 1.1 2004/08/01 19:53:14 gene Exp $
+ *  $Id: HTMLInfoPanel.java,v 1.2 2005/05/30 15:41:05 gene Exp $
  *  IzPack
  *  Copyright (C) 2001-2004 Julien Ponge
  *
@@ -35,6 +35,7 @@ import javax.swing.JScrollPane;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
+import com.izforge.izpack.gui.LabelFactory;
 import com.izforge.izpack.installer.InstallData;
 import com.izforge.izpack.installer.InstallerFrame;
 import com.izforge.izpack.installer.IzPanel;
@@ -77,7 +78,7 @@ public class HTMLInfoPanel extends IzPanel implements HyperlinkListener
     // We add the components
 
     infoLabel =
-      new JLabel(
+      LabelFactory.create(
         parent.langpack.getString("InfoPanel.info"),
         parent.icons.getImageIcon("edit"),
         JLabel.TRAILING);

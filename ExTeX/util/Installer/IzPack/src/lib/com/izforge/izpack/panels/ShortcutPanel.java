@@ -1,5 +1,5 @@
 /*
- * $Id: ShortcutPanel.java,v 1.1 2004/08/01 19:53:14 gene Exp $
+ * $Id: ShortcutPanel.java,v 1.2 2005/05/30 15:41:05 gene Exp $
  *
  * IzPack
  * File is Copyright (C) 2002 Elmar Grom
@@ -40,6 +40,7 @@ import java.io.FileWriter;
 import java.io.InputStream;
 import java.util.Iterator;
 import java.util.Vector;
+import java.util.ArrayList;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -66,16 +67,26 @@ import net.n3.nanoxml.XMLElement;
 
 import com.izforge.izpack.Pack;
 import com.izforge.izpack.gui.ButtonFactory;
+import com.izforge.izpack.gui.LabelFactory;
 import com.izforge.izpack.installer.InstallData;
 import com.izforge.izpack.installer.InstallerFrame;
 import com.izforge.izpack.installer.IzPanel;
+import com.izforge.izpack.installer.ResourceNotFoundException;
 import com.izforge.izpack.installer.UninstallData;
 import com.izforge.izpack.installer.VariableSubstitutor;
+import com.izforge.izpack.util.FileExecutor;
 import com.izforge.izpack.util.MultiLineLabel;
+
+import com.izforge.izpack.util.OsConstraint;
+import com.izforge.izpack.util.OsVersion;
 import com.izforge.izpack.util.TargetFactory;
 import com.izforge.izpack.util.os.ShellLink;
 import com.izforge.izpack.util.os.Shortcut;
-  
+
+import com.izforge.izpack.ExecutableFile;
+//
+//import com.izforge.izpack.panels.ShortcutData;
+
 /*---------------------------------------------------------------------------*/
 /**
  * This class implements a panel for the creation of shortcuts.
@@ -110,10 +121,21 @@ import com.izforge.izpack.util.os.Shortcut;
 public class ShortcutPanel extends IzPanel implements ActionListener,
                                                       ListSelectionListener
 {
-  // ------------------------------------------------------------------------
-  // Constant Definitions
-  // ------------------------------------------------------------------------
+  /** a VectorList of Files wich should be make executable */
+  private Vector execFiles = new Vector();
 
+  private final static String SPEC_ATTRIBUTE_KDE_SUBST_UID = "KdeSubstUID";
+  private final static String SPEC_ATTRIBUTE_URL = "url";
+  private final static String SPEC_ATTRIBUTE_TYPE = "type";
+  private final static String SPEC_ATTRIBUTE_TERMINAL_OPTIONS = "terminalOptions";
+  private final static String SPEC_ATTRIBUTE_TERMINAL = "terminal";
+  private final static String SPEC_ATTRIBUTE_MIMETYPE = "mimetype";
+  private final static String SPEC_ATTRIBUTE_ENCODING = "encoding";
+  /** LOCATION_APPLICATIONS=applications **/
+  private static final String LOCATION_APPLICATIONS     = "applications";
+  /** LOCATION_START_MENU       = "startMenu" **/
+  private static final String LOCATION_START_MENU       = "startMenu";
+  /** SEPARATOR_LINE            = "--------------------------------------------------------------------------------"; **/
   private static final String SEPARATOR_LINE            = "--------------------------------------------------------------------------------";
 
   /** The default file name for the text file in which the shortcut
@@ -128,6 +150,7 @@ public class ShortcutPanel extends IzPanel implements ActionListener,
   // ------------------------------------------------------
   // spec file section keys
   // ------------------------------------------------------
+  private static final String SPEC_KEY_SKIP_IFNOT_SUPPORTED = "skipIfNotSupported";
   private static final String SPEC_KEY_NOT_SUPPORTED        = "notSupported";
   private static final String SPEC_KEY_PROGRAM_GROUP        = "programGroup";
   private static final String SPEC_KEY_SHORTCUT             = "shortcut";
@@ -255,6 +278,9 @@ public class ShortcutPanel extends IzPanel implements ActionListener,
    */
   private boolean hasDesktopShortcuts = false;
 
+  /** Tells wether to skip if the platform is not supported. */
+  private boolean skipIfNotSupported = false;
+
   /**  the one shortcut instance for reuse in many locations */
   private Shortcut shortcut;
   /**
@@ -304,7 +330,7 @@ public class ShortcutPanel extends IzPanel implements ActionListener,
                        InstallData installData)
   {
     super (parent, installData);
-    
+
     // read the XML file
     try
     {
@@ -315,7 +341,7 @@ public class ShortcutPanel extends IzPanel implements ActionListener,
       System.out.println ("could not read shortcut spec!");
       exception.printStackTrace ();
     }
-    
+
     layout      = new GridBagLayout ();
     constraints = new GridBagConstraints ();
     setLayout(layout);
@@ -343,7 +369,7 @@ public class ShortcutPanel extends IzPanel implements ActionListener,
   public void actionPerformed (ActionEvent event)
   {
     Object eventSource = event.getSource ();
-  
+
     // ----------------------------------------------------
     // create shortcut for the current user was selected
     // refresh the list of program groups accordingly and
@@ -401,20 +427,20 @@ public class ShortcutPanel extends IzPanel implements ActionListener,
  /*--------------------------------------------------------------------------*/
   public boolean isValidated ()
   {
-	try
-	{
-	  groupName = programGroup.getText ();
-	}
-	catch (Throwable exception)
-	{
-	  groupName = "";
-	}
+        try
+        {
+          groupName = programGroup.getText ();
+        }
+        catch (Throwable exception)
+        {
+          groupName = "";
+        }
 
-	createShortcuts ();
-      
-	// add files and directories to the uninstaller
-	addToUninstaller ();
-      
+        createShortcuts ();
+
+        // add files and directories to the uninstaller
+        addToUninstaller ();
+
     return (true);
   }
  /*--------------------------------------------------------------------------*/
@@ -428,7 +454,7 @@ public class ShortcutPanel extends IzPanel implements ActionListener,
       firstTime = false;
     else
       return;
-    
+
     analyzeShortcutSpec ();
 
     if (shortcutsToCreate)
@@ -439,9 +465,16 @@ public class ShortcutPanel extends IzPanel implements ActionListener,
       }
       else
       {
-        buildAlternateUI ();
-        parent.unlockNextButton ();
-        parent.lockPrevButton ();
+        if (skipIfNotSupported)
+        {
+          parent.skipPanel();
+        }
+        else
+        {
+          buildAlternateUI ();
+          parent.unlockNextButton();
+          parent.lockPrevButton ();
+        }
       }
     }
     else
@@ -464,57 +497,65 @@ public class ShortcutPanel extends IzPanel implements ActionListener,
     {
       return;
     }
-    
+
     String value = "";
     try
     {
       value = (String)groupList.getSelectedValue ();
     }
     catch (ClassCastException exception) {}
-    
+
     if (value == null)
     {
       value = "";
     }
-    
-    programGroup.setText (value);
+
+    programGroup.setText( value + File.separator + suggestedProgramGroup );
   }
  /*--------------------------------------------------------------------------*/
  /**
   * Reads the XML specification for the shortcuts to create. The result is
   * stored in spec.
   *
-  * @exception Exception for any problems in reading the specification
+  *
   */
  /*--------------------------------------------------------------------------*/
   private void readShortcutSpec () throws Exception
   {
     // open an input stream
     InputStream input = null;
+
     try
+ {
+      input = parent.getResource( TargetFactory.getCurrentOSPrefix() + SPEC_FILE_NAME );
+ }
+
+    catch( ResourceNotFoundException e )
     {
-      input = parent.getResource (SPEC_FILE_NAME);
+
+      input = parent.getResource( SPEC_FILE_NAME );
+      if( input == null )
+      {
+
+        haveShortcutSpec = false;
+        return;
+      }
+
     }
-    catch (Exception exception)
-    {
-      haveShortcutSpec = false;
-      return;
-    }
-    if (input == null)
-    {
-      haveShortcutSpec = false;
-      return;
-    }
-        
+
+
+
+
+
     // initialize the parser
     StdXMLParser parser = new StdXMLParser ();
     parser.setBuilder   (new StdXMLBuilder ());
     parser.setValidator (new NonValidator ());
     parser.setReader    (new StdXMLReader (input));
-        
+
     // get the data
     spec = (XMLElement) parser.parse ();
-        
+
     // close the stream
     input.close ();
     haveShortcutSpec = true;
@@ -533,7 +574,10 @@ public class ShortcutPanel extends IzPanel implements ActionListener,
       shortcutsToCreate = false;
       return;
     }
-    
+
+    XMLElement skipper = spec.getFirstChildNamed(SPEC_KEY_SKIP_IFNOT_SUPPORTED);
+    skipIfNotSupported = (skipper != null);
+
     // ----------------------------------------------------
     // find out if we should simulate a not supported
     // scenario
@@ -553,7 +597,7 @@ public class ShortcutPanel extends IzPanel implements ActionListener,
     XMLElement  group     = spec.getFirstChildNamed (SPEC_KEY_PROGRAM_GROUP);
     String      location  = null;
     hasDesktopShortcuts   = false;
-    
+
     if (group != null)
     {
       suggestedProgramGroup = group.getAttribute (SPEC_ATTRIBUTE_DEFAULT_GROUP, "");
@@ -576,31 +620,49 @@ public class ShortcutPanel extends IzPanel implements ActionListener,
 
     // ----------------------------------------------------
     // create a list of all shortcuts that need to be
-    // created, containing all details about each shortcut 
+    // created, containing all details about each shortcut
     // ----------------------------------------------------
     VariableSubstitutor substitutor   = new VariableSubstitutor (idata.getVariables());
     String              temp;
     Vector              shortcutSpecs = spec.getChildrenNamed (SPEC_KEY_SHORTCUT);
     XMLElement          shortcutSpec;
     ShortcutData        data;
-    
+
     for (int i = 0; i < shortcutSpecs.size (); i++)
     {
       shortcutSpec      = (XMLElement)shortcutSpecs.elementAt (i);
+
+      if (! OsConstraint.oneMatchesCurrentSystem(shortcutSpec))
+        continue;
+
       data              = new ShortcutData ();
 
-      data.name               = shortcutSpec.getAttribute (SPEC_ATTRIBUTE_NAME);
-      data.subgroup           = shortcutSpec.getAttribute (SPEC_ATTRIBUTE_SUBGROUP);
-      data.description        = shortcutSpec.getAttribute (SPEC_ATTRIBUTE_DESCRIPTION, "");
-      temp                    = fixSeparatorChar (shortcutSpec.getAttribute (SPEC_ATTRIBUTE_TARGET, ""));
-      data.target             = substitutor.substitute (temp, null);
-      temp                    = shortcutSpec.getAttribute (SPEC_ATTRIBUTE_COMMAND, "");
-      data.commandLine        = substitutor.substitute (temp, null);
-      temp                    = fixSeparatorChar (shortcutSpec.getAttribute (SPEC_ATTRIBUTE_ICON, ""));
-      data.iconFile           = substitutor.substitute (temp, null);
-      data.iconIndex          = Integer.parseInt (shortcutSpec.getAttribute (SPEC_ATTRIBUTE_ICON_INDEX, "0"));
-      temp                    = fixSeparatorChar (shortcutSpec.getAttribute (SPEC_ATTRIBUTE_WORKING_DIR, ""));
-      data.workingDirectory   = substitutor.substitute (temp, null);
+      data.name               = shortcutSpec.getAttribute( SPEC_ATTRIBUTE_NAME );
+      data.subgroup           = shortcutSpec.getAttribute( SPEC_ATTRIBUTE_SUBGROUP );
+      data.description        = shortcutSpec.getAttribute( SPEC_ATTRIBUTE_DESCRIPTION, "" );
+      //** Linux **//
+      data.deskTopEntryLinux_Encoding = shortcutSpec.getAttribute( SPEC_ATTRIBUTE_ENCODING, "" );
+      data.deskTopEntryLinux_MimeType = shortcutSpec.getAttribute( SPEC_ATTRIBUTE_MIMETYPE, "" );
+      data.deskTopEntryLinux_Terminal = shortcutSpec.getAttribute( SPEC_ATTRIBUTE_TERMINAL, "" );
+      data.deskTopEntryLinux_TerminalOptions = shortcutSpec.getAttribute( SPEC_ATTRIBUTE_TERMINAL_OPTIONS, "" );
+      data.deskTopEntryLinux_Type = shortcutSpec.getAttribute( SPEC_ATTRIBUTE_TYPE, "" );
+
+      data.deskTopEntryLinux_URL  = substitutor.substitute( shortcutSpec.getAttribute( SPEC_ATTRIBUTE_URL, "" ), null );
+
+      data.deskTopEntryLinux_X_KDE_SubstituteUID = shortcutSpec.getAttribute( SPEC_ATTRIBUTE_KDE_SUBST_UID, "" );
+      //** EndOf LINUX **//
+      temp                    = fixSeparatorChar( shortcutSpec.getAttribute( SPEC_ATTRIBUTE_TARGET, "" ) );
+      data.target             = substitutor.substitute( temp, null );
+
+      temp                    = shortcutSpec.getAttribute( SPEC_ATTRIBUTE_COMMAND, "" );
+      data.commandLine        = substitutor.substitute( temp, null );
+
+      temp                    = fixSeparatorChar( shortcutSpec.getAttribute( SPEC_ATTRIBUTE_ICON, "" ) );
+      data.iconFile           = substitutor.substitute( temp, null );
+      data.iconIndex          = Integer.parseInt( shortcutSpec.getAttribute( SPEC_ATTRIBUTE_ICON_INDEX, "0" ) );
+
+      temp                    = fixSeparatorChar( shortcutSpec.getAttribute( SPEC_ATTRIBUTE_WORKING_DIR, "" ) );
+      data.workingDirectory   = substitutor.substitute( temp, null );
 
       String initialState     = shortcutSpec.getAttribute (SPEC_ATTRIBUTE_INITIAL_STATE, "");
       if (initialState.equals (SPEC_VALUE_NO_SHOW))
@@ -633,22 +695,23 @@ public class ShortcutPanel extends IzPanel implements ActionListener,
       // --------------------------------------------------
 
       // without a name we can not create a shortcut
-      if (data.name == null)    
+      if (data.name == null)
       {
         continue;
       }
-      // without a target we can not create a shortcut
-      if (data.target == null)  
+      //1. Elmar: "Without a target we can not create a shortcut."
+      //2. Marc: "No, Even on Linux a Link can be an URL and has no target."
+      if( data.target == null )
       {
         continue;
       }
       // the shortcut is not actually required for any of the selected packs
       Vector forPacks = shortcutSpec.getChildrenNamed (SPEC_KEY_PACKS);
-      if (!shortcutRequiredFor (forPacks))  
+      if (!shortcutRequiredFor (forPacks))
       {
         continue;
       }
-      
+
       // --------------------------------------------------
       // This section is executed if we don't skip.
       // --------------------------------------------------
@@ -695,7 +758,7 @@ public class ShortcutPanel extends IzPanel implements ActionListener,
         }
       }
     }
-    
+
     // ----------------------------------------------------
     // signal if there are any shortcuts to create
     // ----------------------------------------------------
@@ -719,17 +782,26 @@ public class ShortcutPanel extends IzPanel implements ActionListener,
       try
       {
         groupName = groupName + data.subgroup;
-      
-        shortcut.setLinkName          (data.name);
-        shortcut.setLinkType          (data.type);
-        shortcut.setArguments         (data.commandLine);
-        shortcut.setDescription       (data.description);
-        shortcut.setIconLocation      (data.iconFile, data.iconIndex);
-        shortcut.setShowCommand       (data.initialState);
-        shortcut.setTargetPath        (data.target);
-        shortcut.setWorkingDirectory  (data.workingDirectory);
 
-        if (data.addToGroup)
+        shortcut.setLinkName(           data.name );
+        shortcut.setLinkType(           data.type );
+        shortcut.setArguments(          data.commandLine );
+        shortcut.setDescription(        data.description );
+        shortcut.setIconLocation(       data.iconFile, data.iconIndex );
+
+        shortcut.setShowCommand(        data.initialState);
+        shortcut.setTargetPath(         data.target      );
+        shortcut.setWorkingDirectory(   data.workingDirectory );
+        shortcut.setEncoding(           data.deskTopEntryLinux_Encoding );
+        shortcut.setMimetype(           data.deskTopEntryLinux_MimeType );
+
+        shortcut.setTerminal(           data.deskTopEntryLinux_Terminal );
+        shortcut.setTerminalOptions(    data.deskTopEntryLinux_TerminalOptions );
+        shortcut.setType(               data.deskTopEntryLinux_Type );
+        shortcut.setKdeSubstUID(        data.deskTopEntryLinux_X_KDE_SubstituteUID );
+        shortcut.setURL(                data.deskTopEntryLinux_URL );
+
+        if( data.addToGroup )
         {
           shortcut.setProgramGroup    (groupName);
         }
@@ -759,12 +831,17 @@ public class ShortcutPanel extends IzPanel implements ActionListener,
             File file = new File(fileName);
             File base = new File(shortcut.getBasePath());
             Vector intermediates = new Vector();
-            
-            while ( (file = file.getParentFile()) != null)
+
+            //String directoryName  = shortcut.getDirectoryCreated ();
+            execFiles.add( new ExecutableFile( fileName, 2, ExecutableFile.NEVER, new ArrayList(), false ) );
+
+            files.add( fileName );
+
+            while ( ( file = file.getParentFile()) != null)
             {
-              if (file.equals(base))
+              if (file.equals( base ))
                 break;
-              intermediates.add(file);
+                intermediates.add(file);
             }
             if (file != null)
             {
@@ -782,7 +859,16 @@ public class ShortcutPanel extends IzPanel implements ActionListener,
         continue;
       }
 
+
     }
+    //System.out.println( "files:" + files );
+    try
+    {
+      FileExecutor executor = new FileExecutor( execFiles );
+      executor.executeFiles( ExecutableFile.NEVER, null );
+    }
+    catch( Exception cannot ){ cannot.printStackTrace(); }
+
     parent.unlockNextButton();
   }
  /*--------------------------------------------------------------------------*/
@@ -814,16 +900,16 @@ public class ShortcutPanel extends IzPanel implements ActionListener,
   {
     String selected;
     String required;
-    
+
     if (packs.size () == 0)
     {
       return (true);
     }
-    
+
     for (int i = 0; i < idata.selectedPacks.size (); i++)
     {
       selected = ((Pack)idata.selectedPacks.get (i)).name;
-      
+
       for (int k = 0; k < packs.size (); k++)
       {
         required = (String)((XMLElement)packs.elementAt (k)).getAttribute (SPEC_ATTRIBUTE_NAME, "");
@@ -833,7 +919,7 @@ public class ShortcutPanel extends IzPanel implements ActionListener,
         }
       }
     }
-    
+
     return (false);
   }
  /*--------------------------------------------------------------------------*/
@@ -860,7 +946,7 @@ public class ShortcutPanel extends IzPanel implements ActionListener,
                                    String     name)
   {
     String value = element.getAttribute (name, "").toUpperCase ();
-    
+
     if (value.equals ("YES"))
     {
       return (true);
@@ -877,7 +963,7 @@ public class ShortcutPanel extends IzPanel implements ActionListener,
     {
       return (true);
     }
-    
+
     return (false);
   }
  /*--------------------------------------------------------------------------*/
@@ -895,7 +981,7 @@ public class ShortcutPanel extends IzPanel implements ActionListener,
   {
     String newPath  = path.replace ('/', File.separatorChar);
     newPath         = newPath.replace ('\\', File.separatorChar);
-    
+
     return (newPath);
   }
  /*--------------------------------------------------------------------------*/
@@ -922,7 +1008,7 @@ public class ShortcutPanel extends IzPanel implements ActionListener,
     // label a the top of the panel, that gives the
     // basic instructions
     // ----------------------------------------------------
-    listLabel = new JLabel (parent.langpack.getString ("ShortcutPanel.regular.list"),
+    listLabel = LabelFactory.create (parent.langpack.getString ("ShortcutPanel.regular.list"),
                             JLabel.LEADING);
 
     constraints.gridx       = 0;
@@ -936,7 +1022,7 @@ public class ShortcutPanel extends IzPanel implements ActionListener,
     constraints.anchor      = GridBagConstraints.WEST;
     layout.addLayoutComponent (listLabel, constraints);
     add (listLabel);
-    
+
     // ----------------------------------------------------
     // list box to list all of the existing program groups
     // at the intended destination
@@ -966,6 +1052,8 @@ public class ShortcutPanel extends IzPanel implements ActionListener,
       usersGroup.add (currentUser);
       usersPanel.add (currentUser);
       allUsers                 = new JRadioButton (parent.langpack.getString ("ShortcutPanel.regular.allUsers"), !currentUserList);
+      if( ! OsVersion.IS_WINDOWS )
+        allUsers.setEnabled( false );
       allUsers.addActionListener (this);
       usersGroup.add (allUsers);
       usersPanel.add (allUsers);
@@ -1082,7 +1170,7 @@ public class ShortcutPanel extends IzPanel implements ActionListener,
     constraints.weighty     = 1.0;
     layout.addLayoutComponent (listLabel, constraints);
     add (listLabel);
-    
+
     // ----------------------------------------------------
     // list box to list all of the intended shortcut targets
     // ----------------------------------------------------
@@ -1143,17 +1231,17 @@ public class ShortcutPanel extends IzPanel implements ActionListener,
   {
     Dimension size          = getParent ().getSize ();
     Insets    insets        = getInsets ();
-    Border    border        = getBorder (); 
+    Border    border        = getBorder ();
     Insets    borderInsets  = new Insets (0, 0, 0, 0);
-    
+
     if (border != null)
     {
       borderInsets = border.getBorderInsets (this);
     }
-    
+
     size.height = size.height - insets.top  - insets.bottom - borderInsets.top  - borderInsets.bottom - 50;
     size.width  = size.width  - insets.left - insets.right  - borderInsets.left - borderInsets.right  - 50;
-    
+
     return (size);
   }
  /*--------------------------------------------------------------------------*/
@@ -1164,7 +1252,7 @@ public class ShortcutPanel extends IzPanel implements ActionListener,
   private void saveToFile ()
   {
     File file = null;
-    
+
     // ----------------------------------------------------
     // open a file chooser dialog to get a path / file name
     // ----------------------------------------------------
@@ -1178,7 +1266,7 @@ public class ShortcutPanel extends IzPanel implements ActionListener,
     {
       return;
     }
-    
+
     // ----------------------------------------------------
     // save to the file
     // ----------------------------------------------------
@@ -1190,7 +1278,7 @@ public class ShortcutPanel extends IzPanel implements ActionListener,
 
     try
     {
-      output = new FileWriter (file);      
+      output = new FileWriter (file);
     }
     catch (Throwable exception)
     {
@@ -1204,11 +1292,11 @@ public class ShortcutPanel extends IzPanel implements ActionListener,
     // ----------------------------------------------------
     int nextIndex     = 0;
     int currentIndex  = 0;
-    
+
     do
     {
       nextIndex = header.indexOf ("\\n", currentIndex);
-      
+
       if (nextIndex > -1)
       {
         buffer.append (header.substring (currentIndex, nextIndex));
@@ -1222,7 +1310,7 @@ public class ShortcutPanel extends IzPanel implements ActionListener,
       }
     }
     while (nextIndex > -1);
-    
+
     buffer.append (SEPARATOR_LINE);
     buffer.append (newline);
     buffer.append (newline);
@@ -1311,7 +1399,7 @@ public class ShortcutPanel extends IzPanel implements ActionListener,
         // not really anything I can do here, maybe should show a dialog that
         // tells the user that data might not have been saved completely!?
       }
-    }    
+    }
   }
  /*--------------------------------------------------------------------------*/
  /**
@@ -1321,7 +1409,7 @@ public class ShortcutPanel extends IzPanel implements ActionListener,
   private void addToUninstaller ()
   {
     UninstallData uninstallData = UninstallData.getInstance ();
-    
+
     for (int i = 0; i < files.size (); i++)
     {
       uninstallData.addFile ((String)files.elementAt (i));
@@ -1351,13 +1439,14 @@ public class ShortcutPanel extends IzPanel implements ActionListener,
     // not supported, then we have nothing to add. Just
     // return
     // ----------------------------------------------------
-    if (!shortcutsToCreate     || 
+    if (!shortcutsToCreate     ||
         !shortcut.supported () ||
+        groupName == null      ||
          simulteNotSupported      )
     {
       return;
     }
-    
+
     ShortcutData  data;
     XMLElement    dataElement;
 
@@ -1377,7 +1466,7 @@ public class ShortcutPanel extends IzPanel implements ActionListener,
       dataElement = new XMLElement (AUTO_KEY_SHORTCUT);
 
       dataElement.setAttribute (AUTO_ATTRIBUTE_NAME,          data.name);
-      dataElement.setAttribute (AUTO_ATTRIBUTE_GROUP,         new Boolean (data.addToGroup).toString ());
+      dataElement.setAttribute (AUTO_ATTRIBUTE_GROUP,         Boolean.valueOf(data.addToGroup).toString ());
       dataElement.setAttribute (AUTO_ATTRIBUTE_TYPE,          Integer.toString (data.type));
       dataElement.setAttribute (AUTO_ATTRIBUTE_COMMAND,       data.commandLine);
       dataElement.setAttribute (AUTO_ATTRIBUTE_DESCRIPTION,   data.description);
@@ -1430,6 +1519,11 @@ public class ShortcutPanel extends IzPanel implements ActionListener,
       return;
     }
 
+    if (! OsConstraint.oneMatchesCurrentSystem(panelRoot))
+    {
+      return;
+    }
+
     shortcuts     = new Vector ();
     Vector        shortcutElements;
     ShortcutData  data;
@@ -1440,17 +1534,17 @@ public class ShortcutPanel extends IzPanel implements ActionListener,
     // ----------------------------------------------------
     dataElement = panelRoot.getFirstChildNamed (AUTO_KEY_PROGRAM_GROUP);
     groupName   = dataElement.getAttribute (AUTO_ATTRIBUTE_NAME);
-    
+
     if (groupName == null)
     {
       groupName = "";
     }
-    
+
     // ----------------------------------------------------
     // add the details for each of the shortcuts
     // ----------------------------------------------------
     shortcutElements = panelRoot.getChildrenNamed (AUTO_KEY_SHORTCUT);
-    
+
     for (int i = 0; i < shortcutElements.size (); i++)
     {
       data        = new ShortcutData ();
@@ -1466,10 +1560,10 @@ public class ShortcutPanel extends IzPanel implements ActionListener,
       data.initialState     = Integer.valueOf (dataElement.getAttribute (AUTO_ATTRIBUTE_INITIAL_STATE)).intValue ();
       data.target           = dataElement.getAttribute (AUTO_ATTRIBUTE_TARGET);
       data.workingDirectory = dataElement.getAttribute (AUTO_ATTRIBUTE_WORKING_DIR);
-      
+
       shortcuts.add (data);
     }
-    
+
     createShortcuts ();
   }
 }

@@ -1,5 +1,5 @@
 /*
- *  $Id: SimpleFinishPanel.java,v 1.1 2004/08/01 19:53:14 gene Exp $
+ *  $Id: SimpleFinishPanel.java,v 1.2 2005/05/30 15:41:05 gene Exp $
  *  IzPack
  *  Copyright (C) 2001-2004 Julien Ponge
  *
@@ -32,10 +32,10 @@ import java.io.File;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import com.izforge.izpack.gui.LabelFactory;
 import com.izforge.izpack.installer.InstallData;
 import com.izforge.izpack.installer.InstallerFrame;
 import com.izforge.izpack.installer.IzPanel;
@@ -52,11 +52,8 @@ public class SimpleFinishPanel extends IzPanel
   /**  The layout. */
   private BoxLayout layout;
 
-  /**  The automated installers generation button. */
-  private JButton autoButton;
-
   /**  The center panel. */
-  private JPanel centerPanel;
+  protected JPanel centerPanel;
 
   /**  The variables substitutor. */
   private VariableSubstitutor vs;
@@ -108,9 +105,9 @@ public class SimpleFinishPanel extends IzPanel
     if (idata.installSuccess)
     {
       // We set the information
-      centerPanel.add(new JLabel(parent.icons.getImageIcon("check")));
+      centerPanel.add(LabelFactory.create(parent.icons.getImageIcon("check")));
       centerPanel.add(Box.createVerticalStrut(20));
-      centerPanel.add(new JLabel(parent.langpack
+      centerPanel.add(LabelFactory.create(parent.langpack
           .getString("FinishPanel.success"), parent.icons
           .getImageIcon("information"), JLabel.TRAILING));
       centerPanel.add(Box.createVerticalStrut(20));
@@ -121,10 +118,10 @@ public class SimpleFinishPanel extends IzPanel
         String path = translatePath("$INSTALL_PATH") + File.separator
             + "Uninstaller";
 
-        centerPanel.add(new JLabel(parent.langpack
+        centerPanel.add(LabelFactory.create(parent.langpack
             .getString("FinishPanel.uninst.info"), parent.icons
             .getImageIcon("information"), JLabel.TRAILING));
-        centerPanel.add(new JLabel(path, parent.icons.getImageIcon("empty"),
+        centerPanel.add(LabelFactory.create(path, parent.icons.getImageIcon("empty"),
             JLabel.TRAILING));
       }
     }

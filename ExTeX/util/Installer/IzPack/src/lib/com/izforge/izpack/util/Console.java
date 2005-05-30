@@ -1,5 +1,5 @@
 /*
- *  $Id: Console.java,v 1.1 2004/08/01 19:53:15 gene Exp $
+ *  $Id: Console.java,v 1.2 2005/05/30 15:41:05 gene Exp $
  *  IzPack
  *  Copyright (C) 2002 Jan Blok (jblok@profdata.nl - PDM - www.profdata.nl)
  *
@@ -49,10 +49,10 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
 import javax.swing.text.Segment;
 
-public class Console
+public final class Console
 {
-	public static int INITIAL_WIDTH = 800;
-	public static int INITIAL_HEIGHT = 600;
+	public static final int INITIAL_WIDTH = 800;
+	public static final int INITIAL_HEIGHT = 600;
 	
 	public static void main(String[] args)
 	{
@@ -373,12 +373,14 @@ class ConsoleTextArea extends JTextArea implements KeyListener,DocumentListener
     }
     
     
-    synchronized void returnPressed() {
+    void returnPressed() {
         Document doc = getDocument();
         int len = doc.getLength();
         Segment segment = new Segment();
         try {
+          synchronized(doc) {
             doc.getText(outputMark, len - outputMark, segment);
+          }
         } catch(javax.swing.text.BadLocationException ignored) {
             ignored.printStackTrace();
         }
@@ -388,7 +390,9 @@ class ConsoleTextArea extends JTextArea implements KeyListener,DocumentListener
         historyIndex = history.size();
         inPipe.write(segment.array, segment.offset, segment.count);
         append("\n");
-        outputMark = doc.getLength();
+        synchronized(doc) {
+          outputMark = doc.getLength();
+        }
         inPipe.write("\n");
         inPipe.flush();
         console1.flush();
@@ -474,7 +478,7 @@ class ConsoleTextArea extends JTextArea implements KeyListener,DocumentListener
         }
     }
     
-    public synchronized void keyReleased(KeyEvent e) {
+    public void keyReleased(KeyEvent e) {
     }
 
     public synchronized void write(String str) {
@@ -504,14 +508,16 @@ class ConsoleTextArea extends JTextArea implements KeyListener,DocumentListener
         }
     }
 
-    public synchronized void postUpdateUI() {
+    public void postUpdateUI() {
         // this attempts to cleanup the damage done by updateComponentTreeUI
         requestFocus();
         setCaret(getCaret());
-        select(outputMark, outputMark);
+        synchronized(this) {
+          select(outputMark, outputMark);
+        }
     }
     
-    public synchronized void changedUpdate(DocumentEvent e) {
+    public void changedUpdate(DocumentEvent e) {
     }
     
     

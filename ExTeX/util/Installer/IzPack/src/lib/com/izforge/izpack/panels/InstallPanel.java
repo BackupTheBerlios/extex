@@ -1,5 +1,5 @@
 /*
- *  $Id: InstallPanel.java,v 1.1 2004/08/01 19:53:14 gene Exp $
+ *  $Id: InstallPanel.java,v 1.2 2005/05/30 15:41:05 gene Exp $
  *  IzPack
  *  Copyright (C) 2001-2004 Julien Ponge
  *
@@ -33,6 +33,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.JSeparator;
 
+import com.izforge.izpack.gui.LabelFactory;
 import com.izforge.izpack.installer.InstallData;
 import com.izforge.izpack.installer.InstallerFrame;
 import com.izforge.izpack.installer.IzPanel;
@@ -90,7 +91,7 @@ public class InstallPanel extends IzPanel implements AbstractUIProgressHandler
     int row = 1;
 
     this.tipLabel =
-      new JLabel(
+      LabelFactory.create(
         parent.langpack.getString("InstallPanel.tip"),
         parent.icons.getImageIcon("information"),
         JLabel.TRAILING);
@@ -100,7 +101,7 @@ public class InstallPanel extends IzPanel implements AbstractUIProgressHandler
     layout.addLayoutComponent(this.tipLabel, gbConstraints);
     add(this.tipLabel);
 
-    this.packOpLabel = new JLabel(" ", JLabel.TRAILING);
+    this.packOpLabel = LabelFactory.create(" ", JLabel.TRAILING);
     parent.buildConstraints(gbConstraints, 0, row++, 2, 1, 1.0, 0.0);
     gbConstraints.anchor = GridBagConstraints.SOUTHWEST;
     layout.addLayoutComponent(this.packOpLabel, gbConstraints);
@@ -128,7 +129,7 @@ public class InstallPanel extends IzPanel implements AbstractUIProgressHandler
     add(sep);
 
     this.overallOpLabel =
-      new JLabel(
+      LabelFactory.create(
         parent.langpack.getString("InstallPanel.progress"),
         parent.icons.getImageIcon("information"),
         JLabel.TRAILING);
@@ -176,13 +177,13 @@ public class InstallPanel extends IzPanel implements AbstractUIProgressHandler
    *
    * @param  error  The error text.
    */
-  public void errorUnpack(String error)
+  public void emitError(String title, String error)
   {
     this.packOpLabel.setText(error);
     idata.installSuccess = false;
     JOptionPane.showMessageDialog(
       this,
-      error.toString(),
+      error,
       parent.langpack.getString("installer.error"),
       JOptionPane.ERROR_MESSAGE);
   }
@@ -201,7 +202,6 @@ public class InstallPanel extends IzPanel implements AbstractUIProgressHandler
     this.overallProgressBar.setEnabled(false);
     this.packOpLabel.setText(" ");
     this.packOpLabel.setEnabled(false);
-    idata.installSuccess = true;
     idata.canClose = true;
     this.validated = true;
     if (idata.panels.indexOf(this) != (idata.panels.size() - 1))

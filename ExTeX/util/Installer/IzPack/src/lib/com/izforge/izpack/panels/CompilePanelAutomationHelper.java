@@ -1,5 +1,5 @@
 /*
- *  $Id: CompilePanelAutomationHelper.java,v 1.1 2004/08/01 19:53:14 gene Exp $
+ *  $Id: CompilePanelAutomationHelper.java,v 1.2 2005/05/30 15:41:05 gene Exp $
  *  IzPack
  *  Copyright (C) 2003 Jonathan Halliday, Julien Ponge
  *
@@ -168,7 +168,7 @@ public class CompilePanelAutomationHelper extends PanelAutomationHelper
    */
   public void progress(int val, String msg)
   {
-    float percentage = ((float)val)*100.0f/(float)this.job_max;
+    double percentage = ((double)val)*100.0d/(double)this.job_max;
 
     String percent = (new Integer ((int)percentage)).toString()+'%';
     String line = this.job_name + ": " + percent;

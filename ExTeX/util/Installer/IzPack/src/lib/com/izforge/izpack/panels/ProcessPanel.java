@@ -1,5 +1,5 @@
 /*
- *  $Id: ProcessPanel.java,v 1.1 2004/08/01 19:53:14 gene Exp $
+ *  $Id: ProcessPanel.java,v 1.2 2005/05/30 15:41:05 gene Exp $
  *  IzPack
  *  Copyright (C) 2001-2004 Julien Ponge, Tino Schwarze
  *
@@ -36,6 +36,7 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 import net.n3.nanoxml.XMLElement;
 
@@ -173,6 +174,15 @@ public class ProcessPanel extends IzPanel implements AbstractUIProcessHandler
   {
     // TODO: make it colored
     this.outputPane.append(message + '\n');
+    
+    SwingUtilities.invokeLater(new Runnable() 
+      {
+        public void run()
+        {
+          outputPane.setCaretPosition(outputPane.getText().length());
+        }
+      }
+    );
   }
 
   /**

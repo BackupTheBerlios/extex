@@ -1,5 +1,5 @@
 /*
- *  $Id: CompilePanel.java,v 1.1 2004/08/01 19:53:14 gene Exp $
+ *  $Id: CompilePanel.java,v 1.2 2005/05/30 15:41:05 gene Exp $
  *  IzPack
  *  Copyright (C) 2001-2003 Julien Ponge, Tino Schwarze
  *
@@ -51,6 +51,7 @@ import javax.swing.SwingConstants;
 import net.n3.nanoxml.XMLElement;
 
 import com.izforge.izpack.gui.ButtonFactory;
+import com.izforge.izpack.gui.LabelFactory;
 import com.izforge.izpack.installer.CompileHandler;
 import com.izforge.izpack.installer.CompileResult;
 import com.izforge.izpack.installer.CompileWorker;
@@ -132,7 +133,7 @@ public class CompilePanel extends IzPanel implements ActionListener, CompileHand
     JLabel argumentsLabel = new JLabel();
     this.argumentsComboBox = new JComboBox();
     this.startButton = ButtonFactory.createButton (parent.langpack.getString ("CompilePanel.start"), idata.buttonsHColor);
-    this.tipLabel = new JLabel(parent.langpack.getString ("CompilePanel.tip"),
+    this.tipLabel = LabelFactory.create(parent.langpack.getString ("CompilePanel.tip"),
         parent.icons.getImageIcon ("tip"), SwingConstants.TRAILING);
     this.opLabel = new JLabel();
     packProgressBar = new JProgressBar();
@@ -142,7 +143,7 @@ public class CompilePanel extends IzPanel implements ActionListener, CompileHand
     setLayout(new GridBagLayout());
 
     Font font = heading.getFont ();
-    font = font.deriveFont (Font.BOLD, font.getSize()*2.0f);
+    font = font.deriveFont (Font.BOLD, font.getSize() * 2.0f);
     heading.setFont(font);
     heading.setHorizontalAlignment(SwingConstants.CENTER);
     heading.setText(parent.langpack.getString ("CompilePanel.heading"));

@@ -1,5 +1,5 @@
 /*
- *  $Id: PacksPanelAutomationHelper.java,v 1.1 2004/08/01 19:53:14 gene Exp $
+ *  $Id: PacksPanelAutomationHelper.java,v 1.2 2005/05/30 15:41:05 gene Exp $
  *  IzPack
  *  Copyright (C) 2003 Jonathan Halliday, Julien Ponge
  *
@@ -56,7 +56,7 @@ public class PacksPanelAutomationHelper implements PanelAutomation
       XMLElement el = new XMLElement("pack");
       el.setAttribute ("index", new Integer(i).toString());
       el.setAttribute ("name", pack.name);
-      Boolean selected = new Boolean (idata.selectedPacks.contains (pack));
+      Boolean selected = Boolean.valueOf(idata.selectedPacks.contains (pack));
       el.setAttribute ("selected", selected.toString ());
 
       panelRoot.addChild(el);
@@ -72,8 +72,10 @@ public class PacksPanelAutomationHelper implements PanelAutomation
    */
   public void runAutomated(AutomatedInstallData idata, XMLElement panelRoot)
   {
+    // We first get the <selected> child (new from version 3.7.0).
+    XMLElement selectedPacks = panelRoot.getFirstChildNamed("selected");
     // We get the packs markups
-    Vector pm = panelRoot.getChildrenNamed("pack");
+    Vector pm = selectedPacks.getChildrenNamed("pack");
 
     // We figure out the selected ones
     int size = pm.size();
@@ -81,7 +83,7 @@ public class PacksPanelAutomationHelper implements PanelAutomation
     for (int i = 0; i < size; i++)
     {
       XMLElement el = (XMLElement) pm.get(i);
-      Boolean selected = new Boolean (el.getAttribute ("selected"));
+      Boolean selected = new Boolean(true); // No longer needed.
 
       if (selected.booleanValue ())
       {

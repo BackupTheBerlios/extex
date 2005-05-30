@@ -1,7 +1,7 @@
 /*
- *  $Id: TargetPanel.java,v 1.1 2004/08/01 19:53:14 gene Exp $
+ *  $Id: TargetPanel.java,v 1.2 2005/05/30 15:41:05 gene Exp $
  *  IzPack
- *  Copyright (C) 2001-2004 Julien Ponge
+ *  Copyright (C) 2001-2004 Julien Ponge, 2004 Klaus Bartz
  *
  *  File :               TargetPanel.java
  *  Description :        A panel to select the installation path.
@@ -24,57 +24,18 @@
  */
 package com.izforge.izpack.panels;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-
 import net.n3.nanoxml.XMLElement;
 
-import com.izforge.izpack.gui.ButtonFactory;
 import com.izforge.izpack.installer.InstallData;
 import com.izforge.izpack.installer.InstallerFrame;
-import com.izforge.izpack.installer.IzPanel;
 
 /**
  *  The taget directory selection panel.
  *
  * @author     Julien Ponge
  */
-public class TargetPanel extends IzPanel implements ActionListener
+public class TargetPanel extends PathInputPanel
 {
-  /**  The default directory. */
-  private String defaultDir;
-
-  /**  The info label. */
-  private JLabel infoLabel;
-
-  /**  The text field. */
-  private JTextField textField;
-
-  /**  The 'browse' button. */
-  private JButton browseButton;
-
-  /**  The layout . */
-  private GridBagLayout layout;
-
-  /**  The layout constraints. */
-  private GridBagConstraints gbConstraints;
-
-  /** The parent installerframe. */
-  private InstallerFrame parent;
 
   /**
    *  The constructor.
@@ -85,136 +46,32 @@ public class TargetPanel extends IzPanel implements ActionListener
   public TargetPanel(InstallerFrame parent, InstallData idata)
   {
     super(parent, idata);
-    //Initialization
-    this.parent = parent;
-
-    // We initialize our layout
-    layout = new GridBagLayout();
-    gbConstraints = new GridBagConstraints();
-    setLayout(layout);
-
     // load the default directory info (if present)
-    loadDefaultDir();
-    if (defaultDir != null)
+    loadDefaultInstallDir(parent);
+    if (getDefaultInstallDir() != null)
+    {
       // override the system default that uses app name (which is set in the Installer class)
-      idata.setInstallPath(defaultDir);
+      idata.setInstallPath(getDefaultInstallDir());
+    }
+  }
 
-    // We create and put the components
-
-    infoLabel =
-      new JLabel(
-        parent.langpack.getString("TargetPanel.info"),
-        parent.icons.getImageIcon("home"),
-        JLabel.TRAILING);
-    parent.buildConstraints(gbConstraints, 0, 0, 2, 1, 3.0, 0.0);
-    gbConstraints.insets = new Insets(5, 5, 5, 5);
-    gbConstraints.fill = GridBagConstraints.NONE;
-    gbConstraints.anchor = GridBagConstraints.SOUTHWEST;
-    layout.addLayoutComponent(infoLabel, gbConstraints);
-    add(infoLabel);
-
-    textField = new JTextField(idata.getInstallPath(), 40);
-    textField.addActionListener(this);
-    parent.buildConstraints(gbConstraints, 0, 1, 
-      GridBagConstraints.RELATIVE, 1, 1.0, 0.0);
-    gbConstraints.fill = GridBagConstraints.HORIZONTAL;
-    gbConstraints.anchor = GridBagConstraints.WEST;
-    layout.addLayoutComponent(textField, gbConstraints);
-    add(textField);
-
-    browseButton =
-      ButtonFactory.createButton(
-        parent.langpack.getString("TargetPanel.browse"),
-        parent.icons.getImageIcon("open"),
-        idata.buttonsHColor);
-    browseButton.addActionListener(this);
-    parent.buildConstraints(gbConstraints, 1, 1, 
-      GridBagConstraints.REMAINDER, 1, 0.0, 0.0);
-    gbConstraints.fill = GridBagConstraints.HORIZONTAL;
-    gbConstraints.anchor = GridBagConstraints.EAST;
-    layout.addLayoutComponent(browseButton, gbConstraints);
-    add(browseButton);
+  /**  Called when the panel becomes active.  */
+  public void panelActivate()
+  {
+    // Resolve the default for chosenPath
+    super.panelActivate();
+    // Set the default or old value to the path selection panel.
+    pathSelectionPanel.setPath(idata.getInstallPath());
   }
 
   /**
-   *  Loads up the "dir" resource associated with TargetPanel. Acceptable dir
-   *  resource names: <code>
-   *   TargetPanel.dir.macosx
-   *   TargetPanel.dir.mac
-   *   TargetPanel.dir.windows
-   *   TargetPanel.dir.unix
-   *   TargetPanel.dir.xxx,
-   *     where xxx is the lower case version of System.getProperty("os.name"),
-   *     with any spaces replace with underscores
-   *   TargetPanel.dir (generic that will be applied if none of above is found)
-   *   </code> As with all IzPack resources, each the above ids should be
-   *  associated with a separate filename, which is set in the install.xml file
-   *  at compile time.
+   * This method simple delegates to
+   * <code>PathInputPanel.loadDefaultInstallDir</code> with
+   * the current parent as installer frame.
    */
   public void loadDefaultDir()
   {
-    BufferedReader br = null;
-    try
-    {
-      String os = System.getProperty("os.name");
-      InputStream in = null;
-
-      if (os.regionMatches(true, 0, "windows", 0, 7))
-        in = parent.getResource("TargetPanel.dir.windows");
-
-      else if (os.regionMatches(true, 0, "mac os x", 0, 8))
-        in = parent.getResource("TargetPanel.dir.macosx");
-
-      else if (os.regionMatches(true, 0, "mac", 0, 3))
-        in = parent.getResource("TargetPanel.dir.mac");
-
-      else
-      {
-        // first try to look up by specific os name
-        os = os.replace(' ', '_'); // avoid spaces in file names
-        os = os.toLowerCase(); // for consistency among TargetPanel res files
-        in = parent.getResource("TargetPanel.dir.".concat(os));
-        // if not specific os, try getting generic 'unix' resource file
-        if (in == null)
-          in = parent.getResource("TargetPanel.dir.unix");
-
-        // if all those failed, try to look up a generic dir file
-        if (in == null)
-          in = parent.getResource("TargetPanel.dir");
-
-      }
-
-      // if all above tests failed, there is no resource file,
-      // so use system default
-      if (in == null)
-        return;
-
-      // now read the file, once we've identified which one to read
-      InputStreamReader isr = new InputStreamReader(in);
-      br = new BufferedReader(isr);
-      String line = null;
-      while ((line = br.readLine()) != null)
-      {
-        line = line.trim();
-        // use the first non-blank line
-        if (!line.equals(""))
-          break;
-      }
-      defaultDir = line;
-    } catch (Exception e)
-    {
-      defaultDir = null;
-      // leave unset to take the system default set by Installer class
-    } finally
-    {
-      try
-      {
-        if (br != null)
-          br.close();
-      } catch (IOException ignored)
-      {
-      }
-    }
+    super.loadDefaultInstallDir(parent);
   }
 
   /**
@@ -224,76 +81,33 @@ public class TargetPanel extends IzPanel implements ActionListener
    */
   public boolean isValidated()
   {
-    String installPath = textField.getText();
-    boolean ok = true;
+    // Standard behavior of PathInputPanel.
+    if( ! super.isValidated())
+      return(false);
+    idata.setInstallPath(pathSelectionPanel.getPath());
+    return(true);
+  }
 
-    // We put a warning if the specified target is nameless
-    if (installPath.length() == 0)
-    {
-      int res =
-        JOptionPane.showConfirmDialog(
-          this,
-          parent.langpack.getString("TargetPanel.empty_target"),
-          parent.langpack.getString("installer.warning"),
-          JOptionPane.YES_NO_OPTION);
-      ok = (res == JOptionPane.YES_OPTION);
-    }
-    if (!ok)
-      return ok;
 
-    // Normalize the path
-    File path = new File(installPath).getAbsoluteFile();
-    installPath = path.toString();
-
-    // We put a warning if the directory exists else we warn that it will be created
-    if (path.exists())
-    {
-      int res =
-        JOptionPane.showConfirmDialog(
-          this,
-          parent.langpack.getString("TargetPanel.warn"),
-          parent.langpack.getString("installer.warning"),
-          JOptionPane.YES_NO_OPTION);
-      ok = (res == JOptionPane.YES_OPTION);
-    } else
-      JOptionPane.showMessageDialog(
-        this,
-        parent.langpack.getString("TargetPanel.createdir")
-          + "\n"
-          + installPath);
-
-    idata.setInstallPath(installPath);
-    return ok;
+  /**
+   * Returns the default install directory. This is equal to 
+   * <code>PathInputPanel.getDefaultInstallDir</code>
+   * @return the default install directory
+   */
+  public String getDefaultDir()
+  {
+    return getDefaultInstallDir();
   }
 
   /**
-   *  Actions-handling method.
-   *
-   * @param  e  The event.
+   * Sets the default install directory to the given
+   * String. This is equal to 
+   * <code>PathInputPanel.setDefaultInstallDir</code>
+   * @param defaultDir path to be used for the install directory 
    */
-  public void actionPerformed(ActionEvent e)
+  public void setDefaultDir(String defaultDir)
   {
-    Object source = e.getSource();
-
-    if (source != textField)
-    {
-      // The user wants to browse its filesystem
-
-      // Prepares the file chooser
-      JFileChooser fc = new JFileChooser();
-      fc.setCurrentDirectory(new File(textField.getText()));
-      fc.setMultiSelectionEnabled(false);
-      fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-      fc.addChoosableFileFilter(fc.getAcceptAllFileFilter());
-
-      // Shows it
-      if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
-        textField.setText(fc.getSelectedFile().getAbsolutePath());
-
-    }else if(source == textField)
-    {
-      parent.navigateNext();
-    }
+    setDefaultInstallDir(defaultDir);
   }
 
   /**

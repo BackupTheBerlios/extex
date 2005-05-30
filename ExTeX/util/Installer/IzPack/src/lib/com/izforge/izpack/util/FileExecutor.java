@@ -1,5 +1,5 @@
 /*
- *  $Id: FileExecutor.java,v 1.1 2004/08/01 19:53:15 gene Exp $
+ *  $Id: FileExecutor.java,v 1.2 2005/05/30 15:41:05 gene Exp $
  *  IzPack
  *  Copyright (C) 2002 Olexij Tkatchenko
  *
@@ -56,7 +56,7 @@ public class FileExecutor
    *
    * @author     Olexij Tkatchenko <ot@parcs.de>
    */
-  private class MonitorInputStream implements Runnable
+  private static class MonitorInputStream implements Runnable
   {
 
     private BufferedReader reader;
@@ -110,7 +110,7 @@ public class FileExecutor
     catch (InterruptedException e)
     {}
 
-    if (t.isAlive() == false)
+    if (!t.isAlive())
       return true;
 
     t.interrupt();
@@ -210,14 +210,8 @@ public class FileExecutor
 
         // wait for command to complete
         exitStatus = process.waitFor();
-        if (t1 != null)
-        {
-          t1.join();
-        }
-        if (t2 != null)
-        {
-          t2.join();
-        }
+        t1.join();
+        t2.join();
 
         // save command output
         output[0] = outWriter.toString();
@@ -259,14 +253,12 @@ public class FileExecutor
   {
     int exitStatus = 0;
     String[] output = new String[2];
-    String pathSep = System.getProperty("path.separator");
-    String osName = System.getProperty("os.name").toLowerCase();
     //String permissions = (System.getProperty("user.name").equals("root")) ? "a+x" : "u+x";
     String permissions = "a+x";
 
     // loop through all executables
     Iterator efileIterator = files.iterator();
-    while ((exitStatus == 0) && efileIterator.hasNext())
+    while (exitStatus == 0 && efileIterator.hasNext())
     {
       ExecutableFile efile = (ExecutableFile) efileIterator.next();
       boolean deleteAfterwards = ! efile.keepFile;
@@ -277,21 +269,17 @@ public class FileExecutor
       if (! OsConstraint.oneMatchesCurrentSystem (efile.osList))
         continue;
       
-      if(currentStage!=ExecutableFile.UNINSTALL)
+      if(currentStage!=ExecutableFile.UNINSTALL && OsVersion.IS_UNIX)
       {
         // fix executable permission for unix systems
-        if (pathSep.equals(":") && (!osName.startsWith("mac") ||
-              osName.endsWith("x")))
+        Debug.trace("making file executable (setting executable flag)");
+        String[] params = {"/bin/chmod", permissions, file.toString()};
+        exitStatus = executeCommand(params, output);
+        if (exitStatus != 0)
         {
-          Debug.trace("making file executable (setting executable flag)");
-          String[] params = {"/bin/chmod", permissions, file.toString()};
-          exitStatus = executeCommand(params, output);
-          if (exitStatus != 0)
-          {
-            handler.emitError("file execution error", "Error executing \n"+
-              params[0]+" "+params[1]+" "+params[2]);
-            continue;            
-          }
+          handler.emitError("file execution error", "Error executing \n"+
+            params[0]+" "+params[1]+" "+params[2]);
+          continue;            
         }
       }
 
@@ -333,7 +321,7 @@ public class FileExecutor
           deleteAfterwards = false;
           String message = output[0] + "\n" + output[1];
           if (message.length() == 1)
-            message = new String("Failed to execute " + file.toString() + ".");
+            message = "Failed to execute " + file.toString() + ".";
 
           if (efile.onFailure == ExecutableFile.ABORT)
           {

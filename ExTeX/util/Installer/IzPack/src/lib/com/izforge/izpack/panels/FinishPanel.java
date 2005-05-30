@@ -1,5 +1,5 @@
 /*
- *  $Id: FinishPanel.java,v 1.1 2004/08/01 19:53:14 gene Exp $
+ *  $Id: FinishPanel.java,v 1.2 2005/05/30 15:41:05 gene Exp $
  *  IzPack
  *  Copyright (C) 2001-2004 Julien Ponge
  *
@@ -42,6 +42,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import com.izforge.izpack.gui.ButtonFactory;
+import com.izforge.izpack.gui.LabelFactory;
 import com.izforge.izpack.installer.InstallData;
 import com.izforge.izpack.installer.InstallerFrame;
 import com.izforge.izpack.installer.IzPanel;
@@ -114,7 +115,7 @@ public class FinishPanel extends IzPanel implements ActionListener
     {
       // We set the information
       centerPanel.add(
-        new JLabel(
+        LabelFactory.create(
           parent.langpack.getString("FinishPanel.success"),
           parent.icons.getImageIcon("information"),
           JLabel.TRAILING));
@@ -127,12 +128,12 @@ public class FinishPanel extends IzPanel implements ActionListener
           translatePath("$INSTALL_PATH") + File.separator + "Uninstaller";
 
         centerPanel.add(
-          new JLabel(
+          LabelFactory.create(
             parent.langpack.getString("FinishPanel.uninst.info"),
             parent.icons.getImageIcon("information"),
             JLabel.TRAILING));
         centerPanel.add(
-          new JLabel(
+          LabelFactory.create(
             path,
             parent.icons.getImageIcon("empty"),
             JLabel.TRAILING));
@@ -151,7 +152,7 @@ public class FinishPanel extends IzPanel implements ActionListener
       centerPanel.add(autoButton);
     } else
       centerPanel.add(
-        new JLabel(
+        LabelFactory.create(
           parent.langpack.getString("FinishPanel.fail"),
           parent.icons.getImageIcon("information"),
           JLabel.TRAILING));
