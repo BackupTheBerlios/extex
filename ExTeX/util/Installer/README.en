@@ -9,20 +9,28 @@
 <body>
 
 <h1>Welcome to ExTeX</h1>
-
 <p>
 ExTeX is a typesetting program based on the experiences of TeX.
 </p>
 
-
 <h1>Homepage</h1>
 <p>
 ExTeX is present on the Web. On the Homepage you can find additional
-information.
+information:
 </p>
 <p>
 <a href="http://www.extex.org">http://www.extex.org</a>
 </p>
+
+<h1>Acknowlegements</h1>
+ExTeX is based on and contains the following third-party software:
+<ul>
+ <li>Apache Avalon</li>
+ <li>Apache Commons</li>
+ <li>icu4j</li>
+ <li>Log4j</li>
+ <li>PDF Box</li>
+</ul>
 
 <hr>
 

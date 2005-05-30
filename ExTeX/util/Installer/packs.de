@@ -1,15 +1,35 @@
 <?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
 <!-- The German langpack -->
 <langpack>
+
   <str id="core" txt="Basis"/>
   <str id="core.description" txt="Das Basispaket enthält eine TeX-kompatible Implementierung."/>
+
   <str id="libs" txt="Bibliotheken"/>
   <str id="libs.description" txt="Die benutzten Bibliotheken aus anderen Quellen."/>
+
   <str id="fonts" txt="Schriften"/>
   <str id="fonts.description" txt="Eine Beispielmenge an Schriften, die es dem Basispaket erlaubt etwas zu setzen."/>
+
   <str id="settings" txt="Nutzer-Einstellungen"/>
   <str id="settings.description" txt="Einige Einstellungsdateien für den Anfang.
 Die Dateien werden in dem Benutzer-Verzeichnis installiert
 Falls die Dateien bereits vorhanden sind, ist eine Bestätigung erforderlich."/>
+
+  <str id="src" txt="Quellen"/>
+  <str id="src.description" txt="Die Java-Quellen von ExTeX.
+Diese sind hilfreich, wenn eigene Erweiterungen erstellt werden sollen."/>
+
+  <str id="texmf.description" txt=" DESCRIPTION FOR A SEARCH INPUT FIELD."/>
+  <str id="texmf.label" txt="LABEL"/>
+
+  <str id="texmf.intro" txt="ExTeX benötigt einige zusätzliche Dateien, um
+reale Dokumente bearbeiten zu können. Unter diesen Dateien sind Schriften und
+Makro-Dateien. Diese Dateien werden normalerweise einer TeX-Distribution
+(wie TeXlive) entnommen. Um dies zu bewerkstelligen, muss die Umgebungsvariable
+TEXINPUTS auf eines oder mehrere Installationsverzeichnisse verweisen. Diese
+Information wird dann während der Installation in die EInstellungsdatei .extex
+im Home-Verzeichnis des Nutzers übertragen. Bitte überprüfen und korrigieren Sie
+die Einstellung von extex.texinputs in dieser Datei."/>
 
 </langpack>

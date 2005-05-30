@@ -1,25 +1,33 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
-<UserInput>
+<userInput>
   <panel order="0">
-    <field type="text" variable="TEXMF">
-      <description/>
-      <spec txt="Enter some text:" id="text.label" size="15"
-      set="$TEXMF"/>
+    <field type="staticText" align="left" id="texmf.intro"/>
+<!--
+    <field type="text" variable="texinputs">
+      <description id="texinputs.desc"/>
+      <spec txt="texinputs:" id="texinputs.label" size="32"/>
     </field>
-    <field type="search" variable="TEXMF">
-      <description align="left"
-        txt="This is a description for a search input field."
-        id="description.texmf"/>
-      <spec txt="Path to Java SDK:" checkfilename="lib/tools.jar"
+    <field type="search" variable="TEXMF2">
+      <description id="texmf.description"/>
+      <spec id="texmf.label" checkfilename="ls-R"
         type="file" result="directory">
-        <choice value="/usr/lib/tex/" os="unix" />
-        <choice value="/usr/local/lib/tex/" os="unix" />
-        <choice value="/opt/tex" os="unix" />
-        <choice value="C:\Program Files\TeXlive" os="windows" />
-        <choice value="C:\Program Files\TeX" os="windows" />
-        <choice value="C:\TeX" os="windows" />
+        <choice value="/usr/lib/texmf/" os="unix" />
+        <choice value="/usr/lib/tex/texmf/" os="unix" />
+        <choice value="/usr/share/tex/texmf/" os="unix" />
+        <choice value="/usr/share/texmf/" os="unix" />
+        <choice value="/usr/local/lib/tex/texmf/" os="unix" />
+        <choice value="/usr/local/lib/texmf" os="unix" />
+        <choice value="/opt/tex/texmf/" os="unix" />
+        <choice value="/opt/texmf/" os="unix" />
+        <choice value="/var/lib/texmf/" os="unix" />
+        <choice value="C:\Program Files\TeXlive\texmf\" os="windows" />
+        <choice value="C:\Program Files\TeX\texmf\" os="windows" />
+        <choice value="C:\Programme\TeXlive\texmf\" os="windows" />
+        <choice value="C:\Programme\TeX\texmf\" os="windows" />
+        <choice value="C:\TeX\texmf\" os="windows" />
       </spec>
     </field>
+-->
   </panel>
-</UserInput>
+</userInput>

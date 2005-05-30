@@ -3,10 +3,11 @@
 <installation version="1.0">
   <info>
     <appname>ExTeX</appname>
-    <appversion>0.1</appversion>
+    <appversion>0.0</appversion>
     <authors>
       <author name="Gerd Neugebauer" email="gene@gerd-neugebauer.de"/>
       <author name="Michael Niedermair" email="m.g.n@gmx.de"/>
+      <author name="Sebastian Waschik" email="sebastian.waschik@gmx.de"/>
       <author name="Rolf Niepraschk" email="rolf.niepraschk@ptb.de"/>
     </authors>
     <url>http://www.extex.org/</url>
@@ -15,13 +16,15 @@
 
   <variables>
     <variable name="basedir" value="../.."/>
+    <variable name="extex.texinputs" value="${ENV[TEXINPUTS]}"/>
+    <variable name="texinputs" value="${ENV[TEXINPUTS]}"/>
   </variables>
 
   <guiprefs width="720" height="440" resizable="yes"/>
 
   <locale>
-    <langpack iso3="deu"/>
     <langpack iso3="eng"/>
+    <langpack iso3="deu"/>
   </locale>
 
   <resources>
@@ -32,19 +35,21 @@
     <res id="Installer.image" src="ExTeX-side.png" />
     <res id="packsLang.xml_deu" src="packs.de" />
     <res id="packsLang.xml_eng" src="packs.en" />
-<!--    <res id="userInputSpec.xml" src="input.xml" /> -->
+    <res id="userInputLang.xml_deu" src="packs.de" />
+    <res id="userInputLang.xml_eng" src="packs.en" />
+    <res id="userInputSpec.xml" src="input.xml" />
   </resources>
 
   <panels>
 <!--    <panel classname="HelloPanel"/> -->
     <panel classname="HTMLInfoPanel"/>
     <panel classname="LicencePanel"/>
-<!--    <panel classname="UserInputPanel"/> -->
     <panel classname="PacksPanel"/>
     <panel classname="TargetPanel"/> 
+    <panel classname="UserInputPanel"/>
     <panel classname="InstallPanel"/>
 <!--    <panel classname="ShortcutPanel"/> -->
-    <panel classname="SimpleFinishPanel"/>
+    <panel classname="FinishPanel"/>
   </panels>
 
   <packs>
@@ -59,6 +64,7 @@
       <executable targetfile="$INSTALL_PATH/extex.bat"/>
       <file src="../../target/lib/extex.jar" targetdir="$INSTALL_PATH/lib"/>
       <file src=".extex" targetdir="$INSTALL_PATH"/>
+      <parsable targetfile="$INSTALL_PATH/.extex"/>
     </pack>
 
     <pack name="Libraries" id="libs" required="yes">
@@ -68,16 +74,24 @@
       </fileset>
     </pack>
 
-    <pack name="Fonts" id="fonts" required="yes">
+    <pack name="User Settings" id="settings" required="no">
+      <description/>
+      <file src=".extex" targetdir="$USER_HOME" overwrite="askfalse"/>
+      <parsable targetfile="$USER_HOME/.extex"/>
+    </pack>
+
+    <pack name="Fonts" id="fonts" required="no">
       <description/>
       <fileset dir="../../src/font" targetdir="$INSTALL_PATH/font">
       </fileset>
     </pack>
 
-    <pack name="User Settings" id="settings" required="no">
+    <pack name="Sources" id="src" required="no" preselected="no">
       <description/>
-      <file src=".extex" targetdir="$USER_HOME" overwrite="askfalse"/>
+      <fileset dir="../../src/java" targetdir="$INSTALL_PATH/src/java">
+      </fileset>
     </pack>
+
 <!--
     <pack name="JavaDoc" required="no">
       <description>The JavaDoc pack contains the documentation

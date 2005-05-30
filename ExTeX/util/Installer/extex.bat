@@ -28,9 +28,9 @@ if "%JAVA_HOME%"=="" (
   goto end
   )
 
-set LOCALCLASSPATH=.
 set EXTEX_HOME="$INSTALL_PATH"
 set LIBDIR="%EXTEX_HOME%\lib"
+set LOCALCLASSPATH="%EXTEX_HOME%\classes"
 
 for %%i in (%LIBDIR%\*.jar) do (
     set LOCALCLASSPATH=%LOCALCLASSPATH%;%%i
