@@ -28,7 +28,7 @@ case "`uname`" in
   *)          sep=':'    ;;
 esac
 
-CP=.
+CP=$EXTEX_HOME/classes
 for i in $EXTEX_HOME/lib/*.jar ; do
     CP=$CP$sep$i
 done
