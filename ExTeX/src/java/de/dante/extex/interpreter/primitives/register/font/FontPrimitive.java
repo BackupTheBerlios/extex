@@ -84,7 +84,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public class FontPrimitive extends AbstractAssignment
         implements
@@ -169,13 +169,13 @@ public class FontPrimitive extends AbstractAssignment
                     letterspaced, ligatures, kerning));
         } catch (FontException e) {
             if (logger != null) {
-                logger.log(Level.WARNING, "FontPrimitive", e);
+                logger.log(Level.FINE, "FontPrimitive", e);
             }
             throw new HelpingException(getLocalizer(), "TTP.TFMnotFound", //
                     context.esc(fontId), fontname);
         } catch (ConfigurationIOException e) {
             if (logger != null) {
-                logger.log(Level.WARNING, "FontPrimitive", e);
+                logger.log(Level.FINE, "FontPrimitive", e);
             }
             throw new HelpingException(getLocalizer(), "TTP.TFMnotFound", //
                     context.esc(fontId), fontname);
