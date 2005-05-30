@@ -1,5 +1,5 @@
 /*
- *  $Id: Destroyer.java,v 1.1 2004/08/01 19:53:16 gene Exp $
+ *  $Id: Destroyer.java,v 1.2 2005/05/30 17:07:07 gene Exp $
  *  IzPack
  *  Copyright (C) 2001-2004 Julien Ponge
  *
@@ -31,9 +31,12 @@ import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 import java.util.TreeSet;
 
 import com.izforge.izpack.ExecutableFile;
+import com.izforge.izpack.event.UninstallerListener;
 import com.izforge.izpack.util.AbstractUIProgressHandler;
 import com.izforge.izpack.util.FileExecutor;
 
@@ -77,13 +80,21 @@ public class Destroyer extends Thread
   {
     try
     {
+      // We get the list of uninstaller listeners
+      List [] listeners = getListenerLists(); 
       // We get the list of the files to delete
       ArrayList executables = getExecutablesList();
+
+
       FileExecutor executor = new FileExecutor(executables);
       executor.executeFiles(ExecutableFile.UNINSTALL, this.handler);
 
       ArrayList files = getFilesList();
       int size = files.size();
+
+      // Custem action listener stuff --- beforeDeletion ----
+      informListeners(listeners[0], UninstallerListener.BEFORE_DELETION,
+        files, handler);
 
       handler.startAction("destroy", size);
 
@@ -91,9 +102,22 @@ public class Destroyer extends Thread
       for (int i = 0; i < size; i++)
       {
         File file = (File) files.get(i);
+        // Custem action listener stuff --- beforeDelete ----
+        informListeners(listeners[1], UninstallerListener.BEFORE_DELETE,
+          file, handler);
+
         file.delete();
-        handler.progress(i, file.getAbsolutePath());
+
+        // Custem action listener stuff --- afterDelete ----
+        informListeners(listeners[1], UninstallerListener.AFTER_DELETE,
+          file, handler);
+
+       handler.progress(i, file.getAbsolutePath());
       }
+
+      // Custem action listener stuff --- afterDeletion ----
+      informListeners(listeners[0], UninstallerListener.AFTER_DELETION,
+        files, handler);
 
       // We make a complementary cleanup
       handler.progress(size, "[ cleanups ]");
@@ -116,7 +140,7 @@ public class Destroyer extends Thread
   private void askUninstallerRemoval() throws Exception
   {
     // Initialisations
-    InputStream in = getClass().getResourceAsStream("/jarlocation.log");
+    InputStream in = Destroyer.class.getResourceAsStream("/jarlocation.log");
     InputStreamReader inReader = new InputStreamReader(in);
     BufferedReader reader = new BufferedReader(inReader);
 
@@ -139,7 +163,7 @@ public class Destroyer extends Thread
   {
     // Initialisations
     TreeSet files = new TreeSet(Collections.reverseOrder());
-    InputStream in = getClass().getResourceAsStream("/install.log");
+    InputStream in = Destroyer.class.getResourceAsStream("/install.log");
     InputStreamReader inReader = new InputStreamReader(in);
     BufferedReader reader = new BufferedReader(inReader);
 
@@ -162,7 +186,7 @@ public class Destroyer extends Thread
   {
     ArrayList executables = new ArrayList();
     ObjectInputStream in =
-      new ObjectInputStream(getClass().getResourceAsStream("/executables"));
+      new ObjectInputStream(Destroyer.class.getResourceAsStream("/executables"));
     int num = in.readInt();
     for (int i = 0; i < num; i++)
     {
@@ -191,4 +215,81 @@ public class Destroyer extends Thread
       file.delete();
 
   }
+
+  // CUSTOM ACTION STUFF -------------- start -----------------
+
+  /**
+   * Load the defined uninstall listener objects.
+   * @return a list with the defined uninstall listeners
+   * @throws Exception
+   */
+  private List [] getListenerLists() throws Exception
+  {
+    ArrayList [] uninstaller = new ArrayList[] {new ArrayList(),new ArrayList()};
+    // Load listeners if exist
+    InputStream in;
+    ObjectInputStream objIn;
+    in = Destroyer.class.getResourceAsStream("/uninstallerListeners");
+    if( in != null )
+    {
+      objIn = new ObjectInputStream(in);
+      List listeners = (List)objIn.readObject();
+      objIn.close();
+      Iterator iter = listeners.iterator();
+      while( iter != null && iter.hasNext())
+      {
+        Class clazz = Class.forName(((String) iter.next()));
+        UninstallerListener ul = (UninstallerListener) clazz.newInstance();
+        if( ul.isFileListener())
+          uninstaller[1].add( ul );
+        uninstaller[0].add( ul );
+     }
+    }
+    return uninstaller;
+  }
+  /**
+   * Informs all listeners.
+   * @param listeners list with the listener objects
+   * @param action identifier which callback should be called
+   * @param param parameter for the call
+   * @param handler the current progress handler
+   */
+
+  private void informListeners(List listeners, int action, 
+    Object param, AbstractUIProgressHandler handler)
+  {
+    // Iterate the action list.
+    Iterator iter = listeners.iterator();
+    UninstallerListener il = null;
+    while( iter.hasNext())
+    {
+      try
+      {
+        il = (UninstallerListener) iter.next();
+        switch( action )
+        {
+          case UninstallerListener.BEFORE_DELETION:
+            il.beforeDeletion(  (List) param, handler );
+            break;
+          case UninstallerListener.AFTER_DELETION:
+            il.afterDeletion(  (List) param, handler );
+            break;
+          case UninstallerListener.BEFORE_DELETE:
+            il.beforeDelete(  (File) param, handler );
+            break;
+          case UninstallerListener.AFTER_DELETE:
+            il.afterDelete(  (File) param, handler );
+            break;
+        }
+      }
+      catch(Throwable e)
+      { // Catch it to prevent for a block of uninstallation.
+        handler.emitError("Skipping custom action because exception caught during " 
+          + il.getClass().getName(), e.toString());
+      }
+    }
+  }
+
+  // CUSTOM ACTION STUFF -------------- end -----------------
+
 }

@@ -1,5 +1,5 @@
 /*
- *  $Id: IzPackTask.java,v 1.1 2004/08/01 19:53:16 gene Exp $
+ *  $Id: IzPackTask.java,v 1.2 2005/05/30 17:07:08 gene Exp $
  *  IzPackTask
  *  Copyright (C) 2002 Paul Wilkinson
  *
