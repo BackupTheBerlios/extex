@@ -52,9 +52,9 @@ You should be aware of the following common mistakes :
 
   \item markups \textbf{are} case sensitive : \texttt{<markup>} is different
   from \texttt{<Markup>}.
-  
+
   \item you \textbf{must} close the markups in the same order as you create them
-  : \texttt{<m1><m2>(...)</m2></m1>} is right but 
+  : \texttt{<m1><m2>(...)</m2></m1>} is right but
   \texttt{<m1><m2>(...)</m1></m2>} is not.
 
 \end{itemize}
@@ -80,11 +80,13 @@ notice many more places where it is more powerful to use variables
 rather then hard coded values. Wherever variables can be used it will
 be explained in the documentation.\\
 
-There are two types of variables:
+There are three types of variables:
 \begin{itemize}
-  \item Built-In variables. These are implemented in IzPack and are 
+  \item Built-In variables. These are implemented in IzPack and are
         all dynamic in nature. This means that the value of each
         variable depends on local conditions on the target system.
+  \item Environment variables. These are provided by the operating system the
+        installer is run on.
   \item Variables that you can define. You also define the value,
         which is fixed for a given installation file.
 \end{itemize}
@@ -109,7 +111,15 @@ The following variables are built-in :
   \item \texttt{\$APP\_URL} : the application URL
   \item \texttt{\$APP\_VER} : the application version
   \item \texttt{\$ISO3\_LANG} : the ISO3 language code of the selected langpack.
+  \item \texttt{\$FILE\_SEPARATOR} : the file separator on the installation system
 \end{itemize}\
+
+\subsection{Environment Variables}
+Environment variables can be accessed via the syntax \texttt{\$\{ENV[variable]\}}. 
+The curly braces are mandatory.
+Note that variable names are case-sensitive and usually in UPPER CASE.
+
+Example: To get the value of the OS environment variable "CATALINA\_HOME", use \texttt{\$\{ENV[CATALINA\_HOME]\}}.
 
 \subsection{Parse Types}
 Parse types apply only when replacing variables in text files. At places
@@ -129,8 +139,8 @@ following parse types are available:
         a XML file. Individual variables might be modified to function
         properly within the context of XML files.
   \item \texttt{shell} - use this type if the substitution happens in
-        a shell script. Because shell scripts use \texttt{\$variable} 
-        themselves, an alternative variable marker is used: 
+        a shell script. Because shell scripts use \texttt{\$variable}
+        themselves, an alternative variable marker is used:
         \texttt{\%variable} or \texttt{\%\{variable\}}.
 \end{itemize}
 
@@ -159,6 +169,9 @@ contains the following elements :
 
   \item \texttt{<appname>} : the application name
   \item \texttt{<appversion>} : the application version
+  \item \texttt{<appsubpath>} : the subpath for the default of the installation path.
+  A variable substitution and a maskable slash-backslash conversion will be done. If this
+  tag is not defined, the application name will be used instead.
   \item \texttt{<url>} : the application official website url
   \item \texttt{<authors>} : specifies the author(s) of the application. It must contain
   at least one \texttt{<author>} element whose attributes are :
@@ -178,6 +191,7 @@ Here is an example of a typical \texttt{<info>} section :\\
 <info>
   <appname>Super extractor</appname>
   <appversion>2.1 beta 6</appversion>
+  <appsubpath>myCompany/SExtractor</appsubpath>
   <url>http://www.superextractor.com/</url>
   <authors>
     <author name="John John Doo" email="jjd@jjd-mail.com"/>
@@ -228,7 +242,7 @@ available in future versions of \IzPack. The arguments to specify are :
   whether the window size can be changed or not.
   \item \texttt{width} : sets the initial window width
   \item \texttt{height} : sets the initial window height.
-  
+
 \end{itemize}\
 
 Here's a sample :
@@ -302,6 +316,27 @@ Here is a small sample:
 </guiprefs>
 \end{verbatim}
 
+Starting from IzPack 3.7, some characteristics can be customized with the
+\texttt{<modifier>} tag which contains following attributes:
+\begin{itemize}
+
+  \item \texttt{key}: a well defined key of the characteristic which should
+  be changed.
+  \item \texttt{value} the value for the key.
+\end{itemize}\
+Following key value pairs are defined:
+\begin{itemize}
+\item \texttt{useButtonIcons}: possible are "yes" or "no". Default is "yes".
+If it is set to "no", all buttons which are created via the ButtonFactory
+contains no icon also a icon id was submitted. Directly created buttons are
+not affected.
+\item \texttt{useLabelIcons}: possible are "yes" or "no". Default is "yes".
+If it is set to "no", all labels which are created via the LabelFactory
+contains no icon also a icon id was submitted. Directly created labels are
+not affected.
+\end{itemize}\
+
+
 \subsection{The Localization Element \texttt{<locale>}}
 \label{localization-element}
 
@@ -327,6 +362,8 @@ The supported ISO3 codes are :
 \hline
 \textit{ISO3 code} & \textit{Language} \\ \hline
 cat & Catalunyan \\ \hline
+chn & Chinese \\ \hline
+cze & Czech \\ \hline
 dan & Danish \\ \hline
 deu & German \\ \hline
 eng & English \\ \hline
@@ -335,11 +372,14 @@ fra & French \\ \hline
 hun & Hungarian \\ \hline
 ita & Italian \\ \hline
 jpn & Japanese \\ \hline
+mys & Malaysian \\ \hline
 ned & Nederlands \\ \hline
+nor & Norwegian \\ \hline
 pol & Polnish \\ \hline
 por & Portuguese (Brazilian) \\ \hline
 rom & Romanian \\ \hline
 rus & Russian \\ \hline
+scg & Serbian \\ \hline
 spa & Spanish \\ \hline
 svk & Slovakian \\ \hline
 swe & Swedish \\ \hline
@@ -414,7 +454,7 @@ Here's a sample :
 \label{packs-element}
 
 This is a crucial section as it is used to specify the files that need
-to be installed. The \texttt{<packs>} section consists of several 
+to be installed. The \texttt{<packs>} section consists of several
 \texttt{<pack>} tags.
 
 The \texttt{<pack>} takes the following attributes :
@@ -429,13 +469,21 @@ The \texttt{<pack>} takes the following attributes :
     the pack is by default selected for installation or not. Possible values
     are \texttt{yes} and \texttt{no}. A pack which is not preselected needs to
     be explicitly selected by the user during installation to get installed.
+    \item \texttt{loose}: can be used so that the files are not located in the
+    installer Jar. The possible values are \texttt{true} or \texttt{false}, the
+    default beeing \texttt{false}. The author of this feature needed to put his
+    application on a CD so that the users could run it directly from this media.
+    However, he also wanted to offer them the possibility to install the
+    software localy. Enabling this feature will make IzPack take the files on
+    disk instead of from the installer. \textit{Please make sure that your relative
+    files paths are correct !}
     \item \texttt{id}: this attribute is used to give a unique id to the pack to
     be used for internationalization.
   \end{itemize}
 
 \subsubsection{Internationalization of the PacksPanel}
 In order to provide internationalization for the PacksPanel, so that your users can
-be presented with a different name and description for each languadge you support,
+be presented with a different name and description for each language you support,
  you have to create a file named \texttt{packsLang.xml\_xyz} where \texttt{xyz}
  is the ISO3 code of the language in lowercase. Please be aware that case is significant.
  This file has to be inserted in the resources section of \texttt{install.xml} with the
@@ -450,8 +498,19 @@ The following sections describe the tags available for a \texttt{<pack>} section
 \subsubsection{\texttt{<description>} - pack description}
 
 The contents of the \texttt{<description>} tag describe the pack contents.
-This description is displayed if the user highlights the pack during 
+This description is displayed if the user highlights the pack during
 installation.
+
+\subsubsection{\texttt{<depends>} - pack dependencies}
+This can be used to make this pack selectable only to be installed only if some other is
+selected to be installed. The pack can depend on more than one by specifying more than one
+\texttt{<depends>} elements.\\
+Circular depedencies are not supported and the compiler reports an error if one occurs.
+
+This tag takes the following attribute:
+\begin{itemize}
+\item \texttt{packname}: The name of the pack that it depends on
+\end{itemize}
 
 \subsubsection{\texttt{<os>} - OS restrictions}
 
@@ -488,7 +547,7 @@ If the paths are relative, they will be matched relative to
 
 \subsubsection{\label{tag:file}\texttt{<file>} - add files or directories}
 
-The \texttt{<file>} tag specifies a file (a directory is a file too) to 
+The \texttt{<file>} tag specifies a file (a directory is a file too) to
 include into the pack. It takes the following attributes:
 
 \begin{itemize}
@@ -510,14 +569,26 @@ include into the pack. It takes the following attributes:
   that the new file is only installed if it's modification time is newer than
   the modification time of the already existing file (note that this is not a
   reliable mechanism for updates - you cannot detect whether a file was
-  altered after installation this way.) By default it is set to \texttt{true}.
+  altered after installation this way.) By default it is set to \texttt{update}.
+
+\end{itemize}
+\paragraph{\label{tag:additionaldata}\texttt{<additionaldata>}}
+
+This tag can also be specified in order to pass additional data
+related to a file tag for customizing.
+
+\begin{itemize}
+
+  \item \texttt{<key>}: key to identify the data
+  \item \texttt{<value>}: value which can be used by a custom
+  action
 
 \end{itemize}
 
 \subsubsection{\label{tag:singlefile}\texttt{<singlefile>} - add a single file}
 
 Specifies a single file to include. The difference to \texttt{<file>} is that
-this tag allows the file to be renamed, therefore it has a 
+this tag allows the file to be renamed, therefore it has a
 \texttt{target} attribute instead of \texttt{targetdir}.
 
 \begin{itemize}
@@ -534,6 +605,8 @@ this tag allows the file to be renamed, therefore it has a
   \item \texttt{override}: see \texttt{<file>} (\ref{tag:file}) for description
 
 \end{itemize}
+A \texttt{<additionaldata>} (\ref{tag:additionaldata}) tag can
+also be specified for customizing.
 
 \subsubsection{\label{tag:fileset}\texttt{<fileset>}: add a fileset}
 
@@ -558,11 +631,19 @@ Jakarta Ant set syntax. It takes the following parameters:
 
   \item \texttt{override}: see \texttt{<file>} for description
 
+  \item \texttt{includes}: comma- or space-separated list of patterns of
+  files that must be included; all files are included when omitted.
+  This is an alternative for multiple include tags.
+
+  \item \texttt{excludes}: comma- or space-separated list of patterns of
+  files that must be excluded; no files (except default excludes) are
+  excluded when omitted. This is an alternative for multiple exclude tags.
+
 \end{itemize}
 
 You specify the files with  \texttt{<include>} and \texttt{<exclude>} tags
 that take the \texttt{name} parameter to specify the Ant-like pattern :
-\begin{itemize}    
+\begin{itemize}
   \item \texttt{**} : means any subdirectory
   \item \texttt{*} : used as a wildcard.
 \end{itemize}
@@ -606,6 +687,8 @@ task. Default excludes are:
      **/.DS\_Store
 \end{verbatim}
 \normalsize
+A \texttt{<additionaldata>} (\ref{tag:additionaldata})
+tag can also be specified for customizing.
 
 \subsubsection{\texttt{<parsable>} - parse a file after installation}
 
@@ -615,7 +698,9 @@ have variables substituted.
 \begin{itemize}
 
   \item \texttt{targetfile} : the file to parse, could be something like\\
-  \texttt{\$INSTALL\_PATH/bin/launch-script.sh}
+  \texttt{\$INSTALL\_PATH/bin/launch-script.sh}\\
+  \label{tag:slashMasking}A slash will be changed to the system dependant path separator (e.g. to
+  a backslash on Windows) only if no backslash masks the slash.
 
   \item \texttt{type} : specifies the type (same as for the resources) -
   the default is \texttt{plain}
@@ -636,7 +721,9 @@ executable flag on Unix-like systems. Here are the attributes :
 \begin{itemize}
 
   \item \texttt{targetfile} : the file to run, could be something like\\
-  \texttt{\$INSTALL\_PATH/bin/launch-script.sh}
+  \texttt{\$INSTALL\_PATH/bin/launch-script.sh}\\
+  Slashes are handled special (see attribute
+  \texttt{targetfile} of tag \texttt{<parsable>}\ref{tag:slashMasking}).
 
   \item \texttt{class} : If the executable is a jar file, this is the
   class to run for a \Java program
@@ -668,10 +755,11 @@ arguments to the executable:
 \begin{itemize}
 
   \item \texttt{<arg>}: passes the argument specified in the
-  \texttt{value} attribute
+  \texttt{value} attribute.   Slashes are handled special (see attribute
+  \texttt{targetfile} of tag \texttt{<parsable>}\ref{tag:slashMasking}).
 
 \end{itemize}
-  
+
 \subsubsection{\label{tag:os}\texttt{<os>} - make a file OS-dependent}
 
 The \texttt{<os>} tag can be used inside the \texttt{<file>},
@@ -711,7 +799,7 @@ Here's an example installation file :
         <executable targetfile="$INSTALL_PATH/bin/compile" stage="never"/>
         <executable targetfile="$INSTALL_PATH/bin/izpack-fe" stage="never"/>
     </pack>
-    
+
     <!-- The documentation (1 directory) -->
     <pack name="Documentation" required="no">
         <description>The IzPack documentation (HTML and PDF).</description>
@@ -728,14 +816,27 @@ Use this if you want to use a feature that requires a native library.
 The native libraries are placed under \texttt{bin/native/..}. There are 2
 kinds of native libraries : the \IzPack libraries and the third-party
 ones. The IzPack libraries are located at \texttt{bin/native/izpack},
-you can place your own libraries at \texttt{bin/native/3rdparty}. The
-markup takes the following attributes :
-\begin{itemize}
+you can place your own libraries at \texttt{bin/native/3rdparty}.
+It is possible to place a native library also into the uninstaller.
+It is useable from CustomActions (\ref{cha:customactions}). If one or
+more are referenced for it, the needed support classes are automatically
+placed into the uninstaller. To place it only on operating systems
+for which they are build, it is possible to define an OS
+restriction. This restriction will only be performed for the
+uninstaller. The markup takes the following attributes :\begin{itemize}
 
   \item \texttt{type} : \texttt{izpack} or \texttt{3rdparty}
   \item \texttt{name} : the library filename
+  \item \texttt{stage}: stage where to use the library
+  (install|uninstall|both)
 
 \end{itemize}\
+\subsubsection{\texttt{<os>} - make a library OS-dependent}
+
+The \texttt{<os>} tag can be used to restrict the inclusion into
+the uninstaller to a specific operating system family,
+architecture or version. The inclusion into the installer will be
+always done. For more information see \ref{tag:os}.
 
 Here's a sample :
 \footnotesize
@@ -750,8 +851,17 @@ Here's a sample :
 If you adapt \IzPack for your own needs, you might need to merge the
 content of another jar file into the jar installer. For instance, this
 could be a library that you need to merge. The \texttt{<jar>} markup
-allows you to merge the raw content of another jar file, specified by
-the \texttt{src} attribute.\\
+allows you to merge the raw content of another jar file into the
+installer and the uninstaller. It is necessary that the paths in the
+jars are unique because only the contained files of the jar are added
+to the installer jar, not the jar file self.
+The attributes are:\begin{itemize}
+\item \texttt{src} : the path at compile time
+\item \texttt{stage}: stage where to use the contents of the additional jar file
+  (install|uninstall|both)
+
+\end{itemize}\
+
 
 A sample :
 \footnotesize
@@ -778,7 +888,8 @@ version, the URL as well as the authors.\\
 \subsection{InfoPanel and HTMLInfoPanel}
 
 This is a kind of 'README' panel. It presents text of any length. The
-text is specified by the \texttt{(HTML)InfoPanel.info} resource.\\
+text is specified by the \texttt{(HTML)InfoPanel.info} resource. Starting from
+IzPack 3.7.0, variables substitution is allowed.\\
 
 \subsection{LicencePanel and HTMLLicencePanel}
 
@@ -842,7 +953,7 @@ path).\\
 \subsection{FinishPanel}
 
 A ending panel, able to write automated installer information. For
-details see the chapter on 'Advanced Features'.\\ 
+details see the chapter on 'Advanced Features'.\\
 
 \subsection{SimpleFinishPanel}
 
@@ -864,7 +975,7 @@ for a detailed explanation.
 
 \subsection{CompilePanel}
 
-This panel allows you to compile just installed Java sourcecode. 
+This panel allows you to compile just installed Java sourcecode.
 The details for the compilation are specified using the resource \texttt{CompilePanel.Spec.xml}.
 The XML file has the following format:
 \begin{verbatim}
@@ -901,7 +1012,7 @@ the classpath within a job only affects this job and nested jobs. The classpath
 should be specified before any files or directories.
 
 The user can change the compiler to use and choose from some default
-compilation options before compilation is started. 
+compilation options before compilation is started.
 
 \includegraphics[width=\linewidth]{img/compilePanel}
 
@@ -937,17 +1048,89 @@ I've been able to work around my requirements by extending the
 \texttt{ProcessPanelWorker} functionality to run user-specified classes. I've
 extended the DTD of the \texttt{ProcessPanel.Spec.xml} to include a new element:
 \begin{verbatim}
-<executableclass name="classname">
+<executeclass name="classname">
 <args..../>
-</executable>
+</executeclass>
 \end{verbatim}
 I've also added a new sub-class of \texttt{Processable} called
-\texttt{ExecutableClass}. This will run a user-specified class in the context of
+\texttt{executeclass}. This will run a user-specified class in the context of
 the installer JVM with a single method :
-\begin{verbatim}run( AbstractUIHandler handler, String[] args]);\end{verbatim}
+\begin{verbatim}run( AbstractUIProcessHandler handler, String[] args]);\end{verbatim}
 
 It can do everything I need and more. In particular, it allows me to write a
 process extension and still be able to provide feedback to the user through
 the feedback panel, and to add new functionality to the installer, after its
 been built.
 \end{quotation}
+
+New with version 3.7 is the possibility to tee output that is written to
+the ProcessPanel's textarea into an optional logfile. Using this feature is
+pretty much straightforward, you only have to add a line in \texttt{ProcessPanel.Spec.xml} 
+that will tell IzPack the location, where the logfile should be stored.
+
+Variable substitution is performed, so you can use \texttt{\$INSTALL\_PATH} as example.
+
+The name of the logfile is not (yet) configurable but should fit in most cases. It will
+be named 
+\begin{verbatim}
+Install_V<$APP_VER>_<YYYY>-<MM>-<DD>_<hh>-<mm>-<ss>_<RandomId>.log
+\end{verbatim}
+
+Here's an example:
+
+\begin{verbatim}
+<processing>
+  <logfiledir>$INSTALL_PATH</logfiledir>
+  <job name="do xyz">
+    <os family="windows" />
+    <executefile name="$INSTALL_PATH/scripts/xyz.bat">
+      <arg>doit</arg><arg>$variable</arg>
+    </executefile>
+</processing>
+\end{verbatim}
+
+This will generate a logfile named e.g. \texttt{Install\_V1.3\_2004-11-08\_19-22-20\_43423.log} 
+located in \texttt{\$INSTALL\_PATH}.
+
+\texttt{ProcessPanelWorker} will write all output that is directed to \texttt{stdout} and \texttt{stderr} to this file
+if \texttt{ProcessPanel.Spec.xml} contains the \texttt{logfiledir} entry.
+
+Please note that this one file is used for storing the complete output of all jobs and not
+a file for each job that is run.
+
+\subsection{JDKPathPanel}
+This panel allows the user to select a JDK path. The variable JAVA\_HOME does
+not point to a JDK, else to a JRE also the environment variable points to a JDK.
+This is not a bug, this is the behavior of the VM. But some products needs a JDK,
+for that this panel can be used. There is not only a selection of the path else 
+a validation. The validation will be done with the file JDKPath/lib/tools.jar.
+If JAVA\_HOME points to the VM which is placed in the JDK, the directory will 
+be used as default (JAVA\_HOME/..). If there is the variable
+\begin{verbatim}
+JDKPathPanel.skipIfValid
+\end{verbatim}
+defined with the value "yes", the panel will be skiped if the path is valid.
+Additional it is possible to make a version control. If one or both variables
+\begin{verbatim}
+JDKPathPanel.minVersion
+JDKPathPanel.maxVersion
+\end{verbatim}
+are defined, only a JDK will be accepted which has a version in the
+range of it. The detection is a little bit pragmatically, therefor it is 
+possible, that the detection can fail at some VMs. 
+The values in the install.xml should be like 
+\begin{verbatim}
+<variables>
+  <variable name="JDKPathPanel.minVersion" value="1.4.1" />
+  <variable name="JDKPathPanel.maxVersion" value="1.4.99" />
+  <variable name="JDKPathPanel.skipIfValid" value="yes" />
+</variables>
+\end{verbatim}
+
+If all is valid, the panels isValidated method sets the variable
+\begin{verbatim}
+JDKPath
+\end{verbatim}
+to the chosen path. Be aware, this variable exist not until the JDKPanel
+was quitted once. At a secound activation, the default will be the
+last selection.

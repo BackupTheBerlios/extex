@@ -1,5 +1,5 @@
 /*
- *  $Id: VariableSubstitutor.java,v 1.1 2004/08/01 19:53:15 gene Exp $
+ *  $Id: VariableSubstitutor.java,v 1.2 2005/05/30 16:35:00 gene Exp $
  *  IzPack
  *  Copyright (C) 2001 Johannes Lehtinen
  *
@@ -30,12 +30,15 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
+import java.io.Serializable;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.izforge.izpack.util.IoHelper;
 
 /**
  *  Substitutes variables occurring in an input stream or a string. This
@@ -51,11 +54,14 @@ import java.util.Map;
  *
  * @author     Johannes Lehtinen <johannes.lehtinen@iki.fi>
  */
-public class VariableSubstitutor
+public class VariableSubstitutor implements Serializable
 {
 
   /**  The variable value mappings */
-  protected Map environment;
+  protected transient Map variables;
+
+  /**  Whether braces are required for substitution. */
+  protected boolean bracesRequired = false;
 
   /**  A constant for file type. Plain file. */
   protected final static int TYPE_PLAIN = 0;
@@ -69,8 +75,11 @@ public class VariableSubstitutor
   /**  A constant for file type. Shell file. */
   protected final static int TYPE_SHELL = 3;
 
+  /**  A constant for file type. Plain file with '@' start char. */
+  protected final static int TYPE_AT = 4;
+
   /**  A mapping of file type names to corresponding integer constants. */
-  protected static Map typeNameToConstantMap;
+  protected final static Map typeNameToConstantMap;
 
   // Initialize the file type map
   static
@@ -81,18 +90,34 @@ public class VariableSubstitutor
       new Integer(TYPE_JAVA_PROPERTIES));
     typeNameToConstantMap.put("xml", new Integer(TYPE_XML));
     typeNameToConstantMap.put("shell", new Integer(TYPE_SHELL));
+    typeNameToConstantMap.put("at", new Integer(TYPE_AT));
   }
 
 
   /**
    *  Constructs a new substitutor using the specified variable value mappings.
-   *  The environment hashtable is copied by reference.
+   *  The environment hashtable is copied by reference. Braces are not required
+   *  by default
    *
-   * @param  environment  the environment with variable value mappings
+   * @param  variables  the map with variable value mappings
    */
-  public VariableSubstitutor(Map environment)
+  public VariableSubstitutor(Map variables)
   {
-    this.environment = environment;
+    this.variables = variables;
+  }
+
+  /**
+   * Get whether this substitutor requires braces.
+   */
+  public boolean areBracesRequired() {
+    return bracesRequired;
+  }
+
+  /**
+   * Specify whether this substitutor requires braces.
+   */
+  public void setBracesRequired(boolean braces) {
+    bracesRequired = braces;
   }
 
 
@@ -199,7 +224,11 @@ public class VariableSubstitutor
     int t = getTypeConstant(type);
 
     // determine character which starts a variable
-    char variable_start = (t == TYPE_SHELL ? '%' : '$');
+    char variable_start = '$';
+    if (t == TYPE_SHELL)
+      variable_start = '%';
+    else if (t == TYPE_AT)
+      variable_start = '@';
 
     // Copy data and substitute variables
     int c = reader.read();
@@ -214,13 +243,18 @@ public class VariableSubstitutor
       if (c == -1)
         return;
 
-      // Check if braces used
+      // Check if braces used or start char escaped
       boolean braces = false;
       c = reader.read();
       if (c == '{')
       {
         braces = true;
         c = reader.read();
+      }
+      else if (bracesRequired)
+      {
+        writer.write(variable_start);
+        continue;
       }
       else if (c == -1)
       {
@@ -230,10 +264,12 @@ public class VariableSubstitutor
 
       // Read the variable name
       StringBuffer nameBuffer = new StringBuffer();
-      while ((c >= 'a' && c <= 'z') ||
-        (c >= 'A' && c <= 'Z') ||
-        (((c >= '0' && c <= '9') || c == '_') &&
-        nameBuffer.length() > 0))
+      while (c != -1 &&
+             (braces && c != '}') ||
+             (c >= 'a' && c <= 'z') ||
+             (c >= 'A' && c <= 'Z') ||
+             (braces && (c == '[') || (c == ']')) ||
+             (((c >= '0' && c <= '9') || c == '_') && nameBuffer.length() > 0))
       {
         nameBuffer.append((char) c);
         c = reader.read();
@@ -241,15 +277,24 @@ public class VariableSubstitutor
       String name = nameBuffer.toString();
 
       // Check if a legal and defined variable found
-      boolean found = ((!braces || c == '}') &&
-        name.length() > 0 &&
-        environment.containsKey(name));
+      String varvalue = null;
+      
+      if ((!braces || c == '}') && name.length() > 0)
+      {
+        // check for environment variables
+        if (braces && name.startsWith("ENV[") && (name.lastIndexOf(']') == name.length()-1))
+        {
+          varvalue = IoHelper.getenv(name.substring(4, name.length()-1));
+        }
+        else
+          varvalue = (String)variables.get(name);
+      }
 
       // Substitute the variable...
-      if (found)
+      if (varvalue != null)
       {
         writer.write
-          (escapeSpecialChars((String) environment.get(name), t));
+          (escapeSpecialChars(varvalue, t));
         if (braces)
           c = reader.read();
       }
@@ -301,6 +346,7 @@ public class VariableSubstitutor
     {
         case TYPE_PLAIN:
         case TYPE_SHELL:
+        case TYPE_AT:
           return str;
         case TYPE_JAVA_PROPERTIES:
           buffer = new StringBuffer(str);

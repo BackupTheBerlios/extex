@@ -1,5 +1,5 @@
 /*
- *  $Id: GUIInstaller.java,v 1.1 2004/08/01 19:53:15 gene Exp $
+ *  $Id: GUIInstaller.java,v 1.2 2005/05/30 16:35:00 gene Exp $
  *  IzPack
  *  Copyright (C) 2001-2004 Julien Ponge
  *
@@ -62,8 +62,10 @@ import javax.swing.plaf.metal.MetalTheme;
 
 import com.izforge.izpack.GUIPrefs;
 import com.izforge.izpack.LocaleDatabase;
+import com.izforge.izpack.util.OsVersion;
 import com.izforge.izpack.gui.ButtonFactory;
 import com.izforge.izpack.gui.IzPackMetalTheme;
+import com.izforge.izpack.gui.LabelFactory;
 
 /**
  *  The IzPack graphical installer class.
@@ -86,8 +88,6 @@ public class GUIInstaller extends InstallerBase
    */
   public GUIInstaller() throws Exception
   {
-    super();
-
     this.installdata = new InstallData();
 
     // Loads the installation data
@@ -119,7 +119,7 @@ public class GUIInstaller extends InstallerBase
    */
   public void loadGUIInstallData() throws Exception
   {
-    InputStream in = getClass().getResourceAsStream("/GUIPrefs");
+    InputStream in = GUIInstaller.class.getResourceAsStream("/GUIPrefs");
     ObjectInputStream objIn = new ObjectInputStream(in);
     this.installdata.guiPrefs = (GUIPrefs) objIn.readObject();
     objIn.close();
@@ -165,12 +165,25 @@ public class GUIInstaller extends InstallerBase
     if (npacks == 0) throw new Exception("no language pack available");
     String selectedPack;
 
+    // Dummy Frame
+    JFrame frame = new JFrame();
+    frame.setIconImage( new ImageIcon(
+      this.getClass().getResource( "/img/JFrameIcon.png" )).getImage() );
+
+    Dimension frameSize = frame.getSize();
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    frame.setLocation((screenSize.width - frameSize.width) / 2,
+      (screenSize.height - frameSize.height) / 2 - 10);
+
     // We get the langpack name
     if (npacks != 1)
     {
-      LanguageDialog picker = new LanguageDialog(availableLangPacks.toArray());
+      LanguageDialog picker = new LanguageDialog(frame, availableLangPacks.toArray());
       picker.setSelection(Locale.getDefault().getISO3Country().toLowerCase());
       picker.setModal(true);
+      picker.toFront();
+      frame.show();
+      frame.hide();
       picker.show();
 
       selectedPack = (String) picker.getSelection();
@@ -215,13 +228,12 @@ public class GUIInstaller extends InstallerBase
   protected void loadLookAndFeel() throws Exception
   {
     // Do we have any preference for this OS ?
-    String sysos = System.getProperty("os.name");
     String syskey = "unix";
-    if (sysos.regionMatches(true, 0, "windows", 0, 7))
+    if (OsVersion.IS_WINDOWS)
     {
       syskey = "windows";
     }
-    else if (sysos.regionMatches(true, 0, "mac", 0, 3))
+    else if (OsVersion.IS_OSX)
     {
       syskey = "mac";
     }
@@ -232,7 +244,19 @@ public class GUIInstaller extends InstallerBase
     }
 
     // Let's use the system LAF
-    ButtonFactory.useButtonIcons();
+    // Resolve whether button icons should be used or not.
+    boolean useButtonIcons = true;
+    if(installdata.guiPrefs.modifier.containsKey("useButtonIcons") &&
+      ((String)installdata.guiPrefs.modifier.
+      get("useButtonIcons")).equalsIgnoreCase("no") )
+      useButtonIcons = false;
+    ButtonFactory.useButtonIcons(useButtonIcons);
+    boolean useLabelIcons = true;
+    if(installdata.guiPrefs.modifier.containsKey("useLabelIcons") &&
+      ((String)installdata.guiPrefs.modifier.
+      get("useLabelIcons")).equalsIgnoreCase("no") )
+      useLabelIcons = false;
+    LabelFactory.setUseLabelIcons(useLabelIcons);
     if (laf == null)
     {
       if (!syskey.equals("mac"))
@@ -243,6 +267,9 @@ public class GUIInstaller extends InstallerBase
         {
           MetalLookAndFeel.setCurrentTheme(new IzPackMetalTheme());
           ButtonFactory.useHighlightButtons();
+          // Reset the use button icons state because useHighlightButtons
+          // make it always true.
+          ButtonFactory.useButtonIcons(useButtonIcons);
           installdata.buttonsHColor = new Color(182, 182, 204);
         }
       }
@@ -254,6 +281,9 @@ public class GUIInstaller extends InstallerBase
     if (laf.equals("kunststoff"))
     {
       ButtonFactory.useHighlightButtons();
+      // Reset the use button icons state because useHighlightButtons
+      // make it always true.
+      ButtonFactory.useButtonIcons(useButtonIcons);
       installdata.buttonsHColor = new Color(255, 255, 255);
       Class lafClass = Class
           .forName("com.incors.plaf.kunststoff.KunststoffLookAndFeel");
@@ -272,13 +302,13 @@ public class GUIInstaller extends InstallerBase
       lnf = "kunststoff";
       return;
     }
-    
+
     // Liquid (http://liquidlnf.sourceforge.net/)
     if (laf.equals("liquid"))
     {
       UIManager.setLookAndFeel("com.birosoft.liquid.LiquidLookAndFeel");
       lnf = "liquid";
-      
+
       Map params = (Map)installdata.guiPrefs.lookAndFeelParams.get(laf);
       if (params.containsKey("decorate.frames"))
       {
@@ -296,10 +326,10 @@ public class GUIInstaller extends InstallerBase
           JDialog.setDefaultLookAndFeelDecorated(true);
         }
       }
-      
+
       return;
     }
-    
+
     // Metouia (http://mlf.sourceforge.net/)
     if (laf.equals("metouia"))
     {
@@ -307,17 +337,17 @@ public class GUIInstaller extends InstallerBase
       lnf = "metouia";
       return;
     }
-    
+
     // JGoodies Looks (http://looks.dev.java.net/)
     if (laf.equals("looks"))
     {
       Map variants = new TreeMap();
-      variants.put("extwin", "com.jgoodies.plaf.windows.ExtWindowsLookAndFeel ");
+      variants.put("extwin", "com.jgoodies.plaf.windows.ExtWindowsLookAndFeel");
       variants.put("plastic", "com.jgoodies.plaf.plastic.PlasticLookAndFeel");
       variants.put("plastic3D", "com.jgoodies.plaf.plastic.Plastic3DLookAndFeel");
       variants.put("plasticXP", "com.jgoodies.plaf.plastic.PlasticXPLookAndFeel");
       String variant = (String)variants.get("plasticXP");
-      
+
       Map params = (Map)installdata.guiPrefs.lookAndFeelParams.get(laf);
       if (params.containsKey("variant"))
       {
@@ -327,7 +357,7 @@ public class GUIInstaller extends InstallerBase
           variant = (String)variants.get(param);
         }
       }
-      
+
       UIManager.setLookAndFeel(variant);
     }
   }
@@ -356,7 +386,7 @@ public class GUIInstaller extends InstallerBase
    *
    * @author     Julien Ponge
    */
-  class LanguageDialog extends JDialog implements ActionListener
+  private final class LanguageDialog extends JDialog implements ActionListener
   {
 
     /**  The combo box. */
@@ -370,16 +400,18 @@ public class GUIInstaller extends InstallerBase
      *
      * @param  items  The items to display in the box.
      */
-    public LanguageDialog(Object[] items)
+    public LanguageDialog(JFrame frame, Object[] items)
     {
-      super();
+      super(frame);
 
       try
       {
         loadLookAndFeel();
       }
       catch (Exception err)
-      {}
+      {
+        err.printStackTrace();
+      }
 
       // We build the GUI
       addWindowListener(new WindowHandler());
@@ -444,7 +476,7 @@ public class GUIInstaller extends InstallerBase
           (screenSize.height - frameSize.height) / 2 - 10);
       setResizable(true);
     }
-    
+
     /**
      *  Loads an image.
      *
@@ -455,7 +487,7 @@ public class GUIInstaller extends InstallerBase
       ImageIcon img;
       try
       {
-        img = new ImageIcon(this.getClass().getResource(
+        img = new ImageIcon(LanguageDialog.class.getResource(
             "/res/installer.langsel.img"));
       }
       catch (NullPointerException err)
@@ -500,7 +532,7 @@ public class GUIInstaller extends InstallerBase
      *
      * @author     Julien Ponge
      */
-    class WindowHandler extends WindowAdapter
+    private class WindowHandler extends WindowAdapter
     {
 
       /**
@@ -520,7 +552,7 @@ public class GUIInstaller extends InstallerBase
    *
    * @author     Julien Ponge
    */
-  class FlagRenderer extends JLabel implements ListCellRenderer
+  private static class FlagRenderer extends JLabel implements ListCellRenderer
   {
 
     /**  Icons cache. */

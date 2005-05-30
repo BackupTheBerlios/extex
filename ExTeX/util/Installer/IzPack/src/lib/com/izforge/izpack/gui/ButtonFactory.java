@@ -1,5 +1,5 @@
 /*
- *  $Id: ButtonFactory.java,v 1.1 2004/08/01 19:53:16 gene Exp $
+ *  $Id: ButtonFactory.java,v 1.2 2005/05/30 16:35:04 gene Exp $
  *  IzPack
  *  Copyright (C) 2002 Jan Blok (jblok@profdata.nl - PDM - www.profdata.nl)
  *
@@ -45,11 +45,21 @@ public class ButtonFactory
    */
 	public static void useButtonIcons()
 	{
+    useButtonIcons(true);
+	}
+
+  /**
+   * Enable or disable icons for buttons
+   * This setting has no effect on OSX
+   * @param useit flag which determines the behavior
+   */
+  public static void useButtonIcons(boolean useit)
+  {
     if(System.getProperty("mrj.version")==null)
     {
-  		useButtonIcons = true;
+      useButtonIcons = useit;
     }
-	}
+  }
 
   /**
    * Enable highlight buttons
@@ -57,18 +67,32 @@ public class ButtonFactory
    */
 	public static void useHighlightButtons()
 	{
+    useHighlightButtons(true);
+	}
+
+  /**
+   * Enable or disable highlight buttons
+   * This setting has no effect on OSX
+   * @param useit flag which determines the behavior
+  */
+  public static void useHighlightButtons(boolean useit)
+  {
     if(System.getProperty("mrj.version")==null)
     {
-  		useHighlightButtons = true;
-  		useButtonIcons = true;
+      useHighlightButtons = useit;
     }
-	}
+    useButtonIcons(useit);
+  }
 
 	public static JButton createButton(Icon icon, Color color)
 	{
 		if (useHighlightButtons)
 		{
-			return new HighlightJButton(icon, color);
+      if (useButtonIcons)     
+        return new HighlightJButton(icon, color);
+      else
+        return new HighlightJButton("", color);
+       
 		}
 		else
 		{
@@ -99,7 +123,10 @@ public class ButtonFactory
 	{
 		if (useHighlightButtons)
 		{
-			return new HighlightJButton(text,icon, color);
+      if (useButtonIcons)     
+        return new HighlightJButton(text,icon, color);
+      else
+        return new HighlightJButton(text, color);
 		}
 		else
 		{

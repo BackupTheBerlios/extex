@@ -1,5 +1,5 @@
 /*
- *  $Id: Unpacker.java,v 1.1 2004/08/01 19:53:15 gene Exp $
+ *  $Id: Unpacker.java,v 1.2 2005/05/30 16:35:00 gene Exp $
  *  IzPack
  *  Copyright (C) 2001-2004 Julien Ponge
  *
@@ -29,6 +29,7 @@
 package com.izforge.izpack.installer;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -36,6 +37,7 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
@@ -49,13 +51,16 @@ import org.apache.regexp.RECompiler;
 import org.apache.regexp.RESyntaxException;
 
 import com.izforge.izpack.ExecutableFile;
+import com.izforge.izpack.LocaleDatabase;
 import com.izforge.izpack.Pack;
 import com.izforge.izpack.PackFile;
 import com.izforge.izpack.ParsableFile;
 import com.izforge.izpack.UpdateCheck;
+import com.izforge.izpack.event.InstallerListener;
 import com.izforge.izpack.util.AbstractUIHandler;
 import com.izforge.izpack.util.AbstractUIProgressHandler;
 import com.izforge.izpack.util.FileExecutor;
+import com.izforge.izpack.util.IoHelper;
 import com.izforge.izpack.util.OsConstraint;
 
 /**
@@ -84,6 +89,12 @@ public class Unpacker extends Thread
   /**  The absolute path of the installation. (NOT the canonical!) */
   private File absolute_installpath;
 
+  /** The packs locale database. */
+  private LocaleDatabase langpack = null;
+
+  /** The name of the XML file that specifies the panel langpack */
+  private static final String LANG_FILE_NAME = "packsLang.xml";
+
   /**
    *  The constructor.
    *
@@ -95,6 +106,13 @@ public class Unpacker extends Thread
     AbstractUIProgressHandler handler)
   {
     super("IzPack - Unpacker thread");
+    try
+    {
+      String resource = LANG_FILE_NAME + "_" + idata.localeISO3;
+      this.langpack = new LocaleDatabase(ResourceManager.getInstance().getInputStream(resource));
+    }
+    catch (Throwable exception)
+    {}
 
     this.idata = idata;
     this.handler = handler;
@@ -129,17 +147,39 @@ public class Unpacker extends Thread
       int npacks = packs.size();
       handler.startAction("Unpacking", npacks);
       udata = UninstallData.getInstance();
+      // Custom action listener stuff --- load listeners ----
+      List [] customActions = getCustomActions();
+      // Custom action listener stuff --- beforePacks ----
+      informListeners(customActions, InstallerListener.BEFORE_PACKS,idata, 
+        new Integer(npacks), handler);
 
       // We unpack the selected packs
       for (int i = 0; i < npacks; i++)
       {
         // We get the pack stream
         int n = idata.allPacks.indexOf(packs.get(i));
+
+        // Custom action listener stuff --- beforePack ----
+        informListeners(customActions, InstallerListener.BEFORE_PACK,packs.get(i),
+          new Integer(npacks), handler);
         ObjectInputStream objIn = new ObjectInputStream(getPackAsStream(n));
 
         // We unpack the files
         int nfiles = objIn.readInt();
-        handler.nextStep(((Pack) packs.get(i)).name, i + 1, nfiles);
+
+          //We get the internationalized name of the pack
+          final Pack pack = ((Pack) packs.get(i));
+          String stepname = pack.name;//the message to be passed to the installpanel
+          if(langpack !=null && !(pack.id == null || pack.id.equals("")) )
+          {
+
+            final String name = langpack.getString(pack.id);
+            if(name !=null && !name.equals(""))
+            {
+              stepname = name;
+            }
+          }
+          handler.nextStep(stepname, i + 1, nfiles);
         for (int j = 0; j < nfiles; j++)
         {
           // We read the header
@@ -148,27 +188,38 @@ public class Unpacker extends Thread
           if (OsConstraint.oneMatchesCurrentSystem(pf.osConstraints()))
           {
             // We translate & build the path
-            String path = translatePath(pf.getTargetPath());
+            String path = IoHelper.translatePath(pf.getTargetPath(), vs);
             File pathFile = new File(path);
             File dest = pathFile;
             if (! pf.isDirectory())
               dest = pathFile.getParentFile();
-            
+
             if (!dest.exists())
             {
-              if (!dest.mkdirs())
+              // If there are custom actions which would be called at
+              // creating a directory, create it recursively.
+              List fileListeners = customActions[customActions.length - 1];
+              if( fileListeners != null && fileListeners.size() > 0 )
+                mkDirsWithEnhancement(dest, pf, customActions );
+              else  // Create it in on step.
               {
-                handler.emitError(
-                  "Error creating directories",
-                  "Could not create directory\n" + dest.getPath());
-                handler.stopAction();
-                return;
+                if (!dest.mkdirs())
+                {
+                  handler.emitError(
+                    "Error creating directories",
+                    "Could not create directory\n" + dest.getPath());
+                  handler.stopAction();
+                  return;
+                }
               }
             }
-            
+
             if (pf.isDirectory())
               continue;
 
+            // Custom action listener stuff --- beforeFile ----
+            informListeners(customActions, InstallerListener.BEFORE_FILE,pathFile,
+              pf, null);
             // We add the path to the log,
             udata.addFile(path);
 
@@ -192,7 +243,7 @@ public class Unpacker extends Thread
                   // (this is not 100% perfect, because the already existing file might
                   // still be modified but the new installed is just a bit newer; we would
                   // need the creation time of the existing file or record with which mtime
-                  // it was installed...) 
+                  // it was installed...)
                   overwritefile = (pathFile.lastModified() < pf.lastModified());
                 } else
                 {
@@ -220,7 +271,7 @@ public class Unpacker extends Thread
 
               if (!overwritefile)
               {
-                if (!pf.isBackReference())
+                if (!pf.isBackReference() && !((Pack)packs.get(i)).loose)
                   objIn.skip(pf.length());
                 continue;
               }
@@ -231,7 +282,7 @@ public class Unpacker extends Thread
             out = new FileOutputStream(pathFile);
             byte[] buffer = new byte[5120];
             long bytesCopied = 0;
-            ObjectInputStream pis = objIn;
+            InputStream pis = objIn;
             if (pf.isBackReference())
             {
               InputStream is = getPackAsStream(pf.previousPackNumber);
@@ -241,12 +292,13 @@ public class Unpacker extends Thread
               is.skip(pf.offsetInPreviousPack - 4);
               //but the stream header is now already read (== 4 bytes)
             }
+            else if(((Pack)packs.get(i)).loose)
+            {
+              pis = new FileInputStream(pf.sourcePath);
+            }
             while (bytesCopied < pf.length())
             {
-              int maxBytes =
-                (pf.length() - bytesCopied < buffer.length
-                  ? (int) (pf.length() - bytesCopied)
-                  : buffer.length);
+              int maxBytes = (int)Math.min(pf.length() - bytesCopied, buffer.length);
               int bytesInBuffer = pis.read(buffer, 0, maxBytes);
               if (bytesInBuffer == -1)
                 throw new IOException("Unexpected end of stream");
@@ -263,6 +315,10 @@ public class Unpacker extends Thread
             // Set file modification time if specified
             if (pf.lastModified() >= 0)
               pathFile.setLastModified(pf.lastModified());
+            // Custom action listener stuff --- afterFile ----
+            informListeners(customActions, InstallerListener.AFTER_FILE,pathFile,
+              pf, null);
+
 
           } else
           {
@@ -276,7 +332,7 @@ public class Unpacker extends Thread
         for (int k = 0; k < numParsables; k++)
         {
           ParsableFile pf = (ParsableFile) objIn.readObject();
-          pf.path = translatePath(pf.path);
+          pf.path = IoHelper.translatePath(pf.path, vs);
           parsables.add(pf);
         }
 
@@ -285,14 +341,14 @@ public class Unpacker extends Thread
         for (int k = 0; k < numExecutables; k++)
         {
           ExecutableFile ef = (ExecutableFile) objIn.readObject();
-          ef.path = translatePath(ef.path);
+          ef.path = IoHelper.translatePath(ef.path, vs);
           if (null != ef.argList && !ef.argList.isEmpty())
           {
             String arg = null;
             for (int j = 0; j < ef.argList.size(); j++)
             {
               arg = (String) ef.argList.get(j);
-              arg = translatePath(arg);
+              arg = IoHelper.translatePath(arg, vs);
               ef.argList.set(j, arg);
             }
           }
@@ -302,6 +358,8 @@ public class Unpacker extends Thread
             udata.addExecutable(ef);
           }
         }
+        // Custom action listener stuff --- uninstall data ----
+        handleAdditionalUninstallData(udata, customActions);
 
         // Load information about updatechecks
         int numUpdateChecks = objIn.readInt();
@@ -314,6 +372,9 @@ public class Unpacker extends Thread
         }
 
         objIn.close();
+        // Custom action listener stuff --- afterPack ----
+        informListeners(customActions, InstallerListener.AFTER_PACK,
+          packs.get(i), new Integer(i), handler);
       }
 
       // We use the scripts parser
@@ -332,6 +393,10 @@ public class Unpacker extends Thread
 
       // update checks _after_ uninstaller was put, so we don't delete it
       performUpdateChecks(updatechecks);
+
+      // Custom action listener stuff --- afterPacks ----
+      informListeners(customActions, InstallerListener.AFTER_PACKS,idata, 
+        handler, null);
 
       // The end :-)
       handler.stopAction();
@@ -616,13 +681,17 @@ public class Unpacker extends Thread
   {
     // get the uninstaller base, returning if not found so that
     // idata.uninstallOutJar remains null
-    InputStream in = getClass().getResourceAsStream("/res/IzPack.uninstaller");
-    if (in == null)
+    InputStream [] in = new InputStream[2];
+    in[0] = Unpacker.class.getResourceAsStream("/res/IzPack.uninstaller");
+    if (in[0] == null)
       return;
+    // The uninstaller extension is facultative; it will be exist only
+    // if a native library was marked for uninstallation.
+    in[1] = Unpacker.class.getResourceAsStream("/res/IzPack.uninstaller-ext");
 
     // Me make the .uninstaller directory
     String dest =
-      translatePath("$INSTALL_PATH") + File.separator + "Uninstaller";
+      IoHelper.translatePath("$INSTALL_PATH", vs) + File.separator + "Uninstaller";
     String jar = dest + File.separator + "uninstaller.jar";
     File pathMaker = new File(dest);
     pathMaker.mkdirs();
@@ -638,38 +707,49 @@ public class Unpacker extends Thread
     outJar.setLevel(9);
     udata.addFile(jar);
 
-    // We copy the uninstaller
-    ZipInputStream inRes = new ZipInputStream(in);
-    ZipEntry zentry = inRes.getNextEntry();
-    while (zentry != null)
+    // We copy the uninstallers
+    HashSet doubles = new HashSet();
+        
+    for( int i = 0; i < in.length; ++i )
     {
-      // Puts a new entry
-      outJar.putNextEntry(new ZipEntry(zentry.getName()));
-
-      // Byte to byte copy
-      int unc = inRes.read();
-      while (unc != -1)
+      if( in[i] == null )
+        continue;
+      ZipInputStream inRes = new ZipInputStream(in[i]);
+      ZipEntry zentry = inRes.getNextEntry();
+      while (zentry != null)
       {
-        outJar.write(unc);
-        unc = inRes.read();
-      }
+        // Puts a new entry, but not twice like META-INF
+        if( ! doubles.contains(zentry.getName()))
+        {
+          doubles.add(zentry.getName());
+          outJar.putNextEntry(new ZipEntry(zentry.getName()));
 
-      // Next one please
-      inRes.closeEntry();
-      outJar.closeEntry();
-      zentry = inRes.getNextEntry();
+          // Byte to byte copy
+          int unc = inRes.read();
+          while (unc != -1)
+          {
+            outJar.write(unc);
+            unc = inRes.read();
+          }
+
+          // Next one please
+          inRes.closeEntry();
+          outJar.closeEntry();
+        }
+        zentry = inRes.getNextEntry();
+      }
+      inRes.close();
     }
-    inRes.close();
 
     // We put the langpack
-    in =
-      getClass().getResourceAsStream("/langpacks/" + idata.localeISO3 + ".xml");
+    InputStream in2 =
+    Unpacker.class.getResourceAsStream("/langpacks/" + idata.localeISO3 + ".xml");
     outJar.putNextEntry(new ZipEntry("langpack.xml"));
-    int read = in.read();
+    int read = in2.read();
     while (read != -1)
     {
       outJar.write(read);
-      read = in.read();
+      read = in2.read();
     }
     outJar.closeEntry();
   }
@@ -689,7 +769,7 @@ public class Unpacker extends Thread
     
     if (webDirURL == null) // local
     {
-      in = getClass().getResourceAsStream("/packs/pack" + n);
+      in = Unpacker.class.getResourceAsStream("/packs/pack" + n);
     }
     else // web based
     {
@@ -711,18 +791,177 @@ public class Unpacker extends Thread
     return in;
   }
 
-  /**
-   *  Translates a relative path to a local system path.
-   *
-   * @param  destination  The path to translate.
-   * @return              The translated path.
-   */
-  private String translatePath(String destination)
-  {
-    // Parse for variables
-    destination = vs.substitute(destination, null);
+  // CUSTOM ACTION STUFF -------------- start -----------------
 
-    // Convert the file separator characters
-    return destination.replace('/', File.separatorChar);
+  /**
+   * Informs all listeners which would be informed at the given
+   * action type.
+   * @param customActions array of lists with the custom action objects
+   * @param action identifier for which callback should be called
+   * @param firstParam first parameter for the call
+   * @param secondParam second parameter for the call
+   * @param thirdParam third parameter for the call
+   */
+  private void informListeners(List[] customActions, int action, 
+    Object firstParam, Object secondParam, Object thirdParam)
+    throws Exception
+  {
+    List listener = null;
+    // select the right action list.
+    switch( action )
+    {
+      case InstallerListener.BEFORE_FILE:
+      case InstallerListener.AFTER_FILE:
+      case InstallerListener.BEFORE_DIR:
+      case InstallerListener.AFTER_DIR:
+        listener = customActions[customActions.length - 1];  
+        break;
+      default:
+        listener = customActions[0];   
+        break;
+    }
+    if( listener == null )
+      return;
+    // Iterate the action list.
+    Iterator iter = listener.iterator();
+    while( iter.hasNext())
+    {
+      InstallerListener il = (InstallerListener) iter.next();
+      switch( action )
+      {
+        case InstallerListener.BEFORE_FILE:
+          il.beforeFile(  (File) firstParam, (PackFile) secondParam );
+          break;
+        case InstallerListener.AFTER_FILE:
+          il.afterFile(  (File) firstParam, (PackFile) secondParam );
+          break;
+        case InstallerListener.BEFORE_DIR:
+          il.beforeDir( (File) firstParam, (PackFile) secondParam );
+          break;
+        case InstallerListener.AFTER_DIR:
+          il.afterDir( (File) firstParam, (PackFile) secondParam );
+          break;
+        case InstallerListener.BEFORE_PACK:
+          il.beforePack((Pack) firstParam, (Integer) secondParam, 
+            (AbstractUIProgressHandler) thirdParam);
+          break;
+        case InstallerListener.AFTER_PACK:
+          il.afterPack((Pack) firstParam, (Integer) secondParam, 
+            (AbstractUIProgressHandler) thirdParam);
+          break;
+        case InstallerListener.BEFORE_PACKS:
+          il.beforePacks((AutomatedInstallData) firstParam, 
+            (Integer) secondParam, (AbstractUIProgressHandler) thirdParam);
+          break;
+        case InstallerListener.AFTER_PACKS:
+          il.afterPacks((AutomatedInstallData) firstParam,
+            (AbstractUIProgressHandler) secondParam );
+          break;
+       
+      }
+    }
   }
+
+  /**
+   * Returns the defined custom actions split into types including
+   * a constructed type for the file related installer listeners. 
+   * @return array of lists of custom action data like listeners
+   */
+  private List [] getCustomActions()
+  {
+    String [] listenerNames = AutomatedInstallData.CUSTOM_ACTION_TYPES;
+    List [] retval = new List[listenerNames.length + 1];
+    int i;
+    for( i = 0; i < listenerNames.length; ++i)
+    {
+      retval[i] = (List) idata.customData.get(listenerNames[i]);
+      if( retval[i] == null)
+        //    Make a dummy list, then iterator is ever callable.
+        retval[i] = new ArrayList(); 
+    }
+    if( retval[AutomatedInstallData.INSTALLER_LISTENER_INDEX].size() > 0 )
+    { // Installer listeners exist
+      // Create file related installer listener list in the last
+      //element of custom action array.
+      i = retval.length - 1; // Should be so, but safe is safe ...
+      retval[i] = new ArrayList(); 
+      Iterator iter = ((List)retval[
+        AutomatedInstallData.INSTALLER_LISTENER_INDEX]).iterator();
+      while( iter.hasNext())
+      {
+        // If we get a class cast exception many is wrong and
+        // we must fix it.
+        InstallerListener li = (InstallerListener) iter.next();
+        if( li.isFileListener())
+          retval[i].add(li);
+      }
+       
+    }
+    return(retval);
+  }
+
+  /**
+   * Adds additional unistall data to the uninstall data object.
+   * @param udata unistall data 
+   * @param customActions array of lists of custom action data like uninstaller listeners
+   */
+  private void handleAdditionalUninstallData(UninstallData udata, List[] customData)
+  {
+    // Handle uninstall libs
+    udata.addAdditionalData("__uninstallLibs__",
+      customData[AutomatedInstallData.UNINSTALLER_LIBS_INDEX]);
+    // Handle uninstaller listeners
+    udata.addAdditionalData("uninstallerListeners",
+      customData[AutomatedInstallData.UNINSTALLER_LISTENER_INDEX]);
+    // Handle uninstaller jars
+    udata.addAdditionalData("uninstallerJars",
+      customData[AutomatedInstallData.UNINSTALLER_JARS_INDEX]);
+  }
+
+  
+  // This method is only used if a file related custom action exist.
+  /**
+   * Creates the given directory recursive and calls the
+   * method "afterDir" of each listener with the current file
+   * object and the pack file object.  On error an exception
+   * is raised.
+   * @param dest the directory which should be created
+   * @param pf current pack file object
+   * @param customActions all defined custom actions
+   * @return false on error, true else
+   * @throws Exception
+   */
+
+  private boolean mkDirsWithEnhancement(File dest, PackFile pf, 
+    List [] customActions  ) throws Exception
+  {
+    String path = "unknown";
+    if( dest != null )
+      path = dest.getAbsolutePath();
+    if( dest != null && !dest.exists() && dest.getParentFile() != null)
+    {
+      if( dest.getParentFile().exists() )
+        informListeners(customActions, InstallerListener.BEFORE_DIR,
+          dest, pf, null);
+      if( ! dest.mkdir() )
+      {
+        mkDirsWithEnhancement( dest.getParentFile(), pf, customActions );
+        if( ! dest.mkdir() )
+          dest = null;
+      }
+      informListeners(customActions, InstallerListener.AFTER_DIR,
+        dest, pf, null);
+    }
+    if (dest == null)
+    {
+      handler.emitError(
+      "Error creating directories",
+      "Could not create directory\n" + path);
+      handler.stopAction();
+      return(false);
+    }
+    return(true);
+  }
+  // CUSTOM ACTION STUFF -------------- end -----------------
+
 }

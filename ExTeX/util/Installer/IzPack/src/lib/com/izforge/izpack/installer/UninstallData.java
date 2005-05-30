@@ -1,5 +1,5 @@
 /*
- *  $Id: UninstallData.java,v 1.1 2004/08/01 19:53:15 gene Exp $
+ *  $Id: UninstallData.java,v 1.2 2005/05/30 16:35:00 gene Exp $
  *  IzPack
  *  Copyright (C) 2001-2004 Julien Ponge
  *
@@ -25,7 +25,9 @@
 package com.izforge.izpack.installer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.izforge.izpack.ExecutableFile;
 
@@ -52,11 +54,15 @@ public class UninstallData
   /**  The uninstaller path. */
   private String uninstallerPath;
 
+  /**  Additional uninstall data like uninstaller listener list. */
+  private Map additionalData;
+  
   /**  The constructor.  */
   private UninstallData()
   {
     filesList = new ArrayList();
     executablesList = new ArrayList();
+    additionalData  = new HashMap();
   }
 
   /**
@@ -116,7 +122,7 @@ public class UninstallData
    *
    * @return    The uninstaller jar filename.
    */
-  public String getUninstallerJarFilename()
+  public synchronized String getUninstallerJarFilename()
   {
     return uninstallerJarFilename;
   }
@@ -150,4 +156,24 @@ public class UninstallData
   {
     uninstallerPath = path;
   }
+  
+  /**
+   * Returns  additional uninstall data like uninstaller listener list.
+   * @return additional uninstall data
+   */
+  public Map getAdditionalData()
+  {
+    return additionalData;
+  }
+ 
+  /**
+   * Sets additional uninstall data like uninstaller listener list. 
+   * @param name key for the additional uninstall data
+   * @param value the additional uninstall data
+   */
+  public void addAdditionalData(String name, Object value)
+  {
+    additionalData.put(name, value);
+  }
+ 
 }

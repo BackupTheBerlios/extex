@@ -44,6 +44,12 @@ $cached_env_img{$key} = q|<IMG
  SRC="|."$dir".q|img1.png"
  ALT="\fbox{\includegraphics[scale=0.5]{img/lang-sel-splash}}">|; 
 
+$key = q/fbox{includegraphics[scale=1.0]{imgslashInstallerListener}};MSF=1.6;LFS=12;AAT/;
+$cached_env_img{$key} = q|<IMG
+ WIDTH="293" HEIGHT="278" ALIGN="MIDDLE" BORDER="0"
+ SRC="|."$dir".q|img13.png"
+ ALT="\fbox{\includegraphics[scale=1.0]{img/InstallerListener}}">|; 
+
 $key = q/fbox{includegraphics[scale=0.4]{imgslashch1-compinside}};MSF=1.6;LFS=12;AAT/;
 $cached_env_img{$key} = q|<IMG
  WIDTH="525" HEIGHT="831" ALIGN="MIDDLE" BORDER="0"
@@ -55,6 +61,18 @@ $cached_env_img{$key} = q|<IMG
  WIDTH="573" HEIGHT="555" ALIGN="MIDDLE" BORDER="0"
  SRC="|."$dir".q|img6.png"
  ALT="\fbox{\includegraphics[scale=0.5]{img/ch5-izpanel}}">|; 
+
+$key = q/fbox{includegraphics[scale=1.0]{imgslashUninstallerListener}};MSF=1.6;LFS=12;AAT/;
+$cached_env_img{$key} = q|<IMG
+ WIDTH="215" HEIGHT="199" ALIGN="MIDDLE" BORDER="0"
+ SRC="|."$dir".q|img14.png"
+ ALT="\fbox{\includegraphics[scale=1.0]{img/UninstallerListener}}">|; 
+
+$key = q/fbox{includegraphics[scale=1.0]{imgslashCompilerListener}};MSF=1.6;LFS=12;AAT/;
+$cached_env_img{$key} = q|<IMG
+ WIDTH="206" HEIGHT="138" ALIGN="MIDDLE" BORDER="0"
+ SRC="|."$dir".q|img12.png"
+ ALT="\fbox{\includegraphics[scale=1.0]{img/CompilerListener}}">|; 
 
 $key = q/fbox{includegraphics[scale=1.0]{imgslashuserInput-email}};MSF=1.6;LFS=12;AAT/;
 $cached_env_img{$key} = q|<IMG

@@ -1,5 +1,5 @@
 /*
- *  $Id: Pack.java,v 1.1 2004/08/01 19:53:15 gene Exp $
+ *  $Id: Pack.java,v 1.2 2005/05/30 16:35:00 gene Exp $
  *  IzPack
  *  Copyright (C) 2001-2004 Julien Ponge
  *
@@ -24,9 +24,13 @@
  */
 package com.izforge.izpack;
 
+import com.izforge.izpack.compiler.PackInfo;
+
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.HashMap;
+import java.util.ArrayList;
 
 /**
  *  Represents a Pack.
@@ -35,6 +39,8 @@ import java.util.List;
  */
 public class Pack implements Serializable
 {
+  public boolean loose;
+
   /**  The pack name. */
   public String name;
   
@@ -47,6 +53,12 @@ public class Pack implements Serializable
   /**  The target operation system of this pack */
   public List osConstraints = null;
 
+  /**  The list of packs this pack depends on */
+  public List dependencies = null;
+
+  /** Reverse dependencies(childs) */
+  public List revDependencies = null;
+
   /**  True if the pack is required. */
   public boolean required;
 
@@ -56,6 +68,15 @@ public class Pack implements Serializable
   /**  Whether this pack is suggested (preselected for installation). */
   public boolean preselected;
 
+  /** The color of the node. This is used for the dependency graph algorithms */
+  public int color;
+
+  /** white colour*/
+  public final static int WHITE = 0;
+  /** grey colour*/
+  public final static int GREY  = 1;
+  /** black colour*/
+  public final static int BLACK = 2;
   /**
    *  The constructor.
    *
@@ -70,16 +91,21 @@ public class Pack implements Serializable
     String id, 
     String description,
     List osConstraints,
+    List dependencies,
     boolean required,
-    boolean preselected)
+    boolean preselected,
+    boolean loose)
   {
     this.name = name;
     this.id = id;
     this.description = description;
     this.osConstraints = osConstraints;
+    this.dependencies = dependencies;
     this.required = required;
     this.preselected = preselected;
+    this.loose = loose;
     nbytes = 0;
+    color = PackInfo.WHITE;
   }
 
   /**
@@ -90,6 +116,45 @@ public class Pack implements Serializable
   public String toString()
   {
     return name + " (" + description + ")";
+  }
+
+  /** getter method */
+  public List getDependencies()
+  {
+    return dependencies;
+  }
+
+  /**
+   * This adds a reverse dependency. With a reverse dependency we imply a child
+   * dependency or the dependents on this pack
+   *
+   * @param name The name of the pack that depents to this pack
+   */
+  public void addRevDep(String name)
+  {
+    if(revDependencies == null)
+      revDependencies = new ArrayList();
+    revDependencies.add(name);
+  }
+  /**
+   * Creates a text list of all the packs it depend on
+   * @return the created text
+   */
+  public String depString()
+  {
+    String text ="";
+    if (dependencies==null)
+      return text;
+    String name = null;
+    for (int i = 0; i < dependencies.size()-1; i++)
+    {
+      name = (String) dependencies.get(i);
+      text += name+",";
+    }
+    name=(String) dependencies.get(dependencies.size()-1);
+    text += name;
+    return text;
+
   }
 
   /**  Used of conversions. */

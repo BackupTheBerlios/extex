@@ -1,5 +1,5 @@
 /*
- * $Id: TwoColumnConstraints.java,v 1.1 2004/08/01 19:53:16 gene Exp $
+ * $Id: TwoColumnConstraints.java,v 1.2 2005/05/30 16:35:04 gene Exp $
  * Copyright (C) 2002 Elmar Grom
  *
  * File :               TwoColumnConstraint.java
@@ -34,7 +34,7 @@ import java.awt.Component;
  * @version  0.0.1 / 11/15/02
  * @author   Elmar Grom
  */
-public class TwoColumnConstraints
+public class TwoColumnConstraints implements Cloneable
 {
   // these numbers are arbitrary - this way, there's a lower chance
   // of somebody using the number instead of the symbolic name

@@ -1,5 +1,5 @@
 /*
- *  $Id: ResourceManager.java,v 1.1 2004/08/01 19:53:15 gene Exp $
+ *  $Id: ResourceManager.java,v 1.2 2005/05/30 16:35:00 gene Exp $
  *  IzPack
  *  Copyright (C) 2001,2002 Marcus Stursberg
  *
@@ -133,14 +133,14 @@ public class ResourceManager
   {
     InputStream in;
     String resourcePath = this.resourceBasePath + resource + "_" + this.locale;
-    in = this.getClass().getResourceAsStream(resourcePath);
+    in = ResourceManager.class.getResourceAsStream(resourcePath);
     if (in != null)
       return resourcePath;
     else
     {
       // if there's no language dependent resource found
       resourcePath = this.resourceBasePath + resource;
-      in = this.getClass().getResourceAsStream(resourcePath);
+      in = ResourceManager.class.getResourceAsStream(resourcePath);
       if (in != null)
         return resourcePath;
       else
@@ -168,7 +168,7 @@ public class ResourceManager
   {
     String resourcepath = this.getLanguageResourceString(resource);
     //System.out.println ("reading resource "+resourcepath);
-    return this.getClass().getResourceAsStream(resourcepath);
+    return ResourceManager.class.getResourceAsStream(resourcepath);
   }
 
 

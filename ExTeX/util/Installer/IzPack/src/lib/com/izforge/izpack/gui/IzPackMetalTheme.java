@@ -1,5 +1,5 @@
 /*
- *  $Id: IzPackMetalTheme.java,v 1.1 2004/08/01 19:53:16 gene Exp $
+ *  $Id: IzPackMetalTheme.java,v 1.2 2005/05/30 16:35:06 gene Exp $
  *  IzPack
  *  Copyright (C) 2001-2004 Julien Ponge
  *
@@ -43,7 +43,6 @@ public class IzPackMetalTheme extends DefaultMetalTheme
   private FontUIResource controlFont;
   private FontUIResource menuFont;
   private FontUIResource windowTitleFont;
-  private FontUIResource monospacedFont;
 
   /**  The constructor.  */
   public IzPackMetalTheme()
@@ -56,7 +55,6 @@ public class IzPackMetalTheme extends DefaultMetalTheme
     menuFont = new FontUIResource(font1);
     controlFont = new FontUIResource(font1);
     windowTitleFont = new FontUIResource(font2);
-    monospacedFont = new FontUIResource(font1);
   }
 
   private Font createFont(String name, int style, int size)

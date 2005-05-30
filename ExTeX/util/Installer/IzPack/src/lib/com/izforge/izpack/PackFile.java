@@ -1,5 +1,5 @@
 /*
- *  $Id: PackFile.java,v 1.1 2004/08/01 19:53:15 gene Exp $
+ *  $Id: PackFile.java,v 1.2 2005/05/30 16:35:00 gene Exp $
  *  IzPack
  *  Copyright (C) 2001 Johannes Lehtinen
  *
@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  *  Encloses information about a packed file. This class abstracts the way file
@@ -42,6 +43,8 @@ public class PackFile implements Serializable
   public static final int OVERRIDE_ASK_FALSE = 2;
   public static final int OVERRIDE_ASK_TRUE = 3;
   public static final int OVERRIDE_UPDATE = 4;
+
+  public String sourcePath = null;
 
   /**  The full path name of the target file */
   private String targetPath = null;
@@ -60,6 +63,10 @@ public class PackFile implements Serializable
 
   /**  Whether or not this file is going to override any existing ones */
   private int override = OVERRIDE_FALSE;
+
+  /** Additional attributes or any else for customisation */
+  private Map  additionals = null;
+
 
   public int previousPackNumber = -1;
   public long offsetInPreviousPack = -1;
@@ -84,6 +91,7 @@ public class PackFile implements Serializable
     if (target.endsWith("/"))
       target = target.substring(0, target.length()-1);
 
+    this.sourcePath = src.getPath();
     this.targetPath = target;
     this.osConstraints = osList;
     this.override = override;
@@ -91,6 +99,23 @@ public class PackFile implements Serializable
     this.length = src.length();
     this.mtime = src.lastModified();
     this.isDirectory = src.isDirectory();
+  }
+
+  /**
+   * Constructs and initializes from a source file.
+   *
+   * @param  src      file which this PackFile describes
+   * @param  target   the path to install the file to
+   * @param  osList   OS constraints
+   * @param  override what to do when the file already exists
+   * @param  additionals  additional attributes
+   * @throws FileNotFoundException if the specified file does not exist.
+   */
+  public PackFile(File src, String target, List osList, int override,
+    Map additionals) throws FileNotFoundException
+  {
+    this( src, target, osList, override);
+    this.additionals = additionals;
   }
 
   public void setPreviousPackFileRef(int previousPackNumber,
@@ -139,4 +164,13 @@ public class PackFile implements Serializable
   {
     return targetPath;
   }
+  /**
+   * Returns the additionals map.
+   * @return additionals
+   */
+  public Map getAdditionals()
+  {
+    return additionals;
+  }
+
 }

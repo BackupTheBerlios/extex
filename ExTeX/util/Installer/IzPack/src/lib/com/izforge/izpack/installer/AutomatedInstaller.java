@@ -1,5 +1,5 @@
 /*
- *  $Id: AutomatedInstaller.java,v 1.1 2004/08/01 19:53:15 gene Exp $
+ *  $Id: AutomatedInstaller.java,v 1.2 2005/05/30 16:35:00 gene Exp $
  *  IzPack
  *  Copyright (C) 2001-2003 Jonathan Halliday, Julien Ponge
  *
@@ -185,13 +185,16 @@ public class AutomatedInstaller extends InstallerBase
     while (panelsIterator.hasNext())
     {
       Panel p = (Panel) panelsIterator.next();
-
+      String praefix = "com.izforge.izpack.panels.";
+      if( p.className.compareTo(".") > -1 )
+        // Full qualified class name
+        praefix = "";
       if (!OsConstraint.oneMatchesCurrentSystem(p.osConstraints))
         continue;
 
       String panelClassName = p.className;
       String automationHelperClassName =
-        "com.izforge.izpack.panels." + panelClassName + "AutomationHelper";
+        praefix + panelClassName + "AutomationHelper";
       Class automationHelperClass = null;
       // determine if the panel supports automated install
       try

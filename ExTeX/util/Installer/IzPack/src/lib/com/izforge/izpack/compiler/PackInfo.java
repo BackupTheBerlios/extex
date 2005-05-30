@@ -1,5 +1,5 @@
 /*
- *  $Id: PackInfo.java,v 1.1 2004/08/01 19:53:16 gene Exp $
+ *  $Id: PackInfo.java,v 1.2 2005/05/30 16:35:15 gene Exp $
  *  IzPack
  *  Copyright (C) 2001-2004 Julien Ponge
  *
@@ -49,6 +49,16 @@ public class PackInfo
   /** The pack object serialized in the installer. */
   private Pack pack;
 
+  /** The color of the node. This is used for the dependency graph algorithms */
+  public int colour;
+
+  /** white colour*/
+  public final static int WHITE = 0;
+  /** grey colour*/
+  public final static int GREY  = 1;
+  /** black colour*/
+  public final static int BLACK = 2;
+
   /** Files of the Pack. */
   private Map files = new HashMap();
 
@@ -62,15 +72,20 @@ public class PackInfo
   private List updateChecks = new ArrayList();
 
   /** Constructor with required info. */
-  protected PackInfo(String name, String id, String description, boolean required)
+  protected PackInfo(String name, String id, String description, boolean required, boolean loose)
   {
-    pack = new Pack( name, id, description, null, required, true);
+    pack = new Pack( name, id, description, null,null, required, true, loose);
+    colour = PackInfo.WHITE;
   }
   
   /* **********************************************************************
    * Attributes of the Pack
    * **********************************************************************/
 
+  public void setDependencies(List dependencies)
+  {
+    pack.dependencies = dependencies;
+  }
   public void setOsConstraints(List osConstraints)
   {
     pack.osConstraints = osConstraints;
@@ -113,13 +128,35 @@ public class PackInfo
    * thus a FileNotFoundEception will occur then, if the file is deleted
    * in between.
    */
-  public void addFile(File file, String targetfile, List osList, int override)
+/*  public void addFile(File file, String targetfile, List osList, int override)
     throws FileNotFoundException
+  {
+    addFile( file,targetfile, osList, override, null);
+  }
+
+
+  /**
+   * Add a file or directory to be installed.
+   *
+   * @param file       the file or basedir to be installed.
+   * @param targetfile path file will be installed to.
+   * @param osList     the target operation system(s) of this pack.
+   * @param override   what to do if the file already exists when installing
+   * @param  additionals    Map which contains additional data
+   *
+   * @throws FileNotFoundException if the file specified does not exist. The
+   * file is not read until the {@link Packager#createInstaller} is invoked,
+   * thus a FileNotFoundEception will occur then, if the file is deleted
+   * in between.
+   */
+  public void addFile(File file, String targetfile, List osList, 
+    int override, Map additionals) throws FileNotFoundException
   {
     if (! file.exists())
       throw new FileNotFoundException(file.toString());
 
-    PackFile packFile = new PackFile(file, targetfile, osList, override);
+    PackFile packFile = new PackFile(file, targetfile, osList, 
+      override, additionals);
     files.put(packFile, file);
   }
 
@@ -180,5 +217,24 @@ public class PackInfo
   public List getUpdateChecks()
   {
     return updateChecks;
+  }
+  /**
+   * The packs that this file depends on
+   */
+  public void addDependency(String dependency)
+  {
+    if(pack.dependencies == null)
+    {
+      pack.dependencies = new ArrayList();
+    }
+    pack.dependencies.add(dependency);
+  }
+  public List getDependencies()
+  {
+    return pack.dependencies;
+  }
+  public String toString()
+  {
+    return pack.name;
   }
 }

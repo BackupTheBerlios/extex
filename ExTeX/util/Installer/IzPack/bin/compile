@@ -4,7 +4,7 @@
 # Use the '-?' argument to know the parameters and call syntax.
 
 # Sets the IzPack home directory
-IZPACK_HOME="`dirname $0`/.."
+IZPACK_HOME='/home/gene/IzPack'
 
 # Does the effective launching
 java -jar "${IZPACK_HOME}/lib/compiler.jar" -HOME "$IZPACK_HOME" "$@"

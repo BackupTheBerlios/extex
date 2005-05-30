@@ -1,5 +1,5 @@
 /*
- * $Id: TwoColumnLayout.java,v 1.1 2004/08/01 19:53:16 gene Exp $
+ * $Id: TwoColumnLayout.java,v 1.2 2005/05/30 16:35:04 gene Exp $
  * Copyright (C) 2002 Elmar Grom
  *
  * File :               TwoColumnLayout.java

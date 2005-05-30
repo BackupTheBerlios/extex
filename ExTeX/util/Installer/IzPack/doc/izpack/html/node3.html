@@ -27,26 +27,26 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation"><!--Navigation Panel-->
-<A NAME="tex2html277"
+<A NAME="tex2html332"
   HREF="node4.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html273"
+<A NAME="tex2html328"
   HREF="izpack-doc.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html267"
+<A NAME="tex2html322"
   HREF="node2.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html275"
+<A NAME="tex2html330"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>  
 <BR>
-<B> Next:</B> <A NAME="tex2html278"
+<B> Next:</B> <A NAME="tex2html333"
   HREF="node4.html">Writing Installation XML Files</A>
-<B> Up:</B> <A NAME="tex2html274"
+<B> Up:</B> <A NAME="tex2html329"
   HREF="izpack-doc.html">izpack-doc</A>
-<B> Previous:</B> <A NAME="tex2html268"
+<B> Previous:</B> <A NAME="tex2html323"
   HREF="node2.html">Introduction</A>
- &nbsp; <B>  <A NAME="tex2html276"
+ &nbsp; <B>  <A NAME="tex2html331"
   HREF="node1.html">Contents</A></B> 
 <BR>
 <BR></DIV>
@@ -55,19 +55,21 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><A NAME="tex2html279"
+<LI><A NAME="tex2html334"
   HREF="node3.html#SECTION00310000000000000000">Overview</A>
-<LI><A NAME="tex2html280"
+<LI><A NAME="tex2html335"
   HREF="node3.html#SECTION00320000000000000000">First Compilation</A>
-<LI><A NAME="tex2html281"
+<LI><A NAME="tex2html336"
   HREF="node3.html#SECTION00330000000000000000">The I<SMALL>Z</SMALL>P<SMALL>ACK</SMALL> Architecture</A>
 <UL>
-<LI><A NAME="tex2html282"
+<LI><A NAME="tex2html337"
   HREF="node3.html#SECTION00331000000000000000">The Compilation System</A>
-<LI><A NAME="tex2html283"
+<LI><A NAME="tex2html338"
   HREF="node3.html#SECTION00332000000000000000">How an Installer Works</A>
-<LI><A NAME="tex2html284"
+<LI><A NAME="tex2html339"
   HREF="node3.html#SECTION00333000000000000000">The Different Kinds of Installers</A>
+<LI><A NAME="tex2html340"
+  HREF="node3.html#SECTION00334000000000000000">Installers for older VM Versions</A>
 </UL></UL>
 <!--End of Table of Child-Links-->
 <HR>
@@ -142,7 +144,7 @@ The Compilation System</A>
 
 <P>
 The compilation system (see figure <A HREF="#comparch">1.1</A>) is quite modular. 
-Indeed, you can use the compiler in 3 ways :
+Indeed, you can use the compiler in 2 ways :
 
 <UL>
 <LI>from a command-line
@@ -152,7 +154,7 @@ Indeed, you can use the compiler in 3 ways :
 </UL> 
 <P>
 
-<DIV ALIGN="CENTER"><A NAME="comparch"></A><A NAME="292"></A>
+<DIV ALIGN="CENTER"><A NAME="comparch"></A><A NAME="310"></A>
 <TABLE>
 <CAPTION ALIGN="BOTTOM"><STRONG>Figure 1.1:</STRONG>
          <SPAN  CLASS="textit">The compiler architecture.</SPAN></CAPTION>
@@ -214,7 +216,7 @@ include it.
 <BR>
 <P>
 
-<DIV ALIGN="CENTER"><A NAME="archinstaller"></A><A NAME="294"></A>
+<DIV ALIGN="CENTER"><A NAME="archinstaller"></A><A NAME="312"></A>
 <TABLE>
 <CAPTION ALIGN="BOTTOM"><STRONG>Figure 1.2:</STRONG>
          <SPAN  CLASS="textit">The installer architecture.</SPAN></CAPTION>
@@ -263,37 +265,72 @@ There are 2 kinds of installers available :
 </LI>
 <LI><TT>web</TT> : a web based installer (pack data is located on
   an HTTP server, and the installer retrieves it at install time (see
-  section&nbsp;<A HREF="node5.html#webinstaller">3.5</A>))
+  section&nbsp;<A HREF="node5.html#webinstaller">3.6</A>))
 </LI>
 </UL>
+
+<P>
+
+<H2><A NAME="SECTION00334000000000000000">
+Installers for older VM Versions</A>
+</H2>
+For default the installer will be made for the current most used version of
+the java runtime environment. It is possible to create an installation that
+is runable with an older VM version.
+<BR>
+What version is used can be detected in the Ant properties file that is used 
+to build IzPack. It is <TT>[IzPackRoot]/src/ant.properties</TT>. 
+The value of the property "source" determines the VM version.
+<BR>
+If compatibility to older versions is needed, a recompilation of the jar files 
+of the IzPack system should be done. For this the sources of IzPack and an Ant
+installation are needed. The sources of IzPack are selectable at installation
+time of IzPack. Before a recompilation of all can be triggered, the version of 
+byte code should be changed. This can be done simple by changing the "source" 
+entry in <TT>[IzPackRoot]/src/ant.properties</TT> to the needed value. The 
+recompilation should be performed with the current most used VM version 
+because there are classes of it referenced in the IzPack code. Usage of an 
+older VM version at installation time will be possible because the classes of
+the newer VM version are only used after a VM version check. Of course, some 
+features of IzPack will be missing at using an old VM version. To recompile
+IzPack go into <TT>[IzPackRoot]/src</TT>. Use a current JDK (not JRE) for this. 
+Call
+<PRE>
+ant clean
+</PRE>followed by
+<PRE>
+ant all
+</PRE>Then all jar files in <TT>[IzPackRoot]/lib</TT>, 
+<TT>[IzPackRoot]/bin/panels</TT> and <TT>[IzPackRoot]/bin/customActions</TT>
+should be recompiled with the selected source version.
   
 <DIV CLASS="navigation"><HR>
 <!--Navigation Panel-->
-<A NAME="tex2html277"
+<A NAME="tex2html332"
   HREF="node4.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html273"
+<A NAME="tex2html328"
   HREF="izpack-doc.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html267"
+<A NAME="tex2html322"
   HREF="node2.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html275"
+<A NAME="tex2html330"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>  
 <BR>
-<B> Next:</B> <A NAME="tex2html278"
+<B> Next:</B> <A NAME="tex2html333"
   HREF="node4.html">Writing Installation XML Files</A>
-<B> Up:</B> <A NAME="tex2html274"
+<B> Up:</B> <A NAME="tex2html329"
   HREF="izpack-doc.html">izpack-doc</A>
-<B> Previous:</B> <A NAME="tex2html268"
+<B> Previous:</B> <A NAME="tex2html323"
   HREF="node2.html">Introduction</A>
- &nbsp; <B>  <A NAME="tex2html276"
+ &nbsp; <B>  <A NAME="tex2html331"
   HREF="node1.html">Contents</A></B> </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 Julien Ponge
-2004-07-28
+2005-04-22
 </ADDRESS>
 </BODY>
 </HTML>

@@ -1,5 +1,5 @@
 /*
- *  $Id: InstallerFrame.java,v 1.1 2004/08/01 19:53:15 gene Exp $
+ *  $Id: InstallerFrame.java,v 1.2 2005/05/30 16:35:00 gene Exp $
  *  IzPack
  *  Copyright (C) 2001-2004 Julien Ponge
  *
@@ -27,6 +27,7 @@
 package com.izforge.izpack.installer;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -35,12 +36,14 @@ import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
 import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.io.ObjectOutputStream;
@@ -49,10 +52,13 @@ import java.io.OutputStreamWriter;
 import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipException;
 import java.util.zip.ZipOutputStream;
 
 import javax.swing.BorderFactory;
@@ -65,6 +71,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
+import javax.swing.text.JTextComponent;
 
 import net.n3.nanoxml.NonValidator;
 import net.n3.nanoxml.StdXMLBuilder;
@@ -73,6 +80,7 @@ import net.n3.nanoxml.StdXMLReader;
 import net.n3.nanoxml.XMLElement;
 import net.n3.nanoxml.XMLWriter;
 
+import com.izforge.izpack.CustomData;
 import com.izforge.izpack.ExecutableFile;
 import com.izforge.izpack.LocaleDatabase;
 import com.izforge.izpack.Panel;
@@ -80,9 +88,10 @@ import com.izforge.izpack.gui.ButtonFactory;
 import com.izforge.izpack.gui.EtchedLineBorder;
 import com.izforge.izpack.gui.IconsDatabase;
 import com.izforge.izpack.util.AbstractUIProgressHandler;
+import com.izforge.izpack.util.Debug;
 import com.izforge.izpack.util.Housekeeper;
 import com.izforge.izpack.util.OsConstraint;
-
+import com.izforge.izpack.installer.ResourceNotFoundException;
 /**
  *  The IzPack installer frame.
  *
@@ -91,6 +100,9 @@ import com.izforge.izpack.util.OsConstraint;
  */
 public class InstallerFrame extends JFrame
 {
+  /** VM version to use version dependent methods calls */
+  private static final float JAVA_SPECIFICATION_VERSION =
+    Float.parseFloat(System.getProperty("java.specification.version"));
   /**  The language pack. */
   public LocaleDatabase langpack;
 
@@ -179,9 +191,12 @@ public class InstallerFrame extends JFrame
 
       if (!OsConstraint.oneMatchesCurrentSystem(p.osConstraints))
         continue;
-
       className = (String) p.className;
-      objectClass = Class.forName("com.izforge.izpack.panels." + className);
+      String praefix = "com.izforge.izpack.panels.";
+      if( className.compareTo(".") > -1 )
+        // Full qualified class name
+        praefix = "";
+      objectClass = Class.forName(praefix + className);
       constructor = objectClass.getDeclaredConstructor(paramsClasses);
       object = constructor.newInstance(params);
       panel = (IzPanel) object;
@@ -206,7 +221,7 @@ public class InstallerFrame extends JFrame
     ImageIcon img;
     XMLElement icon;
     InputStream inXML =
-      getClass().getResourceAsStream("/com/izforge/izpack/installer/icons.xml");
+      InstallerFrame.class.getResourceAsStream("/com/izforge/izpack/installer/icons.xml");
 
     // Initialises the parser
     StdXMLParser parser = new StdXMLParser();
@@ -223,7 +238,7 @@ public class InstallerFrame extends JFrame
     for (int i = 0; i < size; i++)
     {
       icon = (XMLElement) children.get(i);
-      url = getClass().getResource(icon.getAttribute("res"));
+      url = InstallerFrame.class.getResource(icon.getAttribute("res"));
       img = new ImageIcon(url);
       icons.put(icon.getAttribute("id"), img);
     }
@@ -234,7 +249,7 @@ public class InstallerFrame extends JFrame
     for (int i = 0; i < size; i++)
     {
       icon = (XMLElement) children.get(i);
-      url = getClass().getResource(icon.getAttribute("res"));
+      url = InstallerFrame.class.getResource(icon.getAttribute("res"));
       img = new ImageIcon(url);
       UIManager.put(icon.getAttribute("id"), img);
     }
@@ -255,6 +270,9 @@ public class InstallerFrame extends JFrame
     {
     });
     glassPane.addKeyListener(new KeyAdapter()
+    {
+    });
+    glassPane.addFocusListener(new FocusAdapter()
     {
     });
 
@@ -374,7 +392,7 @@ public class InstallerFrame extends JFrame
     setVisible(true);
   }
 
-        private boolean isBack = false;
+  private boolean isBack = false;
   /**
    *  Switches the current panel.
    *
@@ -382,39 +400,80 @@ public class InstallerFrame extends JFrame
    */
   protected void switchPanel(int last)
   {
-        if (installdata.curPanelNumber<last)
+    try
+    {
+        if (installdata.curPanelNumber < last)
         {
-                isBack = true;
+            isBack = true;
         }
-    panelsContainer.setVisible(false);
-    IzPanel panel =
-      (IzPanel) installdata.panels.get(installdata.curPanelNumber);
-    IzPanel l_panel = (IzPanel) installdata.panels.get(last);
-    l_panel.makeXMLData(installdata.xmlData.getChildAtIndex(last));
-    panelsContainer.remove(l_panel);
-    panelsContainer.add(panel);
-    if (installdata.curPanelNumber == 0)
-    {
-      prevButton.setVisible(false);
-      lockPrevButton();
-      unlockNextButton(); // if we push the button back at the license panel
-    } else if (installdata.curPanelNumber == installdata.panels.size() - 1)
-    {
-      prevButton.setVisible(false);
-      nextButton.setVisible(false);
-      lockNextButton();
-    } else
-    {
-      prevButton.setVisible(true);
-      nextButton.setVisible(true);
-      unlockPrevButton();
-      unlockNextButton();
-    }
-    l_panel.panelDeactivate();
-    panel.panelActivate();
-    panelsContainer.setVisible(true);
+        panelsContainer.setVisible(false);
+        IzPanel panel = (IzPanel)installdata.panels.get(installdata.curPanelNumber);
+        IzPanel l_panel = (IzPanel)installdata.panels.get(last);
+        l_panel.makeXMLData(installdata.xmlData.getChildAtIndex(last));
+
+        if (installdata.curPanelNumber == 0)
+        {
+            prevButton.setVisible(false);
+            lockPrevButton();
+            unlockNextButton(); // if we push the button back at the license panel
+        }
+        else if (installdata.curPanelNumber == installdata.panels.size() - 1)
+        {
+            prevButton.setVisible(false);
+            nextButton.setVisible(false);
+            lockNextButton();
+
+            // Set the default button to the only visible button.
+            getRootPane().setDefaultButton(quitButton);
+        }
+        else
+        {
+            prevButton.setVisible(true);
+            nextButton.setVisible(true);
+            unlockPrevButton();
+            unlockNextButton();
+        }
+
+        // Change panels container to the current one.
+        panelsContainer.remove(l_panel);
+        l_panel.panelDeactivate();
+        panelsContainer.add(panel);
+
+        if(panel.getInitialFocus() != null)
+        { // Initial focus hint should be performed after current panel
+          // was added to the panels container, else the focus hint will
+          // be ignored.
+            // Give a hint for the initial focus to the system.
+            Component inFoc = panel.getInitialFocus();
+            if( JAVA_SPECIFICATION_VERSION < 1.35)
+            {
+                inFoc.requestFocus();
+            }
+            else
+            {
+                inFoc.requestFocusInWindow();
+            }
+
+            /* On editable text components position the caret to the end
+               of the cust existent text. */
+            if( inFoc instanceof JTextComponent )
+            {
+                JTextComponent inText = (JTextComponent) inFoc;
+                if( inText.isEditable() && inText.getDocument() != null)
+                {
+                    inText.setCaretPosition( inText.getDocument().getLength());
+                }
+            }
+        }
+        panel.panelActivate();
+        panelsContainer.setVisible(true);
         loadImage(installdata.curPanelNumber);
-    isBack = false;
+        isBack = false;
+    }
+    catch (Exception err)
+    {
+        err.printStackTrace();
+    }
   }
 
   /**  Writes the uninstalldata.  */
@@ -468,6 +527,118 @@ public class InstallerFrame extends JFrame
       execStream.flush();
       outJar.closeEntry();
 
+       // Write out additional uninstall data
+       // Do not "kill" the installation if there is a problem
+       // with custom uninstall data. Therefore log it to Debug,
+       // but do not throw.
+       Map additionalData = udata.getAdditionalData();
+       if( additionalData  != null && ! additionalData.isEmpty())
+       {
+         Iterator keys = additionalData.keySet().iterator();
+         HashSet exist = new HashSet();
+         while( keys != null && keys.hasNext())
+         {
+           String key = (String) keys.next();
+           Object contents = additionalData.get(key);
+           if(  key.equals("__uninstallLibs__"))
+           {
+             Iterator nativeLibIter = ((List) contents).iterator();
+             while( nativeLibIter != null && nativeLibIter.hasNext() )
+             {
+               String nativeLibName = (String) ((List) nativeLibIter.next()).get(0);
+               byte[] buffer = new byte[5120];
+               long bytesCopied = 0;
+               int bytesInBuffer;
+               outJar.putNextEntry(new ZipEntry( "native/" + nativeLibName));
+               InputStream in = getClass().getResourceAsStream("/native/" + nativeLibName);
+               while ((bytesInBuffer = in.read(buffer)) != -1)
+               {
+                 outJar.write(buffer, 0, bytesInBuffer);
+                 bytesCopied += bytesInBuffer;
+               }
+               outJar.closeEntry();
+              }
+           }
+           else if( key.equals("uninstallerListeners") ||
+            key.equals("uninstallerJars"))
+           { // It is a ArrayList of ArrayLists which contains the full
+             // package paths of all needed class files.
+             // First we create a new ArrayList which contains only
+             // the full paths for the uninstall listener self; thats
+             // the first entry of each sub ArrayList.
+             ArrayList subContents = new ArrayList();
+
+             // Secound put the class into  uninstaller.jar
+             Iterator listenerIter = ((List) contents).iterator();
+             while( listenerIter.hasNext() )
+             {
+               byte[] buffer = new byte[5120];
+               long bytesCopied = 0;
+               int bytesInBuffer;
+               CustomData customData = (CustomData) listenerIter.next();
+               // First element of the list contains the listener class path;
+               // remind it for later.
+               if(customData.listenerName != null )
+                subContents.add(customData.listenerName);
+               Iterator liClaIter = customData.contents.iterator();
+               while( liClaIter.hasNext() )
+               {
+                 String contentPath = (String) liClaIter.next();
+                 if( exist.contains(contentPath ))
+                   continue;
+                 exist.add(contentPath);
+                 try
+                 {
+                   outJar.putNextEntry(new ZipEntry( contentPath));
+                 }
+                 catch(ZipException ze )
+                 { // Ignore, or ignore not ?? May be it is a exception because
+                   // a doubled entry was tried, then we should ignore ...
+                   Debug.trace("ZipException in writing custom data: " + ze.getMessage() );
+                   continue;
+                 }
+                 InputStream in = getClass().getResourceAsStream("/" + contentPath);
+                 if( in != null )
+                 {
+                   while ((bytesInBuffer = in.read(buffer)) != -1)
+                   {
+                     outJar.write(buffer, 0, bytesInBuffer);
+                     bytesCopied += bytesInBuffer;
+                   }
+                 }
+                 else
+                   Debug.trace("custom data not found: " + contentPath );
+                 outJar.closeEntry();
+
+               }
+             }
+             // Third we write the list into the
+             // uninstaller.jar
+             outJar.putNextEntry(new ZipEntry(key));
+             ObjectOutputStream objOut = new ObjectOutputStream(outJar);
+             objOut.writeObject(subContents);
+             objOut.flush();
+             outJar.closeEntry();
+
+           }
+           else
+           {
+             outJar.putNextEntry(new ZipEntry(key));
+             if( contents instanceof ByteArrayOutputStream )
+             {
+               ((ByteArrayOutputStream) contents).writeTo(outJar);
+             }
+             else
+             {
+               ObjectOutputStream objOut = new ObjectOutputStream(outJar);
+               objOut.writeObject(contents);
+               objOut.flush();
+             }
+             outJar.closeEntry();
+           }
+         }
+       }
+
       // Cleanup
       outJar.flush();
       outJar.close();
@@ -483,21 +654,27 @@ public class InstallerFrame extends JFrame
    * @param  res            The resource id.
    * @return                The resource value, null if not found
    */
-  public InputStream getResource(String res)
+  public InputStream getResource(String res) throws Exception
   {
-        String basePath = "";
-        ResourceManager rm = null;
+    InputStream result;
+    String basePath = "";
+    ResourceManager rm = null;
 
     try
     {
-        rm =  ResourceManager.getInstance();
-                basePath = rm.resourceBasePath;
-
-                return this.getClass().getResourceAsStream(basePath+res);
-    } catch (Exception e)
-    {
-      return null;
+      rm =  ResourceManager.getInstance();
+      basePath = rm.resourceBasePath;
     }
+    catch(Exception e)
+    { e.printStackTrace(); }
+
+    result = this.getClass().getResourceAsStream( basePath+res );
+
+    if( result == null )
+    {
+      throw new ResourceNotFoundException( "Warning: Resource not found: " + res );
+    }
+    return result;
   }
 
 
@@ -666,12 +843,28 @@ public class InstallerFrame extends JFrame
     quitButton.setText(text);
   }
 
+  /* FocusTraversalPolicy objects to handle 
+   * keybord blocking; the declaration os Object
+   * allows to use a pre version 1.4 VM.
+   */
+  private Object usualFTP = null;
+  private Object blockFTP = null;
+
   /**  Blocks GUI interaction.  */
   public void blockGUI()
   {
     setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
     getGlassPane().setVisible(true);
     getGlassPane().setEnabled(true);
+    // No traversal handling before VM version 1.4
+    if( JAVA_SPECIFICATION_VERSION < 1.35)
+      return;
+    if( usualFTP == null)
+      usualFTP = getFocusTraversalPolicy();
+    if (blockFTP == null) 
+      blockFTP = new BlockFocusTraversalPolicy();
+    setFocusTraversalPolicy((java.awt.FocusTraversalPolicy) blockFTP);
+    getGlassPane().requestFocus();
   }
 
   /**  Releases GUI interaction.  */
@@ -680,6 +873,10 @@ public class InstallerFrame extends JFrame
     getGlassPane().setEnabled(false);
     getGlassPane().setVisible(false);
     setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+    // No traversal handling before VM version 1.4
+    if( JAVA_SPECIFICATION_VERSION < 1.35)
+      return;
+    setFocusTraversalPolicy((java.awt.FocusTraversalPolicy) usualFTP);
   }
 
   /**  Locks the 'previous' button.  */
@@ -805,5 +1002,20 @@ public class InstallerFrame extends JFrame
       wipeAborted();
       Housekeeper.getInstance().shutDown(0);
     }
+  }
+
+  /** A FocusTraversalPolicy that only allows the block panel to have
+   * the focus
+   */
+  private class BlockFocusTraversalPolicy extends java.awt.DefaultFocusTraversalPolicy
+  {
+      /** Only accepts the block panel
+       * @param aComp the component to check
+       * @return true if aComp is the block panel
+       */
+      protected boolean accept(Component aComp)
+      {
+          return aComp == getGlassPane();
+      }
   }
 }

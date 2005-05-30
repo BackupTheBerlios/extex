@@ -1,5 +1,5 @@
 /*
- * $Id: Scrambler.java,v 1.1 2004/08/01 19:53:16 gene Exp $
+ * $Id: Scrambler.java,v 1.2 2005/05/30 16:35:12 gene Exp $
  * Copyright (C) 2003 Elmar Grom
  *
  * File :               Scramble.java

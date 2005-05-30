@@ -75,5 +75,24 @@ IzPack for your projects ;-)
 - Gaganis Giorgos : for the userInputPanel i18n code.
 - Alex Bradley : for the ProcessPanel contributions.
 - Bronek Truszkowski : for the polish langpack fixes.
+- Erik Artzmark : for the bug fixes and the "files on disk" feature.
+- Flavio Fonseca : for the portuguese langpack updates.
+- Eduard Jodas Samper : for the keyboard UI blocking patch.
+- Andreas Vox : for the various patches.
+- Borje Jonsson : for the InfoPanel variables substitution patch.
+- Redhuan Daniel Oon : for the Malaysian translation.
+- Mohammed Sourouri : for the Norwegian translation.
+- Xi Ping Wang : for the Chinese translation.
+- Filip Brcic : for the Serbian translation.
+- Marc Eppelmann : for the Unix shortcuts support.
+- Michael Hagedorn : for the UserInputPanel fixes.
+- Jan Pavlovic : for the Czech translation.
+- Oscar Sierra : for the patches.
+- Per Abich : for the patches.
+- Alexey Makhmutov : Russian langpack updates.
+- Anthony Xin Chen : for the ProcessPanel patch.
+- Nils Nordman : for the Swedish updates.
+- Juan Alvarez : for the Spanish updates.
+- Andreas Breiter : for various patches.
 
 # vim: fileformat=dos

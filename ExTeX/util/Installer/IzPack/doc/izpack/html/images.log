@@ -1,8 +1,12 @@
-This is TeX, Version 3.14159 (Web2C 7.4.5) (format=latex 2004.6.19)  28 JUL 2004 17:31
+This is e-TeX, Version 3.14159-2.1 (Web2C 7.4.5) (format=latex 2005.4.9)  22 APR 2005 20:20
+entering extended mode
 **./images.tex
 (./images.tex
 LaTeX2e <2001/06/01>
-Babel <v3.7h> and hyphenation patterns for american, nohyphenation, loaded.
+Babel <v3.7h> and hyphenation patterns for american, french, german, ngerman, b
+ahasa, basque, catalan, croatian, czech, danish, dutch, finnish, greek, iceland
+ic, irish, italian, latin, magyar, norsk, norsk, portuges, romanian, russian, s
+lovak, slovene, spanish, swedish, turkish, ukrainian, nohyphenation, loaded.
 
 (/usr/share/texmf/tex/latex/base/report.cls
 Document Class: report 2001/04/21 v1.4e Standard LaTeX document class
@@ -115,7 +119,7 @@ File: pdfmark.def 2003/01/22 v6.73n Hyperref definitions for pdfmark specials
 \pdf@defaulttoks=\toks23
 \Fld@listcount=\count96
 \@outlinefile=\write4
-)) (/home/julien/tmp/izpack-src/src/doc/html.sty
+)) (/home/julien/Prog/izpack-src-b37/src/doc/html.sty
 Package: html 1999/07/19 v1.38 hypertext commands for latex2html (nd, hws, rrm)
 
 \c@lpart=\count97
@@ -142,15 +146,16 @@ File: latin1.def 2001/07/10 v0.99a Input encoding file
 ))
 \sizebox=\box27
 \lthtmlwrite=\write6
-(./images.aux (/home/julien/tmp/izpack-src/src/doc/cover.aux) (/home/julien/tmp
-/izpack-src/src/doc/introduction.aux) (/home/julien/tmp/izpack-src/src/doc/chap
-ter1.aux) (/home/julien/tmp/izpack-src/src/doc/chapter2.aux) (/home/julien/tmp/
-izpack-src/src/doc/chapter3.aux
+(./images.aux (/home/julien/Prog/izpack-src-b37/src/doc/cover.aux) (/home/julie
+n/Prog/izpack-src-b37/src/doc/introduction.aux) (/home/julien/Prog/izpack-src-b
+37/src/doc/chapter1.aux) (/home/julien/Prog/izpack-src-b37/src/doc/chapter2.aux
+) (/home/julien/Prog/izpack-src-b37/src/doc/chapter3.aux
 
 LaTeX Warning: Label `ant-integration' multiply defined.
 
-) (/home/julien/tmp/izpack-src/src/doc/chapter4.aux) (/home/julien/tmp/izpack-s
-rc/src/doc/chapter5.aux) (/home/julien/tmp/izpack-src/src/doc/UserInput.aux))
+) (/home/julien/Prog/izpack-src-b37/src/doc/chapter4.aux) (/home/julien/Prog/iz
+pack-src-b37/src/doc/chapter5.aux) (/home/julien/Prog/izpack-src-b37/src/doc/Us
+erInput.aux) (/home/julien/Prog/izpack-src-b37/src/doc/CustomActions.aux))
 \openout1 = `images.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 128.
@@ -201,7 +206,7 @@ latex2htmlLength evensidemargin=31.0pt
 
 File: img/lang-sel-splash.eps Graphic file (type eps)
 <img/lang-sel-splash.eps>
-l2hSize :tex2html_wrap_inline197:225.72874pt::225.72874pt::166.98376pt.
+l2hSize :tex2html_wrap_inline204:225.72874pt::225.72874pt::166.98376pt.
 [1
 
 
@@ -209,39 +214,39 @@ l2hSize :tex2html_wrap_inline197:225.72874pt::225.72874pt::166.98376pt.
 ]
 File: img/ch1-comparch.eps Graphic file (type eps)
 <img/ch1-comparch.eps>
-l2hSize :tex2html_wrap_inline327:229.13805pt::229.13805pt::237.84499pt.
+l2hSize :tex2html_wrap_inline345:229.13805pt::229.13805pt::237.84499pt.
 [2
 
 
 ]
 File: img/ch1-compinside.eps Graphic file (type eps)
 <img/ch1-compinside.eps>
-l2hSize :tex2html_wrap_inline343:258.84859pt::258.84859pt::327.37811pt.
+l2hSize :tex2html_wrap_inline361:258.84859pt::258.84859pt::327.37811pt.
 [3
 
 
 ]
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 187.
+(Font)              <12> on input line 189.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 187.
+(Font)              <8> on input line 189.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 187.
-l2hSize :tex2html_wrap_inline817:7.75pt::0.0pt::15.60126pt.
+(Font)              <6> on input line 189.
+l2hSize :tex2html_wrap_inline921:7.75pt::0.0pt::15.60126pt.
 [4
 
 
 ]
-l2hSize :tex2html_wrap_inline1311:7.75pt::0.0pt::7.60133pt.
+l2hSize :tex2html_wrap_inline1466:7.75pt::0.0pt::7.60133pt.
 [5
 
 
 ]
 File: img/ch5-izpanel.eps Graphic file (type eps)
 <img/ch5-izpanel.eps>
-l2hSize :tex2html_wrap_inline1787:172.0281pt::172.0281pt::358.19814pt.
+l2hSize :tex2html_wrap_inline2122:172.0281pt::172.0281pt::358.19814pt.
 
-Overfull \hbox (12.58311pt too wide) in paragraph at lines 266--267
+Overfull \hbox (12.58311pt too wide) in paragraph at lines 275--276
 []|[] 
  []
 
@@ -251,36 +256,57 @@ Overfull \hbox (12.58311pt too wide) in paragraph at lines 266--267
 ]
 File: img/userInput-phone.eps Graphic file (type eps)
 <img/userInput-phone.eps>
-l2hSize :tex2html_wrap_inline2307:36.01999pt::36.01999pt::206.13pt.
+l2hSize :tex2html_wrap_inline2655:36.01999pt::36.01999pt::206.13pt.
 [7
 
 
 ]
 File: img/userInput-email.eps Graphic file (type eps)
 <img/userInput-email.eps>
-l2hSize :tex2html_wrap_inline2315:39.03123pt::39.03123pt::282.41501pt.
+l2hSize :tex2html_wrap_inline2663:39.03123pt::39.03123pt::282.41501pt.
 [8
 
 
 ]
 File: img/userInput-IP.eps Graphic file (type eps)
 <img/userInput-IP.eps>
-l2hSize :tex2html_wrap_inline2323:39.03123pt::39.03123pt::174.01001pt.
+l2hSize :tex2html_wrap_inline2671:39.03123pt::39.03123pt::174.01001pt.
 [9
 
 
 ]
 File: img/userInput-serial.eps Graphic file (type eps)
 <img/userInput-serial.eps>
-l2hSize :tex2html_wrap_inline2331:39.03123pt::39.03123pt::163.9725pt.
+l2hSize :tex2html_wrap_inline2679:39.03123pt::39.03123pt::163.9725pt.
 [10
 
 
 ]
 File: img/userInput-search.eps Graphic file (type eps)
 <img/userInput-search.eps>
-l2hSize :tex2html_wrap_inline2407:49.67116pt::49.67116pt::293.25659pt.
+l2hSize :tex2html_wrap_inline2755:49.67116pt::49.67116pt::293.25659pt.
 [11
+
+
+]
+File: img/CompilerListener.eps Graphic file (type eps)
+<img/CompilerListener.eps>
+l2hSize :tex2html_wrap_inline3025:41.03874pt::41.03874pt::126.83376pt.
+[12
+
+
+]
+File: img/InstallerListener.eps Graphic file (type eps)
+<img/InstallerListener.eps>
+l2hSize :tex2html_wrap_inline3045:85.20374pt::85.20374pt::182.04001pt.
+[13
+
+
+]
+File: img/UninstallerListener.eps Graphic file (type eps)
+<img/UninstallerListener.eps>
+l2hSize :tex2html_wrap_inline3067:60.10999pt::60.10999pt::132.85626pt.
+[14
 
 
 ] (./images.aux)
@@ -289,12 +315,12 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 2913 strings out of 95870
- 39795 string characters out of 1196419
- 94196 words of memory out of 1000001
- 5799 multiletter control sequences out of 10000+50000
+ 2924 strings out of 95370
+ 40282 string characters out of 1188186
+ 95470 words of memory out of 1000001
+ 5941 multiletter control sequences out of 10000+50000
  6376 words of font info for 23 fonts, out of 500000 for 1000
- 14 hyphenation exceptions out of 1000
- 25i,6n,21p,252b,313s stack positions out of 1500i,500n,5000p,200000b,5000s
+ 198 hyphenation exceptions out of 1000
+ 25i,6n,21p,252b,241s stack positions out of 1500i,500n,5000p,200000b,5000s
 
-Output written on images.dvi (11 pages, 9592 bytes).
+Output written on images.dvi (14 pages, 11880 bytes).

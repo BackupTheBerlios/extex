@@ -4,3 +4,6 @@ No implementation found for style `graphicx'
 No implementation found for style `hyperref'
 
 Substitution of arg to newlabelxx delayed.
+couldn't convert character /tilde into available encodings
+
+ ...set $ACCENT_IMAGES  to get an image 

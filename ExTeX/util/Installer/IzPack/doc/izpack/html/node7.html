@@ -27,26 +27,26 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation"><!--Navigation Panel-->
-<A NAME="tex2html397"
+<A NAME="tex2html461"
   HREF="node8.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html393"
+<A NAME="tex2html457"
   HREF="izpack-doc.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html387"
+<A NAME="tex2html451"
   HREF="node6.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html395"
+<A NAME="tex2html459"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>  
 <BR>
-<B> Next:</B> <A NAME="tex2html398"
+<B> Next:</B> <A NAME="tex2html462"
   HREF="node8.html">User Input</A>
-<B> Up:</B> <A NAME="tex2html394"
+<B> Up:</B> <A NAME="tex2html458"
   HREF="izpack-doc.html">izpack-doc</A>
-<B> Previous:</B> <A NAME="tex2html388"
+<B> Previous:</B> <A NAME="tex2html452"
   HREF="node6.html">Desktop Shortcuts</A>
- &nbsp; <B>  <A NAME="tex2html396"
+ &nbsp; <B>  <A NAME="tex2html460"
   HREF="node1.html">Contents</A></B> 
 <BR>
 <BR></DIV>
@@ -55,21 +55,21 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><A NAME="tex2html399"
+<LI><A NAME="tex2html463"
   HREF="node7.html#SECTION00710000000000000000">How It Works</A>
 <UL>
-<LI><A NAME="tex2html400"
+<LI><A NAME="tex2html464"
   HREF="node7.html#SECTION00711000000000000000">What You Need</A>
-<LI><A NAME="tex2html401"
+<LI><A NAME="tex2html465"
   HREF="node7.html#SECTION00712000000000000000">What You Have To Do</A>
 </UL>
 <BR>
-<LI><A NAME="tex2html402"
+<LI><A NAME="tex2html466"
   HREF="node7.html#SECTION00720000000000000000">The <TT>IzPanel</TT> Class</A>
 <UL>
-<LI><A NAME="tex2html403"
+<LI><A NAME="tex2html467"
   HREF="node7.html#SECTION00721000000000000000">UML Diagram</A>
-<LI><A NAME="tex2html404"
+<LI><A NAME="tex2html468"
   HREF="node7.html#SECTION00722000000000000000">Description</A>
 </UL></UL>
 <!--End of Table of Child-Links-->
@@ -149,8 +149,10 @@ Description</A>
 </H2>
 
 <P>
-The two data members are : the install data (refer to the <TT>InstallData</TT>
+The data members are : the install data (refer to the <TT>InstallData</TT>
 Javadoc reference) and a reference to the parent installer frame.
+Additional there are the initialFocus Component and some members for
+handling the grid bag constraint.
 <BR>
 <P>
 The methods have the following functionality :
@@ -194,36 +196,51 @@ The methods have the following functionality :
 <BR>
 <P>
 </LI>
-</UL>   
+<LI><TT>setInitialFocus</TT> with this method it is possible to set
+  a hint which component should be get the focus at activation of the
+  panel. It is only a hint. Not all components are supported. For more
+  information see java.awt.Component.requestFocusInWindow or 
+  java.awt.Component.requestFocus if the VM version is less than 1.4.
+<BR>
+<P>
+</LI>
+<LI><TT>getInitialFocus</TT> returns the component which should be get the
+  focos at activation of the panel. If no component was set, null returns.
+<BR>
+<P>
+</LI>
+</UL> Additional there are some helper methods to simplify grid bag layout handling
+and creation of some common used components.
+  
 <P>
 
 <DIV CLASS="navigation"><HR>
 <!--Navigation Panel-->
-<A NAME="tex2html397"
+<A NAME="tex2html461"
   HREF="node8.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html393"
+<A NAME="tex2html457"
   HREF="izpack-doc.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html387"
+<A NAME="tex2html451"
   HREF="node6.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html395"
+<A NAME="tex2html459"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>  
 <BR>
-<B> Next:</B> <A NAME="tex2html398"
+<B> Next:</B> <A NAME="tex2html462"
   HREF="node8.html">User Input</A>
-<B> Up:</B> <A NAME="tex2html394"
+<B> Up:</B> <A NAME="tex2html458"
   HREF="izpack-doc.html">izpack-doc</A>
-<B> Previous:</B> <A NAME="tex2html388"
+<B> Previous:</B> <A NAME="tex2html452"
   HREF="node6.html">Desktop Shortcuts</A>
- &nbsp; <B>  <A NAME="tex2html396"
+ &nbsp; <B>  <A NAME="tex2html460"
   HREF="node1.html">Contents</A></B> </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 Julien Ponge
-2004-07-28
+2005-04-22
 </ADDRESS>
 </BODY>
 </HTML>

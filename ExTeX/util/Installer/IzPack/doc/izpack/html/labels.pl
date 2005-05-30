@@ -6,6 +6,10 @@ $key = q/userInput:descriptiontag/;
 $external_labels{$key} = "$URL/" . q|node8.html|; 
 $noresave{$key} = "$nosave";
 
+$key = q/tag:antpropertyfile/;
+$external_labels{$key} = "$URL/" . q|node9.html|; 
+$noresave{$key} = "$nosave";
+
 $key = q/ant-integration/;
 $external_labels{$key} = "$URL/" . q|node5.html|; 
 $noresave{$key} = "$nosave";
@@ -62,12 +66,20 @@ $key = q/localization-element/;
 $external_labels{$key} = "$URL/" . q|node4.html|; 
 $noresave{$key} = "$nosave";
 
-$key = q/CC-license/;
-$external_labels{$key} = "$URL/" . q|node10.html|; 
-$noresave{$key} = "$nosave";
-
 $key = q/webinstaller/;
 $external_labels{$key} = "$URL/" . q|node5.html|; 
+$noresave{$key} = "$nosave";
+
+$key = q/cha:customactions/;
+$external_labels{$key} = "$URL/" . q|node9.html|; 
+$noresave{$key} = "$nosave";
+
+$key = q/CC-license/;
+$external_labels{$key} = "$URL/" . q|node11.html|; 
+$noresave{$key} = "$nosave";
+
+$key = q/tag:slashMasking/;
+$external_labels{$key} = "$URL/" . q|node4.html|; 
 $noresave{$key} = "$nosave";
 
 $key = q/packs-element/;
@@ -78,12 +90,32 @@ $key = q/jar-element/;
 $external_labels{$key} = "$URL/" . q|node4.html|; 
 $noresave{$key} = "$nosave";
 
+$key = q/tag:antuninsttarget/;
+$external_labels{$key} = "$URL/" . q|node9.html|; 
+$noresave{$key} = "$nosave";
+
+$key = q/sec:caPackaging/;
+$external_labels{$key} = "$URL/" . q|node9.html|; 
+$noresave{$key} = "$nosave";
+
 $key = q/tag:singlefile/;
 $external_labels{$key} = "$URL/" . q|node4.html|; 
 $noresave{$key} = "$nosave";
 
 $key = q/root-element/;
 $external_labels{$key} = "$URL/" . q|node4.html|; 
+$noresave{$key} = "$nosave";
+
+$key = q/tag:additionaldata/;
+$external_labels{$key} = "$URL/" . q|node4.html|; 
+$noresave{$key} = "$nosave";
+
+$key = q/tag:antproperty/;
+$external_labels{$key} = "$URL/" . q|node9.html|; 
+$noresave{$key} = "$nosave";
+
+$key = q/tag:anttarget/;
+$external_labels{$key} = "$URL/" . q|node9.html|; 
 $noresave{$key} = "$nosave";
 
 1;
@@ -97,8 +129,12 @@ $key = q/userInput:descriptiontag/;
 $external_latex_labels{$key} = q|6.2|; 
 $noresave{$key} = "$nosave";
 
+$key = q/tag:antpropertyfile/;
+$external_latex_labels{$key} = q|7.5.1|; 
+$noresave{$key} = "$nosave";
+
 $key = q/ant-integration/;
-$external_latex_labels{$key} = q|3.5|; 
+$external_latex_labels{$key} = q|3.6|; 
 $noresave{$key} = "$nosave";
 
 $key = q/tag:os/;
@@ -153,12 +189,20 @@ $key = q/localization-element/;
 $external_latex_labels{$key} = q|2.3.5|; 
 $noresave{$key} = "$nosave";
 
+$key = q/webinstaller/;
+$external_latex_labels{$key} = q|3.6|; 
+$noresave{$key} = "$nosave";
+
+$key = q/cha:customactions/;
+$external_latex_labels{$key} = q|7|; 
+$noresave{$key} = "$nosave";
+
 $key = q/CC-license/;
 $external_latex_labels{$key} = q|B|; 
 $noresave{$key} = "$nosave";
 
-$key = q/webinstaller/;
-$external_latex_labels{$key} = q|3.5|; 
+$key = q/tag:slashMasking/;
+$external_latex_labels{$key} = q|2.3.8|; 
 $noresave{$key} = "$nosave";
 
 $key = q/packs-element/;
@@ -169,12 +213,32 @@ $key = q/jar-element/;
 $external_latex_labels{$key} = q|2.3.10|; 
 $noresave{$key} = "$nosave";
 
+$key = q/tag:antuninsttarget/;
+$external_latex_labels{$key} = q|7.5.1|; 
+$noresave{$key} = "$nosave";
+
+$key = q/sec:caPackaging/;
+$external_latex_labels{$key} = q|7.3.1|; 
+$noresave{$key} = "$nosave";
+
 $key = q/tag:singlefile/;
 $external_latex_labels{$key} = q|2.3.8|; 
 $noresave{$key} = "$nosave";
 
 $key = q/root-element/;
 $external_latex_labels{$key} = q|2.3.1|; 
+$noresave{$key} = "$nosave";
+
+$key = q/tag:additionaldata/;
+$external_latex_labels{$key} = q|2.3.8|; 
+$noresave{$key} = "$nosave";
+
+$key = q/tag:antproperty/;
+$external_latex_labels{$key} = q|7.5.1|; 
+$noresave{$key} = "$nosave";
+
+$key = q/tag:anttarget/;
+$external_latex_labels{$key} = q|7.5.1|; 
 $noresave{$key} = "$nosave";
 
 1;

@@ -27,26 +27,26 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation"><!--Navigation Panel-->
-<A NAME="tex2html349"
+<A NAME="tex2html410"
   HREF="node6.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html345"
+<A NAME="tex2html406"
   HREF="izpack-doc.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html339"
+<A NAME="tex2html400"
   HREF="node4.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html347"
+<A NAME="tex2html408"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>  
 <BR>
-<B> Next:</B> <A NAME="tex2html350"
+<B> Next:</B> <A NAME="tex2html411"
   HREF="node6.html">Desktop Shortcuts</A>
-<B> Up:</B> <A NAME="tex2html346"
+<B> Up:</B> <A NAME="tex2html407"
   HREF="izpack-doc.html">izpack-doc</A>
-<B> Previous:</B> <A NAME="tex2html340"
+<B> Previous:</B> <A NAME="tex2html401"
   HREF="node4.html">Writing Installation XML Files</A>
- &nbsp; <B>  <A NAME="tex2html348"
+ &nbsp; <B>  <A NAME="tex2html409"
   HREF="node1.html">Contents</A></B> 
 <BR>
 <BR></DIV>
@@ -55,23 +55,25 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><A NAME="tex2html351"
+<LI><A NAME="tex2html412"
   HREF="node5.html#SECTION00510000000000000000">Ant Integration</A>
-<LI><A NAME="tex2html352"
-  HREF="node5.html#SECTION00520000000000000000">Automated Installers</A>
-<LI><A NAME="tex2html353"
-  HREF="node5.html#SECTION00530000000000000000">Picture on the Language Selection Dialog</A>
-<LI><A NAME="tex2html354"
-  HREF="node5.html#SECTION00540000000000000000">Picture in the installer</A>
-<LI><A NAME="tex2html355"
-  HREF="node5.html#SECTION00550000000000000000">Web Installers</A>
-<LI><A NAME="tex2html356"
-  HREF="node5.html#SECTION00560000000000000000">More Internationalization</A>
+<LI><A NAME="tex2html413"
+  HREF="node5.html#SECTION00520000000000000000">System properties as variable</A>
+<LI><A NAME="tex2html414"
+  HREF="node5.html#SECTION00530000000000000000">Automated Installers</A>
+<LI><A NAME="tex2html415"
+  HREF="node5.html#SECTION00540000000000000000">Picture on the Language Selection Dialog</A>
+<LI><A NAME="tex2html416"
+  HREF="node5.html#SECTION00550000000000000000">Picture in the installer</A>
+<LI><A NAME="tex2html417"
+  HREF="node5.html#SECTION00560000000000000000">Web Installers</A>
+<LI><A NAME="tex2html418"
+  HREF="node5.html#SECTION00570000000000000000">More Internationalization</A>
 <UL>
-<LI><A NAME="tex2html357"
-  HREF="node5.html#SECTION00561000000000000000">Special resources</A>
-<LI><A NAME="tex2html358"
-  HREF="node5.html#SECTION00562000000000000000">Packs</A>
+<LI><A NAME="tex2html419"
+  HREF="node5.html#SECTION00571000000000000000">Special resources</A>
+<LI><A NAME="tex2html420"
+  HREF="node5.html#SECTION00572000000000000000">Packs</A>
 </UL></UL>
 <!--End of Table of Child-Links-->
 <HR>
@@ -120,7 +122,7 @@ following parameters:
 <LI><TT>installerType</TT> : optional. <TT>standard</TT> or
     <TT>web</TT>. If <TT>web</TT>, the <TT>&lt;webdir&gt;</TT> attribute
     must be specified in the input file (see
-    section&nbsp;<A HREF="#webinstaller">3.5</A>). Used to force creation of a standard
+    section&nbsp;<A HREF="#webinstaller">3.6</A>). Used to force creation of a standard
     installer when the <TT>&lt;webdir&gt;</TT> attribute has been used.
 </LI>
 <LI><TT>baseDir</TT> : the base directory to resolve the relative paths
@@ -145,6 +147,24 @@ Here is a sample of the task invocation:
 <P>
 
 <H1><A NAME="SECTION00520000000000000000">
+System properties as variable</A>
+</H1>
+
+<P>
+All system properties are available as
+$SYSTEM_&lt;variable&gt; where &lt;variable&gt; is the actual name _BUT_ with
+all separators replaced by '_'. Properties with null values 
+are never stored.
+<BR>
+<P>
+Examples:
+<PRE>
+$SYSTEM_java_version or $SYSTEM_os_name
+</PRE>
+
+<P>
+
+<H1><A NAME="SECTION00530000000000000000">
 Automated Installers</A>
 </H1>
 
@@ -166,7 +186,7 @@ It has reproduced the same installation :-)
 <BR>
 <P>
 
-<H1><A NAME="SECTION00530000000000000000">
+<H1><A NAME="SECTION00540000000000000000">
 Picture on the Language Selection Dialog</A>
 </H1>
 
@@ -177,7 +197,7 @@ resource : <TT>installer.langsel.img</TT>. <SPAN  CLASS="textsl">GIF</SPAN>, <SP
 <BR>
 <P>
 
-<H1><A NAME="SECTION00540000000000000000">
+<H1><A NAME="SECTION00550000000000000000">
 Picture in the installer</A>
 </H1>
 
@@ -203,7 +223,7 @@ instance if you want a specific picture for the third panel, use
 <BR>
 <P>
 
-<H1><A NAME="SECTION00550000000000000000"></A>
+<H1><A NAME="SECTION00560000000000000000"></A>
 <A NAME="webinstaller"></A>
 <BR>
 Web Installers
@@ -222,7 +242,7 @@ downloading those required. It's that simple.
 <P>
 To create a web installer, add the <TT>&lt;webdir&gt;</TT> element to the
 <TT>&lt;info&gt;</TT> element (see section&nbsp;<A HREF="node4.html#info-element">2.3.2</A>). The text must
-be a valid, fully qualified URL for a directly on the web server.
+be a valid, fully qualified URL for a direcory on the web server.
 <BR>
 <P>
 <PRE>
@@ -251,13 +271,13 @@ required.
 
 <P>
 
-<H1><A NAME="SECTION00560000000000000000">
+<H1><A NAME="SECTION00570000000000000000">
 More Internationalization</A>
 </H1>
 
 <P>
 
-<H2><A NAME="SECTION00561000000000000000">
+<H2><A NAME="SECTION00571000000000000000">
 Special resources</A>
 </H2>
 
@@ -285,7 +305,7 @@ Same thing for the other Licence and Info panels.
 <BR>
 <P>
 
-<H2><A NAME="SECTION00562000000000000000">
+<H2><A NAME="SECTION00572000000000000000">
 Packs</A>
 </H2>
 
@@ -309,31 +329,31 @@ then the related entries of the langpacks will look like this:
 
 <DIV CLASS="navigation"><HR>
 <!--Navigation Panel-->
-<A NAME="tex2html349"
+<A NAME="tex2html410"
   HREF="node6.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html345"
+<A NAME="tex2html406"
   HREF="izpack-doc.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html339"
+<A NAME="tex2html400"
   HREF="node4.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html347"
+<A NAME="tex2html408"
   HREF="node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>  
 <BR>
-<B> Next:</B> <A NAME="tex2html350"
+<B> Next:</B> <A NAME="tex2html411"
   HREF="node6.html">Desktop Shortcuts</A>
-<B> Up:</B> <A NAME="tex2html346"
+<B> Up:</B> <A NAME="tex2html407"
   HREF="izpack-doc.html">izpack-doc</A>
-<B> Previous:</B> <A NAME="tex2html340"
+<B> Previous:</B> <A NAME="tex2html401"
   HREF="node4.html">Writing Installation XML Files</A>
- &nbsp; <B>  <A NAME="tex2html348"
+ &nbsp; <B>  <A NAME="tex2html409"
   HREF="node1.html">Contents</A></B> </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 Julien Ponge
-2004-07-28
+2005-04-22
 </ADDRESS>
 </BODY>
 </HTML>

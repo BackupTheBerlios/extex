@@ -1,5 +1,5 @@
 /*
- *  $Id: Info.java,v 1.1 2004/08/01 19:53:15 gene Exp $
+ *  $Id: Info.java,v 1.2 2005/05/30 16:35:00 gene Exp $
  *  IzPack
  *  Copyright (C) 2001-2004 Julien Ponge
  *
@@ -38,11 +38,13 @@ public class Info implements Serializable
   /**  The application name and version */
   private String appName = "", appVersion = "";
 
+  /** The installation subpath */
+  private String installationSubPath = null;
   /**  The application authors */
   private ArrayList authors = new ArrayList();
 
   /**  The application URL */
-  private String appURL = "";
+  private String appURL = null;
 
   /**  The required Java version (min) */
   private String javaVersion = "1.2";
@@ -256,4 +258,22 @@ public class Info implements Serializable
     }
 
   }
+  /**
+   * Gets the installation subpath.
+   * @return the installation subpath
+   */
+  public String getInstallationSubPath()
+  {
+    return installationSubPath;
+  }
+
+  /**
+   * Sets the installation subpath.
+   * @param string subpath to be set
+   */
+  public void setInstallationSubPath(String string)
+  {
+    installationSubPath = string;
+  }
+
 }

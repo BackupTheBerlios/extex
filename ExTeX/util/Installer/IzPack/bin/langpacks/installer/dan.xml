@@ -29,7 +29,7 @@
     <str id="HelloPanel.authors" txt="Forfatteren til denne applikation er : "/>
     <str id="HelloPanel.url" txt="Applikationens hjemmeside er : "/>
     
-    <str id="LicencePanel.info" txt="LÃ¦s venligst den følgende licensaftale:"/>
+    <str id="LicencePanel.info" txt="LÃ?s venligst den følgende licensaftale:"/>
     <str id="LicencePanel.agree" txt="Jeg accepterer vilkårene i licensaftalen."/>
     <str id="LicencePanel.notagree" txt="Jeg accepterer IKKE vilkårene i licensaftalen."/>
     <str id="LicencePanel.yes" txt="Ja"/>

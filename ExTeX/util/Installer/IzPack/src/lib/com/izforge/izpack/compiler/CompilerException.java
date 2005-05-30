@@ -1,5 +1,5 @@
 /*
- *  $Id: CompilerException.java,v 1.1 2004/08/01 19:53:16 gene Exp $
+ *  $Id: CompilerException.java,v 1.2 2005/05/30 16:35:15 gene Exp $
  *  IzPack
  *  Copyright (C) 2001,2002 Marcus Stursberg
  *
@@ -29,7 +29,7 @@ package com.izforge.izpack.compiler;
  *
  * @author     Marcus Stursberg
  */
-class CompilerException extends java.io.IOException
+public class CompilerException extends java.io.IOException
 {
   /**
    * The throwable that caused this throwable to get thrown, or null if this

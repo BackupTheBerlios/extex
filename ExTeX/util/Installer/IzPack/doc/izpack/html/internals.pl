@@ -6,6 +6,10 @@ $key = q/userInput:descriptiontag/;
 $ref_files{$key} = "$dir".q|node8.html|; 
 $noresave{$key} = "$nosave";
 
+$key = q/tag:antpropertyfile/;
+$ref_files{$key} = "$dir".q|node9.html|; 
+$noresave{$key} = "$nosave";
+
 $key = q/ant-integration/;
 $ref_files{$key} = "$dir".q|node5.html|; 
 $noresave{$key} = "$nosave";
@@ -62,12 +66,20 @@ $key = q/localization-element/;
 $ref_files{$key} = "$dir".q|node4.html|; 
 $noresave{$key} = "$nosave";
 
-$key = q/CC-license/;
-$ref_files{$key} = "$dir".q|node10.html|; 
-$noresave{$key} = "$nosave";
-
 $key = q/webinstaller/;
 $ref_files{$key} = "$dir".q|node5.html|; 
+$noresave{$key} = "$nosave";
+
+$key = q/cha:customactions/;
+$ref_files{$key} = "$dir".q|node9.html|; 
+$noresave{$key} = "$nosave";
+
+$key = q/CC-license/;
+$ref_files{$key} = "$dir".q|node11.html|; 
+$noresave{$key} = "$nosave";
+
+$key = q/tag:slashMasking/;
+$ref_files{$key} = "$dir".q|node4.html|; 
 $noresave{$key} = "$nosave";
 
 $key = q/packs-element/;
@@ -78,12 +90,32 @@ $key = q/jar-element/;
 $ref_files{$key} = "$dir".q|node4.html|; 
 $noresave{$key} = "$nosave";
 
+$key = q/tag:antuninsttarget/;
+$ref_files{$key} = "$dir".q|node9.html|; 
+$noresave{$key} = "$nosave";
+
+$key = q/sec:caPackaging/;
+$ref_files{$key} = "$dir".q|node9.html|; 
+$noresave{$key} = "$nosave";
+
 $key = q/tag:singlefile/;
 $ref_files{$key} = "$dir".q|node4.html|; 
 $noresave{$key} = "$nosave";
 
 $key = q/root-element/;
 $ref_files{$key} = "$dir".q|node4.html|; 
+$noresave{$key} = "$nosave";
+
+$key = q/tag:additionaldata/;
+$ref_files{$key} = "$dir".q|node4.html|; 
+$noresave{$key} = "$nosave";
+
+$key = q/tag:antproperty/;
+$ref_files{$key} = "$dir".q|node9.html|; 
+$noresave{$key} = "$nosave";
+
+$key = q/tag:anttarget/;
+$ref_files{$key} = "$dir".q|node9.html|; 
 $noresave{$key} = "$nosave";
 
 1;

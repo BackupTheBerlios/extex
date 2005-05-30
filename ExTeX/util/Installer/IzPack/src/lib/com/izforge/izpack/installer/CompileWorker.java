@@ -1,5 +1,5 @@
 /*
- *  $Id: CompileWorker.java,v 1.1 2004/08/01 19:53:15 gene Exp $
+ *  $Id: CompileWorker.java,v 1.2 2005/05/30 16:35:00 gene Exp $
  *  IzPack
  *  Copyright (C) 2001-2004 Julien Ponge, Tino Schwarze
  *
@@ -554,7 +554,7 @@ public class CompileWorker implements Runnable
   }
 
   /** a compilation job */
-  private class CompilationJob
+  private static class CompilationJob
   {
     private CompileHandler listener;
     private String name;

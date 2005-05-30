@@ -1,5 +1,5 @@
 /*
- *  $Id: IzPackKMetalTheme.java,v 1.1 2004/08/01 19:53:16 gene Exp $
+ *  $Id: IzPackKMetalTheme.java,v 1.2 2005/05/30 16:35:04 gene Exp $
  *  IzPack
  *  Copyright (C) 2001-2004 Julien Ponge
  *

@@ -2,12 +2,11 @@
 <!-- The German langpack -->
 <langpack>
     <!-- General installer strings -->
-    <str id="installer.title" txt="Installation von "/>
+    <str id="installer.title" txt="IzPack - Installation von "/>
     <str id="installer.next" txt="Weiter"/>
     <str id="installer.prev" txt="Zurück"/>
     <str id="installer.quit" txt="Beenden"/>
-<!--    <str id="installer.madewith" txt="(Erstellt mit IzPack - http://www.izforge.com/)"/> -->
-    <str id="installer.madewith" txt=""/>
+    <str id="installer.madewith" txt="(Erstellt mit IzPack - http://www.izforge.com/)"/>
     <str id="installer.quit.title" txt="Wollen Sie wirklich beenden?"/>
     <str id="installer.quit.message" txt="Die Installation wird jetzt abgebrochen!"/>
     <str id="installer.warning" txt="Warnung!"/>
@@ -18,13 +17,13 @@
 
     <!-- Uninstaller specific strings -->
     <str id="uninstaller.warning" txt="Jetzt werden die installierten Anwendungen entfernt!"/>
-    <str id="uninstaller.destroytarget" txt=" Deinstallation durchführen für "/>
+    <str id="uninstaller.destroytarget" txt="Lösche alle Dateien in "/>
     <str id="uninstaller.uninstall" txt="Deinstallieren"/>
 
     <!-- The strings for the 'official' IzPack plugins -->
     <str id="HelloPanel.welcome1" txt="Willkommen zur Installation von "/>
     <str id="HelloPanel.welcome2" txt="!"/>
-    <str id="HelloPanel.authors" txt="Die Autoren dieser Software sind: "/>
+    <str id="HelloPanel.authors" txt="Der(die) Autor(en) dieser Software ist(sind): "/>
     <str id="HelloPanel.url" txt="Die Homepage für diese Software: "/>
     <str id="LicencePanel.info" txt="Bitte lesen Sie die folgenden Lizenzvereinbarungen durch:"/>
     <str id="LicencePanel.agree" txt="Ja, ich stimme diesen Lizenzvereinbarungen zu."/>
@@ -32,19 +31,40 @@
     <str id="LicencePanel.yes" txt="Ja"/>
     <str id="LicencePanel.no" txt="Nein"/>
     <str id="InfoPanel.info" txt="Bitte lesen Sie die folgenden Informationen:"/>
+    
+    <str id="PathInputPanel.required" txt="Das gewählte Verzeichnis muss existieren."/>
+    <str id="PathInputPanel.notValid" txt="Das gewählte Verzeichnis enthält nicht das benötigte Produkt."/>
+
     <str id="TargetPanel.info" txt="Wählen Sie den Installationspfad:"/>
-    <str id="TargetPanel.browse" txt="Auswählen ..."/>
+    <str id="TargetPanel.browse" txt="Auswählen..."/>
     <str id="TargetPanel.warn" 
          txt="Das Verzeichnis existiert bereits! Sind Sie sicher, dass Sie in diesem Verzeichnis installieren wollen?"/>
     <str id="TargetPanel.empty_target"
          txt="Sie haben ein namenloses Ziel eingegeben! Wollen Sie fortfahren?"/>
+    <str id="TargetPanel.nodir"
+         txt="Sie haben ein Ziel eingegeben, welches kein Verzeichnis ist! Bitte wählen Sie ein Verzeichnis aus!"/>
+    <str id="TargetPanel.notwritable"
+         txt="Sie haben ein Ziel eingegeben, welches nicht beschreibbar ist! Bitte wählen Sie ein anderes Verzeichnis aus!"/>
     <str id="TargetPanel.createdir"
-         txt="Das folgende Verzeichnis wird erstellt:" />         
-         
+         txt="Das folgende Verzeichnis wird erstellt:" />
+
+    <str id="JDKPathPanel.intro" txt="Für den Betrieb des Produktes wird ein JDK benötigt. Eine Java-Runtime-Umgebung (JRE) ist nicht ausreichend."/>
+    <str id="JDKPathPanel.info" txt="Pfad des JDK-Verzeichnisses:"/>
+    <str id="JDKPathPanel.badVersion1" txt="Der gewählte JDK hat die falsche Version (vorhanden: "/>
+    <str id="JDKPathPanel.badVersion2" txt=" benötigt: "/>
+    <str id="JDKPathPanel.badVersion3" txt=") Soll der JDK trotzdem benutzt werden?"/>
+
     <str id="PacksPanel.info" txt="Bitte wählen Sie hier die Installationspakete aus:"/>
     <str id="PacksPanel.tip" txt="Hinweis: die grau markierten Pakete können nicht optional ausgewählt werden."/>
     <str id="PacksPanel.space" txt="Erforderlicher Speicherplatz: "/>
+    <str id="PacksPanel.freespace" txt="Verfügbarer Speicherplatz: "/>
     <str id="PacksPanel.description" txt="Beschreibung"/>
+    <str id="PacksPanel.dependencyList" 
+    	txt="Das Paket ist von folgenden Paketen abhängig, bitte wählen Sie diese zuerst aus:"/>
+    <str id="ImgPacksPanel.dependencyList" txt="Abhängigkeiten"/>
+    <str id="PacksPanel.notEnoughSpace" 
+    	txt="Der erforderliche Festplattenplatz für die Installation ist größer als der zur Verfügung stehende Speicherplatz."/>
+    <str id="PacksPanel.notAscertainable" txt="nicht bestimmbar"/>
     
     <str id="InstallPanel.info" txt="Starten Sie hier die Installation:"/>
     <str id="InstallPanel.install" txt="Installieren!"/>
@@ -86,8 +106,8 @@
     <str id="ShortcutPanel.textFile.iconIndex"    txt="Bildindex            : "/>
     <str id="ShortcutPanel.textFile.work"         txt="Arbeitsverzeichnis   : "/>
     <str id="ShortcutPanel.location.desktop"      txt="Desktop"/>
-    <str id="ShortcutPanel.location.applications" txt="Programm-Menü"/>
-    <str id="ShortcutPanel.location.startMenu"    txt="Start-Menü"/>
+    <str id="ShortcutPanel.location.applications" txt="Programm Menü"/>
+    <str id="ShortcutPanel.location.startMenu"    txt="Start Menü"/>
     <str id="ShortcutPanel.location.startup"      txt="Startup-Gruppe"/>
 
     <str id="UserInputPanel.error.caption"        txt="Eingabeproblem"/>
@@ -121,9 +141,17 @@
     <str id="CompilePanel.error.noclassfile" txt="Der Compiler hat keine Klassendatei erzeugt für die Quelldatei " />
     <str id="CompilePanel.error.compilernotfound" txt="Der Compiler konnte nicht gefunden werden." />
     <str id="CompilePanel.choose_compiler" txt="Zu verwendender Compiler:" />
-    <str id="CompilePanel.additional_arguments" txt="Zusätzliche Compiler-Parameter:" />
+    <str id="CompilePanel.additional_arguments" txt="Zusätzliche Compilerparameter:" />
 
     <str id="ProcessPanel.heading" txt="Prozesse" />
+
+    <!-- Strings for the summary of panels --- START -->
+    <str id="SummaryPanel.info" txt="Alle für die Installation notwendigen Daten liegen nun vor. Die wichtigsten sind nachfolgend aufgeführt. Klicken Sie auf &quot;Weiter&quot; um mit der Installation zu beginnen. "/>
+    <str id="TargetPanel.summaryCaption" txt="Installationspfad"/>
+    <str id="JDKPathPanel.summaryCaption" txt="Pfad des JDK-Verzeichnisses"/>
+    <str id="PacksPanel.summaryCaption" txt="Gewählte Installationspakete"/>
+    <str id="ImgPacksPanel.summaryCaption" txt="Gewählte Installationspakete"/>
+    <!-- Strings for the summary of panels --- END -->
 
     <!-- Add your own panels specific strings here if you need -->
 

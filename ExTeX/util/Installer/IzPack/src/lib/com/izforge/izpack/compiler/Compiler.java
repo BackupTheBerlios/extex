@@ -1,5 +1,5 @@
 /*
- *  $Id: Compiler.java,v 1.1 2004/08/01 19:53:16 gene Exp $
+ *  $Id: Compiler.java,v 1.2 2005/05/30 16:35:15 gene Exp $
  *  IzPack
  *  Copyright (C) 2001-2004 Julien Ponge
  *
@@ -14,6 +14,8 @@
  *
  *  Portions are Copyright (c) 2002 Paul Wilkinson
  *  paulw@wilko.com
+ *
+ *  Portions are Copyright (C) 2004 Gaganis Giorgos (geogka@it.teithe.gr)
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -41,15 +43,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.TreeMap;
-import java.util.Vector;
+import java.net.URLClassLoader;
+import java.util.*;
+import java.util.jar.JarInputStream;
+import java.util.zip.ZipEntry;
 
 import net.n3.nanoxml.NonValidator;
 import net.n3.nanoxml.StdXMLBuilder;
@@ -59,6 +56,7 @@ import net.n3.nanoxml.XMLElement;
 
 import org.apache.tools.ant.DirectoryScanner;
 
+import com.izforge.izpack.CustomData;
 import com.izforge.izpack.ExecutableFile;
 import com.izforge.izpack.GUIPrefs;
 import com.izforge.izpack.Info;
@@ -66,6 +64,7 @@ import com.izforge.izpack.PackFile;
 import com.izforge.izpack.Panel;
 import com.izforge.izpack.ParsableFile;
 import com.izforge.izpack.UpdateCheck;
+import com.izforge.izpack.event.CompilerListener;
 import com.izforge.izpack.installer.VariableSubstitutor;
 import com.izforge.izpack.util.Debug;
 import com.izforge.izpack.util.OsConstraint;
@@ -83,7 +82,7 @@ public class Compiler extends Thread
   public final static String VERSION = "1.0";
 
   /**  The IzPack version. */
-  public final static String IZPACK_VERSION = "3.6.0 (build 2004.07.28)";
+  public final static String IZPACK_VERSION = "3.7.2 (build 2005.04.22)";
 
   /**  Standard installer. */
   public final static String STANDARD = "standard";
@@ -117,6 +116,10 @@ public class Compiler extends Thread
 
   /**  The packager listener. */
   protected PackagerListener packagerListener;
+  
+  /** List of CompilerListeners which should be called 
+   * at packaging */
+  protected List compilerListeners;
 
   /** Collects and packs files into installation jars, as told. */
   private Packager packager = null;
@@ -198,6 +201,7 @@ public class Compiler extends Thread
     packager.setPackagerListener(packagerListener);
 
     // We add all the information
+    addCustomListeners(data);
     addVariables(data);
     addInfo(data);
     addGUIPrefs(data);
@@ -223,11 +227,12 @@ public class Compiler extends Thread
    *  Returns the GUIPrefs.
    *
    * @param  data           The XML data.
-   * @return                The GUIPrefs.
-   * @exception  Exception  Description of the Exception
+   * return                The GUIPrefs.
+   * @exception  CompilerException  Description of the Exception
    */
   protected void addGUIPrefs(XMLElement data) throws CompilerException
   {
+    notifyCompilerListener("addGUIPrefs", CompilerListener.BEGIN, data);
     // We get the XMLElement & the attributes
     XMLElement gp = data.getFirstChildNamed("guiprefs");
     GUIPrefs prefs = new GUIPrefs();
@@ -264,7 +269,16 @@ public class Compiler extends Thread
         }
         prefs.lookAndFeelParams.put(lafName, params);
       }
-
+      // Load modifier
+      it = gp.getChildrenNamed("modifier").iterator();
+      while (it.hasNext())
+      {
+        XMLElement curentModifier = (XMLElement)it.next();
+        String key  = requireAttribute(curentModifier, "key");
+        String value = requireAttribute(curentModifier, "value");
+        prefs.modifier.put(key, value);
+       
+      }
       // make sure jar contents of each are available in installer
       // map is easier to read/modify than if tree
       HashMap lafMap = new HashMap();
@@ -290,6 +304,7 @@ public class Compiler extends Thread
       }
     }
     packager.setGUIPrefs(prefs);
+    notifyCompilerListener("addGUIPrefs", CompilerListener.END, data);
   }
 
   /**
@@ -297,8 +312,9 @@ public class Compiler extends Thread
    *
    * @param  data           The XML data.
    */
-  protected void addJars(XMLElement data) throws CompilerException
+  protected void addJars(XMLElement data) throws Exception
   {
+    notifyCompilerListener("addJars", CompilerListener.BEGIN, data);
     Iterator iter = data.getChildrenNamed("jar").iterator();
     while (iter.hasNext())
     {
@@ -306,7 +322,22 @@ public class Compiler extends Thread
       String src = requireAttribute(el, "src");
       URL url = findProjectResource(src, "Jar file", el);
       packager.addJarContent(url);
-    }
+      // Additionals for mark a jar file also used in the uninstaller.
+      // The contained files will be copied from the installer into the 
+      // uninstaller if needed.
+      // Therefore the contained files of the jar should be in the installer also 
+      // they are used only from the uninstaller. This is the reason why the stage 
+      // wiil be only observed for the uninstaller.
+      String stage = el.getAttribute("stage");
+      if( stage != null && 
+        ( stage.equalsIgnoreCase("both") || stage.equalsIgnoreCase("uninstall")))
+      {
+        CustomData ca = new CustomData( null, 
+          getContainedFilePaths(url), null, CustomData.UNINSTALLER_JAR );
+        packager.addCustomJar( ca, url);  
+      }
+     }
+    notifyCompilerListener("addJars", CompilerListener.END, data);
   }
 
   /**
@@ -316,6 +347,8 @@ public class Compiler extends Thread
    */
   protected void addNativeLibraries(XMLElement data) throws Exception
   {
+    boolean needAddOns = false;
+    notifyCompilerListener("addNativeLibraries", CompilerListener.BEGIN, data);
     Iterator iter = data.getChildrenNamed("native").iterator();
     while (iter.hasNext())
     {
@@ -325,7 +358,37 @@ public class Compiler extends Thread
       String path = "bin/native/" + type + "/" + name;
       URL url = findIzPackResource(path, "Native Library", el);
       packager.addNativeLibrary(name, url);
+      // Additionals for mark a native lib also used in the uninstaller
+      // The lib will be copied from the installer into the uninstaller if needed.
+      // Therefore the lib should be in the installer also it is used only from
+      // the uninstaller. This is the reason why the stage wiil be only observed
+      // for the uninstaller.
+      String stage = el.getAttribute("stage");
+      List constraints = OsConstraint.getOsList(el);
+      if( stage != null && 
+        ( stage.equalsIgnoreCase("both") || stage.equalsIgnoreCase("uninstall")))
+      {
+        ArrayList al = new ArrayList();
+        al.add(name);
+        CustomData cad = new CustomData(null,al, constraints, CustomData.UNINSTALLER_LIB);
+        packager.addNativeUninstallerLibrary(cad);
+        needAddOns = true;
+      }
+      
     }
+    if( needAddOns )
+    {
+      // Add the uninstaller extensions as a resource if specified
+      XMLElement root = requireChildNamed(data, "info");
+      XMLElement uninstallInfo = root.getFirstChildNamed("uninstaller");
+      if (validateYesNoAttribute(uninstallInfo, "write", YES))
+      {
+        URL url = findIzPackResource("lib/uninstaller-ext.jar", "Uninstaller extensions", root);
+        packager.addResource("IzPack.uninstaller-ext", url);
+      }
+      
+    }
+    notifyCompilerListener("addNativeLibraries", CompilerListener.END, data);
   }
 
   /**
@@ -335,6 +398,7 @@ public class Compiler extends Thread
    */
   protected void addPacks(XMLElement data) throws CompilerException
   {
+    notifyCompilerListener("addPacks", CompilerListener.BEGIN, data);
     // Initialisation
     XMLElement root = requireChildNamed(data, "packs");
 
@@ -351,10 +415,11 @@ public class Compiler extends Thread
       // Trivial initialisations
       String name = requireAttribute(el, "name");
       String id = el.getAttribute("id");
+      boolean loose = "true".equalsIgnoreCase(el.getAttribute("loose", "false"));
       String description = requireChildNamed(el, "description").getContent();
       boolean required = requireYesNoAttribute(el, "required");
 
-      PackInfo pack = new PackInfo(name, id, description, required);
+      PackInfo pack = new PackInfo(name, id, description, required, loose);
       pack.setOsConstraints(OsConstraint.getOsList(el)); // TODO: unverified
       pack.setPreselected(validateYesNoAttribute(el, "preselected", YES));
 
@@ -388,13 +453,13 @@ public class Compiler extends Thread
         else if ("uninstall".equalsIgnoreCase(val))
           executable.executionStage = ExecutableFile.UNINSTALL;
 
-        // main class  of this executable
-        String executeClass = e.getAttribute("class");
-
         // type of this executable
         val = e.getAttribute("type", "bin");
         if ("jar".equalsIgnoreCase(val))
+        {
           executable.type = ExecutableFile.JAR;
+          executable.mainClass = e.getAttribute("class"); // executable class
+        }
 
         // what to do if execution fails
         val = e.getAttribute("failure", "ask");
@@ -433,14 +498,16 @@ public class Compiler extends Thread
         String targetdir = requireAttribute(f, "targetdir");
         List osList = OsConstraint.getOsList(f); // TODO: unverified
         int override = getOverrideValue(f);
+        Map additionals = getAdditionals(f);
+
 
         File file = new File(src);
         if (! file.isAbsolute())
           file = new File(basedir, src);
-
+        
         try
         {
-          addRecursively(file, targetdir, osList, override, pack);
+          addRecursively(file, targetdir, osList, override, pack, additionals);
         } catch (Exception x)
         {
           parseError(f, x.getMessage(), x);
@@ -456,6 +523,7 @@ public class Compiler extends Thread
         String target = requireAttribute(f, "target");
         List osList = OsConstraint.getOsList(f); // TODO: unverified
         int override = getOverrideValue(f);
+        Map additionals = getAdditionals(f);
 
         File file = new File(src);
         if (! file.isAbsolute())
@@ -463,7 +531,7 @@ public class Compiler extends Thread
 
         try
         {
-          pack.addFile(file, target, osList, override);
+          pack.addFile(file, target, osList, override, additionals);
         } catch (FileNotFoundException x)
         {
           parseError(f, x.getMessage(), x);
@@ -488,7 +556,8 @@ public class Compiler extends Thread
         String targetdir = requireAttribute(f, "targetdir");
         List osList = OsConstraint.getOsList(f); // TODO: unverified
         int override = getOverrideValue(f);
-        
+        Map additionals = getAdditionals(f);
+
         //  get includes and excludes
         Vector xcludesList = null;
         String[] includes = null;
@@ -514,6 +583,40 @@ public class Compiler extends Thread
           }
         }
 
+        // parse additional fileset attributes "includes" and "excludes" 
+        String [] toDo = new String[] {"includes", "excludes" };
+        // use the existing containers filled from include and exclude 
+        // and add the includes and excludes to it
+        String [][] containers =  new String[][] { includes, excludes };
+        for( int j = 0; j < toDo.length; ++j )
+        {
+          String inex = f.getAttribute(toDo[j]);
+          if( inex != null && inex.length() > 0  )
+          { // This is the same "splitting" as ant PatternSet do ...
+            StringTokenizer tok = new StringTokenizer(inex, ", ", false);
+            int newSize = tok.countTokens();
+            int k = 0;
+            String [] nCont = null;
+            if(containers[j] != null && containers[j].length > 0 )
+            { // old container exist; create a new which can hold all values 
+              // and copy the old stuff to the front
+              newSize += containers[j].length;
+              nCont = new String[newSize];
+              for(; k < containers[j].length; ++k)
+                nCont[k] = containers[j][k];
+            }
+            if( nCont == null ) // No container for old values created,
+              // create a new one.
+              nCont = new String[newSize];
+            for( ; k < newSize; ++k) 
+              // Fill the new one or expand the existent container
+              nCont[k] = tok.nextToken();
+            containers[j] = nCont;
+          }
+        }
+        includes = containers[0]; // push the new includes to the local var
+        excludes = containers[1]; // push the new excludes to the local var
+
         // scan and add fileset
         DirectoryScanner ds = new DirectoryScanner();
         ds.setIncludes(includes);
@@ -533,7 +636,8 @@ public class Compiler extends Thread
           try
           {
             String target = new File(targetdir, files[i]).getPath();
-            pack.addFile(new File(dir, files[i]), target, osList, override);
+            pack.addFile(new File(dir, files[i]), target, osList, 
+              override, additionals);
           } catch (FileNotFoundException x)
           {
             parseError(f, x.getMessage(), x);
@@ -544,7 +648,8 @@ public class Compiler extends Thread
           try
           {
             String target = new File(targetdir, dirs[i]).getPath();
-            pack.addFile(new File(dir, dirs[i]), target, osList, override);
+            pack.addFile(new File(dir, dirs[i]), target, osList,
+              override, additionals);
           } catch (FileNotFoundException x)
           {
             parseError(f, x.getMessage(), x);
@@ -582,11 +687,130 @@ public class Compiler extends Thread
         pack.addUpdateCheck(
           new UpdateCheck(includesList, excludesList, casesensitive));
       }
+      //We get the dependencies
+      iter = el.getChildrenNamed("depends").iterator();
+      while (iter.hasNext())
+      {
+        XMLElement dep = (XMLElement) iter.next();
+        String depName = requireAttribute(dep,"packname");
+        pack.addDependency(depName);
+
+      }
 
       // We add the pack
       packager.addPack(pack);
     }
+    checkDependencies(packager.getPacksList());
+
+    notifyCompilerListener("addPacks", CompilerListener.END, data);
   }
+  /**
+   * Checks whether the dependencies stated in the configuration file are
+   * correct. Specifically it checks that no pack point to a non existent
+   * pack and also that there are no circular dependencies in the packs.
+   */
+  public void checkDependencies(List packs) throws CompilerException
+  {
+    // Because we use package names in the configuration file we assosiate
+    // the names with the objects
+    Map names = new HashMap();
+    for (int i = 0; i < packs.size(); i++)
+    {
+      PackInfo pack = (PackInfo) packs.get(i);
+      names.put(pack.getPack().name,pack);
+    }
+    int result = dfs(packs,names);
+    //@todo More informative messages to include the source of the error
+    if(result == -2)
+      parseError("Circular dependency detected");
+    else if(result == -1)
+      parseError("A dependency doesn't exist");
+  }
+  /** We use the dfs graph search algorithm to check whether the graph
+   * is acyclic as described in:
+   * Thomas H. Cormen, Charles Leiserson, Ronald Rivest and Clifford Stein. Introduction
+   * to algorithms 2nd Edition 540-549,MIT Press, 2001
+   * @param packs The graph
+   * @param names The name map
+   * @return
+   */
+  private int dfs(List packs,Map names)
+  {
+    Map edges = new HashMap();
+    for (int i = 0; i < packs.size(); i++)
+    {
+      PackInfo pack = (PackInfo) packs.get(i);
+      if(pack.colour == PackInfo.WHITE)
+      {
+        if(dfsVisit(pack,names,edges)!=0)
+          return -1;
+      }
+
+    }
+    return checkBackEdges(edges);
+  }
+  /**
+   * This function checks for the existence of back edges.
+   */
+  private int checkBackEdges(Map edges)
+  {
+    Set keys = edges.keySet();
+    for (Iterator iterator = keys.iterator(); iterator.hasNext();)
+    {
+      final Object key = iterator.next();
+      int color = ((Integer) edges.get(key)).intValue();
+      if(color == PackInfo.GREY)
+      {
+        return -2;
+      }
+    }
+    return 0;
+
+  }
+  /**
+   * This class is used for the classification of the edges
+   */
+  private class Edge
+  {
+    PackInfo u;
+    PackInfo v;
+    Edge(PackInfo u,PackInfo v)
+    {
+      this.u = u;
+      this.v = v;
+    }
+  }
+  private int dfsVisit(PackInfo u,Map names,Map edges)
+  {
+    u.colour = PackInfo.GREY;
+    List deps = u.getDependencies();
+    if (deps != null)
+    {
+      for (int i = 0; i < deps.size(); i++)
+      {
+        String name = (String) deps.get(i);
+        PackInfo v = (PackInfo)names.get(name);
+        if(v == null)
+          return -1;
+        Edge edge = new Edge(u,v);
+        if(edges.get(edge) == null)
+          edges.put(edge,new Integer(v.colour));
+
+        if(v.colour == PackInfo.WHITE)
+        {
+
+          final int result = dfsVisit(v,names,edges);
+          if(result != 0)
+            return result;
+        }
+      }
+    }
+    u.colour = PackInfo.BLACK;
+    return 0;
+  }
+
+
+
 
   /**
    *  Recursive method to add files in a pack.
@@ -596,25 +820,28 @@ public class Compiler extends Thread
    * @param  osList         The target OS constraints.
    * @param  override       Overriding behaviour.
    * @param  pack           Pack to be packed into
+   * @param  additionals    Map which contains additional data
    * @exception FileNotFoundException if the file does not exist
    */
   protected void addRecursively(File file, String targetdir,
-                                List osList, int override, PackInfo pack)
+                                List osList, int override, 
+                                PackInfo pack, Map additionals)
     throws IOException
   {
     String targetfile = targetdir + "/" + file.getName();
     if (! file.isDirectory())
-      pack.addFile(file, targetfile, osList, override);
+      pack.addFile(file, targetfile, osList, override, additionals);
     else
     {
       File[] files = file.listFiles();
       if (files.length == 0) // The directory is empty so must be added
-        pack.addFile(file, targetfile, osList, override);
+        pack.addFile(file, targetfile, osList, override, additionals);
       else
       {
         // new targetdir = targetfile;
         for (int i = 0; i < files.length; i++)
-          addRecursively(files[i], targetfile, osList, override, pack);
+          addRecursively(files[i], targetfile, osList, override, 
+            pack, additionals);
       }
     }
   }
@@ -624,10 +851,11 @@ public class Compiler extends Thread
    * the Packager.
    *
    * @param  data           The XML data.
-   * @exception  Exception  Description of the Exception
+   * @exception  CompilerException  Description of the Exception
    */
   protected void addPanels(XMLElement data) throws CompilerException
   {
+    notifyCompilerListener("addPanels", CompilerListener.BEGIN, data);
     XMLElement root = requireChildNamed(data, "panels");
 
     // at least one panel is required
@@ -644,15 +872,28 @@ public class Compiler extends Thread
       // create the serialized Panel data
       Panel panel = new Panel();
       panel.osConstraints = OsConstraint.getOsList(xmlPanel);
-      panel.className = xmlPanel.getAttribute("classname");
+      String className = xmlPanel.getAttribute("classname");
 
       // Panel files come in jars packaged w/ IzPack
-      String jarPath = "bin/panels/" + panel.className + ".jar";
+      String jarPath = "bin/panels/" + className + ".jar";
       URL url = findIzPackResource(jarPath, "Panel jar file", xmlPanel);
-
+      String fullClassName = null;
+      try
+      {
+        fullClassName = getFullClassName(url, className);
+      }
+      catch (Exception e)
+      {
+        ;
+      }
+      if( fullClassName != null)
+        panel.className = fullClassName;
+      else
+        panel.className = className;
       // insert into the packager
       packager.addPanelJar(panel, url);
     }
+    notifyCompilerListener("addPanels", CompilerListener.END, data);
   }
 
   /**
@@ -663,6 +904,7 @@ public class Compiler extends Thread
    */
   protected void addResources(XMLElement data) throws CompilerException
   {
+    notifyCompilerListener("addResources", CompilerListener.BEGIN, data);
     XMLElement root = data.getFirstChildNamed("resources");
     if (root == null)
       return;
@@ -718,6 +960,7 @@ public class Compiler extends Thread
 
       packager.addResource(id, url);
     }
+    notifyCompilerListener("addResources", CompilerListener.END, data);
   }
 
   /**
@@ -729,6 +972,7 @@ public class Compiler extends Thread
   protected void addLangpacks(XMLElement data)
     throws CompilerException
   {
+    notifyCompilerListener("addLangpacks", CompilerListener.BEGIN, data);
     XMLElement root = requireChildNamed(data, "locale");
 
     // at least one langpack is required
@@ -752,17 +996,19 @@ public class Compiler extends Thread
       
       packager.addLangPack(iso3, iso3xmlURL, iso3FlagURL);
     }
+    notifyCompilerListener("addLangpacks", CompilerListener.END, data);
   }
 
   /**
    *  Builds the Info class from the XML tree.
    *
    * @param  data           The XML data.
-   * @return                The Info.
+   * return                The Info.
    * @exception  Exception  Description of the Exception
    */
   protected void addInfo(XMLElement data) throws Exception
   {
+    notifyCompilerListener("addInfo", CompilerListener.BEGIN, data);
     // Initialisation
     XMLElement root = requireChildNamed(data, "info");
 
@@ -770,10 +1016,20 @@ public class Compiler extends Thread
     String temp = null;
     info.setAppName(requireContent(requireChildNamed(root, "appname")));
     info.setAppVersion(requireContent(requireChildNamed(root, "appversion")));
+    // We get the installation subpath
+    XMLElement subpath = root.getFirstChildNamed("appsubpath");
+    if(subpath != null)
+    {
+      info.setInstallationSubPath(requireContent(subpath));
+    }
 
     // validate and insert app URL
-    URL appURL = requireURLContent(requireChildNamed(root, "url"));
-    info.setAppURL(appURL.toString());
+    final XMLElement URLElem = root.getFirstChildNamed("url");
+    if(URLElem != null)
+    {
+      URL appURL = requireURLContent(URLElem);
+      info.setAppURL(appURL.toString());
+    }
 
     // We get the authors list
     XMLElement authors = root.getFirstChildNamed("authors");
@@ -820,6 +1076,7 @@ public class Compiler extends Thread
     }
 
     packager.setInfo(info);
+    notifyCompilerListener("addInfo", CompilerListener.END, data);
   }
 
   /**
@@ -833,10 +1090,11 @@ public class Compiler extends Thread
    *  variable declared in this can be referred to in parsable files.
    *
    * @param  data           The XML data.
-   * @exception  Exception  Description of the Exception
+   * @exception  CompilerException  Description of the Exception
    */
   protected void addVariables(XMLElement data) throws CompilerException
   {
+    notifyCompilerListener("addVariables", CompilerListener.BEGIN, data);
     // We get the varible list
     XMLElement root = data.getFirstChildNamed("variables");
     if (root == null)
@@ -854,6 +1112,7 @@ public class Compiler extends Thread
         parseWarn(var, "Variable '" + name + "' being overwritten");
       variables.setProperty(name, value);
     }
+    notifyCompilerListener("addVariables", CompilerListener.END, data);
   }
 
   /**
@@ -924,7 +1183,6 @@ public class Compiler extends Thread
     return override;
   }
 
-  
   /**
    * Look for a project specified resources, which, if not absolute, are sought
    * relative to the projects basedir. The path should use '/' as the
@@ -996,7 +1254,19 @@ public class Compiler extends Thread
 
     return url;
   }
-
+  /**
+   * Create parse error with consistent messages. Includes file name. For use
+   * When parent is unknown.
+   *
+   * @param message Brief message explaining error
+   */
+  protected void parseError(String message)
+    throws CompilerException
+  {
+    this.compileFailed = true;
+    throw new CompilerException(
+      filename + ":" + message);
+  }
   /**
    * Create parse error with consistent messages. Includes file name and line #
    * of parent. It is an error for 'parent' to be null.
@@ -1357,6 +1627,245 @@ public class Compiler extends Thread
     // Closes the JVM
     System.exit(exitCode);
   }
+
+  //-------------------------------------------------------------------------
+  //------------- Listener stuff ------------------------- START ------------
+
+  /**
+   * This method parses install.xml for defined listeners and put they
+   * to the right position. If posible, the listeners will be validated.
+   * Listener declaration is a fragmention in install.xml like : <listeners>
+   * <listener compiler="PermissionCompilerListener" installer="PermissionInstallerListener"/> 
+   * </<listeners>
+   *
+   * @param  data  the XML data
+   * @exception  Exception  Description of the Exception
+   */
+  private void addCustomListeners(XMLElement data) throws Exception
+  {
+    compilerListeners = new ArrayList();
+    // We get the listeners
+    XMLElement root = data.getFirstChildNamed("listeners");
+    if (root == null)
+      return;
+    Iterator iter = root.getChildrenNamed("listener").iterator();
+    while (iter.hasNext())
+    {
+      
+      XMLElement xmlAction = (XMLElement) iter.next();
+      Object [] listener = getCompilerListenerInstance( xmlAction);
+      if( listener != null)
+        addCompilerListener((CompilerListener) listener[0] );
+      String [] typeNames = new String[] {"installer", "uninstaller"};
+      int [] types = new int[] {CustomData.INSTALLER_LISTENER, CustomData.UNINSTALLER_LISTENER};
+      for( int i = 0; i < typeNames.length; ++i )
+      {
+        String className = xmlAction.getAttribute(typeNames[i]);
+        if( className != null )
+        {
+          String jarPath = "bin/customActions/" + className + ".jar";
+          URL url = findIzPackResource(jarPath, "CustomAction jar file", xmlAction);
+          CustomData ca = new CustomData( getFullClassName(url, className), 
+            getContainedFilePaths(url), OsConstraint.getOsList(xmlAction), types[i] );
+          packager.addCustomJar( ca, url);  
+        }
+      }
+    }
+    
+  }
+
+  /**
+   * Returns a list which contains the pathes of all
+   * files which are included in the given url.
+   * This method expects as the url param a jar. 
+   * @param url url of the jar file
+   * @return full qualified paths of the contained files
+   * @throws Exception
+   */
+  private List getContainedFilePaths(URL url) 
+    throws Exception
+  {
+    JarInputStream jis = new JarInputStream(url.openStream());
+    ZipEntry zentry = null;
+    String fullName = null;
+    ArrayList fullNames = new ArrayList();
+    while ( (zentry = jis.getNextEntry()) != null)
+    {
+      String name = zentry.getName();
+      // Add only files, no directory entries.
+      if( ! zentry.isDirectory())
+        fullNames.add(name);
+    }
+    jis.close();
+    return( fullNames );
+  }
+
+  /**
+   * Returns the qualified class name for the given class.
+   * This method expects as the url param a jar file which contains
+   * the given class. It scans the zip entries of the jar file.
+   * @param url url of the jar file which contains the class
+   * @param className short name of the class for which the full name 
+   * should be resolved
+   * @return full qualified class name
+   * @throws Exception
+   */
+  private String getFullClassName(URL url, String className) 
+    throws Exception
+  {
+    JarInputStream jis = new JarInputStream(url.openStream());
+    ZipEntry zentry = null;
+    String fullName = null;
+    while ( (zentry = jis.getNextEntry()) != null)
+    {
+      String name = zentry.getName();
+      int lastPos = name.lastIndexOf(".class");
+      if( lastPos < 0 )
+      {
+        continue; // No class file.
+      }
+      name = name.replace('/', '.');
+      int pos = -1;
+      if( className != null  )
+      {
+        pos = name.indexOf(className);
+      }
+      if( name.length()  == pos + className.length() + 6 ) // "Main" class found
+      {
+        jis.close();
+        return(name.substring(0, lastPos));
+      }
+    }
+    jis.close();
+    return( null );
+  }
+
+  /**
+   * Returns the compiler listener which is defined in the xml
+   * element. As xml element a "listner" node will be expected.
+   * Additional it is expected, that "findIzPackResource" returns
+   * an url based on "bin/customActions/[className].jar". The 
+   * class will be loaded via an URLClassLoader.
+   * @param var the xml element of the "listener" node
+   * @return instance of the defined compiler listener
+   * @throws Exception
+   */
+  private Object [] getCompilerListenerInstance( XMLElement var ) throws Exception
+  {
+    final String defaultRootPath = "com.izforge.izpack.";
+    final String defaultCompilerPath = "compiler.";
+    String className = var.getAttribute("compiler");
+    Class listener = null;
+    Object instance = null;
+    if( className == null )
+      return(null);
+      
+    // CustomAction files come in jars packaged  IzPack
+    String jarPath = "bin/customActions/" + className + ".jar";
+    URL url = findIzPackResource(jarPath, "CustomAction jar file", var);
+    String fullName = getFullClassName(url, className);
+    if( url != null )
+    {
+      if(getClass().getResource("/" + jarPath) != null )
+      { // Oops, standalone, URLClassLoader will not work ...
+        // Write the jar to a temp file.
+        InputStream in = null;
+        FileOutputStream outFile = null;
+        byte[] buffer = new byte[5120];
+        File tf = null;
+        try
+        {
+          tf = File. createTempFile("izpj", ".jar");
+          tf.deleteOnExit();
+          outFile = new FileOutputStream(tf);
+          in = getClass().getResourceAsStream("/" + jarPath);
+          long bytesCopied = 0;
+          int bytesInBuffer;
+          while ((bytesInBuffer = in.read(buffer)) != -1)
+          {
+            outFile.write(buffer, 0, bytesInBuffer);
+            bytesCopied += bytesInBuffer;
+          }
+        }
+        finally
+        {
+          if( in != null )
+            in.close();
+          if( outFile != null )
+          outFile.close();
+       }
+       url = tf.toURL();
+       
+      }
+      // Use the class loader of the interface as parent, else
+      // compile will fail at using it via an Ant task.
+      URLClassLoader ucl = new URLClassLoader( new URL[] {url}, 
+        CompilerListener.class.getClassLoader() );
+      listener = ucl.loadClass(fullName);
+    }
+    if( listener != null )
+      instance = listener.newInstance();
+    else
+      parseError(var, "Cannot find defined compiler listener " + className);
+    if( !  CompilerListener.class.isInstance(instance) )
+      parseError(var, "'" + className + "' must be implemented " + CompilerListener.class.toString());
+    List constraints = OsConstraint.getOsList(var);
+    return( new Object[] {instance, className, constraints} );
+  }
+
+  /**
+   * Add a CompilerListener.
+   * A registered CompilerListener will be called at every
+   * enhancmend point of compiling.
+   * @param pe CompilerListener which should be added
+   */
+  private void addCompilerListener(CompilerListener pe)
+  {
+      compilerListeners.add(pe);
+  }
+  
+  /**
+   * Calls all defined compile listeners notify method with the given data
+   * @param callerName name of the calling method as string
+   * @param state CompileListener.BEGIN or END
+   * @param data current install data
+   * @throws CompilerException
+   */
+  private void notifyCompilerListener( String callerName, 
+    int state, XMLElement data ) throws CompilerException 
+  {
+    Iterator i = compilerListeners.iterator();
+    while( i != null && i.hasNext())
+    {
+      ((CompilerListener)i.next()).notify(callerName, state, data, packager);
+    }
+
+  }
+  /**
+   * Calls the reviseAdditionalDataMap method of all registered
+   * CompilerListener's. 
+   * @param f file releated  XML node
+   * @return a map with the additional attributes
+   */
+  private Map getAdditionals(XMLElement f) throws CompilerException
+  {
+    Iterator i = compilerListeners.iterator();
+    Map retval = null;
+    try
+    {
+      while( i != null && i.hasNext())
+      {
+        retval = ((CompilerListener)i.next()).reviseAdditionalDataMap(retval, f);
+      }
+    }
+    catch(CompilerException ce)
+    {
+      parseError(f, ce.getMessage());
+    }
+    return( retval);
+  }
+  //-------------------------------------------------------------------------
+  //------------- Listener stuff ------------------------- END ------------
 
   /**
    *  Used to handle the packager messages in the command-line mode.

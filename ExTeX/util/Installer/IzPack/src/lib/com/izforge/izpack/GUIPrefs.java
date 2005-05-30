@@ -1,5 +1,5 @@
 /*
- *  $Id: GUIPrefs.java,v 1.1 2004/08/01 19:53:15 gene Exp $
+ *  $Id: GUIPrefs.java,v 1.2 2005/05/30 16:35:00 gene Exp $
  *  IzPack
  *  Copyright (C) 2001-2004 Julien Ponge
  *
@@ -50,4 +50,7 @@ public class GUIPrefs implements Serializable
   
   /** Specifies the OS Look and Feels optionnal parameters. */
   public Map lookAndFeelParams = new TreeMap();
+
+  /** Specifies the modifier. */
+  public Map modifier = new TreeMap();
 }

@@ -1,5 +1,5 @@
 /*
- *  $Id: ResourceNotFoundException.java,v 1.1 2004/08/01 19:53:15 gene Exp $
+ *  $Id: ResourceNotFoundException.java,v 1.2 2005/05/30 16:35:00 gene Exp $
  *  IzPack
  *  Copyright (C) 2001,2002 Marcus Stursberg
  *
@@ -29,24 +29,25 @@ package com.izforge.izpack.installer;
  *
  * @author     Marcus Stursberg
  */
-class ResourceNotFoundException extends java.io.IOException
+
+public class ResourceNotFoundException extends Exception
 {
 
 
-  /**  creates a new ResourceNotFoundException */
-  public ResourceNotFoundException()
-  {
-    super();
-  }
+ /**  creates a new ResourceNotFoundException */
+ public ResourceNotFoundException()
+ {
+   super();
+ }
 
 
-  /**
-   *  creates a new ResourceNotFoundException
-   *
-   * @param  s  description of the exception
-   */
-  public ResourceNotFoundException(String s)
-  {
-    super(s);
-  }
+ /**
+  *  creates a new ResourceNotFoundException
+  *
+  * @param  s  description of the exception
+  */
+ public ResourceNotFoundException(String s)
+ {
+   super(s);
+ }
 }

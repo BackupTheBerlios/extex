@@ -1,5 +1,95 @@
 [ The list of the different public versions of IzPack ]
 
+  > 3.7.2 (build 2005.04.22)
+
+- IoHelper.getPrimaryGroup: bugfix for SunOS (Klaus Bartz).
+- Russian langpack fixes (Alexey Makhmutov).
+- Swedish langpack update (Nils Nordman).
+- Spanish langpack update (Juan Alvarez).
+- UserInputPanel: made 'instanceNumber' a protected atribute (patch #406,
+  Andreas Breiter).
+
+  > 3.7.1 (build 2005.02.15)
+
+- The Danish langpack was empty by mistake in 3.7.0.
+- Silent installations fix (Oscar Sierra).
+- Free disk space bugfix on Solaris (Oscar Sierra).
+- Installation runable with VM versions < 1.4 again (Klaus Bartz) 
+  (implementation for bug #2268 changed).
+- Italian langpack fixes (Fabrice Mirabille).
+- UserInputPanel: bug fixes by Per Abich (bugs #3233 and #3283).
+- Russian langpack fixes (Alexey Makhmutov).
+- ProcessPanel log file creation fix on Win32 (Anthony Xin Chen).
+- IoHelper.getenv: on Windows keys are not case sensitive (Klaus Bartz).
+
+  > 3.7.0 (build 2005.01.11)
+
+- Adding custom action stuff for packaging, installation and uninstallation
+  (Klaus Bartz).
+- The packs files can now be located on disk if needed, for instance to install
+  an application located on a live cd (Erik Artzmark).
+- The attributes "includes" and "excludes" now are supported for filesets
+  (Klaus Bartz).
+- As many sensitive clean-ups as possible have been made after a FindBugs run.
+- Support of native libraries and additional jar files in the uninstaller (Klaus Bartz).
+- InfoPanel: variables substitution is now allowed (Borje Jonsson).
+- InstallPanel supports internationalized package names (Gaganis Giorgos).
+- Support for package dependencies (Gaganis Giorgos).
+- ShortcutPanel: can be optionally skipped on non-supported platforms.
+- PacksPanels: free disk space stuff (Klaus Bartz).
+- New Malaysian langpack (Redhuan Daniel Oon).
+- System properties can now be used as variables (Borje Jonsson).
+- New Norwegian langpack (Mohammed Sourouri).
+- New Chinese langpack (Xi Ping Wang).
+- The language selection box will now appear in the Windows tasks list (Harald
+  Spfle).
+- Spanish langpack update (David Perez Carmona).
+- Fix that prevented the correct detection of OS X.
+- Custom actions for ant calls (Klaus Bartz).
+- IzPanel.setInitialFocus( Component ) stuff added (Klaus Bartz).
+- Configurable button and label icons (Klaus Bartz).
+- Configurable subpath for $INSTALL_PATH default (Klaus Bartz).
+- New base class PathInputPanle for TargetPanel; new JDKPathPanel (Klaus Bartz).
+- Common helper in IzPanel (Klaus Bartz).
+- JGoodies loading fix.
+- Unified OS detection in OsVersion (Hani Suleiman).
+- Default installation path on unix now checks for writable 'usr/local' instead
+  of 'root' username (Hani Suleiman).
+- Removed incomplete and non-functional support for Mac OS9 (Hani Suleiman).
+- Fixed punctuation and some wording in English langpack (Hani Suleiman).
+- Logfile for ProcessPanel (Klaus Bartz).
+- Automatic scrolling of ProcessPanel output (Anthony Xin Chen).
+- Fixed bug parsing some brace enclosed variables (Chad McHenry) (bug #2451).
+- New Serbian translation (Filip Brcic).
+- Bug at loading Panels from other packages fixed (Klaus Bartz).
+- Unix (KDE/Gnome) shortcuts support (Marc Eppelmann).
+- ShortcutPanel: going to a previous panel could lead to strange situations
+  (bug #2713).
+- Installers: avoid showing an empty JFrame behind the languages selection
+  dialog (observed on X11).
+- UserInputPanel: the autodetect button is hidden if not needed 
+  (Michael Hagedorn).
+- A tutorial is now available.
+- New Czech langpack (Jan Pavlovic).
+- German langpack: the uninstaller checkbox string was confusing about the
+  uninstaller performing a full deletion, including the files not unpacked
+  by an IzPack installer.
+- Liquid LnF: version bump (0.2.9-alpha5).
+
+  > 3.6.1 (build 2004.10.09)
+
+- Slovak translation updates (Milan Madzia).
+- Java class execution bug fix (Erik Artzmark).
+- ImgPacksPanel was not aware of i18n by using the packsLang.xml_xxx resource.
+- Portuguese langpack updates (Flavio Fonseca).
+- Blocking the GUI interaction (like in InstallPanel) was only working with the
+  mouse events. It now works with the keyboard ones too (Eduard Jodas Samper).
+- TargetPanel: refuse selecting read-only directories.
+- Documentation fixes.
+- TargetPanel: more sanity checks (Andreas Vox).
+- InstallPanel: register errors as failures (Andreas Vox).
+- Polish translation updates (Bronek Truzkowski).
+
   > 3.6.0 (build 2004.07.28)
 
 - New Danish langpack (Frank Bille Jensen).
@@ -34,14 +124,14 @@
 - added 'defaultexcludes' attribute to <fileset> (Chad McHenry)
 - More elements in dtd are optional, fixed bugs causing errors if certain
   optional elements were omitted. (Chad McHenry)
-- It is now possible to have a specific picture for a specific panel by using 
+- It is now possible to have a specific picture for a specific panel by using
   the Installer.image.n resources where n is the panel 0-based index.
   (Peter Mikula).
 - Adding support for i18n to the pack panel (Thorsten Kamann)
-- Removing limtation the going backward is disabled if a pack not selected and 
+- Removing limtation the going backward is disabled if a pack not selected and
   the pack using a panel (Thorsten Kamann)
 - Adding support for floating text in a langpack file (Thorsten Kamann).
-- At now you can specify a processor class to pre process the set value of a 
+- At now you can specify a processor class to pre process the set value of a
   RuleInputField (Thorsten Kamann).
 - The choices of a combo box can be generated throug a processor class
   (Thorsten Kamann).

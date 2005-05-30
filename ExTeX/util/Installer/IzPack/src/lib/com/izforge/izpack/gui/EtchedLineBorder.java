@@ -1,5 +1,5 @@
 /*
- * $Id: EtchedLineBorder.java,v 1.1 2004/08/01 19:53:16 gene Exp $
+ * $Id: EtchedLineBorder.java,v 1.2 2005/05/30 16:35:06 gene Exp $
  * IzPack
  * Copyright (c) 2003, Julien Ponge <julien@izforge.com>
  * All rights reserved.

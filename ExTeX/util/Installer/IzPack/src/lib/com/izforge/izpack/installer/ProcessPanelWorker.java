@@ -1,5 +1,5 @@
 /*
- *  $Id: ProcessPanelWorker.java,v 1.1 2004/08/01 19:53:15 gene Exp $
+ *  $Id: ProcessPanelWorker.java,v 1.2 2005/05/30 16:35:00 gene Exp $
  *  IzPack
  *  Copyright (C) 2001-2004 Julien Ponge, Tino Schwarze
  *
@@ -25,12 +25,17 @@
 package com.izforge.izpack.installer;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -42,6 +47,8 @@ import net.n3.nanoxml.XMLElement;
 
 import com.izforge.izpack.util.AbstractUIHandler;
 import com.izforge.izpack.util.AbstractUIProcessHandler;
+import com.izforge.izpack.util.Debug;
+import com.izforge.izpack.util.IoHelper;
 import com.izforge.izpack.util.OsConstraint;
 
 /**
@@ -64,13 +71,17 @@ public class ProcessPanelWorker implements Runnable
 
   private XMLElement spec;
 
-  private AutomatedInstallData idata;
-
   protected AbstractUIProcessHandler handler;
 
   private ArrayList jobs = new ArrayList();
 
   private Thread processingThread = null;
+
+  private static PrintWriter logfile = null;
+
+  private String logfiledir = null;
+
+  protected AutomatedInstallData idata;
 
   /**
    *  The constructor.
@@ -83,15 +94,15 @@ public class ProcessPanelWorker implements Runnable
     AbstractUIProcessHandler handler)
     throws IOException
   {
-    this.idata = idata;
     this.handler = handler;
+    this.idata  = idata;
     this.vs = new VariableSubstitutor(idata.getVariables());
 
     if (!readSpec())
       throw new IOException("Error reading processing specification");
   }
 
-  private boolean readSpec()
+  private boolean readSpec() throws IOException
   {
     InputStream input;
     try
@@ -121,6 +132,14 @@ public class ProcessPanelWorker implements Runnable
 
     if (!this.spec.hasChildren())
       return false;
+
+    // Handle logfile
+    XMLElement lfd = spec.getFirstChildNamed("logfiledir");
+    if( lfd != null)
+    {
+      logfiledir = lfd.getContent();
+    }
+
 
     for (Iterator job_it = this.spec.getChildrenNamed("job").iterator();
       job_it.hasNext();
@@ -195,13 +214,44 @@ public class ProcessPanelWorker implements Runnable
     return true;
   }
 
-  /** This is called when the processing thread is activated. 
+  /** This is called when the processing thread is activated.
    *
    * Can also be called directly if asynchronous processing is not
    * desired.
    */
   public void run()
   {
+    // Create logfile if needed. Do it at this point because
+    // variable substitution needs selected install path.
+    if( logfiledir != null )
+    {
+      logfiledir = IoHelper.translatePath(logfiledir,new VariableSubstitutor(idata.getVariables()));
+
+      File lf;
+
+      String appVersion = idata.getVariable("APP_VER");
+
+      if (appVersion != null)
+        appVersion = "V"+appVersion;
+      else
+        appVersion = "undef";
+
+      String identifier = (new SimpleDateFormat("yyyyMMddHHmmss")).format(new Date());
+
+      identifier = appVersion.replace(' ', '_') + "_" + identifier;
+
+      try
+      {
+        lf = File.createTempFile("Install_"+identifier+"_", ".log", new File(logfiledir));
+        logfile = new PrintWriter(new FileOutputStream( lf ), true);
+      }
+      catch (IOException e)
+      {
+        Debug.error(e);
+        // TODO throw or throw not, that's the question...
+      }
+    }
+
     this.handler.startProcessing(this.jobs.size());
 
     for (Iterator job_it = this.jobs.iterator(); job_it.hasNext();)
@@ -219,6 +269,8 @@ public class ProcessPanelWorker implements Runnable
     }
 
     this.handler.finishProcessing();
+    if( logfile != null )
+      logfile.close();
   }
 
   /** Start the compilation in a separate thread. */
@@ -240,7 +292,7 @@ public class ProcessPanelWorker implements Runnable
       VariableSubstitutor vs);
   }
 
-  class ProcessingJob implements Processable
+  private static class ProcessingJob implements Processable
   {
     public String name;
     private List processables;
@@ -268,7 +320,7 @@ public class ProcessPanelWorker implements Runnable
 
   }
 
-  class ExecutableFile implements Processable
+  private static class ExecutableFile implements Processable
   {
     private String filename;
     private List arguments;
@@ -372,12 +424,12 @@ public class ProcessPanelWorker implements Runnable
       }
     }
 
-    public class OutputMonitor implements Runnable
+    static public class OutputMonitor implements Runnable
     {
       private boolean stderr = false;
       private AbstractUIProcessHandler handler;
       private BufferedReader reader;
-      private Boolean stop = new Boolean(false);
+      private Boolean stop = Boolean.valueOf(false);
 
       public OutputMonitor(
         AbstractUIProcessHandler handler,
@@ -398,6 +450,11 @@ public class ProcessPanelWorker implements Runnable
           {
             this.handler.logOutput(line, stderr);
 
+            // log output also to file given in ProcessPanelSpec
+
+            if( logfile != null )
+              logfile.println( line);
+
             synchronized (this.stop)
             {
               if (stop.booleanValue())
@@ -407,6 +464,12 @@ public class ProcessPanelWorker implements Runnable
         } catch (IOException ioe)
         {
           this.handler.logOutput(ioe.toString(), true);
+
+          // log errors also to file given in ProcessPanelSpec
+
+          if( logfile != null )
+            logfile.println( ioe.toString());
+
         }
 
       }
@@ -415,7 +478,7 @@ public class ProcessPanelWorker implements Runnable
       {
         synchronized (this.stop)
         {
-          this.stop = new Boolean(true);
+          this.stop = Boolean.valueOf(true);
         }
       }
 
@@ -429,7 +492,7 @@ public class ProcessPanelWorker implements Runnable
    * a method run(AbstractUIProcessHandler, String[])
    * If found, it calls the method and processes all returned exceptions
    */
-  class ExecutableClass implements Processable
+  private static class ExecutableClass implements Processable
   {
       final private String myClassName;
       final private List myArguments;

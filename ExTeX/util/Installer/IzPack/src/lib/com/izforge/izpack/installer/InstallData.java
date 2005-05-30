@@ -1,5 +1,5 @@
 /*
- *  $Id: InstallData.java,v 1.1 2004/08/01 19:53:15 gene Exp $
+ *  $Id: InstallData.java,v 1.2 2005/05/30 16:35:00 gene Exp $
  *  IzPack
  *  Copyright (C) 2001-2004 Julien Ponge
  *
@@ -25,6 +25,7 @@
 package com.izforge.izpack.installer;
 
 import java.awt.Color;
+import java.io.Serializable;
 
 import com.izforge.izpack.GUIPrefs;
 
@@ -36,7 +37,7 @@ import com.izforge.izpack.GUIPrefs;
  * @author     Julien Ponge <julien@izforge.com>
  * @author     Johannes Lehtinen <johannes.lehtinen@iki.fi>
  */
-public class InstallData extends AutomatedInstallData
+public class InstallData extends AutomatedInstallData implements Serializable
 {
   /**  The GUI preferences. */
   public GUIPrefs guiPrefs;

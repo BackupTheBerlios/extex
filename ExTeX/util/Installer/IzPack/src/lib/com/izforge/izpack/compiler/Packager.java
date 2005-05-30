@@ -1,5 +1,5 @@
 /*
- *  $Id: Packager.java,v 1.1 2004/08/01 19:53:16 gene Exp $
+ *  $Id: Packager.java,v 1.2 2005/05/30 16:35:15 gene Exp $
  *  IzPack
  *  Copyright (C) 2001-2004 Julien Ponge
  *
@@ -46,6 +46,7 @@ import java.util.zip.ZipException;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
+import com.izforge.izpack.CustomData;
 import com.izforge.izpack.GUIPrefs;
 import com.izforge.izpack.Info;
 import com.izforge.izpack.Pack;
@@ -87,6 +88,9 @@ public class Packager
 
   /** The ordered langpack ISO3 names. */
   private List langpackNameList = new ArrayList();
+
+  /** The ordered custom actions informations. */
+  private List customDataList = new ArrayList();
 
   /** The langpack URLs keyed by ISO3 name. */
   private Map installerResourceURLMap = new HashMap();
@@ -139,6 +143,7 @@ public class Packager
     writeInstallerObject("vars", variables);
     writeInstallerObject("GUIPrefs", guiPrefs);
     writeInstallerObject("panelsOrder", panelList);
+    writeInstallerObject("customData", customDataList);
     writeInstallerObject("langpacks.info", langpackNameList);
     writeInstallerResources();
     writeIncludedJars();
@@ -241,6 +246,19 @@ public class Packager
     addJarContent(jarURL); // each included once, no matter how many times added
   }
 
+
+  /**
+   * Add a custom data like custom actions, 
+   * where order is important. Only one copy of the class files
+   * neeed are inserted in the installer.
+   * @param ca custom action object
+   * @param url the URL to include once
+   */
+  public void addCustomJar(CustomData ca, URL url)
+  {
+    customDataList.add(ca);  // serialized to keep order/variables correct
+    addJarContent(url); // each included once, no matter how many times added
+  }
   /**
    * Adds a pack, order is mostly irrelevant.
    *
@@ -249,6 +267,13 @@ public class Packager
   public void addPack(PackInfo pack)
   {
     packsList.add(pack);
+  }
+  /**
+   * Gets the packages list
+   */
+  public List getPacksList()
+  {
+    return packsList;
   }
 
   /**
@@ -306,6 +331,16 @@ public class Packager
     sendMsg("Adding content of jar : " + jarURL.getFile() + " ...");
     includedJarURLs.add(jarURL);
   }
+  
+  /**
+   * Marks a native library to be added to the uninstaller.
+   * @param data the describing custom action data object
+   */
+  public void addNativeUninstallerLibrary(CustomData data)
+  {
+    customDataList.add(data);  // serialized to keep order/variables correct
+
+  }
 
 
   /* **********************************************************************
@@ -320,7 +355,7 @@ public class Packager
   {
     sendMsg("Copying the skeleton installer ...");
 
-    InputStream is = getClass().getResourceAsStream("/" + SKELETON_SUBPATH);
+    InputStream is = Packager.class.getResourceAsStream("/" + SKELETON_SUBPATH);
     if (is == null)
     {
       File skeleton = new File(Compiler.IZPACK_HOME, SKELETON_SUBPATH);
@@ -423,7 +458,7 @@ public class Packager
       Iterator iter = packInfo.getPackFiles().iterator();
       while (iter.hasNext())
       {
-        boolean addFile = true;
+        boolean addFile = !pack.loose;
         PackFile pf = (PackFile) iter.next();
         File file = packInfo.getFile(pf);
 
