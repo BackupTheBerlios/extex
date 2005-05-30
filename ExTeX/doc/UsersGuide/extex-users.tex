@@ -1,5 +1,5 @@
 %%*****************************************************************************
-%% $Id: extex-users.tex,v 1.1 2005/05/29 22:00:43 gene Exp $
+%% $Id: extex-users.tex,v 1.2 2005/05/30 17:18:54 gene Exp $
 %%*****************************************************************************
 %% Author: Gerd Neugebauer
 %%-----------------------------------------------------------------------------
@@ -9,6 +9,91 @@
 \usepackage{booktabs}
 \usepackage{listings}
 \usepackage{graphicx,color}
+
+\definecolor{hellmagenta}{rgb}{1,0.75,0.9}
+\definecolor{hellcyan}{rgb}{0.75,1,0.9}
+\definecolor{hellgelb}{rgb}{1,1,0.8}
+\definecolor{backgroundColor}{rgb}{1,1,0.8}
+\definecolor{colKeys}{rgb}{0,0,.8}
+\definecolor{colIdentifier}{rgb}{0,0,0}
+\definecolor{colComments}{rgb}{.7,.2,.2}
+\definecolor{colString}{rgb}{0,0.5,0}
+\definecolor{darkyellow}{rgb}{1,0.9,0}
+%
+\usepackage{listings}
+\lstset{%
+    language=[AlLaTeX]TEX,%
+    float=hbp,%
+    basicstyle=\ttfamily\small, %
+    identifierstyle=\color{colIdentifier}, %
+    keywordstyle=\color{colKeys}\bf\tt, %
+    stringstyle=\color{colString}, %
+    commentstyle=\color{colComments}, %
+    columns=flexible, %
+    tabsize=3, %
+    frame=single, %
+    extendedchars=true, %
+    showspaces=false, %
+    showstringspaces=false, %
+    numbers=none,% left, %
+    numberstyle=\tiny\sf, %
+    breaklines=true, %
+    backgroundcolor=\color{backgroundColor}, %
+    breakautoindent=true, %
+    captionpos=b,%
+    xleftmargin=\fboxsep,%
+    xrightmargin=\fboxsep%
+}
+%\usepackage[colorlinks]{hyperref}
+%
+
+\lstset{%
+    language=[LaTeX]TEX,%
+    float=hbp,%
+    basicstyle=\ttfamily\small, %
+    identifierstyle=\color{colIdentifier}, %
+    keywordstyle=\color{colKeys}\bf\tt, %
+    stringstyle=\color{colString}, %
+    commentstyle=\color{colComments}, %
+    columns=flexible, %
+    tabsize=4, %
+    frame=single, %
+    extendedchars=true, %
+    showspaces=false, %
+    showstringspaces=false, %
+    numbers=none,% =left, %
+    numberstyle=\tiny\sf, %
+    breaklines=true, %
+    backgroundcolor=\color{backgroundColor}, %
+    breakautoindent=true, %
+    captionpos=b,%
+    xleftmargin=\fboxsep,%
+    xrightmargin=\fboxsep%
+}
+\lstset{%
+    language=Java,%
+    float=hbp,%
+    basicstyle=\ttfamily\small, %
+    identifierstyle=\color{colIdentifier}, %
+    keywordstyle=\color{colKeys}\bf\tt, %
+    stringstyle=\color{colString}, %
+    commentstyle=\color{colComments}, %
+    columns=flexible, %
+    tabsize=4, %
+    frame=single, %
+    extendedchars=true, %
+    showspaces=false, %
+    showstringspaces=false, %
+    numbers=none,% =left, %
+    numberstyle=\tiny\sf, %
+    breaklines=true, %
+    backgroundcolor=\color{backgroundColor}, %
+    breakautoindent=true, %
+    captionpos=b,%
+    xleftmargin=\fboxsep,%
+    xrightmargin=\fboxsep%
+}
+
 \usepackage[colorlinks=true]{hyperref}
 
 \providecommand*{\ExTeX}{\ifx\texorpdfstring\undefined
@@ -23,22 +108,7 @@
   \fi
 }
 
-\lstloadlanguages{TeX}
-\lstset{language=TeX,%
-  basicstyle=\tt,%
-  keywordstyle=\bf,%
-  morekeywords={\namespace,\export,\import}%,
-  %labelstyle=\sf\tiny,%
-  %labelstep=1,%
-  %labelsep=5pt,%
-  %indent=12pt%
-}
-\lstset{language=Java,%
-  basicstyle=\tt,%
-  keywordstyle=\bf,%
-  morekeywords={}
-}
-
+\newcommand\INCOMPLETE{\bigskip\par{\unitlength=1mm\framebox(60,20){To be completed.}}\bigskip\par}
 
 \newenvironment{abstract}{\begin{quotation}}{\end{quotation}}
 
@@ -104,12 +174,25 @@ Im Lerchelsb\"ohl 5\\
 \newpage
 
 \chapter{Introduction}
+%@author Gerd Neugebauer
 
 \ExTeX{} aims at providing a high-quality typesetting system. The
 development of \ExTeX\ has been inspired by the experiences with \TeX.
+The focus lies on an open design and a high degree of configurability.
+Thus \ExTeX\ should be a good base for further development.
+
+On the other hand we have to take care not to leave the current user
+base of \TeX\ behind. pdf\TeX\ has taught us that a migration path
+from \TeX\ has a positive value in it. In the mean time the majority
+of \TeX\ users applies in fact pdf\TeX.
+
+To provide a backward compatibility of \ExTeX\ with \TeX\ one special
+configuration is provided. Thus backward compatibility is just a
+matter of configuration.
 
 
 \section{Web Site}
+%@author Gerd Neugebauer
 
 There is a web site devoted to \ExTeX. This web site can be reached
 via the URL
@@ -120,6 +203,7 @@ via the URL
 
 
 \section{Mailing Lists}
+%@author Gerd Neugebauer
 
 If you are ready to try \ExTeX{} you might as well want to join a
 mailing list to get in contact with the community.
@@ -130,14 +214,17 @@ mailing list to get in contact with the community.
 
 
 \chapter{Getting Started}
+%@author Gerd Neugebauer
 
 In this chapter we describe the steps you can take to get \ExTeX\ up
 and running. We try to use as few as possible premises. Thus it should
 be not too hard to get started.
 
 \section{Prerequisites}
+%@author Gerd Neugebauer
 
 \subsection{Java}
+%@author Gerd Neugebauer
 
 You need to have Java 1.4.2 or later installed on your system. You can
 get Java for a several systems directly from \url{java.sun.com}.
@@ -148,24 +235,40 @@ To check that you have an appropriate Java on your path you can use
 the command \texttt{java} with the argument \texttt{-version}. This
 can be seen in the following listing:
 
-{\small
 \begin{lstlisting}{}
 > java -version
 java version "1.4.2_06"
 Java(TM) 2 Runtime Environment, Standard Edition (build 1.4.2_06-b03)
 Java HotSpot(TM) Client VM (build 1.4.2_06-b03, mixed mode)
 >
-\end{lstlisting}}
+\end{lstlisting}
 
 
 \subsection{TEXMF}
+%@author Gerd Neugebauer
 
 If you want to use more than the pure \TeX\ engine fonts and macros
-can be inherited from texmf tree.
+can be inherited from a texmf tree. \ExTeX\ itself does not contain a
+full texmf tree. It comes just with some rudimentray files necessary
+for testing. Thus you should have installed a texmf tree, e.g. from a
+\TeX Live installation. This can be found on the
+\href{http://www.ctan.org}{Comprehensive \TeX\ Archive Network (CTAN)}.
 
+There is no need to install the texmf tree in a special place. You
+have to tell \ExTeX\ anyhow where it can be found. It is even possible
+to work with several texmf trees.
+
+One requirement for the texmf trees is that they have a file database
+(\texttt{ls-R}). \ExTeX\ can be configured to work without it, but
+then \ExTeX\ is deadly slow. Thus you do not really want to try this
+alternative.
 
 
 \section{Getting \ExTeX}
+%@author Gerd Neugebauer
+
+\subsection{Getting the Sources}
+%@author Gerd Neugebauer
 
 The sources of \ExTeX\ are stored in a RCS repository. To access this
 repository you need access to the internet and RCS installed in some
@@ -212,45 +315,28 @@ Finally we can check out the sources:
 This command shows a lot of output. At the end the current directory
 is filled with a lot of files and directories.
 
-\section{Installing \ExTeX\ from the Command Line}
+\section{Installing \ExTeX}
+%@author Gerd Neugebauer
 
-To install you can use the build script provided in the \ExTeX{}
-base directory.
+\subsection{Installing \ExTeX\ with the Installer}\label{sec:installer}
+%@author Gerd Neugebauer
 
-\begin{lstlisting}{}
-> build -Dinstall.dir=/usr/local/share/ExTeX install
-\end{lstlisting}
-
-Now you can forget the source directory. It is not needed any more
-unless you are debugging or developing \ExTeX{} extensions.
-
-\section{Installing \ExTeX\ with the Installer}
-
-You can make use of the installer of \ExTeX. To use the installer you
-have to create it from the sources. All you need for this step is
-contaoned in the source distribution.
+\begin{figure}[tp]
+  \centering
+  \includegraphics[width=.8\textwidth]{inst1.png}
+  \caption{The Language Selection in the Installer}
+  \label{fig:inst1}
+\end{figure}
+The easiest installation of \ExTeX\ works with the \ExTeX\ installer.
+This installer is named \texttt{ExTeX-setup.jar}. You can start the
+installer with the following command line:
 
 \begin{lstlisting}{}
-> build installer
-\end{lstlisting}
-
-As a result the file \texttt{ExTeX-setup.jar} is created in the
-directory \texttt{target}. This file is a self-contained installer.
-You can start the installer with the following command line:
-
-\begin{lstlisting}{}
-> java -jar target/ExTeX-setup.jar
+> java -jar ExTeX-setup.jar
 \end{lstlisting}
 
 On windows with a properly installed Java you can also start the
 installer by double-clicking \texttt{ExTeX-setup.jar} in the Explorer.
-
-\begin{figure}[htp]
-  \centering
-  \includegraphics[width=.5\textwidth]{inst1.png}
-  \caption{The Language Selection in the Installer}
-  \label{fig:inst1}
-\end{figure}
 
 The installer provides a graphical user interface with a wizard
 guiding you through the installation process. The first dialog is
@@ -264,14 +350,100 @@ can be run under different language environments as well. This is
 controlled by a setting at run-time. Currently only an English
 language binding for \ExTeX\ is provided.
 
+Finally you have to make sure that the executables \texttt{extex} or
+\texttt{extex.bat} is on your path for executables.
+
+
+\subsection{Replaying an Installation}
+%@author Gerd Neugebauer
+
+Sometimes it is desirable to perform an installation on several
+similar machines. This means that the answers to the questions in the
+installer are the same. This process can be automated.
+\begin{figure}[tp]
+  \centering
+  \includegraphics[width=.8\textwidth]{inst8.png}
+  \caption{Generating a Auto-Configuration for the Installer}
+  \label{fig:inst8}
+\end{figure}
+
+In figure~\ref{fig:inst8} you can see the last screen of the
+installer. Here you have the possibility to select the button
+``Generate an automatic installation script''. This produces an XML
+file which can be passed to the installer to avoid the dialogs.
+
+Suppose you have named the file \texttt{replay.xml} in the file
+selector which pops up when the button has been pressed. Then you can
+replay the installation with the following command invocation:
+
+\begin{lstlisting}{}
+> java -jar ExTeX-setup.jar replay.xml
+\end{lstlisting}
+
+This supposes that the two files \texttt{ExTeX-setup.jar} and
+\texttt{replay.xml} are in the current directory.
+
+Finally you have to make sure that the executables \texttt{extex} or
+\texttt{extex.bat} is on your path for executables.
+
+
+\subsection{Creating the \ExTeX\ Installer}
+%@author Gerd Neugebauer
+
+You can create the installer of \ExTeX\ from the sources. All you need
+for this step is contained in the source distribution. Suppose you are
+in the base directory of the distribution. Then the following command
+creates the installer:
+
+\begin{lstlisting}{}
+> build installer
+\end{lstlisting}
+
+As a result the file \texttt{ExTeX-setup.jar} is created in the
+directory \texttt{target}. This file is a self-contained installer.
+You can immediately start the installer with the following command line:
+
+\begin{lstlisting}{}
+> java -jar target/ExTeX-setup.jar
+\end{lstlisting}
+
+In addition the installer file can be moved to any other place -- even
+other machines -- and run the installation there (see also
+section~\ref{sec:installer}).
+
+
+\subsection{Installing \ExTeX\ from the Sources on the Command Line}
+%@author Gerd Neugebauer
+
+To install you can use the build script provided in the \ExTeX{}
+base directory.
+
+\begin{lstlisting}{}
+> build -Dinstall.dir=/usr/local/share/ExTeX install
+\end{lstlisting}
+
+Additionally you have to copy the file \texttt{.extex} from the base
+directory of the \ExTeX\ to your home directory and adapted to your
+installation. Especially the value of \texttt{extex.texinputs} most
+probably needs adaption to point to your texmf trees.
+
+Finally you have to make sure that the executables \texttt{extex} or
+\texttt{extex.bat} is on your path for executables.
+
+Now you can forget the source directory. It is not needed any more
+unless you are debugging or developing \ExTeX{} extensions.
+
 
 \chapter{Configuring \ExTeX}
+%@author Gerd Neugebauer
 
 The behaviour of \ExTeX\ can be influenced via command line arguments
-and configuration files.
+and configuration files. Most of the times the startup files will be
+enough for the casual user.
 
 
 \section{Startup Files}
+%@author Gerd Neugebauer
 
 Whenever \ExTeX\ starts it looks for startup files named
 \texttt{.extex}. This file is sought in the user's home directory in
@@ -279,29 +451,75 @@ in the current directory. The settings in the current directoy
 overwrite the settings from the user's home directory. Those in turn
 overwrite the built-in settings.
 
+\INCOMPLETE
 
 \section{Configuration Files}
+%@author Gerd Neugebauer
 
 Configuration files of another kind contain the assembly instructions
 for \ExTeX. Those files can be used to provide additional features in
 \ExTeX. 
 
+\INCOMPLETE
 
 \chapter{Running \ExTeX}
+%@author Gerd Neugebauer
 
 Currently \ExTeX\ can be run from the command line. In this respect it
 is more or less identical to \TeX\ and can be used as a plug-in
 replacement.
 
-\section{Command Line Parameters}
+The following sample show a simple invocation of \ExTeX\ without any
+command line arguments.
 
+\begin{lstlisting}{}
+> extex
+This is ExTeX, Version 0.0 (TeX compatibility mode)
+**\relax
+
+*\end
+
+No pages of output.
+Transcript written on ./texput.log.
+\end{lstlisting}
+
+In this case \ExTeX\ enters interaction with the user and asks for an
+input file. This is indicated by the two asterists. We have entered
+\verb|\relax| here to indicate that we are not willing to pass in a
+file name. The \ExTeX\ system asks us to enter some command --
+indicted by the single asterisk. Here we have entered \verb|\end| to
+indicate that we want to finish the processing. Thus \ExTeX\
+terminates normally.
+
+
+
+
+
+\INCOMPLETE
+
+\section{Command Line Parameters}
+%@author Gerd Neugebauer
+
+\INCOMPLETE
 
 
 \section{Creating Formats}
+%@author Gerd Neugebauer
+
+\INCOMPLETE
 
 
+\chapter{Troubleshooting \ExTeX}
+%@author Gerd Neugebauer
 
+This chapter contains some hints in the case of trouble.
 
+\section{Why are my files not found?}
+%@author Gerd Neugebauer
+
+\ExTeX\ has a configurable search for external resources.
+
+\INCOMPLETE
 
 
 \end{document}%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
