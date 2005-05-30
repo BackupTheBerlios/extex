@@ -30,7 +30,7 @@ import java.util.logging.LogRecord;
  * is honoured.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class LogFormatter extends Formatter {
 
@@ -81,7 +81,7 @@ public class LogFormatter extends Formatter {
             t.printStackTrace(writer);
             writer.write("\n");
             writer.flush();
-            msg.append(os);
+            out.append(os);
             col = 0;
         }
 
