@@ -19,6 +19,8 @@
 
 package de.dante.extex.interpreter.primitives.register.font;
 
+import java.util.logging.Logger;
+
 import de.dante.extex.font.FontFactory;
 import de.dante.extex.font.FountKey;
 import de.dante.extex.font.exception.FontException;
@@ -41,6 +43,7 @@ import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationIOException;
+import de.dante.util.framework.logger.LogEnabled;
 
 /**
  * This class provides an implementation for the primitive <code>\font</code>.
@@ -80,11 +83,23 @@ import de.dante.util.configuration.ConfigurationIOException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class FontPrimitive extends AbstractAssignment
         implements
-            FontConvertible {
+            FontConvertible,
+            LogEnabled {
+
+    /**
+     * The field <tt>DEBUG</tt> contains the indicator that debug output is
+     * desirable.
+     */
+    private static boolean DEBUG = true;
+
+    /**
+     * The field <tt>logger</tt> contains the logger for debug output.
+     */
+    private transient Logger logger = null;
 
     /**
      * Creates a new object.
@@ -152,9 +167,15 @@ public class FontPrimitive extends AbstractAssignment
             font = factory.getInstance(new FountKey(fontname, fontSize, scale,
                     letterspaced, ligatures, kerning));
         } catch (FontException e) {
+            if (logger != null) {
+                logger.throwing("FontPrimitive", "assign", e);
+            }
             throw new HelpingException(getLocalizer(), "TTP.TFMnotFound", //
                     context.esc(fontId), fontname);
         } catch (ConfigurationIOException e) {
+            if (logger != null) {
+                logger.throwing("FontPrimitive", "assign", e);
+            }
             throw new HelpingException(getLocalizer(), "TTP.TFMnotFound", //
                     context.esc(fontId), fontname);
         } catch (ConfigurationException e) {
@@ -174,6 +195,17 @@ public class FontPrimitive extends AbstractAssignment
             throws InterpreterException {
 
         return context.getTypesettingContext().getFont();
+    }
+
+    /**
+     * @see de.dante.util.framework.logger.LogEnabled#enableLogging(
+     *      java.util.logging.Logger)
+     */
+    public void enableLogging(final Logger logger) {
+
+        if (DEBUG) {
+            this.logger = logger;
+        }
     }
 
     /**
