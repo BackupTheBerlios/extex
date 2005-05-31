@@ -1,178 +1,86 @@
 %%*****************************************************************************
-%% $Id: extex-users.tex,v 1.2 2005/05/30 17:18:54 gene Exp $
+%% $Id: extex-users.tex,v 1.3 2005/05/31 06:27:17 gene Exp $
 %%*****************************************************************************
 %% Author: Gerd Neugebauer
 %%-----------------------------------------------------------------------------
-\documentclass[12pt,div12,a4paper]{scrbook}
+\documentclass{extex-doc}
 
-\usepackage[latin1]{inputenc}
-\usepackage{booktabs}
-\usepackage{listings}
-\usepackage{graphicx,color}
-
-\definecolor{hellmagenta}{rgb}{1,0.75,0.9}
-\definecolor{hellcyan}{rgb}{0.75,1,0.9}
-\definecolor{hellgelb}{rgb}{1,1,0.8}
-\definecolor{backgroundColor}{rgb}{1,1,0.8}
-\definecolor{colKeys}{rgb}{0,0,.8}
-\definecolor{colIdentifier}{rgb}{0,0,0}
-\definecolor{colComments}{rgb}{.7,.2,.2}
-\definecolor{colString}{rgb}{0,0.5,0}
-\definecolor{darkyellow}{rgb}{1,0.9,0}
-%
-\usepackage{listings}
-\lstset{%
-    language=[AlLaTeX]TEX,%
-    float=hbp,%
-    basicstyle=\ttfamily\small, %
-    identifierstyle=\color{colIdentifier}, %
-    keywordstyle=\color{colKeys}\bf\tt, %
-    stringstyle=\color{colString}, %
-    commentstyle=\color{colComments}, %
-    columns=flexible, %
-    tabsize=3, %
-    frame=single, %
-    extendedchars=true, %
-    showspaces=false, %
-    showstringspaces=false, %
-    numbers=none,% left, %
-    numberstyle=\tiny\sf, %
-    breaklines=true, %
-    backgroundcolor=\color{backgroundColor}, %
-    breakautoindent=true, %
-    captionpos=b,%
-    xleftmargin=\fboxsep,%
-    xrightmargin=\fboxsep%
-}
-%\usepackage[colorlinks]{hyperref}
-%
-
-\lstset{%
-    language=[LaTeX]TEX,%
-    float=hbp,%
-    basicstyle=\ttfamily\small, %
-    identifierstyle=\color{colIdentifier}, %
-    keywordstyle=\color{colKeys}\bf\tt, %
-    stringstyle=\color{colString}, %
-    commentstyle=\color{colComments}, %
-    columns=flexible, %
-    tabsize=4, %
-    frame=single, %
-    extendedchars=true, %
-    showspaces=false, %
-    showstringspaces=false, %
-    numbers=none,% =left, %
-    numberstyle=\tiny\sf, %
-    breaklines=true, %
-    backgroundcolor=\color{backgroundColor}, %
-    breakautoindent=true, %
-    captionpos=b,%
-    xleftmargin=\fboxsep,%
-    xrightmargin=\fboxsep%
-}
-\lstset{%
-    language=Java,%
-    float=hbp,%
-    basicstyle=\ttfamily\small, %
-    identifierstyle=\color{colIdentifier}, %
-    keywordstyle=\color{colKeys}\bf\tt, %
-    stringstyle=\color{colString}, %
-    commentstyle=\color{colComments}, %
-    columns=flexible, %
-    tabsize=4, %
-    frame=single, %
-    extendedchars=true, %
-    showspaces=false, %
-    showstringspaces=false, %
-    numbers=none,% =left, %
-    numberstyle=\tiny\sf, %
-    breaklines=true, %
-    backgroundcolor=\color{backgroundColor}, %
-    breakautoindent=true, %
-    captionpos=b,%
-    xleftmargin=\fboxsep,%
-    xrightmargin=\fboxsep%
-}
-
-\usepackage[colorlinks=true]{hyperref}
-
-\providecommand*{\ExTeX}{\ifx\texorpdfstring\undefined
-  \textrm{% the logo comes always with serifs
-    \ensuremath{\textstyle\varepsilon_{\kern-0.15em\mathcal{X}}}%
-    \kern-.15em\TeX}%
-  \else\texorpdfstring{%
-  \textrm{% the logo comes always with serifs
-    \ensuremath{\textstyle\varepsilon_{\kern-0.15em\mathcal{X}}}%
-    \kern-.15em\TeX
-  }}{ExTeX}%
-  \fi
-}
-
-\newcommand\INCOMPLETE{\bigskip\par{\unitlength=1mm\framebox(60,20){To be completed.}}\bigskip\par}
-
-\newenvironment{abstract}{\begin{quotation}}{\end{quotation}}
+\usepackage{makeidx}
 
 \title{ExTeX User's Guide}
 \author{Gerd Neugebauer}
 %\date{}
 
+\newcommand\Arg[1]{\(\langle\){\tt\itshape #1}\(\rangle\)}
+\newcommand\CLI[1]{\texttt{-#1}\index{#1@\texttt{-#1}}}
+\newcommand\Property[1]{\texttt{#1}\index{#1@\texttt{#1}}}
+\newcommand\File[1]{\texttt{#1}\index{#1@\textsf{#1}}}
+\newcommand\Prog[1]{\texttt{#1}\index{#1}}
+\newcommand\Mode[1]{\texttt{#1}\index{#1}}
+\newcommand\macro[1]{\texttt{\char`\\#1}\index{#1@\texttt{\char`\\#1}}}
+
+\def\setVersion$#1: #2.#3${\gdef\Version{0.#3}}
+\setVersion$Version: 0.1$
+
+\makeindex
+
 \begin{document}%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{titlepage}
+  \parindent=0pt
   \begin{center}
   \vspace*{1pt}
   \vfill
   \includegraphics[width=\textwidth]{ExTeX-splash.png}
   \vfill
-  \textsf{\Huge User's Guide}
+  \textsf{\bfseries\Huge User's Guide}
   \vfill
-  \textsf{\Large Version 0.1}
+  \textsf{\Large Version \Version}
   \vfill
   \textsf{\large Gerd Neugebauer}
   \vfill
   \vfill
 %\maketitle
 
-  \begin{abstract}
-    This document describes some basic steps to develop and test \ExTeX.
-    It is meant for newcomers to the project or people who want to
-    evaluate \ExTeX.
+  \begin{abstract}\noindent
+    This document describes \ExTeX. It explains how to get \ExTeX\ up
+    and running and which features \ExTeX\ offers to you. Since
+    \ExTeX\ provides a testbed for experimentation the focus has been
+    put on the default configurations.
+
+    The intended audience for this document are end users of the
+    typesetting engine who want to use \ExTeX\ on the command line or
+    as replacement of \TeX.
   \end{abstract}
+  \unitlength=1mm
+  \begin{picture}(0,0)
+    \put(56,116){\makebox(0,0){\scalebox{6}{\rotatebox{45}{\textsf{\Huge\bfseries Draft}}}}}
+  \end{picture}
   \end{center}
 \newpage
 \footnotesize
 \copyright\ 2005 The \ExTeX\ Group and individual authors listed below 
 
-\ExTeX{} is free software; you can redistribute it and/or modify it
-under the terms of the \href{LGPL.html}{LibraryGNU General Public
-  License} as published by the Free Software Foundation; either
-version 1, or (at your option) any later version.
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.2 or
+any later version published by the Free Software Foundation. A copy of
+the license is included in the section entitled ``GNU Free
+Documentation License''.
 
-\ExTeX{} is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-\href{LGPL.html}{Library GNU General Public License} for more details.
-
-You should have received a copy of the \href{LGPL.html}{Library GNU
-  General Public License} along with this documentation; see the file
-\href{LGPL.html}{LICENSE.txt}.  If not, write to the Free Software
-Foundation, 675 Mass Ave, Cambridge, MA 02139, USA. 
 \vfill
 
-\noindent
 Gerd Neugebauer\\
 Im Lerchelsb\"ohl 5\\
-64521 Gro\ss-Gerau (Germany)\smallskip\par\noindent WWW:
-\url{http://www.gerd-neugebauer.de/}
-\smallskip\par\noindent Net: \href{mailto://gene@gerd-neugebauer.de}{gene@gerd-neugebauer.de}
+64521 Gro\ss-Gerau (Germany)
+\smallskip
+
+Net: \href{mailto://gene@gerd-neugebauer.de}{gene@gerd-neugebauer.de}
 
 \end{titlepage}
 
-
-\newpage
 \tableofcontents
-\newpage
 
+%------------------------------------------------------------------------------
 \chapter{Introduction}
 %@author Gerd Neugebauer
 
@@ -183,19 +91,20 @@ Thus \ExTeX\ should be a good base for further development.
 
 On the other hand we have to take care not to leave the current user
 base of \TeX\ behind. pdf\TeX\ has taught us that a migration path
-from \TeX\ has a positive value in it. In the mean time the majority
-of \TeX\ users applies in fact pdf\TeX.
+from \TeX\index{TeX@\TeX} has a positive value in it. In the mean time
+the majority of \TeX\ users applies in fact
+pdf\TeX\index{pdfTeX@pdf\TeX}.
 
-To provide a backward compatibility of \ExTeX\ with \TeX\ one special
-configuration is provided. Thus backward compatibility is just a
-matter of configuration.
+To provide a backward compatibility of \ExTeX\ with
+\TeX\index{TeX@\TeX} one special configuration is provided. Thus
+backward compatibility is just a matter of configuration.
 
 
 \section{Web Site}
 %@author Gerd Neugebauer
 
-There is a web site devoted to \ExTeX. This web site can be reached
-via the URL
+There is a web site devoted to \ExTeX. \index{WWW}\index{Web Site}This
+web site can be reached via the URL
 
 \begin{quotation}
   \url{http://www.extex.org}
@@ -206,13 +115,39 @@ via the URL
 %@author Gerd Neugebauer
 
 If you are ready to try \ExTeX{} you might as well want to join a
-mailing list to get in contact with the community.
+mailing list to get in contact with the community.\index{Mailing list}
 
 \begin{quotation}
   \url{http://www.dante.de/listman/extex}
 \end{quotation}
 
 
+\section{Reporting Bugs}
+%@author Gerd Neugebauer
+
+
+If you find any bugs in \ExTeX\ you can submit them either via a HTML
+form or via email. You can find the HTML form at
+\begin{quotation}
+  \url{http://www.extex.org/bugs}
+\end{quotation}
+Emails containing the description can be sent to
+\begin{quotation}
+  \href{mailto:extex-bugs@dante.de}{extex-bugs@dante.de}
+\end{quotation}
+
+Please include in your description 
+\begin{itemize}
+\item the source of a \emph{minimal} example showing the problem
+\item the log file resulting from running this example
+\item a description why you think that something went wrong and what
+  the expected result would be
+\item a description of the environment you are using (host
+  architecture, operating system, Java version)
+\end{itemize}
+
+
+%------------------------------------------------------------------------------
 \chapter{Getting Started}
 %@author Gerd Neugebauer
 
@@ -226,55 +161,71 @@ be not too hard to get started.
 \subsection{Java}
 %@author Gerd Neugebauer
 
-You need to have Java 1.4.2 or later installed on your system. You can
-get Java for a several systems directly from \url{java.sun.com}.
-Download and install it accoring to the installation instructions for
-your environment.
+You need to have Java 1.4.2\index{Java} or later installed on your
+system. You can get Java for a several systems directly from
+\url{java.sun.com}. Download and install it according to the
+installation instructions for your environment.
 
 To check that you have an appropriate Java on your path you can use
 the command \texttt{java} with the argument \texttt{-version}. This
 can be seen in the following listing:
 
-\begin{lstlisting}{}
-> java -version
+\lstset{morecomment=[l]{\#}}%
+\begin{lstlisting}{morecomment=[l][keywordstyle]{>}}
+# java -version
 java version "1.4.2_06"
 Java(TM) 2 Runtime Environment, Standard Edition (build 1.4.2_06-b03)
 Java HotSpot(TM) Client VM (build 1.4.2_06-b03, mixed mode)
->
+#
 \end{lstlisting}
 
 
 \subsection{TEXMF}
 %@author Gerd Neugebauer
 
-If you want to use more than the pure \TeX\ engine fonts and macros
-can be inherited from a texmf tree. \ExTeX\ itself does not contain a
-full texmf tree. It comes just with some rudimentray files necessary
-for testing. Thus you should have installed a texmf tree, e.g. from a
-\TeX Live installation. This can be found on the
-\href{http://www.ctan.org}{Comprehensive \TeX\ Archive Network (CTAN)}.
+If you want to use more than the pure \ExTeX\ engine, fonts and macros
+can be inherited from a texmf tree\index{texmf}. \ExTeX\ itself does
+not contain a full texmf tree. It comes just with some rudimentray
+files necessary for testing. Thus you should have installed a texmf
+tree, e.g. from a \TeX Live\index{TeXlive@\TeX Live} installation.
+This can be found on the \href{http://www.ctan.org}{Comprehensive
+  \TeX\ Archive Network (CTAN)}\index{CTAN}.
 
 There is no need to install the texmf tree in a special place. You
 have to tell \ExTeX\ anyhow where it can be found. It is even possible
 to work with several texmf trees.
 
 One requirement for the texmf trees is that they have a file database
-(\texttt{ls-R}). \ExTeX\ can be configured to work without it, but
-then \ExTeX\ is deadly slow. Thus you do not really want to try this
+(\File{ls-R}). \ExTeX\ can be configured to work without it, but then
+\ExTeX\ is deadly slow. Thus you do not really want to try this
 alternative.
 
 
 \section{Getting \ExTeX}
 %@author Gerd Neugebauer
 
+\subsection{Getting the Installer}
+%@author Gerd Neugebauer
+
+The simplest way to get \ExTeX\ up and running is to use the \ExTeX\ 
+installer. This installer\index{installer} is distribted as one file
+\File{ExTeX-setup.jar}. You can download it from
+
+\begin{quotation}
+  \url{http://www.extex.org/download/}
+\end{quotation}
+
+\INCOMPLETE
+
+
 \subsection{Getting the Sources}
 %@author Gerd Neugebauer
 
-The sources of \ExTeX\ are stored in a RCS repository. To access this
-repository you need access to the internet and RCS installed in some
+The sources of \ExTeX\ are stored in a CVS repository. To access this
+repository you need access to the internet and CVS installed in some
 way.
 
-The coordinates of the repository are:
+The coordinates of the repository are:\index{repository}\index{CVS}
 \medskip
 
 \begin{tabular}{ll}\toprule
@@ -286,30 +237,30 @@ The coordinates of the repository are:
 \end{tabular}
 \bigskip
 
-We assume here that you have access to cvs on the command line. This
+We assume here that you have access to CVS on the command line. This
 can be either a shell on a Unix-like system or somethng like cygwin on
 Windows. We also assume that you have direct connection to the internet.
 
 First we create a directory where the sources are stored:
 \begin{lstlisting}{}
-> mkdir ExTeX
+# mkdir ExTeX
 \end{lstlisting}
 
 Next we change the current directory to this base directory:
 \begin{lstlisting}{}
-> cd ExTeX
+# cd ExTeX
 \end{lstlisting}
 
 Now we log into the CVS repository. This login uses an anonymous
 account. This enables us to download the sources but not to commit any
 changes. The committing is restricted to members of the \ExTeX{} team.
 \begin{lstlisting}{}
-> cvs -d:pserver:anonymous@cvs.extex.berlios.de/cvsroot/extex login
+# cvs -d:pserver:anonymous@cvs.extex.berlios.de/cvsroot/extex login
 \end{lstlisting}
 
 Finally we can check out the sources:
 \begin{lstlisting}{}
-> cvs -d:pserver:anonymous@cvs.extex.berlios.de/cvsroot/extex co ExTeX
+# cvs -d:pserver:anonymous@cvs.extex.berlios.de/cvsroot/extex co ExTeX
 \end{lstlisting}
 
 This command shows a lot of output. At the end the current directory
@@ -317,6 +268,9 @@ is filled with a lot of files and directories.
 
 \section{Installing \ExTeX}
 %@author Gerd Neugebauer
+
+There are several ways to install \ExTeX. Some of them are described
+in this section. 
 
 \subsection{Installing \ExTeX\ with the Installer}\label{sec:installer}
 %@author Gerd Neugebauer
@@ -328,30 +282,32 @@ is filled with a lot of files and directories.
   \label{fig:inst1}
 \end{figure}
 The easiest installation of \ExTeX\ works with the \ExTeX\ installer.
-This installer is named \texttt{ExTeX-setup.jar}. You can start the
-installer with the following command line:
+This installer is named \File{ExTeX-setup.jar}. You can start the
+installer with the following command line:\index{installer}
 
 \begin{lstlisting}{}
-> java -jar ExTeX-setup.jar
+# java -jar ExTeX-setup.jar
 \end{lstlisting}
 
-On windows with a properly installed Java you can also start the
-installer by double-clicking \texttt{ExTeX-setup.jar} in the Explorer.
+On Windows\index{Windows} with a properly installed Java\index{Java}
+you can also start the installer by double-clicking
+\texttt{ExTeX-setup.jar} in the Explorer\index{Explorer}.
 
 The installer provides a graphical user interface with a wizard
 guiding you through the installation process. The first dialog is
 shown in figure~\ref{fig:inst1}. As you can see you can select one of
 several languages for the installation process. Currently the
 languages English and German are supported. There might be some more
-at the time you are performing the installation.
+at the time you are performing the
+installation.\index{installer!language}\index{language!installer}
 
 Note that the internationalization covers the installer only. \ExTeX\
 can be run under different language environments as well. This is
 controlled by a setting at run-time. Currently only an English
-language binding for \ExTeX\ is provided.
+language binding for \ExTeX\ is provided.\index{language}
 
-Finally you have to make sure that the executables \texttt{extex} or
-\texttt{extex.bat} is on your path for executables.
+Finally you have to make sure that the executables \Prog{extex} or
+\Prog{extex.bat} is on your path for executables.\index{path}
 
 
 \subsection{Replaying an Installation}
@@ -370,21 +326,22 @@ installer are the same. This process can be automated.
 In figure~\ref{fig:inst8} you can see the last screen of the
 installer. Here you have the possibility to select the button
 ``Generate an automatic installation script''. This produces an XML
-file which can be passed to the installer to avoid the dialogs.
+file which can be passed to the installer to avoid the
+dialogs.\index{installer}\index{installation script}
 
 Suppose you have named the file \texttt{replay.xml} in the file
 selector which pops up when the button has been pressed. Then you can
 replay the installation with the following command invocation:
 
 \begin{lstlisting}{}
-> java -jar ExTeX-setup.jar replay.xml
+# java -jar ExTeX-setup.jar replay.xml
 \end{lstlisting}
 
-This supposes that the two files \texttt{ExTeX-setup.jar} and
+This supposes that the two files \File{ExTeX-setup.jar} and
 \texttt{replay.xml} are in the current directory.
 
-Finally you have to make sure that the executables \texttt{extex} or
-\texttt{extex.bat} is on your path for executables.
+Finally you have to make sure that the executables \Prog{extex} or
+\Prog{extex.bat} is on your path for executables.\index{path}
 
 
 \subsection{Creating the \ExTeX\ Installer}
@@ -393,18 +350,18 @@ Finally you have to make sure that the executables \texttt{extex} or
 You can create the installer of \ExTeX\ from the sources. All you need
 for this step is contained in the source distribution. Suppose you are
 in the base directory of the distribution. Then the following command
-creates the installer:
+creates the installer:\index{installer!building}
 
 \begin{lstlisting}{}
-> build installer
+# build installer
 \end{lstlisting}
 
-As a result the file \texttt{ExTeX-setup.jar} is created in the
+As a result the file \File{ExTeX-setup.jar} is created in the
 directory \texttt{target}. This file is a self-contained installer.
 You can immediately start the installer with the following command line:
 
 \begin{lstlisting}{}
-> java -jar target/ExTeX-setup.jar
+# java -jar target/ExTeX-setup.jar
 \end{lstlisting}
 
 In addition the installer file can be moved to any other place -- even
@@ -419,21 +376,22 @@ To install you can use the build script provided in the \ExTeX{}
 base directory.
 
 \begin{lstlisting}{}
-> build -Dinstall.dir=/usr/local/share/ExTeX install
+# build -Dinstall.dir=/usr/local/share/ExTeX install
 \end{lstlisting}
 
-Additionally you have to copy the file \texttt{.extex} from the base
+Additionally you have to copy the file \File{.extex} from the base
 directory of the \ExTeX\ to your home directory and adapted to your
-installation. Especially the value of \texttt{extex.texinputs} most
+installation. Especially the value of \Property{extex.texinputs} most
 probably needs adaption to point to your texmf trees.
 
-Finally you have to make sure that the executables \texttt{extex} or
-\texttt{extex.bat} is on your path for executables.
+Finally you have to make sure that the executables \Prog{extex} or
+\Prog{extex.bat} is on your path for executables.
 
 Now you can forget the source directory. It is not needed any more
 unless you are debugging or developing \ExTeX{} extensions.
 
 
+%------------------------------------------------------------------------------
 \chapter{Configuring \ExTeX}
 %@author Gerd Neugebauer
 
@@ -451,7 +409,279 @@ in the current directory. The settings in the current directoy
 overwrite the settings from the user's home directory. Those in turn
 overwrite the built-in settings.
 
-\INCOMPLETE
+\ExTeX\ user properties files contain setting of properties. This is
+done in a line-based way. Lines containing only whitespace characters
+are ignored. If the first character is a hash sign (\verb|#|) then the
+line is treated as a comment and ignored.
+
+The first appearance of a equal sign (\verb|=|) or the colon
+(\verb|:|) separates the name of the property from the value. Leading
+and trailing whitespace is ignored both for the name and the value of
+the property.
+
+Some characters have a special meaning. The backslash (\verb|\|) acts
+as an escape character. The sequence \verb|\n| is replaced by the
+newline character. If the last character in a line is a backslash then
+the line is continued in the next line. To produce a single backslash
+it has to be doubled.
+
+You can set any property name you like to a legal value. \ExTeX\ will
+not complain about unknown peoperties but ignore them silently.
+The following properties are used by \ExTeX:
+
+\begin{description}
+\item[\Property{extex.code}]\ \\
+  This parameter contains \ExTeX\ code to be executed directly. The
+  execution is performed after any code specified in an input file.
+
+   Example:\index{relax@\texttt{\char`\\relax}}
+\begin{lstlisting}{}
+  extex.code = \\relax
+\end{lstlisting}
+
+\item[\Property{extex.config}]\ \\
+  This parameter contains the name of the configuration resource to
+  use. This configuration resource is sought on the classpath.
+
+  Example:
+\begin{lstlisting}{}
+  extex.config = tex.xml
+\end{lstlisting}
+
+\item[\Property{extex.encoding}]\ \\
+  This parameter contains the name of the property for the standard
+  encoding to use.
+
+  Example:
+\begin{lstlisting}{}
+  extex.encoding = ISO-8859-1 
+\end{lstlisting}
+
+\item[\Property{extex.error.handler}]\ \\
+  This parameter contains the logical name of the error handler.
+
+  Example:
+\begin{lstlisting}{}
+  extex.error.handler = TeX
+\end{lstlisting}
+
+\item[\Property{extex.fonts}]\ \\
+  This parameter contains the property indicating where to find font
+  files. The value is a path similar to \Property{extex.texinputs}.
+
+  Example:
+\begin{lstlisting}{}
+  extex.fonts = /usr/local/share/fonts
+\end{lstlisting}
+
+\item[\Property{extex.halt.on.error}]\ \\
+  This boolean parameter contains the property indicating whether
+  the processing should stop after the first error. Allowed values are
+  \verb|true| and \verb|false|.
+
+  Example:
+\begin{lstlisting}{}
+  extex.halt.on.error = false
+\end{lstlisting}
+
+\item[\Property{extex.file}]\ \\
+  This parameter contains the file to read from. It has no default. If
+  this property is not set or set to the empty string then no attempt
+  is made to read a file. Maybe the user is asked to provide one.
+
+  Example:
+\begin{lstlisting}{}
+  extex.file = abc.tex
+\end{lstlisting}
+
+\item[\Property{extex.fmt}]\ \\
+  This parameter contains the name of the format to read. An empty
+  string denotes that no format should be read. This is the default.
+  In thi case \ExTeX\ acts with no macros or fonts preloaded.
+
+  Example:
+\begin{lstlisting}{}
+  extex.fmt = plain
+\end{lstlisting}
+
+\item[\Property{extex.ini}]\ \\
+  If set to \verb|true| then act as ini\TeX. This command line option
+  is defined for compatibility to \TeX\ only. In \ExTeX\ it has no
+  effect at all. Allowed values are \verb|true| and \verb|false|.
+
+  Example:
+\begin{lstlisting}{}
+  extex.ini = true
+\end{lstlisting}
+
+\item[\Property{extex.interaction}]\ \\
+  This parameter contains the interaction mode. possible values are
+  the numbers 0\dots3 and the symbolic names \Mode{batchmode} (0),
+  \Mode{nonstopmode} (1), \Mode{scrollmode} (2), and
+  \Mode{errorstopmode} (3).
+
+  Example:
+\begin{lstlisting}{}
+  extex.interaction = scrollmode
+\end{lstlisting}
+
+\item[\Property{extex.jobname}]\ \\
+  This parameter contains the name of the job. It is overwritten if a
+  file is given to read from. In this case the basename of the input
+  file is used instead. If no file is read in then the default value
+  \verb|texput| is used.
+
+  Example:
+\begin{lstlisting}{}
+  extex.jobname = texput
+\end{lstlisting}
+
+\item[\Property{extex.jobnameMaster}]\ \\
+  This parameter contains the name of the job to be used with high
+  priority.
+
+  Example:
+\begin{lstlisting}{}
+  extex.jobnameMaster = texput
+\end{lstlisting}
+
+\item[\Property{extex.lang}]\ \\
+  This parameter contains the name of the locale to be used for the
+  messages. The value is a two letter ISO language code.  \ExTeX\ can
+  be internationalized ust by providing some files with the translated
+  strings. Currently only the language English (\verb|en|) is
+  supported.
+
+  Example:
+\begin{lstlisting}{}
+  extex.lang = en
+\end{lstlisting}
+
+\item[\Property{extex.nobanner}]\ \\
+  This parameter contains a boolean indicating that the banner should
+  be suppressed. Allowed values are \verb|true| and \verb|false|.
+
+  Example:
+\begin{lstlisting}{}
+  extex.nobanner = false
+\end{lstlisting}
+
+\item[\Property{extex.output}]\ \\
+  This parameter contains the output format. This logical name is
+  resolved via the configuration.
+
+  Example:
+\begin{lstlisting}{}
+  extex.output = pdf
+\end{lstlisting}
+
+\item[\Property{extex.outputdir}]\ \\
+  This parameter contain the directory where output files should be
+  created. The period is interpreted as the current directory. The
+  default is the current directory.
+
+  Example:
+\begin{lstlisting}{}
+  extex.outputdir = .
+\end{lstlisting}
+
+\item[\Property{extex.outputdir.fallback}]\ \\
+  This parameter contains the property for the fallback if the output
+  directory (\Property{extex.outputdir}) fails to be writable.  The
+  period is interpreted as the current directory.
+
+  The default is the current directory. Thus you can reset
+  \Property{extex.outputdir} and if this directory happens not to be
+  writable then the current directory is used to create the log file
+  and output files in.
+
+  Example:
+\begin{lstlisting}{}
+  extex.outputdir.fallback = .
+\end{lstlisting}
+
+\item[\Property{extex.progname}]\ \\
+  This parameter can be used to overrule the name of the program shown
+  in the banner and the version information.
+
+  Example:
+\begin{lstlisting}{}
+  extex.progname = iniExTeX
+\end{lstlisting}
+
+\item[\Property{extex.stacktrace.on.internal.error}]\ \\
+  This parameter can be used to force a stacktrace on stdout if an
+  internal error is encountered. This is handy for development.
+  Allowed values are \verb|true| and \verb|false|.
+
+  Example:
+\begin{lstlisting}{}
+  extex.stacktrace.on.internal.error = true
+\end{lstlisting}
+
+\item[\Property{extex.texinputs}]\ \\
+  This parameter contains the additional directories for searching
+  \ExTeX\ input files.
+  The directories are separated by the system-dependant separator.
+  This separator is a colon (\verb|:|) on Unix\index{Unix} and the semicolon
+  (\verb|;|) on Windows\index{Windows}.
+
+  Example:
+\begin{lstlisting}{}
+  extex.texinputs = /home/gene/lib/tex
+\end{lstlisting}
+
+\item[\Property{extex.trace.input.files}]\ \\
+  This boolean parameter contains the indicator whether or not to
+  trace the search for input files.  Allowed values are \verb|true|
+  and \verb|false|.
+
+  Example:
+\begin{lstlisting}{}
+  extex.trace.input.files = false
+\end{lstlisting}
+
+\item[\Property{extex.trace.font.files}]\ \\
+  This boolean parameter contains the indicator whether or not to
+  trace the search for font files.  Allowed values are \verb|true| and
+  \verb|false|.
+
+  Example:
+\begin{lstlisting}{}
+  extex.trace.font.files = false
+\end{lstlisting}
+
+\item[\Property{extex.trace.macros}]\ \\
+  This boolean parameter contains the indicator whether or not to
+  trace the execution of macros.  Allowed values are \verb|true| and
+  \verb|false|.
+
+  Example:
+\begin{lstlisting}{}
+  extex.trace.macros = false
+\end{lstlisting}
+
+\item[\Property{extex.trace.tokenizer}]\ \\
+  This boolean parameter contains the indicator whether or not to
+  trace the work of the tokenizer.  Allowed values are \verb|true| and
+  \verb|false|.
+
+  Example:
+\begin{lstlisting}{}
+  extex.trace.tokenizer = false
+\end{lstlisting}
+
+\item[\Property{extex.typesetter}]\ \\
+  This parameter contains the name of the typesetter to use. If it is
+  not set then the default from the configuration file is used.
+
+  Example:
+\begin{lstlisting}{}
+  extex.typesetter = default
+\end{lstlisting}
+
+\end{description}
+
 
 \section{Configuration Files}
 %@author Gerd Neugebauer
@@ -462,6 +692,8 @@ for \ExTeX. Those files can be used to provide additional features in
 
 \INCOMPLETE
 
+
+%------------------------------------------------------------------------------
 \chapter{Running \ExTeX}
 %@author Gerd Neugebauer
 
@@ -472,8 +704,9 @@ replacement.
 The following sample show a simple invocation of \ExTeX\ without any
 command line arguments.
 
+{\lstset{morecomment=[l]{*}}%
 \begin{lstlisting}{}
-> extex
+# extex
 This is ExTeX, Version 0.0 (TeX compatibility mode)
 **\relax
 
@@ -481,26 +714,240 @@ This is ExTeX, Version 0.0 (TeX compatibility mode)
 
 No pages of output.
 Transcript written on ./texput.log.
-\end{lstlisting}
+\end{lstlisting}}
 
 In this case \ExTeX\ enters interaction with the user and asks for an
 input file. This is indicated by the two asterists. We have entered
-\verb|\relax| here to indicate that we are not willing to pass in a
+\macro{relax} here to indicate that we are not willing to pass in a
 file name. The \ExTeX\ system asks us to enter some command --
-indicted by the single asterisk. Here we have entered \verb|\end| to
-indicate that we want to finish the processing. Thus \ExTeX\
+indicted by the single asterisk. Here we have entered \macro{end} to
+indicate that we want to finish the processing. Thus \ExTeX\ 
 terminates normally.
 
-
-
-
-
 \INCOMPLETE
+
+{\lstset{morecomment=[l]{*}}%
+\begin{lstlisting}{}
+# extex plain
+This is ExTeX, Version 0.0 (TeX compatibility mode)
+(plain Preloading the plain format: codes, registers, parameters, fonts,
+more fonts, macros, math definitions, output routines, hyphenation(hyphen))
+*\dump
+Beginning to dump on file plain.fmt
+
+*\end
+
+No pages of output.
+Transcript written on ./plain.log.
+\end{lstlisting}}
+
 
 \section{Command Line Parameters}
 %@author Gerd Neugebauer
 
-\INCOMPLETE
+The invocation of the executable \Prog{extex} can be controlled by
+large number of command line arguments. Those command line arguments
+are described in the following list:
+
+\begin{description}
+\item[\Arg{code}]\ \\
+  This parameter contains \ExTeX\ code to be executed directly. The
+  execution is performed after any code specified in an input file. On
+  the command line the code has to start with a backslash. This
+  restriction does not hold for the property settings.
+
+  This commad line argument sets the property \Property{extex.code}
+  
+\item[\Arg{file}]\ \\
+  This parameter contains the file to read from. A file name may not
+  start with a backslash or an ampercent. It has no default.
+
+  This command line argument sets the property \Property{extex.file}.
+  
+\item[\CLI{-} \Arg{file}]\ \\
+  This parameter terminates the normal processing of arguments. The
+  next argument -- if present -- is interpreted as input file. With
+  this construction it is possible to process an input file which
+  starts with one of the special characters \verb|\| or \verb|&|.
+
+  This command line argument sets the property \Property{extex.file}
+  if a file argument is present.
+
+\item[\CLI{configuration} \Arg{resource}]\ \\
+  This parameter contains the name of the configuration resource to
+  use. This configuration resource is sought on the class path.
+  
+  This command line argument sets the property \Property{extex.config}.
+  
+\item[\CLI{copyright}]\ \\
+  This command line option produces a copyright notice on the standard
+  output stream and terminates the program afterwards.
+
+\item[\tt\&\Arg{format}]\index{\&}
+\item[\CLI{fmt} \Arg{format}]\ \\
+  This parameter contains the name of the format to read. An empty
+  string denotes that no format should be read. This is the default.
+
+  This command line argument sets the property \Property{extex.fmt}.
+  
+\item[\CLI{debug} \Arg{spec}]\ \\
+  This command line parameter can be used to instruct the program to
+  produce debugging output of several kinds. The debug output is
+  written to the log file. The specification \Arg{spec} is interpreted
+  left to right. Each character is interpreted according to the
+  following table:
+
+  \begin{tabular}{lp{.4\textwidth}l}\toprule
+    \textit{Spec}& \textit{Description}& \textit{See} \\\midrule
+    F& 	This specifier contains the indicator whether or not to trace
+    the searching for input files. & 	\Property{extex.trace.input.files}\\
+    f& 	This specifier contains the indicator whether or not to trace
+    the searching for font files.&      \Property{extex.trace.font.files}\\
+    M& 	This specifier contains the indicator whether or not to trace
+    the execution of macros.&	 	\Property{extex.trace.macros}\\
+    T& 	This specifier contains the indicator whether or not to trace
+    the work of the tokenizer.& 	\Property{extex.trace.tokenizer}\\
+    \bottomrule
+  \end{tabular}
+
+  The following example shows a possible invocation with this
+  parameter: 
+\begin{lstlisting}{}
+# extex -debug FfMT abc.tex
+This is ExTeX, Version 0.0 (TeX compatibilty mode)
+...
+\end{lstlisting}
+  
+\item[\CLI{halt-on-error}]\ \\
+  This parameter contains the indicator whether the processing should
+  halt after the first error which has been encountered.
+
+  This command line argument sets the property \Property{extex.halt.on.error}.
+  
+\item[\CLI{help}]\ \\
+  This command line option produces a short usage description on the
+  standard output stream and terminates the program afterwards.
+  
+\item[\CLI{ini}]\ \\
+  If set to true then act as ini\TeX.\index{initex@init\TeX} This
+  command line option is defined for compatibility to
+  \TeX\index{TeX@\TeX} only. In \ExTeX\ it has no effect at all.
+
+  This command line argument sets the property \Property{extex.ini}.
+
+  The following example shows a possible invocation with this
+  parameter: 
+\begin{lstlisting}{}
+# extex -ini abc.tex
+This is ExTeX, Version 0.0 (TeX compatibilty mode)
+...
+\end{lstlisting}
+  
+\item[\CLI{interaction} \Arg{mode}]\ \\
+  This parameter contains the interaction mode. possible values are
+  the numbers 0\dots3 and the symbolic names \Mode{batchmode} (0),
+  \Mode{nonstopmode} (1), \Mode{scrollmode} (2), and
+  \Mode{errorstopmode} (3).
+
+  This command line argument sets the property \Property{extex.interaction}.
+  
+  The following example shows a possible invocation with this
+  parameter:
+\begin{lstlisting}{}
+# extex -interaction batchmode abc.tex
+This is ExTeX, Version 0.0 (TeX compatibilty mode)
+...
+\end{lstlisting}
+
+\item[\CLI{job-name} \Arg{name}]\ \\
+  This parameter contains the name of the job. It is overwritten if a
+  file is given to read from. In this case the base name of the input
+  file is used instead.
+
+  This command line argument sets the property \Property{extex.jobname}.
+  
+\item[\CLI{language} \Arg{language}]\ \\
+  This parameter contains the name of the locale to be used for the
+  messages.
+
+  This command line argument sets the property \Property{extex.lang}.
+  
+\item[\CLI{output} \Arg{format}]\ \\
+  This parameter contains the output format. This logical name is
+  resolved via the configuration.
+
+  This command line argument sets the property \Property{extex.output}.
+
+  The following example shows a possible invocation with this
+  parameter: 
+\begin{lstlisting}{}
+# extex -output pdf abc.tex
+This is ExTeX, Version 0.0 (TeX compatibilty mode)
+\end{lstlisting}
+  
+\item[\CLI{progname} \Arg{name}]\ \\
+  This parameter can be used to overrule the name of the program shown
+  in the banner and the version information.  The following example
+  shows a possible invocation and the resulting output:
+
+\begin{lstlisting}{}
+# extex -progname XeTxE -version
+This is XeTxE, Version 0.0 (1.4.2_06)
+#
+\end{lstlisting}
+
+  This command line argument sets the property \Property{extex.progname}.
+  
+\item[\CLI{texinputs} \Arg{path}]\ \\
+  This parameter contains the additional directories for searching
+  \ExTeX\ input files.  The directories are separated by the
+  system-dependant separator.  This separator is a colon (\verb|:|) on
+  Unix\index{Unix} and the semicolon (\verb|;|) on
+  Windows\index{Windows}.
+  
+  This command line argument sets the property
+  \Property{extex.texinputs}.
+  
+\item[\CLI{texmfoutputs} \Arg{dir}]\ \\
+  This parameter contains the name of the property for the fallback if
+  the output directory fails to be writable.
+  
+  This command line argument sets the property
+  \Property{extex.outputdir.fallback}.
+  
+\item[\CLI{texoutputs} \Arg{dir}]\ \\
+  This parameter contain the directory where output files should be
+  created.
+
+  This command line argument sets the property \Property{extex.outputdir}.
+  
+\item[\CLI{version}]\ \\
+  This command line parameter forces that the version information is
+  written to standard output and the program is
+  terminated.\index{version} The version of \ExTeX\ is shown and the
+  version of the Java engine\index{Java} in parentheses. The following
+  example shows a possible invocation and the resulting output:
+
+\begin{lstlisting}{}
+# extex -version
+This is ExTeX, Version 0.0 (1.4.2_06)
+#
+\end{lstlisting}
+\end{description}
+
+Command line parameters can be abbreviated up to a unique prefix --
+and sometimes even more. Thus the following invocations are
+equivalent:
+
+\begin{verbatim}
+  extex -v
+  extex -ve
+  extex -ver
+  extex -vers
+  extex -versi
+  extex -versio
+  extex -version  
+\end{verbatim}
 
 
 \section{Creating Formats}
@@ -509,6 +956,7 @@ terminates normally.
 \INCOMPLETE
 
 
+%------------------------------------------------------------------------------
 \chapter{Troubleshooting \ExTeX}
 %@author Gerd Neugebauer
 
@@ -521,6 +969,26 @@ This chapter contains some hints in the case of trouble.
 
 \INCOMPLETE
 
+
+%------------------------------------------------------------------------------
+\chapter{Primitives of \ExTeX}
+%@author Gerd Neugebauer
+
+\ExTeX\ defines a lot of primitives. Those primitives are described below.
+
+\INCOMPLETE
+
+
+%------------------------------------------------------------------------------
+\appendix
+
+\chapter{Licenses}
+
+\input{fdl}
+\input{lgpl}
+
+%------------------------------------------------------------------------------
+{\scriptsize\printindex}
 
 \end{document}%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
