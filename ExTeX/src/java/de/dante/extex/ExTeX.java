@@ -201,7 +201,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  *   </dd>
  *   <dd>Default: <tt>texput</tt></dd>
  *
- *   <dt><a name="extex.jobnameMaster"/><tt>extex.jobnameMaster</tt></dt>
+ *   <dt><a name="extex.jobname.master"/><tt>extex.jobname.master</tt></dt>
  *   <dd>
  *    This parameter contains the name of the job to be used with high
  *    priority.
@@ -315,7 +315,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.104 $
+ * @version $Revision: 1.105 $
  */
 public class ExTeX {
 
@@ -417,7 +417,7 @@ public class ExTeX {
      * The field <tt>PROP_JOBNAME_MASTER</tt> contains the name of the
      * property for the job name to be used with high priority.
      */
-    protected static final String PROP_JOBNAME_MASTER = "extex.jobnameMaster";
+    protected static final String PROP_JOBNAME_MASTER = "extex.jobname.master";
 
     /**
      * The field <tt>PROP_LANG</tt> contains the name of the property for the

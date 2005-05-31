@@ -1,5 +1,5 @@
 %%*****************************************************************************
-%% $Id: extex-users.tex,v 1.4 2005/05/31 06:28:27 gene Exp $
+%% $Id: extex-users.tex,v 1.5 2005/05/31 06:56:14 gene Exp $
 %%*****************************************************************************
 %% Author: Gerd Neugebauer
 %%-----------------------------------------------------------------------------
@@ -7,7 +7,7 @@
 
 \usepackage{makeidx}
 
-\title{ExTeX User's Guide}
+\title{\ExTeX\ User's Guide}
 \author{Gerd Neugebauer}
 
 \newcommand\Arg[1]{\(\langle\){\tt\itshape #1}\(\rangle\)}
@@ -19,7 +19,7 @@
 \newcommand\macro[1]{\texttt{\char`\\#1}\index{#1@\texttt{\char`\\#1}}}
 
 \def\setVersion$#1: #2.#3${\gdef\Version{0.#3}}
-\setVersion$Version: 0.1$
+\setVersion$Revision: 1.5 $
 
 \makeindex
 
@@ -535,13 +535,13 @@ The following properties are used by \ExTeX:
   extex.jobname = texput
 \end{lstlisting}
 
-\item[\Property{extex.jobnameMaster}]\ \\
+\item[\Property{extex.jobname.master}]\ \\
   This parameter contains the name of the job to be used with high
   priority.
 
   Example:
 \begin{lstlisting}{}
-  extex.jobnameMaster = texput
+  extex.jobname.master = texput
 \end{lstlisting}
 
 \item[\Property{extex.lang}]\ \\

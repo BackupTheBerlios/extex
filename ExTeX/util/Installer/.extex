@@ -64,7 +64,7 @@
 ##    the input file is used instead.
 ##-----------------------------------------------------------------------------
 ##
-#extex.jobnameMaster =
+#extex.jobname.master =
 ##    This parameter contains the name of the job to be used with high
 ##    priority.
 ##-----------------------------------------------------------------------------
