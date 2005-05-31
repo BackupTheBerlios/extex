@@ -5,3 +5,9 @@
 *.toc
 *.out
 extex-users.pdf
+.pdf
+*.idx
+*.ilg
+x.pdf
+x.tex
+*.ind
