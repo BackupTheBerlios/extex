@@ -47,7 +47,7 @@ import de.dante.util.GeneralException;
  *  <pre class="syntax">
  *    &lang;shipout&rang;
  *      &rarr; <tt>\shipout</tt> {@linkplain
- *        de.dante.extex.interpreter.TokenSource#getBox(Context, Typesetter)
+ *        de.dante.extex.interpreter.TokenSource#getBox(Context,Typesetter)
  *        &lang;box&rang;}  </pre>
  * </p>
  * <p>
@@ -58,7 +58,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Shipout extends AbstractCode {
 

@@ -45,7 +45,7 @@ import de.dante.util.GeneralException;
  *      &rarr; <tt>\moveleft</tt> {@linkplain
  *        de.dante.extex.interpreter.type.dimen#Dimen(Context,TokenSource)
  *        &lang;dimen&rang;} {@linkplain
- *        de.dante.extex.interpreter.TokenSource#getBox(Context, de.dante.extex.typesetter.Typesetter)
+ *        de.dante.extex.interpreter.TokenSource#getBox(Context,de.dante.extex.typesetter.Typesetter)
  *        &lang;box&rang;}  </pre>
  * </p>
  * <p>
@@ -61,7 +61,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Moveleft extends AbstractCode implements Boxable {
 
