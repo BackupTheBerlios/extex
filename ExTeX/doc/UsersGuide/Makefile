@@ -1,5 +1,5 @@
 #******************************************************************************
-#* $Id: Makefile,v 1.3 2005/06/01 08:43:49 gene Exp $
+#* $Id: Makefile,v 1.4 2005/06/01 16:22:53 gene Exp $
 #******************************************************************************
 #* Author: Gerd Neugebauer
 #*=============================================================================
@@ -7,23 +7,32 @@
 
 all: extex-users.pdf
 
-%.pdf:%.toc %.ind
-	pdflatex $*
-	pdflatex $*
+extex-users.pdf: cfg extex-users.tex
 
-%.ind:%.idx
-	makeindex -s doc.ist $*
+%.pdf: %.toc %.ind
+	@pdflatex $*
+	@pdflatex $*
 
-%.idx:%.tex
-	pdflatex $*
+%.ind: %.idx
+	@makeindex -s doc.ist $*
 
-%.toc:%.tex
-	pdflatex $*
+%.idx: %.tex
+	@pdflatex $*
+
+%.toc: %.tex
+	@pdflatex $*
 
 Configurations/configurations.tex cfg:
-	perl Configurations/analyzeConfig ../../src/java/config/*.xml > Configurations/configurations.tex
+	@perl Configurations/analyzeConfig			\
+		-cp ../../src/java				\
+		-o Configurations/configurations.tex		\
+		-prim Configurations/primitives.tex		\
+		../../src/java/config/*.xml 
 
 clean:
 	rm *.ilg *.out *.toc *.aux *.ilg *.log *.dvi *.ind
+
+veryclean distclean: clean
+	rm extex-users.pdf
 
 #

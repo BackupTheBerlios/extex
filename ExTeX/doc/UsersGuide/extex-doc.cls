@@ -106,6 +106,8 @@
   \fi
 }
 
+\providecommand\eTeX{\ensuremath{\varepsilon}-\TeX}
+
 \newcommand\INCOMPLETE{\bigskip\par{\unitlength=1mm\framebox(60,20){To be completed.}}\bigskip\par}
 
 \newenvironment{abstract}{\begin{quotation}}{\end{quotation}}
