@@ -57,7 +57,7 @@ import de.dante.util.configuration.ConfigurationException;
  *    &lang;box specification&rang;
  *        &rarr;
  *         | <tt>to</tt> &lang;rule dimension&rang;
- *         | <tt>spread</tt> &lang;rule dimension&rang;  </pre>
+ *         | <tt>spread</tt> &lang;rule dimension&rang;
  *
  *    &lang;rows&rang;
  *       &rarr;
@@ -74,7 +74,7 @@ import de.dante.util.configuration.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class Halign extends AbstractAlign implements Boxable {
 
