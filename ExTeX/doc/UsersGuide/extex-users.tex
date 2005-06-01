@@ -1,5 +1,5 @@
 %%*****************************************************************************
-%% $Id: extex-users.tex,v 1.6 2005/06/01 08:44:36 gene Exp $
+%% $Id: extex-users.tex,v 1.7 2005/06/01 10:10:47 gene Exp $
 %%*****************************************************************************
 %% Author: Gerd Neugebauer
 %%-----------------------------------------------------------------------------
@@ -19,8 +19,13 @@
 \newcommand\macro[1]{\texttt{\char`\\#1}\index{#1@\texttt{\char`\\#1}}}
 
 \def\setVersion$#1: #2.#3${\gdef\Version{0.#3}}
-\setVersion$Revision: 1.6 $
+\setVersion$Revision: 1.7 $
 
+\providecommand\indexGroup[1]{\vskip 12pt plus 4pt minus 2pt
+  \textbf{\sffamily\normalsize #1}%
+  \vskip 6pt plus 3pt minus 1pt
+  \nopagebreak
+}
 \makeindex
 
 \usepackage{ragged2e}
