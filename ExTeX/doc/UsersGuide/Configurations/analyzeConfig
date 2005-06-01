@@ -1,6 +1,6 @@
 #!/bin/perl -w
 ##*****************************************************************************
-## $Id: analyzeConfig,v 1.1 2005/06/01 08:43:28 gene Exp $
+## $Id: analyzeConfig,v 1.2 2005/06/01 16:20:58 gene Exp $
 ##*****************************************************************************
 ## Author: Gerd Neugebauer
 ##=============================================================================
@@ -53,39 +53,210 @@ sub usage
 # Variable:	$verbose
 # Description:	
 #
-my $verbose = 0;
+my $verbose   = 0;
+my $outfile   = undef;
+my $pfile     = undef;
+my $classpath = '.';
 
 use Getopt::Long;
-GetOptions("h|help"	=> \&usage,
-	   "v|verbose"	=> \$verbose,
+GetOptions("cp=s"		=> \$classpath,
+	   "h|help"		=> \&usage,
+	   "outfile=s"		=> \$outfile,
+	   "primitives=s"	=> \$pfile,
+	   "v|verbose"		=> \$verbose,
 	  );
 
-my $out	       = \*STDOUT;
-my %cfg	       = ();
-my %primitives = ();
+my %cfg	      = ();
+my %primSets  = ();
+my %primClass = ();
+my %primitive = ();
+my %cache     = ();
 
 foreach my $file (@ARGV) {
   local $_ = $file;
   s|.*/(.*)\.xml|$1|;
   $cfg{$_} = $file;
+  print STDERR "--- Got configuration $_ -> $file" if $verbose;
 }
+
+my $out = ($outfile ? new FileHandle($outfile, 'w'): \*STDOUT);
 
 print $out "\n\\subsection{Predefined Configurations}\n";
 
 foreach (sort keys %cfg) {
-  processConfig($_, $cfg{$_});
+  processConfig($out, $_, $cfg{$_});
 }
 
 print $out "\n\\subsection{Primitive Sets}\n";
 
-foreach (sort keys %primitives) {
-  processPrimitives($_, $primitives{$_});
+foreach (sort keys %primSets) {
+  processPrimitives($out, $_, $primSets{$_});
+}
+
+$out = ($pfile ? new FileHandle($pfile, 'w'): \*STDOUT);
+
+foreach (sort ignorecase keys %primitive) {
+  processPrimitive($out, $_, $primitive{$_});
 }
 
 
+
+#------------------------------------------------------------------------------
+# Function:	ignorecase
+#
+sub ignorecase {
+  lc($a) cmp lc($b)
+}
+
+#------------------------------------------------------------------------------
+# Function:	processPrimitive
+#
+sub processPrimitive {
+  my ($out, $name, $class) = @_;
+
+  print $out "\n\\subsection*{The Primitive \\macro{$name}}\n";
+
+  local $_ = $class;
+  s|\.|/|g;
+  $_ = $classpath . '/' . $_ . '.java';
+  if ($class eq 'de.dante.extex.interpreter.primitives.register.count.IntegerParameter') {
+    print $out "\n\\macro{$name} is a count register.\n";
+  } elsif ($class eq 'de.dante.extex.interpreter.primitives.register.skip.SkipParameter') {
+    print $out "\n\\macro{$name} is a skip register.\n";
+
+  } elsif ($class eq 'de.dante.extex.interpreter.primitives.register.dimen.DimenParameter') {
+    print $out "\n\\macro{$name} is a dimen register.\n";
+
+  } elsif ($cache{$class}) {
+
+  } elsif (-f $_) {
+    processClass($out, $name, $_);
+    $cache{$class} = 1;
+  } else {
+    print $out "\n\\macro{$name} is not implemented yet.\n";
+  }
+}
+
+sub translate {
+  local $_ = shift;
+  s|^ \* ?||;
+#      s|\\|\\|g;
+  s|([~_\%\$])|\\$1|g;
+  s|\s*\&nbsp;\s*|~|g;
+  s|\&ndash;\s*|--|g;
+  s|\&lang;|\\tag{|g;
+  s|\&rang;|}|g;
+  s|\&\#x0*5c;|\\|g;
+  s|\&rarr;|\\rightarrow{}|g;
+
+  s|<logo>TeX</logo>|\\TeX{}|;
+  s|<logo>LaTeX</logo>|\\LaTeX{}|;
+  s|<logo>ExTeX</logo>|\\ExTeX{}|;
+  s|<logo>eTeX</logo>|\\eTeX{}|;
+  s|<tt>\\([^<]*)</tt>|\\macro{$1}|g;
+  s|<tt>{</tt>|\\texttt{\\char\`\\{}|g;
+  s|<tt>}</tt>|\\texttt{\\char\`\\}}|g;
+  s|<tt>([^<]*)</tt>|\\texttt{$1}|g;
+  s|<i>([^<]*)</i>|\\textit{$1}|g;
+  s|<b>([^<]*)</b>|\\emph{$1}|g;
+  s|<strong>|\\emph{|g;
+  s|</strong>|}|g;
+  s|<em>([^<]*)</em>|\\emph{$1}|g;
+  s|<sub>([^<]*)</sub>|\\ensuremath{_{$1}}|g;
+  s|<sup>([^<]*)</sup>|\\ensuremath{^{$1}}|g;
+
+  return $_;
+}
+
+#------------------------------------------------------------------------------
+# Function:	processClass
+#
+sub processClass {
+  my ($out, $name, $file) = @_;
+  my $fd = new FileHandle($file, 'r');
+  local $_;
+  my $collect = undef;
+  my $listing = undef;
+  my $s	      = '';
+
+  while(<$fd>) {
+    if (m|<doc.*name="([^\"]*)"|) {
+      $collect = 1;
+    } elsif(m|</doc>|) {
+      $collect = undef;
+    } elsif($collect) {
+
+      next if m/ TODO /;
+
+      $_ = translate($_);
+
+      s|<h3>.*</h3>\s*||;
+      s|<h4>(.*)</h4>|\\subsubsection{$1}|;
+      s|<p>\s*||g;
+      s|<p class="TeXbook">\s*|\\|g;
+      s|</p>\s*|\\par |;
+      s|<br[ /]*>|\\ |;
+      if (m/<pre\s+class="syntax">/) {
+	$s .= $`;
+	my $spec = '\\begin{syntax}' . $';
+	while(<$fd>) {
+	  $_ = translate($_) ;
+	  next if m/^\s*$/;
+
+	  s|^(\s*)\\rightarrow{}|$1\\>\\(\\rightarrow\\)\\>|;
+	  s/^(\s*)\|/$1\\>\\(|\\)\\>/;
+	  s/\[([a-z \<=\>\&;]*)\]/[\\texttt{$1}]/;
+
+	  if (m|</pre>|) {
+	    $spec .= $`;
+	    last;
+	  }
+	  $spec .= $_;
+	}
+	$_ = $spec;
+	s|\@linkplain\s+\S+\s+||sg;
+	s|\@link\s+\S+\s+||sg;
+	s/\n/\t\\\\\n/mg;
+	$_ .= "\n\\end{syntax}\n";
+
+      } elsif (m/<pre\s+class="TeXSample">/) {
+	$_ = $` . '\\begin{lstlisting}{}' . $';
+	$listing = 1;
+      } elsif(m|</pre>|) {
+	if ($listing) {
+	  $listing = undef;
+	  s|</pre>|\n\\end{lstlisting}|;
+	}
+      }
+
+      s|<pre class="JavaSample">|\\begin{pre}|g;
+      s|</pre>|\\end{pre}|g;
+
+      print STDERR "$file: unprocessed: $&\n" if(m|</?[a-z][a-z0-9]*|i);
+      $s .= $_
+    }
+  }
+
+  $fd->close();
+  $_ = $s;
+  s|\@linkplain\s+\S+\s+||sg;
+  s|\@link\s+\S+\s+||sg;
+  s/\\par\s*$/\n/;
+  s/\\par\s*/\n\n/g;
+  s/\n\n\n+/\n\n/g;
+  s|\&lt;|<|g;
+  s|\&gt;|>|g;
+
+  s|\\macro{\\+}|\\macro{\\char\`\\\\}|g;
+  print $out $_;
+}
+
+#------------------------------------------------------------------------------
+# Function:	processPrimitives
+#
 sub processPrimitives {
-  my ($name, $file) = @_;
-  my %prim;
+  my ($out, $name, $file) = @_;
+  my %prim = ();
   local $_;
   print $out <<__EOF__;
 \\subsubsection{The Primitive Set \\texttt{$name}}
@@ -99,8 +270,10 @@ __EOF__
     if (not m/>/) {
       $_ .= <$fd>;
     }
-    if (m|<[dD]efine name="([^\"]*)"|\w+class="([^\"]*)") {
+    if (m|<[dD]efine name="([^\"]*)"\s+class="([^\"]*)"|m) {
       $prim{$1} = $2;
+      $primitive{$1} = $2;
+      $primClass{$2} = $1;
     }
   }
   $fd->close();
@@ -112,8 +285,11 @@ __EOF__
   print $out "\\end{primitives}\n";
 }
 
+#------------------------------------------------------------------------------
+# Function:	processConfig
+#
 sub processConfig {
-  my ($name, $file) = @_;
+  my ($out, $name, $file) = @_;
   my $banner;
   local $_;
   my $extReg = undef;
@@ -129,7 +305,7 @@ sub processConfig {
     } elsif (m|<primitives src="(.*)"|) {
       my $p = $1;
       $p =~ m|.*/(.*)\.xml|;
-      $primitives{$1} = "$dir/$p";
+      $primSets{$1} = "$dir/$p";
       push @prim, $1;
     }
   }
