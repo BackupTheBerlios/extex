@@ -216,7 +216,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  *   <dt><a name="-ini"><tt>-ini</tt></a></dt>
  *   <dd>
- *    If set to <code>true</code> then act as initex. This coµmand line
+ *    If set to <code>true</code> then act as initex. This command line
  *    option is defined for compatibility to <logo>TeX</logo> only. In
  *   <logo>ExTeX</logo> it has no effect at all.
  *   </dd>
@@ -266,8 +266,8 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  *   <dt><a name="-texinputs"/><tt>-texinputs &lang;path&rang;</tt></dt>
  *   <dd>
- *    This parameter contains the additional directories for searching TeX
- *    input files.
+ *    This parameter contains the additional directories for searching
+ *    <logo>ExTeX</logo> input files.
  *   </dd>
  *   <dd>Property:
  *    <tt><a href="#extex.texinputs">extex.texinputs</a></tt> </dd>
@@ -582,7 +582,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class TeX extends ExTeX {
 
