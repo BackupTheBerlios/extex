@@ -45,10 +45,10 @@ import de.dante.extex.typesetter.Typesetter;
  *  The general form of this primitive is
  * <pre class="syntax">
  *   &lang;javaload&rang;
- *       &rarr; \javaload&lang; <i>tokens</i>&rang; </pre>
+ *       &rarr; <tt>\javaload</tt> &lang;tokens&rang; </pre>
  * </p>
  * <p>
- *  The &lang;<i>tokens</i>&rang; is any specification of a list of
+ *  The <i>&lang;tokens&rang;</i> is any specification of a list of
  *  tokens like a constant list enclosed in braces or a toks register.
  *  The value of these tokens are taken and interpreted as the name of
  *  a Java class. This class is loaded if needed, instantiated, and its
@@ -92,7 +92,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class JavaLoad extends AbstractCode implements Loader {
 

@@ -33,14 +33,14 @@ import de.dante.extex.typesetter.Typesetter;
  * <h3>The Primitive <tt>&#x005c;unless</tt></h3>
  * <p><strong>Copied of the eTeX reference</strong>.</p>
  * <p>
- * similar in effect to &#x005c;unless \ifx &#x005c;undefined, but
- * does not require &#x005c;undefined to actually be undefined, since
+ * similar in effect to <tt>&#x005c;unless</tt> <tt>\ifx</tt> <tt>&#x005c;undefined</tt>, but
+ * does not require <tt>&#x005c;undefined</tt> to actually be undefined, since
  * no explicit comparison is made with any particular control
  * sequence.
  * </p>
  * <p>
  *  The formal description of this primitive is the following:
- * TODO
+ * TODO 
  * </p>
  * <p>
  *  Examples:
@@ -50,7 +50,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Ifdefined extends AbstractIf {
 

@@ -33,22 +33,22 @@ import de.dante.util.framework.i18n.Localizer;
  *
  * <doc name="unless">
  * <h3>The Primitive <tt>&#x005c;unless</tt></h3>
- * <p><strong>Copied of the eTeX reference</strong>.</p>
+ * <p><strong>Copied of the <logo>eTeX</logo> reference</strong>.</p>
  * <p>
  *  <logo>TeX</logo> has, by design, a rather sparse set of conditional
  *  primitives:
- *  \ifeof, \ifodd, \ifvoid, etc., have no complementary
+ *  <tt>\ifeof</tt>, <tt>\ifodd</tt>, <tt>\ifvoid</tt>, etc., have no complementary
  *  counterparts. Whilst this normally poses no problems since each
- *  accepts both a \then (implicit) and an \else (explicit) part, they
- *  fall down when used as the final \if... of a \loop ... \if
- *  ... \repeat construct, since no \else is allowed after the final
- *  \if.... &#x005c;unless allows the sense of all Boolean conditionals to be
- *  inverted, and thus (for example) &#x005c;unless \ifeof yields true iff
+ *  accepts both a <tt>\then</tt> (implicit) and an <tt>\else</tt> (explicit) part, they
+ *  fall down when used as the final <tt>\if</tt>... of a <tt>\loop</tt> ... <tt>\if</tt>
+ *  ... <tt>\repeat</tt> construct, since no <tt>\else</tt> is allowed after the final
+ *  <tt>\if</tt>.... <tt>&#x005c;unless</tt> allows the sense of all Boolean conditionals to be
+ *  inverted, and thus (for example) <tt>&#x005c;unless</tt> <tt>\ifeof</tt> yields true iff
  *  end-of-file has not yet been reached.
  * </p>
  * <p>
  *  The formal description of this primitive is the following:
- * TODO
+ * TODO 
  * </p>
  * <p>
  *  Examples:
@@ -58,7 +58,7 @@ import de.dante.util.framework.i18n.Localizer;
  * </doc>
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Unless extends AbstractIf implements Localizable {
     /**

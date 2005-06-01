@@ -41,7 +41,7 @@ import de.dante.util.UnicodeChar;
  * </p>
  * <p>
  *  The assignment is controlled by the modifier <tt>\global</tt> and the
- *  parameter <tt>\globaldefs</tt>. Usually the assignment is acting on the
+ *  count parameter <tt>\globaldefs</tt>. Usually the assignment is acting on the
  *  current group only. if the integer parameter <tt>\globaldefs</tt> is not
  *  0 or the modifier <tt>\global</tt> is given then the assignment is applied
  *  to all groups.
@@ -67,7 +67,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class CatcodePrimitive extends AbstractAssignment {
 

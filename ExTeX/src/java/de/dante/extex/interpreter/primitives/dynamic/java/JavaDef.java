@@ -54,17 +54,16 @@ import de.dante.extex.typesetter.Typesetter;
  *       &lang;control sequence&rang;} &lang;<i>tokens</i>&rang; </pre>
  * </p>
  * <p>
- * The &lang;<i>control sequence</i>&rang; is any macro or active
+ * The <i>&lang;control sequence&rang;</i> is any macro or active
  * character. If this token is missing or of the wrong type then an
  * error is raised.
  * </p>
  * <p>
- * The &lang;<i>tokens</i>&rang; is any specification of a list of
+ * The <i>&lang;tokens&rang;</i> is any specification of a list of
  * tokens like a constant list enclosed in braces or a toks register.
  * The value of these tokens are taken and interpreted as the name of
  * a Java class. This class is loaded if needed and instantiated. The
- * instance is bound as code to the &lang;<i>control
- * sequence</i>&rang;.
+ * instance is bound as code to the <i>&lang;control sequence&rang;</i>.
  * </p>
  * <p>
  * The following example illustrates the use of this primitive:
@@ -122,7 +121,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class JavaDef extends AbstractCode implements Definer {
 
