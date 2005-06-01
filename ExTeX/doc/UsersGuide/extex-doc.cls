@@ -1,5 +1,5 @@
 %
-%
+% 2005 Gerd Neugebauer
 %
 \NeedsTeXFormat{LaTeX2e}
 \LoadClass[12pt,div12,a4paper]{scrbook}
@@ -8,7 +8,7 @@
 \usepackage{booktabs}
 \usepackage{multicol}
 \usepackage{listings}
-\usepackage{graphicx,color}
+\usepackage{graphicx,pgf,pgfshade}
 
 \definecolor{hellmagenta}{rgb}{1,0.75,0.9}
 \definecolor{hellcyan}{rgb}{0.75,1,0.9}
@@ -105,10 +105,43 @@
   }}{ExTeX}%
   \fi
 }
+\newcommand\ExTeXbox{%
+  \begin{pgfpicture}{0mm}{0mm}{128mm}{64mm}
+    \pgfdeclarehorizontalshading{thisShading}{120mm}%
+    {color(0mm)=(white); rgb(160mm)=(.65,.65,.65)}%
+
+    \pgfrect[fill]{\pgfpoint{0.5mm}{-0.5mm}}{\pgfpoint{128.5mm}{63.5mm}}
+
+    \begin{pgfscope}
+      \pgfmoveto{\pgforigin}
+      \pgflineto{\pgfpoint{0mm}{64mm}}
+      \pgflineto{\pgfpoint{128mm}{64mm}}
+      \pgflineto{\pgfpoint{128mm}{0mm}}
+      \pgfclosepath
+      \pgfclip
+      \pgfputat{\pgfpoint{64mm}{32mm}}{%
+        \begin{pgfrotateby}{\pgfdegree{340}}
+          \pgfbox[center,center]{\pgfuseshading{thisShading}}
+        \end{pgfrotateby}}
+    \end{pgfscope}
+    
+    \begin{pgfmagnify}{4}{4}
+      \pgfputat{\pgfpoint{15.85mm}{8.15mm}}{%
+        \pgfbox[center,center]{\color{white}\Huge\ExTeX}}
+      \pgfputat{\pgfpoint{16.15mm}{7.85mm}}{%
+        \pgfbox[center,center]{\color{white!25!black}\Huge\ExTeX}}
+      \pgfputat{\pgfpoint{16mm}{8mm}}{%
+        \pgfbox[center,center]{\color{white!80!black}\Huge\ExTeX}}
+    \end{pgfmagnify}
+    
+    %  \pgfrect[stroke]{\pgfpoint{0mm}{0mm}}{\pgfpoint{128mm}{64mm}}
+  \end{pgfpicture}%
+}
 
 \providecommand\eTeX{\ensuremath{\varepsilon}-\TeX}
 
-\newcommand\INCOMPLETE{\bigskip\par{\unitlength=1mm\framebox(60,20){To be completed.}}\bigskip\par}
+\newcommand\INCOMPLETE{\bigskip\par{\unitlength=1mm
+    \framebox(60,20){\color{gray}To be completed.}}\bigskip\par}
 
 \newenvironment{abstract}{\begin{quotation}}{\end{quotation}}
 
