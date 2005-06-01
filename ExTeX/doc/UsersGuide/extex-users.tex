@@ -1,5 +1,5 @@
 %%*****************************************************************************
-%% $Id: extex-users.tex,v 1.5 2005/05/31 06:56:14 gene Exp $
+%% $Id: extex-users.tex,v 1.6 2005/06/01 08:44:36 gene Exp $
 %%*****************************************************************************
 %% Author: Gerd Neugebauer
 %%-----------------------------------------------------------------------------
@@ -19,9 +19,12 @@
 \newcommand\macro[1]{\texttt{\char`\\#1}\index{#1@\texttt{\char`\\#1}}}
 
 \def\setVersion$#1: #2.#3${\gdef\Version{0.#3}}
-\setVersion$Revision: 1.5 $
+\setVersion$Revision: 1.6 $
 
 \makeindex
+
+\usepackage{ragged2e}
+\newenvironment{primitives}{\begin{quotation}\noindent\small}{\end{quotation}}
 
 \begin{document}%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -30,7 +33,7 @@
   \begin{center}
   \vspace*{1pt}
   \vfill
-  \includegraphics[width=\textwidth]{ExTeX-splash.png}
+  \includegraphics[width=\textwidth]{img/ExTeX-splash}
   \vfill
   \textsf{\bfseries\Huge User's Guide}
   \vfill
@@ -276,7 +279,7 @@ in this section.
 
 \begin{figure}[tp]
   \centering
-  \includegraphics[width=.8\textwidth]{inst1.png}
+  \includegraphics[width=.8\textwidth]{img/inst1}
   \caption{The Language Selection in the Installer}
   \label{fig:inst1}
 \end{figure}
@@ -317,7 +320,7 @@ similar machines. This means that the answers to the questions in the
 installer are the same. This process can be automated.
 \begin{figure}[tp]
   \centering
-  \includegraphics[width=.8\textwidth]{inst8.png}
+  \includegraphics[width=.8\textwidth]{img/inst8}
   \caption{Generating a Auto-Configuration for the Installer}
   \label{fig:inst8}
 \end{figure}
@@ -380,8 +383,9 @@ base directory.
 
 Additionally you have to copy the file \File{.extex} from the base
 directory of the \ExTeX\ to your home directory and adapted to your
-installation. Especially the value of \Property{extex.texinputs} most
-probably needs adaption to point to your texmf trees.
+installation. Most probably the value of the property
+\Property{extex.texinputs} needs adaption to point to your
+texmf\index{texmf} trees.
 
 Finally you have to make sure that the executables \Prog{extex} or
 \Prog{extex.bat} is on your path for executables.
@@ -391,7 +395,7 @@ unless you are debugging or developing \ExTeX{} extensions.
 
 
 %------------------------------------------------------------------------------
-\chapter{Configuring \ExTeX}
+\section{Configuring \ExTeX}
 %@author Gerd Neugebauer
 
 The behaviour of \ExTeX\ can be influenced via command line arguments
@@ -399,11 +403,11 @@ and configuration files. Most of the times the startup files will be
 enough for the casual user.
 
 
-\section{Startup Files}
+\subsection{Startup Files}
 %@author Gerd Neugebauer
 
 Whenever \ExTeX\ starts it looks for startup files named
-\texttt{.extex}. This file is sought in the user's home directory in
+\File{.extex}. This file is sought in the user's home directory in
 in the current directory. The settings in the current directoy
 overwrite the settings from the user's home directory. Those in turn
 overwrite the built-in settings.
@@ -682,7 +686,7 @@ The following properties are used by \ExTeX:
 \end{description}
 
 
-\section{Configuration Files}
+\subsection{Configuration Files}
 %@author Gerd Neugebauer
 
 Configuration files of another kind contain the assembly instructions
@@ -691,9 +695,10 @@ for \ExTeX. Those files can be used to provide additional features in
 
 \INCOMPLETE
 
+\InputIfFileExists{Configurations/configurations}
 
 %------------------------------------------------------------------------------
-\chapter{Running \ExTeX}
+\section{Running \ExTeX}
 %@author Gerd Neugebauer
 
 Currently \ExTeX\ can be run from the command line. In this respect it
@@ -741,7 +746,7 @@ Transcript written on ./plain.log.
 \end{lstlisting}}
 
 
-\section{Command Line Parameters}
+\subsection{Command Line Parameters}
 %@author Gerd Neugebauer
 
 The invocation of the executable \Prog{extex} can be controlled by
@@ -949,7 +954,7 @@ equivalent:
 \end{verbatim}
 
 
-\section{Creating Formats}
+\subsection{Creating Formats}
 %@author Gerd Neugebauer
 
 \INCOMPLETE
@@ -981,10 +986,7 @@ This chapter contains some hints in the case of trouble.
 %------------------------------------------------------------------------------
 \appendix
 
-\chapter{Licenses}
-
-\input{fdl}
-\input{lgpl}
+\include{Licenses/licenses}
 
 %------------------------------------------------------------------------------
 {\scriptsize\printindex}
