@@ -109,6 +109,7 @@
 
     <primitives src="primitives/tex.xml"/>
     <primitives src="primitives/etex.xml"/>
+    <primitives src="primitives/omega.xml"/>
 
     <ExtendedRegisterNames>true</ExtendedRegisterNames>
 
