@@ -96,8 +96,14 @@
     xrightmargin=\fboxsep%
 }
 
-\usepackage[colorlinks=true]{hyperref}
-
+\usepackage{hyperref}
+\definecolor{linkColor}{rgb}{.2,.2,.7}
+\hypersetup{colorlinks, 
+            citecolor=linkColor,
+            filecolor=linkColor,
+            linkcolor=linkColor,
+            urlcolor=linkColor}
+           
 \providecommand*{\ExTeX}{\ifx\texorpdfstring\undefined
   \textrm{% the logo comes always with serifs
     \ensuremath{\textstyle\varepsilon_{\kern-0.15em\mathcal{X}}}%
