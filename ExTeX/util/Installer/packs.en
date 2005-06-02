@@ -11,6 +11,9 @@
   <str id="fonts" txt="Fonts"/>
   <str id="fonts.description" txt="A sample set of fonts for the core to start working."/>
 
+  <str id="doc" txt="Documentation"/>
+  <str id="doc.description" txt="The documentation package contains a description of ExTeX."/>
+
   <str id="settings" txt="User Settings"/>
   <str id="settings.description" txt="Some init files to start with.
 The files are installed in the user&apos;s home directory.

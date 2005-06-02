@@ -11,6 +11,9 @@
   <str id="fonts" txt="Schriften"/>
   <str id="fonts.description" txt="Eine Beispielmenge an Schriften, die es dem Basispaket erlaubt etwas zu setzen."/>
 
+  <str id="doc" txt="Dokumentation"/>
+  <str id="doc.description" txt="Das Dokumentationpaket enthält eine Beschreibung von ExTeX."/>
+
   <str id="settings" txt="Nutzer-Einstellungen"/>
   <str id="settings.description" txt="Einige Einstellungsdateien für den Anfang.
 Die Dateien werden in dem Benutzer-Verzeichnis installiert

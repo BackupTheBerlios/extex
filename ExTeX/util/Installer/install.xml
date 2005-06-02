@@ -80,15 +80,23 @@
       <parsable targetfile="$USER_HOME/.extex"/>
     </pack>
 
+    <pack name="Documentation" id="doc" required="no">
+      <description/>
+      <file src="../../www/src/documentation/man/extex-users.pdf"
+            targetdir="$INSTALL_PATH/doc"/>
+    </pack>
+
     <pack name="Fonts" id="fonts" required="no">
       <description/>
-      <fileset dir="../../src/font" targetdir="$INSTALL_PATH/font">
+      <fileset dir="../../src/font"
+               targetdir="$INSTALL_PATH/font">
       </fileset>
     </pack>
 
     <pack name="Sources" id="src" required="no" preselected="no">
       <description/>
-      <fileset dir="../../src/java" targetdir="$INSTALL_PATH/src/java">
+      <fileset dir="../../src/java"
+               targetdir="$INSTALL_PATH/src/java">
       </fileset>
     </pack>
 
