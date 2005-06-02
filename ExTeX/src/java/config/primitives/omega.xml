@@ -32,10 +32,10 @@
             class=""/>
     <Define name="oradical"
             class=""/>
-    <Define name="hfi"
-            class=""/>
-    <Define name="vfi"
-            class=""/>
+    <define name="hfi"
+            class="de.dante.extex.interpreter.primitives.typesetter.spacing.Hfi"/>
+    <define name="vfi"
+            class="de.dante.extex.interpreter.primitives.typesetter.spacing.Vfi"/>
     <define name="localinterlinepenalty"
             class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
     <define name="localbrokenpenalty"

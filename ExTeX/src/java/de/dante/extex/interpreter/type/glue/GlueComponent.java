@@ -57,7 +57,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.30 $
+ * @version $Revision: 1.31 $
  */
 public class GlueComponent implements Serializable, FixedGlueComponent {
 
@@ -85,7 +85,7 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
     /**
      * The constant <tt>MAX_ORDER</tt> contains the maximal allowed order.
      */
-    private static final int MAX_ORDER = 3;
+    private static final int MAX_ORDER = 4;
 
     /**
      * The constant <tt>MINUS_ONE_FIL</tt> contains the value of -1 fil.
@@ -99,14 +99,19 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
     public static final long ONE = 1 << 16;
 
     /**
-     * The constant <tt>MINUS_ONE_FIL</tt> contains the value of 1 fil.
+     * The constant <tt>ONE_FI</tt> contains the value of 1 fi.
      */
-    public static final GlueComponent ONE_FIL = new GlueComponent(1, 1);
+    public static final GlueComponent ONE_FI = new GlueComponent(1, 1);
 
     /**
-     * The constant <tt>MINUS_ONE_FIL</tt> contains the value of 1 fill.
+     * The constant <tt>ONE_FIL</tt> contains the value of 1 fil.
      */
-    public static final GlueComponent ONE_FILL = new GlueComponent(1, 2);
+    public static final GlueComponent ONE_FIL = new GlueComponent(1, 2);
+
+    /**
+     * The constant <tt>ONE_FIL</tt> contains the value of 1 fill.
+     */
+    public static final GlueComponent ONE_FILL = new GlueComponent(1, 3);
 
     /**
      * The field <tt>POINT_PER_100_IN</tt> contains the conversion factor from
@@ -497,7 +502,7 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
         } else if (source.getKeyword(context, "em")) {
             Dimen em = context.getTypesettingContext().getFont().getEm();
             value = value * em.getValue() / ONE;
-        } else if (fixed && source.getKeyword(context, "fil")) {
+        } else if (fixed && source.getKeyword(context, "fi")) {
             order = 1;
             for (t = source.getToken(context); //
             (t != null && (t.equals('l') || t.equals('L'))); //
@@ -666,7 +671,7 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
         } else if (order > 0) {
             sb.append('f');
             sb.append('i');
-            for (int i = order; i > 0; i--) {
+            for (int i = order; i > 1; i--) {
                 sb.append('l');
             }
         } else {
