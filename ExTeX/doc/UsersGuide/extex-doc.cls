@@ -21,6 +21,7 @@
 \definecolor{colComments}{rgb}{.7,.2,.2}
 \definecolor{colString}{rgb}{0,0.5,0}
 \definecolor{darkyellow}{rgb}{1,0.9,0}
+\definecolor{colRule}{rgb}{.8,.8,.64}
 %
 \usepackage{listings}
 \lstset{%
@@ -78,6 +79,7 @@
     keywordstyle=\color{colKeys}\bf\tt, %
     stringstyle=\color{colString}, %
     commentstyle=\bfseries\color{colComments}, %
+    rulecolor=\color{colRule}, %
     columns=flexible, %
     tabsize=4, %
     frame=single, %
