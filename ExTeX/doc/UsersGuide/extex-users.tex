@@ -1,5 +1,5 @@
 %%*****************************************************************************
-%% $Id: extex-users.tex,v 1.9 2005/06/01 18:09:34 gene Exp $
+%% $Id: extex-users.tex,v 1.10 2005/06/02 06:42:57 gene Exp $
 %%*****************************************************************************
 %% Author: Gerd Neugebauer
 %%-----------------------------------------------------------------------------
@@ -25,7 +25,7 @@
 \newenvironment{pre}{\par\begingroup\small\tt\obeylines\obeyspaces}{\endgroup\par}
 
 \def\setVersion$#1: #2.#3${\gdef\Version{0.#3}}
-\setVersion$Revision: 1.9 $
+\setVersion$Revision: 1.10 $
 
 \providecommand\indexGroup[1]{\vskip 12pt plus 4pt minus 2pt
   \textbf{\sffamily\normalsize #1}%
@@ -34,8 +34,10 @@
 }
 \makeindex
 
-\usepackage{ragged2e}
-\newenvironment{primitives}{\begin{quotation}\noindent\small}{\end{quotation}}
+\newenvironment{primitives}{\begin{quotation}\noindent\small\rightskip=0pt
+  plus 20em }{\end{quotation}}
+
+\def\[{\leavevmode\hbox{\tt\char`\ }}
 
 \begin{document}%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -45,7 +47,6 @@
   \vspace*{1pt}
   \vfill
   \ExTeXbox
-  %\includegraphics[width=\textwidth]{img/ExTeX-splash}
   \vfill
   \textsf{\bfseries\Huge User's Guide}
   \vfill
@@ -56,7 +57,7 @@
   \vfill
 %\maketitle
 
-  \begin{abstract}\noindent
+  \begin{abstract}\parindent=0pt
     This document describes \ExTeX. It explains how to get \ExTeX\ up
     and running and which features \ExTeX\ offers to you. Since
     \ExTeX\ provides a testbed for experimentation the focus has been
@@ -64,11 +65,11 @@
 
     The intended audience for this document are end users of the
     typesetting engine who want to use \ExTeX\ on the command line or
-    as replacement of \TeX.
+    as plug-in replacement of \TeX.
   \end{abstract}
   \unitlength=1mm
   \begin{picture}(0,0)
-    \put(56,116){\makebox(0,0){\scalebox{6}{\rotatebox{45}{\color{red}\textsf{\Huge\bfseries Draft}}}}}
+    \put(56,120){\makebox(0,0){\scalebox{6}{\rotatebox{45}{\color{red}\textsf{\Huge\bfseries Draft}}}}}
   \end{picture}
   \end{center}
 \newpage
@@ -88,7 +89,7 @@ Im Lerchelsb\"ohl 5\\
 64521 Gro\ss-Gerau (Germany)
 \smallskip
 
-Net: \href{mailto://gene@gerd-neugebauer.de}{gene@gerd-neugebauer.de}
+\href{mailto://gene@gerd-neugebauer.de}{gene@gerd-neugebauer.de}
 
 \end{titlepage}
 
@@ -714,7 +715,7 @@ for \ExTeX. Those files can be used to provide additional features in
 
 \INCOMPLETE
 
-\InputIfFileExists{Configurations/configurations}
+\InputIfFileExists{Configurations/configurations}{}
 
 %------------------------------------------------------------------------------
 \section{Running \ExTeX}
@@ -994,12 +995,15 @@ This chapter contains some hints in the case of trouble.
 
 
 %------------------------------------------------------------------------------
-\chapter{Primitives of \ExTeX}
+\chapter{Syntax and Semantics of \ExTeX}
 %@author Gerd Neugebauer
 
+\section{Primitives of \ExTeX}
 \ExTeX\ defines a lot of primitives. Those primitives are described below.
 
-\InputIfFileExists{Configurations/primitives}
+\InputIfFileExists{Configurations/primitives}{}
+
+\section{Basic Syntactic Entities of \ExTeX}
 
 
 %------------------------------------------------------------------------------
