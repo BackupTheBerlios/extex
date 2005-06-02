@@ -1,5 +1,5 @@
 %%*****************************************************************************
-%% $Id: extex-users.tex,v 1.10 2005/06/02 06:42:57 gene Exp $
+%% $Id: extex-users.tex,v 1.11 2005/06/02 08:03:00 gene Exp $
 %%*****************************************************************************
 %% Author: Gerd Neugebauer
 %%-----------------------------------------------------------------------------
@@ -25,7 +25,7 @@
 \newenvironment{pre}{\par\begingroup\small\tt\obeylines\obeyspaces}{\endgroup\par}
 
 \def\setVersion$#1: #2.#3${\gdef\Version{0.#3}}
-\setVersion$Revision: 1.10 $
+\setVersion$Revision: 1.11 $
 
 \providecommand\indexGroup[1]{\vskip 12pt plus 4pt minus 2pt
   \textbf{\sffamily\normalsize #1}%
@@ -983,19 +983,33 @@ equivalent:
 %------------------------------------------------------------------------------
 \chapter{Troubleshooting \ExTeX}
 %@author Gerd Neugebauer
+% In future versions this might be moved to a FAQ.
 
 This chapter contains some hints in the case of trouble.
 
 \section{Why are my files not found?}
 %@author Gerd Neugebauer
 
-\ExTeX\ has a configurable search for external resources.
+\ExTeX\ has a configurable search for external resources. This search
+is controlled by several parameters.\index{search}
 
 \INCOMPLETE
 
+\section{Why are is the log file different from \TeX's?}
+%@author Gerd Neugebauer
+
+\ExTeX\ has the goal to produce a visual result comparable to the one
+of \TeX.\index{TeX@\TeX} It has been decided explicitly that the
+contents of the log file\index{log file} is not considered for
+compatibility.
+
+The log file is meant for a human reader who should not have any
+trouble with the differences. The log file is not meant to be a means
+for communicating with another program.
+
 
 %------------------------------------------------------------------------------
-\chapter{Syntax and Semantics of \ExTeX}
+\chapter{The Macro Langauge of \ExTeX}
 %@author Gerd Neugebauer
 
 \section{Primitives of \ExTeX}
