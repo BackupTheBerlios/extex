@@ -1,13 +1,16 @@
 #******************************************************************************
-#* $Id: Makefile,v 1.5 2005/06/02 06:41:50 gene Exp $
+#* $Id: Makefile,v 1.6 2005/06/02 08:02:25 gene Exp $
 #******************************************************************************
 #* Author: Gerd Neugebauer
 #*=============================================================================
 
+MANUAL = extex-users
+DEPLOYDIR = ../../www/src/documentation/man
+SRCDIR = ../../src/java
 
-all: extex-users.pdf
+all: $(MANUAL).pdf
 
-extex-users.pdf: cfg extex-users.tex
+extex-users.pdf: cfg $(MANUAL).tex
 
 %.pdf: %.toc %.ind
 	@pdflatex $*
@@ -25,15 +28,19 @@ extex-users.pdf: cfg extex-users.tex
 
 Configurations/configurations.tex cfg:
 	@perl Configurations/analyzeConfig			\
-		-cp ../../src/java				\
-		-o Configurations/configurations.tex		\
+		-cp $(SRCDIR)					\
+		-out  Configurations/configurations.tex		\
 		-prim Configurations/primitives.tex		\
-		../../src/java/config/*.xml 
+		$(SRCDIR)/config/*.xml 
+
+deploy: $(MANUAL).pdf
+	mkdir -p $(DEPLOYDIR)
+	mv $(MANUAL).pdf $(DEPLOYDIR)
 
 clean:
-	rm *.ilg *.out *.toc *.aux *.ilg *.log *.dvi *.ind
+	rm -f *.ilg *.out *.toc *.aux *.ilg *.log *.dvi *.ind *~
 
 veryclean distclean: clean
-	rm extex-users.pdf
+	rm -f $(MANUAL).pdf
 
 #
