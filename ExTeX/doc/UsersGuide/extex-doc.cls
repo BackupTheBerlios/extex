@@ -5,6 +5,7 @@
 \LoadClass[12pt,div12,a4paper]{scrbook}
 
 \usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
 \usepackage{booktabs}
 \usepackage{multicol}
 \usepackage{listings}
@@ -14,6 +15,7 @@
 \definecolor{hellcyan}{rgb}{0.75,1,0.9}
 \definecolor{hellgelb}{rgb}{1,1,0.8}
 \definecolor{backgroundColor}{rgb}{1,1,0.8}
+\definecolor{javaBackgroundColor}{rgb}{0.8,1,0.8}
 \definecolor{colKeys}{rgb}{0,0,.8}
 \definecolor{colIdentifier}{rgb}{0,0,0}
 \definecolor{colComments}{rgb}{.7,.2,.2}
@@ -52,7 +54,7 @@
     identifierstyle=\color{colIdentifier}, %
     keywordstyle=\color{colKeys}\bf\tt, %
     stringstyle=\color{colString}, %
-    commentstyle=\bfseries\color{colComments}, %
+    commentstyle=\itshape\color{colComments}, %
     columns=flexible, %
     tabsize=4, %
     frame=single, %
@@ -62,7 +64,7 @@
     numbers=none,% =left, %
     numberstyle=\tiny\sf, %
     breaklines=true, %
-    backgroundcolor=\color{backgroundColor}, %
+    backgroundcolor=\color{javaBackgroundColor}, %
     breakautoindent=true, %
     captionpos=b,%
     xleftmargin=\fboxsep,%
