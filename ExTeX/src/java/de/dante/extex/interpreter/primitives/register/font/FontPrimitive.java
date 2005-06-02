@@ -79,11 +79,11 @@ import de.dante.util.framework.logger.LogEnabled;
  *       &lang;control sequence&rang;} {@linkplain
  *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
  *        &lang;equals&rang;} &lang;font name&rang; &lang;options&rang;
- * 
+ *
  *    &lang;options&rang;
  *      &rarr; &lang;option&rang;
  *       |  &lang;option&rang; &lang;options&rang;
- * 
+ *
  *    &lang;option&rang;
  *      &rarr; [scaled] {@linkplain
  *        de.dante.extex.interpreter.TokenSource#scanInteger(Context)
@@ -91,8 +91,9 @@ import de.dante.util.framework.logger.LogEnabled;
  *       | [at] &lang;size...&rang;
  *       | [noligatures]
  *       | [nokerning]
- *       | [lessterspaces]  </pre>
+ *       | [letterspaced]  </pre>
  * </p>
+ *
  * <h4>Examples</h4>
  * <p>
  *  In the following example the font cmr12 is loaded at its design size. The
@@ -133,7 +134,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
 public class FontPrimitive extends AbstractAssignment
         implements
