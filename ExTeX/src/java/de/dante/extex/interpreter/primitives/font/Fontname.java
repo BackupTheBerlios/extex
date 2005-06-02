@@ -40,12 +40,16 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="fontname">
  * <h3>The Primitive <tt>\fontname</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The primitive <tt>\fontname</tt> can be used to retrieve the name of a font.
+ *  It takes a font specification as argument. It expands to the name of the
+ *  font. If this font is not loaded at its design size then the actual size
+ *  is appended after the tokens <tt> at </tt>. All tokens produced this way
+ *  are <i>other</i> tokens except of the spaces. Ths means that even the
+ *  letters are of category <i>other</i>.
  * </p>
  * </doc>
  *
- * <p>
- * Example:
+ * <h4>Example</h4>
  * <pre>
  * \font\myFont=cmr12
  * \fontname\myfont
@@ -57,10 +61,11 @@ import de.dante.extex.typesetter.Typesetter;
  * \fontname\myfont
  * &rArr; cmr12 at 24pt
  * </pre>
+ * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class Fontname extends AbstractCode implements ExpandableCode {
 

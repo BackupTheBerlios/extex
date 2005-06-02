@@ -52,24 +52,73 @@ import de.dante.util.framework.logger.LogEnabled;
  * <doc name="font">
  * <h3>The Primitive <tt>\font</tt></h3>
  * <p>
- *  The primitive <tt>\font</tt>
- *  TODO missing documentation
+ *  The primitive <tt>\font</tt> can be used to load a font with some specified
+ *  properties and assign it to a control sequence. The primary option is the
+ *  specification of a size for the font. If no size is given then the font is
+ *  loaded at its design size.
+ * </p>
+ * <p>
+ *  An exact size can be specified with the <tt>at</tt> keyword. The dimension
+ *  following this keyword determines the size of the font.
+ * </p>
+ * <p>
+ *  The design size can be multiplied by a scale factor. This scale fator is
+ *  given as number after the keyword <tt>scaled</tt>. The value given is 1000
+ *  times the scale factor to be used.
+ * </p>
+ *  TODO missing documentation of the extensions
+ * <p>
+ *  This primitive is an assignment.
  * </p>
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;font&rang;
- *      &rarr; <tt>\font</tt> ... </pre>
+ *      &rarr; <tt>\font</tt> {@linkplain
+ *       de.dante.extex.interpreter.TokenSource#getControlSequence(Context)
+ *       &lang;control sequence&rang;} {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+ *        &lang;equals&rang;} &lang;font name&rang; &lang;options&rang;
+ * 
+ *    &lang;options&rang;
+ *      &rarr; &lang;option&rang;
+ *       |  &lang;option&rang; &lang;options&rang;
+ * 
+ *    &lang;option&rang;
+ *      &rarr; [scaled] {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#scanInteger(Context)
+ *        &lang;number&rang;}
+ *       | [at] &lang;size...&rang;
+ *       | [noligatures]
+ *       | [nokerning]
+ *       | [lessterspaces]  </pre>
  * </p>
+ * <h4>Examples</h4>
  * <p>
- *  Examples:
- *  <pre class="TeXSample">
- *    \font\myfont=cmr12 at 15pt
- *  <pre class="TeXSample">
- *    \font\magnifiedfiverm=cmr5 scaled 2000
- *  <pre class="TeXSample">
- *    \font\second=cmr10 at 12truept  </pre>
+ *  In the following example the font cmr12 is loaded at its design size. The
+ *  macro <tt>\myfont</tt> is bound to this font.
  * </p>
+ * <pre class="TeXSample">
+ *   \font\myfont=cmr12  </pre>
+ * <p>
+ *  In the following example the font cmr12 is loaded at the size 15pt. The
+ *  macro <tt>\myfont</tt> is bound to this font.
+ * </p>
+ * <pre class="TeXSample">
+ *   \font\myfont=cmr12 at 15pt  </pre>
+ * <p>
+ *  In the following example the font cmr12 is loaded at the double design size.
+ *  The scale factor 2000 is divided by 1000 to get the effective scaling factor.
+ *  The macro <tt>\myfont</tt> is bound to this font.
+ * </p>
+ * <pre class="TeXSample">
+ *   \font\magnifiedfiverm=cmr5 scaled 2000  </pre>
+ * <p>
+ *  In the following example the font cmr10 is loaded at the size of 12 true pt.
+ *  The macro <tt>\myfont</tt> is bound to this font.
+ * </p>
+ * <pre class="TeXSample">
+ *   \font\second=cmr10 at 12truept  </pre>
  * </doc>
  *
  *
@@ -84,7 +133,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public class FontPrimitive extends AbstractAssignment
         implements

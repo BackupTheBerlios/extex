@@ -37,13 +37,19 @@ import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
  * <doc name="parshape">
  * <h3>The Primitive <tt>\parshape</tt></h3>
  * <p>
+ *  The primitive <tt>\parshape</tt> is a declaration of the shape of the
+ *  paragraph. With its help it is possible to control the left and right margin
+ *  of the current paragraph.
+ *
  *  TODO missing documentation
  * </p>
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;parshape&rang;
- *        &rarr; <tt>\parshape</tt>  ... </pre>
+ *        &rarr; <tt>\parshape</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#scanNumber()
+ *        &lang;8-bit&nbsp;number&rang;} ... </pre>
  * </p>
  * <p>
  *  Examples:
@@ -57,13 +63,13 @@ import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
  *
  * <h3>\parshape as special register</h3>
  * <p>
- * \parshape acts as special register which can be queried. It returns the
- * size of the current parshape specification or 0 if none is present.
+ * <tt>\parshape</tt> acts as special register which can be queried. It returns
+ * the size of the current parshape specification or 0 if none is present.
  * </p>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Parshape extends AbstractCode implements CountConvertible, Theable {
 

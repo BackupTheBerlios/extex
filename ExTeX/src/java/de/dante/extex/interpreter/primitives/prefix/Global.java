@@ -35,23 +35,48 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="global">
  * <h3>The Prefix Primitive <tt>\global</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The primitive <tt>\global</tt> is a prefix macro. It does not do anything
+ *  by its own but works in combination with a following primitive token only.
+ *  If the following token constitutes an assignment then the assignment is not
+ *  restricted to the current group but acts globallay in all groups.
+ * </p>
+ * <p>
+ *  If the following command token does not happen to be an operation for
+ *  which the global modifier is applicable then a warning might be raised.
  * </p>
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;global&rang;
- *      &rarr; <tt>\global ...</tt>  </pre>
+ *      &rarr; <tt>\global</tt> &lang;...&rang; </pre>
  * </p>
+ * <h4>Examples</h4>
  * <p>
- *  Examples:
- *  <pre class="TeXSample">
- *    \global\def\abc{123}  </pre>
+ *  The following example shows that two macros defined in a group. The first
+ *  macro falls back to its previous binding when the group is closed.
+ *  The second macro has the same binding in all groups.
+ *  defined.
  * </p>
+ * <pre class="TeXSample">
+ *   \begingroup
+ *     \def\a{123}
+ *     \global\def\b{123}
+ *   \endgroup  </pre>
+ * <p>
+ *  The following example shows that two count registers are set in a group.
+ *  The first count register keeps its value untile the group is closed and
+ *  falls back to the value it had when the group has been entered. The second
+ *  count register keeps its value even when the group is closed.
+ * </p>
+ * <pre class="TeXSample">
+ *   \begingroup
+ *     \count1=123
+ *     \global\count2=45
+ *   \endgroup  </pre>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class Global extends AbstractCode implements PrefixCode {
 
