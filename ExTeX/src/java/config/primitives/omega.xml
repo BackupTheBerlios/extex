@@ -18,45 +18,86 @@
   -
   -->
 <primitives>
-    <Define name="omathcode" class=""/>
-    <Define name="omathchar" class=""/>
-    <Define name="omathaccent" class=""/>
-    <Define name="omathchardef" class=""/>
-    <Define name="omathdelcode" class=""/>
-    <Define name="odelmiter" class=""/>
-    <Define name="oradical" class=""/>
-    <Define name="hfi" class=""/>
-    <Define name="vfi" class=""/>
-    <Define name="localinterlinepenalty" class=""/>
-    <Define name="localbrokenpenalty" class=""/>
-    <Define name="localleftbox" class=""/>
-    <Define name="localrightbox" class=""/>
-    <Define name="pagedirHR" class=""/>
-    <Define name="pagedirHL" class=""/>
-    <Define name="pagedir" class=""/>
-    <Define name="mathdir" class=""/>
-    <Define name="textdir" class=""/>
-    <Define name="naturaldir" class=""/>
-    <Define name="unnaturaldir" class=""/>
-    <Define name="ocp" class=""/>
-    <Define name="ocplist" class=""/>
-    <Define name="nullocplist" class=""/>
-    <Define name="pushocplist" class=""/>
-    <Define name="popocplist" class=""/>
-    <Define name="clearocplists" class=""/>
-    <Define name="addafterocplist" class=""/>
-    <Define name="addbeforeocplist" class=""/>
-    <Define name="removebeforeocplist" class=""/>
-    <Define name="DefaultInputMode" class=""/>
-    <Define name="noDefaultInputMode" class=""/>
-    <Define name="InputMode" class=""/>
-    <Define name="DefaultOutputMode" class=""/>
-    <Define name="noDefaultOutputMode" class=""/>
-    <Define name="OutputMode" class=""/>
-    <Define name="DefaultInputTranslation" class=""/>
-    <Define name="noDefaultInputTranslation" class=""/>
-    <Define name="InputTranslation" class=""/>
-    <Define name="DefaultOutputTranslation" class=""/>
-    <Define name="noDefaultOutputTranslation" class=""/>
-    <Define name="OutputTranslation" class=""/>
+    <Define name="omathcode"
+            class=""/>
+    <Define name="omathchar"
+            class=""/>
+    <Define name="omathaccent"
+            class=""/>
+    <Define name="omathchardef"
+            class=""/>
+    <Define name="omathdelcode"
+            class=""/>
+    <Define name="odelmiter"
+            class=""/>
+    <Define name="oradical"
+            class=""/>
+    <Define name="hfi"
+            class=""/>
+    <Define name="vfi"
+            class=""/>
+    <define name="localinterlinepenalty"
+            class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
+    <define name="localbrokenpenalty"
+            class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
+    <Define name="localleftbox"
+            class=""/>
+    <Define name="localrightbox"
+            class=""/>
+    <Define name="pagedirHR"
+            class=""/>
+    <Define name="pagedirHL"
+            class=""/>
+    <Define name="pagedir"
+            class=""/>
+    <Define name="mathdir"
+            class=""/>
+    <Define name="textdir"
+            class=""/>
+    <Define name="naturaldir"
+            class=""/>
+    <Define name="unnaturaldir"
+            class=""/>
+    <Define name="ocp"
+            class=""/>
+    <Define name="ocplist"
+            class=""/>
+    <Define name="nullocplist"
+            class=""/>
+    <Define name="pushocplist"
+            class=""/>
+    <Define name="popocplist"
+            class=""/>
+    <Define name="clearocplists"
+            class=""/>
+    <Define name="addafterocplist"
+            class=""/>
+    <Define name="addbeforeocplist"
+            class=""/>
+    <Define name="removebeforeocplist"
+            class=""/>
+    <Define name="DefaultInputMode"
+            class=""/>
+    <Define name="noDefaultInputMode"
+            class=""/>
+    <Define name="InputMode"
+            class=""/>
+    <Define name="DefaultOutputMode"
+            class=""/>
+    <Define name="noDefaultOutputMode"
+            class=""/>
+    <Define name="OutputMode"
+            class=""/>
+    <Define name="DefaultInputTranslation"
+            class=""/>
+    <Define name="noDefaultInputTranslation"
+            class=""/>
+    <Define name="InputTranslation"
+            class=""/>
+    <Define name="DefaultOutputTranslation"
+            class=""/>
+    <Define name="noDefaultOutputTranslation"
+            class=""/>
+    <Define name="OutputTranslation"
+            class=""/>
 </primitives>
