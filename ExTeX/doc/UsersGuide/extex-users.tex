@@ -1,5 +1,5 @@
 %%*****************************************************************************
-%% $Id: extex-users.tex,v 1.11 2005/06/02 08:03:00 gene Exp $
+%% $Id: extex-users.tex,v 1.12 2005/06/03 06:04:50 gene Exp $
 %%*****************************************************************************
 %% Author: Gerd Neugebauer
 %%-----------------------------------------------------------------------------
@@ -25,7 +25,7 @@
 \newenvironment{pre}{\par\begingroup\small\tt\obeylines\obeyspaces}{\endgroup\par}
 
 \def\setVersion$#1: #2.#3${\gdef\Version{0.#3}}
-\setVersion$Revision: 1.11 $
+\setVersion$Revision: 1.12 $
 
 \providecommand\indexGroup[1]{\vskip 12pt plus 4pt minus 2pt
   \textbf{\sffamily\normalsize #1}%
@@ -119,7 +119,7 @@ backward compatibility is just a matter of configuration.
 
 This document is meant to be a reference document. It should contain
 all information neccesary to know. It is not meant ot be a tutorial.
-Thus do not expect tutorial type materaial in this document.
+Thus do not expect tutorial type material in this document.
 
 
 \section{Web Site}
@@ -427,10 +427,10 @@ enough for the casual user.
 %@author Gerd Neugebauer
 
 Whenever \ExTeX\ starts it looks for startup files named
-\File{.extex}. This file is sought in the user's home directory in
-in the current directory. The settings in the current directoy
-overwrite the settings from the user's home directory. Those in turn
-overwrite the built-in settings.
+\File{.extex}. This file is sought in the user's home directory in the
+current directory. The settings in the current directoy overwrite the
+settings from the user's home directory. Those in turn overwrite the
+built-in settings.
 
 \ExTeX\ user properties files contain setting of properties. This is
 done in a line-based way. Lines containing only whitespace characters
@@ -449,7 +449,7 @@ the line is continued in the next line. To produce a single backslash
 it has to be doubled.
 
 You can set any property name you like to a legal value. \ExTeX\ will
-not complain about unknown peoperties but ignore them silently.
+not complain about unknown properties but ignore them silently.
 The following properties are used by \ExTeX:
 
 \begin{description}
@@ -520,7 +520,7 @@ The following properties are used by \ExTeX:
 \item[\Property{extex.fmt}]\ \\
   This parameter contains the name of the format to read. An empty
   string denotes that no format should be read. This is the default.
-  In thi case \ExTeX\ acts with no macros or fonts preloaded.
+  In this case \ExTeX\ acts with no macros or fonts preloaded.
 
   Example:
 \begin{lstlisting}{}
@@ -538,7 +538,7 @@ The following properties are used by \ExTeX:
 \end{lstlisting}
 
 \item[\Property{extex.interaction}]\ \\
-  This parameter contains the interaction mode. possible values are
+  This parameter contains the interaction mode. Possible values are
   the numbers 0\dots3 and the symbolic names \Mode{batchmode} (0),
   \Mode{nonstopmode} (1), \Mode{scrollmode} (2), and
   \Mode{errorstopmode} (3).
@@ -571,7 +571,7 @@ The following properties are used by \ExTeX:
 \item[\Property{extex.lang}]\ \\
   This parameter contains the name of the locale to be used for the
   messages. The value is a two letter ISO language code.  \ExTeX\ can
-  be internationalized ust by providing some files with the translated
+  be internationalized just by providing some files with the translated
   strings. Currently only the language English (\verb|en|) is
   supported.
 
@@ -599,7 +599,7 @@ The following properties are used by \ExTeX:
 \end{lstlisting}
 
 \item[\Property{extex.outputdir}]\ \\
-  This parameter contain the directory where output files should be
+  This parameter contains the directory where output files should be
   created. The period is interpreted as the current directory. The
   default is the current directory.
 
