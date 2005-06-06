@@ -1,5 +1,5 @@
 %%*****************************************************************************
-%% $Id: extex-users.tex,v 1.12 2005/06/03 06:04:50 gene Exp $
+%% $Id: extex-users.tex,v 1.13 2005/06/06 08:06:56 gene Exp $
 %%*****************************************************************************
 %% Author: Gerd Neugebauer
 %%-----------------------------------------------------------------------------
@@ -20,12 +20,17 @@
 \newcommand\Macro[1]{\texttt{\char`\\#1}}
 \newcommand\tag[1]{\(\langle\)\textit{#1}\(\rangle\)}
 
-\newenvironment{syntax}{\vspace{-\parskip}%
-  \begin{tabbing}\kern2em\=\kern2em\=\kill}{\end{tabbing}}
-\newenvironment{pre}{\par\begingroup\small\tt\obeylines\obeyspaces}{\endgroup\par}
+\newenvironment{syntax}{%
+  \begin{tabbing}\kern2em\=\kern2em\=\kill
+  }{%
+  \end{tabbing}}
+%\newenvironment{syntax}{%
+%  \par\hangindent2m\hangafter=1
+%  }{%
+%  \par}
 
-\def\setVersion$#1: #2.#3${\gdef\Version{0.#3}}
-\setVersion$Revision: 1.12 $
+\def\setVersion$#1: #2.#3${\gdef\Version{0.0 (Revision #2.#3)}}
+\setVersion$Revision: 1.13 $
 
 \providecommand\indexGroup[1]{\vskip 12pt plus 4pt minus 2pt
   \textbf{\sffamily\normalsize #1}%
@@ -118,7 +123,7 @@ backward compatibility is just a matter of configuration.
 \section{This Document}
 
 This document is meant to be a reference document. It should contain
-all information neccesary to know. It is not meant ot be a tutorial.
+all information necessary to know. It is not meant to be a tutorial.
 Thus do not expect tutorial type material in this document.
 
 
@@ -207,7 +212,7 @@ Java HotSpot(TM) Client VM (build 1.4.2_06-b03, mixed mode)
 
 If you want to use more than the pure \ExTeX\ engine, fonts and macros
 can be inherited from a texmf tree\index{texmf}. \ExTeX\ itself does
-not contain a full texmf tree. It comes just with some rudimentray
+not contain a full texmf tree. It comes just with some rudimentary
 files necessary for testing. Thus you should have installed a texmf
 tree, e.g. from a \TeX Live\index{TeXlive@\TeX Live} installation.
 This can be found on the \href{http://www.ctan.org}{Comprehensive
@@ -230,7 +235,7 @@ alternative.
 %@author Gerd Neugebauer
 
 The simplest way to get \ExTeX\ up and running is to use the \ExTeX\ 
-installer. This installer\index{installer} is distribted as one file
+installer. This installer\index{installer} is distributed as one file
 \File{ExTeX-setup.jar}. You can download it from
 
 \begin{quotation}
@@ -247,6 +252,7 @@ The sources of \ExTeX\ are stored in a CVS repository. To access this
 repository you need access to the internet and CVS installed in some
 way.
 
+
 The coordinates of the repository are:\index{repository}\index{CVS}
 \medskip
 
@@ -260,7 +266,7 @@ The coordinates of the repository are:\index{repository}\index{CVS}
 \bigskip
 
 We assume here that you have access to CVS on the command line. This
-can be either a shell on a Unix-like system or somethng like cygwin on
+can be either a shell on a Unix-like system or something like cygwin on
 Windows. We also assume that you have direct connection to the internet.
 
 First we create a directory where the sources are stored:
@@ -301,6 +307,7 @@ in this section.
   \centering
   \includegraphics[width=.8\textwidth]{img/inst1}
   \caption{The Language Selection in the Installer}
+
   \label{fig:inst1}
 \end{figure}
 The easiest installation of \ExTeX\ works with the \ExTeX\ installer.
@@ -404,10 +411,11 @@ base directory.
 Additionally you have to copy the file \File{.extex} from the base
 directory of the \ExTeX\ to your home directory and adapted to your
 installation. Most probably the value of the property
-\Property{extex.texinputs} needs adaption to point to your
+\Property{extex.texinputs} needs adaptation to point to your
 texmf\index{texmf} trees.
 
 Finally you have to make sure that the executables \Prog{extex} or
+
 \Prog{extex.bat} is on your path for executables.
 
 Now you can forget the source directory. It is not needed any more
@@ -419,27 +427,27 @@ unless you are debugging or developing \ExTeX{} extensions.
 %@author Gerd Neugebauer
 
 The behaviour of \ExTeX\ can be influenced via command line arguments
-and configuration files. Most of the times the startup files will be
+and configuration files. Most of the times the start-up files will be
 enough for the casual user.
 
 
-\subsection{Startup Files}
+\subsection{Start-up Files}
 %@author Gerd Neugebauer
 
-Whenever \ExTeX\ starts it looks for startup files named
+Whenever \ExTeX\ starts it looks for start-up files named
 \File{.extex}. This file is sought in the user's home directory in the
-current directory. The settings in the current directoy overwrite the
+current directory. The settings in the current directory overwrite the
 settings from the user's home directory. Those in turn overwrite the
 built-in settings.
 
 \ExTeX\ user properties files contain setting of properties. This is
-done in a line-based way. Lines containing only whitespace characters
+done in a line-based way. Lines containing only white space characters
 are ignored. If the first character is a hash sign (\verb|#|) then the
 line is treated as a comment and ignored.
 
 The first appearance of a equal sign (\verb|=|) or the colon
 (\verb|:|) separates the name of the property from the value. Leading
-and trailing whitespace is ignored both for the name and the value of
+and trailing white space is ignored both for the name and the value of
 the property.
 
 Some characters have a special meaning. The backslash (\verb|\|) acts
@@ -464,7 +472,7 @@ The following properties are used by \ExTeX:
 
 \item[\Property{extex.config}]\ \\
   This parameter contains the name of the configuration resource to
-  use. This configuration resource is sought on the classpath.
+  use. This configuration resource is sought on the class path.
 
   Example:
 \begin{lstlisting}{}
@@ -589,6 +597,7 @@ The following properties are used by \ExTeX:
   extex.nobanner = false
 \end{lstlisting}
 
+
 \item[\Property{extex.output}]\ \\
   This parameter contains the output format. This logical name is
   resolved via the configuration.
@@ -633,7 +642,7 @@ The following properties are used by \ExTeX:
 \end{lstlisting}
 
 \item[\Property{extex.stacktrace.on.internal.error}]\ \\
-  This parameter can be used to force a stacktrace on stdout if an
+  This parameter can be used to force a stack trace on stdout if an
   internal error is encountered. This is handy for development.
   Allowed values are \verb|true| and \verb|false|.
 
@@ -668,6 +677,7 @@ The following properties are used by \ExTeX:
   This boolean parameter contains the indicator whether or not to
   trace the search for font files.  Allowed values are \verb|true| and
   \verb|false|.
+
 
   Example:
 \begin{lstlisting}{}
@@ -715,7 +725,7 @@ for \ExTeX. Those files can be used to provide additional features in
 
 \INCOMPLETE
 
-\InputIfFileExists{Configurations/configurations}{}
+\InputIfFileExists{tmp/configurations}{}
 
 %------------------------------------------------------------------------------
 \section{Running \ExTeX}
@@ -741,7 +751,7 @@ Transcript written on ./texput.log.
 \end{lstlisting}}
 
 In this case \ExTeX\ enters interaction with the user and asks for an
-input file. This is indicated by the two asterists. We have entered
+input file. This is indicated by the two asterisks. We have entered
 \macro{relax} here to indicate that we are not willing to pass in a
 file name. The \ExTeX\ system asks us to enter some command --
 indicted by the single asterisk. Here we have entered \macro{end} to
@@ -780,11 +790,11 @@ are described in the following list:
   the command line the code has to start with a backslash. This
   restriction does not hold for the property settings.
 
-  This commad line argument sets the property \Property{extex.code}
+  This command line argument sets the property \Property{extex.code}
   
 \item[\Arg{file}]\ \\
   This parameter contains the file to read from. A file name may not
-  start with a backslash or an ampercent. It has no default.
+  start with a backslash or an ambercent. It has no default.
 
   This command line argument sets the property \Property{extex.file}.
   
@@ -838,7 +848,7 @@ are described in the following list:
   parameter: 
 \begin{lstlisting}{}
 # extex -debug FfMT abc.tex
-This is ExTeX, Version 0.0 (TeX compatibilty mode)
+This is ExTeX, Version 0.0 (TeX compatibility mode)
 ...
 \end{lstlisting}
   
@@ -863,7 +873,7 @@ This is ExTeX, Version 0.0 (TeX compatibilty mode)
   parameter: 
 \begin{lstlisting}{}
 # extex -ini abc.tex
-This is ExTeX, Version 0.0 (TeX compatibilty mode)
+This is ExTeX, Version 0.0 (TeX compatibility mode)
 ...
 \end{lstlisting}
   
@@ -879,7 +889,7 @@ This is ExTeX, Version 0.0 (TeX compatibilty mode)
   parameter:
 \begin{lstlisting}{}
 # extex -interaction batchmode abc.tex
-This is ExTeX, Version 0.0 (TeX compatibilty mode)
+This is ExTeX, Version 0.0 (TeX compatibility mode)
 ...
 \end{lstlisting}
 
@@ -906,7 +916,7 @@ This is ExTeX, Version 0.0 (TeX compatibilty mode)
   parameter: 
 \begin{lstlisting}{}
 # extex -output pdf abc.tex
-This is ExTeX, Version 0.0 (TeX compatibilty mode)
+This is ExTeX, Version 0.0 (TeX compatibility mode)
 \end{lstlisting}
   
 \item[\CLI{progname} \Arg{name}]\ \\
@@ -981,6 +991,7 @@ equivalent:
 
 
 %------------------------------------------------------------------------------
+
 \chapter{Troubleshooting \ExTeX}
 %@author Gerd Neugebauer
 % In future versions this might be moved to a FAQ.
@@ -1009,15 +1020,17 @@ for communicating with another program.
 
 
 %------------------------------------------------------------------------------
-\chapter{The Macro Langauge of \ExTeX}
+\chapter{The Macro Language of \ExTeX}
 %@author Gerd Neugebauer
 
 \section{Primitives of \ExTeX}
 \ExTeX\ defines a lot of primitives. Those primitives are described below.
 
-\InputIfFileExists{Configurations/primitives}{}
+\InputIfFileExists{tmp/primitives}{}
 
 \section{Basic Syntactic Entities of \ExTeX}
+
+\INCOMPLETE
 
 
 %------------------------------------------------------------------------------

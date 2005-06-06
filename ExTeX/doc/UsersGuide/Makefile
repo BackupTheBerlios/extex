@@ -1,5 +1,5 @@
 #******************************************************************************
-#* $Id: Makefile,v 1.6 2005/06/02 08:02:25 gene Exp $
+#* $Id: Makefile,v 1.7 2005/06/06 08:06:56 gene Exp $
 #******************************************************************************
 #* Author: Gerd Neugebauer
 #*=============================================================================
@@ -27,10 +27,10 @@ extex-users.pdf: cfg $(MANUAL).tex
 	@pdflatex $*
 
 Configurations/configurations.tex cfg:
-	@perl Configurations/analyzeConfig			\
-		-cp $(SRCDIR)					\
-		-out  Configurations/configurations.tex		\
-		-prim Configurations/primitives.tex		\
+	@perl bin/analyzeConfig				\
+		-cp   $(SRCDIR)					\
+		-out  tmp/configurations.tex	\
+		-prim tmp/primitives.tex		\
 		$(SRCDIR)/config/*.xml 
 
 deploy: $(MANUAL).pdf
