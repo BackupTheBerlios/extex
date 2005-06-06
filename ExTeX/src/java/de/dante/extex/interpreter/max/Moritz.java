@@ -89,7 +89,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.65 $
+ * @version $Revision: 1.66 $
  */
 public abstract class Moritz
         implements
@@ -202,6 +202,9 @@ public abstract class Moritz
      * new stream before resorting to the previous streams.
      *
      * @param theStream the new stream to read from
+     *
+     * @see de.dante.extex.interpreter.TokenSource#addStream(
+     *      de.dante.extex.scanner.stream.TokenStream)
      */
     public void addStream(final TokenStream theStream) {
 
@@ -686,7 +689,7 @@ public abstract class Moritz
      * could be read. If all stream are at the end then <code>null</code> is
      * returned.
      * <p>
-     * Whenever a file stream is closed then the tokens from the
+     * Whenever a file stream is closed then the tokens from the ...
      * </p>
      *
      * @param context the interpreter context
