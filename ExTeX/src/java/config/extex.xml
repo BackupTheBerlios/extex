@@ -18,7 +18,7 @@
   -
   -->
 <ExTeX >
-  <banner>TeX compatibility mode</banner>
+  <banner>ExTeX default mode</banner>
 
   <!-- 
     -  The section "Resource" contains the search specification for input files.
