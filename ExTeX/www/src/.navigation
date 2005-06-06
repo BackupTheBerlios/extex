@@ -13,7 +13,7 @@
     <div class="navitems">
     <a href="&top;documentation/objectives.html">Objectives</a><br />
     <a href="&top;documentation/faq.html">FAQ</a><br />
-    <i>User's Manual</i><br />
+    <a href="&top;documentation/man/extex-users.pdf">User's Guide</a><br />
     <i>Programmer's Guide</i><br />
     </div>
     <a href="&top;sources/index.html">Sources and Binaries</a>
