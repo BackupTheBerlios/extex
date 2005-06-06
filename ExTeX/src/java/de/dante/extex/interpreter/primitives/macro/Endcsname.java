@@ -1,19 +1,19 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 2.1 of the License, or (at your
+ * option) any later version.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation,
+ * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
 
@@ -36,7 +36,7 @@ import de.dante.extex.typesetter.Typesetter;
  * <p>
  *  The macro <tt>\endcsname</tt> is used in combination with the macro
  *  <tt>\csname</tt> only. Whenever a <tt>\endcsname</tt> is seen alone it must
- *  be an error. Thus thus primitive produces an error message ikn any case.
+ *  be an error. Thus thus primitive produces an error message in any case.
  * </p>
  * <p>
  *  The formal description of this primitive is the following:
@@ -44,17 +44,19 @@ import de.dante.extex.typesetter.Typesetter;
  *    &lang;endcsname&rang;
  *      &rarr; <tt>\endscsname</tt>  </pre>
  * </p>
+ * <h4>Examples</h4>
  * <p>
- *  Examples:
- *  <pre class="TeXSample">
- *    \csname abc\endcsname  </pre>
+ *  The following example shows a complicated way to invoke the macro
+ *  <tt>abc</tt>. Here <tt>\endcsname</tt> is legal.
  * </p>
+ * <pre class="TeXSample">
+ *   \csname abc\endcsname  </pre>
  * </doc>
  *
  * @see "TTP [1134]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Endcsname extends AbstractCode {
 

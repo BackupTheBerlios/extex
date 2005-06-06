@@ -40,15 +40,25 @@ import de.dante.extex.typesetter.Typesetter;
  *  TODO missing documentation
  * </p>
  * <p>
- *  Examples:
- *  <pre class="TeXSample">
- *    \count1=\badness  </pre>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;badness&rang;
+ *      &rarr; <tt>\badness</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+ *        &lang;equals&rang;} {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#scanNumber()
+ *        &lang;number&rang;} </pre>
  * </p>
+ * <h4>Examples</h4>
+ * <p>
+ * </p>
+ * <pre class="TeXSample">
+ *   \count1=\badness  </pre>
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Badness extends AbstractCode implements CountConvertible, Theable {
 

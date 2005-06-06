@@ -48,18 +48,19 @@ import de.dante.util.UnicodeChar;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\fontchardp</tt>    </pre>
+ *    &lang;fontchardp&rang;
+ *      &rarr; <tt>\fontchardp</tt> &lang;font&rang; &lang;number&rang;  </pre>
  * </p>
  * <p>
  *  Examples:
  *  <pre class="TeXSample">
- *    \fontchardp\tenrm `a  </pre>
+ *    \dimen0 = \fontchardp\tenrm `a  </pre>
  * </p>
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Fontchardp extends AbstractCode
         implements

@@ -48,14 +48,17 @@ import de.dante.util.GeneralException;
  *  extended to arbitrary strings.
  * </p>
  * <p>
- *  The primitive expands to the value in a right hand context.
+ *  The primitive expands to the value of the font dimension in a right hand
+ *  context.
  * </p>
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    <tt>\fontdimen</tt> {@linkplain
  *      de.dante.extex.interpreter.TokenSource#scanNumber()
- *      &lang;8-bit&nbsp;number&rang;}  {@linkplain
+ *      &lang;8-bit&nbsp;number&rang;} {@linkplain
+ *      de.dante.extex.interpreter.TokenSource#getFont()
+ *      &lang;font&rang;} {@linkplain
  *      de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
  *      &lang;equals&rang;} {@linkplain
  *      de.dante.extex.interpreter.type.dimen#Dimen(Context,TokenSource)
@@ -76,7 +79,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class Fontdimen extends AbstractAssignment
         implements
