@@ -30,7 +30,7 @@ import java.util.logging.LogRecord;
  * is honoured.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class LogFormatter extends Formatter {
 
@@ -60,7 +60,8 @@ public class LogFormatter extends Formatter {
      */
     public String format(final LogRecord record) {
 
-        StringBuffer msg = new StringBuffer(record.getMessage());
+        String message = record.getMessage();
+        StringBuffer msg = new StringBuffer(message == null ? "" : message);
         StringBuffer out = new StringBuffer();
         int start = 0;
 
