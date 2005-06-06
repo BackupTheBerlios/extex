@@ -32,7 +32,7 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for the primitive <code>\vfilneg</code>.
  *
- * <doc name="vfil">
+ * <doc name="vfilneg">
  * <h3>The Primitive <tt>\vfilneg</tt></h3>
  * <p>
  *  TODO missing documentation
@@ -52,7 +52,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Vfilneg extends AbstractVerticalCode implements VerticalSkip {
 

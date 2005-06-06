@@ -41,7 +41,7 @@ import de.dante.extex.typesetter.Typesetter;
  * This class provides an implementation for the primitive
  * <code>\currentgrouplevel</code>.
  *
- * <doc name="begingroup">
+ * <doc name="currentgrouplevel">
  * <h3>The Primitive <tt>\currentgrouplevel</tt></h3>
  * <p>
  *  ...
@@ -60,7 +60,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Currentgrouplevel extends AbstractCode
         implements

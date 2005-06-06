@@ -49,7 +49,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.51 $
+ * @version $Revision: 1.52 $
  */
 public interface TokenSource {
 
@@ -167,7 +167,7 @@ public interface TokenSource {
     /**
      * Parse the specification of a font.
      *
-     * <doc type="syntax" name="box">
+     * <doc type="syntax" name="font">
      * This method parses the following syntactic entity:
      * <pre class="syntax">
      *   &lang;font&rang; </pre>

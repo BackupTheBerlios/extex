@@ -32,7 +32,7 @@ import de.dante.extex.typesetter.type.node.KernNode;
  * This class provides an implementation for the primitive
  * <code>&#x5c;unpenalty</code>.
  *
- * <doc name="penalty">
+ * <doc name="unpenalty">
  * <h3>The Primitive <tt>&#x5c;unpenalty</tt></h3>
  * <p>
  * </p>
@@ -51,7 +51,7 @@ import de.dante.extex.typesetter.type.node.KernNode;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Unpenalty extends AbstractCode {
 

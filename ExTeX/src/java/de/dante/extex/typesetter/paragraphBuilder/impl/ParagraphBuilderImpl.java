@@ -107,7 +107,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *  end of each paragraph.
  * </doc>
  *
- * <doc name="parfillskip" type="register">
+ * <doc name="parskip" type="register">
  * <h3>The Parameter <tt>\parskip</tt></h3>
  *  The parameter <tt>\parskip</tt> contains the glue which is added to the
  *  vertical list before the beginnng of each paragraph.
@@ -147,7 +147,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * Treat segments of a paragraph separated by forced breaks separately.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class ParagraphBuilderImpl
         implements

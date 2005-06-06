@@ -35,7 +35,7 @@ import de.dante.extex.typesetter.Typesetter;
 /**
  * This class provides an implementation for the primitive <code>\valign</code>.
  *
- * <doc name="span">
+ * <doc name="valign">
  * <h3>The Primitive <tt>\valign</tt></h3>
  * <p>
  *  TODO missing documentation
@@ -43,7 +43,7 @@ import de.dante.extex.typesetter.Typesetter;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    &lang;span&rang;
+ *    &lang;valign&rang;
  *       &rarr; <tt>\valign</tt>  </pre>
  * </p>
  * <p>
@@ -54,7 +54,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Valign extends AbstractAlign {
 

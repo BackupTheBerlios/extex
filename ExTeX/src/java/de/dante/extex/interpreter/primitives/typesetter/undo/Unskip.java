@@ -32,7 +32,7 @@ import de.dante.extex.typesetter.type.node.GlueNode;
  * This class provides an implementation for the primitive
  * <code>&#x5c;unskip</code>.
  *
- * <doc name="penalty">
+ * <doc name="unskip">
  * <h3>The Primitive <tt>&#x5c;unskip</tt></h3>
  * <p>
  * </p>
@@ -51,7 +51,7 @@ import de.dante.extex.typesetter.type.node.GlueNode;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Unskip extends AbstractCode {
 

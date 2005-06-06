@@ -41,7 +41,7 @@ import de.dante.util.framework.logger.LogEnabled;
 /**
  * This class provides an implementation for the primitive <code>\vsplit</code>.
  *
- * <doc name="\vsplit">
+ * <doc name="vsplit">
  * <h3>The Primitive <tt>\vsplit</tt></h3>
  * <p>
  *  TODO missing documentation
@@ -60,7 +60,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Vsplit extends AbstractBox implements Boxable, LogEnabled {
 

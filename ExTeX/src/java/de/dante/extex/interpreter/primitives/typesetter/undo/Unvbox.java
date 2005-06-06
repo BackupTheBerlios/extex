@@ -34,7 +34,7 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive
  * <code>&#x5c;unvbox</code>.
  *
- * <doc name="&#x5c;unvbox">
+ * <doc name="unvbox">
  * <h3>The Primitive <tt>&#x5c;unvbox</tt></h3>
  * <p>
  *  TODO missing documentation
@@ -55,7 +55,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Unvbox extends AbstractBox {
 

@@ -32,7 +32,7 @@ import de.dante.extex.typesetter.type.noad.UnderlinedNoad;
  * This class provides an implementation for the primitive
  * <code>&#x5c;underline</code>.
  *
- * <doc name="span">
+ * <doc name="underline">
  * <h3>The Primitive <tt>&#x5c;underline</tt></h3>
  * <p>
  *  TODO missing documentation
@@ -51,7 +51,7 @@ import de.dante.extex.typesetter.type.noad.UnderlinedNoad;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Underline extends AbstractMathCode {
 

@@ -30,7 +30,7 @@ import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
 /**
  * This class provides an implementation for the primitive <code>\over</code>.
  *
- * <doc name="span">
+ * <doc name="over">
  * <h3>The Primitive <tt>\over</tt></h3>
  * <p>
  *  TODO missing documentation
@@ -49,7 +49,7 @@ import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Over extends AbstractMathCode {
 

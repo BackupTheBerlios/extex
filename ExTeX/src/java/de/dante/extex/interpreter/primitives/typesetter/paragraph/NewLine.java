@@ -29,7 +29,7 @@ import de.dante.extex.typesetter.Typesetter;
 /**
  * This class provides an implementation for the primitive <code>\\</code>.
  *
- * <doc name="\\">
+ * <doc name="\">
  * <h3>The Primitive <tt>\\</tt></h3>
  * <p>
  *  TODO missing documentation
@@ -48,7 +48,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class NewLine extends AbstractBox {
 
