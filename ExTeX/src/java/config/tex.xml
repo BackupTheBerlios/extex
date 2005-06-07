@@ -110,6 +110,7 @@
     <primitives src="primitives/tex.xml"/>
 
     <ExtendedRegisterNames>false</ExtendedRegisterNames>
+    <RegisterMax>255</RegisterMax>
 
   </Interpreter>
 
