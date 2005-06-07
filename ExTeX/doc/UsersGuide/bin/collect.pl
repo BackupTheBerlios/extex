@@ -1,6 +1,6 @@
 #!C:\opt\cygwin\bin\perl.exe -w
 ##*****************************************************************************
-## $Id: collect.pl,v 1.1 2005/06/06 08:06:47 gene Exp $
+## $Id: collect.pl,v 1.2 2005/06/07 07:44:37 gene Exp $
 ##*****************************************************************************
 ## Author: Gerd Neugebauer
 ##=============================================================================
@@ -56,14 +56,13 @@ sub usage
 #
 my $verbose = 0;
 
-my %info = ();
-
 use Getopt::Long;
 GetOptions("h|help"	=> \&usage,
 	   "v|verbose"	=> \$verbose,
 	  );
 
-new Info('../../src/java');
+my $info = new Info('../../src/java');
+$info->dump(\*STDOUT, 'syntax');
 
 
 #------------------------------------------------------------------------------
@@ -118,6 +117,8 @@ package Info;
 use File::Find;
 use Cwd;
 
+my %info = ();
+
 #------------------------------------------------------------------------------
 # Function:	new
 # Description:	
@@ -131,7 +132,23 @@ sub new
   return bless $self,$class;
 }
 
+sub dump {
+  my ($self, $fd, $type) = @_;
 
+  foreach (sort keys %info) {
+    $_ = $info{$_};
+    if ($_->getType() eq $type) {
+      print $fd $_->getValue()."\n" 
+
+    }
+  }
+}
+
+#------------------------------------------------------------------------------
+# Function:	collect
+# Description:	
+# Returns:	
+#
 sub collect {
   my ($basedir) = @_;
   my $cwd	= getcwd();
@@ -146,10 +163,7 @@ sub analyze {
 
   if ( $_ eq 'CVS' ) {
     $File::Find::prune = 1;
-    return
-  }
-
-  if (m/\.java$/) {
+  } elsif (m/\.java$/) {
     analyzeJava($_);
   }
 }
