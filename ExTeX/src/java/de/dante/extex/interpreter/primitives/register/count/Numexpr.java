@@ -102,7 +102,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Numexpr extends AbstractCode implements CountConvertible, Theable {
 
@@ -110,7 +110,7 @@ public class Numexpr extends AbstractCode implements CountConvertible, Theable {
      * This interface describes a binary operation on two longs.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private interface BinOp {
 
@@ -129,7 +129,7 @@ public class Numexpr extends AbstractCode implements CountConvertible, Theable {
      * This operation ignores the first argument and returns the second one.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static final class Second implements BinOp {
 
@@ -146,7 +146,7 @@ public class Numexpr extends AbstractCode implements CountConvertible, Theable {
      * This operation adds the arguments.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static final class Plus implements BinOp {
 
@@ -163,7 +163,7 @@ public class Numexpr extends AbstractCode implements CountConvertible, Theable {
      * This operation subtracts the second argument from the first one.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static final class Minus implements BinOp {
 
@@ -236,7 +236,7 @@ public class Numexpr extends AbstractCode implements CountConvertible, Theable {
 
         long saveVal = 0;
         BinOp op = SECOND;
-        long val = evalOperant(context, source, typesetter);
+        long val = evalOperand(context, source, typesetter);
 
         for (;;) {
 
@@ -245,10 +245,10 @@ public class Numexpr extends AbstractCode implements CountConvertible, Theable {
                 throw new EofException(getName());
 
             } else if (t.equals(Catcode.OTHER, '*')) {
-                val *= evalOperant(context, source, typesetter);
+                val *= evalOperand(context, source, typesetter);
 
             } else if (t.equals(Catcode.OTHER, '/')) {
-                long x = evalOperant(context, source, typesetter);
+                long x = evalOperand(context, source, typesetter);
                 if (x == 0) {
                     throw new ArithmeticOverflowException(getName());
                 }
@@ -256,12 +256,12 @@ public class Numexpr extends AbstractCode implements CountConvertible, Theable {
 
             } else if (t.equals(Catcode.OTHER, '+')) {
                 saveVal = op.apply(saveVal, val);
-                val = evalOperant(context, source, typesetter);
+                val = evalOperand(context, source, typesetter);
                 op = PLUS;
 
             } else if (t.equals(Catcode.OTHER, '-')) {
                 saveVal = op.apply(saveVal, val);
-                val = evalOperant(context, source, typesetter);
+                val = evalOperand(context, source, typesetter);
                 op = MINUS;
 
             } else {
@@ -272,7 +272,7 @@ public class Numexpr extends AbstractCode implements CountConvertible, Theable {
     }
 
     /**
-     * Evaluate an operant.
+     * Evaluate an operand.
      *
      * @param context the interpreter context
      * @param source the source for new tokens
@@ -282,7 +282,7 @@ public class Numexpr extends AbstractCode implements CountConvertible, Theable {
      *
      * @throws InterpreterException in case of an error
      */
-    public long evalOperant(final Context context, final TokenSource source,
+    public long evalOperand(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
         Token t = source.getNonSpace(context);
@@ -300,7 +300,7 @@ public class Numexpr extends AbstractCode implements CountConvertible, Theable {
                     (t == null ? "null" : t.toString()));
 
         } else if (t.equals(Catcode.OTHER, '-')) {
-            long val = evalOperant(context, source, typesetter);
+            long val = evalOperand(context, source, typesetter);
             return -val;
 
         }
