@@ -89,7 +89,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.66 $
+ * @version $Revision: 1.67 $
  */
 public abstract class Moritz
         implements
@@ -136,7 +136,7 @@ public abstract class Moritz
     /**
      * The field <tt>observersLogMessage</tt> contains the observer list is
      * used for the observers which are registered to receive notifications when
-     * a log message is send from another component. This message shuld be made
+     * a log message is send from another component. This message should be made
      * accessible to the user in some way, e.g. in the log file.
      */
     //private ObserverList observersLogMessage = new ObserverList();
@@ -165,7 +165,7 @@ public abstract class Moritz
 
     /**
      * The field <tt>skipSpaces</tt> contains the indicator that space tokens
-     * should be discarted before the next token is delivered.
+     * should be discarded before the next token is delivered.
      */
     private boolean skipSpaces = false;
 
@@ -271,13 +271,13 @@ public abstract class Moritz
      *  <dt><tt>ExtendedRegisterNames</tt></dt>
      *  <dd>The value of this configuration contains a boolean value. If it is
      *   <code>true</code> then extended register names are allowed. This means
-     *   that arbitray strings can be used instead of the simple numbers as
+     *   that arbitrary strings can be used instead of the simple numbers as
      *   defined by <logo>TeX</logo>. This configuration is optional.
      *  </dd>
      *  <dt><tt>RegisterMax</tt></dt>
      *  <dd>The value of this configuration contains a number. This number is
      *   the highest register number. Attempts to use a higher number results
-     *   in an xception.
+     *   in an exception.
      *  </dd>
      * </dl>
      *
@@ -384,8 +384,8 @@ public abstract class Moritz
      * Get the next token from the token stream and check that it is a
      * control sequence or active character.
      * At the end of all input streams the control sequence "inaccessible"
-     * is insered and an exception is thrown. Thus thismethod will never return
-     * <code>null</code>.
+     * is inserted and an exception is thrown. Thus this method will never
+     * return <code>null</code>.
      *
      * @param context the interpreter context
      *
@@ -471,9 +471,9 @@ public abstract class Moritz
 
     /**
      * Scans the input token stream for a given sequence of tokens. Those tokens
-     * may have the catcodes <tt>LETTER</tt> or <tt>OTHER</tt>.
+     * may have the category codes <tt>LETTER</tt> or <tt>OTHER</tt>.
      *
-     * @param context the interprter context
+     * @param context the interpreter context
      * @param s the string to use as reference
      * @param i the index in s to start working at
      *
@@ -894,7 +894,7 @@ public abstract class Moritz
 
     /**
      * Add an observer for the eof event.
-     * This oberserver is triggered by an end of file on the token stream.
+     * This observer is triggered by an end of file on the token stream.
      * This means that all tokens have been processed and all stream are at
      * their end.
      *
@@ -960,8 +960,9 @@ public abstract class Moritz
     /**
      * Scan the input stream for tokens making up an integer, this is a number
      * optionally preceeded by a sign (+ or -). The number can be preceeded by
-     * optional whitespace. Whitespace is also ignored between the sign and the
-     * number. All non-whitespace characters must have the catcode OTHER.
+     * optional white space. White space is also ignored between the sign and
+     * the number. All non-whitespace characters must have the category code
+     * OTHER.
      *
      * @param context the interpreter context
      *
@@ -978,29 +979,28 @@ public abstract class Moritz
             throws InterpreterException,
                 MissingNumberException {
 
-        Token t = getNonSpace(context);
+        boolean neg = false;
+        Token t;
 
-        if (t == null) {
+        for (t = scanNonSpace(context); t != null; t = scanNonSpace(context)) {
 
-            throw new MissingNumberException();
+            if (t.equals(Catcode.OTHER, '-')) {
+                neg = !neg;
 
-        } else if (t.equals(Catcode.OTHER, '-')) {
-
-            return -scanNumber(context);
-
-        } else if (t.equals(Catcode.OTHER, '+')) {
-
-            return scanNumber(context);
-
+            } else if (t.equals(Catcode.OTHER, '+')) {
+                // + is absorbed
+            } else {
+                return (neg ? -scanNumber(context, t) : scanNumber(context, t));
+            }
         }
 
-        return scanNumber(context, t);
+        throw new MissingNumberException();
     }
 
     /**
      * Scan the input for the next token which has not the catcode SPACE.
      *
-     * @param context the interpreter contex
+     * @param context the interpreter context
      *
      * @return the next non-space token or <code>null</code> at EOF
      *
@@ -1010,14 +1010,13 @@ public abstract class Moritz
     public Token scanNonSpace(final Context context)
             throws InterpreterException {
 
-        for (Token t = scanToken(context); t != null; t = scanToken(context)) {
+        Token t;
+        do {
+            skipSpaces = true;
+            t = scanToken(context);
+        } while (t != null && t.isa(Catcode.SPACE));
 
-            if (!(t.isa(Catcode.SPACE))) {
-                return t;
-            }
-        }
-
-        return null;
+        return t;
     }
 
     /**
@@ -1031,10 +1030,10 @@ public abstract class Moritz
 
     /**
      * Scan the input stream for tokens making up a number, this means a
-     * sequence of digits with catcode OTHER. Alternative notations for a number
-     * may exist. The number can be preceeded by optional whitespace.
+     * sequence of digits with category code OTHER. Alternative notations for
+     * a number may exist. The number can be preceeded by optional white space.
      *
-     * @param context the interprester contex
+     * @param context the interpreter context
      *
      * @return the value of the integer scanned
      *
@@ -1051,7 +1050,7 @@ public abstract class Moritz
     /**
      * Scan a number with a given first token.
      *
-     * @param context the interpreter contex
+     * @param context the interpreter context
      * @param token the first token to consider
      *
      * @return the value of the integer scanned
@@ -1068,6 +1067,7 @@ public abstract class Moritz
 
         long n = 0;
         Token t = token;
+        int no;
 
         while (t != null) {
 
@@ -1110,9 +1110,17 @@ public abstract class Moritz
                         break;
 
                     case '\'':
+                        t = scanToken(context); 
+                        if ( !(t instanceof OtherToken)) {
+                            throw new MissingNumberException();
+                        }
+                        n = t.getChar().getCodePoint() - '0';
+                        if (n < 0 || n > 7) {
+                            throw new MissingNumberException();
+                        }
                         for (t = scanToken(context); t instanceof OtherToken; //
                         t = scanToken(context)) {
-                            int no = t.getChar().getCodePoint() - '0';
+                           no = t.getChar().getCodePoint() - '0';
                             if (no < 0 || no > 7) {
                                 break;
                             }
@@ -1130,7 +1138,7 @@ public abstract class Moritz
                         for (t = scanToken(context); //
                         t instanceof OtherToken || t instanceof LetterToken; //
                         t = scanToken(context)) {
-                            int no = t.getChar().getCodePoint();
+                            no = t.getChar().getCodePoint();
                             switch (no) {
                                 case '0':
                                 case '1':
@@ -1227,12 +1235,12 @@ public abstract class Moritz
     }
 
     /**
-     * Expand tokens from the input stream until an unexpandable token is found.
-     * This unexpandable token is returned.
+     * Expand tokens from the input stream until an not expandable token is
+     * found. This not expandable token is returned.
      *
-     * @param context the interpreter contex
+     * @param context the interpreter context
      *
-     * @return the next unexpandable token
+     * @return the next not expandable token
      *
      * @throws InterpreterException in case of an error
      *
