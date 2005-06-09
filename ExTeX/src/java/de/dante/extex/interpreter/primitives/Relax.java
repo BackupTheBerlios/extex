@@ -27,7 +27,14 @@ import de.dante.extex.interpreter.type.AbstractCode;
  * <h3>The Primitive <tt>\relax</tt></h3>
  * <p>
  *  This primitive simply does nothing. It acts as a no-op for the
- *  <logo>TeX</logo> macro language.
+ *  <logo>TeX</logo> macro language. <tt>\relax</tt> is not even expandable.
+ *  in certain circumstances it might be treated as if it where expandable and
+ *  the expansion is empty.
+ * </p>
+ * <p>
+ *  <tt>\relax</tt> sometimes acts as terminating token. For instance when a
+ *  number is parsed <tt>\relax</tt> terminates the parsing even if the
+ *  following token is a digit.
  * </p>
  * <p>
  *  The formal description of this primitive is the following:
@@ -35,18 +42,16 @@ import de.dante.extex.interpreter.type.AbstractCode;
  *    &lang;relax&rang;
  *      &rarr; <tt>\relax</tt>  </pre>
  * </p>
- * <p>
- *  Examples:
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \relax  </pre>
  *  <pre class="TeXSample">
  *    \the\count123\relax456  </pre>
- * </p>
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Relax extends AbstractCode {
 
