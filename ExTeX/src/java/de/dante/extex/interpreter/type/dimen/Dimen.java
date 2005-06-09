@@ -37,7 +37,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class Dimen extends GlueComponent implements Serializable, FixedDimen {
 
@@ -266,7 +266,7 @@ public class Dimen extends GlueComponent implements Serializable, FixedDimen {
 
     /**
      * Setter for the value.
-     * The order of the arument is ignored.
+     * The order of the argument is ignored.
      *
      * @param d the new value
      */
