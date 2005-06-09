@@ -57,7 +57,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.31 $
+ * @version $Revision: 1.32 $
  */
 public class GlueComponent implements Serializable, FixedGlueComponent {
 
@@ -149,13 +149,15 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
         long val = 0;
         int post = 0;
         Token t = start;
-        if (t == null) {
-            return 0;
-        } else if (t.equals(Catcode.OTHER, '-')) {
-            neg = true;
-            t = source.getNonSpace(context);
-        } else if (t.equals(Catcode.OTHER, '+')) {
-            t = source.getNonSpace(context);
+
+        while (t != null) {
+            //return 0;
+            if (t.equals(Catcode.OTHER, '-')) {
+                neg = ! neg;
+            } else if (! t.equals(Catcode.OTHER, '+')) {
+                break;
+            }
+            t = source.scanNonSpace(context);
         }
         if (t != null && !t.equals(Catcode.OTHER, ".")
                 && !t.equals(Catcode.OTHER, ",")) {
@@ -168,8 +170,8 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
             // @see "TeX -- The Program [102]"
             int[] dig = new int[FLOAT_DIGITS];
             int k = 0;
-            for (t = source.getToken(context); t instanceof OtherToken
-                    && t.getChar().isDigit(); t = source.getToken(context)) {
+            for (t = source.scanToken(context); t instanceof OtherToken
+                    && t.getChar().isDigit(); t = source.scanToken(context)) {
                 if (k < FLOAT_DIGITS) {
                     dig[k++] = t.getChar().getCodePoint() - '0';
                 }
@@ -196,7 +198,7 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
     private int order = 0;
 
     /**
-     * The field <tt>value</tt> contains the integer representatation of the
+     * The field <tt>value</tt> contains the integer representation of the
      * dimen register in sp if the order is 0.
      * If the order is not 0 then the value holds the factor to the order in
      * units of 2<sup>16</sup>.
@@ -683,7 +685,7 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
     /**
      * Determine the printable representation of the object and return it as a
      * list of Tokens.
-     * The value returned is exactely the string which would be produced by
+     * The value returned is exactly the string which would be produced by
      * <logo>TeX</logo> to print the Dimen. This means the result is expressed
      * in pt and properly rounded to be read back in again without loss of
      * information.
@@ -709,7 +711,7 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
     /**
      * Determine the printable representation of the object and return it as a
      * list of Tokens.
-     * The value returned is exactely the string which would be produced by
+     * The value returned is exactly the string which would be produced by
      * <logo>TeX</logo> to print the Dimen. This means the result is expressed
      * in pt and properly rounded to be read back in again without loss of
      * information.
