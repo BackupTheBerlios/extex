@@ -60,7 +60,6 @@ import de.dante.extex.interpreter.type.PrefixCode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.language.LanguageManagerFactory;
 import de.dante.extex.scanner.stream.TokenStream;
-import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.extex.scanner.type.ActiveCharacterToken;
 import de.dante.extex.scanner.type.CodeToken;
 import de.dante.extex.scanner.type.ControlSequenceToken;
@@ -86,6 +85,7 @@ import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationMissingException;
 import de.dante.util.configuration.ConfigurationWrapperException;
 import de.dante.util.framework.configuration.Configurable;
+import de.dante.util.framework.i18n.Localizable;
 import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.logger.LogEnabled;
 
@@ -95,11 +95,12 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.72 $
+ * @version $Revision: 1.73 $
  */
-public class Max extends Moritz
+public abstract class Max
         implements
             Interpreter,
+            Localizable,
             LogEnabled,
             ExpandObservable,
             ExpandMacroObservable,
@@ -162,6 +163,11 @@ public class Max extends Moritz
      * nothing should be inserted.
      */
     private String everyRun = null;
+
+    /**
+     * The field <tt>localizer</tt> contains the localizer to use.
+     */
+    private transient Localizer localizer = null;
 
     /**
      * The field <tt>logger</tt> contains the logger or
@@ -229,8 +235,6 @@ public class Max extends Moritz
      */
     public void configure(final Configuration configuration)
             throws ConfigurationException {
-
-        super.configure(configuration);
 
         if (configuration == null) {
             throw new ConfigurationMissingException("Interpreter");
@@ -327,6 +331,19 @@ public class Max extends Moritz
                 .getConfiguration("TokenFactory"));
         factory.enableLogging(logger);
         return factory.createInstance();
+    }
+
+    /**
+     * Setter for the getLocalizer().
+     *
+     * @param theLocalizer the getLocalizer() to use
+     *
+     * @see de.dante.util.framework.i18n.Localizable#enableLocalization(
+     *      de.dante.util.framework.i18n.Localizer)
+     */
+    public void enableLocalization(final Localizer theLocalizer) {
+
+        this.localizer = theLocalizer;
     }
 
     /**
@@ -484,6 +501,16 @@ public class Max extends Moritz
     public Interaction getInteraction() {
 
         return context.getInteraction();
+    }
+
+    /**
+     * Getter for localizer.
+     *
+     * @return the localizer.
+     */
+    protected Localizer getLocalizer() {
+
+        return this.localizer;
     }
 
     /**
@@ -740,16 +767,6 @@ public class Max extends Moritz
     public void setJobname(final String jobname) throws GeneralException {
 
         context.setToks("jobname", new Tokens(context, jobname), true);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.max.Moritz#setTokenStreamFactory(
-     *      de.dante.extex.scanner.stream.TokenStreamFactory)
-     */
-    public void setTokenStreamFactory(final TokenStreamFactory factory)
-            throws ConfigurationException {
-
-        super.setTokenStreamFactory(factory);
     }
 
     /**

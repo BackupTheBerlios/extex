@@ -38,7 +38,6 @@
       <tfm-mathext class="de.dante.extex.font.type.efm.EFMType1TFMMathextFount"/>
       <tfm-normal class="de.dante.extex.font.type.efm.EFMType1TFMNOFount"/>
     </Type>
-    <Resource src="path/fontFinder.xml"/>
   </Fonts>
 
   <!-- 
@@ -56,7 +55,7 @@
     -  The section "Interpreter" contains the specification for the core
     -  interpreter.
     -->
-  <Interpreter class="de.dante.extex.interpreter.max.Max">
+  <Interpreter class="de.dante.extex.interpreter.max.Moritz">
 
     <!-- The maximum number of errors before an abort is forced.
       -->

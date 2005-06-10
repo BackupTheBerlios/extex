@@ -25,7 +25,6 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.exception.ErrorLimitException;
 import de.dante.extex.interpreter.exception.IllegalRegisterException;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.EofException;
@@ -73,8 +72,6 @@ import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.framework.configuration.Configurable;
-import de.dante.util.framework.i18n.Localizable;
-import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.observer.NotObservableException;
 
 /**
@@ -89,13 +86,12 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.67 $
+ * @version $Revision: 1.68 $
  */
-public abstract class Moritz
+public class Moritz extends Max
         implements
             TokenSource,
             Configurable,
-            Localizable,
             StreamCloseObservable,
             PopObservable,
             PushObservable,
@@ -113,11 +109,6 @@ public abstract class Moritz
      * <code>false</code> then only numbers are permitted.
      */
     private boolean extendedRegisterNames = false;
-
-    /**
-     * The field <tt>localizer</tt> contains the localizer to use.
-     */
-    private transient Localizer localizer = null;
 
     /**
      * The field <tt>observersCloseStream</tt> contains the observer list is
@@ -295,6 +286,8 @@ public abstract class Moritz
     public void configure(final Configuration configuration)
             throws ConfigurationException {
 
+        super.configure(configuration);
+
         Configuration cfg = configuration
                 .findConfiguration("ExtendedRegisterNames");
         if (cfg != null) {
@@ -307,42 +300,6 @@ public abstract class Moritz
             registerMaxIndex = Long.valueOf(cfg.getValue()).longValue();
         }
     }
-
-    /**
-     * Setter for the localizer.
-     *
-     * @param theLocalizer the localizer to use
-     *
-     * @see de.dante.util.framework.i18n.Localizable#enableLocalization(
-     *      de.dante.util.framework.i18n.Localizer)
-     */
-    public void enableLocalization(final Localizer theLocalizer) {
-
-        this.localizer = theLocalizer;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.TokenSource#execute(
-     *      de.dante.extex.scanner.type.Token, Context, Typesetter)
-     */
-    public abstract void execute(final Token token, final Context context,
-            final Typesetter typesetter)
-            throws InterpreterException,
-                ErrorLimitException;
-
-    /**
-     * Tries to expand a token. If the given token is expandable then it is
-     * recursively expanded and the result is pushed. The first not-expandable
-     * token is returned.
-     *
-     * @param token the Token to expand
-     *
-     * @return the next non-expandable token or <code>null</code>
-     *
-     * @throws InterpreterException in case of an error
-     */
-    protected abstract Token expand(final Token token)
-            throws InterpreterException;
 
     /**
      * @see de.dante.extex.interpreter.Interpreter#expand(
@@ -366,19 +323,14 @@ public abstract class Moritz
 
         Token t = getToken(context);
         if (!(t instanceof CodeToken)) {
-            throw new HelpingException(localizer, "TTP.BoxExpected");
+            throw new HelpingException(getLocalizer(), "TTP.BoxExpected");
         }
         Code code = context.getCode((CodeToken) t);
         if (!(code instanceof Boxable)) {
-            throw new HelpingException(localizer, "TTP.BoxExpected");
+            throw new HelpingException(getLocalizer(), "TTP.BoxExpected");
         }
         return ((Boxable) code).getBox(context, this, typesetter);
     }
-
-    /**
-     * @see de.dante.extex.interpreter.Interpreter#getContext()
-     */
-    protected abstract Context getContext();
 
     /**
      * Get the next token from the token stream and check that it is a
@@ -417,7 +369,7 @@ public abstract class Moritz
             throw new InterpreterException(e);
         }
         push(t);
-        throw new HelpingException(localizer, "TTP.MissingCtrlSeq");
+        throw new HelpingException(getLocalizer(), "TTP.MissingCtrlSeq");
     }
 
     /**
@@ -430,13 +382,13 @@ public abstract class Moritz
         if (t == null) {
             throw new EofException(null);
         } else if (!(t instanceof CodeToken)) {
-            throw new HelpingException(localizer, "TTP.MissingFontIdent");
+            throw new HelpingException(getLocalizer(), "TTP.MissingFontIdent");
         }
         Code code = context.getCode((CodeToken) t);
         if (code == null) {
             throw new UndefinedControlSequenceException(t.toString());
         } else if (!(code instanceof FontConvertible)) {
-            throw new HelpingException(localizer, "TTP.MissingFontIdent");
+            throw new HelpingException(getLocalizer(), "TTP.MissingFontIdent");
         }
 
         return ((FontConvertible) code).convertFont(context, this);
@@ -498,16 +450,6 @@ public abstract class Moritz
 
         }
         return true;
-    }
-
-    /**
-     * Getter for localizer.
-     *
-     * @return the localizer.
-     */
-    protected Localizer getLocalizer() {
-
-        return this.localizer;
     }
 
     /**
@@ -580,7 +522,7 @@ public abstract class Moritz
                     if (t instanceof ControlSequenceToken) {
                         String val = ((ControlSequenceToken) t).getName();
                         if (val.length() != 1) {
-                            throw new HelpingException(localizer,
+                            throw new HelpingException(getLocalizer(),
                                     "TTP.NonNumericToken", t.toString());
                         }
                         return val.charAt(0);
@@ -766,7 +708,7 @@ public abstract class Moritz
         Token token = getToken(context);
 
         if (token == null) {
-            throw new EofException(localizer.format("Tokens.Text"));
+            throw new EofException(getLocalizer().format("Tokens.Text"));
         } else if (!token.isa(Catcode.LEFTBRACE)) {
             throw new MissingLeftBraceException("???");
         }
@@ -796,13 +738,6 @@ public abstract class Moritz
 
         return tokenStreamFactory;
     }
-
-    /**
-     * Getter for the typesetter.
-     *
-     * @return the typesetter
-     */
-    public abstract Typesetter getTypesetter();
 
     /**
      * Push back a token onto the input stream for subsequent reading.
@@ -959,12 +894,13 @@ public abstract class Moritz
 
     /**
      * Scan the input stream for tokens making up an integer, this is a number
-     * optionally preceeded by a sign (+ or -). The number can be preceeded by
+     * optionally preceded by a sign (+ or -). The number can be preceded by
      * optional white space. White space is also ignored between the sign and
      * the number. All non-whitespace characters must have the category code
      * OTHER.
      *
      * @param context the interpreter context
+     * @param typesetter the typesetter
      *
      * @return the value of the integer scanned
      *
@@ -973,22 +909,33 @@ public abstract class Moritz
      * @throws MissingNumberException in case of a missing number
      *
      * @see de.dante.extex.interpreter.TokenSource#scanInteger(
-     *      de.dante.extex.interpreter.context.Context)
+     *      de.dante.extex.interpreter.context.Context, Typesetter)
      */
-    public long scanInteger(final Context context)
+    public long scanInteger(final Context context, final Typesetter typesetter)
             throws InterpreterException,
                 MissingNumberException {
 
         boolean neg = false;
         Token t;
 
-        for (t = scanNonSpace(context); t != null; t = scanNonSpace(context)) {
+        for (t = getNonSpace(context); t != null; t = getNonSpace(context)) {
 
             if (t.equals(Catcode.OTHER, '-')) {
                 neg = !neg;
 
             } else if (t.equals(Catcode.OTHER, '+')) {
                 // + is absorbed
+            } else if (t instanceof CodeToken) {
+                Code code = context.getCode((CodeToken) t);
+                if (code instanceof CountConvertible) {
+                    return ((CountConvertible) code).convertCount(context,
+                            this, typesetter);
+                } else if (code instanceof ExpandableCode) {
+                    ((ExpandableCode) code).expand(Flags.NONE, context, this,
+                            typesetter);
+                } else {
+                    break;
+                }
             } else {
                 return (neg ? -scanNumber(context, t) : scanNumber(context, t));
             }
@@ -1110,8 +1057,8 @@ public abstract class Moritz
                         break;
 
                     case '\'':
-                        t = scanToken(context); 
-                        if ( !(t instanceof OtherToken)) {
+                        t = scanToken(context);
+                        if (!(t instanceof OtherToken)) {
                             throw new MissingNumberException();
                         }
                         n = t.getChar().getCodePoint() - '0';
@@ -1120,7 +1067,7 @@ public abstract class Moritz
                         }
                         for (t = scanToken(context); t instanceof OtherToken; //
                         t = scanToken(context)) {
-                           no = t.getChar().getCodePoint() - '0';
+                            no = t.getChar().getCodePoint() - '0';
                             if (no < 0 || no > 7) {
                                 break;
                             }
