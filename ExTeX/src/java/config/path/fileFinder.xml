@@ -34,6 +34,36 @@
       <extension></extension>
       <extension>.fmt</extension>
     </fmt>
+    <efm>
+      <extension>.efm</extension>
+      <path>.</path>
+      <path property="extex.fonts"/>
+      <path property="texinputs"/>
+    </efm>
+    <pfb>
+      <extension>.pfb</extension>
+      <path>.</path>
+      <path property="extex.fonts"/>
+      <path property="texinputs"/>
+    </pfb>
+    <ttf>
+      <extension>.ttf</extension>
+      <path>.</path>
+      <path property="extex.fonts"/>
+      <path property="texinputs"/>
+    </ttf>
+    <vf>
+      <extension>.vf</extension>
+      <path>.</path>
+      <path property="extex.fonts"/>
+      <path property="texinputs"/>
+    </vf>
+    <tfm>
+      <extension>.tfm</extension>
+      <path>.</path>
+      <path property="extex.fonts"/>
+      <path property="texinputs"/>
+    </tfm>
     <default>
       <path property="extex.texinputs"/>
       <path property="texinputs"/>
@@ -43,10 +73,21 @@
   </Finder>
 
   <Finder class="de.dante.util.resource.LsrFinder"
+          capacity="88888"
           default="default">
+    <path property="extex.fonts"></path>
+    <path property="texmf.path"></path>
     <path property="extex.texinputs"/>
     <path property="texinputs"/>
 
+    <vf><extension/><extension>.vf</extension></vf>
+    <tfm><extension/><extension>.tfm</extension></tfm>
+    <efm><extension/><extension>.efm</extension></efm>
+    <afm><extension/><extension>.afm</extension></afm>
+    <pfb><extension/><extension>.pfb</extension></pfb>
+    <pfa><extension/><extension>.pfa</extension></pfa>
+    <map><extension/><extension>.map</extension></map>
+    <ttf><extension/><extension>.ttf</extension></ttf>
     <tex><extension>.tex</extension></tex>
     <fmt><extension>.fmt</extension></fmt>
     <default><extension/></default>
@@ -55,6 +96,6 @@
   <Finder class="de.dante.extex.main.ResourceFinderImpl" default="default">
     <tex/>
     <fmt skip="true"/>
-    <default/>
+    <default skip="true"/>
   </Finder>
 </Resource>

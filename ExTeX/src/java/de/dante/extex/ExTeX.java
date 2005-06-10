@@ -315,7 +315,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.105 $
+ * @version $Revision: 1.106 $
  */
 public class ExTeX {
 
@@ -1000,16 +1000,16 @@ public class ExTeX {
 
     /**
      * Create a new font factory.
-     *
      * @param config the configuration object for the font factory
+     * @param finder the resource finder to use
      *
      * @return the new font factory
      *
      * @throws ConfigurationException in case that some kind of problems have
      * been detected in the configuration
      */
-    protected FontFactory makeFontFactory(final Configuration config)
-            throws ConfigurationException {
+    protected FontFactory makeFontFactory(final Configuration config,
+            final ResourceFinder finder) throws ConfigurationException {
 
         FontFactory fontFactory;
         String fontClass = config.getAttribute("class");
@@ -1018,6 +1018,7 @@ public class ExTeX {
             throw new ConfigurationMissingAttributeException("class", config);
         }
 
+        /*
         ResourceFinder fontFinder = (new ResourceFinderFactory())
                 .createResourceFinder(config.getConfiguration("Resource"),
                         logger, properties);
@@ -1025,13 +1026,14 @@ public class ExTeX {
                 .booleanValue()) {
             fontFinder.enableTracing(true);
         }
+        */
 
         try {
             fontFactory = (FontFactory) (Class.forName(fontClass)
                     .getConstructor(
                             new Class[]{Configuration.class,
                                     ResourceFinder.class})
-                    .newInstance(new Object[]{config, fontFinder}));
+                    .newInstance(new Object[]{config, finder}));
         } catch (IllegalArgumentException e) {
             throw new ConfigurationInstantiationException(e);
         } catch (SecurityException e) {
@@ -1238,7 +1240,7 @@ public class ExTeX {
                     config.getConfiguration("Scanner"), finder);
 
             FontFactory fontFactory = makeFontFactory(config
-                    .getConfiguration("Fonts"));
+                    .getConfiguration("Fonts"), finder);
 
             Interpreter interpreter = makeInterpreter(//
                     config.getConfiguration("Interpreter"), //
