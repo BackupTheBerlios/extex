@@ -42,7 +42,7 @@ import de.dante.util.StringList;
  * This class provides means to deal with configurations stored as XML files.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class ConfigurationXMLImpl implements Configuration, Serializable {
 
@@ -125,7 +125,7 @@ public class ConfigurationXMLImpl implements Configuration, Serializable {
      *
      * @param stream the stream to read the configuration from.
      * @param resource the name of the resource to be used;
-     *  i.e. somethinf like the file name
+     *  i.e. something like the file name
      *
      * @throws ConfigurationInvalidResourceException in case that the given
      *  resource name is <code>null</code> or empty.
@@ -373,7 +373,7 @@ public class ConfigurationXMLImpl implements Configuration, Serializable {
      * @throws ConfigurationNotFoundException in case that the configuration
      *  does not exist.
      * @throws ConfigurationIOException in case that an IOException occurred
-     *  while reading the configiuration.
+     *  while reading the configuration.
      * @throws ConfigurationSyntaxException in case of a syntax error in the
      *  configuration.
      * @throws ConfigurationInvalidResourceException in case that the given
