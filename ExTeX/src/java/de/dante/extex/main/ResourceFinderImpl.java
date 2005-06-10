@@ -36,7 +36,7 @@ import de.dante.util.resource.ResourceFinder;
  * tries to find it via its parent.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class ResourceFinderImpl
         implements
@@ -109,8 +109,14 @@ public class ResourceFinderImpl
     public InputStream findResource(final String name, final String type)
             throws ConfigurationException {
 
-        String skip = configuration.findConfiguration(type)
-                .getAttribute("skip");
+        Configuration cfg = configuration.findConfiguration(type);
+        if (cfg == null) {
+            cfg = configuration.findConfiguration("default");
+            if (cfg == null) {
+                return null;
+            }
+        }
+        String skip = cfg.getAttribute("skip");
         if (skip != null && Boolean.valueOf(skip).booleanValue()) {
             return null;
         }
