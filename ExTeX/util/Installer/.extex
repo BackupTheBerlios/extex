@@ -25,7 +25,7 @@
 ##    This parameter contains the logical name of the error handler. 
 ##-----------------------------------------------------------------------------
 ##
-#extex.fonts = 
+extex.fonts = $INSTALL_PATH/font
 ##    This parameter contains the name of the property indicating
 ##    where to find font files. The value is a path similar to
 ##    extex.texinputs.
@@ -104,7 +104,7 @@
 ##    internal error is encountered. This is handy for development.
 ##-----------------------------------------------------------------------------
 ##
-extex.texinputs = ${extex.texinputs}
+extex.texinputs = $INSTALL_PATH/texmf
 ##    This parameter contains the additional directories for searching
 ##    TeX input files.
 ##-----------------------------------------------------------------------------
