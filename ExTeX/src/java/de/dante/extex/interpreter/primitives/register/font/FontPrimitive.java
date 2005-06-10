@@ -86,7 +86,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *    &lang;option&rang;
  *      &rarr; [scaled] {@linkplain
- *        de.dante.extex.interpreter.TokenSource#scanInteger(Context)
+ *        de.dante.extex.interpreter.TokenSource#scanInteger(Context, Typesetter)
  *        &lang;number&rang;}
  *       | [at] &lang;size...&rang;
  *       | [noligatures]
@@ -134,7 +134,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
 public class FontPrimitive extends AbstractAssignment
         implements
@@ -187,7 +187,7 @@ public class FontPrimitive extends AbstractAssignment
             }
 
         } else if (source.getKeyword(context, "scaled")) {
-            long s = source.scanInteger(context);
+            long s = source.scanInteger(context, typesetter);
             if (s <= 0) {
                 throw new HelpingException(getLocalizer(), "TTP.IllegalMag",
                         Long.toString(s), "32768"); //TODO gene: max ok?

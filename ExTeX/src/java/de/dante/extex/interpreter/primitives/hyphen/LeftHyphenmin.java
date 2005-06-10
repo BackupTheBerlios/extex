@@ -44,7 +44,7 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class LeftHyphenmin extends AbstractHyphenationCode implements Theable {
 
@@ -74,7 +74,7 @@ public class LeftHyphenmin extends AbstractHyphenationCode implements Theable {
 
         Language table = getHyphenationTable(context);
         source.getOptionalEquals(context);
-        long lefthyphenmin = source.scanInteger(context);
+        long lefthyphenmin = source.scanInteger(context, typesetter);
 
         try {
             table.setLeftHyphenmin(lefthyphenmin);

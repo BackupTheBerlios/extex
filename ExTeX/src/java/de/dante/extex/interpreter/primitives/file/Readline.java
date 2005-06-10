@@ -59,7 +59,7 @@ import de.dante.util.UnicodeChar;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Readline extends AbstractCode {
 
@@ -67,7 +67,7 @@ public class Readline extends AbstractCode {
      * This class implements a tokenizer which returns only OTHER and SPACE.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static class ReadlineTokenizer implements Tokenizer {
 
@@ -116,7 +116,7 @@ public class Readline extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String key = AbstractFileCode.scanInFileKey(context, source);
+        String key = AbstractFileCode.scanInFileKey(context, source, typesetter);
 
         if (!source.getKeyword(context, "to")) {
             throw new HelpingException(getLocalizer(), "TTP.MissingToForRead");

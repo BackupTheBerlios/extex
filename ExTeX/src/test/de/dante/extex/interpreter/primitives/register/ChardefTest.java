@@ -26,7 +26,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\chardef</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ChardefTest extends ExTeXLauncher {
 
@@ -50,7 +50,10 @@ public class ChardefTest extends ExTeXLauncher {
     }
 
     /**
-     * Test case checking that \chardef throws an error on eof.
+     * <testcase primitive="chardef">
+     *  Test case checking that <tt>\chardef</tt> throws an error on eof.
+     * </testcase>
+     *
      * @throws Exception in case of an error
      */
     public void testEOF1() throws Exception {
@@ -64,7 +67,10 @@ public class ChardefTest extends ExTeXLauncher {
     }
 
     /**
-     * Test case checking that \chardef throws an error on eof.
+     * <testcase primitive="chardef">
+     *  Test case checking that <tt>\chardef</tt> throws an error on eof.
+     * </testcase>
+     *
      * @throws Exception in case of an error
      */
     public void testEOF2() throws Exception {
@@ -78,7 +84,11 @@ public class ChardefTest extends ExTeXLauncher {
     }
 
     /**
-     * Test case checking that \chardef needs a code token as first argument.
+     * <testcase primitive="chardef">
+     *  Test case checking that <tt>\chardef</tt> needs a code token as
+     *  first argument.
+     * </testcase>
+     *
      * @throws Exception in case of an error
      */
     public void testNonCode1() throws Exception {
@@ -92,7 +102,11 @@ public class ChardefTest extends ExTeXLauncher {
     }
 
     /**
-     * Test case checking that \chardef needs a code token as first argument.
+     * <testcase primitive="chardef">
+     *  Test case checking that <tt>\chardef</tt> needs a code token as
+     *  first argument.
+     * </testcase>
+     *
      * @throws Exception in case of an error
      */
     public void testNonCode2() throws Exception {
@@ -106,17 +120,39 @@ public class ChardefTest extends ExTeXLauncher {
     }
 
     /**
-     * Test case checking that \chardef needs a code token as first argument.
+     * <testcase primitive="chardef">
+     *  Test case checking that <tt>\chardef</tt> needs a code token as
+     *  first argument.
+     * </testcase>
+     *
      * @throws Exception in case of an error
      */
-    public void testXX() throws Exception {
+    public void test1() throws Exception {
 
         runCode(//--- input code ---
-                "\\chardef\\x=65 \\count0=\\x\\showthe\\count0\\end",
+                "\\chardef\\x=65 \\the\\x\\end",
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "");
+                "65\n\n");
+    }
+
+    /**
+     * <testcase primitive="chardef">
+     *  Test case checking that <tt>\chardef</tt> needs a code token as
+     *  first argument.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test2() throws Exception {
+
+        runCode(//--- input code ---
+                "\\chardef\\x=65 \\count0=\\x\\the\\count0\\end",
+                //--- log message ---
+                "",
+                //--- output channel ---
+                "65\n\n");
     }
 
 

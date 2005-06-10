@@ -79,7 +79,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public class Fontdimen extends AbstractAssignment
         implements
@@ -107,7 +107,7 @@ public class Fontdimen extends AbstractAssignment
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String key = getKey(context, source);
+        String key = getKey(context, source, typesetter);
         source.skipSpace();
         Font font = source.getFont(context);
         source.getOptionalEquals(context);
@@ -134,16 +134,16 @@ public class Fontdimen extends AbstractAssignment
      * an arbitrary number. In <logo>ExTeX</logo> this has been extended to take
      * an expandable sequence of tokens enclosed in braces. The left brace acts
      * as indicator that this extension is used.
-     *
      * @param context the interpreter context
      * @param source the source for new tokens
+     * @param typesetter the typesetter
      *
      * @return the key
      *
      * @throws InterpreterException in case of an error
      */
-    protected String getKey(final Context context, final TokenSource source)
-            throws InterpreterException {
+    protected String getKey(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
 
         Token t = source.getNonSpace(context);
         if (t == null) {
@@ -157,7 +157,7 @@ public class Fontdimen extends AbstractAssignment
             return key;
         }
         source.push(t);
-        long idx = source.scanInteger(context);
+        long idx = source.scanInteger(context, typesetter);
         return Long.toString(idx);
     }
 
@@ -167,11 +167,10 @@ public class Fontdimen extends AbstractAssignment
      *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
     public Tokens the(final Context context, final TokenSource source,
-            final Typesetter typesetter)
-            throws InterpreterException {
+            final Typesetter typesetter) throws InterpreterException {
 
         try {
-            String key = getKey(context, source);
+            String key = getKey(context, source, typesetter);
             source.skipSpace();
             Font font = source.getFont(context);
             Dimen size = font.getFontDimen(key);

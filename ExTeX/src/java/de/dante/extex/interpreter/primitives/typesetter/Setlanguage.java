@@ -54,7 +54,7 @@ import de.dante.extex.typesetter.type.NodeList;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Setlanguage extends AbstractBox {
 
@@ -63,7 +63,7 @@ public class Setlanguage extends AbstractBox {
      * <tt>language</tt> and <tt>lang</tt> t the end of a paragraph.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.6 $
+     * @version $Revision: 1.7 $
      */
     private class ParObserver implements ParagraphObserver {
 
@@ -139,7 +139,7 @@ public class Setlanguage extends AbstractBox {
             Tokens tokens = source.getTokens(context);
             context.setToks("lang", tokens, false);
         } else {
-            long no = source.scanInteger(context);
+            long no = source.scanInteger(context, typesetter);
             context.setCount("language", no, false);
             context.setToks("lang", Tokens.EMPTY, false);
         }

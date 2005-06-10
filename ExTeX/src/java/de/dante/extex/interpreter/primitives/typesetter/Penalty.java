@@ -63,7 +63,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Penalty extends AbstractCode {
 
@@ -90,7 +90,7 @@ public class Penalty extends AbstractCode {
 
         long penalty = 0;
         try {
-            penalty = source.scanInteger(context);
+            penalty = source.scanInteger(context, typesetter);
             typesetter.add(new PenaltyNode(penalty));
         } catch (GeneralException e) {
             throw new InterpreterException(e);

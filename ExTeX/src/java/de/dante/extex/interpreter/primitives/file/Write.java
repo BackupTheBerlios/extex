@@ -58,7 +58,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class Write extends AbstractCode
         implements
@@ -136,7 +136,7 @@ public class Write extends AbstractCode
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String key = AbstractFileCode.scanOutFileKey(context, source);
+        String key = AbstractFileCode.scanOutFileKey(context, source, typesetter);
 
         if (prefix.isImmediate()) {
 

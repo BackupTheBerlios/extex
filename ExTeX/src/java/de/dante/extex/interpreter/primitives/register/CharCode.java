@@ -25,7 +25,9 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.ExpandableCode;
+import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.count.CountConvertible;
+import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.CatcodeException;
 import de.dante.extex.scanner.type.Token;
@@ -37,16 +39,17 @@ import de.dante.util.UnicodeChar;
  * character.
  * The code is executable, expandable, and convertible into a
  * count register.
- * The token returned by expansion depends on the catcode at the time of
+ * The token returned by expansion depends on the category code at the time of
  * expansion.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class CharCode extends AbstractCode
         implements
             ExpandableCode,
-            CountConvertible {
+            CountConvertible,
+            Theable {
 
     /**
      * The field <tt>character</tt> contains the encapsulated Unicode character.
@@ -110,4 +113,15 @@ public class CharCode extends AbstractCode
         return character.getCodePoint();
     }
 
+    /**
+     * @see de.dante.extex.interpreter.type.Theable#the(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public Tokens the(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
+
+        return new Tokens(context, Integer.toString(character.getCodePoint()));
+    }
 }

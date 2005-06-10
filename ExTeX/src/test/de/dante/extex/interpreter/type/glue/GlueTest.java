@@ -45,7 +45,7 @@ import de.dante.util.observer.NotObservableException;
  * TODO gene: missing JavaDoc.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class GlueTest extends TestCase {
 
@@ -53,7 +53,7 @@ public class GlueTest extends TestCase {
      * TODO gene: missing JavaDoc.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.2 $
+     * @version $Revision: 1.3 $
      */
     private class MContext extends MockContext {
 
@@ -71,7 +71,7 @@ public class GlueTest extends TestCase {
      * TODO gene: missing JavaDoc.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.2 $
+     * @version $Revision: 1.3 $
      */
     private class MockTokenSource implements TokenSource {
 
@@ -259,9 +259,9 @@ public class GlueTest extends TestCase {
         }
 
         /**
-         * @see de.dante.extex.interpreter.TokenSource#scanInteger(de.dante.extex.interpreter.context.Context)
+         * @see de.dante.extex.interpreter.TokenSource#scanInteger(de.dante.extex.interpreter.context.Context, Typesetter)
          */
-        public long scanInteger(final Context context)
+        public long scanInteger(final Context context, Typesetter typesetter)
                 throws InterpreterException,
                     MissingNumberException {
 

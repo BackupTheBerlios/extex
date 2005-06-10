@@ -52,7 +52,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class Spacefactor extends AbstractCode {
 
@@ -77,7 +77,7 @@ public class Spacefactor extends AbstractCode {
             throws InterpreterException {
 
         source.getOptionalEquals(context);
-        long f = source.scanInteger(context);
+        long f = source.scanInteger(context, typesetter);
 
         try {
             typesetter.setSpacefactor(new Count(f));

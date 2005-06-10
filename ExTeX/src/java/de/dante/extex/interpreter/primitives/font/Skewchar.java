@@ -68,7 +68,7 @@ import de.dante.util.UnicodeChar;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Skewchar extends AbstractAssignment
         implements
@@ -100,7 +100,7 @@ public class Skewchar extends AbstractAssignment
         try {
             Font font = source.getFont(context);
             source.getOptionalEquals(context);
-            long c = source.scanInteger(context);
+            long c = source.scanInteger(context, typesetter);
             if (c < 0) {
                 font.setSkewChar(null);
             } else {

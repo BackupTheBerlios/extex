@@ -52,7 +52,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Number extends AbstractCode implements ExpandableCode {
 
@@ -77,7 +77,7 @@ public class Number extends AbstractCode implements ExpandableCode {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        long n = source.scanInteger(context);
+        long n = source.scanInteger(context, typesetter);
         source.push(new Tokens(context, Long.toString(n)));
     }
 
@@ -92,7 +92,7 @@ public class Number extends AbstractCode implements ExpandableCode {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        long n = source.scanInteger(context);
+        long n = source.scanInteger(context, typesetter);
         source.push(new Tokens(context, Long.toString(n)));
     }
 }

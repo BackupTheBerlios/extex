@@ -49,7 +49,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.52 $
+ * @version $Revision: 1.53 $
  */
 public interface TokenSource {
 
@@ -367,15 +367,15 @@ public interface TokenSource {
      *  Tokens are expanded while gathering the requested values.
      * </p>
      * </doc>
-     *
      * @param context the interpreter context
+     * @param typesetter TODO
      *
      * @return the value of the integer scanned
      *
      * @throws InterpreterException in case of an error in an observer
      * @throws MissingNumberException in case that no number could be read
      */
-    long scanInteger(Context context)
+    long scanInteger(Context context, Typesetter typesetter)
             throws InterpreterException,
                 MissingNumberException;
 

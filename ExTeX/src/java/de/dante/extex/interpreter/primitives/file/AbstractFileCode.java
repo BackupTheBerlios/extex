@@ -28,6 +28,7 @@ import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.SpaceToken;
 import de.dante.extex.scanner.type.Token;
+import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
@@ -38,7 +39,7 @@ import de.dante.util.framework.configuration.Configurable;
  * files.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public abstract class AbstractFileCode extends AbstractCode
         implements
@@ -62,15 +63,17 @@ public abstract class AbstractFileCode extends AbstractCode
      *
      * @param context the interpreter context
      * @param source the token source to read from
+     * @param typesetter the typesetter
      *
      * @return the key read in the form of a String
      *
      * @throws GeneralException in case of a failure
      */
     public static String scanInFileKey(final Context context,
-            final TokenSource source) throws InterpreterException {
+            final TokenSource source, final Typesetter typesetter)
+            throws InterpreterException {
 
-        long no = source.scanInteger(context);
+        long no = source.scanInteger(context, typesetter);
         String key = Long.toString(no);
 
         if (no < 0 || no > MAX_IN_FILE_NO) {
@@ -87,15 +90,17 @@ public abstract class AbstractFileCode extends AbstractCode
      *
      * @param context the interpreter context
      * @param source the token source to read from
+     * @param typesetter the typesetter
      *
      * @return the key read in the form of a String
      *
      * @throws InterpreterException in case of a failure
      */
     public static String scanOutFileKey(final Context context,
-            final TokenSource source) throws InterpreterException {
+            final TokenSource source, final Typesetter typesetter)
+            throws InterpreterException {
 
-        long no = source.scanInteger(context);
+        long no = source.scanInteger(context, typesetter);
         return Long.toString(no);
     }
 
