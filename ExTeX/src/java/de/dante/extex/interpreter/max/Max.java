@@ -78,6 +78,7 @@ import de.dante.extex.scanner.type.Token;
 import de.dante.extex.scanner.type.TokenFactory;
 import de.dante.extex.scanner.type.TokenVisitor;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.util.GeneralException;
 import de.dante.util.Switch;
 import de.dante.util.configuration.Configuration;
@@ -95,7 +96,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.73 $
+ * @version $Revision: 1.74 $
  */
 public abstract class Max
         implements
@@ -961,7 +962,11 @@ public abstract class Max
     public Object visitMathShift(final MathShiftToken token, final Object ignore)
             throws GeneralException {
 
-        typesetter.mathShift(context, this, token);
+        try {
+            typesetter.mathShift(context, this, token);
+        } catch (ConfigurationException e) {
+            throw new GeneralException(e);
+        }
         return null;
     }
 
@@ -1025,7 +1030,11 @@ public abstract class Max
     public Object visitSpace(final SpaceToken token, final Object ignore)
             throws GeneralException {
 
-        typesetter.addSpace(context.getTypesettingContext(), null);
+        try {
+            typesetter.addSpace(context.getTypesettingContext(), null);
+        } catch (ConfigurationException e) {
+            throw new GeneralException(e);
+        }
         return null;
     }
 
@@ -1088,7 +1097,11 @@ public abstract class Max
     public Object visitTabMark(final TabMarkToken token, final Object ignore)
             throws GeneralException {
 
-        typesetter.tab(context, this, token);
+        try {
+            typesetter.tab(context, this, token);
+        } catch (ConfigurationException e) {
+            throw new GeneralException(e);
+        }
         return null;
     }
 }
