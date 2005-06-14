@@ -252,6 +252,10 @@ table.internal {
 }
 dt {
   font-weight:bold;
+  padding-top:4pt;
+}
+dd {
+  padding-bottom:6pt;
 }
 ul {
   margin-left:6pt;

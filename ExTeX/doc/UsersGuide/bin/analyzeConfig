@@ -131,6 +131,9 @@ sub processPrimitive {
   } elsif ($class eq 'de.dante.extex.interpreter.primitives.register.toks.ToksParameter') {
     print $out "\n\\macro{$name} is a toks register.\n";
 
+  } elsif ($class eq 'de.dante.extex.interpreter.primitives.register.font.NumberedFont') {
+    print $out "\n\\macro{$name} is a numbered font register.\n";
+
   } elsif ($cache{$class}) {
 
   } elsif (-e $_) {
@@ -190,6 +193,8 @@ sub processClass {
   my $listing = undef;
 
   while(<$fd>) {
+    chomp;
+    $_ = $_ . "\n";
     if (m|<doc.*name="([^\"]*)"|) {
       $collect = 1;
     } elsif(m|</doc>|) {
@@ -202,6 +207,7 @@ sub processClass {
 
       s|<h3>.*</h3>\s*||;
       s|<h4>(.*)</h4>|\\subsubsection*{$1}|;
+      s|^ ?Examples:\s*$|\\subsubsection*{Examples}\n|;
       s|<p>\s*||g;
       s|<dl>|\\begin{description}|g;
       s|</dl>|\\end{description}|g;
@@ -214,13 +220,13 @@ sub processClass {
       s|<br[ /]*>|\\ |;
       if (m/\s*<pre\s+class="syntax">/) {
 	$s .= $`;
-	my $spec = '\\begin{syntax}' . $';
+	my $spec = '\\begin{syntax}';
 	while(<$fd>) {
 	  $_ = translate($_) ;
 	  next if m/^\s*$/;
 
-	  s|^(\s*)\\rightarrow{}|$1\\>\\(\\rightarrow\\)\\>|;
-	  s/^(\s*)\|/$1\\>\\(|\\)\\>/;
+	  s|^(\s*)\\rightarrow{}|$1\\SyntaxDef|;
+	  s/^(\s*)\|/$1\\SyntaxOr/;
 	  s/\[([a-z \<=\>\&;]*)\]/[\\texttt{$1}]/;
 
 	  if (m|</pre>|) {
@@ -230,17 +236,24 @@ sub processClass {
 	  $spec .= $_;
 	}
 	$_ = $spec;
+#	s|\@linkplain\s+\\([^)]+\\)\s+||sg;
+#	s|\@linkplain\s+[^()]+\s+||sg;
 	s|\@linkplain\s+\S+\s+||sg;
-	s|\@link\s+\S+\s+||sg;
+	s|\@link\s+\w+\\([^)]+\\)\s+||sg;
+	s|\@link\s+[^()]+\s+||sg;
 	s/\n/\t\\\\\n/mg;
 	$_ .= "\n\\end{syntax}\n";
+
+    print STDERR $_ . "\n" if m/syntax/;
 
       } elsif (m/\s*<pre\s+class="JavaSample">/) {
 	$s .= $`;
 	my $spec = '\\begin{lstlisting}{language=Java}' . $';
 	while(<$fd>) {
+	  chomp;
+	  $_ = $_ . "\n";
 	  s|^ \* ?||;
-	  s|([~_\%\$])|\\$1|g;
+#	  s|([~_\%\$])|\\$1|g;
 	  s|\&\#x0*5c;|\\|g;
 	  s|\&ndash;\s*|--|g;
 	  s|</?[bi]>||g;
@@ -255,8 +268,26 @@ sub processClass {
 	$_ .= "\\end{lstlisting}\n";
 
       } elsif (m/\s*<pre\s+class="TeXSample">/) {
-	$_ = $` . '\\begin{lstlisting}{}' . $';
-	$listing = 1;
+	$s .= $`;
+	my $spec = '\\begin{lstlisting}{language=TeX}' . $';
+	while(<$fd>) {
+	  chomp;
+	  $_ = $_ . "\n";
+	  s|^ \* ?||;
+#	  s|([~_\%\$])|\\$1|g;
+	  s|\&\#x0*5c;|\\|g;
+	  s|\&ndash;\s*|--|g;
+	  s|</?[bi]>||g;
+
+	  if (m|</pre>|) {
+	    $spec .= $`;
+	    last;
+	  }
+	  $spec .= $_;
+	}
+	$_ = $spec;
+	$_ .= "\n\\end{lstlisting}\n";
+
       } elsif(m|</pre>|) {
 	if ($listing) {
 	  $listing = undef;
@@ -298,8 +329,12 @@ The primitive set \\texttt{$name} defines the following primitives:
 __EOF__
   my $fd = new FileHandle($file,'r') || die "$file:$!\n";
   while (<$fd>) {
+    chomp;
+    $_ = $_ . "\n";
     if (not m/>/) {
       $_ .= <$fd>;
+      chomp;
+      $_ = $_ . "\n";
     }
     if (m|<[dD]efine name="([^\"]*)"\s+class="([^\"]*)"|m) {
       $prim{$1}	     = $2;
@@ -331,6 +366,8 @@ sub processConfig {
   $dir	     =~ s|/[^/]*$||;
   my $fd   = new FileHandle($file,'r');
   while (<$fd>) {
+    chomp;
+    $_ = $_ . "\n";
     if (m|<banner>(.*)</banner>|) {
       $banner = $1;
     } elsif (m|<ExtendedRegisterNames>(.*)</ExtendedRegisterNames>|) {
