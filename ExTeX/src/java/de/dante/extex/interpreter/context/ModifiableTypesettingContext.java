@@ -18,8 +18,6 @@
  */
 package de.dante.extex.interpreter.context;
 
-import java.io.Serializable;
-
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.language.Language;
 
@@ -28,43 +26,43 @@ import de.dante.extex.language.Language;
  * appearance of glyphs or other nodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.1 $
  */
-public interface TypesettingContext extends Serializable {
+public interface ModifiableTypesettingContext extends TypesettingContext {
 
     /**
-     * Copy the current instance.
+     * Setter for all components.
      *
-     * @return a copy of this instance
+     * @param context the context to clone
      */
-    TypesettingContext copy();
+    void set(TypesettingContext context);
 
     /**
-     * Getter for the color.
+     * Setter for the color.
      *
-     * @return the current color
+     * @param color the new color
      */
-    Color getColor();
+    void setColor(Color color);
 
     /**
-     * Getter for the writing direction.
+     * Setter for the writing direction.
      *
-     * @return the current direction
+     * @param direction the new direction
      */
-    Direction getDirection();
+    void setDirection(Direction direction);
 
     /**
-     * Getter for the font component.
+     * Setter for the font component.
      *
-     * @return the font
+     * @param font the font to store
      */
-    Font getFont();
+    void setFont(Font font);
 
     /**
-     * Getter for the hyphenation table.
+     * Setter for the hyphenation table.
      *
-     * @return the hyphenation table
+     * @param language the hyphenation table
      */
-    Language getLanguage();
+    void setLanguage(Language language);
 
 }

@@ -20,6 +20,7 @@
 package de.dante.extex.interpreter.context;
 
 import de.dante.extex.interpreter.type.font.Font;
+import de.dante.extex.language.Language;
 import de.dante.extex.language.LanguageManager;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationClassNotFoundException;
@@ -34,7 +35,7 @@ import de.dante.util.framework.AbstractFactory;
  *  TypesettingContext}.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class TypesettingContextFactory extends AbstractFactory {
 
@@ -112,13 +113,13 @@ public class TypesettingContextFactory extends AbstractFactory {
      * @throws ConfigurationInstantiationException in case that the
      *             instantiation of the class failed.
      */
-    public TypesettingContext newInstance()
+    protected ModifiableTypesettingContext newInstance()
             throws ConfigurationInstantiationException {
 
-        TypesettingContext context;
+        ModifiableTypesettingContext context;
 
         try {
-            context = (TypesettingContext) (theClass.newInstance());
+            context = (ModifiableTypesettingContext) (theClass.newInstance());
         } catch (InstantiationException e) {
             throw new ConfigurationInstantiationException(e);
         } catch (IllegalAccessException e) {
@@ -142,7 +143,7 @@ public class TypesettingContextFactory extends AbstractFactory {
     public TypesettingContext newInstance(final TypesettingContext context,
             final Color color) throws ConfigurationInstantiationException {
 
-        TypesettingContext c = newInstance();
+        ModifiableTypesettingContext c = newInstance();
         c.set(context);
         c.setColor(color);
 
@@ -164,7 +165,7 @@ public class TypesettingContextFactory extends AbstractFactory {
             final Direction direction)
             throws ConfigurationInstantiationException {
 
-        TypesettingContext c = newInstance();
+        ModifiableTypesettingContext c = newInstance();
         c.set(context);
         c.setDirection(direction);
 
@@ -185,7 +186,7 @@ public class TypesettingContextFactory extends AbstractFactory {
     public TypesettingContext newInstance(final TypesettingContext context,
             final Font font) throws ConfigurationInstantiationException {
 
-        TypesettingContext c = newInstance();
+        ModifiableTypesettingContext c = newInstance();
         c.set(context);
         c.setFont(font);
 
@@ -194,7 +195,28 @@ public class TypesettingContextFactory extends AbstractFactory {
 
     /**
      * Factory method to acquire an instance of the TypesettingContext with a
-     * new value for the language. The laguage might be loaded if neccesary.
+     * new value for the language.
+     *
+     * @param context the typesetting context to clone
+     * @param language the new value for the hyphenation table
+     *
+     * @return an appropriate instance of the TypesettingContext.
+     *
+     * @throws ConfigurationException in case of a configuration problem
+     */
+    public TypesettingContext newInstance(final TypesettingContext context,
+            final Language language) throws ConfigurationException {
+
+        ModifiableTypesettingContext c = newInstance();
+        c.set(context);
+        c.setLanguage(language);
+
+        return c;
+    }
+
+    /**
+     * Factory method to acquire an instance of the TypesettingContext with a
+     * new value for the language. The language might be loaded if necessary.
      *
      * @param context the typesetting context to clone
      * @param language the new value for the hyphenation table
@@ -206,7 +228,7 @@ public class TypesettingContextFactory extends AbstractFactory {
     public TypesettingContext newInstance(final TypesettingContext context,
             final String language) throws ConfigurationException {
 
-        TypesettingContext c = newInstance();
+        ModifiableTypesettingContext c = newInstance();
         c.set(context);
         c.setLanguage(hyphenationManager.getLanguage(language));
 

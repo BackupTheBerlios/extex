@@ -29,9 +29,9 @@ import de.dante.extex.language.Language;
  * appearance of glyphs or other nodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
-public class TypesettingContextImpl implements TypesettingContext {
+public class TypesettingContextImpl implements ModifiableTypesettingContext {
 
     /**
      * The field <tt>color</tt> contains the color to use.
@@ -98,10 +98,18 @@ public class TypesettingContextImpl implements TypesettingContext {
     public TypesettingContextImpl(final TypesettingContext tc) {
 
         super();
-        this.font = tc.getFont();
-        this.color = tc.getColor();
-        this.direction = tc.getDirection();
-        this.language = tc.getLanguage();
+        if (tc == null) {
+            this.font = null;
+            this.color = RgbColor.BLACK;
+            this.direction = Direction.LR;
+            this.language = null;
+
+        } else {
+            this.font = tc.getFont();
+            this.color = tc.getColor();
+            this.direction = tc.getDirection();
+            this.language = tc.getLanguage();
+        }
     }
 
     /**
@@ -156,10 +164,12 @@ public class TypesettingContextImpl implements TypesettingContext {
      */
     public void set(final TypesettingContext context) {
 
-        this.font = context.getFont();
-        this.color = context.getColor();
-        this.direction = Direction.LR;
-        this.language = context.getLanguage();
+        if (context != null) {
+            this.font = context.getFont();
+            this.color = context.getColor();
+            this.direction = Direction.LR;
+            this.language = context.getLanguage();
+        }
     }
 
     /**
