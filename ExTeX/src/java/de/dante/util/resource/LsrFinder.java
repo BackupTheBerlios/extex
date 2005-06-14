@@ -127,7 +127,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class LsrFinder
         implements
@@ -372,7 +372,7 @@ public class LsrFinder
      *
      * @param path  the path for the ls-R file
      *
-     * @throws ConfigurationException if an error occured
+     * @throws ConfigurationException if an error occurred
      */
     private void load(final String path) throws ConfigurationException {
 
