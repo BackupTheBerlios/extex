@@ -315,7 +315,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.106 $
+ * @version $Revision: 1.107 $
  */
 public class ExTeX {
 
@@ -1102,7 +1102,7 @@ public class ExTeX {
         }
         context.setTypesettingContext(makeDefaultFont(fontConfiguration,
                 fontFactory));
-        context.getTypesettingContext().setLanguage(context.getLanguage("0"));
+        context.setTypesettingContext(context.getLanguage("0"));
 
         initializeStreams(interpreter, properties);
 
