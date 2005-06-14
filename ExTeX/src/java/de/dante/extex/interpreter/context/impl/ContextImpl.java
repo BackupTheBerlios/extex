@@ -118,7 +118,7 @@ import de.dante.util.framework.i18n.Localizer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.82 $
+ * @version $Revision: 1.83 $
  */
 public class ContextImpl
         implements
@@ -216,11 +216,6 @@ public class ContextImpl
     private transient GroupFactory groupFactory;
 
     /**
-     * The field <tt>languageManager</tt> contains the language manager.
-     */
-    private LanguageManager languageManager;
-
-    /**
      * The field <tt>id</tt> contains the is string.
      * The id string is the classification of the
      * original source as given in the fmt file. The id string can be
@@ -228,6 +223,10 @@ public class ContextImpl
      */
     private String id = null;
 
+    /**
+     * The field <tt>languageManager</tt> contains the language manager.
+     */
+    private LanguageManager languageManager;
     /**
      * The field <tt>localizer</tt> contains the localizer to use.
      */
@@ -397,9 +396,8 @@ public class ContextImpl
         typesettingContextFactory.configure(typesettingConfig);
         typesettingContextFactory.setLanguageManager(languageManager);
         TypesettingContext typesettingContext = typesettingContextFactory
-                .newInstance();
+                .newInstance(null, new NullFont());
 
-        typesettingContext.setFont(new NullFont());
         setTypesettingContext(typesettingContext);
 
         magnificationMax = configuration.getValueAsInteger(
@@ -593,19 +591,6 @@ public class ContextImpl
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#getLanguage(String)
-     */
-    public Language getLanguage(final String language)
-            throws InterpreterException {
-
-        try {
-            return languageManager.getLanguage(language);
-        } catch (ConfigurationException e) {
-            throw new InterpreterException(e);
-        }
-    }
-
-    /**
      * Getter for the id string. The id string is the classification of the
      * original source as given in the fmt file. The id string can be
      * <code>null</code> if not known yet.
@@ -634,6 +619,19 @@ public class ContextImpl
     public Interaction getInteraction() {
 
         return group.getInteraction();
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getLanguage(String)
+     */
+    public Language getLanguage(final String language)
+            throws InterpreterException {
+
+        try {
+            return languageManager.getLanguage(language);
+        } catch (ConfigurationException e) {
+            throw new InterpreterException(e);
+        }
     }
 
     /**
@@ -730,17 +728,17 @@ public class ContextImpl
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#getToks(java.lang.String)
+     * @see de.dante.extex.documentWriter.DocumentWriterOptions#getTokensOption(java.lang.String)
      */
-    public Tokens getToks(final String name) {
+    public Tokens getTokensOption(final String name) {
 
         return group.getToks(name);
     }
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriterOptions#getTokensOption(java.lang.String)
+     * @see de.dante.extex.interpreter.context.Context#getToks(java.lang.String)
      */
-    public Tokens getTokensOption(final String name) {
+    public Tokens getToks(final String name) {
 
         return group.getToks(name);
     }
@@ -1187,15 +1185,6 @@ public class ContextImpl
     }
 
     /**
-     * @see de.dante.extex.language.LanguageManagerCarrier#setLanguageManager(
-     *      de.dante.extex.language.LanguageManager)
-     */
-    public void setLanguageManager(final LanguageManager manager) {
-
-        this.languageManager = manager;
-    }
-
-    /**
      * Setter for the id string. The id string is the classification of the
      * original source like given in the fmt file.
      *
@@ -1239,6 +1228,15 @@ public class ContextImpl
                 throw new InterpreterException(e);
             }
         }
+    }
+
+    /**
+     * @see de.dante.extex.language.LanguageManagerCarrier#setLanguageManager(
+     *      de.dante.extex.language.LanguageManager)
+     */
+    public void setLanguageManager(final LanguageManager manager) {
+
+        this.languageManager = manager;
     }
 
     /**
@@ -1414,6 +1412,17 @@ public class ContextImpl
 
         group.setTypesettingContext(typesettingContextFactory.newInstance(group
                 .getTypesettingContext(), font));
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setTypesettingContext(
+     *      de.dante.extex.language.Language)
+     */
+    public void setTypesettingContext(final Language language)
+            throws ConfigurationException {
+
+        group.setTypesettingContext(typesettingContextFactory.newInstance(group
+                .getTypesettingContext(), language));
     }
 
     /**

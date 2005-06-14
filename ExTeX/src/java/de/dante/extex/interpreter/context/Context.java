@@ -48,7 +48,7 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.55 $
+ * @version $Revision: 1.56 $
  */
 public interface Context
         extends
@@ -136,6 +136,15 @@ public interface Context
     Glue getGlue(String name);
 
     /**
+     * Getter for the id string. The id string is the classification of the
+     * original source like given in the format file. The id string can be
+     * <code>null</code> if not known yet.
+     *
+     * @return the id string
+     */
+    String getId();
+
+    /**
      * Getter for the hyphenation record for a given language. The language is
      * used to find the hyphenation table. If the language is not known an
      * attempt is made to create it. Otherwise the default hyphenation table is
@@ -149,15 +158,6 @@ public interface Context
      */
     Language getLanguage(String language)
             throws InterpreterException;
-
-    /**
-     * Getter for the id string. The id string is the classification of the
-     * original source like given in the format file. The id string can be
-     * <code>null</code> if not known yet.
-     *
-     * @return the id string
-     */
-    String getId();
 
     /**
      * Getter for the lccode mapping of upper case characters to their
@@ -325,19 +325,19 @@ public interface Context
     void setGlue(String name, Glue value, boolean global);
 
     /**
-     * Setter for the hyphenation manager
-     *
-     * @param manager the hyphenatin manager
-     */
-    void setLanguageManager(LanguageManager manager);
-
-    /**
      * Setter for the id string. The id string is the classification of the
      * original source like given in the fmt file.
      *
      * @param id the id string
      */
     void setId(String id);
+
+    /**
+     * Setter for the hyphenation manager
+     *
+     * @param manager the hyphenatin manager
+     */
+    void setLanguageManager(LanguageManager manager);
 
     /**
      * Declare the translation from an upper case character to a lower case
@@ -451,6 +451,15 @@ public interface Context
      * @throws ConfigurationException in case of an error in the configuration.
      */
     void setTypesettingContext(Font font) throws ConfigurationException;
+
+    /**
+     * Setter for the language in the current typesetting context.
+     *
+     * @param language the new language
+     *
+     * @throws ConfigurationException in case of an error in the configuration.
+     */
+    void setTypesettingContext(Language language) throws ConfigurationException;
 
     /**
      * Setter for the typesetting context in the current group.
