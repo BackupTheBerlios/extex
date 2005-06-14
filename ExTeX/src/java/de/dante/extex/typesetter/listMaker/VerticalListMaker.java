@@ -33,13 +33,14 @@ import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
 import de.dante.util.UnicodeChar;
+import de.dante.util.configuration.ConfigurationException;
 
 /**
  * Maker for a vertical list.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class VerticalListMaker extends AbstractListMaker {
 
@@ -72,7 +73,7 @@ public class VerticalListMaker extends AbstractListMaker {
      * @see de.dante.extex.typesetter.ListMaker#add(
      *      de.dante.extex.typesetter.type.Node)
      */
-    public void add(final Node n) throws TypesetterException {
+    public void add(final Node n) throws TypesetterException, ConfigurationException {
 
         nodes.add(n);
     }
@@ -92,7 +93,7 @@ public class VerticalListMaker extends AbstractListMaker {
      *      de.dante.extex.interpreter.type.count.Count)
      */
     public void addSpace(final TypesettingContext typesettingContext,
-            final Count spacefactor) throws TypesetterException {
+            final Count spacefactor) throws TypesetterException, ConfigurationException {
 
     }
 
@@ -109,7 +110,7 @@ public class VerticalListMaker extends AbstractListMaker {
      * @see de.dante.extex.typesetter.ListMaker#complete(TypesetterOptions)
      */
     public final NodeList complete(final TypesetterOptions context)
-            throws TypesetterException {
+            throws TypesetterException, ConfigurationException {
 
         return nodes;
     }
@@ -161,7 +162,7 @@ public class VerticalListMaker extends AbstractListMaker {
      *
      * @see de.dante.extex.typesetter.ListMaker#par()
      */
-    public void par() throws TypesetterException {
+    public void par() throws TypesetterException, ConfigurationException {
 
         // nothing to do
     }

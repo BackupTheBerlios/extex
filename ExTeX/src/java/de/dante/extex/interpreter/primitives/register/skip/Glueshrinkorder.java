@@ -59,7 +59,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Glueshrinkorder extends AbstractCode
         implements
@@ -85,7 +85,7 @@ public class Glueshrinkorder extends AbstractCode
     public long convertCount(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        Glue glue = new Glue(source, context);
+        Glue glue = new Glue(source, context, typesetter);
         int order = glue.getShrink().getOrder();
         return (order < 2 ? order : order - 1);
     }

@@ -36,6 +36,7 @@ import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.util.GeneralException;
+import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.framework.logger.LogEnabled;
 
 /**
@@ -60,7 +61,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Vsplit extends AbstractBox implements Boxable, LogEnabled {
 
@@ -104,6 +105,8 @@ public class Vsplit extends AbstractBox implements Boxable, LogEnabled {
             typesetter.add(nl);
         } catch (GeneralException e) {
             throw new InterpreterException(e);
+        } catch (ConfigurationException e) {
+            throw new InterpreterException(e);
         }
     }
 
@@ -138,7 +141,7 @@ public class Vsplit extends AbstractBox implements Boxable, LogEnabled {
         if (!source.getKeyword(context, "to")) {
             throw new HelpingException(getLocalizer(), "TTP.MissingToForVsplit");
         }
-        Dimen ht = new Dimen(context, source);
+        Dimen ht = new Dimen(context, source, typesetter);
         Box b = context.getBox(key);
         if (b == null || !b.isVbox()) {
             throw new HelpingException(getLocalizer(), "TTP.SplittingNonVbox",

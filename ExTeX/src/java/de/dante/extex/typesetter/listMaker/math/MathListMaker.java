@@ -63,12 +63,13 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
 import de.dante.extex.typesetter.type.node.GlueNode;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
 import de.dante.util.UnicodeChar;
+import de.dante.util.configuration.ConfigurationException;
 
 /**
  * This is the list maker for the inline math formulae.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class MathListMaker extends AbstractListMaker implements NoadConsumer {
 
@@ -77,7 +78,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      * It is used to store to the stack and restore the state from the stack.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.18 $
+     * @version $Revision: 1.19 $
      */
     private class MathMemento {
 
@@ -222,7 +223,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      * @see de.dante.extex.typesetter.ListMaker#add(
      *      de.dante.extex.typesetter.type.Node)
      */
-    public void add(final Node node) throws TypesetterException {
+    public void add(final Node node) throws TypesetterException, ConfigurationException {
 
         insertionPoint.add(new NodeNoad(node));
     }
@@ -249,7 +250,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      *      de.dante.extex.interpreter.type.count.Count)
      */
     public void addSpace(final TypesettingContext typesettingContext,
-            final Count spacefactor) throws TypesetterException {
+            final Count spacefactor) throws TypesetterException, ConfigurationException {
 
     }
 
@@ -275,7 +276,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      * @see "<logo>TeX</logo> &ndash; The Program [719]"
      */
     public NodeList complete(final TypesetterOptions context)
-            throws TypesetterException {
+            throws TypesetterException, ConfigurationException {
 
         HorizontalListNode list = new HorizontalListNode();
         noads.typeset(list, new MathContext(StyleNoad.TEXTSTYLE, context),
@@ -397,7 +398,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      *      de.dante.extex.scanner.type.Token)
      */
     public void mathShift(final Context context, final TokenSource source,
-            final Token t) throws TypesetterException {
+            final Token t) throws TypesetterException, ConfigurationException {
 
         getManager().endParagraph();
     }
@@ -415,13 +416,12 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
     /**
      * Emitting a new paragraph is not supported in math mode.
      * Thus an exception is thrown.
-     *
      * @throws TypesetterException in case of an error
      *
      * @see de.dante.extex.typesetter.ListMaker#par()
      * @see "<logo>TeX</logo> &ndash; The Program [1047]"
      */
-    public void par() throws TypesetterException {
+    public void par() throws TypesetterException, ConfigurationException {
 
         getManager().endParagraph();
         throw new TypesetterException(new MissingMathException("\\par"));

@@ -29,9 +29,10 @@ import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.node.RuleNode;
+import de.dante.util.configuration.ConfigurationException;
 
 /**
- * This class provides an implementation for the primitive <code>\hrule</code>.
+ * This class provides an implementation for the primitive <code>\vrule</code>.
  *
  * <doc name="vrule">
  * <h3>The Primitive <tt>\vrule</tt></h3>
@@ -79,7 +80,7 @@ import de.dante.extex.typesetter.type.node.RuleNode;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Vrule extends AbstractCode implements RuleConvertible {
 
@@ -123,6 +124,8 @@ public class Vrule extends AbstractCode implements RuleConvertible {
             typesetter.add(getRule(context, source, typesetter));
         } catch (InterpreterException e) {
             throw e;
+        } catch (ConfigurationException e) {
+            throw new InterpreterException(e);
         }
     }
 
@@ -137,7 +140,11 @@ public class Vrule extends AbstractCode implements RuleConvertible {
 
         Mode mode = typesetter.getMode();
         if (mode.isVmode()) {
-            typesetter.par();
+            try {
+                typesetter.par();
+            } catch (ConfigurationException e) {
+                throw new InterpreterException(e);
+            }
         }
         Dimen width = new Dimen(DEFAULT_RULE);
         Dimen height = new Dimen(0);
@@ -145,11 +152,11 @@ public class Vrule extends AbstractCode implements RuleConvertible {
 
         for (;;) {
             if (source.getKeyword(context, "width")) {
-                width.set(context, source);
+                width.set(context, source, typesetter);
             } else if (source.getKeyword(context, "height")) {
-                height.set(context, source);
+                height.set(context, source, typesetter);
             } else if (source.getKeyword(context, "depth")) {
-                depth.set(context, source);
+                depth.set(context, source, typesetter);
             } else {
                 break;
             }

@@ -37,18 +37,27 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="inputlineno">
  * <h3>The Primitive <tt>\inputlineno</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The primitive <tt>\inputlineno</tt> is an internal integer quantity which
+ *  expands to the line number of the current input file. This primitive can be
+ *  used to assign the value to variables or after <tt>\the</tt> to translate
+ *  it to tokens.
  * </p>
  * <p>
- *  Examples:
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;inputlineno&rang;
+ *      &rarr; <tt>\inputlineno</tt>  </pre>
+ * </p>
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \count1=\inputlineno  </pre>
- * </p>
+ *  <pre class="TeXSample">
+ *    \the\inputlineno  </pre>
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Inputlineno extends AbstractCode
         implements

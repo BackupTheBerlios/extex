@@ -25,13 +25,14 @@ import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
+import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
  * This an abstract base class for primitives in vertical mode.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class AbstractVerticalCode extends AbstractCode {
 
@@ -62,6 +63,8 @@ public class AbstractVerticalCode extends AbstractCode {
                 // see TTP[1095]
                 typesetter.par();
             } catch (GeneralException e) {
+                throw new InterpreterException(e);
+            } catch (ConfigurationException e) {
                 throw new InterpreterException(e);
             }
             mode = typesetter.getMode();

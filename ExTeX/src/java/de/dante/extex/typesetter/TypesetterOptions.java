@@ -20,6 +20,7 @@
 package de.dante.extex.typesetter;
 
 import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.context.TypesettingContextFactory;
 import de.dante.extex.interpreter.type.count.FixedCount;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.font.Font;
@@ -33,7 +34,7 @@ import de.dante.util.UnicodeChar;
  * options.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface TypesetterOptions {
 
@@ -112,6 +113,13 @@ public interface TypesetterOptions {
      * @return the typesetting context
      */
     TypesettingContext getTypesettingContext();
+
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @return ...
+     */
+    TypesettingContextFactory getTypesettingContextFactory();
 
     /**
      * Setter for the paragraph shape.

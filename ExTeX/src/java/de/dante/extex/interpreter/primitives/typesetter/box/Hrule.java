@@ -28,7 +28,9 @@ import de.dante.extex.interpreter.type.box.RuleConvertible;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.node.RuleNode;
+import de.dante.util.configuration.ConfigurationException;
 
 /**
  * This class provides an implementation for the primitive <code>\hrule</code>.
@@ -80,7 +82,7 @@ import de.dante.extex.typesetter.type.node.RuleNode;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Hrule extends AbstractCode implements RuleConvertible {
 
@@ -124,6 +126,8 @@ public class Hrule extends AbstractCode implements RuleConvertible {
             typesetter.add(getRule(context, source, typesetter));
         } catch (InterpreterException e) {
             throw e;
+        } catch (ConfigurationException e) {
+            throw new InterpreterException(e);
         }
     }
 
@@ -138,9 +142,13 @@ public class Hrule extends AbstractCode implements RuleConvertible {
 
         Mode mode = typesetter.getMode();
         if (mode.isHmode()) {
-            typesetter.par();
+            try {
+                typesetter.par();
 //            throw new HelpingException(getLocalizer(), "TTP.CantUseHrule",
 //                    printableControlSequence(context));
+            } catch (ConfigurationException e) {
+                throw new InterpreterException(e);
+            }
         }
         Dimen width = new Dimen(0);
         Dimen height = new Dimen(DEFAULT_RULE);
@@ -148,11 +156,11 @@ public class Hrule extends AbstractCode implements RuleConvertible {
 
         for (;;) {
             if (source.getKeyword(context, "width")) {
-                width.set(context, source);
+                width.set(context, source, typesetter);
             } else if (source.getKeyword(context, "height")) {
-                height.set(context, source);
+                height.set(context, source, typesetter);
             } else if (source.getKeyword(context, "depth")) {
-                depth.set(context, source);
+                depth.set(context, source, typesetter);
             } else {
                 break;
             }

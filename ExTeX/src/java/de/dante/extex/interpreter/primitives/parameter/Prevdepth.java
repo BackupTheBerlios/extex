@@ -51,7 +51,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class Prevdepth extends AbstractCode {
     /**
@@ -74,7 +74,7 @@ public class Prevdepth extends AbstractCode {
             throws InterpreterException {
 
         source.getOptionalEquals(context);
-        Dimen pd = new Dimen(context, source);
+        Dimen pd = new Dimen(context, source, typesetter);
         try {
             typesetter.setPrevDepth(pd);
         } catch (GeneralException e) {

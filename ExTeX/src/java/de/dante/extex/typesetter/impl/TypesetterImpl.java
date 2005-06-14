@@ -51,6 +51,7 @@ import de.dante.extex.typesetter.type.node.InsertionNode;
 import de.dante.extex.typesetter.type.node.PenaltyNode;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
 import de.dante.util.UnicodeChar;
+import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.framework.i18n.Localizable;
 import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.logger.LogEnabled;
@@ -61,7 +62,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.68 $
+ * @version $Revision: 1.69 $
  */
 public class TypesetterImpl
         implements
@@ -147,7 +148,7 @@ public class TypesetterImpl
      * @see de.dante.extex.typesetter.ListMaker#add(
      *     de.dante.extex.typesetter.type.Node)
      */
-    public void add(final Node node) throws TypesetterException {
+    public void add(final Node node) throws TypesetterException, ConfigurationException {
 
         listMaker.add(node);
 
@@ -177,7 +178,7 @@ public class TypesetterImpl
      *     de.dante.extex.interpreter.type.count.Count)
      */
     public void addSpace(final TypesettingContext typesettingContext,
-            final Count spacefactor) throws TypesetterException {
+            final Count spacefactor) throws TypesetterException, ConfigurationException {
 
         listMaker.addSpace(typesettingContext, null);
     }
@@ -212,7 +213,7 @@ public class TypesetterImpl
      * @see de.dante.extex.typesetter.ListMaker#complete(TypesetterOptions)
      */
     public NodeList complete(final TypesetterOptions context)
-            throws TypesetterException {
+            throws TypesetterException, ConfigurationException {
 
         NodeList nodes = listMaker.complete(context);
         pop();
@@ -262,7 +263,7 @@ public class TypesetterImpl
     /**
      * @see de.dante.extex.typesetter.listMaker.ListManager#endParagraph()
      */
-    public void endParagraph() throws TypesetterException {
+    public void endParagraph() throws TypesetterException, ConfigurationException {
 
         NodeList list = listMaker.complete(options);
         pop();
@@ -279,7 +280,7 @@ public class TypesetterImpl
     /**
      * @see de.dante.extex.typesetter.Typesetter#finish()
      */
-    public void finish() throws TypesetterException {
+    public void finish() throws TypesetterException, ConfigurationException {
 
         par();
         pageBuilder.flush(listMaker.complete(options));
@@ -378,7 +379,7 @@ public class TypesetterImpl
      *      de.dante.extex.scanner.type.Token)
      */
     public void mathShift(final Context context, final TokenSource source,
-            final Token t) throws TypesetterException {
+            final Token t) throws TypesetterException, ConfigurationException {
 
         listMaker.mathShift(context, source, t);
     }
@@ -386,7 +387,7 @@ public class TypesetterImpl
     /**
      * @see de.dante.extex.typesetter.ListMaker#par()
      */
-    public void par() throws TypesetterException {
+    public void par() throws TypesetterException, ConfigurationException {
 
         listMaker.par();
 
@@ -565,7 +566,7 @@ public class TypesetterImpl
      *      TokenSource, de.dante.extex.scanner.type.Token)
      */
     public void tab(final Context context, final TokenSource source,
-            final Token t) throws TypesetterException {
+            final Token t) throws TypesetterException, ConfigurationException {
 
         listMaker.tab(context, source, t);
     }

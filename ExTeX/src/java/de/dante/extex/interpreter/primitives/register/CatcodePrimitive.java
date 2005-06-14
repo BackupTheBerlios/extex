@@ -37,6 +37,9 @@ import de.dante.util.UnicodeChar;
  * <doc name="catcode">
  * <h3>The Primitive <tt>\catcode</tt></h3>
  * <p>
+ *  The primitive <tt>\catcode</tt> can be used to influence the tokenizer of
+ *  <logo>ExTeX</logo>. This is done by assigning category codes to single
+ *  characters.
  *  TODO missing documentation
  * </p>
  * <p>
@@ -58,16 +61,14 @@ import de.dante.util.UnicodeChar;
  *          de.dante.extex.interpreter.TokenSource#scanNumber()
  *          &lang;4-bit&nbsp;number&rang;} </pre>
  * </p>
- * <p>
- *  Examples:
+ * <h4>Example</h4>
  *  <pre class="TeXSample">
- *    \catcode ...  </pre>
- * </p>
+ *    \catcode `\%=12  </pre>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class CatcodePrimitive extends AbstractAssignment {
 

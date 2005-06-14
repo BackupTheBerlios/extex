@@ -22,6 +22,7 @@ package de.dante.extex.typesetter.type.noad;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
+import de.dante.util.configuration.ConfigurationException;
 
 /**
  * This class provides a container for Noads and Nodes.
@@ -29,7 +30,7 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * @see "TTP [???]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class MathList extends AbstractNoad implements Noad {
 
@@ -156,7 +157,7 @@ public class MathList extends AbstractNoad implements Noad {
      *      de.dante.extex.typesetter.TypesetterOptions)
      */
     public void typeset(final NodeList list, final MathContext mathContext,
-            final TypesetterOptions context) {
+            final TypesetterOptions context) throws ConfigurationException {
 
         for (int i = 0; i < nucleus.size(); i++) {
             Noad noad = nucleus.get(i);

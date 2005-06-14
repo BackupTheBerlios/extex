@@ -41,10 +41,10 @@ import de.dante.extex.typesetter.Typesetter;
  *  <pre class="syntax">
  *    &lang;ifhbox&rang;
  *      &rarr; <tt>\ifhbox</tt> {@linkplain
- *        de.dante.extex.interpreter.TokenSource#scanInteger(Context, Typesetter)
+ *        de.dante.extex.interpreter.TokenSource#scanInteger(Context,Typesetter)
  *        &lang;number&rang;} &lang;true text&rang; <tt>\fi</tt>
  *      | <tt>\ifhbox</tt> {@linkplain
- *        de.dante.extex.interpreter.TokenSource#scanInteger(Context, Typesetter)
+ *        de.dante.extex.interpreter.TokenSource#scanInteger(Context,Typesetter)
  *        &lang;number&rang;} &lang;true text&rang; <tt>\else</tt> &lang;false text&rang; <tt>\fi</tt> </pre>
  * </p>
  * <p>
@@ -57,7 +57,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Ifhbox extends AbstractIf {
 

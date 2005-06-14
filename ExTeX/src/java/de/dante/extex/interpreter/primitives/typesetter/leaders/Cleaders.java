@@ -37,6 +37,7 @@ import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.node.CenteredLeadersNode;
+import de.dante.util.configuration.ConfigurationException;
 
 /**
  * This class provides an implementation for the primitive
@@ -61,7 +62,7 @@ import de.dante.extex.typesetter.type.node.CenteredLeadersNode;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Cleaders extends AbstractCode {
 
@@ -115,11 +116,13 @@ public class Cleaders extends AbstractCode {
             throw new HelpingException(getLocalizer(),
                     "TTP.BadGlueAfterLeaders");
         }
-        Glue skip = ((VerticalSkip) code).verticalSkip(context, source);
+        Glue skip = ((VerticalSkip) code).verticalSkip(context, source, typesetter);
 
         try {
             typesetter.add(new CenteredLeadersNode(node, skip));
         } catch (TypesetterException e) {
+            throw new InterpreterException(e);
+        } catch (ConfigurationException e) {
             throw new InterpreterException(e);
         }
     }

@@ -24,6 +24,7 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
+import de.dante.extex.typesetter.Typesetter;
 
 
 /**
@@ -31,7 +32,7 @@ import de.dante.extex.interpreter.exception.helping.HelpingException;
  * to produce an exception. Thus the object is in fact immutable.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class ImmutableDimen extends Dimen implements Serializable {
 
@@ -92,9 +93,9 @@ public class ImmutableDimen extends Dimen implements Serializable {
     /**
      * @see de.dante.extex.interpreter.type.glue.GlueComponent#set(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
+     *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
-    public void set(final Context context, final TokenSource source)
+    public void set(final Context context, final TokenSource source, Typesetter typesetter)
             throws InterpreterException {
 
         throw new RuntimeException("Unable to set an immutable object");
@@ -103,10 +104,10 @@ public class ImmutableDimen extends Dimen implements Serializable {
     /**
      * @see de.dante.extex.interpreter.type.glue.GlueComponent#set(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource, boolean)
+     *      de.dante.extex.interpreter.TokenSource, Typesetter, boolean)
      */
     protected void set(final Context context, final TokenSource source,
-            final boolean fixed) throws InterpreterException {
+            Typesetter typesetter, final boolean fixed) throws InterpreterException {
 
         throw new RuntimeException("Unable to set an immutable object");
     }

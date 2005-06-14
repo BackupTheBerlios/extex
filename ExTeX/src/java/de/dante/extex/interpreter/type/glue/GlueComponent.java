@@ -21,6 +21,7 @@ package de.dante.extex.interpreter.type.glue;
 
 import java.io.Serializable;
 
+import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -28,6 +29,7 @@ import de.dante.extex.interpreter.exception.ImpossibleException;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.Code;
+import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.DimenConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
@@ -57,7 +59,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.32 $
+ * @version $Revision: 1.33 $
  */
 public class GlueComponent implements Serializable, FixedGlueComponent {
 
@@ -151,10 +153,9 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
         Token t = start;
 
         while (t != null) {
-            //return 0;
             if (t.equals(Catcode.OTHER, '-')) {
-                neg = ! neg;
-            } else if (! t.equals(Catcode.OTHER, '+')) {
+                neg = !neg;
+            } else if (!t.equals(Catcode.OTHER, '+')) {
                 break;
             }
             t = source.scanNonSpace(context);
@@ -218,14 +219,17 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
      *
      * @param context the interpreter context
      * @param source the source for the tokens to be read
+     * @param typesetter the typesetter
      * @param fixed if <code>true</code> then no glue order is allowed
+     *
      * @throws InterpreterException in case of an error
      */
     public GlueComponent(final Context context, final TokenSource source,
-            final boolean fixed) throws InterpreterException {
+            Typesetter typesetter, final boolean fixed)
+            throws InterpreterException {
 
         super();
-        set(context, source, fixed);
+        set(context, source, typesetter, fixed);
     }
 
     /**
@@ -266,15 +270,16 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
 
     /**
      * Creates a new object from a TokenStream.
-     *
      * @param source the source for new tokens
      * @param context the interpreter context
+     * @param typesetter the typesetter
+     *
      * @throws InterpreterException in case of an error
      */
-    public GlueComponent(final TokenSource source, final Context context)
-            throws InterpreterException {
+    public GlueComponent(final TokenSource source, final Context context,
+            final Typesetter typesetter) throws InterpreterException {
 
-        this(context, source, false);
+        this(context, source, typesetter, false);
     }
 
     /**
@@ -434,16 +439,16 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
 
     /**
      * Set the value and order from the data gathered by parsing a token source.
-     *
      * @param context the interpreter context
      * @param source the source for next tokens
+     * @param typesetter the typesetter
      *
      * @throws InterpreterException in case of an error
      */
-    public void set(final Context context, final TokenSource source)
-            throws InterpreterException {
+    public void set(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
 
-        set(context, source, true);
+        set(context, source, typesetter, true);
     }
 
     /**
@@ -451,19 +456,38 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
      *
      * @param context the interpreter context
      * @param source the source for next tokens
+     * @param typesetter the typesetter
+     *
      * @param fixed this argument indicates that no fil parts of the object
      * should be filled. This means that the component is in fact a fixed
      * Dimen value.
+     *
      * @throws InterpreterException in case of an error
      */
     protected void set(final Context context, final TokenSource source,
-            final boolean fixed) throws InterpreterException {
+            final Typesetter typesetter, final boolean fixed)
+            throws InterpreterException {
 
-        Typesetter typesetter = null;
-
-        Token t = source.scanNonSpace(context);
-        if (t == null) {
-            throw new HelpingException(getMyLocalizer(), "TTP.IllegalUnit");
+        Token t;
+        for (;;) {
+            t = source.scanNonSpace(context);
+            if (t == null) {
+                throw new HelpingException(getMyLocalizer(), "TTP.IllegalUnit");
+            } else if (t instanceof CodeToken) {
+                Code code = context.getCode((CodeToken) t);
+                if (code instanceof DimenConvertible) {
+                    value = ((DimenConvertible) code).convertDimen(context,
+                            source, typesetter);
+                    return;
+                } else if (t instanceof ExpandableCode) {
+                    ((ExpandableCode) t).expand(Flags.NONE, context, source,
+                            typesetter);
+                } else {
+                    break;
+                }
+            } else {
+                break;
+            }
         }
 
         value = scanFloat(context, source, t);
@@ -739,7 +763,8 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
 
         long v = val / ONE;
         if (v == 0) {
-            toks.add(factory.createToken(Catcode.OTHER, '0', ""));
+            toks.add(factory.createToken(Catcode.OTHER, '0',
+                    Namespace.DEFAULT_NAMESPACE));
         } else {
             long m = 1;
             while (m <= v) {
@@ -748,13 +773,14 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
             m /= 10;
             while (m > 0) {
                 toks.add(factory.createToken(Catcode.OTHER,
-                        (char) ('0' + (v / m)), ""));
+                        (char) ('0' + (v / m)), Namespace.DEFAULT_NAMESPACE));
                 v = v % m;
                 m /= 10;
             }
         }
 
-        toks.add(factory.createToken(Catcode.OTHER, '.', ""));
+        toks.add(factory.createToken(Catcode.OTHER, '.',
+                Namespace.DEFAULT_NAMESPACE));
 
         val = 10 * (val % ONE) + 5;
         long delta = 10;
@@ -763,19 +789,25 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
                 val = val + 0100000 - 50000; // round the last digit
             }
             int i = (int) (val / ONE);
-            toks.add(factory.createToken(Catcode.OTHER, (char) ('0' + i), ""));
+            toks.add(factory.createToken(Catcode.OTHER, (char) ('0' + i),
+                    Namespace.DEFAULT_NAMESPACE));
             val = 10 * (val % ONE);
             delta *= 10;
         } while (val > delta);
 
         if (order == 0) {
-            toks.add(factory.createToken(Catcode.LETTER, 'p', ""));
-            toks.add(factory.createToken(Catcode.LETTER, 't', ""));
+            toks.add(factory.createToken(Catcode.LETTER, 'p',
+                    Namespace.DEFAULT_NAMESPACE));
+            toks.add(factory.createToken(Catcode.LETTER, 't',
+                    Namespace.DEFAULT_NAMESPACE));
         } else if (order > 0) {
-            toks.add(factory.createToken(Catcode.LETTER, 'f', ""));
-            toks.add(factory.createToken(Catcode.LETTER, 'i', ""));
+            toks.add(factory.createToken(Catcode.LETTER, 'f',
+                    Namespace.DEFAULT_NAMESPACE));
+            toks.add(factory.createToken(Catcode.LETTER, 'i',
+                    Namespace.DEFAULT_NAMESPACE));
             for (int i = order; i > 0; i--) {
-                toks.add(factory.createToken(Catcode.LETTER, 'l', ""));
+                toks.add(factory.createToken(Catcode.LETTER, 'l',
+                        Namespace.DEFAULT_NAMESPACE));
             }
         } else {
             throw new ImpossibleException("illegal order "

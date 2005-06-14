@@ -86,7 +86,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *    &lang;option&rang;
  *      &rarr; [scaled] {@linkplain
- *        de.dante.extex.interpreter.TokenSource#scanInteger(Context, Typesetter)
+ *        de.dante.extex.interpreter.TokenSource#scanInteger(Context,Typesetter)
  *        &lang;number&rang;}
  *       | [at] &lang;size...&rang;
  *       | [noligatures]
@@ -134,7 +134,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.30 $
+ * @version $Revision: 1.31 $
  */
 public class FontPrimitive extends AbstractAssignment
         implements
@@ -180,7 +180,7 @@ public class FontPrimitive extends AbstractAssignment
         Count scale = null;
 
         if (source.getKeyword(context, "at")) {
-            fontSize = new Dimen(context, source);
+            fontSize = new Dimen(context, source, typesetter);
             if (fontSize.lt(Dimen.ZERO_PT)) {
                 throw new HelpingException(getLocalizer(), "TTP.ImproperAt",
                         fontSize.toString());
@@ -202,7 +202,7 @@ public class FontPrimitive extends AbstractAssignment
         for (;;) {
 
             if (source.getKeyword(context, "letterspaced")) {
-                letterspaced = new Glue(source, context);
+                letterspaced = new Glue(source, context, typesetter);
             } else if (source.getKeyword(context, "noligatures")) {
                 ligatures = false;
             } else if (source.getKeyword(context, "nokerning")) {

@@ -39,30 +39,30 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="romannumeral">
  * <h3>The Primitive <tt>\romannumeral</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The primitive <tt>\romannumeral</tt> takes a single argument of a number and
+ *  produces the representation of this number in lower case roman numerals.
+ *  If the number is less than one than nothing is produced at all.
  * </p>
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;romannumeral&rang;
  *        &rarr; <tt>\romannumeral</tt> {@linkplain
- *           de.dante.extex.interpreter.TokenSource#scanInteger(Context, Typesetter)
+ *           de.dante.extex.interpreter.TokenSource#scanInteger(Context,Typesetter)
  *           &lang;number&rang;} </pre>
  * </p>
- * <p>
- *  Examples:
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \romannumeral\count1  </pre>
  *  <pre class="TeXSample">
  *    \romannumeral 2004  </pre>
- * </p>
  * </doc>
  *
  *
  * @see "<logo>TeX</logo> &ndash; the Program [69]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class Romannumeral extends AbstractCode implements ExpandableCode {
 

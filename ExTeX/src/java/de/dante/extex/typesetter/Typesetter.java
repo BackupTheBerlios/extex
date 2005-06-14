@@ -26,6 +26,7 @@ import de.dante.extex.typesetter.pageBuilder.PageBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.node.CharNodeFactory;
+import de.dante.util.configuration.ConfigurationException;
 
 /**
  * This interface describes the capabilities of a typesetter.
@@ -36,7 +37,7 @@ import de.dante.extex.typesetter.type.node.CharNodeFactory;
  *
  * @see "<logo>TeX</logo> &ndash; The Program [211]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public interface Typesetter extends ListMaker {
 
@@ -52,10 +53,10 @@ public interface Typesetter extends ListMaker {
      * Instructs the typesetter to perform any actions necessary for cleaning up
      * everything at the end of processing. This should involve a shipout of
      * any material still left unprocessed.
-     *
      * @throws TypesetterException in case of an error
+     * @throws ConfigurationException TODO
      */
-    void finish() throws TypesetterException;
+    void finish() throws TypesetterException, ConfigurationException;
 
     /**
      * Getter for the CharNodeFactory.

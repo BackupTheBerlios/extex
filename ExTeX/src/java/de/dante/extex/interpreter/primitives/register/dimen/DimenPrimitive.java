@@ -48,7 +48,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class DimenPrimitive extends AbstractDimen
         implements
@@ -79,10 +79,11 @@ public class DimenPrimitive extends AbstractDimen
     public void advance(final Flags prefix, final Context context,
             final TokenSource source) throws InterpreterException {
 
+        Typesetter typesetter = null; // TODO gene: provide the typesetter as argument
         String key = getKey(source, context);
         source.getKeyword(context, "by");
 
-        Dimen d = new Dimen(context, source);
+        Dimen d = new Dimen(context, source, typesetter);
         d.add(context.getDimen(key));
         context.setDimen(key, d, prefix.isGlobal());
 
@@ -123,7 +124,7 @@ public class DimenPrimitive extends AbstractDimen
         String key = getKey(source, context);
         source.getOptionalEquals(context);
 
-        Dimen dimen = new Dimen(context, source);
+        Dimen dimen = new Dimen(context, source, typesetter);
         context.setDimen(key, dimen, prefix.isGlobal());
     }
 

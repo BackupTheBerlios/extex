@@ -39,7 +39,7 @@ import de.dante.util.framework.i18n.Localizer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class AbstractCode implements Code, Localizable, Serializable {
 
@@ -179,5 +179,13 @@ public class AbstractCode implements Code, Localizable, Serializable {
     public void setName(final String theName) {
 
         this.name = theName;
+    }
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+
+        return "\\" + name;
     }
 }

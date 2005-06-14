@@ -41,7 +41,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class SkipPrimitive extends AbstractSkip
         implements
@@ -71,7 +71,7 @@ public class SkipPrimitive extends AbstractSkip
 
         String key = getKey(source, context);
         source.getOptionalEquals(context);
-        Glue g = new Glue(source, context);
+        Glue g = new Glue(source, context, typesetter);
         context.setGlue(key, g, prefix.isGlobal());
     }
 

@@ -108,7 +108,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public class Dp extends Setbox
         implements
@@ -141,7 +141,7 @@ public class Dp extends Setbox
 
         Box box = context.getBox(getKey(context, source));
         source.getOptionalEquals(context);
-        Dimen d = new Dimen(context, source);
+        Dimen d = new Dimen(context, source, typesetter);
 
         if (box != null) {
             box.setDepth(d);

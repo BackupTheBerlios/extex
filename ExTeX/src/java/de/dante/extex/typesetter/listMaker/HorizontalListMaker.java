@@ -42,6 +42,7 @@ import de.dante.extex.typesetter.type.node.CharNode;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
 import de.dante.extex.typesetter.type.node.SpaceNode;
 import de.dante.util.UnicodeChar;
+import de.dante.util.configuration.ConfigurationException;
 
 /**
  * Maker for a horizontal list.
@@ -52,7 +53,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class HorizontalListMaker extends AbstractListMaker {
 
@@ -101,7 +102,7 @@ public class HorizontalListMaker extends AbstractListMaker {
      * @see de.dante.extex.typesetter.ListMaker#add(
      *      de.dante.extex.typesetter.type.Node)
      */
-    public void add(final Node c) throws TypesetterException {
+    public void add(final Node c) throws TypesetterException, ConfigurationException {
 
         nodes.add(c);
         spacefactor = DEFAULT_SPACEFACTOR;
@@ -123,7 +124,7 @@ public class HorizontalListMaker extends AbstractListMaker {
      *      de.dante.extex.interpreter.type.count.Count)
      */
     public void addSpace(final TypesettingContext context, final Count sfCount)
-            throws TypesetterException {
+            throws TypesetterException, ConfigurationException {
 
         long sf = (sfCount != null ? sfCount.getValue() : spacefactor);
         Glue space = context.getFont().getSpace();
@@ -171,7 +172,7 @@ public class HorizontalListMaker extends AbstractListMaker {
      * @see de.dante.extex.typesetter.ListMaker#complete(TypesetterOptions)
      */
     public NodeList complete(final TypesetterOptions context)
-            throws TypesetterException {
+            throws TypesetterException, ConfigurationException {
 
         HorizontalListNode list = new HorizontalListNode();
         int size = nodes.size();
@@ -261,7 +262,7 @@ public class HorizontalListMaker extends AbstractListMaker {
     /**
      * @see de.dante.extex.typesetter.ListMaker#par()
      */
-    public void par() throws TypesetterException {
+    public void par() throws TypesetterException, ConfigurationException {
 
         try {
             // Note: the observers have to be run in reverse order to restore

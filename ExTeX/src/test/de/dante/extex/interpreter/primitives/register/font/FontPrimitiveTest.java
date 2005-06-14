@@ -27,7 +27,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\font</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class FontPrimitiveTest extends ExTeXLauncher {
 
@@ -85,7 +85,7 @@ public class FontPrimitiveTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "\n\\cmtt12 x\n");
+                "\nx\n");
     }
 
     /**
@@ -100,7 +100,7 @@ public class FontPrimitiveTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "\n");
+                "");
     }
 
     /**
@@ -115,7 +115,7 @@ public class FontPrimitiveTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "\n");
+                "");
     }
 
     /**
@@ -130,7 +130,7 @@ public class FontPrimitiveTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "\n");
+                "");
     }
 
     /**
@@ -144,6 +144,21 @@ public class FontPrimitiveTest extends ExTeXLauncher {
                 "\\font\\abc=cmtt12 scaled -2000 " + "\\end",
                 //--- log message ---
                 "Illegal magnification has been changed to 1000",
+                //--- output channel ---
+                "");
+    }
+
+    /**
+     * Test case checking that \font can load a non emf font.
+     * @throws Exception in case of an error
+     */
+    public void testNonEmf1() throws Exception {
+
+        runCode(//--- input code ---
+                "\\font\\abc=cmr10\\relax "
+                + "\\end",
+                //--- log message ---
+                "",
                 //--- output channel ---
                 "");
     }

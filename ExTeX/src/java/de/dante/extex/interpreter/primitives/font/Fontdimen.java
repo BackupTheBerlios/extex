@@ -79,7 +79,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public class Fontdimen extends AbstractAssignment
         implements
@@ -111,7 +111,7 @@ public class Fontdimen extends AbstractAssignment
         source.skipSpace();
         Font font = source.getFont(context);
         source.getOptionalEquals(context);
-        Dimen size = new Dimen(context, source);
+        Dimen size = new Dimen(context, source, typesetter);
         font.setFontDimen(key, size);
     }
 

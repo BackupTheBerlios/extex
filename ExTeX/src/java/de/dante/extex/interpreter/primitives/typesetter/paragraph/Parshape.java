@@ -69,7 +69,7 @@ import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Parshape extends AbstractCode implements CountConvertible, Theable {
 
@@ -123,8 +123,8 @@ public class Parshape extends AbstractCode implements CountConvertible, Theable 
         } else {
             ParagraphShape parshape = new ParagraphShape();
             while (n >= 0) {
-                Dimen left = new Dimen(context, source);
-                Dimen right = new Dimen(context, source);
+                Dimen left = new Dimen(context, source, typesetter);
+                Dimen right = new Dimen(context, source, typesetter);
                 parshape.add(left, right);
             }
             context.setParshape(parshape);

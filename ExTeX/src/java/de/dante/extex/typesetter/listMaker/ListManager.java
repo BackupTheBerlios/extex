@@ -25,13 +25,14 @@ import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.node.CharNodeFactory;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
+import de.dante.util.configuration.ConfigurationException;
 
 /**
  * Interface for the Manager of a list maker.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public interface ListManager {
 
@@ -46,10 +47,10 @@ public interface ListManager {
 
     /**
      * End the current paragraph.
-     *
      * @throws TypesetterException in case of an error
+     * @throws ConfigurationException TODO
      */
-    void endParagraph() throws TypesetterException;
+    void endParagraph() throws TypesetterException, ConfigurationException;
 
     /**
      * Getter for the char node factory.

@@ -58,7 +58,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class Write extends AbstractCode
         implements
@@ -150,6 +150,8 @@ public class Write extends AbstractCode
             try {
                 typesetter.add(new WhatsItWriteNode(key, toks, source, this));
             } catch (TypesetterException e) {
+                throw new InterpreterException(e);
+            } catch (ConfigurationException e) {
                 throw new InterpreterException(e);
             }
         }

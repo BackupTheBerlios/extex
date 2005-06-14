@@ -33,7 +33,7 @@ import de.dante.util.configuration.ConfigurationFactory;
  * Test cases for dimen registers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class DimenRegisterTest extends TestCase {
 
@@ -77,7 +77,7 @@ public class DimenRegisterTest extends TestCase {
         interpreterFactory.configure(config.getConfiguration("Interpreter"));
         Interpreter source = interpreterFactory.newInstance();
         source.addStream(new TokenStreamStringImpl(spec));
-        return new Dimen(null, source).getValue();
+        return new Dimen(null, source, null).getValue();
     }
 
     /**

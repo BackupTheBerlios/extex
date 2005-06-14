@@ -23,13 +23,14 @@ import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.type.Knot;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
+import de.dante.util.configuration.ConfigurationException;
 
 /**
  * The interface Noad is a type of data structure which represents mathematical
  * constructions.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public interface Noad extends Knot {
 
@@ -82,8 +83,9 @@ public interface Noad extends Knot {
      * @param list the list to add the nodes to
      * @param mathContext the context to consider
      * @param context the interpreter context
+     * @throws ConfigurationException TODO
      */
     void typeset(NodeList list, MathContext mathContext,
-            TypesetterOptions context);
+            TypesetterOptions context) throws ConfigurationException;
 
 }

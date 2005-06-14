@@ -32,6 +32,7 @@ import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.CodeToken;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.scanner.type.TokenFactory;
+import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
 /**
@@ -40,7 +41,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class Glue implements Serializable, FixedGlue {
 
@@ -115,11 +116,12 @@ public class Glue implements Serializable, FixedGlue {
      *
      * @param source the source to read new tokens from
      * @param context the processing context
+     * @param typesetter the typesetter
      *
      * @throws InterpreterException in case of an error
      */
-    public Glue(final TokenSource source, final Context context)
-            throws InterpreterException {
+    public Glue(final TokenSource source, final Context context,
+            final Typesetter typesetter) throws InterpreterException {
 
         super();
         Token t = source.getToken(context);
@@ -137,12 +139,12 @@ public class Glue implements Serializable, FixedGlue {
             }
         }
         source.push(t);
-        this.length = new GlueComponent(context, source, false);
+        this.length = new GlueComponent(context, source, typesetter, false);
         if (source.getKeyword(context, "plus")) {
-            this.stretch = new GlueComponent(context, source, true);
+            this.stretch = new GlueComponent(context, source, typesetter, true);
         }
         if (source.getKeyword(context, "minus")) {
-            this.shrink = new GlueComponent(context, source, true);
+            this.shrink = new GlueComponent(context, source, typesetter, true);
         }
         return;
     }

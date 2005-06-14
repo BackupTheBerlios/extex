@@ -34,6 +34,7 @@ import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.exception.TypesetterHelpingException;
 import de.dante.extex.typesetter.listMaker.math.DisplaymathListMaker;
 import de.dante.extex.typesetter.listMaker.math.MathListMaker;
+import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
@@ -41,7 +42,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This abstract class provides some methods common to all ListMakers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public abstract class AbstractListMaker implements ListMaker {
 
@@ -102,7 +103,7 @@ public abstract class AbstractListMaker implements ListMaker {
      *      Context, TokenSource, de.dante.extex.scanner.type.Token)
      */
     public void mathShift(final Context context, final TokenSource source,
-            final Token t) throws TypesetterException {
+            final Token t) throws TypesetterException, ConfigurationException {
 
         try {
             Token next = source.getToken(context);
@@ -176,7 +177,7 @@ public abstract class AbstractListMaker implements ListMaker {
      *      de.dante.extex.scanner.type.Token)
      */
     public void tab(final Context context, final TokenSource source,
-            final Token token) throws TypesetterException {
+            final Token token) throws TypesetterException, ConfigurationException {
 
         throw new TypesetterHelpingException(getMyLocalizer(),
                 "TTP.MisplacedTabMark", token.toString());

@@ -51,7 +51,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Hskip extends AbstractHorizontalCode {
 
@@ -77,7 +77,7 @@ public class Hskip extends AbstractHorizontalCode {
             throws InterpreterException {
 
         ensureHorizontalMode(typesetter);
-        Glue g = new Glue(source, context);
+        Glue g = new Glue(source, context, typesetter);
         try {
             typesetter.addGlue(g);
         } catch (GeneralException e) {

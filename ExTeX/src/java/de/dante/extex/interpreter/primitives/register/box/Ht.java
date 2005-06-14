@@ -69,7 +69,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class Ht extends Setbox
         implements
@@ -102,7 +102,7 @@ public class Ht extends Setbox
 
         Box box = context.getBox(getKey(context, source));
         source.getOptionalEquals(context);
-        Dimen d = new Dimen(context, source);
+        Dimen d = new Dimen(context, source, typesetter);
 
         if (box != null) {
             box.setHeight(d);

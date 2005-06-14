@@ -27,9 +27,10 @@ import de.dante.extex.font.type.ModifiableFount;
 import de.dante.extex.font.type.VirtualFount;
 import de.dante.extex.font.type.efm.EFMFount;
 import de.dante.extex.font.type.efm.commands.EfmChar;
+import de.dante.extex.font.type.efm.commands.EfmHVW;
 import de.dante.extex.font.type.efm.commands.EfmRule;
 import de.dante.extex.font.type.efm.commands.EfmSpecial;
-import de.dante.extex.font.type.efm.commands.EfmHVW;
+import de.dante.extex.interpreter.context.ModifiableTypesettingContext;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.context.TypesettingContextImpl;
 import de.dante.extex.interpreter.type.dimen.Dimen;
@@ -44,7 +45,7 @@ import de.dante.util.UnicodeChar;
  * Implemetation for a virtual font.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class VirtualFontImpl extends FontImpl implements VirtualFount {
 
@@ -96,7 +97,7 @@ public class VirtualFontImpl extends FontImpl implements VirtualFount {
                             // TODO: handle exception
                         }
                         if (nf != null) {
-                            TypesettingContext newcontext = new TypesettingContextImpl(
+                            ModifiableTypesettingContext newcontext = new TypesettingContextImpl(
                                     context);
                             newcontext.setFont(nf);
                             CharNode cn = new CharNode(newcontext, uc);

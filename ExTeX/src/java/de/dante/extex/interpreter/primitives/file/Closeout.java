@@ -31,6 +31,7 @@ import de.dante.extex.interpreter.type.file.OutFile;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.node.WhatsItCloseNode;
 import de.dante.util.GeneralException;
+import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.framework.logger.LogEnabled;
 
 /**
@@ -47,7 +48,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *  <pre class="syntax">
  *    &lang;closeout&rang;
  *       &rarr; <tt>\closeout</tt> {@linkplain
- *       de.dante.extex.interpreter.TokenSource#scanInteger(Context, Typesetter)
+ *       de.dante.extex.interpreter.TokenSource#scanInteger(Context,Typesetter)
  *       &lang;number&rang;} </pre>
  * </p>
  * <p>
@@ -65,7 +66,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class Closeout extends AbstractCode implements LogEnabled {
 
@@ -123,6 +124,8 @@ public class Closeout extends AbstractCode implements LogEnabled {
             try {
                 typesetter.add(new WhatsItCloseNode(key));
             } catch (GeneralException e) {
+                throw new InterpreterException(e);
+            } catch (ConfigurationException e) {
                 throw new InterpreterException(e);
             }
         }

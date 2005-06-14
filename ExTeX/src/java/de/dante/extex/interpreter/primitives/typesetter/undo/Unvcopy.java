@@ -29,6 +29,7 @@ import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.util.GeneralException;
+import de.dante.util.configuration.ConfigurationException;
 
 /**
  * This class provides an implementation for the primitive
@@ -55,7 +56,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Unvcopy extends AbstractBox {
 
@@ -92,6 +93,8 @@ public class Unvcopy extends AbstractBox {
                 try {
                     typesetter.add(nl.get(i));
                 } catch (GeneralException e) {
+                    throw new InterpreterException(e);
+                } catch (ConfigurationException e) {
                     throw new InterpreterException(e);
                 }
             }

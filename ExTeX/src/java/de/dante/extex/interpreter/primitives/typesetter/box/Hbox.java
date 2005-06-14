@@ -33,6 +33,7 @@ import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
+import de.dante.util.configuration.ConfigurationException;
 
 /**
  * This class provides an implementation for the primitive <code>\hbox</code>.
@@ -78,7 +79,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Hbox extends AbstractCode implements Boxable {
 
@@ -108,6 +109,8 @@ public class Hbox extends AbstractCode implements Boxable {
             typesetter.add(b.getNodes());
         } catch (GeneralException e) {
             throw new InterpreterException(e);
+        } catch (ConfigurationException e) {
+            throw new InterpreterException(e);
         }
     }
 
@@ -123,11 +126,11 @@ public class Hbox extends AbstractCode implements Boxable {
         Box box;
         try {
             if (source.getKeyword(context, "to")) {
-                Dimen d = new Dimen(context, source);
+                Dimen d = new Dimen(context, source, typesetter);
                 box = acquireBox(context, source, typesetter);
                 box.setWidth(d);
             } else if (source.getKeyword(context, "spread")) {
-                Dimen d = new Dimen(context, source);
+                Dimen d = new Dimen(context, source, typesetter);
                 box = acquireBox(context, source, typesetter);
                 box.spreadWidth(d);
             } else {

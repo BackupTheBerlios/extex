@@ -28,6 +28,7 @@ import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.node.ExplicitKernNode;
 import de.dante.util.GeneralException;
+import de.dante.util.configuration.ConfigurationException;
 
 /**
  * This class provides an implementation for the primitive <code>\kern</code>.
@@ -66,7 +67,7 @@ import de.dante.util.GeneralException;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Kern extends AbstractCode {
 
@@ -93,9 +94,11 @@ public class Kern extends AbstractCode {
 
         Dimen kern = new Dimen();
         try {
-            kern.set(context, source);
+            kern.set(context, source, typesetter);
             typesetter.add(new ExplicitKernNode(kern));
         } catch (GeneralException e) {
+            throw new InterpreterException(e);
+        } catch (ConfigurationException e) {
             throw new InterpreterException(e);
         }
     }

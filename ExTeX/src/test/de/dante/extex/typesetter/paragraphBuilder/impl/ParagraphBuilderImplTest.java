@@ -21,6 +21,7 @@ package de.dante.extex.typesetter.paragraphBuilder.impl;
 
 import junit.framework.TestCase;
 import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.context.TypesettingContextFactory;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.count.FixedCount;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
@@ -38,7 +39,7 @@ import de.dante.util.UnicodeChar;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class ParagraphBuilderImplTest extends TestCase {
 
@@ -46,7 +47,7 @@ public class ParagraphBuilderImplTest extends TestCase {
      * Inner class for the typesetter options.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.6 $
+     * @version $Revision: 1.7 $
      */
     private class MockOptions implements TypesetterOptions {
 
@@ -135,6 +136,14 @@ public class ParagraphBuilderImplTest extends TestCase {
         public TypesettingContext getTypesettingContext() {
 
             // TODO getTypesettingContext unimplemented
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.TypesetterOptions#getTypesettingContextFactory()
+         */
+        public TypesettingContextFactory getTypesettingContextFactory() {
+
             return null;
         }
 

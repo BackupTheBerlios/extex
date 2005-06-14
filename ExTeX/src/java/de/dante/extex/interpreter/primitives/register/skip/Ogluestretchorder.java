@@ -38,7 +38,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Ogluestretchorder extends AbstractCode
         implements
@@ -64,7 +64,7 @@ public class Ogluestretchorder extends AbstractCode
     public long convertCount(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        Glue glue = new Glue(source, context);
+        Glue glue = new Glue(source, context, typesetter);
         return glue.getStretch().getOrder();
     }
 

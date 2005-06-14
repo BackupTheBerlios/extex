@@ -68,7 +68,7 @@ import de.dante.util.configuration.ConfigurationException;
  * classes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class MockContext implements Context, TypesetterOptions {
 
@@ -401,6 +401,14 @@ public class MockContext implements Context, TypesetterOptions {
     }
 
     /**
+     * @see de.dante.extex.typesetter.TypesetterOptions#getTypesettingContextFactory()
+     */
+    public TypesettingContextFactory getTypesettingContextFactory() {
+
+        throw new RuntimeException("unimplemented");
+    }
+
+    /**
      * @see de.dante.extex.interpreter.context.Context#getUccode(de.dante.util.UnicodeChar)
      */
     public UnicodeChar getUccode(final UnicodeChar lc) {
@@ -443,7 +451,8 @@ public class MockContext implements Context, TypesetterOptions {
     /**
      * @see de.dante.extex.interpreter.context.Context#pushConditional(de.dante.util.Locator, boolean, String)
      */
-    public void pushConditional(final Locator locator, final boolean value, String primitive) {
+    public void pushConditional(final Locator locator, final boolean value,
+            String primitive) {
 
         throw new RuntimeException("unimplemented");
     }
@@ -736,6 +745,15 @@ public class MockContext implements Context, TypesetterOptions {
      * @see de.dante.extex.interpreter.context.Context#setTypesettingContext(de.dante.extex.interpreter.type.font.Font)
      */
     public void setTypesettingContext(final Font font)
+            throws ConfigurationException {
+
+        throw new RuntimeException("unimplemented");
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setTypesettingContext(de.dante.extex.language.Language)
+     */
+    public void setTypesettingContext(Language language)
             throws ConfigurationException {
 
         throw new RuntimeException("unimplemented");

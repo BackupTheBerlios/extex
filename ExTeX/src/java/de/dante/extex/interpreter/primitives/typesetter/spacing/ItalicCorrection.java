@@ -33,6 +33,7 @@ import de.dante.extex.typesetter.type.node.CharNode;
 import de.dante.extex.typesetter.type.node.ExplicitKernNode;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
+import de.dante.util.configuration.ConfigurationException;
 
 /**
  * This class provides an implementation for the primitive <code>\ </code>.
@@ -57,7 +58,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class ItalicCorrection extends AbstractCode {
 
@@ -91,6 +92,8 @@ public class ItalicCorrection extends AbstractCode {
             try {
                 typesetter.add(new ExplicitKernNode(ic));
             } catch (GeneralException e) {
+                throw new InterpreterException(e);
+            } catch (ConfigurationException e) {
                 throw new InterpreterException(e);
             }
         }

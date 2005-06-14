@@ -28,6 +28,7 @@ import de.dante.extex.interpreter.exception.helping.ArithmeticOverflowException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.glue.FixedGlueComponent;
 import de.dante.extex.interpreter.type.glue.GlueComponent;
+import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
@@ -37,7 +38,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class Dimen extends GlueComponent implements Serializable, FixedDimen {
 
@@ -45,7 +46,8 @@ public class Dimen extends GlueComponent implements Serializable, FixedDimen {
      * The constant <tt>ONE_INCH</tt> contains the immutable dimen register
      * representing the length of 1&nbsp;in.
      */
-    public static final ImmutableDimen ONE_INCH = new ImmutableDimen(ONE * 7227 / 100);
+    public static final ImmutableDimen ONE_INCH = new ImmutableDimen(
+            ONE * 7227 / 100);
 
     /**
      * The constant <tt>ONE_PT</tt> contains the immutable dimen register
@@ -73,21 +75,25 @@ public class Dimen extends GlueComponent implements Serializable, FixedDimen {
      *
      * <doc type="syntax" name="dimen">
      * This method parses the following syntactic entity:
-     * <pre class="syntax">
-     *   &lang;dimen&rang; </pre>
+     *
+     *  <pre class="syntax">
+     *    &lang;dimen&rang;
+     *      &rarr; ...
+     * </pre>
      *  TODO missing documentation
      * </doc>
      *
-     *
      * @param context the interpreter context
      * @param source the source for next tokens
+     * @param typesetter the typesetter
+     *
      *
      * @throws InterpreterException in case of an error
      */
-    public Dimen(final Context context, final TokenSource source)
-            throws InterpreterException {
+    public Dimen(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
 
-        super(context, source, false);
+        super(context, source, typesetter, false);
     }
 
     /**
@@ -100,17 +106,6 @@ public class Dimen extends GlueComponent implements Serializable, FixedDimen {
     public Dimen(final FixedDimen value) {
 
         super(value == null ? 0 : value.getValue());
-    }
-
-    /**
-     * Creates a new object.
-     * This method makes a new instance of the class with the given value.
-     *
-     * @param value the value to set
-     */
-    public Dimen(final int value) {
-
-        super((long) value);
     }
 
     /**
@@ -248,7 +243,6 @@ public class Dimen extends GlueComponent implements Serializable, FixedDimen {
 
     /**
      * Set the value from the data gathered by parsing a token source.
-     *
      * @param context the interpreter context
      * @param source the source for next tokens
      *
@@ -256,12 +250,12 @@ public class Dimen extends GlueComponent implements Serializable, FixedDimen {
      *
      * @see de.dante.extex.interpreter.type.glue.GlueComponent#set(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
+     *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
-    public void set(final Context context, final TokenSource source)
-            throws InterpreterException {
+    public void set(final Context context, final TokenSource source,
+            Typesetter typesetter) throws InterpreterException {
 
-        set(context, source, true);
+        set(context, source, typesetter, true);
     }
 
     /**

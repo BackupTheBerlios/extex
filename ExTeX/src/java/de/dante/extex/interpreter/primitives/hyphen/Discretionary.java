@@ -40,6 +40,7 @@ import de.dante.extex.typesetter.type.node.CharNodeFactory;
 import de.dante.extex.typesetter.type.node.DiscretionaryNode;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
 import de.dante.util.GeneralException;
+import de.dante.util.configuration.ConfigurationException;
 
 /**
  * This class provides an implementation for the primitive
@@ -65,7 +66,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class Discretionary extends AbstractCode {
 
@@ -74,7 +75,7 @@ public class Discretionary extends AbstractCode {
      * discretionary components.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.19 $
+     * @version $Revision: 1.20 $
      */
     private class Manager implements ListManager {
 
@@ -107,7 +108,7 @@ public class Discretionary extends AbstractCode {
         /**
          * @see de.dante.extex.typesetter.listMaker.ListManager#endParagraph()
          */
-        public void endParagraph() throws TypesetterException {
+        public void endParagraph() throws TypesetterException, ConfigurationException {
 
             throw new ImpossibleException("discretionary.endParagraph");
         }
@@ -196,6 +197,8 @@ public class Discretionary extends AbstractCode {
                     fill(nobreak, tc, typesetter, context)));
         } catch (GeneralException e) {
             throw new InterpreterException(e);
+        } catch (ConfigurationException e) {
+            throw new InterpreterException(e);
         }
     }
 
@@ -209,12 +212,12 @@ public class Discretionary extends AbstractCode {
      *
      * @return the node list or <code>null</code> if there are no tokens to
      *  put into the list
-     *
      * @throws TypesetterException in case of an error
+     * @throws ConfigurationException TODO
      */
     private NodeList fill(final Tokens tokens, final TypesettingContext tc,
             final Typesetter typesetter, final Context context)
-            throws TypesetterException {
+            throws TypesetterException, ConfigurationException {
 
         if (tokens.length() == 0) {
             return null;

@@ -43,13 +43,14 @@ import de.dante.extex.typesetter.type.node.CharNodeFactory;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.Configuration;
+import de.dante.util.configuration.ConfigurationException;
 
 /**
  * The dummy typesetter which does nothing but provide the appropriate
  * interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class NullTypesetterImpl implements Typesetter {
 
@@ -65,7 +66,7 @@ public class NullTypesetterImpl implements Typesetter {
      * @see de.dante.extex.typesetter.ListMaker#add(
      *     de.dante.extex.typesetter.type.Node)
      */
-    public void add(final Node c) throws TypesetterException {
+    public void add(final Node c) throws TypesetterException, ConfigurationException {
 
         // nothing to do
     }
@@ -85,7 +86,7 @@ public class NullTypesetterImpl implements Typesetter {
      *     de.dante.extex.interpreter.type.count.Count)
      */
     public void addSpace(final TypesettingContext typesettingContext,
-            final Count spacefactor) throws TypesetterException {
+            final Count spacefactor) throws TypesetterException, ConfigurationException {
 
         // nothing to do
     }
@@ -108,7 +109,7 @@ public class NullTypesetterImpl implements Typesetter {
      * @see de.dante.extex.typesetter.Typesetter#complete(TypesetterOptions)
      */
     public NodeList complete(final TypesetterOptions context)
-            throws TypesetterException {
+            throws TypesetterException, ConfigurationException {
 
         return null;
     }
@@ -136,7 +137,7 @@ public class NullTypesetterImpl implements Typesetter {
     /**
      * @see de.dante.extex.typesetter.Typesetter#finish()
      */
-    public void finish() {
+    public void finish() throws ConfigurationException {
 
         // nothing to do
     }
@@ -215,14 +216,14 @@ public class NullTypesetterImpl implements Typesetter {
      *      de.dante.extex.scanner.type.Token)
      */
     public void mathShift(final Context context, final TokenSource source,
-            final Token t) throws TypesetterException {
+            final Token t) throws TypesetterException, ConfigurationException {
 
     }
 
     /**
      * @see de.dante.extex.typesetter.Typesetter#par()
      */
-    public void par() throws TypesetterException {
+    public void par() throws TypesetterException, ConfigurationException {
 
         // nothing to do
     }
@@ -353,7 +354,7 @@ public class NullTypesetterImpl implements Typesetter {
      *      TokenSource, de.dante.extex.scanner.type.Token)
      */
     public void tab(final Context context, final TokenSource source,
-            final Token t) throws TypesetterException {
+            final Token t) throws TypesetterException, ConfigurationException {
 
     }
 

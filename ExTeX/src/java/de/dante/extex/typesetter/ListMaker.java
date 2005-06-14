@@ -30,6 +30,7 @@ import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.util.UnicodeChar;
+import de.dante.util.configuration.ConfigurationException;
 
 /**
  * This interface describes the capabilities of a list maker.
@@ -37,7 +38,7 @@ import de.dante.util.UnicodeChar;
  * @see "<logo>TeX</logo> &ndash; The Program [211]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.39 $
+ * @version $Revision: 1.40 $
  */
 public interface ListMaker {
 
@@ -47,10 +48,10 @@ public interface ListMaker {
      * their own.
      *
      * @param node the node to add
-     *
      * @throws TypesetterException in case of an error
+     * @throws ConfigurationException TODO
      */
-    void add(Node node) throws TypesetterException;
+    void add(Node node) throws TypesetterException, ConfigurationException;
 
     /**
      * Add a glue node to the list.
@@ -68,11 +69,11 @@ public interface ListMaker {
      * @param spacefactor the space factor to use for this space or
      * <code>null</code> to indicate that the default space factor should
      * be used.
-     *
      * @throws TypesetterException in case of an error
+     * @throws ConfigurationException TODO
      */
     void addSpace(TypesettingContext typesettingContext, Count spacefactor)
-            throws TypesetterException;
+            throws TypesetterException, ConfigurationException;
 
     /**
      * Register an observer to be invoked at the end of the paragraph.
@@ -93,10 +94,10 @@ public interface ListMaker {
      *  interpreter context
      *
      * @return the node list enclosed in this instance.
-     *
      * @throws TypesetterException in case of an error
+     * @throws ConfigurationException TODO
      */
-    NodeList complete(TypesetterOptions context) throws TypesetterException;
+    NodeList complete(TypesetterOptions context) throws TypesetterException, ConfigurationException;
 
     /**
      * Process a carriage return.
@@ -153,19 +154,19 @@ public interface ListMaker {
      * @param context the interpreter context
      * @param source the source for new tokens
      * @param t the actual math shift character token
-     *
      * @throws TypesetterException in case of an error
+     * @throws ConfigurationException TODO
      */
     void mathShift(Context context, TokenSource source, Token t)
-            throws TypesetterException;
+            throws TypesetterException, ConfigurationException;
 
     /**
      * Emit a new paragraph.
      * This might be a noop under certain circumstances.
-     *
      * @throws TypesetterException in case of an error
+     * @throws ConfigurationException TODO
      */
-    void par() throws TypesetterException;
+    void par() throws TypesetterException, ConfigurationException;
 
     /**
      * Removes the last node from the list.
@@ -229,10 +230,10 @@ public interface ListMaker {
      * @param context the interpreter context
      * @param source the source for new tokens
      * @param t the actual tab token
-     *
      * @throws TypesetterException in case of an error
+     * @throws ConfigurationException TODO
      */
     void tab(Context context, TokenSource source, Token t)
-            throws TypesetterException;
+            throws TypesetterException, ConfigurationException;
 
 }

@@ -42,7 +42,7 @@ import de.dante.extex.typesetter.Typesetter;
  *  <pre class="syntax">
  *    &lang;closein&rang;
  *       &rarr; <tt>\closein</tt> {@linkplain
- *       de.dante.extex.interpreter.TokenSource#scanInteger(Context, Typesetter)
+ *       de.dante.extex.interpreter.TokenSource#scanInteger(Context,Typesetter)
  *       &lang;number&rang;} </pre>
  * </p>
  * <p>
@@ -60,7 +60,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class Closein extends AbstractCode {
 
