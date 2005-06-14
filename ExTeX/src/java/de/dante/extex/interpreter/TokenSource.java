@@ -49,7 +49,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.53 $
+ * @version $Revision: 1.54 $
  */
 public interface TokenSource {
 
@@ -368,7 +368,7 @@ public interface TokenSource {
      * </p>
      * </doc>
      * @param context the interpreter context
-     * @param typesetter TODO
+     * @param typesetter the typesetter
      *
      * @return the value of the integer scanned
      *
