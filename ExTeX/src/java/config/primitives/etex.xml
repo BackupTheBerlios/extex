@@ -43,8 +43,8 @@
           class=""/>
   <Define name="detokenize"
           class=""/>
-  <Define name="dimenexpr"
-          class=""/>
+  <define name="dimenexpr"
+          class="de.dante.extex.interpreter.primitives.register.dimen.Dimenexpr"/>
   <Define name="displaywidowpenalties"
           class=""/>
   <define name="eTeXrevision"
