@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -35,18 +35,18 @@ import de.dante.extex.interpreter.context.Context;
  * This class writes and reads format files.
  * <p>
  * Format files contains the information needed to continue processing some
- * inout. This means that essentially the context is stored.
+ * input. This means that essentially the context is stored.
  * </p>
  * <h3>The Format File</h3>
  * <p>
- * The format file contains certain informations in a fixed sequence:
+ * The format file contains certain information in a fixed sequence:
  * <dl>
  *  <dd>The magic line</dd>
  *  <dt>This line is ended by a newline character and is used on Unix to
  *   make the format executable.
  *  </dt>
  *  <dd>The format identifier</dd>
- *  <dt>This string is stored as Java objectand is used to distinguish
+ *  <dt>This string is stored as Java object and is used to distinguish
  *   formats from other types of files.
  *  </dt>
  *  <dd>The format version</dd>
@@ -61,7 +61,7 @@ import de.dante.extex.interpreter.context.Context;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class SerialLoader {
 
@@ -141,7 +141,7 @@ public class SerialLoader {
      * Write the format information to an output stream.
      *
      * @param stream the output stream to write the context to
-     * @param jobname the jobname currently processed
+     * @param jobname the name of the job currently processed
      * @param context the interpreter context to store
      *
      * @throws IOException in case of an IO error
