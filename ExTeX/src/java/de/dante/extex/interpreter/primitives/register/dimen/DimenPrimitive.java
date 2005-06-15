@@ -42,13 +42,27 @@ import de.dante.extex.typesetter.Typesetter;
  * It sets the named dimen register to the value given,
  * and as a side effect all prefixes are zeroed.
  *
- * <p>Example</p>
- * <pre>
- * \day=345
- * </pre>
+ * <doc name="dimen">
+ * <h3>The Primitive <tt>\dimen</tt></h3>
+ * <p>
+ *  The primitive <tt>\dimen</tt> provides access to the dimen registers. Those
+ *  registers contain length values.
+ *  TODO documentation incomplete
+ * </p>
+ *
+ * <h4>Syntax</h4>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;dimen&rang;
+ *      &rarr; &lang;prefix&rang; <tt>\dimen</tt> &lang;key&rang; ...  </pre>
+ *
+ * <h4>Examples</h4>
+ * <pre class="TeXSample">
+ *   \dimen1=12 pt </pre>
+ * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class DimenPrimitive extends AbstractDimen
         implements

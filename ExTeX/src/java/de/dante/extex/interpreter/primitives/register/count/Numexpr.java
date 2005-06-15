@@ -68,7 +68,8 @@ import de.dante.extex.typesetter.Typesetter;
  *  The primitive <tt>\numexpr</tt> can be used in any place where a number is
  *  required. This includes assignments to count registers and comparisons.
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;numexpr&rang;
@@ -78,16 +79,16 @@ import de.dante.extex.typesetter.Typesetter;
  *    &lang;expr&rang;
  *      &rarr; &lang;number&rang;
  *      |   &lang;operand&rang;
- *      |   &lang;operand&rang; <tt>+</tt> &lang;operand&rang;
- *      |   &lang;operand&rang; <tt>-</tt> &lang;operand&rang;
- *      |   &lang;operand&rang; <tt>*</tt> &lang;operand&rang;
- *      |   &lang;operand&rang; <tt>/</tt> &lang;operand&rang;
+ *      |   &lang;expr&rang; <tt>+</tt> &lang;expr&rang;
+ *      |   &lang;expr&rang; <tt>-</tt> &lang;expr&rang;
+ *      |   &lang;expr&rang; <tt>*</tt> &lang;expr&rang;
+ *      |   &lang;expr&rang; <tt>/</tt> &lang;expr&rang;
  *
  *    &lang;operand&rang;
  *      &rarr; &lang;number&rang;
  *      |   <tt>-</tt> &lang;expr&rang;
  *      |   <tt>(</tt> &lang;expr&rang; <tt>)</tt>   </pre>
- * </p>
+ *
  * <h4>Examples</h4>
  * <pre class="TeXSample">
  *   \count1=\numexpr 23 \relax </pre>
@@ -102,7 +103,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Numexpr extends AbstractCode implements CountConvertible, Theable {
 
@@ -110,7 +111,7 @@ public class Numexpr extends AbstractCode implements CountConvertible, Theable {
      * This interface describes a binary operation on two longs.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.2 $
+     * @version $Revision: 1.3 $
      */
     private interface BinOp {
 
@@ -129,7 +130,7 @@ public class Numexpr extends AbstractCode implements CountConvertible, Theable {
      * This operation ignores the first argument and returns the second one.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.2 $
+     * @version $Revision: 1.3 $
      */
     private static final class Second implements BinOp {
 
@@ -146,7 +147,7 @@ public class Numexpr extends AbstractCode implements CountConvertible, Theable {
      * This operation adds the arguments.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.2 $
+     * @version $Revision: 1.3 $
      */
     private static final class Plus implements BinOp {
 
@@ -163,7 +164,7 @@ public class Numexpr extends AbstractCode implements CountConvertible, Theable {
      * This operation subtracts the second argument from the first one.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.2 $
+     * @version $Revision: 1.3 $
      */
     private static final class Minus implements BinOp {
 

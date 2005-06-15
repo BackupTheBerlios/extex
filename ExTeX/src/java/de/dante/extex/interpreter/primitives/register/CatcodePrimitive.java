@@ -43,32 +43,40 @@ import de.dante.util.UnicodeChar;
  *  TODO missing documentation
  * </p>
  * <p>
- *  The assignment is controlled by the modifier <tt>\global</tt> and the
- *  count parameter <tt>\globaldefs</tt>. Usually the assignment is acting on the
- *  current group only. if the integer parameter <tt>\globaldefs</tt> is not
- *  0 or the modifier <tt>\global</tt> is given then the assignment is applied
- *  to all groups.
+ *  The assignment is controlled by the prefix <tt>\global</tt> and the count
+ *  parameter <tt>\globaldefs</tt>. Usually the assignment is acting on the
+ *  current group only. if the integer parameter <tt>\globaldefs</tt> is greater
+ *  than 0 or the prefix <tt>\global</tt> is given then the assignment is
+ *  applied to all groups.
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;catcode&rang;
- *      &rarr; <tt>\catcode</tt> {@linkplain
+ *      &rarr; &lang;prefix&rang; <tt>\catcode</tt> {@linkplain
  *          de.dante.extex.interpreter.TokenSource#scanNumber()
  *          &lang;8-bit&nbsp;number&rang;} {@linkplain
  *          de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
  *          &lang;equals&rang;} {@linkplain
  *          de.dante.extex.interpreter.TokenSource#scanNumber()
- *          &lang;4-bit&nbsp;number&rang;} </pre>
- * </p>
- * <h4>Example</h4>
+ *          &lang;4-bit&nbsp;number&rang;}
+ *
+ *    &lang;prefix&rang;
+ *      &rarr;
+ *       |  &lang;global&rang; </pre>
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \catcode `\%=12  </pre>
+ *  <pre class="TeXSample">
+ *    \global\catcode `\%=11  </pre>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class CatcodePrimitive extends AbstractAssignment {
 

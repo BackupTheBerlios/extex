@@ -41,21 +41,23 @@ import de.dante.extex.typesetter.Typesetter;
  * <p>
  *  TODO missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;read&rang;
  *       &rarr; <tt>\read</tt> &lang;read&rang; <tt>to</tt> &lang;control sequence&rang;</pre>
- * </p>
+ *
+ * <h4>Examples</h4>
+ * <pre class="TeXSample">
+ * \openin3= abc.def
+ * \read3 to \line
+ * \closein3 </pre>
  * </doc>
  *
- * Example
- * <pre>
- * \read3 to \abc
- * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class Read extends AbstractCode {
 

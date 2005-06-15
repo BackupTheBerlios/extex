@@ -38,17 +38,16 @@ import de.dante.extex.typesetter.Typesetter;
  * This means that you can place arbitray text behind this primitive in a file.
  * This text is ignored immediately.
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;endinput&rang;
  *       &rarr; <tt>\endinput</tt>  </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \endinput  </pre>
- * </p>
  * </doc>
  *
  * Example
@@ -57,7 +56,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class Endinput extends AbstractCode {
 

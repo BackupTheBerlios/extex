@@ -40,15 +40,34 @@ import de.dante.util.configuration.ConfigurationException;
  * <p>
  *  TODO missing documentation
  * </p>
+ *
+ * <h4>Syntax</h4>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;openin&rang;
+ *      &rarr; &lang;modifier&rang; <tt>\openin</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#scanNumber()
+ *        &lang;8-bit&nbsp;number&rang;} {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+ *        &lang;equals&rang;} {@linkplain
+ *        de.dante.extex.interpreter.primitive.file.AbstractFileCode#scanFileName(Context,TokenSource)
+ *        &lang;file name&rang;}
+ *
+ *    &lang;modifier&rang;
+ *      &rarr;
+ *       |  <tt>\global</tt> &lang;modifier&rang;
+ *       |  <tt>\immediate</tt> &lang;modifier&rang;  </pre>
+ *
+ * <h4>Examples</h4>
+ * <pre class="TeXSample">
+ * \immediate\openout3= abc.def
+ * \write3{Hi there!}
+ * \closeout3 </pre>
  * </doc>
  *
- * Example
- * <pre>
- * \openout3= abc.def
- * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class Openout extends AbstractFileCode {
 

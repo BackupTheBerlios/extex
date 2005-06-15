@@ -39,16 +39,17 @@ import de.dante.extex.typesetter.Typesetter;
  * <p>
  *  TODO missing documentation
  * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Syntax</h4>
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \inputfilename  </pre>
- * </p>
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Inputfilename extends AbstractCode
         implements

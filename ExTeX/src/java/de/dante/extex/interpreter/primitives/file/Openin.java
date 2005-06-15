@@ -35,17 +35,46 @@ import de.dante.util.configuration.ConfigurationException;
  * <doc name="openin">
  * <h3>The Primitive <tt>\openin</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The primitive <tt>\openin</tt> tries to open a file or other named resource
+ *  for reading. The reference is stored in a read register to be used with
+ *  <tt>\read</tt>. If the opening fails then the read register is void. This
+ *  can be checked with the primitive <tt>\ifeof</tt>.
  * </p>
+ * <p>
+ *  The assignment to a read register is local to the current group unless
+ *  specified differently. If the prefix <tt>\global</tt> is given then the
+ *  read register is assigned globally.
+ * </p>
+ * <p>
+ *  The stream should be closed with <tt>\closein</tt> when not needed any more.
+ * </p>
+ *
+ * <h4>Syntax</h4>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;openin&rang;
+ *      &rarr; &lang;modifier&rang; <tt>\openin</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#scanNumber()
+ *        &lang;8-bit&nbsp;number&rang;} {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+ *        &lang;equals&rang;} {@linkplain
+ *        de.dante.extex.interpreter.primitive.file.AbstractFileCode#scanFileName(Context,TokenSource)
+ *        &lang;file name&rang;}
+ *
+ *    &lang;modifier&rang;
+ *      &rarr;
+ *       |  <tt>\global</tt>  </pre>
+ *
+ * <h4>Examples</h4>
+ * <pre class="TeXSample">
+ * \openin3= abc.def
+ * \read3 to \line
+ * \closein3 </pre>
  * </doc>
  *
- * Example
- * <pre>
- * \openin3= abc.def
- * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class Openin extends AbstractFileCode {
 

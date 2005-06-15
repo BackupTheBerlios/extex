@@ -77,7 +77,8 @@ import de.dante.extex.typesetter.Typesetter;
  *  The primitive <tt>\dimenexpr</tt> can be used in any place where a dimen is
  *  required. This includes assignments to dimen registers and comparisons.
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;dimenexpr&rang;
@@ -85,20 +86,18 @@ import de.dante.extex.typesetter.Typesetter;
  *      |   <tt>\dimenexpr</tt> &lang;expr&rang;
  *
  *    &lang;expr&rang;
- *      &rarr; &lang;dimen&rang;
- *      |   &lang;operand&rang;
- *      |   &lang;operand&rang; <tt>+</tt> &lang;operand&rang;
- *      |   &lang;operand&rang; <tt>-</tt> &lang;operand&rang;
+ *      &rarr; &lang;operand&rang;
+ *      |   &lang;operand&rang; <tt>+</tt> &lang;expr&rang;
+ *      |   &lang;operand&rang; <tt>-</tt> &lang;expr&rang;
  *
  *    &lang;operand&rang;
  *      &rarr; &lang;dimen&rang;
- *      |   &lang;operand&rang;
  *      |   &lang;operand&rang; <tt>*</tt> &lang;number&rang;
  *      |   &lang;number&rang; <tt>*</tt> &lang;operand&rang;
  *      |   &lang;operand&rang; <tt>/</tt> &lang;number&rang;
  *      |   <tt>-</tt> &lang;expr&rang;
  *      |   <tt>(</tt> &lang;expr&rang; <tt>)</tt>   </pre>
- * </p>
+ *
  * <h4>Examples</h4>
  * <pre class="TeXSample">
  *   \count1=\dimenexpr 23pt \relax </pre>
@@ -112,8 +111,9 @@ import de.dante.extex.typesetter.Typesetter;
  *   \count1=\dimenexpr 2*-\dimen0  </pre>
  * </doc>
  *
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Dimenexpr extends AbstractCode
         implements

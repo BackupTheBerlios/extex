@@ -39,7 +39,7 @@ import de.dante.util.framework.configuration.Configurable;
  * files.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public abstract class AbstractFileCode extends AbstractCode
         implements
@@ -171,7 +171,7 @@ public abstract class AbstractFileCode extends AbstractCode
      * <doc type="syntax" name="filename">
      * This method parses the following syntactic entity:
      * <pre class="syntax">
-     *   &lang;filename&rang; </pre>
+     *   &lang;file name&rang; </pre>
      *
      * The scanning is performed in one of two ways:
      * <ul>
