@@ -2,13 +2,16 @@
     Your help is required.<br />
     <div class="infoitems">
       <center>
-        <img src="&top;image/IWantYou.gif" alt="I WANT YOU" />
+        <img src="&top;image/IWantYou.gif"
+                 alt="I WANT YOU"
+                 width="128"
+                 height="161"/>
       </center>
       <ul>
         <li>For <a href="&top;task/testing.html">testing</a></li>
         <li>For <a href="&top;task/documentation.html">documenting</a></li>
         <li>For <a href="&top;task/web-master.html">maintaining the Web pages</a></li>
-        <li>For <a href="&top;task/patgen.html">patgen</a></li>
+        <li>For <a href="&top;task/patgen.html">implementing patgen</a></li>
       </ul>
     </div>
    </div>
@@ -36,7 +39,10 @@
     <div class="infoitems">
     <a href="http://www.dante.de"
        title="DANTE e.V."
-       ><img src="&top;image/DANTE-logo.png" border="0" alt="DANTE e.V." /></a>
+       ><img src="&top;image/DANTE-logo.png" border="0"
+                   alt="DANTE e.V."
+                   width="130"
+                   height="32" /></a>
     </div>
     Hosted by
     <div class="infoitems">
