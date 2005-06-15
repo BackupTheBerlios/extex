@@ -33,25 +33,25 @@ import de.dante.extex.typesetter.type.noad.Noad;
  * <code>\mathchoice</code>.
  *
  * <doc name="mathchoice">
- * <h3>The Primitive <tt>\mathchoice</tt></h3>
+ * <h3>The Math Primitive <tt>\mathchoice</tt></h3>
  * <p>
  *  TODO missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;mathchoice&rang;
- *       &rarr; <tt>\mathchoice</tt>  </pre>
- * </p>
- * <p>
- *  Examples:
+ *       &rarr; <tt>\mathchoice</tt>  ... </pre>
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \mathchoice{d}{t}{s}{ss}  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Mathchoice extends AbstractMathCode {
 

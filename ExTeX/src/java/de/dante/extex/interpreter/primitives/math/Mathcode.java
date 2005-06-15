@@ -33,24 +33,24 @@ import de.dante.util.UnicodeChar;
  * <code>\mathcode</code>.
  *
  * <doc name="mathcode">
- * <h3>The Primitive <tt>\mathcode</tt></h3>
+ * <h3>The Math Primitive <tt>\mathcode</tt></h3>
  * <p>
  *  TODO missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\mathcode ...</tt>  </pre>
- * </p>
- * <p>
- *  Examples:
+ *    <tt>\mathcode</tt> ...  </pre>
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \mathcode ...  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Mathcode extends AbstractAssignment {
 

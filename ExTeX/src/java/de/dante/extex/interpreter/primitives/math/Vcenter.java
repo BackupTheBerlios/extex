@@ -33,25 +33,25 @@ import de.dante.extex.typesetter.type.noad.VCenterNoad;
  * <code>\vcenter</code>.
  *
  * <doc name="vcenter">
- * <h3>The Primitive <tt>\vcenter</tt></h3>
+ * <h3>The Math Primitive <tt>\vcenter</tt></h3>
  * <p>
  *  TODO missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;vcenter&rang;
- *       &rarr; <tt>\vcenter</tt>  </pre>
- * </p>
- * <p>
- *  Examples:
+ *       &rarr; <tt>\vcenter</tt> ...  </pre>
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \vcenter  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Vcenter extends AbstractMathCode {
 

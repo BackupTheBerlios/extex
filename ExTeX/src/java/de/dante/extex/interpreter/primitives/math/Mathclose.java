@@ -32,25 +32,25 @@ import de.dante.extex.typesetter.type.noad.Noad;
  * This class provides an implementation for the primitive <code>\mathclose</code>.
  *
  * <doc name="mathclose">
- * <h3>The Primitive <tt>\mathclose</tt></h3>
+ * <h3>The Math Primitive <tt>\mathclose</tt></h3>
  * <p>
  *  TODO missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;mathclose&rang;
  *       &rarr; <tt>\mathclose</tt>  </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \mathclose  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Mathclose extends AbstractMathCode {
 

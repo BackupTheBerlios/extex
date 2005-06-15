@@ -35,25 +35,25 @@ import de.dante.extex.typesetter.type.noad.RadicalNoad;
  * <code>\radical</code>.
  *
  * <doc name="radical">
- * <h3>The Primitive <tt>\radical</tt></h3>
+ * <h3>The Math Primitive <tt>\radical</tt></h3>
  * <p>
  *  TODO missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;radical&rang;
- *       &rarr; <tt>\radical</tt>  </pre>
- * </p>
- * <p>
- *  Examples:
+ *       &rarr; <tt>\radical</tt> ...  </pre>
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
- *    \radical  </pre>
- * </p>
+ *    \radical{a^2 + b^2}  </pre>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Radical extends AbstractTeXDelimter {
 

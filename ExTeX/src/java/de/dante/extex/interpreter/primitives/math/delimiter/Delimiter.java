@@ -33,25 +33,29 @@ import de.dante.extex.typesetter.type.math.MathDelimiter;
  * <code>\delimiter</code>.
  *
  * <doc name="delimiter">
- * <h3>The Primitive <tt>\delimiter</tt></h3>
+ * <h3>The Math Primitive <tt>\delimiter</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The math primitive <tt>\delimiter</tt> can be used to insert a delimiter.
+ *  Thus it is possible to bypass the definition of the delimiter code as
+ *  assigned to single characters.
  * </p>
- * <p>
- *  The formal description of this primitive is the following:
+ *  TODO missing documentation
+ *
+ * <h4>Syntax</h4>
+ * The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;delimiter&rang;
- *       &rarr; <tt>\delimiter</tt>  </pre>
+ *       &rarr; <tt>\delimiter</tt> &lang;delcode&rang; </pre>
  * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \delimiter "426830A </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Delimiter extends AbstractMathCode {
 

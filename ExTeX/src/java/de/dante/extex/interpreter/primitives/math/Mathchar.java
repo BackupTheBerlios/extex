@@ -42,29 +42,29 @@ import de.dante.util.UnicodeChar;
  * <code>\mathchar</code>.
  *
  * <doc name="mathchar">
- * <h3>The Primitive <tt>\mathchar</tt></h3>
+ * <h3>The Math Primitive <tt>\mathchar</tt></h3>
  * <p>
  *  The primitive <tt>\mathchar</tt> inserts a mathematical character consisting
  *  of a math class and a character code inti the current math list. This is
  *  supposed to work in math mode only.
  *  TODO missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    <tt>\mathchar ...</tt>  </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \mathchar"041  </pre>
  *  <pre class="TeXSample">
  *    \mathchar{ordinary}0 `A  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class Mathchar extends AbstractMathCode {
 

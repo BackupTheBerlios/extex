@@ -33,25 +33,25 @@ import de.dante.extex.typesetter.type.noad.Noad;
  * <code>\mathinner</code>.
  *
  * <doc name="mathinner">
- * <h3>The Primitive <tt>\mathinner</tt></h3>
+ * <h3>The Math Primitive <tt>\mathinner</tt></h3>
  * <p>
  *  TODO missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;mathinner&rang;
  *       &rarr; <tt>\mathinner</tt> &lang;math block&rang; </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \mathinner{a^b}  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Mathinner extends AbstractMathCode {
 

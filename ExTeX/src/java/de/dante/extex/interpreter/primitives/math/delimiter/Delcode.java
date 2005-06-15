@@ -42,9 +42,11 @@ import de.dante.util.UnicodeChar;
  * <code>\delcode</code>.
  *
  * <doc name="delcode">
- * <h3>The Primitive <tt>\delcode</tt></h3>
+ * <h3>The Math Primitive <tt>\delcode</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The primitive <tt>\delcode</tt> can be used to assign and query the
+ *  delimiter code for a character. The delimiter code determines, how a
+ *  character is typeset in math mode.
  * </p>
  * <p>
  * The <logo>TeX</logo> encoding interprets the number as 27 bit hex number:
@@ -63,26 +65,53 @@ import de.dante.util.UnicodeChar;
  * </dl>
  * </p>
  * <p>
+ *  The assigning a new value to a delimiter code acts in a group restricted way
+ *  unless declared differently. If the prefix <tt>\global</tt> is given then
+ *  the assignment is performed globally. The same effect can be achieved when
+ *  the count register <tt>\globaldefs</tt> is greater than 0.
+ * </p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;delcode&rang;
- *      &rarr; <tt>\delcode</tt> {@linkplain
+ *      &rarr; &lang;prefix&rang; <tt>\delcode</tt> {@linkplain
  *        de.dante.extex.interpreter.TokenSource#scanNumber()
  *        &lang;8-bit&nbsp;number&rang;} {@linkplain
  *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
  *        &lang;equals&rang;} {@linkplain
  *        de.dante.extex.interpreter.TokenSource#scanNumber()
- *        &lang;8-bit&nbsp;number&rang;}  </pre>
- * </p>
- * <p>
- *  Examples:
+ *        &lang;8-bit&nbsp;number&rang;}
+ *
+ *    &lang;prefix&rang;
+ *      &rarr;
+ *       |  &lang;global&rang; </pre>
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \delcode`x="123456  </pre>
+ *  <pre class="TeXSample">
+ *    \global\delcode`x="123456  </pre>
+ *
+ * <h4>Using as Count Register</h4>
+ * <p>
+ *  The primitive <tt>\delcode</tt> can be used like a count register. This
+ *  means you can use it wherever a number is expected. In addition the value
+ *  can be advanced, multiplied, and divided. In any case the delimiter code
+ *  is translated according to the <logo>TeX</logo> encoding and processed as
+ *  number.
  * </p>
+ *
+ * <h4>Examples</h4>
+ *  <pre class="TeXSample">
+ *    \count1=\delcode`x  </pre>
+ *  <pre class="TeXSample">
+ *    \advance\delcode`x by 42  </pre>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Delcode extends AbstractAssignment
         implements
@@ -144,8 +173,8 @@ public class Delcode extends AbstractAssignment
      * @param prefix the prefix indicator
      * @param context the interpreter context
      * @param source the token source
-     * @param charCode the character to assign the delcode to
-     * @param value the delcode in <logo>TeX</logo> encoding
+     * @param charCode the character to assign the delimiter code to
+     * @param value the delimiter code in <logo>TeX</logo> encoding
      *
      * @throws InterpreterException in case of an error
      */

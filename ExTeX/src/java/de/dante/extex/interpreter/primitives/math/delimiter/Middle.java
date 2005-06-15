@@ -23,7 +23,6 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.primitives.math.AbstractMathCode;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
 import de.dante.extex.typesetter.type.math.MathDelimiter;
@@ -32,25 +31,25 @@ import de.dante.extex.typesetter.type.math.MathDelimiter;
  * This class provides an implementation for the primitive <code>\middle</code>.
  *
  * <doc name="middle">
- * <h3>The Primitive <tt>\middle</tt></h3>
+ * <h3>The Math Primitive <tt>\middle</tt></h3>
  * <p>
  *  TODO missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;span&rang;
- *       &rarr; <tt>\middle</tt>  </pre>
- * </p>
- * <p>
- *  Examples:
+ *       &rarr; <tt>\middle</tt> ... </pre>
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \middle  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Middle extends AbstractTeXDelimter {
 

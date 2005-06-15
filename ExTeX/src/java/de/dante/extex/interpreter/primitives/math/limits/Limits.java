@@ -34,25 +34,25 @@ import de.dante.extex.typesetter.type.noad.OperatorNoad;
  * This class provides an implementation for the primitive <code>\limits</code>.
  *
  * <doc name="limits">
- * <h3>The Primitive <tt>\limits</tt></h3>
+ * <h3>The Math Primitive <tt>\limits</tt></h3>
  * <p>
  *  TODO missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;limits&rang;
  *       &rarr; <tt>\limits</tt>  </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \limits  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Limits extends AbstractMathCode {
 

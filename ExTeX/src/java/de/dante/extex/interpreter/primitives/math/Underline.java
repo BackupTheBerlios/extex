@@ -33,25 +33,25 @@ import de.dante.extex.typesetter.type.noad.UnderlinedNoad;
  * <code>&#x5c;underline</code>.
  *
  * <doc name="underline">
- * <h3>The Primitive <tt>&#x5c;underline</tt></h3>
+ * <h3>The Math Primitive <tt>&#x5c;underline</tt></h3>
  * <p>
  *  TODO missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;span&rang;
- *       &rarr; <tt>&#x5c;underline</tt>  </pre>
- * </p>
- * <p>
- *  Examples:
+ *       &rarr; <tt>&#x5c;underline</tt> ...  </pre>
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
- *    &#x5c;underline  </pre>
- * </p>
+ *    &#x5c;underline{abc}  </pre>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Underline extends AbstractMathCode {
 

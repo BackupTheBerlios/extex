@@ -32,25 +32,25 @@ import de.dante.extex.typesetter.type.noad.PunctationNoad;
  * This class provides an implementation for the primitive <code>\mathpunct</code>.
  *
  * <doc name="mathpunct">
- * <h3>The Primitive <tt>\mathpunct</tt></h3>
+ * <h3>The Math Primitive <tt>\mathpunct</tt></h3>
  * <p>
  *  TODO missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;mathpunct&rang;
  *       &rarr; <tt>\mathpunct</tt>  </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \mathpunct  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Mathpunct extends AbstractMathCode {
 

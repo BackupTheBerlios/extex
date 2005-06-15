@@ -35,25 +35,25 @@ import de.dante.extex.typesetter.type.noad.OperatorNoad;
  * <code>\displaylimits</code>.
  *
  * <doc name="displaylimits">
- * <h3>The Primitive <tt>\displaylimits</tt></h3>
+ * <h3>The Math Primitive <tt>\displaylimits</tt></h3>
  * <p>
  *  TODO missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;displaylimits&rang;
  *       &rarr; <tt>\displaylimits</tt>  </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \displaylimits  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Displaylimits extends AbstractMathCode {
 

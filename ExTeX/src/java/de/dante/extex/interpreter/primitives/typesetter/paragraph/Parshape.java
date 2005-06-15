@@ -40,36 +40,55 @@ import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
  *  The primitive <tt>\parshape</tt> is a declaration of the shape of the
  *  paragraph. With its help it is possible to control the left and right margin
  *  of the current paragraph.
- *
- *  TODO missing documentation
  * </p>
  * <p>
+ *  The shape of the paragraph is controlled on a line base. For each line the
+ *  left indentation and the width are given. The first argument of
+ *  <tt>\parshape</tt> determines the number of such pairs to follow.
+ * </p>
+ * <p>
+ *  When the paragraph is typeset the lines are indented and adjusted according
+ *  to the specification given. If there are more lines specified as actually
+ *  present in the current paragraph then the remaining specifications are
+ *  discarded at the end of the paragraph. If there are less lines then the last
+ *  specification is repeated.
+ * </p>
+ * <p>
+ *  If several <tt>\parshape</tt> declarations are given in one oaragraph then
+ *  the one is used which is in effect at the end of the paragraph. This means
+ *  that later declarations overrule earlier ones.
+ * </p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;parshape&rang;
  *        &rarr; <tt>\parshape</tt> {@linkplain
  *        de.dante.extex.interpreter.TokenSource#scanNumber()
  *        &lang;8-bit&nbsp;number&rang;} ... </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \parshape 3 20pt \linewidth
  *                20pt \linewidth
  *                0pt \linewidth </pre>
  *  <pre class="TeXSample">
  *    \parshape 0 </pre>
+ *
+ * <h3><tt>\parshape</tt> as special integer</h3>
+ * <p>
+ *  <tt>\parshape</tt> acts as special count register which can be queried.
+ *  It returns the size of the current parshape specification or 0 if none is
+ *  present.
  * </p>
  *
- * <h3>\parshape as special register</h3>
- * <p>
- * <tt>\parshape</tt> acts as special register which can be queried. It returns
- * the size of the current parshape specification or 0 if none is present.
- * </p>
+ * <h4>Examples</h4>
+ *  <pre class="TeXSample">
+ *    \count1=\parshape  </pre>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Parshape extends AbstractCode implements CountConvertible, Theable {
 

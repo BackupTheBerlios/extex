@@ -32,25 +32,25 @@ import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
  * This class provides an implementation for the primitive <code>\above</code>.
  *
  * <doc name="above">
- * <h3>The Primitive <tt>\above</tt></h3>
+ * <h3>The Math Primitive <tt>\above</tt></h3>
  * <p>
  *  TODO missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;above&rang;
- *       &rarr; <tt>\above</tt>  </pre>
- * </p>
- * <p>
- *  Examples:
+ *       &rarr; ... <tt>\above</tt> ... </pre>
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    {a \above b}  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Above extends AbstractMathCode {
 

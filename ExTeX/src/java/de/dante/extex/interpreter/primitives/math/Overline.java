@@ -33,25 +33,25 @@ import de.dante.extex.typesetter.type.noad.OverlinedNoad;
  * <code>\overline</code>.
  *
  * <doc name="overline">
- * <h3>The Primitive <tt>\overline</tt></h3>
+ * <h3>The Math Primitive <tt>\overline</tt></h3>
  * <p>
  *  TODO missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;span&rang;
- *       &rarr; <tt>\overline</tt>  </pre>
- * </p>
- * <p>
- *  Examples:
+ *       &rarr; <tt>\overline</tt> ...  </pre>
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
- *    \overline  </pre>
- * </p>
+ *    \overline{abc} </pre>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Overline extends AbstractMathCode {
 

@@ -23,7 +23,6 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.primitives.math.AbstractMathCode;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
 import de.dante.extex.typesetter.type.math.MathDelimiter;
@@ -32,25 +31,25 @@ import de.dante.extex.typesetter.type.math.MathDelimiter;
  * This class provides an implementation for the primitive <code>\right</code>.
  *
  * <doc name="right">
- * <h3>The Primitive <tt>\right</tt></h3>
+ * <h3>The Math Primitive <tt>\right</tt></h3>
  * <p>
  *  TODO missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;span&rang;
- *       &rarr; <tt>\right</tt>  </pre>
- * </p>
- * <p>
- *  Examples:
+ *       &rarr; <tt>\right</tt> ...  </pre>
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
- *    \right  </pre>
- * </p>
+ *    \right )  </pre>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Right extends AbstractTeXDelimter {
 

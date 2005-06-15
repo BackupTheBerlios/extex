@@ -31,25 +31,25 @@ import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
  * This class provides an implementation for the primitive <code>\over</code>.
  *
  * <doc name="over">
- * <h3>The Primitive <tt>\over</tt></h3>
+ * <h3>The Math Primitive <tt>\over</tt></h3>
  * <p>
  *  TODO missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;over&rang;
- *       &rarr; <tt>\over</tt>  </pre>
- * </p>
- * <p>
- *  Examples:
+ *       &rarr; ... <tt>\over</tt> ...  </pre>
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    a \over b  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Over extends AbstractMathCode {
 

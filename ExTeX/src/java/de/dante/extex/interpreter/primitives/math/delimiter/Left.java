@@ -31,25 +31,25 @@ import de.dante.extex.typesetter.type.math.MathDelimiter;
  * This class provides an implementation for the primitive <code>\left</code>.
  *
  * <doc name="left">
- * <h3>The Primitive <tt>\left</tt></h3>
+ * <h3>The Math Primitive <tt>\left</tt></h3>
  * <p>
  *  TODO missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;left&rang;
- *       &rarr; <tt>\left</tt>  </pre>
- * </p>
- * <p>
- *  Examples:
+ *       &rarr; <tt>\left</tt> ...  </pre>
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
- *    \left  </pre>
- * </p>
+ *    \left(  </pre>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Left extends AbstractTeXDelimter {
 

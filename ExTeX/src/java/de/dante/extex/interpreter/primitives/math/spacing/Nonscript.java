@@ -33,26 +33,26 @@ import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
  * <code>\nonscript</code>.
  *
  * <doc name="nonscript">
- * <h3>The Primitive <tt>\nonscript</tt></h3>
+ * <h3>The Math Primitive <tt>\nonscript</tt></h3>
  * <p>
  *  The primitive can be used in math modes only. It cancels following glue if
  *  the current style is script style or scriptscript style.
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;nonscript&rang;
  *       &rarr; <tt>\nonscript</tt>  </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \nonscript  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Nonscript extends AbstractMathCode {
 

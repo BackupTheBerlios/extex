@@ -32,25 +32,25 @@ import de.dante.extex.typesetter.type.noad.OpenNoad;
  * This class provides an implementation for the primitive <code>\mathopen</code>.
  *
  * <doc name="mathopen">
- * <h3>The Primitive <tt>\mathopen</tt></h3>
+ * <h3>The Math Primitive <tt>\mathopen</tt></h3>
  * <p>
  *  TODO missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;mathopen&rang;
  *       &rarr; <tt>\mathopen</tt>  </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \mathopen  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Mathopen extends AbstractMathCode {
 

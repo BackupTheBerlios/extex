@@ -35,25 +35,25 @@ import de.dante.extex.typesetter.type.noad.Noad;
  * <code>\mathaccent</code>.
  *
  * <doc name="mathaccent">
- * <h3>The Primitive <tt>\mathaccent</tt></h3>
+ * <h3>The Math Primitive <tt>\mathaccent</tt></h3>
  * <p>
  *  TODO missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;mathaccent&rang;
  *       &rarr; <tt>\mathaccent</tt>  </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \mathaccent  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Mathaccent extends AbstractMathCode {
 

@@ -32,25 +32,25 @@ import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
  * This class provides an implementation for the primitive <code>\atop</code>.
  *
  * <doc name="atop">
- * <h3>The Primitive <tt>\atop</tt></h3>
+ * <h3>The Math Primitive <tt>\atop</tt></h3>
  * <p>
  *  TODO missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;atop&rang;
- *       &rarr; <tt>\atop</tt>  </pre>
- * </p>
- * <p>
- *  Examples:
+ *       &rarr; ... <tt>\atop</tt> ...  </pre>
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \atop  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Atop extends AbstractMathCode {
 

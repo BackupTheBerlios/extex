@@ -33,25 +33,25 @@ import de.dante.extex.typesetter.type.noad.Noad;
  * <code>\mathbin</code>.
  *
  * <doc name="mathbin">
- * <h3>The Primitive <tt>\mathbin</tt></h3>
+ * <h3>The Math Primitive <tt>\mathbin</tt></h3>
  * <p>
  *  TODO missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;mathbin&rang;
  *       &rarr; <tt>\mathbin</tt>  </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \mathbin  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Mathbin extends AbstractMathCode {
 
