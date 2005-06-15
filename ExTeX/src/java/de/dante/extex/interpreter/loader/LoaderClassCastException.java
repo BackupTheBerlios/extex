@@ -19,11 +19,12 @@
 package de.dante.extex.interpreter.loader;
 
 
+
 /**
  * This exception is used when the loader detects a class cast exception.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class LoaderClassCastException extends LoaderException {
 
