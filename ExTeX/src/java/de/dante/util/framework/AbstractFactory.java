@@ -66,9 +66,13 @@ import de.dante.util.framework.logger.LogEnabled;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
-public abstract class AbstractFactory implements Configurable, LogEnabled {
+public abstract class AbstractFactory
+        implements
+            Configurable,
+            LogEnabled,
+            RegistrarObserver {
 
     /**
      * The constant <tt>CLASS_ATTRIBUTE</tt> contains the name of the attribute
@@ -472,13 +476,13 @@ public abstract class AbstractFactory implements Configurable, LogEnabled {
      *
      * @param config the configuration to us
      * @param className the name of the class to instantiate
-     * @param theClass the class to instatiate
+     * @param theClass the class to instantiate
      *
      * @return a new instance
      *
      * @throws InstantiationException in case of an instantiation error
      * @throws IllegalAccessException in case of an access error
-     * @throws ConfigurationException in case of a configuartion error
+     * @throws ConfigurationException in case of a configuration error
      */
     private Object createInstanceForConfiguration0(final Configuration config,
             final String className, final Class theClass)
@@ -510,7 +514,7 @@ public abstract class AbstractFactory implements Configurable, LogEnabled {
      * @throws InstantiationException in case of an instantiation error
      * @throws IllegalAccessException in case of an access error
      * @throws InvocationTargetException in case of an invocation error
-     * @throws ConfigurationException in case of a configuartion error
+     * @throws ConfigurationException in case of a configuration error
      */
     private Object createInstanceForConfiguration1(final Configuration config,
             final Class target, final String className,
@@ -604,6 +608,16 @@ public abstract class AbstractFactory implements Configurable, LogEnabled {
     public Logger getLogger() {
 
         return this.logger;
+    }
+
+    /**
+     * @see de.dante.util.framework.RegistrarObserver#reconnect(java.lang.Object)
+     */
+    public void reconnect(final Object instance) throws ConfigurationException {
+
+        enableLogging(instance, getLogger());
+        configure(instance, configuration);
+        enableLocalization(instance, instance.getClass().getName());
     }
 
     /**
