@@ -1,6 +1,6 @@
 #!/bin/perl -w
 ##*****************************************************************************
-## $Id: analyzeConfig,v 0.00 2005/05/31 10:29:42 gene Exp $
+## $Id: primitives.pl,v 1.1 2005/06/15 21:32:48 gene Exp $
 ##*****************************************************************************
 ## Author: Gerd Neugebauer
 ##=============================================================================
@@ -115,23 +115,27 @@ sub ignorecase {
 sub processPrimitive {
   my ($out, $name, $class) = @_;
   local $_ = ($name eq ' '? '\\[': $name);
-  print $out "\n\\subsection*{The Primitive \\Macro{$_}}\n";
 
   local $_ = $class;
   s|\.|/|g;
   $_ = $classpath . '/' . $_ . '.java';
   if ($class eq 'de.dante.extex.interpreter.primitives.register.count.IntegerParameter') {
+    print $out "\n\\subsection*{The Count Primitive \\Macro{$name}}\n";
     print $out "\n\\macro{$name} is a count register.\n";
   } elsif ($class eq 'de.dante.extex.interpreter.primitives.register.skip.SkipParameter') {
+    print $out "\n\\subsection*{The Glue Primitive \\Macro{$name}}\n";
     print $out "\n\\macro{$name} is a skip register.\n";
 
   } elsif ($class eq 'de.dante.extex.interpreter.primitives.register.dimen.DimenParameter') {
+    print $out "\n\\subsection*{The Dimen Primitive \\Macro{$name}}\n";
     print $out "\n\\macro{$name} is a dimen register.\n";
 
   } elsif ($class eq 'de.dante.extex.interpreter.primitives.register.toks.ToksParameter') {
+    print $out "\n\\subsection*{The Toks Primitive \\Macro{$name}}\n";
     print $out "\n\\macro{$name} is a toks register.\n";
 
   } elsif ($class eq 'de.dante.extex.interpreter.primitives.register.font.NumberedFont') {
+    print $out "\n\\subsection*{The Font Primitive \\Macro{$name}}\n";
     print $out "\n\\macro{$name} is a numbered font register.\n";
 
   } elsif ($cache{$class}) {
@@ -140,6 +144,7 @@ sub processPrimitive {
     processClass($out, $name, $_, '');
     $cache{$class} = 1;
   } else {
+    print $out "\n\\subsection*{The Primitive \\Macro{$name}}\n";
     print $out "\n\\macro{$name} is not implemented yet.\n\n";
   }
   $_ = ($name eq ' '? '\\[': $name);
@@ -190,113 +195,13 @@ sub processClass {
   my $fd = new FileHandle($file, 'r');
   local $_;
   my $collect = undef;
-  my $listing = undef;
 
   while(<$fd>) {
     chomp;
     $_ = $_ . "\n";
     if (m|<doc.*name="([^\"]*)"|) {
+      $s       = processDocTag($name, $fd, $s);
       $collect = 1;
-    } elsif(m|</doc>|) {
-      $collect = undef;
-    } elsif($collect) {
-
-      next if m/ TODO /;
-
-      $_ = translate($_);
-
-      s|<h3>.*</h3>\s*||;
-      s|<h4>(.*)</h4>|\\subsubsection*{$1}|;
-      s|^ ?Examples:\s*$|\\subsubsection*{Examples}\n|;
-      s|<p>\s*||g;
-      s|<dl>|\\begin{description}|g;
-      s|</dl>|\\end{description}|g;
-      s|<dt>|\\item[|g;
-      s|</dt>|]|g;
-      s|<dd>||g;
-      s|</dd>||g;
-      s|<p class="TeXbook">\s*|\\|g;
-      s|</p>\s*|\\par |;
-      s|<br[ /]*>|\\ |;
-      if (m/\s*<pre\s+class="syntax">/) {
-	$s .= $`;
-	my $spec = '\\begin{syntax}';
-	while(<$fd>) {
-	  $_ = translate($_) ;
-	  next if m/^\s*$/;
-
-	  s|^(\s*)\\rightarrow{}|$1\\SyntaxDef|;
-	  s/^(\s*)\|/$1\\SyntaxOr/;
-	  s/\[([a-z \<=\>\&;]*)\]/[\\texttt{$1}]/;
-
-	  if (m|</pre>|) {
-	    $spec .= $`;
-	    last;
-	  }
-	  $spec .= $_;
-	}
-	$_ = $spec;
-#	s|\@linkplain\s+\\([^)]+\\)\s+||sg;
-#	s|\@linkplain\s+[^()]+\s+||sg;
-	s|\@linkplain\s+\S+\s+||sg;
-	s|\@link\s+\w+\\([^)]+\\)\s+||sg;
-	s|\@link\s+[^()]+\s+||sg;
-	s/\n/\t\\\\\n/mg;
-	$_ .= "\n\\end{syntax}\n";
-
-    print STDERR $_ . "\n" if m/syntax/;
-
-      } elsif (m/\s*<pre\s+class="JavaSample">/) {
-	$s .= $`;
-	my $spec = '\\begin{lstlisting}{language=Java}' . $';
-	while(<$fd>) {
-	  chomp;
-	  $_ = $_ . "\n";
-	  s|^ \* ?||;
-#	  s|([~_\%\$])|\\$1|g;
-	  s|\&\#x0*5c;|\\|g;
-	  s|\&ndash;\s*|--|g;
-	  s|</?[bi]>||g;
-
-	  if (m|</pre>|) {
-	    $spec .= $`;
-	    last;
-	  }
-	  $spec .= $_;
-	}
-	$_ = $spec;
-	$_ .= "\\end{lstlisting}\n";
-
-      } elsif (m/\s*<pre\s+class="TeXSample">/) {
-	$s .= $`;
-	my $spec = '\\begin{lstlisting}{language=TeX}' . $';
-	while(<$fd>) {
-	  chomp;
-	  $_ = $_ . "\n";
-	  s|^ \* ?||;
-#	  s|([~_\%\$])|\\$1|g;
-	  s|\&\#x0*5c;|\\|g;
-	  s|\&ndash;\s*|--|g;
-	  s|</?[bi]>||g;
-
-	  if (m|</pre>|) {
-	    $spec .= $`;
-	    last;
-	  }
-	  $spec .= $_;
-	}
-	$_ = $spec;
-	$_ .= "\n\\end{lstlisting}\n";
-
-      } elsif(m|</pre>|) {
-	if ($listing) {
-	  $listing = undef;
-	  s|</pre>|\n\\end{lstlisting}|;
-	}
-      }
-
-      print STDERR "$file: unprocessed: $&\n" if(m|</?[a-z][a-z0-9]*|i);
-      $s .= $_
     }
   }
 
@@ -312,6 +217,116 @@ sub processClass {
   s|\\Macro{ }|\\Macro{\\[}|g;
   s|\\Macro{\\+}|\\Macro{\\char\`\\\\}|g;
   print $out $_;
+}
+
+#------------------------------------------------------------------------------
+# Function:	processDocTag
+#
+sub processDocTag {
+  my ($name, $fd, $s) = @_;
+  local $_;
+
+  while(<$fd>) {
+    chomp;
+    $_ = $_ . "\n";
+    if(m|</doc>|) {
+      return $s;
+    }
+
+    if ( m/ TODO / ) {
+      $s .= "\n\n\\Incomplete\n\n";
+      next;
+    }
+
+    $_ = translate($_);
+
+    s|<h3>(.*)</h3>\s*|\\subsection*{$1}|;
+    s|<h4>(.*)</h4>|\\subsubsection*{$1}|;
+    s|^ ?Examples:\s*$|\\subsubsection*{Examples}\n|;
+    s|<p>\s*||g;
+    s|<dl>|\\begin{description}|g;
+    s|</dl>|\\end{description}|g;
+    s|<dt>|\\item[|g;
+    s|</dt>|]|g;
+    s|<dd>||g;
+    s|</dd>||g;
+    s|<p class="TeXbook">\s*|\\|g;
+    s|</p>\s*|\\par |;
+    s|<br[ /]*>|\\ |;
+    if (m/\s*<pre\s+class="syntax">/) {
+      $s .= $`;
+      my $spec = '\\begin{syntax}';
+      while(<$fd>) {
+	$_ = translate($_) ;
+	next if m/^\s*$/;
+	
+	s|^(\s*)\\rightarrow{}|$1\\SyntaxDef|;
+	s/^(\s*)\|/$1\\SyntaxOr/;
+	s/\[([a-z \<=\>\&;]*)\]/[\\texttt{$1}]/;
+	
+	if (m|</pre>|) {
+	    $spec .= $`;
+	    last;
+	  }
+	$spec .= $_;
+      }
+      $_ = $spec;
+#	s|\@linkplain\s+\\([^)]+\\)\s+||sg;
+#	s|\@linkplain\s+[^()]+\s+||sg;
+      s|\@linkplain\s+\S+\s+||sg;
+      s|\@link\s+\w+\\([^)]+\\)\s+||sg;
+      s|\@link\s+[^()]+\s+||sg;
+      s/\n/\t\\\\\n/mg;
+      $_ .= "\n\\end{syntax}\n";
+
+    } elsif (m/\s*<pre\s+class="JavaSample">/) {
+      $s .= $`;
+      my $spec = '\\begin{lstlisting}{language=Java}' . $';
+      while(<$fd>) {
+	chomp;
+	$_ = $_ . "\n";
+	s|^ \* ?||;
+#	  s|([~_\%\$])|\\$1|g;
+	s|\&\#x0*5c;|\\|g;
+	s|\&ndash;\s*|--|g;
+	s|</?[bi]>||g;
+	
+	if (m|</pre>|) {
+	  $spec .= $`;
+	  last;
+	}
+	$spec .= $_;
+      }
+      $_ = $spec;
+      $_ .= "\\end{lstlisting}\n";
+      
+    } elsif (m/\s*<pre\s+class="TeXSample">/) {
+      $s .= $`;
+      my $spec = '\\begin{lstlisting}{language=TeX}' . $';
+      while(<$fd>) {
+	chomp;
+	$_ = $_ . "\n";
+	s|^ \* ?||;
+#	  s|([~_\%\$])|\\$1|g;
+	s|\&\#x0*5c;|\\|g;
+	s|\&ndash;\s*|--|g;
+	s|</?[bi]>||g;
+	
+	if (m|</pre>|) {
+	  $spec .= $`;
+	  last;
+	}
+	$spec .= $_;
+      }
+      $_ = $spec;
+      $_ .= "\n\\end{lstlisting}\n";
+      
+    }
+
+    print STDERR "$name: unprocessed: $&\n" if(m|</?[a-z][a-z0-9]*|i);
+    $s .= $_;
+  }
+  return $s;
 }
 
 #------------------------------------------------------------------------------
