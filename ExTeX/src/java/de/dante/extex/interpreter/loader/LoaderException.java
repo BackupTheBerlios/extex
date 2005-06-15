@@ -22,10 +22,10 @@ import de.dante.extex.interpreter.exception.InterpreterException;
 
 
 /**
- * This esception is used when the loader detects some exception.
+ * This exception is used when the loader detects some problem.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class LoaderException extends InterpreterException {
 
@@ -40,21 +40,21 @@ public class LoaderException extends InterpreterException {
     /**
      * Creates a new object.
      *
-     * @param arg0 the message
+     * @param message the message
      */
-    public LoaderException(final String arg0) {
+    public LoaderException(final String message) {
 
-        super(arg0);
+        super(message);
     }
 
     /**
      * Creates a new object.
      *
-     * @param arg0 the cause
+     * @param cause the cause
      */
-    public LoaderException(final Throwable arg0) {
+    public LoaderException(final Throwable cause) {
 
-        super(arg0);
+        super(cause);
     }
 
 }

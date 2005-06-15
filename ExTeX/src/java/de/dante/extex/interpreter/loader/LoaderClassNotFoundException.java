@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -16,25 +16,25 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.loader;
 
-
 /**
- * This exception is used when the loader detects a class not found exception.
+ * This exception is used when the loader detects that a class can not be found.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class LoaderClassNotFoundException extends LoaderException {
 
     /**
      * Creates a new object.
      *
-     * @param arg1 the cause
+     * @param cause the cause of all evil
      */
-    public LoaderClassNotFoundException(final Throwable arg1) {
+    public LoaderClassNotFoundException(final Throwable cause) {
 
-        super(arg1);
+        super(cause);
     }
 
 }
