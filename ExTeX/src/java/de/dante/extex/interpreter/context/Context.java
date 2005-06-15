@@ -48,7 +48,7 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.56 $
+ * @version $Revision: 1.57 $
  */
 public interface Context
         extends
@@ -431,7 +431,7 @@ public interface Context
      *
      * @throws ConfigurationException in case of an error in the configuration.
      */
-    void setTypesettingContext(Color color) throws ConfigurationException;
+    void set(Color color) throws ConfigurationException;
 
     /**
      * Setter for the direction in the current typesetting context.
@@ -440,7 +440,7 @@ public interface Context
      *
      * @throws ConfigurationException in case of an error in the configuration.
      */
-    void setTypesettingContext(Direction direction)
+    void set(Direction direction)
             throws ConfigurationException;
 
     /**
@@ -450,7 +450,7 @@ public interface Context
      *
      * @throws ConfigurationException in case of an error in the configuration.
      */
-    void setTypesettingContext(Font font) throws ConfigurationException;
+    void set(Font font) throws ConfigurationException;
 
     /**
      * Setter for the language in the current typesetting context.
@@ -459,7 +459,7 @@ public interface Context
      *
      * @throws ConfigurationException in case of an error in the configuration.
      */
-    void setTypesettingContext(Language language) throws ConfigurationException;
+    void set(Language language) throws ConfigurationException;
 
     /**
      * Setter for the typesetting context in the current group.
@@ -475,7 +475,7 @@ public interface Context
      * @param global the indicator for the scope; <code>true</code> means all
      *            groups; otherwise the current group is affected only
      */
-    void setTypesettingContext(TypesettingContext context, boolean global);
+    void set(TypesettingContext context, boolean global);
 
     /**
      * Declare the translation from a lower case character to an upper case
