@@ -27,7 +27,7 @@ import de.dante.extex.interpreter.type.dimen.FixedDimen;
  * left and by the given width on the right.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class FixedParagraphShape extends ParagraphShape {
 
@@ -48,16 +48,16 @@ public class FixedParagraphShape extends ParagraphShape {
     }
 
     /**
-     * @see de.dante.extex.typesetter.paragraphBuilder.ParagraphShape#getLeft(int)
+     * @see de.dante.extex.typesetter.paragraphBuilder.ParagraphShape#getIndent(int)
      */
-    public FixedDimen getLeft(final int index) {
+    public FixedDimen getIndent(final int index) {
 
         return Dimen.ZERO_PT;
     }
     /**
-     * @see de.dante.extex.typesetter.paragraphBuilder.ParagraphShape#getRight(int)
+     * @see de.dante.extex.typesetter.paragraphBuilder.ParagraphShape#getLength(int)
      */
-    public FixedDimen getRight(final int index) {
+    public FixedDimen getLength(final int index) {
 
         return hsize;
     }

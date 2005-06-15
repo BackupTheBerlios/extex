@@ -26,7 +26,7 @@ import de.dante.extex.interpreter.type.dimen.FixedDimen;
  * This paragraph shape represents a block with hanging indentation.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class HangingParagraphShape extends ParagraphShape {
 
@@ -63,9 +63,9 @@ public class HangingParagraphShape extends ParagraphShape {
     }
 
     /**
-     * @see de.dante.extex.typesetter.paragraphBuilder.ParagraphShape#getLeft(int)
+     * @see de.dante.extex.typesetter.paragraphBuilder.ParagraphShape#getIndent(int)
      */
-    public FixedDimen getLeft(final int index) {
+    public FixedDimen getIndent(final int index) {
 
         if (hangafter > 0) {
             if (index >= hangafter) {
@@ -79,9 +79,9 @@ public class HangingParagraphShape extends ParagraphShape {
     }
 
     /**
-     * @see de.dante.extex.typesetter.paragraphBuilder.ParagraphShape#getRight(int)
+     * @see de.dante.extex.typesetter.paragraphBuilder.ParagraphShape#getLength(int)
      */
-    public FixedDimen getRight(final int index) {
+    public FixedDimen getLength(final int index) {
 
         return hsize;
     }

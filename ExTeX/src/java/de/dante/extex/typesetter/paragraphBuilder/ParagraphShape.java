@@ -29,7 +29,7 @@ import de.dante.extex.interpreter.type.dimen.FixedDimen;
  * This class defines an arbitray paragraph shape.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class ParagraphShape {
 
@@ -63,29 +63,39 @@ public class ParagraphShape {
     /**
      * Getter for the left hand margin of a certain position.
      * The position is given by an index into the list.
+     * If the index points past the end of th list then the last entry is
+     * repeated. If the index is negative then 0pt is returned.
      *
      * @param index the index of the position
      *
      * @return the left hand margin
      */
-    public FixedDimen getLeft(final int index) {
+    public FixedDimen getIndent(final int index) {
 
+        if (index < 0) {
+            return Dimen.ZERO_PT;
+        }
         int i = points.size() / 2;
-        return (Dimen) points.get((index > i ? i : index) * 2);
+        return (FixedDimen) points.get((index > i ? i : index) * 2);
     }
 
     /**
      * Getter for the right hand margin of a certain position.
      * The position is given by an index into the list.
+     * If the index points past the end of th list then the last entry is
+     * repeated. If the index is negative then 0pt is returned.
      *
      * @param index the index of the position
      *
      * @return the right hand margin
      */
-    public FixedDimen getRight(final int index) {
+    public FixedDimen getLength(final int index) {
 
+        if (index < 0) {
+            return Dimen.ZERO_PT;
+        }
         int i = points.size() / 2;
-        return (Dimen) points.get((index > i ? i : index) * 2 + 1);
+        return (FixedDimen) points.get((index > i ? i : index) * 2 + 1);
     }
 
     /**

@@ -55,7 +55,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
 
@@ -228,8 +228,8 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
 
         while (i < len) {
             accumulator.set(Dimen.ZERO_PT);
-            wd.set(parshape.getRight(line));
-            wd.subtract(parshape.getLeft(line));
+            wd.set(parshape.getLength(line));
+            wd.subtract(parshape.getIndent(line));
             Dimen width = new Dimen(wd);
             wd.subtract(adjustLeftRight);
             HorizontalListNode hlist = new HorizontalListNode();

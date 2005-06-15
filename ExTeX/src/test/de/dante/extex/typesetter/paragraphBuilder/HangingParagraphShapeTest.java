@@ -26,7 +26,7 @@ import de.dante.extex.interpreter.type.dimen.Dimen;
  * Test cases for the class HangingParagraphShape.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class HangingParagraphShapeTest extends TestCase {
 
@@ -59,14 +59,14 @@ public class HangingParagraphShapeTest extends TestCase {
         HangingParagraphShape shape = new HangingParagraphShape(0, new Dimen(
                 INDENT), new Dimen(RIGHT));
 
-        assertEquals(0, shape.getLeft(0).getValue());
-        assertEquals(0, shape.getLeft(1).getValue());
-        assertEquals(0, shape.getLeft(2).getValue());
-        assertEquals(0, shape.getLeft(3).getValue());
-        assertEquals(RIGHT, shape.getRight(0).getValue());
-        assertEquals(RIGHT, shape.getRight(1).getValue());
-        assertEquals(RIGHT, shape.getRight(2).getValue());
-        assertEquals(RIGHT, shape.getRight(3).getValue());
+        assertEquals(0, shape.getIndent(0).getValue());
+        assertEquals(0, shape.getIndent(1).getValue());
+        assertEquals(0, shape.getIndent(2).getValue());
+        assertEquals(0, shape.getIndent(3).getValue());
+        assertEquals(RIGHT, shape.getLength(0).getValue());
+        assertEquals(RIGHT, shape.getLength(1).getValue());
+        assertEquals(RIGHT, shape.getLength(2).getValue());
+        assertEquals(RIGHT, shape.getLength(3).getValue());
     }
 
     /**
@@ -78,14 +78,14 @@ public class HangingParagraphShapeTest extends TestCase {
         HangingParagraphShape shape = new HangingParagraphShape(1, new Dimen(
                 INDENT), new Dimen(RIGHT));
 
-        assertEquals(0, shape.getLeft(0).getValue());
-        assertEquals(INDENT, shape.getLeft(1).getValue());
-        assertEquals(INDENT, shape.getLeft(2).getValue());
-        assertEquals(INDENT, shape.getLeft(3).getValue());
-        assertEquals(RIGHT, shape.getRight(0).getValue());
-        assertEquals(RIGHT, shape.getRight(1).getValue());
-        assertEquals(RIGHT, shape.getRight(2).getValue());
-        assertEquals(RIGHT, shape.getRight(3).getValue());
+        assertEquals(0, shape.getIndent(0).getValue());
+        assertEquals(INDENT, shape.getIndent(1).getValue());
+        assertEquals(INDENT, shape.getIndent(2).getValue());
+        assertEquals(INDENT, shape.getIndent(3).getValue());
+        assertEquals(RIGHT, shape.getLength(0).getValue());
+        assertEquals(RIGHT, shape.getLength(1).getValue());
+        assertEquals(RIGHT, shape.getLength(2).getValue());
+        assertEquals(RIGHT, shape.getLength(3).getValue());
     }
 
     /**
@@ -97,14 +97,14 @@ public class HangingParagraphShapeTest extends TestCase {
         HangingParagraphShape shape = new HangingParagraphShape(2, new Dimen(
                 INDENT), new Dimen(RIGHT));
 
-        assertEquals(0, shape.getLeft(0).getValue());
-        assertEquals(0, shape.getLeft(1).getValue());
-        assertEquals(INDENT, shape.getLeft(2).getValue());
-        assertEquals(INDENT, shape.getLeft(3).getValue());
-        assertEquals(RIGHT, shape.getRight(0).getValue());
-        assertEquals(RIGHT, shape.getRight(1).getValue());
-        assertEquals(RIGHT, shape.getRight(2).getValue());
-        assertEquals(RIGHT, shape.getRight(3).getValue());
+        assertEquals(0, shape.getIndent(0).getValue());
+        assertEquals(0, shape.getIndent(1).getValue());
+        assertEquals(INDENT, shape.getIndent(2).getValue());
+        assertEquals(INDENT, shape.getIndent(3).getValue());
+        assertEquals(RIGHT, shape.getLength(0).getValue());
+        assertEquals(RIGHT, shape.getLength(1).getValue());
+        assertEquals(RIGHT, shape.getLength(2).getValue());
+        assertEquals(RIGHT, shape.getLength(3).getValue());
     }
 
     /**
@@ -115,14 +115,14 @@ public class HangingParagraphShapeTest extends TestCase {
         HangingParagraphShape shape = new HangingParagraphShape(3, new Dimen(
                 INDENT), new Dimen(RIGHT));
 
-        assertEquals(0, shape.getLeft(0).getValue());
-        assertEquals(0, shape.getLeft(1).getValue());
-        assertEquals(0, shape.getLeft(2).getValue());
-        assertEquals(INDENT, shape.getLeft(3).getValue());
-        assertEquals(RIGHT, shape.getRight(0).getValue());
-        assertEquals(RIGHT, shape.getRight(1).getValue());
-        assertEquals(RIGHT, shape.getRight(2).getValue());
-        assertEquals(RIGHT, shape.getRight(3).getValue());
+        assertEquals(0, shape.getIndent(0).getValue());
+        assertEquals(0, shape.getIndent(1).getValue());
+        assertEquals(0, shape.getIndent(2).getValue());
+        assertEquals(INDENT, shape.getIndent(3).getValue());
+        assertEquals(RIGHT, shape.getLength(0).getValue());
+        assertEquals(RIGHT, shape.getLength(1).getValue());
+        assertEquals(RIGHT, shape.getLength(2).getValue());
+        assertEquals(RIGHT, shape.getLength(3).getValue());
     }
 
     /**
@@ -133,14 +133,14 @@ public class HangingParagraphShapeTest extends TestCase {
         HangingParagraphShape shape = new HangingParagraphShape(-1, new Dimen(
                 INDENT), new Dimen(RIGHT));
 
-        assertEquals(INDENT, shape.getLeft(0).getValue());
-        assertEquals(0, shape.getLeft(1).getValue());
-        assertEquals(0, shape.getLeft(2).getValue());
-        assertEquals(0, shape.getLeft(3).getValue());
-        assertEquals(RIGHT, shape.getRight(0).getValue());
-        assertEquals(RIGHT, shape.getRight(1).getValue());
-        assertEquals(RIGHT, shape.getRight(2).getValue());
-        assertEquals(RIGHT, shape.getRight(3).getValue());
+        assertEquals(INDENT, shape.getIndent(0).getValue());
+        assertEquals(0, shape.getIndent(1).getValue());
+        assertEquals(0, shape.getIndent(2).getValue());
+        assertEquals(0, shape.getIndent(3).getValue());
+        assertEquals(RIGHT, shape.getLength(0).getValue());
+        assertEquals(RIGHT, shape.getLength(1).getValue());
+        assertEquals(RIGHT, shape.getLength(2).getValue());
+        assertEquals(RIGHT, shape.getLength(3).getValue());
     }
 
     /**
@@ -151,14 +151,14 @@ public class HangingParagraphShapeTest extends TestCase {
         HangingParagraphShape shape = new HangingParagraphShape(-2, new Dimen(
                 INDENT), new Dimen(RIGHT));
 
-        assertEquals(INDENT, shape.getLeft(0).getValue());
-        assertEquals(INDENT, shape.getLeft(1).getValue());
-        assertEquals(0, shape.getLeft(2).getValue());
-        assertEquals(0, shape.getLeft(3).getValue());
-        assertEquals(RIGHT, shape.getRight(0).getValue());
-        assertEquals(RIGHT, shape.getRight(1).getValue());
-        assertEquals(RIGHT, shape.getRight(2).getValue());
-        assertEquals(RIGHT, shape.getRight(3).getValue());
+        assertEquals(INDENT, shape.getIndent(0).getValue());
+        assertEquals(INDENT, shape.getIndent(1).getValue());
+        assertEquals(0, shape.getIndent(2).getValue());
+        assertEquals(0, shape.getIndent(3).getValue());
+        assertEquals(RIGHT, shape.getLength(0).getValue());
+        assertEquals(RIGHT, shape.getLength(1).getValue());
+        assertEquals(RIGHT, shape.getLength(2).getValue());
+        assertEquals(RIGHT, shape.getLength(3).getValue());
     }
 
     /**
@@ -169,14 +169,14 @@ public class HangingParagraphShapeTest extends TestCase {
         HangingParagraphShape shape = new HangingParagraphShape(-3, new Dimen(
                 INDENT), new Dimen(RIGHT));
 
-        assertEquals(INDENT, shape.getLeft(0).getValue());
-        assertEquals(INDENT, shape.getLeft(1).getValue());
-        assertEquals(INDENT, shape.getLeft(2).getValue());
-        assertEquals(0, shape.getLeft(3).getValue());
-        assertEquals(RIGHT, shape.getRight(0).getValue());
-        assertEquals(RIGHT, shape.getRight(1).getValue());
-        assertEquals(RIGHT, shape.getRight(2).getValue());
-        assertEquals(RIGHT, shape.getRight(3).getValue());
+        assertEquals(INDENT, shape.getIndent(0).getValue());
+        assertEquals(INDENT, shape.getIndent(1).getValue());
+        assertEquals(INDENT, shape.getIndent(2).getValue());
+        assertEquals(0, shape.getIndent(3).getValue());
+        assertEquals(RIGHT, shape.getLength(0).getValue());
+        assertEquals(RIGHT, shape.getLength(1).getValue());
+        assertEquals(RIGHT, shape.getLength(2).getValue());
+        assertEquals(RIGHT, shape.getLength(3).getValue());
     }
 
 }
