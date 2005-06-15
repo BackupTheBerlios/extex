@@ -29,6 +29,9 @@ import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.scanner.type.ControlSequenceToken;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.framework.Registrar;
+import de.dante.util.framework.RegistrarException;
 import de.dante.util.framework.i18n.Localizable;
 import de.dante.util.framework.i18n.Localizer;
 
@@ -39,7 +42,7 @@ import de.dante.util.framework.i18n.Localizer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class AbstractCode implements Code, Localizable, Serializable {
 
@@ -168,8 +171,13 @@ public class AbstractCode implements Code, Localizable, Serializable {
      */
     public Object readResolve() throws ObjectStreamException {
 
-        //System.err.println(this.getClass().getName());
-        //TODO gene: readResolve() unimplemented
+        try {
+            Registrar.reconnect(this);
+        } catch (RegistrarException e) {
+            new RuntimeException(e);
+        } catch (ConfigurationException e) {
+            new RuntimeException(e);
+        }
         return this;
     }
 
