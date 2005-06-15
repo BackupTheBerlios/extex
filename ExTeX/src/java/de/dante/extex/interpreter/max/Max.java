@@ -78,13 +78,13 @@ import de.dante.extex.scanner.type.Token;
 import de.dante.extex.scanner.type.TokenFactory;
 import de.dante.extex.scanner.type.TokenVisitor;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.util.GeneralException;
 import de.dante.util.Switch;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationMissingException;
 import de.dante.util.configuration.ConfigurationWrapperException;
+import de.dante.util.framework.Registrar;
 import de.dante.util.framework.configuration.Configurable;
 import de.dante.util.framework.i18n.Localizable;
 import de.dante.util.framework.i18n.Localizer;
@@ -96,7 +96,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.74 $
+ * @version $Revision: 1.75 $
  */
 public abstract class Max
         implements
@@ -543,7 +543,7 @@ public abstract class Max
      * Load the format from an external source.
      *
      * @param stream the stream to read the format information from
-     * @param fmt the nam eof the format to be loaded
+     * @param fmt the name of the format to be loaded
      *
      * @throws LoaderException in case that a class could not be found
      *  on the class path or a wrong class is contained in the format
@@ -559,7 +559,9 @@ public abstract class Max
 
         Context newContext;
         try {
+            //Registrar.register( xxx , Code.class);
             newContext = new SerialLoader().load(stream);
+            Registrar.reset();
         } catch (InvalidClassException e) {
             throw new LoaderException(getLocalizer().format(
                     "ClassLoaderIncompatibility", fmt, e.getMessage()));
