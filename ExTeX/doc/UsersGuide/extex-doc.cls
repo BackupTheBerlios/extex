@@ -150,8 +150,10 @@
 
 \providecommand\eTeX{\ensuremath{\varepsilon}-\TeX}
 
-\newcommand\INCOMPLETE{\bigskip\par{\unitlength=1mm
+\newcommand\INCOMPLETE{\bigskip\par\noindent{\unitlength=1mm
     \framebox(60,20){\color{gray}To be completed.}}\bigskip\par}
+\newcommand\Incomplete{\bigskip\par\noindent{\unitlength=1mm
+    \framebox(60,8){\color{gray}To be completed.}}\bigskip\par}
 
 \newenvironment{abstract}{\begin{quotation}}{\end{quotation}}
 

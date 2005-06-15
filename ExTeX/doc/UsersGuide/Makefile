@@ -1,5 +1,5 @@
 #******************************************************************************
-#* $Id: Makefile,v 1.8 2005/06/14 10:00:41 gene Exp $
+#* $Id: Makefile,v 1.9 2005/06/15 21:37:41 gene Exp $
 #******************************************************************************
 #* Author: Gerd Neugebauer
 #*=============================================================================
@@ -26,8 +26,8 @@ extex-users.pdf: cfg $(MANUAL).tex
 %.toc: %.tex
 	@pdflatex $*
 
-Configurations/configurations.tex cfg: bin/analyzeConfig
-	perl bin/analyzeConfig				\
+Configurations/configurations.tex cfg: bin/primitives.pl
+	perl bin/primitives.pl				\
 		-cp   $(SRCDIR)				\
 		-out  tmp/configurations.tex		\
 		-prim tmp/primitives.tex		\
