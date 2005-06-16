@@ -30,7 +30,7 @@ import de.dante.util.UnicodeChar;
  * GlyphImplementation
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class GlyphImpl implements Glyph, Serializable {
 
@@ -77,7 +77,7 @@ public class GlyphImpl implements Glyph, Serializable {
     /**
      * The external fontfile or null, if no exists
      */
-    private FontStream externalfile = null;
+    private transient FontStream externalfile = null;
 
     /**
      * The left space in a glyph

@@ -21,7 +21,6 @@ package de.dante.extex.font;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Serializable;
 
 import de.dante.extex.font.exception.FontException;
 import de.dante.extex.font.exception.FontIOException;
@@ -33,9 +32,9 @@ import de.dante.util.file.random.RandomAccessR;
  * Abstract class for a FontStream.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public abstract class AbstractFontStream implements FontStream, Serializable {
+public abstract class AbstractFontStream implements FontStream {
 
     /**
      * Create a new object

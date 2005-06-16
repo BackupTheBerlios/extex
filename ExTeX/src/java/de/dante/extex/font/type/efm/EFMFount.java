@@ -59,7 +59,7 @@ import de.dante.util.resource.ResourceFinder;
  * Abstract class for a efm-font.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public abstract class EFMFount implements ModifiableFount, Serializable {
 
@@ -71,7 +71,7 @@ public abstract class EFMFount implements ModifiableFount, Serializable {
     /**
      * the external fontfile
      */
-    private FontStream externalstream;
+    private transient FontStream externalstream;
 
     /**
      * The glue for letterspace
@@ -116,7 +116,7 @@ public abstract class EFMFount implements ModifiableFount, Serializable {
     /**
      * the font factroy
      */
-    private FontFactory fontfactory;
+    private transient FontFactory fontfactory;
 
     /**
      * the fount key
