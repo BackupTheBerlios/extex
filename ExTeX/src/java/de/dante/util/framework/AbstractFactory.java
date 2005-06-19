@@ -66,7 +66,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public abstract class AbstractFactory
         implements
@@ -613,11 +613,17 @@ public abstract class AbstractFactory
     /**
      * @see de.dante.util.framework.RegistrarObserver#reconnect(java.lang.Object)
      */
-    public void reconnect(final Object instance) throws ConfigurationException {
+    public Object reconnect(final Object instance) throws RegistrarException {
 
-        enableLogging(instance, getLogger());
-        configure(instance, configuration);
-        enableLocalization(instance, instance.getClass().getName());
+        try {
+            enableLogging(instance, getLogger());
+            configure(instance, configuration);
+            enableLocalization(instance, instance.getClass().getName());
+        } catch (ConfigurationException e) {
+            throw new RegistrarException(e);
+        }
+
+        return instance;
     }
 
     /**

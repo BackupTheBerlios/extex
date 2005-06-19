@@ -22,17 +22,51 @@ package de.dante.util.framework;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.dante.util.configuration.ConfigurationException;
-
 /**
  * This class provides a means to reconnect an object to a managing factory
  * after it has been disconnected. The disconnection might happen during
  * serialization and deserialization.
  *
- * TODO gene: missing JavaDoc.
+ * <p>
+ *  Whenever an object is deserialized Java tries to invoke the method
+ *  {@link readResolve() readResolve()}. This method can be used to get a hand
+ *  on the object which has just been reconstructed. Here the object can be
+ *  replaced by another one or some other action can be applied.
+ * </p>
+ * <p>
+ *  Any class which is serializable and wants to participate in the reconnection
+ *  mechanism should implement the method <code>readResolve</code>. In this
+ *  method the method <code>reconnect()</code> of the
+ *  {@link Registrar Registrar} should be invoked. This is shown in the
+ *  following example:
+ * </p>
+ *
+ * <pre class="JavaSample">
+ *  <b>protected</b> Object readResolve() <b>throws</b> ObjectStreamException {
+ *
+ *      <b>return</b> Registrar.reconnect(this);
+ *  }
+ * <pre>
+ *
+ * <p>
+ *  Any factory which  wants to participate in the reconnection mechanism should
+ *  implement the interface
+ *  {@link de.dante.util.framework.RegistrarObserver RegistrarObserver}.
+ * </p>
+ * <p>
+ *  Finally, before an object is deserialized, the interested parties should
+ *  register an observer at the {@link Registrar Registrar}.
+ * </p>
+ * </p>
+ *  Note that the registrar has to be implemented as a static singleton since
+ *  readResolve() does not provide any means to pass a reference to some other
+ *  object to it.
+ * <p>
+ *
+ *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public final class Registrar {
 
@@ -40,7 +74,7 @@ public final class Registrar {
      * This class provides a container for a pair of a class and an observer.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static final class Obs {
 
@@ -89,12 +123,15 @@ public final class Registrar {
     }
 
     /**
-     * The field <tt>observers</tt> contains the ...
+     * The field <tt>observers</tt> contains the observers which are currently
+     * registered.
      */
     private static List observers = new ArrayList();
 
     /**
-     * TODO gene: missing JavaDoc
+     * This method registers an observer at the registrar. This observer is
+     * invoked for each class which is deserialized and matches the class given.
+     * The type argument can be an interface as well.
      *
      * @param observer the observer
      * @param type the interface or class to be observed
@@ -111,24 +148,26 @@ public final class Registrar {
      *
      * @param object the object to reconnect
      *
-     * @throws ConfigurationException in case of a problem during configuration
+     * @return the object which should actually be used
+     *
      * @throws RegistrarException in case of a problem with registration
      */
-    public static void reconnect(final Object object)
-            throws RegistrarException,
-                ConfigurationException {
+    public static Object reconnect(final Object object)
+            throws RegistrarException {
 
+        Object ob = object;
         int n = observers.size();
         for (int i = 0; i < n; i++) {
             Obs obs = (Obs) observers.get(i);
             if (obs.getType().isInstance(object)) {
-                obs.getObserver().reconnect(object);
+                ob = obs.getObserver().reconnect(ob);
             }
         }
+        return ob;
     }
 
     /**
-     * Reset all information which might be
+     * Reset the list all observers which are registered.
      */
     public static void reset() {
 
