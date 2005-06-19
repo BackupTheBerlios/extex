@@ -157,5 +157,23 @@
 
 \newenvironment{abstract}{\begin{quotation}}{\end{quotation}}
 
+\usepackage{multicol}
+\renewenvironment{theindex}{%
+  \setchapterpreamble{\index@preamble}%
+  \if@openright\cleardoublepage\else\clearpage\fi%
+  \chapter*{\indexname}\@mkboth{\indexname}{\indexname}%
+  \begin{multicols}3
+  \thispagestyle{\indexpagestyle}\parindent\z@
+  \setlength{\parskip}{\z@ \@plus .3\p@}
+  \setlength{\parfillskip}{\z@ \@plus 1fil}
+  \let\item\@idxitem}
+{\end{multicols}\clearpage}
+
+\providecommand\indexGroup[1]{\vskip 12pt plus 4pt minus 2pt
+  \textbf{\sffamily\normalsize #1}%
+  \vskip 6pt plus 3pt minus 1pt
+  \nopagebreak
+}
+
 \ProvidesClass{extex-doc}
 

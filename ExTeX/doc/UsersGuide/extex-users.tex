@@ -1,5 +1,5 @@
 %%*****************************************************************************
-%% $Id: extex-users.tex,v 1.15 2005/06/15 21:37:41 gene Exp $
+%% $Id: extex-users.tex,v 1.16 2005/06/19 13:13:32 gene Exp $
 %%*****************************************************************************
 %% Author: Gerd Neugebauer
 %%-----------------------------------------------------------------------------
@@ -18,7 +18,11 @@
 \newcommand\Mode[1]{\texttt{#1}\index{#1}}
 \newcommand\macro[1]{\texttt{\char`\\ #1}\index{#1@\texttt{\char`\\ #1}}}
 \newcommand\Macro[1]{\texttt{\char`\\ #1}}
-\newcommand\tag[1]{\(\langle\)\textit{#1}\(\rangle\)}
+\newcommand\tag[1]{%
+    \(\langle\)\textit{#1}\(\rangle\)%
+    \index{#1@\protect\Tag{#1}}}
+\newcommand\Tag[1]{\texorpdfstring{%
+    \(\langle\)\textit{#1}\(\rangle\)}{<#1>}}
 
 \newenvironment{syntax}{%
   \begin{tabbing}\kern2em\=\kern2em\=\kill
@@ -27,15 +31,9 @@
 \newcommand\SyntaxDef{\>\(\rightarrow\)\>}
 \newcommand\SyntaxOr{\>\(|\)\>}
 
-
 \def\setVersion$#1: #2.#3 ${\gdef\Version{0.0 (Revision #2.#3)}}
-\setVersion$Revision: 1.15 $
+\setVersion$Revision: 1.16 $
 
-\providecommand\indexGroup[1]{\vskip 12pt plus 4pt minus 2pt
-  \textbf{\sffamily\normalsize #1}%
-  \vskip 6pt plus 3pt minus 1pt
-  \nopagebreak
-}
 \makeindex
 
 \newenvironment{primitives}{\begin{quotation}\noindent\small\rightskip=0pt
@@ -85,6 +83,10 @@ under the terms of the GNU Free Documentation License, Version 1.2 or
 any later version published by the Free Software Foundation. A copy of
 the license is included in the section entitled ``GNU Free
 Documentation License''.
+\bigskip
+
+This product includes software developed by the Apache Software
+Foundation (http://www.apache.org/).
 
 \vfill
 
@@ -1022,20 +1024,25 @@ for communicating with another program.
 \chapter{The Macro Language of \ExTeX}
 %@author Gerd Neugebauer
 
-\section{Primitives of \ExTeX}
-\ExTeX\ defines a lot of primitives. Those primitives are described below.
-
 \section{Basic Syntactic Entities of \ExTeX}
 
-\InputIfFileExists{tmp/syntax}{\INCOMPLETE}
+The underlying parsing routines provide several sytactic entities
+which are user across the parsing of primitives and their arguments.
+These general syntactic entities are describes in this section.
 
-\InputIfFileExists{tmp/primitives}{\INCOMPLETE}
+\InputIfFileExists{tmp/syntax}{}
+
+\section{Primitives of \ExTeX}
+
+\ExTeX\ defines a lot of primitives. Those primitives are described below.
+
+\InputIfFileExists{tmp/primitives}{}
 
 
 %------------------------------------------------------------------------------
 \appendix
 
-\include{Licenses/licenses}
+\input{Licenses/licenses}
 
 %------------------------------------------------------------------------------
 {\scriptsize\printindex}

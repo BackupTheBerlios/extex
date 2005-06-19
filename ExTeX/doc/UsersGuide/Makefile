@@ -1,5 +1,5 @@
 #******************************************************************************
-#* $Id: Makefile,v 1.9 2005/06/15 21:37:41 gene Exp $
+#* $Id: Makefile,v 1.10 2005/06/19 13:13:32 gene Exp $
 #******************************************************************************
 #* Author: Gerd Neugebauer
 #*=============================================================================
@@ -10,7 +10,7 @@ SRCDIR = ../../src/java
 
 all: $(MANUAL).pdf
 
-extex-users.pdf: cfg $(MANUAL).tex
+extex-users.pdf: cfg syntax $(MANUAL).tex
 
 %.pdf: %.toc %.ind
 	@pdflatex $*
@@ -26,12 +26,17 @@ extex-users.pdf: cfg $(MANUAL).tex
 %.toc: %.tex
 	@pdflatex $*
 
-Configurations/configurations.tex cfg: bin/primitives.pl
+tmp/configurations.tex cfg: bin/primitives.pl
 	perl bin/primitives.pl				\
 		-cp   $(SRCDIR)				\
 		-out  tmp/configurations.tex		\
 		-prim tmp/primitives.tex		\
 		$(SRCDIR)/config/*.xml 
+
+tmp/syntax.tex syntax: bin/syntax.pl
+	perl bin/syntax.pl				\
+		-cp   $(SRCDIR)				\
+		-out  tmp/syntax.tex
 
 deploy: $(MANUAL).pdf
 	mkdir -p $(DEPLOYDIR)
