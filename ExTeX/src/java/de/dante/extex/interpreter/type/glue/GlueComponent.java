@@ -36,6 +36,7 @@ import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.CatcodeException;
 import de.dante.extex.scanner.type.CodeToken;
+import de.dante.extex.scanner.type.LetterToken;
 import de.dante.extex.scanner.type.OtherToken;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.scanner.type.TokenFactory;
@@ -59,7 +60,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.33 $
+ * @version $Revision: 1.34 $
  */
 public class GlueComponent implements Serializable, FixedGlueComponent {
 
@@ -493,73 +494,155 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
         value = scanFloat(context, source, t);
 
         t = source.getNonSpace(context);
-        if (t == null) {
-            throw new HelpingException(getMyLocalizer(), "TTP.IllegalUnit");
+
+        long mag = 1000;
+        if (source.getKeyword(context, "true")) { // cf. TTP[453], TTP[457]
+            source.push(t);
+            mag = context.getMagnification();
+            t = source.scanNonSpace(context);
+        }
+
+        // cf. TTP[458]
+        if (t instanceof CodeToken) {
+            Code code = context.getCode((CodeToken) t);
+            if (code instanceof DimenConvertible) {
+                value = value
+                        * ((DimenConvertible) code).convertDimen(context,
+                                source, typesetter) / ONE;
+                return;
+            }
+        } else if (t instanceof LetterToken) {
+            int c = t.getChar().getCodePoint();
+            t = source.getToken(context);
+            if (t == null) {
+                throw new HelpingException(getMyLocalizer(), "TTP.IllegalUnit");
+            }
+            switch (c) {
+                case 'p':
+                    if (t.equals(Catcode.LETTER, 't')) {
+                        // nothing to do
+                    } else if (t.equals(Catcode.LETTER, 'c')) {
+                        value = value * PT_PER_PC;
+                    } else {
+                        break;
+                    }
+                    if (mag != 1000) {
+                        value = value * mag / 1000;
+                    }
+                    return;
+                case 'c':
+                    if (t.equals(Catcode.LETTER, 'm')) {
+                        value = value * POINT_PER_100_IN / CM100_PER_IN;
+                    } else if (t.equals(Catcode.LETTER, 'c')) {
+                        value = value * 14856 / 1157;
+                    } else {
+                        break;
+                    }
+                    if (mag != 1000) {
+                        value = value * mag / 1000;
+                    }
+                    return;
+                case 'd':
+                    if (t.equals(Catcode.LETTER, 'd')) {
+                        value = value * 1238 / 1157;
+                    } else {
+                        break;
+                    }
+                    if (mag != 1000) {
+                        value = value * mag / 1000;
+                    }
+                    return;
+                case 'm':
+                    if (t.equals(Catcode.LETTER, 'm')) {
+                        value = value * POINT_PER_100_IN / (CM100_PER_IN * 10);
+                    } else {
+                        break;
+                    }
+                    if (mag != 1000) {
+                        value = value * mag / 1000;
+                    }
+                    return;
+                case 'i':
+                    if (t.equals(Catcode.LETTER, 'n')) {
+                        value = value * POINT_PER_100_IN / 100;
+                    } else {
+                        break;
+                    }
+                    if (mag != 1000) {
+                        value = value * mag / 1000;
+                    }
+                    return;
+                case 's':
+                    if (t.equals(Catcode.LETTER, 'p')) {
+                        value = value / ONE;
+                    } else {
+                        break;
+                    }
+                    if (mag != 1000) {
+                        value = value * mag / 1000;
+                    }
+                    return;
+                case 'e':
+                    if (t.equals(Catcode.LETTER, 'x')) {
+                        Dimen ex = context.getTypesettingContext().getFont()
+                                .getEm();
+                        value = value * ex.getValue() / ONE;
+                    } else if (t.equals(Catcode.LETTER, 'm')) {
+                        Dimen em = context.getTypesettingContext().getFont()
+                                .getEm();
+                        value = value * em.getValue() / ONE;
+                    } else {
+                        break;
+                    }
+                    if (mag != 1000) {
+                        value = value * mag / 1000;
+                    }
+                    return;
+                case 'b':
+                    if (t.equals(Catcode.LETTER, 'p')) {
+                        value = value * POINT_PER_100_IN / BP100_PER_IN;
+                    } else {
+                        break;
+                    }
+                    if (mag != 1000) {
+                        value = value * mag / 1000;
+                    }
+                    return;
+                case 'f':
+                    if (fixed && t.equals(Catcode.LETTER, 'i')) {
+                        order = 1;
+                        for (t = source.getToken(context); //
+                        (t != null && (t.equals('l') || t.equals('L'))); //
+                        t = source.getToken(context)) {
+                            order++;
+                        }
+                        source.push(t);
+                        if (order > MAX_ORDER) {
+                            break;
+                        }
+                        return;
+                    }
+                    break;
+                case 'n':
+                    if (t.equals(Catcode.LETTER, 'd')) {
+                        value = value * 4818 / 635;
+                    } else if (t.equals(Catcode.LETTER, 'c')) {
+                        value = value * 803 / 1270;
+                    } else {
+                        break;
+                    }
+                    if (mag != 1000) {
+                        value = value * mag / 1000;
+                    }
+                    return;
+                default:
+                    break;
+            }
         }
 
         source.push(t);
-        long mag = 1000;
-        if (source.getKeyword(context, "true")) { // cf. TTP[453], TTP[457]
-            mag = context.getMagnification();
-            source.push(source.scanNonSpace(context));
-        }
-        // cf. TTP[458]
-        if (source.getKeyword(context, "pt")) {
-            // nothing to do
-        } else if (source.getKeyword(context, "sp")) {
-            value = value / ONE;
-        } else if (source.getKeyword(context, "mm")) {
-            value = value * POINT_PER_100_IN / (CM100_PER_IN * 10);
-        } else if (source.getKeyword(context, "cm")) {
-            value = value * POINT_PER_100_IN / CM100_PER_IN;
-        } else if (source.getKeyword(context, "in")) {
-            value = value * POINT_PER_100_IN / 100;
-        } else if (source.getKeyword(context, "pc")) {
-            value = value * PT_PER_PC;
-        } else if (source.getKeyword(context, "bp")) {
-            value = value * POINT_PER_100_IN / BP100_PER_IN;
-        } else if (source.getKeyword(context, "dd")) {
-            value = value * 1238 / 1157;
-        } else if (source.getKeyword(context, "cc")) {
-            value = value * 14856 / 1157;
-        } else if (source.getKeyword(context, "ex")) {
-            Dimen ex = context.getTypesettingContext().getFont().getEm();
-            value = value * ex.getValue() / ONE;
-        } else if (source.getKeyword(context, "em")) {
-            Dimen em = context.getTypesettingContext().getFont().getEm();
-            value = value * em.getValue() / ONE;
-        } else if (fixed && source.getKeyword(context, "fi")) {
-            order = 1;
-            for (t = source.getToken(context); //
-            (t != null && (t.equals('l') || t.equals('L'))); //
-            t = source.getToken(context)) {
-                order++;
-            }
-            if (order > MAX_ORDER) {
-                throw new HelpingException(getMyLocalizer(), "TTP.IllegalFil");
-            }
-            source.push(t);
-        } else if ((t = source.getToken(context)) != null) {
-            if (t instanceof CodeToken) {
-                Code code = context.getCode((CodeToken) t);
-                if (code instanceof DimenConvertible) {
-                    value = value
-                            * ((DimenConvertible) code).convertDimen(context,
-                                    source, typesetter) / ONE;
-                } else {
-                    throw new HelpingException(getMyLocalizer(),
-                            "TTP.IllegalUnit");
-                }
-            } else {
-                throw new HelpingException(getMyLocalizer(), "TTP.IllegalUnit");
-            }
-        } else { // cf. TTP [459]
-            throw new HelpingException(getMyLocalizer(), "TTP.IllegalUnit");
-        }
-
-        if (mag != 1000) {
-            value = value * mag / 1000;
-        }
+        // cf. TTP [459]
+        throw new HelpingException(getMyLocalizer(), "TTP.IllegalUnit");
     }
 
     /**
