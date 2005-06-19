@@ -37,7 +37,7 @@ import de.dante.util.framework.component.Component;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class ComponentFactory {
 
@@ -70,7 +70,7 @@ public class ComponentFactory {
     }
 
     /**
-     * Get an instance of a typesetter.
+     * Get an instance of a component.
      *
      * @param type the tag to use for the selection of the sub-configuration
      *

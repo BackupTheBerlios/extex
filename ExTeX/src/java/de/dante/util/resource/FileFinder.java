@@ -74,7 +74,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * <p>
  *  Whenever a resource is sought its type is used to find the appropriate
  *  parameters for the search. If the sub-configuration with the name of the
- *  type exists then this subconfiguration is used. For instance if the
+ *  type exists then this sub-configuration is used. For instance if the
  *  resource <tt>tex</tt> with the type <tt>fmt</tt> is sought then the
  *  sub-configuration <tt>fmt</tt> determines how to find this file.
  * </p>
@@ -114,7 +114,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class FileFinder
         implements

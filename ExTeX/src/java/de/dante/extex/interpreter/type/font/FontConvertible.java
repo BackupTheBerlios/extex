@@ -23,7 +23,7 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 
 /**
- * This is an interface which describes the feature to be convertibe into a
+ * This is an interface which describes the feature to be convertible into a
  * font.
  *
  * <doc type="interface" name="font">
@@ -51,7 +51,7 @@ import de.dante.extex.interpreter.exception.InterpreterException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public interface FontConvertible {
 
