@@ -2,7 +2,7 @@
   ############################################################################
   # This is the Ant build file for ExTeX
   ############################################################################
-  # Copyright (C) 2004 The ExTeX Group
+  # Copyright (C) 2004-2005 The ExTeX Group
   #
   # This library is free software; you can redistribute it and/or modify it
   # under the terms of the GNU Lesser General Public License as published by
@@ -39,6 +39,8 @@
           tests [-Dtests.haltonfailure=yes]
               Perfom all tests.
           deploy
+          installer
+              Create the GUI-based installer.
           install -Dinstalldir=...
               Install the relevant files in the given directory.
           clean
@@ -146,6 +148,11 @@
                 <patternset>
                     <exclude name="**/*Test.class"/>
                     <exclude name="**/AllTests.class"/>
+                </patternset>
+            </fileset>
+            <fileset dir=".">
+                <patternset>
+                    <include name="LICENSE.txt"/>
                 </patternset>
             </fileset>
             <manifest>
