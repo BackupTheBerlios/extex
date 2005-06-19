@@ -25,6 +25,9 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.AbstractAssignment;
+import de.dante.extex.interpreter.type.Theable;
+import de.dante.extex.interpreter.type.count.CountConvertible;
+import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.CatcodeException;
 import de.dante.extex.typesetter.Typesetter;
@@ -43,12 +46,34 @@ import de.dante.util.UnicodeChar;
  *  TODO missing documentation
  * </p>
  * <p>
- *  The assignment is controlled by the prefix <tt>\global</tt> and the count
- *  parameter <tt>\globaldefs</tt>. Usually the assignment is acting on the
- *  current group only. if the integer parameter <tt>\globaldefs</tt> is greater
- *  than 0 or the prefix <tt>\global</tt> is given then the assignment is
- *  applied to all groups.
+ *  The assignment is controlled by the prefix macro <tt>\global</tt> and the
+ *  count parameter <tt>\globaldefs</tt>. Usually the assignment is acting on
+ *  the current group only. If the count parameter <tt>\globaldefs</tt> is
+ *  greater than 0 or the prefix <tt>\global</tt> is given then the assignment
+ *  is applied to all groups.
  * </p>
+ * <p>
+ *  The following table contains the category codes with their meaning and the
+ *  mapping to numerical values.
+ * </p>
+ * <table format="lrl">
+ *  <tr><td>ESCAPE</td><td>0</td><td></td></tr>
+ *  <tr><td>LEFTBRACE</td><td>1</td><td></td></tr>
+ *  <tr><td>RIGHTBRACE</td><td>2</td><td></td></tr>
+ *  <tr><td>MATHSHIFT</td><td>3</td><td></td></tr>
+ *  <tr><td>TABMARK</td><td>4</td><td></td></tr>
+ *  <tr><td>CR</td><td>5</td><td></td></tr>
+ *  <tr><td>MACROPARAM</td><td>6</td><td></td></tr>
+ *  <tr><td>SUPMARK</td><td>7</td><td></td></tr>
+ *  <tr><td>SUBMARK</td><td>8</td><td></td></tr>
+ *  <tr><td>IGNORE</td><td>9</td><td></td></tr>
+ *  <tr><td>SPACE</td><td>10</td><td></td></tr>
+ *  <tr><td>LETTER</td><td>11</td><td></td></tr>
+ *  <tr><td>OTHER</td><td>12</td><td></td></tr>
+ *  <tr><td>ACTIVE</td><td>13</td><td></td></tr>
+ *  <tr><td>COMMENT</td><td>14</td><td></td></tr>
+ *  <tr><td>INVALID</td><td>15</td><td></td></tr>
+ * </table>
  *
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
@@ -72,13 +97,24 @@ import de.dante.util.UnicodeChar;
  *  <pre class="TeXSample">
  *    \global\catcode `\%=11  </pre>
  *
+ * <h4><tt>\catcode</tt> as a Count Value</h4>
+ *
+ * <p>
+ *  <tt>\catcode</tt> can be used wherever a count value is required. 
+ * </p>
+ *
+ *
  * </doc>
+ *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
-public class CatcodePrimitive extends AbstractAssignment {
+public class CatcodePrimitive extends AbstractAssignment
+        implements
+            CountConvertible,
+            Theable {
 
     /**
      * Creates a new object.
@@ -103,7 +139,7 @@ public class CatcodePrimitive extends AbstractAssignment {
 
         UnicodeChar charCode = source.scanCharacterCode(context);
         source.getOptionalEquals(context);
-        long ccNumber = source.scanNumber(context);
+        long ccNumber = source.scanInteger(context, typesetter);
 
         try {
             context.setCatcode(charCode, Catcode.toCatcode((int) ccNumber),
@@ -114,5 +150,31 @@ public class CatcodePrimitive extends AbstractAssignment {
                     Integer.toString(Catcode.getCatcodeMax()));
         }
 
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.count.CountConvertible#convertCount(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public long convertCount(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
+
+        UnicodeChar charCode = source.scanCharacterCode(context);
+
+        return context.getCatcode(charCode).getCode();
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.Theable#the(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public Tokens the(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
+
+        return new Tokens(context, convertCount(context, source, typesetter));
     }
 }
