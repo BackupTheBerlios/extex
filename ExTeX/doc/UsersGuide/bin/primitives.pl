@@ -1,19 +1,19 @@
 #!/bin/perl -w
 ##*****************************************************************************
-## $Id: primitives.pl,v 1.2 2005/06/15 21:34:05 gene Exp $
+## $Id: primitives.pl,v 1.3 2005/06/19 13:12:33 gene Exp $
 ##*****************************************************************************
 ## Author: Gerd Neugebauer
 ##=============================================================================
 
 =head1 NAME
 
-analyzeConfig - ...
+primitives.pl - ...
 
 =head1 SYNOPSIS
 
-analyzeConfig [-v|--verbose] 
+primitives.pl [-v|--verbose] 
 
-analyzeConfig [-h|-help]
+primitives.pl [-h|-help]
 
 =head1 DESCRIPTION
 
@@ -37,6 +37,10 @@ Gerd Neugebauer
 
 use strict;
 use FileHandle;
+
+use lib ".";
+use lib "./bin";
+use xml2tex;
 
 #------------------------------------------------------------------------------
 # Function:	usage
@@ -152,182 +156,30 @@ sub processPrimitive {
 }
 
 #------------------------------------------------------------------------------
-# Function:	translate
-#
-sub translate {
-  local $_ = shift;
-  s|^ \* ?||;
-#      s|\\|\\|g;
-  s|([~_\%\$])|\\$1|g;
-  s|\s*\&nbsp;\s*|~|g;
-  s|\&ndash;|--|g;
-  s|\&lang;|\\tag{|g;
-  s|\&rang;|}|g;
-  s|\&\#x0*5c;|\\|g;
-  s|\&rarr;|\\rightarrow{}|g;
-
-  s|<logo>TeX</logo>|\\TeX{}|;
-  s|<logo>LaTeX</logo>|\\LaTeX{}|;
-  s|<logo>ExTeX</logo>|\\ExTeX{}|;
-  s|<logo>eTeX</logo>|\\eTeX{}|;
-  s|<logo>Omega</logo>|Omega|;
-  s|<tt>\\ </tt>|\\Macro{\\[}|g;
-  s|<tt>\\([^<]*)</tt>|\\Macro{$1}|g;
-  s|<tt>{</tt>|\\texttt{\\char\`\\{}|g;
-  s|<tt>}</tt>|\\texttt{\\char\`\\}}|g;
-  s|<tt>([^<]*)</tt>|\\texttt{$1}|g;
-  s|<i>([^<]*)</i>|\\textit{$1}|g;
-  s|<b>([^<]*)</b>|\\emph{$1}|g;
-  s|<strong>|\\emph{|g;
-  s|</strong>|}|g;
-  s|<em>([^<]*)</em>|\\emph{$1}|g;
-  s|<sub>([^<]*)</sub>|\\ensuremath{_{$1}}|g;
-  s|<sup>([^<]*)</sup>|\\ensuremath{^{$1}}|g;
-
-  return $_;
-}
-
-#------------------------------------------------------------------------------
 # Function:	processClass
 #
 sub processClass {
   my ($out, $name, $file, $s) = @_;
   my $fd = new FileHandle($file, 'r');
   local $_;
-  my $collect = undef;
 
-  while(<$fd>) {
+  while (<$fd>) {
     chomp;
     $_ = $_ . "\n";
     if (m|<doc.*name="([^\"]*)"|) {
-      $s       = processDocTag($name, $fd, $s);
-      $collect = 1;
+      $s	     = processDocTag($name, $fd, $s);
     }
   }
 
   $fd->close();
   $_ = $s;
-  s|\@linkplain\s+\S+\s+||sg;
-  s|\@link\s+\S+\s+||sg;
-  s/\\par\s+/\n\n/g;
-  s/\n\n\n+/\n\n/g;
-  s|\&lt;|<|g;
-  s|\&gt;|>|g;
 
+  s|^ ?Examples:\s*$|\\subsubsection*{Examples}\n|g;
   s|\\Macro{ }|\\Macro{\\[}|g;
   s|\\Macro{\\+}|\\Macro{\\char\`\\\\}|g;
   print $out $_;
 }
 
-#------------------------------------------------------------------------------
-# Function:	processDocTag
-#
-sub processDocTag {
-  my ($name, $fd, $s) = @_;
-  local $_;
-
-  while(<$fd>) {
-    chomp;
-    $_ = $_ . "\n";
-    if(m|</doc>|) {
-      return $s;
-    }
-
-    if ( m/ TODO / ) {
-      $s .= "\n\n\\Incomplete\n\n";
-      next;
-    }
-
-    $_ = translate($_);
-
-    s|<h3>(.*)</h3>\s*|\\subsection*{$1}|;
-    s|<h4>(.*)</h4>|\\subsubsection*{$1}|;
-    s|^ ?Examples:\s*$|\\subsubsection*{Examples}\n|;
-    s|<p>\s*||g;
-    s|<dl>|\\begin{description}|g;
-    s|</dl>|\\end{description}|g;
-    s|<dt>|\\item[|g;
-    s|</dt>|]|g;
-    s|<dd>||g;
-    s|</dd>||g;
-    s|<p class="TeXbook">\s*|\\|g;
-    s|</p>\s*|\\par |;
-    s|<br[ /]*>|\\ |;
-    if (m/\s*<pre\s+class="syntax">/) {
-      $s .= $`;
-      my $spec = '\\begin{syntax}';
-      while(<$fd>) {
-	$_ = translate($_) ;
-	next if m/^\s*$/;
-	
-	s|^(\s*)\\rightarrow{}|$1\\SyntaxDef|;
-	s/^(\s*)\|/$1\\SyntaxOr/;
-	s/\[([a-z \<=\>\&;]*)\]/[\\texttt{$1}]/;
-	
-	if (m|</pre>|) {
-	    $spec .= $`;
-	    last;
-	  }
-	$spec .= $_;
-      }
-      $_ = $spec;
-#	s|\@linkplain\s+\\([^)]+\\)\s+||sg;
-#	s|\@linkplain\s+[^()]+\s+||sg;
-      s|\@linkplain\s+\S+\s+||sg;
-      s|\@link\s+\w+\\([^)]+\\)\s+||sg;
-      s|\@link\s+[^()]+\s+||sg;
-      s/\n/\t\\\\\n/mg;
-      $_ .= "\n\\end{syntax}\n";
-
-    } elsif (m/\s*<pre\s+class="JavaSample">/) {
-      $s .= $`;
-      my $spec = '\\begin{lstlisting}{language=Java}' . $';
-      while(<$fd>) {
-	chomp;
-	$_ = $_ . "\n";
-	s|^ \* ?||;
-#	  s|([~_\%\$])|\\$1|g;
-	s|\&\#x0*5c;|\\|g;
-	s|\&ndash;\s*|--|g;
-	s|</?[bi]>||g;
-	
-	if (m|</pre>|) {
-	  $spec .= $`;
-	  last;
-	}
-	$spec .= $_;
-      }
-      $_ = $spec;
-      $_ .= "\\end{lstlisting}\n";
-      
-    } elsif (m/\s*<pre\s+class="TeXSample">/) {
-      $s .= $`;
-      my $spec = '\\begin{lstlisting}{language=TeX}' . $';
-      while(<$fd>) {
-	chomp;
-	$_ = $_ . "\n";
-	s|^ \* ?||;
-#	  s|([~_\%\$])|\\$1|g;
-	s|\&\#x0*5c;|\\|g;
-	s|\&ndash;\s*|--|g;
-	s|</?[bi]>||g;
-	
-	if (m|</pre>|) {
-	  $spec .= $`;
-	  last;
-	}
-	$spec .= $_;
-      }
-      $_ = $spec;
-      $_ .= "\n\\end{lstlisting}\n";
-      
-    }
-
-    print STDERR "$name: unprocessed: $&\n" if(m|</?[a-z][a-z0-9]*|i);
-    $s .= $_;
-  }
-  return $s;
-}
 
 #------------------------------------------------------------------------------
 # Function:	processPrimitives
