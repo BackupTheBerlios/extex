@@ -44,7 +44,8 @@ import de.dante.extex.typesetter.Typesetter;
  * <p>
  *  TODO missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;count&rang;
@@ -55,13 +56,13 @@ import de.dante.extex.typesetter.Typesetter;
  *        &lang;equals&rang;} {@linkplain
  *        de.dante.extex.interpreter.TokenSource#scanInteger(Context,Typesetter)
  *        &lang;number&rang;}</pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \count23=-456  </pre>
- * </p>
+ *
  * </doc>
+ *
  *
  * @see de.dante.extex.interpreter.type.arithmetic.Advanceable
  * @see de.dante.extex.interpreter.type.arithmetic.Divideable
@@ -70,7 +71,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class CountPrimitive extends AbstractCount
         implements
@@ -204,7 +205,7 @@ public class CountPrimitive extends AbstractCount
             final Typesetter typesetter) throws InterpreterException {
 
         String key = getKey(context, source);
-        return new Tokens(context, context.getCount(key).toString());
+        return new Tokens(context, context.getCount(key).getValue());
     }
 
 }

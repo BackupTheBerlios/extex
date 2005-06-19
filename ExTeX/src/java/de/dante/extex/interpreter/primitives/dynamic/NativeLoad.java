@@ -45,17 +45,18 @@ import de.dante.util.framework.logger.LogEnabled;
  * <p>
  *  TODO missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The general form of this primitive is
  * <pre class="syntax">
  *   &lang;nativeload&rang;
- *       &rarr; <tt>\nativeload</tt> &lang;<i>type</i>&rang; &lang;<i>tokens</i>&rang; </pre>
- * </p>
+ *       &rarr; <tt>\nativeload</tt> <i>&lang;type&rang;</i> <i>&lang;tokens&rang;</i> </pre>
+ *
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class NativeLoad extends AbstractCode
         implements
@@ -68,7 +69,7 @@ public class NativeLoad extends AbstractCode
      * inheritance in Java.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.4 $
+     * @version $Revision: 1.5 $
      */
     protected class Factory extends AbstractFactory {
 

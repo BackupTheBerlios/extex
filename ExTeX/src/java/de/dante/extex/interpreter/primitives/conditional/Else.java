@@ -34,26 +34,29 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="else">
  * <h3>The Primitive <tt>\else</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The primitive <tt>\else</tt> can not be used alone. It always comes in
+ *  conjunction with a conditional. A isolated <tt>\else</tt> leads to an
+ *  error immediately.
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;else&rang;
  *      &rarr; <tt>\else</tt> &lang;...&rang; </pre>
  * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \ifnum 1<2\else no\fi  </pre>
- * </p>
  * </doc>
+ *
  *
  * Note:<br />
  * This primitive is <emph>not</emph> expandable!
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class Else extends AbstractCode {
 
@@ -72,7 +75,7 @@ public class Else extends AbstractCode {
      * <p>
      *  This primitive can only be seen when a conditional has been opened
      *  before for which the then branch is expanded. Thus the else branch
-     *  has to be skipped. Additioonally the conditional stack has to be
+     *  has to be skipped. Additionally the conditional stack has to be
      *  updated. If the conditional stack is already empty then an exception
      *  is raised.
      * </p>

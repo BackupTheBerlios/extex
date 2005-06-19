@@ -38,25 +38,28 @@ import de.dante.extex.typesetter.Typesetter;
  *  <tt>\csname</tt> only. Whenever a <tt>\endcsname</tt> is seen alone it must
  *  be an error. Thus thus primitive produces an error message in any case.
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;endcsname&rang;
  *      &rarr; <tt>\endscsname</tt>  </pre>
- * </p>
+ *
  * <h4>Examples</h4>
  * <p>
  *  The following example shows a complicated way to invoke the macro
- *  <tt>abc</tt>. Here <tt>\endcsname</tt> is legal.
+ *  <tt>abc</tt>. Here the primitive <tt>\endcsname</tt> is legal. It is
+ *  consumed by the primitive <tt>\csname</tt> and nt expanded by its own.
  * </p>
  * <pre class="TeXSample">
  *   \csname abc\endcsname  </pre>
  * </doc>
  *
+ *
  * @see "TTP [1134]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Endcsname extends AbstractCode {
 

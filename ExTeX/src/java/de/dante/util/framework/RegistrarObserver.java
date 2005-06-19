@@ -16,25 +16,32 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
-package de.dante.util.framework;
 
-import de.dante.util.configuration.ConfigurationException;
+package de.dante.util.framework;
 
 
 /**
- * TODO gene: missing JavaDoc.
+ * This interface describes an observer which is meant to reconnect a object
+ * which has just been reconstructed.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface RegistrarObserver {
 
     /**
-     * TODO gene: missing JavaDoc
+     * Reconnect an object.
+     * It should return the object which should actually be used. This is
+     * normally the object which is passed in as argument. Nevertheless the
+     * as a side effect the object can be attached to an internal list in a
+     * factory or augmented with additional information by invoking some of its
+     * methods.
      *
      * @param object the object to reconnect
      *
-     * @throws ConfigurationException in case of an error during configuration
+     * @return the object to be actually used
+     *
+     * @throws RegistrarException in case of an error during configuration
      */
-    void reconnect(Object object) throws RegistrarException, ConfigurationException;
+    Object reconnect(Object object) throws RegistrarException;
 }

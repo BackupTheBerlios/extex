@@ -37,14 +37,24 @@ import de.dante.util.configuration.ConfigurationException;
  * <doc name="input">
  * <h3>The Primitive <tt>\input</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The primitive <tt>\input</tt> takes as argument one file name and opens this
+ *  file for reading. The following tokens are taken from this input stream.
+ *  Thus the effect is as if the file contents where copied at the place of the
+ *  primitive.
+ * </p>
+ * <p>
+ *  If the file can not be opened for reading then an error is raised.
+ * </p>
+ * <p>
+ *  The primitive also makes provisions that the information in
+ *  <tt>\inputfilename</tt> and <tt>\inputlineno</tt> are set properly.
  * </p>
  *
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;input&rang;
- *       &rarr; <tt>\input</tt> &lang;filename&rang; </pre>
+ *       &rarr; <tt>\input</tt> &lang;file name&rang; </pre>
  *
  * <h4>Examples</h4>
  * <p>
@@ -62,7 +72,7 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class Input extends AbstractFileCode {
 

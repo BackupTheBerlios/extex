@@ -42,7 +42,7 @@ import de.dante.util.framework.i18n.Localizer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class AbstractCode implements Code, Localizable, Serializable {
 
@@ -169,16 +169,9 @@ public class AbstractCode implements Code, Localizable, Serializable {
      *
      * @throws ObjectStreamException in case of an error
      */
-    public Object readResolve() throws ObjectStreamException {
+    protected Object readResolve() throws ObjectStreamException {
 
-        try {
-            Registrar.reconnect(this);
-        } catch (RegistrarException e) {
-            new RuntimeException(e);
-        } catch (ConfigurationException e) {
-            new RuntimeException(e);
-        }
-        return this;
+        return Registrar.reconnect(this);
     }
 
     /**

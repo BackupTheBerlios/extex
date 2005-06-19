@@ -35,7 +35,7 @@ import java.io.Serializable;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class Catcode implements Serializable {
 
@@ -120,6 +120,7 @@ public abstract class Catcode implements Serializable {
 
             return visitor.visitComment(arg1, arg2, arg3);
         }
+
         /**
          * Return the singleton constant object after the serialized instance
          * has been read back in.
@@ -919,7 +920,7 @@ public abstract class Catcode implements Serializable {
     /**
      * Getter for the maximal numerical catcode.
      *
-     * @return the maximal alloed category code
+     * @return the maximal allowed category code
      */
     public static int getCatcodeMax() {
 
@@ -952,6 +953,12 @@ public abstract class Catcode implements Serializable {
     private String name;
 
     /**
+     * The field <tt>code</tt> contains the cached numerical value. in case of a
+     * negative number no value has been cached yet.
+     */
+    private int code = -1;
+
+    /**
      * Creates a new object.
      * This constructor is private since only the static instances defined
      * above are allowed.
@@ -966,19 +973,20 @@ public abstract class Catcode implements Serializable {
 
     /**
      * Get the numerical representation for the Catcode.
-     * Beware: this method should be used only as a last resort.
-     * To discourage its use it is implemented rather inefficiently.
      *
      * @return the catcode as integer
      */
     public int getCode() {
 
-        for (int i = 0; i < CATCODES.length; i++) {
-            if (CATCODES[i] == this) {
-                return i;
+        if (code < 0) {
+            for (int i = 0; i < CATCODES.length; i++) {
+                if (CATCODES[i] == this) {
+                    code = i;
+                    return i;
+                }
             }
         }
-        return 0;
+        return code;
     }
 
     /**
@@ -1002,8 +1010,8 @@ public abstract class Catcode implements Serializable {
     }
 
     /**
-     * Catcodes support the visitor pattern. This method is the entry for
-     * visiting CATCODES.
+     * Catcode support the visitor pattern. This method is the entry for
+     * visiting CATCODE.
      *
      * @param visitor the visitor
      * @param arg1 the first argument to pass

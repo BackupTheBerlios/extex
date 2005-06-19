@@ -45,14 +45,14 @@ import de.dante.extex.typesetter.Typesetter;
  * works. The difference is that the definition has to be provided in
  * form of a Java class.
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  * The general form of this primitive is
  * <pre class="syntax">
  *   &lang;javadef&rang;
  *       &rarr; <tt>\javadef</tt> {@linkplain
  *       de.dante.extex.interpreter.TokenSource#getControlSequence(Context)
- *       &lang;control sequence&rang;} &lang;<i>tokens</i>&rang; </pre>
- * </p>
+ *       &lang;control sequence&rang;} <i>&lang;tokens&rang;</i> </pre>
  * <p>
  * The <i>&lang;control sequence&rang;</i> is any macro or active
  * character. If this token is missing or of the wrong type then an
@@ -82,7 +82,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </p>
  * <p>
  * Now we come to the Java side of the definition. The class given as
- * &lang;<i>tokens</i>&rang; must implement the interface {@link
+ * <i>&lang;tokens&rang;</i> must implement the interface {@link
  * de.dante.extex.interpreter.type.Code Code}. The easiest way to achieve
  * this is by declaring a class derived from {@link
  * de.dante.extex.interpreter.type.AbstractCode AbstractCode}.
@@ -121,7 +121,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class JavaDef extends AbstractCode implements Definer {
 

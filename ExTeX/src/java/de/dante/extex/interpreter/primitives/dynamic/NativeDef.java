@@ -44,30 +44,30 @@ import de.dante.util.framework.logger.LogEnabled;
  * <doc name="nativedef">
  * <h3>The Primitive <tt>\nativedef</tt></h3>
  * <p>
- * The primitive <tt>\nativedef</tt> attaches a definition to a macro or
+ * The primitive <tt>\nativedef</tt> assigns a definition to a macro or
  * active character. This is done in a similar way as <tt>\def</tt>
  * works. The difference is that the definition has to be provided in
  * form of a Java class which glues in native code.
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  * The general form of this primitive is
  * <pre class="syntax">
  *   &lang;nativedef&rang;
  *       &rarr; <tt>\nativedef</tt> {@linkplain
  *       de.dante.extex.interpreter.TokenSource#getControlSequence(Context)
- *       &lang;control sequence&rang;} &lang;<i>name</i>&rang; </pre>
- * </p>
+ *       &lang;control sequence&rang;} <i>&lang;name&rang;</i> </pre>
  * <p>
- * The &lang;<i>control sequence</i>&rang; is any macro or active
+ * The <i>&lang;control sequence&rang;</i> is any macro or active
  * character. If this token is missing or of the wrong type then an
  * error is raised.
  * </p>
  * <p>
- * The &lang;<i>name</i>&rang; is any specification of a list of
- * tokens like a constant list enclosed in braces or a toks register.
+ * The <i>&lang;name&rang;</i> is any specification of a list of
+ * tokens like a constant list enclosed in braces or a token register.
  * The value of these tokens are taken and resolved via the configuration.
  * This appropriate class is loaded if needed and instantiated. The
- * instance is bound as code to the &lang;<i>control sequence</i>&rang;.
+ * instance is bound as code to the <i>&lang;control sequence&rang;</i>.
  * </p>
  * <p>
  * The primitive <tt>\javadef</tt> is local to the enclosing group as
@@ -75,10 +75,12 @@ import de.dante.util.framework.logger.LogEnabled;
  * <tt>\global</tt> can be used to make the definition in all groups
  * instead of the current group only.
  * </p>
+ *
  * </doc>
  *
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class NativeDef extends AbstractCode
         implements
@@ -91,7 +93,7 @@ public class NativeDef extends AbstractCode
      * inheritance in Java.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.2 $
+     * @version $Revision: 1.3 $
      */
     protected class Factory extends AbstractFactory {
 
