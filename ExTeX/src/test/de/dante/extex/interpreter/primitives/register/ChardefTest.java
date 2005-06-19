@@ -19,14 +19,13 @@
 
 package de.dante.extex.interpreter.primitives.register;
 
-import de.dante.extex.interpreter.type.dimen.DimenRegisterTest;
 import de.dante.test.ExTeXLauncher;
 
 /**
  * This is a test suite for the primitive <tt>\chardef</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class ChardefTest extends ExTeXLauncher {
 
@@ -36,7 +35,7 @@ public class ChardefTest extends ExTeXLauncher {
      */
     public static void main(final String[] args) {
 
-        junit.textui.TestRunner.run(DimenRegisterTest.class);
+        junit.textui.TestRunner.run(ChardefTest.class);
     }
 
     /**
