@@ -22,7 +22,9 @@ package de.dante.extex.interpreter.type.dimen;
 import junit.framework.TestCase;
 import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.InterpreterFactory;
+import de.dante.extex.interpreter.context.MockContext;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.extex.scanner.stream.impl32.TokenStreamStringImpl;
 import de.dante.util.GeneralException;
 import de.dante.util.configuration.Configuration;
@@ -33,7 +35,7 @@ import de.dante.util.configuration.ConfigurationFactory;
  * Test cases for dimen registers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class DimenRegisterTest extends TestCase {
 
@@ -58,7 +60,7 @@ public class DimenRegisterTest extends TestCase {
     //TODO change InterpreterFactory
 
     /**
-     * Performa test on a given String.
+     * Performs test on a given String.
      *
      * @param spec the String to parse
      *
@@ -73,11 +75,14 @@ public class DimenRegisterTest extends TestCase {
 
         Configuration config = new ConfigurationFactory()
                 .newInstance("config/extex.xml");
+        TokenStreamFactory fac = new TokenStreamFactory(config
+                .getConfiguration("Scanner"), "base");
         InterpreterFactory interpreterFactory = new InterpreterFactory();
         interpreterFactory.configure(config.getConfiguration("Interpreter"));
         Interpreter source = interpreterFactory.newInstance();
-        source.addStream(new TokenStreamStringImpl(spec));
-        return new Dimen(null, source, null).getValue();
+        source.addStream(fac.newInstance(spec));
+        source.setTokenStreamFactory(fac);
+        return new Dimen(new MockContext(), source, null).getValue();
     }
 
     /**
@@ -100,6 +105,28 @@ public class DimenRegisterTest extends TestCase {
     public void testPt1() throws Exception {
 
         assertEquals(65536, doTest("1.000pt"));
+    }
+
+    /**
+     * Test that the parsing of points works.
+     * A value in the middle (1.000pt) is used. This results into 65536sp.
+     *
+     * @throws Exception in case of an error
+     */
+    public void testPt1b() throws Exception {
+
+        assertEquals(65536, doTest("1 pt"));
+    }
+
+    /**
+     * Test that the parsing of points works.
+     * A value in the middle (1.000pt) is used. This results into 65536sp.
+     *
+     * @throws Exception in case of an error
+     */
+    public void testPt1c() throws Exception {
+
+        assertEquals(65536, doTest("1. pt"));
     }
 
     /**
