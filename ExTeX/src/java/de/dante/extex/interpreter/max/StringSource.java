@@ -19,26 +19,16 @@
 
 package de.dante.extex.interpreter.max;
 
-import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
-import de.dante.extex.scanner.type.Token;
-import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.configuration.ConfigurationException;
 
 /**
  * This class provides a token source which is fed from a sting.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class StringSource extends Moritz {
-
-    /**
-     * The field <tt>context</tt> contains the processing context. Here nearly
-     * all relevant information can be found.
-     */
-    private Context context = null;
 
     /**
      * Creates a new object.
@@ -55,48 +45,4 @@ public class StringSource extends Moritz {
         addStream(factory.newInstance(s));
     }
 
-    /**
-     * @see de.dante.extex.interpreter.max.Moritz#getTypesetter()
-     */
-    public Typesetter getTypesetter() {
-
-        return null;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.max.Moritz#expand(
-     *      de.dante.extex.scanner.type.Token)
-     */
-    protected Token expand(final Token token) {
-
-        return token;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.TokenSource#executeGroup()
-     */
-    public void executeGroup() throws InterpreterException {
-
-        // TODO gene: executeGroup() unimplemented
-        throw new RuntimeException("unimplemented");
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.TokenSource#execute(
-     *      de.dante.extex.scanner.type.Token, Context, Typesetter)
-     */
-    public void execute(final Token token, final Context context,
-            final Typesetter typesetter) throws InterpreterException {
-
-        // TODO gene: execute() unimplemented
-        throw new RuntimeException("unimplemented");
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.max.Moritz#getContext()
-     */
-    public Context getContext() {
-
-        return context;
-    }
 }
