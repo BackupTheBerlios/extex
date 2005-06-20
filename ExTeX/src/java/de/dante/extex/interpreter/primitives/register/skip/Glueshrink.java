@@ -37,22 +37,31 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="glueshrink">
  * <h3>The Primitive <tt>\glueshrink</tt></h3>
  * <p>
- * TODO gene:
+ *  The primitive <tt>\glueshrink</tt> translates a shrink part of a glue
+ *  value into a length. The shrink order is stripped and just the size is
+ *  preserved. The unit is changed to pt. For instance, if the value considered
+ *  is 8pt minus 1.23 fil then <tt>\glueshrink</tt> returns 1.23 pt.
  * </p>
  * <p>
+ *  The primitive <tt>\glueshrink</tt> can be used wherever a length is
+ *  expected. The primitive is also applicable to <tt>\the</tt>.
+ * </p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;glueshrink&rang;
  *      &rarr; <tt>\glueshrink</tt> &lang;glue&rang; </pre>
- * </p>
+ *
  * <h4>Examples</h4>
  * <pre class="TeXSample">
  *   \glueshrink\skip1  </pre>
+ *
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Glueshrink extends AbstractCode
         implements

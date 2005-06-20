@@ -37,14 +37,22 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="gluestretch">
  * <h3>The Primitive <tt>\gluestretch</tt></h3>
  * <p>
- * TODO gene:
+ *  The primitive <tt>\gluestretch</tt> translates a stretch part of a glue
+ *  value into a length. The stretch order is stripped and just the size is
+ *  preserved. The unit is changed to pt. For instance, if the value considered
+ *  is 8pt plus 1.23 fil then <tt>\gluestretch</tt> returns 1.23 pt.
  * </p>
  * <p>
+ *  The primitive <tt>\gluestretch</tt> can be used wherever a length is
+ *  expected. The primitive is also applicable to <tt>\the</tt>.
+ * </p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;gluestretch&rang;
  *      &rarr; <tt>\gluestretch</tt> &lang;glue&rang; </pre>
- * </p>
+ *
  * <h4>Examples</h4>
  * <pre class="TeXSample">
  *   \gluestretch\skip1  </pre>
@@ -52,7 +60,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Gluestretch extends AbstractCode
         implements
