@@ -53,6 +53,8 @@ import de.dante.extex.typesetter.type.node.VerticalListNode;
 import de.dante.util.framework.logger.LogEnabled;
 
 /**
+ * This class provides a paragraph builder.
+ *
  * TODO gene: missing JavaDoc.
  *
  * <doc name="emergencystretch" type="register">
@@ -147,7 +149,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * Treat segments of a paragraph separated by forced breaks separately.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class ParagraphBuilderImpl
         implements
@@ -375,7 +377,7 @@ public class ParagraphBuilderImpl
                 a[xi++] = breakPoint[i].getPosition();
             }
         }
-        return new Breaks(999, a); //TODO gene:
+        return new Breaks(999, a); //TODO gene: provide accumulated penalty
     }
 
     /**

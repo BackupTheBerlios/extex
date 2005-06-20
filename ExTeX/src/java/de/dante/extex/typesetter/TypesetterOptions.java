@@ -34,7 +34,7 @@ import de.dante.util.UnicodeChar;
  * options.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public interface TypesetterOptions {
 
@@ -115,9 +115,9 @@ public interface TypesetterOptions {
     TypesettingContext getTypesettingContext();
 
     /**
-     * TODO gene: missing JavaDoc
+     * Getter for the typesetting context factory.
      *
-     * @return ...
+     * @return the typesetting context factory
      */
     TypesettingContextFactory getTypesettingContextFactory();
 
