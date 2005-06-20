@@ -22,6 +22,7 @@ package de.dante.extex.interpreter.context;
 import de.dante.extex.font.FontFactory;
 import de.dante.extex.interpreter.Conditional;
 import de.dante.extex.interpreter.Interaction;
+import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.observer.CodeObserver;
@@ -64,11 +65,11 @@ import de.dante.util.configuration.ConfigurationException;
 
 /**
  * This mock implementation of a context does nothing useful but provide dummy
- * methods. It is meant as a base for dreived mock implementations in test
+ * methods. It is meant as a base for derived mock implementations in test
  * classes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class MockContext implements Context, TypesetterOptions {
 
@@ -164,7 +165,21 @@ public class MockContext implements Context, TypesetterOptions {
      */
     public Catcode getCatcode(final UnicodeChar c) {
 
-        throw new RuntimeException("unimplemented");
+        if (c.isLetter()) {
+            return Catcode.LETTER;
+        }
+        switch (c.getCodePoint()) {
+            case ' ':
+                return Catcode.SPACE;
+            case '{':
+                return Catcode.LEFTBRACE;
+            case '}':
+                return Catcode.RIGHTBRACE;
+            case '\\':
+                return Catcode.ESCAPE;
+            default:
+                return Catcode.OTHER;
+        }
     }
 
     /**
@@ -333,7 +348,7 @@ public class MockContext implements Context, TypesetterOptions {
      */
     public String getNamespace() {
 
-        throw new RuntimeException("unimplemented");
+        return Namespace.DEFAULT_NAMESPACE;
     }
 
     /**
@@ -373,7 +388,7 @@ public class MockContext implements Context, TypesetterOptions {
      */
     public Tokenizer getTokenizer() {
 
-        throw new RuntimeException("unimplemented");
+        return this;
     }
 
     /**
@@ -497,6 +512,46 @@ public class MockContext implements Context, TypesetterOptions {
      */
     public void registerTokensObserver(final String name,
             final TokensObserver observer) {
+
+        throw new RuntimeException("unimplemented");
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#set(de.dante.extex.interpreter.context.Color)
+     */
+    public void set(final Color color) throws ConfigurationException {
+
+        throw new RuntimeException("unimplemented");
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#set(de.dante.extex.interpreter.context.Direction)
+     */
+    public void set(final Direction direction) throws ConfigurationException {
+
+        throw new RuntimeException("unimplemented");
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#set(de.dante.extex.interpreter.type.font.Font)
+     */
+    public void set(final Font font) throws ConfigurationException {
+
+        throw new RuntimeException("unimplemented");
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#set(de.dante.extex.language.Language)
+     */
+    public void set(Language language) throws ConfigurationException {
+
+        throw new RuntimeException("unimplemented");
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#set(de.dante.extex.interpreter.context.TypesettingContext, boolean)
+     */
+    public void set(final TypesettingContext context, final boolean global) {
 
         throw new RuntimeException("unimplemented");
     }
@@ -724,54 +779,9 @@ public class MockContext implements Context, TypesetterOptions {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#set(de.dante.extex.interpreter.context.Color)
-     */
-    public void set(final Color color)
-            throws ConfigurationException {
-
-        throw new RuntimeException("unimplemented");
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#set(de.dante.extex.interpreter.context.Direction)
-     */
-    public void set(final Direction direction)
-            throws ConfigurationException {
-
-        throw new RuntimeException("unimplemented");
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#set(de.dante.extex.interpreter.type.font.Font)
-     */
-    public void set(final Font font)
-            throws ConfigurationException {
-
-        throw new RuntimeException("unimplemented");
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#set(de.dante.extex.language.Language)
-     */
-    public void set(Language language)
-            throws ConfigurationException {
-
-        throw new RuntimeException("unimplemented");
-    }
-
-    /**
      * @see de.dante.extex.interpreter.context.Context#setTypesettingContext(de.dante.extex.interpreter.context.TypesettingContext)
      */
     public void setTypesettingContext(final TypesettingContext context) {
-
-        throw new RuntimeException("unimplemented");
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#set(de.dante.extex.interpreter.context.TypesettingContext, boolean)
-     */
-    public void set(final TypesettingContext context,
-            final boolean global) {
 
         throw new RuntimeException("unimplemented");
     }
