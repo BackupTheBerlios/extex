@@ -44,7 +44,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * to and from their <logo>TeX</logo> encoding as numbers to abstract math code.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class AbstractTeXDelimter extends AbstractMathCode {
 
@@ -286,7 +286,7 @@ public class AbstractTeXDelimter extends AbstractMathCode {
         if (t == null) {
             throw new EofException("???");
         }
-        if ((t instanceof CodeToken)) {
+        if (t instanceof CodeToken) {
             Code code = context.getCode((CodeToken) t);
             if (code instanceof Delimiter) {
                 return newMathDelimiter(source.scanNumber(context));
