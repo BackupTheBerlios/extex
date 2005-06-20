@@ -1,6 +1,6 @@
 #!/bin/perl -w
 ##*****************************************************************************
-## $Id: primitives.pl,v 1.3 2005/06/19 13:12:33 gene Exp $
+## $Id: primitives.pl,v 1.4 2005/06/20 10:31:02 gene Exp $
 ##*****************************************************************************
 ## Author: Gerd Neugebauer
 ##=============================================================================
@@ -58,14 +58,14 @@ sub usage
 # Description:	
 #
 my $verbose   = 0;
-my $outfile   = undef;
+my $sfile   = undef;
 my $pfile     = undef;
 my $classpath = '.';
 
 use Getopt::Long;
 GetOptions("cp=s"		=> \$classpath,
 	   "h|help"		=> \&usage,
-	   "outfile=s"		=> \$outfile,
+	   "sets=s"		=> \$sfile,
 	   "primitives=s"	=> \$pfile,
 	   "v|verbose"		=> \$verbose,
 	  );
@@ -84,7 +84,7 @@ foreach my $file (@ARGV) {
   print STDERR "--- Got configuration $_ -> $file" if $verbose;
 }
 
-my $out = ($outfile ? new FileHandle($outfile, 'w'): \*STDOUT);
+my $out = ($sfile ? new FileHandle($sfile, 'w'): \*STDOUT);
 
 print $out "\n\\subsection{Predefined Configurations}\n";
 

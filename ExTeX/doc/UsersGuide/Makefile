@@ -1,5 +1,5 @@
 #******************************************************************************
-#* $Id: Makefile,v 1.10 2005/06/19 13:13:32 gene Exp $
+#* $Id: Makefile,v 1.11 2005/06/20 10:31:05 gene Exp $
 #******************************************************************************
 #* Author: Gerd Neugebauer
 #*=============================================================================
@@ -29,7 +29,7 @@ extex-users.pdf: cfg syntax $(MANUAL).tex
 tmp/configurations.tex cfg: bin/primitives.pl
 	perl bin/primitives.pl				\
 		-cp   $(SRCDIR)				\
-		-out  tmp/configurations.tex		\
+		-sets tmp/configurations.tex		\
 		-prim tmp/primitives.tex		\
 		$(SRCDIR)/config/*.xml 
 
