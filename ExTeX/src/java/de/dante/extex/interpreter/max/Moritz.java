@@ -86,7 +86,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.68 $
+ * @version $Revision: 1.69 $
  */
 public class Moritz extends Max
         implements
@@ -322,14 +322,13 @@ public class Moritz extends Max
             throws InterpreterException {
 
         Token t = getToken(context);
-        if (!(t instanceof CodeToken)) {
-            throw new HelpingException(getLocalizer(), "TTP.BoxExpected");
+        if (t instanceof CodeToken) {
+            Code code = context.getCode((CodeToken) t);
+            if (code instanceof Boxable) {
+                return ((Boxable) code).getBox(context, this, typesetter);
+            }
         }
-        Code code = context.getCode((CodeToken) t);
-        if (!(code instanceof Boxable)) {
-            throw new HelpingException(getLocalizer(), "TTP.BoxExpected");
-        }
-        return ((Boxable) code).getBox(context, this, typesetter);
+        throw new HelpingException(getLocalizer(), "TTP.BoxExpected");
     }
 
     /**
@@ -381,17 +380,19 @@ public class Moritz extends Max
 
         if (t == null) {
             throw new EofException(null);
-        } else if (!(t instanceof CodeToken)) {
-            throw new HelpingException(getLocalizer(), "TTP.MissingFontIdent");
-        }
-        Code code = context.getCode((CodeToken) t);
-        if (code == null) {
-            throw new UndefinedControlSequenceException(t.toString());
-        } else if (!(code instanceof FontConvertible)) {
-            throw new HelpingException(getLocalizer(), "TTP.MissingFontIdent");
-        }
 
-        return ((FontConvertible) code).convertFont(context, this);
+        } else if (t instanceof CodeToken) {
+            Code code = context.getCode((CodeToken) t);
+            if (code == null) {
+                throw new UndefinedControlSequenceException(t.toString());
+
+            } else if (code instanceof FontConvertible) {
+                return ((FontConvertible) code).convertFont(context, this);
+            }
+
+        }
+        throw new HelpingException(getLocalizer(), "TTP.MissingFontIdent");
+
     }
 
     /**
@@ -444,6 +445,13 @@ public class Moritz extends Max
             } else if (!(t.equals(Catcode.LETTER, s.charAt(i)) //
                     || t.equals(Catcode.OTHER, s.charAt(i)))
                     || !getKeyword(context, s, i + 1)) {
+                if (stream == null) {
+                    try {
+                        stream = tokenStreamFactory.newInstance("");
+                    } catch (ConfigurationException e) {
+                        throw new InterpreterException(e);
+                    }
+                }
                 stream.put(t);
                 return false;
             }
@@ -616,9 +624,7 @@ public class Moritz extends Max
         skipSpaces = true;
         Token t = getToken(context);
 
-        if (t == null) {
-            return;
-        } else if (t.equals(Catcode.OTHER, '=')) {
+        if (t != null && t.equals(Catcode.OTHER, '=')) {
             skipSpaces = true;
         } else {
             stream.put(t);
