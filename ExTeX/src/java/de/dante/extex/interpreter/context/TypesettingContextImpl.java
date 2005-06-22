@@ -29,7 +29,7 @@ import de.dante.extex.language.Language;
  * appearance of glyphs or other nodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class TypesettingContextImpl implements ModifiableTypesettingContext {
 
@@ -110,14 +110,6 @@ public class TypesettingContextImpl implements ModifiableTypesettingContext {
             this.direction = tc.getDirection();
             this.language = tc.getLanguage();
         }
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.TypesettingContext#copy()
-     */
-    public TypesettingContext copy() {
-
-        return new TypesettingContextImpl(this);
     }
 
     /**

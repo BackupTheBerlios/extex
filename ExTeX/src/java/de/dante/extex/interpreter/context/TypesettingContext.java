@@ -28,16 +28,9 @@ import de.dante.extex.language.Language;
  * appearance of glyphs or other nodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public interface TypesettingContext extends Serializable {
-
-    /**
-     * Copy the current instance.
-     *
-     * @return a copy of this instance
-     */
-    TypesettingContext copy();
 
     /**
      * Getter for the color.
