@@ -60,6 +60,7 @@ import de.dante.extex.typesetter.type.noad.NodeNoad;
 import de.dante.extex.typesetter.type.noad.RightNoad;
 import de.dante.extex.typesetter.type.noad.StyleNoad;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
+import de.dante.extex.typesetter.type.node.DiscretionaryNode;
 import de.dante.extex.typesetter.type.node.GlueNode;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
 import de.dante.util.UnicodeChar;
@@ -69,7 +70,7 @@ import de.dante.util.configuration.ConfigurationException;
  * This is the list maker for the inline math formulae.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class MathListMaker extends AbstractListMaker implements NoadConsumer {
 
@@ -78,7 +79,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      * It is used to store to the stack and restore the state from the stack.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.19 $
+     * @version $Revision: 1.20 $
      */
     private class MathMemento {
 
@@ -223,7 +224,18 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      * @see de.dante.extex.typesetter.ListMaker#add(
      *      de.dante.extex.typesetter.type.Node)
      */
-    public void add(final Node node) throws TypesetterException, ConfigurationException {
+    public void add(final Node node)
+            throws TypesetterException,
+                ConfigurationException {
+
+        if (node instanceof DiscretionaryNode) {
+            NodeList postBreak = ((DiscretionaryNode) node).getPostBreak();
+            if (postBreak != null && postBreak.size() != 0) {
+                throw new TypesetterException(new HelpingException(
+                        getLocalizer(), "TTP.IllegalMathDisc", postBreak
+                                .toString()));
+            }
+        }
 
         insertionPoint.add(new NodeNoad(node));
     }
@@ -241,21 +253,24 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      * Spaces are ignored in math mode. Thus this method is a noop.
      *
      * @param typesettingContext the typesetting context for the space
-     * @param spacefactor the spacefactor to use for this space or
-     * <code>null</code> to indicate that the default speacefactor should
-     * be used.
+     * @param spacefactor the space factor to use for this space or
+     *  <code>null</code> to indicate that the default space factor should
+     *  be used.
      *
      * @see de.dante.extex.typesetter.ListMaker#addSpace(
      *      de.dante.extex.interpreter.context.TypesettingContext,
      *      de.dante.extex.interpreter.type.count.Count)
      */
     public void addSpace(final TypesettingContext typesettingContext,
-            final Count spacefactor) throws TypesetterException, ConfigurationException {
+            final Count spacefactor)
+            throws TypesetterException,
+                ConfigurationException {
 
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#afterParagraph(ParagraphObserver)
+     * @see de.dante.extex.typesetter.ListMaker#afterParagraph(
+     *      de.dante.extex.typesetter.ParagraphObserver)
      */
     public void afterParagraph(final ParagraphObserver observer) {
 
@@ -276,7 +291,8 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      * @see "<logo>TeX</logo> &ndash; The Program [719]"
      */
     public NodeList complete(final TypesetterOptions context)
-            throws TypesetterException, ConfigurationException {
+            throws TypesetterException,
+                ConfigurationException {
 
         HorizontalListNode list = new HorizontalListNode();
         noads.typeset(list, new MathContext(StyleNoad.TEXTSTYLE, context),
