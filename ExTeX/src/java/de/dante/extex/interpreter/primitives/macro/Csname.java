@@ -40,8 +40,7 @@ import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.UnicodeChar;
 
 /**
- * This class provides an implementation for the primitive
- * <code>\csname</code>.
+ * This class provides an implementation for the primitive <code>\csname</code>.
  *
  * <doc name="csname">
  * <h3>The Primitive <tt>\csname</tt></h3>
@@ -56,26 +55,39 @@ import de.dante.util.UnicodeChar;
  *  will be a single control sequence token, defined to be like <tt>\relax</tt>
  *  if its meaning is currently undefined.
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;csname&rang;
  *      &rarr; <tt>\csname</tt> &lang;...&rang; <tt>\endcsname</tt>  </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \csname abc\endcsname  </pre>
- * </p>
+ *  <p>
+ *  </p>
+ *
+ *  <pre class="TeXSample">
+ *    \csname ab#de\endcsname  </pre>
+ *  <p>
+ *   The example is valid. It shows that even non-character tokens might be
+ *   contained.
+ *  </p>
+ *
+ *  <pre class="TeXSample">
+ *    \csname \TeX\endcsname  </pre>
+ *  <p>
+ *   This is usually illegal since <tt>\TeX</tt> is defined in plain to contain
+ *   some non-expandable primitives.
+ *  </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
-public class Csname extends AbstractCode
-        implements
-            ExpandableCode,
-            CsConvertible {
+public class Csname extends AbstractCode implements ExpandableCode {
 
     /**
      * Creates a new object.
@@ -99,7 +111,7 @@ public class Csname extends AbstractCode
 
         try {
             return context.getTokenFactory().createToken(Catcode.ESCAPE,
-                    new UnicodeChar(context.escapechar()), toks.toString(),
+                    new UnicodeChar(context.escapechar()), toks.toText(),
                     context.getNamespace());
         } catch (CatcodeException e) {
             throw new InterpreterException(e);
@@ -117,13 +129,18 @@ public class Csname extends AbstractCode
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        Tokens toks = scanToEndCsname(context, source, null);
+        Tokens toks = scanToEndCsname(context, source, typesetter);
         String s = toks.toText();
 
         try {
-            source.push(context.getTokenFactory().createToken(Catcode.ESCAPE,
-                    new UnicodeChar(context.escapechar()), s,
-                    context.getNamespace()));
+            CodeToken t = (CodeToken) context.getTokenFactory().createToken(
+                    Catcode.ESCAPE, new UnicodeChar(context.escapechar()), s,
+                    context.getNamespace());
+            Code code = context.getCode(t);
+            if (code == null) {
+                context.setCode(t, new Relax(s), true);
+            }
+            source.push(t);
         } catch (CatcodeException e) {
             throw new InterpreterException(e);
         }
@@ -140,16 +157,17 @@ public class Csname extends AbstractCode
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        Tokens toks = scanToEndCsname(context, source, null);
+        Tokens toks = scanToEndCsname(context, source, typesetter);
+        String s = toks.toText();
 
         try {
             source.push(context.getTokenFactory().createToken(Catcode.ESCAPE,
-                    new UnicodeChar(context.escapechar()), toks.toString(),
+                    new UnicodeChar(context.escapechar()), s,
                     context.getNamespace()));
         } catch (CatcodeException e) {
             throw new InterpreterException(e);
         }
-        //TODO gene: this might not be correct
+        //gene: this might not be correct
     }
 
     /**
@@ -158,7 +176,7 @@ public class Csname extends AbstractCode
      * assigned to {@link Endcsname Endcsname}.
      *
      * @param context the interpreter context
-     * @param source the source fot new tokens
+     * @param source the source for new tokens
      * @param typesetter the typesetter
      *
      * @return the Tokens found while scanning the input tokens
