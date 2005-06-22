@@ -33,6 +33,7 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.FlagsImpl;
 import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.Interpreter;
+import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.ContextFactory;
 import de.dante.extex.interpreter.context.observer.afterGroup.SwitchObserver;
@@ -40,6 +41,7 @@ import de.dante.extex.interpreter.exception.ErrorLimitException;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.CantUseInException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
+import de.dante.extex.interpreter.exception.helping.UndefinedControlSequenceException;
 import de.dante.extex.interpreter.loader.LoaderException;
 import de.dante.extex.interpreter.loader.SerialLoader;
 import de.dante.extex.interpreter.observer.error.ErrorObservable;
@@ -60,6 +62,7 @@ import de.dante.extex.interpreter.type.PrefixCode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.language.LanguageManagerFactory;
 import de.dante.extex.scanner.stream.TokenStream;
+import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.extex.scanner.type.ActiveCharacterToken;
 import de.dante.extex.scanner.type.CodeToken;
 import de.dante.extex.scanner.type.ControlSequenceToken;
@@ -96,7 +99,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.75 $
+ * @version $Revision: 1.76 $
  */
 public abstract class Max
         implements
@@ -133,12 +136,6 @@ public abstract class Max
      * per hour.
      */
     private static final int MINUTES_PER_HOUR = 60;
-
-    /**
-     * The field <tt>calendar</tt> contains the time and date when
-     * <logo>ExTeX</logo> has been started.
-     */
-    private Calendar calendar = Calendar.getInstance();
 
     /**
      * The field <tt>configuration</tt> contains the configuration for this
@@ -250,25 +247,12 @@ public abstract class Max
         context.setTokenFactory(tokenFactory);
         configureHyhenation(configuration);
 
-        try {
-            context.setInteraction(Interaction.ERRORSTOPMODE, true);
-            configurePrimitives(configuration, tokenFactory);
-            initializeDate(context);
-        } catch (ConfigurationException e) {
-            throw e;
-        } catch (InterpreterException e) {
-            Throwable cause = e.getCause();
-            if (cause instanceof ConfigurationException) {
-                throw (ConfigurationException) cause;
-            }
-            throw new ConfigurationWrapperException(e);
-        }
-
         Configuration everyRunConfig = configuration
                 .findConfiguration("everyjob");
         if (everyRunConfig != null) {
             everyRun = everyRunConfig.getValue();
         }
+
     }
 
     /**
@@ -297,13 +281,16 @@ public abstract class Max
      *
      * @param configuration the configuration
      * @param tokenFactory the token factory
+     * @param streamFactory the token stream factory
      *
      * @throws ConfigurationException in case of a configuration error
      */
-    private void configurePrimitives(final Configuration configuration,
-            final TokenFactory tokenFactory) throws ConfigurationException {
+    protected void configurePrimitives(final Configuration configuration,
+            final TokenFactory tokenFactory,
+            final TokenStreamFactory streamFactory)
+            throws ConfigurationException {
 
-        PrimitiveFactory primitiveFactory = new PrimitiveFactory();
+        PrimitiveFactory primitiveFactory = new PrimitiveFactory(streamFactory);
         Iterator iterator = configuration.iterator("primitives");
 
         try {
@@ -476,6 +463,158 @@ public abstract class Max
     }
 
     /**
+     * @see de.dante.extex.interpreter.Interpreter#expand(
+     *      de.dante.extex.interpreter.type.tokens.Tokens,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public Tokens expand(final Tokens tokens, final Typesetter typesetter)
+            throws GeneralException {
+
+        Tokens result = new Tokens();
+        TokenStream stream;
+        try {
+            stream = getTokenStreamFactory().newInstance("");
+        } catch (ConfigurationException e) {
+            throw new InterpreterException(e);
+        }
+
+        for (int i = tokens.length() - 1; i >= 0; i--) {
+            stream.put(tokens.get(i));
+        }
+
+        TokenVisitor tv = new TokenVisitor() {
+
+            public Object visitActive(final ActiveCharacterToken token,
+                    final Object arg) throws Exception {
+
+                Code code = context.getCode(token);
+                if (code instanceof ExpandableCode) {
+                    ((ExpandableCode) code).expand(Flags.NONE, context,
+                            (TokenSource) arg, typesetter);
+                } else if (code == null) {
+                    throw new UndefinedControlSequenceException(token
+                            .toString());
+                } else {
+                    //TODO gene: unimplemented
+                    throw new RuntimeException("unimplemented");
+                }
+
+                return null;
+            }
+
+            public Object visitCr(final CrToken token, final Object arg)
+                    throws Exception {
+
+                //TODO gene: unimplemented
+                throw new RuntimeException("unimplemented");
+            }
+
+            public Object visitEscape(final ControlSequenceToken token,
+                    final Object arg) throws Exception {
+
+                Code code = context.getCode(token);
+                if (code instanceof ExpandableCode) {
+                    ((ExpandableCode) code).expand(Flags.NONE, context,
+                            (TokenSource) arg, typesetter);
+                } else if (code == null) {
+                    throw new UndefinedControlSequenceException(token
+                            .toString());
+                } else {
+                    //TODO gene: unimplemented
+                    throw new RuntimeException("unimplemented");
+                }
+
+                return null;
+            }
+
+            public Object visitLeftBrace(final LeftBraceToken token,
+                    final Object arg) throws Exception {
+
+                //TODO gene: unimplemented
+                throw new RuntimeException("unimplemented");
+            }
+
+            public Object visitLetter(final LetterToken token, final Object arg)
+                    throws Exception {
+
+                return token;
+            }
+
+            public Object visitMacroParam(final MacroParamToken token,
+                    final Object arg) throws Exception {
+
+                //TODO gene: unimplemented
+                throw new RuntimeException("unimplemented");
+            }
+
+            public Object visitMathShift(final MathShiftToken token,
+                    final Object arg) throws Exception {
+
+                //TODO gene: unimplemented
+                throw new RuntimeException("unimplemented");
+            }
+
+            public Object visitOther(final OtherToken token, final Object arg)
+                    throws Exception {
+
+                return token;
+            }
+
+            public Object visitRightBrace(final RightBraceToken token,
+                    final Object arg) throws Exception {
+
+                //TODO gene: unimplemented
+                throw new RuntimeException("unimplemented");
+            }
+
+            public Object visitSpace(final SpaceToken token, final Object arg)
+                    throws Exception {
+
+                return token;
+            }
+
+            public Object visitSubMark(final SubMarkToken token,
+                    final Object arg) throws Exception {
+
+                //TODO gene: unimplemented
+                throw new RuntimeException("unimplemented");
+            }
+
+            public Object visitSupMark(final SupMarkToken token,
+                    final Object arg) throws Exception {
+
+                //TODO gene: unimplemented
+                throw new RuntimeException("unimplemented");
+            }
+
+            public Object visitTabMark(final TabMarkToken token,
+                    final Object arg) throws Exception {
+
+                //TODO gene: unimplemented
+                throw new RuntimeException("unimplemented");
+            }
+
+        };
+
+        try {
+            for (;;) {
+                Token t = stream.get(null, null);
+                if (t == null) {
+                    return result;
+                }
+                t = (Token) t.visit(tv, stream);
+                if (t != null) {
+                    result.add(t);
+                }
+            }
+        } catch (InterpreterException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new InterpreterException(e);
+        }
+    }
+
+    /**
      * @see de.dante.extex.interpreter.max.Moritz#getContext()
      */
     public Context getContext() {
@@ -525,17 +664,16 @@ public abstract class Max
     /**
      * Initialize the date and time related primitives.
      *
-     * @param theContext the context
+     * @param calendar the time and date when <logo>ExTeX</logo> has been started
      *
      * @throws InterpreterException in case of an error
      */
-    private void initializeDate(final Context theContext)
-            throws InterpreterException {
+    protected void initializeDate(final Calendar calendar) throws InterpreterException {
 
-        theContext.setCount("day", calendar.get(Calendar.DAY_OF_MONTH), true);
-        theContext.setCount("month", calendar.get(Calendar.MONTH), true);
-        theContext.setCount("year", calendar.get(Calendar.YEAR), true);
-        theContext.setCount("time", calendar.get(Calendar.HOUR_OF_DAY)
+        context.setCount("day", calendar.get(Calendar.DAY_OF_MONTH), true);
+        context.setCount("month", calendar.get(Calendar.MONTH), true);
+        context.setCount("year", calendar.get(Calendar.YEAR), true);
+        context.setCount("time", calendar.get(Calendar.HOUR_OF_DAY)
                 * MINUTES_PER_HOUR + calendar.get(Calendar.MINUTE), true);
     }
 
@@ -568,7 +706,7 @@ public abstract class Max
         }
 
         try {
-            initializeDate(newContext);
+            initializeDate(Calendar.getInstance());
         } catch (InterpreterException e) {
             Throwable cause = e.getCause();
             if (cause instanceof ConfigurationException) {
@@ -710,16 +848,6 @@ public abstract class Max
 
         addStream(stream);
         run();
-    }
-
-    /**
-     * Setter for calendar.
-     *
-     * @param theCalendar the calendar to set.
-     */
-    public void setCalendar(final Calendar theCalendar) {
-
-        this.calendar = theCalendar;
     }
 
     /**
