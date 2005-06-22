@@ -1,40 +1,37 @@
 /*
  * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 2.1 of the License, or (at your
+ * option) any later version.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation,
+ * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
 
 package de.dante.extex.interpreter.primitives.hyphen;
 
-import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
-import de.dante.extex.interpreter.exception.ImpossibleException;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
-import de.dante.extex.language.ligature.LigatureBuilder;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
-import de.dante.extex.typesetter.listMaker.HorizontalListMaker;
 import de.dante.extex.typesetter.listMaker.ListManager;
+import de.dante.extex.typesetter.listMaker.RestrictedHorizontalListMaker;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.node.CharNodeFactory;
 import de.dante.extex.typesetter.type.node.DiscretionaryNode;
@@ -49,119 +46,39 @@ import de.dante.util.configuration.ConfigurationException;
  * <doc name="discretionary">
  * <h3>The Primitive <tt>\discretionary</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The primitive <tt>\discretionary</tt> can be used to insert an optional
+ *  break point into the paragraph. The optional break point consists of three
+ *  parts. The first part is inserted into the paragraph if no line breaking
+ *  happens at this position. In case that the line breaking chooses this place
+ *  for a line break then the second part of the discretionary is inserted at
+ *  the end of the current line and the third part is inserted at the beginning
+ *  of the next line.
  * </p>
  * <p>
+ *  The three parts are given as three sequences of characters in braces. It
+ *  may be composed of characters, ligatures, and rules only.
+ * </p>
+ * <p>
+ *  In math mode the third part is forced to be empty.
+ * </p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;discretionary&rang;
- *      &rarr; <tt>\discretionary ...</tt>  </pre>
- * </p>
- * <p>
- *  Examples:
+ *      &rarr; <tt>\discretionary</tt>{...}{...}{...}  </pre>
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \discretionary{f-}{fi}{ffi}
  *    \discretionary{-}{}{}  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class Discretionary extends AbstractCode {
-
-    /**
-     * This inner class is used temporarily during the collection of the
-     * discretionary components.
-     *
-     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.20 $
-     */
-    private class Manager implements ListManager {
-
-        /**
-         * The field <tt>charNodeFactory</tt> contains the factory for new
-         * characters.
-         */
-        private CharNodeFactory charNodeFactory;
-
-        /**
-         * Creates a new object.
-         *
-         * @param cnf the char node factor to use
-         */
-        public Manager(final CharNodeFactory cnf) {
-
-            super();
-            charNodeFactory = cnf;
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.listMaker.ListManager#buildParagraph(
-         *      de.dante.extex.typesetter.type.node.HorizontalListNode)
-         */
-        public NodeList buildParagraph(final HorizontalListNode nodes) {
-
-            throw new ImpossibleException("discretionary.buildParagraph");
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.listMaker.ListManager#endParagraph()
-         */
-        public void endParagraph() throws TypesetterException, ConfigurationException {
-
-            throw new ImpossibleException("discretionary.endParagraph");
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.listMaker.ListManager#getCharNodeFactory()
-         */
-        public CharNodeFactory getCharNodeFactory() {
-
-            return charNodeFactory;
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.listMaker.ListManager#getDocumentWriter()
-         */
-        public DocumentWriter getDocumentWriter() {
-
-            return null;
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.listMaker.ListManager#getLigatureBuilder()
-         */
-        public LigatureBuilder getLigatureBuilder() {
-
-            return null;
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.listMaker.ListManager#getOptions()
-         */
-        public TypesetterOptions getOptions() {
-
-            return null;
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.listMaker.ListManager#pop()
-         */
-        public ListMaker pop() throws TypesetterException {
-
-            throw new RuntimeException("unimplemented");
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.listMaker.ListManager#push(
-         *      de.dante.extex.typesetter.ListMaker)
-         */
-        public void push(final ListMaker listMaker) throws TypesetterException {
-
-            throw new RuntimeException("unimplemented");
-        }
-    }
 
     /**
      * Creates a new object.
@@ -213,17 +130,19 @@ public class Discretionary extends AbstractCode {
      * @return the node list or <code>null</code> if there are no tokens to
      *  put into the list
      * @throws TypesetterException in case of an error
-     * @throws ConfigurationException TODO
+     * @throws ConfigurationException in case of a configuration error
      */
     private NodeList fill(final Tokens tokens, final TypesettingContext tc,
             final Typesetter typesetter, final Context context)
-            throws TypesetterException, ConfigurationException {
+            throws TypesetterException,
+                ConfigurationException {
 
         if (tokens.length() == 0) {
             return null;
         }
-        ListManager man = new Manager(typesetter.getCharNodeFactory());
-        ListMaker hlist = new HorizontalListMaker(man);
+
+        ListManager man = typesetter.getManager();
+        ListMaker hlist = new RestrictedHorizontalListMaker(man);
         NodeList nodes = new HorizontalListNode();
 
         for (int i = 0; i < tokens.length(); i++) {

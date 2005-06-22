@@ -38,7 +38,7 @@ import de.dante.util.configuration.ConfigurationException;
  * @see "<logo>TeX</logo> &ndash; The Program [211]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.40 $
+ * @version $Revision: 1.41 $
  */
 public interface ListMaker {
 
@@ -48,8 +48,9 @@ public interface ListMaker {
      * their own.
      *
      * @param node the node to add
+     *
      * @throws TypesetterException in case of an error
-     * @throws ConfigurationException TODO
+     * @throws ConfigurationException in case of a configuration error
      */
     void add(Node node) throws TypesetterException, ConfigurationException;
 
@@ -67,13 +68,15 @@ public interface ListMaker {
      *
      * @param typesettingContext the typesetting context for the space
      * @param spacefactor the space factor to use for this space or
-     * <code>null</code> to indicate that the default space factor should
-     * be used.
+     *  <code>null</code> to indicate that the default space factor should
+     *  be used.
+     *
      * @throws TypesetterException in case of an error
-     * @throws ConfigurationException TODO
+     * @throws ConfigurationException in case of a configuration error
      */
     void addSpace(TypesettingContext typesettingContext, Count spacefactor)
-            throws TypesetterException, ConfigurationException;
+            throws TypesetterException,
+                ConfigurationException;
 
     /**
      * Register an observer to be invoked at the end of the paragraph.
@@ -93,11 +96,14 @@ public interface ListMaker {
      * @param context the typesetter options mapping a fragment of the
      *  interpreter context
      *
-     * @return the node list enclosed in this instance.
+     * @return the node list enclosed in this instance
+     *
      * @throws TypesetterException in case of an error
-     * @throws ConfigurationException TODO
+     * @throws ConfigurationException in case of a configuration error
      */
-    NodeList complete(TypesetterOptions context) throws TypesetterException, ConfigurationException;
+    NodeList complete(TypesetterOptions context)
+            throws TypesetterException,
+                ConfigurationException;
 
     /**
      * Process a carriage return.
@@ -154,17 +160,20 @@ public interface ListMaker {
      * @param context the interpreter context
      * @param source the source for new tokens
      * @param t the actual math shift character token
+     *
      * @throws TypesetterException in case of an error
-     * @throws ConfigurationException TODO
+     * @throws ConfigurationException in case of a configuration error
      */
     void mathShift(Context context, TokenSource source, Token t)
-            throws TypesetterException, ConfigurationException;
+            throws TypesetterException,
+                ConfigurationException;
 
     /**
      * Emit a new paragraph.
      * This might be a noop under certain circumstances.
+     *
      * @throws TypesetterException in case of an error
-     * @throws ConfigurationException TODO
+     * @throws ConfigurationException in case of a configuration error
      */
     void par() throws TypesetterException, ConfigurationException;
 
@@ -202,27 +211,29 @@ public interface ListMaker {
 
     /**
      * Treat a subscript mark. This might be meaningful in math mode only.
+     *
      * @param context the interpreter context
      * @param source the source for new tokens
-     * @param typesetter TODO
+     * @param typesetter the typesetter
      * @param t the actual sub mark token
      *
      * @throws TypesetterException in case of an error
      */
-    void subscriptMark(Context context, TokenSource source, Typesetter typesetter, Token t)
-            throws TypesetterException;
+    void subscriptMark(Context context, TokenSource source,
+            Typesetter typesetter, Token t) throws TypesetterException;
 
     /**
      * Treat a superscript mark. This might be meaningful in math mode only.
+     *
      * @param context the interpreter context
      * @param source the source for new tokens
-     * @param typesetter TODO
+     * @param typesetter the typesetter
      * @param t the actual super mark token
      *
      * @throws TypesetterException in case of an error
      */
-    void superscriptMark(Context context, TokenSource source, Typesetter typesetter, Token t)
-            throws TypesetterException;
+    void superscriptMark(Context context, TokenSource source,
+            Typesetter typesetter, Token t) throws TypesetterException;
 
     /**
      * Treat a alignment tab character.
@@ -230,10 +241,12 @@ public interface ListMaker {
      * @param context the interpreter context
      * @param source the source for new tokens
      * @param t the actual tab token
+     *
      * @throws TypesetterException in case of an error
-     * @throws ConfigurationException TODO
+     * @throws ConfigurationException in case of a configuration error
      */
     void tab(Context context, TokenSource source, Token t)
-            throws TypesetterException, ConfigurationException;
+            throws TypesetterException,
+                ConfigurationException;
 
 }

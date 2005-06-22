@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -55,7 +55,7 @@ import de.dante.util.resource.ResourceFinder;
  * TokenStream. The name of the class is given as the argument <tt>class</tt>
  * as shown below.
  * <pre>
- *   &lt;Scanner class="the.package.TheClass"/&gt;
+ *   &lt;Scanner class="the.pack.age.TheClass"/&gt;
  * </pre>
  * </p>
  * <p>
@@ -73,7 +73,7 @@ import de.dante.util.resource.ResourceFinder;
  * <tt>buffersize</tt> is taken into account. This parameter is optional.
  * Its usage can look as follows:
  * <pre>
- *   &lt;Scanner class="the.package.TheClass"
+ *   &lt;Scanner class="the.pack.age.TheClass"
  *         buffersize="0"/&gt;
  * </pre>
  * The value given is a number. If this number is positive then it is
@@ -88,7 +88,7 @@ import de.dante.util.resource.ResourceFinder;
  * the mapping from bytes to characters according to an encoding.
  * The name is given as the parameter <tt>reader</tt> as shown below:
  * <pre>
- *   &lt;Scanner class="the.package.TheClass"
+ *   &lt;Scanner class="the.pack.age.TheClass"
  *         reader="another.pack.age.TheReaderClass"/&gt;
  * </pre>
  * </p>
@@ -123,7 +123,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
 public class TokenStreamFactory extends AbstractFactory
         implements
