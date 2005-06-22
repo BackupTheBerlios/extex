@@ -20,8 +20,10 @@
 package de.dante.extex.interpreter.max;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import de.dante.extex.interpreter.Flags;
+import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.Context;
@@ -71,6 +73,7 @@ import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.configuration.ConfigurationWrapperException;
 import de.dante.util.framework.configuration.Configurable;
 import de.dante.util.observer.NotObservableException;
 
@@ -86,7 +89,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.69 $
+ * @version $Revision: 1.70 $
  */
 public class Moritz extends Max
         implements
@@ -288,6 +291,21 @@ public class Moritz extends Max
 
         super.configure(configuration);
 
+        try {
+            getContext().setInteraction(Interaction.ERRORSTOPMODE, true);
+            configurePrimitives(configuration, getContext().getTokenFactory(),
+                    tokenStreamFactory);
+            initializeDate(Calendar.getInstance());
+        } catch (ConfigurationException e) {
+            throw e;
+        } catch (InterpreterException e) {
+            Throwable cause = e.getCause();
+            if (cause instanceof ConfigurationException) {
+                throw (ConfigurationException) cause;
+            }
+            throw new ConfigurationWrapperException(e);
+        }
+
         Configuration cfg = configuration
                 .findConfiguration("ExtendedRegisterNames");
         if (cfg != null) {
@@ -299,19 +317,6 @@ public class Moritz extends Max
         if (cfg != null) {
             registerMaxIndex = Long.valueOf(cfg.getValue()).longValue();
         }
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.Interpreter#expand(
-     *      de.dante.extex.interpreter.type.tokens.Tokens,
-     *      de.dante.extex.typesetter.Typesetter)
-     */
-    public Tokens expand(final Tokens tokens, final Typesetter typesetter)
-            throws GeneralException {
-
-        Tokens result = new Tokens();
-        // TODO gene: expand unimplemented
-        throw new RuntimeException("unimplemented");
     }
 
     /**
