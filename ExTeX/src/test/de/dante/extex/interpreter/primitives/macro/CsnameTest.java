@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\csname</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class CsnameTest extends ExTeXLauncher {
 
@@ -40,8 +40,10 @@ public class CsnameTest extends ExTeXLauncher {
     }
 
     /**
-     * Test case checking that the normal operation is performed on letter
-     * inputs only.
+     * <testcase primitive="csname">
+     *  Test case checking that the normal operation is performed on letter
+     *  inputs only.
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -50,17 +52,19 @@ public class CsnameTest extends ExTeXLauncher {
         runCode(//--- input code ---
                 "\\catcode`{=1"
                 + "\\catcode`}=2"
-                + "\\def\\abc{-a-b-c-}" +
-                "\\csname abc\\endcsname\\end",
+                + "\\def\\abc{-a-b-c-}"
+                + "\\csname abc\\endcsname\\end",
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "-a-b-c-\n\n-a-b-c-\n\n");
+                "-a-b-c-\n\n");
     }
 
     /**
-     * Test case checking that the normal operation is performed on letter
-     * inputs only and whitespace is ignored.
+     * <testcase primitive="csname">
+     *  Test case checking that the normal operation is performed on letter
+     *  inputs only and white-space is ignored.
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -69,17 +73,19 @@ public class CsnameTest extends ExTeXLauncher {
         runCode(//--- input code ---
                 "\\catcode`{=1"
                 + "\\catcode`}=2"
-                + "\\def\\abc{-a-b-c-}" +
-                "\\csname a b  c\\endcsname\\end",
+                + "\\def\\abc{-a-b-c-}"
+                + "\\csname a b  c\\endcsname\\end",
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "-a-b-c-\n\n-a-b-c-\n\n");
+                "-a-b-c-\n\n");
     }
 
     /**
-     * Test case checking that the normal operation is performed on letter
-     * inputs only and whitespace and \relax is ignored.
+     * <testcase primitive="csname">
+     *  Test case checking that the normal operation is performed on letter
+     *  inputs only and white-space and \relax is ignored.
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -88,17 +94,40 @@ public class CsnameTest extends ExTeXLauncher {
         runCode(//--- input code ---
                 "\\catcode`{=1"
                 + "\\catcode`}=2"
-                + "\\def\\abc{-a-b-c-}" +
-                "\\csname a b \\relax c\\endcsname\\end",
+                + "\\def\\abc{-a-b-c-}"
+                + "\\csname a b \\relax c\\endcsname\\end",
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "-a-b-c-\n\n-a-b-c-\n\n");
+                "-a-b-c-\n\n");
     }
 
     /**
-     * Test case checking that the normal operation is performed on letter
-     * and digit inputs only.
+     * <testcase primitive="csname">
+     *  Test case checking that the primitive \string can be used to insert
+     *  special characters.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testString1() throws Exception {
+
+        runCode(//--- input code ---
+                "\\catcode`{=1"
+                + "\\catcode`}=2"
+                + "\\csname \\string\\par \\endcsname\\end",
+                //--- log message ---
+                "",
+                //--- output channel ---
+                "");
+    }
+
+    /**
+     * <testcase primitive="csname">
+     *  Test case checking that the normal operation is performed on letter
+     *  and digit inputs only. Undefined control sequences are treated as
+     *  <tt>\relax</tt>.
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -107,17 +136,42 @@ public class CsnameTest extends ExTeXLauncher {
         runCode(//--- input code ---
                 "\\catcode`{=1"
                 + "\\catcode`}=2"
-                + "\\def\\abc{-a-b-c-}" +
-                "\\csname abc 123\\endcsname\\end",
+                + "\\def\\abc{-a-b-c-}"
+                + "\\csname abc 123\\endcsname\\end",
                 //--- log message ---
-                "Undefined control sequence",
+                "",
                 //--- output channel ---
                 "");
     }
 
     /**
-     * Test case checking that the normal operation is performed on letter
-     * and digit inputs only.
+     * <testcase primitive="csname">
+     *  Test case checking that the normal operation is performed on letter
+     *  and digit inputs only. Undefined control sequences are treated as
+     *  <tt>\relax</tt>.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testMixed2() throws Exception {
+
+        runCode(//--- input code ---
+                "\\catcode`{=1"
+                + "\\catcode`}=2"
+                + "\\catcode`#=6"
+                + "\\def\\abc{-a-b-c-}"
+                + "\\csname abc # 123\\endcsname\\end",
+                //--- log message ---
+                "",
+                //--- output channel ---
+                "");
+    }
+
+    /**
+     * <testcase primitive="csname">
+     *  Test case checking that the normal operation is performed on letter
+     *  and digit inputs only.
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -132,7 +186,9 @@ public class CsnameTest extends ExTeXLauncher {
     }
 
     /**
-     * Test case checking that eof is recognized.
+     * <testcase primitive="csname">
+     *  Test case checking that eof is recognized.
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -141,9 +197,9 @@ public class CsnameTest extends ExTeXLauncher {
         runCode(//--- input code ---
                 "\\expandafter\\meaning\\csname ",
                 //--- log message ---
-                "",
+                "Unexpected end of file while processing \\meaning",
                 //--- output channel ---
-                "\\=undefined\n\n\\=undefined\n\n");
+                "");
     }
 
 }
