@@ -25,6 +25,8 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.InitializableCode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.scanner.type.Token;
+import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
 /**
@@ -39,7 +41,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class ToksParameter extends ToksPrimitive implements InitializableCode {
 
@@ -71,12 +73,12 @@ public class ToksParameter extends ToksPrimitive implements InitializableCode {
     }
 
     /**
-     * Return the key (the number) for the toks register.
+     * Return the key (the number) for the tokens register.
      *
      * @param source the source for the next tokens &ndash; if required
      * @param context the interpreter context to use
      *
-     * @return the key for the toks register
+     * @return the key for the tokens register
      */
     protected String getKey(final TokenSource source, final Context context) {
 
@@ -90,19 +92,18 @@ public class ToksParameter extends ToksPrimitive implements InitializableCode {
     /**
      * @see de.dante.extex.interpreter.type.InitializableCode#init(
      *      de.dante.extex.interpreter.context.Context,
-     *      java.lang.String)
+     *      TokenSource, Typesetter)
      */
-    public void init(final Context context, final String value)
-            throws InterpreterException {
+    public void init(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
 
-        if (value != null && value.length() > 0) {
-            try {
-                context.setToks(getKey((TokenSource) null, context), //
-                        new Tokens(context, value), true);
-            } catch (GeneralException e) {
-                throw new InterpreterException(e);
+        if (source != null) {
+            Tokens toks = new Tokens();
+            for (Token t = source.getToken(context); t != null; t = source
+                    .getToken(context)) {
+                toks.add(t);
             }
-
+            context.setToks(getKey((TokenSource) null, context), toks, true);
         }
     }
 }

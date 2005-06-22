@@ -24,6 +24,8 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.InitializableCode;
+import de.dante.extex.scanner.type.Token;
+import de.dante.extex.typesetter.Typesetter;
 
 /**
  * This class provides an implementation for the count valued primitives like
@@ -40,7 +42,7 @@ import de.dante.extex.interpreter.type.InitializableCode;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class IntegerParameter extends CountPrimitive
         implements
@@ -70,22 +72,22 @@ public class IntegerParameter extends CountPrimitive
      * Initialize the Code with some value coming from a String.
      *
      * @param context the interpreter context
-     * @param value the source of information for the initialization
+     * @param source the source of information for the initialization
+     * @param typesetter the typesetter
+     *
+     * @throws InterpreterException in case of an error
      *
      * @see de.dante.extex.interpreter.type.InitializableCode#init(
-     *      de.dante.extex.interpreter.context.Context, java.lang.String)
+     *      de.dante.extex.interpreter.context.Context, TokenSource, Typesetter)
      */
-    public void init(final Context context, final String value)
-            throws InterpreterException {
+    public void init(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
 
-        if (!value.equals("")) {
-            try {
-                long val = Long.parseLong(value);
-                context.setCount(getKey(context, null), val, true);
-            } catch (NumberFormatException e) {
-                throw new HelpingException(getLocalizer(),
-                        "NumberFormatException",
-                        printableControlSequence(context), value);
+        if (source != null) {
+            Token t = source.getToken(context);
+            if (t != null) {
+                long value = source.scanNumber(context, t);
+                context.setCount(getKey(context, null), value, true);
             }
         }
     }

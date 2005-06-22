@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -26,9 +26,11 @@ import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.InitializableCode;
+import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.CodeToken;
 import de.dante.extex.scanner.type.TokenFactory;
+import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.Configuration;
@@ -47,7 +49,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class PrimitiveFactory extends AbstractFactory {
 
@@ -58,11 +60,19 @@ public class PrimitiveFactory extends AbstractFactory {
     private static final String NAME_ATTRIBUTE = "name";
 
     /**
-     * Creates a new object.
+     * The field <tt>factory</tt> contains the ...
      */
-    public PrimitiveFactory() {
+    private TokenStreamFactory factory;
+
+    /**
+     * Creates a new object.
+     *
+     * @param factory the factory for token streams
+     */
+    public PrimitiveFactory(final TokenStreamFactory factory) {
 
         super();
+        this.factory = factory;
     }
 
     /**
@@ -93,6 +103,7 @@ public class PrimitiveFactory extends AbstractFactory {
                 ConfigurationException {
 
         Iterator iterator = configuration.iterator("define");
+        Typesetter typesetter = null; //gene: it might be ok to have none
 
         while (iterator.hasNext()) {
             Configuration cfg = (Configuration) iterator.next();
@@ -108,7 +119,11 @@ public class PrimitiveFactory extends AbstractFactory {
                 ((LogEnabled) code).enableLogging(outputLogger);
             }
             if (code instanceof InitializableCode) {
-                ((InitializableCode) code).init(context, cfg.getValue());
+
+                String value = cfg.getValue();
+                StringSource stringSource = new StringSource(value);
+                ((InitializableCode) code).init(context, stringSource,
+                        typesetter);
             }
         }
     }

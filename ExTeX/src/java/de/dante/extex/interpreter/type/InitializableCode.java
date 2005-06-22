@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -18,27 +18,29 @@
  */
 package de.dante.extex.interpreter.type;
 
+import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.typesetter.Typesetter;
 
 
 /**
  * This interface describes the ability to be initialized
- * This is a lifecycle feature.
+ * This is a life-cycle feature.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface InitializableCode {
 
     /**
      * Initialize the Code with some value coming from a String.
-     *
      * @param context the interpreter context
-     * @param value the source of information for the initialization
+     * @param source the source of information for the initialization
+     * @param typesetter TODO
      *
      * @throws InterpreterException in case of an error
      */
-    void init(Context context, String value) throws InterpreterException;
+    void init(Context context, TokenSource source, Typesetter typesetter) throws InterpreterException;
 
 }

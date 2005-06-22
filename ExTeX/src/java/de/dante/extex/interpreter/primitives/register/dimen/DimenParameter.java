@@ -21,10 +21,15 @@ package de.dante.extex.interpreter.primitives.register.dimen;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.type.InitializableCode;
+import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.scanner.type.Token;
+import de.dante.extex.typesetter.Typesetter;
 
 /**
  * This class provides an implementation for the primitive <code>\dimen</code>.
- * It sets the named dimen register to the value given,
+ * It sets the named length register to the value given,
  * and as a side effect all prefixes are zeroed.
  *
  * <p>Example</p>
@@ -33,9 +38,9 @@ import de.dante.extex.interpreter.context.Context;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
-public class DimenParameter extends DimenPrimitive {
+public class DimenParameter extends DimenPrimitive implements InitializableCode {
 
     /**
      * Creates a new object.
@@ -50,18 +55,45 @@ public class DimenParameter extends DimenPrimitive {
     /**
      * Return the key (the name of the primitive) for the register.
      *
-     * @param source the source for new tokens
      * @param context the interpreter context to use
+     * @param source the source for new tokens
      *
      * @return the key for the current register
      *
      * @see de.dante.extex.interpreter.primitives.register.dimen.AbstractDimen#getKey(
-     *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.interpreter.context.Context)
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource)
      */
-    protected String getKey(final TokenSource source, final Context context) {
+    protected String getKey(final Context context, final TokenSource source) {
 
         return getName();
+    }
+
+    /**
+     * Initialize the Code with some value coming from a Token source.
+     *
+     * @param context the interpreter context
+     * @param source the source of information for the initialization
+     * @param typesetter the typesetter
+     *
+     * @throws InterpreterException in case of an error
+     *
+     * @see de.dante.extex.interpreter.type.InitializableCode#init(
+     *      de.dante.extex.interpreter.context.Context, TokenSource, Typesetter)
+     */
+    public void init(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
+
+        if (source == null) {
+            return;
+        }
+        Token t = source.getNonSpace(context);
+        if (t == null) {
+            return;
+        }
+        source.push(t);
+        Dimen d = new Dimen(context, source, typesetter);
+        context.setDimen(getKey(context, null), d, true);
     }
 
 }
