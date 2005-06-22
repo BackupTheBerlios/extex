@@ -25,7 +25,7 @@ package de.dante.extex.scanner.stream.observer.string;
  * a new string based stream has been opened.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface OpenStringObserver {
 
@@ -35,5 +35,5 @@ public interface OpenStringObserver {
      *
      * @param string the contents to be processed
      */
-    void update(String string);
+    void update(CharSequence string);
 }

@@ -24,10 +24,10 @@ import java.util.List;
 
 
 /**
- * This class provides a typesafe list of observers for the open file event.
+ * This class provides a type-safe list of observers for the open file event.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public final class OpenStringObserverList implements OpenStringObserver {
 
@@ -66,7 +66,7 @@ public final class OpenStringObserverList implements OpenStringObserver {
     /**
      * Add an observer to the list.
      *
-     * @param observer te observer to add to the list
+     * @param observer the observer to add to the list
      */
     public void add(final OpenStringObserver observer) {
 
@@ -74,13 +74,13 @@ public final class OpenStringObserverList implements OpenStringObserver {
     }
 
     /**
-     * Invoke all observers on the list to inform them of the string which has
-     * been opened.
+     * Invoke all observers on the list to inform them of the character sequence
+     * which has been opened.
      *
      * @see de.dante.extex.scanner.stream.observer.string.OpenStringObserver#update(
-     *      java.lang.String)
+     *      java.lang.CharSequence)
      */
-    public void update(final String string) {
+    public void update(final CharSequence string) {
 
         for (int i = 0; i < list.size(); i++) {
             ((OpenStringObserver) list.get(i)).update(string);
