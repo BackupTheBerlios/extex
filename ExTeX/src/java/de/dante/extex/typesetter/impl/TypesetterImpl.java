@@ -62,7 +62,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.69 $
+ * @version $Revision: 1.70 $
  */
 public class TypesetterImpl
         implements
@@ -148,7 +148,9 @@ public class TypesetterImpl
      * @see de.dante.extex.typesetter.ListMaker#add(
      *     de.dante.extex.typesetter.type.Node)
      */
-    public void add(final Node node) throws TypesetterException, ConfigurationException {
+    public void add(final Node node)
+            throws TypesetterException,
+                ConfigurationException {
 
         listMaker.add(node);
 
@@ -178,7 +180,9 @@ public class TypesetterImpl
      *     de.dante.extex.interpreter.type.count.Count)
      */
     public void addSpace(final TypesettingContext typesettingContext,
-            final Count spacefactor) throws TypesetterException, ConfigurationException {
+            final Count spacefactor)
+            throws TypesetterException,
+                ConfigurationException {
 
         listMaker.addSpace(typesettingContext, null);
     }
@@ -213,7 +217,8 @@ public class TypesetterImpl
      * @see de.dante.extex.typesetter.ListMaker#complete(TypesetterOptions)
      */
     public NodeList complete(final TypesetterOptions context)
-            throws TypesetterException, ConfigurationException {
+            throws TypesetterException,
+                ConfigurationException {
 
         NodeList nodes = listMaker.complete(context);
         pop();
@@ -263,7 +268,9 @@ public class TypesetterImpl
     /**
      * @see de.dante.extex.typesetter.listMaker.ListManager#endParagraph()
      */
-    public void endParagraph() throws TypesetterException, ConfigurationException {
+    public void endParagraph()
+            throws TypesetterException,
+                ConfigurationException {
 
         NodeList list = listMaker.complete(options);
         pop();
@@ -555,7 +562,8 @@ public class TypesetterImpl
      *      Typesetter, de.dante.extex.scanner.type.Token)
      */
     public void superscriptMark(final Context context,
-            final TokenSource source, Typesetter typesetter, final Token t) throws TypesetterException {
+            final TokenSource source, Typesetter typesetter, final Token t)
+            throws TypesetterException {
 
         listMaker.superscriptMark(context, source, typesetter, t);
     }
