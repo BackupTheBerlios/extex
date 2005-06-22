@@ -18,8 +18,8 @@ To generate the Web site run the following command:
 	make
 
 This command creates a complete directory hierarchy with all
-subdirectories in www. An exception are the directories named CVS.
-Those directories are ignored.
+subdirectories in ../target/www. An exception are the directories
+named CVS. Those directories are ignored.
 
 The files starting with . or ending in ~ or in .bak are also ignored.
 The files not ending in .html are copied into the destination tree.
