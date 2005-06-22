@@ -35,7 +35,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class CharNode extends AbstractNode implements Node {
 
@@ -60,7 +60,7 @@ public class CharNode extends AbstractNode implements Node {
      * Creates a new object.
      *
      * @param context the typesetting context
-     * @param uc the unicode character
+     * @param uc the Unicode character
      */
     public CharNode(final TypesettingContext context, final UnicodeChar uc) {
 
@@ -119,7 +119,7 @@ public class CharNode extends AbstractNode implements Node {
     }
 
     /**
-     * Getter for the space factor
+     * Getter for the space factor.
      *
      * @return the space factor
      */

@@ -26,14 +26,14 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * encountered.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class UndefinedControlSequenceException extends HelpingException {
 
     /**
      * Creates a new object.
      *
-     * @param macro the name of the macro in which the eof has been encoutered
+     * @param macro the name of the macro in which the eof has been encountered
      */
     public UndefinedControlSequenceException(final String macro) {
 
