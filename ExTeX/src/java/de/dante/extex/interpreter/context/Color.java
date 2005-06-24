@@ -25,7 +25,7 @@ import java.io.Serializable;
  * channel.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public interface Color extends Serializable {
 
@@ -37,4 +37,13 @@ public interface Color extends Serializable {
      */
     int getAlpha();
 
+    /**
+     * Check that the current color is identical to another one.
+     *
+     * @param other the other object to compare to
+     *
+     * @return <code>true</code> iff the color system is identical and the
+     *  colors are the same
+     */
+    boolean equals(Object other);
 }

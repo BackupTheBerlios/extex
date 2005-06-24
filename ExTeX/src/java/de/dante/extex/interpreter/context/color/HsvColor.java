@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -26,7 +26,7 @@ import de.dante.extex.interpreter.context.Color;
  * channel.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class HsvColor implements Color {
 
@@ -79,17 +79,33 @@ public class HsvColor implements Color {
      * @param thevalue the value channel
      * @param theAlpha the alpha channel
      */
-    public HsvColor(final int thehue, final int thesaturation, final int thevalue,
-            final int theAlpha) {
+    public HsvColor(final int thehue, final int thesaturation,
+            final int thevalue, final int theAlpha) {
 
         super();
         this.hue = (thehue < 0 ? 0 : thehue < MAX_VALUE ? thehue : MAX_VALUE);
-        this.saturation = (thesaturation < 0 ? 0 : thesaturation < MAX_VALUE ? thesaturation
+        this.saturation = (thesaturation < 0 ? 0 : thesaturation < MAX_VALUE
+                ? thesaturation
                 : MAX_VALUE);
-        this.value = (thevalue < 0 ? 0 : thevalue < MAX_VALUE ? thevalue
+        this.value = (thevalue < 0 ? 0 : thevalue < MAX_VALUE
+                ? thevalue
                 : MAX_VALUE);
-        this.alpha = (theAlpha < 0 ? 0 : theAlpha < MAX_VALUE ? theAlpha
+        this.alpha = (theAlpha < 0 ? 0 : theAlpha < MAX_VALUE
+                ? theAlpha
                 : MAX_VALUE);
+    }
+
+    /**
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public boolean equals(final Object obj) {
+
+        if (!(obj instanceof HsvColor)) {
+            return false;
+        }
+        HsvColor other = (HsvColor) obj;
+        return hue == other.getHue() && saturation == other.getSaturation()
+                && value == other.getValue() && alpha == other.getAlpha();
     }
 
     /**

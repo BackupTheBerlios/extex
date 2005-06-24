@@ -26,7 +26,7 @@ import de.dante.extex.interpreter.context.Color;
  * channel.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class CmykColor implements Color {
 
@@ -105,6 +105,20 @@ public class CmykColor implements Color {
         this.alpha = (theAlpha < 0 ? 0 : theAlpha < MAX_VALUE
                 ? theAlpha
                 : MAX_VALUE);
+    }
+
+    /**
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public boolean equals(final Object obj) {
+
+        if (!(obj instanceof CmykColor)) {
+            return false;
+        }
+        CmykColor other = (CmykColor) obj;
+        return cyan == other.getCyan() && magenta == other.getMagenta()
+                && yellow == other.getYellow() && black == other.getBlack()
+                && alpha == other.getAlpha();
     }
 
     /**

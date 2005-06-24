@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -26,7 +26,7 @@ import de.dante.extex.interpreter.context.Color;
  * channel.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class GrayscaleColor implements Color {
 
@@ -47,16 +47,16 @@ public class GrayscaleColor implements Color {
     public static final Color WHITE = new GrayscaleColor(0, 0);
 
     /**
-     * The field <tt>gray</tt> contains the gray value of the color.
-     * It has a value in the range from 0 to {@link #MAX_VALUE MAX_VALUE}.
-     */
-    private int gray;
-
-    /**
      * The field <tt>alpha</tt> contains the alpha channel of the color.
      * It has a value in the range from 0 to {@link #MAX_VALUE MAX_VALUE}.
      */
     private int alpha;
+
+    /**
+     * The field <tt>gray</tt> contains the gray value of the color.
+     * It has a value in the range from 0 to {@link #MAX_VALUE MAX_VALUE}.
+     */
+    private int gray;
 
     /**
      * Creates a new object.
@@ -76,14 +76,15 @@ public class GrayscaleColor implements Color {
     }
 
     /**
-     * Getter for the gray value.
-     * It has a value in the range from 0 to {@link #MAX_VALUE MAX_VALUE}.
-     *
-     * @return the gray value.
+     * @see java.lang.Object#equals(java.lang.Object)
      */
-    public int getGray() {
+    public boolean equals(final Object obj) {
 
-        return gray;
+        if (!(obj instanceof GrayscaleColor)) {
+            return false;
+        }
+        GrayscaleColor other = (GrayscaleColor) obj;
+        return gray == other.getGray() && alpha == other.getAlpha();
     }
 
     /**
@@ -94,4 +95,14 @@ public class GrayscaleColor implements Color {
         return alpha;
     }
 
+    /**
+     * Getter for the gray value.
+     * It has a value in the range from 0 to {@link #MAX_VALUE MAX_VALUE}.
+     *
+     * @return the gray value.
+     */
+    public int getGray() {
+
+        return gray;
+    }
 }
