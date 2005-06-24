@@ -17,39 +17,48 @@
  *
  */
 
-package de.dante.extex.format.pdf.exception;
+package de.dante.extex.documentWriter.pdf.exception;
+
 
 /**
- * Exception for all pdf errors.
+ * Exception for the ColorAdapter.
+ * The colorsystem is not aviable in the PDF.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @version $Revision: 1.1 $
  */
-public class PdfException extends Exception {
+
+public class DocumentWriterPdfNotSupportedColorException
+        extends
+            DocumentWriterPdfException {
 
     /**
      * Create a new object.
+     * @param message The message.
      */
-    public PdfException() {
-
-        super();
-    }
-
-    /**
-     * Create a new object.
-     * @param message   the message
-     */
-    public PdfException(final String message) {
+    public DocumentWriterPdfNotSupportedColorException(final String message) {
 
         super(message);
     }
 
     /**
      * Create a new object.
-     * @param e the exception
+     * @param message   The message.
+     * @param cause     The cuase.
      */
-    public PdfException(final Exception e) {
+    public DocumentWriterPdfNotSupportedColorException(final String message,
+            final Throwable cause) {
 
-        super(e);
+        super(message, cause);
     }
+
+    /**
+     * Create a new object.
+     * @param cause The cause.
+     */
+    public DocumentWriterPdfNotSupportedColorException(final Throwable cause) {
+
+        super(cause);
+    }
+
 }

@@ -29,6 +29,7 @@ import org.pdfbox.pdmodel.graphics.path.BasePath;
 
 import de.dante.extex.documentWriter.exception.DocumentWriterException;
 import de.dante.extex.documentWriter.exception.DocumentWriterIOException;
+import de.dante.extex.documentWriter.pdf.pdfbox.PdfColorAdapter;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.typesetter.type.Node;
@@ -62,7 +63,7 @@ import de.dante.util.Unit;
  * PDF NodeVisitor.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 
 public class PdfNodeVisitor implements NodeVisitor {
@@ -230,6 +231,11 @@ public class PdfNodeVisitor implements NodeVisitor {
     }
 
     /**
+     * the color from the character before
+     */
+    private de.dante.extex.interpreter.context.Color oldcolor = null;
+
+    /**
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitChar(CharNode,
      * java.lang.Object)
      */
@@ -239,8 +245,8 @@ public class PdfNodeVisitor implements NodeVisitor {
         try {
             UnicodeChar uc = node.getCharacter();
             Font font = node.getTypesettingContext().getFont();
-            //        de.dante.extex.interpreter.context.Color color = node
-            //                .getTypesettingContext().getColor();
+            de.dante.extex.interpreter.context.Color newcolor = node
+                    .getTypesettingContext().getColor();
 
             PDFont pdfont = PDType1Font.HELVETICA;
 
@@ -255,7 +261,11 @@ public class PdfNodeVisitor implements NodeVisitor {
             //PdfFont.createFont("src/font/lmr12.afm", "",
             //    PdfFont.EMBEDDED);
 
-            contentStream.setStrokingColor(Color.BLACK);
+            // the same color?
+            if (!newcolor.equals(oldcolor)) {
+                PdfColorAdapter.setColor(contentStream, newcolor);
+                oldcolor = newcolor;
+            }
             contentStream.beginText();
             contentStream.setFont(pdfont, (float) Unit.getDimenAsPT(font
                     .getActualSize()));
