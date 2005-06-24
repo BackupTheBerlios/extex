@@ -28,7 +28,7 @@ import junit.framework.TestCase;
  * Test for XMLStreamWriter.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class TestXMLStreamWriter extends TestCase {
@@ -87,11 +87,11 @@ public class TestXMLStreamWriter extends TestCase {
         XMLStreamWriter writer = new XMLStreamWriter(out, "ISO-8859-1");
 
         try {
-        writer.writeStartDocument();
-        writer.writeStartElement("root");
-        // writer.writeEndElement();
-        writer.writeEndDocument();
-        writer.close();
+            writer.writeStartDocument();
+            writer.writeStartElement("root");
+            // writer.writeEndElement();
+            writer.writeEndDocument();
+            writer.close();
 
         } catch (IOException e) {
 
@@ -124,7 +124,8 @@ public class TestXMLStreamWriter extends TestCase {
 
         String xml = (new String(out.toByteArray())).trim();
         assertEquals(
-                "<root><xxx key=\"value\" key2=\"value2\" key3=\"value3\"/>", xml);
+                "<root><xxx key=\"value\" key2=\"value2\" key3=\"value3\"/>",
+                xml);
 
     }
 
@@ -142,8 +143,7 @@ public class TestXMLStreamWriter extends TestCase {
         writer.writeEndElement();
         writer.close();
         String xml = (new String(out.toByteArray())).trim();
-        assertEquals(
-                "<root>Dies ist ein Text!</root>", xml);
+        assertEquals("<root>Dies ist ein Text!</root>", xml);
 
     }
 
@@ -161,8 +161,7 @@ public class TestXMLStreamWriter extends TestCase {
         writer.writeEndElement();
         writer.close();
         String xml = (new String(out.toByteArray())).trim();
-        assertEquals(
-                "<root>Sonderzeichen &lt;</root>", xml);
+        assertEquals("<root>Sonderzeichen &lt;</root>", xml);
 
     }
 
@@ -180,8 +179,7 @@ public class TestXMLStreamWriter extends TestCase {
         writer.writeEndElement();
         writer.close();
         String xml = (new String(out.toByteArray())).trim();
-        assertEquals(
-                "<root>Sonderzeichen &gt;</root>", xml);
+        assertEquals("<root>Sonderzeichen &gt;</root>", xml);
 
     }
 
@@ -199,8 +197,7 @@ public class TestXMLStreamWriter extends TestCase {
         writer.writeEndElement();
         writer.close();
         String xml = (new String(out.toByteArray())).trim();
-        assertEquals(
-                "<root>Sonderzeichen &amp;</root>", xml);
+        assertEquals("<root>Sonderzeichen &amp;</root>", xml);
 
     }
 
@@ -218,8 +215,7 @@ public class TestXMLStreamWriter extends TestCase {
         writer.writeEndElement();
         writer.close();
         String xml = (new String(out.toByteArray())).trim();
-        assertEquals(
-                "<root>Sonderzeichen &quot;</root>", xml);
+        assertEquals("<root>Sonderzeichen &quot;</root>", xml);
 
     }
 
@@ -237,8 +233,25 @@ public class TestXMLStreamWriter extends TestCase {
         writer.writeEndElement();
         writer.close();
         String xml = (new String(out.toByteArray())).trim();
-        assertEquals(
-                "<root>Sonderzeichen &apos;</root>", xml);
+        assertEquals("<root>Sonderzeichen &apos;</root>", xml);
+
+    }
+
+    /**
+     * Test the element.
+     * @throws IOException if an error occurs.
+     */
+    public void testText7() throws IOException {
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        XMLStreamWriter writer = new XMLStreamWriter(out, "ISO-8859-1");
+
+        writer.writeStartElement("root");
+        writer.writeCharacters("Umlaute: öäüß ÖÄÜ");
+        writer.writeEndElement();
+        writer.close();
+        String xml = (new String(out.toByteArray())).trim();
+        assertEquals("<root>Umlaute: öäüß ÖÄÜ</root>", xml);
 
     }
 
