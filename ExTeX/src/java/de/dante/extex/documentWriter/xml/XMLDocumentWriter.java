@@ -65,7 +65,7 @@ import de.dante.util.xml.XMLStreamWriter;
  * This is a xml implementation of a document writer.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class XMLDocumentWriter
         implements
@@ -155,7 +155,7 @@ public class XMLDocumentWriter
     private boolean showvisible = true;
 
     /**
-     * xml trimallwhitespace
+     * xml trimallwhitespace TODO incomplete
      */
     private boolean trimallwhitespace = true;
 
@@ -262,11 +262,11 @@ public class XMLDocumentWriter
     public void close() throws DocumentWriterException {
 
         if (out != null) {
-            // write to xml-file
             try {
                 writer.writeEndElement();
                 writer.writeEndDocument();
                 writer.close();
+                out.close();
             } catch (IOException e) {
                 throw new DocumentWriterIOException(e);
             }
@@ -274,8 +274,6 @@ public class XMLDocumentWriter
         } else {
             throw new DocumentWriterClosedChannelException("closed channel");
         }
-        System.out.println("\nZeit xml-backend: "
-                + (System.currentTimeMillis() - start));
     }
 
     /**
@@ -285,27 +283,6 @@ public class XMLDocumentWriter
 
         return "xml";
     }
-
-    //    /**
-    //     * return the node element
-    //     * @param node      the node
-    //     * @return Returns the node-element
-    //     */
-    //    private Element getNodeElement(final Node node) {
-    //
-    //        Element element = null;
-    //        try {
-    //            Object o = node.visit(this, node);
-    //            if (o != null) {
-    //                if (o instanceof Element) {
-    //                    element = (Element) o;
-    //                }
-    //            }
-    //        } catch (GeneralException e) {
-    //            e.printStackTrace();
-    //        }
-    //        return element;
-    //    }
 
     /**
      * @see de.dante.extex.documentWriter.DocumentWriter#getPages()
@@ -341,53 +318,9 @@ public class XMLDocumentWriter
         }
     }
 
-    //    /**
-    //     * process Node
-    //     * @param nodes     the nodelist
-    //     * @throws IOException ...
-    //     */
-    //    private void processNodes(final NodeList nodes) throws IOException {
-    //
-    //        Element oldparent = parent;
-    //        NodeIterator it = nodes.iterator();
-    //        Element element = getNodeElement(nodes);
-    //        parent.addContent(element);
-    //        parent = element;
-    //        while (it.hasNext()) {
-    //            Node n = it.next();
-    //            if (n instanceof NodeList) {
-    //                State oldstate = state;
-    //                Dimen saveX = new Dimen(currentX);
-    //                Dimen saveY = new Dimen(currentY);
-    //
-    //                if (n instanceof VerticalListNode) {
-    //                    state = VERTICAL;
-    //                } else {
-    //                    state = HORIOZONTAL;
-    //                }
-    //
-    //                processNodes((NodeList) n);
-    //
-    //                state = oldstate;
-    //                currentX.set(saveX);
-    //                currentY.set(saveY);
-    //                if (n instanceof VerticalListNode) {
-    //                    // vertical
-    //                    currentY.add(n.getDepth());
-    //                    currentY.add(n.getHeight());
-    //                } else {
-    //                    // horizontal
-    //                    currentX.add(n.getWidth());
-    //                }
-    //            } else {
-    //                parent.addContent(getNodeElement(n));
-    //            }
-    //        }
-    //        parent = oldparent;
-    //    }
-
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#setOutputStream(java.io.OutputStream)
+     * @see de.dante.extex.documentWriter.DocumentWriter#setOutputStream(
+     *      java.io.OutputStream)
      */
     public void setOutputStream(final OutputStream outStream) {
 
@@ -404,11 +337,6 @@ public class XMLDocumentWriter
     }
 
     /**
-     * only for test
-     */
-    private long start;
-
-    /**
      * The XML stream writer.
      */
     private XMLStreamWriter writer;
@@ -417,12 +345,7 @@ public class XMLDocumentWriter
      * @see de.dante.extex.documentWriter.DocumentWriter#shipout(
      *      de.dante.extex.typesetter.type.NodeList)
      */
-    public void shipout(final NodeList nodes) throws DocumentWriterException,
-            GeneralException {
-
-        if (shippedPages == 0) {
-            start = System.currentTimeMillis();
-        }
+    public void shipout(final NodeList nodes) throws GeneralException {
 
         try {
             if (writer == null) {
