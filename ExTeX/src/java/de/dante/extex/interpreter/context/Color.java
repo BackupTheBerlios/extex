@@ -16,6 +16,7 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.context;
 
 import java.io.Serializable;
@@ -25,9 +26,15 @@ import java.io.Serializable;
  * channel.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public interface Color extends Serializable {
+
+    /**
+     * The constant <tt>MAX_VALUE</tt> contains the maximal values for all
+     * channels.
+     */
+    int MAX_VALUE = 0xffff;
 
     /**
      * Getter for the alpha channel.
