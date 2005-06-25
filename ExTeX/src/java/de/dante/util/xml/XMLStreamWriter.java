@@ -32,7 +32,7 @@ import java.util.LinkedList;
  * <p> only xml version 1.0</p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class XMLStreamWriter {
@@ -51,6 +51,21 @@ public class XMLStreamWriter {
      * the default namespace
      */
     private String defaultns = null;
+
+    /**
+     * Beautify the output?
+     */
+    private boolean beauty = false;
+
+    /**
+     * indetstring
+     */
+    private String indent = "   ";
+
+    /**
+     * is the last operation a newline?
+     */
+    private boolean nlset = false;
 
     /**
      * The buffersize
@@ -82,6 +97,11 @@ public class XMLStreamWriter {
 
     /**
      * Write the start of the document.
+     * <p>
+     * A newline is write after the header, without attend
+     * the beauty-flag.
+     * </p>
+     *
      * @throws IOException if an error occurs.
      */
     public void writeStartDocument() throws IOException {
@@ -112,9 +132,47 @@ public class XMLStreamWriter {
     public void writeComment(final String text) throws IOException {
 
         closeElement();
+        stack.setAppend();
+        printIndent();
         out.write("<!-- ");
         out.write(text);
         out.write(" -->");
+        printNewLine();
+    }
+
+    /**
+     * Print a newline, if beauty is set.
+     * @throws IOException if an error occurs.
+     */
+    private void printNewLine() throws IOException {
+
+        if (beauty) {
+            out.write("\n");
+            nlset = true;
+        }
+    }
+
+    /**
+     * Print a indent, if beauty is set.
+     * @throws IOException if an error occurs.
+     */
+    private void printIndent() throws IOException {
+
+        printIndent(stack.size());
+    }
+
+    /**
+     * Print a indent, if beauty is set.
+     * @param cnt   the count of the depth
+     * @throws IOException if an error occurs.
+     */
+    private void printIndent(final int cnt) throws IOException {
+
+        if (beauty) {
+            for (int i = 0; i < cnt; i++) {
+                out.write(indent);
+            }
+        }
     }
 
     /**
@@ -147,8 +205,12 @@ public class XMLStreamWriter {
             throws IOException {
 
         closeElement();
+        if (!nlset) {
+            printNewLine();
+        }
+        printIndent();
         stack.setAppend();
-        stack.add(element);
+        stack.add(ns, element);
         out.write("<");
         if (ns != null) {
             out.write(ns);
@@ -166,6 +228,7 @@ public class XMLStreamWriter {
 
         if (elementopen) {
             out.write(">");
+            printNewLine();
         }
         elementopen = false;
     }
@@ -176,29 +239,26 @@ public class XMLStreamWriter {
      */
     public void writeEndElement() throws IOException {
 
-        writeEndElement(null);
-    }
-
-    /**
-     * Write the end element to the output
-     * @param ns    The namespace
-     * @throws IOException if an error occurs.
-     */
-    public void writeEndElement(final String ns) throws IOException {
-
         if (stack.size() > 0) {
             if (stack.isAppend()) {
                 closeElement();
+                if (!nlset) {
+                    printNewLine();
+                }
+                printIndent(stack.size() - 1);
                 out.write("</");
+                String ns = stack.getNameSpace();
                 if (ns != null) {
                     out.write(ns);
                     out.write(':');
                 }
                 out.write(stack.get());
                 out.write(">");
+                printNewLine();
             } else {
                 out.write("/>");
                 elementopen = false;
+                nlset = false;
             }
             stack.remove();
 
@@ -236,7 +296,11 @@ public class XMLStreamWriter {
 
         closeElement();
         stack.setAppend();
+        if (nlset) {
+            printIndent();
+        }
         out.write(createEntity(text));
+        nlset = false;
     }
 
     /**
@@ -302,6 +366,10 @@ public class XMLStreamWriter {
     public void close() throws IOException {
 
         out.close();
+        if (stack.size() != 0) {
+            throw new IOException("invalid struktur: depth=" + stack.size());
+        }
+
     }
 
     // --------------------------------------------------
@@ -326,6 +394,37 @@ public class XMLStreamWriter {
         } else {
             throw new IOException("only before writeStartDocument()!");
         }
+    }
+
+    /**
+     * Set the beauty.
+     * @param b The beauty to set.
+     * @throws IOException if an error occurs.
+     */
+    public void setBeauty(final boolean b) throws IOException {
+
+        if (!docopen) {
+            beauty = b;
+        } else {
+            throw new IOException("only before writeStartDocument()!");
+        }
+    }
+
+    /**
+     * Set the indent.
+     * @param i The indent to set.
+     * @throws IOException if an error occurs.
+     */
+    public void setIndent(final String i) throws IOException {
+
+        if (!docopen) {
+            if (indent != null) {
+                indent = i;
+            }
+        } else {
+            throw new IOException("only before writeStartDocument()!");
+        }
+
     }
 
     // -------------------------------------
@@ -359,6 +458,16 @@ public class XMLStreamWriter {
         }
 
         /**
+         * Add a element
+         * @param ns        the namespace
+         * @param element   the element
+         */
+        public void add(final String ns, final String element) {
+
+            istack.addLast(new Values(ns, element));
+        }
+
+        /**
          * Remove a element
          * @return Returns the name of the element.
          */
@@ -374,6 +483,15 @@ public class XMLStreamWriter {
         public String get() {
 
             return ((Values) istack.getLast()).getElement();
+        }
+
+        /**
+         * Get a element namespace.
+         * @return Returns the name of the element.
+         */
+        public String getNameSpace() {
+
+            return ((Values) istack.getLast()).getNameSpace();
         }
 
         /**
@@ -410,18 +528,36 @@ public class XMLStreamWriter {
             private String element;
 
             /**
+             * The namespace
+             */
+            private String namespace;
+
+            /**
              * append
              */
             private boolean append;
 
             /**
              * Create a new object.
-             * @param el
+             * @param el the element
              */
             public Values(final String el) {
 
                 element = el.trim();
                 append = false;
+                namespace = null;
+            }
+
+            /**
+             * Create a new object.
+             * @param ns the namespace
+             * @param el the element
+             */
+            public Values(final String ns, final String el) {
+
+                element = el.trim();
+                append = false;
+                namespace = ns;
             }
 
             /**
@@ -449,6 +585,15 @@ public class XMLStreamWriter {
             public String getElement() {
 
                 return element;
+            }
+
+            /**
+             * Returns the namespace.
+             * @return Returns the namespace.
+             */
+            public String getNameSpace() {
+
+                return namespace;
             }
         }
     }

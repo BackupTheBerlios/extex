@@ -28,7 +28,7 @@ import junit.framework.TestCase;
  * Test for XMLStreamWriter.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 
 public class TestXMLStreamWriter extends TestCase {
@@ -120,11 +120,99 @@ public class TestXMLStreamWriter extends TestCase {
         writer.writeAttribute("key2", "value2");
         writer.writeAttribute("key3", "value3");
         writer.writeEndElement();
+        writer.writeEndElement();
         writer.close();
 
         String xml = (new String(out.toByteArray())).trim();
         assertEquals(
-                "<root><xxx key=\"value\" key2=\"value2\" key3=\"value3\"/>",
+                "<root><xxx key=\"value\" key2=\"value2\" key3=\"value3\"/></root>",
+                xml);
+
+    }
+
+    /**
+     * Test the element.
+     * @throws IOException if an error occurs.
+     */
+    public void testElement2() throws IOException {
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        XMLStreamWriter writer = new XMLStreamWriter(out, "ISO-8859-1");
+
+        writer.setDefaultNamespace("svg");
+        writer.writeStartElement("root");
+        writer.writeEndElement();
+        writer.close();
+
+        String xml = (new String(out.toByteArray())).trim();
+        assertEquals("<svg:root/>", xml);
+
+    }
+
+    /**
+     * Test the element.
+     * @throws IOException if an error occurs.
+     */
+    public void testElement3() throws IOException {
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        XMLStreamWriter writer = new XMLStreamWriter(out, "ISO-8859-1");
+
+        writer.setDefaultNamespace("svg");
+        writer.writeStartElement("root");
+        writer.writeStartElement("xxx");
+        writer.writeEndElement();
+        writer.writeEndElement();
+        writer.close();
+
+        String xml = (new String(out.toByteArray())).trim();
+        assertEquals("<svg:root><svg:xxx/></svg:root>", xml);
+
+    }
+
+    /**
+     * Test the element.
+     * @throws IOException if an error occurs.
+     */
+    public void testElement4() throws IOException {
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        XMLStreamWriter writer = new XMLStreamWriter(out, "ISO-8859-1");
+
+        writer.setDefaultNamespace("svg");
+        writer.writeStartElement("root");
+        writer.writeStartElement("html", "body");
+        writer.writeComment("Beispiel");
+        writer.writeEndElement();
+        writer.writeEndElement();
+        writer.close();
+
+        String xml = (new String(out.toByteArray())).trim();
+        assertEquals(
+                "<svg:root><html:body><!-- Beispiel --></html:body></svg:root>",
+                xml);
+
+    }
+
+    /**
+     * Test the element.
+     * @throws IOException if an error occurs.
+     */
+    public void testElement5() throws IOException {
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        XMLStreamWriter writer = new XMLStreamWriter(out, "ISO-8859-1");
+
+        writer.setDefaultNamespace("svg");
+        writer.writeStartElement("root");
+        writer.writeStartElement("html", "body");
+        writer.writeCharacters("Beispiel");
+        writer.writeEndElement();
+        writer.writeEndElement();
+        writer.close();
+
+        String xml = (new String(out.toByteArray())).trim();
+        assertEquals("<svg:root><html:body>Beispiel</html:body></svg:root>",
                 xml);
 
     }
@@ -252,6 +340,70 @@ public class TestXMLStreamWriter extends TestCase {
         writer.close();
         String xml = (new String(out.toByteArray())).trim();
         assertEquals("<root>Umlaute: öäüß ÖÄÜ</root>", xml);
+
+    }
+
+    /**
+     * Test the element.
+     * @throws IOException if an error occurs.
+     */
+    public void testBeauty1() throws IOException {
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        XMLStreamWriter writer = new XMLStreamWriter(out, "ISO-8859-1");
+
+        writer.setBeauty(true);
+        writer.writeStartElement("root");
+        writer.writeStartElement("xxx");
+        writer.writeAttribute("key", "value");
+        writer.writeAttribute("key2", "value2");
+        writer.writeAttribute("key3", "value3");
+        writer.writeEndElement();
+        writer.writeEndElement();
+        writer.close();
+
+        String xml = (new String(out.toByteArray())).trim();
+        assertEquals("<root>\n"
+                + "   <xxx key=\"value\" key2=\"value2\" key3=\"value3\"/>\n"
+                + "</root>", xml);
+
+    }
+
+    /**
+     * Test the element.
+     * @throws IOException if an error occurs.
+     */
+    public void testBeauty2() throws IOException {
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        XMLStreamWriter writer = new XMLStreamWriter(out, "ISO-8859-1");
+
+        writer.setBeauty(true);
+        writer.setIndent("  ");
+        writer.writeStartElement("root");
+        writer.writeStartElement("xxx");
+        writer.writeAttribute("key", "value");
+        writer.writeAttribute("key2", "value2");
+        writer.writeAttribute("key3", "value3");
+        writer.writeEndElement();
+        writer.writeStartElement("yyy");
+        writer.writeEndElement();
+        writer.writeStartElement("yyy");
+        writer.writeStartElement("a1");
+        writer.writeStartElement("a2");
+        writer.writeCharacters("Text");
+        writer.writeEndElement();
+        writer.writeEndElement();
+        writer.writeEndElement();
+        writer.writeEndElement();
+        writer.close();
+
+        String xml = (new String(out.toByteArray())).trim();
+        assertEquals("<root>\n"
+                + "  <xxx key=\"value\" key2=\"value2\" key3=\"value3\"/>\n"
+                + "  <yyy/>\n" + "  <yyy>\n" + "    <a1>\n" + "      <a2>\n"
+                + "        Text\n" + "      </a2>\n" + "    </a1>\n"
+                + "  </yyy>\n" + "</root>", xml);
 
     }
 
