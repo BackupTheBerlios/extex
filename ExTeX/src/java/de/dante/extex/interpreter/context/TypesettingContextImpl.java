@@ -19,7 +19,8 @@
 
 package de.dante.extex.interpreter.context;
 
-import de.dante.extex.interpreter.context.color.RgbColor;
+import de.dante.extex.color.model.ColorFactory;
+import de.dante.extex.color.model.GrayscaleColor;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.language.Language;
 
@@ -29,7 +30,7 @@ import de.dante.extex.language.Language;
  * appearance of glyphs or other nodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class TypesettingContextImpl implements ModifiableTypesettingContext {
 
@@ -70,7 +71,7 @@ public class TypesettingContextImpl implements ModifiableTypesettingContext {
 
         super();
         this.font = null;
-        this.color = RgbColor.BLACK;
+        this.color = ColorFactory.BLACK;
         this.direction = Direction.LR;
         this.language = null;
     }
@@ -85,7 +86,7 @@ public class TypesettingContextImpl implements ModifiableTypesettingContext {
 
         super();
         this.font = theFont;
-        this.color = RgbColor.BLACK;
+        this.color = ColorFactory.BLACK;
         this.direction = Direction.LR;
         this.language = null;
     }
@@ -100,7 +101,7 @@ public class TypesettingContextImpl implements ModifiableTypesettingContext {
         super();
         if (tc == null) {
             this.font = null;
-            this.color = RgbColor.BLACK;
+            this.color = ColorFactory.BLACK;
             this.direction = Direction.LR;
             this.language = null;
 
