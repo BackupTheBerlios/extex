@@ -1,5 +1,5 @@
 %%*****************************************************************************
-%% $Id: extex-users.tex,v 1.16 2005/06/19 13:13:32 gene Exp $
+%% $Id: extex-users.tex,v 1.17 2005/06/25 20:06:48 gene Exp $
 %%*****************************************************************************
 %% Author: Gerd Neugebauer
 %%-----------------------------------------------------------------------------
@@ -32,7 +32,7 @@
 \newcommand\SyntaxOr{\>\(|\)\>}
 
 \def\setVersion$#1: #2.#3 ${\gdef\Version{0.0 (Revision #2.#3)}}
-\setVersion$Revision: 1.16 $
+\setVersion$Revision: 1.17 $
 
 \makeindex
 
@@ -469,6 +469,18 @@ The following properties are used by \ExTeX:
    Example:\index{relax@\texttt{\char`\\relax}}
 \begin{lstlisting}{}
   extex.code = \\relax
+\end{lstlisting}
+
+\item[\Property{extex.color.converter}]\ \\
+  This parameter contains the logical name of the color converter to
+  use. The color converter describes how colors are converted between
+  different color soaces. Currently at least the color spaces RGB,
+  Grayscale, HSV, and CMYK are supported.
+  The configuration mapps this to a concrete instance.
+
+  Example:
+\begin{lstlisting}{}
+  extex.color.converter = basic
 \end{lstlisting}
 
 \item[\Property{extex.config}]\ \\

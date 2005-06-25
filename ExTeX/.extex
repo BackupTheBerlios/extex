@@ -11,6 +11,10 @@
 ##    settings.
 ##-----------------------------------------------------------------------------
 ##
+#extex.color.converter = basic
+##    This parameter contains the logical name of the color converter.
+##-----------------------------------------------------------------------------
+##
 #extex.config = tex.xml
 ##    This parameter contains the name of the configuration resource
 ##    to use. This configuration resource is sought on the classpath.

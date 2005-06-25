@@ -343,6 +343,13 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *   </dd>
  *   <dd>Command line: <tt>&lang;code&rang;</tt></dd>
  *
+ *   <dt><a name="extex.color.converter"/><tt>extex.color.converter</tt></dt>
+ *   <dd>
+ *    This parameter contains the name of the configuration resource to use for
+ *    the color converter.
+ *   </dd>
+ *   <dd>Default: <tt></tt></dd>
+ *
  *   <dt><a name="extex.config"/><tt>extex.config</tt></dt>
  *   <dd>
  *    This parameter contains the name of the configuration resource to use.
@@ -582,7 +589,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class TeX extends ExTeX {
 
