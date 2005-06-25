@@ -32,11 +32,11 @@ import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.configuration.ConfigurationException;
 
 /**
- * This class provides an implementation for a font primitve.
+ * This class provides an implementation for a font primitive.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class FontCode extends AbstractCode implements FontConvertible, Theable {
 
@@ -49,7 +49,7 @@ public class FontCode extends AbstractCode implements FontConvertible, Theable {
      * Creates a new object.
      *
      * @param name      the name for debugging
-     * @param fontname  the font for this primitve
+     * @param fontname  the font for this primitive
      */
     public FontCode(final String name, final Font fontname) {
 
@@ -69,7 +69,7 @@ public class FontCode extends AbstractCode implements FontConvertible, Theable {
             throws InterpreterException {
 
         try {
-            context.set(font);
+            context.set(font, prefix.isGlobal());
         } catch (ConfigurationException e) {
             throw new InterpreterException(e);
         }
