@@ -118,7 +118,7 @@ import de.dante.util.framework.i18n.Localizer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.84 $
+ * @version $Revision: 1.85 $
  */
 public class ContextImpl
         implements
@@ -227,6 +227,7 @@ public class ContextImpl
      * The field <tt>languageManager</tt> contains the language manager.
      */
     private LanguageManager languageManager;
+
     /**
      * The field <tt>localizer</tt> contains the localizer to use.
      */
@@ -398,7 +399,7 @@ public class ContextImpl
         TypesettingContext typesettingContext = typesettingContextFactory
                 .newInstance(null, new NullFont());
 
-        setTypesettingContext(typesettingContext);
+        set(typesettingContext, true);
 
         magnificationMax = configuration.getValueAsInteger(
                 "maximalMagnification", (int) MAGNIFICATION_MAX);
@@ -1043,6 +1044,62 @@ public class ContextImpl
     }
 
     /**
+     * @see de.dante.extex.interpreter.context.Context#set(
+     *      de.dante.extex.interpreter.context.Color)
+     */
+    public void set(final Color color, final boolean global)
+            throws ConfigurationException {
+
+        group.setTypesettingContext(typesettingContextFactory.newInstance(group
+                .getTypesettingContext(), color), global);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#set(
+     *      de.dante.extex.interpreter.context.Direction)
+     */
+    public void set(final Direction direction, final boolean global)
+            throws ConfigurationException {
+
+        group.setTypesettingContext(typesettingContextFactory.newInstance(group
+                .getTypesettingContext(), direction), global);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#set(
+     *      de.dante.extex.interpreter.type.font.Font)
+     */
+    public void set(final Font font, final boolean global)
+            throws ConfigurationException {
+
+        group.setTypesettingContext(typesettingContextFactory.newInstance(group
+                .getTypesettingContext(), font), global);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#set(
+     *      de.dante.extex.language.Language)
+     */
+    public void set(final Language language, final boolean global)
+            throws ConfigurationException {
+
+        group.setTypesettingContext(typesettingContextFactory.newInstance(group
+                .getTypesettingContext(), language), global);
+    }
+
+    /**
+     * Setter for the typesetting context in the specified groups.
+     *
+     * @param context the new context to use
+     * @param global if <code>true</code> then the new value is set in all
+     *            groups, otherwise only in the current group.
+     */
+    public void set(final TypesettingContext context, final boolean global) {
+
+        group.setTypesettingContext(context, global);
+    }
+
+    /**
      * @see de.dante.extex.interpreter.context.Context#setAfterassignment(
      *      de.dante.extex.scanner.type.Token)
      */
@@ -1379,73 +1436,6 @@ public class ContextImpl
         if (null != observerList) {
             runTokensObservers(name, toks, observerList);
         }
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#set(
-     *      de.dante.extex.interpreter.context.Color)
-     */
-    public void set(final Color color)
-            throws ConfigurationException {
-
-        group.setTypesettingContext(typesettingContextFactory.newInstance(group
-                .getTypesettingContext(), color));
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#set(
-     *      de.dante.extex.interpreter.context.Direction)
-     */
-    public void set(final Direction direction)
-            throws ConfigurationException {
-
-        group.setTypesettingContext(typesettingContextFactory.newInstance(group
-                .getTypesettingContext(), direction));
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#set(
-     *      de.dante.extex.interpreter.type.font.Font)
-     */
-    public void set(final Font font)
-            throws ConfigurationException {
-
-        group.setTypesettingContext(typesettingContextFactory.newInstance(group
-                .getTypesettingContext(), font));
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#set(
-     *      de.dante.extex.language.Language)
-     */
-    public void set(final Language language)
-            throws ConfigurationException {
-
-        group.setTypesettingContext(typesettingContextFactory.newInstance(group
-                .getTypesettingContext(), language));
-    }
-
-    /**
-     * Setter for the typesetting context in the current group.
-     *
-     * @param context the new context to use
-     */
-    public void setTypesettingContext(final TypesettingContext context) {
-
-        group.setTypesettingContext(context);
-    }
-
-    /**
-     * Setter for the typesetting context in the specified groups.
-     *
-     * @param context the new context to use
-     * @param global if <code>true</code> then the new value is set in all
-     *            groups, otherwise only in the current group.
-     */
-    public void set(final TypesettingContext context,
-            final boolean global) {
-
-        group.setTypesettingContext(context, global);
     }
 
     /**

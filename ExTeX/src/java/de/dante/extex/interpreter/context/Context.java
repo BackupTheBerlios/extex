@@ -48,7 +48,7 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.57 $
+ * @version $Revision: 1.58 $
  */
 public interface Context
         extends
@@ -428,45 +428,46 @@ public interface Context
      * Setter for the color in the current typesetting context.
      *
      * @param color the new color
+     * @param global the indicator for the scope; <code>true</code> means all
+     *            groups; otherwise the current group is affected only
      *
      * @throws ConfigurationException in case of an error in the configuration.
      */
-    void set(Color color) throws ConfigurationException;
+    void set(Color color, boolean global) throws ConfigurationException;
 
     /**
      * Setter for the direction in the current typesetting context.
      *
      * @param direction the new direction
+     * @param global the indicator for the scope; <code>true</code> means all
+     *            groups; otherwise the current group is affected only
      *
      * @throws ConfigurationException in case of an error in the configuration.
      */
-    void set(Direction direction)
+    void set(Direction direction, boolean global)
             throws ConfigurationException;
 
     /**
      * Setter for the font in the current typesetting context.
      *
      * @param font the new font
+     * @param global the indicator for the scope; <code>true</code> means all
+     *            groups; otherwise the current group is affected only
      *
      * @throws ConfigurationException in case of an error in the configuration.
      */
-    void set(Font font) throws ConfigurationException;
+    void set(Font font, boolean global) throws ConfigurationException;
 
     /**
      * Setter for the language in the current typesetting context.
      *
      * @param language the new language
+     * @param global the indicator for the scope; <code>true</code> means all
+     *            groups; otherwise the current group is affected only
      *
      * @throws ConfigurationException in case of an error in the configuration.
      */
-    void set(Language language) throws ConfigurationException;
-
-    /**
-     * Setter for the typesetting context in the current group.
-     *
-     * @param context the new typesetting context
-     */
-    void setTypesettingContext(TypesettingContext context);
+    void set(Language language, boolean global) throws ConfigurationException;
 
     /**
      * Setter for the typesetting context in the specified groups.

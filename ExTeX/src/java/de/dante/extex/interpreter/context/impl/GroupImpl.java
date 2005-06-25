@@ -58,7 +58,7 @@ import de.dante.util.configuration.ConfigurationInstantiationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.45 $
+ * @version $Revision: 1.46 $
  */
 public class GroupImpl implements Group, Tokenizer, Serializable {
 
@@ -961,15 +961,6 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
         if (global && next != null) {
             next.setToks(name, value, global);
         }
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setTypesettingContext(
-     *      de.dante.extex.interpreter.context.TypesettingContext)
-     */
-    public void setTypesettingContext(final TypesettingContext context) {
-
-        typesettingContext = context;
     }
 
     /**

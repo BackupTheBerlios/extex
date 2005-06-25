@@ -54,7 +54,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.30 $
+ * @version $Revision: 1.31 $
  */
 public interface Group extends Tokenizer, Serializable {
 
@@ -538,13 +538,6 @@ public interface Group extends Tokenizer, Serializable {
      *            groups; otherwise the current group is affected only
      */
     void setToks(String name, Tokens value, boolean global);
-
-    /**
-     * Setter for the typesetting context in the current group.
-     *
-     * @param context the new typesetting context
-     */
-    void setTypesettingContext(TypesettingContext context);
 
     /**
      * Setter for the typesetting context in the specified groups.
