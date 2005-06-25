@@ -41,6 +41,15 @@
   </Fonts>
 
   <!-- 
+    -  The section "ColorConverter" contains the specification for the
+    -  color converter.
+    -->
+  <ColorConverter default="basic">
+    <basic class="de.dante.extex.color.BasicColorConverter"/>
+    <no class="de.dante.extex.color.NoColorConverter"/>
+  </ColorConverter>
+
+  <!-- 
     -  The section "Scanner" contains the specification for the scanner, i.e. the
     -  token stream.
     -->

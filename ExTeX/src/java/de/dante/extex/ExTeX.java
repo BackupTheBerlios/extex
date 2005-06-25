@@ -40,6 +40,9 @@ import java.util.logging.StreamHandler;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import de.dante.extex.color.ColorAware;
+import de.dante.extex.color.ColorConverter;
+import de.dante.extex.color.ColorConverterFacory;
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.documentWriter.DocumentWriterFactory;
 import de.dante.extex.documentWriter.DocumentWriterOptions;
@@ -88,6 +91,7 @@ import de.dante.util.file.OutputFactory;
 import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.i18n.LocalizerFactory;
 import de.dante.util.observer.NotObservableException;
+import de.dante.util.resource.PropertyConfigurable;
 import de.dante.util.resource.ResourceFinder;
 import de.dante.util.resource.ResourceFinderFactory;
 
@@ -127,6 +131,13 @@ import de.dante.util.resource.ResourceFinderFactory;
  *    restriction does not hold for the property settings.
  *   </dd>
  *   <dd>Command line: <tt>&lang;code&rang;</tt></dd>
+ *
+ *   <dt><a name="extex.color.converter"/><tt>extex.color.converter</tt></dt>
+ *   <dd>
+ *    This parameter contains the name of the configuration resource to use for
+ *    the color converter.
+ *   </dd>
+ *   <dd>Default: <tt></tt></dd>
  *
  *   <dt><a name="extex.config"/><tt>extex.config</tt></dt>
  *   <dd>
@@ -315,7 +326,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.108 $
+ * @version $Revision: 1.109 $
  */
 public class ExTeX {
 
@@ -355,6 +366,12 @@ public class ExTeX {
      * <logo>TeX</logo> code to be inserted at the beginning of the job.
      */
     protected static final String PROP_CODE = "extex.code";
+
+    /**
+     * The field <tt>PROP_COLOR_CONVERTER</tt> contains the name of the
+     * property for the color converter to use.
+     */
+    protected static final String PROP_COLOR_CONVERTER = "extex.color.converter";
 
     /**
      * The field <tt>PROP_CONFIG</tt> contains the name of the
@@ -405,6 +422,11 @@ public class ExTeX {
      * property for the interaction mode.
      */
     protected static final String PROP_INTERACTION = "extex.interaction";
+
+    /**
+     * The field <tt>PROP_INTERNAL_STACKTRACE</tt> contains the ...
+     */
+    protected static final String PROP_INTERNAL_STACKTRACE = "extex.stacktrace.on.internal.error";
 
     /**
      * The field <tt>PROP_JOBNAME</tt> contains the name of the
@@ -468,11 +490,6 @@ public class ExTeX {
      * for the token stream class to use.
      */
     protected static final String PROP_TOKEN_STREAM = "extex.token.stream";
-
-    /**
-     * The field <tt>PROP_INTERNAL_STACKTRACE</tt> contains the ...
-     */
-    protected static final String PROP_INTERNAL_STACKTRACE = "extex.stacktrace.on.internal.error";
 
     /**
      * The field <tt>PROP_TRACE_FONT_FILES</tt> contains the name of the
@@ -924,6 +941,25 @@ public class ExTeX {
     }
 
     /**
+     * Make a new instance of a color converter.
+     *
+     * @param cfg the configuration to use
+     *
+     *  @return the new color converter
+     *
+     * @throws ConfigurationException in case of a configuration problem
+     */
+    private ColorConverter makeColorConverter(final Configuration cfg)
+            throws ConfigurationException {
+
+        ColorConverterFacory factory = new ColorConverterFacory();
+        factory.configure(cfg);
+        factory.enableLogging(logger);
+        return factory
+                .newInstance(properties.getProperty(PROP_COLOR_CONVERTER));
+    }
+
+    /**
      * Create a default font for the interpreter context.
      *
      * @param config the configuration object for the font
@@ -975,6 +1011,7 @@ public class ExTeX {
      * @param jobname the job name to use
      * @param outFactory the output factory
      * @param options the options to be passed to the document writer
+     * @param colorConfig the configuration for the color converter
      *
      * @return the new document writer
      *
@@ -983,7 +1020,7 @@ public class ExTeX {
      */
     protected DocumentWriter makeDocumentWriter(final Configuration config,
             final String jobname, final OutputStreamFactory outFactory,
-            final DocumentWriterOptions options)
+            final DocumentWriterOptions options, final Configuration colorConfig)
             throws DocumentWriterException,
                 ConfigurationException {
 
@@ -993,6 +1030,13 @@ public class ExTeX {
                 properties.getProperty(PROP_OUTPUT_TYPE), //
                 options, //
                 outFactory);
+        if (docWriter instanceof PropertyConfigurable) {
+            ((PropertyConfigurable) docWriter).setProperties(properties);
+        }
+        if (docWriter instanceof ColorAware) {
+            ((ColorAware) docWriter)
+                    .setColorConverter(makeColorConverter(colorConfig));
+        }
         docWriter.setParameter("Creator", "ExTeX " + new Version().toString());
 
         return docWriter;
@@ -1018,16 +1062,6 @@ public class ExTeX {
             throw new ConfigurationMissingAttributeException("class", config);
         }
 
-        /*
-        ResourceFinder fontFinder = (new ResourceFinderFactory())
-                .createResourceFinder(config.getConfiguration("Resource"),
-                        logger, properties);
-        if (Boolean.valueOf(properties.getProperty(PROP_TRACE_FONT_FILES))
-                .booleanValue()) {
-            fontFinder.enableTracing(true);
-        }
-        */
-
         try {
             fontFactory = (FontFactory) (Class.forName(fontClass)
                     .getConstructor(
@@ -1048,6 +1082,10 @@ public class ExTeX {
             throw new ConfigurationNoSuchMethodException(e);
         } catch (ClassNotFoundException e) {
             throw new ConfigurationClassNotFoundException(fontClass);
+        }
+
+        if (fontFactory instanceof PropertyConfigurable) {
+            ((PropertyConfigurable) fontFactory).setProperties(properties);
         }
 
         return fontFactory;
@@ -1078,6 +1116,11 @@ public class ExTeX {
         interpreterFactory.enableLogging(logger);
 
         Interpreter interpreter = interpreterFactory.newInstance();
+
+        if (interpreter instanceof PropertyConfigurable) {
+            ((PropertyConfigurable) interpreter).setProperties(properties);
+        }
+
         ErrorHandler errHandler = errorHandler;
         if (errHandler == null) {
             ErrorHandlerFactory errorHandlerFactory = new ErrorHandlerFactory(
@@ -1100,9 +1143,8 @@ public class ExTeX {
         if (fontConfiguration == null) {
             throw new ConfigurationMissingException(TAG_FONT, config.toString());
         }
-        context.set(makeDefaultFont(fontConfiguration,
-                fontFactory));
-        context.set(context.getLanguage("0"));
+        context.set(makeDefaultFont(fontConfiguration, fontFactory), true);
+        context.set(context.getLanguage("0"), true);
 
         initializeStreams(interpreter, properties);
 
@@ -1247,9 +1289,11 @@ public class ExTeX {
                     tokenStreamFactory, fontFactory);
 
             DocumentWriter docWriter = makeDocumentWriter(//
-                    config.getConfiguration("DocumentWriter"), jobname,
-                    outFactory, (DocumentWriterOptions) interpreter
-                            .getContext());
+                    config.getConfiguration("DocumentWriter"), //
+                    jobname, //
+                    outFactory, //
+                    (DocumentWriterOptions) interpreter.getContext(), //
+                    config.getConfiguration("ColorConverter"));
 
             Typesetter typesetter = makeTypesetter(//
                     config.getConfiguration("Typesetter"), docWriter,
