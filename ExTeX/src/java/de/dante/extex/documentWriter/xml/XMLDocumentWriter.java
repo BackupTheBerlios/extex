@@ -22,7 +22,10 @@ package de.dante.extex.documentWriter.xml;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.NumberFormat;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Locale;
+import java.util.Map;
 
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.documentWriter.DocumentWriterOptions;
@@ -65,7 +68,7 @@ import de.dante.util.xml.XMLStreamWriter;
  * This is a xml implementation of a document writer.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class XMLDocumentWriter
         implements
@@ -328,12 +331,54 @@ public class XMLDocumentWriter
     }
 
     /**
+     * map for the parameters.
+     */
+    private Map param = new HashMap();
+
+    /**
      * @see de.dante.extex.documentWriter.DocumentWriter#setParameter(
      *      java.lang.String,
      *      java.lang.String)
      */
     public void setParameter(final String name, final String value) {
 
+        param.put(name, value);
+    }
+
+    /**
+     * Print the parameter as comment.
+     * @throws IOException if an error occurs.
+     */
+    private void printParameterComment() throws IOException {
+
+        StringBuffer buf = new StringBuffer();
+        buf.append("\n");
+        Iterator it = param.keySet().iterator();
+        while (it.hasNext()) {
+            String name = (String) it.next();
+            buf.append(name);
+            buf.append("=");
+            buf.append(param.get(name));
+            buf.append("\n");
+        }
+        writer.writeComment(buf.toString());
+    }
+
+    /**
+     * Print the parameter as element.
+     * @throws IOException if an error occurs.
+     */
+    private void printParameterElement() throws IOException {
+
+        writer.writeStartElement("parameter");
+        Iterator it = param.keySet().iterator();
+        while (it.hasNext()) {
+            String name = (String) it.next();
+            writer.writeStartElement(name);
+            writer.writeCharacters((String) param.get(name));
+            writer.writeEndElement();
+        }
+        writer.writeEndElement();
     }
 
     /**
@@ -357,7 +402,9 @@ public class XMLDocumentWriter
                 writer.setBeauty(newlines);
                 writer.setIndent(indent);
                 writer.writeStartDocument();
+                printParameterComment();
                 writer.writeStartElement("root");
+                printParameterElement();
             }
 
             writer.writeStartElement("page");
