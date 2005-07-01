@@ -27,7 +27,8 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.ImpossibleException;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.EofException;
-import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
+import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.interpreter.type.color.ColorConvertible;
 import de.dante.extex.interpreter.type.glue.GlueComponent;
 import de.dante.extex.scanner.type.LeftBraceToken;
@@ -76,9 +77,32 @@ import de.dante.util.configuration.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class ColorPrimitive extends AbstractCode implements ColorConvertible {
+public class ColorPrimitive extends AbstractAssignment
+        implements
+            ColorConvertible {
+
+    /**
+     * The constant <tt>CMYK</tt> contains the indicator for the CMYK color model.
+     */
+    private static final int CMYK = 2;
+
+    /**
+     * The constant <tt>GRAY</tt> contains the indictor for the grayscale color
+     * model.
+     */
+    private static final int GRAY = 3;
+
+    /**
+     * The constant <tt>HSV</tt> contains the indicator for the HSV color model.
+     */
+    private static final int HSV = 1;
+
+    /**
+     * The constant <tt>RGB</tt> contains the indicator for the RGB color model.
+     */
+    private static final int RGB = 0;
 
     /**
      * Creates a new object.
@@ -89,14 +113,6 @@ public class ColorPrimitive extends AbstractCode implements ColorConvertible {
 
         super(name);
     }
-
-    private static final int RGB = 0;
-
-    private static final int HSV = 1;
-
-    private static final int CMYK = 2;
-
-    private static final int GRAY = 3;
 
     /**
      * @see de.dante.extex.interpreter.type.color.ColorConvertible#convertColor(
@@ -129,8 +145,7 @@ public class ColorPrimitive extends AbstractCode implements ColorConvertible {
         if (t == null) {
             throw new EofException(getName());
         } else if (!(t instanceof LeftBraceToken)) {
-            //TODO gene: error unimplemented
-            throw new RuntimeException("unimplemented");
+            throw new HelpingException(getLocalizer(), "MissingLeftBrace");
         }
 
         Color color = null;
@@ -163,21 +178,39 @@ public class ColorPrimitive extends AbstractCode implements ColorConvertible {
         }
         t = source.getNonSpace(context);
         if (!(t instanceof RightBraceToken)) {
-            //TODO gene: error unimplemented
-            throw new RuntimeException("unimplemented");
+            throw new HelpingException(getLocalizer(), "MissingRightBrace");
         }
         return color;
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * @see de.dante.extex.interpreter.type.AbstractAssignment#assign(
+     *      de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public void assign(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws InterpreterException {
+
+        Color color = convertColor(context, source, typesetter);
+        try {
+            context.set(color, prefix.isGlobal());
+        } catch (ConfigurationException e) {
+            throw new InterpreterException(e);
+        }
+    }
+
+    /**
+     * Scan a color component and translate it into a color value.
      *
-     * @param context
-     * @param source
+     * @param context the interpreter context
+     * @param source the token source
      *
-     * @return
+     * @return the color component in units of Color.MAX_VALUE
      *
-     * @throws InterpreterException
+     * @throws InterpreterException in case of an error
      */
     private int scanColorComponent(final Context context,
             final TokenSource source) throws InterpreterException {
@@ -189,25 +222,6 @@ public class ColorPrimitive extends AbstractCode implements ColorConvertible {
 
         return (int) (GlueComponent.scanFloat(context, source, t)
                 * Color.MAX_VALUE / GlueComponent.ONE);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.type.Code#execute(
-     *      de.dante.extex.interpreter.Flags,
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.typesetter.Typesetter)
-     */
-    public void execute(final Flags prefix, final Context context,
-            final TokenSource source, final Typesetter typesetter)
-            throws InterpreterException {
-
-        Color color = convertColor(context, source, typesetter);
-        try {
-            context.set(color, prefix.isGlobal());
-        } catch (ConfigurationException e) {
-            throw new InterpreterException(e);
-        }
     }
 
 }
