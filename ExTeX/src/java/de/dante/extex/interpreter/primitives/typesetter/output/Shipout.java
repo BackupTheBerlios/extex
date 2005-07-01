@@ -42,7 +42,8 @@ import de.dante.util.GeneralException;
  *  This count register is used to break out of infinite loops when no material
  *  is shipped out in the output routine.
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;shipout&rang;
@@ -50,15 +51,15 @@ import de.dante.util.GeneralException;
  *        de.dante.extex.interpreter.TokenSource#getBox(Context,Typesetter)
  *        &lang;box&rang;}  </pre>
  * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \shipout\box255  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Shipout extends AbstractCode {
 

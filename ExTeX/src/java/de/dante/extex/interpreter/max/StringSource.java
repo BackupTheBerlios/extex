@@ -21,7 +21,6 @@ package de.dante.extex.interpreter.max;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.Tokenizer;
@@ -38,30 +37,31 @@ import de.dante.util.configuration.ConfigurationException;
  * This class provides a token source which is fed from a sting.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class StringSource extends Moritz {
 
     /**
-     * TODO gene: missing JavaDoc.
+     * This Token stream is fed from a CharSequence.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.19 $
+     * @version $Revision: 1.20 $
      */
     private class TStream implements TokenStream {
 
         /**
-         * The field <tt>ptr</tt> contains the ...
+         * The field <tt>ptr</tt> contains the pointer to the next char to read.
          */
         private int ptr = 0;
 
         /**
-         * The field <tt>cs</tt> contains the ...
+         * The field <tt>cs</tt> contains the char sequence containing the chars
+         * to read.
          */
         private CharSequence cs;
 
         /**
-         * The field <tt>stack</tt> contains the ...
+         * The field <tt>stack</tt> contains the stack for pushed tokens.
          */
         private List stack = new ArrayList();
 

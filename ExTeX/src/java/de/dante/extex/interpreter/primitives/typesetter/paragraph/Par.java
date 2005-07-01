@@ -34,23 +34,35 @@ import de.dante.util.configuration.ConfigurationException;
  * <doc name="par">
  * <h3>The Primitive <tt>\par</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The primitive <tt>\par</tt> signals the end of a paragraph. If
+ *  <logo>ExTeX</logo> is in a horizontal mode then the preceding material is
+ *  typeset and the paragraph is added to the vertical list. <logo>ExTeX</logo>
+ *  goes into a vertical mode afterwards.
  * </p>
  * <p>
+ *  If <logo>ExTeX</logo> is in a vertical mode then this primitive is simply
+ *  ignored.
+ * </p>
+ * <p>
+ *  The scanner rules of <logo>TeX</logo> determine that the macro <tt>\par</tt>
+ *  is inserted for any number of subsequent empty lines. This means that in a
+ *  normal text there might be a lot of invocations of <tt>\par</tt> even if
+ *  none of them is written explicitly.
+ * </p>
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;par&rang;
  *      &rarr; <tt>\par</tt>  </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
- *    \par  </pre>
- * </p>
+ *    abc \par  def </pre>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Par extends AbstractCode {
 

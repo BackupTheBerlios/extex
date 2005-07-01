@@ -311,12 +311,6 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * </p>
  *
  *
- * <a name="fileSearch"/><h3>Searching Files</h3>
- *
- * TODO gene: doc incomplete
- *
- *
- *
  * <a name="settings"/><h3>Settings and Command Line Parameters</h3>
  *
  * <p>
@@ -589,7 +583,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class TeX extends ExTeX {
 
