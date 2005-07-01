@@ -12,7 +12,7 @@
 <div class="tabSep"><br/></div>
 <table cellspacing="0" width="100%" class="internal">
  <tr>
-  <td width="20%" valign="top">
+  <td width="20%" valign="top" background="&top;image/cutoff.gif" style="background-repeat:repeat-y">
    <navigation/>
   </td>
   <td width="60%" class="text">

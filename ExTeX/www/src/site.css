@@ -12,10 +12,7 @@ body {
   border-left:0pt;
   border-right:0pt;
   border-top:6pt;
-  margin-bottom:0pt;
-  margin-left:0pt;
-  margin-right:0pt;
-  margin-top:0pt;
+  margin:0pt;
   padding-bottom:0px;
   padding-left:16pt;
   padding-right:16pt;
@@ -23,6 +20,9 @@ body {
   text-align:right;
 }
 .tabOFF	{
+  font-size:75%;
+  font-weight:bold;
+  color:#999999;
   background-color:#eeeedd;
   border-bottom-color:#333333;
   border-bottom-style:solid;
@@ -32,17 +32,11 @@ body {
   border-right-style:solid;
   border-right-width:2px;
   border-top:6pt;
-  color:#999999;
-  font-size:75%;
-  font-weight:bold;
-  margin-bottom:0pt;
-  margin-left:0pt;
-  margin-right:0pt;
-  margin-top:0pt;
+  margin:0pt;
   padding-bottom:4pt;
   padding-left:0pt;
-  padding-right:6pt;
-  padding-top:0pt;
+  padding-right:16pt;
+  padding-top:4pt;
 }
 .tabOff	{
   background-color:#eeeedd;
@@ -52,34 +46,28 @@ body {
   border-left:0pt;
   border-right:0pt;
   border-top:6pt;
-  margin-bottom:0pt;
-  margin-left:0pt;
-  margin-right:0pt;
-  margin-top:6pt;
-  padding-bottom:0pt;
+  margin:0pt;
+  padding-bottom:4pt;
   padding-left:0pt;
-  padding-right:0pt;
+  padding-right:6pt;
   padding-top:0pt;
   vertical-align:top;
 }
 .tabON {
   background-color:#dddd99;
+  color:black;
+  font-size:75%;
+  font-weight:bold;
   border-bottom:0pt;
   border-left:0pt;
   border-right-color:#333333;
   border-right-style:solid;
   border-right-width:2px;
   border-top:6pt;
-  color:black;
-  font-size:75%;
-  font-weight:bold;
-  margin-bottom:0pt;
-  margin-left:0pt;
-  margin-right:0pt;
-  margin-top:6pt;
+  margin:0pt;
   padding-bottom:4pt;
   padding-left:0pt;
-  padding-right:60pt;
+  padding-right:16pt;
   padding-top:4pt;
 }
 .tabOn {
@@ -88,13 +76,10 @@ body {
   border-left:0pt;
   border-right:0pt;
   border-top:6pt;
-  margin-bottom:0pt;
-  margin-left:0pt;
-  margin-right:0pt;
-  margin-top:6pt;
-  padding-bottom:0pt;
+  margin:0pt;
+  padding-bottom:4pt;
   padding-left:0pt;
-  padding-right:0pt;
+  padding-right:6pt;
   padding-top:0pt;
   vertical-align:top;
 }
@@ -125,10 +110,10 @@ h1 {
   border-width:1px;
   border-color:#dddd99;
   border-style:solid;
-  border-bottom-width:2px;
+  border-bottom-width:2pt;
   border-bottom-color:#54532c;
   border-bottom-style:solid;
-  border-right-width:2px;
+  border-right-width:2pt;
   border-right-color:#54532c;
   border-right-style:solid;
 }
@@ -144,10 +129,10 @@ h2 {
   border-width:1px;
   border-color:#dddd99;
   border-style:solid;
-  border-bottom-width:2px;
+  border-bottom-width:2pt;
   border-bottom-color:#54532c;
   border-bottom-style:solid;
-  border-right-width:2px;
+  border-right-width:2pt;
   border-right-color:#54532c;
   border-right-style:solid;
 }
@@ -196,9 +181,12 @@ a.nav:hover { color:black;
 }
 .navi {
   font-size:80%;
-  border:1px;
   border-color:#54532c;
   border-style:solid;
+  border-left-width:1px;
+  border-top-width:1px;
+  border-right-width:3pt;
+  border-bottom-width:3pt;
   padding:4pt;
   margin-left:2pt;
   margin-right:2pt;
@@ -209,15 +197,23 @@ a.nav:hover { color:black;
 }
 .navitems {
   background-color:#eeeedd;
-  border:1px;
-  border-color:#dddd99;
+  border-color:#54532c;
   border-style:solid;
-  padding:2pt;
+  border-left-width:1.2pt;
+  border-top-width:1.2pt;
+  border-right-width:0pt;
+  border-bottom-width:0pt;
+  padding:4pt;
+  margin-top:2pt;
+  margin-bottom:2pt;
   font-weight:normal;
 }
 .info {
   font-size:80%;
-  border:1px;
+  border-left-width:1px;
+  border-top-width:1px;
+  border-right-width:3pt;
+  border-bottom-width:3pt;
   border-color:#54532c;
   border-style:solid;
   padding:4pt;
@@ -230,10 +226,14 @@ a.nav:hover { color:black;
 }
 .infoitems {
   background-color:#eeeedd;
-  border:1px;
-  border-color:#dddd99;
+  border-color:#54532c;
   border-style:solid;
-  padding:2pt;
+  border-left-width:1.2pt;
+  border-top-width:1.2pt;
+  border-right-width:0pt;
+  border-bottom-width:0pt;
+  padding:4pt;
+  margin-top:4pt;
   font-weight:normal;
 }
 table {
@@ -263,6 +263,10 @@ ul {
 }
 pre {
   background-color:#eeeedd;
+  border-color:lightgray;
+  border-style:solid;
+  border-width:1px;
+  padding:3pt;
 }
 .pdf {
   margin-left:36px;
