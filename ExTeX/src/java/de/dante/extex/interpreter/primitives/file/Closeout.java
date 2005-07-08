@@ -41,9 +41,11 @@ import de.dante.util.framework.logger.LogEnabled;
  * <doc name="closeout">
  * <h3>The Primitive <tt>\closeout</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The primitive takes one expanded integer argument. This argument denotes a
+ *  write register which will be closed if it is currently assigned to a file.
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;closeout&rang;
@@ -51,22 +53,18 @@ import de.dante.util.framework.logger.LogEnabled;
  *       de.dante.extex.interpreter.TokenSource#scanInteger(Context,Typesetter)
  *       &lang;number&rang;} </pre>
  * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \closeout5  </pre>
  *  <pre class="TeXSample">
  *    \closeout\count120  </pre>
- * </p>
+ *
  * </doc>
  *
- * Example
- * <pre>
- * \closeout3
- * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class Closeout extends AbstractCode implements LogEnabled {
 
@@ -109,7 +107,8 @@ public class Closeout extends AbstractCode implements LogEnabled {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String key = AbstractFileCode.scanOutFileKey(context, source, typesetter);
+        String key = AbstractFileCode.scanOutFileKey(context, source,
+                typesetter);
 
         if (prefix.isImmediate()) {
             OutFile file = context.getOutFile(key);

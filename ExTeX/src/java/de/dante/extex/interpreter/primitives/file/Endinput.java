@@ -34,8 +34,8 @@ import de.dante.extex.typesetter.Typesetter;
  * <h3>The Primitive <tt>\endinput</tt></h3>
  * <p>
  * The primitive <tt>\endinput</tt> closes the topmost file input stream. All
- * tokens collected for this input stream and the ones above are discarted.
- * This means that you can place arbitray text behind this primitive in a file.
+ * tokens collected for this input stream and the ones above are discarded.
+ * This means that you can place arbitrary text behind this primitive in a file.
  * This text is ignored immediately.
  * </p>
  *
@@ -47,16 +47,12 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
- *    \endinput  </pre>
+ *    \endinput  ... and some ignored text</pre>
  * </doc>
  *
- * Example
- * <pre>
- * \endinput
- * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class Endinput extends AbstractCode {
 

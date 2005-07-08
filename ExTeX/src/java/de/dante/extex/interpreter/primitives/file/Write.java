@@ -61,7 +61,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public class Write extends AbstractCode
         implements
@@ -94,7 +94,7 @@ public class Write extends AbstractCode
 
     /**
      * The field <tt>write18</tt> contains the indicator that the ancient
-     * write18 feature of <logo>TeX</logo> should be enabled.
+     * \write18 feature of <logo>TeX</logo> should be enabled.
      */
     private boolean write18 = false;
 
@@ -139,7 +139,8 @@ public class Write extends AbstractCode
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String key = AbstractFileCode.scanOutFileKey(context, source, typesetter);
+        String key = AbstractFileCode.scanOutFileKey(context, source,
+                typesetter);
 
         if (prefix.isImmediate()) {
 
@@ -165,8 +166,8 @@ public class Write extends AbstractCode
      *      de.dante.extex.interpreter.context.Context,
      *      TokenSource, Typesetter)
      */
-    public void init(final Context context, final TokenSource value, Typesetter typesetter)
-            throws InterpreterException {
+    public void init(final Context context, final TokenSource value,
+            final Typesetter typesetter) throws InterpreterException {
 
         context.setOutFile(LOG_FILE, new LogFile(logger), true);
         context.setOutFile(USER_AND_LOG, new UserAndLogFile(logger), true);

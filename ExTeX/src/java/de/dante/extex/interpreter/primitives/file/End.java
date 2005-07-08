@@ -32,7 +32,9 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="end">
  * <h3>The Primitive <tt>\end</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The primitive <tt>\end</tt> closes all input stream and discards all tokens
+ *  which might be waiting to be read. This usually mean the end of the
+ *  processing of one document.
  * </p>
  *
  * <h4>Syntax</h4>
@@ -44,15 +46,12 @@ import de.dante.extex.typesetter.Typesetter;
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \end  </pre>
+ * 
  * </doc>
  *
- * Example
- * <pre>
- * \end
- * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class End extends AbstractCode {
 
@@ -67,7 +66,8 @@ public class End extends AbstractCode {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Code#execute(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.type.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)

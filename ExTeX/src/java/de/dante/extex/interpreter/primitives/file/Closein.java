@@ -37,7 +37,8 @@ import de.dante.extex.typesetter.Typesetter;
  *  The primitive takes one expanded integer argument. This argument denotes a
  *  read register which will be closed if it is currently assigned to a file.
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;closein&rang;
@@ -45,22 +46,18 @@ import de.dante.extex.typesetter.Typesetter;
  *       de.dante.extex.interpreter.TokenSource#scanInteger(Context,Typesetter)
  *       &lang;number&rang;} </pre>
  * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \closein5  </pre>
  *  <pre class="TeXSample">
  *    \closein\count120  </pre>
- * </p>
+ *
  * </doc>
  *
- * Example
- * <pre>
- * \closein3
- * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class Closein extends AbstractCode {
 
@@ -75,7 +72,8 @@ public class Closein extends AbstractCode {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Code#execute(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.type.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
