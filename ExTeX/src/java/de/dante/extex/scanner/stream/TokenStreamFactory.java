@@ -123,7 +123,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.30 $
+ * @version $Revision: 1.31 $
  */
 public class TokenStreamFactory extends AbstractFactory
         implements
@@ -140,7 +140,7 @@ public class TokenStreamFactory extends AbstractFactory
     /**
      * The field <tt>bufferSize</tt> contains the desired size for the input
      * buffer. Negative values mean that the default size should be used. If the
-     * vakue is zero then no buffer at all should be used.
+     * value is zero then no buffer at all should be used.
      */
     //private int bufferSize = -1;
     /**
