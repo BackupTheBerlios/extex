@@ -32,24 +32,30 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="endgroup">
  * <h3>The Primitive <tt>\endgroup</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The primitive <tt>\endgroup</tt> closes the current group all properties are
+ *  reset to the values they had before the group had been entered. A group is
+ *  usually opened with <tt>\begingroup</tt>.
  * </p>
  * <p>
+ *  If no group has been opened then an error is raised.
+ * </p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;endgroup&rang;
  *      &rarr; <tt>\endgroup</tt>  </pre>
  * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \begingroup 123 \endgroup  </pre>
- * </p>
+ *
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Endgroup extends AbstractCode {
 

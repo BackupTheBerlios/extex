@@ -34,23 +34,29 @@ import de.dante.util.configuration.ConfigurationException;
  * <doc name="begingroup">
  * <h3>The Primitive <tt>\begingroup</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The primitive <tt>\begingroup</tt> starts a new group. The new group
+ *  inherits all properties from the previous group.
  * </p>
  * <p>
+ *  The group is usually ended by a corresponding <tt>\endgroup</tt>. If the
+ *  job is completed without encountering a proper <tt>\endgroup</tt> then an
+ *  error is raised.
+ * </p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;begingroup&rang;
  *      &rarr; <tt>\begingroup</tt>  </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \begingroup 123 \endgroup  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class Begingroup extends AbstractCode {
 

@@ -35,23 +35,24 @@ import de.dante.extex.typesetter.Typesetter;
  * <h3>The Primitive <tt>\fi</tt></h3>
  * <p>
  *  This primitive indicates the end of an conditional. As such it can not
- *  appear alone but only in combination with a preceeding <tt>\if*</tt>.
+ *  appear alone but only in combination with a preceding <tt>\if*</tt>.
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;fi&rang;
  *     &rarr; <tt>\fi</tt>  </pre>
  * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \fi  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class Fi extends AbstractCode implements ExpandableCode {
 

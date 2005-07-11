@@ -26,6 +26,7 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.primitives.register.box.AbstractBox;
+import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.framework.logger.LogEnabled;
 
@@ -51,7 +52,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Showlists extends AbstractBox implements LogEnabled {
 
@@ -90,8 +91,11 @@ public class Showlists extends AbstractBox implements LogEnabled {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        logger.fine("\\showlists unimplemented");
-        //TODO gene: \showlists unimplemented
+        Count depth = context.getCount("showboxdepth");
+        Count width = context.getCount("showboxbreadth");
+        typesetter.getListMaker().dump(logger,
+                depth != null ? depth.getValue() : Long.MAX_VALUE,
+                width != null ? width.getValue() : Long.MAX_VALUE);
     }
 
 }

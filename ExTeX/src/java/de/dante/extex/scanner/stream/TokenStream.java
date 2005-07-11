@@ -27,7 +27,7 @@ import de.dante.util.Locator;
 
 /**
  * This interface describes the features of a stream capable of delivering
- * {@link de.dante.extex.scanner.type.Token Token}s. In fact it is a pushback
+ * {@link de.dante.extex.scanner.type.Token Token}s. In fact it is a push-back
  * stream since Tokens already read can be pushed back onto the stream for
  * further reading.
  * <p>
@@ -37,7 +37,7 @@ import de.dante.util.Locator;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public interface TokenStream {
 

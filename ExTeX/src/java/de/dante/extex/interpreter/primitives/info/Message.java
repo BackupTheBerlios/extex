@@ -38,11 +38,23 @@ import de.dante.util.framework.logger.LogEnabled;
  * <p>
  *  TODO missing documentation
  * </p>
+ *
+ * <h4>Syntax</h4>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;message&rang;
+ *      &rarr; <tt>\message</tt> ... </pre>
+ *
+ * <h4>Examples</h4>
+ *  <pre class="TeXSample">
+ *    \message{Hello World!}  </pre>
+ *
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class Message extends AbstractCode implements LogEnabled {
 

@@ -53,9 +53,15 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class Jobname extends AbstractCode implements ExpandableCode {
+
+    /**
+     * The constant <tt>JOBNAME</tt> contains the name of the token register to
+     * carry the job name.
+     */
+    public static final String JOBNAME = "jobname";
 
     /**
      * Creates a new object.
@@ -78,7 +84,7 @@ public class Jobname extends AbstractCode implements ExpandableCode {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        source.push(context.getToks("jobname"));
+        source.push(context.getToks(JOBNAME));
     }
 
     /**
@@ -92,7 +98,7 @@ public class Jobname extends AbstractCode implements ExpandableCode {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        source.push(context.getToks("jobname"));
+        source.push(context.getToks(JOBNAME));
     }
 
 }

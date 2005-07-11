@@ -1,24 +1,26 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 2.1 of the License, or (at your
+ * option) any later version.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation,
+ * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.util.configuration;
 
 import java.lang.reflect.InvocationTargetException;
+
 
 /**
  * This is the factory for configurations.
@@ -31,7 +33,7 @@ import java.lang.reflect.InvocationTargetException;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class ConfigurationFactory {
 
@@ -39,6 +41,7 @@ public class ConfigurationFactory {
      * Creates a new object.
      */
     public ConfigurationFactory() {
+
         super();
     }
 
@@ -49,7 +52,7 @@ public class ConfigurationFactory {
      * a file name but can be anything else, like a URL or a reference to a
      * database &ndash; depending on the underlying implementation.
      *
-     * @param source the source of the configration
+     * @param source the source of the configuration
      *
      * @return a new Configuration object
      *
@@ -66,7 +69,7 @@ public class ConfigurationFactory {
      * </ul>
      */
     public Configuration newInstance(final String source)
-        throws ConfigurationException {
+            throws ConfigurationException {
 
         if (source == null) {
             throw new ConfigurationInvalidNameException(null);
@@ -82,7 +85,8 @@ public class ConfigurationFactory {
 
         try {
             config = (Configuration) (Class.forName(classname).getConstructor(
-                new Class[]{String.class}).newInstance(new Object[]{source}));
+                    new Class[]{String.class})
+                    .newInstance(new Object[]{source}));
         } catch (IllegalArgumentException e) {
             throw new ConfigurationInstantiationException(e);
         } catch (SecurityException e) {

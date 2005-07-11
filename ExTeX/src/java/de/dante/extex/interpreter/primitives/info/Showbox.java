@@ -38,23 +38,23 @@ import de.dante.util.framework.logger.LogEnabled;
  * <p>
  *  TODO missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;showbox&rang;
  *       &rarr; <tt>\showbox</tt> {@linkplain
  *          de.dante.extex.interpreter.TokenSource#scanNumber()
  *          &lang;8-bit&nbsp;number&rang;} </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \showbox 1  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Showbox extends AbstractBox implements LogEnabled {
 

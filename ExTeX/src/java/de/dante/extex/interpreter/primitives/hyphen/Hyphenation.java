@@ -46,14 +46,27 @@ import de.dante.util.UnicodeChar;
  * This class provides an implementation for the primitive
  * <code>\hyphenation</code>.
  *
- * <p>Example:</p>
+ * <doc name="hyphenation">
+ * <h3>The Primitive <tt>\hyphenation</tt></h3>
+ * <p>
+ *  TODO missing documentation
+ * </p>
+ *
+ * <h4>Syntax</h4>
+ *  <pre class="syntax">
+ *    &lang;hyphenation&rang;
+ *     &rarr; <tt>\hyphenation</tt> {...} </pre>
+ *
+ * <h4>Example:</h4>
  * <pre>
- * \hyphenation{as-so-ciate as-so-ciates }
- * </pre>
+ * \hyphenation{as-so-ciate as-so-ciates}  </pre>
+ *
+ * </doc>
+ *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Hyphenation extends AbstractHyphenationCode {
 
@@ -68,14 +81,14 @@ public class Hyphenation extends AbstractHyphenationCode {
     }
 
     /**
-     * Cretate the name for the <code>HyphenationTable</code>.
+     * Create the name for the <code>HyphenationTable</code>.
      *
      * @param pattern the pattern
      * @param context the interpreter context
      *
-     * @return  the name
+     * @return the name
      *
-     * @throws CatcodeException
+     * @throws CatcodeException in case of an error
      */
     private Tokens createHyphenation(final Tokens pattern, final Context context)
             throws CatcodeException {

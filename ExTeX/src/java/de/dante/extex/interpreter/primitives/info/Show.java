@@ -44,23 +44,24 @@ import de.dante.util.framework.logger.LogEnabled;
  * <p>
  *  TODO missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;show&rang;
  *       &rarr; <tt>\show</tt> {@linkplain
  *           de.dante.extex.interpreter.TokenSource#getToken(Context)
  *           &lang;token&rang;} </pre>
- * </p>
- * <p>
+ *
+ * <h4>Examples</h4>
  *  Examples:
  *  <pre class="TeXSample">
  *    \show\abc  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class Show extends AbstractCode implements LogEnabled {
 
