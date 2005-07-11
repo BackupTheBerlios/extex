@@ -19,6 +19,8 @@
 
 package de.dante.extex.interpreter;
 
+import java.util.logging.Logger;
+
 import junit.framework.TestCase;
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.interpreter.context.Context;
@@ -54,7 +56,7 @@ import de.dante.util.configuration.ConfigurationFactory;
 
 /**
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.59 $
+ * @version $Revision: 1.60 $
  */
 public class Max1 extends TestCase {
 
@@ -145,6 +147,13 @@ public class Max1 extends TestCase {
          */
         public void cr(final Context context, final TypesettingContext tc,
                 final UnicodeChar uc) throws TypesetterException {
+
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.ListMaker#dump(java.util.logging.Logger, long, long)
+         */
+        public void dump(final Logger logger, final long width, final long depth) {
 
         }
 

@@ -19,6 +19,8 @@
 
 package de.dante.extex.typesetter;
 
+import java.util.logging.Logger;
+
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
@@ -38,7 +40,7 @@ import de.dante.util.configuration.ConfigurationException;
  * @see "<logo>TeX</logo> &ndash; The Program [211]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.41 $
+ * @version $Revision: 1.42 $
  */
 public interface ListMaker {
 
@@ -116,6 +118,16 @@ public interface ListMaker {
      */
     void cr(Context context, TypesettingContext tc, UnicodeChar uc)
             throws TypesetterException;
+
+    /**
+     * Print the current internal list to a logger. The display is truncated
+     * to a certain size.
+     *
+     * @param logger the target logger
+     * @param width the width
+     * @param depth the depth
+     */
+    void dump(Logger logger, long width, long depth);
 
     /**
      * Access the last node on the list.

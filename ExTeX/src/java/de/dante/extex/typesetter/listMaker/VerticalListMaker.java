@@ -19,6 +19,8 @@
 
 package de.dante.extex.typesetter.listMaker;
 
+import java.util.logging.Logger;
+
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
@@ -40,7 +42,7 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class VerticalListMaker extends AbstractListMaker {
 
@@ -124,6 +126,15 @@ public class VerticalListMaker extends AbstractListMaker {
     public void cr(final Context context, final TypesettingContext tc,
             final UnicodeChar uc) throws TypesetterException {
 
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#dump(java.util.logging.Logger, long, long)
+     */
+    public void dump(final Logger logger, final long width, final long depth) {
+
+        //TODO gene: unimplemented
+        throw new RuntimeException("unimplemented");
     }
 
     /**

@@ -20,6 +20,7 @@
 package de.dante.extex.typesetter.listMaker.math;
 
 import java.util.Stack;
+import java.util.logging.Logger;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -70,7 +71,7 @@ import de.dante.util.configuration.ConfigurationException;
  * This is the list maker for the inline math formulae.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class MathListMaker extends AbstractListMaker implements NoadConsumer {
 
@@ -79,7 +80,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      * It is used to store to the stack and restore the state from the stack.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.20 $
+     * @version $Revision: 1.21 $
      */
     private class MathMemento {
 
@@ -309,6 +310,17 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
     public void cr(final Context context, final TypesettingContext tc,
             final UnicodeChar uc) throws TypesetterException {
 
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#dump(java.util.logging.Logger, long, long)
+     */
+    public void dump(final Logger logger, final long width, final long depth) {
+
+        StringBuffer sb = new StringBuffer();
+        noads.toString(sb, (int) depth);
+        logger.fine(sb.toString());
+        //TODO gene: use width for dump
     }
 
     /**

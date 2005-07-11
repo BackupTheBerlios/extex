@@ -62,7 +62,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.70 $
+ * @version $Revision: 1.71 $
  */
 public class TypesetterImpl
         implements
@@ -235,6 +235,14 @@ public class TypesetterImpl
             final UnicodeChar uc) throws TypesetterException {
 
         listMaker.cr(context, tc, uc);
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#dump(java.util.logging.Logger, long, long)
+     */
+    public void dump(final Logger logger, final long width, final long depth) {
+
+        listMaker.dump(logger, width, depth);
     }
 
     /**

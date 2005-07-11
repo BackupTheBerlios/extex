@@ -21,6 +21,7 @@ package de.dante.extex.typesetter.listMaker;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
@@ -53,7 +54,7 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class HorizontalListMaker extends AbstractListMaker {
 
@@ -102,7 +103,9 @@ public class HorizontalListMaker extends AbstractListMaker {
      * @see de.dante.extex.typesetter.ListMaker#add(
      *      de.dante.extex.typesetter.type.Node)
      */
-    public void add(final Node c) throws TypesetterException, ConfigurationException {
+    public void add(final Node c)
+            throws TypesetterException,
+                ConfigurationException {
 
         nodes.add(c);
         spacefactor = DEFAULT_SPACEFACTOR;
@@ -124,7 +127,8 @@ public class HorizontalListMaker extends AbstractListMaker {
      *      de.dante.extex.interpreter.type.count.Count)
      */
     public void addSpace(final TypesettingContext context, final Count sfCount)
-            throws TypesetterException, ConfigurationException {
+            throws TypesetterException,
+                ConfigurationException {
 
         long sf = (sfCount != null ? sfCount.getValue() : spacefactor);
         Glue space = context.getFont().getSpace();
@@ -172,7 +176,8 @@ public class HorizontalListMaker extends AbstractListMaker {
      * @see de.dante.extex.typesetter.ListMaker#complete(TypesetterOptions)
      */
     public NodeList complete(final TypesetterOptions context)
-            throws TypesetterException, ConfigurationException {
+            throws TypesetterException,
+                ConfigurationException {
 
         HorizontalListNode list = new HorizontalListNode();
         int size = nodes.size();
@@ -204,6 +209,18 @@ public class HorizontalListMaker extends AbstractListMaker {
     public void cr(final Context context, final TypesettingContext tc,
             final UnicodeChar uc) throws TypesetterException {
 
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#dump(java.util.logging.Logger, long, long)
+     */
+    public void dump(final Logger logger, final long width, final long depth) {
+
+        for (int i = 0; i < nodes.size(); i++) {
+            //TODO gene: unimplemented
+
+        }
+        throw new RuntimeException("unimplemented");
     }
 
     /**
