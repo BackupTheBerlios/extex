@@ -19,11 +19,12 @@
 
 package de.dante.util.configuration;
 
+
 /**
  * This exception is thrown when a dynamically loaded class could not be found.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class ConfigurationClassNotFoundException extends ConfigurationException {
 
