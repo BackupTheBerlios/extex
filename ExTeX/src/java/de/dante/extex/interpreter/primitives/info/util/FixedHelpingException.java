@@ -17,13 +17,13 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.info;
+package de.dante.extex.interpreter.primitives.info.util;
 
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 
 /**
  * This class provides an Exception with the possibility to provide additional
- * help on the error encoutered. Thus it has two levels of information: the
+ * help on the error encountered. Thus it has two levels of information: the
  * first level is the message and the second level is the additional help.
  * <p>
  * In contrast to
@@ -33,7 +33,7 @@ import de.dante.extex.interpreter.exception.helping.HelpingException;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.1 $
  */
 public class FixedHelpingException extends HelpingException {
 
@@ -53,14 +53,14 @@ public class FixedHelpingException extends HelpingException {
     /**
      * Creates a new object.
      *
-     * @param theMessage the message of this Exception
-     * @param theHelp the help string
+     * @param message the message of this Exception
+     * @param help the help string
      */
-    public FixedHelpingException(final String theMessage, final String theHelp) {
+    public FixedHelpingException(final String message, final String help) {
 
         super();
-        this.message = theMessage;
-        this.help = theHelp;
+        this.message = message;
+        this.help = help;
     }
 
     /**
