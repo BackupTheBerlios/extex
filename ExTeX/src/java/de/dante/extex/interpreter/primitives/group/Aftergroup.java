@@ -39,25 +39,25 @@ import de.dante.extex.typesetter.Typesetter;
  *  inserted after the current group has been closed. If several tokens are
  *  saved then they will be inserted in the same sequence as they are saved.
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *   &lang;aftergroup&rang;
  *     &rarr; <tt>\aftergroup</tt> {@linkplain
  *       de.dante.extex.interpreter.TokenSource#getToken(Context)
  *       &lang;token&rang;}   </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Example:</h4>
  *  <pre class="TeXSample">
  *    {\aftergroup~ xyz}  </pre>
  *  <pre class="TeXSample">
  *    {\aftergroup\a\aftergroup\b xyz}  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class Aftergroup extends AbstractCode {
 

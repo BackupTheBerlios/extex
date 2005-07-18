@@ -44,20 +44,20 @@ import de.dante.util.UnicodeChar;
  * <p>
  *  If no proper argument is found then an error is raised.
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;char&rang;
  *        &rarr; <tt>\char</tt> {@linkplain
  *        de.dante.extex.interpreter.TokenSource#scanNumber()
  *        &lang;number&rang;} </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \char42
  *    \char\count1  </pre>
- * </p>
+ *
  * </doc>
  *
  * <p>
@@ -68,7 +68,7 @@ import de.dante.util.UnicodeChar;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class Char extends AbstractCode implements ExpandableCode {
 

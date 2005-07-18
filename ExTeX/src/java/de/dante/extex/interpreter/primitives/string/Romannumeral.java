@@ -43,26 +43,28 @@ import de.dante.extex.typesetter.Typesetter;
  *  produces the representation of this number in lower case roman numerals.
  *  If the number is less than one than nothing is produced at all.
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;romannumeral&rang;
  *        &rarr; <tt>\romannumeral</tt> {@linkplain
  *           de.dante.extex.interpreter.TokenSource#scanInteger(Context,Typesetter)
  *           &lang;number&rang;} </pre>
- * </p>
+ *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \romannumeral\count1  </pre>
  *  <pre class="TeXSample">
  *    \romannumeral 2004  </pre>
+ *
  * </doc>
  *
  *
  * @see "<logo>TeX</logo> &ndash; the Program [69]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class Romannumeral extends AbstractCode implements ExpandableCode {
 
@@ -121,7 +123,7 @@ public class Romannumeral extends AbstractCode implements ExpandableCode {
             }
 
             if (n <= 0) {
-                return; //nonpositive input produces no output
+                return; // non-positive input produces no output
             }
 
             int k = j + 2;
