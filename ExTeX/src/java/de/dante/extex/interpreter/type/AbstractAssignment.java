@@ -37,7 +37,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public abstract class AbstractAssignment extends AbstractCode {
 
@@ -93,5 +93,5 @@ public abstract class AbstractAssignment extends AbstractCode {
     public abstract void assign(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException;
-    //todo gene: maybe the typesetter argument can be deleted.
+
 }
