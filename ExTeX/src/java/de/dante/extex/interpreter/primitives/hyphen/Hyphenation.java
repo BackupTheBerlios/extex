@@ -58,15 +58,15 @@ import de.dante.util.UnicodeChar;
  *     &rarr; <tt>\hyphenation</tt> {...} </pre>
  *
  * <h4>Example:</h4>
- * <pre>
- * \hyphenation{as-so-ciate as-so-ciates}  </pre>
+ *  <pre class="TeXSample">
+ *   \hyphenation{as-so-ciate as-so-ciates}  </pre>
  *
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Hyphenation extends AbstractHyphenationCode {
 

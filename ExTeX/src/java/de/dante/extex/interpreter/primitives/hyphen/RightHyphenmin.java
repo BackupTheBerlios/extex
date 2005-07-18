@@ -47,8 +47,8 @@ import de.dante.util.configuration.ConfigurationException;
  *     &rarr; <tt>\righthyphenmin</tt> = ... </pre>
  *
  * <h4>Example:</h4>
- * <pre>
- * \righthyphenmin=3 </pre>
+ *  <pre class="TeXSample">
+ *   \righthyphenmin=3 </pre>
  *
  * </doc>
  *
@@ -61,7 +61,7 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class RightHyphenmin extends AbstractHyphenationCode
         implements
