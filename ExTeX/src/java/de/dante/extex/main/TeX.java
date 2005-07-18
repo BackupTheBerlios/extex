@@ -40,6 +40,7 @@ import de.dante.extex.ExTeX;
 import de.dante.extex.font.FontFactory;
 import de.dante.extex.font.exception.FontException;
 import de.dante.extex.interpreter.Interpreter;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.observer.expand.ExpandObservable;
 import de.dante.extex.interpreter.observer.expand.ExpandObserver;
 import de.dante.extex.interpreter.observer.pop.PopObservable;
@@ -583,7 +584,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class TeX extends ExTeX {
 
@@ -699,13 +700,14 @@ public class TeX extends ExTeX {
      *            that this value is <code>null</code> no user properties
      *            will be considered.
      *
-     * @throws MainException in case of an IO Error during the reading of the
+     * @throws InterpreterException in case of an invalid inetraction mode
+     * @throws IOException in case of an IO Error during the reading of the
      *             properties file
      *
      * @see de.dante.extex.ExTeX#ExTeX(java.util.Properties, java.lang.String)
      */
     public TeX(final Properties theProperties, final String dotFile)
-            throws MainException {
+            throws InterpreterException, IOException {
 
         super(theProperties, dotFile);
         localizer = LocalizerFactory.getLocalizer(TeX.class.getName());

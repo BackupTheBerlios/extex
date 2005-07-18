@@ -34,6 +34,7 @@ import de.dante.extex.ExTeX;
 import de.dante.extex.interpreter.ErrorHandler;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.main.errorHandler.editHandler.EditHandler;
 import de.dante.extex.main.exception.MainException;
 import de.dante.extex.main.logging.LogFormatter;
@@ -45,7 +46,7 @@ import de.dante.util.GeneralException;
  * running an instance of ExTeX.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class ExTeXLauncher extends TestCase {
 
@@ -53,7 +54,7 @@ public class ExTeXLauncher extends TestCase {
      * Inner class for the error handler.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.24 $
+     * @version $Revision: 1.25 $
      */
     private class EHandler implements ErrorHandler {
 
@@ -178,12 +179,12 @@ public class ExTeXLauncher extends TestCase {
      * @param log the expected output on the log stream
      * @param expect the expected output on the output stream
      *
-     * @return TODO
+     * @return a new instance of the ExTeX class
      *
      * @throws MainException in case of an error
      */
     public ExTeX runCode(final Properties properties, final String code,
-            final String log, final String expect) throws MainException {
+            final String log, final String expect) throws InterpreterException {
 
         boolean errorP = false;
 

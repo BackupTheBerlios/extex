@@ -53,10 +53,12 @@ import de.dante.extex.font.exception.FontException;
 import de.dante.extex.interpreter.ErrorHandler;
 import de.dante.extex.interpreter.ErrorHandlerFactory;
 import de.dante.extex.interpreter.Interaction;
+import de.dante.extex.interpreter.InteractionUnknownException;
 import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.InterpreterFactory;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.observer.InteractionObserver;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.loader.LoaderException;
 import de.dante.extex.interpreter.output.TeXOutputRoutine;
@@ -67,7 +69,6 @@ import de.dante.extex.main.exception.MainCodingException;
 import de.dante.extex.main.exception.MainConfigurationException;
 import de.dante.extex.main.exception.MainException;
 import de.dante.extex.main.exception.MainIOException;
-import de.dante.extex.main.exception.MainUnknownInteractionException;
 import de.dante.extex.main.logging.LogFormatter;
 import de.dante.extex.main.observer.FileOpenObserver;
 import de.dante.extex.main.observer.InteractionModeObserver;
@@ -326,7 +327,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.109 $
+ * @version $Revision: 1.110 $
  */
 public class ExTeX {
 
@@ -608,7 +609,7 @@ public class ExTeX {
      *
      * @throws MainException in case of an error
      */
-    public ExTeX(final Properties theProperties) throws MainException {
+    public ExTeX(final Properties theProperties) throws InterpreterException {
 
         super();
 
@@ -667,24 +668,22 @@ public class ExTeX {
      *            that this value is <code>null</code> no user properties
      *            will be considered.
      *
-     * @throws MainException in case of an IO Error during the reading of the
+     * @throws InterpreterException in case of an invalid inetraction mode
+     * @throws IOException in case of an IO Error during the reading of the
      *             properties file
      *
      * @see #ExTeX(java.util.Properties)
      */
     public ExTeX(final Properties theProperties, final String dotFile)
-            throws MainException {
+            throws InterpreterException,
+                IOException {
 
         this(theProperties);
 
         if (dotFile != null) {
-            try {
-                loadUserProperties(new File(System.getProperty("user.home"),
-                        dotFile));
-                loadUserProperties(new File(dotFile));
-            } catch (IOException e) {
-                throw new MainIOException(e);
-            }
+            loadUserProperties(new File(System.getProperty("user.home"),
+                    dotFile));
+            loadUserProperties(new File(dotFile));
 
             applyLanguage();
         }
@@ -694,16 +693,16 @@ public class ExTeX {
      * Propagate the settings for the interaction mode to the
      * <code>interactionObserver</code>.
      *
-     * @throws MainUnknownInteractionException in case that the interaction is
+     * @throws InteractionUnknownException in case that the interaction is
      *             not set properly
      */
-    protected void applyInteraction() throws MainUnknownInteractionException {
+    protected void applyInteraction() throws InteractionUnknownException {
 
         try {
             interactionObserver.receiveInteractionChange(null, Interaction
                     .get(properties.getProperty(PROP_INTERACTION)));
         } catch (Exception e) {
-            throw new MainUnknownInteractionException("");
+            throw new InteractionUnknownException("");
         }
     }
 
@@ -714,19 +713,26 @@ public class ExTeX {
     protected void applyLanguage() {
 
         String lang = (String) properties.get(PROP_LANG);
-        Matcher m;
 
         if (lang != null) {
-            if (lang.length() == 2) {
+            int len = lang.length();
+            if (len == 2) {
                 Locale.setDefault(new Locale(lang));
-            } else if ((m = Pattern.compile("^(..)[_-](..)$").matcher(lang))
-                    .matches()) {
-                Locale.setDefault(new Locale(m.group(1), m.group(2)));
-            } else if ((m = Pattern.compile("^(..)[_-](..)[_-](..)$").matcher(
-                    lang)).matches()) {
-                Locale
-                        .setDefault(new Locale(m.group(1), m.group(2), m
-                                .group(3)));
+            } else if (len == 5
+                    && (lang.charAt(2) == '-' || lang.charAt(2) == '_')) {
+
+                Locale.setDefault(new Locale(lang.substring(0, 1), lang
+                        .substring(3, 4)));
+
+            } else if (len == 8
+                    && (lang.charAt(2) == '-' || lang.charAt(2) == '_')
+                    && (lang.charAt(5) == '-' || lang.charAt(5) == '_')) {
+
+                Locale.setDefault(new Locale(lang.substring(0, 1), lang
+                        .substring(3, 4), lang.substring(6, 7)));
+
+            } else {
+                // TODO ignored on purpose?
             }
         }
 
