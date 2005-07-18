@@ -19,7 +19,6 @@
 
 package de.dante.extex.interpreter;
 
-import de.dante.extex.main.exception.MainUnknownInteractionException;
 import de.dante.util.GeneralException;
 
 import java.io.ObjectStreamException;
@@ -32,7 +31,7 @@ import java.io.Serializable;
  *
  * @see "<logo>TeX</logo> &ndash; The Program [73]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public abstract class Interaction implements Serializable {
 
@@ -40,7 +39,7 @@ public abstract class Interaction implements Serializable {
      * This inner class is use to represent the batch mode.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.16 $
+     * @version $Revision: 1.17 $
      */
     private static class BatchMode extends Interaction {
 
@@ -84,7 +83,7 @@ public abstract class Interaction implements Serializable {
      * This inner class is use to represent the error stop mode.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.16 $
+     * @version $Revision: 1.17 $
      */
     private static class ErrorstopMode extends Interaction {
 
@@ -128,7 +127,7 @@ public abstract class Interaction implements Serializable {
      * This inner class is use to represent the nonstop mode.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.16 $
+     * @version $Revision: 1.17 $
      */
     private static class NonstopMode extends Interaction {
 
@@ -172,7 +171,7 @@ public abstract class Interaction implements Serializable {
      * This inner class is use to represent the scroll mode.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.16 $
+     * @version $Revision: 1.17 $
      */
     private static class ScrollMode extends Interaction {
 
@@ -252,14 +251,14 @@ public abstract class Interaction implements Serializable {
      *
      * @return the appropriate interaction mode constant
      *
-     * @throws MainUnknownInteractionException in case that the numerical value
+     * @throws InteractionUnknownException in case that the numerical value
      *             is out of range
      */
     public static Interaction get(final int mode)
-            throws MainUnknownInteractionException {
+            throws InteractionUnknownException {
 
         if (mode < 0 || mode >= MODE_MAP.length) {
-            throw new MainUnknownInteractionException(Integer.toString(mode));
+            throw new InteractionUnknownException(Integer.toString(mode));
         }
 
         return MODE_MAP[mode];
@@ -272,10 +271,10 @@ public abstract class Interaction implements Serializable {
      *
      * @return the number of the mode
      *
-     * @throws MainUnknownInteractionException in case of an error
+     * @throws InteractionUnknownException in case of an error
      */
     public static int get(final Interaction mode)
-            throws MainUnknownInteractionException {
+            throws InteractionUnknownException {
 
         for (int i = 0; i < MODE_MAP.length; i++) {
             if (mode == MODE_MAP[i]) {
@@ -283,7 +282,7 @@ public abstract class Interaction implements Serializable {
             }
         }
 
-        throw new MainUnknownInteractionException(mode.toString());
+        throw new InteractionUnknownException(mode.toString());
     }
 
     /**
@@ -300,14 +299,14 @@ public abstract class Interaction implements Serializable {
      *
      * @return the appropriate interaction mode constant
      *
-     * @throws MainUnknownInteractionException in case that something is passed
+     * @throws InteractionUnknownException in case that something is passed
      *             in which can not be interpreted as interaction mode
      */
     public static Interaction get(final String mode)
-            throws MainUnknownInteractionException {
+            throws InteractionUnknownException {
 
         if (mode == null || "".equals(mode)) {
-            throw new MainUnknownInteractionException("");
+            throw new InteractionUnknownException("");
         } else if ("batchmode".startsWith(mode) || mode.equals("0")) {
             return BATCHMODE;
         } else if ("nonstopmode".startsWith(mode) || mode.equals("1")) {
@@ -318,7 +317,7 @@ public abstract class Interaction implements Serializable {
             return ERRORSTOPMODE;
         }
 
-        throw new MainUnknownInteractionException(mode);
+        throw new InteractionUnknownException(mode);
     }
 
     /**

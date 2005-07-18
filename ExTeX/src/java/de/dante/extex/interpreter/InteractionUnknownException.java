@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -17,30 +17,27 @@
  *
  */
 
-package de.dante.extex.main.exception;
+package de.dante.extex.interpreter;
+
+import de.dante.extex.interpreter.exception.InterpreterException;
 
 /**
- * This exception is thrown when the user attempty to set the interaction mode
+ * This exception is thrown when the user attempts to set the interaction mode
  * but specifies an invalid value for the mode.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.1 $
  */
-public class MainUnknownInteractionException extends MainException {
-
-    /**
-     * The constant <tt>ERROR_CODE</tt> contains the return code.
-     */
-    private static final int ERROR_CODE = -14;
+public class InteractionUnknownException extends InterpreterException {
 
     /**
      * Creates a new object.
      *
      * @param message the name of the missing argument
      */
-    public MainUnknownInteractionException(final String message) {
+    public InteractionUnknownException(final String message) {
 
-        super(ERROR_CODE, message);
+        super(message);
     }
 
     /**
@@ -48,7 +45,7 @@ public class MainUnknownInteractionException extends MainException {
      */
     public String getLocalizedMessage() {
 
-        return getLocalizer().format("MainUnknownInteractionException.Message",
+        return getLocalizer().format("InteractionUnknownException.Message",
                 super.getMessage());
     }
 }
