@@ -22,6 +22,8 @@ package de.dante.extex.interpreter.max;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import com.ibm.icu.lang.UCharacter;
+
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.TokenSource;
@@ -61,6 +63,7 @@ import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.CodeToken;
 import de.dante.extex.scanner.type.ControlSequenceToken;
+import de.dante.extex.scanner.type.LeftBraceToken;
 import de.dante.extex.scanner.type.LetterToken;
 import de.dante.extex.scanner.type.OtherToken;
 import de.dante.extex.scanner.type.RightBraceToken;
@@ -89,7 +92,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.70 $
+ * @version $Revision: 1.71 $
  */
 public class Moritz extends Max
         implements
@@ -292,7 +295,7 @@ public class Moritz extends Max
         super.configure(configuration);
 
         try {
-            getContext().setInteraction(Interaction.ERRORSTOPMODE, true);
+            getContext().setInteraction(Interaction.ERRORSTOPMODE);
             configurePrimitives(configuration, getContext().getTokenFactory(),
                     tokenStreamFactory);
             initializeDate(Calendar.getInstance());
@@ -888,16 +891,39 @@ public class Moritz extends Max
     }
 
     /**
+     * This method scans a character code.
+     * <doc type="extension">
+     *  The character code is either a number &ndash; after expansion &ndash; or
+     *  the name of a Unicode character in braces.
+     * </doc>
+     *
      * @see de.dante.extex.interpreter.TokenSource#scanCharacterCode(Context)
      */
     public UnicodeChar scanCharacterCode(final Context context)
             throws InterpreterException {
 
-        long cc = scanNumber(context);
+        long cc;
 
-        if (cc < 0 || cc > MAX_CHAR_CODE) {
-            throw new HelpingException(getLocalizer(), "TTP.BadCharCode", //
-                    Long.toString(cc), "0", Long.toString(MAX_CHAR_CODE));
+        Token t = getNonSpace(context);
+        if (t instanceof LeftBraceToken) {
+            push(t);
+            String name = scanTokensAsString(context);
+            if (name == null) {
+                throw new HelpingException(getLocalizer(), "BadCharName", "");
+            }
+            cc = UCharacter.getCharFromName(name);
+
+            if (cc < 0 || cc > MAX_CHAR_CODE) {
+                throw new HelpingException(getLocalizer(), "BadCharName", name);
+            }
+        } else {
+
+            cc = scanNumber(context, t);
+
+            if (cc < 0 || cc > MAX_CHAR_CODE) {
+                throw new HelpingException(getLocalizer(), "TTP.BadCharCode", //
+                        Long.toString(cc), "0", Long.toString(MAX_CHAR_CODE));
+            }
         }
 
         return new UnicodeChar((int) cc);
