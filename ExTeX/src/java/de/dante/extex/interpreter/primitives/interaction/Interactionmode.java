@@ -1,19 +1,19 @@
 /*
  * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 2.1 of the License, or (at your
+ * option) any later version.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation,
+ * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
 
@@ -21,13 +21,13 @@ package de.dante.extex.interpreter.primitives.interaction;
 
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.Interaction;
+import de.dante.extex.interpreter.InteractionUnknownException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.ImpossibleException;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.interpreter.type.count.CountConvertible;
-import de.dante.extex.main.exception.MainUnknownInteractionException;
 import de.dante.extex.typesetter.Typesetter;
 
 /**
@@ -41,21 +41,21 @@ import de.dante.extex.typesetter.Typesetter;
  * <p>
  *  TODO missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;interactionmode&rang;
  *      &rarr; <tt>\interactionmode</tt>  </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \interactionmode  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Interactionmode extends AbstractAssignment
         implements
@@ -85,8 +85,8 @@ public class Interactionmode extends AbstractAssignment
         source.getOptionalEquals(context);
         long mode = source.scanNumber(context);
         try {
-            context.setInteraction(Interaction.get((int) mode), prefix.isGlobal());
-        } catch (MainUnknownInteractionException e) {
+            context.setInteraction(Interaction.get((int) mode));
+        } catch (InteractionUnknownException e) {
             throw new InterpreterException(e);
         }
     }
@@ -102,7 +102,7 @@ public class Interactionmode extends AbstractAssignment
 
         try {
             return Interaction.get(context.getInteraction());
-        } catch (MainUnknownInteractionException e) {
+        } catch (InteractionUnknownException e) {
             throw new ImpossibleException("unknown interaction");
         }
     }

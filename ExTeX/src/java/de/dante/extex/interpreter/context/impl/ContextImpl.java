@@ -118,7 +118,7 @@ import de.dante.util.framework.i18n.Localizer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.85 $
+ * @version $Revision: 1.86 $
  */
 public class ContextImpl
         implements
@@ -222,6 +222,12 @@ public class ContextImpl
      * <code>null</code> if not known yet.
      */
     private String id = null;
+
+    /**
+     * The field <tt>interaction</tt> contains the currently active
+     * interaction mode.
+     */
+    private Interaction interaction = Interaction.ERRORSTOPMODE;
 
     /**
      * The field <tt>languageManager</tt> contains the language manager.
@@ -336,18 +342,6 @@ public class ContextImpl
 
         if (next == null) {
             throw new HelpingException(localizer, "TTP.TooManyRightBraces");
-        }
-
-        Interaction interaction = next.getInteraction();
-        if (group.getInteraction() != interaction) {
-            try {
-                for (int i = 0; i < changeInteractionObservers.size(); i++) {
-                    ((InteractionObserver) changeInteractionObservers.get(i))
-                            .receiveInteractionChange(this, interaction);
-                }
-            } catch (Exception e) {
-                throw new InterpreterException(e);
-            }
         }
 
         group.runAfterGroup();
@@ -619,7 +613,7 @@ public class ContextImpl
      */
     public Interaction getInteraction() {
 
-        return group.getInteraction();
+        return (interaction != null ? interaction : Interaction.ERRORSTOPMODE);
     }
 
     /**
@@ -1267,15 +1261,13 @@ public class ContextImpl
 
     /**
      * @see de.dante.extex.interpreter.context.Context#setInteraction(
-     *      de.dante.extex.interpreter.Interaction,
-     *      boolean)
+     *      de.dante.extex.interpreter.Interaction)
      */
-    public void setInteraction(final Interaction interaction,
-            final boolean global) throws InterpreterException {
+    public void setInteraction(final Interaction interaction)
+            throws InterpreterException {
 
-        group.setInteraction(interaction, global);
-
-        if (group.getInteraction() != interaction) {
+        if (this.interaction != interaction) {
+            this.interaction = interaction;
             try {
                 for (int i = 0; i < changeInteractionObservers.size(); i++) {
                     ((InteractionObserver) changeInteractionObservers.get(i))

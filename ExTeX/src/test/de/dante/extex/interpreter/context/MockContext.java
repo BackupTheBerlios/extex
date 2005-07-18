@@ -70,7 +70,7 @@ import de.dante.util.configuration.ConfigurationException;
  * classes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class MockContext implements Context, TypesetterOptions {
 
@@ -682,10 +682,9 @@ public class MockContext implements Context, TypesetterOptions {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setInteraction(de.dante.extex.interpreter.Interaction, boolean)
+     * @see de.dante.extex.interpreter.context.Context#setInteraction(de.dante.extex.interpreter.Interaction)
      */
-    public void setInteraction(final Interaction interaction,
-            final boolean global) throws InterpreterException {
+    public void setInteraction(final Interaction interaction) throws InterpreterException {
 
         throw new RuntimeException("unimplemented");
     }

@@ -24,7 +24,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.dante.extex.font.type.other.NullFont;
-import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.TypesettingContext;
@@ -58,7 +57,7 @@ import de.dante.util.configuration.ConfigurationInstantiationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.46 $
+ * @version $Revision: 1.47 $
  */
 public class GroupImpl implements Group, Tokenizer, Serializable {
 
@@ -149,12 +148,6 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
      * The field <tt>inFileMap</tt> contains the map for the input files.
      */
     private Map inFileMap = new HashMap();
-
-    /**
-     * The field <tt>interaction</tt> contains the currently active
-     * intercation mode.
-     */
-    private Interaction interaction = null;
 
     /**
      * The field <tt>lccodeMap</tt> contains the map for the translation to
@@ -461,20 +454,6 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
 
         return (next != null ? next.getInFile(name) : new InFile(
                 standardTokenStream));
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.impl.Group#getInteraction()
-     */
-    public Interaction getInteraction() {
-
-        if (null != interaction) {
-            return interaction;
-        }
-
-        return (next != null
-                ? next.getInteraction()
-                : Interaction.ERRORSTOPMODE);
     }
 
     /**
@@ -819,21 +798,6 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
 
         if (global && next != null) {
             next.setInFile(name, file, global);
-        }
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setInteraction(
-     *      de.dante.extex.interpreter.Interaction,
-     *      boolean)
-     */
-    public void setInteraction(final Interaction aInteraction,
-            final boolean global) {
-
-        this.interaction = aInteraction;
-
-        if (global && next != null) {
-            next.setInteraction(interaction, global);
         }
     }
 
