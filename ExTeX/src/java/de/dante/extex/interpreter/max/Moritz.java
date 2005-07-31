@@ -92,7 +92,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.71 $
+ * @version $Revision: 1.72 $
  */
 public class Moritz extends Max
         implements
@@ -1075,10 +1075,12 @@ public class Moritz extends Max
                             n = n * 10 + t.getChar().getCodePoint() - '0';
                         }
 
-                        if (t != null) {
+                        while (t instanceof SpaceToken) {
+                            t = getToken(context);
+                        }
+                        if (stream != null) {
                             stream.put(t);
                         }
-                        skipSpaces = true;
                         return n;
 
                     case '`':
@@ -1111,10 +1113,12 @@ public class Moritz extends Max
                             n = n * 8 + no;
                         }
 
-                        if (t != null) {
+                        while (t instanceof SpaceToken) {
+                            t = getToken(context);
+                        }
+                        if (stream != null) {
                             stream.put(t);
                         }
-                        skipSpaces = true;
                         return n;
 
                     case '"':
@@ -1159,8 +1163,12 @@ public class Moritz extends Max
                             }
                         }
 
-                        stream.put(t);
-                        skipSpaces = true;
+                        while (t instanceof SpaceToken) {
+                            t = getToken(context);
+                        }
+                        if (stream != null) {
+                            stream.put(t);
+                        }
                         return n;
 
                     default:
