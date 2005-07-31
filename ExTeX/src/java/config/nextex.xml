@@ -166,9 +166,11 @@
     -  one of several backends programatically.
     -->
   <DocumentWriter default="out">
-    <pdf class="de.dante.extex.documentWriter.pdf.PdfDocumentWriter"/>
-    <dvi class="de.dante.extex.documentWriter.dvi.DviDocumentWriter"/>
-    <out class="de.dante.extex.documentWriter.dump.DumpDocumentWriter"/>
+    <pdf  class="de.dante.extex.documentWriter.pdf.PdfDocumentWriter"/>
+    <dvi  class="de.dante.extex.documentWriter.dvi.DviDocumentWriter"/>
+    <ps   class="de.dante.extex.documentWriter.postscript.PsWriter"/>
+    <eps  class="de.dante.extex.documentWriter.postscript.EpsWriter"/>
+    <out  class="de.dante.extex.documentWriter.dump.DumpDocumentWriter"/>
     <dump class="de.dante.extex.documentWriter.dump.DumpDocumentWriter"/>
     <text class="de.dante.extex.documentWriter.text.TextDocumentWriter"/>
     <xml  class="de.dante.extex.documentWriter.xml.XMLDocumentWriter"
