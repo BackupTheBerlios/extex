@@ -1,0 +1,52 @@
+<!--
+  ############################################################################
+  # This is the Ant build file for the ExTeX Users Guide
+  ############################################################################
+  # Copyright (C) 2005 The ExTeX Group
+  #
+  # This library is free software; you can redistribute it and/or modify it
+  # under the terms of the GNU Lesser General Public License as published by
+  # the Free Software Foundation; either version 2.1 of the License, or (at
+  # your option) any later version.
+  #
+  # This library is distributed in the hope that it will be useful, but
+  # WITHOUT ANY WARRANTY; without even the implied warranty of
+  # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser
+  # General Public License for more details.
+  #
+  # You should have received a copy of the GNU Lesser General Public License
+  # along with this library; if not, write to the Free Software Foundation,
+  # Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+  #
+  ######################################################################### -->
+
+<project name="ExTeX" default="help" basedir=".">
+
+    <description>ExTeX - build file</description>
+
+    <target name="help" description="Displays usage information">
+        <echo>Usage: ant &lt;target&gt;
+          The following targets are supported:
+          all
+              Build nearly everything
+          deploy
+          clean
+        </echo>
+    </target>
+
+    <property name="tmp" location="tmp"/>
+    <property name="deploy" location="deploy"/>
+
+    <target name="all"
+            description="Build nearly everything"
+            depends="installer,javadoc,checkstyle,tests" />
+
+    <target name="compile"
+            description="Compile the source files">
+        <exec executable="make" output="tmp/extex-users.out">
+        </exec>
+    </target>
+
+</project>
+
+
