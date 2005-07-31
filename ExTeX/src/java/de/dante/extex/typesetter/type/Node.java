@@ -41,7 +41,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public interface Node extends Knot {
 
@@ -108,8 +108,22 @@ public interface Node extends Knot {
     Dimen getHeight();
 
     /**
+     * Getter for move.
+     *
+     * @return the move
+     */
+    Dimen getMove();
+
+    /**
+     * Getter for shift.
+     *
+     * @return the shift
+     */
+    Dimen getShift();
+
+    /**
      * Compute the vertical size of a node.
-     * The vertical size is the size of the box enclosing the bouding
+     * The vertical size is the size of the box enclosing the bounding
      * box and containing the base line (see figure).
      * <img src="doc-files/verticalSize.png" alt="" align="right"/>
      * <ul>
