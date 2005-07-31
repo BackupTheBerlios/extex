@@ -38,7 +38,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class Dimen extends GlueComponent implements Serializable, FixedDimen {
 
@@ -54,6 +54,12 @@ public class Dimen extends GlueComponent implements Serializable, FixedDimen {
      * representing the length of 1&nbsp;pt.
      */
     public static final ImmutableDimen ONE_PT = new ImmutableDimen(ONE);
+
+    /**
+     * The constant <tt>ONE_SP</tt> contains the immutable dimen register
+     * representing the length of 1&nbsp;scaled point.
+     */
+    public static final ImmutableDimen ONE_SP = new ImmutableDimen(1);
 
     /**
      * The constant <tt>ZERO_PT</tt> contains the immutable dimen register
