@@ -31,7 +31,7 @@ import de.dante.util.configuration.ConfigurationException;
  * as one.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class ResourceFinderList implements ResourceFinder, RecursiveFinder {
 
@@ -119,4 +119,19 @@ public class ResourceFinderList implements ResourceFinder, RecursiveFinder {
         }
     }
 
+    /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+
+        StringBuffer sb = new StringBuffer("(resource");
+        Iterator iterator = list.iterator();
+        while (iterator.hasNext()) {
+            sb.append(' ');
+            ResourceFinder finder = (ResourceFinder) iterator.next();
+            sb.append(finder.toString());
+        }
+        sb.append(')');
+        return sb.toString();
+    }
 }
