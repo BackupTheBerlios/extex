@@ -28,7 +28,7 @@ import de.dante.extex.scanner.type.Token;
  * Observer for the operation of pushing a token to the token stream.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class TokenPushObserver implements PushObserver {
 
@@ -54,6 +54,6 @@ public class TokenPushObserver implements PushObserver {
      */
     public void update(final Token token) {
 
-        logger.fine(">>> " + token.toString() + "\n");
+        logger.fine(": push " + token.toString() + "\n");
     }
 }
