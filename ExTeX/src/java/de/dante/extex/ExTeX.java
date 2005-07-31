@@ -37,8 +37,6 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import de.dante.extex.color.ColorAware;
 import de.dante.extex.color.ColorConverter;
@@ -93,6 +91,7 @@ import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.i18n.LocalizerFactory;
 import de.dante.util.observer.NotObservableException;
 import de.dante.util.resource.PropertyConfigurable;
+import de.dante.util.resource.ResourceConsumer;
 import de.dante.util.resource.ResourceFinder;
 import de.dante.util.resource.ResourceFinderFactory;
 
@@ -327,7 +326,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.110 $
+ * @version $Revision: 1.111 $
  */
 public class ExTeX {
 
@@ -607,7 +606,7 @@ public class ExTeX {
      *  used and modified. The caller should provide a new instance if this is
      *  not desirable.
      *
-     * @throws MainException in case of an error
+     * @throws InterpreterException in case of an error
      */
     public ExTeX(final Properties theProperties) throws InterpreterException {
 
@@ -750,9 +749,11 @@ public class ExTeX {
 
         if (jobname == null || jobname.equals("")) {
             jobname = properties.getProperty(PROP_JOBNAME);
+            if (jobname == null || jobname.equals("")) {
+                jobname = "texput";
+            }
         }
-        jobname = new File(jobname).getName();
-        return jobname;
+        return new File(jobname).getName();
     }
 
     /**
@@ -1018,6 +1019,7 @@ public class ExTeX {
      * @param outFactory the output factory
      * @param options the options to be passed to the document writer
      * @param colorConfig the configuration for the color converter
+     * @param finder the resource finder if one is requested
      *
      * @return the new document writer
      *
@@ -1026,7 +1028,8 @@ public class ExTeX {
      */
     protected DocumentWriter makeDocumentWriter(final Configuration config,
             final String jobname, final OutputStreamFactory outFactory,
-            final DocumentWriterOptions options, final Configuration colorConfig)
+            final DocumentWriterOptions options,
+            final Configuration colorConfig, final ResourceFinder finder)
             throws DocumentWriterException,
                 ConfigurationException {
 
@@ -1043,7 +1046,15 @@ public class ExTeX {
             ((ColorAware) docWriter)
                     .setColorConverter(makeColorConverter(colorConfig));
         }
+        if (docWriter instanceof ResourceConsumer) {
+            ((ResourceConsumer) docWriter).setResourceFinder(finder);
+        }
         docWriter.setParameter("Creator", "ExTeX " + new Version().toString());
+        docWriter.setParameter("Title", "");
+        docWriter.setParameter("Paper", "A4");
+        docWriter.setParameter("Orientation", "Portrait");
+        docWriter.setParameter("Pages", "*");
+        docWriter.setParameter("PageOrder", "Ascend");
 
         return docWriter;
     }
@@ -1299,7 +1310,7 @@ public class ExTeX {
                     jobname, //
                     outFactory, //
                     (DocumentWriterOptions) interpreter.getContext(), //
-                    config.getConfiguration("ColorConverter"));
+                    config.getConfiguration("ColorConverter"), finder);
 
             Typesetter typesetter = makeTypesetter(//
                     config.getConfiguration("Typesetter"), docWriter,
