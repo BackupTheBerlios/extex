@@ -32,7 +32,7 @@ import de.dante.util.configuration.ConfigurationException;
  * implementations. Even an interaction with the user can be envisioned.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface ResourceFinder {
 
@@ -54,9 +54,9 @@ public interface ResourceFinder {
      * Enable or disable the tracing. The argument indicates whether tracing
      * should be enabled or disabled.
      * The resource finder can decide on its own how to perform tracing. The
-     * prefered way is to write tracing records to a logger.
+     * preferred way is to write tracing records to a logger.
      *
-     * @param flag indicator whether tracing should be tured on or off.
+     * @param flag indicator whether tracing should be turned on or off.
      */
     void enableTracing(boolean flag);
 
