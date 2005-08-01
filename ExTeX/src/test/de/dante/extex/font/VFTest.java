@@ -19,7 +19,6 @@
 
 package de.dante.extex.font;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -30,10 +29,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
 
 import junit.framework.TestCase;
-
-import org.jdom.Document;
-import org.jdom.output.XMLOutputter;
-
 import de.dante.extex.font.type.vf.VFFont;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationClassNotFoundException;
@@ -45,6 +40,7 @@ import de.dante.util.configuration.ConfigurationNoSuchMethodException;
 import de.dante.util.file.random.RandomAccessInputStream;
 import de.dante.util.resource.ResourceFinder;
 import de.dante.util.resource.ResourceFinderFactory;
+import de.dante.util.xml.XMLStreamWriter;
 
 /**
  * Test the VFFont class.
@@ -53,7 +49,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class VFTest extends TestCase {
@@ -96,7 +92,7 @@ public class VFTest extends TestCase {
         for (int i = 0; i < FILES.length; i++) {
 
             // vf-file
-            InputStream vfin = finder.findResource(FILES[i] , "vf");
+            InputStream vfin = finder.findResource(FILES[i], "vf");
 
             if (vfin == null) {
                 throw new FileNotFoundException(FILES[i]);
@@ -115,14 +111,14 @@ public class VFTest extends TestCase {
 
             //           font.setFontMapEncoding(psfm, ef);
 
-            // write to efm-file
-            XMLOutputter xmlout = new XMLOutputter("   ", true);
-            BufferedOutputStream out = new BufferedOutputStream(
-                    new FileOutputStream(PATH + FILES[i] + ".xml.tmp"));
-            Document doc = new Document(font.toXML());
-            xmlout.output(doc, out);
-            out.close();
-
+            // write to xml-file
+            XMLStreamWriter writer = new XMLStreamWriter(new FileOutputStream(
+                    PATH + FILES[i] + ".xml.tmp"), "ISO-8859-1");
+            writer.setBeauty(true);
+            writer.writeStartDocument();
+            font.writeXML(writer);
+            writer.writeEndDocument();
+            writer.close();
         }
 
     }

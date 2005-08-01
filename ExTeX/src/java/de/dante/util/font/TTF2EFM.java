@@ -37,7 +37,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * Convert a TTF-file to a EFM-file
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public final class TTF2EFM {
 
@@ -76,10 +76,10 @@ public final class TTF2EFM {
         Configuration config = new ConfigurationFactory()
                 .newInstance("config/extex.xml");
 
-        Configuration cfgfonts = config.getConfiguration("Fonts");
+        //Configuration cfgfonts = config.getConfiguration("Fonts");
 
         ResourceFinder finder = (new ResourceFinderFactory())
-                .createResourceFinder(cfgfonts.getConfiguration("Resource"),
+                .createResourceFinder(config.getConfiguration("Resource"),
                         null, System.getProperties());
 
         // ttf-file

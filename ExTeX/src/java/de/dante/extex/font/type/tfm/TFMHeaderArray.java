@@ -22,12 +22,11 @@ package de.dante.extex.font.type.tfm;
 import java.io.IOException;
 import java.io.Serializable;
 
-import org.jdom.Element;
-
 import de.dante.extex.font.type.PlFormat;
 import de.dante.extex.font.type.PlWriter;
-import de.dante.util.XMLConvertible;
+import de.dante.util.XMLWriterConvertible;
 import de.dante.util.file.random.RandomAccessR;
+import de.dante.util.xml.XMLStreamWriter;
 
 /**
  * Class for TFM header information.
@@ -62,9 +61,13 @@ import de.dante.util.file.random.RandomAccessR;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
-public class TFMHeaderArray implements XMLConvertible, PlFormat, Serializable {
+public class TFMHeaderArray
+        implements
+            XMLWriterConvertible,
+            PlFormat,
+            Serializable {
 
     /**
      * header[0]: checksum
@@ -296,33 +299,34 @@ public class TFMHeaderArray implements XMLConvertible, PlFormat, Serializable {
     }
 
     /**
-     * @see de.dante.util.XMLConvertible#toXML()
+     * @see de.dante.util.XMLWriterConvertible#writeXML(de.dante.util.xml.XMLStreamWriter)
      */
-    public Element toXML() {
+    public void writeXML(final XMLStreamWriter writer) throws IOException {
 
-        Element h = new Element("header");
-        h.setAttribute("checksum", String.valueOf(checksum));
-        h.setAttribute("desingsize", designsize.toString());
-        h.setAttribute("units", String.valueOf(TFMConstants.CONST_1000));
+        writer.writeStartElement("header");
+        writer.writeAttribute("checksum", String.valueOf(checksum));
+        writer.writeAttribute("desingsize", designsize.toString());
+        writer.writeAttribute("units", String.valueOf(TFMConstants.CONST_1000));
         if (codingscheme != null) {
-            h.setAttribute("codingscheme", codingscheme);
+            writer.writeAttribute("codingscheme", codingscheme);
         }
         if (fonttype != null) {
-            h.setAttribute("fonttype", fonttype.toString());
+            writer.writeAttribute("fonttype", fonttype.toString());
         }
         if (fontfamily != null) {
-            h.setAttribute("fontfamily", fontfamily);
+            writer.writeAttribute("fontfamily", fontfamily);
         }
-        h.setAttribute("sevenbitsafe", String.valueOf(sevenBitSafe));
-        h.setAttribute("xeroxfacecode", String.valueOf(xeroxfacecode));
+        writer.writeAttribute("sevenbitsafe", String.valueOf(sevenBitSafe));
+        writer.writeAttribute("xeroxfacecode", String.valueOf(xeroxfacecode));
         if (headerrest != null) {
             for (int i = 0; i < headerrest.length; i++) {
-                Element rest = new Element("header");
-                rest.setAttribute("id", String.valueOf(i + HEADER_REST_SIZE));
-                rest.setAttribute("value", String.valueOf(headerrest[i]));
-                h.addContent(rest);
+                writer.writeStartElement("header");
+                writer.writeAttribute("id", String
+                        .valueOf(i + HEADER_REST_SIZE));
+                writer.writeAttribute("value", String.valueOf(headerrest[i]));
+                writer.writeEndElement();
             }
         }
-        return h;
+        writer.writeEndElement();
     }
 }

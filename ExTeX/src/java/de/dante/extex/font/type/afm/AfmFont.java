@@ -38,15 +38,16 @@ import de.dante.extex.font.type.afm.exception.AfmMissingEndFontMetricsException;
 import de.dante.extex.font.type.afm.exception.AfmMissingEndKernPairsException;
 import de.dante.extex.font.type.afm.exception.AfmMissingStartCharMetricsException;
 import de.dante.extex.font.type.afm.exception.AfmNoBoundingBoxFoundException;
-import de.dante.util.XMLConvertible;
+import de.dante.util.XMLWriterConvertible;
+import de.dante.util.xml.XMLStreamWriter;
 
 /**
  * This class read a AFM-file and create a efm-element.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class AfmFont implements FontMetric, Serializable, XMLConvertible {
+public class AfmFont implements FontMetric, Serializable, XMLWriterConvertible {
 
     /**
      * the fontname
@@ -500,68 +501,72 @@ public class AfmFont implements FontMetric, Serializable, XMLConvertible {
     }
 
     /**
-     * @see de.dante.util.XMLConvertible#toXML()
+     * @see de.dante.util.XMLWriterConvertible#writeXML(
+     *      de.dante.util.xml.XMLStreamWriter)
      */
-    public Element toXML() {
+    public void writeXML(final XMLStreamWriter writer) throws IOException {
 
-        Element root = new Element("afm");
-        root.setAttribute("name", fontname);
-        root.addContent(header.toXML());
+        writer.writeStartElement("afm");
+        writer.writeAttribute("name", fontname);
+
+        header.writeXML(writer);
         for (int i = 0; i < afmCharMetrics.size(); i++) {
 
-            // create  glyph
-            Element glyph = new Element("glyph");
+            // glyph
+            writer.writeStartElement("glyph");
 
             // get the AFMCharMertix-object
             AfmCharMetric cm = (AfmCharMetric) afmCharMetrics.get(i);
 
             // create attributes
             if (cm.getC() >= 0) {
-                glyph.setAttribute("ID", String.valueOf(cm.getC()));
+                writer.writeAttribute("ID", String.valueOf(cm.getC()));
             } else {
-                glyph.setAttribute("ID", "notdef_" + cm.getN());
+                writer.writeAttribute("ID", "notdef_" + cm.getN());
             }
-            glyph.setAttribute("glyph-number", String.valueOf(cm.getC()));
-            glyph.setAttribute("glyph-name", cm.getN());
+            writer.writeAttribute("glyph-number", String.valueOf(cm.getC()));
+            writer.writeAttribute("glyph-name", cm.getN());
 
             if (cm.getWx() != AfmHeader.NOTINIT) {
-                glyph.setAttribute("width", String.valueOf(cm.getWx()));
+                writer.writeAttribute("width", String.valueOf(cm.getWx()));
             } else {
                 // calculate with from bbox
                 if (cm.getBllx() != AfmHeader.NOTINIT) {
-                    glyph.setAttribute("width", String.valueOf(cm.getBllx()
+                    writer.writeAttribute("width", String.valueOf(cm.getBllx()
                             + cm.getBurx()));
                 }
             }
 
             if (cm.getBllx() != AfmHeader.NOTINIT) {
                 if (cm.getBlly() < 0) {
-                    glyph.setAttribute("depth", String.valueOf(-cm.getBlly()));
+                    writer.writeAttribute("depth", String
+                            .valueOf(-cm.getBlly()));
                 } else {
-                    glyph.setAttribute("depth", "0");
+                    writer.writeAttribute("depth", "0");
                 }
                 if (cm.getBury() > 0) {
-                    glyph.setAttribute("height", String.valueOf(cm.getBury()));
+                    writer.writeAttribute("height", String
+                            .valueOf(cm.getBury()));
                 } else {
-                    glyph.setAttribute("height", "0");
+                    writer.writeAttribute("height", "0");
                 }
             }
-            glyph.setAttribute("italic", String
-                    .valueOf(header.getItalicangle()));
+            writer.writeAttribute("italic", String.valueOf(header
+                    .getItalicangle()));
 
             // kerning
-            String glyphname = glyph.getAttributeValue("glyph-name");
+            String glyphname = cm.getN();
             AfmKernPairs kp;
 
             for (int k = 0; k < afmKerningPairs.size(); k++) {
                 kp = (AfmKernPairs) afmKerningPairs.get(k);
                 if (kp.getCharpre().equals(glyphname)) {
-                    Element kerning = new Element("kerning");
-                    kerning.setAttribute("glyph-name", kp.getCharpost());
-                    kerning.setAttribute("glyph-id", getIDforName(kp
+                    writer.writeStartElement("kerning");
+                    writer.writeAttribute("glyph-name", kp.getCharpost());
+                    writer.writeAttribute("glyph-id", getIDforName(kp
                             .getCharpost()));
-                    kerning.setAttribute("size", kp.getKerningsize());
-                    glyph.addContent(kerning);
+                    writer.writeAttribute("size", kp.getKerningsize());
+                    writer.writeEndElement();
                 }
             }
 
@@ -570,20 +575,20 @@ public class AfmFont implements FontMetric, Serializable, XMLConvertible {
                 Iterator iterator = cm.getL().keySet().iterator();
                 while (iterator.hasNext()) {
                     String key = (String) iterator.next();
-                    Element lig = new Element("ligature");
-                    lig.setAttribute("letter", key);
-                    lig.setAttribute("letter-id", getIDforName(key));
+                    writer.writeStartElement("ligature");
+                    writer.writeAttribute("letter", key);
+                    writer.writeAttribute("letter-id", getIDforName(key));
                     String value = (String) cm.getL().get(key);
-                    lig.setAttribute("lig", value);
-                    lig.setAttribute("lig-id", getIDforName(value));
-                    glyph.addContent(lig);
+                    writer.writeAttribute("lig", value);
+                    writer.writeAttribute("lig-id", getIDforName(value));
+                    writer.writeEndElement();
                 }
             }
 
-            // add to fontseg
-            root.addContent(glyph);
+            writer.writeEndElement();
         }
 
-        return root;
+        writer.writeEndElement();
+
     }
 }

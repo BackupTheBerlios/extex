@@ -23,18 +23,18 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 
-import org.jdom.Element;
-
 import de.dante.extex.font.exception.FontException;
-import de.dante.extex.font.type.FontMetric;
 import de.dante.extex.font.type.PlFormat;
 import de.dante.extex.font.type.PlWriter;
+import de.dante.extex.font.type.pfb.PfbParser;
 import de.dante.extex.font.type.tfm.enc.EncFactory;
 import de.dante.extex.font.type.tfm.psfontsmap.PSFontEncoding;
 import de.dante.extex.font.type.tfm.psfontsmap.PSFontsMapReader;
-import de.dante.util.XMLConvertible;
+import de.dante.util.EFMWriterConvertible;
+import de.dante.util.XMLWriterConvertible;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.file.random.RandomAccessR;
+import de.dante.util.xml.XMLStreamWriter;
 
 /**
  * This class read a TFM-file.
@@ -42,13 +42,13 @@ import de.dante.util.file.random.RandomAccessR;
  * @see <a href="package-summary.html#TFMformat">TFM-Format</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class TFMFont
         implements
-            XMLConvertible,
-            FontMetric,
+            XMLWriterConvertible,
             PlFormat,
+            EFMWriterConvertible,
             Serializable {
 
     /**
@@ -311,27 +311,6 @@ public class TFMFont
     }
 
     /**
-     * @see de.dante.util.XMLConvertible#toXML()
-     */
-    public Element toXML() {
-
-        Element tfm = new Element("tfm");
-        tfm.setAttribute("name", fontname);
-        tfm.addContent(lengths.toXML());
-        tfm.addContent(header.toXML());
-        tfm.addContent(charinfo.toXML());
-        tfm.addContent(width.toXML());
-        tfm.addContent(height.toXML());
-        tfm.addContent(depth.toXML());
-        tfm.addContent(italic.toXML());
-        tfm.addContent(ligkern.toXML());
-        tfm.addContent(kern.toXML());
-        tfm.addContent(exten.toXML());
-        tfm.addContent(param.toXML());
-        return tfm;
-    }
-
-    /**
      * Returns the font family.
      * @return Returns the font family.
      */
@@ -353,7 +332,7 @@ public class TFMFont
      * Returns the design size.
      * @return Returns the design size.
      */
-    public double getDesignSize() {
+    public double getDesignSizeAsDouble() {
 
         return Double.parseDouble(header.getDesignsize().toString());
     }
@@ -367,41 +346,41 @@ public class TFMFont
         return header.getFontype();
     }
 
-    /**
-     * @see de.dante.extex.font.type.FontMetric#getFontMetric()
-     */
-    public Element getFontMetric() {
-
-        // create efm-file
-        Element root = new Element("fontgroup");
-        root.setAttribute("name", getFontFamily());
-        root.setAttribute("id", getFontFamily());
-        root.setAttribute("default-size", String.valueOf(getDesignSize()));
-        root.setAttribute("empr", "100");
-        root.setAttribute("type", "tfm");
-
-        Element fontdimen = new Element("fontdimen");
-        root.addContent(fontdimen);
-
-        Element font = new Element("font");
-        root.addContent(font);
-
-        font.setAttribute("font-name", getFontFamily());
-        font.setAttribute("font-family", getFontFamily());
-        root.setAttribute("units-per-em", "1000");
-        font.setAttribute("checksum", String.valueOf(getChecksum()));
-        font.setAttribute("type", getFontType().toTFMString());
-        param.addParam(fontdimen);
-
-        // filename
-        if (pfbfilename != null) {
-            font.setAttribute("filename", pfbfilename);
-        }
-        charinfo.addGlyphs(font);
-
-        return root;
-    }
-
+    //    /**
+    //     * @see de.dante.extex.font.type.FontMetric#getFontMetric()
+    //     */
+    //    public Element getFontMetric() {
+    //
+    //        // create efm-file
+    //        Element root = new Element("fontgroup");
+    //        root.setAttribute("name", getFontFamily());
+    //        root.setAttribute("id", getFontFamily());
+    //        root.setAttribute("default-size", String.valueOf(getDesignSize()));
+    //        root.setAttribute("empr", "100");
+    //        root.setAttribute("type", "tfm");
+    //
+    //        Element fontdimen = new Element("fontdimen");
+    //        root.addContent(fontdimen);
+    //
+    //        Element font = new Element("font");
+    //        root.addContent(font);
+    //
+    //        font.setAttribute("font-name", getFontFamily());
+    //        font.setAttribute("font-family", getFontFamily());
+    //        root.setAttribute("units-per-em", "1000");
+    //        font.setAttribute("checksum", String.valueOf(getChecksum()));
+    //        font.setAttribute("type", getFontType().toTFMString());
+    //        param.addParam(fontdimen);
+    //
+    //        // filename
+    //        if (pfbfilename != null) {
+    //            font.setAttribute("filename", pfbfilename);
+    //        }
+    //        // charinfo.addGlyphs(font);
+    //
+    //        return root;
+    //    }
+    //
     /**
      * psfontmap
      */
@@ -428,6 +407,36 @@ public class TFMFont
     private String pfbfilename;
 
     /**
+     * the pfb parser
+     */
+    private PfbParser pfbparser;
+
+    /**
+     * Returns the pfbparser.
+     * @return Returns the pfbparser.
+     */
+    public PfbParser getPfbParser() {
+
+        return pfbparser;
+    }
+
+    /**
+     * The pfbparser to set.
+     * @param parser The pfbparser to set.
+     */
+    public void setPfbParser(final PfbParser parser) {
+
+        pfbparser = parser;
+        if (enctable == null && parser != null) {
+
+            // no encoding table -> set the glyphname
+            String enc[] = parser.getEncoding();
+            // glyphname
+            charinfo.setEncodingTable(enc);
+        }
+    }
+
+    /**
      * Set the fontmap reader an d the encoding factory
      * @param apsfontmap    the psfonts.map reader
      * @param encf          the encoding factory
@@ -445,7 +454,6 @@ public class TFMFont
             psfenc = psfontmap.getPSFontEncoding(fontname);
 
             // encoding
-
             if (psfenc != null) {
                 if (!"".equals(psfenc.getEncfile())) {
                     enctable = encfactory.getEncodingTable(psfenc.getEncfile());
@@ -484,5 +492,52 @@ public class TFMFont
         param.toPL(out);
         ligkern.toPL(out);
         charinfo.toPL(out);
+    }
+
+    /**
+     * @see de.dante.util.XMLWriterConvertible#writeXML(de.dante.util.xml.XMLStreamWriter)
+     */
+    public void writeXML(final XMLStreamWriter writer) throws IOException {
+
+        writer.writeStartElement("tfm");
+        writer.writeAttribute("name", fontname);
+        lengths.writeXML(writer);
+        header.writeXML(writer);
+        charinfo.writeXML(writer);
+        width.writeXML(writer);
+        height.writeXML(writer);
+        depth.writeXML(writer);
+        italic.writeXML(writer);
+        ligkern.writeXML(writer);
+        kern.writeXML(writer);
+        exten.writeXML(writer);
+        param.writeXML(writer);
+        if (pfbparser != null) {
+            pfbparser.writeXML(writer);
+        }
+        writer.writeEndElement();
+    }
+
+    /**
+     * @see de.dante.util.EFMWriterConvertible#writeEFM(de.dante.util.xml.XMLStreamWriter)
+     */
+    public void writeEFM(final XMLStreamWriter writer) throws IOException {
+
+        writer.writeStartElement("font");
+        writer.writeAttribute("id", getFontFamily());
+        writer.writeAttribute("font-name", getFontFamily());
+        writer.writeAttribute("font-family", getFontFamily());
+        writer.writeAttribute("default-size", String
+                .valueOf(getDesignSizeAsDouble()));
+        writer.writeAttribute("type", "tfm");
+        writer.writeAttribute("units-per-em", "1000");
+        writer.writeAttribute("checksum", String.valueOf(getChecksum()));
+        writer.writeAttribute("subtype", getFontType().toTFMString());
+        if (pfbfilename != null) {
+            writer.writeAttribute("filename", pfbfilename);
+        }
+        param.writeEFM(writer);
+        charinfo.writeEFM(writer);
+        writer.writeEndElement();
     }
 }

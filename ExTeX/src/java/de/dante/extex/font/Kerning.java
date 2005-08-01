@@ -27,7 +27,7 @@ import de.dante.extex.interpreter.type.dimen.Dimen;
  * Kerning
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Kerning implements Serializable {
 
@@ -125,21 +125,21 @@ public class Kerning implements Serializable {
         size = gsize;
     }
 
-    /**
-     * @param gsize         The size to set as <code>String</code>.
-     * @param em            The em-size.
-     * @param unitsperem    The unit per em.
-     */
-    public void setSize(final String gsize, final Dimen em, final int unitsperem) {
-
-        try {
-            float fsize = Float.parseFloat(gsize);
-            size = new Dimen((long) (fsize * em.getValue() / unitsperem));
-        } catch (Exception e) {
-            // use default
-            size = new Dimen(0);
-        }
-    }
+    //    /**
+    //     * @param gsize         The size to set as <code>String</code>.
+    //     * @param em            The em-size.
+    //     * @param unitsperem    The unit per em.
+    //     */
+    //    public void setSize(final String gsize, final Dimen em, final int unitsperem) {
+    //
+    //        try {
+    //            float fsize = Float.parseFloat(gsize);
+    //            size = new Dimen((long) (fsize * em.getValue() / unitsperem));
+    //        } catch (Exception e) {
+    //            // use default
+    //            size = new Dimen(0);
+    //        }
+    //    }
 
     /**
      * @return Returns the idleft.

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -29,14 +29,14 @@ import java.io.InputStream;
  * RandomAccess for a InputStream
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class RandomAccessInputStream implements RandomAccessR {
 
     /**
      * Buffer
      */
-    private short[] buffer;
+    private byte[] buffer;
 
     /**
      * pointer
@@ -69,6 +69,11 @@ public class RandomAccessInputStream implements RandomAccessR {
     public static final int SHIFT32 = 32;
 
     /**
+     * 0xff
+     */
+    public static final int XFF = 0xff;
+
+    /**
      * Create a new object
      * @param iostream  stream for reading
      * @throws IOException if an IO-error occured
@@ -89,43 +94,43 @@ public class RandomAccessInputStream implements RandomAccessR {
      * @return Return a short-array
      * @throws IOException in case of an error
      */
-    private short[] readStream(final InputStream iostream) throws IOException {
+    private byte[] readStream(final InputStream iostream) throws IOException {
 
         BufferedInputStream bufin = new BufferedInputStream(iostream, BLOCKSIZE);
 
         int count = 0;
-        short[] buf = new short[BLOCKSIZE];
+        byte[] buf = new byte[BLOCKSIZE];
 
         int read;
         while ((read = bufin.read()) != -1) {
 
             int newcount = count + 1;
             if (newcount > buf.length) {
-                short[] newbuf = new short[buf.length + BLOCKSIZE];
+                byte[] newbuf = new byte[buf.length + BLOCKSIZE];
                 System.arraycopy(buf, 0, newbuf, 0, count);
                 buf = newbuf;
             }
-            buf[count] = (short) read;
+            buf[count] = (byte) read;
             count = newcount;
         }
         bufin.close();
         iostream.close();
 
-        short[] newbuf = new short[count];
+        byte[] newbuf = new byte[count];
         System.arraycopy(buf, 0, newbuf, 0, count);
         return newbuf;
     }
 
     /**
      * Reads a byte of data from this file. The byte is returned as an
-     * integer in the range 0 to 255 (<code>0x00-0x0ff</code>).
+     * integer in the range 0 to 255 (<code>0x00-0xff</code>).
      * @return     the next byte of data, or <code>-1</code> if the end of the
      *             file has been reached.
      */
     public int read() {
 
         if (pointer < buffer.length) {
-            return buffer[pointer++];
+            return (buffer[pointer++] & XFF);
         }
         return -1;
     }

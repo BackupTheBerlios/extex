@@ -29,7 +29,7 @@ import de.dante.util.UnicodeChar;
  * Fount Interface (only getter)
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public interface Fount {
 
@@ -120,6 +120,14 @@ public interface Fount {
 
     /**
      * Returns the key for the font.
+     * @return Returns the key for the font.
      */
     FountKey getFontKey();
+
+    //    /**
+    //     * Check, if the font is a virtual font.
+    //     * @return Returns <code>true</code>, if the font is a virtual font
+    //     */
+    //    boolean isVirtual();
+
 }

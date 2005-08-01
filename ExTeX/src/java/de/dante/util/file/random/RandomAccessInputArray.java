@@ -27,14 +27,14 @@ import java.io.IOException;
  * RandomAccess for a Array
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class RandomAccessInputArray implements RandomAccessR {
 
     /**
      * Buffer
      */
-    private short[] buffer;
+    private byte[] buffer;
 
     /**
      * pointer
@@ -62,10 +62,15 @@ public class RandomAccessInputArray implements RandomAccessR {
     private static final int SHIFT32 = 32;
 
     /**
+     * 0xff
+     */
+    public static final int XFF = 0xff;
+
+    /**
      * Create a new object
      * @param array     the array
      */
-    public RandomAccessInputArray(final short[] array) {
+    public RandomAccessInputArray(final byte[] array) {
 
         super();
 
@@ -75,14 +80,14 @@ public class RandomAccessInputArray implements RandomAccessR {
 
     /**
      * Reads a byte of data from this file. The byte is returned as an
-     * integer in the range 0 to 255 (<code>0x00-0x0ff</code>).
+     * integer in the range 0 to 255 (<code>0x00-0xff</code>).
      * @return     the next byte of data, or <code>-1</code> if the end of the
      *             file has been reached.
      */
     public int read() {
 
         if (pointer < buffer.length) {
-            return buffer[pointer++];
+            return (buffer[pointer++] & XFF);
         }
         return -1;
     }

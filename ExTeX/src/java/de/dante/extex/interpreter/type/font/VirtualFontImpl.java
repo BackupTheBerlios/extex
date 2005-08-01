@@ -19,25 +19,14 @@
 
 package de.dante.extex.interpreter.type.font;
 
-import java.util.ArrayList;
-
 import de.dante.extex.font.Glyph;
 import de.dante.extex.font.type.Fount;
 import de.dante.extex.font.type.ModifiableFount;
 import de.dante.extex.font.type.VirtualFount;
-import de.dante.extex.font.type.efm.EFMFount;
-import de.dante.extex.font.type.efm.commands.EfmChar;
 import de.dante.extex.font.type.efm.commands.EfmHVW;
-import de.dante.extex.font.type.efm.commands.EfmRule;
-import de.dante.extex.font.type.efm.commands.EfmSpecial;
-import de.dante.extex.interpreter.context.ModifiableTypesettingContext;
 import de.dante.extex.interpreter.context.TypesettingContext;
-import de.dante.extex.interpreter.context.TypesettingContextImpl;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.type.node.AbstractNode;
-import de.dante.extex.typesetter.type.node.CharNode;
-import de.dante.extex.typesetter.type.node.RuleNode;
-import de.dante.extex.typesetter.type.node.SpecialNode;
 import de.dante.extex.typesetter.type.node.VirtualCharNode;
 import de.dante.util.UnicodeChar;
 
@@ -45,7 +34,7 @@ import de.dante.util.UnicodeChar;
  * Implemetation for a virtual font.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class VirtualFontImpl extends FontImpl implements VirtualFount {
 
@@ -76,50 +65,50 @@ public class VirtualFontImpl extends FontImpl implements VirtualFount {
         Dimen v = new Dimen(0);
 
         // get all commands
-        if (fount instanceof EFMFount) {
-            EFMFount efm = (EFMFount) fount;
-            ArrayList commands = efm.getCommands(uc);
-            if (commands != null) {
-                for (int i = 0; i < commands.size(); i++) {
-                    Object o = commands.get(i);
-                    if (o instanceof EfmChar) {
-                        EfmChar c = (EfmChar) o;
-                        String fontname = c.getFont();
-                        Dimen fontsize = c.getFontsize();
-                        Font nf = null;
-                        try {
-                            nf = efm.getFontfactory().getInstance(fontname,
-                                    fontsize);
-                        } catch (Exception e) {
-                            // eigentlich unmöglich, da Font schon
-                            // geladen worden ist
-                            e.printStackTrace();
-                            // TODO: handle exception
-                        }
-                        if (nf != null) {
-                            ModifiableTypesettingContext newcontext = new TypesettingContextImpl(
-                                    context);
-                            newcontext.setFont(nf);
-                            CharNode cn = new CharNode(newcontext, uc);
-
-                            calculateMoveShift(v, h, c, cn, cnode);
-                        }
-                    } else if (o instanceof EfmRule) {
-                        EfmRule r = (EfmRule) o;
-
-                        RuleNode rn = new RuleNode(r.getWidth(), r.getHeight(),
-                                Dimen.ZERO_PT, context);
-
-                        calculateMoveShift(v, h, r, rn, cnode);
-
-                    } else if (o instanceof EfmSpecial) {
-                        EfmSpecial sp = (EfmSpecial) o;
-                        SpecialNode sn = new SpecialNode(sp.getText());
-                        cnode.add(sn);
-                    }
-                }
-            }
-        }
+        //        if (fount instanceof EFMFount) {
+        //            EFMFount efm = (EFMFount) fount;
+        //            ArrayList commands = efm.getCommands(uc);
+        //            if (commands != null) {
+        //                for (int i = 0; i < commands.size(); i++) {
+        //                    Object o = commands.get(i);
+        //                    if (o instanceof EfmChar) {
+        //                        EfmChar c = (EfmChar) o;
+        //                        String fontname = c.getFont();
+        //                        Dimen fontsize = c.getFontsize();
+        //                        Font nf = null;
+        //                        try {
+        //                            nf = efm.getFontfactory().getInstance(fontname,
+        //                                    fontsize);
+        //                        } catch (Exception e) {
+        //                            // eigentlich unmöglich, da Font schon
+        //                            // geladen worden ist
+        //                            e.printStackTrace();
+        //                            // TODO: handle exception
+        //                        }
+        //                        if (nf != null) {
+        //                            ModifiableTypesettingContext newcontext = new TypesettingContextImpl(
+        //                                    context);
+        //                            newcontext.setFont(nf);
+        //                            CharNode cn = new CharNode(newcontext, uc);
+        //
+        //                            calculateMoveShift(v, h, c, cn, cnode);
+        //                        }
+        //                    } else if (o instanceof EfmRule) {
+        //                        EfmRule r = (EfmRule) o;
+        //
+        //                        RuleNode rn = new RuleNode(r.getWidth(), r.getHeight(),
+        //                                Dimen.ZERO_PT, context);
+        //
+        //                        calculateMoveShift(v, h, r, rn, cnode);
+        //
+        //                    } else if (o instanceof EfmSpecial) {
+        //                        EfmSpecial sp = (EfmSpecial) o;
+        //                        SpecialNode sn = new SpecialNode(sp.getText());
+        //                        cnode.add(sn);
+        //                    }
+        //                }
+        //            }
+        //}
 
         // set the dimension from the glyph to the nodelist
         cnode.setHeight(vglyph.getHeight());

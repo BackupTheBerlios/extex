@@ -19,14 +19,16 @@
 
 package de.dante.extex.font.type.tfm;
 
+import java.io.Serializable;
+
 /**
  * TFM: key-value-container
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 
-public class TFMKeyInt {
+public class TFMKeyInt implements Serializable {
 
     /**
      * key

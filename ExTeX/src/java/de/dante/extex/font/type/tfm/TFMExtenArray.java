@@ -22,10 +22,9 @@ package de.dante.extex.font.type.tfm;
 import java.io.IOException;
 import java.io.Serializable;
 
-import org.jdom.Element;
-
-import de.dante.util.XMLConvertible;
+import de.dante.util.XMLWriterConvertible;
 import de.dante.util.file.random.RandomAccessR;
+import de.dante.util.xml.XMLStreamWriter;
 
 /**
  * Class for TFM exten array.
@@ -44,10 +43,10 @@ import de.dante.util.file.random.RandomAccessR;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 
-public class TFMExtenArray implements XMLConvertible, Serializable {
+public class TFMExtenArray implements XMLWriterConvertible, Serializable {
 
     /**
      * the array
@@ -79,14 +78,14 @@ public class TFMExtenArray implements XMLConvertible, Serializable {
     }
 
     /**
-     * @see de.dante.util.XMLConvertible#toXML()
+     * @see de.dante.util.XMLWriterConvertible#writeXML(de.dante.util.xml.XMLStreamWriter)
      */
-    public Element toXML() {
+    public void writeXML(final XMLStreamWriter writer) throws IOException {
 
-        Element element = new Element("exten");
+        writer.writeStartElement("exten");
         for (int i = 0; i < extensiblerecipe.length; i++) {
-            element.addContent(extensiblerecipe[i].toXML());
+            extensiblerecipe[i].writeXML(writer);
         }
-        return element;
+        writer.writeEndElement();
     }
 }

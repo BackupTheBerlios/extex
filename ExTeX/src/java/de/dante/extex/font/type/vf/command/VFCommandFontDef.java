@@ -22,8 +22,6 @@ package de.dante.extex.font.type.vf.command;
 import java.io.IOException;
 import java.util.Map;
 
-import org.jdom.Element;
-
 import de.dante.extex.font.FontFactory;
 import de.dante.extex.font.FountKey;
 import de.dante.extex.font.exception.FontException;
@@ -39,6 +37,7 @@ import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.util.file.random.RandomAccessR;
+import de.dante.util.xml.XMLStreamWriter;
 
 /**
  * VFCommand: fnt_def.
@@ -108,7 +107,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class VFCommandFontDef extends VFCommand implements PlFormat {
 
@@ -257,25 +256,25 @@ public class VFCommandFontDef extends VFCommand implements PlFormat {
     }
 
     /**
-     * @see de.dante.util.XMLConvertible#toXML()
+     * @see de.dante.util.XMLWriterConvertible#writeXML(de.dante.util.xml.XMLStreamWriter)
      */
-    public Element toXML() {
+    public void writeXML(final XMLStreamWriter writer) throws IOException {
 
-        Element element = new Element("fontdef");
-        element.setAttribute("opcode", String.valueOf(getCommandCode()));
-        element.setAttribute("fontnumbers", String.valueOf(fontnumbers));
-        element.setAttribute("fontname", fontname);
-        element.setAttribute("checksum", String.valueOf(checksum));
-        element.setAttribute("scalefactor", String.valueOf(scalefactor));
-        element.setAttribute("designsize", String.valueOf(designsize));
+        writer.writeStartElement("fontdef");
+        writer.writeStartElement("opcode", String.valueOf(getCommandCode()));
+        writer.writeStartElement("fontnumbers", String.valueOf(fontnumbers));
+        writer.writeStartElement("fontname", fontname);
+        writer.writeStartElement("checksum", String.valueOf(checksum));
+        writer.writeStartElement("scalefactor", String.valueOf(scalefactor));
+        writer.writeStartElement("designsize", String.valueOf(designsize));
 
         if (tfmfont != null) {
-            element.addContent(tfmfont.toXML());
+            tfmfont.writeXML(writer);
         }
         if (vffont != null) {
-            element.addContent(vffont.toXML());
+            vffont.writeXML(writer);
         }
-        return element;
+        writer.writeEndElement();
     }
 
     /**

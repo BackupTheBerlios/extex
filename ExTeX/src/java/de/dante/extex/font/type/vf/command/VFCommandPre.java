@@ -21,12 +21,11 @@ package de.dante.extex.font.type.vf.command;
 
 import java.io.IOException;
 
-import org.jdom.Element;
-
 import de.dante.extex.font.exception.FontException;
 import de.dante.extex.font.type.tfm.TFMFixWord;
 import de.dante.extex.font.type.vf.exception.VFWrongCodeException;
 import de.dante.util.file.random.RandomAccessR;
+import de.dante.util.xml.XMLStreamWriter;
 
 /**
  * VFCommand: pre
@@ -49,7 +48,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 
 public class VFCommandPre extends VFCommand {
@@ -152,20 +151,20 @@ public class VFCommandPre extends VFCommand {
     }
 
     /**
-     * @see de.dante.util.XMLConvertible#toXML()
+     * @see de.dante.util.XMLWriterConvertible#writeXML(de.dante.util.xml.XMLStreamWriter)
      */
-    public Element toXML() {
+    public void writeXML(final XMLStreamWriter writer) throws IOException {
 
-        Element element = new Element("preamble");
-        element.setAttribute("opcode", String.valueOf(getCommandCode()));
-        element.setAttribute("identification", String.valueOf(identification));
-        element.setAttribute("checksum", String.valueOf(checksum));
-        element.setAttribute("designsize", designsize.toString());
+        writer.writeStartElement("preamble");
+        writer.writeAttribute("opcode", String.valueOf(getCommandCode()));
+        writer.writeAttribute("identification", String.valueOf(identification));
+        writer.writeAttribute("checksum", String.valueOf(checksum));
+        writer.writeAttribute("designsize", designsize.toString());
         if (comment != null && comment.trim().length() > 0) {
-            Element c = new Element("comment");
-            c.setText(comment);
-            element.addContent(c);
+            writer.writeStartElement("comment");
+            writer.writeCharacters(comment);
+            writer.writeEndElement();
         }
-        return element;
+        writer.writeEndElement();
     }
 }

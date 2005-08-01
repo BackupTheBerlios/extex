@@ -35,9 +35,9 @@ import de.dante.extex.font.type.vf.exception.VFDviException;
 import de.dante.extex.font.type.vf.exception.VFWrongCodeException;
 import de.dante.extex.format.dvi.DviEfm;
 import de.dante.extex.format.dvi.DviPl;
-import de.dante.extex.format.dvi.DviXml;
 import de.dante.util.file.random.RandomAccessInputArray;
 import de.dante.util.file.random.RandomAccessR;
+import de.dante.util.xml.XMLStreamWriter;
 
 /**
  * VFCommand: character packets
@@ -100,7 +100,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 
 public class VFCommandCharacterPackets extends VFCommand implements PlFormat {
@@ -123,7 +123,7 @@ public class VFCommandCharacterPackets extends VFCommand implements PlFormat {
     /**
      * the dvi commands
      */
-    private short[] dvi;
+    private byte[] dvi;
 
     /**
      * the font factory
@@ -179,9 +179,9 @@ public class VFCommandCharacterPackets extends VFCommand implements PlFormat {
             width = new TFMFixWord(rar.readInt24(),
                     TFMFixWord.FIXWORDDENOMINATOR);
         }
-        dvi = new short[packetlength];
+        dvi = new byte[packetlength];
         for (int i = 0; i < packetlength; i++) {
-            dvi[i] = (short) rar.readByteAsInt();
+            dvi[i] = (byte) rar.readByteAsInt();
         }
     }
 
@@ -198,7 +198,7 @@ public class VFCommandCharacterPackets extends VFCommand implements PlFormat {
      * Returns the dvi.
      * @return Returns the dvi.
      */
-    public short[] getDvi() {
+    public byte[] getDvi() {
 
         return dvi;
     }
@@ -222,15 +222,15 @@ public class VFCommandCharacterPackets extends VFCommand implements PlFormat {
     }
 
     /**
-     * @see de.dante.util.XMLConvertible#toXML()
+     * @see de.dante.util.XMLWriterConvertible#writeXML(de.dante.util.xml.XMLStreamWriter)
      */
-    public Element toXML() {
+    public void writeXML(final XMLStreamWriter writer) throws IOException {
 
-        Element element = new Element("char");
-        element.setAttribute("opcode", String.valueOf(getCommandCode()));
-        element.setAttribute("char", String.valueOf(charactercode));
-        element.setAttribute("packetlength", String.valueOf(packetlength));
-        element.setAttribute("width", width.toString());
+        writer.writeStartElement("char");
+        writer.writeAttribute("opcode", String.valueOf(getCommandCode()));
+        writer.writeAttribute("char", String.valueOf(charactercode));
+        writer.writeAttribute("packetlength", String.valueOf(packetlength));
+        writer.writeAttribute("width", width.toString());
 
         // read the char from ther master-tfm
         int bc = mastertfm.getLengths().getBc();
@@ -238,9 +238,9 @@ public class VFCommandCharacterPackets extends VFCommand implements PlFormat {
                 charactercode - bc);
 
         if (ciw != null) {
-            Element tfm = new Element("tfm");
-            tfm.addContent(ciw.toXML());
-            element.addContent(tfm);
+            writer.writeStartElement("tfm");
+            ciw.writeXML(writer);
+            writer.writeEndElement();
         }
 
         //        for (int i = 0; i < dvi.length; i++) {
@@ -250,25 +250,26 @@ public class VFCommandCharacterPackets extends VFCommand implements PlFormat {
         //            element.addContent(d);
         //        }
 
-        Element d = new Element("dvi");
-        element.addContent(d);
+        writer.writeStartElement("dvi");
 
         try {
             RandomAccessR arar = new RandomAccessInputArray(dvi);
 
-            DviXml dvixml = new DviXml(d, fontfactory);
-            //dvixml.setShowPT(true);
-            dvixml.setFontmap(fontmap);
-
-            dvixml.interpret(arar);
+            // TODO incomplete: change from element to xmlwriter
+            //            DviXml dvixml = new DviXml(writer, fontfactory);
+            //            //dvixml.setShowPT(true);
+            //            dvixml.setFontmap(fontmap);
+            //
+            //            dvixml.interpret(arar);
             arar.close();
         } catch (Exception e) {
             e.printStackTrace();
-            Element err = new Element("error");
-            err.setText(e.getMessage());
-            d.addContent(err);
+            writer.writeStartElement("error");
+            writer.writeCharacters(e.getMessage());
+            writer.writeEndElement();
         }
-        return element;
+        writer.writeEndElement();
+        writer.writeEndElement();
     }
 
     /**

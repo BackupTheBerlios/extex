@@ -45,7 +45,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * Convert a TFM-file to a PL-file
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public final class TFM2PL {
 
@@ -83,7 +83,7 @@ public final class TFM2PL {
         Configuration config = new ConfigurationFactory()
                 .newInstance("config/extex.xml");
 
-        Configuration cfgfonts = config.getConfiguration("Fonts");
+        //Configuration cfgfonts = config.getConfiguration("Fonts");
 
         Properties prop = new Properties();
         try {
@@ -94,7 +94,7 @@ public final class TFM2PL {
         }
 
         ResourceFinder finder = (new ResourceFinderFactory())
-                .createResourceFinder(cfgfonts.getConfiguration("Resource"),
+                .createResourceFinder(config.getConfiguration("Resource"),
                         null, prop);
 
         EncFactory ef = new EncFactory(finder);

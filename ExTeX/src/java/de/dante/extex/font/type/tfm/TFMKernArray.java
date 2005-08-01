@@ -22,10 +22,9 @@ package de.dante.extex.font.type.tfm;
 import java.io.IOException;
 import java.io.Serializable;
 
-import org.jdom.Element;
-
-import de.dante.util.XMLConvertible;
+import de.dante.util.XMLWriterConvertible;
 import de.dante.util.file.random.RandomAccessR;
+import de.dante.util.xml.XMLStreamWriter;
 
 /**
  * Class for TFM kern table.
@@ -39,10 +38,10 @@ import de.dante.util.file.random.RandomAccessR;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 
-public class TFMKernArray implements XMLConvertible, Serializable {
+public class TFMKernArray implements XMLWriterConvertible, Serializable {
 
     /**
      * the width table
@@ -76,17 +75,17 @@ public class TFMKernArray implements XMLConvertible, Serializable {
     }
 
     /**
-     * @see de.dante.util.XMLConvertible#toXML()
+     * @see de.dante.util.XMLWriterConvertible#writeXML(de.dante.util.xml.XMLStreamWriter)
      */
-    public Element toXML() {
+    public void writeXML(final XMLStreamWriter writer) throws IOException {
 
-        Element element = new Element("kerntable");
+        writer.writeStartElement("kerntable");
         for (int i = 0; i < table.length; i++) {
-            Element e = new Element("kern");
-            e.setAttribute("id", String.valueOf(i));
-            e.setAttribute("value", table[i].toStringComma());
-            element.addContent(e);
+            writer.writeStartElement("kern");
+            writer.writeAttribute("id", String.valueOf(i));
+            writer.writeAttribute("value", table[i].toStringComma());
+            writer.writeEndElement();
         }
-        return element;
+        writer.writeEndElement();
     }
 }

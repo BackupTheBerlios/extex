@@ -22,12 +22,11 @@ package de.dante.extex.font.type.tfm;
 import java.io.IOException;
 import java.io.Serializable;
 
-import org.jdom.Element;
-
 import de.dante.extex.font.type.PlFormat;
 import de.dante.extex.font.type.PlWriter;
-import de.dante.util.XMLConvertible;
+import de.dante.util.XMLWriterConvertible;
 import de.dante.util.file.random.RandomAccessR;
+import de.dante.util.xml.XMLStreamWriter;
 
 /**
  * Class for TFM lig/kern array.
@@ -102,10 +101,14 @@ import de.dante.util.file.random.RandomAccessR;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 
-public class TFMLigKernArray implements XMLConvertible, PlFormat, Serializable {
+public class TFMLigKernArray
+        implements
+            XMLWriterConvertible,
+            PlFormat,
+            Serializable {
 
     /**
      * the array
@@ -524,15 +527,15 @@ public class TFMLigKernArray implements XMLConvertible, PlFormat, Serializable {
     }
 
     /**
-     * @see de.dante.util.XMLConvertible#toXML()
+     * @see de.dante.util.XMLWriterConvertible#writeXML(de.dante.util.xml.XMLStreamWriter)
      */
-    public Element toXML() {
+    public void writeXML(final XMLStreamWriter writer) throws IOException {
 
-        Element element = new Element("ligkern");
+        writer.writeStartElement("ligkern");
         for (int i = 0; i < ligkerncommand.length; i++) {
-            element.addContent(ligkerncommand[i].toXML());
+            ligkerncommand[i].writeXML(writer);
         }
-        return element;
+        writer.writeEndElement();
     }
 
 }

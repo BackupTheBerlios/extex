@@ -20,11 +20,11 @@
 package de.dante.extex.font.type.tfm;
 
 import java.io.IOException;
+import java.io.Serializable;
 
-import org.jdom.Element;
-
-import de.dante.util.XMLConvertible;
+import de.dante.util.XMLWriterConvertible;
 import de.dante.util.file.random.RandomAccessR;
+import de.dante.util.xml.XMLStreamWriter;
 
 /**
  * Class for a lig_kern_command.
@@ -52,10 +52,10 @@ import de.dante.util.file.random.RandomAccessR;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 
-public class TFMLigKernCommand implements XMLConvertible {
+public class TFMLigKernCommand implements XMLWriterConvertible, Serializable {
 
     /**
      * the skipbyte
@@ -352,7 +352,7 @@ public class TFMLigKernCommand implements XMLConvertible {
     /**
      * This is a type-safe class to represent activity information.
      */
-    public static final class Activity {
+    public static final class Activity implements Serializable {
 
         /**
          * Creates a new object.
@@ -409,16 +409,16 @@ public class TFMLigKernCommand implements XMLConvertible {
     }
 
     /**
-     * @see de.dante.util.XMLConvertible#toXML()
+     * @see de.dante.util.XMLWriterConvertible#writeXML(de.dante.util.xml.XMLStreamWriter)
      */
-    public Element toXML() {
+    public void writeXML(final XMLStreamWriter writer) throws IOException {
 
-        Element element = new Element("ligkerncommand");
-        element.setAttribute("id", String.valueOf(lkid));
-        element.setAttribute("skipbyte", String.valueOf(skipbyte));
-        element.setAttribute("nextchar", String.valueOf(nextchar));
-        element.setAttribute("opbyte", String.valueOf(opbyte));
-        element.setAttribute("remainder", String.valueOf(remainder));
-        return element;
+        writer.writeStartElement("ligkerncommand");
+        writer.writeAttribute("id", String.valueOf(lkid));
+        writer.writeAttribute("skipbyte", String.valueOf(skipbyte));
+        writer.writeAttribute("nextchar", String.valueOf(nextchar));
+        writer.writeAttribute("opbyte", String.valueOf(opbyte));
+        writer.writeAttribute("remainder", String.valueOf(remainder));
+        writer.writeEndElement();
     }
 }

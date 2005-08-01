@@ -22,12 +22,12 @@ package de.dante.extex.font.type.tfm;
 import java.io.IOException;
 import java.io.Serializable;
 
-import org.jdom.Element;
-
 import de.dante.extex.font.type.PlFormat;
 import de.dante.extex.font.type.PlWriter;
-import de.dante.util.XMLConvertible;
+import de.dante.util.EFMWriterConvertible;
+import de.dante.util.XMLWriterConvertible;
 import de.dante.util.file.random.RandomAccessR;
+import de.dante.util.xml.XMLStreamWriter;
 
 /**
  * Class for TFM char info.
@@ -55,10 +55,15 @@ import de.dante.util.file.random.RandomAccessR;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 
-public class TFMCharInfoArray implements XMLConvertible, PlFormat, Serializable {
+public class TFMCharInfoArray
+        implements
+            XMLWriterConvertible,
+            EFMWriterConvertible,
+            PlFormat,
+            Serializable {
 
     /**
      * the char info
@@ -241,10 +246,9 @@ public class TFMCharInfoArray implements XMLConvertible, PlFormat, Serializable 
     }
 
     /**
-     * Add all glyphs to the element
-     * @param element   the element
+     * @see de.dante.util.EFMWriterConvertible#writeEFM(de.dante.util.xml.XMLStreamWriter)
      */
-    public void addGlyphs(final Element element) {
+    public void writeEFM(final XMLStreamWriter writer) throws IOException {
 
         for (int i = 0; i < charinfoword.length; i++) {
 
@@ -254,29 +258,25 @@ public class TFMCharInfoArray implements XMLConvertible, PlFormat, Serializable 
             if (ci != null) {
 
                 // create glyph
-                Element glyph = new Element("glyph");
+                writer.writeStartElement("glyph");
 
-                glyph.setAttribute("ID", String.valueOf(i));
-                glyph.setAttribute("glyph-number", String.valueOf(i + bc));
+                writer.writeAttribute("ID", String.valueOf(i));
+                writer.writeAttribute("glyph-number", String.valueOf(i + bc));
                 String c = Character.toString((char) i);
                 if (c != null && c.trim().length() > 0) {
-                    glyph.setAttribute("char", c);
+                    writer.writeAttribute("char", c);
                 }
                 if (ci.getGlyphname() != null) {
-                    element.setAttribute("glyph-name", ci.getGlyphname()
-                            .substring(1));
+                    writer.writeAttribute("glyph-name", ci.getGlyphname()
+                            .replaceAll("/", ""));
                 }
-                glyph.setAttribute("width", ci.getWidth().toStringComma());
-                glyph.setAttribute("height", ci.getHeight().toStringComma());
-                glyph.setAttribute("depth", ci.getDepth().toStringComma());
-                glyph.setAttribute("italic", ci.getItalic().toStringComma());
-                glyph.setAttribute("width-fw", String.valueOf(ci.getWidth()
+                writer.writeAttribute("width", String.valueOf(ci.getWidth()
                         .getValue()));
-                glyph.setAttribute("height-fw", String.valueOf(ci.getHeight()
+                writer.writeAttribute("height", String.valueOf(ci.getHeight()
                         .getValue()));
-                glyph.setAttribute("depth-fw", String.valueOf(ci.getDepth()
+                writer.writeAttribute("depth", String.valueOf(ci.getDepth()
                         .getValue()));
-                glyph.setAttribute("italic-fw", String.valueOf(ci.getItalic()
+                writer.writeAttribute("italic", String.valueOf(ci.getItalic()
                         .getValue()));
 
                 // ligature
@@ -290,44 +290,43 @@ public class TFMCharInfoArray implements XMLConvertible, PlFormat, Serializable 
                         if (lk instanceof TFMLigature) {
                             TFMLigature lig = (TFMLigature) lk;
 
-                            Element ligature = new Element("ligature");
-
-                            ligature.setAttribute("letter-id", String
+                            writer.writeStartElement("ligature");
+                            writer.writeAttribute("letter-id", String
                                     .valueOf(lig.getNextChar()));
                             String sl = Character.toString((char) lig
                                     .getNextChar());
                             if (sl != null && sl.trim().length() > 0) {
-                                ligature.setAttribute("letter", sl.trim());
+                                writer.writeAttribute("letter", sl.trim());
                             }
 
-                            ligature.setAttribute("lig-id", String.valueOf(lig
+                            writer.writeAttribute("lig-id", String.valueOf(lig
                                     .getAddingChar()));
                             String slig = Character.toString((char) lig
                                     .getAddingChar());
                             if (slig != null && slig.trim().length() > 0) {
-                                ligature.setAttribute("lig", slig.trim());
+                                writer.writeAttribute("lig", slig.trim());
                             }
-                            glyph.addContent(ligature);
+                            writer.writeEndElement();
                         } else if (lk instanceof TFMKerning) {
                             TFMKerning kern = (TFMKerning) lk;
 
-                            Element kerning = new Element("kerning");
+                            writer.writeStartElement("kerning");
 
-                            kerning.setAttribute("glyph-id", String
+                            writer.writeAttribute("glyph-id", String
                                     .valueOf(kern.getNextChar()));
                             String sk = Character.toString((char) kern
                                     .getNextChar());
                             if (sk != null && sk.trim().length() > 0) {
-                                kerning.setAttribute("char", sk.trim());
+                                writer.writeAttribute("char", sk.trim());
                             }
-                            kerning.setAttribute("size", kern.getKern()
-                                    .toStringComma());
+                            writer.writeAttribute("size", String.valueOf(kern
+                                    .getKern().getValue()));
 
-                            glyph.addContent(kerning);
+                            writer.writeEndElement();
                         }
                     }
                 }
-                element.addContent(glyph);
+                writer.writeEndElement();
             }
         }
     }
@@ -381,14 +380,50 @@ public class TFMCharInfoArray implements XMLConvertible, PlFormat, Serializable 
     }
 
     /**
-     * @see de.dante.util.XMLConvertible#toXML()
+     * @see de.dante.util.XMLWriterConvertible#writeXML(de.dante.util.xml.XMLStreamWriter)
      */
-    public Element toXML() {
+    public void writeXML(XMLStreamWriter writer) throws IOException {
 
-        Element element = new Element("charinfo");
+        writer.writeStartElement("charinfo");
         for (int i = 0; i < charinfoword.length; i++) {
-            element.addContent(charinfoword[i].toXML());
+            charinfoword[i].writeXML(writer);
         }
-        return element;
+        writer.writeEndElement();
+    }
+
+    /**
+     * Returns the depth.
+     * @return Returns the depth.
+     */
+    public TFMDepthArray getDepth() {
+
+        return depth;
+    }
+
+    /**
+     * Returns the height.
+     * @return Returns the height.
+     */
+    public TFMHeightArray getHeight() {
+
+        return height;
+    }
+
+    /**
+     * Returns the italic.
+     * @return Returns the italic.
+     */
+    public TFMItalicArray getItalic() {
+
+        return italic;
+    }
+
+    /**
+     * Returns the width.
+     * @return Returns the width.
+     */
+    public TFMWidthArray getWidth() {
+
+        return width;
     }
 }

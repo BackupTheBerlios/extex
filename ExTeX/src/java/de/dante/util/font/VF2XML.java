@@ -19,7 +19,6 @@
 
 package de.dante.util.font;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -27,9 +26,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
-
-import org.jdom.Document;
-import org.jdom.output.XMLOutputter;
 
 import de.dante.extex.font.FontFactory;
 import de.dante.extex.font.type.vf.VFFont;
@@ -43,12 +39,13 @@ import de.dante.util.configuration.ConfigurationNoSuchMethodException;
 import de.dante.util.file.random.RandomAccessInputStream;
 import de.dante.util.resource.ResourceFinder;
 import de.dante.util.resource.ResourceFinderFactory;
+import de.dante.util.xml.XMLStreamWriter;
 
 /**
  * Convert a VF-file to a XML-file
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public final class VF2XML {
 
@@ -83,7 +80,7 @@ public final class VF2XML {
         Configuration config = new ConfigurationFactory()
                 .newInstance("config/extex.xml");
 
-        Configuration cfgfonts = config.getConfiguration("Fonts");
+        // Configuration cfgfonts = config.getConfiguration("Fonts");
 
         Properties prop = new Properties();
         try {
@@ -94,7 +91,7 @@ public final class VF2XML {
         }
 
         ResourceFinder finder = (new ResourceFinderFactory())
-                .createResourceFinder(cfgfonts.getConfiguration("Resource"),
+                .createResourceFinder(config.getConfiguration("Resource"),
                         null, prop);
 
         // EncFactory ef = new EncFactory(finder);
@@ -124,13 +121,14 @@ public final class VF2XML {
 
         //font.setFontMapEncoding(psfm, ef);
 
-        // write to efm-file
-        XMLOutputter xmlout = new XMLOutputter("   ", true);
-        BufferedOutputStream out = new BufferedOutputStream(
-                new FileOutputStream(xmlfile));
-        Document doc = new Document(font.toXML());
-        xmlout.output(doc, out);
-        out.close();
+        // write to xml-file
+        XMLStreamWriter writer = new XMLStreamWriter(new FileOutputStream(
+                xmlfile), "ISO-8859-1");
+        writer.setBeauty(true);
+        writer.writeStartDocument();
+        font.writeXML(writer);
+        writer.writeEndDocument();
+        writer.close();
     }
 
     /**

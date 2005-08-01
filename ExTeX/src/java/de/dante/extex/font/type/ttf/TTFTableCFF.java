@@ -86,7 +86,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class TTFTableCFF extends AbstractTTFTable
         implements
@@ -446,7 +446,7 @@ public class TTFTableCFF extends AbstractTTFTable
             super(offset, rar);
 
             if (getDatas().length > 0) {
-                short[] data = (short[]) getDatas()[0];
+                byte[] data = (byte[]) getDatas()[0];
 
                 RandomAccessInputArray arar = new RandomAccessInputArray(data);
 
@@ -545,7 +545,7 @@ public class TTFTableCFF extends AbstractTTFTable
             values = new String[getDatas().length];
 
             for (int i = 0; i < getDatas().length; i++) {
-                short[] tmp = (short[]) getDatas()[i];
+                byte[] tmp = (byte[]) getDatas()[i];
                 System.out.print(" array[" + i + "] ");
                 tmp_print(tmp);
                 values[i] = convert(tmp);
@@ -558,7 +558,7 @@ public class TTFTableCFF extends AbstractTTFTable
          * @return Returns the String.
          * @throws IOException if an IO-error occurs.
          */
-        private String convert(final short[] data) throws IOException {
+        private String convert(final byte[] data) throws IOException {
 
             RandomAccessInputArray arar = new RandomAccessInputArray(data);
 
@@ -612,7 +612,7 @@ public class TTFTableCFF extends AbstractTTFTable
      * print the array (only for test)
      * @param data  the array
      */
-    private void tmp_print(final short[] data) {
+    private void tmp_print(final byte[] data) {
 
         for (int i = 0; i < data.length; i++) {
             System.out.print("0x" + Integer.toHexString(data[i]) + " ");

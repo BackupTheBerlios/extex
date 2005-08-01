@@ -29,7 +29,7 @@ import de.dante.util.file.random.RandomAccessInputStream;
  * Test cases for RandomAccessInputStream
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class RandomAccessTest extends TestCase {
 
@@ -162,7 +162,7 @@ public class RandomAccessTest extends TestCase {
         byte[] b2 = new byte[1000];
 
         rar.readFully(b1);
-        rar.readFully(b2);
+        raf.readFully(b2);
         for (int i = 0; i < b1.length; i++) {
             assertEquals(b1[i], b2[i]);
         }

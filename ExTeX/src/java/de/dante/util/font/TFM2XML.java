@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,97 +19,60 @@
 
 package de.dante.util.font;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.util.Properties;
 
-import org.jdom.Document;
-import org.jdom.output.XMLOutputter;
-
-import de.dante.extex.font.exception.FontException;
 import de.dante.extex.font.exception.FontMapNotFoundException;
+import de.dante.extex.font.type.pfb.PfbParser;
 import de.dante.extex.font.type.tfm.TFMFont;
 import de.dante.extex.font.type.tfm.enc.EncFactory;
 import de.dante.extex.font.type.tfm.psfontsmap.PSFontsMapReader;
-import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
-import de.dante.util.configuration.ConfigurationFactory;
 import de.dante.util.file.random.RandomAccessInputStream;
-import de.dante.util.resource.ResourceFinder;
-import de.dante.util.resource.ResourceFinderFactory;
+import de.dante.util.xml.XMLStreamWriter;
 
 /**
  * Convert a TFM-file to a XML-file
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public final class TFM2XML {
+public final class TFM2XML extends AbstractFontUtil {
 
     /**
-     * private: no instance
+     * Create a new object.
+     *
+     * @throws ConfigurationException if a config-error occurs.
      */
-    private TFM2XML() {
+    private TFM2XML() throws ConfigurationException {
 
+        super();
     }
 
     /**
-     * parameter
+     * do it.
+     *
+     * @param args the comandline
+     * @throws Exception if an error occurs.
      */
-    private static final int PARAMETER = 2;
+    private void doIt(final String[] args) throws Exception {
 
-    /**
-     * main
-     * @param args      the comandlinearguments
-     * @throws IOException if a IO-error occured.
-     * @throws Fontxception if a font-error occured.
-     * @throws ConfigurationException from the resourcefinder.
-     */
-    public static void main(final String[] args) throws IOException,
-            FontException, ConfigurationException {
-
-        if (args.length != PARAMETER) {
-            System.err
-                    .println("java de.dante.util.font.TFM2XML <tfm-file> <xml-file>");
-            System.exit(1);
-        }
-
-        File efmfile = new File(args[1]);
+        File xmlfile = new File(args[1]);
         String fontname = args[0].replaceAll("\\.tfm|\\.TFM", "");
 
-        Configuration config = new ConfigurationFactory()
-                .newInstance("config/extex.xml");
-
-        Configuration cfgfonts = config.getConfiguration("Fonts");
-
-        Properties prop = new Properties();
-        try {
-            InputStream in = new FileInputStream(".extex");
-            prop.load(in);
-        } catch (Exception e) {
-            prop.setProperty("extex.fonts", "src/font");
-        }
-
-        ResourceFinder finder = (new ResourceFinderFactory())
-                .createResourceFinder(cfgfonts.getConfiguration("Resource"),
-                        null, prop);
-
-        EncFactory ef = new EncFactory(finder);
+        EncFactory ef = new EncFactory(getFinder());
 
         // tfm-file
-        InputStream tfmin = finder.findResource(args[0], "");
+        InputStream tfmin = getFinder().findResource(args[0], "");
 
         if (tfmin == null) {
             throw new FileNotFoundException(args[0]);
         }
 
         // psfonts.map
-        InputStream psin = finder.findResource("psfonts.map", "");
+        InputStream psin = getFinder().findResource("psfonts.map", "");
 
         if (psin == null) {
             throw new FontMapNotFoundException();
@@ -120,12 +83,45 @@ public final class TFM2XML {
 
         font.setFontMapEncoding(psfm, ef);
 
-        // write to efm-file
-        XMLOutputter xmlout = new XMLOutputter("   ", true);
-        BufferedOutputStream out = new BufferedOutputStream(
-                new FileOutputStream(efmfile));
-        Document doc = new Document(font.toXML());
-        xmlout.output(doc, out);
-        out.close();
+        String pfbfile = font.getPfbfilename();
+        if (pfbfile != null) {
+            // pfb file
+            InputStream pfbin = getFinder().findResource(pfbfile, "");
+            if (pfbin == null) {
+                throw new FileNotFoundException(pfbfile);
+            }
+            font.setPfbParser(new PfbParser(pfbin));
+        }
+
+        // write to xml-file
+        XMLStreamWriter writer = new XMLStreamWriter(new FileOutputStream(
+                xmlfile), "ISO-8859-1");
+        writer.setBeauty(true);
+        writer.writeStartDocument();
+        font.writeXML(writer);
+        writer.writeEndDocument();
+        writer.close();
+    }
+
+    /**
+     * parameter
+     */
+    private static final int PARAMETER = 2;
+
+    /**
+     * main
+     * @param args      the comandlinearguments
+     * @throws Exception if an error occured.
+     */
+    public static void main(final String[] args) throws Exception {
+
+        if (args.length != PARAMETER) {
+            System.err
+                    .println("java de.dante.util.font.TFM2XML <tfm-file> <xml-file>");
+            System.exit(1);
+        }
+
+        TFM2XML tfm2xml = new TFM2XML();
+        tfm2xml.doIt(args);
     }
 }

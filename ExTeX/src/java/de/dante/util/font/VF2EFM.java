@@ -48,7 +48,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * Convert a VF-file to a EFM-file
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public final class VF2EFM {
 
@@ -83,7 +83,7 @@ public final class VF2EFM {
         Configuration config = new ConfigurationFactory()
                 .newInstance("config/extex.xml");
 
-        Configuration cfgfonts = config.getConfiguration("Fonts");
+        // Configuration cfgfonts = config.getConfiguration("Fonts");
 
         Properties prop = new Properties();
         try {
@@ -94,7 +94,7 @@ public final class VF2EFM {
         }
 
         ResourceFinder finder = (new ResourceFinderFactory())
-                .createResourceFinder(cfgfonts.getConfiguration("Resource"),
+                .createResourceFinder(config.getConfiguration("Resource"),
                         null, prop);
 
         //       EncFactory ef = new EncFactory(finder);

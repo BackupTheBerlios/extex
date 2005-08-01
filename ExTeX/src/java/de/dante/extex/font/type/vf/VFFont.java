@@ -20,7 +20,6 @@
 package de.dante.extex.font.type.vf;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,9 +36,10 @@ import de.dante.extex.font.type.vf.command.VFCommand;
 import de.dante.extex.font.type.vf.command.VFCommandCharacterPackets;
 import de.dante.extex.font.type.vf.command.VFCommandFontDef;
 import de.dante.extex.font.type.vf.exception.VFMasterTFMNotFoundException;
-import de.dante.util.XMLConvertible;
+import de.dante.util.XMLWriterConvertible;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.file.random.RandomAccessR;
+import de.dante.util.xml.XMLStreamWriter;
 
 /**
  * This class read a VF-file.
@@ -55,20 +55,17 @@ import de.dante.util.file.random.RandomAccessR;
  * @see <a href="package-summary.html#VFformat">VF-Format</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
-public class VFFont
-        implements
-            XMLConvertible,
-            Serializable,
-            FontMetric,
-            PlFormat {
+public class VFFont implements XMLWriterConvertible,
+
+FontMetric, PlFormat {
 
     /**
      * units per em (default-value)
      */
     public static final int UNITS_PER_EM_DEFAULT = 1000;
-    
+
     /**
      * fontname
      */
@@ -144,18 +141,18 @@ public class VFFont
     }
 
     /**
-     * @see de.dante.util.XMLConvertible#toXML()
+     * @see de.dante.util.XMLWriterConvertible#writeXML(de.dante.util.xml.XMLStreamWriter)
      */
-    public Element toXML() {
+    public void writeXML(final XMLStreamWriter writer) throws IOException {
 
-        Element element = new Element("vf");
-        element.setAttribute("name", fontname);
-        element.addContent(mastertfm.toXML());
+        writer.writeStartElement("vf");
+        writer.writeAttribute("name", fontname);
+        mastertfm.writeXML(writer);
         for (int i = 0; i < cmds.size(); i++) {
             VFCommand command = (VFCommand) cmds.get(i);
-            element.addContent(command.toXML());
+            command.writeXML(writer);
         }
-        return element;
+        writer.writeEndElement();
     }
 
     /**
@@ -169,7 +166,8 @@ public class VFFont
         out.plopen("FACE").addFace(mastertfm.getFace()).plclose();
         out.plopen("CODINGSCHEME").addStr(
                 mastertfm.getHeader().getCodingscheme()).plclose();
-        out.plopen("DESIGNSIZE").addReal(mastertfm.getDesignSize()).plclose();
+        out.plopen("DESIGNSIZE").addReal(mastertfm.getDesignSizeAsDouble())
+                .plclose();
         out.addComment("DESIGNSIZE IS IN POINTS");
         out.addComment("OTHER SIZES ARE MULTIPLES OF DESIGNSIZE");
         out.plopen("CHECKSUM").addOct(mastertfm.getChecksum()).plclose();
@@ -205,7 +203,7 @@ public class VFFont
         root.setAttribute("name", getFontname());
         root.setAttribute("id", getFontname());
         root.setAttribute("default-size", String.valueOf(mastertfm
-                .getDesignSize()));
+                .getDesignSizeAsDouble()));
         root.setAttribute("empr", "100");
         root.setAttribute("type", "vf");
         root.setAttribute("virtual", "true");

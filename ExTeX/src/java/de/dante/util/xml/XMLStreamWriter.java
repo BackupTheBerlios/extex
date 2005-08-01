@@ -32,7 +32,7 @@ import java.util.LinkedList;
  * <p> only xml version 1.0</p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 
 public class XMLStreamWriter {
@@ -138,6 +138,32 @@ public class XMLStreamWriter {
         out.write(text);
         out.write(" -->");
         printNewLine();
+    }
+
+    /**
+     * Write a cdata string.
+     * @param text  The cdata string.
+     * @throws IOException if an error occurs.
+     */
+    public void writeCDATA(final String text) throws IOException {
+
+        closeElement();
+        stack.setAppend();
+        printIndent();
+        out.write("<![CDATA[\n");
+        out.write(text);
+        out.write("\n]]>");
+        printNewLine();
+    }
+
+    /**
+     * Write a cdata string.
+     * @param text  The cdata as array.
+     * @throws IOException if an error occurs.
+     */
+    public void writeCDATA(final byte[] array) throws IOException {
+
+        writeCDATA(new String(array));
     }
 
     /**

@@ -26,8 +26,9 @@ import org.jdom.Element;
 
 import de.dante.extex.font.type.PlFormat;
 import de.dante.extex.font.type.PlWriter;
-import de.dante.util.XMLConvertible;
+import de.dante.util.XMLWriterConvertible;
 import de.dante.util.file.random.RandomAccessR;
+import de.dante.util.xml.XMLStreamWriter;
 
 /**
  * Class for TFM char info word.
@@ -79,10 +80,14 @@ import de.dante.util.file.random.RandomAccessR;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 
-public class TFMCharInfoWord implements XMLConvertible, PlFormat, Serializable {
+public class TFMCharInfoWord
+        implements
+            XMLWriterConvertible,
+            PlFormat,
+            Serializable {
 
     /**
      * no_tag: vanilla character
@@ -272,7 +277,7 @@ public class TFMCharInfoWord implements XMLConvertible, PlFormat, Serializable {
     /**
      * Tag (type-safe class)
      */
-    private static final class Tag {
+    private static final class Tag implements Serializable {
 
         /**
          * Creates a new object.
@@ -762,25 +767,25 @@ public class TFMCharInfoWord implements XMLConvertible, PlFormat, Serializable {
     }
 
     /**
-     * @see de.dante.util.XMLConvertible#toXML()
+     * @see de.dante.util.XMLWriterConvertible#writeXML(de.dante.util.xml.XMLStreamWriter)
      */
-    public Element toXML() {
+    public void writeXML(final XMLStreamWriter writer) throws IOException {
 
-        Element element = new Element("char");
-        element.setAttribute("id", String.valueOf(charid));
-        element.setAttribute("glyph-number", String.valueOf(charid + bc));
+        writer.writeStartElement("char");
+        writer.writeAttribute("id", String.valueOf(charid));
+        writer.writeAttribute("glyph-number", String.valueOf(charid + bc));
         String c = Character.toString((char) (charid + bc));
         if (c != null && c.trim().length() > 0) {
-            element.setAttribute("char", c);
+            writer.writeAttribute("char", c);
         }
         if (glyphname != null) {
-            element.setAttribute("glyph-name", glyphname.substring(1));
+            writer.writeAttribute("glyph-name", glyphname.replaceAll("/", ""));
         }
-        element.setAttribute("heightindex", String.valueOf(heightindex));
-        element.setAttribute("depthindex", String.valueOf(depthindex));
-        element.setAttribute("widthindex", String.valueOf(widthindex));
-        element.setAttribute("italicindex", String.valueOf(italicindex));
-        element.setAttribute("tagnr", String.valueOf(tag));
+        writer.writeAttribute("heightindex", String.valueOf(heightindex));
+        writer.writeAttribute("depthindex", String.valueOf(depthindex));
+        writer.writeAttribute("widthindex", String.valueOf(widthindex));
+        writer.writeAttribute("italicindex", String.valueOf(italicindex));
+        writer.writeAttribute("tagnr", String.valueOf(tag));
         String s;
         switch (tag) {
             case TAG0 :
@@ -795,36 +800,40 @@ public class TFMCharInfoWord implements XMLConvertible, PlFormat, Serializable {
             default :
                 s = "EXT_TAG";
         }
-        element.setAttribute("tag", s);
-        element.setAttribute("remainder", String.valueOf(remainder));
-        element.setAttribute("width_fw", String.valueOf(getWidth().getValue()));
-        element.setAttribute("width", getWidth().toStringComma());
-        element.setAttribute("height_fw", String
-                .valueOf(getHeight().getValue()));
-        element.setAttribute("height", getHeight().toStringComma());
-        element.setAttribute("depth_fw", String.valueOf(getDepth().getValue()));
-        element.setAttribute("depth", getDepth().toStringComma());
-        element.setAttribute("italic_fw", String
-                .valueOf(getItalic().getValue()));
-        element.setAttribute("italic", getItalic().toStringComma());
+        writer.writeAttribute("tag", s);
+        writer.writeAttribute("remainder", String.valueOf(remainder));
+        writer
+                .writeAttribute("width_fw", String.valueOf(getWidth()
+                        .getValue()));
+        writer.writeAttribute("width", getWidth().toStringComma());
+        writer.writeAttribute("height_fw", String.valueOf(getHeight()
+                .getValue()));
+        writer.writeAttribute("height", getHeight().toStringComma());
+        writer
+                .writeAttribute("depth_fw", String.valueOf(getDepth()
+                        .getValue()));
+        writer.writeAttribute("depth", getDepth().toStringComma());
+        writer.writeAttribute("italic_fw", String.valueOf(getItalic()
+                .getValue()));
+        writer.writeAttribute("italic", getItalic().toStringComma());
         if (getTop() != NOCHARCODE) {
-            element.setAttribute("top", String.valueOf(getTop()));
+            writer.writeAttribute("top", String.valueOf(getTop()));
         }
         if (getMid() != NOCHARCODE) {
-            element.setAttribute("mid", String.valueOf(getMid()));
+            writer.writeAttribute("mid", String.valueOf(getMid()));
         }
         if (getBot() != NOCHARCODE) {
-            element.setAttribute("bot", String.valueOf(getBot()));
+            writer.writeAttribute("bot", String.valueOf(getBot()));
         }
         if (getRep() != NOCHARCODE) {
-            element.setAttribute("rep", String.valueOf(getRep()));
+            writer.writeAttribute("rep", String.valueOf(getRep()));
         }
         if (getLigkernstart() != NOINDEX) {
-            element.setAttribute("ligkernstart", String
+            writer.writeAttribute("ligkernstart", String
                     .valueOf(getLigkernstart()));
         }
         if (getNextchar() != NOINDEX) {
-            element.setAttribute("nextchar", String.valueOf(getNextchar()));
+            writer.writeAttribute("nextchar", String.valueOf(getNextchar()));
         }
 
         // ligature
@@ -838,43 +847,40 @@ public class TFMCharInfoWord implements XMLConvertible, PlFormat, Serializable {
                 if (lk instanceof TFMLigature) {
                     TFMLigature lig = (TFMLigature) lk;
 
-                    Element ligature = new Element("ligature");
-
-                    ligature.setAttribute("letter-id", String.valueOf(lig
+                    writer.writeStartElement("ligature");
+                    writer.writeAttribute("letter-id", String.valueOf(lig
                             .getNextChar()));
                     String sl = Character.toString((char) lig.getNextChar());
                     if (sl != null && sl.trim().length() > 0) {
-                        ligature.setAttribute("letter", sl.trim());
+                        writer.writeAttribute("letter", sl.trim());
                     }
 
-                    ligature.setAttribute("lig-id", String.valueOf(lig
+                    writer.writeAttribute("lig-id", String.valueOf(lig
                             .getAddingChar()));
                     String slig = Character
                             .toString((char) lig.getAddingChar());
                     if (slig != null && slig.trim().length() > 0) {
-                        ligature.setAttribute("lig", slig.trim());
+                        writer.writeAttribute("lig", slig.trim());
                     }
-                    element.addContent(ligature);
+                    writer.writeEndElement();
                 } else if (lk instanceof TFMKerning) {
                     TFMKerning kern = (TFMKerning) lk;
 
-                    Element kerning = new Element("kerning");
-
-                    kerning.setAttribute("id", String.valueOf(kern
+                    writer.writeStartElement("kerning");
+                    writer.writeAttribute("id", String.valueOf(kern
                             .getNextChar()));
                     String sk = Character.toString((char) kern.getNextChar());
                     if (sk != null && sk.trim().length() > 0) {
-                        kerning.setAttribute("char", sk.trim());
+                        writer.writeAttribute("char", sk.trim());
                     }
-                    kerning.setAttribute("size_fw", String.valueOf(kern
+                    writer.writeAttribute("size_fw", String.valueOf(kern
                             .getKern().getValue()));
-                    kerning
-                            .setAttribute("size", kern.getKern()
-                                    .toStringComma());
-                    element.addContent(kerning);
+                    writer.writeAttribute("size", kern.getKern()
+                            .toStringComma());
+                    writer.writeEndElement();
                 }
             }
         }
-        return element;
+        writer.writeEndElement();
     }
 }

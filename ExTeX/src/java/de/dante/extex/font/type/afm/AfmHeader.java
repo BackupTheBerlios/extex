@@ -19,18 +19,19 @@
 
 package de.dante.extex.font.type.afm;
 
-import org.jdom.Element;
+import java.io.IOException;
 
-import de.dante.util.XMLConvertible;
+import de.dante.util.XMLWriterConvertible;
+import de.dante.util.xml.XMLStreamWriter;
 
 /**
  * AFM-Header.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 
-public class AfmHeader implements XMLConvertible {
+public class AfmHeader implements XMLWriterConvertible {
 
     /**
      * The Postscript font name.
@@ -490,33 +491,34 @@ public class AfmHeader implements XMLConvertible {
     }
 
     /**
-     * @see de.dante.util.XMLConvertible#toXML()
+     * @see de.dante.util.XMLWriterConvertible#writeXML(
+     *      de.dante.util.xml.XMLStreamWriter)
      */
-    public Element toXML() {
+    public void writeXML(final XMLStreamWriter writer) throws IOException {
 
-        Element element = new Element("header");
-        element.setAttribute("name", fontname);
-        element.setAttribute("fullname", fullname);
-        element.setAttribute("familyname", familyname);
-        element.setAttribute("weight", weight);
-        element.setAttribute("italicangle", String.valueOf(italicangle));
-        element.setAttribute("isfixedpitch", String.valueOf(isfixedpitch));
-        element.setAttribute("characterset", characterset);
-        element.setAttribute("llx", String.valueOf(llx));
-        element.setAttribute("lly", String.valueOf(lly));
-        element.setAttribute("urx", String.valueOf(urx));
-        element.setAttribute("ury", String.valueOf(ury));
-        element.setAttribute("underlineposition", String
+        writer.writeStartElement("header");
+        writer.writeAttribute("name", fontname);
+        writer.writeAttribute("fullname", fullname);
+        writer.writeAttribute("familyname", familyname);
+        writer.writeAttribute("weight", weight);
+        writer.writeAttribute("italicangle", String.valueOf(italicangle));
+        writer.writeAttribute("isfixedpitch", String.valueOf(isfixedpitch));
+        writer.writeAttribute("characterset", characterset);
+        writer.writeAttribute("llx", String.valueOf(llx));
+        writer.writeAttribute("lly", String.valueOf(lly));
+        writer.writeAttribute("urx", String.valueOf(urx));
+        writer.writeAttribute("ury", String.valueOf(ury));
+        writer.writeAttribute("underlineposition", String
                 .valueOf(underlineposition));
-        element.setAttribute("underlinethickness", String
+        writer.writeAttribute("underlinethickness", String
                 .valueOf(underlinethickness));
-        element.setAttribute("encodingscheme", encodingscheme);
-        element.setAttribute("capheight", String.valueOf(capheight));
-        element.setAttribute("xheight", String.valueOf(xheight));
-        element.setAttribute("ascender", String.valueOf(ascender));
-        element.setAttribute("descender", String.valueOf(descender));
-        element.setAttribute("stdhw", String.valueOf(stdhw));
-        element.setAttribute("stdvw", String.valueOf(stdvw));
-        return element;
+        writer.writeAttribute("encodingscheme", encodingscheme);
+        writer.writeAttribute("capheight", String.valueOf(capheight));
+        writer.writeAttribute("xheight", String.valueOf(xheight));
+        writer.writeAttribute("ascender", String.valueOf(ascender));
+        writer.writeAttribute("descender", String.valueOf(descender));
+        writer.writeAttribute("stdhw", String.valueOf(stdhw));
+        writer.writeAttribute("stdvw", String.valueOf(stdvw));
+        writer.writeEndElement();
     }
 }

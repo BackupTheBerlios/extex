@@ -22,7 +22,6 @@ package de.dante.extex.font;
 import java.io.Serializable;
 import java.util.HashMap;
 
-import de.dante.extex.font.type.tfm.TFMFixWord;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.util.UnicodeChar;
 
@@ -30,7 +29,7 @@ import de.dante.util.UnicodeChar;
  * GlyphImplementation
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class GlyphImpl implements Glyph, Serializable {
 
@@ -129,22 +128,22 @@ public class GlyphImpl implements Glyph, Serializable {
         depth = d;
     }
 
-    /**
-     * @param gsize         The size to set as <code>String</code>.
-     * @param em            The em-size.
-     * @param unitsperem    The unit per em.
-     */
-    public void setDepth(final String gsize, final Dimen em,
-            final int unitsperem) {
-
-        try {
-            float fsize = Float.parseFloat(gsize);
-            depth = new Dimen(Math.round(fsize * em.getValue() / unitsperem));
-        } catch (Exception e) {
-            // use default
-            depth = new Dimen(0);
-        }
-    }
+    //    /**
+    //     * @param gsize         The size to set as <code>String</code>.
+    //     * @param em            The em-size.
+    //     * @param unitsperem    The unit per em.
+    //     */
+    //    public void setDepth(final String gsize, final Dimen em,
+    //            final int unitsperem) {
+    //
+    //        try {
+    //            float fsize = Float.parseFloat(gsize);
+    //            depth = new Dimen(Math.round(fsize * em.getValue() / unitsperem));
+    //        } catch (Exception e) {
+    //            // use default
+    //            depth = new Dimen(0);
+    //        }
+    //    }
 
     /**
      * @return Returns the height.
@@ -162,22 +161,22 @@ public class GlyphImpl implements Glyph, Serializable {
         height = h;
     }
 
-    /**
-     * @param gsize         The size to set as <code>String</code>.
-     * @param em            The em-size.
-     * @param unitsperem    The unit per em.
-     */
-    public void setHeight(final String gsize, final Dimen em,
-            final int unitsperem) {
-
-        try {
-            float fsize = Float.parseFloat(gsize);
-            height = new Dimen(Math.round(fsize * em.getValue() / unitsperem));
-        } catch (Exception e) {
-            // use default
-            height = new Dimen(0);
-        }
-    }
+    //    /**
+    //     * @param gsize         The size to set as <code>String</code>.
+    //     * @param em            The em-size.
+    //     * @param unitsperem    The unit per em.
+    //     */
+    //    public void setHeight(final String gsize, final Dimen em,
+    //            final int unitsperem) {
+    //
+    //        try {
+    //            float fsize = Float.parseFloat(gsize);
+    //            height = new Dimen(Math.round(fsize * em.getValue() / unitsperem));
+    //        } catch (Exception e) {
+    //            // use default
+    //            height = new Dimen(0);
+    //        }
+    //    }
 
     /**
      * @return Returns the italic.
@@ -195,22 +194,22 @@ public class GlyphImpl implements Glyph, Serializable {
         italic = d;
     }
 
-    /**
-     * @param gsize         The size to set as <code>String</code>.
-     * @param em            The em-size.
-     * @param unitsperem    The unit per em.
-     */
-    public void setItalicCorrection(final String gsize, final Dimen em,
-            final int unitsperem) {
-
-        try {
-            float fsize = Float.parseFloat(gsize);
-            italic = new Dimen(Math.round(fsize * em.getValue() / unitsperem));
-        } catch (Exception e) {
-            // use default
-            italic = new Dimen(0);
-        }
-    }
+    //    /**
+    //     * @param gsize         The size to set as <code>String</code>.
+    //     * @param em            The em-size.
+    //     * @param unitsperem    The unit per em.
+    //     */
+    //    public void setItalicCorrection(final String gsize, final Dimen em,
+    //            final int unitsperem) {
+    //
+    //        try {
+    //            float fsize = Float.parseFloat(gsize);
+    //            italic = new Dimen(Math.round(fsize * em.getValue() / unitsperem));
+    //        } catch (Exception e) {
+    //            // use default
+    //            italic = new Dimen(0);
+    //        }
+    //    }
 
     /**
      * @return Returns the width.
@@ -228,93 +227,93 @@ public class GlyphImpl implements Glyph, Serializable {
         width = w;
     }
 
-    /**
-     * @param gsize         The size to set as <code>String</code>.
-     * @param em            The em-size.
-     * @param unitsperem    The unit per em. (default 1000)
-     */
-    public void setWidth(final String gsize, final Dimen em,
-            final int unitsperem) {
+    //    /**
+    //     * @param gsize         The size to set as <code>String</code>.
+    //     * @param em            The em-size.
+    //     * @param unitsperem    The unit per em. (default 1000)
+    //     */
+    //    public void setWidth(final String gsize, final Dimen em,
+    //            final int unitsperem) {
+    //
+    //        try {
+    //            double fsize = Double.parseDouble(gsize);
+    //            width = new Dimen((long) (fsize * em.getValue() / unitsperem));
+    //        } catch (Exception e) {
+    //            // use default
+    //            width = new Dimen(0);
+    //        }
+    //    }
 
-        try {
-            double fsize = Double.parseDouble(gsize);
-            width = new Dimen((long) (fsize * em.getValue() / unitsperem));
-        } catch (Exception e) {
-            // use default
-            width = new Dimen(0);
-        }
-    }
+    //    /**
+    //     * @see de.dante.extex.font.Glyph#setWidth(
+    //     *      de.dante.extex.font.type.tfm.TFMFixWord,
+    //     *      de.dante.extex.interpreter.type.dimen.Dimen)
+    //     */
+    //    public void setWidth(final TFMFixWord size, final Dimen em) {
+    //
+    //        try {
+    //            long l = size.getValue() * em.getValue()
+    //                    / TFMFixWord.FIXWORDDENOMINATOR;
+    //            width = new Dimen(l);
+    //        } catch (Exception e) {
+    //            // use default
+    //            width = new Dimen(0);
+    //        }
+    //    }
 
-    /**
-     * @see de.dante.extex.font.Glyph#setWidth(
-     *      de.dante.extex.font.type.tfm.TFMFixWord,
-     *      de.dante.extex.interpreter.type.dimen.Dimen)
-     */
-    public void setWidth(final TFMFixWord size, final Dimen em) {
+    //    /**
+    //     * @see de.dante.extex.font.Glyph#setDepth(
+    //     *      de.dante.extex.font.type.tfm.TFMFixWord,
+    //     *      de.dante.extex.interpreter.type.dimen.Dimen)
+    //     */
+    //    public void setDepth(final TFMFixWord size, final Dimen em) {
+    //
+    //        try {
+    //            long l = size.getValue() * em.getValue()
+    //                    / TFMFixWord.FIXWORDDENOMINATOR;
+    //            depth = new Dimen(l);
+    //        } catch (Exception e) {
+    //            // use default
+    //            depth = new Dimen(0);
+    //        }
+    //
+    //    }
 
-        try {
-            long l = size.getValue() * em.getValue()
-                    / TFMFixWord.FIXWORDDENOMINATOR;
-            width = new Dimen(l);
-        } catch (Exception e) {
-            // use default
-            width = new Dimen(0);
-        }
-    }
+    //    /**
+    //     * @see de.dante.extex.font.Glyph#setHeight(
+    //     *      de.dante.extex.font.type.tfm.TFMFixWord,
+    //     *      de.dante.extex.interpreter.type.dimen.Dimen)
+    //     */
+    //    public void setHeight(final TFMFixWord size, final Dimen em) {
+    //
+    //        try {
+    //            long l = size.getValue() * em.getValue()
+    //                    / TFMFixWord.FIXWORDDENOMINATOR;
+    //            height = new Dimen(l);
+    //        } catch (Exception e) {
+    //            // use default
+    //            height = new Dimen(0);
+    //        }
+    //
+    //    }
 
-    /**
-     * @see de.dante.extex.font.Glyph#setDepth(
-     *      de.dante.extex.font.type.tfm.TFMFixWord,
-     *      de.dante.extex.interpreter.type.dimen.Dimen)
-     */
-    public void setDepth(final TFMFixWord size, final Dimen em) {
-
-        try {
-            long l = size.getValue() * em.getValue()
-                    / TFMFixWord.FIXWORDDENOMINATOR;
-            depth = new Dimen(l);
-        } catch (Exception e) {
-            // use default
-            depth = new Dimen(0);
-        }
-
-    }
-
-    /**
-     * @see de.dante.extex.font.Glyph#setHeight(
-     *      de.dante.extex.font.type.tfm.TFMFixWord,
-     *      de.dante.extex.interpreter.type.dimen.Dimen)
-     */
-    public void setHeight(final TFMFixWord size, final Dimen em) {
-
-        try {
-            long l = size.getValue() * em.getValue()
-                    / TFMFixWord.FIXWORDDENOMINATOR;
-            height = new Dimen(l);
-        } catch (Exception e) {
-            // use default
-            height = new Dimen(0);
-        }
-
-    }
-
-    /**
-     * @see de.dante.extex.font.Glyph#setItalicCorrection(
-     *      de.dante.extex.font.type.tfm.TFMFixWord,
-     *      de.dante.extex.interpreter.type.dimen.Dimen)
-     */
-    public void setItalicCorrection(final TFMFixWord size, final Dimen em) {
-
-        try {
-            long l = size.getValue() * em.getValue()
-                    / TFMFixWord.FIXWORDDENOMINATOR;
-            italic = new Dimen(l);
-        } catch (Exception e) {
-            // use default
-            italic = new Dimen(0);
-        }
-
-    }
+    //    /**
+    //     * @see de.dante.extex.font.Glyph#setItalicCorrection(
+    //     *      de.dante.extex.font.type.tfm.TFMFixWord,
+    //     *      de.dante.extex.interpreter.type.dimen.Dimen)
+    //     */
+    //    public void setItalicCorrection(final TFMFixWord size, final Dimen em) {
+    //
+    //        try {
+    //            long l = size.getValue() * em.getValue()
+    //                    / TFMFixWord.FIXWORDDENOMINATOR;
+    //            italic = new Dimen(l);
+    //        } catch (Exception e) {
+    //            // use default
+    //            italic = new Dimen(0);
+    //        }
+    //
+    //    }
 
     /**
      * @return Returns the name.

@@ -20,23 +20,22 @@
 package de.dante.extex.font.type.vf.command;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.Map;
 
 import de.dante.extex.font.FontFactory;
 import de.dante.extex.font.exception.FontException;
 import de.dante.extex.font.type.tfm.TFMFont;
 import de.dante.extex.font.type.vf.exception.VFWrongCodeException;
-import de.dante.util.XMLConvertible;
+import de.dante.util.XMLWriterConvertible;
 import de.dante.util.file.random.RandomAccessR;
 
 /**
  * Abstract class for all vf commands.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
-public abstract class VFCommand implements XMLConvertible, Serializable {
+public abstract class VFCommand implements XMLWriterConvertible {
 
     /**
      * pre

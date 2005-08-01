@@ -18,53 +18,53 @@
 
 package de.dante.extex.font;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.jdom.Attribute;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.input.SAXBuilder;
+import java.util.Properties;
 
 import de.dante.extex.font.exception.FontException;
 import de.dante.extex.font.exception.FontIOException;
 import de.dante.extex.font.exception.FontMapNotFoundException;
 import de.dante.extex.font.exception.FontNotFoundException;
-import de.dante.extex.font.exception.FontReadException;
 import de.dante.extex.font.type.ModifiableFount;
-import de.dante.extex.font.type.afm.AfmFont;
-import de.dante.extex.font.type.efm.EFMFount;
+import de.dante.extex.font.type.efm.EfmReader;
+import de.dante.extex.font.type.efm.ModifiableFountEFM;
 import de.dante.extex.font.type.other.NullFont;
+import de.dante.extex.font.type.pfb.PfbParser;
+import de.dante.extex.font.type.tfm.ModifiableFountTFM;
 import de.dante.extex.font.type.tfm.TFMFont;
 import de.dante.extex.font.type.tfm.enc.EncFactory;
 import de.dante.extex.font.type.tfm.psfontsmap.PSFontsMapReader;
 import de.dante.extex.font.type.vf.VFFont;
-import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.font.FontImpl;
 import de.dante.extex.interpreter.type.font.VirtualFontImpl;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.util.configuration.Configuration;
-import de.dante.util.configuration.ConfigurationClassNotFoundException;
 import de.dante.util.configuration.ConfigurationException;
-import de.dante.util.configuration.ConfigurationInstantiationException;
-import de.dante.util.configuration.ConfigurationMissingAttributeException;
-import de.dante.util.configuration.ConfigurationNoSuchMethodException;
 import de.dante.util.file.random.RandomAccessInputStream;
+import de.dante.util.resource.PropertyConfigurable;
 import de.dante.util.resource.ResourceFinder;
+import de.dante.util.xml.XMLStreamWriter;
 
 /**
  * Factory to load a font.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
-public class FontFactory {
+public class FontFactory implements PropertyConfigurable {
+
+    /**
+     * the nullfont
+     */
+    private static final NullFont NULLFONT = new NullFont();
 
     /**
      * The field <tt>TAG_TYPE</tt> contains the name of the tag in the
@@ -105,9 +105,7 @@ public class FontFactory {
 
         super();
         finder = resourceFinder;
-
         cfgType = config.getConfiguration(TAG_TYPE);
-
         fountmap = new HashMap();
     }
 
@@ -120,7 +118,7 @@ public class FontFactory {
      */
     public Font getInstance() throws ConfigurationException, FontException {
 
-        return new NullFont();
+        return NULLFONT;
     }
 
     /**
@@ -134,7 +132,8 @@ public class FontFactory {
     public Font getInstance(final String name) throws ConfigurationException,
             FontException {
 
-        return getInstance(name, null, null, new Glue(0), false, false);
+        return getInstance(new FountKey(name, null, null, new Glue(0), false,
+                false));
     }
 
     /**
@@ -149,53 +148,8 @@ public class FontFactory {
     public Font getInstance(final String name, final Dimen size)
             throws ConfigurationException, FontException {
 
-        return getInstance(name, size, null, new Glue(0), false, false);
-    }
-
-    /**
-     * Return a new instance.
-     *
-     * If the name ist empty or null, then the <code>NullFont</code>
-     * are returned.
-     *
-     * @param name          the anme of the font
-     * @param size          the size
-     * @param scale         the scale-factor in 1000
-     * @param letterspaced  the letterspaced
-     * @param ligatures     ligatures on/off
-     * @param kerning       lerning on/off
-     * @return Returns the new font instance.
-     * @throws ConfigurationException from the resourcefinder.
-     * @throws FontException if a font-error occured.
-     * @deprecated use getInstance(FountKey) instead
-     */
-    public Font getInstance(final String name, final Dimen size,
-            final Count scale, final Glue letterspaced,
-            final boolean ligatures, final boolean kerning)
-            throws ConfigurationException, FontException {
-
-        if (name == null || name.trim().length() == 0) {
-            return new NullFont();
-        }
-
-        FountKey key = new FountKey(name, size, scale, letterspaced, ligatures,
-                kerning);
-        ModifiableFount fount = (ModifiableFount) (fountmap.get(key));
-        if (fount == null) {
-
-            Document doc = loadEFMDocument(name);
-
-            fount = loadFontClass(key, doc);
-
-            // store fount
-            fountmap.put(key, fount);
-        }
-        if (fount instanceof EFMFount) {
-            if (((EFMFount) fount).isVirtual()) {
-                return new VirtualFontImpl(fount);
-            }
-        }
-        return new FontImpl(fount);
+        return getInstance(new FountKey(name, size, null, new Glue(0), false,
+                false));
     }
 
     /**
@@ -213,61 +167,89 @@ public class FontFactory {
             FontException {
 
         if (key.getName() == null || key.getName().trim().length() == 0) {
-            return new NullFont();
+            return NULLFONT;
         }
 
         ModifiableFount fount = (ModifiableFount) (fountmap.get(key));
         if (fount == null) {
 
-            Document doc = loadEFMDocument(key.getName());
-
-            fount = loadFontClass(key, doc);
-
-            // store fount
+            fount = loadFont(key);
             fountmap.put(key, fount);
         }
-        if (fount instanceof EFMFount) {
-            if (((EFMFount) fount).isVirtual()) {
-                return new VirtualFontImpl(fount);
-            }
-        }
+        //        if (fount instanceof EFMFount) {
+        //            if (((EFMFount) fount).isVirtual()) {
+        //                return new VirtualFontImpl(fount);
+        //            }
+        //        }
         return new FontImpl(fount);
     }
 
     /**
-     * @param key          the fontkey
-     * @param doc           the xml-doc
-     * @return Returns the fount
-     * @throws ConfigurationException from the resourcefinder.
+     * Load the Font
+     * @param key  the fount key
+     * @return  the fontt or <code>null</code>, if not found
+     * @throws ConfigurationException from the resourcefinder
+     * @throws FontException in case of an font-error
      */
-    private ModifiableFount loadFontClass(final FountKey key, final Document doc)
-            throws ConfigurationException {
+    private ModifiableFount loadFont(final FountKey key)
+            throws ConfigurationException, FontException {
 
-        String classname = getFontClass(doc);
-        ModifiableFount fount = null;
-
+        // efm ???
         try {
-            fount = (ModifiableFount) (Class.forName(classname).getConstructor(
-                    new Class[]{Document.class, FountKey.class,
-                            ResourceFinder.class, FontFactory.class})
-                    .newInstance(new Object[]{doc, key, finder, this}));
-        } catch (IllegalArgumentException e) {
-            throw new ConfigurationInstantiationException(e);
-        } catch (SecurityException e) {
-            throw new ConfigurationInstantiationException(e);
-        } catch (InstantiationException e) {
-            throw new ConfigurationInstantiationException(e);
-        } catch (IllegalAccessException e) {
-            throw new ConfigurationInstantiationException(e);
-        } catch (InvocationTargetException e) {
-            throw new ConfigurationInstantiationException(e);
-        } catch (NoSuchMethodException e) {
-            throw new ConfigurationNoSuchMethodException(e);
-        } catch (ClassNotFoundException e) {
-            throw new ConfigurationClassNotFoundException(classname);
+            EfmReader efmfont = readEFMFont(key.getName());
+            if (efmfont != null) {
+                return new ModifiableFountEFM(key, efmfont);
+            }
+        } catch (FontException e) {
+            // try next
         }
-        return fount;
+
+        // tfm ???
+        try {
+            TFMFont tfmfont = readTFMFont(key.getName());
+            if (tfmfont != null) {
+                return new ModifiableFountTFM(key, tfmfont);
+            }
+        } catch (FontException e) {
+            // try next
+        }
+        throw new FontNotFoundException(key.getName());
     }
+
+    //    /**
+    //     * @param key          the fontkey
+    //     * @param doc           the xml-doc
+    //     * @return Returns the fount
+    //     * @throws ConfigurationException from the resourcefinder.
+    //     */
+    //    private ModifiableFount loadFontClass(final FountKey key, final Document doc)
+    //            throws ConfigurationException {
+    //
+    //        String classname = getFontClass(doc);
+    //        ModifiableFount fount = null;
+    //
+    //        try {
+    //            fount = (ModifiableFount) (Class.forName(classname).getConstructor(
+    //                    new Class[]{Document.class, FountKey.class,
+    //                            ResourceFinder.class, FontFactory.class})
+    //                    .newInstance(new Object[]{doc, key, finder, this}));
+    //        } catch (IllegalArgumentException e) {
+    //            throw new ConfigurationInstantiationException(e);
+    //        } catch (SecurityException e) {
+    //            throw new ConfigurationInstantiationException(e);
+    //        } catch (InstantiationException e) {
+    //            throw new ConfigurationInstantiationException(e);
+    //        } catch (IllegalAccessException e) {
+    //            throw new ConfigurationInstantiationException(e);
+    //        } catch (InvocationTargetException e) {
+    //            throw new ConfigurationInstantiationException(e);
+    //        } catch (NoSuchMethodException e) {
+    //            throw new ConfigurationNoSuchMethodException(e);
+    //        } catch (ClassNotFoundException e) {
+    //            throw new ConfigurationClassNotFoundException(classname);
+    //        }
+    //        return fount;
+    //    }
 
     /**
      * Return a new instance.
@@ -290,11 +272,7 @@ public class FontFactory {
 
         ModifiableFount fount = (ModifiableFount) (fountmap.get(key));
         if (fount == null) {
-
-            Document doc = new Document(tfm.getFontMetric());
-
-            fount = loadFontClass(key, doc);
-
+            fount = new ModifiableFountTFM(key, tfm);
             // store fount
             fountmap.put(key, fount);
         }
@@ -335,49 +313,49 @@ public class FontFactory {
         return new VirtualFontImpl(fount);
     }
 
-    /**
-     * Return the font-class for a font
-     * @param doc   the efm-document
-     * @return the font-class for a font
-     * @throws ConfigurationException in case off an error
-     */
-    private String getFontClass(final Document doc)
-            throws ConfigurationException {
-
-        Element root = doc.getRootElement();
-        Element font = EFMFount.scanForElement(root, "font");
-        Attribute typeattr = font.getAttribute("type");
-
-        String classname = null;
-
-        if ("type1".equals(typeattr.getValue().toLowerCase())) {
-            Configuration cfg = cfgType.getConfiguration("type1");
-            classname = cfg.getAttribute("class");
-        } else if ("ttf".equals(typeattr.getValue().toLowerCase())) {
-            Configuration cfg = cfgType.getConfiguration("ttf");
-            classname = cfg.getAttribute("class");
-        } else if ("tfm-mathsyml".equals(typeattr.getValue().toLowerCase())) {
-            Configuration cfg = cfgType.getConfiguration("tfm-mathsyml");
-            classname = cfg.getAttribute("class");
-        } else if ("tfm-mathext".equals(typeattr.getValue().toLowerCase())) {
-            Configuration cfg = cfgType.getConfiguration("tfm-mathext");
-            classname = cfg.getAttribute("class");
-        } else if ("tfm-normal".equals(typeattr.getValue().toLowerCase())) {
-            Configuration cfg = cfgType.getConfiguration("tfm-normal");
-            classname = cfg.getAttribute("class");
-        }
-
-        if (classname == null || classname.trim().length() == 0) {
-            Configuration cfg = cfgType.getConfiguration(cfgType
-                    .getAttribute(ATTR_DEFAULT));
-            classname = cfg.getAttribute("class");
-            if (classname == null || classname.trim().length() == 0) {
-                throw new ConfigurationMissingAttributeException("default",
-                        cfgType);
-            }
-        }
-        return classname;
-    }
+    //    /**
+    //     * Return the font-class for a font
+    //     * @param doc   the efm-document
+    //     * @return the font-class for a font
+    //     * @throws ConfigurationException in case off an error
+    //     */
+    //    private String getFontClass(final Document doc)
+    //            throws ConfigurationException {
+    //
+    //        Element root = doc.getRootElement();
+    //        Element font = EFMFount.scanForElement(root, "font");
+    //        Attribute typeattr = font.getAttribute("type");
+    //
+    //        String classname = null;
+    //
+    //        if ("type1".equals(typeattr.getValue().toLowerCase())) {
+    //            Configuration cfg = cfgType.getConfiguration("type1");
+    //            classname = cfg.getAttribute("class");
+    //        } else if ("ttf".equals(typeattr.getValue().toLowerCase())) {
+    //            Configuration cfg = cfgType.getConfiguration("ttf");
+    //            classname = cfg.getAttribute("class");
+    //        } else if ("tfm-mathsyml".equals(typeattr.getValue().toLowerCase())) {
+    //            Configuration cfg = cfgType.getConfiguration("tfm-mathsyml");
+    //            classname = cfg.getAttribute("class");
+    //        } else if ("tfm-mathext".equals(typeattr.getValue().toLowerCase())) {
+    //            Configuration cfg = cfgType.getConfiguration("tfm-mathext");
+    //            classname = cfg.getAttribute("class");
+    //        } else if ("tfm-normal".equals(typeattr.getValue().toLowerCase())) {
+    //            Configuration cfg = cfgType.getConfiguration("tfm-normal");
+    //            classname = cfg.getAttribute("class");
+    //        }
+    //
+    //        if (classname == null || classname.trim().length() == 0) {
+    //            Configuration cfg = cfgType.getConfiguration(cfgType
+    //                    .getAttribute(ATTR_DEFAULT));
+    //            classname = cfg.getAttribute("class");
+    //            if (classname == null || classname.trim().length() == 0) {
+    //                throw new ConfigurationMissingAttributeException("default",
+    //                        cfgType);
+    //            }
+    //        }
+    //        return classname;
+    //    }
 
     /**
      * EFM-Extension
@@ -398,6 +376,16 @@ public class FontFactory {
      * AFM-Extension
      */
     private static final String AFMEXTENSION = "afm";
+
+    /**
+     * TTF-Extension
+     */
+    private static final String TTFEXTENSION = "ttf";
+
+    /**
+     * OTF-Extension
+     */
+    private static final String OTFEXTENSION = "otf";
 
     /**
      * the reader for psfont.map
@@ -440,6 +428,31 @@ public class FontFactory {
      * @throws ConfigurationException from the resourcefinder
      * @throws FontException in case of an font-error
      */
+    public EfmReader readEFMFont(final String name)
+            throws ConfigurationException, FontException {
+
+        EfmReader font = null;
+
+        if (name != null) {
+
+            // efm
+            InputStream fontfile = finder.findResource(name, EFMEXTENSION);
+
+            if (fontfile != null) {
+                font = new EfmReader(fontfile);
+            }
+        }
+        return font;
+    }
+
+    /**
+     * Read a tfm-font.
+     *
+     * @param name  the name of the tfm-file
+     * @return  the tfm-font or <code>null</code>, if not found
+     * @throws ConfigurationException from the resourcefinder
+     * @throws FontException in case of an font-error
+     */
     public TFMFont readTFMFont(final String name)
             throws ConfigurationException, FontException {
 
@@ -460,12 +473,37 @@ public class FontFactory {
 
                     font.setFontMapEncoding(getPsfm(), ef);
 
+                    String pfbfile = font.getPfbfilename();
+                    if (pfbfile != null) {
+                        // pfb file
+                        InputStream pfbin = finder.findResource(pfbfile, "");
+                        if (pfbin == null) {
+                            throw new FileNotFoundException(pfbfile);
+                        }
+                        font.setPfbParser(new PfbParser(pfbin));
+                    }
+
+                    // cahe the font ?
+                    String cachedir = prop.getProperty("fonts.cache");
+                    if (cachedir != null) {
+                        StringBuffer buf = new StringBuffer();
+                        buf.append(cachedir).append("/");
+                        buf.append(fontname).append(".").append(EFMEXTENSION);
+                        // write to xml-file
+                        XMLStreamWriter writer = new XMLStreamWriter(
+                                new FileOutputStream(buf.toString()),
+                                "ISO-8859-1");
+                        writer.setBeauty(true);
+                        writer.writeStartDocument();
+                        font.writeEFM(writer);
+                        writer.writeEndDocument();
+                        writer.close();
+                    }
                 } catch (IOException e) {
                     throw new FontIOException(e.getMessage());
                 }
             }
         }
-
         return font;
     }
 
@@ -505,89 +543,111 @@ public class FontFactory {
         return font;
     }
 
+    //    /**
+    //     * Load the efm-Font
+    //     * @param name  the name of the efm-file
+    //     * @return  the efm as Document or <code>null</code>, if not found
+    //     * @throws ConfigurationException from the resourcefinder
+    //     * @throws FontException in case of an font-error
+    //     */
+    //    private Document loadEFMDocument(final String name)
+    //            throws ConfigurationException, FontException {
+    //
+    //        Document doc = null;
+    //        if (name != null) {
+    //
+    //            //            // efm
+    //            //            InputStream fontfile = finder.findResource(name, EFMEXTENSION);
+    //            //
+    //            //            if (fontfile != null) {
+    //            //                try {
+    //            //                    // create a document with SAXBuilder (without validate)
+    //            //                    SAXBuilder builder = new SAXBuilder(false);
+    //            //                    doc = builder.build(fontfile);
+    //            //                } catch (Exception e) {
+    //            //                    throw new FontReadException(e.getMessage());
+    //            //                }
+    //            //            } else {
+    //
+    //            // check tfm-font
+    //            try {
+    //
+    //                TFMFont tfmfont = readTFMFont(name);
+    //                doc = new Document(font.getFontMetric());
+    //
+    //            } catch (FontException e) {
+    //                // try next
+    //            }
+    //
+    //            //                // try vf
+    //            //                InputStream vffile = finder.findResource(name /* + ".vf"*/,
+    //            //                        VFEXTENSION);
+    //            //
+    //            //                if (vffile != null) {
+    //            //
+    //            //                    // TODO incomplete
+    //            //
+    //            //                } else {
+    //            //                    // try tfm
+    //            //                    InputStream tfmfile = finder.findResource(name,
+    //            //                            TFMEXTENSION);
+    //            //
+    //            //                    if (tfmfile != null) {
+    //            //
+    //            //                        try {
+    //            //                            String fontname = name.replaceAll("\\.tfm|\\.TFM",
+    //            //                                    "");
+    //            //
+    //            //                            TFMFont font = new TFMFont(
+    //            //                                    new RandomAccessInputStream(tfmfile),
+    //            //                                    fontname);
+    //            //
+    //            //                            font.setFontMapEncoding(getPsfm(), ef);
+    //            //
+    //            //                            doc = new Document(font.getFontMetric());
+    //            //
+    //            //                        } catch (IOException e) {
+    //            //                            throw new FontIOException(e.getMessage());
+    //            //                        }
+    //            //                    } else {
+    //            //
+    //            //                        // try afm
+    //            //                        InputStream afmfile = finder.findResource(
+    //            //                                name /*+ ".afm"*/, AFMEXTENSION);
+    //            //
+    //            //                        if (afmfile != null) {
+    //            //
+    //            //                            try {
+    //            //                                AfmFont afmreader = new AfmFont(afmfile, name);
+    //            //
+    //            //                                doc = new Document(afmreader.getFontMetric());
+    //            //                            } catch (IOException e) {
+    //            //                                throw new FontIOException(e.getMessage());
+    //            //                            }
+    //            //
+    //            //                        } else {
+    //            //                            throw new FontNotFoundException();
+    //            //                        }
+    //            //                    }
+    //            //                }
+    //            //            }
+    //        }
+    //        if (doc == null) {
+    //            throw new FontNotFoundException(name);
+    //        }
+    //        return doc;
+    //    }
+
     /**
-     * Load the efm-Font
-     * @param name  the name of the efm-file
-     * @return  the efm as Document or <code>null</code>, if not found
-     * @throws ConfigurationException from the resourcefinder
-     * @throws FontException in case of an font-error
+     * properties
      */
-    private Document loadEFMDocument(final String name)
-            throws ConfigurationException, FontException {
+    private Properties prop;
 
-        Document doc = null;
-        if (name != null) {
+    /**
+     * @see de.dante.util.resource.PropertyConfigurable#setProperties(java.util.Properties)
+     */
+    public void setProperties(final Properties properties) {
 
-            // efm
-            InputStream fontfile = finder.findResource(name, EFMEXTENSION);
-
-            if (fontfile != null) {
-                try {
-                    // create a document with SAXBuilder (without validate)
-                    SAXBuilder builder = new SAXBuilder(false);
-                    doc = builder.build(fontfile);
-                } catch (Exception e) {
-                    throw new FontReadException(e.getMessage());
-                }
-            } else {
-
-                // try vf
-                InputStream vffile = finder.findResource(name /* + ".vf"*/,
-                        VFEXTENSION);
-
-                if (vffile != null) {
-
-                    // TODO incomplete
-
-                } else {
-                    // try tfm
-                    InputStream tfmfile = finder.findResource(
-                            name /* + ".tfm"*/, TFMEXTENSION);
-
-                    if (tfmfile != null) {
-
-                        try {
-                            String fontname = name.replaceAll("\\.tfm|\\.TFM",
-                                    "");
-
-                            TFMFont font = new TFMFont(
-                                    new RandomAccessInputStream(tfmfile),
-                                    fontname);
-
-                            font.setFontMapEncoding(getPsfm(), ef);
-
-                            doc = new Document(font.getFontMetric());
-
-                        } catch (IOException e) {
-                            throw new FontIOException(e.getMessage());
-                        }
-                    } else {
-
-                        // try afm
-                        InputStream afmfile = finder.findResource(
-                                name /*+ ".afm"*/, AFMEXTENSION);
-
-                        if (afmfile != null) {
-
-                            try {
-                                AfmFont afmreader = new AfmFont(afmfile, name);
-
-                                doc = new Document(afmreader.getFontMetric());
-                            } catch (IOException e) {
-                                throw new FontIOException(e.getMessage());
-                            }
-
-                        } else {
-                            throw new FontNotFoundException();
-                        }
-                    }
-                }
-            }
-        }
-        if (doc == null) {
-            throw new FontNotFoundException(name);
-        }
-        return doc;
+        prop = properties;
     }
-
 }

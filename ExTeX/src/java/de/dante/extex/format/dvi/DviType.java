@@ -28,6 +28,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import de.dante.extex.font.FontFactory;
+import de.dante.extex.font.FountKey;
 import de.dante.extex.font.Glyph;
 import de.dante.extex.font.exception.FontException;
 import de.dante.extex.format.dvi.command.DviBOP;
@@ -66,7 +67,7 @@ import de.dante.util.file.random.RandomAccessR;
  * DviType.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 
 public class DviType implements DviInterpreter, DviExecuteCommand {
@@ -149,8 +150,10 @@ public class DviType implements DviInterpreter, DviExecuteCommand {
             Count scale = command.getScaledAsCount(mag);
             String name = command.getFName();
 
-            Font f = fontfactory.getInstance(name, designsize, scale, new Glue(
-                    0), true, true);
+            //            Font f = fontfactory.getInstance(name, designsize, scale, new Glue(
+            //                    0), true, true);
+            Font f = fontfactory.getInstance(new FountKey(name, designsize,
+                    scale, new Glue(0), true, true));
             if (f == null) {
                 throw new DviFontNotFoundException(name);
             }

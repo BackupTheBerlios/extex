@@ -22,11 +22,10 @@ package de.dante.extex.font.type.tfm;
 import java.io.IOException;
 import java.io.Serializable;
 
-import org.jdom.Element;
-
 import de.dante.extex.font.type.tfm.exception.TFMReadFileException;
-import de.dante.util.XMLConvertible;
+import de.dante.util.XMLWriterConvertible;
 import de.dante.util.file.random.RandomAccessR;
+import de.dante.util.xml.XMLStreamWriter;
 
 /**
  * Class for TFM header length table.
@@ -62,9 +61,9 @@ import de.dante.util.file.random.RandomAccessR;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
-public class TFMHeaderLengths implements XMLConvertible, Serializable {
+public class TFMHeaderLengths implements XMLWriterConvertible, Serializable {
 
     /**
      * max chars
@@ -298,26 +297,26 @@ public class TFMHeaderLengths implements XMLConvertible, Serializable {
     }
 
     /**
-     * @see de.dante.util.XMLConvertible#toXML()
+     * @see de.dante.util.XMLWriterConvertible#writeXML(de.dante.util.xml.XMLStreamWriter)
      */
-    public Element toXML() {
+    public void writeXML(final XMLStreamWriter writer) throws IOException {
 
-        Element hl = new Element("headerlength");
-        hl.setAttribute("lf", String.valueOf(lf));
-        hl.setAttribute("lh", String.valueOf(lh));
-        hl.setAttribute("bc", String.valueOf(bc));
-        hl.setAttribute("ec", String.valueOf(ec));
-        hl.setAttribute("nw", String.valueOf(nw));
-        hl.setAttribute("nh", String.valueOf(nh));
-        hl.setAttribute("nd", String.valueOf(nd));
-        hl.setAttribute("ni", String.valueOf(ni));
-        hl.setAttribute("nl", String.valueOf(nl));
-        hl.setAttribute("nk", String.valueOf(nk));
-        hl.setAttribute("lf", String.valueOf(lf));
-        hl.setAttribute("ne", String.valueOf(ne));
-        hl.setAttribute("lf", String.valueOf(lf));
-        hl.setAttribute("np", String.valueOf(np));
-        hl.setAttribute("cc", String.valueOf(cc));
-        return hl;
+        writer.writeStartElement("headerlength");
+        writer.writeAttribute("lf", String.valueOf(lf));
+        writer.writeAttribute("lh", String.valueOf(lh));
+        writer.writeAttribute("bc", String.valueOf(bc));
+        writer.writeAttribute("ec", String.valueOf(ec));
+        writer.writeAttribute("nw", String.valueOf(nw));
+        writer.writeAttribute("nh", String.valueOf(nh));
+        writer.writeAttribute("nd", String.valueOf(nd));
+        writer.writeAttribute("ni", String.valueOf(ni));
+        writer.writeAttribute("nl", String.valueOf(nl));
+        writer.writeAttribute("nk", String.valueOf(nk));
+        writer.writeAttribute("lf", String.valueOf(lf));
+        writer.writeAttribute("ne", String.valueOf(ne));
+        writer.writeAttribute("lf", String.valueOf(lf));
+        writer.writeAttribute("np", String.valueOf(np));
+        writer.writeAttribute("cc", String.valueOf(cc));
+        writer.writeEndElement();
     }
 }

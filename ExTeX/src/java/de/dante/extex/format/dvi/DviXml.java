@@ -27,6 +27,7 @@ import java.util.Stack;
 import org.jdom.Element;
 
 import de.dante.extex.font.FontFactory;
+import de.dante.extex.font.FountKey;
 import de.dante.extex.font.Glyph;
 import de.dante.extex.font.exception.FontException;
 import de.dante.extex.format.dvi.command.DviBOP;
@@ -74,11 +75,12 @@ import de.dante.util.file.random.RandomAccessR;
  * @see <a href="package-summary.html#DVIformat">DVI-Format</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 
 public class DviXml implements DviInterpreter, DviExecuteCommand {
 
+    // TODO incompelte: change from element to xmlwriter
     /**
      * the parent element (change from some commands to nested other elements)
      */
@@ -169,8 +171,10 @@ public class DviXml implements DviInterpreter, DviExecuteCommand {
         Count scale = command.getScaledAsCount(mag);
         String name = command.getFName();
 
-        Font f = fontfactory.getInstance(name, designsize, scale, new Glue(0),
-                true, true);
+        //        Font f = fontfactory.getInstance(name, designsize, scale, new Glue(0),
+        //                true, true);
+        Font f = fontfactory.getInstance(new FountKey(name, designsize, scale,
+                new Glue(0), true, true));
         if (f == null) {
             throw new DviFontNotFoundException(name);
         }
@@ -306,9 +310,8 @@ public class DviXml implements DviInterpreter, DviExecuteCommand {
      * @throws FontException if a font-error occurs.
      * @throws ConfigurationException from the config systen.
      */
-    public Element readNextElement(final RandomAccessR rar)
-            throws IOException, DviException, FontException,
-            ConfigurationException {
+    public Element readNextElement(final RandomAccessR rar) throws IOException,
+            DviException, FontException, ConfigurationException {
 
         // store old parent
         Element old = parent;

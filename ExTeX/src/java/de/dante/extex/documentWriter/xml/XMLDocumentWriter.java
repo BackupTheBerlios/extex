@@ -68,7 +68,7 @@ import de.dante.util.xml.XMLStreamWriter;
  * This is a xml implementation of a document writer.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class XMLDocumentWriter
         implements
@@ -266,9 +266,11 @@ public class XMLDocumentWriter
 
         if (out != null) {
             try {
-                writer.writeEndElement();
-                writer.writeEndDocument();
-                writer.close();
+                if (writer != null) {
+                    writer.writeEndElement();
+                    writer.writeEndDocument();
+                    writer.close();
+                }
                 out.close();
             } catch (IOException e) {
                 throw new DocumentWriterIOException(e);

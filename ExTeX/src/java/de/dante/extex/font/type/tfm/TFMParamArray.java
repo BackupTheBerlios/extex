@@ -26,8 +26,10 @@ import org.jdom.Element;
 
 import de.dante.extex.font.type.PlFormat;
 import de.dante.extex.font.type.PlWriter;
-import de.dante.util.XMLConvertible;
+import de.dante.util.EFMWriterConvertible;
+import de.dante.util.XMLWriterConvertible;
 import de.dante.util.file.random.RandomAccessR;
+import de.dante.util.xml.XMLStreamWriter;
 
 /**
  * Class for TFM param table.
@@ -41,10 +43,15 @@ import de.dante.util.file.random.RandomAccessR;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 
-public class TFMParamArray implements XMLConvertible, PlFormat, Serializable {
+public class TFMParamArray
+        implements
+            XMLWriterConvertible,
+            EFMWriterConvertible,
+            PlFormat,
+            Serializable {
 
     /**
      * the param table
@@ -165,22 +172,40 @@ public class TFMParamArray implements XMLConvertible, PlFormat, Serializable {
     }
 
     /**
-     * @see de.dante.util.XMLConvertible#toXML()
+     * @see de.dante.util.XMLWriterConvertible#writeXML(de.dante.util.xml.XMLStreamWriter)
      */
-    public Element toXML() {
+    public void writeXML(final XMLStreamWriter writer) throws IOException {
 
-        Element element = new Element("params");
+        writer.writeStartElement("params");
         for (int i = 0; i < table.length; i++) {
-            Element e = new Element("param");
-            e.setAttribute("id", String.valueOf(i));
+            writer.writeStartElement("param");
+            writer.writeAttribute("id", String.valueOf(i));
             String name = getLabelName(i);
             if (name.length() != 0) {
-                e.setAttribute("name", name);
+                writer.writeAttribute("name", name);
             }
-            e.setAttribute("value_fw", String.valueOf(table[i].getValue()));
-            e.setAttribute("value", table[i].toStringComma());
-            element.addContent(e);
+            writer.writeAttribute("value_fw", String.valueOf(table[i]
+                    .getValue()));
+            writer.writeAttribute("value", table[i].toStringComma());
+            writer.writeEndElement();
         }
-        return element;
+        writer.writeEndElement();
+    }
+
+    /**
+     * @see de.dante.util.EFMWriterConvertible#writeEFM(de.dante.util.xml.XMLStreamWriter)
+     */
+    public void writeEFM(final XMLStreamWriter writer) throws IOException {
+
+        writer.writeStartElement("fontdimen");
+        for (int i = 0; i < table.length; i++) {
+            String name = getLabelName(i);
+            if (name.length() != 0) {
+                writer
+                        .writeAttribute(name, String.valueOf(table[i]
+                                .getValue()));
+            }
+        }
+        writer.writeEndElement();
     }
 }
