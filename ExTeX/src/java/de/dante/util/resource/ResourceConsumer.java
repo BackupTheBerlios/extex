@@ -20,10 +20,10 @@ package de.dante.util.resource;
 
 
 /**
- * TODO gene: missing JavaDoc.
+ * This interface descries the ability to receive a RsourceFinder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface ResourceConsumer {
 
