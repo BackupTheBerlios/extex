@@ -2,7 +2,7 @@
  <head>
   <title>ExTeX: Document Writer</title>
   <meta name="copyright" content="
-   Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+   Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
 
    This library is free software; you can redistribute it and/or modify it
    under the terms of the GNU Lesser General Public License as published by
@@ -19,12 +19,101 @@
    Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
   " />
   <meta name="author" content="Gerd Neugebauer" />
-  <meta name="version" content="$Revision: 1.6 $" />
+  <meta name="version" content="$Revision: 1.7 $" />
  </head>
  <body>
-  This package contains the backends of ExTeX which are responsible
-  for writing the constructed pages to an appropriate file. For
-  instance a PDF writer is located in a subpackage.
+  This package contains the backends of <logo>ExTeX</logo> which are
+  responsible for writing the constructed pages to an appropriate
+  file. For instance a PDF writer and a PostScript writer are located
+  in a sub-package.
+
+  <h3>Writing a DocumentWriter</h3>
+  <p>
+   To write a document writer you start to create a class which
+   implements the interface {@link
+   de.dante.extex.documentWriter.DocumentWriter DocumentWriter}. This
+   interface describes the ability to receive some nodes for
+   processing. This is usually not enough. In addition it is necessary
+   to send the result to some destination. This is accomplished by the
+   interfaces {@link
+   de.dante.extex.documentWriter.SingleDocumentStream
+   SingleDocumentStream} and {@link
+   de.dante.extex.documentWriter.MultipleDocumentStream
+   MultipleDocumentStream}.
+  </p>
+  <h4>Output Streams</h4>
+  <p>
+   The decoupling of the actual output stream and the writing of the
+   document is necessary to relief the document writer from the task
+   and concentrate the same routine for each document writer in one
+   place. On the other side with this approach it is possible to
+   transparently add some processing before or after the document
+   writer. It would also be possible not only to direct the output to
+   some file but send it to a display immediately.
+  </p>
+  <p>
+   The interface {@link
+   de.dante.extex.documentWriter.SingleDocumentStream
+   SingleDocumentStream} is used by those document writers which send
+   the output to a single destination. At startup the method
+   setOutputStream() is invoked and the output stream is passed to the
+   document writer. As an example consider a classical dvi document
+   writer which tries to produce one output file.
+  </p>
+  <p>
+   The interface {@link
+   de.dante.extex.documentWriter.MultipleDocumentStream
+   MultipleDocumentStream} is used by those document writers which
+   send the output to several destinations. As an example consider an
+   EPS writer which produces one file per page. Here the method
+   setOutputStreamFactory() is invoked at startup and a factory is
+   passed to the document writer which can be used to acquire the next
+   output stream. In fact MultipleDocumentStream can also be used in
+   the case of a single output stream but the SingleDocumentStream is
+   a little bit easier to use.
+  </p>
+  <h4>Localization</h4>
+  <p>
+   If the instantiated class implements the interface {@link
+   de.dante.util.framework.i18n.Localizable Localizable} then the
+   associated method is used to pass on the localizer to the new
+   instance. The localizer is acquired from the {@link
+   de.dante.util.framework.i18n.LocalizerFactory LocalizerFactory}
+   with the name of the class as key.
+  </p>
+  <h4>Configuration</h4>
+  <p>
+   The document writer can implement the interface {@link
+   de.dante.util.framework.configuration.Configurable Configurable}.
+   In this case the configuration object is passed to the document
+   writer at startup.
+  </p>
+  <p>
+   The document writer can implement the interface {@link
+   de.dante.util.resource.PropertyConfigurable PropertyConfigurable}.
+   In this case the properties with the user's settings are passed to
+   the document writer at startup.
+  </p>
+  <h4>Logging</h4>
+  <p>
+   The document writer can implement the interface {@link
+   de.dante.util.framework.logger.LogEnabled LogEnabled}. In this case
+   the logger is passed to the document writer at startup. It can be
+   used to send some informative or debugging messages to the log
+   file.
+  </p>
+  <h4>Color</h4>
+  <p>
+   The document writer can implement the interface {@link
+   de.dante.extex.color.ColorAware ColorAware}. In this case a color
+   converter is passed to the document writer.
+  </p>
+  <h4>Resource Access</h4>
+  <p>
+   The document writer can implement the interface {@link
+   de.dante.util.resource.ResoureConsumer ResoureConsumer}. In this
+   case a resource finder is passed to the document writer.
+  </p>
 
  </body>
 </html>
