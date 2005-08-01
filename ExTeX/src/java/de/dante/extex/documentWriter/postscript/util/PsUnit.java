@@ -26,7 +26,7 @@ import de.dante.extex.interpreter.type.dimen.Dimen;
  * This class contains some utility methods.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class PsUnit {
 
@@ -84,6 +84,8 @@ public abstract class PsUnit {
 
     /**
      * Scan a floating point number from a character sequence.
+     * White-space characters at the beginning and after the optional sign are
+     * ignored.
      *
      * @param seq the sequence to read from
      * @param index the index of the next character to read
@@ -95,7 +97,7 @@ public abstract class PsUnit {
         boolean neg = false;
         long val = 0;
         int post = 0;
-        int t = getChar(seq, index);
+        int t = getNonSpace(seq, index);
 
         while (t >= 0) {
             if (t == '-') {
@@ -136,19 +138,32 @@ public abstract class PsUnit {
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * Parse a character sequence for a length and return it in sp.
+     * The length is given as a float number optionally preceded by white-space
+     * and a sign. This number is followed by optional white-space and a unit
+     * given as two letters.
+     * The following units are supported: pt, sp, bp, mm, cm, cc, dd, pc.
+     *
+     * <p>Examples</p>
+     * <pre>
+     *  1sp
+     *  .2 pt
+     *  -3.4 mm
+     * </pre>
      *
      * @param seq the sequence to read from
      * @param index the index of the next character to read
      *
-     * @return
+     * @return the length in scaled points
+     *
+     * @throws NumberFormatException in case of a parsing error
      */
     public static long getLength(final CharSequence seq, final Count index)
             throws NumberFormatException {
 
         long length = getFloat(seq, index);
 
-        int c = getChar(seq, index);
+        int c = getNonSpace(seq, index);
         switch (c) {
             case 'b':
                 c = getChar(seq, index);

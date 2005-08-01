@@ -28,7 +28,7 @@ import de.dante.extex.documentWriter.OutputStreamFactory;
 import de.dante.extex.documentWriter.postscript.util.FontManager;
 import de.dante.extex.documentWriter.postscript.util.HeaderManager;
 import de.dante.extex.documentWriter.postscript.util.PsConverter;
-import de.dante.extex.documentWriter.postscript.util.Unit;
+import de.dante.extex.documentWriter.postscript.util.PsUnit;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.util.GeneralException;
@@ -38,7 +38,7 @@ import de.dante.util.framework.configuration.Configurable;
  * This document writer produces Encapsulated Postscript documents.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class EpsWriter extends AbstractPostscriptWriter
         implements
@@ -175,13 +175,13 @@ public class EpsWriter extends AbstractPostscriptWriter
         stream.write(':');
         stream.write(' ');
         stream.write("0 0 ".getBytes());
-        Unit.toPoint(nodes.getWidth(), sb, true);
+        PsUnit.toPoint(nodes.getWidth(), sb, true);
         stream.write(sb.toString().getBytes());
         sb.delete(0, sb.length() - 1);
         stream.write(' ');
         Dimen d = new Dimen(nodes.getHeight());
         d.add(nodes.getDepth());
-        Unit.toPoint(d, sb, true);
+        PsUnit.toPoint(d, sb, true);
         stream.write(sb.toString().getBytes());
         stream.write('\n');
     }
@@ -205,13 +205,13 @@ public class EpsWriter extends AbstractPostscriptWriter
         stream.write(':');
         stream.write(' ');
         stream.write("0 0 ".getBytes());
-        Unit.toPoint(nodes.getWidth(), sb, false);
+        PsUnit.toPoint(nodes.getWidth(), sb, false);
         stream.write(sb.toString().getBytes());
         sb.delete(0, sb.length() - 1);
         stream.write(' ');
         Dimen d = new Dimen(nodes.getHeight());
         d.add(nodes.getDepth());
-        Unit.toPoint(d, sb, false);
+        PsUnit.toPoint(d, sb, false);
         stream.write(sb.toString().getBytes());
         stream.write('\n');
     }

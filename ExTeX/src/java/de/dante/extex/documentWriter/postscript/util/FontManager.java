@@ -32,7 +32,7 @@ import de.dante.util.UnicodeChar;
  * The font manager keeps track of the fonts and characters used.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class FontManager {
 
@@ -90,7 +90,7 @@ public class FontManager {
             fnt.append("/F");
             fnt.append(n);
             fnt.append("{/Times-Roman findfont "); //TODO use the correct font
-            Unit.toPoint(font.getActualSize(), fnt, false);
+            PsUnit.toPoint(font.getActualSize(), fnt, false);
             fnt.append(" scalefont setfont}def\n");
 
             return "F" + n + " ";

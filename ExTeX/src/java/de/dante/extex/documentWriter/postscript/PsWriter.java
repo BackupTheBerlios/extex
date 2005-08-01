@@ -33,7 +33,7 @@ import de.dante.extex.documentWriter.exception.DocumentWriterException;
 import de.dante.extex.documentWriter.postscript.util.FontManager;
 import de.dante.extex.documentWriter.postscript.util.HeaderManager;
 import de.dante.extex.documentWriter.postscript.util.PsConverter;
-import de.dante.extex.documentWriter.postscript.util.Unit;
+import de.dante.extex.documentWriter.postscript.util.PsUnit;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.util.GeneralException;
@@ -43,7 +43,7 @@ import de.dante.util.framework.configuration.Configurable;
  * This document writer produces multi-page PostScript documents.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class PsWriter extends AbstractPostscriptWriter
         implements
@@ -123,9 +123,9 @@ public class PsWriter extends AbstractPostscriptWriter
 
         stream.write("%%BoundingBox: 0 0 ".getBytes());
         StringBuffer sb = new StringBuffer(' ');
-        Unit.toPoint(pageWidth, sb, true);
+        PsUnit.toPoint(pageWidth, sb, true);
         sb.append(' ');
-        Unit.toPoint(pageHeight, sb, true);
+        PsUnit.toPoint(pageHeight, sb, true);
         sb.append('\n');
         stream.write(sb.toString().getBytes());
 

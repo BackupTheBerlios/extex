@@ -61,7 +61,7 @@ import de.dante.util.UnicodeChar;
  * boxes of the characters.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class PsBoxConverter implements PsConverter, NodeVisitor {
 
@@ -134,13 +134,13 @@ public class PsBoxConverter implements PsConverter, NodeVisitor {
             final Dimen height, final String box) {
 
         if (height.ne(Dimen.ZERO_PT)) {
-            Unit.toPoint(node.getWidth(), out, false);
+            PsUnit.toPoint(node.getWidth(), out, false);
             out.append(' ');
-            Unit.toPoint(height, out, false);
+            PsUnit.toPoint(height, out, false);
             out.append(' ');
-            Unit.toPoint(x, out, false);
+            PsUnit.toPoint(x, out, false);
             out.append(' ');
-            Unit.toPoint(y, out, false);
+            PsUnit.toPoint(y, out, false);
             out.append(' ');
             out.append(box);
             out.append('\n');
@@ -331,9 +331,9 @@ public class PsBoxConverter implements PsConverter, NodeVisitor {
         //Color color = tc.getColor();
 
         if (showChars) {
-            Unit.toPoint(x, out, false);
+            PsUnit.toPoint(x, out, false);
             out.append(' ');
-            Unit.toPoint(y, out, false);
+            PsUnit.toPoint(y, out, false);
             out.append(" moveto ");
             Font font = tc.getFont();
             UnicodeChar c = node.getCharacter();

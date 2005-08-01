@@ -68,7 +68,7 @@ import de.dante.util.resource.ResourceFinder;
  * This class provides a converter to PostScript code.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class PsBasicConverter
         implements
@@ -82,7 +82,7 @@ public class PsBasicConverter
      * for output.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.2 $
+     * @version $Revision: 1.3 $
      */
     private class Buffer {
 
@@ -170,15 +170,15 @@ public class PsBasicConverter
                 out.append("(");
                 out.append(buffer);
                 out.append(")");
-                Unit.toPoint(currX, out, false);
+                PsUnit.toPoint(currX, out, false);
                 out.append(' ');
-                Unit.toPoint(currY, out, false);
+                PsUnit.toPoint(currY, out, false);
                 out.append(" s\n");
             } else {
                 out.append("(");
                 out.append(buffer);
                 out.append(")");
-                Unit.toPoint(currX, out, false);
+                PsUnit.toPoint(currX, out, false);
                 out.append(" x\n");
             }
 
@@ -474,12 +474,12 @@ public class PsBasicConverter
                     case 'p':
                         if (text.startsWith("papersize=")) {
                             Count index = new Count(10);
-                            long w = Unit.getLength(text, index);
-                            int c = Unit.getChar(text, index);
+                            long w = PsUnit.getLength(text, index);
+                            int c = PsUnit.getChar(text, index);
                             if (c != ',') {
                                 throw new NumberFormatException();
                             }
-                            long h = Unit.getLength(text, index);
+                            long h = PsUnit.getLength(text, index);
                             Dimen[] paper = (Dimen[]) coordinates;
                             paper[0].set(w);
                             paper[1].set(h);
@@ -665,16 +665,16 @@ public class PsBasicConverter
 
         out.append(' ');
         if (color instanceof GrayscaleColor) {
-            Unit.toPoint(new Dimen(((GrayscaleColor) color).getGray()
+            PsUnit.toPoint(new Dimen(((GrayscaleColor) color).getGray()
                     * Dimen.ONE), out, false);
             out.append(" Cg\n");
         } else {
             RgbColor rgb = cc.toRgb(color);
-            Unit.toPoint(new Dimen(rgb.getRed() * Dimen.ONE), out, false);
+            PsUnit.toPoint(new Dimen(rgb.getRed() * Dimen.ONE), out, false);
             out.append(' ');
-            Unit.toPoint(new Dimen(rgb.getGreen() * Dimen.ONE), out, false);
+            PsUnit.toPoint(new Dimen(rgb.getGreen() * Dimen.ONE), out, false);
             out.append(' ');
-            Unit.toPoint(new Dimen(rgb.getBlue() * Dimen.ONE), out, false);
+            PsUnit.toPoint(new Dimen(rgb.getBlue() * Dimen.ONE), out, false);
             out.append(" Cr\n");
         }
         currentColor = color;
@@ -947,13 +947,13 @@ public class PsBasicConverter
             switchColors(color, out);
         }
 
-        Unit.toPoint(node.getWidth(), out, false);
+        PsUnit.toPoint(node.getWidth(), out, false);
         out.append(' ');
-        Unit.toPoint(node.getHeight(), out, false);
+        PsUnit.toPoint(node.getHeight(), out, false);
         out.append(' ');
-        Unit.toPoint(x, out, false);
+        PsUnit.toPoint(x, out, false);
         out.append(' ');
-        Unit.toPoint(y, out, false);
+        PsUnit.toPoint(y, out, false);
         out.append(' ');
         out.append("rule");
         out.append('\n');

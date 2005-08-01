@@ -30,7 +30,7 @@ import de.dante.extex.typesetter.type.NodeList;
  * PostScript code.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface PsConverter {
 
@@ -45,11 +45,13 @@ public interface PsConverter {
 
     /**
      * Translate nodes into PostScript code.
+     *
      * @param nodes the nodes to translate into PostScript code
      * @param fontManager the font manager to inform about characters
      * @param headerManager the container fro the headers
      * @return the bytes representing the current page
-     * @throws DocumentWriterException TODO
+     *
+     * @throws DocumentWriterException in case of an error
      */
     public byte[] nodesToPostScript(final NodeList nodes, final FontManager fontManager,
             HeaderManager headerManager) throws DocumentWriterException;
