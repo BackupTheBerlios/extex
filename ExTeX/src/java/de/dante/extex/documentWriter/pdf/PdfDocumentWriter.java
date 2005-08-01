@@ -21,6 +21,8 @@ package de.dante.extex.documentWriter.pdf;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.pdfbox.exceptions.COSVisitorException;
 import org.pdfbox.pdmodel.PDDocument;
@@ -47,7 +49,7 @@ import de.dante.util.configuration.Configuration;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:Rolf.Niepraschk@ptb.de">Rolf Niepraschk</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class PdfDocumentWriter implements DocumentWriter, SingleDocumentStream {
 
@@ -108,6 +110,7 @@ public class PdfDocumentWriter implements DocumentWriter, SingleDocumentStream {
         if (out != null) {
             try {
                 if (document != null) {
+                    System.err.println("\nSAVE\n");
                     document.save(out);
                     document.close();
                 }
@@ -148,12 +151,18 @@ public class PdfDocumentWriter implements DocumentWriter, SingleDocumentStream {
     }
 
     /**
+     * map for the parameters.
+     */
+    private Map param = new HashMap();
+
+    /**
      * @see de.dante.extex.documentWriter.DocumentWriter#setParameter(
      *      java.lang.String,
      *      java.lang.String)
      */
     public void setParameter(final String name, final String value) {
 
+        param.put(name, value);
     }
 
     /**
@@ -205,6 +214,7 @@ public class PdfDocumentWriter implements DocumentWriter, SingleDocumentStream {
             visitor = new PdfNodeVisitor(contentStream, currentX, currentY);
 
             shippedPages++;
+            //            System.err.print("[" + shippedPages + "]");
 
             // TeX primitives should set the papersize in any way:
             // o \paperwidth   / \paperheight,
@@ -256,7 +266,7 @@ public class PdfDocumentWriter implements DocumentWriter, SingleDocumentStream {
             nodes.visit(visitor, nodes);
 
             contentStream.close();
-            
+
         } catch (IOException e) {
             throw new DocumentWriterIOException(e);
         } catch (GeneralException e) {
