@@ -38,7 +38,7 @@ import de.dante.util.framework.configuration.Configurable;
  * This document writer produces Encapsulated Postscript documents.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class EpsWriter extends AbstractPostscriptWriter
         implements
@@ -131,8 +131,7 @@ public class EpsWriter extends AbstractPostscriptWriter
             init = false;
 
             headerManager.reset();
-            converter = makeConverter();
-            converter.init(headerManager);
+            converter = makeConverter(headerManager);
         }
 
         OutputStream stream = writerFactory.getOutputStream();

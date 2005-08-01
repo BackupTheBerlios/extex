@@ -19,17 +19,16 @@
 
 package de.dante.extex.documentWriter.postscript.util;
 
-import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This class contains some utility methods.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @version $Revision: 1.1 $
  */
-public abstract class Unit {
+public abstract class PsUnit {
 
     /**
      * The constant <tt>FLOAT_DIGITS</tt> contains the number of digits to
@@ -41,13 +40,15 @@ public abstract class Unit {
     private static final int FLOAT_DIGITS = 17;
 
     /**
-     * TODO gene: missing JavaDoc
+     * Get the next character from a character sequence.
      *
-     * @param seq
-     * @param index
-     * @return
+     * @param seq the sequence to read from
+     * @param index the index of the next character to read
+     *
+     * @return the code of the next character or a negative number if none
+     *  could be read
      */
-    private static int getChar(final CharSequence seq, final Count index) {
+    public static int getChar(final CharSequence seq, final Count index) {
 
         int i = (int) index.getValue();
         if (i >= seq.length()) {
@@ -58,11 +59,13 @@ public abstract class Unit {
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * Get the next non-space character from a character sequence.
      *
-     * @param seq
-     * @param index
-     * @return
+     * @param seq the sequence to read from
+     * @param index the index of the next character to read
+     *
+     * @return the code of the next character or a negative number if none
+     *  could be read
      */
     private static int getNonSpace(final CharSequence seq, final Count index) {
 
@@ -79,8 +82,15 @@ public abstract class Unit {
         return -1;
     }
 
-    public static long scanFloat(final CharSequence seq, final Count index)
-            throws InterpreterException {
+    /**
+     * Scan a floating point number from a character sequence.
+     *
+     * @param seq the sequence to read from
+     * @param index the index of the next character to read
+     *
+     * @return the fixed point number in multiples of 2^16
+     */
+    public static long getFloat(final CharSequence seq, final Count index) {
 
         boolean neg = false;
         long val = 0;
@@ -123,6 +133,73 @@ public abstract class Unit {
         index.add(-1);
         val = val << 16 | post;
         return (neg ? -val : val);
+    }
+
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param seq the sequence to read from
+     * @param index the index of the next character to read
+     *
+     * @return
+     */
+    public static long getLength(final CharSequence seq, final Count index)
+            throws NumberFormatException {
+
+        long length = getFloat(seq, index);
+
+        int c = getChar(seq, index);
+        switch (c) {
+            case 'b':
+                c = getChar(seq, index);
+                if (c == 'p') {
+                    return (length * 7227 / 7200);
+                }
+                break;
+            case 'c':
+                c = getChar(seq, index);
+                if (c == 'm') {
+                    return (length * 7227 / 254);
+                } else if (c == 'c') {
+                    return (length * 14856 / 1157);
+                }
+                break;
+            case 'd':
+                c = getChar(seq, index);
+                if (c == 'd') {
+                    return (length * 1238 / 1157);
+                }
+                break;
+            case 'i':
+                c = getChar(seq, index);
+                if (c == 'n') {
+                    return (length * 7227 / 100);
+                }
+                break;
+            case 'm':
+                c = getChar(seq, index);
+                if (c == 'm') {
+                    return (length * 7227 / 2540);
+                }
+                break;
+            case 'p':
+                c = getChar(seq, index);
+                if (c == 't') {
+                    return (length);
+                } else if (c == 'c') {
+                    return (length * 12);
+                }
+                break;
+            case 's':
+                c = getChar(seq, index);
+                if (c == 'p') {
+                    return (length >> 16);
+                }
+                break;
+            default:
+        // fall through to exception
+        }
+        throw new NumberFormatException();
     }
 
     /**
@@ -196,7 +273,7 @@ public abstract class Unit {
     /**
      * Creating a new object is impossible.
      */
-    private Unit() {
+    private PsUnit() {
 
     }
 

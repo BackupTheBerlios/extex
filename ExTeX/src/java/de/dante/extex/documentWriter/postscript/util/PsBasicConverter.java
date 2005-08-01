@@ -19,6 +19,7 @@
 
 package de.dante.extex.documentWriter.postscript.util;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -26,8 +27,11 @@ import de.dante.extex.color.ColorAware;
 import de.dante.extex.color.ColorConverter;
 import de.dante.extex.color.model.GrayscaleColor;
 import de.dante.extex.color.model.RgbColor;
+import de.dante.extex.documentWriter.exception.DocumentWriterException;
+import de.dante.extex.documentWriter.exception.DocumentWriterIOException;
 import de.dante.extex.interpreter.context.Color;
 import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.typesetter.type.Node;
@@ -64,7 +68,7 @@ import de.dante.util.resource.ResourceFinder;
  * This class provides a converter to PostScript code.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class PsBasicConverter
         implements
@@ -78,7 +82,7 @@ public class PsBasicConverter
      * for output.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private class Buffer {
 
@@ -223,6 +227,280 @@ public class PsBasicConverter
     private HeaderManager hm = null;
 
     /**
+     * The field <tt>paperSize</tt> contains the width and the height of the
+     * paper.
+     */
+    private Dimen[] paperSize = new Dimen[2];
+
+    /**
+     * The field <tt>paperSizeScanner</tt> contains the node visitor which
+     * traverses the node tree recursively searching for papersize specials.
+     */
+    private NodeVisitor paperSizeScanner = new NodeVisitor() {
+
+        /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitAdjust(
+         *      de.dante.extex.typesetter.type.node.AdjustNode,
+         *      java.lang.Object)
+         */
+        public Object visitAdjust(final AdjustNode node,
+                final Object coordinates) throws GeneralException {
+
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitAfterMath(
+         *      de.dante.extex.typesetter.type.node.AfterMathNode,
+         *      java.lang.Object)
+         */
+        public Object visitAfterMath(final AfterMathNode node,
+                final Object coordinates) throws GeneralException {
+
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitAlignedLeaders(
+         *      de.dante.extex.typesetter.type.node.AlignedLeadersNode,
+         *      java.lang.Object)
+         */
+        public Object visitAlignedLeaders(final AlignedLeadersNode node,
+                final Object coordinates) throws GeneralException {
+
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitBeforeMath(
+         *      de.dante.extex.typesetter.type.node.BeforeMathNode,
+         *      java.lang.Object)
+         */
+        public Object visitBeforeMath(final BeforeMathNode node,
+                final Object coordinates) throws GeneralException {
+
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitCenteredLeaders(
+         *      de.dante.extex.typesetter.type.node.CenteredLeadersNode,
+         *      java.lang.Object)
+         */
+        public Object visitCenteredLeaders(final CenteredLeadersNode node,
+                final Object coordinates) throws GeneralException {
+
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitChar(
+         *      de.dante.extex.typesetter.type.node.CharNode,
+         *      java.lang.Object)
+         */
+        public Object visitChar(final CharNode node, final Object coordinates)
+                throws GeneralException {
+
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitDiscretionary(
+         *      de.dante.extex.typesetter.type.node.DiscretionaryNode,
+         *      java.lang.Object)
+         */
+        public Object visitDiscretionary(final DiscretionaryNode node,
+                final Object coordinates) throws GeneralException {
+
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitExpandedLeaders(
+         *      de.dante.extex.typesetter.type.node.ExpandedLeadersNode,
+         *      java.lang.Object)
+         */
+        public Object visitExpandedLeaders(final ExpandedLeadersNode node,
+                final Object coordinates) throws GeneralException {
+
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitGlue(
+         *      de.dante.extex.typesetter.type.node.GlueNode,
+         *      java.lang.Object)
+         */
+        public Object visitGlue(final GlueNode node, final Object coordinates)
+                throws GeneralException {
+
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitHorizontalList(
+         *      de.dante.extex.typesetter.type.node.HorizontalListNode,
+         *      java.lang.Object)
+         */
+        public Object visitHorizontalList(final HorizontalListNode node,
+                final Object coordinates) throws GeneralException {
+
+            int len = node.size();
+
+            for (int i = 0; i < len; i++) {
+                node.get(i).visit(this, coordinates);
+            }
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitInsertion(
+         *      de.dante.extex.typesetter.type.node.InsertionNode,
+         *      java.lang.Object)
+         */
+        public Object visitInsertion(final InsertionNode node,
+                final Object coordinates) throws GeneralException {
+
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitKern(
+         *      de.dante.extex.typesetter.type.node.KernNode,
+         *      java.lang.Object)
+         */
+        public Object visitKern(final KernNode node, final Object coordinates)
+                throws GeneralException {
+
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitLigature(
+         *      de.dante.extex.typesetter.type.node.LigatureNode,
+         *      java.lang.Object)
+         */
+        public Object visitLigature(final LigatureNode node,
+                final Object coordinates) throws GeneralException {
+
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitMark(
+         *      de.dante.extex.typesetter.type.node.MarkNode,
+         *      java.lang.Object)
+         */
+        public Object visitMark(final MarkNode node, final Object coordinates)
+                throws GeneralException {
+
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitPenalty(
+         *      de.dante.extex.typesetter.type.node.PenaltyNode,
+         *      java.lang.Object)
+         */
+        public Object visitPenalty(final PenaltyNode node,
+                final Object coordinates) throws GeneralException {
+
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitRule(
+         *      de.dante.extex.typesetter.type.node.RuleNode,
+         *      java.lang.Object)
+         */
+        public Object visitRule(final RuleNode node, final Object coordinates)
+                throws GeneralException {
+
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitSpace(
+         *      de.dante.extex.typesetter.type.node.SpaceNode,
+         *      java.lang.Object)
+         */
+        public Object visitSpace(final SpaceNode node, final Object coordinates)
+                throws GeneralException {
+
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitVerticalList(
+         *      de.dante.extex.typesetter.type.node.VerticalListNode,
+         *      java.lang.Object)
+         */
+        public Object visitVerticalList(final VerticalListNode node,
+                final Object coordinates) throws GeneralException {
+
+            int len = node.size();
+
+            for (int i = 0; i < len; i++) {
+                node.get(i).visit(this, coordinates);
+            }
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitVirtualChar(
+         *      de.dante.extex.typesetter.type.node.VirtualCharNode,
+         *      java.lang.Object)
+         */
+        public Object visitVirtualChar(final VirtualCharNode node,
+                final Object coordinates) throws GeneralException {
+
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitWhatsIt(
+         *      de.dante.extex.typesetter.type.node.WhatsItNode,
+         *      java.lang.Object)
+         */
+        public Object visitWhatsIt(final WhatsItNode node,
+                final Object coordinates) throws GeneralException {
+
+            if (node instanceof SpecialNode) {
+                String text = ((SpecialNode) node).getText();
+                if (text == null || text.length() == 0) {
+                    return null;
+                }
+                switch (text.charAt(0)) {
+                    case 'p':
+                        if (text.startsWith("papersize=")) {
+                            Count index = new Count(10);
+                            long w = Unit.getLength(text, index);
+                            int c = Unit.getChar(text, index);
+                            if (c != ',') {
+                                throw new NumberFormatException();
+                            }
+                            long h = Unit.getLength(text, index);
+                            Dimen[] paper = (Dimen[]) coordinates;
+                            paper[0].set(w);
+                            paper[1].set(h);
+                        }
+                        break;
+                    case 'l':
+                        if (text.equals("landscape")) {
+                            //TODO gene: unimplemented
+                            throw new RuntimeException("unimplemented");
+                        }
+                        break;
+                    default:
+                // ignored on purpose
+                }
+            }
+            return null;
+        }
+
+    };
+
+    /**
      * The field <tt>x</tt> contains the current x position.
      */
     private Dimen x = new Dimen();
@@ -234,19 +512,15 @@ public class PsBasicConverter
 
     /**
      * Creates a new object.
-     * Initializes the current point to the upper left corner 1 inch from the
-     * border.
      *
-     * @param originX the x coordinate of the origin relative to the
-     *  PostScript coordinate system
-     * @param originY the y coordinate of the origin relative to the
-     *  PostScript coordinate system
+     * @param width the default width of the paper
+     * @param height the default height of the paper
      */
-    public PsBasicConverter(final Dimen originX, final Dimen originY) {
+    public PsBasicConverter(final Dimen width, final Dimen height) {
 
         super();
-        x.set(originX);
-        y.set(originY);
+        paperSize[0] = new Dimen(width);
+        paperSize[1] = new Dimen(height);
     }
 
     /**
@@ -278,7 +552,7 @@ public class PsBasicConverter
      *
      * @return the bytes representing the current page
      *
-     * @throws GeneralException in case of an error
+     * @throws DocumentWriterException in case of an error
      *
      * @see de.dante.extex.documentWriter.postscript.util.PsConverter#nodesToPostScript(
      *      de.dante.extex.typesetter.type.NodeList,
@@ -287,13 +561,22 @@ public class PsBasicConverter
      */
     public byte[] nodesToPostScript(final NodeList nodes,
             final FontManager fontManager, final HeaderManager headerManager)
-            throws GeneralException {
+            throws DocumentWriterException {
+
+        try {
+            nodes.visit(paperSizeScanner, paperSize);
+        } catch (GeneralException e) {
+            throw new DocumentWriterException(e);
+        }
+
+        x.set(Dimen.ONE_INCH);
+        y.set(paperSize[1]);
+        y.subtract(Dimen.ONE_INCH);
 
         fm = fontManager;
         hm = headerManager;
         buffer.reset();
-        StringBuffer out = new StringBuffer();
-        out.append("TeXDict begin\n");
+        StringBuffer out = new StringBuffer("TeXDict begin\n");
 
         visit(nodes, out);
 
@@ -302,7 +585,8 @@ public class PsBasicConverter
     }
 
     /**
-     * @see de.dante.extex.color.ColorAware#setColorConverter(de.dante.extex.color.ColorConverter)
+     * @see de.dante.extex.color.ColorAware#setColorConverter(
+     *      de.dante.extex.color.ColorConverter)
      */
     public void setColorConverter(final ColorConverter converter) {
 
@@ -319,22 +603,21 @@ public class PsBasicConverter
     }
 
     /**
-     * Add some text to the header section.
+     * Add some text from a resource to the header section.
      *
-     * @param text the text to add as header
+     * @param name the name of the resource to add as header
      *
      * @throws GeneralException in case of an error
      */
-    private void specialHeader(final String text) throws GeneralException {
+    private void specialHeader(final String name) throws GeneralException {
 
         try {
-            InputStream s = finder.findResource(text, "pro");
+            InputStream s = finder.findResource(name, "pro");
             if (s != null) {
-                hm.add(s, text);
+                hm.add(s, name);
                 s.close();
             } else {
-                //TODO gene: unimplemented
-                throw new RuntimeException("unimplemented");
+                throw new DocumentWriterIOException(new FileNotFoundException());
             }
         } catch (ConfigurationException e) {
             throw new GeneralException(e);
@@ -363,8 +646,7 @@ public class PsBasicConverter
                 }
                 s.close();
             } else {
-                //TODO gene: unimplemented
-                throw new RuntimeException("unimplemented");
+                throw new DocumentWriterIOException(new FileNotFoundException());
             }
         } catch (ConfigurationException e) {
             throw new GeneralException(e);
@@ -405,23 +687,32 @@ public class PsBasicConverter
      * @param node the node to consider
      * @param out the target for writing
      *
-     * @throws GeneralException in case of an error
+     * @throws DocumentWriterException in case of an error
      */
     private void visit(final Node node, final StringBuffer out)
-            throws GeneralException {
+            throws DocumentWriterException {
 
         Dimen shift = node.getShift();
         Dimen move = node.getMove();
-        if (shift.ne(Dimen.ZERO_PT) && move.ne(Dimen.ZERO_PT)) {
-            Dimen saveX = new Dimen(x);
-            Dimen saveY = new Dimen(y);
-            x.add(move);
-            y.add(shift);
-            node.visit(this, out);
-            x.set(saveX);
-            y.set(saveY);
-        } else {
-            node.visit(this, out);
+        try {
+            if (shift.ne(Dimen.ZERO_PT) && move.ne(Dimen.ZERO_PT)) {
+                Dimen saveX = new Dimen(x);
+                Dimen saveY = new Dimen(y);
+                x.add(move);
+                y.add(shift);
+                node.visit(this, out);
+                x.set(saveX);
+                y.set(saveY);
+            } else {
+                node.visit(this, out);
+            }
+        } catch (GeneralException e) {
+            Throwable cause = e.getCause();
+            if (cause instanceof FileNotFoundException) {
+
+                throw new DocumentWriterIOException(cause);
+            }
+            throw new DocumentWriterException(e);
         }
     }
 
@@ -740,10 +1031,6 @@ public class PsBasicConverter
                 case 'p':
                     if (text.startsWith("ps:")) {
                         out.append(text.substring(3));
-                    } else if (text.startsWith("papersize=")) {
-                        //TODO gene: unimplemented
-                        throw new RuntimeException("unimplemented");
-
                     } else if (text.startsWith("psfile=")) {
                         specialPsfile(out, text.substring(7));
                     }
@@ -751,12 +1038,6 @@ public class PsBasicConverter
                 case 'h':
                     if (text.startsWith("header=")) {
                         specialHeader(text.substring(7));
-                    }
-                    break;
-                case 'l':
-                    if (text.equals("landscape")) {
-                        //TODO gene: unimplemented
-                        throw new RuntimeException("unimplemented");
                     }
                     break;
                 case '"':

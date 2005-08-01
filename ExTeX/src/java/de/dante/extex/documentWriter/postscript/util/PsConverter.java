@@ -22,14 +22,15 @@ package de.dante.extex.documentWriter.postscript.util;
 
 import java.io.IOException;
 
+import de.dante.extex.documentWriter.exception.DocumentWriterException;
 import de.dante.extex.typesetter.type.NodeList;
-import de.dante.util.GeneralException;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This interface describes the ability to translate some nodes into
+ * PostScript code.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface PsConverter {
 
@@ -48,9 +49,8 @@ public interface PsConverter {
      * @param fontManager the font manager to inform about characters
      * @param headerManager the container fro the headers
      * @return the bytes representing the current page
-     *
-     * @throws GeneralException in case of an error
+     * @throws DocumentWriterException TODO
      */
     public byte[] nodesToPostScript(final NodeList nodes, final FontManager fontManager,
-            HeaderManager headerManager) throws GeneralException;
+            HeaderManager headerManager) throws DocumentWriterException;
 }

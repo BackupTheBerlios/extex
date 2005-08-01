@@ -27,6 +27,7 @@ import java.util.Map;
 import de.dante.extex.color.ColorAware;
 import de.dante.extex.color.ColorConverter;
 import de.dante.extex.documentWriter.DocumentWriter;
+import de.dante.extex.documentWriter.postscript.util.HeaderManager;
 import de.dante.extex.documentWriter.postscript.util.PsBasicConverter;
 import de.dante.extex.documentWriter.postscript.util.PsConverter;
 import de.dante.extex.documentWriter.postscript.util.FontManager;
@@ -44,7 +45,7 @@ import de.dante.util.resource.ResourceFinder;
  * code. Here some utility methods of general nature are collected.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class AbstractPostscriptWriter
         implements
@@ -111,20 +112,25 @@ public abstract class AbstractPostscriptWriter
     /**
      * Create a PostScript converter.
      *
+     * @param headerManager the header manager
+     *
      * @return the new converter
+     *
+     * @throws IOException in case of an IO error
      */
-    protected PsConverter makeConverter() {
+    protected PsConverter makeConverter(final HeaderManager headerManager)
+            throws IOException {
 
-        Dimen y = new Dimen(Dimen.ONE_INCH);
-        y.multiply(2970, 254); // A4 paper
-
-        y.subtract(Dimen.ONE_INCH);
+        Dimen width = new Dimen(Dimen.ONE_INCH);
+        width.multiply(2100, 254); // A4 paper
+        Dimen height = new Dimen(Dimen.ONE_INCH);
+        height.multiply(2970, 254); // A4 paper
 
         PsConverter converter;
         if (boxed) {
-            converter = new PsBoxConverter(Dimen.ONE_INCH, y);
+            converter = new PsBoxConverter(width, height);
         } else {
-            converter = new PsBasicConverter(Dimen.ONE_INCH, y);
+            converter = new PsBasicConverter(width, height);
         }
         if (converter instanceof ColorAware) {
             ((ColorAware) converter).setColorConverter(colorConverter);
@@ -132,6 +138,7 @@ public abstract class AbstractPostscriptWriter
         if (converter instanceof ResourceConsumer) {
             ((ResourceConsumer) converter).setResourceFinder(finder);
         }
+        converter.init(headerManager);
         return converter;
     }
 

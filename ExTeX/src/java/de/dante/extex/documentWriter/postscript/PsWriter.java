@@ -43,7 +43,7 @@ import de.dante.util.framework.configuration.Configurable;
  * This document writer produces multi-page PostScript documents.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class PsWriter extends AbstractPostscriptWriter
         implements
@@ -186,8 +186,7 @@ public class PsWriter extends AbstractPostscriptWriter
             init = false;
 
             headerManager.reset();
-            converter = makeConverter();
-            converter.init(headerManager);
+            converter = makeConverter(headerManager);
         }
 
         page

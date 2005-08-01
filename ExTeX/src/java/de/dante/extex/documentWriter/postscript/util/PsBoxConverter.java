@@ -19,9 +19,12 @@
 
 package de.dante.extex.documentWriter.postscript.util;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
+import de.dante.extex.documentWriter.exception.DocumentWriterException;
+import de.dante.extex.documentWriter.exception.DocumentWriterIOException;
 import de.dante.extex.interpreter.context.Color;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.dimen.Dimen;
@@ -58,7 +61,7 @@ import de.dante.util.UnicodeChar;
  * boxes of the characters.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class PsBoxConverter implements PsConverter, NodeVisitor {
 
@@ -72,6 +75,16 @@ public class PsBoxConverter implements PsConverter, NodeVisitor {
      * The field <tt>fm</tt> contains the font manager.
      */
     private FontManager fm = null;
+
+    /**
+     * The field <tt>paperHeight</tt> contains the height of the paper.
+     */
+    private Dimen paperHeight = new Dimen();
+
+    /**
+     * The field <tt>paperWidth</tt> contains the width of the paper.
+     */
+    private Dimen paperWidth = new Dimen();
 
     /**
      * The field <tt>showChars</tt> contains the indicator whether the
@@ -98,19 +111,15 @@ public class PsBoxConverter implements PsConverter, NodeVisitor {
 
     /**
      * Creates a new object.
-     * Initializes the current point to the upper left corner 1 inch from the
-     * border.
      *
-     * @param originX the x coordinate of the origin relative to the
-     *  PostScript coordinate system
-     * @param originY the y coordinate of the origin relative to the
-     *  PostScript coordinate system
+     * @param width the width of the paper
+     * @param height the height of the paper
      */
-    public PsBoxConverter(final Dimen originX, final Dimen originY) {
+    public PsBoxConverter(final Dimen width, final Dimen height) {
 
         super();
-        x.set(originX);
-        y.set(originY);
+        paperWidth.set(width);
+        paperHeight.set(height);
     }
 
     /**
@@ -164,6 +173,24 @@ public class PsBoxConverter implements PsConverter, NodeVisitor {
     }
 
     /**
+     * Perform some initializations for each document.
+     *
+     * @param header the target writer
+     *
+     * @throws IOException in case of an error during the writing
+     */
+    public void init(final HeaderManager header) throws IOException {
+
+        String name = this.getClass().getName().replace('.', '/') + ".ps";
+        InputStream stream = getClass().getClassLoader().getResourceAsStream(
+                name);
+        if (stream != null) {
+            header.add(stream, name.substring(name.lastIndexOf('/') + 1));
+            stream.close();
+        }
+    }
+
+    /**
      * Translate nodes into PostScript code.
      * This method traverses the nodes tree recursively and produces the
      * corresponding PostScript code for each node visited.
@@ -174,13 +201,17 @@ public class PsBoxConverter implements PsConverter, NodeVisitor {
      *
      * @return the bytes representing the current page
      *
-     * @throws GeneralException in case of an error
+     * @throws DocumentWriterException in case of an error
      */
     public byte[] nodesToPostScript(final NodeList nodes,
             final FontManager fontManager, final HeaderManager headerManager)
-            throws GeneralException {
+            throws DocumentWriterException {
 
         fm = fontManager;
+
+        x.set(Dimen.ONE_INCH);
+        y.set(paperHeight);
+        y.subtract(Dimen.ONE_INCH);
 
         StringBuffer out = new StringBuffer();
         out.append("TeXDict begin\n");
@@ -198,23 +229,32 @@ public class PsBoxConverter implements PsConverter, NodeVisitor {
      * @param node the node to consider
      * @param out the target for writing
      *
-     * @throws GeneralException in case of an error
+     * @throws DocumentWriterException in case of an error
      */
     private void visit(final Node node, final StringBuffer out)
-            throws GeneralException {
+            throws DocumentWriterException {
 
         Dimen shift = node.getShift();
         Dimen move = node.getMove();
-        if (shift.ne(Dimen.ZERO_PT) && move.ne(Dimen.ZERO_PT)) {
-            Dimen saveX = new Dimen(x);
-            Dimen saveY = new Dimen(y);
-            x.add(move);
-            y.add(shift);
-            node.visit(this, out);
-            x.set(saveX);
-            y.set(saveY);
-        } else {
-            node.visit(this, out);
+        try {
+            if (shift.ne(Dimen.ZERO_PT) && move.ne(Dimen.ZERO_PT)) {
+                Dimen saveX = new Dimen(x);
+                Dimen saveY = new Dimen(y);
+                x.add(move);
+                y.add(shift);
+                node.visit(this, out);
+                x.set(saveX);
+                y.set(saveY);
+            } else {
+                node.visit(this, out);
+            }
+        } catch (GeneralException e) {
+            Throwable cause = e.getCause();
+            if (cause instanceof FileNotFoundException) {
+
+                throw new DocumentWriterIOException(cause);
+            }
+            throw new DocumentWriterException(e);
         }
     }
 
@@ -545,23 +585,5 @@ public class PsBoxConverter implements PsConverter, NodeVisitor {
             }
         }
         return null;
-    }
-
-    /**
-     * Perform some initializations for each document.
-     *
-     * @param header the target writer
-     *
-     * @throws IOException in case of an error during the writing
-     */
-    public void init(final HeaderManager header) throws IOException {
-
-        String name = this.getClass().getName().replace('.', '/') + ".ps";
-        InputStream stream = getClass().getClassLoader().getResourceAsStream(
-                name);
-        if (stream != null) {
-            header.add(stream, name.substring(name.lastIndexOf('/') + 1));
-            stream.close();
-        }
     }
 }
