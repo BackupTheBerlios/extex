@@ -67,7 +67,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.34 $
+ * @version $Revision: 1.35 $
  */
 public class Dump extends AbstractCode implements LogEnabled {
 
@@ -148,7 +148,6 @@ public class Dump extends AbstractCode implements LogEnabled {
         } catch (FileNotFoundException e) {
             throw new InterpreterException(e);
         } catch (IOException e) {
-            //e.printStackTrace();
             throw new InterpreterException(e);
         } finally {
             if (stream != null) {
