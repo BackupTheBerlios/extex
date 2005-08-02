@@ -31,10 +31,64 @@ import de.dante.util.configuration.ConfigurationMissingAttributeException;
 import de.dante.util.framework.logger.LogEnabled;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This resource finder utilizes the Java class finder to search in the class
+ * path. Thus it is possible to find resources inside a jar archive.
+ *
+ * <h2>Configuration</h2>
+ * The resource finder can be configured to influence its actions.
+ * The following example shows a configuration for a resource finder:
+ *
+ * <pre>
+ * &lt;Finder class="de.dante.util.resource.ClasspathFinder"
+ *         trace="false"
+ *         default="default"&gt;
+ *   &lt;tex&gt;
+ *     &lt;extension&gt;&lt;/extension&gt;
+ *     &lt;extension&gt;.tex&lt;/extension&gt;
+ *   &lt;/tex&gt;
+ *   &lt;fmt&gt;
+ *     &lt;extension&gt;&lt;/extension&gt;
+ *     &lt;extension&gt;.fmt&lt;/extension&gt;
+ *   &lt;/fmt&gt;
+ *   &lt;default&gt;
+ *     &lt;extension&gt;&lt;/extension&gt;
+ *   &lt;/default&gt;
+ * &lt;/Finder&gt;
+ * </pre>
+ *
+ * <p>
+ *  Whenever a resource is sought its type is used to find the appropriate
+ *  parameters for the search. If the sub-configuration with the name of the
+ *  type exists then this sub-configuration is used. For instance if the
+ *  resource <tt>tex</tt> with the type <tt>fmt</tt> is sought then the
+ *  sub-configuration <tt>fmt</tt> determines how to find this file.
+ * </p>
+ * <p>
+ *  If no sub-configuration of the given type is present then the attribute
+ *  <tt>default</tt> is used to find the default sub-configuration. In the
+ *  example given above this default configuration is called <tt>default</tt>.
+ *  Nevertheless it would also be possible to point the default configuration
+ *  to another existing configuration. The attribute <tt>default</tt> is
+ *  mandatory.
+ * </p>
+ * <p>
+ *  Each sub-configuration takes the tag <tt>extension</tt> in arbitrary number.
+ *  <tt>extension</tt> contains the extension appended after the resource name.
+ * </p>
+ * <p>
+ *  All combinations of resource name and extension are tried in turn.
+ *  If one combination leads to a readable input stream then it is used.
+ * </p>
+ * <p>
+ *  The attribute <tt>trace</tt> can be used to force a tracing of the actions
+ *  in the log file. The tracing is performed only if a logger is present when
+ *  needed. The tracing flag can be overwritten at run-time.
+ *  The attribute <tt>trace</tt> is optional.
+ * </p>
+ *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ClasspathFinder implements LogEnabled, ResourceFinder {
 
@@ -44,10 +98,10 @@ public class ClasspathFinder implements LogEnabled, ResourceFinder {
     private transient ResourceBundle bundle = null;
 
     /**
-     * The field <tt>config</tt> contains the configuration object on which this
-     * resource finder is based.
+     * The field <tt>configuration</tt> contains the configuration object on
+     * which this resource finder is based.
      */
-    private Configuration config;
+    private Configuration configuration;
 
     /**
      * The field <tt>logger</tt> contains the logger to be used for tracing.
@@ -68,7 +122,7 @@ public class ClasspathFinder implements LogEnabled, ResourceFinder {
     public ClasspathFinder(final Configuration configuration) {
 
         super();
-        this.config = configuration;
+        this.configuration = configuration;
         String t = configuration.getAttribute("trace");
         if (t != null && Boolean.valueOf(t).booleanValue()) {
             trace = true;
@@ -104,16 +158,20 @@ public class ClasspathFinder implements LogEnabled, ResourceFinder {
     public InputStream findResource(final String name, final String type)
             throws ConfigurationException {
 
+        if (trace && bundle == null) {
+            bundle = ResourceBundle.getBundle(ClasspathFinder.class.getName());
+        }
+
         ClassLoader classLoader = this.getClass().getClassLoader();
 
-        Configuration cfg = config.findConfiguration(type);
+        Configuration cfg = configuration.findConfiguration(type);
         if (cfg == null) {
-            String t = config.getAttribute("default");
+            String t = configuration.getAttribute("default");
             if (t == null) {
                 throw new ConfigurationMissingAttributeException("default",
-                        config);
+                        configuration);
             }
-            cfg = config.getConfiguration(t);
+            cfg = configuration.getConfiguration(t);
             if (cfg == null) {
                 return null;
             }
@@ -124,6 +182,9 @@ public class ClasspathFinder implements LogEnabled, ResourceFinder {
         while (extIt.hasNext()) {
             String ext = extIt.next();
             String fullName = name + ext;
+            if (trace) {
+                trace("Try", fullName, null);
+            }
             InputStream stream = classLoader.getResourceAsStream(fullName);
 
             if (stream != null) {
@@ -132,7 +193,9 @@ public class ClasspathFinder implements LogEnabled, ResourceFinder {
                 }
                 return stream;
             }
-            trace("NotFound", fullName, null);
+            if (trace) {
+                trace("NotFound", fullName, null);
+            }
         }
         return null;
     }
@@ -145,10 +208,6 @@ public class ClasspathFinder implements LogEnabled, ResourceFinder {
      * @param arg2 the second argument to insert
      */
     private void trace(final String key, final String arg, final String arg2) {
-
-        if (bundle == null) {
-            bundle = ResourceBundle.getBundle(ClasspathFinder.class.getName());
-        }
 
         logger.fine(MessageFormat.format(bundle.getString(key), //
                 new Object[]{arg, arg2}));
