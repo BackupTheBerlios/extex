@@ -99,7 +99,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.77 $
+ * @version $Revision: 1.78 $
  */
 public abstract class Max
         implements
@@ -296,7 +296,7 @@ public abstract class Max
         try {
             while (iterator.hasNext()) {
                 primitiveFactory.define((Configuration) iterator.next(),
-                        tokenFactory, context, logger);
+                        tokenFactory, context, logger, null); //TODO gene: provide OutputStreamFactory
             }
         } catch (GeneralException e) {
             throw new ConfigurationWrapperException(e);

@@ -22,10 +22,12 @@ package de.dante.extex.interpreter.max;
 import java.util.Iterator;
 import java.util.logging.Logger;
 
+import de.dante.extex.documentWriter.OutputStreamFactory;
 import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.InitializableCode;
+import de.dante.extex.interpreter.type.OutputStreamConsumer;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.CodeToken;
@@ -49,7 +51,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class PrimitiveFactory extends AbstractFactory {
 
@@ -77,11 +79,11 @@ public class PrimitiveFactory extends AbstractFactory {
 
     /**
      * Scan a configuration and define the primitives found.
-     *
      * @param configuration the configuration to scan
      * @param tokenFactory the token factory to use
      * @param context the interpreter context to register the primitive in
      * @param outputLogger the logger to produce output to
+     * @param outputFactory TODO
      *
      * @throws GeneralException In case of an error
      * @throws ConfigurationException in case of an error
@@ -98,7 +100,7 @@ public class PrimitiveFactory extends AbstractFactory {
      */
     public void define(final Configuration configuration,
             final TokenFactory tokenFactory, final Context context,
-            final Logger outputLogger)
+            final Logger outputLogger, final OutputStreamFactory outputFactory)
             throws GeneralException,
                 ConfigurationException {
 
@@ -124,6 +126,9 @@ public class PrimitiveFactory extends AbstractFactory {
                 StringSource stringSource = new StringSource(value);
                 ((InitializableCode) code).init(context, stringSource,
                         typesetter);
+            }
+            if (code instanceof OutputStreamConsumer) {
+                ((OutputStreamConsumer)code).setOutputStreamFactory(outputFactory);
             }
         }
     }
