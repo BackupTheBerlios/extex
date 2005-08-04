@@ -24,8 +24,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 
-import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
-
 import de.dante.extex.font.exception.FontException;
 import de.dante.extex.font.exception.FontIOException;
 import de.dante.extex.font.type.pfb.exception.PfbIncorrectRecordTypeException;
@@ -44,7 +42,7 @@ import de.dante.util.xml.XMLStreamWriter;
  * <p>Type 1 Font Programm [ASCII - eexec encryption (Binary only) - ASCII]<p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class PfbParser implements XMLWriterConvertible, Serializable {
 
@@ -327,7 +325,7 @@ public class PfbParser implements XMLWriterConvertible, Serializable {
             if (PFB_RECORDS[i] == ASCII_MARKER) {
                 writer.writeCDATA(getPart(i));
             } else {
-                writer.writeCDATA(Base64.encode(getPart(i)));
+     //           writer.writeCDATA(Base64.encode(getPart(i)));
             }
             writer.writeEndElement();
         }
