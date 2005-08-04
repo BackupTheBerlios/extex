@@ -47,11 +47,12 @@ import de.dante.util.framework.logger.LogEnabled;
  *  &lt;cfg&gt;
  *    &lt;define name="<i>name</i>" class="<i>class</i>"/&gt;
  *    &lt;define name="<i>name</i>" class="<i>class</i>"&gt;<i>value</i>&lt;/define&gt;
+ *    &lt;define name="<i>name</i>" class="<i>class</i>"/&gt;
  *  &lt;/cfg&gt;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class PrimitiveFactory extends AbstractFactory {
 
@@ -114,9 +115,14 @@ public class PrimitiveFactory extends AbstractFactory {
             Code code = (Code) createInstanceForConfiguration(cfg, Code.class,
                     name);
 
+            String namespace = cfg.getAttribute("namespace");
+            if (namespace == null) {
+                namespace = Namespace.DEFAULT_NAMESPACE;
+            }
+
             context.setCode((CodeToken) tokenFactory.createToken(
-                    Catcode.ESCAPE, new UnicodeChar('\\'), name,
-                    Namespace.DEFAULT_NAMESPACE), code, true);
+                    Catcode.ESCAPE, new UnicodeChar('\\'), name, namespace),
+                    code, true);
             if (code instanceof LogEnabled) {
                 ((LogEnabled) code).enableLogging(outputLogger);
             }
@@ -128,7 +134,8 @@ public class PrimitiveFactory extends AbstractFactory {
                         typesetter);
             }
             if (code instanceof OutputStreamConsumer) {
-                ((OutputStreamConsumer)code).setOutputStreamFactory(outputFactory);
+                ((OutputStreamConsumer) code)
+                        .setOutputStreamFactory(outputFactory);
             }
         }
     }
