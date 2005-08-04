@@ -43,7 +43,7 @@ import de.dante.util.framework.configuration.Configurable;
  * This document writer produces multi-page PostScript documents.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class PsWriter extends AbstractPostscriptWriter
         implements
@@ -158,14 +158,6 @@ public class PsWriter extends AbstractPostscriptWriter
     }
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#getPages()
-     */
-    public int getPages() {
-
-        return page.size();
-    }
-
-    /**
      * @see de.dante.extex.documentWriter.SingleDocumentStream#setOutputStream(
      *      java.io.OutputStream)
      */
@@ -175,12 +167,13 @@ public class PsWriter extends AbstractPostscriptWriter
     }
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#shipout(
-     *      de.dante.extex.typesetter.type.NodeList)
+     * @see de.dante.extex.documentWriter.AbstractDocumentWriter#shipout(
+     *      de.dante.extex.typesetter.type.NodeList,
+     *      de.dante.extex.interpreter.type.dimen.Dimen,
+     *      de.dante.extex.interpreter.type.dimen.Dimen)
      */
-    public void shipout(final NodeList nodes)
-            throws GeneralException,
-                IOException {
+    public boolean shipout(final NodeList nodes, final Dimen width,
+            final Dimen height) throws GeneralException, IOException {
 
         if (init) {
             init = false;
@@ -192,6 +185,7 @@ public class PsWriter extends AbstractPostscriptWriter
         page
                 .add(converter.nodesToPostScript(nodes, fontManager,
                         headerManager));
+        return true;
     }
 
     /**

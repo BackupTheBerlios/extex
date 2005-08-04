@@ -26,6 +26,7 @@ import java.util.Map;
 
 import de.dante.extex.color.ColorAware;
 import de.dante.extex.color.ColorConverter;
+import de.dante.extex.documentWriter.AbstractDocumentWriter;
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.documentWriter.postscript.util.HeaderManager;
 import de.dante.extex.documentWriter.postscript.util.PsBasicConverter;
@@ -45,11 +46,10 @@ import de.dante.util.resource.ResourceFinder;
  * code. Here some utility methods of general nature are collected.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public abstract class AbstractPostscriptWriter
+public abstract class AbstractPostscriptWriter extends AbstractDocumentWriter
         implements
-            DocumentWriter,
             Configurable,
             ResourceConsumer,
             ColorAware {
@@ -71,11 +71,6 @@ public abstract class AbstractPostscriptWriter
     private ResourceFinder finder = null;
 
     /**
-     * The field <tt>parameter</tt> contains the map for parameters.
-     */
-    private Map parameter = new HashMap();
-
-    /**
      * Creates a new object.
      */
     public AbstractPostscriptWriter() {
@@ -95,18 +90,6 @@ public abstract class AbstractPostscriptWriter
 
         String b = config.getAttribute("boxed");
         boxed = (b == null ? false : Boolean.valueOf(b).booleanValue());
-    }
-
-    /**
-     * Getter for a named parameter.
-     *
-     * @param name the name of the parameter
-     *
-     * @return the value of the parameter or <code>null</code> if none exists
-     */
-    protected String getParameter(final String name) {
-
-        return (String) parameter.get(name);
     }
 
     /**
@@ -149,16 +132,6 @@ public abstract class AbstractPostscriptWriter
     public void setColorConverter(final ColorConverter converter) {
 
         this.colorConverter = converter;
-    }
-
-    /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#setParameter(
-     *      java.lang.String,
-     *      java.lang.String)
-     */
-    public void setParameter(final String name, final String value) {
-
-        parameter.put(name, value);
     }
 
     /**

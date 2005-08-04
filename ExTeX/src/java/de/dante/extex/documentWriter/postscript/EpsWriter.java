@@ -23,8 +23,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import de.dante.extex.documentWriter.DocumentWriterOptions;
-import de.dante.extex.documentWriter.MultipleDocumentStream;
-import de.dante.extex.documentWriter.OutputStreamFactory;
 import de.dante.extex.documentWriter.postscript.util.FontManager;
 import de.dante.extex.documentWriter.postscript.util.HeaderManager;
 import de.dante.extex.documentWriter.postscript.util.PsConverter;
@@ -38,11 +36,10 @@ import de.dante.util.framework.configuration.Configurable;
  * This document writer produces Encapsulated Postscript documents.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class EpsWriter extends AbstractPostscriptWriter
         implements
-            MultipleDocumentStream,
             Configurable {
 
     /**
@@ -65,16 +62,6 @@ public class EpsWriter extends AbstractPostscriptWriter
      * is still required.
      */
     private boolean init = true;
-
-    /**
-     * The field <tt>pages</tt> contains the number of pages already processed.
-     */
-    private int pages = 0;
-
-    /**
-     * The field <tt>writerFactory</tt> contains the factory for output streams.
-     */
-    private OutputStreamFactory writerFactory = null;
 
     /**
      * Creates a new object.
@@ -103,29 +90,13 @@ public class EpsWriter extends AbstractPostscriptWriter
     }
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#getPages()
+     * @see de.dante.extex.documentWriter.AbstractDocumentWriter#shipout(
+     *      de.dante.extex.typesetter.type.NodeList,
+     *      de.dante.extex.interpreter.type.dimen.Dimen,
+     *      de.dante.extex.interpreter.type.dimen.Dimen)
      */
-    public int getPages() {
-
-        return pages;
-    }
-
-    /**
-     * @see de.dante.extex.documentWriter.MultipleDocumentStream#setOutputStreamFactory(
-     *      de.dante.extex.documentWriter.OutputStreamFactory)
-     */
-    public void setOutputStreamFactory(final OutputStreamFactory factory) {
-
-        this.writerFactory = factory;
-    }
-
-    /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#shipout(
-     *      de.dante.extex.typesetter.type.NodeList)
-     */
-    public void shipout(final NodeList nodes)
-            throws GeneralException,
-                IOException {
+    public boolean shipout(final NodeList nodes, final Dimen width,
+            final Dimen height) throws GeneralException, IOException {
 
         if (init) {
             init = false;
@@ -134,7 +105,7 @@ public class EpsWriter extends AbstractPostscriptWriter
             converter = makeConverter(headerManager);
         }
 
-        OutputStream stream = writerFactory.getOutputStream();
+        OutputStream stream = newOutputStream("eps");
 
         byte[] bytes = converter.nodesToPostScript(nodes, fontManager,
                 headerManager);
@@ -153,7 +124,7 @@ public class EpsWriter extends AbstractPostscriptWriter
         writeDsc(stream, "EOF");
         stream.close();
         stream = null;
-        pages++;
+        return true;
     }
 
     /**
