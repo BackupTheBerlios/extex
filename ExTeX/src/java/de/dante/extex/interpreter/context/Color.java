@@ -21,12 +21,15 @@ package de.dante.extex.interpreter.context;
 
 import java.io.Serializable;
 
+import de.dante.extex.color.ColorVisitor;
+import de.dante.util.GeneralException;
+
 /**
  * This interface declares some methods to access the color with an alpha
  * channel.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public interface Color extends Serializable {
 
@@ -53,4 +56,17 @@ public interface Color extends Serializable {
      *  colors are the same
      */
     boolean equals(Object other);
+
+    /**
+     * This method provides an entry point for the visitor pattern.
+     *
+     * @param visitor the visitor to apply
+     * @param value the argument for the visitor
+     *
+     * @return the result of the method invocation of the visitor
+     *
+     * @throws GeneralException in case of an error
+     */
+    Object visit(ColorVisitor visitor, Object value) throws GeneralException;
+
 }

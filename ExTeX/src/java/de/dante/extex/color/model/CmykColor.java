@@ -19,14 +19,16 @@
 
 package de.dante.extex.color.model;
 
+import de.dante.extex.color.ColorVisitor;
 import de.dante.extex.interpreter.context.Color;
+import de.dante.util.GeneralException;
 
 /**
  * This class implements a color specification in CMYK mode with an alpha
  * channel.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class CmykColor implements Color {
 
@@ -167,5 +169,16 @@ public class CmykColor implements Color {
                 + Integer.toHexString(yellow) + " "
                 + Integer.toHexString(black) + " alpha=" + (float) alpha
                 / Color.MAX_VALUE + " >";
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Color#visit(
+     *      de.dante.extex.color.ColorVisitor,
+     *      java.lang.Object)
+     */
+    public Object visit(final ColorVisitor visitor, final Object value)
+            throws GeneralException {
+
+        return visitor.visitCmyk(this, value);
     }
 }
