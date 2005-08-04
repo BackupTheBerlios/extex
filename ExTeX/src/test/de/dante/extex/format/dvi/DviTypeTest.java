@@ -25,6 +25,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.LineNumberReader;
 import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
@@ -43,6 +44,7 @@ import de.dante.util.configuration.ConfigurationInstantiationException;
 import de.dante.util.configuration.ConfigurationMissingAttributeException;
 import de.dante.util.configuration.ConfigurationNoSuchMethodException;
 import de.dante.util.file.random.RandomAccessInputFile;
+import de.dante.util.resource.PropertyConfigurable;
 import de.dante.util.resource.ResourceFinder;
 import de.dante.util.resource.ResourceFinderFactory;
 
@@ -53,7 +55,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 
 public class DviTypeTest extends TestCase {
@@ -194,6 +196,11 @@ public class DviTypeTest extends TestCase {
     private Properties props = null;
 
     /**
+     * finder
+     */
+    private ResourceFinder finder;
+
+    /**
      * make a font factroy
      * @return  Return the fontfactory
      * @throws Exception if an error occurs.
@@ -203,6 +210,11 @@ public class DviTypeTest extends TestCase {
 
         Configuration config = new ConfigurationFactory()
                 .newInstance("config/extex.xml");
+
+        props = getProps();
+
+        finder = (new ResourceFinderFactory()).createResourceFinder(config
+                .getConfiguration("Resource"), null, props);
 
         FontFactory fontFactory = makeFontFactory(config
                 .getConfiguration("Fonts"));
@@ -230,20 +242,20 @@ public class DviTypeTest extends TestCase {
             throw new ConfigurationMissingAttributeException("class", config);
         }
 
-        ResourceFinder fontFinder = (new ResourceFinderFactory())
-                .createResourceFinder(config.getConfiguration("Resource"),
-                        null, getProps());
-        if (Boolean.valueOf(getProps().getProperty("extex.trace.font.files"))
-                .booleanValue()) {
-            fontFinder.enableTracing(true);
-        }
+        //        ResourceFinder fontFinder = (new ResourceFinderFactory())
+        //                .createResourceFinder(config.getConfiguration("Resource"),
+        //                        null, getProps());
+        //        if (Boolean.valueOf(getProps().getProperty("extex.trace.font.files"))
+        //                .booleanValue()) {
+        //            fontFinder.enableTracing(true);
+        //        }
 
         try {
             fontFactory = (FontFactory) (Class.forName(fontClass)
                     .getConstructor(
                             new Class[]{Configuration.class,
                                     ResourceFinder.class})
-                    .newInstance(new Object[]{config, fontFinder}));
+                    .newInstance(new Object[]{config, finder}));
         } catch (IllegalArgumentException e) {
             throw new ConfigurationInstantiationException(e);
         } catch (SecurityException e) {
@@ -258,6 +270,10 @@ public class DviTypeTest extends TestCase {
             throw new ConfigurationNoSuchMethodException(e);
         } catch (ClassNotFoundException e) {
             throw new ConfigurationClassNotFoundException(fontClass);
+        }
+
+        if (fontFactory instanceof PropertyConfigurable) {
+            ((PropertyConfigurable) fontFactory).setProperties(props);
         }
 
         return fontFactory;
