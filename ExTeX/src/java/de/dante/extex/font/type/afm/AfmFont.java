@@ -29,15 +29,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
-import org.jdom.Element;
-
 import de.dante.extex.font.exception.FontException;
-import de.dante.extex.font.type.FontMetric;
 import de.dante.extex.font.type.afm.exception.AfmMissingEndCharMetricsException;
 import de.dante.extex.font.type.afm.exception.AfmMissingEndFontMetricsException;
 import de.dante.extex.font.type.afm.exception.AfmMissingEndKernPairsException;
 import de.dante.extex.font.type.afm.exception.AfmMissingStartCharMetricsException;
-import de.dante.extex.font.type.afm.exception.AfmNoBoundingBoxFoundException;
+import de.dante.util.EFMWriterConvertible;
 import de.dante.util.XMLWriterConvertible;
 import de.dante.util.xml.XMLStreamWriter;
 
@@ -45,9 +42,13 @@ import de.dante.util.xml.XMLStreamWriter;
  * This class read a AFM-file and create a efm-element.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class AfmFont implements FontMetric, Serializable, XMLWriterConvertible {
+public class AfmFont
+        implements
+            Serializable,
+            XMLWriterConvertible,
+            EFMWriterConvertible {
 
     /**
      * the fontname
@@ -372,101 +373,94 @@ public class AfmFont implements FontMetric, Serializable, XMLWriterConvertible {
     }
 
     /**
-     * @see de.dante.extex.font.type.FontMetric#getFontMetric()
+     * @see de.dante.util.EFMWriterConvertible#writeEFM(de.dante.util.xml.XMLStreamWriter)
      */
-    public Element getFontMetric() throws FontException {
+    public void writeEFM(final XMLStreamWriter writer) throws IOException {
 
-        // create efm-file
-        Element root = new Element("fontgroup");
-        root.setAttribute("name", fontname);
-        root.setAttribute("id", fontname);
-        root.setAttribute("empr", "100");
-
-        Element efontdimen = new Element("fontdimen");
-        root.addContent(efontdimen);
-
-        Element font = new Element("font");
-        font.setAttribute("type", "type1");
-        root.addContent(font);
-
-        font.setAttribute("font-name", header.getFontname());
-        font.setAttribute("font-fullname", header.getFullname());
-        font.setAttribute("font-family", header.getFamilyname());
-        font.setAttribute("font-weight", header.getWeight());
-
-        root.setAttribute("units-per-em", "1000");
-        root.setAttribute("bbox", String.valueOf(header.getLlx()) + ' '
+        writer.writeStartElement("font");
+        writer.writeAttribute("id", fontname);
+        writer.writeAttribute("type", "type1");
+        writer.writeAttribute("font-name", header.getFontname());
+        writer.writeAttribute("font-fullname", header.getFullname());
+        writer.writeAttribute("font-family", header.getFamilyname());
+        writer.writeAttribute("font-weight", header.getWeight());
+        writer.writeAttribute("units-per-em", "1000");
+        writer.writeAttribute("bbox", String.valueOf(header.getLlx()) + ' '
                 + String.valueOf(header.getLly()) + ' '
                 + String.valueOf(header.getUrx()) + ' '
                 + String.valueOf(header.getUry()));
         if (header.getUnderlinethickness() != 0) {
-            efontdimen.setAttribute("underline-position", String.valueOf(header
+            writer.writeAttribute("underline-position", String.valueOf(header
                     .getUnderlineposition()));
-            efontdimen.setAttribute("underline-thickness", String
-                    .valueOf(header.getUnderlinethickness()));
+            writer.writeAttribute("underline-thickness", String.valueOf(header
+                    .getUnderlinethickness()));
         }
-        efontdimen.setAttribute("xheight", String.valueOf(header.getXheight()));
-        efontdimen.setAttribute("capheight", String.valueOf(header
-                .getCapheight()));
+        writer.writeAttribute("xheight", String.valueOf(header.getXheight()));
+        writer.writeAttribute("capheight", String
+                .valueOf(header.getCapheight()));
 
         for (int i = 0; i < afmCharMetrics.size(); i++) {
 
             // create  glyph
-            Element glyph = new Element("glyph");
+            writer.writeStartElement("glyph");
 
             // get the AFMCharMertix-object
             AfmCharMetric cm = (AfmCharMetric) afmCharMetrics.get(i);
 
             // create attributes
             if (cm.getC() >= 0) {
-                glyph.setAttribute("ID", String.valueOf(cm.getC()));
+                writer.writeAttribute("ID", String.valueOf(cm.getC()));
             } else {
-                glyph.setAttribute("ID", "notdef_" + cm.getN());
+                writer.writeAttribute("ID", "notdef_" + cm.getN());
             }
-            glyph.setAttribute("glyph-number", String.valueOf(cm.getC()));
-            glyph.setAttribute("glyph-name", cm.getN());
+            writer.writeAttribute("glyph-number", String.valueOf(cm.getC()));
+            writer.writeAttribute("glyph-name", cm.getN());
 
             if (cm.getWx() != AfmHeader.NOTINIT) {
-                glyph.setAttribute("width", String.valueOf(cm.getWx()));
+                writer.writeAttribute("width", String.valueOf(cm.getWx()));
             } else {
                 // calculate with from bbox
                 if (cm.getBllx() != AfmHeader.NOTINIT) {
-                    glyph.setAttribute("width", String.valueOf(cm.getBllx()
+                    writer.writeAttribute("width", String.valueOf(cm.getBllx()
                             + cm.getBurx()));
                 }
             }
 
             if (cm.getBllx() != AfmHeader.NOTINIT) {
                 if (cm.getBlly() < 0) {
-                    glyph.setAttribute("depth", String.valueOf(-cm.getBlly()));
+                    writer.writeAttribute("depth", String
+                            .valueOf(-cm.getBlly()));
                 } else {
-                    glyph.setAttribute("depth", "0");
+                    writer.writeAttribute("depth", "0");
                 }
                 if (cm.getBury() > 0) {
-                    glyph.setAttribute("height", String.valueOf(cm.getBury()));
+                    writer.writeAttribute("height", String
+                            .valueOf(cm.getBury()));
                 } else {
-                    glyph.setAttribute("height", "0");
+                    writer.writeAttribute("height", "0");
                 }
             } else {
-                throw new AfmNoBoundingBoxFoundException(String.valueOf(cm
-                        .getC()));
+                throw new IOException("no bounding box found");
+                // ...
+                //                throw new AfmNoBoundingBoxFoundException(String.valueOf(cm
+                //                        .getC()));
             }
-            glyph.setAttribute("italic", String
-                    .valueOf(header.getItalicangle()));
+            writer.writeAttribute("italic", String.valueOf(header
+                    .getItalicangle()));
 
             // kerning
-            String glyphname = glyph.getAttributeValue("glyph-name");
+            String glyphname = cm.getN();
             AfmKernPairs kp;
 
             for (int k = 0; k < afmKerningPairs.size(); k++) {
                 kp = (AfmKernPairs) afmKerningPairs.get(k);
                 if (kp.getCharpre().equals(glyphname)) {
-                    Element kerning = new Element("kerning");
-                    kerning.setAttribute("glyph-name", kp.getCharpost());
-                    kerning.setAttribute("glyph-id", getIDforName(kp
+                    writer.writeStartElement("kerning");
+                    writer.writeAttribute("glyph-name", kp.getCharpost());
+                    writer.writeAttribute("glyph-id", getIDforName(kp
                             .getCharpost()));
-                    kerning.setAttribute("size", kp.getKerningsize());
-                    glyph.addContent(kerning);
+                    writer.writeAttribute("size", kp.getKerningsize());
+                    writer.writeEndElement();
                 }
             }
 
@@ -475,20 +469,18 @@ public class AfmFont implements FontMetric, Serializable, XMLWriterConvertible {
                 Iterator iterator = cm.getL().keySet().iterator();
                 while (iterator.hasNext()) {
                     String key = (String) iterator.next();
-                    Element lig = new Element("ligature");
-                    lig.setAttribute("letter", key);
-                    lig.setAttribute("letter-id", getIDforName(key));
+                    writer.writeStartElement("ligature");
+                    writer.writeAttribute("letter", key);
+                    writer.writeAttribute("letter-id", getIDforName(key));
                     String value = (String) cm.getL().get(key);
-                    lig.setAttribute("lig", value);
-                    lig.setAttribute("lig-id", getIDforName(value));
-                    glyph.addContent(lig);
+                    writer.writeAttribute("lig", value);
+                    writer.writeAttribute("lig-id", getIDforName(value));
+                    writer.writeEndElement();
                 }
             }
-
-            // add to fontseg
-            font.addContent(glyph);
+            writer.writeEndElement();
         }
-        return root;
+        writer.writeEndElement();
     }
 
     /**

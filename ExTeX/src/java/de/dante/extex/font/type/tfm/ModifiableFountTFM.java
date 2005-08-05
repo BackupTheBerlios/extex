@@ -38,7 +38,7 @@ import de.dante.util.UnicodeChar;
  * Adapter for a ModifiableFount for TFM.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class ModifiableFountTFM implements ModifiableFount, Serializable {
 
@@ -101,7 +101,7 @@ public class ModifiableFountTFM implements ModifiableFount, Serializable {
     private Dimen designsize;
 
     /**
-     * set the fontdimen values from the tfm param
+     * set the font dimen values from the tfm parameter
      */
     private void setFontDimenValues() {
 
@@ -109,8 +109,7 @@ public class ModifiableFountTFM implements ModifiableFount, Serializable {
         TFMFixWord[] fw = param.getTable();
         for (int i = 0; i < fw.length; i++) {
             String labelname = param.getLabelName(i);
-            Dimen d = new Dimen((long) (fw[i].toDouble()
-                    * actualsize.getValue() / DEFAULTUNITSPEREM));
+            Dimen d = convertFixWordToDimen(fw[i]);
             fontdimen.put(labelname, d);
         }
     }
@@ -250,23 +249,20 @@ public class ModifiableFountTFM implements ModifiableFount, Serializable {
      * TFMFixWord.FIXWORDDENOMINATOR to allow for a
      * bytewise calculation. We do not need this bytewise
      * calculation since we have long integers, but we
-     * need to be precise in perfoming the same rounding.
+     * need to be precise in performing the same rounding.
      *
-     * @param fw
-     *            the fixword value
+     * @param fw    the fixword value
      * @return Returns the Dimen value.
      */
     private Dimen convertFixWordToDimen(final TFMFixWord fw) {
 
-        Dimen rt = new Dimen(0);
         int shift = 20;
         long z = actualsize.getValue();
         while (z >= 8388608) {
             z >>= 1;
             shift -= 1;
         }
-        rt = new Dimen(z*fw.getValue() >> shift);
-        return rt;
+        return new Dimen(z * fw.getValue() >> shift);
     }
 
     /**

@@ -31,6 +31,7 @@ import de.dante.extex.font.exception.FontIOException;
 import de.dante.extex.font.exception.FontMapNotFoundException;
 import de.dante.extex.font.exception.FontNotFoundException;
 import de.dante.extex.font.type.ModifiableFount;
+import de.dante.extex.font.type.afm.AfmFont;
 import de.dante.extex.font.type.efm.EfmReader;
 import de.dante.extex.font.type.efm.ModifiableFountEFM;
 import de.dante.extex.font.type.other.NullFont;
@@ -57,7 +58,7 @@ import de.dante.util.xml.XMLStreamWriter;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public class FontFactory implements PropertyConfigurable {
 
@@ -213,6 +214,16 @@ public class FontFactory implements PropertyConfigurable {
         } catch (FontException e) {
             // try next
         }
+
+        //        // afm ???
+        //        try {
+        //            AfmFont afmfont = readAFMFont(key.getName());
+        //            if (afmfont != null) {
+        //                // return new ModifiableFountTFM(key, tfmfont);
+        //            }
+        //        } catch (FontException e) {
+        //            // try next
+        //        }
         throw new FontNotFoundException(key.getName());
     }
 
@@ -418,6 +429,35 @@ public class FontFactory implements PropertyConfigurable {
             psfm = new PSFontsMapReader(psin);
         }
         return psfm;
+    }
+
+    /**
+     * Read a afm-font.
+     *
+     * @param name  the name of the afm-file
+     * @return  the afm-font or <code>null</code>, if not found
+     * @throws ConfigurationException from the resourcefinder
+     * @throws FontException in case of an font-error
+     */
+    public AfmFont readAFMFont(final String name)
+            throws ConfigurationException, FontException {
+
+        AfmFont font = null;
+
+        if (name != null) {
+
+            // efm
+            InputStream fontfile = finder.findResource(name, AFMEXTENSION);
+
+            if (fontfile != null) {
+                try {
+                    font = new AfmFont(fontfile, name);
+                } catch (IOException e) {
+                    throw new FontIOException(e.getMessage());
+                }
+            }
+        }
+        return font;
     }
 
     /**

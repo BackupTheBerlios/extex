@@ -29,7 +29,7 @@ import de.dante.extex.interpreter.type.glue.Glue;
  * Test for the tfm class.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 
 public class TfmTest extends ExTeXRunner {
@@ -74,16 +74,17 @@ public class TfmTest extends ExTeXRunner {
 
         Font cmr12 = fontFactory.getInstance(key);
 
-        assertEquals(cmr12.getDesignSize().toString(), pt12.toString());
-        assertEquals(cmr12.getActualSize().toString(), pt12.toString());
+        assertEquals(pt12.toString(), cmr12.getDesignSize().toString());
+        assertEquals(pt12.toString(), cmr12.getActualSize().toString());
 
+        assertEquals("3.91663pt", cmr12.getFontDimen("SPACE").toString());
     }
 
     // -----------------------------------------
 
     /**
      * main
-     * @param args  the commandline
+     * @param args  the command line
      */
     public static void main(final String[] args) {
 
