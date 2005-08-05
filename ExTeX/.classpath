@@ -7,13 +7,13 @@
 	<classpathentry kind="lib" path="lib.develop/ant.jar"/>
 	<classpathentry kind="lib" path="lib.develop/junit.jar"/>
 	<classpathentry kind="lib" path="lib/js.jar"/>
-	<classpathentry sourcepath="D:/src/ICU/icu4jsrc_3_2.jar" kind="lib" path="lib/icu4j_2_8.jar"/>
+	<classpathentry kind="lib" path="lib/icu4j_2_8.jar"/>
 	<classpathentry kind="var" path="JAVA_HOME/lib/tools.jar"/>
 	<classpathentry kind="lib" path="lib/avalon-framework-4.1.4.jar"/>
 	<classpathentry kind="lib" path="lib/jel.jar"/>
 	<classpathentry kind="lib" path="lib.develop/jaxen-full.jar"/>
 	<classpathentry kind="lib" path="lib.develop/saxpath.jar"/>
-	<classpathentry kind="lib" path="lib/PDFBox.jar"/>
+	<classpathentry sourcepath="/PDFBox/src" kind="lib" path="lib/PDFBox.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.9.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
