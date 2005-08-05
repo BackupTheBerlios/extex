@@ -20,12 +20,13 @@
 package de.dante.extex.font;
 
 import de.dante.extex.ExTeXRunner;
+import de.dante.extex.font.type.tfm.TFMFont;
 
 /**
  * Test for the tfm class.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class TfmTest extends ExTeXRunner {
@@ -34,7 +35,7 @@ public class TfmTest extends ExTeXRunner {
      * the font factory
      */
     private FontFactory fontFactory;
-    
+
     /*
      * @see TestCase#setUp()
      */
@@ -44,9 +45,18 @@ public class TfmTest extends ExTeXRunner {
         fontFactory = extex.getFontFactory();
     }
 
-    
-    
-    
+    /**
+     * test 01
+     * @throws Exception if an error occurs
+     */
+    public void test01() throws Exception {
+
+        TFMFont font = fontFactory.readTFMFont("cmr12");
+
+        assertEquals(font.getDesignSizeAsDouble(), 12.0d, 0);
+
+    }
+
     // -----------------------------------------
 
     /**

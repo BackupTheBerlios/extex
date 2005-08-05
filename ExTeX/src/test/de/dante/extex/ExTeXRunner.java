@@ -32,7 +32,7 @@ import de.dante.util.resource.ResourceFinder;
  * ExTeX-TestRunner.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class ExTeXRunner extends TestCase {
@@ -140,7 +140,8 @@ public class ExTeXRunner extends TestCase {
         public FontFactory getFontFactory() throws ConfigurationException {
 
             if (fontFactory == null) {
-                fontFactory = makeFontFactory(config, getResourceFinder());
+                fontFactory = makeFontFactory(config.getConfiguration("Fonts"),
+                        getResourceFinder());
             }
             return fontFactory;
         }
