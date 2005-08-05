@@ -38,7 +38,7 @@ import de.dante.util.UnicodeChar;
  * Adapter for a ModifiableFount for TFM.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ModifiableFountTFM implements ModifiableFount, Serializable {
 
@@ -68,7 +68,7 @@ public class ModifiableFountTFM implements ModifiableFount, Serializable {
     }
 
     /**
-     * calcualte the sizes
+     * Calculate the sizes
      */
     private void calculateSize() {
 
@@ -80,12 +80,12 @@ public class ModifiableFountTFM implements ModifiableFount, Serializable {
             fountkey.setScale(new Count(PERMILLE_FACTOR));
         }
 
-        // calculate actualsize
+        // calculate actual size
         if (fountkey.getSize() == null) {
-            actualsize = new Dimen((long) (designsize.getValue()
+            actualsize = new Dimen((designsize.getValue()
                     * fountkey.getScale().getValue() / PERMILLE_FACTOR));
         } else {
-            actualsize = new Dimen((long) (fountkey.getSize().getValue()
+            actualsize = new Dimen((fountkey.getSize().getValue()
                     * fountkey.getScale().getValue() / PERMILLE_FACTOR));
         }
     }
@@ -274,15 +274,14 @@ public class ModifiableFountTFM implements ModifiableFount, Serializable {
      */
     public Glue getSpace() {
 
-        // use actual-size for 'space'
-        Glue rt = new Glue(actualsize);
-
         // glyph 'space' exists?
         Dimen spacedimen = (Dimen) fontdimen.get("SPACE");
         if (spacedimen != null) {
-            rt = new Glue(actualsize);
+            return new Glue(spacedimen);
         }
-        return rt;
+
+        // mgn Walter fragen, welche spacebreite?
+        return new Glue(actualsize);
     }
 
     /**

@@ -20,25 +20,19 @@
 package de.dante.util.font;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.util.Properties;
 
 import de.dante.extex.font.type.afm.AfmFont;
-import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
-import de.dante.util.configuration.ConfigurationFactory;
-import de.dante.util.resource.ResourceFinder;
-import de.dante.util.resource.ResourceFinderFactory;
 import de.dante.util.xml.XMLStreamWriter;
 
 /**
  * Convert a AFM-file to a XML-file.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public final class AFM2XML extends AbstractFontUtil {
 
@@ -63,25 +57,8 @@ public final class AFM2XML extends AbstractFontUtil {
         File xmlfile = new File(args[1]);
         String fontname = args[0].replaceAll("\\.afm|\\.AFM", "");
 
-        Configuration config = new ConfigurationFactory()
-                .newInstance("config/extex.xml");
-
-        //Configuration cfgfonts = config.getConfiguration("Fonts");
-
-        Properties prop = new Properties();
-        try {
-            InputStream in = new FileInputStream(".extex");
-            prop.load(in);
-        } catch (Exception e) {
-            prop.setProperty("extex.fonts", "src/font");
-        }
-
-        ResourceFinder finder = (new ResourceFinderFactory())
-                .createResourceFinder(config.getConfiguration("Resource"),
-                        null, prop);
-
         // afm-file
-        InputStream afmin = finder.findResource(args[0], "");
+        InputStream afmin = getFinder().findResource(args[0], "");
 
         if (afmin == null) {
             throw new FileNotFoundException(args[0]);

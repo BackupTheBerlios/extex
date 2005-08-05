@@ -19,35 +19,61 @@
 
 package de.dante.util.font;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.util.Properties;
-
-import org.jdom.Document;
-import org.jdom.output.XMLOutputter;
 
 import de.dante.extex.font.type.afm.AfmFont;
-import de.dante.util.configuration.Configuration;
-import de.dante.util.configuration.ConfigurationFactory;
-import de.dante.util.resource.ResourceFinder;
-import de.dante.util.resource.ResourceFinderFactory;
+import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.xml.XMLStreamWriter;
 
 /**
  * Convert a AFM-file to a EFM-file.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
-public final class AFM2EFM {
+public final class AFM2EFM extends AbstractFontUtil {
 
     /**
-     * private: no instance
+     * Create a new object.
+     *
+     * @throws ConfigurationException if a config-error occurs.
      */
-    private AFM2EFM() {
+    private AFM2EFM() throws ConfigurationException {
+
+        super();
+    }
+
+    /**
+     * do it.
+     *
+     * @param args the comandline
+     * @throws Exception if an error occurs.
+     */
+    private void doIt(final String[] args) throws Exception {
+
+        File efmfile = new File(args[1]);
+        String fontname = args[0].replaceAll("\\.afm|\\.AFM", "");
+
+        // afm-file
+        InputStream afmin = getFinder().findResource(args[0], "");
+
+        if (afmin == null) {
+            throw new FileNotFoundException(args[0]);
+        }
+
+        AfmFont font = new AfmFont(afmin, fontname);
+
+        // write to xml-file
+        XMLStreamWriter writer = new XMLStreamWriter(new FileOutputStream(
+                efmfile), "ISO-8859-1");
+        writer.setBeauty(true);
+        writer.writeStartDocument();
+        font.writeEFM(writer);
+        writer.writeEndDocument();
+        writer.close();
 
     }
 
@@ -69,41 +95,7 @@ public final class AFM2EFM {
             System.exit(1);
         }
 
-        File efmfile = new File(args[1]);
-        String fontname = args[0].replaceAll("\\.afm|\\.AFM", "");
-
-        Configuration config = new ConfigurationFactory()
-                .newInstance("config/extex.xml");
-
-        //Configuration cfgfonts = config.getConfiguration("Fonts");
-
-        Properties prop = new Properties();
-        try {
-            InputStream in = new FileInputStream(".extex");
-            prop.load(in);
-        } catch (Exception e) {
-            prop.setProperty("extex.fonts", "src/font");
-        }
-
-        ResourceFinder finder = (new ResourceFinderFactory())
-                .createResourceFinder(config.getConfiguration("Resource"),
-                        null, prop);
-
-        // afm-file
-        InputStream afmin = finder.findResource(args[0], "");
-
-        if (afmin == null) {
-            throw new FileNotFoundException(args[0]);
-        }
-
-        AfmFont font = new AfmFont(afmin, fontname);
-
-        // write to efm-file
-        XMLOutputter xmlout = new XMLOutputter("   ", true);
-        BufferedOutputStream out = new BufferedOutputStream(
-                new FileOutputStream(efmfile));
-        Document doc = new Document(font.getFontMetric());
-        xmlout.output(doc, out);
-        out.close();
+        AFM2EFM afm2efm = new AFM2EFM();
+        afm2efm.doIt(args);
     }
 }

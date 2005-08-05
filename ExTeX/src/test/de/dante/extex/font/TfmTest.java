@@ -21,12 +21,15 @@ package de.dante.extex.font;
 
 import de.dante.extex.ExTeXRunner;
 import de.dante.extex.font.type.tfm.TFMFont;
+import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.font.Font;
+import de.dante.extex.interpreter.type.glue.Glue;
 
 /**
  * Test for the tfm class.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 
 public class TfmTest extends ExTeXRunner {
@@ -46,14 +49,33 @@ public class TfmTest extends ExTeXRunner {
     }
 
     /**
-     * test 01
+     * test: design size from tfm.
      * @throws Exception if an error occurs
      */
-    public void test01() throws Exception {
+    public void testdesignsize() throws Exception {
 
         TFMFont font = fontFactory.readTFMFont("cmr12");
 
         assertEquals(font.getDesignSizeAsDouble(), 12.0d, 0);
+
+    }
+
+    /**
+     * test: design / actual size from cmr12.
+     *
+     * @throws Exception if an error occurs
+     */
+    public void test01() throws Exception {
+
+        Dimen pt12 = new Dimen(12 * Dimen.ONE_PT.getValue());
+
+        FountKey key = new FountKey("cmr12", null, null, new Glue(0), true,
+                true);
+
+        Font cmr12 = fontFactory.getInstance(key);
+
+        assertEquals(cmr12.getDesignSize().toString(), pt12.toString());
+        assertEquals(cmr12.getActualSize().toString(), pt12.toString());
 
     }
 

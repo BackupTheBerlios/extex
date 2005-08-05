@@ -31,7 +31,7 @@ import java.util.Locale;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class TFMFixWord implements Serializable {
 
@@ -200,7 +200,9 @@ public class TFMFixWord implements Serializable {
      */
     public double toDouble() {
 
-        return (double) value * TFMConstants.CONST_1000 / FIXWORDDENOMINATOR;
+        // mgn check!
+        return (double) value /*  * TFMConstants.CONST_1000*/
+                / FIXWORDDENOMINATOR;
     }
 
     /**
