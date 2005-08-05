@@ -1,0 +1,110 @@
+\documentclass{scrartcl}
+\providecommand*{\ExTeX}{%
+  \textrm{% das Logo grundsätzlich serifenbehaftet
+    \ensuremath{\textstyle\varepsilon_{\kern-0.15em\mathcal{X}}}%
+    \kern-.15em\TeX
+  }%
+}
+\begin{document}
+\section{Unicode and \ExTeX}
+There are different aspects concering Unicode compatibililty:
+\begin{itemize}
+\item Unicode semantics on glyphs
+\item use a 32 bit representation for internal addressing
+\item composite characters (base character combined with an arbitrary
+number of combining characters)
+\item normalization
+\item bidirectional properties of glyphs
+\item sorting (not yet relevant)
+\end{itemize}
+
+We do have two main goals:
+\begin{itemize}
+\item Unicode compatibility (make aspects as quoted above available to
+the user and \ExTeX{} internals)
+\item backward compatibility
+\end{itemize}
+
+\section{Impact on the scanner}
+
+The scanner is responsible for creating tokens from the input streams.
+Some of the tokens are letter and other tokens, which represent
+integers and will be mapped to glyphs at some later point. While in
+regular \TeX{} those integers will be in range 0 to 255, in \ExTeX{} an
+offset will be used to move them into a private area of Unicode. An
+offset of 0xee00 will be used.
+
+There will be other techniques (extending regular \TeX) to construct
+letter and other tokens different from this private Unicode area.
+Those extensions need to be discussed.
+
+\section{Impact on the interpreter}
+
+In the interpreter at certain points the integers of the letter and
+other tokens can be used for computations. Here the offset has to be
+undone. When letter and other token are outside of the extended ascii
+range then the Unicode semantics will be used to identify feasible
+character classes, for instance minuscule numerals.
+
+The catcode handling need to be adjusted to provide the necessary
+information for the scanner. It's worth to consider to use the Unicode
+semantics for all characters not contained in the private area for
+catcode selection.
+
+\section{Impact on the typesetter}
+
+\subsection{Construction of CharNodes}
+
+In a first step the tokenizer will construct CharNodes out of the
+letter and other tokens as before.
+
+There will be no CharNodes for combining characters. Instead the
+combining characters are stored in a VirtualCharNode. This translation
+step will use Unicode semantics on composite characters.
+
+Note that the characters in the private Unicode area are non-composite
+characters as \TeX{} is not aware of such constructions as well.
+
+For regular \TeX{} fonts without further configuration the font subsystem
+will keep the CharNodes in the private area and transparently perform
+the necessary mapping to the font information given for the fonts to
+the other components of \ExTeX. However, it is possible to construct a
+font (an "\ExTeX{} Unicode font"), which creates CharNodes outside of the
+private Unicode area although the original tokens are in the private
+area.
+
+Note that different "\TeX{} fonts" are associated with a single
+\ExTeX{} Unicode font. This means we do not change the \ExTeX{} Unicode font
+when changing the \TeX{} font but the translation step from tokens to
+CharNodes takes into account the current \TeX{} font setting as stated in
+the interpreter context. A \TeX{} font is infact composed of an \ExTeX{}
+Unicode font and a mapping for tokens to CharNodes.
+
+\subsection{Hyphernation}
+
+Both the hyphernation information and the CharNodes are treated as
+Unicode for hyphernation purposes. The private area is mapped for
+standard ascii. In \TeX{} and \ExTeX{} the hypernation can be deactivated by
+invalidating the hypenchar in the \TeX{} font. The hyphenator should take
+into account that different Unicode characters might be equivalent
+(like composite vs. decomposed characters).
+
+The Unicode semantics on space characters and word boundaries are
+worth a consideration for the extraction of words for hyphernation.
+
+\section{Impact on the font subsystem}
+
+\subsection{compatibility type font handling}
+
+We keep everything working in the private area. The font subsystem
+handles this range and maps the information available from font
+metrices etc. into that range. This is the default (i.e. when no
+manually created efm files or translation tables are provided).
+
+\subsection{\ExTeX{} Unicode style fonts}
+
+An Unicode style font allows to combine several \TeX{} fonts and map the
+glyphs to the proper Unicode code points. This mapping will be applied
+to letter and other tokens when building the CharNodes.
+
+\end{document}
