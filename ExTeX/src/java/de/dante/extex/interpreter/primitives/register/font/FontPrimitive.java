@@ -134,7 +134,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.31 $
+ * @version $Revision: 1.32 $
  */
 public class FontPrimitive extends AbstractAssignment
         implements
@@ -260,7 +260,7 @@ public class FontPrimitive extends AbstractAssignment
     }
 
     /**
-     * scan the filename until a <code>SpaceToken</code>.
+     * Scan the file name until a <code>SpaceToken</code> is found.
      *
      * @param context the interpreter context
      * @param source the source for new tokens
