@@ -25,13 +25,17 @@ import de.dante.extex.color.model.GrayscaleColor;
 import de.dante.extex.color.model.HsvColor;
 import de.dante.extex.color.model.RgbColor;
 import de.dante.extex.interpreter.context.Color;
+import de.dante.extex.interpreter.exception.ImpossibleException;
+import de.dante.util.GeneralException;
 
 /**
  * This implementation of a color converter is based on the formulas in the
  * color space FAQ.
  *
+ * TODO gene: use the new ColorVisitor
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class BasicColorConverter implements ColorConverter {
 
@@ -42,6 +46,238 @@ public class BasicColorConverter implements ColorConverter {
 
         super();
     }
+
+    /**
+     * The field <tt>cmyk</tt> contains the converter for colors to the CMYK
+     * model.
+     */
+    private static ColorVisitor cmyk = new ColorVisitor() {
+
+        /**
+         * @see de.dante.extex.color.ColorVisitor#visitCmyk(
+         *      de.dante.extex.color.model.CmykColor,
+         *      java.lang.Object)
+         */
+        public Object visitCmyk(final CmykColor color, final Object value)
+                throws GeneralException {
+
+            return color;
+        }
+
+        /**
+         * @see de.dante.extex.color.ColorVisitor#visitGray(
+         *      de.dante.extex.color.model.GrayscaleColor,
+         *      java.lang.Object)
+         */
+        public Object visitGray(final GrayscaleColor color, final Object value)
+                throws GeneralException {
+
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.color.ColorVisitor#visitHsv(
+         *      de.dante.extex.color.model.HsvColor,
+         *      java.lang.Object)
+         */
+        public Object visitHsv(final HsvColor color, final Object value)
+                throws GeneralException {
+
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.color.ColorVisitor#visitRgb(
+         *      de.dante.extex.color.model.RgbColor,
+         *      java.lang.Object)
+         */
+        public Object visitRgb(final RgbColor color, final Object value)
+                throws GeneralException {
+
+            int r = Color.MAX_VALUE - ((RgbColor) color).getRed();
+            int g = Color.MAX_VALUE - ((RgbColor) color).getGreen();
+            int b = Color.MAX_VALUE - ((RgbColor) color).getBlue();
+            int black = (r > b ? (b > g ? g : b) : (r > g ? g : r));
+            return ColorFactory.getCmyk(//
+                    black == Color.MAX_VALUE ? 0 : (r - black)
+                            / (Color.MAX_VALUE - black), //
+                    black == Color.MAX_VALUE ? 0 : (g - black)
+                            / (Color.MAX_VALUE - black), //
+                    black == Color.MAX_VALUE ? 0 : (r - black)
+                            / (Color.MAX_VALUE - black), //
+                    black, ((RgbColor) color).getAlpha());
+        }
+    };
+
+    /**
+     * The field <tt>gray</tt> contains the converter for colors to the
+     * grayscale model.
+     */
+    private static ColorVisitor gray = new ColorVisitor() {
+
+        /**
+         * @see de.dante.extex.color.ColorVisitor#visitCmyk(
+         *      de.dante.extex.color.model.CmykColor,
+         *      java.lang.Object)
+         */
+        public Object visitCmyk(final CmykColor color, final Object value)
+                throws GeneralException {
+
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.color.ColorVisitor#visitGray(
+         *      de.dante.extex.color.model.GrayscaleColor,
+         *      java.lang.Object)
+         */
+        public Object visitGray(final GrayscaleColor color, final Object value)
+                throws GeneralException {
+
+            return color;
+        }
+
+        /**
+         * @see de.dante.extex.color.ColorVisitor#visitHsv(
+         *      de.dante.extex.color.model.HsvColor,
+         *      java.lang.Object)
+         */
+        public Object visitHsv(final HsvColor color, final Object value)
+                throws GeneralException {
+
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.color.ColorVisitor#visitRgb(
+         *      de.dante.extex.color.model.RgbColor,
+         *      java.lang.Object)
+         */
+        public Object visitRgb(final RgbColor color, final Object value)
+                throws GeneralException {
+
+            return ColorFactory
+                    .getGray(
+                            (222 * ((RgbColor) color).getRed() + 707
+                                    * ((RgbColor) color).getGreen() + 713 * ((RgbColor) color)
+                                    .getBlue()) / 1000, ((RgbColor) color)
+                                    .getAlpha());
+        }
+    };
+
+    /**
+     * The field <tt>rgb</tt> contains the converter for colors to the RGB
+     * model.
+     */
+    private static ColorVisitor rgb = new ColorVisitor() {
+
+        /**
+         * @see de.dante.extex.color.ColorVisitor#visitCmyk(
+         *      de.dante.extex.color.model.CmykColor,
+         *      java.lang.Object)
+         */
+        public Object visitCmyk(final CmykColor color, final Object value)
+                throws GeneralException {
+
+            int r = Color.MAX_VALUE - ((CmykColor) color).getCyan()
+                    * (Color.MAX_VALUE - ((CmykColor) color).getBlack())
+                    / Color.MAX_VALUE + ((CmykColor) color).getBlack();
+            int g = Color.MAX_VALUE - ((CmykColor) color).getMagenta()
+                    * (Color.MAX_VALUE - ((CmykColor) color).getBlack())
+                    / Color.MAX_VALUE + ((CmykColor) color).getBlack();
+            int b = Color.MAX_VALUE - ((CmykColor) color).getYellow()
+                    * (Color.MAX_VALUE - ((CmykColor) color).getBlack())
+                    / Color.MAX_VALUE + ((CmykColor) color).getBlack();
+            return ColorFactory.getRgb((r < 0 ? 0 : r), //
+                    (g < 0 ? 0 : g), //
+                    (b < 0 ? 0 : b), //
+                    ((CmykColor) color).getAlpha());
+        }
+
+        /**
+         * @see de.dante.extex.color.ColorVisitor#visitGray(
+         *      de.dante.extex.color.model.GrayscaleColor,
+         *      java.lang.Object)
+         */
+        public Object visitGray(final GrayscaleColor color, final Object value)
+                throws GeneralException {
+
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.color.ColorVisitor#visitHsv(
+         *      de.dante.extex.color.model.HsvColor,
+         *      java.lang.Object)
+         */
+        public Object visitHsv(final HsvColor color, final Object value)
+                throws GeneralException {
+
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.color.ColorVisitor#visitRgb(
+         *      de.dante.extex.color.model.RgbColor,
+         *      java.lang.Object)
+         */
+        public Object visitRgb(final RgbColor color, final Object value)
+                throws GeneralException {
+
+            return color;
+        }
+    };
+
+    /**
+     * The field <tt>hsv</tt> contains the converter for colors to the HSV
+     * model.
+     */
+    private static ColorVisitor hsv = new ColorVisitor() {
+
+        /**
+         * @see de.dante.extex.color.ColorVisitor#visitCmyk(
+         *      de.dante.extex.color.model.CmykColor,
+         *      java.lang.Object)
+         */
+        public Object visitCmyk(final CmykColor color, final Object value)
+                throws GeneralException {
+
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.color.ColorVisitor#visitGray(
+         *      de.dante.extex.color.model.GrayscaleColor,
+         *      java.lang.Object)
+         */
+        public Object visitGray(final GrayscaleColor color, final Object value)
+                throws GeneralException {
+
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.color.ColorVisitor#visitHsv(
+         *      de.dante.extex.color.model.HsvColor,
+         *      java.lang.Object)
+         */
+        public Object visitHsv(final HsvColor color, final Object value)
+                throws GeneralException {
+
+            return color;
+        }
+
+        /**
+         * @see de.dante.extex.color.ColorVisitor#visitRgb(
+         *      de.dante.extex.color.model.RgbColor,
+         *      java.lang.Object)
+         */
+        public Object visitRgb(final RgbColor color, final Object value)
+                throws GeneralException {
+
+            return null;
+        }
+    };
 
     /**
      * Convert an arbitrary color to the CMYK model.
@@ -57,27 +293,11 @@ public class BasicColorConverter implements ColorConverter {
      */
     public CmykColor toCmyk(final Color color) {
 
-        if (color instanceof CmykColor) {
-            return (CmykColor) color;
-
-        } else if (color instanceof RgbColor) {
-            RgbColor rgb = (RgbColor) color;
-            int r = Color.MAX_VALUE - rgb.getRed();
-            int g = Color.MAX_VALUE - rgb.getGreen();
-            int b = Color.MAX_VALUE - rgb.getBlue();
-            int black = (r > b ? (b > g ? g : b) : (r > g ? g : r));
-            return ColorFactory.getCmyk(//
-                    black == Color.MAX_VALUE ? 0 : (r - black)
-                            / (Color.MAX_VALUE - black), //
-                    black == Color.MAX_VALUE ? 0 : (g - black)
-                            / (Color.MAX_VALUE - black), //
-                    black == Color.MAX_VALUE ? 0 : (r - black)
-                            / (Color.MAX_VALUE - black), //
-                    black, rgb.getAlpha());
-
+        try {
+            return (CmykColor) color.visit(cmyk, null);
+        } catch (GeneralException e) {
+            throw new ImpossibleException(this.getClass().getName());
         }
-
-        return null;
     }
 
     /**
@@ -94,18 +314,11 @@ public class BasicColorConverter implements ColorConverter {
      */
     public GrayscaleColor toGrayscale(final Color color) {
 
-        if (color instanceof GrayscaleColor) {
-            return (GrayscaleColor) color;
-
-        } else if (color instanceof RgbColor) {
-            RgbColor rgb = (RgbColor) color;
-            return ColorFactory.getGray((222 * rgb.getRed() + 707
-                    * rgb.getGreen() + 713 * rgb.getBlue()) / 1000, rgb
-                    .getAlpha());
-
+        try {
+            return (GrayscaleColor) color.visit(gray, null);
+        } catch (GeneralException e) {
+            throw new ImpossibleException(this.getClass().getName());
         }
-
-        return null;
     }
 
     /**
@@ -122,12 +335,11 @@ public class BasicColorConverter implements ColorConverter {
      */
     public HsvColor toHsv(final Color color) {
 
-        if (color instanceof HsvColor) {
-            return (HsvColor) color;
-
+        try {
+            return (HsvColor) color.visit(hsv, null);
+        } catch (GeneralException e) {
+            throw new ImpossibleException(this.getClass().getName());
         }
-
-        return null;
     }
 
     /**
@@ -144,27 +356,10 @@ public class BasicColorConverter implements ColorConverter {
      */
     public RgbColor toRgb(final Color color) {
 
-        if (color instanceof RgbColor) {
-            return (RgbColor) color;
-
-        } else if (color instanceof CmykColor) {
-            CmykColor cmyk = (CmykColor) color;
-            int r = Color.MAX_VALUE - cmyk.getCyan()
-                    * (Color.MAX_VALUE - cmyk.getBlack()) / Color.MAX_VALUE
-                    + cmyk.getBlack();
-            int g = Color.MAX_VALUE - cmyk.getMagenta()
-                    * (Color.MAX_VALUE - cmyk.getBlack()) / Color.MAX_VALUE
-                    + cmyk.getBlack();
-            int b = Color.MAX_VALUE - cmyk.getYellow()
-                    * (Color.MAX_VALUE - cmyk.getBlack()) / Color.MAX_VALUE
-                    + cmyk.getBlack();
-            return ColorFactory.getRgb((r < 0 ? 0 : r), //
-                    (g < 0 ? 0 : g), //
-                    (b < 0 ? 0 : b), //
-                    cmyk.getAlpha());
-
+        try {
+            return (RgbColor) color.visit(rgb, null);
+        } catch (GeneralException e) {
+            throw new ImpossibleException(this.getClass().getName());
         }
-
-        return null;
     }
 }
