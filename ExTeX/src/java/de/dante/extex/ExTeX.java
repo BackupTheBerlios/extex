@@ -326,7 +326,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.111 $
+ * @version $Revision: 1.112 $
  */
 public class ExTeX {
 
@@ -1196,7 +1196,25 @@ public class ExTeX {
     }
 
     /**
+     * Create a ResourceFinder.
+     * Implicitly the logger and the properties are used.
+     *
+     * @param config the configuration
+     *
+     * @return the new resource finder
+     *
+     * @throws ConfigurationException in case of an configuration error
+     */
+    protected ResourceFinder makeResourceFinder(final Configuration config)
+            throws ConfigurationException {
+
+        return (new ResourceFinderFactory()).createResourceFinder(config
+                .getConfiguration("Resource"), logger, properties);
+    }
+
+    /**
      * Create a TokenStreamFactory.
+     * Implicitly the logger is used.
      *
      * @param config the configuration object for the token stream factory
      * @param finder the file finder for the token stream factory
@@ -1288,9 +1306,7 @@ public class ExTeX {
                     jobname);
             outFactory.setDefaultStream(outStream);
 
-            ResourceFinder finder = (new ResourceFinderFactory())
-                    .createResourceFinder(config.getConfiguration("Resource"),
-                            logger, properties);
+            ResourceFinder finder = makeResourceFinder(config);
             if (Boolean.valueOf(properties.getProperty(PROP_TRACE_INPUT_FILES))
                     .booleanValue()) {
                 finder.enableTracing(true);
