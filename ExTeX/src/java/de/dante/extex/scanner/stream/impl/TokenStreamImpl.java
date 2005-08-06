@@ -48,23 +48,18 @@ import de.dante.util.configuration.ConfigurationSyntaxException;
 /**
  * This class contains an implementation of a token stream which is fed from a
  * Reader.
- * <p>
- * The class ignores the encoding in <tt>\inputencoding</tt>!
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.39 $
+ * @version $Revision: 1.40 $
  */
-public class TokenStreamImpl extends TokenStreamBaseImpl
-        implements
-            TokenStream,
-            CatcodeVisitor {
+public class TokenStreamImpl extends TokenStreamBaseImpl implements TokenStream {
 
     /**
      * This is a type-safe class to represent state information.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.39 $
+     * @version $Revision: 1.40 $
      */
     private static final class State {
 
@@ -76,6 +71,300 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
             super();
         }
     }
+
+    private CatcodeVisitor visitor = new CatcodeVisitor() {
+
+        /**
+         * @see de.dante.extex.scanner.type.CatcodeVisitor#visitActive(
+         *      java.lang.Object, java.lang.Object, java.lang.Object)
+         */
+        public Object visitActive(final Object oFactory,
+                final Object oTokenizer, final Object uc)
+                throws GeneralException {
+
+            state = MID_LINE;
+
+            TokenFactory tokenFactory = (TokenFactory) oFactory;
+            Tokenizer tokenizer = (Tokenizer) oTokenizer;
+            return tokenFactory.createToken(Catcode.ACTIVE, (UnicodeChar) uc,
+                    tokenizer.getNamespace());
+        }
+
+        /**
+         * @see de.dante.extex.scanner.type.CatcodeVisitor#visitComment(
+         *      java.lang.Object, java.lang.Object, java.lang.Object)
+         */
+        public Object visitComment(final Object oFactory,
+                final Object oTokenizer, final Object uc)
+                throws GeneralException {
+
+            endLine();
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.scanner.type.CatcodeVisitor#visitCr(java.lang.Object,
+         *      java.lang.Object, java.lang.Object)
+         */
+        public Object visitCr(final Object oFactory, final Object oTokenizer,
+                final Object uchar) throws GeneralException {
+
+            TokenFactory factory = (TokenFactory) oFactory;
+            Tokenizer tokenizer = (Tokenizer) oTokenizer;
+            Token t = null;
+
+            if (state == MID_LINE) {
+                t = factory.createToken(Catcode.SPACE, ' ', tokenizer
+                        .getNamespace());
+            } else if (state == NEW_LINE) {
+                t = factory.createToken(Catcode.ESCAPE, (UnicodeChar) uchar,
+                        "par", tokenizer.getNamespace());
+            }
+
+            endLine();
+            return t;
+        }
+
+        /**
+         * @see de.dante.extex.scanner.type.CatcodeVisitor#visitEscape(java.lang.Object,
+         *      java.lang.Object, java.lang.Object)
+         */
+        public Object visitEscape(final Object oFactory,
+                final Object oTokenizer, final Object uchar)
+                throws GeneralException {
+
+            TokenFactory factory = (TokenFactory) oFactory;
+            Tokenizer tokenizer = (Tokenizer) oTokenizer;
+            String namespace = tokenizer.getNamespace();
+
+            if (atEndOfLine()) {
+                //empty control sequence; see "The TeXbook, Chapter 8, p. 47"
+                return factory.createToken(Catcode.ESCAPE, (UnicodeChar) uchar,
+                        "", namespace);
+            }
+
+            UnicodeChar uc = getChar(tokenizer);
+
+            if (uc == null) {
+                return factory.createToken(Catcode.ESCAPE, (UnicodeChar) uchar,
+                        "", namespace);
+
+            } else if (tokenizer.getCatcode(uc) == Catcode.LETTER) {
+                StringBuffer sb = new StringBuffer();
+                sb.append((char) (uc.getCodePoint()));
+                int savedPointer = pointer;
+                state = SKIP_BLANKS;
+
+                while (!atEndOfLine() && (uc = getChar(tokenizer)) != null) {
+                    if (tokenizer.getCatcode(uc) != Catcode.LETTER) {
+                        pointer = savedPointer;
+                        return factory.createToken(Catcode.ESCAPE,
+                                (UnicodeChar) uchar, sb.toString(), namespace);
+                    }
+                    sb.append((char) (uc.getCodePoint()));
+                    savedPointer = pointer;
+                }
+
+                return factory.createToken(Catcode.ESCAPE, (UnicodeChar) uchar,
+                        sb.toString(), namespace);
+
+            } else {
+                state = MID_LINE;
+                return factory.createToken(Catcode.ESCAPE, uc, namespace);
+
+            }
+        }
+
+        /**
+         * @see de.dante.extex.scanner.type.CatcodeVisitor#visitIgnore(java.lang.Object,
+         *      java.lang.Object, java.lang.Object)
+         */
+        public Object visitIgnore(final Object oFactory,
+                final Object oTokenizer, final Object uc)
+                throws GeneralException {
+
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.scanner.type.CatcodeVisitor#visitInvalid(java.lang.Object,
+         *      java.lang.Object, java.lang.Object)
+         */
+        public Object visitInvalid(final Object oFactory,
+                final Object oTokenizer, final Object uc)
+                throws GeneralException {
+
+            state = MID_LINE;
+
+            throw new InvalidCharacterException((UnicodeChar) uc);
+        }
+
+        /**
+         * @see de.dante.extex.scanner.type.CatcodeVisitor#visitLeftBrace(
+         *      java.lang.Object, java.lang.Object, java.lang.Object)
+         */
+        public Object visitLeftBrace(final Object oFactory,
+                final Object oTokenizer, final Object uc)
+                throws GeneralException {
+
+            Tokenizer tokenizer = (Tokenizer) oTokenizer;
+            state = MID_LINE;
+
+            return ((TokenFactory) oFactory).createToken(Catcode.LEFTBRACE,
+                    (UnicodeChar) uc, tokenizer.getNamespace());
+        }
+
+        /**
+         * @see de.dante.extex.scanner.type.CatcodeVisitor#visitLetter(java.lang.Object,
+         *      java.lang.Object, java.lang.Object)
+         */
+        public Object visitLetter(final Object oFactory,
+                final Object oTokenizer, final Object uc)
+                throws GeneralException {
+
+            Tokenizer tokenizer = (Tokenizer) oTokenizer;
+            state = MID_LINE;
+
+            return ((TokenFactory) oFactory).createToken(Catcode.LETTER,
+                    (UnicodeChar) uc, tokenizer.getNamespace());
+        }
+
+        /**
+         * @see de.dante.extex.scanner.type.CatcodeVisitor#visitMacroParam(
+         *      java.lang.Object, java.lang.Object, java.lang.Object)
+         */
+        public Object visitMacroParam(final Object oFactory,
+                final Object oTokenizer, final Object uc)
+                throws GeneralException {
+
+            Tokenizer tokenizer = (Tokenizer) oTokenizer;
+            state = MID_LINE;
+
+            return ((TokenFactory) oFactory).createToken(Catcode.MACROPARAM,
+                    (UnicodeChar) uc, tokenizer.getNamespace());
+        }
+
+        /**
+         * @see de.dante.extex.scanner.type.CatcodeVisitor#visitMathShift(
+         *      java.lang.Object, java.lang.Object, java.lang.Object)
+         */
+        public Object visitMathShift(final Object oFactory,
+                final Object oTokenizer, final Object uc)
+                throws GeneralException {
+
+            Tokenizer tokenizer = (Tokenizer) oTokenizer;
+            state = MID_LINE;
+
+            return ((TokenFactory) oFactory).createToken(Catcode.MATHSHIFT,
+                    (UnicodeChar) uc, tokenizer.getNamespace());
+        }
+
+        /**
+         * @see de.dante.extex.scanner.type.CatcodeVisitor#visitOther(java.lang.Object,
+         *      java.lang.Object, java.lang.Object)
+         */
+        public Object visitOther(final Object oFactory,
+                final Object oTokenizer, final Object uc)
+                throws GeneralException {
+
+            Tokenizer tokenizer = (Tokenizer) oTokenizer;
+            state = MID_LINE;
+
+            return ((TokenFactory) oFactory).createToken(Catcode.OTHER,
+                    (UnicodeChar) uc, tokenizer.getNamespace());
+        }
+
+        /**
+         * @see de.dante.extex.scanner.type.CatcodeVisitor#visitRightBrace(
+         *      java.lang.Object, java.lang.Object, java.lang.Object)
+         */
+        public Object visitRightBrace(final Object oFactory,
+                final Object oTokenizer, final Object uc)
+                throws GeneralException {
+
+            Tokenizer tokenizer = (Tokenizer) oTokenizer;
+            state = MID_LINE;
+
+            return ((TokenFactory) oFactory).createToken(Catcode.RIGHTBRACE,
+                    (UnicodeChar) uc, tokenizer.getNamespace());
+        }
+
+        /**
+         * This visit method is invoked on a space token.
+         *
+         * @param oFactory the first argument is the factory to use
+         * @param oTokenizer the second argument is the tokenizer to use
+         * @param uc the third argument is the UnicodeCharacer
+         *
+         * @return a space token if in mid line mode or <code>null</code> otherwise
+         *
+         * @throws CatcodeException in case of an error
+         *
+         * @see de.dante.extex.scanner.type.CatcodeVisitor#visitSpace(
+         *      java.lang.Object, java.lang.Object, java.lang.Object)
+         * @see "The TeXbook [Chapter 8, page 47]"
+         */
+        public Object visitSpace(final Object oFactory,
+                final Object oTokenizer, final Object uc)
+                throws CatcodeException {
+
+            TokenFactory factory = (TokenFactory) oFactory;
+
+            if (state == MID_LINE) {
+                state = SKIP_BLANKS;
+                return factory.createToken(Catcode.SPACE, ' ',
+                        Namespace.DEFAULT_NAMESPACE);
+            }
+
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.scanner.type.CatcodeVisitor#visitSubMark(
+         *      java.lang.Object, java.lang.Object, java.lang.Object)
+         */
+        public Object visitSubMark(final Object oFactory,
+                final Object oTokenizer, final Object uc)
+                throws GeneralException {
+
+            Tokenizer tokenizer = (Tokenizer) oTokenizer;
+            state = MID_LINE;
+
+            return ((TokenFactory) oFactory).createToken(Catcode.SUBMARK,
+                    (UnicodeChar) uc, tokenizer.getNamespace());
+        }
+
+        /**
+         * @see de.dante.extex.scanner.type.CatcodeVisitor#visitSupMark(
+         *      java.lang.Object, java.lang.Object, java.lang.Object)
+         */
+        public Object visitSupMark(final Object oFactory,
+                final Object oTokenizer, final Object uc)
+                throws GeneralException {
+
+            Tokenizer tokenizer = (Tokenizer) oTokenizer;
+            state = MID_LINE;
+
+            return ((TokenFactory) oFactory).createToken(Catcode.SUPMARK,
+                    (UnicodeChar) uc, tokenizer.getNamespace());
+        }
+
+        /**
+         * @see de.dante.extex.scanner.type.CatcodeVisitor#visitTabMark(
+         *      java.lang.Object, java.lang.Object, java.lang.Object)
+         */
+        public Object visitTabMark(final Object oFactory,
+                final Object oTokenizer, final Object uc)
+                throws GeneralException {
+
+            Tokenizer tokenizer = (Tokenizer) oTokenizer;
+            state = MID_LINE;
+
+            return ((TokenFactory) oFactory).createToken(Catcode.TABMARK,
+                    (UnicodeChar) uc, tokenizer.getNamespace());
+        }
+
+    };
 
     /**
      * The constant <tt>BUFFERSIZE_ATTRIBUTE</tt> contains the name of the
@@ -142,6 +431,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
 
     /**
      * Creates a new object.
+     *
      * @param config the configuration object for this instance; This
      * configuration is ignored in this implementation.
      * @param options ignored here
@@ -232,7 +522,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
      * @return <code>true</code> iff the next reading operation would try to
      * refill the line buffer
      */
-    private boolean atEndOfLine() {
+    protected boolean atEndOfLine() {
 
         return (pointer > line.length());
     }
@@ -240,7 +530,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
     /**
      * End the current line.
      */
-    private void endLine() {
+    protected void endLine() {
 
         pointer = line.length() + 1;
     }
@@ -287,7 +577,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
             if (uc.equals(c)) {
                 c = getRawChar();
                 if (c == null) {
-                    return new UnicodeChar(0);
+                    return UnicodeChar.NULL;
                 }
                 int hexHigh = hex2int(c.getCodePoint());
                 if (hexHigh >= 0) {
@@ -343,7 +633,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
             }
 
             try {
-                t = (Token) tokenizer.getCatcode(uc).visit(this, factory,
+                t = (Token) tokenizer.getCatcode(uc).visit(visitor, factory,
                         tokenizer, uc);
             } catch (Exception e) {
                 throw new ScannerException(e);
@@ -358,10 +648,10 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
      *
      * @return the next raw character or <code>null</code> if none is available.
      */
-    private UnicodeChar getRawChar() {
+    protected UnicodeChar getRawChar() {
 
         if (pointer < line.length()) {
-            return new UnicodeChar(line, pointer++);
+            return new UnicodeChar(line.charAt(pointer++));
         }
 
         return (pointer++ > line.length() ? null : CR);
@@ -435,288 +725,12 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
         return true;
     }
 
-    
     /**
      * @see java.lang.Object#toString()
      */
     public String toString() {
 
         return source + ":" + in.getLineNumber() + "[" + pointer + "]:" + line;
-    }
-
-    /**
-     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitActive(
-     *      java.lang.Object, java.lang.Object, java.lang.Object)
-     */
-    public Object visitActive(final Object oFactory, final Object oTokenizer,
-            final Object uc) throws GeneralException {
-
-        state = MID_LINE;
-
-        TokenFactory tokenFactory = (TokenFactory) oFactory;
-        Tokenizer tokenizer = (Tokenizer) oTokenizer;
-        return tokenFactory.createToken(Catcode.ACTIVE, (UnicodeChar) uc,
-                tokenizer.getNamespace());
-    }
-
-    /**
-     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitComment(
-     *      java.lang.Object, java.lang.Object, java.lang.Object)
-     */
-    public Object visitComment(final Object oFactory, final Object oTokenizer,
-            final Object uc) throws GeneralException {
-
-        endLine();
-        return null;
-    }
-
-    /**
-     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitCr(java.lang.Object,
-     *      java.lang.Object, java.lang.Object)
-     */
-    public Object visitCr(final Object oFactory, final Object oTokenizer,
-            final Object uchar) throws GeneralException {
-
-        TokenFactory factory = (TokenFactory) oFactory;
-        Tokenizer tokenizer = (Tokenizer) oTokenizer;
-        Token t = null;
-
-        if (state == MID_LINE) {
-            t = factory.createToken(Catcode.SPACE, ' ', tokenizer
-                    .getNamespace());
-        } else if (state == NEW_LINE) {
-            t = factory.createToken(Catcode.ESCAPE, (UnicodeChar) uchar, "par",
-                    tokenizer.getNamespace());
-        }
-
-        endLine();
-        return t;
-    }
-
-    /**
-     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitEscape(java.lang.Object,
-     *      java.lang.Object, java.lang.Object)
-     */
-    public Object visitEscape(final Object oFactory, final Object oTokenizer,
-            final Object uchar) throws GeneralException {
-
-        TokenFactory factory = (TokenFactory) oFactory;
-        Tokenizer tokenizer = (Tokenizer) oTokenizer;
-        String namespace = tokenizer.getNamespace();
-
-        if (atEndOfLine()) {
-            //empty control sequence; see "The TeXbook, Chapter 8, p. 47"
-            return factory.createToken(Catcode.ESCAPE, (UnicodeChar) uchar, "",
-                    namespace);
-        }
-
-        UnicodeChar uc = getChar(tokenizer);
-
-        if (uc == null) {
-            return factory.createToken(Catcode.ESCAPE, (UnicodeChar) uchar, "",
-                    namespace);
-
-        } else if (tokenizer.getCatcode(uc) == Catcode.LETTER) {
-            StringBuffer sb = new StringBuffer();
-            sb.append((char) (uc.getCodePoint()));
-            int savedPointer = pointer;
-            state = SKIP_BLANKS;
-
-            while (!atEndOfLine() && (uc = getChar(tokenizer)) != null) {
-                if (tokenizer.getCatcode(uc) != Catcode.LETTER) {
-                    pointer = savedPointer;
-                    return factory.createToken(Catcode.ESCAPE,
-                            (UnicodeChar) uchar, sb.toString(), namespace);
-                }
-                sb.append((char) (uc.getCodePoint()));
-                savedPointer = pointer;
-            }
-
-            return factory.createToken(Catcode.ESCAPE, (UnicodeChar) uchar, sb
-                    .toString(), namespace);
-
-        } else {
-            state = MID_LINE;
-            return factory.createToken(Catcode.ESCAPE, uc, namespace);
-
-        }
-    }
-
-    /**
-     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitIgnore(java.lang.Object,
-     *      java.lang.Object, java.lang.Object)
-     */
-    public Object visitIgnore(final Object oFactory, final Object oTokenizer,
-            final Object uc) throws GeneralException {
-
-        return null;
-    }
-
-    /**
-     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitInvalid(java.lang.Object,
-     *      java.lang.Object, java.lang.Object)
-     */
-    public Object visitInvalid(final Object oFactory, final Object oTokenizer,
-            final Object uc) throws GeneralException {
-
-        state = MID_LINE;
-
-        throw new InvalidCharacterException((UnicodeChar) uc);
-    }
-
-    /**
-     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitLeftBrace(
-     *      java.lang.Object, java.lang.Object, java.lang.Object)
-     */
-    public Object visitLeftBrace(final Object oFactory,
-            final Object oTokenizer, final Object uc) throws GeneralException {
-
-        Tokenizer tokenizer = (Tokenizer) oTokenizer;
-        state = MID_LINE;
-
-        return ((TokenFactory) oFactory).createToken(Catcode.LEFTBRACE,
-                (UnicodeChar) uc, tokenizer.getNamespace());
-    }
-
-    /**
-     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitLetter(java.lang.Object,
-     *      java.lang.Object, java.lang.Object)
-     */
-    public Object visitLetter(final Object oFactory, final Object oTokenizer,
-            final Object uc) throws GeneralException {
-
-        Tokenizer tokenizer = (Tokenizer) oTokenizer;
-        state = MID_LINE;
-
-        return ((TokenFactory) oFactory).createToken(Catcode.LETTER,
-                (UnicodeChar) uc, tokenizer.getNamespace());
-    }
-
-    /**
-     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitMacroParam(
-     *      java.lang.Object, java.lang.Object, java.lang.Object)
-     */
-    public Object visitMacroParam(final Object oFactory,
-            final Object oTokenizer, final Object uc) throws GeneralException {
-
-        Tokenizer tokenizer = (Tokenizer) oTokenizer;
-        state = MID_LINE;
-
-        return ((TokenFactory) oFactory).createToken(Catcode.MACROPARAM,
-                (UnicodeChar) uc, tokenizer.getNamespace());
-    }
-
-    /**
-     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitMathShift(
-     *      java.lang.Object, java.lang.Object, java.lang.Object)
-     */
-    public Object visitMathShift(final Object oFactory,
-            final Object oTokenizer, final Object uc) throws GeneralException {
-
-        Tokenizer tokenizer = (Tokenizer) oTokenizer;
-        state = MID_LINE;
-
-        return ((TokenFactory) oFactory).createToken(Catcode.MATHSHIFT,
-                (UnicodeChar) uc, tokenizer.getNamespace());
-    }
-
-    /**
-     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitOther(java.lang.Object,
-     *      java.lang.Object, java.lang.Object)
-     */
-    public Object visitOther(final Object oFactory, final Object oTokenizer,
-            final Object uc) throws GeneralException {
-
-        Tokenizer tokenizer = (Tokenizer) oTokenizer;
-        state = MID_LINE;
-
-        return ((TokenFactory) oFactory).createToken(Catcode.OTHER,
-                (UnicodeChar) uc, tokenizer.getNamespace());
-    }
-
-    /**
-     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitRightBrace(
-     *      java.lang.Object, java.lang.Object, java.lang.Object)
-     */
-    public Object visitRightBrace(final Object oFactory,
-            final Object oTokenizer, final Object uc) throws GeneralException {
-
-        Tokenizer tokenizer = (Tokenizer) oTokenizer;
-        state = MID_LINE;
-
-        return ((TokenFactory) oFactory).createToken(Catcode.RIGHTBRACE,
-                (UnicodeChar) uc, tokenizer.getNamespace());
-    }
-
-    /**
-     * This visit method is invoked on a space token.
-     *
-     * @param oFactory the first argument ias the factory to use
-     * @param oTokenizer the second argument is the tokenizer to use
-     * @param uc the third argument is the UnicodeCharacer
-     *
-     * @return a space token if in mid line mode or <code>null</code> otherwise
-     *
-     * @throws CatcodeException in case of an error
-     *
-     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitSpace(
-     *      java.lang.Object, java.lang.Object, java.lang.Object)
-     * @see "The TeXbook [Chapter 8, page 47]"
-     */
-    public Object visitSpace(final Object oFactory, final Object oTokenizer,
-            final Object uc) throws CatcodeException {
-
-        TokenFactory factory = (TokenFactory) oFactory;
-
-        if (state == MID_LINE) {
-            state = SKIP_BLANKS;
-            return factory.createToken(Catcode.SPACE, ' ',
-                    Namespace.DEFAULT_NAMESPACE);
-        }
-
-        return null;
-    }
-
-    /**
-     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitSubMark(
-     *      java.lang.Object, java.lang.Object, java.lang.Object)
-     */
-    public Object visitSubMark(final Object oFactory, final Object oTokenizer,
-            final Object uc) throws GeneralException {
-
-        Tokenizer tokenizer = (Tokenizer) oTokenizer;
-        state = MID_LINE;
-
-        return ((TokenFactory) oFactory).createToken(Catcode.SUBMARK,
-                (UnicodeChar) uc, tokenizer.getNamespace());
-    }
-
-    /**
-     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitSupMark(
-     *      java.lang.Object, java.lang.Object, java.lang.Object)
-     */
-    public Object visitSupMark(final Object oFactory, final Object oTokenizer,
-            final Object uc) throws GeneralException {
-
-        Tokenizer tokenizer = (Tokenizer) oTokenizer;
-        state = MID_LINE;
-
-        return ((TokenFactory) oFactory).createToken(Catcode.SUPMARK,
-                (UnicodeChar) uc, tokenizer.getNamespace());
-    }
-
-    /**
-     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitTabMark(
-     *      java.lang.Object, java.lang.Object, java.lang.Object)
-     */
-    public Object visitTabMark(final Object oFactory, final Object oTokenizer,
-            final Object uc) throws GeneralException {
-
-        Tokenizer tokenizer = (Tokenizer) oTokenizer;
-        state = MID_LINE;
-
-        return ((TokenFactory) oFactory).createToken(Catcode.TABMARK,
-                (UnicodeChar) uc, tokenizer.getNamespace());
     }
 
 }
