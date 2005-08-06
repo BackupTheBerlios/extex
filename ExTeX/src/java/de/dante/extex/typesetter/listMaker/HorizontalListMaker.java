@@ -27,6 +27,8 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.count.Count;
+import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.language.Language;
@@ -41,6 +43,7 @@ import de.dante.extex.typesetter.type.node.AfterMathNode;
 import de.dante.extex.typesetter.type.node.BeforeMathNode;
 import de.dante.extex.typesetter.type.node.CharNode;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
+import de.dante.extex.typesetter.type.node.ImplicitKernNode;
 import de.dante.extex.typesetter.type.node.SpaceNode;
 import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.ConfigurationException;
@@ -54,7 +57,7 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class HorizontalListMaker extends AbstractListMaker {
 
@@ -264,6 +267,21 @@ public class HorizontalListMaker extends AbstractListMaker {
     public void letter(final Context context, final TypesettingContext tc,
             final UnicodeChar symbol) {
 
+        int size = nodes.size();
+        if (size > 0) {
+            Node n = nodes.get(size - 1);
+            if (n instanceof CharNode) {
+                Font f = tc.getFont();
+                CharNode cn = ((CharNode) n);
+                if (cn.getTypesettingContext().getFont().equals(f)) {
+                    Dimen kerning = f.getGlyph(cn.getCharacter()).getKerning(
+                            symbol);
+                    if (kerning.ne(Dimen.ZERO_PT)) {
+                        nodes.add(new ImplicitKernNode(kerning));
+                    }
+                }
+            }
+        }
         CharNode c = getManager().getCharNodeFactory().newInstance(tc, symbol);
         nodes.add(c);
 
@@ -341,7 +359,7 @@ public class HorizontalListMaker extends AbstractListMaker {
             Node n = nodes.get(i);
             if (n instanceof CharNode) {
                 list.add(n);
-            } else {
+            } else if (!(n instanceof ImplicitKernNode)) {
                 return i;
             }
         }
