@@ -77,7 +77,7 @@ import de.dante.util.configuration.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ColorPrimitive extends AbstractAssignment
         implements
@@ -89,7 +89,7 @@ public class ColorPrimitive extends AbstractAssignment
     private static final int CMYK = 2;
 
     /**
-     * The constant <tt>GRAY</tt> contains the indictor for the grayscale color
+     * The constant <tt>GRAY</tt> contains the indicator for the grayscale color
      * model.
      */
     private static final int GRAY = 3;
