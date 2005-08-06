@@ -39,7 +39,7 @@ import de.dante.extex.typesetter.type.node.CharNode;
  * @see de.dante.extex.interpreter.type.box.Box
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface NodeList extends Node {
 
@@ -81,7 +81,7 @@ public interface NodeList extends Node {
     void clear();
 
     /**
-     * Getter for a node at a given posotion.
+     * Getter for a node at a given position.
      *
      * @param index the position
      *

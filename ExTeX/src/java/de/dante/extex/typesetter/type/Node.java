@@ -41,7 +41,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public interface Node extends Knot {
 
@@ -82,7 +82,7 @@ public interface Node extends Knot {
      * <li>Any other node types has no character</li>
      * </ul>
      *
-     * @return the numer of characters contained
+     * @return the number of characters contained
      */
     int countChars();
 
@@ -106,20 +106,6 @@ public interface Node extends Knot {
      * @return the height
      */
     Dimen getHeight();
-
-    /**
-     * Getter for move.
-     *
-     * @return the move
-     */
-    Dimen getMove();
-
-    /**
-     * Getter for shift.
-     *
-     * @return the shift
-     */
-    Dimen getShift();
 
     /**
      * Compute the vertical size of a node.
@@ -146,7 +132,7 @@ public interface Node extends Knot {
      *  </li>
      * </ul>
      *
-     * @return the vertcal size
+     * @return the vertical size
      */
     Dimen getVerticalSize();
 

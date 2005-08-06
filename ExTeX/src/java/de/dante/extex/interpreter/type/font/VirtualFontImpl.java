@@ -34,7 +34,7 @@ import de.dante.util.UnicodeChar;
  * Implemetation for a virtual font.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class VirtualFontImpl extends FontImpl implements VirtualFount {
 
@@ -145,8 +145,8 @@ public class VirtualFontImpl extends FontImpl implements VirtualFount {
         shift.subtract(v);
 
         // set move / shift
-        node.setMove(move);
-        node.setShift(shift);
+        //TODO MGN: node.setMove(move);
+        //TODO MGN: node.setShift(shift);
         cnode.add(node);
 
         // calculate new refpoint
