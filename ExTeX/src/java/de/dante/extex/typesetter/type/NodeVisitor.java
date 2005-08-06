@@ -62,7 +62,7 @@ import de.dante.util.GeneralException;
  * </p>
  * <p>
  * The other simplistic solution is to use a large switch, or cascaded
- * if-then-else, to differntiate the cases. This kind of code is cumbersome to
+ * if-then-else, to differentiate the cases. This kind of code is cumbersome to
  * maintain. Whenever a new type of node is added you have to remember all
  * places which need adaption.
  * </p>
@@ -71,7 +71,7 @@ import de.dante.util.GeneralException;
  * the nodes has to provide one method called <tt>visit()</tt> here. This
  * method has as one argument the visitor which should be called back. The
  * visitor is defined by this interface. He has to provide a set of methods
- * which allow him to differntiate the types of the nodes.
+ * which allow him to differentiate the types of the nodes.
  * </p>
  * <p>
  * Each node has to implement the method <tt>visit()</tt> in a way that the
@@ -205,14 +205,14 @@ import de.dante.util.GeneralException;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public interface NodeVisitor {
 
     /**
      * This method is called when an
      * {@link de.dante.extex.typesetter.type.node.AdjustNode AdjustNode}
-     * has been encoutered.
+     * has been encountered.
      *
      * @param node the first parameter for the visitor is the node visited
      * @param value the second parameter for the visitor
@@ -226,7 +226,7 @@ public interface NodeVisitor {
     /**
      * This method is called when an
      * {@link de.dante.extex.typesetter.type.node.AfterMathNode AfterMathNode}
-     * has been encoutered.
+     * has been encountered.
      *
      * @param node the first parameter for the visitor is the node visited
      * @param value the second parameter for the visitor
@@ -241,7 +241,7 @@ public interface NodeVisitor {
     /**
      * This method is called when an
      * {@link de.dante.extex.typesetter.type.node.AlignedLeadersNode AlignedLeadersNode}
-     * has been encoutered.
+     * has been encountered.
      *
      * @param node the first parameter for the visitor is the node visited
      * @param value the second parameter for the visitor
@@ -256,7 +256,7 @@ public interface NodeVisitor {
     /**
      * This method is called when a
      * {@link de.dante.extex.typesetter.type.node.BeforeMathNode BeforeMathNode}
-     * has been encoutered.
+     * has been encountered.
      *
      * @param node the first parameter for the visitor is the node visited
      * @param value the second parameter for the visitor
@@ -271,7 +271,7 @@ public interface NodeVisitor {
     /**
      * This method is called when a
      * {@link de.dante.extex.typesetter.type.node.CenteredLeadersNode CenteredLeadersNode}
-     * has been encoutered.
+     * has been encountered.
      *
      * @param node the first parameter for the visitor is the node visited
      * @param value the second parameter for the visitor
@@ -286,7 +286,7 @@ public interface NodeVisitor {
     /**
      * This method is called when a
      * {@link de.dante.extex.typesetter.type.node.CharNode CharNode}
-     * has been encoutered.
+     * has been encountered.
      *
      * @param node the first parameter for the visitor is the node visited
      * @param value the second parameter for the visitor
@@ -300,7 +300,7 @@ public interface NodeVisitor {
     /**
      * This method is called when a
      * {@link de.dante.extex.typesetter.type.node.DiscretionaryNode DiscretionaryNode}
-     * has been encoutered.
+     * has been encountered.
      *
      * @param node the first parameter for the visitor is the node visited
      * @param value the second parameter for the visitor
@@ -315,7 +315,7 @@ public interface NodeVisitor {
     /**
      * This method is called when an
      * {@link de.dante.extex.typesetter.type.node.ExpandedLeadersNode ExpandedLeadersNode}
-     * has been encoutered.
+     * has been encountered.
      *
      * @param node the first parameter for the visitor is the node visited
      * @param value the second parameter for the visitor
@@ -330,7 +330,7 @@ public interface NodeVisitor {
     /**
      * This method is called when a
      * {@link de.dante.extex.typesetter.type.node.GlueNode GlueNode}
-     * has been encoutered.
+     * has been encountered.
      *
      * @param node the first parameter for the visitor is the node visited
      * @param value the second parameter for the visitor
@@ -344,7 +344,7 @@ public interface NodeVisitor {
     /**
      * This method is called when a
      * {@link de.dante.extex.typesetter.type.node.HorizontalListNode HorizontalListNode}
-     * has been encoutered.
+     * has been encountered.
      *
      * @param node the first parameter for the visitor is the node visited
      * @param value the second parameter for the visitor
@@ -359,7 +359,7 @@ public interface NodeVisitor {
     /**
      * This method is called when an
      * {@link de.dante.extex.typesetter.type.node.InsertionNode InsertionNode}
-     * has been encoutered.
+     * has been encountered.
      *
      * @param node the first parameter for the visitor is the node visited
      * @param value the second parameter for the visitor
@@ -374,7 +374,7 @@ public interface NodeVisitor {
     /**
      * This method is called when a
      * {@link de.dante.extex.typesetter.type.node.KernNode KernNode}
-     * has been encoutered.
+     * has been encountered.
      *
      * @param node the first parameter for the visitor is the node visited
      * @param value the second parameter for the visitor
@@ -388,7 +388,7 @@ public interface NodeVisitor {
     /**
      * This method is called when a
      * {@link de.dante.extex.typesetter.type.node.LigatureNode LigatureNode}
-     * has been encoutered.
+     * has been encountered.
      *
      * @param node the first parameter for the visitor is the node visited
      * @param value the second parameter for the visitor
@@ -403,7 +403,7 @@ public interface NodeVisitor {
     /**
      * This method is called when a
      * {@link de.dante.extex.typesetter.type.node.MarkNode MarkNode}
-     * has been encoutered.
+     * has been encountered.
      *
      * @param node the first parameter for the visitor is the node visited
      * @param value the second parameter for the visitor
@@ -417,7 +417,7 @@ public interface NodeVisitor {
     /**
      * This method is called when a
      * {@link de.dante.extex.typesetter.type.node.PenaltyNode PenaltyNode}
-     * has been encoutered.
+     * has been encountered.
      *
      * @param node the first parameter for the visitor is the node visited
      * @param value the second parameter for the visitor
@@ -431,7 +431,7 @@ public interface NodeVisitor {
     /**
      * This method is called when a
      * {@link de.dante.extex.typesetter.type.node.RuleNode RuleNode}
-     * has been encoutered.
+     * has been encountered.
      *
      * @param node the first parameter for the visitor is the node visited
      * @param value the second parameter for the visitor
@@ -445,7 +445,7 @@ public interface NodeVisitor {
     /**
      * This method is called when a
      * {@link de.dante.extex.typesetter.type.node.SpaceNode SpaceNode}
-     * has been encoutered.
+     * has been encountered.
      *
      * @param node the first parameter for the visitor is the node visited
      * @param value the second parameter for the visitor
@@ -459,7 +459,7 @@ public interface NodeVisitor {
     /**
      * This method is called when a
      * {@link de.dante.extex.typesetter.type.node.VerticalListNode VerticalListNode}
-     * has been encoutered.
+     * has been encountered.
      *
      * @param node the first parameter for the visitor is the node visited
      * @param value the second parameter for the visitor
@@ -474,7 +474,7 @@ public interface NodeVisitor {
     /**
      * This method is called when a
      * {@link de.dante.extex.typesetter.type.node.VirtualCharNode VirtualCharNode}
-     * has been encoutered.
+     * has been encountered.
      *
      * @param node the first parameter for the visitor is the node visited
      * @param value the second parameter for the visitor
@@ -489,7 +489,7 @@ public interface NodeVisitor {
     /**
      * This method is called when a
      * {@link de.dante.extex.typesetter.type.node.WhatsItNode WhatsItNode}
-     * has been encoutered.
+     * has been encountered.
      *
      * @param node the first parameter for the visitor is the node visited
      * @param value the second parameter for the visitor

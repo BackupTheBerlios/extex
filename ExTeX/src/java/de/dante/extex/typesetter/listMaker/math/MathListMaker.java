@@ -31,6 +31,7 @@ import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.exception.helping.MissingMathException;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.muskip.Mudimen;
 import de.dante.extex.interpreter.type.muskip.Muskip;
@@ -61,9 +62,11 @@ import de.dante.extex.typesetter.type.noad.NodeNoad;
 import de.dante.extex.typesetter.type.noad.RightNoad;
 import de.dante.extex.typesetter.type.noad.StyleNoad;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
+import de.dante.extex.typesetter.type.node.CharNode;
 import de.dante.extex.typesetter.type.node.DiscretionaryNode;
 import de.dante.extex.typesetter.type.node.GlueNode;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
+import de.dante.extex.typesetter.type.node.ImplicitKernNode;
 import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.ConfigurationException;
 
@@ -71,7 +74,7 @@ import de.dante.util.configuration.ConfigurationException;
  * This is the list maker for the inline math formulae.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class MathListMaker extends AbstractListMaker implements NoadConsumer {
 
@@ -80,7 +83,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      * It is used to store to the stack and restore the state from the stack.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.21 $
+     * @version $Revision: 1.22 $
      */
     private class MathMemento {
 
@@ -281,7 +284,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
 
     /**
      * Close the node list.
-     * In the course of the closing the Noad list is translated into a Node
+     * In the course of the closing, the Noad list is translated into a Node
      * list.
      *
      * @param context the fragment of the context accessible for the typesetter
@@ -368,11 +371,11 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
     }
 
     /**
-     * Getter for noades.
+     * Getter for Noads.
      *
-     * @return the noades.
+     * @return the Noads.
      */
-    protected Noad getNoades() {
+    protected Noad getNoads() {
 
         return this.noads;
     }
