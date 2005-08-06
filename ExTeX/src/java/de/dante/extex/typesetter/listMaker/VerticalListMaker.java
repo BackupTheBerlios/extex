@@ -19,10 +19,13 @@
 
 package de.dante.extex.typesetter.listMaker;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
@@ -38,13 +41,19 @@ import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.ConfigurationException;
 
 /**
- * Maker for a vertical list.
+ * This class provides a maker for a vertical list.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class VerticalListMaker extends AbstractListMaker {
+
+    /**
+     * The field <tt>afterParagraphObservers</tt> contains the observers to be
+     * invoked after the paragraph has been completed.
+     */
+    private List afterParagraphObservers = new ArrayList();
 
     /**
      * The field <tt>nodes</tt> contains the list of nodes encapsulated.
@@ -54,7 +63,7 @@ public class VerticalListMaker extends AbstractListMaker {
     /**
      * This value contains the previous depth for baseline calculations. In
      * contrast to <logo>TeX</logo> the value null is used to indicate that the
-     * next box on the vertical list should be extempt from the baseline
+     * next box on the vertical list should be exempt from the baseline
      * calculations.
      *
      * @see "<logo>TeX</logo> &ndash; The Program [212]"
@@ -75,7 +84,9 @@ public class VerticalListMaker extends AbstractListMaker {
      * @see de.dante.extex.typesetter.ListMaker#add(
      *      de.dante.extex.typesetter.type.Node)
      */
-    public void add(final Node n) throws TypesetterException, ConfigurationException {
+    public void add(final Node n)
+            throws TypesetterException,
+                ConfigurationException {
 
         nodes.add(n);
     }
@@ -95,7 +106,9 @@ public class VerticalListMaker extends AbstractListMaker {
      *      de.dante.extex.interpreter.type.count.Count)
      */
     public void addSpace(final TypesettingContext typesettingContext,
-            final Count spacefactor) throws TypesetterException, ConfigurationException {
+            final Count spacefactor)
+            throws TypesetterException,
+                ConfigurationException {
 
     }
 
@@ -104,15 +117,15 @@ public class VerticalListMaker extends AbstractListMaker {
      */
     public void afterParagraph(final ParagraphObserver observer) {
 
-        //TODO gene: unimplemented
-        throw new RuntimeException("unimplemented");
+        afterParagraphObservers.add(observer);
     }
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#complete(TypesetterOptions)
      */
     public final NodeList complete(final TypesetterOptions context)
-            throws TypesetterException, ConfigurationException {
+            throws TypesetterException,
+                ConfigurationException {
 
         return nodes;
     }
@@ -175,7 +188,17 @@ public class VerticalListMaker extends AbstractListMaker {
      */
     public void par() throws TypesetterException, ConfigurationException {
 
-        // nothing to do
+        try {
+            // Note: the observers have to be run in reverse order to restore
+            // the language properly.
+            for (int i = afterParagraphObservers.size() - 1; i >= 0; i--) {
+                ((ParagraphObserver) afterParagraphObservers.get(i))
+                        .atParagraph(nodes);
+            }
+        } catch (InterpreterException e) {
+            throw new TypesetterException(e);
+        }
+        // nothing more to do
     }
 
     /**
