@@ -16,21 +16,21 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.type;
 
 import de.dante.extex.documentWriter.OutputStreamFactory;
 
-
 /**
- * TODO gene: missing JavaDoc.
+ * This interface describes a consumer of an output stream factory.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface OutputStreamConsumer {
 
     /**
-     * TODO gene: missing JavaDoc
+     * This method takes an output stream factory for further use.
      *
      * @param factory the output stream factory to use
      */

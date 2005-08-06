@@ -30,7 +30,7 @@ import de.dante.util.configuration.ConfigurationException;
  * constructions.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public interface Noad extends Knot {
 
@@ -80,7 +80,8 @@ public interface Noad extends Knot {
     /**
      * Translate a Noad into a NodeList.
      *
-     * @param list the list to add the nodes to
+     * @param list the list to add the nodes to. This list contains the Nodes
+     *  previously typeset. Thus it can be used to look back
      * @param mathContext the context to consider
      * @param context the interpreter context
      *

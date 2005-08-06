@@ -28,17 +28,16 @@ import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
 
 /**
- * This is the abstarct base class for primitives dealing with box registers.
+ * This is the abstract base class for primitives dealing with box registers.
  * It provides a method to get the key of a box register.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public abstract class AbstractBox extends AbstractCode implements Serializable {
 
     /**
      * Return the key (the number) for the box register.
-     *
      *
      * <doc type="syntax" name="box register name">
      * <p>
@@ -56,13 +55,14 @@ public abstract class AbstractBox extends AbstractCode implements Serializable {
      *        | {@linkplain de.dante.extex.interpreter.TokenSource#scanNumber()
      *        &lang;number&rang;}  </pre>
      *
+     * TODO gene: doc incomplete
+     *
      * <h4>Examples</h4>
-     * <p>
+     * <pre>
      *  123
      *  {abc}
-     * </p>
+     * </pre>
      * </doc>
-     * TODO gene: doc incomplete
      *
      *
      * @param context the interpreter context to use

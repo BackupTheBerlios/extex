@@ -44,7 +44,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * to and from their <logo>TeX</logo> encoding as numbers to abstract math code.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class AbstractTeXDelimter extends AbstractMathCode {
 
@@ -54,17 +54,18 @@ public class AbstractTeXDelimter extends AbstractMathCode {
     private static final int CHAR_MASK = 0xff;
 
     /**
-     * The field <tt>CHAR_MAX</tt> contains the ...
+     * The field <tt>CHAR_MAX</tt> contains the maximal number for a character.
      */
     private static final int CHAR_MAX = 255;
 
     /**
-     * The field <tt>CHAR_MIN</tt> contains the ...
+     * The field <tt>CHAR_MIN</tt> contains the minimal number for a character.
      */
     private static final int CHAR_MIN = 0;
 
     /**
-     * The field <tt>CLASS_MASK</tt> contains the ...
+     * The field <tt>CLASS_MASK</tt> contains the mask for the class. This
+     * implies a maximal value.
      */
     private static final int CLASS_MASK = 0xf;
 
@@ -81,17 +82,18 @@ public class AbstractTeXDelimter extends AbstractMathCode {
     private static final int CLASS_SHIFT = 24;
 
     /**
-     * The field <tt>FAM_MAX</tt> contains the ...
+     * The field <tt>FAM_MAX</tt> contains the maximum of the family number.
      */
     private static final int FAM_MAX = 15;
 
     /**
-     * The field <tt>FAM_MIN</tt> contains the ...
+     * The field <tt>FAM_MIN</tt> contains the minimum of the family number.
      */
     private static final int FAM_MIN = 0;
 
     /**
-     * The field <tt>LARGE_CLASS_OFFSET</tt> contains the ...
+     * The field <tt>LARGE_CLASS_OFFSET</tt> contains the offset for large
+     * character's class.
      */
     private static final int LARGE_CLASS_OFFSET = 8;
 
@@ -175,12 +177,14 @@ public class AbstractTeXDelimter extends AbstractMathCode {
     };
 
     /**
-     * The field <tt>SMALL_CHAR_OFFSET</tt> contains the ...
+     * The field <tt>SMALL_CHAR_OFFSET</tt> contains the offset for the small
+     * characters.
      */
     private static final int SMALL_CHAR_OFFSET = 12;
 
     /**
-     * The field <tt>SMALL_CLASS_OFFSET</tt> contains the ...
+     * The field <tt>SMALL_CLASS_OFFSET</tt> contains the offset for the small
+     * character's class.
      */
     private static final int SMALL_CLASS_OFFSET = 20;
 
@@ -241,7 +245,7 @@ public class AbstractTeXDelimter extends AbstractMathCode {
     }
 
     /**
-     * Parse an extdended <logo>ExTeX</logo> delimter from a token source.
+     * Parse an extended <logo>ExTeX</logo> delimiter from a token source.
      *
      * @param context the interpreter context
      * @param source the token source to read from
@@ -354,7 +358,7 @@ public class AbstractTeXDelimter extends AbstractMathCode {
     }
 
     /**
-     * Translate the delimiter into a <logo>TeX</logo> encodd number or throw
+     * Translate the delimiter into a <logo>TeX</logo> encoded number or throw
      * an exception if this is not possible.
      *
      * @param del the delimiter to encode
