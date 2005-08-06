@@ -25,9 +25,18 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\accent</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class AccentTest extends ExTeXLauncher {
+
+    /**
+     * Command line interface.
+     * @param args the arguments
+     */
+    public static void main(final String[] args) {
+
+        junit.textui.TestRunner.run(AccentTest.class);
+    }
 
     /**
      * Constructor for MathaccentTest.
