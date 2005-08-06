@@ -35,7 +35,7 @@ import com.ibm.icu.text.UTF16;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class UnicodeChar implements Serializable {
 
@@ -50,17 +50,6 @@ public class UnicodeChar implements Serializable {
      * (32 bit).
      */
     private int code;
-
-    /**
-     * Creates a new object from a 16-bit character.
-     *
-     * @param char16 16 bit character
-     */
-    public UnicodeChar(final char char16) {
-
-        super();
-        this.code = UCharacter.getCodePoint(char16);
-    }
 
     /**
      * Creates a new object from two 16-bit characters.
@@ -81,7 +70,7 @@ public class UnicodeChar implements Serializable {
      * change String to CharBuffer.
      *
      * @param cb the <code>CharBuffer</code>
-     * @param idx the position in the charbuffer
+     * @param idx the position in the char buffer
      */
     public UnicodeChar(final CharBuffer cb, final int idx) {
 
@@ -153,10 +142,12 @@ public class UnicodeChar implements Serializable {
     }
 
     /**
-     * Init with a char32 from a String at position index.
+     * Creates a new instance from a String at position index.
      *
      * @param s the <code>String</code>
      * @param index the position in the string
+     *
+     * @deprecated use UnicodeChar(int) instead
      */
     public UnicodeChar(final String s, final int index) {
 
@@ -165,27 +156,16 @@ public class UnicodeChar implements Serializable {
     }
 
     /**
-     * Init with a char32 from a String at position idx.
-     *
-     * @param sb the <code>StringBuffer</code>
-     * @param index the position in the string
-     */
-    public UnicodeChar(final StringBuffer sb, final int index) {
-
-        super();
-        this.code = UTF16.charAt(sb, index);
-    }
-
-    /**
      * Compares a <code>UnicodeChar</code> character with the value of this
      * object. They are considered equal if the are both UnicodeChars and have
      * the same code.
      * <p>
-     * The general signature for comparison to an arbitray object is required
+     * The general signature for comparison to an arbitrary object is required
      * for the implementation of {@link java.util.HashMap HashMap} and friends.
      * </p>
      *
      * @param unicodeChar the character to compare
+     *
      * @return <code>true</code> if the characters are equal, otherwise
      *         <code>false</code>
      */
@@ -206,9 +186,9 @@ public class UnicodeChar implements Serializable {
     }
 
     /**
-     * Return the unicode code point.
+     * Return the Unicode code point.
      *
-     * @return the unicode code point
+     * @return the Unicode code point
      */
     public int getCodePoint() {
 
@@ -216,9 +196,9 @@ public class UnicodeChar implements Serializable {
     }
 
     /**
-     * Returns the bidirection property of the character.
+     * Returns the bi-direction property of the character.
      *
-     * @return the bidirection property
+     * @return the bi-direction property
      */
     public int getDirection() {
 
