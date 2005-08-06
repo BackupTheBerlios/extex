@@ -57,7 +57,7 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class HorizontalListMaker extends AbstractListMaker {
 
@@ -68,14 +68,14 @@ public class HorizontalListMaker extends AbstractListMaker {
     private static final int DEFAULT_SPACEFACTOR = 1000;
 
     /**
-     * The constant <tt>SPACEFACTOR_THRESHOLD</tt> contains the threshhold for
-     * the spacefactor above which the space is handled different.
+     * The constant <tt>SPACEFACTOR_THRESHOLD</tt> contains the threshold for
+     * the space factor above which the space is handled different.
      */
     private static final int SPACEFACTOR_THRESHOLD = 2000;
 
     /**
      * The field <tt>afterParagraphObservers</tt> contains the observers to be
-     * invoked after the pargraph has been completed.
+     * invoked after the paragraph has been completed.
      */
     private List afterParagraphObservers = new ArrayList();
 
@@ -86,11 +86,11 @@ public class HorizontalListMaker extends AbstractListMaker {
     private HorizontalListNode nodes = new HorizontalListNode();
 
     /**
-     * The field <tt>spacefactor</tt> contains the current space factor.
+     * The field <tt>spaceFactor</tt> contains the current space factor.
      *
      * @see "<logo>TeX</logo> &ndash; The Program [212]"
      */
-    private long spacefactor = DEFAULT_SPACEFACTOR;
+    private long spaceFactor = DEFAULT_SPACEFACTOR;
 
     /**
      * Creates a new object.
@@ -111,7 +111,7 @@ public class HorizontalListMaker extends AbstractListMaker {
                 ConfigurationException {
 
         nodes.add(c);
-        spacefactor = DEFAULT_SPACEFACTOR;
+        spaceFactor = DEFAULT_SPACEFACTOR;
     }
 
     /**
@@ -121,7 +121,7 @@ public class HorizontalListMaker extends AbstractListMaker {
     public void addGlue(final Glue g) throws TypesetterException {
 
         nodes.addSkip(g);
-        spacefactor = DEFAULT_SPACEFACTOR;
+        spaceFactor = DEFAULT_SPACEFACTOR;
     }
 
     /**
@@ -133,7 +133,7 @@ public class HorizontalListMaker extends AbstractListMaker {
             throws TypesetterException,
                 ConfigurationException {
 
-        long sf = (sfCount != null ? sfCount.getValue() : spacefactor);
+        long sf = (sfCount != null ? sfCount.getValue() : spaceFactor);
         Glue space = context.getFont().getSpace();
 
         // gene: maybe my interpretation of the TeXbook is slightly wrong
@@ -288,7 +288,7 @@ public class HorizontalListMaker extends AbstractListMaker {
         int f = c.getSpaceFactor();
 
         if (f != 0) {
-            spacefactor = (spacefactor < DEFAULT_SPACEFACTOR
+            spaceFactor = (spaceFactor < DEFAULT_SPACEFACTOR
                     && f > DEFAULT_SPACEFACTOR //
             ? DEFAULT_SPACEFACTOR : f);
         }
@@ -396,7 +396,7 @@ public class HorizontalListMaker extends AbstractListMaker {
             throw new TypesetterHelpingException(getLocalizer(),
                     "TTP.BadSpaceFactor", Long.toString(sf));
         }
-        spacefactor = sf;
+        spaceFactor = sf;
     }
 
 }
