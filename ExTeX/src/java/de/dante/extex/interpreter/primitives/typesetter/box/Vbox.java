@@ -75,13 +75,13 @@ import de.dante.util.configuration.ConfigurationException;
  * <h3>The Tokens Parameter <tt>\everyvbox</tt></h3>
  * <p>
  *  The tokens parameter is used in <tt>/vbox</tt>. The tokens contained are
- *  inserted at the beginnig of the vertical material of the vbox.
+ *  inserted at the beginning of the vertical material of the vbox.
  * </p>
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Vbox extends AbstractCode implements Boxable {
 

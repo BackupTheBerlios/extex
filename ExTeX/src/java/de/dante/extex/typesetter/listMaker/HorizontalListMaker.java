@@ -51,13 +51,13 @@ import de.dante.util.configuration.ConfigurationException;
 /**
  * Maker for a horizontal list.
  * <p>
- * After <code>par()</code>, the linebreak and hyphenation are applied.
+ * After <code>par()</code>, the line breaking and hyphenation are applied.
  * </p>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class HorizontalListMaker extends AbstractListMaker {
 
