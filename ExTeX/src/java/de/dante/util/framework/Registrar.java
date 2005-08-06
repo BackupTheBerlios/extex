@@ -46,7 +46,7 @@ import java.util.List;
  *
  *      <b>return</b> Registrar.reconnect(this);
  *  }
- * <pre>
+ * </pre>
  *
  * <p>
  *  Any factory which  wants to participate in the reconnection mechanism should
@@ -66,7 +66,7 @@ import java.util.List;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public final class Registrar {
 
@@ -74,7 +74,7 @@ public final class Registrar {
      * This class provides a container for a pair of a class and an observer.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.2 $
+     * @version $Revision: 1.3 $
      */
     private static final class Obs {
 
