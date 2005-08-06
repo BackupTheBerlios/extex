@@ -34,7 +34,7 @@ import de.dante.util.Locator;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class TokenStreamBaseImpl implements TokenStream {
 
@@ -51,7 +51,7 @@ public class TokenStreamBaseImpl implements TokenStream {
     private boolean skipSpaces = false;
 
     /**
-     * The field <tt>stack</tt> contains the Token stack for the pushback
+     * The field <tt>stack</tt> contains the Token stack for the push-back
      * operation.
      */
     private Tokens stack = new Tokens();
