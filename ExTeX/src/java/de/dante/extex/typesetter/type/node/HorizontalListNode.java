@@ -33,7 +33,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class HorizontalListNode extends AbstractNodeList implements NodeList {
 
@@ -104,9 +104,9 @@ public class HorizontalListNode extends AbstractNodeList implements NodeList {
 
     /**
      * @see de.dante.extex.typesetter.type.node.AbstractNodeList#updateDimensions(
-     *      de.dante.extex.typesetter.type.Node)
+     *      de.dante.extex.typesetter.type.Node, boolean)
      */
-    protected void updateDimensions(final Node node) {
+    protected void updateDimensions(final Node node, boolean first) {
 
         getWidth().add(node.getWidth());
         getHeight().max(node.getHeight());

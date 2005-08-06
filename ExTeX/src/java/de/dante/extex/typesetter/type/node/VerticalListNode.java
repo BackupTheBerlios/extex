@@ -38,7 +38,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class VerticalListNode extends AbstractNodeList implements NodeList {
 
@@ -64,7 +64,7 @@ public class VerticalListNode extends AbstractNodeList implements NodeList {
     }
 
     /**
-     * compute the penalty for the spilt at a given position.
+     * Compute the penalty for the split at a given position.
      *
      * @param penalty the base penalty optionally coming from a penalty node
      * @param ht the actual height
@@ -83,9 +83,9 @@ public class VerticalListNode extends AbstractNodeList implements NodeList {
     }
 
     /**
-     * Split off material from a vlist of a desired height. The splitting is
-     * performed at a position with minimal penalty. The list is stretched to
-     * the desired height.
+     * Split off material from a vertical list of a desired height. The
+     * splitting is performed at a position with minimal penalty. The list is
+     * stretched to the desired height.
      *
      * @param height the target height
      * @param traceLogger the logger for tracing
@@ -177,13 +177,18 @@ public class VerticalListNode extends AbstractNodeList implements NodeList {
 
     /**
      * @see de.dante.extex.typesetter.type.node.AbstractNodeList#updateDimensions(
-     *      de.dante.extex.typesetter.type.Node)
+     *      de.dante.extex.typesetter.type.Node, boolean)
      */
-    protected void updateDimensions(final Node node) {
+    protected void updateDimensions(final Node node, final boolean first) {
 
         getWidth().max(node.getWidth());
-        getHeight().add(node.getHeight()); //TODO gene: incorrect
-        getDepth().add(node.getDepth()); //TODO gene: incorrect
+        Dimen d = getDepth();
+        if (first) {
+            getHeight().set(node.getHeight());
+        } else {
+            d.add(node.getHeight());
+        }
+        d.add(node.getDepth());
     }
 
     /**

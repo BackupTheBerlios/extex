@@ -39,7 +39,7 @@ import de.dante.util.UnicodeChar;
  * This class is used to represent composed characters from virtual fonts.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class VirtualCharNode extends CharNode implements NodeList {
 
@@ -48,7 +48,7 @@ public class VirtualCharNode extends CharNode implements NodeList {
      * It is here to compensate the missing multiple inheritance of Java.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.7 $
+     * @version $Revision: 1.8 $
      */
     private class NL extends AbstractNodeList {
 
@@ -79,9 +79,9 @@ public class VirtualCharNode extends CharNode implements NodeList {
 
         /**
          * @see de.dante.extex.typesetter.type.node.AbstractNodeList#updateDimensions(
-         *      de.dante.extex.typesetter.type.Node)
+         *      de.dante.extex.typesetter.type.Node, boolean)
          */
-        protected void updateDimensions(final Node n) {
+        protected void updateDimensions(final Node n, boolean first) {
 
             // This should not be needed
             throw new RuntimeException("unimplemented");
