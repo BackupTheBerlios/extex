@@ -43,7 +43,7 @@ import de.dante.util.framework.configuration.Configurable;
  * This document writer produces multi-page PostScript documents.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class PsWriter extends AbstractPostscriptWriter
         implements
@@ -172,7 +172,7 @@ public class PsWriter extends AbstractPostscriptWriter
      *      de.dante.extex.interpreter.type.dimen.Dimen,
      *      de.dante.extex.interpreter.type.dimen.Dimen)
      */
-    public boolean shipout(final NodeList nodes, final Dimen width,
+    public int shipout(final NodeList nodes, final Dimen width,
             final Dimen height) throws GeneralException, IOException {
 
         if (init) {
@@ -185,7 +185,7 @@ public class PsWriter extends AbstractPostscriptWriter
         page
                 .add(converter.nodesToPostScript(nodes, fontManager,
                         headerManager));
-        return true;
+        return 1;
     }
 
     /**

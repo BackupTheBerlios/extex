@@ -30,17 +30,14 @@ import de.dante.extex.documentWriter.postscript.util.PsUnit;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.util.GeneralException;
-import de.dante.util.framework.configuration.Configurable;
 
 /**
  * This document writer produces Encapsulated Postscript documents.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
-public class EpsWriter extends AbstractPostscriptWriter
-        implements
-            Configurable {
+public class EpsWriter extends AbstractPostscriptWriter {
 
     /**
      * The field <tt>converter</tt> contains the converter to use.
@@ -95,7 +92,7 @@ public class EpsWriter extends AbstractPostscriptWriter
      *      de.dante.extex.interpreter.type.dimen.Dimen,
      *      de.dante.extex.interpreter.type.dimen.Dimen)
      */
-    public boolean shipout(final NodeList nodes, final Dimen width,
+    public int shipout(final NodeList nodes, final Dimen width,
             final Dimen height) throws GeneralException, IOException {
 
         if (init) {
@@ -124,7 +121,7 @@ public class EpsWriter extends AbstractPostscriptWriter
         writeDsc(stream, "EOF");
         stream.close();
         stream = null;
-        return true;
+        return 1;
     }
 
     /**
