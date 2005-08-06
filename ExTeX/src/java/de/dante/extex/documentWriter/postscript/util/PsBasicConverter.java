@@ -68,7 +68,7 @@ import de.dante.util.resource.ResourceFinder;
  * This class provides a converter to PostScript code.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class PsBasicConverter
         implements
@@ -82,7 +82,7 @@ public class PsBasicConverter
      * for output.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.3 $
+     * @version $Revision: 1.4 $
      */
     private class Buffer {
 
@@ -234,7 +234,8 @@ public class PsBasicConverter
 
     /**
      * The field <tt>paperSizeScanner</tt> contains the node visitor which
-     * traverses the node tree recursively searching for papersize specials.
+     * traverses the node tree recursively searching for <tt>papersize</tt>
+     * specials.
      */
     private NodeVisitor paperSizeScanner = new NodeVisitor() {
 
@@ -578,7 +579,16 @@ public class PsBasicConverter
         buffer.reset();
         StringBuffer out = new StringBuffer("TeXDict begin\n");
 
-        visit(nodes, out);
+        try {
+            nodes.visit(this, out);
+        } catch (GeneralException e) {
+            Throwable cause = e.getCause();
+            if (cause instanceof FileNotFoundException) {
+
+                throw new DocumentWriterIOException(cause);
+            }
+            throw new DocumentWriterException(e);
+        }
 
         out.append("end\n");
         return out.toString().getBytes();
@@ -681,42 +691,6 @@ public class PsBasicConverter
     }
 
     /**
-     * This method treats a single node and all nodes contained.
-     * It takes care of the move and shift offsets.
-     *
-     * @param node the node to consider
-     * @param out the target for writing
-     *
-     * @throws DocumentWriterException in case of an error
-     */
-    private void visit(final Node node, final StringBuffer out)
-            throws DocumentWriterException {
-
-        Dimen shift = node.getShift();
-        Dimen move = node.getMove();
-        try {
-            if (shift.ne(Dimen.ZERO_PT) && move.ne(Dimen.ZERO_PT)) {
-                Dimen saveX = new Dimen(x);
-                Dimen saveY = new Dimen(y);
-                x.add(move);
-                y.add(shift);
-                node.visit(this, out);
-                x.set(saveX);
-                y.set(saveY);
-            } else {
-                node.visit(this, out);
-            }
-        } catch (GeneralException e) {
-            Throwable cause = e.getCause();
-            if (cause instanceof FileNotFoundException) {
-
-                throw new DocumentWriterIOException(cause);
-            }
-            throw new DocumentWriterException(e);
-        }
-    }
-
-    /**
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitAdjust(
      *      de.dante.extex.typesetter.type.node.AdjustNode,
      *      java.lang.Object)
@@ -800,11 +774,6 @@ public class PsBasicConverter
         if (color != currentColor) {
             buffer.clear(out);
             switchColors(color, out);
-
-        } else if (node.getMove().ne(Dimen.ZERO)
-                || node.getShift().ne(Dimen.ZERO)) {
-
-            buffer.clear(out);
         }
 
         buffer.add(c, x, y);
@@ -858,16 +827,23 @@ public class PsBasicConverter
         StringBuffer out = (StringBuffer) oOut;
         buffer.clear(out);
 
-        Dimen xSave = new Dimen(x);
+        Dimen saveX = new Dimen(x);
+        Dimen saveY = new Dimen(y);
+        x.add(node.getMove());
+        y.add(node.getShift());
+
         Node n;
         int len = node.size();
 
         for (int i = 0; i < len; i++) {
             n = node.get(i);
-            visit(n, out);
+            n.visit(this, out);
             x.add(n.getWidth());
         }
-        x.set(xSave);
+
+        x.set(saveX);
+        y.set(saveY);
+
         return null;
     }
 
@@ -984,18 +960,24 @@ public class PsBasicConverter
         StringBuffer out = (StringBuffer) oOut;
         buffer.clear(out);
 
-        Dimen ySave = new Dimen(y);
+        Dimen saveX = new Dimen(x);
+        Dimen saveY = new Dimen(y);
+        x.add(node.getMove());
+        y.add(node.getShift());
+
         Node n;
         int len = node.size();
 
         for (int i = 0; i < len; i++) {
             n = node.get(i);
-            visit(n, out);
+            n.visit(this, out);
             y.subtract(n.getHeight());
             y.subtract(n.getDepth());
         }
 
-        y.set(ySave);
+        x.set(saveX);
+        y.set(saveY);
+
         return null;
     }
 

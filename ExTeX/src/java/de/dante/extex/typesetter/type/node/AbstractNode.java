@@ -34,7 +34,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This abstract class provides some methods common to all Nodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public abstract class AbstractNode implements Node {
 
@@ -59,18 +59,6 @@ public abstract class AbstractNode implements Node {
      * The field <tt>localizer</tt> contains the localizer.
      */
     private Localizer localizer = null;
-
-    /**
-     * The field <tt>move</tt> contains the offset of the reference point in
-     * horizontal direction.
-     */
-    private Dimen move = new Dimen(0);
-
-    /**
-     * The field <tt>shift</tt> contains the offset of the reference point in
-     * vertical direction.
-     */
-    private Dimen shift = new Dimen(0);
 
     /** This is the width of the node.
      *  The width is the extend of the node along the baseline.
@@ -202,26 +190,6 @@ public abstract class AbstractNode implements Node {
     }
 
     /**
-     * Getter for move.
-     *
-     * @return the move
-     */
-    public Dimen getMove() {
-
-        return this.move;
-    }
-
-    /**
-     * Getter for shift.
-     *
-     * @return the shift
-     */
-    public Dimen getShift() {
-
-        return this.shift;
-    }
-
-    /**
      * @see de.dante.extex.typesetter.type.Node#getVerticalSize()
      */
     public Dimen getVerticalSize() {
@@ -276,26 +244,6 @@ public abstract class AbstractNode implements Node {
     }
 
     /**
-     * Setter for move.
-     *
-     * @param move the move to set
-     */
-    public void setMove(final Dimen move) {
-
-        this.move = move;
-    }
-
-    /**
-     * Setter for shift.
-     *
-     * @param shift the shift to set
-     */
-    public void setShift(final Dimen shift) {
-
-        this.shift = shift;
-    }
-
-    /**
      * @see de.dante.extex.typesetter.type.Node#setWidth(
      *      de.dante.extex.interpreter.type.dimen.FixedDimen)
      */
@@ -321,7 +269,7 @@ public abstract class AbstractNode implements Node {
 
     /**
      * This method returns the printable representation.
-     * This is meant to produce a exaustive form as it is used in tracing
+     * This is meant to produce a exhaustive form as it is used in tracing
      * output to the log file.
      *
      * @return the printable representation

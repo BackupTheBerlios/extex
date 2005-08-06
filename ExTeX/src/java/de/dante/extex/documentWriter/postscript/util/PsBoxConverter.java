@@ -61,7 +61,7 @@ import de.dante.util.UnicodeChar;
  * boxes of the characters.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class PsBoxConverter implements PsConverter, NodeVisitor {
 
@@ -216,38 +216,8 @@ public class PsBoxConverter implements PsConverter, NodeVisitor {
         StringBuffer out = new StringBuffer();
         out.append("TeXDict begin\n");
 
-        visit(nodes, out);
-
-        out.append("end\n");
-        return out.toString().getBytes();
-    }
-
-    /**
-     * This method treats a single node and all nodes contained.
-     * It takes care of the move and shift offsets.
-     *
-     * @param node the node to consider
-     * @param out the target for writing
-     *
-     * @throws DocumentWriterException in case of an error
-     */
-    private void visit(final Node node, final StringBuffer out)
-            throws DocumentWriterException {
-
-        Dimen shift = node.getShift();
-        Dimen move = node.getMove();
         try {
-            if (shift.ne(Dimen.ZERO_PT) && move.ne(Dimen.ZERO_PT)) {
-                Dimen saveX = new Dimen(x);
-                Dimen saveY = new Dimen(y);
-                x.add(move);
-                y.add(shift);
-                node.visit(this, out);
-                x.set(saveX);
-                y.set(saveY);
-            } else {
-                node.visit(this, out);
-            }
+            nodes.visit(this, out);
         } catch (GeneralException e) {
             Throwable cause = e.getCause();
             if (cause instanceof FileNotFoundException) {
@@ -256,6 +226,9 @@ public class PsBoxConverter implements PsConverter, NodeVisitor {
             }
             throw new DocumentWriterException(e);
         }
+
+        out.append("end\n");
+        return out.toString().getBytes();
     }
 
     /**
@@ -407,18 +380,24 @@ public class PsBoxConverter implements PsConverter, NodeVisitor {
     public Object visitHorizontalList(final HorizontalListNode node,
             final Object oOut) throws GeneralException {
 
-        Dimen xSave = new Dimen(x);
-        StringBuffer out = (StringBuffer) oOut;
-        drawBox(node, out, "Box");
+        Dimen saveX = new Dimen(x);
+        Dimen saveY = new Dimen(y);
+        x.add(node.getMove());
+        y.add(node.getShift());
+
+        drawBox(node, (StringBuffer) oOut, "Box");
         Node n;
         int len = node.size();
 
         for (int i = 0; i < len; i++) {
             n = node.get(i);
-            visit(n, out);
+            n.visit(this, oOut);
             x.add(n.getWidth());
         }
-        x.set(xSave);
+
+        x.set(saveX);
+        y.set(saveY);
+
         return null;
     }
 
@@ -537,20 +516,25 @@ public class PsBoxConverter implements PsConverter, NodeVisitor {
     public Object visitVerticalList(final VerticalListNode node,
             final Object oOut) throws GeneralException {
 
-        Dimen ySave = new Dimen(y);
-        StringBuffer out = (StringBuffer) oOut;
-        drawBox(node, out, "Box");
+        Dimen saveX = new Dimen(x);
+        Dimen saveY = new Dimen(y);
+        x.add(node.getMove());
+        y.add(node.getShift());
+
+        drawBox(node, (StringBuffer) oOut, "Box");
         Node n;
         int len = node.size();
 
         for (int i = 0; i < len; i++) {
             n = node.get(i);
-            visit(n, out);
+            n.visit(this, oOut);
             y.subtract(n.getHeight());
             y.subtract(n.getDepth());
         }
 
-        y.set(ySave);
+        x.set(saveX);
+        y.set(saveY);
+        
         return null;
     }
 
