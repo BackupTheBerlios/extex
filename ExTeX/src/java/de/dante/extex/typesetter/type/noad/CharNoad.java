@@ -21,18 +21,22 @@ package de.dante.extex.typesetter.type.noad;
 
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.primitives.register.font.NumberedFont;
+import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.typesetter.TypesetterOptions;
+import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
 import de.dante.extex.typesetter.type.node.CharNode;
+import de.dante.extex.typesetter.type.node.ImplicitKernNode;
+import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.ConfigurationException;
 
 /**
  * This class provides a container for a mathematical character.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class CharNoad extends AbstractNoad implements Noad {
 
@@ -77,7 +81,7 @@ public class CharNoad extends AbstractNoad implements Noad {
      *      de.dante.extex.typesetter.type.noad.util.MathContext,
      *      de.dante.extex.typesetter.TypesetterOptions)
      */
-    public void typeset(final NodeList list, final MathContext mathContext,
+    public void typeset(final NodeList nodes, final MathContext mathContext,
             final TypesetterOptions context) throws ConfigurationException {
 
         String type = mathContext.getStyle().getStyleName();
@@ -87,8 +91,26 @@ public class CharNoad extends AbstractNoad implements Noad {
             //gene: impossible
             throw new NullPointerException("font");
         }
-        TypesettingContext tc = context.getTypesettingContextFactory().newInstance(
-                context.getTypesettingContext(), font);
-        list.addGlyph(new CharNode(tc, glyph.getCharacter()));
+
+        UnicodeChar c = glyph.getCharacter();
+
+        int size = nodes.size();
+        if (size > 0) {
+            Node n = nodes.get(size - 1);
+            if (n instanceof CharNode) {
+                CharNode cn = ((CharNode) n);
+                if (cn.getTypesettingContext().getFont().equals(font)) {
+                    Dimen kerning = font.getGlyph(cn.getCharacter())
+                            .getKerning(c);
+                    if (kerning.ne(Dimen.ZERO_PT)) {
+                        nodes.add(new ImplicitKernNode(kerning));
+                    }
+                }
+            }
+        }
+
+        TypesettingContext tc = context.getTypesettingContextFactory()
+                .newInstance(context.getTypesettingContext(), font);
+        nodes.addGlyph(new CharNode(tc, c));
     }
 }
