@@ -21,18 +21,15 @@ package de.dante.extex.documentWriter.postscript;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.HashMap;
-import java.util.Map;
 
 import de.dante.extex.color.ColorAware;
 import de.dante.extex.color.ColorConverter;
 import de.dante.extex.documentWriter.AbstractDocumentWriter;
-import de.dante.extex.documentWriter.DocumentWriter;
+import de.dante.extex.documentWriter.postscript.util.FontManager;
 import de.dante.extex.documentWriter.postscript.util.HeaderManager;
 import de.dante.extex.documentWriter.postscript.util.PsBasicConverter;
-import de.dante.extex.documentWriter.postscript.util.PsConverter;
-import de.dante.extex.documentWriter.postscript.util.FontManager;
 import de.dante.extex.documentWriter.postscript.util.PsBoxConverter;
+import de.dante.extex.documentWriter.postscript.util.PsConverter;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.util.configuration.Configuration;
@@ -46,7 +43,7 @@ import de.dante.util.resource.ResourceFinder;
  * code. Here some utility methods of general nature are collected.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public abstract class AbstractPostscriptWriter extends AbstractDocumentWriter
         implements
@@ -61,12 +58,14 @@ public abstract class AbstractPostscriptWriter extends AbstractDocumentWriter
     private boolean boxed;
 
     /**
-     * The field <tt>colorConverter</tt> contains the ...
+     * The field <tt>colorConverter</tt> contains the color converter as set
+     * from the managing instance.
      */
     private ColorConverter colorConverter = null;
 
     /**
-     * The field <tt>finder</tt> contains the ...
+     * The field <tt>finder</tt> contains the resource finder as set from the
+     * managing instance.
      */
     private ResourceFinder finder = null;
 

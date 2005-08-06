@@ -33,7 +33,7 @@ import de.dante.util.GeneralException;
  * This is a abstract base class for DocumentWriters.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class AbstractDocumentWriter
         implements
@@ -41,9 +41,14 @@ public abstract class AbstractDocumentWriter
             MultipleDocumentStream {
 
     /**
-     * The field <tt>pages</tt> contains the ...
+     * The field <tt>pages</tt> contains the number of pages already written.
      */
     private int pages = 0;
+
+    /**
+     * The field <tt>parameter</tt> contains the map for parameters.
+     */
+    protected Map parameter = new HashMap();
 
     /**
      * The field <tt>writerFactory</tt> contains the ...
@@ -67,64 +72,6 @@ public abstract class AbstractDocumentWriter
     }
 
     /**
-     * TODO gene: missing JavaDoc
-     *
-     * @param type the type for the reference to the configuration file
-     *
-     * @return
-     *
-     * @throws DocumentWriterException in case of an error
-     */
-    protected OutputStream newOutputStream(final String type)
-            throws DocumentWriterException {
-
-        return writerFactory.getOutputStream(type);
-    }
-
-    /**
-     * @see de.dante.extex.documentWriter.MultipleDocumentStream#setOutputStreamFactory(de.dante.extex.documentWriter.OutputStreamFactory)
-     */
-    public void setOutputStreamFactory(final OutputStreamFactory writerFactory) {
-
-        this.writerFactory = writerFactory;
-    }
-
-    /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#shipout(de.dante.extex.typesetter.type.NodeList)
-     */
-    public final void shipout(final NodeList nodes)
-            throws DocumentWriterException,
-                GeneralException,
-                IOException {
-
-        Dimen width = new Dimen();
-        Dimen height = new Dimen();
-
-        if (shipout(nodes, width, height)) {
-            pages++;
-        }
-    }
-
-    /**
-     * TODO gene: missing JavaDoc
-     *
-     * @param nodes
-     * @param width
-     * @param height
-     *
-     * @return
-     * @throws IOException
-     * @throws GeneralException
-     */
-    protected abstract boolean shipout(final NodeList nodes, final Dimen width,
-            final Dimen height) throws GeneralException, IOException;
-
-    /**
-     * The field <tt>parameter</tt> contains the map for parameters.
-     */
-    protected Map parameter = new HashMap();
-
-    /**
      * Getter for a named parameter.
      *
      * @param name the name of the parameter
@@ -137,6 +84,30 @@ public abstract class AbstractDocumentWriter
     }
 
     /**
+     * Acquire a new output stream.
+     *
+     * @param type the type for the reference to the configuration file
+     *
+     * @return the new output stream
+     *
+     * @throws DocumentWriterException in case of an error
+     */
+    protected OutputStream newOutputStream(final String type)
+            throws DocumentWriterException {
+
+        return writerFactory.getOutputStream(type);
+    }
+
+    /**
+     * @see de.dante.extex.documentWriter.MultipleDocumentStream#setOutputStreamFactory(
+     *      de.dante.extex.documentWriter.OutputStreamFactory)
+     */
+    public void setOutputStreamFactory(final OutputStreamFactory factory) {
+
+        this.writerFactory = factory;
+    }
+
+    /**
      * @see de.dante.extex.documentWriter.DocumentWriter#setParameter(
      *      java.lang.String,
      *      java.lang.String)
@@ -145,4 +116,41 @@ public abstract class AbstractDocumentWriter
 
         parameter.put(name, value);
     }
+
+    /**
+     * @see de.dante.extex.documentWriter.DocumentWriter#shipout(
+     *      de.dante.extex.typesetter.type.NodeList)
+     */
+    public final void shipout(final NodeList nodes)
+            throws GeneralException,
+                IOException {
+
+        Dimen width = new Dimen(Dimen.ONE_INCH);
+        width.multiply(2100, 254); // A4 paper
+        Dimen height = new Dimen(Dimen.ONE_INCH);
+        height.multiply(2970, 254); // A4 paper
+
+        pages += shipout(nodes, width, height);
+    }
+
+    /**
+     * This is the entry point for the document writer. Here it receives a
+     * complete node list to be sent to the output writer. It can be assumed
+     * that all values for width, height, and depth of the node lists are
+     * properly filled. Thus all information should be present to place the
+     * ink on the paper.
+     *
+     * @param nodes the nodes to put on the paper
+     * @param width the width of the page
+     * @param height the height of the page
+     *
+     * @return the number of pages shipped out in this step. This is usually 1.
+     *  But it can also be 0 if the page is skipped or a greater number is the
+     *  page is split.
+     *
+     * @throws IOException in case of an IO error
+     * @throws GeneralException in case of another error
+     */
+    protected abstract int shipout(final NodeList nodes, final Dimen width,
+            final Dimen height) throws GeneralException, IOException;
 }
