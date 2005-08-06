@@ -68,7 +68,7 @@ import de.dante.util.resource.ResourceFinder;
  * This class provides a converter to PostScript code.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class PsBasicConverter
         implements
@@ -82,7 +82,7 @@ public class PsBasicConverter
      * for output.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.4 $
+     * @version $Revision: 1.5 $
      */
     private class Buffer {
 
@@ -488,8 +488,10 @@ public class PsBasicConverter
                         break;
                     case 'l':
                         if (text.equals("landscape")) {
-                            //TODO gene: unimplemented
-                            throw new RuntimeException("unimplemented");
+                            Dimen[] paper = (Dimen[]) coordinates;
+                            Dimen x = paper[0];
+                            paper[0].set(paper[1]);
+                            paper[1].set(x);
                         }
                         break;
                     default:
