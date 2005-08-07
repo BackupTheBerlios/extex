@@ -29,7 +29,7 @@ import de.dante.extex.interpreter.type.glue.Glue;
  * Font-key-class.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 
 public class FountKey implements Serializable {
@@ -50,7 +50,7 @@ public class FountKey implements Serializable {
     private Count scale;
 
     /**
-     * The glue for letterspace
+     * The glue for letter space
      */
     private Glue letterspaced;
 
@@ -69,7 +69,7 @@ public class FountKey implements Serializable {
      * @param n     the name
      * @param s     the size
      * @param sf    the scale factor
-     * @param ls    the letterspace
+     * @param ls    the letter space
      * @param lig   the ligature
      * @param kern  the kerning
      */
@@ -131,8 +131,8 @@ public class FountKey implements Serializable {
     }
 
     /**
-     * Returns the letterspaced.
-     * @return Returns the letterspaced.
+     * Returns the letter spaced.
+     * @return Returns the letter spaced.
      */
     public Glue getLetterspaced() {
 
@@ -140,8 +140,8 @@ public class FountKey implements Serializable {
     }
 
     /**
-     * Set the letterspaced.
-     * @param l The letterspaced to set.
+     * Set the letter spaced.
+     * @param l The letter spaced to set.
      */
     public void setLetterspaced(final Glue l) {
 
@@ -218,5 +218,33 @@ public class FountKey implements Serializable {
     public void setSize(final Dimen s) {
 
         size = s;
+    }
+
+    /**
+     * Check, if the key have the same values.
+     *
+     * @param key   the fount key
+     * @return Returns <code>true</code>, if the two objects are equals,
+     *         or <code>false</code>, if not.
+     */
+    public boolean eq(final FountKey key) {
+
+        if (key != null) {
+            if (key.getName() != null && key.getName().equals(name)) {
+                if (key.getSize() != null && key.getSize().eq(size)) {
+                    if (key.getScale() != null && key.getScale().eq(scale)) {
+                        //if (key.getLetterspaced() != null && key.getLetterspaced().eq) {
+                        // TODO Glue.eq() missing
+                        if (key.isKerning() == kerning) {
+                            if (key.isLigatures() == ligatures) {
+                                return true;
+                            }
+                        }
+                        //}
+                    }
+                }
+            }
+        }
+        return false;
     }
 }

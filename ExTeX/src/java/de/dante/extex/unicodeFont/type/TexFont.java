@@ -1,0 +1,85 @@
+/*
+ * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+ *
+ */
+
+package de.dante.extex.unicodeFont.type;
+
+import de.dante.extex.interpreter.type.count.Count;
+import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.util.UnicodeChar;
+
+/**
+ * Interface for the tex font.
+ *
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.1 $
+ */
+
+public interface TexFont extends ExtexFont {
+
+    /**
+     * Returns the skew char.
+     *
+     * @return Returns the skew char.
+     */
+    UnicodeChar getSkewChar();
+
+    /**
+     * Set the skew char.
+     *
+     * @param uc    The Unicode char.
+     */
+    void setSkewChar(UnicodeChar uc);
+
+    /**
+     * Returns the hyphen char.
+     *
+     * @return Returns the hyphen char.
+     */
+    UnicodeChar getHyphenChar();
+
+    /**
+     * Set the hyphen char.
+     *
+     * @param uc    The Unicode char.
+     */
+    void setHyphenChar(UnicodeChar uc);
+
+    /**
+     * Set the new value for the font parameter.
+     *
+     * @param name  The name of the parameter.
+     * @param value The value to set.
+     */
+    void setFontDimen(String name, Dimen value);
+
+    /**
+     * Set the actual size of the font.
+     *
+     * @param size  The actual size.
+     */
+    void setActualsize(Dimen size);
+
+    /**
+     * Set the scale factor of the font.
+     *
+     * @param scaleFactor    The scale factor.
+     */
+    void setScalefactor(Count scaleFactor);
+
+}

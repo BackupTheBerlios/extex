@@ -19,29 +19,30 @@
 
 package de.dante.extex.font;
 
-import java.io.InputStream;
-
-import de.dante.extex.font.exception.FontException;
-import de.dante.util.file.random.RandomAccessR;
 
 /**
- * Interface for the fontfile (e.g. the pfb-file).
+ * Class for a pfb-font-file.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @version $Revision: 1.1 $
  */
-public interface FontStream {
+public class PfbFontByteArray extends AbstractFontByteArray implements FontByteArray {
 
     /**
-     * Returns the <code>InputStream</code> for the external fontfile.
-     * @return Returns the <code>InputStream</code> for the external fontfile.
+     * Create a new object
+     * @param b  the byte array
      */
-    InputStream getStream();
+    public PfbFontByteArray(final byte[] b) {
+
+        super(b);
+    }
 
     /**
-     * Returns the <code>RandomAccessR</code> fpr the external fontfile.
-     * @throws FontException in case of a font error.
-     * @return Returns the <code>RandomAccessR</code> fpr the external fontfile.
+     * Returns the String for the class
+     * @return Returns the string for the class
      */
-    RandomAccessR getRandomAccessRead() throws FontException;
+    public String toString() {
+
+        return "PFB";
+    }
 }

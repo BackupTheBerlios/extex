@@ -26,7 +26,7 @@ import java.util.ArrayList;
  * Class for a <code>FontFile</code>List.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class FontFileList implements Serializable {
 
@@ -67,7 +67,7 @@ public class FontFileList implements Serializable {
      * Add a <code>FontFile</code>
      * @param fontfile  the fontfile to add
      */
-    public void add(final FontStream fontfile) {
+    public void add(final FontByteArray fontfile) {
 
         list.add(fontfile);
     }
@@ -77,9 +77,9 @@ public class FontFileList implements Serializable {
      * @param idx   the position
      * @return  the fontfile at position idx
      */
-    public FontStream getFontFile(final int idx) {
+    public FontByteArray getFontFile(final int idx) {
 
-        return (FontStream) list.get(idx);
+        return (FontByteArray) list.get(idx);
     }
 
 }

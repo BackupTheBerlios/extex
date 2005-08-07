@@ -49,7 +49,7 @@ import de.dante.util.configuration.Configuration;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:Rolf.Niepraschk@ptb.de">Rolf Niepraschk</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class PdfDocumentWriter implements DocumentWriter, SingleDocumentStream {
 
@@ -74,7 +74,7 @@ public class PdfDocumentWriter implements DocumentWriter, SingleDocumentStream {
     private int shippedPages = 0;
 
     /**
-     * documentwriter options
+     * document writer options
      */
     private DocumentWriterOptions docoptions;
 
@@ -166,17 +166,17 @@ public class PdfDocumentWriter implements DocumentWriter, SingleDocumentStream {
     }
 
     /**
-     * paperwidth
+     * paper width
      */
     private Dimen paperwidth = new Dimen();
 
     /**
-     * paperheight
+     * paper height
      */
     private Dimen paperheight = new Dimen();
 
     /**
-     * paperheight in BP
+     * paper height in BP
      */
     private float phBP = HEIGHT_A4_BP;
 
@@ -186,14 +186,14 @@ public class PdfDocumentWriter implements DocumentWriter, SingleDocumentStream {
     private Dimen currentX = new Dimen();
 
     /**
-     * current y postition
+     * current y position
      */
     private Dimen currentY = new Dimen();
 
     /**
-     * the pdf nodevisitor
+     * the pdf node visitor
      */
-    private NodeVisitor visitor;
+    private NodeVisitor nodeVisitor;
 
     /**
      * @see de.dante.extex.documentWriter.DocumentWriter#shipout(
@@ -211,7 +211,7 @@ public class PdfDocumentWriter implements DocumentWriter, SingleDocumentStream {
                     document, page);
 
             document.addPage(page);
-            visitor = new PdfNodeVisitor(contentStream, currentX, currentY);
+            nodeVisitor = new PdfNodeVisitor(document, contentStream, currentX, currentY);
 
             shippedPages++;
             //            System.err.print("[" + shippedPages + "]");
@@ -229,8 +229,9 @@ public class PdfDocumentWriter implements DocumentWriter, SingleDocumentStream {
                     paperheight.set(h);
                     paperwidth.set(w);
                     phBP = Unit.getDimenAsBP(paperheight);
-                    if (visitor instanceof PdfNodeVisitor) {
-                        ((PdfNodeVisitor) visitor).setPaperheight(paperheight);
+                    if (nodeVisitor instanceof PdfNodeVisitor) {
+                        ((PdfNodeVisitor) nodeVisitor)
+                                .setPaperheight(paperheight);
                     }
                 }
             }
@@ -263,7 +264,7 @@ public class PdfDocumentWriter implements DocumentWriter, SingleDocumentStream {
             //            cb.stroke();
             // --------------------------------------
 
-            nodes.visit(visitor, nodes);
+            nodes.visit(nodeVisitor, nodes);
 
             contentStream.close();
 

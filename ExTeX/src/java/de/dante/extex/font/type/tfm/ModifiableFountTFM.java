@@ -22,6 +22,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.dante.extex.font.FontByteArray;
 import de.dante.extex.font.FountKey;
 import de.dante.extex.font.Glyph;
 import de.dante.extex.font.GlyphImpl;
@@ -38,7 +39,7 @@ import de.dante.util.UnicodeChar;
  * Adapter for a ModifiableFount for TFM.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class ModifiableFountTFM implements ModifiableFount, Serializable {
 
@@ -378,4 +379,11 @@ public class ModifiableFountTFM implements ModifiableFount, Serializable {
         return fountkey;
     }
 
+    /**
+     * @see de.dante.extex.font.type.Fount#getFontByteArray()
+     */
+    public FontByteArray getFontByteArray() {
+
+        return null;
+    }
 }

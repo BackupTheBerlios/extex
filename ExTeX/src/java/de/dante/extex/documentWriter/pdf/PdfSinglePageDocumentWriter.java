@@ -39,7 +39,7 @@ import de.dante.util.configuration.Configuration;
  * Implementation of a pdf document writer.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class PdfSinglePageDocumentWriter
         implements
@@ -57,7 +57,7 @@ public class PdfSinglePageDocumentWriter
     private static final int HEIGHT_A4_BP = 842;
 
     /**
-     * the output factroy
+     * the output factory
      */
     private OutputStreamFactory outFactory = null;
 
@@ -67,7 +67,7 @@ public class PdfSinglePageDocumentWriter
     private int shippedPages = 0;
 
     /**
-     * documentwriter options
+     * document writer options
      */
     private DocumentWriterOptions docoptions;
 
@@ -143,12 +143,12 @@ public class PdfSinglePageDocumentWriter
     }
 
     /**
-     * paperwidth
+     * paper width
      */
     private Dimen paperwidth = new Dimen();
 
     /**
-     * paperheight
+     * paper height
      */
     private Dimen paperheight = new Dimen();
 
@@ -158,14 +158,14 @@ public class PdfSinglePageDocumentWriter
     private Dimen currentX = new Dimen();
 
     /**
-     * current y postition
+     * current y position
      */
     private Dimen currentY = new Dimen();
 
     /**
-     * the pdf nodevisitor
+     * the pdf node visitor
      */
-    private NodeVisitor visitor;
+    private NodeVisitor nodeVisitor;
 
     /**
      * @see de.dante.extex.documentWriter.DocumentWriter#shipout(
@@ -241,7 +241,7 @@ public class PdfSinglePageDocumentWriter
 
             // -----------------------------
 
-            nodes.visit(visitor, nodes);
+            nodes.visit(nodeVisitor, nodes);
 
             // close the page output
             out.close();

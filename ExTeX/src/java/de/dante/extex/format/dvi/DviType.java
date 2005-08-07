@@ -67,7 +67,7 @@ import de.dante.util.file.random.RandomAccessR;
  * DviType.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 
 public class DviType implements DviInterpreter, DviExecuteCommand {
@@ -78,7 +78,7 @@ public class DviType implements DviInterpreter, DviExecuteCommand {
     private int page = 0;
 
     /**
-     * the fontfactory
+     * the font factory
      */
     private FontFactory fontfactory;
 
@@ -120,8 +120,8 @@ public class DviType implements DviInterpreter, DviExecuteCommand {
     /**
      * Create a new object.
      *
-     * @param element   the root element
-     * @param ff        the fontfactroy
+     * @param wout      the output writer
+     * @param ff        the font factory
      */
     public DviType(final PrintWriter wout, final FontFactory ff) {
 
@@ -136,7 +136,7 @@ public class DviType implements DviInterpreter, DviExecuteCommand {
      * Load the font.
      *
      * @throws DviException if a font not found.
-     * @throws FontException if an font-error occured.
+     * @throws FontException if an font-error occurred.
      * @throws ConfigurationException from the config-system.
      */
     private void loadFont() throws DviException, FontException,
@@ -150,7 +150,7 @@ public class DviType implements DviInterpreter, DviExecuteCommand {
             Count scale = command.getScaledAsCount(mag);
             String name = command.getFName();
 
-            //            Font f = fontfactory.getInstance(name, designsize, scale, new Glue(
+            //            Font f = fontfactory.getInstance(name, design size, scale, new Glue(
             //                    0), true, true);
             Font f = fontfactory.getInstance(new FountKey(name, designsize,
                     scale, new Glue(0), true, true));
@@ -182,12 +182,12 @@ public class DviType implements DviInterpreter, DviExecuteCommand {
     private static final int FORM8 = 8;
 
     /**
-     * NUM 
+     * NUM
      */
     private static final double NUM = 254000.0d;
 
     /**
-     * The conversion factor conv is figured as follows:
+     * The conversion factor 'conv' is figured as follows:
      * There are exactly n/d decimicrons per DVI unit,
      * and 254000 decimicrons per inch, and resolution pixels per inch.
      * Then we have to adjust this by the stated amount of magnification.

@@ -26,7 +26,7 @@ import de.dante.util.UnicodeChar;
  * Interface for a Glyph
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface Glyph {
 
@@ -179,12 +179,12 @@ public interface Glyph {
      * @return Returns the externalfile.
      * MGN change FontFile
      */
-    FontStream getExternalFile();
+    FontByteArray getExternalFile();
 
     /**
      * @param file The externalfile to set.
      */
-    void setExternalFile(FontStream file);
+    void setExternalFile(FontByteArray file);
 
     /**
      * @return Returns the leftSpace.

@@ -19,23 +19,23 @@
 
 package de.dante.extex.font;
 
-import java.io.InputStream;
-
 /**
  * Class for a ttf-font-file.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public class TtfFontFile extends AbstractFontStream implements FontStream {
+public class TtfFontByteArray extends AbstractFontByteArray
+        implements
+            FontByteArray {
 
     /**
      * Create a new object
-     * @param in  the external stream
+     * @param b  the byte array
      */
-    public TtfFontFile(final InputStream in) {
+    public TtfFontByteArray(final byte[] b) {
 
-        super(in);
+        super(b);
     }
 
     /**

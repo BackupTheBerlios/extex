@@ -29,7 +29,7 @@ import de.dante.util.UnicodeChar;
  * GlyphImplementation
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class GlyphImpl implements Glyph, Serializable {
 
@@ -76,7 +76,7 @@ public class GlyphImpl implements Glyph, Serializable {
     /**
      * The external fontfile or null, if no exists
      */
-    private transient FontStream externalfile = null;
+    private transient FontByteArray externalfile = null;
 
     /**
      * The left space in a glyph
@@ -422,7 +422,7 @@ public class GlyphImpl implements Glyph, Serializable {
     /**
      * @return Returns the externalfile.
      */
-    public FontStream getExternalFile() {
+    public FontByteArray getExternalFile() {
 
         return externalfile;
     }
@@ -430,7 +430,7 @@ public class GlyphImpl implements Glyph, Serializable {
     /**
      * @param file The externalfile to set.
      */
-    public void setExternalFile(final FontStream file) {
+    public void setExternalFile(final FontByteArray file) {
 
         externalfile = file;
     }

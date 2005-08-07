@@ -20,7 +20,7 @@
 package de.dante.extex.language.hyphenation.impl;
 
 import junit.framework.TestCase;
-import de.dante.extex.font.FontStream;
+import de.dante.extex.font.FontByteArray;
 import de.dante.extex.font.FountKey;
 import de.dante.extex.font.Glyph;
 import de.dante.extex.font.Kerning;
@@ -47,7 +47,7 @@ import de.dante.util.UnicodeChar;
  * TODO gene: missing JavaDoc.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class BaseHyphenationTableTest extends TestCase {
 
@@ -55,7 +55,7 @@ public class BaseHyphenationTableTest extends TestCase {
      * TODO gene: missing JavaDoc.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.3 $
+     * @version $Revision: 1.4 $
      */
     private class MockFont implements Font {
 
@@ -211,7 +211,15 @@ public class BaseHyphenationTableTest extends TestCase {
          */
         public FountKey getFontKey() {
 
-            return new FountKey("mockfont");// add by mgn
+            return new FountKey("mockfont"); // add by mgn
+        }
+        
+        /**
+         * @see de.dante.extex.font.type.Fount#getFontByteArray()
+         */
+        public FontByteArray getFontByteArray() {
+        
+            return null; // add by mgn
         }
 
     }
@@ -220,7 +228,7 @@ public class BaseHyphenationTableTest extends TestCase {
      * This is a mock implementation of a glyph.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.3 $
+     * @version $Revision: 1.4 $
      */
     private class MockGlyph implements Glyph {
 
@@ -243,7 +251,7 @@ public class BaseHyphenationTableTest extends TestCase {
             return null;
         }
 
-        public FontStream getExternalFile() {
+        public FontByteArray getExternalFile() {
 
             return null;
         }
@@ -305,7 +313,7 @@ public class BaseHyphenationTableTest extends TestCase {
 
         }
 
-        public void setExternalFile(FontStream file) {
+        public void setExternalFile(FontByteArray file) {
 
         }
 
@@ -366,7 +374,7 @@ public class BaseHyphenationTableTest extends TestCase {
      * This mock implementation is for test purposes only.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.3 $
+     * @version $Revision: 1.4 $
      */
     private class MyMockContext extends MockContext {
 

@@ -21,6 +21,7 @@ package de.dante.extex.interpreter.type.font;
 
 import java.io.Serializable;
 
+import de.dante.extex.font.FontByteArray;
 import de.dante.extex.font.FountKey;
 import de.dante.extex.font.Glyph;
 import de.dante.extex.font.type.BoundingBox;
@@ -30,10 +31,10 @@ import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.util.UnicodeChar;
 
 /**
- * Implemetation for a font.
+ * Implementation for a font.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class FontImpl implements Font, Serializable {
 
@@ -215,5 +216,13 @@ public class FontImpl implements Font, Serializable {
     public FountKey getFontKey() {
 
         return fount.getFontKey();
+    }
+
+    /**
+     * @see de.dante.extex.font.type.Fount#getFontByteArray()
+     */
+    public FontByteArray getFontByteArray() {
+
+        return fount.getFontByteArray();
     }
 }

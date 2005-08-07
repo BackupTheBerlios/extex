@@ -24,22 +24,28 @@ import de.dante.extex.font.type.tfm.TFMFont;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.util.UnicodeChar;
 
 /**
  * Test for the tfm class.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 
 public class TfmTest extends ExTeXRunner {
+
+    /**
+     * size 12
+     */
+    private static final int SIZE12 = 12;
 
     /**
      * the font factory
      */
     private FontFactory fontFactory;
 
-    /*
+    /**
      * @see TestCase#setUp()
      */
     protected void setUp() throws Exception {
@@ -56,7 +62,7 @@ public class TfmTest extends ExTeXRunner {
 
         TFMFont font = fontFactory.readTFMFont("cmr12");
 
-        assertEquals(font.getDesignSizeAsDouble(), 12.0d, 0);
+        assertEquals(font.getDesignSizeAsDouble(), SIZE12, 0);
 
     }
 
@@ -67,7 +73,7 @@ public class TfmTest extends ExTeXRunner {
      */
     public void test01() throws Exception {
 
-        Dimen pt12 = new Dimen(12 * Dimen.ONE_PT.getValue());
+        Dimen pt12 = new Dimen(SIZE12 * Dimen.ONE_PT.getValue());
 
         FountKey key = new FountKey("cmr12", null, null, new Glue(0), true,
                 true);
@@ -78,6 +84,26 @@ public class TfmTest extends ExTeXRunner {
         assertEquals(pt12.toString(), cmr12.getActualSize().toString());
 
         assertEquals("3.91663pt", cmr12.getFontDimen("SPACE").toString());
+    }
+
+    /**
+     * test: ligature
+     *
+     * @throws Exception if an error occurs
+     */
+    public void test02() throws Exception {
+
+        FountKey key = new FountKey("cmr12", null, null, new Glue(0), true,
+                true);
+
+        Font cmr12 = fontFactory.getInstance(key);
+
+        // A - V
+
+        Glyph g = cmr12.getGlyph(new UnicodeChar('A'));
+        Dimen k = g.getKerning(new UnicodeChar('V'));
+
+        assertEquals("-1.30554pt", k.toString());
     }
 
     // -----------------------------------------

@@ -19,6 +19,7 @@
 
 package de.dante.extex.font.type;
 
+import de.dante.extex.font.FontByteArray;
 import de.dante.extex.font.FountKey;
 import de.dante.extex.font.Glyph;
 import de.dante.extex.interpreter.type.dimen.Dimen;
@@ -29,7 +30,7 @@ import de.dante.util.UnicodeChar;
  * Fount Interface (only getter)
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public interface Fount {
 
@@ -37,7 +38,7 @@ public interface Fount {
      * Return the Glyph of a <code>UnicodeChar</code>, or
      * null, if the character is not defined.
      *
-     * @param c the unicodechar
+     * @param c the Unicode char
      * @return the <code>Glyph</code>
      */
     Glyph getGlyph(UnicodeChar c);
@@ -82,7 +83,7 @@ public interface Fount {
     /**
      * Return the font name.
      *
-     * @return the fontname
+     * @return the font name
      */
     String getFontName();
 
@@ -101,8 +102,8 @@ public interface Fount {
     BoundingBox getBoundingBox();
 
     /**
-     * Return the letterspacing
-     * @return  the letterspacing
+     * Return the letter spacing
+     * @return  the letter spacing
      */
     Glue getLetterSpacing();
 
@@ -123,6 +124,12 @@ public interface Fount {
      * @return Returns the key for the font.
      */
     FountKey getFontKey();
+
+    /**
+     * Returns the byte array for the external file e.g. cmr12.pfb.
+     * @return Returns the byte array for the external file e.g. cmr12.pfb.
+     */
+    FontByteArray getFontByteArray();
 
     //    /**
     //     * Check, if the font is a virtual font.

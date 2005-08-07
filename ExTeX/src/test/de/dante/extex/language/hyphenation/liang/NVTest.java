@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import junit.framework.TestCase;
-import de.dante.extex.font.FontStream;
+import de.dante.extex.font.FontByteArray;
 import de.dante.extex.font.FountKey;
 import de.dante.extex.font.Glyph;
 import de.dante.extex.font.Kerning;
@@ -56,7 +56,7 @@ import de.dante.util.UnicodeChar;
  * This is the test class for NV.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class NVTest extends TestCase {
 
@@ -64,7 +64,7 @@ public class NVTest extends TestCase {
      * This is a mock implementation of a font.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.4 $
+     * @version $Revision: 1.5 $
      */
     private class MockFont implements Font {
 
@@ -246,7 +246,15 @@ public class NVTest extends TestCase {
          */
         public FountKey getFontKey() {
 
-            return new FountKey("mockfont");// add by mgn
+            return new FountKey("mockfont"); // add by mgn
+        }
+
+        /**
+         * @see de.dante.extex.font.type.Fount#getFontByteArray()
+         */
+        public FontByteArray getFontByteArray() {
+
+            return null; // add by mgn
         }
     }
 
@@ -254,7 +262,7 @@ public class NVTest extends TestCase {
      * This is a mock implementation of a glyph.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.4 $
+     * @version $Revision: 1.5 $
      */
     private class MockGlyph implements Glyph {
 
@@ -299,7 +307,7 @@ public class NVTest extends TestCase {
         /**
          * @see de.dante.extex.font.Glyph#getExternalFile()
          */
-        public FontStream getExternalFile() {
+        public FontByteArray getExternalFile() {
 
             return null;
         }
@@ -412,7 +420,7 @@ public class NVTest extends TestCase {
         /**
          * @see de.dante.extex.font.Glyph#setExternalFile(de.dante.extex.font.FontFile)
          */
-        public void setExternalFile(final FontStream file) {
+        public void setExternalFile(final FontByteArray file) {
 
         }
 

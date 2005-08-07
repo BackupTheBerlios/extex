@@ -22,14 +22,17 @@ package de.dante.extex.documentWriter.pdf;
 import java.awt.Color;
 import java.io.IOException;
 
+import org.pdfbox.pdmodel.PDDocument;
 import org.pdfbox.pdmodel.edit.PDPageContentStream;
 import org.pdfbox.pdmodel.font.PDFont;
 import org.pdfbox.pdmodel.font.PDType1Font;
 import org.pdfbox.pdmodel.graphics.path.BasePath;
 
+import de.dante.extex.color.ColorVisitor;
 import de.dante.extex.documentWriter.exception.DocumentWriterException;
 import de.dante.extex.documentWriter.exception.DocumentWriterIOException;
-import de.dante.extex.documentWriter.pdf.pdfbox.PdfColorAdapter;
+import de.dante.extex.documentWriter.pdf.pdfbox.PdfBoxType1Font;
+import de.dante.extex.font.FountKey;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.typesetter.type.Node;
@@ -63,7 +66,7 @@ import de.dante.util.Unit;
  * PDF NodeVisitor.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 
 public class PdfNodeVisitor implements NodeVisitor {
@@ -74,12 +77,12 @@ public class PdfNodeVisitor implements NodeVisitor {
     private Dimen currentX;
 
     /**
-     * current y postition
+     * current y position
      */
     private Dimen currentY;
 
     /**
-     * paperheight in BP
+     * paper height in BP
      */
     private float phBP = PdfDocumentWriter.HEIGHT_A4_BP;
 
@@ -89,24 +92,38 @@ public class PdfNodeVisitor implements NodeVisitor {
     private PDPageContentStream contentStream;
 
     /**
+     * the pdf color visitor
+     */
+    private ColorVisitor colorVisitor;
+
+    /**
+     * the pdf document
+     */
+    private PDDocument document;
+
+    /**
      * Create a new object.
      *
-     * @param cs     the pdf contenstream
-     * @param cx     the currentx
-     * @param cy     the currenty
+     * @param doc    the pdf document
+     * @param cs     the pdf content stream
+     * @param cx     the current x
+     * @param cy     the current y
      */
-    public PdfNodeVisitor(final PDPageContentStream cs, final Dimen cx,
-            final Dimen cy) {
+    public PdfNodeVisitor(final PDDocument doc, final PDPageContentStream cs,
+            final Dimen cx, final Dimen cy) {
 
+        document = doc;
         contentStream = cs;
         currentX = cx;
         currentY = cy;
+        colorVisitor = new PdfColorVisitor();
     }
 
     /**
      * Draw a box around the node (only for test).
      *
      * @param node  the node
+     * @throws DocumentWriterException if an error occurred.
      */
     private void drawNode(final Node node) throws DocumentWriterException {
 
@@ -155,8 +172,8 @@ public class PdfNodeVisitor implements NodeVisitor {
     }
 
     /**
-     * Set the paperheight.
-     * @param ph The paperheight to set.
+     * Set the paper height.
+     * @param ph The paper height to set.
      */
     public void setPaperheight(final Dimen ph) {
 
@@ -174,9 +191,6 @@ public class PdfNodeVisitor implements NodeVisitor {
      */
     public Object visitAdjust(final AdjustNode node, final Object value2) {
 
-        //        Element element = new Element("adjust");
-        //        addNodeAttributes(node, element);
-        //        return element;
         return null;
     }
 
@@ -186,9 +200,6 @@ public class PdfNodeVisitor implements NodeVisitor {
      */
     public Object visitAfterMath(final AfterMathNode node, final Object value2) {
 
-        //        Element element = new Element("aftermath");
-        //        addNodeAttributes(node, element);
-        //        return element;
         return null;
     }
 
@@ -199,9 +210,6 @@ public class PdfNodeVisitor implements NodeVisitor {
     public Object visitAlignedLeaders(final AlignedLeadersNode node,
             final Object value2) {
 
-        //        Element element = new Element("alignedleaders");
-        //        addNodeAttributes(node, element);
-        //        return element;
         return null;
     }
 
@@ -211,9 +219,6 @@ public class PdfNodeVisitor implements NodeVisitor {
      */
     public Object visitBeforeMath(final BeforeMathNode node, final Object value2) {
 
-        //        Element element = new Element("beforemath");
-        //        addNodeAttributes(node, element);
-        //        return element;
         return null;
     }
 
@@ -224,9 +229,6 @@ public class PdfNodeVisitor implements NodeVisitor {
     public Object visitCenteredLeaders(final CenteredLeadersNode node,
             final Object value) {
 
-        //        Element element = new Element("centeredleaders");
-        //        addNodeAttributes(node, element);
-        //        return element;
         return null;
     }
 
@@ -236,38 +238,41 @@ public class PdfNodeVisitor implements NodeVisitor {
     private de.dante.extex.interpreter.context.Color oldcolor = null;
 
     /**
+     * the fount key from the character before
+     */
+    private FountKey oldfountkey = null;
+
+    /**
+     * the pdf font
+     */
+    private PDFont pdfont = PDType1Font.HELVETICA;
+
+    /**
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitChar(CharNode,
      * java.lang.Object)
      */
     public Object visitChar(final CharNode node, final Object value)
-            throws DocumentWriterException {
+            throws GeneralException {
 
         try {
             UnicodeChar uc = node.getCharacter();
-            Font font = node.getTypesettingContext().getFont();
+            Font newfont = node.getTypesettingContext().getFont();
+            FountKey newfountkey = newfont.getFontKey();
             de.dante.extex.interpreter.context.Color newcolor = node
                     .getTypesettingContext().getColor();
 
-            PDFont pdfont = PDType1Font.HELVETICA;
-
-            //            if (bf == null) {
-            //                bf = PdfEfmFont.createFont(font);
-            //                if (bf == null) {
-            //                    bf = new PdfType1Font("src/font/lmr12.afm", "Cp1252",
-            //                            PdfFont.EMBEDDED, null, null);
-            //                }
-            //                // bf.setSubset(false);
-            //            }
-            //PdfFont.createFont("src/font/lmr12.afm", "",
-            //    PdfFont.EMBEDDED);
+            if (!newfountkey.eq(oldfountkey)) {
+                pdfont = PdfBoxType1Font.getInstance(document, newfont);
+                oldfountkey = newfountkey;
+            }
 
             // the same color?
             if (!newcolor.equals(oldcolor)) {
-                PdfColorAdapter.setColor(contentStream, newcolor);
+                newcolor.visit(colorVisitor, contentStream);
                 oldcolor = newcolor;
             }
             contentStream.beginText();
-            contentStream.setFont(pdfont, (float) Unit.getDimenAsPT(font
+            contentStream.setFont(pdfont, (float) Unit.getDimenAsPT(newfont
                     .getActualSize()));
             contentStream.moveTextPositionByAmount(Unit.getDimenAsBP(currentX),
                     phBP - Unit.getDimenAsBP(currentY));
@@ -296,8 +301,6 @@ public class PdfNodeVisitor implements NodeVisitor {
     public Object visitDiscretionary(final DiscretionaryNode node,
             final Object value) {
 
-        //        Element element = new Element("discretionary");
-        //        addNodeAttributes(nod
         return null;
     }
 
@@ -308,9 +311,6 @@ public class PdfNodeVisitor implements NodeVisitor {
     public Object visitExpandedLeaders(final ExpandedLeadersNode node,
             final Object value) {
 
-        //        Element element = new Element("expandedleaders");
-        //        addNodeAttributes(node, element);
-        //        return element;
         return null;
     }
 
@@ -360,9 +360,6 @@ public class PdfNodeVisitor implements NodeVisitor {
      */
     public Object visitInsertion(final InsertionNode node, final Object value) {
 
-        //        Element element = new Element("insertion");
-        //        addNodeAttributes(node, element);
-        //        return element;
         return null;
     }
 
@@ -372,9 +369,6 @@ public class PdfNodeVisitor implements NodeVisitor {
      */
     public Object visitKern(final KernNode node, final Object value) {
 
-        //        Element element = new Element("kern");
-        //        addNodeAttributes(node, element);
-        //        return element;
         return null;
     }
 
@@ -410,9 +404,6 @@ public class PdfNodeVisitor implements NodeVisitor {
      */
     public Object visitMark(final MarkNode node, final Object value) {
 
-        //        Element element = new Element("mark");
-        //        addNodeAttributes(node, element);
-        //        return element;
         return null;
     }
 
@@ -422,10 +413,6 @@ public class PdfNodeVisitor implements NodeVisitor {
      */
     public Object visitPenalty(final PenaltyNode node, final Object value) {
 
-        //        Element element = new Element("penalty");
-        //        addNodeAttributes(node, element);
-        //        element.setAttribute("penalty", String.valueOf(node.getPenalty()));
-        //        return element;
         return null;
     }
 
@@ -435,9 +422,6 @@ public class PdfNodeVisitor implements NodeVisitor {
      */
     public Object visitRule(final RuleNode node, final Object value) {
 
-        //        Element element = new Element("rule");
-        //        addNodeAttributes(node, element);
-        //        return element;
         return null;
     }
 
@@ -447,9 +431,6 @@ public class PdfNodeVisitor implements NodeVisitor {
      */
     public Object visitSpace(final SpaceNode node, final Object value) {
 
-        //        Element element = new Element("space");
-        //        addNodeAttributes(node, element);
-        //        return element;
         return null;
     }
 
@@ -500,9 +481,6 @@ public class PdfNodeVisitor implements NodeVisitor {
      */
     public Object visitWhatsIt(final WhatsItNode node, final Object value) {
 
-        //        Element element = new Element("whatsit");
-        //        addNodeAttributes(node, element);
-        //        return element;
         return null;
     }
 }
