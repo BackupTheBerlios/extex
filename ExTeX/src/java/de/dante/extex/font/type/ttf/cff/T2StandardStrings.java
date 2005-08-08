@@ -26,7 +26,7 @@ package de.dante.extex.font.type.ttf.cff;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 
 public final class T2StandardStrings {
@@ -41,7 +41,7 @@ public final class T2StandardStrings {
     /**
      * Standard Strings
      */
-    public static final String DATA[] = {".notdef", // 0
+    public static final String[] DATA = {".notdef", // 0
             "space", // 1
             "exclam", // 2
             "quotedbl", // 3
