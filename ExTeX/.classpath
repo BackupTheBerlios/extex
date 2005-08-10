@@ -4,16 +4,16 @@
 	<classpathentry kind="src" path="src/test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/jdom.jar"/>
-	<classpathentry kind="lib" path="lib.develop/ant.jar"/>
-	<classpathentry kind="lib" path="lib.develop/junit.jar"/>
+	<classpathentry kind="lib" path="develop/lib/ant.jar"/>
+	<classpathentry kind="lib" path="develop/lib/junit.jar"/>
 	<classpathentry kind="lib" path="lib/js.jar"/>
-	<classpathentry kind="lib" path="lib/icu4j_2_8.jar"/>
+	<classpathentry sourcepath="develop/src/icu4jsrc_3_2.jar" kind="lib" path="lib/icu4j_2_8.jar"/>
 	<classpathentry kind="var" path="JAVA_HOME/lib/tools.jar"/>
 	<classpathentry kind="lib" path="lib/avalon-framework-4.1.4.jar"/>
 	<classpathentry kind="lib" path="lib/jel.jar"/>
-	<classpathentry kind="lib" path="lib.develop/jaxen-full.jar"/>
-	<classpathentry kind="lib" path="lib.develop/saxpath.jar"/>
-	<classpathentry sourcepath="/PDFBox/src" kind="lib" path="lib/PDFBox.jar"/>
+	<classpathentry kind="lib" path="develop/lib/jaxen-full.jar"/>
+	<classpathentry kind="lib" path="develop/lib/saxpath.jar"/>
+	<classpathentry kind="lib" path="lib/PDFBox.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.9.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
