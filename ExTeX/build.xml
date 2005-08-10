@@ -68,16 +68,13 @@
     <path id="main.class.path">
         <fileset dir="lib">
             <include name="*.jar"/>
-            <exclude name="junit.jar"/>
-            <exclude name="ant.jar"/>
         </fileset>
     </path>
     <path id="test.class.path">
         <fileset dir="lib">
             <include name="*.jar"/>
-            <exclude name="ant.jar"/>
         </fileset>
-        <fileset dir="lib.develop">
+        <fileset dir="develop/lib">
             <include name="*.jar"/>
             <exclude name="ant.jar"/>
         </fileset>
@@ -85,8 +82,8 @@
 
     <taskdef resource="checkstyletask.properties">
         <classpath>
-            <pathelement location="lib.develop/checkstyle-all-3.4.jar"/>
-            <pathelement location="lib.develop/checkstyle-optional-3.4.jar"/>
+            <pathelement location="develop/lib/checkstyle-all-3.4.jar"/>
+            <pathelement location="develop/lib/checkstyle-optional-3.4.jar"/>
         </classpath>
     </taskdef>
 
@@ -222,9 +219,6 @@
         <copy todir="${target.lib}">
             <fileset dir="lib">
                 <include name="**/*.jar"/>
-                <exclude name="**/ant.jar"/>
-                <exclude name="**/junit.jar"/>
-                <exclude name="**/shiftone-jrat.jar"/>
             </fileset>
         </copy>
         <tstamp/>
@@ -384,7 +378,7 @@
 
     <target name="gcview"
             description="Show the logfile from the GC in the gcviewer">
-        <java fork="true" jar="lib.develop/gcviewer.jar">
+        <java fork="true" jar="develop/lib/gcviewer.jar">
             <arg value="gc.log"/>
         </java>
     </target>
@@ -397,7 +391,7 @@
             <exclude name="doc/javadocxml/**/*"/>
             <exclude name="doc/javadoc/**/*"/>
             <include name="lib/**/*"/>
-            <include name="lib.develop/**/*"/>
+            <include name="develop/lib/**/*"/>
             <include name="src/**/*"/>
             <include name="font/**/*"/>
             <include name="test/**/*"/>

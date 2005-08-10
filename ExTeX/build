@@ -1,6 +1,6 @@
 #!/bin/sh
 #------------------------------------------------------------------------------
-# Copyright (C) 2004 The ExTeX Group
+# Copyright (C) 2004-2005 The ExTeX Group
 #
 # This library is free software; you can redistribute it and/or modify it under
 # the terms of the GNU Lesser General Public License as published by the Free
@@ -57,6 +57,11 @@ if $cygwin ; then
         JAVA_HOME=`cygpath --unix "$JAVA_HOME"`
 fi
 
+if [ ! -e $JAVA_HOME/lib/tools.jar ] ; then
+    echo "Found no tools.jar in $JAVA_HOME/lib"
+    exit 1
+fi
+
 LIBDIR=lib
 
 LOCALCLASSPATH=.
@@ -64,16 +69,9 @@ LOCALCLASSPATH=$JAVA_HOME/lib/tools.jar
 LOCALCLASSPATH=$LOCALCLASSPATH:$JAVA_HOME/lib/classes.zip
 
 # jar-Dateien
-#for i in $LIBDIR/*.jar ; do
-#    LOCALCLASSPATH=$LOCALCLASSPATH:$i
-#done
-
-# jar-Dateien
-for i in lib.develop/*.jar ; do
+for i in develop/lib/*.jar ; do
     LOCALCLASSPATH=$LOCALCLASSPATH:$i
 done
-
-# export $LOCALCLASSPATH
 
 # antRun must be executable (can't do this in build.xml because Ant uses antRun
 # to do the chmod)
