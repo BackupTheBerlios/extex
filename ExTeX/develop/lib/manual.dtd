@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+
+<!ELEMENT emph (#PCDATA)>
+<!ELEMENT strong (#PCDATA)>
+<!ELEMENT code (#PCDATA)>
+<!ELEMENT const (#PCDATA)>
+
+<!ELEMENT german (#PCDATA | emph | strong | code | const)*>
+<!ELEMENT english (#PCDATA | emph | strong | code | const)*>
+
+<!ELEMENT description (shortDesc,example,version)>
+<!ATTLIST description
+    name CDATA  #REQUIRED
+>
+
+<!ELEMENT shortDesc (german,english)>
+
+<!ELEMENT example (source,output,explanation)*>
+
+<!ELEMENT source (#PCDATA)>
+<!ELEMENT output (#PCDATA)>
+<!ELEMENT explanation (german,english)>
+
+<!ELEMENT version EMPTY+>
+<!ATTLIST version
+    class CDATA  #REQUIRED 
+    revision CDATA  #REQUIRED 
+>
