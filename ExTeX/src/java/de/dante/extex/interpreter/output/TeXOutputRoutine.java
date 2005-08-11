@@ -35,7 +35,7 @@ import de.dante.extex.scanner.type.Token;
 import de.dante.extex.scanner.type.TokenFactory;
 import de.dante.extex.typesetter.OutputRoutine;
 import de.dante.extex.typesetter.type.NodeList;
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
@@ -48,7 +48,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * interpreter.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class TeXOutputRoutine implements OutputRoutine {
 

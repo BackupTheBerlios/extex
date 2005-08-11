@@ -35,7 +35,7 @@ import de.dante.extex.interpreter.type.real.Real;
 import de.dante.extex.interpreter.type.real.RealConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 
 /**
  * This class provides an implementation for the real valued primitives.
@@ -48,7 +48,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class NamedReal extends AbstractAssignment
         implements

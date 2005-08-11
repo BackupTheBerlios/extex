@@ -23,7 +23,7 @@ import java.io.IOException;
 
 import de.dante.extex.documentWriter.exception.DocumentWriterException;
 import de.dante.extex.typesetter.type.NodeList;
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 
 /**
  * This is the interface to the backend of the system. The document has to be
@@ -31,7 +31,7 @@ import de.dante.util.GeneralException;
  * after the production of the output.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public interface DocumentWriter {
 

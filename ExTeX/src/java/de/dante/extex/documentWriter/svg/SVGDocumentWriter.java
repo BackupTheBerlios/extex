@@ -61,9 +61,9 @@ import de.dante.extex.typesetter.type.node.SpaceNode;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
 import de.dante.extex.typesetter.type.node.VirtualCharNode;
 import de.dante.extex.typesetter.type.node.WhatsItNode;
-import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 import de.dante.util.Unit;
+import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.Configuration;
 
 /**
@@ -74,7 +74,7 @@ import de.dante.util.framework.configuration.Configuration;
  * TODO incomplete !!!
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class SVGDocumentWriter
         implements

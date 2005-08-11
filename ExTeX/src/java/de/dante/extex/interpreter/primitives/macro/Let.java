@@ -45,7 +45,7 @@ import de.dante.extex.scanner.type.TabMarkToken;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.scanner.type.TokenVisitor;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\let</code>.
@@ -76,7 +76,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
 public class Let extends AbstractAssignment {
 

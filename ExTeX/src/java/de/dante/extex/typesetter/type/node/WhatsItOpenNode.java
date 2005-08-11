@@ -22,13 +22,13 @@ package de.dante.extex.typesetter.type.node;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.file.OutFile;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 
 /**
  * This WhatsIt node opens an out file on shipping.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class WhatsItOpenNode extends WhatsItNode {
 

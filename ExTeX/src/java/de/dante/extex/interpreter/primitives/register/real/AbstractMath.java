@@ -30,14 +30,14 @@ import de.dante.extex.interpreter.type.real.Real;
 import de.dante.extex.interpreter.type.real.RealConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 
 /**
  * Abstract class for math primitives.
  * e.g. sin, cos, ...
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public abstract class AbstractMath extends AbstractCode
         implements

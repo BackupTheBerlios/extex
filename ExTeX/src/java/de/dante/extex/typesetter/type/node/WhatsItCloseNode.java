@@ -25,14 +25,14 @@ import java.util.logging.Logger;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.file.OutFile;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.logger.LogEnabled;
 
 /**
  * This WhatsIt node closes an out file on shipping.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class WhatsItCloseNode extends WhatsItNode implements LogEnabled {
 

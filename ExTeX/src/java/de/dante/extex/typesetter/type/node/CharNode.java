@@ -25,8 +25,8 @@ import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeVisitor;
-import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
+import de.dante.util.exception.GeneralException;
 
 /**
  * This is the Node which carries a single character.
@@ -35,7 +35,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class CharNode extends AbstractNode implements Node {
 

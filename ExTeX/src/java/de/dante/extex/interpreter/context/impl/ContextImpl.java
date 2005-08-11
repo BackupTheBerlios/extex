@@ -73,9 +73,9 @@ import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
 import de.dante.extex.typesetter.type.math.MathDelimiter;
-import de.dante.util.GeneralException;
 import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
+import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.Configurable;
 import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
@@ -118,7 +118,7 @@ import de.dante.util.framework.i18n.Localizer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.87 $
+ * @version $Revision: 1.88 $
  */
 public class ContextImpl
         implements

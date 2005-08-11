@@ -76,7 +76,7 @@ import de.dante.extex.scanner.stream.TokenStreamOptions;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterFactory;
 import de.dante.extex.typesetter.exception.TypesetterException;
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 import de.dante.util.file.OutputFactory;
 import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.ConfigurationFactory;
@@ -326,7 +326,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.113 $
+ * @version $Revision: 1.114 $
  */
 public class ExTeX {
 

@@ -31,9 +31,9 @@ import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.extex.scanner.type.CodeToken;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
 import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
+import de.dante.util.exception.GeneralException;
 import de.dante.util.observer.NotObservableException;
 
 /**
@@ -49,7 +49,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.54 $
+ * @version $Revision: 1.55 $
  */
 public interface TokenSource {
 

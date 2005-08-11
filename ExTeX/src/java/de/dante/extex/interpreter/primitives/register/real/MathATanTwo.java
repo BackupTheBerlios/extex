@@ -26,7 +26,7 @@ import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.real.Real;
 import de.dante.extex.interpreter.type.real.RealConvertible;
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 
 /**
  * Math. Converts rectangular coordinates (x, y) to polar (r, theta).
@@ -42,7 +42,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class MathATanTwo extends AbstractMath
         implements

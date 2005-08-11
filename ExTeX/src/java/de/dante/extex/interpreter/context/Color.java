@@ -22,14 +22,14 @@ package de.dante.extex.interpreter.context;
 import java.io.Serializable;
 
 import de.dante.extex.color.ColorVisitor;
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 
 /**
  * This interface declares some methods to access the color with an alpha
  * channel.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public interface Color extends Serializable {
 

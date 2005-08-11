@@ -29,7 +29,7 @@ import org.jdom.Element;
 import de.dante.extex.font.Kerning;
 import de.dante.extex.font.type.FontMetric;
 import de.dante.extex.interpreter.type.dimen.Dimen;
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 import de.dante.util.file.random.RandomAccessInputStream;
 
 /**
@@ -40,7 +40,7 @@ import de.dante.util.file.random.RandomAccessInputStream;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class TTFReader implements FontMetric {
 

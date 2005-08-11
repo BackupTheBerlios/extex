@@ -33,8 +33,8 @@ import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.CodeToken;
 import de.dante.extex.scanner.type.TokenFactory;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
+import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.AbstractFactory;
 import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
@@ -52,7 +52,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class PrimitiveFactory extends AbstractFactory {
 

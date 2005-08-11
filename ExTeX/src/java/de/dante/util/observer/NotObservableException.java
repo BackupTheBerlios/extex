@@ -19,14 +19,14 @@
 
 package de.dante.util.observer;
 
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 
 /**
  * This Exception is thrown when an Observer for a non-observable action is
  * requested to be registered.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class NotObservableException extends GeneralException {
 

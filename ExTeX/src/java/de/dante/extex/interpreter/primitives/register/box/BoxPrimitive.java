@@ -28,7 +28,7 @@ import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.box.Boxable;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
@@ -55,7 +55,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class BoxPrimitive extends AbstractBox implements Boxable, Serializable {
 

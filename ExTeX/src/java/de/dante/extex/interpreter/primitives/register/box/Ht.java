@@ -34,7 +34,7 @@ import de.dante.extex.interpreter.type.dimen.DimenConvertible;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\ht</code>.
@@ -69,7 +69,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class Ht extends Setbox
         implements

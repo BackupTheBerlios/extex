@@ -33,8 +33,9 @@ import de.dante.extex.typesetter.type.node.CharNode;
 import de.dante.extex.typesetter.type.node.GlueNode;
 import de.dante.extex.typesetter.type.node.RuleNode;
 import de.dante.extex.typesetter.type.node.WhatsItNode;
-import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
+import de.dante.util.exception.GeneralException;
+
 import java.io.OutputStream;
 import java.util.EmptyStackException;
 import java.util.Enumeration;
@@ -46,7 +47,7 @@ import java.util.Vector;
  * This is a implementation of a dvi document writer.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class DviWriter {
 

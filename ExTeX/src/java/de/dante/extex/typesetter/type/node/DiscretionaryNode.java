@@ -22,7 +22,7 @@ package de.dante.extex.typesetter.type.node;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.NodeVisitor;
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 
 /**
  * This node represents a glyph which can be broken if required.
@@ -31,7 +31,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class DiscretionaryNode extends AbstractNode implements Node {
 

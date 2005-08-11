@@ -47,8 +47,8 @@ import de.dante.extex.typesetter.type.node.SpaceNode;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
 import de.dante.extex.typesetter.type.node.VirtualCharNode;
 import de.dante.extex.typesetter.type.node.WhatsItNode;
-import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
+import de.dante.util.exception.GeneralException;
 
 /**
  * This class provides a node visitor to insert discretionaries into nodes.
@@ -56,7 +56,7 @@ import de.dante.util.UnicodeChar;
  * &ldquo;normal&rdquo; cases do not apply.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 class NV implements NodeVisitor {
 

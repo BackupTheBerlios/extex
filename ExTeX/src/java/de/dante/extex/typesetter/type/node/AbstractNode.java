@@ -26,7 +26,7 @@ import de.dante.extex.interpreter.type.glue.FixedGlueComponent;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.Node;
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
@@ -34,7 +34,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This abstract class provides some methods common to all Nodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public abstract class AbstractNode implements Node {
 

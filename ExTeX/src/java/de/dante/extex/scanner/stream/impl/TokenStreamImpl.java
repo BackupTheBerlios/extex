@@ -38,9 +38,9 @@ import de.dante.extex.scanner.type.CatcodeException;
 import de.dante.extex.scanner.type.CatcodeVisitor;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.scanner.type.TokenFactory;
-import de.dante.util.GeneralException;
 import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
+import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 import de.dante.util.framework.configuration.exception.ConfigurationSyntaxException;
@@ -51,7 +51,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationSyntaxExcept
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.41 $
+ * @version $Revision: 1.42 $
  */
 public class TokenStreamImpl extends TokenStreamBaseImpl implements TokenStream {
 
@@ -59,7 +59,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements TokenStream 
      * This is a type-safe class to represent state information.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.41 $
+     * @version $Revision: 1.42 $
      */
     private static final class State {
 

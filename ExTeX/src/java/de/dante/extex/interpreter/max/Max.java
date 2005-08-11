@@ -81,8 +81,8 @@ import de.dante.extex.scanner.type.Token;
 import de.dante.extex.scanner.type.TokenFactory;
 import de.dante.extex.scanner.type.TokenVisitor;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
 import de.dante.util.Switch;
+import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.Registrar;
 import de.dante.util.framework.configuration.Configurable;
 import de.dante.util.framework.configuration.Configuration;
@@ -99,7 +99,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.79 $
+ * @version $Revision: 1.80 $
  */
 public abstract class Max
         implements

@@ -26,7 +26,7 @@ import de.dante.extex.interpreter.type.glue.FixedGlueComponent;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.node.CharNode;
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 
 /**
  * A node is the basic data structure for the typesetter. It has a reference
@@ -41,7 +41,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public interface Node extends Knot {
 

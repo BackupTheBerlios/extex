@@ -26,7 +26,7 @@ import de.dante.extex.color.model.HsvColor;
 import de.dante.extex.color.model.RgbColor;
 import de.dante.extex.interpreter.context.Color;
 import de.dante.extex.interpreter.exception.ImpossibleException;
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 
 /**
  * This implementation of a color converter is based on the formulas in the
@@ -35,7 +35,7 @@ import de.dante.util.GeneralException;
  * TODO gene: use the new ColorVisitor
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class BasicColorConverter implements ColorConverter {
 

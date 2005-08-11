@@ -39,14 +39,14 @@ import de.dante.extex.main.errorHandler.editHandler.EditHandler;
 import de.dante.extex.main.exception.MainException;
 import de.dante.extex.main.logging.LogFormatter;
 import de.dante.extex.scanner.type.Token;
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 
 /**
  * This base class for test cases handles all the nitty gritty details of
  * running an instance of ExTeX.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public class ExTeXLauncher extends TestCase {
 
@@ -54,7 +54,7 @@ public class ExTeXLauncher extends TestCase {
      * Inner class for the error handler.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.26 $
+     * @version $Revision: 1.27 $
      */
     private class EHandler implements ErrorHandler {
 

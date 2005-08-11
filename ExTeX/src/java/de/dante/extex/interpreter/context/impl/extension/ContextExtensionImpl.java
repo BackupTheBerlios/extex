@@ -30,7 +30,7 @@ import de.dante.extex.interpreter.type.hash.toks.HashToks;
 import de.dante.extex.interpreter.type.pair.Pair;
 import de.dante.extex.interpreter.type.real.Real;
 import de.dante.extex.interpreter.type.transform.Transform;
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
@@ -39,7 +39,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * ExTeX functions.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class ContextExtensionImpl extends ContextImpl
         implements

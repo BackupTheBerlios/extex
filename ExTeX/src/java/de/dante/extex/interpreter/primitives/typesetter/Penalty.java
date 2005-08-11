@@ -26,7 +26,7 @@ import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.node.PenaltyNode;
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
@@ -64,7 +64,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Penalty extends AbstractCode {
 

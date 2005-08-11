@@ -37,9 +37,9 @@ import de.dante.extex.scanner.type.CatcodeException;
 import de.dante.extex.scanner.type.CatcodeVisitor;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.scanner.type.TokenFactory;
-import de.dante.util.GeneralException;
 import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
+import de.dante.util.exception.GeneralException;
 import de.dante.util.file.InputLineDecodeReader;
 import de.dante.util.file.InputLineDecodeStream;
 import de.dante.util.file.InputLineDecodeString;
@@ -55,7 +55,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationSyntaxExcept
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class TokenStreamTeXImpl extends AbstractTokenStreamImpl
         implements

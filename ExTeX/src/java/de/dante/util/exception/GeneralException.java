@@ -17,7 +17,7 @@
  *
  */
 
-package de.dante.util;
+package de.dante.util.exception;
 
 import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.i18n.LocalizerFactory;
@@ -47,7 +47,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.1 $
  */
 public class GeneralException extends Exception {
 

@@ -31,15 +31,15 @@ import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeIterator;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.NodeVisitor;
-import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
+import de.dante.util.exception.GeneralException;
 
 /**
  * This class exposes itself as character node but contains an hlist internally.
  * This class is used to represent composed characters from virtual fonts.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class VirtualCharNode extends CharNode implements NodeList {
 
@@ -48,7 +48,7 @@ public class VirtualCharNode extends CharNode implements NodeList {
      * It is here to compensate the missing multiple inheritance of Java.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.8 $
+     * @version $Revision: 1.9 $
      */
     private class NL extends AbstractNodeList {
 

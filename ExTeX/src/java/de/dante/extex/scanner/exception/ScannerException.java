@@ -18,14 +18,14 @@
  */
 package de.dante.extex.scanner.exception;
 
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 
 
 /**
  * This is the base class for all exceptions thrown by the scanner.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ScannerException extends GeneralException {
 

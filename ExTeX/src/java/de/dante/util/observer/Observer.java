@@ -18,7 +18,7 @@
  */
 package de.dante.util.observer;
 
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 
 
 /**
@@ -26,7 +26,7 @@ import de.dante.util.GeneralException;
  * {@link de.dante.util.observer.Observable Observable}.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface Observer {
 

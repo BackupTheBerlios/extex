@@ -19,14 +19,14 @@
 
 package de.dante.extex.interpreter.exception;
 
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.i18n.Localizer;
 
 /**
  * This is the base class for all exceptions of the interpreter.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class InterpreterException extends GeneralException {
 

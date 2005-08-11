@@ -31,7 +31,7 @@ import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.real.Real;
 import de.dante.extex.interpreter.type.real.RealConvertible;
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 
 /**
  * Math. Expressions to get a real-value.
@@ -44,7 +44,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class MathExpression extends AbstractMath
         implements

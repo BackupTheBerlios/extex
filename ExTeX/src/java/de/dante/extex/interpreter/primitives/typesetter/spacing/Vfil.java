@@ -27,7 +27,7 @@ import de.dante.extex.interpreter.primitives.typesetter.AbstractVerticalCode;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.glue.GlueComponent;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\vfil</code>.
@@ -52,7 +52,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Vfil extends AbstractVerticalCode implements VerticalSkip {
 

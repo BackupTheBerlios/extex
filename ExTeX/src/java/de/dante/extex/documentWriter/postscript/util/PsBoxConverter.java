@@ -53,15 +53,15 @@ import de.dante.extex.typesetter.type.node.SpecialNode;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
 import de.dante.extex.typesetter.type.node.VirtualCharNode;
 import de.dante.extex.typesetter.type.node.WhatsItNode;
-import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
+import de.dante.util.exception.GeneralException;
 
 /**
  * This class provides a converter to PostScript code which shows mainly the
  * boxes of the characters.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class PsBoxConverter implements PsConverter, NodeVisitor {
 

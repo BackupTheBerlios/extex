@@ -38,8 +38,8 @@ import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.node.AccentKernNode;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
-import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
+import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
@@ -66,7 +66,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [1123]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Accent extends AbstractCode {
 

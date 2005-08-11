@@ -43,14 +43,14 @@ import de.dante.extex.typesetter.type.node.GlueNode;
 import de.dante.extex.typesetter.type.node.InsertionNode;
 import de.dante.extex.typesetter.type.node.MarkNode;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.Configuration;
 
 /**
  * JUnit tests for class <code>DviDocumentWriter</code>.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 
 public class DviDocumentWriterTest extends TestCase {

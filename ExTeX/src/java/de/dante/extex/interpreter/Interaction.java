@@ -19,7 +19,7 @@
 
 package de.dante.extex.interpreter;
 
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 
 import java.io.ObjectStreamException;
 import java.io.Serializable;
@@ -31,7 +31,7 @@ import java.io.Serializable;
  *
  * @see "<logo>TeX</logo> &ndash; The Program [73]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public abstract class Interaction implements Serializable {
 
@@ -39,7 +39,7 @@ public abstract class Interaction implements Serializable {
      * This inner class is use to represent the batch mode.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.17 $
+     * @version $Revision: 1.18 $
      */
     private static class BatchMode extends Interaction {
 
@@ -83,7 +83,7 @@ public abstract class Interaction implements Serializable {
      * This inner class is use to represent the error stop mode.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.17 $
+     * @version $Revision: 1.18 $
      */
     private static class ErrorstopMode extends Interaction {
 
@@ -127,7 +127,7 @@ public abstract class Interaction implements Serializable {
      * This inner class is use to represent the nonstop mode.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.17 $
+     * @version $Revision: 1.18 $
      */
     private static class NonstopMode extends Interaction {
 
@@ -171,7 +171,7 @@ public abstract class Interaction implements Serializable {
      * This inner class is use to represent the scroll mode.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.17 $
+     * @version $Revision: 1.18 $
      */
     private static class ScrollMode extends Interaction {
 

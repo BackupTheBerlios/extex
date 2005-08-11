@@ -30,13 +30,13 @@ import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 
 /**
  * This is a first reference implementation of a page builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class PageBuilderImpl implements PageBuilder {
 

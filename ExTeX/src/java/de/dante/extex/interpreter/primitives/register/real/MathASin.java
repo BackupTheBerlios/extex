@@ -26,7 +26,7 @@ import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.real.Real;
 import de.dante.extex.interpreter.type.real.RealConvertible;
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 
 /**
  * Math. the arc sine of an angle, in the range of -pi/2 through pi/2.
@@ -40,7 +40,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class MathASin extends AbstractMath
         implements

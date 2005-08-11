@@ -22,7 +22,7 @@ package de.dante.extex.typesetter.type.node;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.NodeVisitor;
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 
 /**
  * This node is meant to record an insertion.
@@ -30,7 +30,7 @@ import de.dante.util.GeneralException;
  * @see "<logo>TeX</logo> &ndash; The Program [140]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class InsertionNode extends AbstractNode implements Node {
 

@@ -33,7 +33,7 @@ import de.dante.extex.scanner.type.CodeToken;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.scanner.type.TokenFactory;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 
 /**
  * This class provides the basic data type of a stretchable and shrinkable
@@ -41,7 +41,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class Glue implements Serializable, FixedGlue {
 

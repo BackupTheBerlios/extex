@@ -22,7 +22,7 @@ package de.dante.extex.typesetter.type.node;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeVisitor;
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 
 /**
  * A mark node carries some tokens which can be extracted after the page has
@@ -34,7 +34,7 @@ import de.dante.util.GeneralException;
  * @see "<logo>TeX</logo> &ndash; The Program [141]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class MarkNode extends AbstractNode implements Node {
 

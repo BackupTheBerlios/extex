@@ -21,7 +21,7 @@ package de.dante.extex.interpreter.type.tokens;
 
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.scanner.type.Token;
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 
 /**
  * This interface describes the features of a
@@ -29,7 +29,7 @@ import de.dante.util.GeneralException;
  * which do not modify the value.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface FixedTokens {
 

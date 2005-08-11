@@ -33,7 +33,7 @@ import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 
 /**
  * This class provides an implementation for the primitive
@@ -79,7 +79,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public class Fontdimen extends AbstractAssignment
         implements

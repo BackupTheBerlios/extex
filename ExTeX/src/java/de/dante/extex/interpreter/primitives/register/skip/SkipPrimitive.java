@@ -28,7 +28,7 @@ import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.glue.GlueConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\skip</code>.
@@ -41,7 +41,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class SkipPrimitive extends AbstractSkip
         implements

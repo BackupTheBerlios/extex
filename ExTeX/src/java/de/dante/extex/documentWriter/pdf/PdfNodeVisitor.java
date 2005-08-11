@@ -58,15 +58,15 @@ import de.dante.extex.typesetter.type.node.SpaceNode;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
 import de.dante.extex.typesetter.type.node.VirtualCharNode;
 import de.dante.extex.typesetter.type.node.WhatsItNode;
-import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 import de.dante.util.Unit;
+import de.dante.util.exception.GeneralException;
 
 /**
  * PDF NodeVisitor.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 
 public class PdfNodeVisitor implements NodeVisitor {

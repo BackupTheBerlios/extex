@@ -22,7 +22,7 @@ package de.dante.extex.interpreter.type.glue;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.TokenFactory;
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 
 /**
  * This interface describes the features of a
@@ -30,7 +30,7 @@ import de.dante.util.GeneralException;
  * the value.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public interface FixedGlue {
 

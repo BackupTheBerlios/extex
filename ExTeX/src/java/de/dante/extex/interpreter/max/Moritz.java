@@ -71,9 +71,9 @@ import de.dante.extex.scanner.type.SpaceToken;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.scanner.type.TokenFactory;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
 import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
+import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.Configurable;
 import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
@@ -92,7 +92,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.73 $
+ * @version $Revision: 1.74 $
  */
 public class Moritz extends Max
         implements

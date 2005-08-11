@@ -26,7 +26,7 @@ import de.dante.extex.interpreter.context.MockContext;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.extex.scanner.stream.impl32.TokenStreamStringImpl;
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.ConfigurationFactory;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
@@ -35,7 +35,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * Test cases for dimen registers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class DimenRegisterTest extends TestCase {
 

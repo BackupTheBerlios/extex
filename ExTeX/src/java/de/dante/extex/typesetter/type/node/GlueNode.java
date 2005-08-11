@@ -26,7 +26,7 @@ import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.typesetter.Discardable;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeVisitor;
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 
 /**
  * This node represents a <logo>TeX</logo> "glue" node.
@@ -43,7 +43,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class GlueNode extends AbstractNode implements Node, Discardable {
 

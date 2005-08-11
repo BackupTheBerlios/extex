@@ -27,7 +27,7 @@ import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.node.ExplicitKernNode;
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
@@ -67,7 +67,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Kern extends AbstractCode {
 

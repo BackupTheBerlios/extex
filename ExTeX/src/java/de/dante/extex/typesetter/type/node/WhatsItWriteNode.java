@@ -24,13 +24,13 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.TokensWriter;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 
 /**
  * This WhatsIt node writes some expanded tokens to an out file on shipping.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class WhatsItWriteNode extends WhatsItNode {
 

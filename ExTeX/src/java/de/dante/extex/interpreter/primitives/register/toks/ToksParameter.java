@@ -27,7 +27,7 @@ import de.dante.extex.interpreter.type.InitializableCode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\toks</code>.
@@ -41,7 +41,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class ToksParameter extends ToksPrimitive implements InitializableCode {
 

@@ -32,8 +32,8 @@ import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.main.errorHandler.editHandler.EditHandler;
 import de.dante.extex.scanner.type.Token;
-import de.dante.util.GeneralException;
 import de.dante.util.Locator;
+import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 import de.dante.util.framework.i18n.Localizable;
 import de.dante.util.framework.i18n.Localizer;
@@ -50,7 +50,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class ErrorHandlerImpl
         implements

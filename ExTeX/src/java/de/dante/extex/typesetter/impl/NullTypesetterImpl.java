@@ -42,8 +42,8 @@ import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.node.CharNodeFactory;
-import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
+import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
@@ -52,7 +52,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class NullTypesetterImpl implements Typesetter {
 

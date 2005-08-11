@@ -33,7 +33,7 @@ import de.dante.extex.interpreter.exception.helping.HelpingException;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class FixedHelpingException extends HelpingException {
 
@@ -64,7 +64,7 @@ public class FixedHelpingException extends HelpingException {
     }
 
     /**
-     * @see de.dante.util.GeneralException#getHelp()
+     * @see de.dante.util.exception.GeneralException#getHelp()
      */
     public String getHelp() {
 

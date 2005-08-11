@@ -36,14 +36,14 @@ import de.dante.extex.documentWriter.postscript.util.PsConverter;
 import de.dante.extex.documentWriter.postscript.util.PsUnit;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.type.NodeList;
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.Configurable;
 
 /**
  * This document writer produces multi-page PostScript documents.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class PsWriter extends AbstractPostscriptWriter
         implements

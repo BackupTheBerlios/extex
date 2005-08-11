@@ -21,14 +21,14 @@ package de.dante.extex.color.model;
 
 import de.dante.extex.color.ColorVisitor;
 import de.dante.extex.interpreter.context.Color;
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 
 /**
  * This class implements a color specification in grayscale mode with an alpha
  * channel.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class GrayscaleColor implements Color {
 

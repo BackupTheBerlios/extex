@@ -21,7 +21,7 @@ package de.dante.extex.interpreter.type.glue;
 
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.TokenFactory;
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 
 /**
  * This interface describes the features of a
@@ -29,7 +29,7 @@ import de.dante.util.GeneralException;
  * which do not modify the value.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public interface FixedGlueComponent {
 

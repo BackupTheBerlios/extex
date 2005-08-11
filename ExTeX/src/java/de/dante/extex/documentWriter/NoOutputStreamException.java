@@ -18,14 +18,14 @@
  */
 package de.dante.extex.documentWriter;
 
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 
 
 /**
  * A documentwriter throws is exception when no outputstream was set before calling shipout.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class NoOutputStreamException extends GeneralException {
     /**

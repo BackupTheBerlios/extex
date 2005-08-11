@@ -45,7 +45,7 @@ import de.dante.extex.typesetter.type.node.SpaceNode;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
 import de.dante.extex.typesetter.type.node.VirtualCharNode;
 import de.dante.extex.typesetter.type.node.WhatsItNode;
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\lastnodetype</code>.
@@ -64,7 +64,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 
 public class Lastnodetype extends AbstractReadonlyCount {

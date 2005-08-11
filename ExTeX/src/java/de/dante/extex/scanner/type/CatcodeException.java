@@ -19,14 +19,14 @@
 
 package de.dante.extex.scanner.type;
 
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 
 /**
  * This exception is thrown when something in the context of catcode creation or
  * access goes wrong.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class CatcodeException extends GeneralException {
 

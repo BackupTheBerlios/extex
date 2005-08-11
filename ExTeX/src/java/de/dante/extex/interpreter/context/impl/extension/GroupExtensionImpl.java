@@ -32,13 +32,13 @@ import de.dante.extex.interpreter.type.hash.toks.HashToks;
 import de.dante.extex.interpreter.type.pair.Pair;
 import de.dante.extex.interpreter.type.real.Real;
 import de.dante.extex.interpreter.type.transform.Transform;
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 
 /**
  * This is a simple implementation for a group with ExTeX-functions.
  *
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class GroupExtensionImpl extends GroupImpl
         implements

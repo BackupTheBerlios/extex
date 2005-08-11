@@ -48,15 +48,15 @@ import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.noad.Noad;
 import de.dante.extex.typesetter.type.node.CharNodeFactory;
-import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
+import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.ConfigurationFactory;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.61 $
+ * @version $Revision: 1.62 $
  */
 public class Max1 extends TestCase {
 

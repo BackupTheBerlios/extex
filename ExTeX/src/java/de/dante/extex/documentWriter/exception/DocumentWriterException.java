@@ -18,7 +18,7 @@
  */
 package de.dante.extex.documentWriter.exception;
 
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 
 
 /**
@@ -26,7 +26,7 @@ import de.dante.util.GeneralException;
  * interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class DocumentWriterException extends GeneralException {
 

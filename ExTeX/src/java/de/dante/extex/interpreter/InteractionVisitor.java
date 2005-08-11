@@ -19,7 +19,7 @@
 
 package de.dante.extex.interpreter;
 
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 
 /**
  * This interface describes a visitor for interaction modes.
@@ -42,7 +42,7 @@ import de.dante.util.GeneralException;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public interface InteractionVisitor {
 

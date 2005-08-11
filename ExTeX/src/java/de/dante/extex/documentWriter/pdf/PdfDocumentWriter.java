@@ -40,8 +40,8 @@ import de.dante.extex.documentWriter.pdf.exception.DocumentWriterPdfException;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.NodeVisitor;
-import de.dante.util.GeneralException;
 import de.dante.util.Unit;
+import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.Configuration;
 
 /**
@@ -49,7 +49,7 @@ import de.dante.util.framework.configuration.Configuration;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:Rolf.Niepraschk@ptb.de">Rolf Niepraschk</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public class PdfDocumentWriter implements DocumentWriter, SingleDocumentStream {
 

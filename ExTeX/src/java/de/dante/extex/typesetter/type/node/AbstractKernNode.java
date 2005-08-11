@@ -21,7 +21,7 @@ package de.dante.extex.typesetter.type.node;
 
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.type.NodeVisitor;
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 
 /**
  * This class provides the same functionality as
@@ -30,7 +30,7 @@ import de.dante.util.GeneralException;
  * <logo>TeX</logo>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public abstract class AbstractKernNode extends AbstractNode implements KernNode {
 

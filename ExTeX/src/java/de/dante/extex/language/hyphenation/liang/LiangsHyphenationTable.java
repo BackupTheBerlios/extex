@@ -39,8 +39,8 @@ import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.node.CharNodeFactory;
 import de.dante.extex.typesetter.type.node.DiscretionaryNode;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
-import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
+import de.dante.util.exception.GeneralException;
 
 /**
  * This class stores the values for hyphenations and hyphenates words.
@@ -114,7 +114,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class LiangsHyphenationTable extends BaseHyphenationTable {
 

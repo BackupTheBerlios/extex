@@ -23,7 +23,7 @@ import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeVisitor;
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 
 /**
  * The rule node represents a rectangular area on the page filled with some
@@ -32,7 +32,7 @@ import de.dante.util.GeneralException;
  * @see "<logo>TeX</logo> &ndash; The Program [138]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class RuleNode extends AbstractNode implements Node {
 

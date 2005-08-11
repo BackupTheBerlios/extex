@@ -18,7 +18,7 @@
  */
 package de.dante.extex.interpreter.type.count;
 
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 
 
 /**
@@ -26,7 +26,7 @@ import de.dante.util.GeneralException;
  * the contents are redefined to produce an exception.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class ImmutableCount extends Count {
 

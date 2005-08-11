@@ -31,8 +31,8 @@ import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
+import de.dante.util.exception.GeneralException;
 
 /**
  * This class provides an implementation for the primitive
@@ -68,7 +68,7 @@ import de.dante.util.UnicodeChar;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class Hyphenchar extends AbstractAssignment
         implements

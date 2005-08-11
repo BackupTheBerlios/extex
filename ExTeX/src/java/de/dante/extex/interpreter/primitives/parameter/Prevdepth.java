@@ -26,7 +26,7 @@ import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
+import de.dante.util.exception.GeneralException;
 
 /**
  * This class provides an implementation for the primitive
@@ -51,7 +51,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class Prevdepth extends AbstractCode {
     /**
