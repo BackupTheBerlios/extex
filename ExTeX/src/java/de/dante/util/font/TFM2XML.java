@@ -29,15 +29,15 @@ import de.dante.extex.font.type.pfb.PfbParser;
 import de.dante.extex.font.type.tfm.TFMFont;
 import de.dante.extex.font.type.tfm.enc.EncFactory;
 import de.dante.extex.font.type.tfm.psfontsmap.PSFontsMapReader;
-import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.file.random.RandomAccessInputStream;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 import de.dante.util.xml.XMLStreamWriter;
 
 /**
  * Convert a TFM-file to a XML-file
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public final class TFM2XML extends AbstractFontUtil {
 

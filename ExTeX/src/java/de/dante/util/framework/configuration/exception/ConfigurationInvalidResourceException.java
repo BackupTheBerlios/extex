@@ -17,14 +17,14 @@
  *
  */
 
-package de.dante.util.configuration;
+package de.dante.util.framework.configuration.exception;
 
 /**
  * This Exception is thrown when a configuration is requested with the path
  * <code>null</code>> or the empty string.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.1 $
  */
 public class ConfigurationInvalidResourceException
         extends

@@ -18,8 +18,8 @@
  */
 package de.dante.util.framework.configuration;
 
-import de.dante.util.configuration.Configuration;
-import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
+
 
 /**
  * This interface describes the possibilities to configure an object.
@@ -29,7 +29,7 @@ import de.dante.util.configuration.ConfigurationException;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface Configurable {
 

@@ -25,14 +25,14 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 
 import de.dante.extex.font.type.afm.AfmFont;
-import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 import de.dante.util.xml.XMLStreamWriter;
 
 /**
  * Convert a AFM-file to a EFM-file.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public final class AFM2EFM extends AbstractFontUtil {
 

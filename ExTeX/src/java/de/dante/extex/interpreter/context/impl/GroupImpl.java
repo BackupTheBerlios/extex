@@ -48,7 +48,7 @@ import de.dante.extex.scanner.type.CodeToken;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.type.math.MathDelimiter;
 import de.dante.util.UnicodeChar;
-import de.dante.util.configuration.ConfigurationInstantiationException;
+import de.dante.util.framework.configuration.exception.ConfigurationInstantiationException;
 
 /**
  * This is a simple implementation for a group. The whole stack of groups is
@@ -57,7 +57,7 @@ import de.dante.util.configuration.ConfigurationInstantiationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.47 $
+ * @version $Revision: 1.48 $
  */
 public class GroupImpl implements Group, Tokenizer, Serializable {
 

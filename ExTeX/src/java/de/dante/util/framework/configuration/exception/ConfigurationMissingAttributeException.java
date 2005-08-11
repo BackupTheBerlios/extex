@@ -16,7 +16,9 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
-package de.dante.util.configuration;
+package de.dante.util.framework.configuration.exception;
+
+import de.dante.util.framework.configuration.Configuration;
 
 
 /**
@@ -24,7 +26,7 @@ package de.dante.util.configuration;
  * <code>null</code>> or the empty string.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.1 $
  */
 public class ConfigurationMissingAttributeException extends
         ConfigurationException {

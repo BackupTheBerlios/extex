@@ -17,50 +17,48 @@
  *
  */
 
-package de.dante.util.configuration;
+package de.dante.util.framework.configuration.exception;
 
 /**
- * This Exception is thrown when a configuration contains a syntax error.
+ * This Exception is thrown when a configuration could not be found.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.1 $
  */
-public class ConfigurationSyntaxException extends ConfigurationException {
+public class ConfigurationNotFoundException extends ConfigurationException {
+
+    /**
+     * The field <tt>configName</tt> contains the name of the missing
+     * configuration.
+     */
+    private String configName;
 
     /**
      * Create a new object.
      *
-     * @param message the message string
-     * @param source the source of the exception
+     * @param name the name of the missing configuration
+     * @param source the the name of the file for which this exception occurred
      */
-    public ConfigurationSyntaxException(final String message,
-            final String source) {
+    public ConfigurationNotFoundException(final String name, final String source) {
 
-        super(message, source);
+        super(null, source);
+        this.configName = name;
     }
 
     /**
-     * Create a new object.
-     *
-     * @param message message the message string
-     * @param cause the next Throwable in the list
-     */
-    public ConfigurationSyntaxException(final String message,
-            final Throwable cause) {
-
-        super(message, cause);
-    }
-
-    /**
-     * Getter for the text prefix of this Exception.
+     * Getter for the text prefix of this
+     * {@link de.dante.util.framework.configuration.exception.ConfigurationException ConfigurationException}.
      * The text is taken from the resource bundle <tt>ConfigurationEception</tt>
-     * under the key <tt>ConfigurationSyntaxException.Text</tt>.
+     * under the key <tt>ConfigurationNotFoundException.Text</tt>. The argument
+     * {0} is replaced by the name of the missing configuration as passed to the
+     * constructor.
      *
      * @return the text
      */
     protected String getText() {
 
-        return getLocalizer().format("ConfigurationSyntaxException.Text");
+        return getLocalizer().format("ConfigurationNotFoundException.Text",
+                configName);
     }
 
 }

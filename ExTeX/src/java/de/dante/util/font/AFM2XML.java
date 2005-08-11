@@ -25,14 +25,14 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 
 import de.dante.extex.font.type.afm.AfmFont;
-import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 import de.dante.util.xml.XMLStreamWriter;
 
 /**
  * Convert a AFM-file to a XML-file.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public final class AFM2XML extends AbstractFontUtil {
 

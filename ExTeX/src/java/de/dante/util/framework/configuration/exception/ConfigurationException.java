@@ -17,7 +17,7 @@
  *
  */
 
-package de.dante.util.configuration;
+package de.dante.util.framework.configuration.exception;
 
 import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.i18n.LocalizerFactory;
@@ -27,7 +27,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * detected.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.1 $
  */
 public abstract class ConfigurationException extends Exception {
 

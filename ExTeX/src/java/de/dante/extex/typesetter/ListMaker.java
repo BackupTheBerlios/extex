@@ -32,7 +32,7 @@ import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.util.UnicodeChar;
-import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * This interface describes the capabilities of a list maker.
@@ -40,7 +40,7 @@ import de.dante.util.configuration.ConfigurationException;
  * @see "<logo>TeX</logo> &ndash; The Program [211]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.42 $
+ * @version $Revision: 1.43 $
  */
 public interface ListMaker {
 

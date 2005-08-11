@@ -23,8 +23,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Logger;
 
-import de.dante.util.configuration.Configuration;
-import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.framework.configuration.Configuration;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.i18n.LocalizerFactory;
 import de.dante.util.framework.logger.LogEnabled;
@@ -36,7 +36,7 @@ import de.dante.util.resource.ResourceFinder;
  * tries to find it via its parent.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class ResourceFinderImpl
         implements

@@ -17,40 +17,53 @@
  *
  */
 
-package de.dante.util.configuration;
+package de.dante.util.framework.configuration.exception;
+
 
 /**
- * This exception is thrown when a dynamicaly loaded class has signaled an
- * illegal access.
+ * This exception is thrown when a dynamically loaded class signals an
+ * instantiation exception.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.1 $
  */
-public class ConfigurationIllegalAccessException extends ConfigurationException {
+public class ConfigurationInstantiationException extends ConfigurationException {
+
+    /**
+     * Creates a new object.
+     *
+     * @param message the message text
+     * @param cause the next Throwable in the list
+     */
+    public ConfigurationInstantiationException(final String message,
+            final Throwable cause) {
+
+        super(message, cause);
+    }
 
     /**
      * Creates a new object.
      *
      * @param cause the next Throwable in the list
      */
-    public ConfigurationIllegalAccessException(final Throwable cause) {
+    public ConfigurationInstantiationException(final Throwable cause) {
 
-        super(null, cause);
+        super("", cause);
     }
 
     /**
      * Getter for the text prefix of this ConfigException.
      * The text is taken from the resource bundle <tt>ConfigurationEception</tt>
-     * under the key <tt>ConfigurationIllegalAccessException.Text</tt>. The
+     * under the key <tt>ConfigurationInstantiationException.Text</tt>. The
      * argument {0} is replaced by the message of the embedded cause as passed
      * to the constructor.
      *
      * @return the text
      */
-    protected String getMesssage() {
+    protected String getText() {
 
         return getLocalizer().format(
-                "ConfigurationIllegalAccessException.Text",
+                "ConfigurationInstantiationException.Text",
                 getCause().getLocalizedMessage());
     }
 

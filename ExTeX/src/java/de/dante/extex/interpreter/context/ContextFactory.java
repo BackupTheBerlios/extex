@@ -19,9 +19,9 @@
 
 package de.dante.extex.interpreter.context;
 
-import de.dante.util.configuration.Configuration;
-import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.framework.AbstractFactory;
+import de.dante.util.framework.configuration.Configuration;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * This class provides a factory for a
@@ -34,7 +34,7 @@ import de.dante.util.framework.AbstractFactory;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class ContextFactory extends AbstractFactory {
 

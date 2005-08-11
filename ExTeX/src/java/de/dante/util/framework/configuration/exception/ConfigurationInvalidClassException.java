@@ -17,14 +17,16 @@
  *
  */
 
-package de.dante.util.configuration;
+package de.dante.util.framework.configuration.exception;
+
+import de.dante.util.framework.configuration.Configuration;
 
 /**
  * This exception is thrown when a dynamically loaded class does not implement
  * an expected interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.1 $
  */
 public class ConfigurationInvalidClassException extends ConfigurationException {
 

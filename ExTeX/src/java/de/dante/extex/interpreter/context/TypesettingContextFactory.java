@@ -22,12 +22,12 @@ package de.dante.extex.interpreter.context;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.language.Language;
 import de.dante.extex.language.LanguageManager;
-import de.dante.util.configuration.Configuration;
-import de.dante.util.configuration.ConfigurationClassNotFoundException;
-import de.dante.util.configuration.ConfigurationException;
-import de.dante.util.configuration.ConfigurationInstantiationException;
-import de.dante.util.configuration.ConfigurationMissingAttributeException;
 import de.dante.util.framework.AbstractFactory;
+import de.dante.util.framework.configuration.Configuration;
+import de.dante.util.framework.configuration.exception.ConfigurationClassNotFoundException;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
+import de.dante.util.framework.configuration.exception.ConfigurationInstantiationException;
+import de.dante.util.framework.configuration.exception.ConfigurationMissingAttributeException;
 
 /**
  * This class provides a factory for a
@@ -35,7 +35,7 @@ import de.dante.util.framework.AbstractFactory;
  *  TypesettingContext}.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class TypesettingContextFactory extends AbstractFactory {
 

@@ -33,14 +33,14 @@ import de.dante.extex.scanner.type.TokenFactory;
 import de.dante.extex.scanner.type.TokenFactoryImpl;
 import de.dante.util.StringList;
 import de.dante.util.UnicodeChar;
-import de.dante.util.configuration.Configuration;
-import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.framework.configuration.Configuration;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * Test cases for the string implementation of atoken stream.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class TokenStreamStringImplTest extends TestCase {
 
@@ -48,12 +48,12 @@ public class TokenStreamStringImplTest extends TestCase {
      * Mock configuration class.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.16 $
+     * @version $Revision: 1.17 $
      */
     private static class MockConfiguration implements Configuration {
 
         /**
-         * @see de.dante.util.configuration.Configuration#getValues(
+         * @see de.dante.util.framework.configuration.Configuration#getValues(
          *      de.dante.util.StringList, java.lang.String)
          */
         public void getValues(final StringList list, final String key) {
@@ -85,7 +85,7 @@ public class TokenStreamStringImplTest extends TestCase {
         }
 
         /**
-         * @see de.dante.util.configuration.Configuration#findConfiguration(
+         * @see de.dante.util.framework.configuration.Configuration#findConfiguration(
          *      java.lang.String)
          */
         public Configuration findConfiguration(final String key) {
@@ -94,7 +94,7 @@ public class TokenStreamStringImplTest extends TestCase {
         }
 
         /**
-         * @see de.dante.util.configuration.Configuration#findConfiguration(
+         * @see de.dante.util.framework.configuration.Configuration#findConfiguration(
          *      java.lang.String,
          *      java.lang.String)
          */
@@ -105,7 +105,7 @@ public class TokenStreamStringImplTest extends TestCase {
         }
 
         /**
-         * @see de.dante.util.configuration.Configuration#getAttribute(
+         * @see de.dante.util.framework.configuration.Configuration#getAttribute(
          *      java.lang.String)
          */
         public String getAttribute(final String name) {
@@ -114,7 +114,7 @@ public class TokenStreamStringImplTest extends TestCase {
         }
 
         /**
-         * @see de.dante.util.configuration.Configuration#getConfiguration(
+         * @see de.dante.util.framework.configuration.Configuration#getConfiguration(
          *      java.lang.String)
          */
         public Configuration getConfiguration(final String key) {
@@ -124,7 +124,7 @@ public class TokenStreamStringImplTest extends TestCase {
         }
 
         /**
-         * @see de.dante.util.configuration.Configuration#getConfiguration(
+         * @see de.dante.util.framework.configuration.Configuration#getConfiguration(
          *      java.lang.String,
          *      java.lang.String)
          */
@@ -135,7 +135,7 @@ public class TokenStreamStringImplTest extends TestCase {
         }
 
         /**
-         * @see de.dante.util.configuration.Configuration#getValue()
+         * @see de.dante.util.framework.configuration.Configuration#getValue()
          */
         public String getValue() {
 
@@ -143,7 +143,7 @@ public class TokenStreamStringImplTest extends TestCase {
         }
 
         /**
-         * @see de.dante.util.configuration.Configuration#getValue(
+         * @see de.dante.util.framework.configuration.Configuration#getValue(
          *      java.lang.String)
          */
         public String getValue(final String key) {
@@ -152,7 +152,7 @@ public class TokenStreamStringImplTest extends TestCase {
         }
 
         /**
-         * @see de.dante.util.configuration.Configuration#getValueAsInteger(
+         * @see de.dante.util.framework.configuration.Configuration#getValueAsInteger(
          *      java.lang.String,
          *      int)
          */
@@ -162,7 +162,7 @@ public class TokenStreamStringImplTest extends TestCase {
         }
 
         /**
-         * @see de.dante.util.configuration.Configuration#getValues(
+         * @see de.dante.util.framework.configuration.Configuration#getValues(
          *      java.lang.String)
          */
         public StringList getValues(final String key) {
@@ -171,7 +171,7 @@ public class TokenStreamStringImplTest extends TestCase {
         }
 
         /**
-         * @see de.dante.util.configuration.Configuration#iterator(
+         * @see de.dante.util.framework.configuration.Configuration#iterator(
          *      java.lang.String)
          */
         public Iterator iterator(final String key) {

@@ -19,14 +19,14 @@
 
 package de.dante.extex.interpreter.max;
 
-import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * This Exception is thrown when a configuration is requested with the path
  * <code>null</code>> or the empty string.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class NoTypesetterException extends ConfigurationException {
 

@@ -33,13 +33,13 @@ import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.NodeVisitor;
 import de.dante.util.GeneralException;
 import de.dante.util.Unit;
-import de.dante.util.configuration.Configuration;
+import de.dante.util.framework.configuration.Configuration;
 
 /**
  * Implementation of a pdf document writer.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class PdfSinglePageDocumentWriter
         implements

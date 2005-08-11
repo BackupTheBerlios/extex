@@ -46,9 +46,9 @@ import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.font.FontImpl;
 import de.dante.extex.interpreter.type.font.VirtualFontImpl;
 import de.dante.extex.interpreter.type.glue.Glue;
-import de.dante.util.configuration.Configuration;
-import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.file.random.RandomAccessInputStream;
+import de.dante.util.framework.configuration.Configuration;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 import de.dante.util.resource.PropertyConfigurable;
 import de.dante.util.resource.ResourceFinder;
 import de.dante.util.xml.XMLStreamWriter;
@@ -58,7 +58,7 @@ import de.dante.util.xml.XMLStreamWriter;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
 public class FontFactory implements PropertyConfigurable {
 

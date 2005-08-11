@@ -37,8 +37,8 @@ import de.dante.extex.font.type.vf.command.VFCommandCharacterPackets;
 import de.dante.extex.font.type.vf.command.VFCommandFontDef;
 import de.dante.extex.font.type.vf.exception.VFMasterTFMNotFoundException;
 import de.dante.util.XMLWriterConvertible;
-import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.file.random.RandomAccessR;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 import de.dante.util.xml.XMLStreamWriter;
 
 /**
@@ -55,7 +55,7 @@ import de.dante.util.xml.XMLStreamWriter;
  * @see <a href="package-summary.html#VFformat">VF-Format</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class VFFont implements XMLWriterConvertible,
 

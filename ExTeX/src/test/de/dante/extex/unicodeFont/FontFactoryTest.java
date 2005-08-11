@@ -27,13 +27,13 @@ import de.dante.extex.ExTeX;
 import de.dante.extex.unicodeFont.key.FontKey;
 import de.dante.extex.unicodeFont.key.FontKeyFactory;
 import de.dante.extex.unicodeFont.type.TexFont;
-import de.dante.util.configuration.Configuration;
-import de.dante.util.configuration.ConfigurationClassNotFoundException;
-import de.dante.util.configuration.ConfigurationException;
-import de.dante.util.configuration.ConfigurationFactory;
-import de.dante.util.configuration.ConfigurationInstantiationException;
-import de.dante.util.configuration.ConfigurationMissingAttributeException;
-import de.dante.util.configuration.ConfigurationNoSuchMethodException;
+import de.dante.util.framework.configuration.Configuration;
+import de.dante.util.framework.configuration.ConfigurationFactory;
+import de.dante.util.framework.configuration.exception.ConfigurationClassNotFoundException;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
+import de.dante.util.framework.configuration.exception.ConfigurationInstantiationException;
+import de.dante.util.framework.configuration.exception.ConfigurationMissingAttributeException;
+import de.dante.util.framework.configuration.exception.ConfigurationNoSuchMethodException;
 import de.dante.util.resource.PropertyConfigurable;
 import de.dante.util.resource.ResourceFinder;
 
@@ -41,7 +41,7 @@ import de.dante.util.resource.ResourceFinder;
  * Test for the font factory.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class FontFactoryTest extends TestCase {

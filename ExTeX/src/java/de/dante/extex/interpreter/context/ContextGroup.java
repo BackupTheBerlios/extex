@@ -24,14 +24,14 @@ import de.dante.extex.interpreter.context.observer.afterGroup.AfterGroupObserver
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * This interface describes the container for all data of an interpreter
  * context.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface ContextGroup {
 

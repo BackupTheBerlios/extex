@@ -32,9 +32,9 @@ import de.dante.extex.documentWriter.postscript.util.PsBoxConverter;
 import de.dante.extex.documentWriter.postscript.util.PsConverter;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
-import de.dante.util.configuration.Configuration;
-import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.framework.configuration.Configurable;
+import de.dante.util.framework.configuration.Configuration;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 import de.dante.util.resource.ResourceConsumer;
 import de.dante.util.resource.ResourceFinder;
 
@@ -43,7 +43,7 @@ import de.dante.util.resource.ResourceFinder;
  * code. Here some utility methods of general nature are collected.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public abstract class AbstractPostscriptWriter extends AbstractDocumentWriter
         implements

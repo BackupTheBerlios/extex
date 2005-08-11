@@ -25,8 +25,8 @@ import de.dante.extex.interpreter.InterpreterFactory;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.real.Real;
 import de.dante.extex.scanner.stream.impl32.TokenStreamStringImpl;
-import de.dante.util.configuration.Configuration;
-import de.dante.util.configuration.ConfigurationFactory;
+import de.dante.util.framework.configuration.Configuration;
+import de.dante.util.framework.configuration.ConfigurationFactory;
 
 /**
  * A test for the real-regsiter.
@@ -36,7 +36,7 @@ import de.dante.util.configuration.ConfigurationFactory;
  * </p>
  *
  * @author <a href="mailto:m.g.sn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class RealRegisterTest extends TestCase {
 

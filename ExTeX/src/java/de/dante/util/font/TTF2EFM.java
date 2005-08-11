@@ -28,8 +28,8 @@ import org.jdom.Document;
 import org.jdom.output.XMLOutputter;
 
 import de.dante.extex.font.type.ttf.TTFReader;
-import de.dante.util.configuration.Configuration;
-import de.dante.util.configuration.ConfigurationFactory;
+import de.dante.util.framework.configuration.Configuration;
+import de.dante.util.framework.configuration.ConfigurationFactory;
 import de.dante.util.resource.ResourceFinder;
 import de.dante.util.resource.ResourceFinderFactory;
 
@@ -37,7 +37,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * Convert a TTF-file to a EFM-file
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public final class TTF2EFM {
 

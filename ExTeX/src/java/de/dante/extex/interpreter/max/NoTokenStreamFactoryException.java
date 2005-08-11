@@ -19,14 +19,14 @@
 
 package de.dante.extex.interpreter.max;
 
-import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * This Exception is thrown when a TokenStreamFactory is needed but none is
  * found.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class NoTokenStreamFactoryException extends ConfigurationException {
 

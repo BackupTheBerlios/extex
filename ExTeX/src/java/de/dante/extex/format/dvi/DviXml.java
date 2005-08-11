@@ -62,8 +62,8 @@ import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.util.UnicodeChar;
 import de.dante.util.Unit;
-import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.file.random.RandomAccessR;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * DVI to XML converter.
@@ -75,7 +75,7 @@ import de.dante.util.file.random.RandomAccessR;
  * @see <a href="package-summary.html#DVIformat">DVI-Format</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 
 public class DviXml implements DviInterpreter, DviExecuteCommand {

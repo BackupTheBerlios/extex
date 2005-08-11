@@ -19,9 +19,9 @@
 
 package de.dante.extex.interpreter;
 
-import de.dante.util.configuration.Configuration;
-import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.framework.AbstractFactory;
+import de.dante.util.framework.configuration.Configuration;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * This class provides a factory for
@@ -30,7 +30,7 @@ import de.dante.util.framework.AbstractFactory;
  * present and required.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class InterpreterFactory extends AbstractFactory {
 

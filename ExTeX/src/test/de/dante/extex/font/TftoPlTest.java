@@ -35,11 +35,11 @@ import de.dante.extex.font.type.PlWriter;
 import de.dante.extex.font.type.tfm.TFMFont;
 import de.dante.extex.font.type.tfm.enc.EncFactory;
 import de.dante.extex.font.type.tfm.psfontsmap.PSFontsMapReader;
-import de.dante.util.configuration.Configuration;
-import de.dante.util.configuration.ConfigurationFactory;
 import de.dante.util.file.random.RandomAccessInputFile;
 import de.dante.util.file.random.RandomAccessInputStream;
 import de.dante.util.file.random.RandomAccessR;
+import de.dante.util.framework.configuration.Configuration;
+import de.dante.util.framework.configuration.ConfigurationFactory;
 import de.dante.util.resource.ResourceFinder;
 import de.dante.util.resource.ResourceFinderFactory;
 
@@ -47,7 +47,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * Test the tftopl class.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 
 public class TftoPlTest extends TestCase {

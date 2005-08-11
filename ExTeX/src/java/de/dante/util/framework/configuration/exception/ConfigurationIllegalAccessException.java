@@ -17,48 +17,41 @@
  *
  */
 
-package de.dante.util.configuration;
+package de.dante.util.framework.configuration.exception;
 
 /**
- * This Exception is thrown when a configuration is requested with the path
- * <code>null</code>> or the empty string.
+ * This exception is thrown when a dynamicaly loaded class has signaled an
+ * illegal access.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.1 $
  */
-public class ConfigurationInvalidNameException extends ConfigurationException {
-
-    /**
-     * Create a new object.
-     *
-     * @param message the message string
-     */
-    public ConfigurationInvalidNameException(final String message) {
-
-        super(message, (String) null);
-    }
+public class ConfigurationIllegalAccessException extends ConfigurationException {
 
     /**
      * Creates a new object.
      *
-     * @param message message the message string
      * @param cause the next Throwable in the list
      */
-    public ConfigurationInvalidNameException(final String message,
-            final Throwable cause) {
+    public ConfigurationIllegalAccessException(final Throwable cause) {
 
-        super(message, cause);
+        super(null, cause);
     }
 
     /**
      * Getter for the text prefix of this ConfigException.
      * The text is taken from the resource bundle <tt>ConfigurationEception</tt>
-     * under the key <tt>ConfigurationInvalidNameException.Text</tt>.
+     * under the key <tt>ConfigurationIllegalAccessException.Text</tt>. The
+     * argument {0} is replaced by the message of the embedded cause as passed
+     * to the constructor.
      *
      * @return the text
      */
-    protected String getText() {
+    protected String getMesssage() {
 
-        return getLocalizer().format("ConfigurationInvalidNameException.Text");
+        return getLocalizer().format(
+                "ConfigurationIllegalAccessException.Text",
+                getCause().getLocalizedMessage());
     }
+
 }

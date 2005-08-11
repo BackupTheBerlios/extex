@@ -17,21 +17,27 @@
  *
  */
 
-package de.dante.util.configuration;
+package de.dante.util.framework.configuration.impl;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import de.dante.util.StringList;
+import de.dante.util.framework.configuration.Configuration;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
+import de.dante.util.framework.configuration.exception.ConfigurationIOException;
+import de.dante.util.framework.configuration.exception.ConfigurationInvalidResourceException;
+import de.dante.util.framework.configuration.exception.ConfigurationNotFoundException;
+import de.dante.util.framework.configuration.exception.ConfigurationSyntaxException;
 
 /**
  * Container for several
- * {@link de.dante.util.configuration.Configuration Configuration} objects.
+ * {@link de.dante.util.framework.configuration.Configuration Configuration} objects.
  * They can be treated as if they where contained in one configuration.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.1 $
  */
 public class MultiConfiguration implements Configuration {
 
@@ -55,7 +61,7 @@ public class MultiConfiguration implements Configuration {
     }
 
     /**
-     * @see de.dante.util.configuration.Configuration#findConfiguration(
+     * @see de.dante.util.framework.configuration.Configuration#findConfiguration(
      *      java.lang.String)
      */
     public Configuration findConfiguration(final String key)
@@ -88,7 +94,7 @@ public class MultiConfiguration implements Configuration {
     }
 
     /**
-     * @see de.dante.util.configuration.Configuration#findConfiguration(
+     * @see de.dante.util.framework.configuration.Configuration#findConfiguration(
      *      java.lang.String,
      *      java.lang.String)
      */
@@ -124,7 +130,7 @@ public class MultiConfiguration implements Configuration {
      * @return the value of the attribute or <code>null</code> if such an
      *  attribute is not present
      *
-     * @see de.dante.util.configuration.Configuration#getAttribute(
+     * @see de.dante.util.framework.configuration.Configuration#getAttribute(
      *      java.lang.String)
      */
     public String getAttribute(final String name) {
@@ -139,7 +145,7 @@ public class MultiConfiguration implements Configuration {
     }
 
     /**
-     * @see de.dante.util.configuration.Configuration#getConfiguration(
+     * @see de.dante.util.framework.configuration.Configuration#getConfiguration(
      *      java.lang.String)
      */
     public Configuration getConfiguration(final String key)
@@ -165,7 +171,7 @@ public class MultiConfiguration implements Configuration {
     }
 
     /**
-     * @see de.dante.util.configuration.Configuration#getConfiguration(
+     * @see de.dante.util.framework.configuration.Configuration#getConfiguration(
      *      java.lang.String, java.lang.String)
      */
     public Configuration getConfiguration(final String key,
@@ -198,7 +204,7 @@ public class MultiConfiguration implements Configuration {
      *
      * @throws ConfigurationException in case that something went wrong
      *
-     * @see de.dante.util.configuration.Configuration#getValue()
+     * @see de.dante.util.framework.configuration.Configuration#getValue()
      */
     public String getValue() throws ConfigurationException {
 
@@ -215,7 +221,7 @@ public class MultiConfiguration implements Configuration {
     }
 
     /**
-     * @see de.dante.util.configuration.Configuration#getValue(java.lang.String)
+     * @see de.dante.util.framework.configuration.Configuration#getValue(java.lang.String)
      */
     public String getValue(final String key) throws ConfigurationException {
 
@@ -231,7 +237,7 @@ public class MultiConfiguration implements Configuration {
     }
 
     /**
-     * @see de.dante.util.configuration.Configuration#getValueAsInteger(
+     * @see de.dante.util.framework.configuration.Configuration#getValueAsInteger(
      *      java.lang.String, int)
      */
     public int getValueAsInteger(final String key, final int defaultValue)
@@ -249,7 +255,7 @@ public class MultiConfiguration implements Configuration {
     }
 
     /**
-     * @see de.dante.util.configuration.Configuration#getValues(java.lang.String)
+     * @see de.dante.util.framework.configuration.Configuration#getValues(java.lang.String)
      */
     public StringList getValues(final String key) {
 
@@ -265,7 +271,7 @@ public class MultiConfiguration implements Configuration {
      * @param key the name of the tags
      * @param list the list tol append the values to
      *
-     * @see de.dante.util.configuration.Configuration#getValues(
+     * @see de.dante.util.framework.configuration.Configuration#getValues(
      *      de.dante.util.StringList, java.lang.String)
      */
     public void getValues(final StringList list, final String key) {
@@ -284,7 +290,7 @@ public class MultiConfiguration implements Configuration {
      *
      * @throws ConfigurationException in case that something went wrong
      *
-     * @see de.dante.util.configuration.Configuration#iterator(java.lang.String)
+     * @see de.dante.util.framework.configuration.Configuration#iterator(java.lang.String)
      */
     public Iterator iterator(final String key) throws ConfigurationException {
 

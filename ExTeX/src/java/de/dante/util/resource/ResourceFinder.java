@@ -21,7 +21,7 @@ package de.dante.util.resource;
 
 import java.io.InputStream;
 
-import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * This interface describes a class which is able to find files or other
@@ -32,7 +32,7 @@ import de.dante.util.configuration.ConfigurationException;
  * implementations. Even an interaction with the user can be envisioned.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public interface ResourceFinder {
 

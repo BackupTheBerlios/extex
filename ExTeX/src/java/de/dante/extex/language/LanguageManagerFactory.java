@@ -19,8 +19,8 @@
 
 package de.dante.extex.language;
 
-import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.framework.AbstractFactory;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * This class provides a factory for a
@@ -33,7 +33,7 @@ import de.dante.util.framework.AbstractFactory;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class LanguageManagerFactory extends AbstractFactory {
 

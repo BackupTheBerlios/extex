@@ -23,14 +23,14 @@ import java.io.IOException;
 
 import de.dante.extex.font.exception.FontException;
 import de.dante.extex.format.dvi.exception.DviException;
-import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.file.random.RandomAccessR;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * Interface for a DVI command to read.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface DviReadCommand {
 

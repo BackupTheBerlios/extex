@@ -31,12 +31,12 @@ import de.dante.extex.unicodeFont.key.FontKeyConfigurable;
 import de.dante.extex.unicodeFont.type.FontInit;
 import de.dante.extex.unicodeFont.type.InputStreamConfigurable;
 import de.dante.extex.unicodeFont.type.TexFont;
-import de.dante.util.configuration.Configuration;
-import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.framework.AbstractFactory;
 import de.dante.util.framework.Registrar;
 import de.dante.util.framework.RegistrarException;
 import de.dante.util.framework.RegistrarObserver;
+import de.dante.util.framework.configuration.Configuration;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 import de.dante.util.framework.logger.LogEnabled;
 import de.dante.util.resource.PropertyConfigurable;
 import de.dante.util.resource.ResourceConsumer;
@@ -46,7 +46,7 @@ import de.dante.util.resource.ResourceFinder;
  * Factory for the font system.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class FontFactory extends AbstractFactory

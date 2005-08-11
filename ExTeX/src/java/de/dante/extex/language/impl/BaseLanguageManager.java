@@ -27,9 +27,9 @@ import de.dante.extex.language.Language;
 import de.dante.extex.language.LanguageManager;
 import de.dante.extex.language.ModifiableLanguage;
 import de.dante.extex.language.ligature.LigatureBuilder;
-import de.dante.util.configuration.Configuration;
-import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.framework.AbstractFactory;
+import de.dante.util.framework.configuration.Configuration;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * This class manages the <code>HyphenationTable</code>s. It is a container
@@ -47,7 +47,7 @@ import de.dante.util.framework.AbstractFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class BaseLanguageManager extends AbstractFactory
         implements

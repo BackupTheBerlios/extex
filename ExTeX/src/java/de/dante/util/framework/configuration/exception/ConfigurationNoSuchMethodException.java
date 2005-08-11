@@ -17,14 +17,16 @@
  *
  */
 
-package de.dante.util.configuration;
+package de.dante.util.framework.configuration.exception;
+
+import de.dante.util.framework.configuration.Configuration;
 
 /**
  * This exception is thrown when a dynamically loaded class does not provide
  * the expected method.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.1 $
  */
 public class ConfigurationNoSuchMethodException extends ConfigurationException {
 

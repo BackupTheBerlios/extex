@@ -17,44 +17,25 @@
  *
  */
 
-package de.dante.util.configuration;
+package de.dante.util.framework.configuration.exception;
 
 /**
  * This Exception is thrown when a configuration is requested with the path
- * <code>null</code>> or the empty string. Alternatively it can be used when
- * some other kind of configuration information is missing.
+ * <code>null</code>> or the empty string.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.1 $
  */
-public class ConfigurationMissingException extends ConfigurationException {
-
-    /**
-     * The field <tt>item</tt> contains the name of the missing item.
-     */
-    private String item = "";
+public class ConfigurationInvalidNameException extends ConfigurationException {
 
     /**
      * Create a new object.
      *
      * @param message the message string
      */
-    public ConfigurationMissingException(final String message) {
+    public ConfigurationInvalidNameException(final String message) {
 
         super(message, (String) null);
-    }
-
-    /**
-     * Create a new object.
-     *
-     * @param message the message string
-     * @param location the location of the missing configuration item
-     */
-    public ConfigurationMissingException(final String message,
-            final String location) {
-
-        super(null, location);
-        item = message;
     }
 
     /**
@@ -63,7 +44,7 @@ public class ConfigurationMissingException extends ConfigurationException {
      * @param message message the message string
      * @param cause the next Throwable in the list
      */
-    public ConfigurationMissingException(final String message,
+    public ConfigurationInvalidNameException(final String message,
             final Throwable cause) {
 
         super(message, cause);
@@ -72,13 +53,12 @@ public class ConfigurationMissingException extends ConfigurationException {
     /**
      * Getter for the text prefix of this ConfigException.
      * The text is taken from the resource bundle <tt>ConfigurationEception</tt>
-     * under the key <tt>ConfigurationMissingException.Text</tt>.
+     * under the key <tt>ConfigurationInvalidNameException.Text</tt>.
      *
      * @return the text
      */
     protected String getText() {
 
-        return getLocalizer()
-                .format("ConfigurationMissingException.Text", item);
+        return getLocalizer().format("ConfigurationInvalidNameException.Text");
     }
 }

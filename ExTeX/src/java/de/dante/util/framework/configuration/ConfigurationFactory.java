@@ -17,9 +17,15 @@
  *
  */
 
-package de.dante.util.configuration;
+package de.dante.util.framework.configuration;
 
 import java.lang.reflect.InvocationTargetException;
+
+import de.dante.util.framework.configuration.exception.ConfigurationClassNotFoundException;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
+import de.dante.util.framework.configuration.exception.ConfigurationInstantiationException;
+import de.dante.util.framework.configuration.exception.ConfigurationInvalidNameException;
+import de.dante.util.framework.configuration.impl.ConfigurationXMLImpl;
 
 
 /**
@@ -28,12 +34,12 @@ import java.lang.reflect.InvocationTargetException;
  * The class to be used for the configuration can be set with the
  * <tt>System.property</tt> named <tt>Util.Configuarion.class</tt>.
  * If this property is not set then the fallback class
- * {@link de.dante.util.configuration.ConfigurationXMLImpl ConfigurationXMLImpl}
+ * {@link de.dante.util.framework.configuration.impl.ConfigurationXMLImpl ConfigurationXMLImpl}
  * is used instead.
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.1 $
  */
 public class ConfigurationFactory {
 
@@ -47,7 +53,7 @@ public class ConfigurationFactory {
 
     /**
      * Delivers a new
-     * {@link de.dante.util.configuration.Configuration Configuration}
+     * {@link de.dante.util.framework.configuration.Configuration Configuration}
      * object which is initialized from a named source. This source is usually
      * a file name but can be anything else, like a URL or a reference to a
      * database &ndash; depending on the underlying implementation.

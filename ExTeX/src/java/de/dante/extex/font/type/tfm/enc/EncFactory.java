@@ -25,14 +25,14 @@ import java.util.Map;
 
 import de.dante.extex.font.exception.FontException;
 import de.dante.extex.font.type.tfm.enc.exception.FontEncodingFileNotFoundException;
-import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 import de.dante.util.resource.ResourceFinder;
 
 /**
  * Factory for enc-files.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class EncFactory implements Serializable {
 

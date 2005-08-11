@@ -28,14 +28,14 @@ import de.dante.extex.format.dvi.exception.DviException;
 import de.dante.extex.format.dvi.exception.DviPostNotFoundException;
 import de.dante.extex.format.dvi.exception.DviPreNotFoundException;
 import de.dante.extex.format.dvi.exception.DviUndefinedOpcodeException;
-import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.file.random.RandomAccessR;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * Abstract class for all DVI commands.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public abstract class DviCommand {

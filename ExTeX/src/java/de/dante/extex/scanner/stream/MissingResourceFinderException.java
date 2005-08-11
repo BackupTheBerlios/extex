@@ -19,14 +19,14 @@
 
 package de.dante.extex.scanner.stream;
 
-import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * This Exception is thrown when no file finder has been provided before it is
  * needed.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class MissingResourceFinderException extends ConfigurationException {
 

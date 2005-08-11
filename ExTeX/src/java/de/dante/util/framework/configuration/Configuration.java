@@ -17,9 +17,14 @@
  *
  */
 
-package de.dante.util.configuration;
+package de.dante.util.framework.configuration;
 
 import de.dante.util.StringList;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
+import de.dante.util.framework.configuration.exception.ConfigurationIOException;
+import de.dante.util.framework.configuration.exception.ConfigurationInvalidResourceException;
+import de.dante.util.framework.configuration.exception.ConfigurationNotFoundException;
+import de.dante.util.framework.configuration.exception.ConfigurationSyntaxException;
 
 import java.util.Iterator;
 
@@ -52,7 +57,7 @@ import java.util.Iterator;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.1 $
  */
 public interface Configuration {
 

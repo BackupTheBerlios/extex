@@ -49,8 +49,8 @@ import de.dante.extex.format.dvi.command.DviXXX;
 import de.dante.extex.format.dvi.command.DviY;
 import de.dante.extex.format.dvi.command.DviZ;
 import de.dante.extex.format.dvi.exception.DviException;
-import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.file.random.RandomAccessR;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * DVI to PL converter.
@@ -62,7 +62,7 @@ import de.dante.util.file.random.RandomAccessR;
  * @see <a href="package-summary.html#DVIformat">DVI-Format</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 
 public class DviPl implements DviInterpreter, DviExecuteCommand {

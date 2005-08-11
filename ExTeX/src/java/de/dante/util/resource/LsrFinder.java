@@ -38,12 +38,12 @@ import java.util.logging.Logger;
 
 import de.dante.util.StringList;
 import de.dante.util.StringListIterator;
-import de.dante.util.configuration.Configuration;
-import de.dante.util.configuration.ConfigurationException;
-import de.dante.util.configuration.ConfigurationIOException;
-import de.dante.util.configuration.ConfigurationMissingAttributeException;
-import de.dante.util.configuration.ConfigurationMissingException;
-import de.dante.util.configuration.ConfigurationWrapperException;
+import de.dante.util.framework.configuration.Configuration;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
+import de.dante.util.framework.configuration.exception.ConfigurationIOException;
+import de.dante.util.framework.configuration.exception.ConfigurationMissingAttributeException;
+import de.dante.util.framework.configuration.exception.ConfigurationMissingException;
+import de.dante.util.framework.configuration.exception.ConfigurationWrapperException;
 import de.dante.util.framework.logger.LogEnabled;
 
 /**
@@ -127,7 +127,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class LsrFinder
         implements

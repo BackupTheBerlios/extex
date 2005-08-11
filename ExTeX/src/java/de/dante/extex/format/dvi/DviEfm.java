@@ -56,8 +56,8 @@ import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.util.UnicodeChar;
 import de.dante.util.Unit;
-import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.file.random.RandomAccessR;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * DVI to EFM converter.
@@ -69,7 +69,7 @@ import de.dante.util.file.random.RandomAccessR;
  * @see <a href="package-summary.html#DVIformat">DVI-Format</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class DviEfm implements DviInterpreter, DviExecuteCommand {

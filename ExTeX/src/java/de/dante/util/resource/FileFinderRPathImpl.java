@@ -28,9 +28,9 @@ import java.util.Properties;
 import java.util.logging.Logger;
 
 import de.dante.util.StringListIterator;
-import de.dante.util.configuration.Configuration;
-import de.dante.util.configuration.ConfigurationException;
-import de.dante.util.configuration.ConfigurationMissingAttributeException;
+import de.dante.util.framework.configuration.Configuration;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
+import de.dante.util.framework.configuration.exception.ConfigurationMissingAttributeException;
 import de.dante.util.framework.logger.LogEnabled;
 
 /**
@@ -38,7 +38,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class FileFinderRPathImpl
         implements

@@ -28,8 +28,8 @@ import de.dante.extex.font.type.pfb.PfbParser;
 import de.dante.extex.font.type.tfm.TFMFont;
 import de.dante.extex.font.type.tfm.enc.EncFactory;
 import de.dante.extex.font.type.tfm.psfontsmap.PSFontsMapReader;
-import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.file.random.RandomAccessInputStream;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 import de.dante.util.xml.XMLStreamWriter;
 
 /**
@@ -39,7 +39,7 @@ import de.dante.util.xml.XMLStreamWriter;
  * and the name of the pfb-file.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public final class TFM2EFM extends AbstractFontUtil {
 

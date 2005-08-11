@@ -17,29 +17,37 @@
  *
  */
 
-package de.dante.util.configuration;
+package de.dante.util.framework.configuration.exception;
 
 /**
- * This Exception is thrown when a configuration tries to use an unsupported
- * encoding.
+ * This Exception is thrown when a configuration is requested with the path
+ * <code>null</code>> or the empty string. Alternatively it can be used when
+ * some other kind of configuration information is missing.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.1 $
  */
-public class ConfigurationUnsupportedEncodingException
-        extends
-            ConfigurationException {
+public class ConfigurationIOException extends ConfigurationException {
 
     /**
      * Create a new object.
      *
      * @param message the message string
-     * @param source the the name of the file for which this exception occurred
      */
-    public ConfigurationUnsupportedEncodingException(final String message,
-            final String source) {
+    public ConfigurationIOException(final String message) {
 
-        super(message, source);
+        super(message, (String) null);
+    }
+
+    /**
+     * Create a new object.
+     *
+     * @param message the message string
+     * @param location the location of the IO configuration item
+     */
+    public ConfigurationIOException(final String message, final String location) {
+
+        super(message, location);
     }
 
     /**
@@ -48,23 +56,20 @@ public class ConfigurationUnsupportedEncodingException
      * @param message message the message string
      * @param cause the next Throwable in the list
      */
-    public ConfigurationUnsupportedEncodingException(final String message,
-            final Throwable cause) {
+    public ConfigurationIOException(final String message, final Throwable cause) {
 
         super(message, cause);
     }
 
     /**
-     * Getter for the text prefix of this ConfigException.
+     * Getter for the text prefix of this Exception.
      * The text is taken from the resource bundle <tt>ConfigurationEception</tt>
-     * under the key <tt>ConfigurationUnsupportedEncodingException.Text</tt>.
+     * under the key <tt>ConfigurationIOException.Text</tt>.
      *
      * @return the text
      */
     protected String getText() {
 
-        return getLocalizer().format(
-                "ConfigurationUnsupportedEncodingException.Text");
+        return getLocalizer().format("ConfigurationIOException.Text");
     }
-
 }

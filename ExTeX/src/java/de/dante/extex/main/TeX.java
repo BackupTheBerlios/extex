@@ -63,10 +63,10 @@ import de.dante.extex.main.queryFile.QueryFileHandler;
 import de.dante.extex.main.queryFile.QueryFileHandlerTeXImpl;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.util.GeneralException;
-import de.dante.util.configuration.Configuration;
-import de.dante.util.configuration.ConfigurationException;
-import de.dante.util.configuration.ConfigurationFactory;
-import de.dante.util.configuration.ConfigurationUnsupportedEncodingException;
+import de.dante.util.framework.configuration.Configuration;
+import de.dante.util.framework.configuration.ConfigurationFactory;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
+import de.dante.util.framework.configuration.exception.ConfigurationUnsupportedEncodingException;
 import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
@@ -584,7 +584,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class TeX extends ExTeX {
 

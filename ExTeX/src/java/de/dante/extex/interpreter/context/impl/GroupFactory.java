@@ -21,11 +21,11 @@ package de.dante.extex.interpreter.context.impl;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-import de.dante.util.configuration.Configuration;
-import de.dante.util.configuration.ConfigurationClassNotFoundException;
-import de.dante.util.configuration.ConfigurationException;
-import de.dante.util.configuration.ConfigurationInstantiationException;
-import de.dante.util.configuration.ConfigurationMissingAttributeException;
+import de.dante.util.framework.configuration.Configuration;
+import de.dante.util.framework.configuration.exception.ConfigurationClassNotFoundException;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
+import de.dante.util.framework.configuration.exception.ConfigurationInstantiationException;
+import de.dante.util.framework.configuration.exception.ConfigurationMissingAttributeException;
 
 /**
  * This class provides a factory for a
@@ -38,7 +38,7 @@ import de.dante.util.configuration.ConfigurationMissingAttributeException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class GroupFactory {
 

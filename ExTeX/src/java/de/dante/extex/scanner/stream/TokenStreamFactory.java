@@ -34,13 +34,13 @@ import de.dante.extex.scanner.stream.observer.reader.OpenReaderObserverList;
 import de.dante.extex.scanner.stream.observer.string.OpenStringObservable;
 import de.dante.extex.scanner.stream.observer.string.OpenStringObserver;
 import de.dante.extex.scanner.stream.observer.string.OpenStringObserverList;
-import de.dante.util.configuration.Configuration;
-import de.dante.util.configuration.ConfigurationClassNotFoundException;
-import de.dante.util.configuration.ConfigurationException;
-import de.dante.util.configuration.ConfigurationInstantiationException;
-import de.dante.util.configuration.ConfigurationMissingAttributeException;
-import de.dante.util.configuration.ConfigurationNoSuchMethodException;
 import de.dante.util.framework.AbstractFactory;
+import de.dante.util.framework.configuration.Configuration;
+import de.dante.util.framework.configuration.exception.ConfigurationClassNotFoundException;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
+import de.dante.util.framework.configuration.exception.ConfigurationInstantiationException;
+import de.dante.util.framework.configuration.exception.ConfigurationMissingAttributeException;
+import de.dante.util.framework.configuration.exception.ConfigurationNoSuchMethodException;
 import de.dante.util.resource.ResourceFinder;
 
 /**
@@ -123,7 +123,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.31 $
+ * @version $Revision: 1.32 $
  */
 public class TokenStreamFactory extends AbstractFactory
         implements

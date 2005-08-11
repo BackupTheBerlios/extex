@@ -77,16 +77,16 @@ import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterFactory;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.util.GeneralException;
-import de.dante.util.configuration.Configuration;
-import de.dante.util.configuration.ConfigurationClassNotFoundException;
-import de.dante.util.configuration.ConfigurationException;
-import de.dante.util.configuration.ConfigurationFactory;
-import de.dante.util.configuration.ConfigurationInstantiationException;
-import de.dante.util.configuration.ConfigurationMissingAttributeException;
-import de.dante.util.configuration.ConfigurationMissingException;
-import de.dante.util.configuration.ConfigurationNoSuchMethodException;
-import de.dante.util.configuration.ConfigurationSyntaxException;
 import de.dante.util.file.OutputFactory;
+import de.dante.util.framework.configuration.Configuration;
+import de.dante.util.framework.configuration.ConfigurationFactory;
+import de.dante.util.framework.configuration.exception.ConfigurationClassNotFoundException;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
+import de.dante.util.framework.configuration.exception.ConfigurationInstantiationException;
+import de.dante.util.framework.configuration.exception.ConfigurationMissingAttributeException;
+import de.dante.util.framework.configuration.exception.ConfigurationMissingException;
+import de.dante.util.framework.configuration.exception.ConfigurationNoSuchMethodException;
+import de.dante.util.framework.configuration.exception.ConfigurationSyntaxException;
 import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.i18n.LocalizerFactory;
 import de.dante.util.observer.NotObservableException;
@@ -326,7 +326,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.112 $
+ * @version $Revision: 1.113 $
  */
 public class ExTeX {
 

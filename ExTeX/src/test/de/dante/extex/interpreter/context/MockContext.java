@@ -62,7 +62,7 @@ import de.dante.extex.typesetter.type.math.MathDelimiter;
 import de.dante.util.GeneralException;
 import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
-import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * This mock implementation of a context does nothing useful but provide dummy
@@ -70,7 +70,7 @@ import de.dante.util.configuration.ConfigurationException;
  * classes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class MockContext implements Context, TypesetterOptions {
 

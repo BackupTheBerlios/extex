@@ -36,15 +36,15 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.main.errorHandler.editHandler.EditHandler;
 import de.dante.extex.scanner.type.Token;
 import de.dante.util.GeneralException;
-import de.dante.util.configuration.Configuration;
-import de.dante.util.configuration.ConfigurationFactory;
+import de.dante.util.framework.configuration.Configuration;
+import de.dante.util.framework.configuration.ConfigurationFactory;
 
 /**
  * Test for ExTeX.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public final class TestTeX {
 

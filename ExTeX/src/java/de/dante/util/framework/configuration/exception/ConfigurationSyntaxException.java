@@ -17,54 +17,50 @@
  *
  */
 
-package de.dante.util.configuration;
-
+package de.dante.util.framework.configuration.exception;
 
 /**
- * This exception is thrown when a dynamically loaded class signals an
- * instantiation exception.
+ * This Exception is thrown when a configuration contains a syntax error.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.1 $
  */
-public class ConfigurationInstantiationException extends ConfigurationException {
+public class ConfigurationSyntaxException extends ConfigurationException {
 
     /**
-     * Creates a new object.
+     * Create a new object.
      *
-     * @param message the message text
+     * @param message the message string
+     * @param source the source of the exception
+     */
+    public ConfigurationSyntaxException(final String message,
+            final String source) {
+
+        super(message, source);
+    }
+
+    /**
+     * Create a new object.
+     *
+     * @param message message the message string
      * @param cause the next Throwable in the list
      */
-    public ConfigurationInstantiationException(final String message,
+    public ConfigurationSyntaxException(final String message,
             final Throwable cause) {
 
         super(message, cause);
     }
 
     /**
-     * Creates a new object.
-     *
-     * @param cause the next Throwable in the list
-     */
-    public ConfigurationInstantiationException(final Throwable cause) {
-
-        super("", cause);
-    }
-
-    /**
-     * Getter for the text prefix of this ConfigException.
+     * Getter for the text prefix of this Exception.
      * The text is taken from the resource bundle <tt>ConfigurationEception</tt>
-     * under the key <tt>ConfigurationInstantiationException.Text</tt>. The
-     * argument {0} is replaced by the message of the embedded cause as passed
-     * to the constructor.
+     * under the key <tt>ConfigurationSyntaxException.Text</tt>.
      *
      * @return the text
      */
     protected String getText() {
 
-        return getLocalizer().format(
-                "ConfigurationInstantiationException.Text",
-                getCause().getLocalizedMessage());
+        return getLocalizer().format("ConfigurationSyntaxException.Text");
     }
 
 }

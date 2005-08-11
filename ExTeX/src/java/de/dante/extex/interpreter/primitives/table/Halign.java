@@ -38,7 +38,7 @@ import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.listMaker.HAlignListMaker;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.util.GeneralException;
-import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * This class provides an implementation for the primitive <code>\halign</code>.
@@ -74,7 +74,7 @@ import de.dante.util.configuration.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class Halign extends AbstractAlign implements Boxable {
 

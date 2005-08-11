@@ -23,18 +23,18 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Logger;
 
-import de.dante.util.configuration.Configuration;
-import de.dante.util.configuration.ConfigurationClassNotFoundException;
-import de.dante.util.configuration.ConfigurationException;
-import de.dante.util.configuration.ConfigurationIOException;
-import de.dante.util.configuration.ConfigurationInstantiationException;
-import de.dante.util.configuration.ConfigurationInvalidClassException;
-import de.dante.util.configuration.ConfigurationInvalidResourceException;
-import de.dante.util.configuration.ConfigurationMissingAttributeException;
-import de.dante.util.configuration.ConfigurationMissingException;
-import de.dante.util.configuration.ConfigurationNotFoundException;
-import de.dante.util.configuration.ConfigurationSyntaxException;
 import de.dante.util.framework.configuration.Configurable;
+import de.dante.util.framework.configuration.Configuration;
+import de.dante.util.framework.configuration.exception.ConfigurationClassNotFoundException;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
+import de.dante.util.framework.configuration.exception.ConfigurationIOException;
+import de.dante.util.framework.configuration.exception.ConfigurationInstantiationException;
+import de.dante.util.framework.configuration.exception.ConfigurationInvalidClassException;
+import de.dante.util.framework.configuration.exception.ConfigurationInvalidResourceException;
+import de.dante.util.framework.configuration.exception.ConfigurationMissingAttributeException;
+import de.dante.util.framework.configuration.exception.ConfigurationMissingException;
+import de.dante.util.framework.configuration.exception.ConfigurationNotFoundException;
+import de.dante.util.framework.configuration.exception.ConfigurationSyntaxException;
 import de.dante.util.framework.i18n.Localizable;
 import de.dante.util.framework.i18n.LocalizerFactory;
 import de.dante.util.framework.logger.LogEnabled;
@@ -66,7 +66,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public abstract class AbstractFactory
         implements

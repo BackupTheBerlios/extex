@@ -40,7 +40,7 @@ import de.dante.extex.typesetter.type.node.AccentKernNode;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
-import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * This class provides an implementation for the primitive <code>\accent</code>.
@@ -66,7 +66,7 @@ import de.dante.util.configuration.ConfigurationException;
  * @see "TTP [1123]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Accent extends AbstractCode {
 

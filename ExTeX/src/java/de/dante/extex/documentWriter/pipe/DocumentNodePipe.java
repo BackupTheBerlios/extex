@@ -28,15 +28,15 @@ import de.dante.extex.documentWriter.OutputStreamFactory;
 import de.dante.extex.documentWriter.exception.DocumentWriterException;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.util.GeneralException;
-import de.dante.util.configuration.Configuration;
-import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.framework.configuration.Configurable;
+import de.dante.util.framework.configuration.Configuration;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * TODO gene: missing JavaDoc.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class DocumentNodePipe
         implements

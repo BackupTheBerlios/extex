@@ -31,15 +31,15 @@ import de.dante.extex.interpreter.type.pair.Pair;
 import de.dante.extex.interpreter.type.real.Real;
 import de.dante.extex.interpreter.type.transform.Transform;
 import de.dante.util.GeneralException;
-import de.dante.util.configuration.Configuration;
-import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.framework.configuration.Configuration;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * This is a reference implementation for an interpreter context with
  * ExTeX functions.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class ContextExtensionImpl extends ContextImpl
         implements

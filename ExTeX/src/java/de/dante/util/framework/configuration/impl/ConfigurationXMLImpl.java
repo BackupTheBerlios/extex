@@ -17,7 +17,7 @@
  *
  */
 
-package de.dante.util.configuration;
+package de.dante.util.framework.configuration.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,12 +37,18 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import de.dante.util.StringList;
+import de.dante.util.framework.configuration.Configuration;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
+import de.dante.util.framework.configuration.exception.ConfigurationIOException;
+import de.dante.util.framework.configuration.exception.ConfigurationInvalidResourceException;
+import de.dante.util.framework.configuration.exception.ConfigurationNotFoundException;
+import de.dante.util.framework.configuration.exception.ConfigurationSyntaxException;
 
 /**
  * This class provides means to deal with configurations stored as XML files.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.1 $
  */
 public class ConfigurationXMLImpl implements Configuration, Serializable {
 
@@ -328,7 +334,7 @@ public class ConfigurationXMLImpl implements Configuration, Serializable {
     }
 
     /**
-     * @see de.dante.util.configuration.Configuration#getAttribute(
+     * @see de.dante.util.framework.configuration.Configuration#getAttribute(
      *      java.lang.String)
      */
     public String getAttribute(final String name) {
@@ -455,7 +461,7 @@ public class ConfigurationXMLImpl implements Configuration, Serializable {
     }
 
     /**
-     * @see de.dante.util.configuration.Configuration#getNodeValue(Node)
+     * @see de.dante.util.framework.configuration.Configuration#getNodeValue(Node)
      */
     private String getNodeValue(final Node node) {
 
@@ -471,7 +477,7 @@ public class ConfigurationXMLImpl implements Configuration, Serializable {
     }
 
     /**
-     * @see de.dante.util.configuration.Configuration#getValue()
+     * @see de.dante.util.framework.configuration.Configuration#getValue()
      */
     public String getValue() throws ConfigurationException {
 
@@ -551,7 +557,7 @@ public class ConfigurationXMLImpl implements Configuration, Serializable {
     }
 
     /**
-     * @see de.dante.util.configuration.Configuration#getValueAsInteger(
+     * @see de.dante.util.framework.configuration.Configuration#getValueAsInteger(
      *      java.lang.String, int)
      */
     public int getValueAsInteger(final String key, final int defaultValue)
@@ -574,7 +580,7 @@ public class ConfigurationXMLImpl implements Configuration, Serializable {
      *
      * @return the list of values
      *
-     * @see de.dante.util.configuration.Configuration#getValues(java.lang.String)
+     * @see de.dante.util.framework.configuration.Configuration#getValues(java.lang.String)
      */
     public StringList getValues(final String tag) {
 
@@ -590,7 +596,7 @@ public class ConfigurationXMLImpl implements Configuration, Serializable {
      * @param key the name of the tags
      * @param list the list tol append the values to
      *
-     * @see de.dante.util.configuration.Configuration#getValues(
+     * @see de.dante.util.framework.configuration.Configuration#getValues(
      *      de.dante.util.StringList, java.lang.String)
      */
     public void getValues(final StringList list, final String key) {
@@ -619,7 +625,7 @@ public class ConfigurationXMLImpl implements Configuration, Serializable {
      * @throws ConfigurationInvalidResourceException in case that the resource
      *  is invalid
      *
-     * @see de.dante.util.configuration.Configuration#iterator(java.lang.String)
+     * @see de.dante.util.framework.configuration.Configuration#iterator(java.lang.String)
      */
     public Iterator iterator(final String key)
             throws ConfigurationInvalidResourceException,

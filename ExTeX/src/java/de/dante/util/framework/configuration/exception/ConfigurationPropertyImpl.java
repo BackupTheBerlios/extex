@@ -17,12 +17,13 @@
  *
  */
 
-package de.dante.util.configuration;
+package de.dante.util.framework.configuration.exception;
 
 import java.util.Iterator;
 import java.util.Properties;
 
 import de.dante.util.StringList;
+import de.dante.util.framework.configuration.Configuration;
 
 /**
  * This class provides an implementation for a configuration which is based on
@@ -70,7 +71,7 @@ public class ConfigurationPropertyImpl implements Configuration {
     }
 
     /**
-     * @see de.dante.util.configuration.Configuration#findConfiguration(java.lang.String)
+     * @see de.dante.util.framework.configuration.Configuration#findConfiguration(java.lang.String)
      */
     public Configuration findConfiguration(final String key)
             throws ConfigurationInvalidResourceException,
@@ -82,7 +83,7 @@ public class ConfigurationPropertyImpl implements Configuration {
     }
 
     /**
-     * @see de.dante.util.configuration.Configuration#findConfiguration(
+     * @see de.dante.util.framework.configuration.Configuration#findConfiguration(
      *      java.lang.String,
      *      java.lang.String)
      */
@@ -93,7 +94,7 @@ public class ConfigurationPropertyImpl implements Configuration {
     }
 
     /**
-     * @see de.dante.util.configuration.Configuration#getAttribute(
+     * @see de.dante.util.framework.configuration.Configuration#getAttribute(
      *     java.lang.String)
      */
     public String getAttribute(final String name) {
@@ -102,7 +103,7 @@ public class ConfigurationPropertyImpl implements Configuration {
     }
 
     /**
-     * @see de.dante.util.configuration.Configuration#getConfiguration(
+     * @see de.dante.util.framework.configuration.Configuration#getConfiguration(
      *      java.lang.String)
      */
     public Configuration getConfiguration(final String key)
@@ -112,7 +113,7 @@ public class ConfigurationPropertyImpl implements Configuration {
     }
 
     /**
-     * @see de.dante.util.configuration.Configuration#getConfiguration(
+     * @see de.dante.util.framework.configuration.Configuration#getConfiguration(
      *      java.lang.String,
      *      java.lang.String)
      */
@@ -123,7 +124,7 @@ public class ConfigurationPropertyImpl implements Configuration {
     }
 
     /**
-     * @see de.dante.util.configuration.Configuration#getValue()
+     * @see de.dante.util.framework.configuration.Configuration#getValue()
      */
     public String getValue() throws ConfigurationException {
 
@@ -131,7 +132,7 @@ public class ConfigurationPropertyImpl implements Configuration {
     }
 
     /**
-     * @see de.dante.util.configuration.Configuration#getValue(java.lang.String)
+     * @see de.dante.util.framework.configuration.Configuration#getValue(java.lang.String)
      */
     public String getValue(final String key) throws ConfigurationException {
 
@@ -139,7 +140,7 @@ public class ConfigurationPropertyImpl implements Configuration {
     }
 
     /**
-     * @see de.dante.util.configuration.Configuration#getValueAsInteger(
+     * @see de.dante.util.framework.configuration.Configuration#getValueAsInteger(
      *      java.lang.String, int)
      */
     public int getValueAsInteger(final String key, final int defaultValue)
@@ -155,7 +156,7 @@ public class ConfigurationPropertyImpl implements Configuration {
     }
 
     /**
-     * @see de.dante.util.configuration.Configuration#getValues(
+     * @see de.dante.util.framework.configuration.Configuration#getValues(
      *      java.lang.String)
      */
     public StringList getValues(final String key) {
@@ -164,7 +165,7 @@ public class ConfigurationPropertyImpl implements Configuration {
     }
 
     /**
-     * @see de.dante.util.configuration.Configuration#getValues(
+     * @see de.dante.util.framework.configuration.Configuration#getValues(
      *      de.dante.util.StringList,
      *      java.lang.String)
      */
@@ -173,7 +174,7 @@ public class ConfigurationPropertyImpl implements Configuration {
     }
 
     /**
-     * @see de.dante.util.configuration.Configuration#iterator(
+     * @see de.dante.util.framework.configuration.Configuration#iterator(
      *      java.lang.String)
      */
     public Iterator iterator(final String key) throws ConfigurationException {

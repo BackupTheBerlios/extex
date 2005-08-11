@@ -60,7 +60,7 @@ import de.dante.extex.typesetter.type.node.VirtualCharNode;
 import de.dante.extex.typesetter.type.node.WhatsItNode;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
-import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 import de.dante.util.resource.ResourceConsumer;
 import de.dante.util.resource.ResourceFinder;
 
@@ -68,7 +68,7 @@ import de.dante.util.resource.ResourceFinder;
  * This class provides a converter to PostScript code.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class PsBasicConverter
         implements
@@ -82,7 +82,7 @@ public class PsBasicConverter
      * for output.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.5 $
+     * @version $Revision: 1.6 $
      */
     private class Buffer {
 
