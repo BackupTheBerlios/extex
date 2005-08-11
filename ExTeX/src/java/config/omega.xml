@@ -86,7 +86,7 @@
 
     <!-- The configuration of the token factory.
       -->
-    <TokenFactory class="de.dante.extex.scanner.type.TokenFactoryImpl"/>
+    <TokenFactory class="de.dante.extex.scanner.type.token.TokenFactoryImpl"/>
 
     <!-- The configuration of the context implementation to use.
       -->
