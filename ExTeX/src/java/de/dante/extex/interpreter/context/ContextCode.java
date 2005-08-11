@@ -22,8 +22,8 @@ package de.dante.extex.interpreter.context;
 import de.dante.extex.interpreter.context.observer.CodeObserver;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.Code;
-import de.dante.extex.scanner.type.CodeToken;
-import de.dante.extex.scanner.type.Token;
+import de.dante.extex.scanner.type.token.CodeToken;
+import de.dante.extex.scanner.type.token.Token;
 
 /**
  * This interface describes the container for all data of an interpreter
@@ -31,7 +31,7 @@ import de.dante.extex.scanner.type.Token;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface ContextCode {
 
@@ -63,9 +63,9 @@ public interface ContextCode {
     /**
      * Setter for the code assigned to a Token.
      * The Token has to be either a
-     * {@link de.dante.extex.scanner.type.ActiveCharacterToken ActiveCharacterToken}
+     * {@link de.dante.extex.scanner.type.token.ActiveCharacterToken ActiveCharacterToken}
      * or a
-     * {@link de.dante.extex.scanner.type.ControlSequenceToken ControlSequenceToken}.
+     * {@link de.dante.extex.scanner.type.token.ControlSequenceToken ControlSequenceToken}.
      *
      * @param t the Token to set the code for
      * @param code the code for the token

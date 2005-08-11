@@ -25,8 +25,8 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.primitives.register.box.AbstractBox;
 import de.dante.extex.interpreter.type.tokens.Tokens;
-import de.dante.extex.scanner.type.LeftBraceToken;
-import de.dante.extex.scanner.type.Token;
+import de.dante.extex.scanner.type.token.LeftBraceToken;
+import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.ParagraphObserver;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.NodeList;
@@ -54,7 +54,7 @@ import de.dante.extex.typesetter.type.NodeList;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Setlanguage extends AbstractBox {
 
@@ -63,7 +63,7 @@ public class Setlanguage extends AbstractBox {
      * <tt>language</tt> and <tt>lang</tt> t the end of a paragraph.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.7 $
+     * @version $Revision: 1.8 $
      */
     private class ParObserver implements ParagraphObserver {
 

@@ -26,8 +26,8 @@ import de.dante.extex.interpreter.exception.helping.BadFileNumberException;
 import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.scanner.type.Catcode;
-import de.dante.extex.scanner.type.SpaceToken;
-import de.dante.extex.scanner.type.Token;
+import de.dante.extex.scanner.type.token.SpaceToken;
+import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.Configurable;
@@ -39,7 +39,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * files.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public abstract class AbstractFileCode extends AbstractCode
         implements

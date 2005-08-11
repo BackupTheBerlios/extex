@@ -28,8 +28,8 @@ import de.dante.extex.interpreter.exception.helping.ArithmeticOverflowException;
 import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.tokens.Tokens;
-import de.dante.extex.scanner.type.CodeToken;
-import de.dante.extex.scanner.type.Token;
+import de.dante.extex.scanner.type.token.CodeToken;
+import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.i18n.Localizer;
@@ -41,7 +41,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class Count implements Serializable, FixedCount {
 

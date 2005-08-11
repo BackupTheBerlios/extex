@@ -31,14 +31,14 @@ import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.dimen.DimenConvertible;
 import de.dante.extex.scanner.type.Catcode;
-import de.dante.extex.scanner.type.ControlSequenceToken;
-import de.dante.extex.scanner.type.Token;
+import de.dante.extex.scanner.type.token.ControlSequenceToken;
+import de.dante.extex.scanner.type.token.Token;
 
 /**
  * Real (with a double value)
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Real implements Serializable {
 

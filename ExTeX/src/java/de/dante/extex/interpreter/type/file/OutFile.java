@@ -29,26 +29,26 @@ import java.io.Writer;
 
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.tokens.Tokens;
-import de.dante.extex.scanner.type.ActiveCharacterToken;
-import de.dante.extex.scanner.type.ControlSequenceToken;
-import de.dante.extex.scanner.type.CrToken;
-import de.dante.extex.scanner.type.LeftBraceToken;
-import de.dante.extex.scanner.type.LetterToken;
-import de.dante.extex.scanner.type.MacroParamToken;
-import de.dante.extex.scanner.type.MathShiftToken;
-import de.dante.extex.scanner.type.OtherToken;
-import de.dante.extex.scanner.type.RightBraceToken;
-import de.dante.extex.scanner.type.SpaceToken;
-import de.dante.extex.scanner.type.SubMarkToken;
-import de.dante.extex.scanner.type.SupMarkToken;
-import de.dante.extex.scanner.type.TabMarkToken;
-import de.dante.extex.scanner.type.TokenVisitor;
+import de.dante.extex.scanner.type.token.ActiveCharacterToken;
+import de.dante.extex.scanner.type.token.ControlSequenceToken;
+import de.dante.extex.scanner.type.token.CrToken;
+import de.dante.extex.scanner.type.token.LeftBraceToken;
+import de.dante.extex.scanner.type.token.LetterToken;
+import de.dante.extex.scanner.type.token.MacroParamToken;
+import de.dante.extex.scanner.type.token.MathShiftToken;
+import de.dante.extex.scanner.type.token.OtherToken;
+import de.dante.extex.scanner.type.token.RightBraceToken;
+import de.dante.extex.scanner.type.token.SpaceToken;
+import de.dante.extex.scanner.type.token.SubMarkToken;
+import de.dante.extex.scanner.type.token.SupMarkToken;
+import de.dante.extex.scanner.type.token.TabMarkToken;
+import de.dante.extex.scanner.type.token.TokenVisitor;
 
 /**
  * This class holds an output file onto which tokens can be wrtitten.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class OutFile implements Serializable {
 
@@ -59,7 +59,7 @@ public class OutFile implements Serializable {
     private static final TokenVisitor VISITOR = new TokenVisitor() {
 
         /**
-         * @see de.dante.extex.scanner.type.TokenVisitor#visitActive(
+         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitActive(
          *      de.dante.extex.scanner.type.ActiveCharacterToken,
          *      java.lang.Object)
          */
@@ -71,7 +71,7 @@ public class OutFile implements Serializable {
         }
 
         /**
-         * @see de.dante.extex.scanner.type.TokenVisitor#visitCr(
+         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitCr(
          *      de.dante.extex.scanner.type.CrToken, java.lang.Object)
          */
         public Object visitCr(final CrToken token, final Object w)
@@ -82,7 +82,7 @@ public class OutFile implements Serializable {
         }
 
         /**
-         * @see de.dante.extex.scanner.type.TokenVisitor#visitEscape(
+         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitEscape(
          *      de.dante.extex.scanner.type.ControlSequenceToken,
          *      java.lang.Object)
          */
@@ -95,7 +95,7 @@ public class OutFile implements Serializable {
         }
 
         /**
-         * @see de.dante.extex.scanner.type.TokenVisitor#visitLeftBrace(
+         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitLeftBrace(
          *      de.dante.extex.scanner.type.LeftBraceToken,
          *      java.lang.Object)
          */
@@ -107,7 +107,7 @@ public class OutFile implements Serializable {
         }
 
         /**
-         * @see de.dante.extex.scanner.type.TokenVisitor#visitLetter(
+         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitLetter(
          *      de.dante.extex.scanner.type.LetterToken,
          *      java.lang.Object)
          */
@@ -119,7 +119,7 @@ public class OutFile implements Serializable {
         }
 
         /**
-         * @see de.dante.extex.scanner.type.TokenVisitor#visitMacroParam(
+         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitMacroParam(
          *      de.dante.extex.scanner.type.MacroParamToken,
          *      java.lang.Object)
          */
@@ -131,7 +131,7 @@ public class OutFile implements Serializable {
         }
 
         /**
-         * @see de.dante.extex.scanner.type.TokenVisitor#visitMathShift(
+         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitMathShift(
          *      de.dante.extex.scanner.type.MathShiftToken,
          *      java.lang.Object)
          */
@@ -143,7 +143,7 @@ public class OutFile implements Serializable {
         }
 
         /**
-         * @see de.dante.extex.scanner.type.TokenVisitor#visitOther(
+         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitOther(
          *      de.dante.extex.scanner.type.OtherToken,
          *      java.lang.Object)
          */
@@ -155,7 +155,7 @@ public class OutFile implements Serializable {
         }
 
         /**
-         * @see de.dante.extex.scanner.type.TokenVisitor#visitRightBrace(
+         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitRightBrace(
          *      de.dante.extex.scanner.type.RightBraceToken,
          *      java.lang.Object)
          */
@@ -167,7 +167,7 @@ public class OutFile implements Serializable {
         }
 
         /**
-         * @see de.dante.extex.scanner.type.TokenVisitor#visitSpace(
+         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitSpace(
          *      de.dante.extex.scanner.type.SpaceToken,
          *      java.lang.Object)
          */
@@ -179,7 +179,7 @@ public class OutFile implements Serializable {
         }
 
         /**
-         * @see de.dante.extex.scanner.type.TokenVisitor#visitSubMark(
+         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitSubMark(
          *      de.dante.extex.scanner.type.SubMarkToken,
          *      java.lang.Object)
          */
@@ -191,7 +191,7 @@ public class OutFile implements Serializable {
         }
 
         /**
-         * @see de.dante.extex.scanner.type.TokenVisitor#visitSupMark(
+         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitSupMark(
          *      de.dante.extex.scanner.type.SupMarkToken,
          *      java.lang.Object)
          */
@@ -203,7 +203,7 @@ public class OutFile implements Serializable {
         }
 
         /**
-         * @see de.dante.extex.scanner.type.TokenVisitor#visitTabMark(
+         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitTabMark(
          *      de.dante.extex.scanner.type.TabMarkToken,
          *      java.lang.Object)
          */

@@ -22,13 +22,13 @@ package de.dante.extex.main.observer;
 import java.util.logging.Logger;
 
 import de.dante.extex.interpreter.observer.pop.PopObserver;
-import de.dante.extex.scanner.type.Token;
+import de.dante.extex.scanner.type.token.Token;
 
 /**
  * Observer for tokens which are read from the token stream.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class TokenObserver implements PopObserver {
 

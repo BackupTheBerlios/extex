@@ -31,8 +31,8 @@ import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.Catcode;
-import de.dante.extex.scanner.type.CodeToken;
-import de.dante.extex.scanner.type.Token;
+import de.dante.extex.scanner.type.token.CodeToken;
+import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
 
 /**
@@ -103,7 +103,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Numexpr extends AbstractCode implements CountConvertible, Theable {
 
@@ -111,7 +111,7 @@ public class Numexpr extends AbstractCode implements CountConvertible, Theable {
      * This interface describes a binary operation on two longs.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.3 $
+     * @version $Revision: 1.4 $
      */
     private interface BinOp {
 
@@ -130,7 +130,7 @@ public class Numexpr extends AbstractCode implements CountConvertible, Theable {
      * This operation ignores the first argument and returns the second one.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.3 $
+     * @version $Revision: 1.4 $
      */
     private static final class Second implements BinOp {
 
@@ -147,7 +147,7 @@ public class Numexpr extends AbstractCode implements CountConvertible, Theable {
      * This operation adds the arguments.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.3 $
+     * @version $Revision: 1.4 $
      */
     private static final class Plus implements BinOp {
 
@@ -164,7 +164,7 @@ public class Numexpr extends AbstractCode implements CountConvertible, Theable {
      * This operation subtracts the second argument from the first one.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.3 $
+     * @version $Revision: 1.4 $
      */
     private static final class Minus implements BinOp {
 

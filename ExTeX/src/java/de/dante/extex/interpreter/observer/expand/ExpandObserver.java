@@ -18,7 +18,7 @@
  */
 package de.dante.extex.interpreter.observer.expand;
 
-import de.dante.extex.scanner.type.Token;
+import de.dante.extex.scanner.type.token.Token;
 
 
 /**
@@ -26,7 +26,7 @@ import de.dante.extex.scanner.type.Token;
  * a token is expanded.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface ExpandObserver {
 

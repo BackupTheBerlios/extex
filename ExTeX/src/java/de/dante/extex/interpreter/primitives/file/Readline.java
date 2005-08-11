@@ -33,7 +33,7 @@ import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.file.InFile;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.Catcode;
-import de.dante.extex.scanner.type.CodeToken;
+import de.dante.extex.scanner.type.token.CodeToken;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.UnicodeChar;
 
@@ -61,7 +61,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Readline extends AbstractCode {
 
@@ -69,7 +69,7 @@ public class Readline extends AbstractCode {
      * This class implements a tokenizer which returns only OTHER and SPACE.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.3 $
+     * @version $Revision: 1.4 $
      */
     private static class ReadlineTokenizer implements Tokenizer {
 

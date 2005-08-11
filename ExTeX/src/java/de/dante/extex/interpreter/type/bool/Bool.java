@@ -29,14 +29,14 @@ import de.dante.extex.interpreter.type.bool.exception.InterpreterNoBoolValueExce
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.real.RealConvertible;
-import de.dante.extex.scanner.type.ControlSequenceToken;
-import de.dante.extex.scanner.type.Token;
+import de.dante.extex.scanner.type.token.ControlSequenceToken;
+import de.dante.extex.scanner.type.token.Token;
 
 /**
  * Bool
  *
  * @author <a href="mailto:m.g.sn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Bool implements Serializable {
 

@@ -31,10 +31,10 @@ import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.Showable;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.Catcode;
-import de.dante.extex.scanner.type.LeftBraceToken;
-import de.dante.extex.scanner.type.MacroParamToken;
-import de.dante.extex.scanner.type.OtherToken;
-import de.dante.extex.scanner.type.Token;
+import de.dante.extex.scanner.type.token.LeftBraceToken;
+import de.dante.extex.scanner.type.token.MacroParamToken;
+import de.dante.extex.scanner.type.token.OtherToken;
+import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.i18n.Localizer;
@@ -53,7 +53,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class MacroCode extends AbstractCode
         implements

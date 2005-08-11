@@ -22,13 +22,13 @@ package de.dante.extex.interpreter.observer.pop;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.dante.extex.scanner.type.Token;
+import de.dante.extex.scanner.type.token.Token;
 
 /**
  * This class provides a typesafe list of observers for the pop event.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public final class PopObserverList implements PopObserver {
 

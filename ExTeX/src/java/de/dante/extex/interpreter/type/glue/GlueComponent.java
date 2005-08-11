@@ -35,11 +35,11 @@ import de.dante.extex.interpreter.type.dimen.DimenConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.CatcodeException;
-import de.dante.extex.scanner.type.CodeToken;
-import de.dante.extex.scanner.type.LetterToken;
-import de.dante.extex.scanner.type.OtherToken;
-import de.dante.extex.scanner.type.Token;
-import de.dante.extex.scanner.type.TokenFactory;
+import de.dante.extex.scanner.type.token.CodeToken;
+import de.dante.extex.scanner.type.token.LetterToken;
+import de.dante.extex.scanner.type.token.OtherToken;
+import de.dante.extex.scanner.type.token.Token;
+import de.dante.extex.scanner.type.token.TokenFactory;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.i18n.LocalizerFactory;
@@ -60,7 +60,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.34 $
+ * @version $Revision: 1.35 $
  */
 public class GlueComponent implements Serializable, FixedGlueComponent {
 

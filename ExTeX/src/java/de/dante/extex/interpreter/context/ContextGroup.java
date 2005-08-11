@@ -22,7 +22,7 @@ package de.dante.extex.interpreter.context;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.observer.afterGroup.AfterGroupObserver;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.scanner.type.Token;
+import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
@@ -31,7 +31,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * context.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public interface ContextGroup {
 

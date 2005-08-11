@@ -20,7 +20,7 @@
 package de.dante.extex.interpreter.type.glue;
 
 import de.dante.extex.interpreter.type.tokens.Tokens;
-import de.dante.extex.scanner.type.TokenFactory;
+import de.dante.extex.scanner.type.token.TokenFactory;
 import de.dante.util.exception.GeneralException;
 
 /**
@@ -29,7 +29,7 @@ import de.dante.util.exception.GeneralException;
  * which do not modify the value.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public interface FixedGlueComponent {
 

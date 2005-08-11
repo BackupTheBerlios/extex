@@ -28,22 +28,22 @@ import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.primitives.register.CharCode;
 import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.interpreter.type.Code;
-import de.dante.extex.scanner.type.ActiveCharacterToken;
-import de.dante.extex.scanner.type.CodeToken;
-import de.dante.extex.scanner.type.ControlSequenceToken;
-import de.dante.extex.scanner.type.CrToken;
-import de.dante.extex.scanner.type.LeftBraceToken;
-import de.dante.extex.scanner.type.LetterToken;
-import de.dante.extex.scanner.type.MacroParamToken;
-import de.dante.extex.scanner.type.MathShiftToken;
-import de.dante.extex.scanner.type.OtherToken;
-import de.dante.extex.scanner.type.RightBraceToken;
-import de.dante.extex.scanner.type.SpaceToken;
-import de.dante.extex.scanner.type.SubMarkToken;
-import de.dante.extex.scanner.type.SupMarkToken;
-import de.dante.extex.scanner.type.TabMarkToken;
-import de.dante.extex.scanner.type.Token;
-import de.dante.extex.scanner.type.TokenVisitor;
+import de.dante.extex.scanner.type.token.ActiveCharacterToken;
+import de.dante.extex.scanner.type.token.CodeToken;
+import de.dante.extex.scanner.type.token.ControlSequenceToken;
+import de.dante.extex.scanner.type.token.CrToken;
+import de.dante.extex.scanner.type.token.LeftBraceToken;
+import de.dante.extex.scanner.type.token.LetterToken;
+import de.dante.extex.scanner.type.token.MacroParamToken;
+import de.dante.extex.scanner.type.token.MathShiftToken;
+import de.dante.extex.scanner.type.token.OtherToken;
+import de.dante.extex.scanner.type.token.RightBraceToken;
+import de.dante.extex.scanner.type.token.SpaceToken;
+import de.dante.extex.scanner.type.token.SubMarkToken;
+import de.dante.extex.scanner.type.token.SupMarkToken;
+import de.dante.extex.scanner.type.token.TabMarkToken;
+import de.dante.extex.scanner.type.token.Token;
+import de.dante.extex.scanner.type.token.TokenVisitor;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.exception.GeneralException;
 
@@ -76,7 +76,7 @@ import de.dante.util.exception.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.30 $
+ * @version $Revision: 1.31 $
  */
 public class Let extends AbstractAssignment {
 

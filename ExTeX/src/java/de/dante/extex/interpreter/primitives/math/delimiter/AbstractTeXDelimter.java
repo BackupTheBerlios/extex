@@ -27,9 +27,9 @@ import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.exception.helping.MissingNumberException;
 import de.dante.extex.interpreter.primitives.math.AbstractMathCode;
 import de.dante.extex.interpreter.type.Code;
-import de.dante.extex.scanner.type.CodeToken;
-import de.dante.extex.scanner.type.OtherToken;
-import de.dante.extex.scanner.type.Token;
+import de.dante.extex.scanner.type.token.CodeToken;
+import de.dante.extex.scanner.type.token.OtherToken;
+import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.type.math.MathClass;
 import de.dante.extex.typesetter.type.math.MathClassVisitor;
 import de.dante.extex.typesetter.type.math.MathDelimiter;
@@ -44,7 +44,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * to and from their <logo>TeX</logo> encoding as numbers to abstract math code.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class AbstractTeXDelimter extends AbstractMathCode {
 

@@ -21,14 +21,14 @@ package de.dante.extex.interpreter.context.observer;
 
 import de.dante.extex.interpreter.context.ContextInternals;
 import de.dante.extex.interpreter.type.Code;
-import de.dante.extex.scanner.type.Token;
+import de.dante.extex.scanner.type.token.Token;
 
 /**
  * This interface describes the ability to receive a notification about the
  * change of a code assignment for a macro or an  active character.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface CodeObserver {
 

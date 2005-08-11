@@ -29,13 +29,13 @@ import de.dante.extex.language.hyphenation.exception.DuplicateHyphenationExcepti
 import de.dante.extex.language.hyphenation.liang.LiangsHyphenationTable;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.CatcodeException;
-import de.dante.extex.scanner.type.TokenFactory;
+import de.dante.extex.scanner.type.token.TokenFactory;
 
 /**
  * TODO gene: missing JavaDoc.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class LiangsHyphenationTableTest extends TestCase {
 
@@ -43,7 +43,7 @@ public class LiangsHyphenationTableTest extends TestCase {
      * This mock implementation is for test purposes only.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private class MyMockContext extends MockContext {
 

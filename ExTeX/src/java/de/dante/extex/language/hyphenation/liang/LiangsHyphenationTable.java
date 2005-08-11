@@ -31,9 +31,9 @@ import de.dante.extex.language.hyphenation.exception.IllegalTokenHyphenationExce
 import de.dante.extex.language.hyphenation.exception.IllegalValueHyphenationException;
 import de.dante.extex.language.hyphenation.exception.ImmutableHyphenationException;
 import de.dante.extex.language.hyphenation.util.NodeTraverser;
-import de.dante.extex.scanner.type.LetterToken;
-import de.dante.extex.scanner.type.OtherToken;
-import de.dante.extex.scanner.type.Token;
+import de.dante.extex.scanner.type.token.LetterToken;
+import de.dante.extex.scanner.type.token.OtherToken;
+import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.node.CharNodeFactory;
@@ -114,7 +114,7 @@ import de.dante.util.exception.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class LiangsHyphenationTable extends BaseHyphenationTable {
 

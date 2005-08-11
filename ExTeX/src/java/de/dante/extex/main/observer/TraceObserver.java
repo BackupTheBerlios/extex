@@ -22,14 +22,14 @@ package de.dante.extex.main.observer;
 import java.util.logging.Logger;
 
 import de.dante.extex.interpreter.observer.expand.ExpandObserver;
-import de.dante.extex.scanner.type.Token;
+import de.dante.extex.scanner.type.token.Token;
 
 /**
  * Observer for tracing macros. The macro is written to the log file preceeded
  * by a <tt>&gt;</tt> mark and a space character.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class TraceObserver implements ExpandObserver {
 

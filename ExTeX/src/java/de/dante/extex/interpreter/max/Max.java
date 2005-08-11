@@ -63,23 +63,23 @@ import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.language.LanguageManagerFactory;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
-import de.dante.extex.scanner.type.ActiveCharacterToken;
-import de.dante.extex.scanner.type.CodeToken;
-import de.dante.extex.scanner.type.ControlSequenceToken;
-import de.dante.extex.scanner.type.CrToken;
-import de.dante.extex.scanner.type.LeftBraceToken;
-import de.dante.extex.scanner.type.LetterToken;
-import de.dante.extex.scanner.type.MacroParamToken;
-import de.dante.extex.scanner.type.MathShiftToken;
-import de.dante.extex.scanner.type.OtherToken;
-import de.dante.extex.scanner.type.RightBraceToken;
-import de.dante.extex.scanner.type.SpaceToken;
-import de.dante.extex.scanner.type.SubMarkToken;
-import de.dante.extex.scanner.type.SupMarkToken;
-import de.dante.extex.scanner.type.TabMarkToken;
-import de.dante.extex.scanner.type.Token;
-import de.dante.extex.scanner.type.TokenFactory;
-import de.dante.extex.scanner.type.TokenVisitor;
+import de.dante.extex.scanner.type.token.ActiveCharacterToken;
+import de.dante.extex.scanner.type.token.CodeToken;
+import de.dante.extex.scanner.type.token.ControlSequenceToken;
+import de.dante.extex.scanner.type.token.CrToken;
+import de.dante.extex.scanner.type.token.LeftBraceToken;
+import de.dante.extex.scanner.type.token.LetterToken;
+import de.dante.extex.scanner.type.token.MacroParamToken;
+import de.dante.extex.scanner.type.token.MathShiftToken;
+import de.dante.extex.scanner.type.token.OtherToken;
+import de.dante.extex.scanner.type.token.RightBraceToken;
+import de.dante.extex.scanner.type.token.SpaceToken;
+import de.dante.extex.scanner.type.token.SubMarkToken;
+import de.dante.extex.scanner.type.token.SupMarkToken;
+import de.dante.extex.scanner.type.token.TabMarkToken;
+import de.dante.extex.scanner.type.token.Token;
+import de.dante.extex.scanner.type.token.TokenFactory;
+import de.dante.extex.scanner.type.token.TokenVisitor;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.Switch;
 import de.dante.util.exception.GeneralException;
@@ -99,7 +99,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.80 $
+ * @version $Revision: 1.81 $
  */
 public abstract class Max
         implements
@@ -920,7 +920,7 @@ public abstract class Max
      *
      * @throws GeneralException in case of an error
      *
-     * @see de.dante.extex.scanner.type.TokenVisitor#visitActive(
+     * @see de.dante.extex.scanner.type.token.TokenVisitor#visitActive(
      *      de.dante.extex.scanner.ActiveCharacterToken, java.lang.Object)
      */
     public Object visitActive(final ActiveCharacterToken token,
@@ -950,7 +950,7 @@ public abstract class Max
      *
      * @throws GeneralException in case of an error
      *
-     * @see de.dante.extex.scanner.type.TokenVisitor#visitCr(
+     * @see de.dante.extex.scanner.type.token.TokenVisitor#visitCr(
      *      de.dante.extex.scanner.CrToken, java.lang.Object)
      */
     public Object visitCr(final CrToken token, final Object ignore)
@@ -972,7 +972,7 @@ public abstract class Max
      *
      * @throws GeneralException in case of an error
      *
-     * @see de.dante.extex.scanner.type.TokenVisitor#visitEscape(
+     * @see de.dante.extex.scanner.type.token.TokenVisitor#visitEscape(
      *      de.dante.extex.scanner.ControlSequenceToken, java.lang.Object)
      */
     public Object visitEscape(final ControlSequenceToken token,
@@ -1006,7 +1006,7 @@ public abstract class Max
      * @throws GeneralException in case of an error
      *
      * @see "<logo>TeX</logo> &ndash; The Program [1063]"
-     * @see de.dante.extex.scanner.type.TokenVisitor#visitLeftBrace(
+     * @see de.dante.extex.scanner.type.token.TokenVisitor#visitLeftBrace(
      *      de.dante.extex.scanner.LeftBraceToken, java.lang.Object)
      */
     public Object visitLeftBrace(final LeftBraceToken token, final Object ignore)
@@ -1031,7 +1031,7 @@ public abstract class Max
      *
      * @throws GeneralException in case of an error
      *
-     * @see de.dante.extex.scanner.type.TokenVisitor#visitLetter(
+     * @see de.dante.extex.scanner.type.token.TokenVisitor#visitLetter(
      *      de.dante.extex.scanner.LetterToken, java.lang.Object)
      */
     public Object visitLetter(final LetterToken token, final Object ignore)
@@ -1053,7 +1053,7 @@ public abstract class Max
      *
      * @throws GeneralException in case of an error
      *
-     * @see de.dante.extex.scanner.type.TokenVisitor#visitMacroParam(
+     * @see de.dante.extex.scanner.type.token.TokenVisitor#visitMacroParam(
      *      de.dante.extex.scanner.MacroParamToken, java.lang.Object)
      */
     public Object visitMacroParam(final MacroParamToken token,
@@ -1086,7 +1086,7 @@ public abstract class Max
      * @throws GeneralException in case of an error
      *
      * @see "<logo>TeX</logo> &ndash; The Program [1137]"
-     * @see de.dante.extex.scanner.type.TokenVisitor#visitMathShift(
+     * @see de.dante.extex.scanner.type.token.TokenVisitor#visitMathShift(
      *      de.dante.extex.scanner.MathShiftToken, java.lang.Object)
      */
     public Object visitMathShift(final MathShiftToken token, final Object ignore)
@@ -1110,7 +1110,7 @@ public abstract class Max
      *
      * @throws GeneralException in case of an error
      *
-     * @see de.dante.extex.scanner.type.TokenVisitor#visitOther(
+     * @see de.dante.extex.scanner.type.token.TokenVisitor#visitOther(
      *      de.dante.extex.scanner.OtherToken, java.lang.Object)
      */
     public Object visitOther(final OtherToken token, final Object ignore)
@@ -1133,7 +1133,7 @@ public abstract class Max
      * @throws GeneralException in case of an error
      *
      * @see "<logo>TeX</logo> &ndash; The Program [1067]"
-     * @see de.dante.extex.scanner.type.TokenVisitor#visitRightBrace(
+     * @see de.dante.extex.scanner.type.token.TokenVisitor#visitRightBrace(
      *      de.dante.extex.scanner.RightBraceToken, java.lang.Object)
      */
     public Object visitRightBrace(final RightBraceToken token,
@@ -1154,7 +1154,7 @@ public abstract class Max
      *
      * @throws GeneralException in case of an error
      *
-     * @see de.dante.extex.scanner.type.TokenVisitor#visitSpace(
+     * @see de.dante.extex.scanner.type.token.TokenVisitor#visitSpace(
      *      de.dante.extex.scanner.SpaceToken, java.lang.Object)
      */
     public Object visitSpace(final SpaceToken token, final Object ignore)
@@ -1179,7 +1179,7 @@ public abstract class Max
      *
      * @throws GeneralException in case of an error
      *
-     * @see de.dante.extex.scanner.type.TokenVisitor#visitSubMark(
+     * @see de.dante.extex.scanner.type.token.TokenVisitor#visitSubMark(
      *      de.dante.extex.scanner.SubMarkToken, java.lang.Object)
      */
     public Object visitSubMark(final SubMarkToken token, final Object ignore)
@@ -1200,7 +1200,7 @@ public abstract class Max
      *
      * @throws GeneralException in case of an error
      *
-     * @see de.dante.extex.scanner.type.TokenVisitor#visitSupMark(
+     * @see de.dante.extex.scanner.type.token.TokenVisitor#visitSupMark(
      *      de.dante.extex.scanner.SupMarkToken, java.lang.Object)
      */
     public Object visitSupMark(final SupMarkToken token, final Object ignore)
@@ -1221,7 +1221,7 @@ public abstract class Max
      *
      * @throws GeneralException in case of an error
      *
-     * @see de.dante.extex.scanner.type.TokenVisitor#visitTabMark(
+     * @see de.dante.extex.scanner.type.token.TokenVisitor#visitTabMark(
      *      de.dante.extex.scanner.TabMarkToken, java.lang.Object)
      */
     public Object visitTabMark(final TabMarkToken token, final Object ignore)

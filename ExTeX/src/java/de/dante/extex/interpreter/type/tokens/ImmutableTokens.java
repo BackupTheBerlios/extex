@@ -18,7 +18,7 @@
  */
 package de.dante.extex.interpreter.type.tokens;
 
-import de.dante.extex.scanner.type.Token;
+import de.dante.extex.scanner.type.token.Token;
 
 
 /**
@@ -28,7 +28,7 @@ import de.dante.extex.scanner.type.Token;
  * it has been created.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class ImmutableTokens extends Tokens {
 

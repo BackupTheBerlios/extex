@@ -24,8 +24,8 @@ import java.util.LinkedList;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.scanner.exception.ScannerException;
 import de.dante.extex.scanner.stream.TokenStream;
-import de.dante.extex.scanner.type.Token;
-import de.dante.extex.scanner.type.TokenFactory;
+import de.dante.extex.scanner.type.token.Token;
+import de.dante.extex.scanner.type.token.TokenFactory;
 import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
 
@@ -35,7 +35,7 @@ import de.dante.util.UnicodeChar;
  * with push() or reduced with pop().
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public abstract class AbstractTokenStreamImpl implements TokenStream {
 

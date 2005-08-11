@@ -30,7 +30,7 @@ import de.dante.extex.interpreter.primitives.macro.MacroPattern;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.file.InFile;
 import de.dante.extex.interpreter.type.tokens.Tokens;
-import de.dante.extex.scanner.type.CodeToken;
+import de.dante.extex.scanner.type.token.CodeToken;
 import de.dante.extex.typesetter.Typesetter;
 
 /**
@@ -57,7 +57,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public class Read extends AbstractCode {
 

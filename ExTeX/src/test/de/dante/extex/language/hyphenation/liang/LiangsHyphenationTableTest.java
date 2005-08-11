@@ -24,14 +24,14 @@ import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.CatcodeException;
-import de.dante.extex.scanner.type.TokenFactory;
-import de.dante.extex.scanner.type.TokenFactoryImpl;
+import de.dante.extex.scanner.type.token.TokenFactory;
+import de.dante.extex.scanner.type.token.TokenFactoryImpl;
 
 /**
  * This class contains soem test cases fro liang's hyphenation table.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class LiangsHyphenationTableTest extends TestCase {
 

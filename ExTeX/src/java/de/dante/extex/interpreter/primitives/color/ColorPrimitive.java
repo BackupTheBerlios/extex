@@ -31,10 +31,10 @@ import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.interpreter.type.color.ColorConvertible;
 import de.dante.extex.interpreter.type.glue.GlueComponent;
-import de.dante.extex.scanner.type.LeftBraceToken;
-import de.dante.extex.scanner.type.LetterToken;
-import de.dante.extex.scanner.type.RightBraceToken;
-import de.dante.extex.scanner.type.Token;
+import de.dante.extex.scanner.type.token.LeftBraceToken;
+import de.dante.extex.scanner.type.token.LetterToken;
+import de.dante.extex.scanner.type.token.RightBraceToken;
+import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
@@ -77,7 +77,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class ColorPrimitive extends AbstractAssignment
         implements

@@ -19,7 +19,7 @@
 package de.dante.extex.interpreter.observer.expandMacro;
 
 import de.dante.extex.interpreter.type.Code;
-import de.dante.extex.scanner.type.Token;
+import de.dante.extex.scanner.type.token.Token;
 
 
 /**
@@ -27,7 +27,7 @@ import de.dante.extex.scanner.type.Token;
  * a macro is expanded.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface ExpandMacroObserver {
 

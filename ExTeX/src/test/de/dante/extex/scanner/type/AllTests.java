@@ -19,6 +19,19 @@
 
 package de.dante.extex.scanner.type;
 
+import de.dante.extex.scanner.type.token.ActiveCharacterTokenTest;
+import de.dante.extex.scanner.type.token.ControlSequenceTokenTest;
+import de.dante.extex.scanner.type.token.CrTokenTest;
+import de.dante.extex.scanner.type.token.LeftBraceTokenTest;
+import de.dante.extex.scanner.type.token.LetterTokenTest;
+import de.dante.extex.scanner.type.token.MacroParamTokenTest;
+import de.dante.extex.scanner.type.token.MathShiftTokenTest;
+import de.dante.extex.scanner.type.token.OtherTokenTest;
+import de.dante.extex.scanner.type.token.RightBraceTokenTest;
+import de.dante.extex.scanner.type.token.SpaceTokenTest;
+import de.dante.extex.scanner.type.token.SubMarkTokenTest;
+import de.dante.extex.scanner.type.token.SupMarkTokenTest;
+import de.dante.extex.scanner.type.token.TabMarkTokenTest;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
@@ -26,7 +39,7 @@ import junit.framework.TestSuite;
  * Test cases for the scanner.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class AllTests {
 
