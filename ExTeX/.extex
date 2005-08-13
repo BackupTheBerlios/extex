@@ -30,10 +30,14 @@
 ##-----------------------------------------------------------------------------
 ##
 #extex.fonts = 
-extex.fonts = src/font
+#extex.fonts = src/font
 ##    This parameter contains the name of the property indicating
 ##    where to find font files. The value is a path similar to
 ##    extex.texinputs.
+##-----------------------------------------------------------------------------
+#fonts.cache = 
+##    This parameter contains the name of the property indicating
+##    where the efm font files are cached.
 ##-----------------------------------------------------------------------------
 ##
 #extex.halt.on.error =
