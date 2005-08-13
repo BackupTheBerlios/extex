@@ -33,6 +33,8 @@
               Compile all file except the tests.
           jar
               Create the jar file.
+          onejar
+              Create one jar file with include all other classes.
           javadoc
               Create the javadoc documentation in target/javadoc.
           checkstyle
@@ -56,7 +58,6 @@
     <property name="src.tests" location="src/test"/>
     <property name="classes" location="target/classes"/>
     <property name="javadoc" location="target/javadoc"/>
-    <property name="javadocxml" location="doc/javadocxml"/>
     <property name="dbdoclet" location="doc/javadocdb"/>
     <property name="tmp" location="tmp"/>
     <property name="tmp.tests" location="tmp/tests"/>
@@ -69,6 +70,11 @@
         <fileset dir="lib">
             <include name="*.jar"/>
         </fileset>
+    </path>
+    <path id="develop.class.path">
+	    <fileset dir="develop/lib">
+		    <include name="*.jar"/>
+	    </fileset>
     </path>
     <path id="test.class.path">
         <fileset dir="lib">
@@ -312,29 +318,10 @@
              nodeprecatedlist="false"
              nodeprecated="false">
             <classpath refid="main.class.path"/>
-            <packageset dir="${src}" defaultexcludes="yes" excludes="de/dante/tools/**/*" />
+            <packageset dir="${src}" defaultexcludes="yes" />
         </javadoc>
         <copy todir="${javadoc}">
             <fileset dir="${src}">
-                <include name="**/*.gif"/>
-                <include name="**/*.png"/>
-            </fileset>
-        </copy>
-    </target>
-
-    <target name="javadocxml"
-            description="Create javadoc XML pages">
-        <mkdir dir="${javadocxml}" />
-        <property name="doc.params" value="-outdir ${javadocxml}"/>
-        <javadoc
-                doclet="de.dante.tools.doclet.XMLDoclet1"
-                additionalparam="${doc.params}">
-            <classpath refid="main.class.path"/>
-            <classpath refid="test.class.path"/>
-            <packageset dir="${src}" defaultexcludes="yes"/>
-        </javadoc>
-        <copy todir="${javadocxml}">
-            <fileset dir="src">
                 <include name="**/*.gif"/>
                 <include name="**/*.png"/>
             </fileset>
@@ -414,7 +401,7 @@
                 </java>
     </target> -->
 
-    <target name="extex32"
+<!--    <target name="extex32"
             depends="compile"
             description="Create a extex32.xml config file">
         <java fork="true" classname="de.dante.tools.plugin.CreateConfig">
@@ -428,12 +415,15 @@
             </fileset>
         </copy>
         </target>
-
+-->
+	
 	<target name="onejar"
             depends="jar"
             description="Create one extex-jar-archive which include all other needed classes from all libs">
 	<mkdir dir="${target.lib}"/>
         <java fork="true" classname="de.uni_hamburg.eggink.autojar.Autojar">
+             <classpath refid="main.class.path"/>
+	     <classpath refid="develop.class.path"/>
              <arg value="-o"/>
 	     <arg value="${target.lib}/extexone.jar"/>
              <arg value="-b"/>

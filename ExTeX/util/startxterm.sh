@@ -5,7 +5,7 @@ export PATH=$EXTEXPATH/util:$PATH
 cd $EXTEXPATH
 
 # CLASSPATH erweitern
-export CLASSPATH=.:/usr/lib/java/lib/tools.jar:$EXTEXPATH/target/classes/:src/de/dante/extex/config/
+export CLASSPATH=.:$EXTEXPATH/target/classes/:src/de/dante/extex/config/
 
 # jar-Dateien
 for i in $EXTEXPATH/lib/*.jar ; do
@@ -13,7 +13,7 @@ for i in $EXTEXPATH/lib/*.jar ; do
 done
 
 # jar-Dateien
-for i in $EXTEXPATH/lib.develop/*.jar ; do
+for i in $EXTEXPATH/develop/lib/*.jar ; do
         export CLASSPATH=$CLASSPATH:$i
 done
 

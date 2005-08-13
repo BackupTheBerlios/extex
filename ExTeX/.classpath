@@ -8,7 +8,6 @@
 	<classpathentry kind="lib" path="develop/lib/junit.jar"/>
 	<classpathentry kind="lib" path="lib/js.jar"/>
 	<classpathentry sourcepath="develop/src/icu4jsrc_3_2.jar" kind="lib" path="lib/icu4j_2_8.jar"/>
-	<classpathentry kind="var" path="JAVA_HOME/lib/tools.jar"/>
 	<classpathentry kind="lib" path="lib/avalon-framework-4.1.4.jar"/>
 	<classpathentry kind="lib" path="lib/jel.jar"/>
 	<classpathentry kind="lib" path="develop/lib/jaxen-full.jar"/>
