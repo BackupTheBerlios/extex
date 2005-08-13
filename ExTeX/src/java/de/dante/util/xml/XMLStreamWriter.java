@@ -29,10 +29,10 @@ import java.util.LinkedList;
 /**
  * A writer, which write xml-elements, attributes and so on
  * to an output stream.
- * <p> only xml version 1.0</p>
+ * <p>only xml version 1.0</p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 
 public class XMLStreamWriter {
@@ -48,7 +48,7 @@ public class XMLStreamWriter {
     private String encoding;
 
     /**
-     * the default namespace
+     * the default name space
      */
     private String defaultns = null;
 
@@ -58,7 +58,7 @@ public class XMLStreamWriter {
     private boolean beauty = false;
 
     /**
-     * indetstring
+     * Indent string
      */
     private String indent = "   ";
 
@@ -68,7 +68,7 @@ public class XMLStreamWriter {
     private boolean nlset = false;
 
     /**
-     * The buffersize
+     * The buffer size
      */
     private static final int BUFFERSIZE = 0xffff;
 
@@ -91,7 +91,7 @@ public class XMLStreamWriter {
     // --------------------------------------------------
 
     /**
-     * Docuement open?
+     * Document open?
      */
     private boolean docopen = false;
 
@@ -157,8 +157,8 @@ public class XMLStreamWriter {
     }
 
     /**
-     * Write a cdata string.
-     * @param text  The cdata as array.
+     * Write a CDATA string.
+     * @param array  The CDATA as array.
      * @throws IOException if an error occurs.
      */
     public void writeCDATA(final byte[] array) throws IOException {
@@ -188,6 +188,20 @@ public class XMLStreamWriter {
     }
 
     /**
+     * Print a indent in a string buffer, if beauty is set.
+     * @param buf   The string buffer.
+     * @throws IOException if an error occurs.
+     */
+    private void printIndent(final StringBuffer buf) throws IOException {
+
+        if (beauty) {
+            for (int i = 0, cnt = stack.size(); i < cnt; i++) {
+                buf.append(indent);
+            }
+        }
+    }
+
+    /**
      * Print a indent, if beauty is set.
      * @param cnt   the count of the depth
      * @throws IOException if an error occurs.
@@ -202,7 +216,7 @@ public class XMLStreamWriter {
     }
 
     /**
-     * Element are opend?
+     * Element are opened?
      */
     private boolean elementopen = false;
 
@@ -314,6 +328,54 @@ public class XMLStreamWriter {
     }
 
     /**
+     * Write a attribute to the element.
+     * @param name      The name of the attribute.
+     * @param value     The value of the attribute.
+     * @throws IOException if an error occurs.
+     */
+    public void writeAttribute(final String name, final long value)
+            throws IOException {
+
+        writeAttribute(name, String.valueOf(value));
+    }
+
+    /**
+     * Write a attribute to the element.
+     * @param name      The name of the attribute.
+     * @param value     The value of the attribute.
+     * @throws IOException if an error occurs.
+     */
+    public void writeAttribute(final String name, final double value)
+            throws IOException {
+
+        writeAttribute(name, String.valueOf(value));
+    }
+
+    /**
+     * Write a attribute to the element.
+     * @param name      The name of the attribute.
+     * @param value     The value of the attribute.
+     * @throws IOException if an error occurs.
+     */
+    public void writeAttribute(final String name, final boolean value)
+            throws IOException {
+
+        writeAttribute(name, String.valueOf(value));
+    }
+
+    /**
+     * Write a attribute to the element.
+     * @param name      The name of the attribute.
+     * @param value     The value of the attribute.
+     * @throws IOException if an error occurs.
+     */
+    public void writeAttribute(final String name, final Object value)
+            throws IOException {
+
+        writeAttribute(name, value.toString());
+    }
+
+    /**
      * Write characters to the output.
      * @param text  The text
      * @throws IOException  if an error occurs.
@@ -327,6 +389,77 @@ public class XMLStreamWriter {
         }
         out.write(createEntity(text));
         nlset = false;
+    }
+
+    /**
+     * The length of one entry
+     */
+    private static final int ENTRY_LENGTH = 7;
+
+    /**
+     * Convert a int-value to a hex string with x digits.
+     * @param value     The int value.
+     * @param digits    The digits.
+     * @return Returns a hex string.
+     */
+    private String toHexString(final int value, final int digits) {
+
+        StringBuffer buf = new StringBuffer();
+        for (int i = 0; i < digits; i++) {
+            buf.append("0");
+        }
+        buf.append(Integer.toHexString(value));
+        return buf.substring(buf.length() - digits);
+    }
+
+    /**
+     * Write a byte array with hex values to the output.
+     *
+     * @param bytes The byte array.
+     * @throws IOException if an error occurs.
+     */
+    public void writeByteArray(final byte[] bytes) throws IOException {
+
+        StringBuffer buf = new StringBuffer(bytes.length * ENTRY_LENGTH);
+        for (int i = 0; i < bytes.length; i++) {
+            buf.append("0x").append(toHexString(bytes[i], 2)).append(" ");
+            if (beauty && i % ENTRY_LINES == ENTRY_LINES - 1) {
+                buf.append("\n");
+                printIndent(buf);
+            }
+        }
+        writeCharacters(buf.toString());
+    }
+
+    /**
+     * Entries each line
+     */
+    private static final int ENTRY_LINES = 8;
+
+    /**
+     * The length of a short value
+     */
+    private static final int SHORT_LENGTH = 4;
+
+    /**
+     * Write a short array with hex values to the output.
+     *
+     * @param shorts The short array.
+     * @throws IOException if an error occurs.
+     */
+    public void writeShortArray(final short[] shorts) throws IOException {
+
+        StringBuffer buf = new StringBuffer(shorts.length * ENTRY_LENGTH);
+
+        for (int i = 0; i < shorts.length; i++) {
+            buf.append("0x").append(toHexString(shorts[i], SHORT_LENGTH))
+                    .append(" ");
+            if (beauty && i % ENTRY_LINES == ENTRY_LINES - 1) {
+                buf.append("\n");
+                printIndent(buf);
+            }
+        }
+        writeCharacters(buf.toString());
     }
 
     /**

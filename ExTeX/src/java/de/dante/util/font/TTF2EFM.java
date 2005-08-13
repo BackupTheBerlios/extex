@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group
+ * Copyright (C) 2004-2005 The ExTeX Group
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,15 +19,10 @@
 
 package de.dante.util.font;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.InputStream;
 
-import org.jdom.Document;
-import org.jdom.output.XMLOutputter;
-
-import de.dante.extex.font.type.ttf.TTFReader;
+import de.dante.extex.unicodeFont.format.xtf.XtfReader;
 import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.ConfigurationFactory;
 import de.dante.util.resource.ResourceFinder;
@@ -37,7 +32,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * Convert a TTF-file to a EFM-file
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public final class TTF2EFM {
 
@@ -92,14 +87,17 @@ public final class TTF2EFM {
 
         File efmfile = new File(args[1]);
 
-        TTFReader ttfr = new TTFReader(ttfin, fontname);
+        XtfReader ttfr = new XtfReader(ttfin);
+
+        // MGN incomplete
+        System.err.println("incomplete");
 
         // write to efm-file
-        XMLOutputter xmlout = new XMLOutputter("   ", true);
-        BufferedOutputStream out = new BufferedOutputStream(
-                new FileOutputStream(efmfile), FILEBUFFER);
-        Document doc = new Document(ttfr.getFontMetric());
-        xmlout.output(doc, out);
-        out.close();
+        //        XMLOutputter xmlout = new XMLOutputter("   ", true);
+        //        BufferedOutputStream out = new BufferedOutputStream(
+        //                new FileOutputStream(efmfile), FILEBUFFER);
+        //        Document doc = new Document(ttfr.getFontMetric());
+        //        xmlout.output(doc, out);
+        //        out.close();
     }
 }
