@@ -61,7 +61,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public class Write extends AbstractCode
         implements
@@ -69,6 +69,11 @@ public class Write extends AbstractCode
             LogEnabled,
             Configurable,
             InitializableCode {
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * The constant <tt>LOG_FILE</tt> contains the key for the log file.

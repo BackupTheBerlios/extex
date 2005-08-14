@@ -43,7 +43,7 @@ import de.dante.extex.typesetter.Typesetter;
  *        &lang;control sequence&rang;} {@linkplain
  *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
  *        &lang;equals&rang;} {@linkplain
- *        de.dante.extex.interpreter.TokenSource#scanNumber()
+ *        de.dante.extex.interpreter.TokenSource#scanNumber(Context)
  *        &lang;8-bit&nbsp;number&rang;} </pre>
  * </p>
  * <p>
@@ -69,9 +69,14 @@ import de.dante.extex.typesetter.Typesetter;
  * "#<i>name</i>" or "dimen#<i>name</i>".
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class Dimendef extends AbstractDimen {
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a new object.

@@ -62,7 +62,7 @@ import de.dante.extex.typesetter.Typesetter;
  * @see de.dante.extex.interpreter.type.Theable
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Mag extends AbstractCount
         implements
@@ -72,6 +72,11 @@ public class Mag extends AbstractCount
             Divideable,
             Theable,
             CountConvertible {
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a new object.

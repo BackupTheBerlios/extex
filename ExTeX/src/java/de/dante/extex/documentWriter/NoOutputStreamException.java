@@ -16,23 +16,30 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.documentWriter;
 
 import de.dante.util.exception.GeneralException;
-
 
 /**
  * A documentwriter throws is exception when no outputstream was set before calling shipout.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class NoOutputStreamException extends GeneralException {
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    private static final long serialVersionUID = 1L;
+
     /**
      * Creates a new <code>NoOutputStreamException</code> instance.
      *
      */
     public NoOutputStreamException() {
+
         super();
     }
 }

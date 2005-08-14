@@ -25,9 +25,14 @@ package de.dante.util.framework.configuration.exception;
  * some other kind of configuration information is missing.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ConfigurationMissingException extends ConfigurationException {
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * The field <tt>item</tt> contains the name of the missing item.

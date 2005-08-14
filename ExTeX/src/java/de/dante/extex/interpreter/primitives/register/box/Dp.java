@@ -57,7 +57,7 @@ import de.dante.util.exception.GeneralException;
  *  <pre class="syntax">
  *    &lang;dp&rang;
  *      &rarr; &lang;optional prefix&rang; <tt>\dp</tt> {@linkplain
- *        de.dante.extex.interpreter.TokenSource#scanNumber()
+ *        de.dante.extex.interpreter.TokenSource#scanNumber(Context)
  *        &lang;8-bit&nbsp;number&rang;} {@linkplain
  *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
  *        &lang;equals&rang;} {@linkplain
@@ -86,7 +86,7 @@ import de.dante.util.exception.GeneralException;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    <tt>\dp</tt> {@linkplain
- *      de.dante.extex.interpreter.TokenSource#scanNumber()
+ *      de.dante.extex.interpreter.TokenSource#scanNumber(Context)
  *      &lang;8-bit&nbsp;number&rang;} </pre>
  * </p>
  * <p>
@@ -108,7 +108,7 @@ import de.dante.util.exception.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public class Dp extends Setbox
         implements
@@ -117,6 +117,11 @@ public class Dp extends Setbox
             Theable,
             CountConvertible,
             DimenConvertible {
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a new object.

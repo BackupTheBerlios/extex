@@ -49,10 +49,15 @@ import de.dante.extex.interpreter.type.font.FontConvertible;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class NullfontPrimitive extends AbstractCode
         implements FontConvertible {
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * The field <tt>nullFont</tt> contains the font encapsulated in this

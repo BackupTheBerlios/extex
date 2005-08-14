@@ -26,9 +26,14 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * needed.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class MissingResourceFinderException extends ConfigurationException {
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * The field <tt>message</tt> contains the message of this exception.

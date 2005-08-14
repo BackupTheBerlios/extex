@@ -36,9 +36,14 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * The actual length is a multiple of math units (mu).
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class Muskip implements Serializable {
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * Scan a math unit.

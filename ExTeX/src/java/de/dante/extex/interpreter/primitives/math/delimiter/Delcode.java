@@ -76,11 +76,11 @@ import de.dante.util.UnicodeChar;
  *  <pre class="syntax">
  *    &lang;delcode&rang;
  *      &rarr; &lang;prefix&rang; <tt>\delcode</tt> {@linkplain
- *        de.dante.extex.interpreter.TokenSource#scanNumber()
+ *        de.dante.extex.interpreter.TokenSource#scanNumber(Context)
  *        &lang;8-bit&nbsp;number&rang;} {@linkplain
  *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
  *        &lang;equals&rang;} {@linkplain
- *        de.dante.extex.interpreter.TokenSource#scanNumber()
+ *        de.dante.extex.interpreter.TokenSource#scanNumber(Context)
  *        &lang;8-bit&nbsp;number&rang;}
  *
  *    &lang;prefix&rang;
@@ -111,7 +111,7 @@ import de.dante.util.UnicodeChar;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Delcode extends AbstractAssignment
         implements
@@ -120,6 +120,11 @@ public class Delcode extends AbstractAssignment
             Divideable,
             Multiplyable,
             Theable {
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a new object.

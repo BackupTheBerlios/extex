@@ -30,9 +30,14 @@ import de.dante.extex.interpreter.type.tokens.Tokens;
  * It outputs the items to the log file only.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class LogFile extends OutFile {
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * The field <tt>logger</tt> contains the encapsulated logger.

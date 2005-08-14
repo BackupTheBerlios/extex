@@ -24,9 +24,14 @@ package de.dante.extex.main.exception;
  * commandline option.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class MainUnknownOptionException extends MainException {
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * The constant <tt>ERROR_CODE</tt> contains the return code.

@@ -35,7 +35,7 @@ import java.io.Serializable;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public abstract class Catcode implements Serializable {
 
@@ -43,6 +43,11 @@ public abstract class Catcode implements Serializable {
      * This inner class represents an active catcode.
      */
     private static final class CatcodeActive extends Catcode {
+
+        /**
+         * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+         */
+        private static final long serialVersionUID = 1L;
 
         /**
          * Creates a new object.
@@ -91,6 +96,11 @@ public abstract class Catcode implements Serializable {
      * This inner class represents a comment catcode.
      */
     private static final class CatcodeComment extends Catcode {
+
+        /**
+         * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+         */
+        private static final long serialVersionUID = 1L;
 
         /**
          * Creates a new object.
@@ -142,6 +152,11 @@ public abstract class Catcode implements Serializable {
     private static final class CatcodeCr extends Catcode {
 
         /**
+         * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+         */
+        private static final long serialVersionUID = 1L;
+
+        /**
          * Creates a new object.
          */
         private CatcodeCr() {
@@ -188,6 +203,11 @@ public abstract class Catcode implements Serializable {
      * This inner class represents an escape catcode.
      */
     private static final class CatcodeEscape extends Catcode {
+
+        /**
+         * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+         */
+        private static final long serialVersionUID = 1L;
 
         /**
          * Creates a new object.
@@ -238,6 +258,11 @@ public abstract class Catcode implements Serializable {
     private static final class CatcodeIgnore extends Catcode {
 
         /**
+         * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+         */
+        private static final long serialVersionUID = 1L;
+
+        /**
          * Creates a new object.
          */
         private CatcodeIgnore() {
@@ -286,6 +311,11 @@ public abstract class Catcode implements Serializable {
     private static final class CatcodeInvalid extends Catcode {
 
         /**
+         * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+         */
+        private static final long serialVersionUID = 1L;
+
+        /**
          * Creates a new object.
          */
         private CatcodeInvalid() {
@@ -332,6 +362,11 @@ public abstract class Catcode implements Serializable {
      * This inner class represents a left brace character.
      */
     private static final class CatcodeLeftBrace extends Catcode {
+
+        /**
+         * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+         */
+        private static final long serialVersionUID = 1L;
 
         /**
          * Creates a new object.
@@ -383,6 +418,11 @@ public abstract class Catcode implements Serializable {
     private static final class CatcodeLetter extends Catcode {
 
         /**
+         * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+         */
+        private static final long serialVersionUID = 1L;
+
+        /**
          * Creates a new object.
          */
         private CatcodeLetter() {
@@ -429,6 +469,11 @@ public abstract class Catcode implements Serializable {
      * This inner class represents a macro parameter character.
      */
     private static final class CatcodeMacroParam extends Catcode {
+
+        /**
+         * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+         */
+        private static final long serialVersionUID = 1L;
 
         /**
          * Creates a new object.
@@ -480,6 +525,11 @@ public abstract class Catcode implements Serializable {
     private static final class CatcodeMathShift extends Catcode {
 
         /**
+         * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+         */
+        private static final long serialVersionUID = 1L;
+
+        /**
          * Creates a new object.
          */
         private CatcodeMathShift() {
@@ -529,6 +579,11 @@ public abstract class Catcode implements Serializable {
     private static final class CatcodeOther extends Catcode {
 
         /**
+         * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+         */
+        private static final long serialVersionUID = 1L;
+
+        /**
          * Creates a new object.
          */
         private CatcodeOther() {
@@ -575,6 +630,11 @@ public abstract class Catcode implements Serializable {
      * This inner class represents a right brace character catcode.
      */
     private static final class CatcodeRigthBrace extends Catcode {
+
+        /**
+         * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+         */
+        private static final long serialVersionUID = 1L;
 
         /**
          * Creates a new object.
@@ -626,6 +686,11 @@ public abstract class Catcode implements Serializable {
     private static final class CatcodeSpace extends Catcode {
 
         /**
+         * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+         */
+        private static final long serialVersionUID = 1L;
+
+        /**
          * Creates a new object.
          */
         private CatcodeSpace() {
@@ -672,6 +737,11 @@ public abstract class Catcode implements Serializable {
      * This inner class represents a sub mark character catcode.
      */
     private static final class CatcodeSubMark extends Catcode {
+
+        /**
+         * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+         */
+        private static final long serialVersionUID = 1L;
 
         /**
          * Creates a new object.
@@ -722,6 +792,11 @@ public abstract class Catcode implements Serializable {
     private static final class CatcodeSupMark extends Catcode {
 
         /**
+         * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+         */
+        private static final long serialVersionUID = 1L;
+
+        /**
          * Creates a new object.
          */
         private CatcodeSupMark() {
@@ -768,6 +843,11 @@ public abstract class Catcode implements Serializable {
      * This inner class represents a tab mark character catcode.
      */
     private static final class CatcodeTabMark extends Catcode {
+
+        /**
+         * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+         */
+        private static final long serialVersionUID = 1L;
 
         /**
          * Creates a new object.

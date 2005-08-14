@@ -48,9 +48,14 @@ import de.dante.extex.scanner.type.token.TokenVisitor;
  * This class holds an output file onto which tokens can be wrtitten.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class OutFile implements Serializable {
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * This anonymous inner class is used with the visitor pattern to map the

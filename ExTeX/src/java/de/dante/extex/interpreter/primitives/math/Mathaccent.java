@@ -53,9 +53,14 @@ import de.dante.extex.typesetter.type.noad.Noad;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Mathaccent extends AbstractMathCode {
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * The field <tt>CHARCODE_MAX</tt> contains the maximum of the character

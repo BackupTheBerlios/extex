@@ -31,9 +31,14 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * large, and a small math glyph.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class MathDelimiter implements Serializable {
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * The field <tt>largeChar</tt> contains the code of the large character.

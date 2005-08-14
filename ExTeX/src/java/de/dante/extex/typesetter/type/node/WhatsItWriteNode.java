@@ -30,9 +30,14 @@ import de.dante.util.exception.GeneralException;
  * This WhatsIt node writes some expanded tokens to an out file on shipping.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class WhatsItWriteNode extends WhatsItNode {
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * The field <tt>key</tt> contains the key of the outfile to write to.

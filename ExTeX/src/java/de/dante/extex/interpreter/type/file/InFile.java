@@ -35,9 +35,14 @@ import de.dante.extex.scanner.type.token.TokenFactory;
  * This class holds an input file from which tokens can be read.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class InFile implements Serializable {
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * The field <tt>file</tt> contains name of the underlying file.

@@ -25,9 +25,14 @@ import de.dante.extex.interpreter.type.tokens.Tokens;
  * This class provides a container for the pattern of a macro.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class MacroPattern extends Tokens {
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * The constant <tt>EMPTY</tt> contains the empty macro pattern. This can

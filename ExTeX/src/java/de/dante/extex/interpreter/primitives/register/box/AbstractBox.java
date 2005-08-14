@@ -32,7 +32,7 @@ import de.dante.extex.interpreter.type.AbstractCode;
  * It provides a method to get the key of a box register.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public abstract class AbstractBox extends AbstractCode implements Serializable {
 
@@ -52,7 +52,7 @@ public abstract class AbstractBox extends AbstractCode implements Serializable {
      *       &rarr; {@linkplain
      *        de.dante.extex.interpreter.TokenSource#scanTokens(Context)
      *        &lang;tokens&rang;}
-     *        | {@linkplain de.dante.extex.interpreter.TokenSource#scanNumber()
+     *        | {@linkplain de.dante.extex.interpreter.TokenSource#scanNumber(Context)
      *        &lang;number&rang;}  </pre>
      *
      * TODO gene: doc incomplete

@@ -23,9 +23,14 @@ package de.dante.extex.documentWriter.exception;
  * This exception is used to signal that an output stream could not be opened.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class OutputStreamOpenException extends DocumentWriterException {
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a new object.

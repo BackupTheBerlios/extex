@@ -30,9 +30,14 @@ import de.dante.extex.interpreter.type.dimen.Dimen;
  * @see "<logo>TeX</logo> &ndash; The Program [155]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class AccentKernNode extends AbstractKernNode {
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a new object.

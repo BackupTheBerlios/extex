@@ -27,7 +27,7 @@ import java.io.Serializable;
  * In fact it is a finite enumeration which exposes the values as constants.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class MathClass implements Serializable {
 
@@ -35,9 +35,14 @@ public abstract class MathClass implements Serializable {
      * This is a inner class for a binary operator.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static final class BinaryMathClass extends MathClass {
+
+        /**
+         * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+         */
+        private static final long serialVersionUID = 1L;
 
         /**
          * Return the singleton constant object after the serialized instance
@@ -77,9 +82,14 @@ public abstract class MathClass implements Serializable {
      * This is a inner class for closing.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static final class ClosingMathClass extends MathClass {
+
+        /**
+         * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+         */
+        private static final long serialVersionUID = 1L;
 
         /**
          * Return the singleton constant object after the serialized instance
@@ -119,9 +129,14 @@ public abstract class MathClass implements Serializable {
      * This is a inner class for large operators.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static final class LargeMathClass extends MathClass {
+
+        /**
+         * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+         */
+        private static final long serialVersionUID = 1L;
 
         /**
          * Return the singleton constant object after the serialized instance
@@ -161,9 +176,14 @@ public abstract class MathClass implements Serializable {
      * This is a inner class for opening.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static final class OpeningMathClass extends MathClass {
+
+        /**
+         * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+         */
+        private static final long serialVersionUID = 1L;
 
         /**
          * Return the singleton constant object after the serialized instance
@@ -203,9 +223,14 @@ public abstract class MathClass implements Serializable {
      * This is a inner class for ordinary characters.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static final class OrdinaryMathClass extends MathClass {
+
+        /**
+         * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+         */
+        private static final long serialVersionUID = 1L;
 
         /**
          * Return the singleton constant object after the serialized instance
@@ -245,9 +270,14 @@ public abstract class MathClass implements Serializable {
      * This is a inner class for punctation marks.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static final class PunctationMathClass extends MathClass {
+
+        /**
+         * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+         */
+        private static final long serialVersionUID = 1L;
 
         /**
          * Return the singleton constant object after the serialized instance
@@ -287,9 +317,14 @@ public abstract class MathClass implements Serializable {
      * This is a inner class for relation symbols.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static final class RelationMathClass extends MathClass {
+
+        /**
+         * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+         */
+        private static final long serialVersionUID = 1L;
 
         /**
          * Return the singleton constant object after the serialized instance
@@ -329,9 +364,14 @@ public abstract class MathClass implements Serializable {
      * This is a inner class for variable width characters.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static final class VariableMathClass extends MathClass {
+
+        /**
+         * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+         */
+        private static final long serialVersionUID = 1L;
 
         /**
          * Return the singleton constant object after the serialized instance

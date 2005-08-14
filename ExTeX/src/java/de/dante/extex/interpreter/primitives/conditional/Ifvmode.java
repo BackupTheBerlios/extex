@@ -16,6 +16,7 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.conditional;
 
 import de.dante.extex.interpreter.TokenSource;
@@ -49,15 +50,22 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Ifvmode extends AbstractIf {
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    private static final long serialVersionUID = 1L;
+
     /**
      * Creates a new object.
      *
      * @param name the name for debugging
      */
     public Ifvmode(final String name) {
+
         super(name);
     }
 
@@ -68,7 +76,8 @@ public class Ifvmode extends AbstractIf {
      *      de.dante.extex.typesetter.Typesetter)
      */
     protected boolean conditional(final Context context,
-        final TokenSource source, final Typesetter typesetter) {
+            final TokenSource source, final Typesetter typesetter) {
+
         Mode mode = typesetter.getMode();
         return (mode == Mode.VERTICAL || mode == Mode.INNER_VERTICAL);
     }

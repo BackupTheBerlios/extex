@@ -46,7 +46,7 @@ import de.dante.extex.typesetter.Typesetter;
  *      &rarr; <tt>\badness</tt> {@linkplain
  *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
  *        &lang;equals&rang;} {@linkplain
- *        de.dante.extex.interpreter.TokenSource#scanNumber()
+ *        de.dante.extex.interpreter.TokenSource#scanNumber(Context)
  *        &lang;number&rang;} </pre>
  * </p>
  * <h4>Examples</h4>
@@ -58,9 +58,14 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Badness extends AbstractCode implements CountConvertible, Theable {
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a new object.

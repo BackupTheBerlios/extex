@@ -26,9 +26,14 @@ import de.dante.util.UnicodeChar;
  * This is thrown when an invalid character has been encountered.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class InvalidCharacterScannerException extends ScannerException {
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * The field <tt>invalid</tt> contains the invalid character.
@@ -44,6 +49,17 @@ public class InvalidCharacterScannerException extends ScannerException {
 
         super();
         this.invalid = invalid;
+    }
+
+    
+    /**
+     * Getter for the invalid character.
+     *
+     * @return the invalid character
+     */
+    public UnicodeChar getInvalid() {
+    
+        return this.invalid;
     }
 
 }

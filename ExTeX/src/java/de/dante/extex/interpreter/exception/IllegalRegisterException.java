@@ -27,10 +27,15 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * is not in the legal range.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class IllegalRegisterException extends InterpreterException {
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * Create a new object.

@@ -28,9 +28,14 @@ import de.dante.util.exception.GeneralException;
  * This WhatsIt node opens an out file on shipping.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class WhatsItOpenNode extends WhatsItNode {
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * The field <tt>file</tt> contains the output file.

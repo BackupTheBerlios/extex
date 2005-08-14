@@ -46,7 +46,7 @@ import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
  *  <pre class="syntax">
  *    &lang;parshapeindent&rang;
  *        &rarr; <tt>\parshapeindent</tt> {@linkplain
- *        de.dante.extex.interpreter.TokenSource#scanNumber()
+ *        de.dante.extex.interpreter.TokenSource#scanNumber(Context)
  *        &lang;8-bit&nbsp;number&rang;} </pre>
  *
  * <h4>Examples</h4>
@@ -58,13 +58,18 @@ import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Parshapeindent extends AbstractCode
         implements
             CountConvertible,
             DimenConvertible,
             Theable {
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a new object.

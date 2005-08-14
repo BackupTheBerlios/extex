@@ -103,15 +103,20 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Numexpr extends AbstractCode implements CountConvertible, Theable {
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * This interface describes a binary operation on two longs.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.4 $
+     * @version $Revision: 1.5 $
      */
     private interface BinOp {
 
@@ -130,7 +135,7 @@ public class Numexpr extends AbstractCode implements CountConvertible, Theable {
      * This operation ignores the first argument and returns the second one.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.4 $
+     * @version $Revision: 1.5 $
      */
     private static final class Second implements BinOp {
 
@@ -147,7 +152,7 @@ public class Numexpr extends AbstractCode implements CountConvertible, Theable {
      * This operation adds the arguments.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.4 $
+     * @version $Revision: 1.5 $
      */
     private static final class Plus implements BinOp {
 
@@ -164,7 +169,7 @@ public class Numexpr extends AbstractCode implements CountConvertible, Theable {
      * This operation subtracts the second argument from the first one.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.4 $
+     * @version $Revision: 1.5 $
      */
     private static final class Minus implements BinOp {
 

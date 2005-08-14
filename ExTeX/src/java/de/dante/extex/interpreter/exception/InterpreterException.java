@@ -26,9 +26,14 @@ import de.dante.util.framework.i18n.Localizer;
  * This is the base class for all exceptions of the interpreter.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class InterpreterException extends GeneralException {
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * The field <tt>localizer</tt> contains the localizer.

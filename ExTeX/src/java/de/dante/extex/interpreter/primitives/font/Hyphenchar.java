@@ -49,7 +49,7 @@ import de.dante.util.exception.GeneralException;
  *    <tt>\hyphenchar</tt> &lang;font&rang; {@linkplain
  *    de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
  *    &lang;equals&rang;} {@linkplain
- *    de.dante.extex.interpreter.TokenSource#scanNumber()
+ *    de.dante.extex.interpreter.TokenSource#scanNumber(Context)
  *    &lang;8-bit&nbsp;number&rang;} </pre>
  * </p>
  * <p>
@@ -68,13 +68,18 @@ import de.dante.util.exception.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class Hyphenchar extends AbstractAssignment
         implements
             CountConvertible,
             ExpandableCode,
             Theable {
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a new object.
