@@ -31,7 +31,7 @@ reale Dokumente bearbeiten zu können. Unter diesen Dateien sind Schriften und
 Makro-Dateien. Diese Dateien werden normalerweise einer TeX-Distribution
 (wie TeXlive) entnommen. Um dies zu bewerkstelligen, muss die Umgebungsvariable
 TEXINPUTS auf eines oder mehrere Installationsverzeichnisse verweisen. Diese
-Information wird dann während der Installation in die EInstellungsdatei .extex
+Information wird dann während der Installation in die Einstellungsdatei .extex
 im Home-Verzeichnis des Nutzers übertragen. Bitte überprüfen und korrigieren Sie
 die Einstellung von extex.texinputs in dieser Datei."/>
 
