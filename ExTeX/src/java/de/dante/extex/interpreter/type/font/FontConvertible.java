@@ -36,13 +36,13 @@ import de.dante.extex.interpreter.exception.InterpreterException;
  *    &lang;font&rang;
  *        &rarr;  &lang;loaded font&rang;
  *         |   <tt>\textfont</tt> {@linkplain
- *             de.dante.extex.interpreter.TokenSource#scanNumber()
+ *             de.dante.extex.interpreter.TokenSource#scanNumber(Context)
  *             &lang;8-bit&nbsp;number&rang;}
  *         |   <tt>\scriptfont</tt> {@linkplain
- *             de.dante.extex.interpreter.TokenSource#scanNumber()
+ *             de.dante.extex.interpreter.TokenSource#scanNumber(Context)
  *             &lang;8-bit&nbsp;number&rang;}
  *         |   <tt>\scriptscriptfont</tt> {@linkplain
- *             de.dante.extex.interpreter.TokenSource#scanNumber()
+ *             de.dante.extex.interpreter.TokenSource#scanNumber(Context)
  *             &lang;8-bit&nbsp;number&rang;}
  *         |   <tt>\font</tt>
  *  </pre>
@@ -51,7 +51,7 @@ import de.dante.extex.interpreter.exception.InterpreterException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public interface FontConvertible {
 

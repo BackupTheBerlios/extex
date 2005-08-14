@@ -30,7 +30,7 @@ import java.util.ResourceBundle;
  * This factory provides means to get a localizer.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public final class LocalizerFactory {
 
@@ -39,9 +39,14 @@ public final class LocalizerFactory {
      * delived by this factory.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.7 $
+     * @version $Revision: 1.8 $
      */
     private static class BasicLocalizer implements Localizer {
+
+        /**
+         * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+         */
+        private static final long serialVersionUID = 1L;
 
         /**
          * The field <tt>bundle</tt> contains the resource bundle for this

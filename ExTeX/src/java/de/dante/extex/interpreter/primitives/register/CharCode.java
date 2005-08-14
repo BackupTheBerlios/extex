@@ -43,13 +43,18 @@ import de.dante.util.UnicodeChar;
  * expansion.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class CharCode extends AbstractCode
         implements
             ExpandableCode,
             CountConvertible,
             Theable {
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * The field <tt>character</tt> contains the encapsulated Unicode character.

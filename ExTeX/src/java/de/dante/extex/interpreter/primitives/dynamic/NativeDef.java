@@ -80,7 +80,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class NativeDef extends AbstractCode
         implements
@@ -88,12 +88,17 @@ public class NativeDef extends AbstractCode
             LogEnabled {
 
     /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    private static final long serialVersionUID = 1L;
+
+    /**
      * This inner class provides access to the functionality of an abstract
      * factory. It is here to overcome the deficiency of a missing multiple
      * inheritance in Java.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.4 $
+     * @version $Revision: 1.5 $
      */
     protected class Factory extends AbstractFactory {
 

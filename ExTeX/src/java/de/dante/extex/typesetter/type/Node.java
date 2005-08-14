@@ -19,6 +19,8 @@
 
 package de.dante.extex.typesetter.type;
 
+import java.io.Serializable;
+
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
@@ -41,9 +43,9 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
-public interface Node extends Knot {
+public interface Node extends Knot, Serializable {
 
     /**
      * Add the flexible height of the current node to the given glue.

@@ -51,16 +51,16 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *   &lang;multiplyable&rang;
  *     &rarr; &lang;integer variable&rang; &lang;optional <tt>by</tt>&rang; {@linkplain
- *      de.dante.extex.interpreter.TokenSource#scanNumber()
+ *      de.dante.extex.interpreter.TokenSource#scanNumber(Context)
  *      &lang;8-bit&nbsp;number&rang;}
  *      |  &lang;dimen variable&rang; &lang;optional <tt>by</tt>&rang; {@linkplain
- *      de.dante.extex.interpreter.TokenSource#scanNumber()
+ *      de.dante.extex.interpreter.TokenSource#scanNumber(Context)
  *      &lang;8-bit&nbsp;number&rang;}
  *      |  &lang;glue variable&rang; &lang;optional <tt>by</tt>&rang; {@linkplain
- *      de.dante.extex.interpreter.TokenSource#scanNumber()
+ *      de.dante.extex.interpreter.TokenSource#scanNumber(Context)
  *      &lang;8-bit&nbsp;number&rang;}
  *      |  &lang;muglue variable&rang; &lang;optional <tt>by</tt>&rang; {@linkplain
- *      de.dante.extex.interpreter.TokenSource#scanNumber()
+ *      de.dante.extex.interpreter.TokenSource#scanNumber(Context)
  *      &lang;8-bit&nbsp;number&rang;}
  *
  *   &lang;optional <tt>by</tt>&rang;
@@ -80,9 +80,14 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * @see de.dante.extex.interpreter.type.arithmetic.Multiplyable
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class Multiply extends AbstractAssignment {
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a new object.

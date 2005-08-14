@@ -20,7 +20,6 @@
 package de.dante.extex.interpreter.context;
 
 import de.dante.extex.color.model.ColorFactory;
-import de.dante.extex.color.model.GrayscaleColor;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.language.Language;
 
@@ -30,9 +29,14 @@ import de.dante.extex.language.Language;
  * appearance of glyphs or other nodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class TypesettingContextImpl implements ModifiableTypesettingContext {
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * The field <tt>color</tt> contains the color to use.

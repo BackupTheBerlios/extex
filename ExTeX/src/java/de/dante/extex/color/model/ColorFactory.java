@@ -19,8 +19,6 @@
 
 package de.dante.extex.color.model;
 
-import java.util.WeakHashMap;
-
 import de.dante.extex.interpreter.context.Color;
 
 /**
@@ -29,7 +27,7 @@ import de.dante.extex.interpreter.context.Color;
  * methods are implemented as static methods.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public final class ColorFactory {
 

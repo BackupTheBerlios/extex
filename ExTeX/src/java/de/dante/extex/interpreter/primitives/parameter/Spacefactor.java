@@ -47,14 +47,19 @@ import de.dante.util.exception.GeneralException;
  * <p>
  *  Examples:
  *  <pre class="TeXSample">
- *    \spacefactor ...  </pre>
+ *    \spacefactor 1200  </pre>
  * </p>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class Spacefactor extends AbstractCode {
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a new object.
@@ -67,7 +72,8 @@ public class Spacefactor extends AbstractCode {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Code#execute(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.type.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
@@ -77,10 +83,10 @@ public class Spacefactor extends AbstractCode {
             throws InterpreterException {
 
         source.getOptionalEquals(context);
-        long f = source.scanInteger(context, typesetter);
+        long factor = source.scanInteger(context, typesetter);
 
         try {
-            typesetter.setSpacefactor(new Count(f));
+            typesetter.setSpacefactor(new Count(factor));
         } catch (GeneralException e) {
             throw new HelpingException(getLocalizer(), "TTP.ImproperSForPD",
                     printableControlSequence(context));

@@ -92,7 +92,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.75 $
+ * @version $Revision: 1.76 $
  */
 public class Moritz extends Max
         implements
@@ -1024,7 +1024,7 @@ public class Moritz extends Max
      * @throws InterpreterException in case that no number is found or the
      *  end of file has been reached before an integer could be acquired
      *
-     * @see de.dante.extex.interpreter.TokenSource#scanNumber()
+     * @see de.dante.extex.interpreter.TokenSource#scanNumber(Context)
      */
     public long scanNumber(final Context context) throws InterpreterException {
 

@@ -50,7 +50,7 @@ import de.dante.util.UnicodeChar;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class LigatureBuilderImplTest extends TestCase {
 
@@ -58,10 +58,18 @@ public class LigatureBuilderImplTest extends TestCase {
      * ...
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.5 $
+     * @version $Revision: 1.6 $
      */
     private class MockFont extends NullFont {
 
+        /**
+         * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+         */
+        private static final long serialVersionUID = 1L;
+
+        /**
+         * The field <tt>cache</tt> contains the ...
+         */
         private Map cache = new HashMap();
 
         /**
@@ -109,7 +117,7 @@ public class LigatureBuilderImplTest extends TestCase {
      * ...
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.5 $
+     * @version $Revision: 1.6 $
      */
     private class MockGlyph implements Glyph {
 

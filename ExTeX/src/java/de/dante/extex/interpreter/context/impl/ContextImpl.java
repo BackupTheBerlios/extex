@@ -118,7 +118,7 @@ import de.dante.util.framework.i18n.Localizer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.89 $
+ * @version $Revision: 1.90 $
  */
 public class ContextImpl
         implements
@@ -130,6 +130,11 @@ public class ContextImpl
             Localizable,
             Configurable,
             Serializable {
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * The constant <tt>GROUP_TAG</tt> contains the name of the tag for the
