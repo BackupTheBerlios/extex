@@ -60,7 +60,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.36 $
+ * @version $Revision: 1.37 $
  */
 public class GlueComponent implements Serializable, FixedGlueComponent {
 
@@ -445,6 +445,7 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
 
     /**
      * Set the value and order from the data gathered by parsing a token source.
+     *
      * @param context the interpreter context
      * @param source the source for next tokens
      * @param typesetter the typesetter
@@ -463,7 +464,6 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
      * @param context the interpreter context
      * @param source the source for next tokens
      * @param typesetter the typesetter
-     *
      * @param fixed this argument indicates that no fil parts of the object
      * should be filled. This means that the component is in fact a fixed
      * Dimen value.

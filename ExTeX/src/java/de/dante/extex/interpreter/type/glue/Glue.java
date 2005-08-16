@@ -41,7 +41,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class Glue implements Serializable, FixedGlue {
 
@@ -108,7 +108,7 @@ public class Glue implements Serializable, FixedGlue {
     /**
      * Creates a new object from a fixed length.
      *
-     * @param theLength the naturallength in scaled point
+     * @param theLength the natural length in scaled point
      */
     public Glue(final long theLength) {
 
@@ -156,7 +156,7 @@ public class Glue implements Serializable, FixedGlue {
 
     /**
      * Add another glue to this one.
-     * The addition is perfomred indepentently on the components.
+     * The addition is performed independently on the components.
      *
      * @param g the glue to add
      */
@@ -169,7 +169,7 @@ public class Glue implements Serializable, FixedGlue {
 
     /**
      * Add a dimen to this one glue.
-     * The addition is performed indepentently on the components.
+     * The addition is performed independently on the components.
      *
      * @param g the glue to add
      */
@@ -347,7 +347,7 @@ public class Glue implements Serializable, FixedGlue {
 
     /**
      * Determine the printable representation of the object.
-     * The value returned is exactely the string which would be produced by
+     * The value returned is exactly the string which would be produced by
      * <logo>TeX</logo> to print the skip register.
      *
      * @return the string representation of this glue
@@ -369,7 +369,7 @@ public class Glue implements Serializable, FixedGlue {
 
     /**
      * Determine the printable representation of the object.
-     * The value returned is exactely the string which would be produced by
+     * The value returned is exactly the string which would be produced by
      * <logo>TeX</logo> to print the skip register.
      *
      * @param factory the factory to get the tokens from

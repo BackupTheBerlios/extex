@@ -39,14 +39,14 @@ import de.dante.extex.interpreter.exception.InterpreterException;
  * <p>
  *  With this interface the division is in fact tied to the implementing
  *  code and not to the primitive <tt>\divide</tt>. Each primitive can be
- *  made aware for division without touchíng the code for
+ *  made aware for division without touching the code for
  *  <tt>\divide</tt>.
  * </p>
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface Divideable {
 

@@ -52,7 +52,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class PrimitiveFactory extends AbstractFactory {
 
@@ -63,7 +63,7 @@ public class PrimitiveFactory extends AbstractFactory {
     private static final String NAME_ATTRIBUTE = "name";
 
     /**
-     * The field <tt>factory</tt> contains the ...
+     * The field <tt>factory</tt> contains the factory for new tokens.
      */
     private TokenStreamFactory factory;
 
@@ -84,7 +84,7 @@ public class PrimitiveFactory extends AbstractFactory {
      * @param tokenFactory the token factory to use
      * @param context the interpreter context to register the primitive in
      * @param outputLogger the logger to produce output to
-     * @param outputFactory TODO
+     * @param outputFactory the factory for new output streams
      *
      * @throws GeneralException In case of an error
      * @throws ConfigurationException in case of an error

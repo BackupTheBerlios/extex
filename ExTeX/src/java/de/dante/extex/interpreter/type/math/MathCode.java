@@ -26,7 +26,7 @@ import de.dante.util.UnicodeChar;
  * family and a character code.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class MathCode {
 
@@ -43,7 +43,7 @@ public class MathCode {
 
     /**
      * The constant <tt>CHAR_MASK</tt> contains the mask for filtering a
-     * character code from an inetger.
+     * character code from an integer.
      */
     private static final int CHAR_MASK = 0xff;
 
@@ -58,7 +58,7 @@ public class MathCode {
     private int mathFamily;
 
     /**
-     * The field <tt>uc</tt> contains the character.
+     * The field <tt>mathChar</tt> contains the character.
      */
     private UnicodeChar mathChar;
 

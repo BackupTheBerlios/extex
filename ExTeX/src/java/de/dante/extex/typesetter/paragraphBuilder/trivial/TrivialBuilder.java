@@ -55,7 +55,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
 
@@ -412,7 +412,7 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
      * @param end the index of the element after the ones to save
      * @param hlist the destination list
      * @param accumulator the accumulator for the glue of the saved nodes
-     * @param height the accumulator for te height
+     * @param height the accumulator for the height
      * @param depth the accuulator for the depth
      *
      * @return the index of the first node which has not been copied

@@ -39,7 +39,7 @@ import de.dante.extex.scanner.type.token.TokenFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class Tokens implements Serializable, FixedTokens {
 
@@ -49,7 +49,7 @@ public class Tokens implements Serializable, FixedTokens {
     private static final long serialVersionUID = 1L;
 
     /**
-     * This constant is the empty toks register.
+     * This constant is the empty token register.
      */
     public static final Tokens EMPTY = new ImmutableTokens();
 
@@ -193,8 +193,8 @@ public class Tokens implements Serializable, FixedTokens {
      *
      * @param i the index for the token to get
      *
-     * @return the i <sup>th</sup> token or <code>null</code> if i is out
-     *         of bounds
+     * @return the i<sup>th</sup> token or <code>null</code> if i is out of
+     *  bounds
      */
     public Token get(final int i) {
 
@@ -225,10 +225,10 @@ public class Tokens implements Serializable, FixedTokens {
     }
 
     /**
-     * Getter for the length of the toks register, this is the number of
+     * Getter for the length of the token register, this is the number of
      * elements contained.
      *
-     * @return the number of elements in the toks register
+     * @return the number of elements in the token register
      */
     public int length() {
 

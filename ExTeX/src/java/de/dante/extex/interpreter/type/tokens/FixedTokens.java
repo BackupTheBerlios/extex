@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -29,7 +29,7 @@ import de.dante.util.exception.GeneralException;
  * which do not modify the value.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public interface FixedTokens {
 
@@ -38,16 +38,16 @@ public interface FixedTokens {
      *
      * @param i the index for the token to get
      *
-     * @return the i <sup>th</sup> token or <code>null</code> if i is out
-     *         of bounds
+     * @return the i<sup>th</sup> token or <code>null</code> if i is out of
+     *  bounds
      */
     Token get(int i);
 
     /**
-     * Getter for the length of the toks register, this is the number of
+     * Getter for the length of the token register, this is the number of
      * elements contained.
      *
-     * @return the number of elements in the toks register
+     * @return the number of elements in the token register
      */
     int length();
 

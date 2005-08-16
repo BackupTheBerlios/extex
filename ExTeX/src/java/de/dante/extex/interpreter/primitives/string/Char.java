@@ -63,12 +63,12 @@ import de.dante.util.UnicodeChar;
  * <p>
  * Possible extension
  * <ul>
- * <li>Take a group and interpret it as unicode name.</li>
+ * <li>Take a group and interpret it as Unicode name.</li>
  * </ul>
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class Char extends AbstractCode implements ExpandableCode {
 

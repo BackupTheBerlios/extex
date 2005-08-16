@@ -25,10 +25,10 @@ import java.util.List;
 
 
 /**
- * This class provides a typesafe list of observers for the open reader event.
+ * This class provides a type-safe list of observers for the open reader event.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public final class OpenReaderObserverList implements OpenReaderObserver {
 
@@ -67,7 +67,7 @@ public final class OpenReaderObserverList implements OpenReaderObserver {
     /**
      * Add an observer to the list.
      *
-     * @param observer te observer to add to the list
+     * @param observer the observer to add to the list
      */
     public void add(final OpenReaderObserver observer) {
 
