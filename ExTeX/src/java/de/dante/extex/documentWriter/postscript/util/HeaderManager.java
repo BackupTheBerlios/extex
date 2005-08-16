@@ -27,7 +27,7 @@ import java.io.OutputStream;
  * The header manager keeps track of the headers for the PostScript file.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class HeaderManager {
 
@@ -45,7 +45,7 @@ public class HeaderManager {
     }
 
     /**
-     * Add the contents read from a stream to te headers.
+     * Add the contents read from a stream to the headers.
      *
      * @param stream the stream to read from
      * @param name the name of the stream

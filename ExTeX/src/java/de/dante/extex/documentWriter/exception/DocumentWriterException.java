@@ -22,11 +22,11 @@ import de.dante.util.exception.GeneralException;
 
 
 /**
- * This is the base class for all document writer exception visible throught the
+ * This is the base class for all document writer exception visible through the
  * interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class DocumentWriterException extends GeneralException {
 

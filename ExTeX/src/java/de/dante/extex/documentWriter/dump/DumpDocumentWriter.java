@@ -59,7 +59,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * and as tool for testing.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
 public class DumpDocumentWriter
         implements
@@ -398,7 +398,7 @@ public class DumpDocumentWriter
     };
 
     /**
-     * The field <tt>out</tt> contains the outut stream to use.
+     * The field <tt>out</tt> contains the output stream to use.
      */
     private OutputStream out = null;
 
