@@ -32,10 +32,9 @@ import de.dante.util.exception.GeneralException;
  * This implementation of a color converter is based on the formulas in the
  * color space FAQ.
  *
- * TODO gene: use the new ColorVisitor
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class BasicColorConverter implements ColorConverter {
 
