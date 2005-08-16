@@ -60,6 +60,12 @@ import de.dante.extex.interpreter.type.font.FontConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
+import de.dante.extex.scanner.stream.observer.file.OpenFileObservable;
+import de.dante.extex.scanner.stream.observer.file.OpenFileObserver;
+import de.dante.extex.scanner.stream.observer.reader.OpenReaderObservable;
+import de.dante.extex.scanner.stream.observer.reader.OpenReaderObserver;
+import de.dante.extex.scanner.stream.observer.string.OpenStringObservable;
+import de.dante.extex.scanner.stream.observer.string.OpenStringObserver;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.token.CodeToken;
 import de.dante.extex.scanner.type.token.ControlSequenceToken;
@@ -92,7 +98,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.76 $
+ * @version $Revision: 1.77 $
  */
 public class Moritz extends Max
         implements
@@ -101,7 +107,10 @@ public class Moritz extends Max
             StreamCloseObservable,
             PopObservable,
             PushObservable,
-            EofObservable {
+            EofObservable,
+            OpenFileObservable,
+            OpenStringObservable,
+            OpenReaderObservable {
 
     /**
      * The constant <tt>MAX_CHAR_CODE</tt> contains the maximum value for a
@@ -130,13 +139,6 @@ public class Moritz extends Max
      */
     private EofObserver observersEOF = null;
 
-    /**
-     * The field <tt>observersLogMessage</tt> contains the observer list is
-     * used for the observers which are registered to receive notifications when
-     * a log message is send from another component. This message should be made
-     * accessible to the user in some way, e.g. in the log file.
-     */
-    //private ObserverList observersLogMessage = new ObserverList();
     /**
      * The field <tt>observersPop</tt> contains the observer list is used for
      * the observers which are registered to receive a notification when a new
@@ -236,7 +238,7 @@ public class Moritz extends Max
     /**
      * Close the topmost stream and pop another one to the top if one is left.
      * If the closed stream has been a file stream then the tokens from the
-     * toks register <tt>everyeof</tt> is inserted into the token stream.
+     * tokens register <tt>everyeof</tt> is inserted into the token stream.
      *
      * @param context the interpreter context
      *
@@ -855,6 +857,39 @@ public class Moritz extends Max
     }
 
     /**
+     * @see de.dante.extex.scanner.stream.observer.file.OpenFileObservable#registerObserver(de.dante.extex.scanner.stream.observer.file.OpenFileObserver)
+     */
+    public void registerObserver(final OpenFileObserver observer) {
+
+        if (tokenStreamFactory instanceof OpenFileObservable) {
+            ((OpenFileObservable) tokenStreamFactory)
+                    .registerObserver(observer);
+        }
+    }
+
+    /**
+     * @see de.dante.extex.scanner.stream.observer.reader.OpenReaderObservable#registerObserver(de.dante.extex.scanner.stream.observer.reader.OpenReaderObserver)
+     */
+    public void registerObserver(final OpenReaderObserver observer) {
+
+        if (tokenStreamFactory instanceof OpenReaderObservable) {
+            ((OpenReaderObservable) tokenStreamFactory)
+                    .registerObserver(observer);
+        }
+    }
+
+    /**
+     * @see de.dante.extex.scanner.stream.observer.string.OpenStringObservable#registerObserver(de.dante.extex.scanner.stream.observer.string.OpenStringObserver)
+     */
+    public void registerObserver(final OpenStringObserver observer) {
+
+        if (tokenStreamFactory instanceof OpenStringObservable) {
+            ((OpenStringObservable) tokenStreamFactory)
+                    .registerObserver(observer);
+        }
+    }
+
+    /**
      * Add an observer for the pop event.
      * This observer is triggered by a pop operation on the token stream.
      * This means that a token has been extracted.
@@ -1004,18 +1039,9 @@ public class Moritz extends Max
     }
 
     /**
-     * @see de.dante.extex.interpreter.TokenSource#scanNumber()
-     * @deprecated use scanNumber(Context) instead
-     */
-    public long scanNumber() throws InterpreterException {
-
-        return scanNumber(getContext(), getNonSpace(getContext()));
-    }
-
-    /**
      * Scan the input stream for tokens making up a number, this means a
      * sequence of digits with category code OTHER. Alternative notations for
-     * a number may exist. The number can be preceeded by optional white space.
+     * a number may exist. The number can be preceded by optional white space.
      *
      * @param context the interpreter context
      *
