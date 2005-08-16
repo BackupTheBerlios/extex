@@ -49,7 +49,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.56 $
+ * @version $Revision: 1.57 $
  */
 public interface TokenSource {
 
@@ -390,11 +390,6 @@ public interface TokenSource {
      *  in case of an error in {@link #scanToken(Context) scanToken()}
      */
     public Token scanNonSpace(Context context) throws InterpreterException;
-
-    /**
-     * @deprecated use scanNumber(Context) instead
-     */
-    long scanNumber() throws InterpreterException;
 
     /**
      * Scan the input stream for tokens making up a number, this is a sequence
