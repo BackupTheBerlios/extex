@@ -60,7 +60,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * and as tool for testing.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class MultiDumpDocumentWriter
         implements
@@ -69,8 +69,8 @@ public class MultiDumpDocumentWriter
             Configurable {
 
     /**
-     * The field <tt>nv</tt> contains the node visitor instance to use in the
-     * form of an anonymous inner class.
+     * The field <tt>nodeVisitor</tt> contains the node visitor instance to use
+     * in the form of an anonymous inner class.
      */
     private NodeVisitor nodeVisitor = new NodeVisitor() {
 
@@ -399,7 +399,7 @@ public class MultiDumpDocumentWriter
     };
 
     /**
-     * The field <tt>out</tt> contains the outut stream to use.
+     * The field <tt>out</tt> contains the output stream to use.
      */
     private OutputStream out = null;
 
