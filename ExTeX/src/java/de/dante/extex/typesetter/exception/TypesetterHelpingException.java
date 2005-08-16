@@ -20,7 +20,6 @@
 package de.dante.extex.typesetter.exception;
 
 import de.dante.util.framework.i18n.Localizer;
-import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
  * This class provides an Exception with the possibility to provide additional
@@ -79,7 +78,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class TypesetterHelpingException extends TypesetterException {
 
@@ -211,58 +210,6 @@ public class TypesetterHelpingException extends TypesetterException {
         this.arg1 = a1;
         this.arg2 = a2;
         this.arg3 = a3;
-    }
-
-    /**
-     * Creates a new object without variable arguments.
-     *
-     * @param messageTag the message
-     *
-     * @deprecated use the method with the explicit localizer instead: add getLocalizer() as first argument in primitives
-     */
-    public TypesetterHelpingException(final String messageTag) {
-
-        super();
-        this.tag = messageTag;
-        this.localizer = LocalizerFactory.getLocalizer(TypesetterHelpingException.class
-                .getName());
-    }
-
-    /**
-     * Creates a new object with one variable argument.
-     *
-     * @param messageTag the message
-     * @param a1 the first argument
-     *
-     * @deprecated use the method with the explicit localizer instead: add getLocalizer() as first argument in primitives
-     */
-    public TypesetterHelpingException(final String messageTag, final String a1) {
-
-        super();
-        this.tag = messageTag;
-        this.localizer = LocalizerFactory.getLocalizer(TypesetterHelpingException.class
-                .getName());
-        this.arg1 = a1;
-    }
-
-    /**
-     * Creates a new object with two variable arguments.
-     *
-     * @param messageTag the message
-     * @param a1 the first argument
-     * @param a2 the second argument
-     *
-     * @deprecated use the method with the explicit localizer instead: add getLocalizer() as first argument in primitives
-     */
-    public TypesetterHelpingException(final String messageTag, final String a1,
-            final String a2) {
-
-        super();
-        this.tag = messageTag;
-        this.localizer = LocalizerFactory.getLocalizer(TypesetterHelpingException.class
-                .getName());
-        this.arg1 = a1;
-        this.arg2 = a2;
     }
 
     /**
