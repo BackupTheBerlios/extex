@@ -31,17 +31,12 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This class provides a container for a mathematical glyph.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class MathGlyph implements Noad, Serializable {
 
     /**
-     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
-     */
-    private static final long serialVersionUID = 1L;
-
-    /**
-     * The constan <tt>CHARACTER_MASK</tt> contains the mask for the character
+     * The constant <tt>CHARACTER_MASK</tt> contains the mask for the character
      * value in the <logo>TeX</logo> encoding.
      */
     private static final int CHARACTER_MASK = 0xff;
@@ -51,6 +46,17 @@ public class MathGlyph implements Noad, Serializable {
      * <logo>TeX</logo> encoding.
      */
     private static final int FAMILY_MASK = 0xf;
+
+    /**
+     * The constant <tt>FAMILY_OFFSET</tt> contains the offset for the family in
+     * the <logo>TeX</logo> encoding.
+     */
+    private static final int FAMILY_OFFSET = 8;
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * The field <tt>character</tt> contains the character of this glyph.
@@ -69,8 +75,8 @@ public class MathGlyph implements Noad, Serializable {
      */
     public MathGlyph(final int code) {
 
-        this((code >> 8) & FAMILY_MASK, new UnicodeChar(
-                (int) (code & CHARACTER_MASK)));
+        this((code >> FAMILY_OFFSET) & FAMILY_MASK, //
+                new UnicodeChar((int) (code & CHARACTER_MASK)));
     }
 
     /**
