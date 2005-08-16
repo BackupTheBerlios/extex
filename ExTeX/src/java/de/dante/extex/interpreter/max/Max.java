@@ -56,6 +56,12 @@ import de.dante.extex.interpreter.observer.expandMacro.ExpandMacroObserverList;
 import de.dante.extex.interpreter.observer.load.LoadObservable;
 import de.dante.extex.interpreter.observer.load.LoadObserver;
 import de.dante.extex.interpreter.observer.load.LoadObserverList;
+import de.dante.extex.interpreter.observer.start.StartObservable;
+import de.dante.extex.interpreter.observer.start.StartObserver;
+import de.dante.extex.interpreter.observer.start.StartObserverList;
+import de.dante.extex.interpreter.observer.stop.StopObservable;
+import de.dante.extex.interpreter.observer.stop.StopObserver;
+import de.dante.extex.interpreter.observer.stop.StopObserverList;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.PrefixCode;
@@ -99,7 +105,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.81 $
+ * @version $Revision: 1.82 $
  */
 public abstract class Max
         implements
@@ -110,6 +116,8 @@ public abstract class Max
             ExpandMacroObservable,
             ErrorObservable,
             LoadObservable,
+            StartObservable,
+            StopObservable,
             TokenVisitor {
 
     /**
@@ -195,7 +203,9 @@ public abstract class Max
     private ExpandObserver observersExpand = null;
 
     /**
-     * The field <tt>observersUndump</tt> contains the ...
+     * The field <tt>observersLoad</tt> contains the observer list for the
+     * observers which are registered to receive a notification when a format
+     * is loaded.
      */
     private LoadObserver observersLoad = null;
 
@@ -204,6 +214,20 @@ public abstract class Max
      * receive a notification when a macro is expanded.
      */
     private ExpandMacroObserver observersMacro = null;
+
+    /**
+     * The field <tt>observersStart</tt> contains the observer list for the
+     * observers which are registered to receive a notification when the
+     * execution is started.
+     */
+    private StartObserver observersStart = null;
+
+    /**
+     * The field <tt>observersStop</tt> contains the observer list for the
+     * observers which are registered to receive a notification when the
+     * execution is finished.
+     */
+    private StopObserver observersStop = null;
 
     /**
      * This is the prefix for the next invocations.
@@ -215,6 +239,157 @@ public abstract class Max
      * "left-over" material.
      */
     private Typesetter typesetter = null;
+
+    /**
+     * The field <tt>tv</tt> contains the ...
+     */
+    private TokenVisitor tv = new TokenVisitor() {
+
+        public Object visitActive(final ActiveCharacterToken token,
+                final Object arg) throws Exception {
+
+            Code code = context.getCode(token);
+            if (code instanceof ExpandableCode) {
+                ((ExpandableCode) code).expand(Flags.NONE, context,
+                        (TokenSource) arg, typesetter);
+            } else if (code == null) {
+                throw new UndefinedControlSequenceException(token.toString());
+            } else {
+                //TODO gene: unimplemented
+                throw new RuntimeException("unimplemented");
+            }
+
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitCr(de.dante.extex.scanner.type.token.CrToken, java.lang.Object)
+         */
+        public Object visitCr(final CrToken token, final Object arg)
+                throws Exception {
+
+            //TODO gene: unimplemented
+            throw new RuntimeException("unimplemented");
+        }
+
+        /**
+         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitEscape(de.dante.extex.scanner.type.token.ControlSequenceToken, java.lang.Object)
+         */
+        public Object visitEscape(final ControlSequenceToken token,
+                final Object arg) throws Exception {
+
+            Code code = context.getCode(token);
+            if (code instanceof ExpandableCode) {
+                ((ExpandableCode) code).expand(Flags.NONE, context,
+                        (TokenSource) arg, typesetter);
+            } else if (code == null) {
+                throw new UndefinedControlSequenceException(token.toString());
+            } else {
+                //TODO gene: unimplemented
+                throw new RuntimeException("unimplemented");
+            }
+
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitLeftBrace(de.dante.extex.scanner.type.token.LeftBraceToken, java.lang.Object)
+         */
+        public Object visitLeftBrace(final LeftBraceToken token,
+                final Object arg) throws Exception {
+
+            //TODO gene: unimplemented
+            throw new RuntimeException("unimplemented");
+        }
+
+        /**
+         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitLetter(de.dante.extex.scanner.type.token.LetterToken, java.lang.Object)
+         */
+        public Object visitLetter(final LetterToken token, final Object arg)
+                throws Exception {
+
+            return token;
+        }
+
+        /**
+         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitMacroParam(de.dante.extex.scanner.type.token.MacroParamToken, java.lang.Object)
+         */
+        public Object visitMacroParam(final MacroParamToken token,
+                final Object arg) throws Exception {
+
+            //TODO gene: unimplemented
+            throw new RuntimeException("unimplemented");
+        }
+
+        /**
+         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitMathShift(de.dante.extex.scanner.type.token.MathShiftToken, java.lang.Object)
+         */
+        public Object visitMathShift(final MathShiftToken token,
+                final Object arg) throws Exception {
+
+            //TODO gene: unimplemented
+            throw new RuntimeException("unimplemented");
+        }
+
+        /**
+         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitOther(de.dante.extex.scanner.type.token.OtherToken, java.lang.Object)
+         */
+        public Object visitOther(final OtherToken token, final Object arg)
+                throws Exception {
+
+            return token;
+        }
+
+        /**
+         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitRightBrace(de.dante.extex.scanner.type.token.RightBraceToken, java.lang.Object)
+         */
+        public Object visitRightBrace(final RightBraceToken token,
+                final Object arg) throws Exception {
+
+            //TODO gene: unimplemented
+            throw new RuntimeException("unimplemented");
+        }
+
+        /**
+         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitSpace(de.dante.extex.scanner.type.token.SpaceToken, java.lang.Object)
+         */
+        public Object visitSpace(final SpaceToken token, final Object arg)
+                throws Exception {
+
+            return token;
+        }
+
+        /**
+         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitSubMark(de.dante.extex.scanner.type.token.SubMarkToken, java.lang.Object)
+         */
+        public Object visitSubMark(final SubMarkToken token, final Object arg)
+                throws Exception {
+
+            //TODO gene: unimplemented
+            throw new RuntimeException("unimplemented");
+        }
+
+        /**
+         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitSupMark(de.dante.extex.scanner.type.token.SupMarkToken, java.lang.Object)
+         */
+        public Object visitSupMark(final SupMarkToken token, final Object arg)
+                throws Exception {
+
+            //TODO gene: unimplemented
+            throw new RuntimeException("unimplemented");
+        }
+
+        /**
+         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitTabMark(de.dante.extex.scanner.type.token.TabMarkToken, java.lang.Object)
+         */
+        public Object visitTabMark(final TabMarkToken token, final Object arg)
+                throws Exception {
+
+            //TODO gene: unimplemented
+            throw new RuntimeException("unimplemented");
+        }
+
+    };
 
     /**
      * Creates a new object.
@@ -384,8 +559,14 @@ public abstract class Max
                     throw e;
                 }
             } catch (RuntimeException e) {
+                if (observersError != null) {
+                    observersError.update(e);
+                }
                 throw e;
             } catch (Exception e) {
+                if (observersError != null) {
+                    observersError.update(e);
+                }
                 throw new InterpreterException(e);
             }
 
@@ -423,6 +604,9 @@ public abstract class Max
             }
             throw e;
         } catch (Exception e) {
+            if (observersError != null) {
+                observersError.update(e);
+            }
             throw new InterpreterException(e);
         }
     }
@@ -481,120 +665,6 @@ public abstract class Max
         for (int i = tokens.length() - 1; i >= 0; i--) {
             stream.put(tokens.get(i));
         }
-
-        TokenVisitor tv = new TokenVisitor() {
-
-            public Object visitActive(final ActiveCharacterToken token,
-                    final Object arg) throws Exception {
-
-                Code code = context.getCode(token);
-                if (code instanceof ExpandableCode) {
-                    ((ExpandableCode) code).expand(Flags.NONE, context,
-                            (TokenSource) arg, typesetter);
-                } else if (code == null) {
-                    throw new UndefinedControlSequenceException(token
-                            .toString());
-                } else {
-                    //TODO gene: unimplemented
-                    throw new RuntimeException("unimplemented");
-                }
-
-                return null;
-            }
-
-            public Object visitCr(final CrToken token, final Object arg)
-                    throws Exception {
-
-                //TODO gene: unimplemented
-                throw new RuntimeException("unimplemented");
-            }
-
-            public Object visitEscape(final ControlSequenceToken token,
-                    final Object arg) throws Exception {
-
-                Code code = context.getCode(token);
-                if (code instanceof ExpandableCode) {
-                    ((ExpandableCode) code).expand(Flags.NONE, context,
-                            (TokenSource) arg, typesetter);
-                } else if (code == null) {
-                    throw new UndefinedControlSequenceException(token
-                            .toString());
-                } else {
-                    //TODO gene: unimplemented
-                    throw new RuntimeException("unimplemented");
-                }
-
-                return null;
-            }
-
-            public Object visitLeftBrace(final LeftBraceToken token,
-                    final Object arg) throws Exception {
-
-                //TODO gene: unimplemented
-                throw new RuntimeException("unimplemented");
-            }
-
-            public Object visitLetter(final LetterToken token, final Object arg)
-                    throws Exception {
-
-                return token;
-            }
-
-            public Object visitMacroParam(final MacroParamToken token,
-                    final Object arg) throws Exception {
-
-                //TODO gene: unimplemented
-                throw new RuntimeException("unimplemented");
-            }
-
-            public Object visitMathShift(final MathShiftToken token,
-                    final Object arg) throws Exception {
-
-                //TODO gene: unimplemented
-                throw new RuntimeException("unimplemented");
-            }
-
-            public Object visitOther(final OtherToken token, final Object arg)
-                    throws Exception {
-
-                return token;
-            }
-
-            public Object visitRightBrace(final RightBraceToken token,
-                    final Object arg) throws Exception {
-
-                //TODO gene: unimplemented
-                throw new RuntimeException("unimplemented");
-            }
-
-            public Object visitSpace(final SpaceToken token, final Object arg)
-                    throws Exception {
-
-                return token;
-            }
-
-            public Object visitSubMark(final SubMarkToken token,
-                    final Object arg) throws Exception {
-
-                //TODO gene: unimplemented
-                throw new RuntimeException("unimplemented");
-            }
-
-            public Object visitSupMark(final SupMarkToken token,
-                    final Object arg) throws Exception {
-
-                //TODO gene: unimplemented
-                throw new RuntimeException("unimplemented");
-            }
-
-            public Object visitTabMark(final TabMarkToken token,
-                    final Object arg) throws Exception {
-
-                //TODO gene: unimplemented
-                throw new RuntimeException("unimplemented");
-            }
-
-        };
 
         try {
             for (;;) {
@@ -668,7 +738,8 @@ public abstract class Max
      *
      * @throws InterpreterException in case of an error
      */
-    protected void initializeDate(final Calendar calendar) throws InterpreterException {
+    protected void initializeDate(final Calendar calendar)
+            throws InterpreterException {
 
         context.setCount("day", calendar.get(Calendar.DAY_OF_MONTH), true);
         context.setCount("month", calendar.get(Calendar.MONTH), true);
@@ -793,6 +864,26 @@ public abstract class Max
     }
 
     /**
+     * Add an observer for the start event.
+     *
+     * @param observer the observer to add
+     */
+    public void registerObserver(final StartObserver observer) {
+
+        observersStart = StartObserverList.register(observersStart, observer);
+    }
+
+    /**
+     * Add an observer for the stop event.
+     *
+     * @param observer the observer to add
+     */
+    public void registerObserver(final StopObserver observer) {
+
+        observersStop = StopObserverList.register(observersStop, observer);
+    }
+
+    /**
      * @see de.dante.extex.interpreter.Interpreter#run()
      */
     public void run() throws ConfigurationException, InterpreterException {
@@ -804,6 +895,10 @@ public abstract class Max
         if (getTokenStreamFactory() == null) {
             throw new NoTokenStreamFactoryException(getClass().getName()
                     + "#run()");
+        }
+
+        if (observersStart != null) {
+            observersStart.update(this);
         }
 
         if (everyRun != null && everyRun.length() > 0) {
@@ -824,7 +919,11 @@ public abstract class Max
             String message = localizer.format("TTP.EndGroup", context
                     .esc(endPrimitive), Long.toString(groupLevel));
             logger.warning(message);
-            throw new InterpreterException(message);
+            InterpreterException e = new InterpreterException(message);
+            if (observersError != null) {
+                observersError.update(e);
+            }
+            throw e;
         }
         Conditional cond = context.popConditional();
         if (cond != null) {
@@ -834,7 +933,15 @@ public abstract class Max
                     .esc(endPrimitive), cond.getPrimitive(), cond.getLocator()
                     .toString());
             logger.warning(message);
-            throw new InterpreterException(message);
+            InterpreterException e = new InterpreterException(message);
+            if (observersError != null) {
+                observersError.update(e);
+            }
+            throw e;
+        }
+
+        if (observersStop != null) {
+            observersStop.update(this);
         }
     }
 
