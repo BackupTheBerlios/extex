@@ -25,10 +25,10 @@ import java.util.List;
 import de.dante.extex.scanner.stream.TokenStream;
 
 /**
- * This class provides a typesafe list of observers for the expand event.
+ * This class provides a type-safe list of observers for the expand event.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public final class StreamCloseObserverList implements StreamCloseObserver {
 
@@ -62,7 +62,7 @@ public final class StreamCloseObserverList implements StreamCloseObserver {
     /**
      * Add an observer to the list
      *
-     * @param observer te observer to add to the list
+     * @param observer the observer to add to the list
      */
     public void add(final StreamCloseObserver observer) {
 

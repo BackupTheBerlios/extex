@@ -25,10 +25,10 @@ import java.util.List;
 import de.dante.extex.interpreter.context.Context;
 
 /**
- * This class provides a typesafe list of observers for the undump event.
+ * This class provides a type-safe list of observers for the undump event.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public final class LoadObserverList implements LoadObserver {
 
@@ -67,7 +67,7 @@ public final class LoadObserverList implements LoadObserver {
     /**
      * Add an observer to the list.
      *
-     * @param observer te observer to add to the list
+     * @param observer the observer to add to the list
      */
     public void add(final LoadObserver observer) {
 
@@ -82,7 +82,8 @@ public final class LoadObserverList implements LoadObserver {
      */
     public void update(final Context context) {
 
-        for (int i = 0; i < list.size(); i++) {
+        int size = list.size();
+        for (int i = 0; i < size; i++) {
             ((LoadObserver) list.get(i)).update(context);
         }
     }

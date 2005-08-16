@@ -24,10 +24,10 @@ import java.util.List;
 
 
 /**
- * This class provides a typesafe list of observers for the eof event.
+ * This class provides a type-safe list of observers for the eof event.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public final class EofObserverList implements EofObserver {
 
@@ -66,7 +66,7 @@ public final class EofObserverList implements EofObserver {
     /**
      * Add an observer to the list.
      *
-     * @param observer te observer to add to the list
+     * @param observer the observer to add to the list
      */
     public void add(final EofObserver observer) {
 
@@ -79,7 +79,8 @@ public final class EofObserverList implements EofObserver {
      */
     public void update() {
 
-        for (int i = 0; i < list.size(); i++) {
+        int size = list.size();
+        for (int i = 0; i < size; i++) {
             ((EofObserver) list.get(i)).update();
         }
     }

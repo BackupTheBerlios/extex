@@ -25,10 +25,10 @@ import java.util.List;
 import de.dante.extex.scanner.type.token.Token;
 
 /**
- * This class provides a typesafe list of observers for the expand event.
+ * This class provides a type-safe list of observers for the expand event.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public final class ExpandObserverList implements ExpandObserver {
 
@@ -67,7 +67,7 @@ public final class ExpandObserverList implements ExpandObserver {
     /**
      * Add an observer to the list.
      *
-     * @param observer te observer to add to the list
+     * @param observer the observer to add to the list
      */
     public void add(final ExpandObserver observer) {
 
@@ -82,7 +82,8 @@ public final class ExpandObserverList implements ExpandObserver {
      */
     public void update(final Token token) {
 
-        for (int i = 0; i < list.size(); i++) {
+        int size = list.size();
+        for (int i = 0; i < size; i++) {
             ((ExpandObserver) list.get(i)).update(token);
         }
     }

@@ -34,10 +34,10 @@ import de.dante.util.UnicodeChar;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
- * This class provides a token source which is fed from a sting.
+ * This class provides a token source which is fed from a string.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class StringSource extends Moritz {
 
@@ -45,14 +45,14 @@ public class StringSource extends Moritz {
      * This Token stream is fed from a CharSequence.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.22 $
+     * @version $Revision: 1.23 $
      */
     private class TStream implements TokenStream {
 
         /**
-         * The field <tt>ptr</tt> contains the pointer to the next char to read.
+         * The field <tt>next</tt> contains the pointer to the next char to read.
          */
-        private int ptr = 0;
+        private int next = 0;
 
         /**
          * The field <tt>cs</tt> contains the char sequence containing the chars
@@ -80,7 +80,7 @@ public class StringSource extends Moritz {
          */
         public boolean closeFileStream() {
 
-            ptr = cs.length();
+            next = cs.length();
             return false;
         }
 
@@ -96,8 +96,8 @@ public class StringSource extends Moritz {
             if (size > 0) {
                 return (Token) stack.remove(size - 1);
             }
-            if (ptr < cs.length()) {
-                UnicodeChar c = new UnicodeChar(cs.charAt(ptr++));
+            if (next < cs.length()) {
+                UnicodeChar c = new UnicodeChar(cs.charAt(next++));
                 try {
                     return factory.createToken(tokenizer.getCatcode(c), c,
                             Namespace.DEFAULT_NAMESPACE);
@@ -113,7 +113,7 @@ public class StringSource extends Moritz {
          */
         public Locator getLocator() {
 
-            return new Locator("", 0, cs.toString(), ptr);
+            return new Locator("", 0, cs.toString(), next);
         }
 
         /**
@@ -121,7 +121,7 @@ public class StringSource extends Moritz {
          */
         public boolean isEof() throws ScannerException {
 
-            return ptr >= cs.length();
+            return next >= cs.length();
         }
 
         /**

@@ -23,10 +23,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class provides a typesafe list of observers for the error event.
+ * This class provides a type-safe list of observers for the error event.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public final class ErrorObserverList implements ErrorObserver {
 
@@ -65,7 +65,7 @@ public final class ErrorObserverList implements ErrorObserver {
     /**
      * Add an observer to the list.
      *
-     * @param observer te observer to add to the list
+     * @param observer the observer to add to the list
      */
     public void add(final ErrorObserver observer) {
 
@@ -80,7 +80,8 @@ public final class ErrorObserverList implements ErrorObserver {
      */
     public void update(final Exception e) {
 
-        for (int i = 0; i < list.size(); i++) {
+        int size = list.size();
+        for (int i = 0; i < size; i++) {
             ((ErrorObserver) list.get(i)).update(e);
         }
     }
