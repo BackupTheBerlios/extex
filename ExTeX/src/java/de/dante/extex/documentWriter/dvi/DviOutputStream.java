@@ -33,7 +33,7 @@ import java.io.OutputStream;
  * This class provides the methods to write to the dvi-Stream.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class DviOutputStream {
     /**
@@ -75,6 +75,11 @@ public class DviOutputStream {
      */
     private int streamPosition = 0;
 
+
+    public void close() throws GeneralException, IOException {
+        outputStream.close();
+        outputStream = null;
+    }
 
     /**
      * Get the StreamPosition value.

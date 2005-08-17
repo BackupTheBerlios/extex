@@ -23,6 +23,7 @@
 // TODO: 10^-7 (TE)
 package de.dante.extex.documentWriter.dvi;
 
+
 import de.dante.extex.documentWriter.DocumentWriterOptions;
 import de.dante.extex.font.Glyph;
 import de.dante.extex.interpreter.type.dimen.Dimen;
@@ -35,7 +36,7 @@ import de.dante.extex.typesetter.type.node.RuleNode;
 import de.dante.extex.typesetter.type.node.WhatsItNode;
 import de.dante.util.UnicodeChar;
 import de.dante.util.exception.GeneralException;
-
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.EmptyStackException;
 import java.util.Enumeration;
@@ -47,7 +48,7 @@ import java.util.Vector;
  * This is a implementation of a dvi document writer.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class DviWriter {
 
@@ -599,7 +600,7 @@ public class DviWriter {
      *
      * @exception GeneralException if an error occurs
      */
-    public void endDviFile() throws GeneralException {
+    public void endDviFile() throws GeneralException, IOException {
         int postPosition = dviOutputStream.getStreamPosition();
         int numberTrailingBytes;
 
@@ -637,7 +638,7 @@ public class DviWriter {
         for (int i = 0; i < numberTrailingBytes; i++) {
             dviOutputStream.writeByte(DVI_TRAILING_BYTE);
         }
-
+        dviOutputStream.close();
     }
 
 
@@ -694,9 +695,9 @@ public class DviWriter {
 
         int fontNumber = definedFonts.indexOf(font);
         /*
-         * TODO: the following (checksum, scale and designSize)
+         * TODO: the following (scale and designSize)
          * is not correct (TE) */
-        int checksum = 0x58ab510b;
+        int checksum = font.getCheckSum();
         int scale = convertToInt(font.getEm().getValue());
         int designSize = scale;
         String area = "";
