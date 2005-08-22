@@ -48,7 +48,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationSyntaxExcept
  * This class provides means to deal with configurations stored as XML files.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ConfigurationXMLImpl implements Configuration, Serializable {
 
@@ -599,7 +599,7 @@ public class ConfigurationXMLImpl implements Configuration, Serializable {
      * configuration and append them to a given StringList.
      *
      * @param key the name of the tags
-     * @param list the list tol append the values to
+     * @param list the list to append the values to
      *
      * @see de.dante.util.framework.configuration.Configuration#getValues(
      *      de.dante.util.StringList, java.lang.String)
@@ -622,7 +622,7 @@ public class ConfigurationXMLImpl implements Configuration, Serializable {
      * @return the iterator
      *
      * @throws ConfigurationIOException in case that an IO exception occurs
-     *  durinmg the reading of the configuration.
+     *  during the reading of the configuration.
      * @throws ConfigurationSyntaxException in case that the configuration
      *  contains a syntax error.
      * @throws ConfigurationNotFoundException in case that the specified
