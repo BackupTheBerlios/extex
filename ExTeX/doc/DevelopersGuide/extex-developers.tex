@@ -1,0 +1,553 @@
+%%*****************************************************************************
+%% $Id: extex-developers.tex,v 1.1 2005/08/22 07:30:20 gene Exp $
+%%*****************************************************************************
+%% Author: Gerd Neugebauer
+%%-----------------------------------------------------------------------------
+\documentclass{extex-doc}
+
+\usepackage{subfigure}
+
+\def\setVersion$#1: #2.#3 ${\gdef\Version{#2.#3}}
+\setVersion$Revision: 1.1 $
+
+\newcommand\menu{\textsf}
+\newcommand\sub{\(\rightarrow\) }
+
+\begin{document}%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{titlepage}
+  \parindent=0pt
+  \begin{center}
+  \vspace*{1pt}
+  \vfill
+  \ExTeXbox
+  \vfill
+  \textsf{\bfseries\Huge Developer's Guide}
+  \vfill
+  \textsf{\Large Version \Version}
+  \vfill
+  \textsf{\large Gerd Neugebauer}
+  \vfill
+  \vfill
+%\maketitle
+
+  \begin{abstract}\parindent=0pt
+    This document describes some basic steps to develop and test
+    \ExTeX.  It is meant for newcomers to the project or people who
+    want to evaluate \ExTeX\ by inspecting the sources.
+  \end{abstract}
+  \end{center}
+\newpage
+\footnotesize
+\copyright\ 2005 The \ExTeX\ Group and individual authors listed below 
+\medskip
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.2 or
+any later version published by the Free Software Foundation. A copy of
+the license is included in the section entitled ``GNU Free
+Documentation License''.
+\bigskip
+
+This product includes software developed by the Apache Software
+Foundation (http://www.apache.org/).
+
+\vfill
+
+Gerd Neugebauer\\
+Im Lerchelsb\"ohl 5\\
+64521 Gro\ss-Gerau (Germany)
+\smallskip
+
+\href{mailto://gene@gerd-neugebauer.de}{gene@gerd-neugebauer.de}
+
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+%------------------------------------------------------------------------------
+\chapter{Introduction}
+%@author Gerd Neugebauer
+
+\ExTeX{} aims at providing a high-quality typesetting system. The
+development of \ExTeX\ has been inspired by the experiences with \TeX.
+The focus lies on an open design and a high degree of configurability.
+Thus \ExTeX\ should be a good base for further development.
+
+On the other hand we have to take care not to leave the current user
+base of \TeX\ behind. pdf\TeX\ has taught us that a migration path
+from \TeX\index{TeX@\TeX} has a positive value in it. In the mean time
+the majority of \TeX\ users applies in fact
+pdf\TeX\index{pdfTeX@pdf\TeX}.
+
+To provide a backward compatibility of \ExTeX\ with
+\TeX\index{TeX@\TeX} one special configuration is provided. Thus
+backward compatibility is just a matter of configuration.
+
+
+\section{Audience}
+
+This document is meant for developers and those interested in the
+sources and development processes of \ExTeX. It should contain all
+information for getting started quickly.
+
+
+\section{Mailing Lists}
+
+If you are ready to try \ExTeX{} you might as well want to join a
+mailing list to get in contact with the community. The following
+mailing lists might be of interest:
+
+\begin{description}
+\item[extex@dante.de] \ \\
+  A general mailing list about \ExTeX. It has low traffic and is
+  mainly in German. Subscribe and unsubscribe via the Web form
+  \url{http://www.dante.de/listman/extex}.
+\item[extex-en@dante.de] \ \\
+  A general mailing list about \ExTeX. It has currently very low
+  traffic and is in English. Subscribe and unsubscribe via the Web
+  form \url{http://www.dante.de/listman/extex-en}.
+\item[extex-devel@dante.de] \ \\
+  A mailing list for the exchange of the developers of \ExTeX. It has
+  low traffic and is partly in German. Subscribe and unsubscribe via
+  the Web form \url{http://www.dante.de/listman/extex-devel}.
+\end{description}
+
+
+\section{Language}
+
+The official project language for \ExTeX\ is English in the US
+dialect. The sources are documented in this language and the major
+documents are written in this language.
+
+Since some of the developers are German this language might slip in
+during intensive discussions.
+
+\section{The Repository}
+
+The sources of \ExTeX\ are stored in a RCS repository. To access this
+repository you need access to the internet and RCS installed in some
+way.
+
+The coordinates of the repository are:\medskip
+
+\begin{tabular}{ll}\toprule
+  Connection type: & \texttt{pserver}			\\
+  User:		   & \texttt{anonymous}			\\
+  Host:		   & \texttt{cvs.extex.berlios.de}	\\
+  Location:	   & \texttt{/cvsroot/extex}		\\
+  Module:	   & \texttt{ExTeX}			\\\bottomrule
+\end{tabular}\medskip
+
+These coordinates allow you anonymous access to the sources with
+reading permissions only.
+
+\section{User Account at Berlios}
+
+To commit changes to the repository you have to be enlisted as a
+developer for \ExTeX. A first requirement for this is an account at
+Berlios -- the hosting site. 
+
+
+
+%------------------------------------------------------------------------------
+\chapter{Prerequisites}
+%@author Gerd Neugebauer
+
+\section{Java}
+
+You need to have Java 1.4.2 or later installed on your system. You can
+get Java for a several systems directly from \url{http://java.sun.com}.
+Download and install it according to the installation instructions for
+your environment.
+
+Free Java re-implementations are currently not supported. They might
+work, but the last time we checked it, GCJ didn't suffice. We would be
+happy have someone working on a compatibility layer for a free Java
+implementation.
+
+
+\section{CVS Client}
+
+You need a CVS client installed. In the simplest case this is the
+client build into te IDE Eclipse, or the command line version of cvs.
+
+
+\section{A Command Line Interpreter}
+
+For several tasks it is convenient to have a command line interpreter
+at hand. On Unix this can be the (bourne/bash/...) shell. On Windows
+we recommend the Cygwin suite which contains the bash.
+
+
+
+
+%------------------------------------------------------------------------------
+\chapter{The Development Environment}
+%@author Gerd Neugebauer
+
+There is no mandatory IDE for the development of \ExTeX. Nevertheless
+in practice you can get good support if you stick to the development
+environment widely used within the \ExTeX\ community. This is based on
+the Eclipse IDE.
+
+\section{Eclipse}
+
+Eclipse is a free IDE for Java and other programming languages. It
+also provides a framework for the development of own programs. But
+this is not needed for the \ExTeX\ core. Currently the version 3.1 of
+Eclipse is used within the \ExTeX\ development team.
+\begin{figure}[h]
+  \centering  \includegraphics[scale=.5]{image/eclipse-splash}
+  \caption{Eclipse}\label{fig:eclipse}
+\end{figure}
+
+\subsection{Eclipse Installation}
+
+Eclipse can be downloaded for free from \url{http://www.eclipse.org}.
+There you can get a file appropriate for your operating system
+containing the software development kit (SDK). For instance
+\begin{description}
+\item [eclipse-SDK-3.1-win32.zip]\ \\
+  for any decent Windows platform.
+\item [eclipse-SDK-3.1-linux-gtk.zip]\ \\
+  for Linux on Intel x86 with GTK.
+\end{description}
+
+Download the appropriate file and unpack it in the installation
+directory. A new subdirectory \texttt{eclipse} will be created
+containing all files of Eclipse. You are done with the basic
+installation. You can start the \texttt{eclipse} executable found in
+the just installed directory.
+
+\begin{figure}[h]
+  \centering  \includegraphics[scale=.5]{image/eclipse-workspace}
+  \caption{Eclipse Workspace}\label{fig:eclipse-workspace}
+\end{figure}
+When Eclipse starts you first see the splash screen shown in
+figure~\ref{fig:eclipse}. Then Eclipse requests a workspace -- as
+shown in figure~\ref{fig:eclipse-workspace}. The workspace is a
+directory where the projects live and where your preferences are
+stored. If you have chosen the workspace directory carefully, you can
+turn on the check mark in this dialog to be not asked again.
+
+Finally you end up in the welcome window of Eclipse shown in
+figure~\ref{fig:eclipse-welcome}. Take some time and read the
+introductory material found there.
+\begin{figure}[h]
+  \centering  \includegraphics[scale=.25]{image/eclipse-welcome}
+  \caption{Eclipse Initial Window}\label{fig:eclipse-welcome}
+\end{figure}
+
+The following sections describe some of the configurations which
+should be performed in order to work with Eclipse on \ExTeX.
+
+
+\subsection{Downloading the Sources}
+
+Now we are ready to create a project for the sources of \ExTeX.
+Everything needed can be found in the CVs repository of \ExTeX\ hosted
+by Berlios.. Thus we start to get things onto the local host. For this
+purpose we need to open a new perspective in Eclipse. A perspective is
+a collection of windows which are usually meant for a common task.
+
+A new perspective can be opened via the window \menu{Window \sub Open
+  Perspective \sub Other\ldots} which can be seen in
+figure~\ref{fig:eclipse-open-perspective-menu}.
+\begin{figure}[ht]
+  \hbox{}\hfill
+  \subfigure[Open Perspective\label{fig:A1}]{%
+    \includegraphics[scale=.4]{image/eclipse-open-perspective-menu}}%
+  \hfill
+  \subfigure[Selecting ``CVS Exploring Perspective''\label{fig:eclipse-open-perspective-menu}]{%
+    \includegraphics[scale=.4]{image/eclipse-select-cvs}}%
+  \hfill\hbox{}
+
+%  \caption{Open Perspective}\label{fig:eclipse-open-perspective-menu}
+\end{figure}
+
+This menu item opens a dialog box which offers some perspectives for
+opening. Currently we need a ``CVS Exploring'' perspective. This
+perspective is meant for inspecting CVS repositories and manipulation.
+Thus this perspective is selected (see
+figure~\ref{fig:eclipse-select-cvs}) and the dialog is completed with
+the OK button.
+%\begin{figure}[ht]
+%  \centering  \includegraphics[scale=.4]{image/eclipse-select-cvs}
+%  \caption{Selecting ``CVS Exploring Perspective''}\label{fig:eclipse-select-cvs}
+%\end{figure}
+
+Now a CVS exploring perspective is opened (see
+figure~\ref{fig:eclipse-cvs-1}). You see a lot of windows and icons
+there. The tab ``CVS Repositories'' on the left side shows all
+repository locations currently known. This list is empty since we have
+not added any CVS locations yet.
+\begin{figure}[ht]
+  \centering  \includegraphics[scale=.25]{image/eclipse-cvs-1}
+  \caption{CVS Exploring Perspective}\label{fig:eclipse-cvs-1}
+\end{figure}
+
+To add a new repository location press the left mouse button on this
+tab and select \menu{New \sub Repository Location\ldots} (see
+figure~\ref{fig:eclipse-new-repository}).
+\begin{figure}[ht]
+  \centering  \includegraphics[scale=.4]{image/eclipse-new-repository}
+  \caption{New Repository Location}\label{fig:eclipse-new-repository}
+\end{figure}
+
+This brings up the dialog shown in figure~\ref{fig:eclipse-add-cvs}.
+Here you can enter the coordinates of the \ExTeX\ CVS repository.
+\begin{figure}[ht]
+  \centering  \includegraphics[scale=.4]{image/eclipse-add-cvs}
+  \caption{The Coordinates of the \ExTeX\ Repository}\label{fig:eclipse-add-cvs}
+\end{figure}
+
+Note that you have to enter your account at Berlios ant its password
+into the appropriate fields. If you do not have an account you can use
+the account name \texttt{anonymous} without any password to get
+reading access to the sources.
+
+For this step you need online access to the internet. When the form is
+submitted with the OK button, the accessibility of the repository
+location is checked. Upon success the new repository location is
+added to the list of repository locations as can be seen in figure~\ref{fig:eclipse-cvs}.
+\begin{figure}[ht]
+  \centering  \includegraphics[scale=.4]{image/eclipse-cvs}
+  \caption{The \ExTeX\ Repository Listed}\label{fig:eclipse-cvs}
+\end{figure}
+
+
+\subsection{Configuring Eclipse}
+
+Eclipse can be configured in a wide range. In the following sections
+some configuration options are proposed for the seamless development
+of \ExTeX. The configuration is performed via the preferences dialog.
+This dialog can be opened via \menu{Window \sub Preferences\ldots}
+\begin{figure}[ht]
+  \centering  \includegraphics[scale=.4]{image/eclipse-preferences}
+  \caption{Eclipse Preferences}\label{fig:eclipse-preferences}
+\end{figure}
+
+
+\subsection{The Code Formatter}
+
+Eclipse comes has a code formatter which can be invoked easily. This
+code formatter can be configured for different needs. A configuration
+for \ExTeX\ is contained in the repository under
+\texttt{develop/eclipse/formatter.xml}.
+
+
+
+\subsection{Checkstyle}
+
+Checkstyle is a tool for checking the adherence of Java source code to
+certain rules. The rules can be freely configured. The \ExTeX\
+repository contains a set of rules for checkstyle.
+
+Checkstyle comes in a command line version and as a plug-in for
+Eclipse. This plugin has to be installed first.
+
+
+\subsection{Spelling}
+
+Since English is not the native language of each developer it is a
+good idea to enable the spell checking of the source code. This
+feature is provided by Eclipse. In figure~ref{fig:eclipse-spelling}
+you can seen the preference page where you can activate the spell
+checking and provide a dictionary.
+\begin{figure}[th]
+  \centering
+  \includegraphics[scale=.4]{image/spelling}
+  \caption{Spelling Preferences}\label{fig:eclipse-spelling}
+\end{figure}
+
+A dictionary can be got from SCOWL
+(\url{http://wordlist.sourceforge.net/}). You might want to use the US
+dictionary of medium size. Since this contains enough words to fit but
+not too much obscure words which hide typos.
+
+After the spell checking is activated potential typos are marked in
+the editor with yellow lines. Correction proposals can be requested
+with the quick fix shortcut Ctrl-1.
+
+
+\subsection{Compiling \ExTeX}
+
+Any source file in Eclipse is compiled automatically when the file is
+saved. Thus it is usually not necessary to compile things manually.
+If you feel the need to recompile everything you can achieve this by
+selecting \menu{Project \sub Clean\ldots} while the item \menu{Project
+\sub Build Automatically} is checked (see figure~\ref{fig:eclipse-recompile}).
+\begin{figure}[th]
+  \centering
+  \includegraphics[scale=.4]{image/eclipse-recompile}
+  \caption{Recompiling a Project}\label{fig:eclipse-recompile}
+\end{figure}
+
+Another recompilation can be triggered via the ant task \texttt{compile}.
+
+\subsection{Running \ExTeX}
+
+\ExTeX\ can be run from within Eclipse.
+
+\INCOMPLETE
+
+\subsection{Committing Changes}
+
+\INCOMPLETE
+
+
+%------------------------------------------------------------------------------
+\section{Command Line Use}
+%@author Gerd Neugebauer
+
+
+\subsection{Downloading the Sources}
+
+You need to download the sources of \ExTeX. On the command line this
+can be done with the following commands:
+
+\begin{verbatim}
+% cvs -d:pserver:anonymous@cvs.extex.berlios.de:/cvsroot/extex login
+% cvs -z3 -d:pserver:anonymous@cvs.extex.berlios.de:/cvsroot/extex co ExTeX
+\end{verbatim}
+
+
+\subsection{Checkstyle}
+
+Checkstyle is a source code checker.
+\ExTeX\ should show a homogeneous appearance of the sources.
+
+\subsection{Ant}
+
+Apache Ant is a build system for Java. It can be considered state of
+the art for Java programs to come with ant scripts. \ExTeX\ supports
+ant by providing a \texttt{build.xml} file for various tasks.
+
+The files needed for running ant are included in the \ExTeX\
+repository. Thus no additional installation is required.
+
+
+\subsection{JUnit}
+
+JUnit is the state of the art concerning test automation for Java
+programs. 
+
+\INCOMPLETE
+
+
+\subsection{Compiling \ExTeX}
+
+\INCOMPLETE
+
+
+\subsection{Running \ExTeX}
+
+\INCOMPLETE
+
+
+%------------------------------------------------------------------------------
+\section{Use with Emacs and JDE}
+%@author Gerd Neugebauer
+
+\INCOMPLETE
+
+
+
+%------------------------------------------------------------------------------
+\section{Modelling: Jude}
+
+Jude is a UML modeller written in Java. It is distributed in a
+community edition for free use. Currently the version 1.6.2 is
+available from \url{http://www.esm.jp/jude-web/index.html}. 
+\begin{figure}[thp]
+  \centering
+  \includegraphics[width=\textwidth]{image/jude-seq}
+  \caption{Jude}\label{fig:jude}
+\end{figure}
+
+Jude should be used for any situations where UML diagrams are needed.
+A screenshot of Jude can be seen in figure~\ref{fig:jude}.
+
+
+%------------------------------------------------------------------------------
+\chapter{The Source Tree Organization}
+%@author Gerd Neugebauer
+
+\section{The Toplevel Directory}
+
+The toplevel directory of an \ExTeX\ project contains certain files
+and sub-directories.
+
+\begin{description}
+\item[develop] \ \\
+  The sub-directory \texttt{develop} contains bits and pieces needed
+  for development only.
+\item[doc]  \ \\
+  The sub-directory \texttt{doc} contains documentation -- papers
+  written by the \ExTeX\ Group and material collected from elsewhere.
+\item[lib]  \ \\
+  The sub-directory \texttt{lib} contains libraries which need to be
+  present for the final executable to run.
+\item[src]  \ \\
+  The sub-directory \texttt{src} contains the sources.
+\item[target]  \ \\
+  The sub-directory \texttt{target} contains the generated files. This
+  directory is not present in the CVS archive.
+\item[tmp]  \ \\
+  The sub-directory \texttt{tmp} may contain intermediary files. This
+  directory is not present in the CVS archive.
+\item[util]  \ \\
+  The sub-directory \texttt{util} contains some utilities.
+\item[work]  \ \\
+  The sub-directory \texttt{work} may contain working files of single
+  developers. It is not shared via the repositiory.
+\item[www]  \ \\
+  The sub-directory \texttt{www} contains the sources for te Web pages
+  of \ExTeX.
+\end{description}
+
+\section{User's Working Area}
+
+\INCOMPLETE
+
+
+
+%------------------------------------------------------------------------------
+\chapter{Unit Tests}
+%@author Gerd Neugebauer
+
+\INCOMPLETE
+
+
+
+
+%------------------------------------------------------------------------------
+\chapter{The Web Pages}
+%@author Gerd Neugebauer
+
+\INCOMPLETE
+
+
+
+%------------------------------------------------------------------------------
+\chapter{Licenses for \ExTeX}
+%@author Gerd Neugebauer
+
+\INCOMPLETE
+
+
+%------------------------------------------------------------------------------
+\appendix
+%------------------------------------------------------------------------------
+\chapter{Licenses}
+\input{fdl}
+
+
+\end{document}%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Local Variables: 
+% mode: latex
+% TeX-master: nil
+% End: 
