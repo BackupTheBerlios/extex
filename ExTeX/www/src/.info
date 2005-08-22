@@ -15,13 +15,26 @@
       </ul>
     </div>
    </div>
+
+   <div class="info">
+    Snapshots Available
+    <div class="infoitems">
+     The <a href="&top;snapshot/ExTeX-setup.jar">&ExTeX; installer</a>
+     is available in a snapshot version. This snapshot version is automatically
+     generated once a day. Note: it may not be complete nor suitable for any
+     purpose.
+    </div>
+   </div>
+
    <div class="info">
     Developer Meeting
     <div class="infoitems">
-     The &ExTeX; developers have scheduled a meeting for beginning of August
-     2005 in Groﬂ-Gerau (Germany).
+     The &ExTeX; developers had scheduled a meeting for beginning of August
+     2005 in Groﬂ-Gerau (Germany). The focus of the discussions was on the
+     font system and the impact of Unicode support.
     </div>
    </div>
+
    <div class="info">
     <a href="http://www.gutenberg.eu.org/eurotex2005/en/157-intro.html">EuroTeX 2005</a>
     <div class="infoitems">
