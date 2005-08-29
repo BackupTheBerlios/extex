@@ -1,0 +1,12 @@
+%
+% Makindex style file
+% 2005 Gerd Neugebauer
+%
+group_skip ""
+heading_prefix "\n \\indexGroup{"
+heading_suffix "}"
+headings_flag 1
+
+delim_0 "\\dotfill"
+delim_1 "\\dotfill"
+delim_2 "\\dotfill"
