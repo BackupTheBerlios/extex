@@ -2,7 +2,7 @@
  <head>
   <title>Configuration</title>
   <meta name="copyright" content="
-   Copyright (C) 2004 The ExTeX Group and individual authors listed below
+   Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
 
    This library is free software; you can redistribute it and/or modify it
    under the terms of the GNU Lesser General Public License as published by
@@ -19,12 +19,21 @@
    Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
    " />
   <meta name="author" content="Gerd Neugebauer" />
-  <meta name="version" content="$Revision: 1.1 $" />
+  <meta name="version" content="$Revision: 1.2 $" />
  </head>
  <body>
   This package contains some classes and interfaces for dealing with
   the logger for components.
 
+  <h3>Logging</h3>
+  
+  <p>
+   The logging supported in thos framework is based on the Java logging.
+   Any component may request a logger by implementing the interface
+   {@link de.dante.util.framework.logger.LogEnabled LogEnabled}. In the
+   course of the life-cylce management the factory will pass a logger to
+   the component requesting it.
+  </p>
 
  </body>
 </html>

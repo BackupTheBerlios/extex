@@ -22,12 +22,12 @@ package de.dante.extex.typesetter.paragraphBuilder.impl;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This class represents a break point for the paragraph breaking.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
-class BreakPoint {
+public class BreakPoint {
 
     /**
      * The field <tt>fitness</tt> contains the fitness for the break point.
