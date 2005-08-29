@@ -4,3 +4,5 @@
 *.pdf
 *.toc
 Thumbs.db
+tmp
+x.tex
