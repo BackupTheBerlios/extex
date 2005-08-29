@@ -1,5 +1,5 @@
 %%*****************************************************************************
-%% $Id: extex-developers.tex,v 1.1 2005/08/22 07:30:20 gene Exp $
+%% $Id: extex-developers.tex,v 1.2 2005/08/29 07:08:02 gene Exp $
 %%*****************************************************************************
 %% Author: Gerd Neugebauer
 %%-----------------------------------------------------------------------------
@@ -8,10 +8,13 @@
 \usepackage{subfigure}
 
 \def\setVersion$#1: #2.#3 ${\gdef\Version{#2.#3}}
-\setVersion$Revision: 1.1 $
+\setVersion$Revision: 1.2 $
 
 \newcommand\menu{\textsf}
 \newcommand\sub{\(\rightarrow\) }
+\newcommand\File[1]{\texttt{#1}}
+
+\newcommand\Macro[1]{\texttt{\char`\\ #1}}
 
 \begin{document}%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -104,10 +107,10 @@ mailing lists might be of interest:
   A general mailing list about \ExTeX. It has low traffic and is
   mainly in German. Subscribe and unsubscribe via the Web form
   \url{http://www.dante.de/listman/extex}.
-\item[extex-en@dante.de] \ \\
+\item[extex-eng@dante.de] \ \\
   A general mailing list about \ExTeX. It has currently very low
   traffic and is in English. Subscribe and unsubscribe via the Web
-  form \url{http://www.dante.de/listman/extex-en}.
+  form \url{http://www.dante.de/listman/extex-eng}.
 \item[extex-devel@dante.de] \ \\
   A mailing list for the exchange of the developers of \ExTeX. It has
   low traffic and is partly in German. Subscribe and unsubscribe via
@@ -177,7 +180,7 @@ client build into te IDE Eclipse, or the command line version of cvs.
 \section{A Command Line Interpreter}
 
 For several tasks it is convenient to have a command line interpreter
-at hand. On Unix this can be the (bourne/bash/...) shell. On Windows
+at hand. On Unix this can be the (bourne, bash,\ldots) shell. On Windows
 we recommend the Cygwin suite which contains the bash.
 
 
@@ -264,7 +267,7 @@ figure~\ref{fig:eclipse-open-perspective-menu}.
     \includegraphics[scale=.4]{image/eclipse-select-cvs}}%
   \hfill\hbox{}
 
-%  \caption{Open Perspective}\label{fig:eclipse-open-perspective-menu}
+  \caption{Switching to a Perspective}\label{fig:eclipse-perspective}
 \end{figure}
 
 This menu item opens a dialog box which offers some perspectives for
@@ -292,18 +295,19 @@ To add a new repository location press the left mouse button on this
 tab and select \menu{New \sub Repository Location\ldots} (see
 figure~\ref{fig:eclipse-new-repository}).
 \begin{figure}[ht]
-  \centering  \includegraphics[scale=.4]{image/eclipse-new-repository}
-  \caption{New Repository Location}\label{fig:eclipse-new-repository}
+  \hbox{}\hfill
+  \subfigure[New Repository Location\label{fig:eclipse-new-repository}]{%
+    \includegraphics[scale=.4]{image/eclipse-new-repository}}%
+  \hfill
+  \subfigure[The Coordinates of the \ExTeX\ CVS Repository\label{fig:eclipse-add-cvs}]{%
+    \includegraphics[scale=.4]{image/eclipse-add-cvs}}%
+  \caption{Adding the \ExTeX\ CVS Repository}
 \end{figure}
 
 This brings up the dialog shown in figure~\ref{fig:eclipse-add-cvs}.
 Here you can enter the coordinates of the \ExTeX\ CVS repository.
-\begin{figure}[ht]
-  \centering  \includegraphics[scale=.4]{image/eclipse-add-cvs}
-  \caption{The Coordinates of the \ExTeX\ Repository}\label{fig:eclipse-add-cvs}
-\end{figure}
 
-Note that you have to enter your account at Berlios ant its password
+Note that you have to enter your account at Berlios and its password
 into the appropriate fields. If you do not have an account you can use
 the account name \texttt{anonymous} without any password to get
 reading access to the sources.
@@ -311,12 +315,32 @@ reading access to the sources.
 For this step you need online access to the internet. When the form is
 submitted with the OK button, the accessibility of the repository
 location is checked. Upon success the new repository location is
-added to the list of repository locations as can be seen in figure~\ref{fig:eclipse-cvs}.
+added to the list of repository locations as can be seen in
+figure~\ref{fig:eclipse-cvs}.
 \begin{figure}[ht]
   \centering  \includegraphics[scale=.4]{image/eclipse-cvs}
   \caption{The \ExTeX\ Repository Listed}\label{fig:eclipse-cvs}
 \end{figure}
 
+The next step consists of the check-out of the sources into an Eclipse
+project. To accomplish this right-click the repository location in the
+list and select \menu{???} in the appearing context menu.
+
+\INCOMPLETE
+%\begin{figure}[ht]
+%  \centering  \includegraphics[scale=.4]{image/eclipse-checkout}
+%  \caption{The Checkout Progress Bar}\label{fig:eclipse-checkout}
+%\end{figure}
+
+\begin{figure}[ht]
+  \hbox{}\hfill
+  \subfigure[The Checkout Progress Bar\label{fig:eclipse-checkout}]{%
+    \includegraphics[scale=.4]{image/eclipse-checkout}}%
+  \hfill
+  \subfigure[The \ExTeX\ Project in the Package View\label{fig:eclipse-extex-project}]{%
+    \includegraphics[scale=.4]{image/eclipse-extex-project}}%
+  \caption{Checking out \ExTeX\ from the Repository}
+\end{figure}
 
 \subsection{Configuring Eclipse}
 
@@ -329,6 +353,33 @@ This dialog can be opened via \menu{Window \sub Preferences\ldots}
   \caption{Eclipse Preferences}\label{fig:eclipse-preferences}
 \end{figure}
 
+\begin{figure}[ht]
+  \centering  \includegraphics[scale=.4]{image/eclipse-print-margin}
+  \caption{Eclipse Print Margin}\label{fig:eclipse-print-margin}
+\end{figure}
+
+
+\subsection{Code Templates}
+
+Code templates provide a convenient way of filling in a frame for the
+documentation whenever some code is generated by Eclipse. The \ExTeX\ 
+repository contains in the file
+\File{develop/eclipse/codetemplates.xml} some definitions of code
+templates. To import those definitions use the preferences (see
+figure~\ref{fig:eclipse-preferences}). Here select the item \menu{Java
+  \sub Code Style \sub Code Templates}. The button \menu{Import\ldots}
+can leads to a file selector where the file
+\File{develop/eclipse/codetemplates.xml} should be entered.
+\begin{figure}[ht]
+  \centering  \includegraphics[scale=.4]{image/eclipse-templates}
+  \caption{Eclipse Preferences}\label{fig:eclipse-templates}
+\end{figure}
+
+After the code templates have been loaded a minor adaption is
+required. The entry under the key \menu{Comments \sub Types} containes
+hard-wired a name and email address of the author. Here the own name
+and email address should be entered.
+
 
 \subsection{The Code Formatter}
 
@@ -337,6 +388,8 @@ code formatter can be configured for different needs. A configuration
 for \ExTeX\ is contained in the repository under
 \texttt{develop/eclipse/formatter.xml}.
 
+
+ant-formatter
 
 
 \subsection{Checkstyle}
@@ -347,6 +400,8 @@ repository contains a set of rules for checkstyle.
 
 Checkstyle comes in a command line version and as a plug-in for
 Eclipse. This plugin has to be installed first.
+
+The configuration can be found in \texttt{develop/eclipse/checkstyle-plugin.xml}.
 
 
 \subsection{Spelling}
@@ -419,6 +474,8 @@ can be done with the following commands:
 Checkstyle is a source code checker.
 \ExTeX\ should show a homogeneous appearance of the sources.
 
+\INCOMPLETE
+
 \subsection{Ant}
 
 Apache Ant is a build system for Java. It can be considered state of
@@ -429,26 +486,91 @@ The files needed for running ant are included in the \ExTeX\
 repository. Thus no additional installation is required.
 
 
+\INCOMPLETE
+
+
 \subsection{JUnit}
 
 JUnit is the state of the art concerning test automation for Java
-programs. 
+programs. Thus \ExTeX\ provides some test cases in the form of JUnit
+classes.
 
 \INCOMPLETE
 
 
 \subsection{Compiling \ExTeX}
 
-\INCOMPLETE
+Compiling \ExTeX form the command line can be accomplished with the
+help of the build script. The build script is a wrapper around Ant. It
+can be invoked with the following command:
+
+\begin{verbatim}
+  build compile
+\end{verbatim}
+
+The generated files are placed in the sub-directory
+\texttt{target/classes}. 
 
 
 \subsection{Running \ExTeX}
 
+\ExTeX\ can be run with the help of the \ExTeX\ script in the main
+directory or by a direct invocation of Java. The start script is
+provided for Unix under the name \File{extex} and for Windows under
+the name \File{extex.bat}.
+
+For the usual purposes these scripts can be used as a plug-in
+replacement for \TeX. See the User's Guide for the command line
+options.
+
+To run \ExTeX\ from the command line prepare the class path -- i.e.
+the environment variable \texttt{CLASSPATH} -- to contain all
+libraries found in the directory \texttt{lib}. In addition the
+directory \texttt{target/classes} have to be on the class path.
+Then you can invoke \ExTeX\ like in the following example:
+
+\begin{verbatim}
+  java de.dante.extex.Main.TeX sample.tex
+\end{verbatim}
+
+The command line arguments are the same as for \File{extex} mentioned
+above.
+
+
+\subsection{Creating JavaDoc}
+
+
+\begin{verbatim}
+  build javadoc
+\end{verbatim}
+
 \INCOMPLETE
 
 
+
+\subsection{Creating the Installer}
+
+The installer can be build with the help of the build script. The
+invocation looks as follows:
+
+\begin{verbatim}
+  build installer
+\end{verbatim}
+
+After the work is complete the installer can be found in the file
+\texttt{target/ExTeX-setup.jar}. The use of the installer is described
+in the User's Manual.
+
+Alternatively the installer can also be created with the Ant task
+\texttt{installer}. Using this method can be applied from the command
+line and from within Eclipse.
+
+Note that the installer is automatically created once a day and
+provided in the snapshot directory of the \ExTeX\ Web site.
+
+
 %------------------------------------------------------------------------------
-\section{Use with Emacs and JDE}
+\section{Use with Emacs and JDEE}
 %@author Gerd Neugebauer
 
 \INCOMPLETE
@@ -469,6 +591,36 @@ available from \url{http://www.esm.jp/jude-web/index.html}.
 
 Jude should be used for any situations where UML diagrams are needed.
 A screenshot of Jude can be seen in figure~\ref{fig:jude}.
+
+Models for \ExTeX\ should be placed in the directory \File{doc/models}.
+
+
+%------------------------------------------------------------------------------
+\chapter{Source Code Documentation}
+%@author Gerd Neugebauer
+
+The source code has to be documented. \TeX\ shows us a good example of
+a proper documenatation. Donald Knuth has invented the Web system to
+keep together the documentation and the source code. The source code
+and documentation are extracted from a common file. In the Java world
+the JavaDoc system has been invented for a similar purpose. 
+
+\section{JavaDoc}
+
+The JavaDoc conventions for comments make it possible to extract the
+relevant part of the documentation and generate several outut formats
+from it. The primary output format is HTML.
+\begin{figure}[tbh]
+  \centering
+  \includegraphics[scale=.25]{image/javadoc}
+  \caption{JavaDoc in the Browser}\label{fig:eclipse-javadoc}
+\end{figure}
+
+\section{Documentation of Primitives}
+
+\INCOMPLETE
+
+
 
 
 %------------------------------------------------------------------------------
@@ -499,7 +651,8 @@ and sub-directories.
   The sub-directory \texttt{tmp} may contain intermediary files. This
   directory is not present in the CVS archive.
 \item[util]  \ \\
-  The sub-directory \texttt{util} contains some utilities.
+  The sub-directory \texttt{util} contains some utilities for
+  development. They are not contained in the installer.
 \item[work]  \ \\
   The sub-directory \texttt{work} may contain working files of single
   developers. It is not shared via the repositiory.
@@ -510,7 +663,17 @@ and sub-directories.
 
 \section{User's Working Area}
 
-\INCOMPLETE
+Any user may have some files in the project area, Those files should
+not be committed to the Repository. For this purpose the directory
+\texttt{work} is reserved.
+
+
+
+%------------------------------------------------------------------------------
+\chapter{Java Details}
+%@author Gerd Neugebauer
+
+\InputIfFileExists{tmp/howto}{}
 
 
 
@@ -527,8 +690,222 @@ and sub-directories.
 \chapter{The Web Pages}
 %@author Gerd Neugebauer
 
-\INCOMPLETE
+\section{Overview}
 
+\ExTeX\ has a domain of its own. This domain \url{www.extex.org} has
+been registered by DANTE e.V. In this location the official Web pages
+(see figure~\ref{fig:www-eclipse-org}) are provided.
+\begin{figure}[htb]
+  \centering
+  \includegraphics[scale=.4]{image/www-extex-org}
+  \caption{www.extex.org}\label{fig:www-extex-org}
+\end{figure}
+
+The Web pages are build with a simple generator for a Web site written
+in Perl. It has been made for \ExTeX. The aim is the ease of
+maintainance for normal content of pages. They are stored as simple
+HTML files and augmented automatically upon publication.
+
+The layout is separated form the content and stored in several files.
+This makes it very easy to adapt the appearance without touching the
+contents.
+
+The sources are kept in the subdirectory \texttt{src}. The generated
+files are put into the subdirectory \texttt{www}. Both locations can
+be configured.
+
+To generate the Web site run the following command, where the current
+directory is the directory \texttt{www}:
+
+\begin{verbatim}
+  make
+\end{verbatim}
+
+This command creates a complete directory hierarchy with all necessary
+sub-directories in \texttt{../target/www}. An exception are the
+directories named \texttt{CVS}. Those directories are ignored.
+
+The files starting with \verb|.| or ending in \verb|~| or in
+\texttt{.bak} are also ignored. The files not ending in \verb|.html|
+are copied into the destination tree. The files ending in \verb|.html|
+are processed as follows: Text is inserted before the \verb|</head>|
+tag from the file \File{.headEnd}. Text is inserted after the
+\verb|<body>| tag from the file \File{.bodyStart}. Text is inserted
+before the \verb|</body>| tag from the file \File{.bodyEnd}.
+
+The text to be inserted is sought in the current directory and in case
+of failure upwards in the super-directories until it is found. In the
+inserted files the following entities and tags are replaced:
+
+\begin{description}
+\item [\tt\&top;]\ \\
+  this is the relative path to the top directory.
+\item [\tt\&year;]\ \\
+  this is the current year when generating.
+\item [\tt\&month;]\ \\
+  this is the current month when generating.
+\item [\tt\&day;]\ \\
+  this is the current day when generating.
+\item [\tt<tabs/>]\ \\
+  this is replaced by the contents of the file .tabs.
+\item [\tt<navigation/>]\ \\
+  this is replaced by the contents of the file .navigation.
+\item [\tt<info/>]\ \\
+  this is replaced by the contents of the file .info.
+\end{description}
+
+Note, that even so it looks like XML processing, currently the
+processing is based on string manipulation. Thus tricks possible with
+XML might not work here.
+
+\section{Layout}
+
+The current layout has the scheme shown in figure~\ref{fig:www-layout}.
+\definecolor{bg}{gray}{.95}
+\begin{figure}[htbp]
+  \centering
+
+  \definecolor{bg}{gray}{.95}
+  \definecolor{shadow}{gray}{.8}
+  \begin{pgfpicture}{-1.25mm}{-5mm}{132mm}{51mm}
+    
+    \begin{pgftranslate}{\pgfpoint{22mm}{41mm}}
+      \begin{pgftranslate}{\pgfpoint{1mm}{-1mm}}
+        \color{shadow}
+        \pgfmoveto{\pgfpoint{0mm}{0mm}} \pgflineto{\pgfpoint{5mm}{10mm}}
+        \pgflineto{\pgfpoint{105mm}{10mm}} \pgflineto{\pgfpoint{100mm}{0mm}}
+        \pgflineto{\pgfpoint{0mm}{0mm}} \pgffillstroke
+      \end{pgftranslate}
+      \color{bg}
+      \pgfmoveto{\pgfpoint{0mm}{0mm}} \pgflineto{\pgfpoint{5mm}{10mm}}
+      \pgflineto{\pgfpoint{105mm}{10mm}} \pgflineto{\pgfpoint{100mm}{0mm}}
+      \pgflineto{\pgfpoint{0mm}{0mm}} \pgffillstroke
+      \color{black}
+      \pgfmoveto{\pgfpoint{0mm}{0mm}} \pgflineto{\pgfpoint{5mm}{10mm}}
+      \pgflineto{\pgfpoint{105mm}{10mm}} \pgflineto{\pgfpoint{100mm}{0mm}}
+      \pgflineto{\pgfpoint{0mm}{0mm}} \pgfstroke
+      \pgfputat{\pgfpoint{52.5mm}{5mm}}{\pgfbox[center,center]{\sf\itshape Header}}
+    \end{pgftranslate}
+    
+    \begin{pgftranslate}{\pgfpoint{18.5mm}{34mm}}
+      \begin{pgftranslate}{\pgfpoint{1mm}{-1mm}}
+        \color{shadow}
+        \pgfmoveto{\pgfpoint{0mm}{0mm}} \pgflineto{\pgfpoint{2.5mm}{5mm}}
+        \pgflineto{\pgfpoint{102.5mm}{5mm}} \pgflineto{\pgfpoint{100mm}{0mm}}
+        \pgflineto{\pgfpoint{0mm}{0mm}} \pgffillstroke
+      \end{pgftranslate}
+      \color{bg}
+      \pgfmoveto{\pgfpoint{0mm}{0mm}} \pgflineto{\pgfpoint{2.5mm}{5mm}}
+      \pgflineto{\pgfpoint{102.5mm}{5mm}} \pgflineto{\pgfpoint{100mm}{0mm}}
+      \pgflineto{\pgfpoint{0mm}{0mm}} \pgffillstroke
+      \color{black}
+      \pgfmoveto{\pgfpoint{0mm}{0mm}} \pgflineto{\pgfpoint{2.5mm}{5mm}}
+      \pgflineto{\pgfpoint{102.5mm}{5mm}} \pgflineto{\pgfpoint{100mm}{0mm}}
+      \pgflineto{\pgfpoint{0mm}{0mm}} \pgfstroke
+      \pgfputat{\pgfpoint{52.5mm}{2.5mm}}{\pgfbox[center,center]{\sf\itshape Tab Bar}}
+    \end{pgftranslate}
+    
+    \begin{pgftranslate}{\pgfpoint{-1mm}{2mm}}
+      \begin{pgftranslate}{\pgfpoint{1mm}{-1mm}}
+        \color{shadow}
+        \pgfmoveto{\pgfpoint{0mm}{0mm}} \pgflineto{\pgfpoint{15mm}{30mm}}
+        \pgflineto{\pgfpoint{35mm}{30mm}} \pgflineto{\pgfpoint{20mm}{0mm}}
+        \pgflineto{\pgfpoint{0mm}{0mm}} \pgffillstroke
+      \end{pgftranslate}
+      \color{bg}
+      \pgfmoveto{\pgfpoint{0mm}{0mm}} \pgflineto{\pgfpoint{15mm}{30mm}}
+      \pgflineto{\pgfpoint{35mm}{30mm}} \pgflineto{\pgfpoint{20mm}{0mm}}
+      \pgflineto{\pgfpoint{0mm}{0mm}} \pgffillstroke
+      \color{black}
+      \pgfmoveto{\pgfpoint{0mm}{0mm}} \pgflineto{\pgfpoint{15mm}{30mm}}
+      \pgflineto{\pgfpoint{35mm}{30mm}} \pgflineto{\pgfpoint{20mm}{0mm}}
+      \pgflineto{\pgfpoint{0mm}{0mm}} \pgfstroke
+      \pgfputat{\pgfpoint{17.75mm}{15mm}}{\pgfbox[center,center]{\parbox{20mm}{\centering\sf\itshape
+            Navigation\\Area~~~}}}
+    \end{pgftranslate}
+    
+    \begin{pgftranslate}{\pgfpoint{22mm}{2mm}}
+      \begin{pgftranslate}{\pgfpoint{1mm}{-1mm}}
+        \color{shadow}
+        \pgfmoveto{\pgfpoint{0mm}{0mm}} \pgflineto{\pgfpoint{15mm}{30mm}}
+        \pgflineto{\pgfpoint{75mm}{30mm}} \pgflineto{\pgfpoint{60mm}{0mm}}
+        \pgflineto{\pgfpoint{0mm}{0mm}} \pgffillstroke
+      \end{pgftranslate}
+      \color{bg}
+      \pgfmoveto{\pgfpoint{0mm}{0mm}} \pgflineto{\pgfpoint{15mm}{30mm}}
+      \pgflineto{\pgfpoint{75mm}{30mm}} \pgflineto{\pgfpoint{60mm}{0mm}}
+      \pgflineto{\pgfpoint{0mm}{0mm}} \pgffillstroke
+      \color{black}
+      \pgfmoveto{\pgfpoint{0mm}{0mm}} \pgflineto{\pgfpoint{15mm}{30mm}}
+      \pgflineto{\pgfpoint{75mm}{30mm}} \pgflineto{\pgfpoint{60mm}{0mm}}
+      \pgflineto{\pgfpoint{0mm}{0mm}} \pgfstroke
+      \pgfputat{\pgfpoint{37.5mm}{15mm}}{\pgfbox[center,center]{\sf\itshape
+          Content Area}}
+    \end{pgftranslate}
+    
+    \begin{pgftranslate}{\pgfpoint{85mm}{2mm}}
+      \begin{pgftranslate}{\pgfpoint{1mm}{-1mm}}
+        \color{shadow}
+        \pgfmoveto{\pgfpoint{0mm}{0mm}} \pgflineto{\pgfpoint{15mm}{30mm}}
+        \pgflineto{\pgfpoint{35mm}{30mm}} \pgflineto{\pgfpoint{20mm}{0mm}}
+        \pgflineto{\pgfpoint{0mm}{0mm}} \pgffillstroke
+      \end{pgftranslate}
+      \color{bg}
+      \pgfmoveto{\pgfpoint{0mm}{0mm}} \pgflineto{\pgfpoint{15mm}{30mm}}
+      \pgflineto{\pgfpoint{35mm}{30mm}} \pgflineto{\pgfpoint{20mm}{0mm}}
+      \pgflineto{\pgfpoint{0mm}{0mm}} \pgffillstroke
+      \color{black}
+      \pgfmoveto{\pgfpoint{0mm}{0mm}} \pgflineto{\pgfpoint{15mm}{30mm}}
+      \pgflineto{\pgfpoint{35mm}{30mm}} \pgflineto{\pgfpoint{20mm}{0mm}}
+      \pgflineto{\pgfpoint{0mm}{0mm}} \pgfstroke
+      \pgfputat{\pgfpoint{17.5mm}{15mm}}{\pgfbox[center,center]{\parbox{20mm}{\centering\sf\itshape
+            Info\\Area~~~}}}
+    \end{pgftranslate}
+    
+    \begin{pgftranslate}{\pgfpoint{-1.25mm}{-5mm}}
+      \begin{pgftranslate}{\pgfpoint{1mm}{-1mm}}
+        \color{shadow}
+        \pgfmoveto{\pgfpoint{0mm}{0mm}} \pgflineto{\pgfpoint{2.5mm}{5mm}}
+        \pgflineto{\pgfpoint{102.5mm}{5mm}} \pgflineto{\pgfpoint{100mm}{0mm}}
+        \pgflineto{\pgfpoint{0mm}{0mm}} \pgffillstroke
+      \end{pgftranslate}
+      \color{bg}
+      \pgfmoveto{\pgfpoint{0mm}{0mm}} \pgflineto{\pgfpoint{2.5mm}{5mm}}
+      \pgflineto{\pgfpoint{102.5mm}{5mm}} \pgflineto{\pgfpoint{100mm}{0mm}}
+      \pgflineto{\pgfpoint{0mm}{0mm}} \pgffillstroke
+      \color{black}
+      \pgfmoveto{\pgfpoint{0mm}{0mm}} \pgflineto{\pgfpoint{2.5mm}{5mm}}
+      \pgflineto{\pgfpoint{102.5mm}{5mm}} \pgflineto{\pgfpoint{100mm}{0mm}}
+      \pgflineto{\pgfpoint{0mm}{0mm}} \pgfstroke
+      \pgfputat{\pgfpoint{52.5mm}{2.5mm}}{\pgfbox[center,center]{\sf\itshape Footer}}
+    \end{pgftranslate}
+  \end{pgfpicture}
+
+  \caption{Layout of the Web pages}\label{fig:www-layout}
+\end{figure}
+
+The Header contains the right aligned Logo only.
+It is the same on all pages.
+The Tab Bar shows the topmost navigation items with the Tab metophor.
+The Navigation Area shows all navigation items.
+It is the same on all pages.
+The Info Area shows some info items specific for the current
+navigation item.
+
+The Content Area contains the contents of the page. This is maintained
+by the site authors. The Footer contains a simple copyrigt note.
+
+
+\section{Automatic Generation}
+
+The web pages are generated automatically every night. This task is
+performed with the help of a cron job on shell.berlios.de under the
+account gene. In the course of this generation the current sources are
+checked out from te CVS repository
+
+Thus the normal user simply has to edit the pages in the area
+\texttt{www/src} and check them into the CVS repository. The rest
+happens automagically.
 
 
 %------------------------------------------------------------------------------
