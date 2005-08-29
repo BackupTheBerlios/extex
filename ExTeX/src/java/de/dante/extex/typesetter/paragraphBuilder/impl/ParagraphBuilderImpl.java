@@ -55,7 +55,7 @@ import de.dante.util.framework.logger.LogEnabled;
 /**
  * This class provides a paragraph builder.
  *
- * TODO gene: missing JavaDoc.
+ * TODO gene: documentation incomplete.
  *
  * <doc name="emergencystretch" type="register">
  * <h3>The Parameter <tt>\emergencystretch</tt></h3>
@@ -149,7 +149,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * Treat segments of a paragraph separated by forced breaks separately.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public class ParagraphBuilderImpl
         implements
