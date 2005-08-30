@@ -1,5 +1,5 @@
 %%*****************************************************************************
-%% $Id: extex-developers.tex,v 1.2 2005/08/29 07:08:02 gene Exp $
+%% $Id: extex-developers.tex,v 1.3 2005/08/30 08:02:59 gene Exp $
 %%*****************************************************************************
 %% Author: Gerd Neugebauer
 %%-----------------------------------------------------------------------------
@@ -8,7 +8,7 @@
 \usepackage{subfigure}
 
 \def\setVersion$#1: #2.#3 ${\gdef\Version{#2.#3}}
-\setVersion$Revision: 1.2 $
+\setVersion$Revision: 1.3 $
 
 \newcommand\menu{\textsf}
 \newcommand\sub{\(\rightarrow\) }
@@ -160,15 +160,49 @@ Berlios -- the hosting site.
 
 \section{Java}
 
-You need to have Java 1.4.2 or later installed on your system. You can
-get Java for a several systems directly from \url{http://java.sun.com}.
-Download and install it according to the installation instructions for
-your environment.
+You need to have Java 1.4.2\index{Java} or later installed on your
+system. You can get Java for a several systems directly from
+\url{java.sun.com}. Download and install it according to the
+installation instructions for your environment.
 
-Free Java re-implementations are currently not supported. They might
+To check that you have an appropriate Java on your path you can use
+the command \texttt{java} with the argument \texttt{-version}. This
+can be seen in the following listing:
+
+\lstset{morecomment=[l]{\#}}%
+\begin{lstlisting}{morecomment=[l][keywordstyle]{>}}
+# java -version
+java version "1.4.2_06"
+Java(TM) 2 Runtime Environment, Standard Edition (build 1.4.2_06-b03)
+Java HotSpot(TM) Client VM (build 1.4.2_06-b03, mixed mode)
+#
+\end{lstlisting}
+
+Free Java implementations are currently not supported. They might
 work, but the last time we checked it, GCJ didn't suffice. We would be
 happy have someone working on a compatibility layer for a free Java
 implementation.
+
+
+\section{TEXMF}
+%@author Gerd Neugebauer
+
+If you want to use more than the pure \ExTeX\ engine, fonts and macros
+can be inherited from a texmf tree\index{texmf}. \ExTeX\ itself does
+not contain a full texmf tree. It comes just with some rudimentary
+files necessary for testing. Thus you should have installed a texmf
+tree, e.g. from a \TeX Live\index{TeXlive@\TeX Live} installation.
+This can be found on the \href{http://www.ctan.org}{Comprehensive
+  \TeX\ Archive Network (CTAN)}\index{CTAN}.
+
+There is no need to install the texmf tree in a special place. You
+have to tell \ExTeX\ anyhow where it can be found. It is even possible
+to work with several texmf trees.
+
+One requirement for the texmf trees is that they have a file database
+(\File{ls-R}). \ExTeX\ can be configured to work without it, but then
+\ExTeX\ is deadly slow. Thus you do not really want to try this
+alternative.
 
 
 \section{CVS Client}
@@ -294,7 +328,7 @@ not added any CVS locations yet.
 To add a new repository location press the left mouse button on this
 tab and select \menu{New \sub Repository Location\ldots} (see
 figure~\ref{fig:eclipse-new-repository}).
-\begin{figure}[ht]
+\begin{figure}[htp]
   \hbox{}\hfill
   \subfigure[New Repository Location\label{fig:eclipse-new-repository}]{%
     \includegraphics[scale=.4]{image/eclipse-new-repository}}%
@@ -317,22 +351,31 @@ submitted with the OK button, the accessibility of the repository
 location is checked. Upon success the new repository location is
 added to the list of repository locations as can be seen in
 figure~\ref{fig:eclipse-cvs}.
-\begin{figure}[ht]
-  \centering  \includegraphics[scale=.4]{image/eclipse-cvs}
-  \caption{The \ExTeX\ Repository Listed}\label{fig:eclipse-cvs}
+\begin{figure}[htp]
+  \hbox{}\hfill
+  \subfigure[The \ExTeX\ Repository Listed\label{fig:eclipse-cvs}]{%
+    \includegraphics[scale=.4]{image/eclipse-cvs}}%
+  \hfill
+  \subfigure[Selecting to check-out of \ExTeX\label{fig:eclipse-checkout-extex}]{%
+    \includegraphics[scale=.4]{image/eclipse-checkout-extex}}%
+  \caption{Checking-out of \ExTeX}
 \end{figure}
 
 The next step consists of the check-out of the sources into an Eclipse
-project. To accomplish this right-click the repository location in the
-list and select \menu{???} in the appearing context menu.
+project. To accomplish this you have to open the repository location
+and the HEAD within. Right-click the item \texttt{ExTeX} in the list
+(see figure~\ref{fig:eclipse-cvs}) and select \menu{Checkout} in the
+appearing context menu (see figure~\ref{fig:eclipse-checkout-extex}).
+This will instruct Exclipe to create a new project in the workspace
+and fill it with the files from the repository.
 
-\INCOMPLETE
-%\begin{figure}[ht]
-%  \centering  \includegraphics[scale=.4]{image/eclipse-checkout}
-%  \caption{The Checkout Progress Bar}\label{fig:eclipse-checkout}
-%\end{figure}
-
-\begin{figure}[ht]
+\INCOMPLETE Eclipse shows a progress bar during the check-out (see
+figure~ref{fig:eclipse-checkout}). This operation may take some time
+-- we have been really busy creating files. When the checkout is
+finished you will find the project \texttt{ExTeX} in Eclipse containing
+the files within. The appearance of the Package View with those files
+is shown in figure~\ref{fig:eclipse-extex-project}.
+\begin{figure}[htp]
   \hbox{}\hfill
   \subfigure[The Checkout Progress Bar\label{fig:eclipse-checkout}]{%
     \includegraphics[scale=.4]{image/eclipse-checkout}}%
@@ -348,15 +391,40 @@ Eclipse can be configured in a wide range. In the following sections
 some configuration options are proposed for the seamless development
 of \ExTeX. The configuration is performed via the preferences dialog.
 This dialog can be opened via \menu{Window \sub Preferences\ldots}
-\begin{figure}[ht]
-  \centering  \includegraphics[scale=.4]{image/eclipse-preferences}
-  \caption{Eclipse Preferences}\label{fig:eclipse-preferences}
+\begin{figure}[htp]
+  \hbox{}\hfill
+  \subfigure[Eclipse Preferences\label{fig:eclipse-preferences}]{%
+    \includegraphics[scale=.4]{image/eclipse-preferences}}%
+  \hfill
+  \subfigure[Eclipse Print Margin\label{fig:eclipse-print-margin}]{%
+    \includegraphics[scale=.4]{image/eclipse-print-margin}}%
+  \caption{Some simple Settings}
 \end{figure}
 
-\begin{figure}[ht]
-  \centering  \includegraphics[scale=.4]{image/eclipse-print-margin}
-  \caption{Eclipse Print Margin}\label{fig:eclipse-print-margin}
-\end{figure}
+This menu brings up a dialog with many tabs which can be used to
+adjust the behaviour of Eclipse in many ways. The first step described
+below consists of the adaption of the appearance of the text editors.
+In the tree view on the left side of the dialog select \menu{General
+  \sub Editors \sub Text Editors} as shown in
+figure~\ref{fig:eclipse-print-margin}. 
+
+Now you can adjust some values on the right side of the dialog. Set
+the tag width to 8. Check the item \menu{Show print margin}. Adjust
+the print margin to 80. And finally change the print color to red. The
+settings are stored in the workspace by accepting the settings with
+the \menu{OK} button.
+
+The rational is that the tabs should be used in the traditional sense
+of eight chracters wide. In fact this is just a fallback. Usually tabs
+should be avoided where possible. The print margin of 80 is a weak
+rule. Try to limit yourself to this width. Sometimes it is not
+reasonable. Thus the checkstyle rules allow some more characters
+before complaining.
+
+The following sections describe some more of the configuration
+options. You should really consider to follow the instructions to make
+maximal use of the configurations provided with \ExTeX.
+
 
 
 \subsection{Code Templates}
@@ -370,7 +438,7 @@ figure~\ref{fig:eclipse-preferences}). Here select the item \menu{Java
   \sub Code Style \sub Code Templates}. The button \menu{Import\ldots}
 can leads to a file selector where the file
 \File{develop/eclipse/codetemplates.xml} should be entered.
-\begin{figure}[ht]
+\begin{figure}[htp]
   \centering  \includegraphics[scale=.4]{image/eclipse-templates}
   \caption{Eclipse Preferences}\label{fig:eclipse-templates}
 \end{figure}
@@ -411,7 +479,7 @@ good idea to enable the spell checking of the source code. This
 feature is provided by Eclipse. In figure~ref{fig:eclipse-spelling}
 you can seen the preference page where you can activate the spell
 checking and provide a dictionary.
-\begin{figure}[th]
+\begin{figure}[htp]
   \centering
   \includegraphics[scale=.4]{image/spelling}
   \caption{Spelling Preferences}\label{fig:eclipse-spelling}
@@ -434,7 +502,7 @@ saved. Thus it is usually not necessary to compile things manually.
 If you feel the need to recompile everything you can achieve this by
 selecting \menu{Project \sub Clean\ldots} while the item \menu{Project
 \sub Build Automatically} is checked (see figure~\ref{fig:eclipse-recompile}).
-\begin{figure}[th]
+\begin{figure}[thp]
   \centering
   \includegraphics[scale=.4]{image/eclipse-recompile}
   \caption{Recompiling a Project}\label{fig:eclipse-recompile}
@@ -463,10 +531,10 @@ Another recompilation can be triggered via the ant task \texttt{compile}.
 You need to download the sources of \ExTeX. On the command line this
 can be done with the following commands:
 
-\begin{verbatim}
+\begin{lstlisting}{}
 % cvs -d:pserver:anonymous@cvs.extex.berlios.de:/cvsroot/extex login
 % cvs -z3 -d:pserver:anonymous@cvs.extex.berlios.de:/cvsroot/extex co ExTeX
-\end{verbatim}
+\end{lstlisting}{}
 
 
 \subsection{Checkstyle}
@@ -504,9 +572,9 @@ Compiling \ExTeX form the command line can be accomplished with the
 help of the build script. The build script is a wrapper around Ant. It
 can be invoked with the following command:
 
-\begin{verbatim}
+\begin{lstlisting}{}
   build compile
-\end{verbatim}
+\end{lstlisting}
 
 The generated files are placed in the sub-directory
 \texttt{target/classes}. 
@@ -529,9 +597,9 @@ libraries found in the directory \texttt{lib}. In addition the
 directory \texttt{target/classes} have to be on the class path.
 Then you can invoke \ExTeX\ like in the following example:
 
-\begin{verbatim}
+\begin{lstlisting}{}
   java de.dante.extex.Main.TeX sample.tex
-\end{verbatim}
+\end{lstlisting}{}
 
 The command line arguments are the same as for \File{extex} mentioned
 above.
@@ -540,9 +608,9 @@ above.
 \subsection{Creating JavaDoc}
 
 
-\begin{verbatim}
+\begin{lstlisting}{}
   build javadoc
-\end{verbatim}
+\end{lstlisting}{}
 
 \INCOMPLETE
 
@@ -553,13 +621,13 @@ above.
 The installer can be build with the help of the build script. The
 invocation looks as follows:
 
-\begin{verbatim}
+\begin{lstlisting}{}
   build installer
-\end{verbatim}
+\end{lstlisting}{}
 
 After the work is complete the installer can be found in the file
-\texttt{target/ExTeX-setup.jar}. The use of the installer is described
-in the User's Manual.
+\File{ExTeX-setup.jar} in the director \File{target}. The use of the
+installer is described in the User's Manual.
 
 Alternatively the installer can also be created with the Ant task
 \texttt{installer}. Using this method can be applied from the command
@@ -572,6 +640,9 @@ provided in the snapshot directory of the \ExTeX\ Web site.
 %------------------------------------------------------------------------------
 \section{Use with Emacs and JDEE}
 %@author Gerd Neugebauer
+
+JDEE is the extension of Emcas for the development with Java. \ExTeX\
+contais soem support files for use in this context.
 
 \INCOMPLETE
 
@@ -670,8 +741,12 @@ not be committed to the Repository. For this purpose the directory
 
 
 %------------------------------------------------------------------------------
-\chapter{Java Details}
+\chapter{Design Details}
 %@author Gerd Neugebauer
+
+This chapter contains some explanations, tips \& tricks. It might be
+helpful to read them when you are concerned with the related topics.
+
 
 \InputIfFileExists{tmp/howto}{}
 
@@ -717,9 +792,9 @@ be configured.
 To generate the Web site run the following command, where the current
 directory is the directory \texttt{www}:
 
-\begin{verbatim}
+\begin{lstlisting}{}
   make
-\end{verbatim}
+\end{lstlisting}{}
 
 This command creates a complete directory hierarchy with all necessary
 sub-directories in \texttt{../target/www}. An exception are the
