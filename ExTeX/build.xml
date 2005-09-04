@@ -38,6 +38,7 @@
           javadoc
               Create the javadoc documentation in target/javadoc.
           checkstyle
+              Apply the style rules.  
           tests [-Dtests.haltonfailure=yes]
               Perfom all tests.
           deploy
@@ -202,10 +203,20 @@
 
   <target name="checkstyle"
           description="Generates a report of violations of the coding conventions.">
-    <checkstyle config=".checkstyle.cfg"
+    <checkstyle config="develop/eclipse/checkstyle.cfg"
                 failureProperty="checkstyle.failure"
                 failOnViolation="false">
-      <formatter type="plain" tofile="${tmp}/checkstyle.txt" />
+      <formatter type="plain" tofile="${target}/checkstyle.txt" />
+      <fileset dir="src" includes="**/*.java" />
+    </checkstyle>
+  </target>
+
+  <target name="checkstyle-xml"
+          description="Generates a report of violations of the coding conventions.">
+    <checkstyle config="develop/eclipse/checkstyle.cfg"
+                failureProperty="checkstyle.failure"
+                failOnViolation="false">
+      <formatter type="xml" tofile="${target}/checkstyle.html" />
       <fileset dir="src" includes="**/*.java" />
     </checkstyle>
   </target>
@@ -291,7 +302,7 @@
       </fileset>
     </delete>
     <delete dir="${target.lib}" />
-    <delete file="${tmp}/checkstyle.txt" />
+    <delete file="${target}/checkstyle.txt" />
     <delete file="${target}/ExTeX-setup.jar" />
   </target>
 
