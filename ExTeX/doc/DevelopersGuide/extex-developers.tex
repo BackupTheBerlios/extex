@@ -1,5 +1,5 @@
 %%*****************************************************************************
-%% $Id: extex-developers.tex,v 1.3 2005/08/30 08:02:59 gene Exp $
+%% $Id: extex-developers.tex,v 1.4 2005/09/04 11:34:58 gene Exp $
 %%*****************************************************************************
 %% Author: Gerd Neugebauer
 %%-----------------------------------------------------------------------------
@@ -8,7 +8,7 @@
 \usepackage{subfigure}
 
 \def\setVersion$#1: #2.#3 ${\gdef\Version{#2.#3}}
-\setVersion$Revision: 1.3 $
+\setVersion$Revision: 1.4 $
 
 \newcommand\menu{\textsf}
 \newcommand\sub{\(\rightarrow\) }
@@ -16,34 +16,45 @@
 
 \newcommand\Macro[1]{\texttt{\char`\\ #1}}
 
-\begin{document}%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{titlepage}
-  \parindent=0pt
+\makeatletter
+\renewcommand\maketitle{
   \begin{center}
+  \parindent=0pt
   \vspace*{1pt}
   \vfill
   \ExTeXbox
   \vfill
-  \textsf{\bfseries\Huge Developer's Guide}
+  \textsf{\bfseries\Huge \@title}
   \vfill
   \textsf{\Large Version \Version}
   \vfill
-  \textsf{\large Gerd Neugebauer}
+  \textsf{\large \@author}
   \vfill
   \vfill
-%\maketitle
-
-  \begin{abstract}\parindent=0pt
-    This document describes some basic steps to develop and test
-    \ExTeX.  It is meant for newcomers to the project or people who
-    want to evaluate \ExTeX\ by inspecting the sources.
-  \end{abstract}
   \end{center}
-\newpage
-\footnotesize
-\copyright\ 2005 The \ExTeX\ Group and individual authors listed below 
-\medskip
+}
+\makeatother
+
+
+\begin{document}%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{titlepage}\parindent=0pt
+
+  \title{Developer's Guide}
+  \author{Gerd Neugebauer}
+  \maketitle
+
+  \begin{center}
+    \begin{abstract}\parindent=0pt
+      This document describes some basic steps to develop and test
+      \ExTeX.  It is meant for newcomers to the project or people who
+      want to evaluate \ExTeX\ by inspecting the sources.
+    \end{abstract}
+  \end{center}
+  \newpage
+  \footnotesize
+  \copyright\ 2005 The \ExTeX\ Group and individual authors listed below 
+  \medskip
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.2 or
@@ -53,7 +64,7 @@ Documentation License''.
 \bigskip
 
 This product includes software developed by the Apache Software
-Foundation (http://www.apache.org/).
+Foundation (\url{http://www.apache.org/}).
 
 \vfill
 
@@ -118,7 +129,12 @@ mailing lists might be of interest:
 \end{description}
 
 
-\section{Language}
+\section{Organizational Agreements}
+
+The developers of \ExTeX\ have agreed on some rule for cooperation.
+Those rules are documented here.
+
+\subsection{Language}
 
 The official project language for \ExTeX\ is English in the US
 dialect. The sources are documented in this language and the major
@@ -127,36 +143,34 @@ documents are written in this language.
 Since some of the developers are German this language might slip in
 during intensive discussions.
 
-\section{The Repository}
 
-The sources of \ExTeX\ are stored in a RCS repository. To access this
-repository you need access to the internet and RCS installed in some
-way.
+\subsection{Maintainers of Files}
 
-The coordinates of the repository are:\medskip
+Each file has a single maintainer -- even if there are several
+authors. The maintainer has to be informed and has to agree on any
+changes in the file. The maintainership is usually indicated in the
+Java sources with the help of te tag \texttt{@author}. The first
+author is always the maintainer.
 
-\begin{tabular}{ll}\toprule
-  Connection type: & \texttt{pserver}			\\
-  User:		   & \texttt{anonymous}			\\
-  Host:		   & \texttt{cvs.extex.berlios.de}	\\
-  Location:	   & \texttt{/cvsroot/extex}		\\
-  Module:	   & \texttt{ExTeX}			\\\bottomrule
-\end{tabular}\medskip
+Changes to a file can be carried out by the maintainer or delegated to
+somebody else. The maintainer can change if both the old and new
+maintainer agree in this.
 
-These coordinates allow you anonymous access to the sources with
-reading permissions only.
-
-\section{User Account at Berlios}
-
-To commit changes to the repository you have to be enlisted as a
-developer for \ExTeX. A first requirement for this is an account at
-Berlios -- the hosting site. 
 
 
 
 %------------------------------------------------------------------------------
 \chapter{Prerequisites}
 %@author Gerd Neugebauer
+
+\section{User Account at Berlios}
+
+To commit changes to the repository you have to be enlisted as a
+developer for \ExTeX. A first requirement for this is an account at
+Berlios -- the hosting site. If you just want to read the sources then
+you can use anonymous access.
+
+
 
 \section{Java}
 
@@ -172,15 +186,15 @@ can be seen in the following listing:
 \lstset{morecomment=[l]{\#}}%
 \begin{lstlisting}{morecomment=[l][keywordstyle]{>}}
 # java -version
-java version "1.4.2_06"
-Java(TM) 2 Runtime Environment, Standard Edition (build 1.4.2_06-b03)
-Java HotSpot(TM) Client VM (build 1.4.2_06-b03, mixed mode)
+java version "1.4.2_09"
+Java(TM) 2 Runtime Environment, Standard Edition (build 1.4.2_09-b03)
+Java HotSpot(TM) Client VM (build 1.4.2_09-b03, mixed mode)
 #
 \end{lstlisting}
 
 Free Java implementations are currently not supported. They might
 work, but the last time we checked it, GCJ didn't suffice. We would be
-happy have someone working on a compatibility layer for a free Java
+happy to have someone working on a compatibility layer for a free Java
 implementation.
 
 
@@ -208,7 +222,7 @@ alternative.
 \section{CVS Client}
 
 You need a CVS client installed. In the simplest case this is the
-client build into te IDE Eclipse, or the command line version of cvs.
+client build into the IDE Eclipse, or the command line version of cvs.
 
 
 \section{A Command Line Interpreter}
@@ -216,6 +230,7 @@ client build into te IDE Eclipse, or the command line version of cvs.
 For several tasks it is convenient to have a command line interpreter
 at hand. On Unix this can be the (bourne, bash,\ldots) shell. On Windows
 we recommend the Cygwin suite which contains the bash.
+
 
 
 
@@ -273,7 +288,7 @@ Finally you end up in the welcome window of Eclipse shown in
 figure~\ref{fig:eclipse-welcome}. Take some time and read the
 introductory material found there.
 \begin{figure}[h]
-  \centering  \includegraphics[scale=.25]{image/eclipse-welcome}
+  \centering  \includegraphics[scale=.33]{image/eclipse-welcome}
   \caption{Eclipse Initial Window}\label{fig:eclipse-welcome}
 \end{figure}
 
@@ -291,55 +306,49 @@ a collection of windows which are usually meant for a common task.
 
 A new perspective can be opened via the window \menu{Window \sub Open
   Perspective \sub Other\ldots} which can be seen in
-figure~\ref{fig:eclipse-open-perspective-menu}.
+figure~\ref{fig:eclipse-open-perspective-menu}. This menu item opens a
+dialog box which offers some perspectives for opening. Currently we
+need a ``CVS Exploring'' perspective. This perspective is meant for
+inspecting CVS repositories and manipulation. Thus this perspective is
+selected (see figure~\ref{fig:eclipse-select-cvs}) and the dialog is
+completed with the OK button.
 \begin{figure}[ht]
   \hbox{}\hfill
-  \subfigure[Open Perspective\label{fig:A1}]{%
+  \subfigure[Open Perspective\label{fig:eclipse-open-perspective-menu}]{%
     \includegraphics[scale=.4]{image/eclipse-open-perspective-menu}}%
   \hfill
-  \subfigure[Selecting ``CVS Exploring Perspective''\label{fig:eclipse-open-perspective-menu}]{%
+  \subfigure[Selecting ``CVS Exploring Perspective''\label{fig:eclipse-select-cvs}]{%
     \includegraphics[scale=.4]{image/eclipse-select-cvs}}%
   \hfill\hbox{}
 
   \caption{Switching to a Perspective}\label{fig:eclipse-perspective}
 \end{figure}
 
-This menu item opens a dialog box which offers some perspectives for
-opening. Currently we need a ``CVS Exploring'' perspective. This
-perspective is meant for inspecting CVS repositories and manipulation.
-Thus this perspective is selected (see
-figure~\ref{fig:eclipse-select-cvs}) and the dialog is completed with
-the OK button.
-%\begin{figure}[ht]
-%  \centering  \includegraphics[scale=.4]{image/eclipse-select-cvs}
-%  \caption{Selecting ``CVS Exploring Perspective''}\label{fig:eclipse-select-cvs}
-%\end{figure}
-
 Now a CVS exploring perspective is opened (see
 figure~\ref{fig:eclipse-cvs-1}). You see a lot of windows and icons
 there. The tab ``CVS Repositories'' on the left side shows all
 repository locations currently known. This list is empty since we have
 not added any CVS locations yet.
-\begin{figure}[ht]
-  \centering  \includegraphics[scale=.25]{image/eclipse-cvs-1}
+\begin{figure}[htbp]
+  \centering  \includegraphics[scale=.33]{image/eclipse-cvs-1}
   \caption{CVS Exploring Perspective}\label{fig:eclipse-cvs-1}
 \end{figure}
 
 To add a new repository location press the left mouse button on this
 tab and select \menu{New \sub Repository Location\ldots} (see
-figure~\ref{fig:eclipse-new-repository}).
+figure~\ref{fig:eclipse-new-repository}). This brings up the dialog
+shown in figure~\ref{fig:eclipse-add-cvs}. Here you can enter the
+coordinates of the \ExTeX\ CVS repository.
 \begin{figure}[htp]
   \hbox{}\hfill
   \subfigure[New Repository Location\label{fig:eclipse-new-repository}]{%
     \includegraphics[scale=.4]{image/eclipse-new-repository}}%
   \hfill
-  \subfigure[The Coordinates of the \ExTeX\ CVS Repository\label{fig:eclipse-add-cvs}]{%
+  \subfigure[The Coordinates of the \ExTeX\ CVS
+  Repository\label{fig:eclipse-add-cvs}]{%
     \includegraphics[scale=.4]{image/eclipse-add-cvs}}%
   \caption{Adding the \ExTeX\ CVS Repository}
 \end{figure}
-
-This brings up the dialog shown in figure~\ref{fig:eclipse-add-cvs}.
-Here you can enter the coordinates of the \ExTeX\ CVS repository.
 
 Note that you have to enter your account at Berlios and its password
 into the appropriate fields. If you do not have an account you can use
@@ -356,7 +365,8 @@ figure~\ref{fig:eclipse-cvs}.
   \subfigure[The \ExTeX\ Repository Listed\label{fig:eclipse-cvs}]{%
     \includegraphics[scale=.4]{image/eclipse-cvs}}%
   \hfill
-  \subfigure[Selecting to check-out of \ExTeX\label{fig:eclipse-checkout-extex}]{%
+  \subfigure[Selecting to check-out of
+  \ExTeX\label{fig:eclipse-checkout-extex}]{%
     \includegraphics[scale=.4]{image/eclipse-checkout-extex}}%
   \caption{Checking-out of \ExTeX}
 \end{figure}
@@ -369,18 +379,19 @@ appearing context menu (see figure~\ref{fig:eclipse-checkout-extex}).
 This will instruct Exclipe to create a new project in the workspace
 and fill it with the files from the repository.
 
-\INCOMPLETE Eclipse shows a progress bar during the check-out (see
+Eclipse shows a progress bar during the check-out (see
 figure~ref{fig:eclipse-checkout}). This operation may take some time
 -- we have been really busy creating files. When the checkout is
-finished you will find the project \texttt{ExTeX} in Eclipse containing
-the files within. The appearance of the Package View with those files
-is shown in figure~\ref{fig:eclipse-extex-project}.
+finished you will find the project \texttt{ExTeX} in Eclipse
+containing the files within. The appearance of the Package View with
+those files is shown in figure~\ref{fig:eclipse-extex-project}.
 \begin{figure}[htp]
   \hbox{}\hfill
   \subfigure[The Checkout Progress Bar\label{fig:eclipse-checkout}]{%
     \includegraphics[scale=.4]{image/eclipse-checkout}}%
   \hfill
-  \subfigure[The \ExTeX\ Project in the Package View\label{fig:eclipse-extex-project}]{%
+  \subfigure[The \ExTeX\ Project in the Package
+  View\label{fig:eclipse-extex-project}]{%
     \includegraphics[scale=.4]{image/eclipse-extex-project}}%
   \caption{Checking out \ExTeX\ from the Repository}
 \end{figure}
@@ -456,8 +467,16 @@ code formatter can be configured for different needs. A configuration
 for \ExTeX\ is contained in the repository under
 \texttt{develop/eclipse/formatter.xml}.
 
+\INCOMPLETE
 
-ant-formatter
+The formatter for Ant files has distinct parameters which should be
+adapted. The Prference page can be found under the key \menu{Ant \sub
+  Editor \sub Formatter}. The values should be adjusted as shown in
+figure~\ref{fig:eclipse-ant-formatter}.
+\begin{figure}[htp]
+  \centering  \includegraphics[scale=.4]{image/eclipse-ant-formatter}
+  \caption{Settings for the  Ant Formatter}\label{fig:eclipse-ant-formatter}
+\end{figure}
 
 
 \subsection{Checkstyle}
@@ -469,7 +488,10 @@ repository contains a set of rules for checkstyle.
 Checkstyle comes in a command line version and as a plug-in for
 Eclipse. This plugin has to be installed first.
 
-The configuration can be found in \texttt{develop/eclipse/checkstyle-plugin.xml}.
+The configuration can be found in
+\texttt{develop/eclipse/checkstyle-plugin.xml}.
+
+\INCOMPLETE
 
 
 \subsection{Spelling}
@@ -498,10 +520,11 @@ with the quick fix shortcut Ctrl-1.
 \subsection{Compiling \ExTeX}
 
 Any source file in Eclipse is compiled automatically when the file is
-saved. Thus it is usually not necessary to compile things manually.
-If you feel the need to recompile everything you can achieve this by
+saved. Thus it is usually not necessary to compile things manually. If
+you feel the need to recompile everything you can achieve this by
 selecting \menu{Project \sub Clean\ldots} while the item \menu{Project
-\sub Build Automatically} is checked (see figure~\ref{fig:eclipse-recompile}).
+  \sub Build Automatically} is checked (see
+figure~\ref{fig:eclipse-recompile}).
 \begin{figure}[thp]
   \centering
   \includegraphics[scale=.4]{image/eclipse-recompile}
@@ -512,13 +535,84 @@ Another recompilation can be triggered via the ant task \texttt{compile}.
 
 \subsection{Running \ExTeX}
 
-\ExTeX\ can be run from within Eclipse.
+\ExTeX\ can be run from within Eclipse. We will describe here the
+execution of the compiled sources from a workspace. The executio of an
+external program would be an alterative. But this is only of minor
+relevance for a developer.
 
 \INCOMPLETE
 
 \subsection{Committing Changes}
 
+Eclipse ships with a CVS plugin which hides the details of the
+underlying version control system. Thus things are quite simple for
+the newcomers. On the other hand they are differnt from the procedure
+on the command line or other tools whic mimic the command line (like
+WinCVS or TortoiseCVS).
+
+The metaphor used in Eclipse is the synchronisation of the workspace
+with the reporsitory. In the course of this syncronisation changes in
+the workspace files are committed to the repository, changes from the
+repository are updated into the workspace, and conflicts can be
+resolved. The conflict resolution -- also known as merging -- is the
+demanding task. Thus it has to be performed by a human.
+
+To start the synchronisation select in the \menu{Package Manager} or
+\menu{Navigator} view the topmost \ExTeX\ node and activate in the
+context menu (right mouse button) the entry \menu{Team \sub Synchronize
+with Repository} (see figure~\ref{fig:eclipse-team}).
+\begin{figure}[htp]
+  \centering
+  \includegraphics[scale=.4]{image/eclipse-team}
+  \caption{Starting Synchronization}\label{fig:eclipse-team}
+\end{figure}
+
+
+
 \INCOMPLETE
+
+
+
+\subsection{Running Ant from within Eclipse}\label{sec:eclipse.ant}
+
+To use Ant from within Eclipse you have to open the Ant view. This can
+be acomplished via the menu \menu{Window \sub Show View \sub Ant} (see
+figure~\ref{fig:eclipse-ant-open}).
+
+In this view use the leftmost tool to add an Ant file. In the file
+selector choose the file \File{ExTeX/build.xml}. The Ant file is added
+to the (previously empty) list. It can be open to show the Ant target
+available (see figure~\ref{fig:eclipse-ant}).
+\begin{figure}[htp]
+  \hbox{}\hfill
+  \subfigure[Opening an Ant View\label{fig:eclipse-ant-open}]{%
+    \includegraphics[scale=.4]{image/eclipse-ant-open}}%
+  \hfill
+  \subfigure[The Ant View for \ExTeX\label{fig:eclipse-ant}]{%
+    \includegraphics[scale=.4]{image/eclipse-ant}}%
+  \caption{Ant in Eclipse}
+\end{figure}
+
+A double click on a target starts it's execution. The output is shown
+in a Console view.
+
+A description of the targets can be found in section~\ref{sec:Ant}.
+
+
+\subsection{Creating Javadoc}
+
+To create the Javadoc HTML description of the sources you can use the
+Ant target \texttt{javadoc}. See sections \ref{sec:eclipse.ant} and
+\ref{sec:Ant}. The result can be found in the directory
+\File{target/javadoc}.
+
+
+\subsection{Creating the Installer}
+
+To create the inastaller you can use the Ant target
+\texttt{installer}. See sections \ref{sec:eclipse.ant} and
+\ref{sec:Ant}. The result can be found in the file
+\File{target/ExTeX-setup.jar}.
 
 
 %------------------------------------------------------------------------------
@@ -526,7 +620,27 @@ Another recompilation can be triggered via the ant task \texttt{compile}.
 %@author Gerd Neugebauer
 
 
+
+
 \subsection{Downloading the Sources}
+
+
+The sources of \ExTeX\ are stored in a RCS repository. To access this
+repository you need access to the internet and RCS installed in some
+way.
+
+The coordinates of the repository are:\medskip
+
+\begin{tabular}{ll}\toprule
+  Connection type: & \texttt{pserver}			\\
+  User:		   & \texttt{anonymous}			\\
+  Host:		   & \texttt{cvs.extex.berlios.de}	\\
+  Location:	   & \texttt{/cvsroot/extex}		\\
+  Module:	   & \texttt{ExTeX}			\\\bottomrule
+\end{tabular}\medskip
+
+These coordinates allow you anonymous access to the sources with
+reading permissions only.
 
 You need to download the sources of \ExTeX. On the command line this
 can be done with the following commands:
@@ -536,25 +650,78 @@ can be done with the following commands:
 % cvs -z3 -d:pserver:anonymous@cvs.extex.berlios.de:/cvsroot/extex co ExTeX
 \end{lstlisting}{}
 
+If you want to participate in the development and are enlisted at
+Berlios you should use your account and password instead of the
+anonymous account.
+
 
 \subsection{Checkstyle}
 
 Checkstyle is a source code checker.
-\ExTeX\ should show a homogeneous appearance of the sources.
+\ExTeX\ should show a homogeneous appearance of the sources. Thus
+certain rules should be followed. Some of the rules are checked by the
+following command:
 
-\INCOMPLETE
+\begin{lstlisting}{}
+% build checkstyle
+\end{lstlisting}{}
 
-\subsection{Ant}
+The result can be found in the file \File{target/checkstyle.txt}.
 
-Apache Ant is a build system for Java. It can be considered state of
-the art for Java programs to come with ant scripts. \ExTeX\ supports
-ant by providing a \texttt{build.xml} file for various tasks.
+\subsection{Ant}\label{sec:Ant}
 
-The files needed for running ant are included in the \ExTeX\
-repository. Thus no additional installation is required.
+Apache Ant (\url{http://ant.apache.org}) is a build system for Java.
+It can be considered state of the art for Java programs to come with
+Ant scripts. \ExTeX\ supports ant by providing a \texttt{build.xml}
+file for various tasks.
 
+The files needed for running Ant are included in the \ExTeX\
+repository. Thus no additional installation is required. Just some
+setting need to be performed before Ant can be used.
 
-\INCOMPLETE
+An environment variable \verb|JAVA_HOME| should be defined which points
+to the JDK. The following jars should be placed on the environment
+variable \verb|CLASSPATH|:
+\begin{itemize}
+\item \verb|$JAVA_HOME/lib/tools.jar|
+\item \verb|$JAVA_HOME/lib/classes.zip|
+\item and all jars found in \File{develop/lib}
+\end{itemize}
+
+The Ant can be invoked like in
+
+\begin{lstlisting}{}
+  $JAVA_HOME/bin/java -Dant.home=$ANT_HOME org.apache.tools.ant.Main compile
+\end{lstlisting}
+
+These steps are performed by the shell script \File{build} in the
+\ExTeX\ directory. Thus you can achieve the same effect -- without any
+preparations except setting \verb|JAVA_HOME| -- with the following command:
+
+\begin{lstlisting}{}
+  build compile
+\end{lstlisting}
+
+The Ant configuration can be found in the file \File{build.xml} in the
+\ExTeX\ main directory. This configuration contains at least the
+following targets:
+
+\begin{description}
+\item [all] This target builds nearly everything.
+\item [compile] Tis target compiles all Java files of the sources into
+  the directora \File{target/classes}. Note, that the test classess
+  are not compiled.
+\item [jar] This target arranges that the file \File{target/extex.jar}
+  is created. It contains the compiled sources of  \ExTeX.
+\item [javadoc] This target creates the Javadoc HTML files in the
+  directory \File{target/javadoc}.
+\item [checkstyle] This target performs the checkstyle tests and
+  creates a report in \File{target/checkstyle.txt}.
+\item [tests] This target aplies all JUnit test cases.
+\item [installer] This target creates the installer. The result is
+  placed in the file \File{target/ExTeX-setup.jar}.
+\item [clean] This target deletes some generated files.
+\end{description}
 
 
 \subsection{JUnit}
@@ -564,6 +731,10 @@ programs. Thus \ExTeX\ provides some test cases in the form of JUnit
 classes.
 
 \INCOMPLETE
+
+\begin{lstlisting}{}
+  build tests
+\end{lstlisting}
 
 
 \subsection{Compiling \ExTeX}
@@ -577,7 +748,8 @@ can be invoked with the following command:
 \end{lstlisting}
 
 The generated files are placed in the sub-directory
-\texttt{target/classes}. 
+\texttt{target/classes}. Thus if this directory and the jars in
+\File{lib} are on the class path then \ExTeX\ can be run immediately.
 
 
 \subsection{Running \ExTeX}
@@ -586,6 +758,9 @@ The generated files are placed in the sub-directory
 directory or by a direct invocation of Java. The start script is
 provided for Unix under the name \File{extex} and for Windows under
 the name \File{extex.bat}.
+\begin{lstlisting}{}
+  extex sample.tex
+\end{lstlisting}{}
 
 For the usual purposes these scripts can be used as a plug-in
 replacement for \TeX. See the User's Guide for the command line
@@ -605,15 +780,18 @@ The command line arguments are the same as for \File{extex} mentioned
 above.
 
 
-\subsection{Creating JavaDoc}
+\subsection{Creating Javadoc}
 
+Creating the Javadoc HTML pages can best be complished with the help
+of the build script. Here the target \texttt{javadoc} does everythign
+necessary:
 
 \begin{lstlisting}{}
   build javadoc
 \end{lstlisting}{}
 
-\INCOMPLETE
-
+As the result of this invocation the Javadoc HTML pages are stored in
+the sub-directory \File{target/javadoc}.
 
 
 \subsection{Creating the Installer}
@@ -626,7 +804,7 @@ invocation looks as follows:
 \end{lstlisting}{}
 
 After the work is complete the installer can be found in the file
-\File{ExTeX-setup.jar} in the director \File{target}. The use of the
+\File{ExTeX-setup.jar} in the directory \File{target}. The use of the
 installer is described in the User's Manual.
 
 Alternatively the installer can also be created with the Ant task
@@ -674,17 +852,17 @@ The source code has to be documented. \TeX\ shows us a good example of
 a proper documenatation. Donald Knuth has invented the Web system to
 keep together the documentation and the source code. The source code
 and documentation are extracted from a common file. In the Java world
-the JavaDoc system has been invented for a similar purpose. 
+the Javadoc system has been invented for a similar purpose. 
 
-\section{JavaDoc}
+\section{Javadoc}
 
-The JavaDoc conventions for comments make it possible to extract the
+The Javadoc conventions for comments make it possible to extract the
 relevant part of the documentation and generate several outut formats
 from it. The primary output format is HTML.
 \begin{figure}[tbh]
   \centering
-  \includegraphics[scale=.25]{image/javadoc}
-  \caption{JavaDoc in the Browser}\label{fig:eclipse-javadoc}
+  \includegraphics[scale=.33]{image/javadoc}
+  \caption{Javadoc in the Browser}\label{fig:eclipse-javadoc}
 \end{figure}
 
 \section{Documentation of Primitives}
@@ -697,6 +875,12 @@ from it. The primary output format is HTML.
 %------------------------------------------------------------------------------
 \chapter{The Source Tree Organization}
 %@author Gerd Neugebauer
+
+
+In this section the description of the directory hierarchy is
+contained. This structure is oriented on the structuring proposed by
+Maven (\url{http://maven.apache.org}).
+
 
 \section{The Toplevel Directory}
 
@@ -723,20 +907,66 @@ and sub-directories.
   directory is not present in the CVS archive.
 \item[util]  \ \\
   The sub-directory \texttt{util} contains some utilities for
-  development. They are not contained in the installer.
+  development. They are not included into the installer.
 \item[work]  \ \\
   The sub-directory \texttt{work} may contain working files of single
   developers. It is not shared via the repositiory.
 \item[www]  \ \\
-  The sub-directory \texttt{www} contains the sources for te Web pages
+  The sub-directory \texttt{www} contains the sources for the Web pages
   of \ExTeX.
 \end{description}
 
-\section{User's Working Area}
+\section{\texttt{develop}: Development Support}
+
+\begin{description}
+\item[eclipse] 
+\item[lib] 
+\end{description}
+
+\section{\texttt{doc}: Documentation}
+
+\begin{description}
+\item[DevelopersGuide] 
+\item[Library] 
+\item[Publications] 
+\item[UsersGuide] 
+\item[models] 
+\item[notes] 
+\end{description}
+
+\section{\texttt{lib}: Third-Party Libraries}
+
+This directory contains libraries needed for \ExTeX\ to run.
+
+\section{\texttt{src}: The Sources}
+
+\begin{description}
+\item[font] 
+\item[java] 
+\item[javadoc] 
+\item[text] 
+\end{description}
+
+\section{\texttt{util}: Utilities}
+
+This directory contains vairous utitlies and scripts.
+
+\begin{description}
+\item[Installer] 
+\end{description}
+
+\section{\texttt{work}: User's Working Area}
 
 Any user may have some files in the project area, Those files should
 not be committed to the Repository. For this purpose the directory
 \texttt{work} is reserved.
+
+\section{\texttt{www}: The Web Site}
+
+
+\begin{description}
+\item[src] 
+\end{description}
 
 
 
@@ -769,7 +999,7 @@ helpful to read them when you are concerned with the related topics.
 
 \ExTeX\ has a domain of its own. This domain \url{www.extex.org} has
 been registered by DANTE e.V. In this location the official Web pages
-(see figure~\ref{fig:www-eclipse-org}) are provided.
+(see figure~\ref{fig:www-extex-org}) are provided.
 \begin{figure}[htb]
   \centering
   \includegraphics[scale=.4]{image/www-extex-org}
@@ -797,7 +1027,7 @@ directory is the directory \texttt{www}:
 \end{lstlisting}{}
 
 This command creates a complete directory hierarchy with all necessary
-sub-directories in \texttt{../target/www}. An exception are the
+sub-di\-rec\-to\-ries in \texttt{../target/www}. An exception are the
 directories named \texttt{CVS}. Those directories are ignored.
 
 The files starting with \verb|.| or ending in \verb|~| or in
