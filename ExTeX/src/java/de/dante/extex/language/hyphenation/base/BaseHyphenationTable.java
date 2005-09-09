@@ -42,11 +42,11 @@ import de.dante.extex.typesetter.type.node.LigatureNode;
 import de.dante.util.UnicodeChar;
 
 /**
- * This class stores the values for hyphenations and hypernates words.
+ * This class stores the values for hyphenations and hyphenates words.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class BaseHyphenationTable implements ModifiableLanguage {
 
@@ -86,7 +86,8 @@ public class BaseHyphenationTable implements ModifiableLanguage {
     private long righthyphenmin = 0;
 
     /**
-     * The field <tt>wordTokenizer</tt> contains the ...
+     * The field <tt>wordTokenizer</tt> contains the tokenizer to recognize
+     * words.
      */
     private WordTokenizer wordTokenizer = null;
 
