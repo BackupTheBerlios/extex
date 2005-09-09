@@ -1,5 +1,5 @@
 #******************************************************************************
-#* $Id: Makefile,v 1.1 2005/08/29 07:08:46 gene Exp $
+#* $Id: Makefile,v 1.2 2005/09/09 09:43:06 gene Exp $
 #******************************************************************************
 #* Author: Gerd Neugebauer
 #*=============================================================================
@@ -10,7 +10,7 @@ SRCDIR = ../../src/java
 
 all: $(MANUAL).pdf
 
-$(MANUAL).pdf:  $(MANUAL).tex $(MANUAL).toc howto
+$(MANUAL).pdf:  $(MANUAL).tex howto $(MANUAL).toc
 	@pdflatex $(MANUAL)
 
 %.pdf: %.toc %.ind
@@ -33,6 +33,7 @@ deploy: $(MANUAL).pdf
 	mv $(MANUAL).pdf $(DEPLOYDIR)
 
 howto tmp/howto.tex:
+	mkdir -p tmp
 	perl bin/howto.pl -cp ../../src/java -out tmp/howto.tex
 
 clean:
