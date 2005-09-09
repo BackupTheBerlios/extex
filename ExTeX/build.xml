@@ -51,6 +51,7 @@
   </target>
 
   <property name="tests.haltonfailure" value="no" />
+  <property name="cases" value="**/*Test.java" />
   <property name="javac.deprecation" value="off" />
   <property name="extexjarfile" value="extex" />
   <property name="testsuitejarfile" value="testsuite" />
@@ -59,12 +60,12 @@
   <property name="classes" location="target/classes" />
   <property name="javadoc" location="target/javadoc" />
   <property name="dbdoclet" location="doc/javadocdb" />
-  <property name="tmp" location="tmp" />
-  <property name="tmp.tests" location="tmp/tests" />
   <property name="deploy" location="deploy" />
   <property name="installer.dir" location="util/Installer" />
   <property name="target" location="target" />
   <property name="target.lib" location="target/lib" />
+  <property name="tmp" location="tmp" />
+  <property name="target.tests" location="target/tests" />
   <!-- classpath for the application -->
   <path id="main.class.path">
     <fileset dir="lib">
@@ -183,8 +184,8 @@
 
   <target name="tests" depends="jar,jar.tests" description="Run JUnit tests">
     <!-- create output directories for test reports -->
-    <delete dir="${tmp.tests}" />
-    <mkdir dir="${tmp.tests}" />
+    <delete dir="${target.tests}" />
+    <mkdir dir="${target.tests}" />
     <!-- Performing tests:                                         -->
     <!-- Run all classes "*Test.java" in the folder "${src.tests}" -->
     <junit printsummary="yes" haltonfailure="${tests.haltonfailure}">
@@ -193,9 +194,9 @@
       </classpath>
       <classpath refid="test.class.path" />
       <formatter type="plain" />
-      <batchtest fork="yes" todir="${tmp.tests}">
+      <batchtest fork="yes" todir="${target.tests}">
         <fileset dir="${src.tests}">
-          <include name="**/*Test.java" />
+          <include name="${cases}" />
         </fileset>
       </batchtest>
     </junit>
@@ -216,9 +217,24 @@
     <checkstyle config="develop/eclipse/checkstyle.cfg"
                 failureProperty="checkstyle.failure"
                 failOnViolation="false">
-      <formatter type="xml" tofile="${target}/checkstyle.html" />
+      <formatter type="plain" tofile="${target}/checkstyle.txt" />
+      <formatter type="xml" tofile="${target}/checkstyle.xml" />
       <fileset dir="src" includes="**/*.java" />
+      <classpath refid="develop.class.path" />
     </checkstyle>
+    <xslt>
+    </xslt>
+  </target>
+
+  <target name="cx"
+          description="Generates a report of violations of the coding conventions.">
+    <xslt basedir="${target}"
+          destdir="${target}"
+	  includes="checkstyle.xml"
+	  extension=".html"
+	  style="develop/checkstyle/style.xsl">
+      <classpath refid="develop.class.path" />
+    </xslt>
   </target>
 
   <target name="dist"
@@ -293,7 +309,7 @@
   <target name="clean" description="Remove unneccesary files and directories.">
     <delete dir="${classes}" />
     <delete dir="${deploy}" />
-    <delete dir="${tmp.tests}" />
+    <delete dir="${target.tests}" />
     <delete dir="${javadoc}" />
     <delete>
       <fileset dir="src/test/data">
