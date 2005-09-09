@@ -1,0 +1,86 @@
+%%*****************************************************************************
+%% $Id: chapter-testing.tex,v 1.1 2005/09/09 08:01:57 gene Exp $
+%%*****************************************************************************
+%% @author Gerd Neugebauer
+%%-----------------------------------------------------------------------------
+\chapter{Quality Assurance and Unit Tests}\label{chapter:testing}
+
+Quality assurance and testing play an important r\^ole in software
+development. Automated regression tests help to guarantee that
+funtionality is preserved across releases.
+
+
+\section{Deficiencies of the Trip Test}
+
+Donald Knuth has provided the trip test for \TeX. This test is not
+suitable for \ExTeX\ for several reasons:
+\begin{itemize}
+\item The trip test compares the log file and the dvi output. \ExTeX\
+  does not guarantee identical log files.
+\item And \ExTeX\ may produce more than dvi.
+\item The trip test covers only part of the functionality of \TeX. It
+  is interesting to test other features too.
+\item The trip test contains tests for failures as well. In those
+  cases the bahaviour of \ExTeX\ might be different.
+\end{itemize}
+
+As a consequence \ExTeX\ comes with an own set of test cases.
+
+\section{Anatomy of a JUnit Test Class}
+
+\INCOMPLETE
+
+\begin{lstlisting}{}
+package de.dante.extex.interpreter.primitives;
+
+import de.dante.test.ExTeXLauncher;
+
+/**
+ * This is a test suite for the primitive <tt>\relax</tt>.
+ *
+ * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+ * @version $Revision: 1.1 $
+ */
+public class RelaxTest extends ExTeXLauncher {
+
+    /**
+     * Method for running the tests standalone.
+     *
+     * @param args command line parameter
+     */
+    public static void main(final String[] args) {
+
+        junit.textui.TestRunner.run(RelaxTest.class);
+    }
+
+    /**
+     * Constructor for RelaxTest.
+     *
+     * @param arg the name
+     */
+    public RelaxTest(final String arg) {
+
+        super(arg);
+    }
+
+    /**
+     * Test case checking that a pure \relax has no effect.
+     * @throws Exception in case of an error
+     */
+    public void test1() throws Exception {
+
+        runCode(//--- input code ---
+                "\\relax",
+                //--- log message ---
+                "",
+                //--- output channel ---
+                "");
+    }
+}
+\end{lstlisting}
+
+
+\section{Creating Test Cases for the Interpreter}
+
+\INCOMPLETE
+

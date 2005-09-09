@@ -1,0 +1,87 @@
+%%*****************************************************************************
+%% $Id: chapter-licenses.tex,v 1.1 2005/09/09 08:01:57 gene Exp $
+%%*****************************************************************************
+%% @author Bastien Roucries
+%%-----------------------------------------------------------------------------
+\chapter{Licenses for \ExTeX}
+\footnotetext{Author: Bastien Roucaries}%
+
+The project goal of \ExTeX\ is to provide a typesetting library
+facility.  The global licence of the heart of \ExTeX\ is therefore the
+LGPL. But in order to keep open linking facility against all the
+different licenses we must be choose carefully third party program
+licenses, i.e. jar files.
+
+\section{Acceptable Licenses}
+
+The licence that we accept and why:
+
+\begin{itemize}
+\item LGPL\\
+  for obvious reasons.
+\item  modified BSD licence
+  (\url{http://www.xfree86.org/3.3.6/COPYRIGHT2.html#5})\\
+  We can always convert this licence to LGPL.
+\item  Apache 2.0 licence \\
+  Unfortunately linking with GPL2 programs is in gray area.
+  Interpretation differs between FSF and Apache but GPLv3 will be
+  compatible.
+\item Public domain\\
+  (obvious)
+\item GPL with explicit linking clause that don't enforce viral clause
+  of GPL and insure clear encapsulation of GPL license. It is the GPL
+  with this special exception like this:
+
+  \begin{quote}
+    As a special exception, if other files instantiate templates or
+    use macros or inline functions from this file, or you compile this
+    file and link it with other works to produce a work based on this
+    file, this file does not by itself cause the resulting work to be
+    covered by the GNU General Public License.  However the source
+    code for this file must still be made available in accordance with
+    section (3) of the GNU General Public License.
+  \end{quote}
+	   
+  or like this:
+	   
+  \begin{quote}
+    Linking this library statically or dynamically with other modules
+    is making a combined work based on this library. Thus, the terms
+    and conditions of the G NU General Public License cover the whole
+    combination.
+  
+    As a special exception, the copyright holders of this library give
+    you permission to link this library with independent modules to
+    produce an executable, regardless of the license terms of these
+    independent modules, and to copy and distribute the resulting
+    executable under terms of your choice, provided that you also
+    meet, for each linked independent module, the terms and conditions
+    of the license of that module. An independent module is a module
+    which is not derived from or based on this library. If you modify
+    this library, you may extend this exception to your version of the
+    library, but you are not obligated to do so.  If you do not wish
+    to do so, delete this exception statement from your version.
+  \end{quote}
+
+\end{itemize}
+
+\section{Non-Acceptable Licenses}
+
+The licence that \emph{don't} accept and why:
+
+\begin{itemize}
+\item GPL license:\\
+  We would loose the free linking facility.
+\item Apache 1.1 license:\\
+  It forbids linking with GPL software. Check if an upgrade to
+  Apache~2.0 exists.
+\item Eclipse public license:\\
+  It forbids linking with GPL software and has nasty side effects for
+  proprietary software.  Perhaps side effects exist with Apache 2.0
+  due to patents issue.
+\item Original BSD license and Apache 1.0\\
+  Have a boring clause that forbids linking with a lot of different
+  licenses -- particularly GPL -- and non carefully written
+  proprietary software.
+\end{itemize}
+

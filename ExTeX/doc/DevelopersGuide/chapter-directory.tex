@@ -1,0 +1,98 @@
+%%*****************************************************************************
+%% $Id: chapter-directory.tex,v 1.1 2005/09/09 08:01:57 gene Exp $
+%%*****************************************************************************
+%% @author Gerd Neugebauer
+%%-----------------------------------------------------------------------------
+\chapter{The Source Tree Organization}
+
+In this section the description of the directory hierarchy is
+contained. This structure is oriented on the structuring proposed by
+Maven (\url{http://maven.apache.org}).
+
+
+\section{The Toplevel Directory}
+
+The toplevel directory of an \ExTeX\ project contains certain files
+and sub-directories.
+
+\begin{description}
+\item[develop] \ \\
+  The sub-directory \texttt{develop} contains bits and pieces needed
+  for development only.
+\item[doc]  \ \\
+  The sub-directory \texttt{doc} contains documentation -- papers
+  written by the \ExTeX\ Group and material collected from elsewhere.
+\item[lib]  \ \\
+  The sub-directory \texttt{lib} contains libraries which need to be
+  present for the final executable to run.
+\item[src]  \ \\
+  The sub-directory \texttt{src} contains the sources.
+\item[target]  \ \\
+  The sub-directory \texttt{target} contains the generated files. This
+  directory is not present in the CVS archive.
+\item[tmp]  \ \\
+  The sub-directory \texttt{tmp} may contain intermediary files. This
+  directory is not present in the CVS archive.
+\item[util]  \ \\
+  The sub-directory \texttt{util} contains some utilities for
+  development. They are not included into the installer.
+\item[work]  \ \\
+  The sub-directory \texttt{work} may contain working files of single
+  developers. It is not shared via the repositiory.
+\item[www]  \ \\
+  The sub-directory \texttt{www} contains the sources for the Web pages
+  of \ExTeX.
+\end{description}
+
+\section{\texttt{develop}: Development Support}
+
+\begin{description}
+\item[eclipse] 
+\item[lib] 
+\end{description}
+
+\section{\texttt{doc}: Documentation}
+
+\begin{description}
+\item[DevelopersGuide] 
+\item[Library] 
+\item[Publications] 
+\item[UsersGuide] 
+\item[models] 
+\item[notes] 
+\end{description}
+
+\section{\texttt{lib}: Third-Party Libraries}
+
+This directory contains libraries needed for \ExTeX\ to run.
+
+\section{\texttt{src}: The Sources}
+
+\begin{description}
+\item[font] 
+\item[java] 
+\item[javadoc] 
+\item[text] 
+\end{description}
+
+\section{\texttt{util}: Utilities}
+
+This directory contains vairous utitlies and scripts.
+
+\begin{description}
+\item[Installer] 
+\end{description}
+
+\section{\texttt{work}: User's Working Area}
+
+Any user may have some files in the project area, Those files should
+not be committed to the Repository. For this purpose the directory
+\texttt{work} is reserved.
+
+\section{\texttt{www}: The Web Site}
+
+
+\begin{description}
+\item[src] 
+\end{description}
+

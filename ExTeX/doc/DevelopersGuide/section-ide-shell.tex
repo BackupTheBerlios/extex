@@ -1,0 +1,329 @@
+%%*****************************************************************************
+%% $Id: section-ide-shell.tex,v 1.1 2005/09/09 08:01:57 gene Exp $
+%%*****************************************************************************
+%% @author Gerd Neugebauer
+%%-----------------------------------------------------------------------------
+\section{Command Line Use}
+
+
+\subsection{Downloading the Sources}
+
+
+The sources of \ExTeX\ are stored in a RCS repository. To access this
+repository you need access to the internet and RCS installed in some
+way.
+
+The coordinates of the repository are:\medskip
+
+\begin{tabular}{ll}\toprule
+  Connection type: & \texttt{pserver}			\\
+  User:		   & \texttt{anonymous}			\\
+  Host:		   & \texttt{cvs.extex.berlios.de}	\\
+  Location:	   & \texttt{/cvsroot/extex}		\\
+  Module:	   & \texttt{ExTeX}			\\\bottomrule
+\end{tabular}\medskip
+
+These coordinates allow you anonymous access to the sources with
+reading permissions only.
+
+You need to download the sources of \ExTeX. On the command line this
+can be done with the following commands:
+
+\begin{lstlisting}{}
+# cvs -d:pserver:anonymous@cvs.extex.berlios.de:/cvsroot/extex login
+# cvs -z3 -d:pserver:anonymous@cvs.extex.berlios.de:/cvsroot/extex co ExTeX
+\end{lstlisting}{}
+
+If you want to participate in the development and are enlisted at
+Berlios you should use your account and password instead of the
+anonymous account.
+
+
+\subsection{Checkstyle}
+
+Checkstyle is a source code checker.
+\ExTeX\ should show a homogeneous appearance of the sources. Thus
+certain rules should be followed. Some of the rules are checked by the
+following command:
+
+\begin{lstlisting}{}
+# build checkstyle
+\end{lstlisting}{}
+
+The result can be found in the file \File{target/checkstyle.txt}.
+
+\subsection{Ant}\label{sec:Ant}
+
+Apache Ant (\url{http://ant.apache.org}) is a build system for Java.
+It can be considered state of the art for Java programs to come with
+Ant scripts. \ExTeX\ supports Ant by providing a \texttt{build.xml}
+file for various tasks.
+
+The files needed for running Ant are included in the \ExTeX\
+repository. Thus no additional installation is required. Just some
+setting need to be performed before Ant can be used.
+
+An environment variable \verb|JAVA_HOME| should be defined which points
+to the JDK. The following jars should be placed on the environment
+variable \verb|CLASSPATH|:
+\begin{itemize}
+\item \verb|$JAVA_HOME/lib/tools.jar|
+\item \verb|$JAVA_HOME/lib/classes.zip|
+\item and all jars found in \File{develop/lib}
+\end{itemize}
+
+The Ant can be invoked like in
+
+\begin{lstlisting}{}
+#  $JAVA_HOME/bin/java -Dant.home=$ANT_HOME org.apache.tools.ant.Main compile
+Buildfile: build.xml
+
+compile:
+
+BUILD SUCCESSFUL
+Total time: 1 second
+#
+\end{lstlisting}
+
+These steps are performed by the shell script \File{build} in the
+\ExTeX\ directory. Thus you can achieve the same effect -- without any
+preparations except setting \verb|JAVA_HOME| -- with the following command:
+
+\begin{lstlisting}{}
+#  build compile
+Buildfile: build.xml
+
+compile:
+
+BUILD SUCCESSFUL
+Total time: 1 second
+#
+\end{lstlisting}
+
+The Ant configuration can be found in the file \File{build.xml} in the
+\ExTeX\ main directory. This configuration contains at least the
+following targets:
+
+\begin{description}
+\item [all] This target builds nearly everything.
+\item [compile] Tis target compiles all Java files of the sources into
+  the directora \File{target/classes}. Note, that the test classess
+  are not compiled. See also section~\ref{sec:shell-compile}.
+\item [jar] This target arranges that the file \File{target/extex.jar}
+  is created. It contains the compiled sources of  \ExTeX.
+\item [javadoc] This target creates the Javadoc HTML files in the
+  directory \File{target/javadoc}. See also section~\ref{sec:shell-javadoc}.
+\item [checkstyle] This target applies checkstyle and creates a report
+  in \File{target/checkstyle.txt}.
+\item [tests] This target aplies all JUnit test cases. See also
+  section~\ref{sec:shell-junit}.
+\item [installer] This target creates the installer with the graphical
+  user interface. The result is placed in the file
+  \File{target/ExTeX-setup.jar}. See also section~\ref{sec:shell-installer}.
+\item [clean] This target deletes some generated files.
+\end{description}
+
+
+\subsection{Compiling \ExTeX}\label{sec:shell-compile}
+
+Compiling \ExTeX form the command line can be accomplished with the
+help of the build script. The build script is a wrapper around Ant. It
+can be invoked with the following command:
+
+\begin{lstlisting}{}
+#  build compile
+Buildfile: build.xml
+
+compile:
+
+BUILD SUCCESSFUL
+Total time: 1 second
+#
+\end{lstlisting}
+
+The generated files are placed in the sub-directory
+\texttt{target/classes}. Thus if this directory and the jars in
+\File{lib} are on the class path then \ExTeX\ can be run immediately.
+
+
+\subsection{Running \ExTeX}
+
+\ExTeX\ can be run with the help of the \ExTeX\ script in the main
+directory or by a direct invocation of Java. The start script is
+provided for Unix under the name \File{extex} and for Windows under
+the name \File{extex.bat}.
+\begin{lstlisting}{}
+#  extex work/empty.tex
+This is ExTeX, Version 0.0 (ExTeX mode)
+(work/empty)
+No pages of output.
+Transcript written on ./empty.log.
+#
+\end{lstlisting}{}
+
+For the usual purposes these scripts can be used as a plug-in
+replacement for \TeX. See the User's Guide for the command line
+options.
+
+To run \ExTeX\ from the command line prepare the class path -- i.e.
+the environment variable \texttt{CLASSPATH} -- to contain all
+libraries found in the directory \texttt{lib}. In addition the
+directory \texttt{target/classes} have to be on the class path.
+Then you can invoke \ExTeX\ like in the following example:
+
+\begin{lstlisting}{}
+#  java de.dante.extex.Main.TeX work/empty
+This is ExTeX, Version 0.0 (ExTeX mode)
+(work/empty)
+No pages of output.
+Transcript written on ./empty.log.
+#
+\end{lstlisting}{}
+
+The command line arguments are the same as for \File{extex} mentioned
+above.
+
+
+\subsection{JUnit}\label{sec:shell-junit}
+
+JUnit is the state of the art concerning test automation for Java
+programs. Thus \ExTeX\ provides some test cases in the form of JUnit
+classes.
+
+All test can be run from the command line with the build script:
+
+\begin{lstlisting}{}
+#  build tests
+Buildfile: build.xml
+
+compile:
+
+jar:
+      [jar] Building jar: /home/gene/src/ExTeX/target/lib/extex.jar
+
+compile.tests:
+     [copy] Copying 148 files to /home/gene/src/ExTeX/target/classes
+
+jar.tests:
+      [jar] Building jar: /home/gene/src/ExTeX/target/lib/testsuite.jar
+
+tests:
+    [mkdir] Created dir: /home/gene/src/ExTeX/tmp/tests
+    [junit] Running de.dante.etex.CurrentgrouplevelTest
+    [junit] Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 1,623 sec
+...
+
+BUILD SUCCESSFUL
+Total time: 3 minutes 54 seconds
+#
+\end{lstlisting}
+
+This invocation runas all JUnit test cases found in the directory
+\File{src/test}. The results can be found in the directory
+\File{target/tests} with one file per test class.
+
+To run single cases or a selected set of test cases you can use the
+parameter \texttt{cases}. This parameter is added to the command line
+arguments with the prefix \verb|-D|. The value follows after an equals
+sign. The value is a pattern to select the test case files to be used.
+The pattern \verb|**| denotes an arbitrary deep directory hierarchy.
+\verb|*| denotes an arbitrary sequence of characters. Note that the
+pattern should end in \verb|Test.java|.
+
+\begin{lstlisting}{}
+#  build tests -Dcases=**/RelaxTest.java
+Buildfile: build.xml
+
+compile:
+
+jar:
+
+compile.tests:
+
+jar.tests:
+
+tests:
+   [delete] Deleting directory /home/gene/src/ExTeX/target/tests
+    [mkdir] Created dir: /home/gene/src/ExTeX/target/tests
+    [junit] Running de.dante.extex.interpreter.primitives.RelaxTest
+    [junit] Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 1,062 sec
+
+BUILD SUCCESSFUL
+Total time: 5 seconds
+#
+\end{lstlisting}
+
+Details on testing and test cases can be found in
+section~\ref{chapter:testing}.
+
+
+\subsection{Creating Javadoc}\label{sec:shell-javadoc}
+
+Creating the Javadoc HTML pages can best be complished with the help
+of the build script. Here the target \texttt{javadoc} does everythign
+necessary:
+
+\begin{lstlisting}{}
+#  build javadoc
+Buildfile: build.xml
+
+javadoc:
+  [javadoc] Generating Javadoc
+  [javadoc] Javadoc execution
+  [javadoc] Loading source files for package de.dante.extex...
+  [javadoc] Loading source files for package de.dante.extex.color...
+  [javadoc] Loading source files for package de.dante.extex.color.model...
+...
+
+BUILD SUCCESSFUL
+Total time: 2 minutes 20 seconds
+#
+\end{lstlisting}{}
+
+As the result of this invocation the Javadoc HTML pages are stored in
+the sub-directory \File{target/javadoc}.
+
+
+\subsection{Creating the Installer}\label{sec:shell-installer}
+
+The installer can be build with the help of the build script. The
+invocation looks as follows:
+
+\begin{lstlisting}{}
+#  build installer
+Buildfile: build.xml
+
+compile:
+
+jar:
+      [jar] Building jar: /home/gene/src/ExTeX/target/lib/extex.jar
+
+installer:
+   [izpack] Adding resource : IzPack.uninstaller ...
+   [izpack] Setting the installer informations ...
+   [izpack] Setting the GUI preferences ...
+... 
+   [izpack] Writing Packs ...
+   [izpack] Writing Pack #0 : Core
+   [izpack] Writing Pack #1 : Libraries
+   [izpack] Writing Pack #2 : User Settings
+   [izpack] Writing Pack #3 : Documentation
+   [izpack] Writing Pack #4 : Fonts
+   [izpack] Writing Pack #5 : Sources
+
+BUILD SUCCESSFUL
+Total time: 1 minute 30 seconds
+#
+\end{lstlisting}{}
+
+After the work is complete the installer can be found in the file
+\File{ExTeX-setup.jar} in the directory \File{target}. The use of the
+installer is described in the User's Manual.
+
+Alternatively the installer can also be created with the Ant task
+\texttt{installer}. Using this method can be applied from the command
+line and from within Eclipse.
+
+Note that the installer is automatically created once a day and
+provided in the snapshot directory of the \ExTeX\ Web site.
+
