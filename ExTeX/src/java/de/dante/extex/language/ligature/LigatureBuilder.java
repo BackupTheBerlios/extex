@@ -16,6 +16,7 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.language.ligature;
 
 import java.io.Serializable;
@@ -23,14 +24,13 @@ import java.io.Serializable;
 import de.dante.extex.language.hyphenation.exception.HyphenationException;
 import de.dante.extex.typesetter.type.NodeList;
 
-
 /**
  * This interface describes the capability of a ligature builder.
- * The ligature builder inserts kern nodes and constructs ligature nodes.
+ * The ligature builder inserts kerning nodes and constructs ligature nodes.
  * It might use the information from the font.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface LigatureBuilder extends Serializable {
 
