@@ -1,0 +1,33 @@
+#!/bin/bash
+#--------------------------------------------------------------------
+# (c) 2003-2005 Gerd Neugebauer (gene@gerd-neugebauer.de)
+#
+CVSDIR=":pserver:anonymous@cvs.extex.berlios.de:/cvsroot/extex"
+MODULES="ExTeX"
+LOCALDIR="$HOME/build"
+LOG=$LOCALDIR/log
+
+export JAVA_HOME=$HOME/local/share/j2sdk1.4.2_09/
+export PATH=${JAVA_HOME}/bin:$PATH
+
+mkdir -p $LOCALDIR
+mkdir -p $LOG
+
+cd $LOCALDIR
+date >$LOG/export.log
+cvs -q -r -d $CVSDIR checkout -P $MODULES 2>&1 >>$LOG/export.log
+cvs -q -r -d $CVSDIR update -P $MODULES 2>&1 >>$LOG/export.log
+
+#cd $LOCALDIR/ExTeX/www
+#make all FLAGS="-src=src -dest=/home/groups/extex/htdocs"
+
+cd $LOCALDIR/ExTeX
+date >$LOG/installer.log
+sh build installer 2>&1 >>$LOG/installer.log
+scp -q target/ExTeX-setup.jar shell.berlios.de:/home/groups/extex/htdocs/snapsho
+t
+
+sh build javadoc 2>&1 >>$LOG/javadoc.log
+scp -q -r target/javadoc shell.berlios.de:/home/groups/extex/htdocs/snapshot
+
+#
