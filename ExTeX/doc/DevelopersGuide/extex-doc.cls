@@ -175,5 +175,26 @@
   \nopagebreak
 }
 
+\renewcommand\maketitle{
+  \begin{center}
+  \parindent=0pt
+  \vspace*{1pt}
+  \vfill
+  \ExTeXbox
+  \vfill
+  \textsf{\bfseries\Huge \@title}
+  \vfill
+  \textsf{\Large Version \Version}
+  \vfill
+  \textsf{\large \@author}
+  \vfill
+  \vfill
+  \end{center}
+}
+
+\newcommand\File[1]{\texttt{#1}}
+
+\newcommand\Macro[1]{\texttt{\char`\\ #1}}
+
 \ProvidesClass{extex-doc}
 
