@@ -39,7 +39,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * <h2>Configuration</h2>
  *
  * This instance is configurable. The configuration is used to select the
- * appropriate classs and optional parameters for a requested instance. In this
+ * appropriate class and optional parameters for a requested instance. In this
  * respect this class makes best use of the infrastructure of the
  * {@link de.dante.util.framework.AbstractFactory AbstractFactory}.
  *
@@ -47,7 +47,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class BaseLanguageManager extends AbstractFactory
         implements
@@ -109,7 +109,7 @@ public class BaseLanguageManager extends AbstractFactory
      *
      * @param name the name for which the language is requested
      *
-     * @return the laguage for the given name
+     * @return the language for the given name
      *
      * @throws ConfigurationException in case of an error in the configuration
      *
