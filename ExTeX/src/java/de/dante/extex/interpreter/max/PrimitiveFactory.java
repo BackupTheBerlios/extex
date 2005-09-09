@@ -52,7 +52,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class PrimitiveFactory extends AbstractFactory {
 
@@ -80,6 +80,7 @@ public class PrimitiveFactory extends AbstractFactory {
 
     /**
      * Scan a configuration and define the primitives found.
+     *
      * @param configuration the configuration to scan
      * @param tokenFactory the token factory to use
      * @param context the interpreter context to register the primitive in
