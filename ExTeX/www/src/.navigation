@@ -14,17 +14,17 @@
     <a href="&top;documentation/index.html">Documentation</a><br />
     <div class="navitems">
      <a href="&top;documentation/objectives.html">Objectives</a><br />
-     <a href="&top;documentation/man/extex-users.pdf">User's Guide</a><br />
+     <a href="&top;documentation/man/extex-users.pdf">User&apos;s Guide</a><br />
+     <a href="&top;documentation/man/extex-users.pdf">Developer&apos;s Guide</a><br />
      <a href="&top;documentation/faq.html">FAQ</a><br />
-     <i>Programmer's Guide</i><br />
      <a href="&top;snapshot/javadoc/index.html">Javadoc (Snapshot)</a><br />
     </div>
  
     <a href="&top;sources/index.html">Download</a><br />
     <div class="navitems">
      <i>Current Release</i><br />
+     <a href="&top;snapshot/ExTeX-setup.jar">Installer (Snapshot)</a><br />
      <a href="&top;sources/repository.html">Repository</a><br />
-     <a href="&top;snapshot/ExTeX-setup.jar">Snapshot Installer</a><br />
     </div>
    </div>
 

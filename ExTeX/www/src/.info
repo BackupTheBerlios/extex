@@ -27,6 +27,14 @@
    </div>
 
    <div class="info">
+    Developer's Guide Available
+    <div class="infoitems">
+     The <a href="&top;documentation/man/developersGuide.pdf">&ExTeX;
+     Developer's Guide</a> is available in a draft version.
+    </div>
+   </div>
+
+   <div class="info">
     Developer Meeting
     <div class="infoitems">
      The &ExTeX; developers had scheduled a meeting for beginning of August
