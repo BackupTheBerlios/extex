@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\fontname</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class FontnameTest extends ExTeXLauncher {
 
@@ -40,7 +40,9 @@ public class FontnameTest extends ExTeXLauncher {
     }
 
     /**
-     * Test case checking that an end of file leads to an error.
+     * <testcase primitive="\fontname">
+     *  Test case checking that an end of file leads to an error.
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -55,7 +57,9 @@ public class FontnameTest extends ExTeXLauncher {
     }
 
     /**
-     * Test case checking that a missing font identifier leads to an error.
+     * <testcase primitive="\fontname">
+     *  Test case checking that a missing font identifier leads to an error.
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -70,7 +74,9 @@ public class FontnameTest extends ExTeXLauncher {
     }
 
     /**
-     * Test case checking that a missing font identifier leads to an error.
+     * <testcase primitive="\fontname">
+     *  Test case checking that a missing font identifier leads to an error.
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -85,8 +91,10 @@ public class FontnameTest extends ExTeXLauncher {
     }
 
     /**
-     * Test case checking that a correct value is produced for a font loaded at
-     * its deign size.
+     * <testcase primitive="\fontname">
+     *  Test case checking that a correct value is produced for a font loaded at
+     *  its deign size.
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -99,12 +107,14 @@ public class FontnameTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "cmtt12\n");
+                "cmtt12\n\n");
     }
 
     /**
-     * Test case checking that a correct value is produced.
-     * This test case needs an external font cmi10!
+     * <testcase primitive="\fontname">
+     *  Test case checking that a correct value is produced.
+     *  This test case needs an external font cmi10!
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -117,12 +127,14 @@ public class FontnameTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "cmmi10\n");
+                "cmmi10\n\n");
     }
 
     /**
-     * Test case checking that a correct value is produced for a font loaded
-     * with an explicit size which is its design size.
+     * <testcase primitive="\fontname">
+     *  Test case checking that a correct value is produced for a font loaded
+     *  with an explicit size which is its design size.
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -135,12 +147,14 @@ public class FontnameTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "cmtt12\n");
+                "cmtt12\n\n");
     }
 
     /**
-     * Test case checking that a correct value is produced for a font loaded
-     * with an explicit size which is not its design size.
+     * <testcase primitive="\fontname">
+     *  Test case checking that a correct value is produced for a font loaded
+     *  with an explicit size which is not its design size.
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -153,7 +167,7 @@ public class FontnameTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "cmtt12 at 24.0pt\n");
+                "cmtt12 at 24.0pt\n\n");
     }
 
 }

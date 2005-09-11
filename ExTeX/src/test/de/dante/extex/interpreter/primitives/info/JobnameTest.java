@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -27,7 +27,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\jobname</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class JobnameTest extends ExTeXLauncher {
 
@@ -42,7 +42,9 @@ public class JobnameTest extends ExTeXLauncher {
     }
 
     /**
-     * Test case checking that \jobname delivers a decent default value.
+     * <testcase primitive="\jobname">
+     *  Test case checking that \jobname delivers a decent default value.
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -56,11 +58,13 @@ public class JobnameTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "texput\n");
+                "texput\n\n");
     }
 
     /**
-     * Test case checking that \jobname can be set properly.
+     * <testcase primitive="\jobname">
+     *  Test case checking that \jobname can be set properly.
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -78,6 +82,6 @@ public class JobnameTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "job\n");
+                "job\n\n");
     }
 }

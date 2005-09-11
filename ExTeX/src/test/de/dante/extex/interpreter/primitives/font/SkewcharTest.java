@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\skewchar</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class SkewcharTest extends ExTeXLauncher {
 
@@ -40,7 +40,9 @@ public class SkewcharTest extends ExTeXLauncher {
     }
 
     /**
-     * Test case checking that an end of file leads to an error.
+     * <testcase primitive="\skewchar">
+     *  Test case checking that an end of file leads to an error.
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -55,7 +57,9 @@ public class SkewcharTest extends ExTeXLauncher {
     }
 
     /**
-     * Test case checking that an end of file leads to an error.
+     * <testcase primitive="\skewchar">
+     *  Test case checking that an end of file leads to an error.
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -70,7 +74,9 @@ public class SkewcharTest extends ExTeXLauncher {
     }
 
     /**
-     * Test case checking that a missing font identifier leads to an error.
+     * <testcase primitive="\skewchar">
+     *  Test case checking that a missing font identifier leads to an error.
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -85,7 +91,9 @@ public class SkewcharTest extends ExTeXLauncher {
     }
 
     /**
-     * Test case checking that a missing font identifier leads to an error.
+     * <testcase primitive="\skewchar">
+     *  Test case checking that a missing font identifier leads to an error.
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -100,8 +108,10 @@ public class SkewcharTest extends ExTeXLauncher {
     }
 
     /**
-     * Test case checking that a correct value is produced when the skew char
-     * is not preset for \nullfont.
+     * <testcase primitive="\skewchar">
+     *  Test case checking that a correct value is produced when the skew char
+     *  is not preset for \nullfont.
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -113,12 +123,14 @@ public class SkewcharTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "-1\n");
+                "-1\n\n");
     }
 
     /**
-     * Test case checking that a correct value is produced when the skew char
-     * is set to 123 for \nullfont.
+     * <testcase primitive="\skewchar">
+     *  Test case checking that a correct value is produced when the skew char
+     *  is set to 123 for \nullfont.
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -131,12 +143,14 @@ public class SkewcharTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "123\n");
+                "123\n\n");
     }
 
     /**
-     * Test case checking that a correct value is produced when the skew char
-     * is set to undefined for \nullfont.
+     * <testcase primitive="\skewchar">
+     *  Test case checking that a correct value is produced when the skew char
+     *  is set to undefined for \nullfont.
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -149,11 +163,13 @@ public class SkewcharTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "-1\n");
+                "-1\n\n");
     }
 
     /**
-     * Test case checking that \skewchar is countconvertible for \nullfont.
+     * <testcase primitive="\skewchar">
+     *  Test case checking that \skewchar is countconvertible for \nullfont.
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -167,12 +183,14 @@ public class SkewcharTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "123\n");
+                "123\n\n");
     }
 
     /**
-     * Test case checking that a correct value is produced when the skew char
-     * is not preset for a loaded \font.
+     * <testcase primitive="\skewchar">
+     *  Test case checking that a correct value is produced when the skew char
+     *  is not preset for a loaded \font.
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -185,12 +203,14 @@ public class SkewcharTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "-1\n");
+                "-1\n\n");
     }
 
     /**
-     * Test case checking that a correct value is produced when the skew char
-     * is set to 123 for a loaded \font.
+     * <testcase primitive="\skewchar">
+     *  Test case checking that a correct value is produced when the skew char
+     *  is set to 123 for a loaded \font.
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -204,12 +224,14 @@ public class SkewcharTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "123\n");
+                "123\n\n");
     }
 
     /**
-     * Test case checking that a correct value is produced when the skew char
-     * is set to undefined for a loaded \font.
+     * <testcase primitive="\skewchar">
+     *  Test case checking that a correct value is produced when the skew char
+     *  is set to undefined for a loaded \font.
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -223,11 +245,13 @@ public class SkewcharTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "-1\n");
+                "-1\n\n");
     }
 
     /**
-     * Test case checking that \skewchar is countconvertible for a loaded \font.
+     * <testcase primitive="\skewchar">
+     *  Test case checking that \skewchar is countconvertible for a loaded \font.
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -242,7 +266,7 @@ public class SkewcharTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "123\n");
+                "123\n\n");
     }
 
 }
