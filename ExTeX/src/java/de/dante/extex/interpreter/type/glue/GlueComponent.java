@@ -60,7 +60,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.37 $
+ * @version $Revision: 1.38 $
  */
 public class GlueComponent implements Serializable, FixedGlueComponent {
 
@@ -534,6 +534,7 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
                     if (mag != 1000) {
                         value = value * mag / 1000;
                     }
+                    source.skipSpace();
                     return;
                 case 'c':
                     if (t.equals(Catcode.LETTER, 'm')) {
@@ -546,6 +547,7 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
                     if (mag != 1000) {
                         value = value * mag / 1000;
                     }
+                    source.skipSpace();
                     return;
                 case 'd':
                     if (t.equals(Catcode.LETTER, 'd')) {
@@ -556,6 +558,7 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
                     if (mag != 1000) {
                         value = value * mag / 1000;
                     }
+                    source.skipSpace();
                     return;
                 case 'm':
                     if (t.equals(Catcode.LETTER, 'm')) {
@@ -566,6 +569,7 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
                     if (mag != 1000) {
                         value = value * mag / 1000;
                     }
+                    source.skipSpace();
                     return;
                 case 'i':
                     if (t.equals(Catcode.LETTER, 'n')) {
@@ -576,6 +580,7 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
                     if (mag != 1000) {
                         value = value * mag / 1000;
                     }
+                    source.skipSpace();
                     return;
                 case 's':
                     if (t.equals(Catcode.LETTER, 'p')) {
@@ -586,6 +591,7 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
                     if (mag != 1000) {
                         value = value * mag / 1000;
                     }
+                    source.skipSpace();
                     return;
                 case 'e':
                     if (t.equals(Catcode.LETTER, 'x')) {
@@ -602,6 +608,7 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
                     if (mag != 1000) {
                         value = value * mag / 1000;
                     }
+                    source.skipSpace();
                     return;
                 case 'b':
                     if (t.equals(Catcode.LETTER, 'p')) {
@@ -612,6 +619,7 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
                     if (mag != 1000) {
                         value = value * mag / 1000;
                     }
+                    source.skipSpace();
                     return;
                 case 'f':
                     if (fixed && t.equals(Catcode.LETTER, 'i')) {
@@ -625,6 +633,7 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
                         if (order > MAX_ORDER) {
                             break;
                         }
+                        source.skipSpace();
                         return;
                     }
                     break;
@@ -639,6 +648,7 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
                     if (mag != 1000) {
                         value = value * mag / 1000;
                     }
+                    source.skipSpace();
                     return;
                 default:
                     break;
