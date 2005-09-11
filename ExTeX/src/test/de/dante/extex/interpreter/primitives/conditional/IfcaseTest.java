@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\ifcase</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class IfcaseTest extends ExTeXLauncher {
 
@@ -50,7 +50,10 @@ public class IfcaseTest extends ExTeXLauncher {
     }
 
     /**
-     * Test case checking that the case 0 is hit if present.
+     * <testcase primitive="\ifcase">
+     *  Test case checking that the case 0 is hit if present.
+     * </testcase>
+     *
      * @throws Exception in case of an error
      */
     public void testConst0() throws Exception {
@@ -64,7 +67,10 @@ public class IfcaseTest extends ExTeXLauncher {
     }
 
     /**
-     * Test case checking that the case 2 is hit if present.
+     * <testcase primitive="\ifcase">
+     *  Test case checking that the case 2 is hit if present.
+     * </testcase>
+     *
      * @throws Exception in case of an error
      */
     public void testConst1() throws Exception {
@@ -78,7 +84,10 @@ public class IfcaseTest extends ExTeXLauncher {
     }
 
     /**
-     * Test case checking that the case 2 is hit if present.
+     * <testcase primitive="\ifcase">
+     *  Test case checking that the case 2 is hit if present.
+     * </testcase>
+     *
      * @throws Exception in case of an error
      */
     public void testConst2() throws Exception {
@@ -92,7 +101,10 @@ public class IfcaseTest extends ExTeXLauncher {
     }
 
     /**
-     * Test case checking that the case 12 hits the else case if present.
+     * <testcase primitive="\ifcase">
+     *  Test case checking that the case 12 hits the else case if present.
+     * </testcase>
+     *
      * @throws Exception in case of an error
      */
     public void testConst12() throws Exception {
@@ -106,7 +118,10 @@ public class IfcaseTest extends ExTeXLauncher {
     }
 
     /**
-     * Test case checking that the case 12 hits nothing.
+     * <testcase primitive="\ifcase">
+     *  Test case checking that the case 12 hits nothing.
+     * </testcase>
+     *
      * @throws Exception in case of an error
      */
     public void testConst12b() throws Exception {
@@ -121,7 +136,10 @@ public class IfcaseTest extends ExTeXLauncher {
 
 
     /**
-     * Test case checking that the case -1 hits the else case if present.
+     * <testcase primitive="\ifcase">
+     *  Test case checking that the case -1 hits the else case if present.
+     * </testcase>
+     *
      * @throws Exception in case of an error
      */
     public void testConst_1() throws Exception {
@@ -135,7 +153,10 @@ public class IfcaseTest extends ExTeXLauncher {
     }
 
     /**
-     * Test case checking that the case -1 hits the else case if present.
+     * <testcase primitive="\ifcase">
+     *  Test case checking that the case -1 hits the else case if present.
+     * </testcase>
+     *
      * @throws Exception in case of an error
      */
     public void testConst_1b() throws Exception {
