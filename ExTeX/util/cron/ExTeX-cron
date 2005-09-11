@@ -6,6 +6,7 @@ CVSDIR=":pserver:anonymous@cvs.extex.berlios.de:/cvsroot/extex"
 MODULES="ExTeX"
 LOCALDIR="$HOME/build"
 LOG=$LOCALDIR/log
+export INSTALLDIR=shell.berlios.de:/home/groups/extex/htdocs
 
 export JAVA_HOME=$HOME/local/share/j2sdk1.4.2_09/
 export PATH=${JAVA_HOME}/bin:$PATH
@@ -24,10 +25,9 @@ cvs -q -r -d $CVSDIR update -P $MODULES 2>&1 >>$LOG/export.log
 cd $LOCALDIR/ExTeX
 date >$LOG/installer.log
 sh build installer 2>&1 >>$LOG/installer.log
-scp -q target/ExTeX-setup.jar shell.berlios.de:/home/groups/extex/htdocs/snapsho
-t
+scp -q target/ExTeX-setup.jar $INSTALLDIR/snapshot
 
 sh build javadoc 2>&1 >>$LOG/javadoc.log
-scp -q -r target/javadoc shell.berlios.de:/home/groups/extex/htdocs/snapshot
+scp -q -r target/javadoc $INSTALLDIR/snapshot
 
 #
