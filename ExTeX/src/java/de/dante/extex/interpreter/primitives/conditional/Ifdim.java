@@ -60,7 +60,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class Ifdim extends AbstractIf {
 
@@ -103,7 +103,7 @@ public class Ifdim extends AbstractIf {
                 case '>':
                     return (x > new Dimen(context, source, typesetter).getValue());
                 default:
-            // Fal through to error handling
+            // Fall through to error handling
             }
         }
 
