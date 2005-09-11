@@ -1,6 +1,6 @@
 #!C:\usr\local\share\cygwin\bin\perl.exe -w
 ##*****************************************************************************
-## $Id: .make.pl,v 1.5 2005/06/14 10:06:40 gene Exp $
+## $Id: .make.pl,v 1.6 2005/09/11 15:02:08 gene Exp $
 ##*****************************************************************************
 ## Author: Gerd Neugebauer
 ##=============================================================================
@@ -78,7 +78,7 @@ my $destdir = "www";
 #
 my ($sec,$min,$hour,$day,$month,$year,$wday,$yday,$isdst) = localtime(time);
 $year  += 1900;
-$month +=1;
+$month += 1;
 
 my $force = undef;
 
@@ -158,6 +158,9 @@ sub process
   }
 }
 
+#------------------------------------------------------------------------------
+# Function:	uptodate
+#
 sub uptodate
 { my $file1 = shift;
   local $_;
@@ -252,8 +255,26 @@ sub includeFile
       includeFile($fromdir,".info",$out,$top,$fromdir);
     } elsif ( m|<tabs[ ]*/>|i ) {
       includeFile($fromdir,".tabs",$out,$top,$fromdir);
+    } elsif ( m|<directory[ ]*/>|i ) {
+
+      print $out "  <table>\n";
+      my @files = glob("$fromdir/*");
+      foreach $_ (@files)
+      { next if m|/CVS$|;
+	next if m|/index.html$|;
+	next if m|/~$|;
+	print "$_\n";
+#	my ($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
+#            $atime,$mtime,$ctime,$blksize,$blocks)
+#           = stat($_);
+	s|.*/||;
+        print $out "    <tr>\n      <td><a href=\"$_\">$_</a></td>\n    </tr>\n";
+      }
+      print $out "  </table>\n";
+
     } else {
-      print $out $_;
+      chomp;
+      print $out "$_\n";
     }
   }
 
