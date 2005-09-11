@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -31,7 +31,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @see "<logo>TeX</logo> &ndash; The Program [73]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public abstract class Interaction implements Serializable {
 
@@ -39,7 +39,7 @@ public abstract class Interaction implements Serializable {
      * This inner class is use to represent the batch mode.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.19 $
+     * @version $Revision: 1.20 $
      */
     private static class BatchMode extends Interaction {
 
@@ -88,12 +88,13 @@ public abstract class Interaction implements Serializable {
      * This inner class is use to represent the error stop mode.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.19 $
+     * @version $Revision: 1.20 $
      */
     private static class ErrorstopMode extends Interaction {
 
         /**
-         * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+         * The constant <tt>serialVersionUID</tt> contains the id for
+         * serialization.
          */
         private static final long serialVersionUID = 1L;
 
@@ -137,7 +138,7 @@ public abstract class Interaction implements Serializable {
      * This inner class is use to represent the nonstop mode.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.19 $
+     * @version $Revision: 1.20 $
      */
     private static class NonstopMode extends Interaction {
 
@@ -186,7 +187,7 @@ public abstract class Interaction implements Serializable {
      * This inner class is use to represent the scroll mode.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.19 $
+     * @version $Revision: 1.20 $
      */
     private static class ScrollMode extends Interaction {
 
@@ -232,29 +233,29 @@ public abstract class Interaction implements Serializable {
     }
 
     /**
-     * The field <tt>BATCHMODE</tt> contains the constant for batch mode.
+     * The constant <tt>BATCHMODE</tt> contains the constant for batch mode.
      */
     public static final Interaction BATCHMODE = new BatchMode();
 
     /**
-     * The field <tt>ERRORSTOPMODE</tt> contains the constant for error stop
+     * The constant <tt>ERRORSTOPMODE</tt> contains the constant for error stop
      * mode.
      */
     public static final Interaction ERRORSTOPMODE = new ErrorstopMode();
 
     /**
-     * The field <tt>NONSTOPMODE</tt> contains the constant for non-stop
+     * The constant <tt>NONSTOPMODE</tt> contains the constant for non-stop
      * mode.
      */
     public static final Interaction NONSTOPMODE = new NonstopMode();
 
     /**
-     * The field <tt>SCROLLMODE</tt> contains the constant for scroll mode.
+     * The constant <tt>SCROLLMODE</tt> contains the constant for scroll mode.
      */
     public static final Interaction SCROLLMODE = new ScrollMode();
 
     /**
-     * The field <tt>MODE_MAP</tt> contains the list for mapping integers to
+     * The constant <tt>MODE_MAP</tt> contains the list for mapping integers to
      * modes.
      *
      * @see "<logo>TeX</logo> &ndash; The Program [73]"
