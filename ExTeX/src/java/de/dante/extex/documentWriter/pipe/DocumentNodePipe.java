@@ -36,7 +36,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This document writer can be used to combine several components.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class DocumentNodePipe
         implements
@@ -45,7 +45,7 @@ public class DocumentNodePipe
             Configurable {
 
     /**
-     * The field <tt>pipe</tt> contains the ...
+     * The field <tt>pipe</tt> contains the elements of the pipe.
      */
     private NodePipe[] pipe;
 
@@ -67,8 +67,9 @@ public class DocumentNodePipe
                 GeneralException,
                 IOException {
 
-        // TODO gene: close unimplemented
-
+        for (int i=0;i< pipe.length; i++) {
+            pipe[i].close();
+        }
     }
 
     /**
@@ -86,8 +87,7 @@ public class DocumentNodePipe
      */
     public String getExtension() {
 
-        // TODO gene: getExtension unimplemented
-        return null;
+        return pipe[pipe.length-1].getExtension();
     }
 
     /**
@@ -95,8 +95,7 @@ public class DocumentNodePipe
      */
     public int getPages() {
 
-        // TODO gene: getPages unimplemented
-        return 0;
+        return pipe[pipe.length-1].getPages();
     }
 
     /**
@@ -116,15 +115,16 @@ public class DocumentNodePipe
      */
     public void setParameter(final String name, final String value) {
 
-        // TODO gene: setParameter unimplemented
-
+        for (int i=0;i< pipe.length; i++) {
+            pipe[i].setParameter(name, value);
+        }
     }
 
     /**
      * @see de.dante.extex.documentWriter.DocumentWriter#shipout(
      *      de.dante.extex.typesetter.type.NodeList)
      */
-    public void shipout(NodeList nodes)
+    public void shipout(final NodeList nodes)
             throws DocumentWriterException,
                 GeneralException,
                 IOException {
