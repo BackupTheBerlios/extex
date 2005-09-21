@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -47,7 +47,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [770]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class HAlignListMaker extends RestrictedHorizontalListMaker
         implements
@@ -57,7 +57,7 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
      * This inner class is a container for the cell information in an alignment.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.13 $
+     * @version $Revision: 1.14 $
      */
     protected class Cell {
 
