@@ -24,7 +24,6 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Color;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.exception.ImpossibleException;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
@@ -77,11 +76,111 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class ColorPrimitive extends AbstractAssignment
         implements
             ColorConvertible {
+
+    /**
+     * This internal interface is used to describe the parsers for the differnt
+     * color models.
+     *
+     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+     * @version $Revision: 1.7 $
+     */
+    private interface ColorMode {
+
+        /**
+         * Parse a color value.
+         *
+         * @param context the interpreter context
+         * @param source the token source
+         * @param alpha the alpha channel
+         * @param name the name of the primitive
+         *
+         * @return the color found
+         *
+         * @throws InterpreterException in case of an error
+         */
+        Color parse(Context context, TokenSource source, int alpha, String name)
+                throws InterpreterException;
+    }
+
+    /**
+     * The field <tt>RGB_MODE</tt> contains the parser for a rgb color.
+     */
+    private static final ColorMode RGB_MODE = new ColorMode() {
+
+        /**
+         * @see de.dante.extex.interpreter.primitives.color.ColorPrimitive.ColorMode#parse()
+         */
+        public Color parse(final Context context, final TokenSource source,
+                final int alpha, String name) throws InterpreterException {
+
+            int r = scanColorComponent(context, source, name);
+            int g = scanColorComponent(context, source, name);
+            int b = scanColorComponent(context, source, name);
+            return ColorFactory.getRgb(r, g, b, alpha);
+        }
+
+    };
+
+    /**
+     * The field <tt>HSV_MODE</tt> contains the parser for a hsv color.
+     */
+    private static final ColorMode HSV_MODE = new ColorMode() {
+
+        /**
+         * @see de.dante.extex.interpreter.primitives.color.ColorPrimitive.ColorMode#parse()
+         */
+        public Color parse(final Context context, final TokenSource source,
+                final int alpha, String name) throws InterpreterException {
+
+            int h = scanColorComponent(context, source, name);
+            int s = scanColorComponent(context, source, name);
+            int v = scanColorComponent(context, source, name);
+            return ColorFactory.getHsv(h, s, v, alpha);
+        }
+
+    };
+
+    /**
+     * The field <tt>GRAY_MODE</tt> contains the parser for a grayscale color.
+     */
+    private static final ColorMode GRAY_MODE = new ColorMode() {
+
+        /**
+         * @see de.dante.extex.interpreter.primitives.color.ColorPrimitive.ColorMode#parse()
+         */
+        public Color parse(final Context context, final TokenSource source,
+                final int alpha, String name) throws InterpreterException {
+
+            int gray = scanColorComponent(context, source, name);
+            return ColorFactory.getGray(gray, alpha);
+        }
+
+    };
+
+    /**
+     * The field <tt>CMYK_MODE</tt> contains the parser for a cmyk color.
+     */
+    private static final ColorMode CMYK_MODE = new ColorMode() {
+
+        /**
+         * @see de.dante.extex.interpreter.primitives.color.ColorPrimitive.ColorMode#parse()
+         */
+        public Color parse(final Context context, final TokenSource source,
+                final int alpha, String name) throws InterpreterException {
+
+            int c = scanColorComponent(context, source, name);
+            int m = scanColorComponent(context, source, name);
+            int y = scanColorComponent(context, source, name);
+            int k = scanColorComponent(context, source, name);
+            return ColorFactory.getCmyk(c, m, y, k, alpha);
+        }
+
+    };
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
@@ -89,25 +188,27 @@ public class ColorPrimitive extends AbstractAssignment
     private static final long serialVersionUID = 1L;
 
     /**
-     * The constant <tt>CMYK</tt> contains the indicator for the CMYK color model.
+     * Scan a color component and translate it into a color value.
+     *
+     * @param context the interpreter context
+     * @param source the token source
+     *
+     * @return the color component in units of Color.MAX_VALUE
+     *
+     * @throws InterpreterException in case of an error
      */
-    private static final int CMYK = 2;
+    private static int scanColorComponent(final Context context,
+            final TokenSource source, final String name)
+            throws InterpreterException {
 
-    /**
-     * The constant <tt>GRAY</tt> contains the indicator for the grayscale color
-     * model.
-     */
-    private static final int GRAY = 3;
+        Token t = source.getNonSpace(context);
+        if (t == null) {
+            throw new EofException(name);
+        }
 
-    /**
-     * The constant <tt>HSV</tt> contains the indicator for the HSV color model.
-     */
-    private static final int HSV = 1;
-
-    /**
-     * The constant <tt>RGB</tt> contains the indicator for the RGB color model.
-     */
-    private static final int RGB = 0;
+        return (int) (GlueComponent.scanFloat(context, source, t)
+                * Color.MAX_VALUE / GlueComponent.ONE);
+    }
 
     /**
      * Creates a new object.
@@ -117,75 +218,6 @@ public class ColorPrimitive extends AbstractAssignment
     public ColorPrimitive(final String name) {
 
         super(name);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.type.color.ColorConvertible#convertColor(
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.typesetter.Typesetter)
-     */
-    public Color convertColor(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws InterpreterException {
-
-        int alpha = 0;
-        int mode = RGB;
-
-        Token t = source.getNonSpace(context);
-        while (t instanceof LetterToken) {
-            source.push(t);
-            if (source.getKeyword(context, "alpha")) {
-                alpha = scanColorComponent(context, source);
-            } else if (source.getKeyword(context, "rgb")) {
-                mode = RGB;
-            } else if (source.getKeyword(context, "gray")) {
-                mode = GRAY;
-            } else if (source.getKeyword(context, "hsv")) {
-                mode = HSV;
-            } else if (source.getKeyword(context, "cmyk")) {
-                mode = CMYK;
-            }
-            t = source.getToken(context);
-        }
-        if (t == null) {
-            throw new EofException(getName());
-        } else if (!(t instanceof LeftBraceToken)) {
-            throw new HelpingException(getLocalizer(), "MissingLeftBrace");
-        }
-
-        Color color = null;
-        switch (mode) {
-            case RGB:
-                int r = scanColorComponent(context, source);
-                int g = scanColorComponent(context, source);
-                int b = scanColorComponent(context, source);
-                color = ColorFactory.getRgb(r, g, b, alpha);
-                break;
-            case HSV:
-                int h = scanColorComponent(context, source);
-                int s = scanColorComponent(context, source);
-                int v = scanColorComponent(context, source);
-                color = ColorFactory.getHsv(h, s, v, alpha);
-                break;
-            case GRAY:
-                int gray = scanColorComponent(context, source);
-                color = ColorFactory.getGray(gray, alpha);
-                break;
-            case CMYK:
-                int c = scanColorComponent(context, source);
-                int m = scanColorComponent(context, source);
-                int y = scanColorComponent(context, source);
-                int k = scanColorComponent(context, source);
-                color = ColorFactory.getCmyk(c, m, y, k, alpha);
-                break;
-            default:
-                throw new ImpossibleException("convertColor");
-        }
-        t = source.getNonSpace(context);
-        if (!(t instanceof RightBraceToken)) {
-            throw new HelpingException(getLocalizer(), "MissingRightBrace");
-        }
-        return color;
     }
 
     /**
@@ -208,25 +240,45 @@ public class ColorPrimitive extends AbstractAssignment
     }
 
     /**
-     * Scan a color component and translate it into a color value.
-     *
-     * @param context the interpreter context
-     * @param source the token source
-     *
-     * @return the color component in units of Color.MAX_VALUE
-     *
-     * @throws InterpreterException in case of an error
+     * @see de.dante.extex.interpreter.type.color.ColorConvertible#convertColor(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
      */
-    private int scanColorComponent(final Context context,
-            final TokenSource source) throws InterpreterException {
+    public Color convertColor(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
+
+        int alpha = 0;
+        ColorMode mode = RGB_MODE;
 
         Token t = source.getNonSpace(context);
+        while (t instanceof LetterToken) {
+            source.push(t);
+            if (source.getKeyword(context, "alpha")) {
+                alpha = scanColorComponent(context, source, getName());
+            } else if (source.getKeyword(context, "rgb")) {
+                mode = RGB_MODE;
+            } else if (source.getKeyword(context, "gray")) {
+                mode = GRAY_MODE;
+            } else if (source.getKeyword(context, "hsv")) {
+                mode = HSV_MODE;
+            } else if (source.getKeyword(context, "cmyk")) {
+                mode = CMYK_MODE;
+            }
+            t = source.getToken(context);
+        }
         if (t == null) {
             throw new EofException(getName());
+        } else if (!(t instanceof LeftBraceToken)) {
+            throw new HelpingException(getLocalizer(), "MissingLeftBrace");
         }
 
-        return (int) (GlueComponent.scanFloat(context, source, t)
-                * Color.MAX_VALUE / GlueComponent.ONE);
+        Color color = mode.parse(context, source, alpha, getName());
+        t = source.getNonSpace(context);
+        if (!(t instanceof RightBraceToken)) {
+            throw new HelpingException(getLocalizer(), "MissingRightBrace");
+        }
+        return color;
     }
 
 }
