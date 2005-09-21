@@ -87,6 +87,7 @@ import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.scanner.type.token.TokenFactory;
 import de.dante.extex.scanner.type.token.TokenVisitor;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.util.Switch;
 import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.Registrar;
@@ -105,7 +106,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.82 $
+ * @version $Revision: 1.83 $
  */
 public abstract class Max
         implements
@@ -1201,6 +1202,12 @@ public abstract class Max
 
         try {
             typesetter.mathShift(context, this, token);
+        } catch (TypesetterException e) {
+            Throwable cause = e.getCause();
+            if (cause instanceof InterpreterException) {
+                throw (InterpreterException) cause;
+            }
+            throw e;
         } catch (ConfigurationException e) {
             throw new GeneralException(e);
         }
@@ -1292,7 +1299,15 @@ public abstract class Max
     public Object visitSubMark(final SubMarkToken token, final Object ignore)
             throws GeneralException {
 
-        typesetter.subscriptMark(context, this, typesetter, token);
+        try {
+            typesetter.subscriptMark(context, this, typesetter, token);
+        } catch (TypesetterException e) {
+            Throwable cause = e.getCause();
+            if (cause instanceof InterpreterException) {
+                throw (InterpreterException) cause;
+            }
+            throw e;
+        }
         return null;
     }
 
@@ -1313,7 +1328,15 @@ public abstract class Max
     public Object visitSupMark(final SupMarkToken token, final Object ignore)
             throws GeneralException {
 
-        typesetter.superscriptMark(context, this, typesetter, token);
+        try {
+            typesetter.superscriptMark(context, this, typesetter, token);
+        } catch (TypesetterException e) {
+            Throwable cause = e.getCause();
+            if (cause instanceof InterpreterException) {
+                throw (InterpreterException) cause;
+            }
+            throw e;
+        }
         return null;
     }
 

@@ -31,7 +31,7 @@ import de.dante.util.exception.GeneralException;
  * numbered dimen registers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public abstract class AbstractDimen extends AbstractAssignment {
 
@@ -62,6 +62,8 @@ public abstract class AbstractDimen extends AbstractAssignment {
         String name;
         try {
             name = source.scanRegisterName(context);
+        } catch (InterpreterException e) {
+            throw e;
         } catch (GeneralException e) {
             throw new InterpreterException(e);
         }
