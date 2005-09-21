@@ -98,7 +98,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.77 $
+ * @version $Revision: 1.78 $
  */
 public class Moritz extends Max
         implements
@@ -455,14 +455,7 @@ public class Moritz extends Max
             } else if (!(t.equals(Catcode.LETTER, s.charAt(i)) //
                     || t.equals(Catcode.OTHER, s.charAt(i)))
                     || !getKeyword(context, s, i + 1)) {
-                if (stream == null) {
-                    try {
-                        stream = tokenStreamFactory.newInstance("");
-                    } catch (ConfigurationException e) {
-                        throw new InterpreterException(e);
-                    }
-                }
-                stream.put(t);
+                put(t);
                 return false;
             }
 
@@ -529,7 +522,7 @@ public class Moritz extends Max
                     }
 
                     if (t != null) {
-                        stream.put(t);
+                        put(t);
                     }
                     skipSpaces = true;
                     return n;
@@ -560,7 +553,7 @@ public class Moritz extends Max
                         n = n * 8 + no;
                     }
 
-                    stream.put(t);
+                    put(t);
                     skipSpaces = true;
                     return n;
 
@@ -600,13 +593,13 @@ public class Moritz extends Max
                                 n = n * 16 + no - 'A' + 10;
                                 break;
                             default:
-                                stream.put(t);
+                                put(t);
                                 skipSpaces = true;
                                 return n;
                         }
                     }
 
-                    stream.put(t);
+                    put(t);
                     skipSpaces = true;
                     return n;
 
@@ -637,7 +630,7 @@ public class Moritz extends Max
         if (t != null && t.equals(Catcode.OTHER, '=')) {
             skipSpaces = true;
         } else {
-            stream.put(t);
+            put(t);
         }
     }
 
@@ -767,6 +760,9 @@ public class Moritz extends Max
      */
     public void push(final Token token) throws InterpreterException {
 
+        if (token == null) {
+            return;
+        }
         if (observersPush != null) {
             observersPush.update(token);
         }
@@ -778,7 +774,6 @@ public class Moritz extends Max
                 throw new InterpreterException(e);
             }
         }
-
         stream.put(token);
     }
 
@@ -793,6 +788,14 @@ public class Moritz extends Max
      *      de.dante.extex.scanner.type.Token[])
      */
     public void push(final Token[] tokens) throws InterpreterException {
+
+        if (stream == null) {
+            try {
+                stream = getTokenStreamFactory().newInstance("");
+            } catch (ConfigurationException e) {
+                throw new InterpreterException(e);
+            }
+        }
 
         for (int i = tokens.length - 1; i >= 0; i--) {
 
@@ -841,6 +844,29 @@ public class Moritz extends Max
             }
             stream.put(t);
         }
+    }
+
+    /**
+     * Push a token back to the input stream.
+     *
+     * @param t the token to push
+     *
+     * @throws InterpreterException in case of a configuration problem
+     */
+    private void put(final Token t) throws InterpreterException {
+
+        if (t == null) {
+            return;
+        }
+        if (stream == null) {
+            try {
+                stream = getTokenStreamFactory().newInstance("");
+            } catch (ConfigurationException e) {
+                throw new InterpreterException(e);
+            }
+        }
+        stream.put(t);
+
     }
 
     /**
@@ -1104,9 +1130,7 @@ public class Moritz extends Max
                         while (t instanceof SpaceToken) {
                             t = getToken(context);
                         }
-                        if (stream != null) {
-                            stream.put(t);
-                        }
+                        put(t);
                         return n;
 
                     case '`':
@@ -1142,9 +1166,7 @@ public class Moritz extends Max
                         while (t instanceof SpaceToken) {
                             t = getToken(context);
                         }
-                        if (stream != null) {
-                            stream.put(t);
-                        }
+                        put(t);
                         return n;
 
                     case '"':
@@ -1183,7 +1205,7 @@ public class Moritz extends Max
                                     n = n * 16 + no - 'A' + 10;
                                     break;
                                 default:
-                                    stream.put(t);
+                                    put(t);
                                     skipSpaces = true;
                                     return n;
                             }
@@ -1192,9 +1214,7 @@ public class Moritz extends Max
                         while (t instanceof SpaceToken) {
                             t = getToken(context);
                         }
-                        if (stream != null) {
-                            stream.put(t);
-                        }
+                        put(t);
                         return n;
 
                     default:
