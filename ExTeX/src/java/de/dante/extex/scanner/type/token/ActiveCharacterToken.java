@@ -34,7 +34,7 @@ import de.dante.util.UnicodeChar;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ActiveCharacterToken extends AbstractToken implements CodeToken {
 
@@ -146,7 +146,8 @@ public class ActiveCharacterToken extends AbstractToken implements CodeToken {
      */
     public String toString() {
 
-        return getLocalizer().format("ActiveCharacterToken.Text", getName());
+        return getLocalizer().format("ActiveCharacterToken.Text",
+                getChar().toString());
     }
 
     /**
@@ -158,7 +159,8 @@ public class ActiveCharacterToken extends AbstractToken implements CodeToken {
      */
     public void toString(final StringBuffer sb) {
 
-        sb.append(getLocalizer().format("ActiveCharacterToken.Text",
+        sb
+                .append(getLocalizer().format("ActiveCharacterToken.Text",
                         getName()));
     }
 
