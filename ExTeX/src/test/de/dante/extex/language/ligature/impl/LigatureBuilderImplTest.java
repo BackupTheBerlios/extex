@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -50,7 +50,7 @@ import de.dante.util.UnicodeChar;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class LigatureBuilderImplTest extends TestCase {
 
@@ -58,7 +58,7 @@ public class LigatureBuilderImplTest extends TestCase {
      * ...
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.6 $
+     * @version $Revision: 1.7 $
      */
     private class MockFont extends NullFont {
 
@@ -117,7 +117,7 @@ public class LigatureBuilderImplTest extends TestCase {
      * ...
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.6 $
+     * @version $Revision: 1.7 $
      */
     private class MockGlyph implements Glyph {
 

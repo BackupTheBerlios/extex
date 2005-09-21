@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\iffalse</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class IffalseTest extends ExTeXLauncher {
 
@@ -81,7 +81,7 @@ public class IffalseTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "xx \n\n");
+                "xx\n\n");
     }
 
 }

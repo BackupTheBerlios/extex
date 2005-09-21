@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\iftrue</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class IftrueTest extends ExTeXLauncher {
 
@@ -81,7 +81,7 @@ public class IftrueTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "xax \n\n");
+                "xax\n\n");
     }
 
 }

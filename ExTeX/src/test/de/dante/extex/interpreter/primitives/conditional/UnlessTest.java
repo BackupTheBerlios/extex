@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -17,40 +17,36 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.math;
+package de.dante.extex.interpreter.primitives.conditional;
 
 import de.dante.test.ExTeXLauncher;
 
 /**
- * This is a test suite for the primitive <tt>\mathchoice</tt>.
+ * This is a test suite for the primitive <tt>\u005cnless</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.1 $
  */
-public class MathchoiceTest extends ExTeXLauncher {
+public class UnlessTest extends ExTeXLauncher {
 
     /**
-     * Constructor for MathchoiceTest.
+     * Method for running the tests standalone.
      *
-     * @param arg the name
+     * @param args command line parameter
      */
-    public MathchoiceTest(final String arg) {
+    public static void main(final String[] args) {
 
-        super(arg);
+        junit.textui.TestRunner.run(UnlessTest.class);
     }
 
     /**
-     * Test case checking that \mathchoice needs the math mode.
-     * @throws Exception in case of an error
+     * Creates a new object.
+     *
+     * @param arg the name
      */
-    public void testNonMathMode() throws Exception {
+    public UnlessTest(final String arg) {
 
-        runCode(//--- input code ---
-                "\\mathchoice \\end",
-                //--- log message ---
-                "Missing $ inserted",
-                //--- output channel ---
-                "");
+        super(arg);
     }
 
 }

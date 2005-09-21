@@ -70,7 +70,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * classes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class MockContext implements Context, TypesetterOptions {
 
@@ -130,7 +130,7 @@ public class MockContext implements Context, TypesetterOptions {
      */
     public String esc(final Token token) {
 
-        return token.toText('\\');
+        return token.toText();
     }
 
     /**

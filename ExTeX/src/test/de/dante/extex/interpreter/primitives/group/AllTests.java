@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -16,41 +16,31 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+package de.dante.extex.interpreter.primitives.group;
 
-package de.dante.extex.interpreter.primitives.math.delimiter;
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
-import de.dante.test.ExTeXLauncher;
 
 /**
- * This is a test suite for the primitive <tt>\left</tt>.
+ * Test suite for the group primitives.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public class LeftTest extends ExTeXLauncher {
+public class AllTests {
 
-    /**
-     * Constructor for LeftTest.
-     *
-     * @param arg the name
-     */
-    public LeftTest(final String arg) {
+    public static Test suite() {
 
-        super(arg);
-    }
-
-    /**
-     * Test case checking that \left needs the math mode.
-     * @throws Exception in case of an error
-     */
-    public void testNonMathMode() throws Exception {
-
-        runCode(//--- input code ---
-                "\\left \\end",
-                //--- log message ---
-                "Missing $ inserted",
-                //--- output channel ---
-                "");
+        TestSuite suite = new TestSuite(
+                "Test for de.dante.extex.interpreter.primitives.group");
+        //$JUnit-BEGIN$
+        suite.addTestSuite(EndgroupTest.class);
+        suite.addTestSuite(AftergroupTest.class);
+        suite.addTestSuite(CurrentgrouplevelTest.class);
+        suite.addTestSuite(BegingroupTest.class);
+        //$JUnit-END$
+        return suite;
     }
 
 }

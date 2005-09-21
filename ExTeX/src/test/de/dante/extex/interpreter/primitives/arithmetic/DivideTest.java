@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\divide</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class DivideTest extends ExTeXLauncher {
 
@@ -47,6 +47,158 @@ public class DivideTest extends ExTeXLauncher {
     public DivideTest(final String arg) {
 
         super(arg);
+    }
+
+    /**
+     * <testcase primitive="\divide">
+     *  Test case checking that <tt>\divide</tt> on a letter leads to an error.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testLetter1() throws Exception {
+
+        runCode(//--- input code ---
+                "\\divide a",
+                //--- log message ---
+                "You can\'t use `a\' after \\divide",
+                //--- output channel ---
+                "");
+    }
+
+    /**
+     * <testcase primitive="\divide">
+     *  Test case checking that <tt>\divide</tt> on a other token leads to an
+     *  error.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testOther1() throws Exception {
+
+        runCode(//--- input code ---
+                "\\divide 12 ",
+                //--- log message ---
+                "You can\'t use `1\' after \\divide",
+                //--- output channel ---
+                "");
+    }
+
+    /**
+     * <testcase primitive="\divide">
+     *  Test case checking that <tt>\divide</tt> on a macro parameter token
+     *  leads to an error.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testMacro1() throws Exception {
+
+        runCode(//--- input code ---
+                "\\catcode`#=6 "
+                + "\\divide #2 ",
+                //--- log message ---
+                "You can\'t use `#\' after \\divide",
+                //--- output channel ---
+                "");
+    }
+
+    /**
+     * <testcase primitive="\divide">
+     *  Test case checking that <tt>\divide</tt> on a non-dividable
+     *  primitive (\\relax) leads to an error.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testRelax1() throws Exception {
+
+        runCode(//--- input code ---
+                "\\divide \\relax ",
+                //--- log message ---
+                "You can\'t use `\\relax\' after \\divide",
+                //--- output channel ---
+                "");
+    }
+
+    /**
+     * <testcase primitive="\divide">
+     *  Test case checking that <tt>\divide</tt> by 0 on a count register name
+     *  leads to an error.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testCount0() throws Exception {
+
+        runCode(//--- input code ---
+                "\\count1 16 "
+                +"\\divide \\count1 0 "
+                + "\\the\\count1 \\end",
+                //--- log message ---
+                "Arithmetic overflow",
+                //--- output channel ---
+                "");
+    }
+
+    /**
+     * <testcase primitive="\divide">
+     *  Test case checking that <tt>\divide</tt> on a count register name
+     *  works.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testCount1() throws Exception {
+
+        runCode(//--- input code ---
+                "\\count1 16 "
+                +"\\divide \\count1 8 "
+                + "\\the\\count1 \\end",
+                //--- log message ---
+                "",
+                //--- output channel ---
+                "2\n\n");
+    }
+
+    /**
+     * <testcase primitive="\divide">
+     *  Test case checking that <tt>\divide</tt> on a dimen register name
+     *  works.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testDimen1() throws Exception {
+
+        runCode(//--- input code ---
+                "\\dimen1 8pt "
+                +"\\divide \\dimen1 16 "
+                + "\\the\\dimen1 \\end",
+                //--- log message ---
+                "",
+                //--- output channel ---
+                "0.5pt\n\n");
+    }
+
+    /**
+     * <testcase primitive="\divide">
+     *  Test case checking that <tt>\divide</tt> by 0 on a dimen register name
+     *  leads to an error.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testDimen0() throws Exception {
+
+        runCode(//--- input code ---
+                "\\dimen1 8pt "
+                +"\\divide \\dimen1 0 "
+                + "\\the\\dimen1 \\end",
+                //--- log message ---
+                "Arithmetic overflow",
+                //--- output channel ---
+                "");
     }
 
 }

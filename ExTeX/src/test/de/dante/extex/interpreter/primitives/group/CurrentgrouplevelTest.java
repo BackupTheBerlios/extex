@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -17,38 +17,53 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.math;
+package de.dante.extex.interpreter.primitives.group;
 
 import de.dante.test.ExTeXLauncher;
 
 /**
- * This is a test suite for the primitive <tt>\mathchoice</tt>.
+ * This is a test suite for the primitive <tt>\currentgrouplevel</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.1 $
  */
-public class MathchoiceTest extends ExTeXLauncher {
+public class CurrentgrouplevelTest extends ExTeXLauncher {
 
     /**
-     * Constructor for MathchoiceTest.
+     * Method for running the tests standalone.
+     *
+     * @param args command line parameter
+     */
+    public static void main(final String[] args) {
+
+        junit.textui.TestRunner.run(CurrentgrouplevelTest.class);
+    }
+
+    /**
+     * Creates a new object.
      *
      * @param arg the name
      */
-    public MathchoiceTest(final String arg) {
+    public CurrentgrouplevelTest(final String arg) {
 
         super(arg);
     }
 
     /**
-     * Test case checking that \mathchoice needs the math mode.
+     * <testcase primitive="\currentgrouplevel">
+     *  Test case checking that a lonely <tt>\currentgrouplevel</tt> leads to an error.
+     * </testcase>
+     *
      * @throws Exception in case of an error
      */
-    public void testNonMathMode() throws Exception {
+    public void test1() throws Exception {
 
         runCode(//--- input code ---
-                "\\mathchoice \\end",
+                "\\catcode`{=1 "
+                + "\\catcode`}=2 "
+                +"\\currentgrouplevel",
                 //--- log message ---
-                "Missing $ inserted",
+                "\\the\\currentgrouplevel",
                 //--- output channel ---
                 "");
     }

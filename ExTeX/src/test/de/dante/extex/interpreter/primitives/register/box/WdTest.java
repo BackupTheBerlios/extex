@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\wd</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class WdTest extends ExTeXLauncher {
 
@@ -92,7 +92,7 @@ public class WdTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "0 \n\n");
+                "0\n\n");
     }
 
     /**
@@ -114,7 +114,7 @@ public class WdTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "6.175pt \n\n"); // checked wih TeX
+                "6.175pt\n\n"); // checked wih TeX
     }
 
     /**
@@ -136,7 +136,7 @@ public class WdTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "18.52501pt \n\n"); // checked wih TeX
+                "18.52501pt\n\n"); // checked wih TeX
     }
 
     /**
@@ -158,7 +158,7 @@ public class WdTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "5.28589pt \n\n"); // checked wih TeX
+                "5.28589pt\n\n"); // checked wih TeX
     }
 
     public void testWd21() throws Exception {

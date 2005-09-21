@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -17,17 +17,17 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives;
+package de.dante.extex.interpreter.primitives.group;
 
 import de.dante.test.ExTeXLauncher;
 
 /**
- * This is a test suite for the primitive <tt>\relax</tt>.
+ * This is a test suite for the primitive <tt>\begingroup</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.1 $
  */
-public class RelaxTest extends ExTeXLauncher {
+public class BegingroupTest extends ExTeXLauncher {
 
     /**
      * Method for running the tests standalone.
@@ -36,103 +36,111 @@ public class RelaxTest extends ExTeXLauncher {
      */
     public static void main(final String[] args) {
 
-        junit.textui.TestRunner.run(RelaxTest.class);
+        junit.textui.TestRunner.run(BegingroupTest.class);
     }
 
     /**
-     * Constructor for RelaxTest.
+     * Creates a new object.
      *
      * @param arg the name
      */
-    public RelaxTest(final String arg) {
+    public BegingroupTest(final String arg) {
 
         super(arg);
     }
 
     /**
-     * <testcase primitive="\relax">
-     *  Test case checking that a pure <tt>\relax</tt> has no effect.
+     * <testcase primitive="\begingroup">
+     *  Test case checking that a lonely <tt>\begingroup</tt> leads to an error.
      * </testcase>
      *
      * @throws Exception in case of an error
      */
-    public void test1() throws Exception {
+    public void testUnbalanced1() throws Exception {
 
         runCode(//--- input code ---
-                "\\relax",
+                "\\begingroup",
                 //--- log message ---
-                "",
+                "(\\end occurred inside a group at level 1)",
                 //--- output channel ---
                 "");
     }
 
     /**
-     * <testcase primitive="\relax">
-     *  Test case checking that a pure <tt>\relax</tt> has no effect in the
-     *  middle of a word.
+     * <testcase primitive="\begingroup">
+     *  Test case checking that a group is ok.
      * </testcase>
      *
      * @throws Exception in case of an error
      */
-    public void test10() throws Exception {
+    public void testGroup1() throws Exception {
 
         runCode(//--- input code ---
-                "abc\\relax def",
+                "\\begingroup abc\\endgroup",
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "abcdef\n\n");
+                "abc\n\n");
     }
 
     /**
-     * <testcase primitive="\relax">
-     *  Test case checking that a white-space after a <tt>\relax</tt> is ignored.
+     * <testcase primitive="\begingroup">
+     *  Test case checking that a group does not destroy a count register.
      * </testcase>
      *
      * @throws Exception in case of an error
      */
-    public void test2() throws Exception {
+    public void testGroup2() throws Exception {
 
         runCode(//--- input code ---
-                "\\relax ",
+                "\\count0=123 \\begingroup \\the\\count0\\endgroup",
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "");
+                "123\n\n");
     }
 
     /**
-     * <testcase primitive="\relax">
-     *  Test case checking that more white-space after a <tt>\relax</tt> is ignored.
+     * <testcase primitive="\begingroup">
+     *  Test case checking that a group does restore a count register after
+     *  the end.
      * </testcase>
      *
      * @throws Exception in case of an error
      */
-    public void test4() throws Exception {
+    public void testGroup3() throws Exception {
 
-        runCode(//--- input code ---
-                "\\relax         ",
+        runCode(
+        //--- input code ---
+                "\\count0=123 "
+                        + "\\begingroup \\count0=456 \\the\\count0\\endgroup "
+                        + "-\\the\\count0",
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "");
+                "456-123\n\n");
     }
 
     /**
-     * <testcase primitive="\relax">
-     *  Test case checking that a comment after a <tt>\relax</tt> is ignored.
+     * <testcase primitive="\begingroup">
+     *  Test case checking that a group does restore a count register after
+     *  the end &ndash; across two levels of grouping.
      * </testcase>
      *
      * @throws Exception in case of an error
      */
-    public void test5() throws Exception {
+    public void testGroup4() throws Exception {
 
-        runCode(//--- input code ---
-                "\\relax %1234 ",
+        runCode(
+        //--- input code ---
+                "\\count0=123 "
+                        + "\\begingroup \\count0=456 \\the\\count0 "
+                        + "\\begingroup \\count0=789 -\\the\\count0\\endgroup "
+                        + "-\\the\\count0\\endgroup"
+                        + "-\\the\\count0",
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "");
+                "456-789-456-123\n\n");
     }
-
 }

@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\ifodd</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class IfoddTest extends ExTeXLauncher {
 
@@ -82,7 +82,7 @@ public class IfoddTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "xax \n\n");
+                "xax\n\n");
     }
 
     /**
@@ -118,7 +118,7 @@ public class IfoddTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "xax \n\n");
+                "xax\n\n");
     }
 
     /**
@@ -154,7 +154,7 @@ public class IfoddTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "xx \n\n");
+                "xx\n\n");
     }
 
 }

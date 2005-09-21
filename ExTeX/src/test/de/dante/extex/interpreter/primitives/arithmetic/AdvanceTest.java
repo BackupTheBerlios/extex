@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\advance</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class AdvanceTest extends ExTeXLauncher {
 
@@ -49,4 +49,115 @@ public class AdvanceTest extends ExTeXLauncher {
         super(arg);
     }
 
+    /**
+     * <testcase primitive="\advance">
+     *  Test case checking that <tt>\advance</tt> on a letter leads to an error.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testLetter1() throws Exception {
+
+        runCode(//--- input code ---
+                "\\advance a",
+                //--- log message ---
+                "You can\'t use `a\' after \\advance",
+                //--- output channel ---
+                "");
+    }
+
+    /**
+     * <testcase primitive="\advance">
+     *  Test case checking that <tt>\advance</tt> on a other token leads to an
+     *  error.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testOther1() throws Exception {
+
+        runCode(//--- input code ---
+                "\\advance 12 ",
+                //--- log message ---
+                "You can\'t use `1\' after \\advance",
+                //--- output channel ---
+                "");
+    }
+
+    /**
+     * <testcase primitive="\advance">
+     *  Test case checking that <tt>\advance</tt> on a macro parameter token
+     *  leads to an error.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testMacro1() throws Exception {
+
+        runCode(//--- input code ---
+                "\\catcode`#=6 "
+                + "\\advance #2 ",
+                //--- log message ---
+                "You can\'t use `#\' after \\advance",
+                //--- output channel ---
+                "");
+    }
+
+    /**
+     * <testcase primitive="\advance">
+     *  Test case checking that <tt>\advance</tt> on a non-advancable
+     *  primitive (\\relax) leads to an error.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testRelax1() throws Exception {
+
+        runCode(//--- input code ---
+                "\\advance \\relax ",
+                //--- log message ---
+                "You can\'t use `\\relax\' after \\advance",
+                //--- output channel ---
+                "");
+    }
+
+    /**
+     * <testcase primitive="\advance">
+     *  Test case checking that <tt>\advance</tt> on a count register name
+     *  works.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testCount1() throws Exception {
+
+        runCode(//--- input code ---
+                "\\count1 5 "
+                +"\\advance \\count1 123 "
+                + "\\the\\count1 \\end",
+                //--- log message ---
+                "",
+                //--- output channel ---
+                "128\n\n");
+    }
+
+    /**
+     * <testcase primitive="\advance">
+     *  Test case checking that <tt>\advance</tt> on a dimen register name
+     *  works.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testDimen1() throws Exception {
+
+        runCode(//--- input code ---
+                "\\dimen1 5pt "
+                +"\\advance \\dimen1 123pt "
+                + "\\the\\dimen1 \\end",
+                //--- log message ---
+                "",
+                //--- output channel ---
+                "128.0pt\n\n");
+    }
 }

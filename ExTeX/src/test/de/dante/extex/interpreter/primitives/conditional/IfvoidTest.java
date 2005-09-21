@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\ifvoid</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class IfvoidTest extends ExTeXLauncher {
 
@@ -82,7 +82,7 @@ public class IfvoidTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "xax \n\n");
+                "xax\n\n");
     }
 
     /**

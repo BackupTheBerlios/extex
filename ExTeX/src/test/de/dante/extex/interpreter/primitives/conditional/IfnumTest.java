@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\ifnum</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class IfnumTest extends ExTeXLauncher {
 
@@ -64,7 +64,7 @@ public class IfnumTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "xax \n\n");
+                "xax\n\n");
     }
 
     /**
@@ -82,7 +82,7 @@ public class IfnumTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "xbx \n\n");
+                "xbx\n\n");
     }
 
     /**
@@ -100,7 +100,7 @@ public class IfnumTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "xbx \n\n");
+                "xbx\n\n");
     }
 
     /**
@@ -118,7 +118,7 @@ public class IfnumTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "xbx \n\n");
+                "xbx\n\n");
     }
 
     /**
@@ -136,7 +136,7 @@ public class IfnumTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "xax \n\n");
+                "xax\n\n");
     }
 
     /**
@@ -154,7 +154,7 @@ public class IfnumTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "xbx \n\n");
+                "xbx\n\n");
     }
 
     /**
@@ -172,7 +172,7 @@ public class IfnumTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "xbx \n\n");
+                "xbx\n\n");
     }
 
     /**
@@ -190,7 +190,7 @@ public class IfnumTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "xbx \n\n");
+                "xbx\n\n");
     }
 
     /**
@@ -208,7 +208,7 @@ public class IfnumTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "xax \n\n");
+                "xax\n\n");
     }
 
 }

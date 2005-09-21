@@ -1,24 +1,25 @@
 /*
- * Copyright (C) 2004  Gerd Neugebauer
+ * Copyright (C) 2005 The ExTeX Group and individual authors listed below
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 2.1 of the License, or (at your
+ * option) any later version.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation,
+ * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
 
 package de.dante.extex.scanner.type.token;
 
+import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.token.ControlSequenceToken;
 import de.dante.extex.scanner.type.token.OtherToken;
@@ -30,7 +31,7 @@ import junit.framework.TestCase;
  * Test cases for control sequence tokens.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ControlSequenceTokenTest extends TestCase {
 
@@ -46,14 +47,21 @@ public class ControlSequenceTokenTest extends TestCase {
     /**
      * The field <tt>t</tt> contains the reference token.
      */
-    private static Token t = new ControlSequenceToken(new UnicodeChar('\\'),
-            "x", "");
+    private static ControlSequenceToken t = new ControlSequenceToken(
+            new UnicodeChar('\\'), "x", Namespace.DEFAULT_NAMESPACE);
 
     /**
      */
     public void testGetCatcode() {
 
         assertEquals(Catcode.ESCAPE, t.getCatcode());
+    }
+
+    /**
+     */
+    public void testGetChar() {
+
+        assertEquals("\\", t.getChar().toString());
     }
 
     /**
@@ -65,16 +73,32 @@ public class ControlSequenceTokenTest extends TestCase {
 
     /**
      */
-    public void testToText() {
+    public void testName1() {
 
-        assertEquals("x", t.toText());
+        assertEquals("x", t.getName());
     }
 
     /**
      */
-    public void testGetValue() {
+    public void testNamespace1() {
 
-        //assertEquals("x", t.getValue());
+        assertEquals("", t.getNamespace());
+    }
+
+    /**
+     */
+    public void testToText1() {
+
+        assertEquals("\\x", t.toText());
+    }
+
+    /**
+     */
+    public void testToText2() {
+
+        Token ta = new ControlSequenceToken(null, "a",
+                Namespace.DEFAULT_NAMESPACE);
+        assertEquals("a", ta.toText());
     }
 
     /**
@@ -125,7 +149,8 @@ public class ControlSequenceTokenTest extends TestCase {
      */
     public void testEqualschar0() {
 
-        assertTrue(t.equals('x'));
+        boolean b = t.equals('x');
+        assertTrue(b);
     }
 
     /**

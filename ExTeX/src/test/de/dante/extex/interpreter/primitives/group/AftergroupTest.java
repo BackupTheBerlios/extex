@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\aftergroup</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class AftergroupTest extends ExTeXLauncher {
 
@@ -66,7 +66,7 @@ public class AftergroupTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "abdxe \n\n");
+                "abdxe\n\n");
     }
     /**
      * <testcase primitive="\aftergroup">
@@ -86,7 +86,7 @@ public class AftergroupTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "abdttte \n\n");
+                "abdttte\n\n");
     }
 
 
