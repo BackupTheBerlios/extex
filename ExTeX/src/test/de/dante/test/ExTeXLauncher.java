@@ -46,7 +46,7 @@ import de.dante.util.exception.GeneralException;
  * running an instance of ExTeX.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
 public class ExTeXLauncher extends TestCase {
 
@@ -54,7 +54,7 @@ public class ExTeXLauncher extends TestCase {
      * Inner class for the error handler.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.28 $
+     * @version $Revision: 1.29 $
      */
     private class EHandler implements ErrorHandler {
 
@@ -256,9 +256,24 @@ public class ExTeXLauncher extends TestCase {
      */
     public String runFile(final String file) throws Exception {
 
-        Properties properties = System.getProperties();
+        return runFile1(file, System.getProperties());
+    }
+
+    /**
+     * Run ExTeX on a file.
+     *
+     * @param file the name of the file to read from
+     * @param properties properties to start with
+     *
+     * @return the contents of the log file
+     *
+     * @throws Exception in case of an error
+     */
+    public String runFile1(final String file, final Properties properties)
+            throws Exception {
+
         prepareProperties(properties);
-        properties.setProperty("extex.code", "");
+        properties.setProperty("extex.code", "\\errorstopmode ");
         properties.setProperty("extex.file", file);
         properties.setProperty("extex.jobname", file);
 
