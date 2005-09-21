@@ -188,7 +188,7 @@
     <mkdir dir="${target.tests}" />
     <!-- Performing tests:                                         -->
     <!-- Run all classes "*Test.java" in the folder "${src.tests}" -->
-    <junit printsummary="yes" haltonfailure="${tests.haltonfailure}">
+    <junit printsummary="on" haltonfailure="${tests.haltonfailure}">
       <classpath>
         <pathelement path="${classes}" />
       </classpath>
@@ -200,6 +200,54 @@
         </fileset>
       </batchtest>
     </junit>
+  </target>
+
+  <target name="test.report" depends="jar,jar.tests"
+          description="Run JUnit tests and produce an HTML test report">
+    <delete dir="${target.tests}" />
+    <mkdir dir="${target.tests}" />
+    <junit printsummary="on" haltonfailure="no">
+      <classpath>
+        <pathelement path="${classes}" />
+      </classpath>
+      <classpath refid="test.class.path" />
+      <formatter type="xml"/>
+      <batchtest fork="yes" todir="${target.tests}">
+        <fileset dir="${src.tests}">
+          <include name="${cases}" />
+        </fileset>
+      </batchtest>
+    </junit>
+    <delete dir="${target}/www/reports/tests" />
+    <mkdir dir="${target}/www/reports/tests" />
+    <xslt basedir="${target.tests}"
+          destdir="${target}/www/reports/tests"
+	  extension=".html"
+	  style="develop/reports/junit.xsl">
+      <classpath refid="develop.class.path" />
+    </xslt>
+  </target>
+
+  <target name="site"
+          description="">
+    <mkdir dir="${target}/tmp" />
+    <javac srcdir="develop/reports"
+           destdir="${target}/tmp"
+           debug="on">
+      <classpath refid="main.class.path" />
+    </javac>
+    <java classname="org.extex.site.report.Summary"
+          classpath="${target}/tmp"
+	  output="target/tests/index.xml">
+      <arg value="-dir"/>
+      <arg value="target/tests"/>
+    </java>
+    <xslt basedir="${target.tests}"
+          destdir="${target}/www/reports/tests"
+	  extension=".html"
+	  style="develop/reports/junit.xsl">
+      <classpath refid="develop.class.path" />
+    </xslt>
   </target>
 
   <target name="checkstyle"
