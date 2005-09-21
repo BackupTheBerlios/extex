@@ -40,7 +40,7 @@ import de.dante.extex.typesetter.Discardable;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class ExplicitKernNode extends AbstractKernNode implements Discardable {
 
@@ -66,7 +66,7 @@ public class ExplicitKernNode extends AbstractKernNode implements Discardable {
      */
     public void toString(final StringBuffer sb, final String prefix) {
 
-        sb.append(getLocalizer().format("ExplicitKernNode.String",
+        sb.append(getLocalizer().format("String.Format",
                 getWidth().toString()));
     }
 
@@ -85,7 +85,7 @@ public class ExplicitKernNode extends AbstractKernNode implements Discardable {
      */
     public void toText(final StringBuffer sb, final String prefix) {
 
-        sb.append(getLocalizer().format("ExplicitKernNode.Text",
+        sb.append(getLocalizer().format("Text.Format",
                 getWidth().toString()));
     }
 
