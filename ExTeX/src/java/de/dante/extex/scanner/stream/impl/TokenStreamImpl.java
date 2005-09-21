@@ -51,7 +51,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationSyntaxExcept
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.43 $
+ * @version $Revision: 1.44 $
  */
 public class TokenStreamImpl extends TokenStreamBaseImpl implements TokenStream {
 
@@ -59,7 +59,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements TokenStream 
      * This is a type-safe class to represent state information.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.43 $
+     * @version $Revision: 1.44 $
      */
     private static final class State {
 
@@ -650,11 +650,13 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements TokenStream 
      */
     protected UnicodeChar getRawChar() {
 
-        if (pointer < line.length()) {
+        if (line != null && pointer < line.length()) {
             return new UnicodeChar(line.charAt(pointer++));
         }
 
-        return (pointer++ > line.length() ? null : CR);
+        //return (pointer++ > line.length() ? null : CR);
+        //TODO: gene: check		
+        return null;
     }
 
     /**
