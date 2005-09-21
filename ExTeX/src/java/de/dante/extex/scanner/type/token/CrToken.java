@@ -31,7 +31,7 @@ import de.dante.util.UnicodeChar;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class CrToken extends AbstractToken implements Token {
 
@@ -51,6 +51,30 @@ public class CrToken extends AbstractToken implements Token {
     }
 
     /**
+     * @see de.dante.extex.scanner.type.token.AbstractToken#equals(de.dante.extex.scanner.type.Catcode, char)
+     */
+    public boolean equals(final Catcode cc, final char c) {
+
+        return cc == getCatcode();
+    }
+
+    /**
+     * @see de.dante.extex.scanner.type.token.AbstractToken#equals(de.dante.extex.scanner.type.Catcode, java.lang.String)
+     */
+    public boolean equals(final Catcode cc, final String s) {
+
+        return cc == getCatcode();
+    }
+
+    /**
+     * @see de.dante.extex.scanner.type.token.AbstractToken#equals(char)
+     */
+    public boolean equals(char c) {
+
+        return false;
+    }
+
+    /**
      * @see de.dante.extex.scanner.type.token.Token#getCatcode()
      */
     public Catcode getCatcode() {
@@ -67,7 +91,9 @@ public class CrToken extends AbstractToken implements Token {
      */
     public String toString() {
 
-        return getLocalizer().format("CrToken.Text", getChar().toString());
+        UnicodeChar c = getChar();
+        return getLocalizer().format("CrToken.Text",
+                (c != null ? c.toString() : ""));
     }
 
     /**
@@ -79,7 +105,9 @@ public class CrToken extends AbstractToken implements Token {
      */
     public void toString(final StringBuffer sb) {
 
-        sb.append(getLocalizer().format("CrToken.Text", getChar().toString()));
+        UnicodeChar c = getChar();
+        sb.append(getLocalizer().format("CrToken.Text",
+                (c != null ? c.toString() : "")));
     }
 
     /**

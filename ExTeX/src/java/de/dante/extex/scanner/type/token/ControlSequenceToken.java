@@ -39,7 +39,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ControlSequenceToken extends AbstractToken implements CodeToken {
 
@@ -139,6 +139,23 @@ public class ControlSequenceToken extends AbstractToken implements CodeToken {
     }
 
     /**
+     * @see de.dante.extex.scanner.type.token.AbstractToken#equals(
+     *      de.dante.extex.scanner.type.Catcode, char)
+     */
+    public boolean equals(final Catcode cc, final char c) {
+
+        return getCatcode() == cc && name.length() == 1 && name.charAt(0) == c;
+    }
+
+    /**
+     * @see de.dante.extex.scanner.type.token.AbstractToken#equals(char)
+     */
+    public boolean equals(char c) {
+
+        return name.length() == 1 && name.charAt(0) == c;
+    }
+
+    /**
      * @see de.dante.extex.scanner.type.token.Token#getCatcode()
      */
     public Catcode getCatcode() {
@@ -177,7 +194,8 @@ public class ControlSequenceToken extends AbstractToken implements CodeToken {
      */
     public String toString() {
 
-        return getLocalizer().format("ControlSequenceToken.Text", name);
+        return getLocalizer().format("ControlSequenceToken.Text",
+                getChar().toString(), name, namespace);
     }
 
     /**
@@ -189,7 +207,8 @@ public class ControlSequenceToken extends AbstractToken implements CodeToken {
      */
     public void toString(final StringBuffer sb) {
 
-        sb.append(getLocalizer().format("ControlSequenceToken.Text", name));
+        sb.append(getLocalizer().format("ControlSequenceToken.Text",
+                getChar().toString(), name, namespace));
     }
 
     /**
@@ -199,6 +218,19 @@ public class ControlSequenceToken extends AbstractToken implements CodeToken {
 
         if (esc != '\0') {
             return esc + name;
+        }
+
+        return name;
+    }
+
+    /**
+     * @see de.dante.extex.scanner.type.token.AbstractToken#toText()
+     */
+    public String toText() {
+
+        UnicodeChar c = getChar();
+        if (c != null && c.getCodePoint() != 0) {
+            return c.toString() + name;
         }
 
         return name;
