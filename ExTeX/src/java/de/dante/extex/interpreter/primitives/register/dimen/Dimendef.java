@@ -65,11 +65,11 @@ import de.dante.extex.typesetter.Typesetter;
  * \dimendef\abc={xyz\the\count0}
  * \dimendef\abc {def}
  * </pre>
- * To protect the buildin registers one might consider to use the key
+ * To protect the built-in registers one might consider to use the key
  * "#<i>name</i>" or "dimen#<i>name</i>".
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class Dimendef extends AbstractDimen {
 
@@ -103,6 +103,7 @@ public class Dimendef extends AbstractDimen {
         source.getOptionalEquals(context);
         String key = getKey(context, source);
         context.setCode(cs, new DimenParameter(key), prefix.isGlobal());
+        prefix.clearGlobal();
     }
 
 }

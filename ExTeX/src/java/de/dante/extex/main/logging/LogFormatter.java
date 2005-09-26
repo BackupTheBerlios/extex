@@ -27,10 +27,10 @@ import java.util.logging.LogRecord;
 /**
  * This class provides a means to format the log entries.
  * This implementation makes provisions that the line length of 80 characters
- * is honoured.
+ * is honored.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class LogFormatter extends Formatter {
 
@@ -97,7 +97,9 @@ public class LogFormatter extends Formatter {
      */
     private void print(final StringBuffer out, final CharSequence msg) {
 
-        if (msg.length() == 0) {
+        CharSequence s = msg;
+        int length = msg.length();
+        if (length == 0) {
             return;
         }
         boolean skip = false;
@@ -109,24 +111,45 @@ public class LogFormatter extends Formatter {
             }
         }
 
-        col += msg.length() + (skip ? 1 : 0);
+        if (col + s.length() + (skip ? 1 : 0) >= LINE_LENGTH) {
 
-        if (col >= LINE_LENGTH) {
-            out.append('\n');
-            col = msg.length();
-            char c = msg.charAt(0);
-            if (c == '\n' || c == '\r' || c == ' ') {
-                skip = true;
-            }
+            s = breakLine(out, s);
+            col = 0;
+            length = s.length();
+            char c = s.charAt(0);
+            skip =  (c == '\n' || c == '\r' || c == ' ');
         }
+
+        col += length + (skip ? 1 : 0);
+
         if (skip) {
-            out.append(msg.subSequence(1, msg.length()));
+            out.append(s.subSequence(1, length));
         } else {
-            out.append(msg);
+            out.append(s);
         }
-        if (msg.charAt(msg.length() - 1) == '\n') {
+        if (msg.charAt(length - 1) == '\n') {
             col = 0;
         }
     }
 
+    /**
+     * Find a break point at a whitespace and break the line there.
+     *
+     * @param out the target buffer
+     * @param msg the message to process
+     */
+    private CharSequence breakLine(final StringBuffer out,
+            final CharSequence msg) {
+
+        for (int i = LINE_LENGTH - col; i >= 0; i--) {
+            char c = msg.charAt(i);
+            if (c == ' ' || c == '\t') {
+                out.append(msg.subSequence(0, i));
+                out.append('\n');
+                return msg.subSequence(i, msg.length());
+            }
+        }
+        out.append('\n');
+        return msg;
+    }
 }
