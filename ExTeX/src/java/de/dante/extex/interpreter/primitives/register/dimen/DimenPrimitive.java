@@ -62,7 +62,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class DimenPrimitive extends AbstractDimen
         implements
@@ -96,17 +96,16 @@ public class DimenPrimitive extends AbstractDimen
      *      de.dante.extex.interpreter.TokenSource)
      */
     public void advance(final Flags prefix, final Context context,
-            final TokenSource source) throws InterpreterException {
+            final TokenSource source, final Typesetter typesetter)
+            throws InterpreterException {
 
-        Typesetter typesetter = null; // TODO gene: provide the typesetter as argument
         String key = getKey(context, source);
         source.getKeyword(context, "by");
 
         Dimen d = new Dimen(context, source, typesetter);
         d.add(context.getDimen(key));
         context.setDimen(key, d, prefix.isGlobal());
-
-        prefix.clear();
+        prefix.clearGlobal();
     }
 
     /**
@@ -122,7 +121,8 @@ public class DimenPrimitive extends AbstractDimen
 
         String key = getKey(context, source);
         try {
-            Tokens toks = context.getDimen(key).toToks(context.getTokenFactory());
+            Tokens toks = context.getDimen(key).toToks(
+                    context.getTokenFactory());
             source.push(toks);
         } catch (CatcodeException e) {
             throw new InterpreterException(e);
@@ -145,6 +145,7 @@ public class DimenPrimitive extends AbstractDimen
 
         Dimen dimen = new Dimen(context, source, typesetter);
         context.setDimen(key, dimen, prefix.isGlobal());
+        prefix.clearGlobal();
     }
 
     /**
@@ -185,8 +186,7 @@ public class DimenPrimitive extends AbstractDimen
         long value = Count.scanCount(context, source, null);
         Dimen d = new Dimen(context.getDimen(key).getValue() * value);
         context.setDimen(key, d, prefix.isGlobal());
-
-        prefix.clear();
+        prefix.clearGlobal();
     }
 
     /**
@@ -209,6 +209,7 @@ public class DimenPrimitive extends AbstractDimen
 
         Dimen d = new Dimen(context.getDimen(key).getValue() / value);
         context.setDimen(key, d, prefix.isGlobal());
+        prefix.clearGlobal();
     }
 
     /**
