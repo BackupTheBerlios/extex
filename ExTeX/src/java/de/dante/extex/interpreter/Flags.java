@@ -76,7 +76,7 @@ package de.dante.extex.interpreter;
  * </table>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public interface Flags {
 
@@ -90,6 +90,43 @@ public interface Flags {
      * This method clears all flags.
      */
     void clear();
+
+    /**
+     * Setter for the expanded flag.
+     */
+    void clearExpanded();
+
+    /**
+     * Setter for the global flag.
+     */
+    void clearGlobal();
+
+    /**
+     * Setter for the immediate flag.
+     */
+    void clearImmediate();
+
+    /**
+     * Setter for the long flag.
+     */
+    void clearLong();
+
+    /**
+     * Setter for the outer flag.
+     */
+    void clearOuter();
+
+    /**
+     * Setter for the protected flag.
+     */
+    void clearProtected();
+
+    /**
+     * Test if all flags are cleared.
+     *
+     * @return <code>true</code> iff not all flags are cleared
+     */
+    boolean isDirty();
 
     /**
      * Getter for the expanded flag.

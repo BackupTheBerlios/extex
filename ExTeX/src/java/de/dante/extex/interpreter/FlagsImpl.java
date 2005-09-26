@@ -24,7 +24,7 @@ package de.dante.extex.interpreter;
  * This is needed to pass controlling information to primitives.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class FlagsImpl implements Flags {
 
@@ -78,6 +78,63 @@ public class FlagsImpl implements Flags {
         expandedP = false;
         immediateP = false;
         protectedP = false;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.Flags#clearExpanded()
+     */
+    public void clearExpanded() {
+
+        expandedP = false;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.Flags#clearGlobal()
+     */
+    public void clearGlobal() {
+
+        globalP = false;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.Flags#clearImmediate()
+     */
+    public void clearImmediate() {
+
+        immediateP = false;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.Flags#clearLong()
+     */
+    public void clearLong() {
+
+        longP = false;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.Flags#clearOuter()
+     */
+    public void clearOuter() {
+
+        outerP = false;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.Flags#clearProtected()
+     */
+    public void clearProtected() {
+
+        protectedP = false;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.Flags#isDirty()
+     */
+    public boolean isDirty() {
+
+        return globalP || longP || immediateP || outerP || protectedP
+                || expandedP;
     }
 
     /**
