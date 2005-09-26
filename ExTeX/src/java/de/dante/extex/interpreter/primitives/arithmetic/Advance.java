@@ -80,7 +80,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * @see de.dante.extex.interpreter.type.arithmetic.Advanceable
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class Advance extends AbstractAssignment {
 
@@ -117,7 +117,7 @@ public class Advance extends AbstractAssignment {
 
             if (code instanceof Advanceable) {
 
-                ((Advanceable) code).advance(prefix, context, source);
+                ((Advanceable) code).advance(prefix, context, source, typesetter);
                 return;
 
             } else if (code == null) {
