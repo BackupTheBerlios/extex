@@ -25,16 +25,19 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.CantUseInException;
+import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.Theable;
+import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.DimenConvertible;
+import de.dante.extex.interpreter.type.dimen.ImmutableDimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.scanner.type.CatcodeException;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.UnicodeChar;
-import de.dante.util.exception.GeneralException;
 
 /**
  * This class provides an implementation for the primitive
@@ -60,11 +63,12 @@ import de.dante.util.exception.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Fontchardp extends AbstractCode
         implements
             ExpandableCode,
+            CountConvertible,
             DimenConvertible,
             Theable {
 
@@ -84,6 +88,18 @@ public class Fontchardp extends AbstractCode
     }
 
     /**
+     * @see de.dante.extex.interpreter.type.count.CountConvertible#convertCount(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public long convertCount(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
+
+        return convertDimen(context, source, typesetter);
+    }
+
+    /**
      * @see de.dante.extex.interpreter.type.dimen.DimenConvertible#convertDimen(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
@@ -92,22 +108,7 @@ public class Fontchardp extends AbstractCode
     public long convertDimen(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        try {
-            Font fnt = source.getFont(context);
-            UnicodeChar uc = source.scanCharacterCode(context);
-            Glyph glyph = fnt.getGlyph(uc);
-            if (glyph == null) {
-                return 0;
-            }
-            Dimen depth = glyph.getDepth();
-            if (depth == null) {
-                return 0;
-            }
-
-            return depth.getValue();
-        } catch (GeneralException e) {
-            throw new InterpreterException(e);
-        }
+        return get(context, source, typesetter).getValue();
     }
 
     /**
@@ -136,8 +137,34 @@ public class Fontchardp extends AbstractCode
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        long value = convertDimen(context, source, typesetter);
-        source.push(new Tokens(context, value));
+        source.push(the(context, source, typesetter));
+    }
+
+    /**
+     * Get the dimen value of the depth. If the character is not defined in the
+     * font then ZERO_PT is returned.
+     *
+     * @param context the interpreter context
+     * @param source the source for new tokens
+     * @param typesetter the typesetter
+     *
+     * @return the dimen value of the depth
+     *
+     * @throws InterpreterException in case of an error
+     */
+    private Dimen get(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
+
+        try {
+            Font fnt = source.getFont(context, getName());
+            UnicodeChar uc = source.scanCharacterCode(context, null);
+            Glyph glyph = fnt.getGlyph(uc);
+            Dimen depth = (glyph != null ? glyph.getDepth() : null);
+            return (depth != null ? depth : Dimen.ZERO_PT);
+
+        } catch (EofException e) {
+            throw new EofException(context.esc(getName()));
+        }
     }
 
     /**
@@ -148,8 +175,12 @@ public class Fontchardp extends AbstractCode
     public Tokens the(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        long value = convertDimen(context, source, typesetter);
-        return new Tokens(context, value);
+        try {
+            Dimen depth = get(context, source, typesetter);
+            return depth.toToks(context.getTokenFactory());
+        } catch (CatcodeException e) {
+            throw new InterpreterException(e);
+        }
     }
 
 }
