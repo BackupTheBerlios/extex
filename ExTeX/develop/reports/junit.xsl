@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!-- ====================================================================== -->
-<!--  $Id: junit.xsl,v 1.1 2005/09/21 07:15:02 gene Exp $                -->
+<!--  $Id: junit.xsl,v 1.2 2005/09/26 15:52:39 gene Exp $                -->
 <!-- ====================================================================== -->
 
 <xsl:stylesheet version="1.0"
@@ -16,6 +16,34 @@
  <!-- ===================================================================== -->
  <!-- Template: testsuite                                                   -->
  <!--                                                                       -->
+  <xsl:template name="header">
+<table width="100%" class="head" cellspacing="0" cellpadding="0">
+ <tr>
+
+  <td colspan="10" class="head">
+   <a href="index.html"><img src="{$top}/image/ExTeX-small.gif" alt="ExTeX" border="0"/></a>
+  </td>
+ </tr>
+ <tr>
+  <td class="tabOff"><img src="{$top}/image/tab.gif" align="top" /></td>
+  <td class="tabOFF"><a class="nav" href="development/index.html">Development</a></td>
+  <td> </td>
+
+  <td class="tabOff"><img src="{$top}/image/tabOff.gif" align="top" /></td>
+  <td class="tabOFF"><a class="nav" href="documentation/index.html">Documentation</a></td>
+  <td> </td>
+  <td class="tabOff"><img src="{$top}/image/tabOff.gif" align="top" /></td>
+  <td class="tabOFF"><a class="nav" href="sources/index.html">Download</a></td>
+  <td width="90%"> </td>
+ </tr>
+
+</table>
+<div class="tabSep"><br/></div>
+  </xsl:template>
+
+ <!-- ===================================================================== -->
+ <!-- Template: testsuite                                                   -->
+ <!--                                                                       -->
   <xsl:template match="testsuite">
    <html>
     <head>
@@ -23,6 +51,7 @@
      <link rel="stylesheet" href="{$top}/report.css"/>
     </head>
     <body>
+     <xsl:call-template name="header"/>
      <h1><xsl:value-of select="@name"/></h1>
      <table>
       <tr>
@@ -76,6 +105,7 @@
      <link rel="stylesheet" href="{$top}/report.css"/>
     </head>
     <body>
+     <xsl:call-template name="header"/>
      <h1>Test Summary</h1>
      <xsl:value-of select="@date"/>
      <table>
