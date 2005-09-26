@@ -22,7 +22,6 @@ package de.dante.extex.interpreter.context;
 import de.dante.extex.color.ColorConverter;
 import de.dante.extex.font.FontFactory;
 import de.dante.extex.interpreter.Conditional;
-import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.Tokenizer;
@@ -34,6 +33,7 @@ import de.dante.extex.interpreter.context.observer.TokensObserver;
 import de.dante.extex.interpreter.context.observer.afterGroup.AfterGroupObserver;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
+import de.dante.extex.interpreter.interaction.Interaction;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.count.Count;
@@ -70,7 +70,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * classes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class MockContext implements Context, TypesetterOptions {
 
