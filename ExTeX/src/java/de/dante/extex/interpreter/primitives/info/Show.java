@@ -22,6 +22,7 @@ package de.dante.extex.interpreter.primitives.info;
 import java.util.logging.Logger;
 
 import de.dante.extex.interpreter.Flags;
+import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
@@ -30,6 +31,8 @@ import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.Showable;
 import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.scanner.type.Catcode;
+import de.dante.extex.scanner.type.CatcodeException;
 import de.dante.extex.scanner.type.token.CodeToken;
 import de.dante.extex.scanner.type.token.ControlSequenceToken;
 import de.dante.extex.scanner.type.token.Token;
@@ -61,7 +64,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public class Show extends AbstractCode implements LogEnabled {
 
@@ -135,7 +138,14 @@ public class Show extends AbstractCode implements LogEnabled {
             toks = new Tokens(context, context.esc(t));
 
         } else {
-            toks = new Tokens(context, t.getChar().getCodePoint());
+            try {
+                Token token = context.getTokenFactory()
+                        .createToken(Catcode.OTHER, t.getChar(),
+                                Namespace.DEFAULT_NAMESPACE);
+                toks = new Tokens(token);
+            } catch (CatcodeException e) {
+                throw new InterpreterException(e);
+            }
         }
 
         toks.add(new Tokens(context, "="));
