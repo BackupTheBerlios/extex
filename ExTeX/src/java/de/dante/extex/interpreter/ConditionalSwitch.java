@@ -22,10 +22,10 @@ package de.dante.extex.interpreter;
 import de.dante.util.Locator;
 
 /**
- * This class represents a conditional for an \ifcase construct.
+ * This class represents a conditional for an <tt>\ifcase</tt> construct.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class ConditionalSwitch extends Conditional {
 

@@ -22,14 +22,14 @@ package de.dante.extex.interpreter.exception.helping;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
- * This exception is raised when an arithmetic overflow has been encoutered.
+ * This exception is raised when an arithmetic overflow has been encountered.
  * <p>
  *  The localization format is taken from the Localizer under the key
  *  <tt>TTP.ArithmeticOverflow</tt>.
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class ArithmeticOverflowException extends HelpingException {
 
@@ -41,7 +41,7 @@ public class ArithmeticOverflowException extends HelpingException {
     /**
      * Creates a new object.
      *
-     * @param macro the name of the macro in which the eof has been encoutered
+     * @param macro the name of the macro in which the eof has been encountered
      */
     public ArithmeticOverflowException(final String macro) {
 
