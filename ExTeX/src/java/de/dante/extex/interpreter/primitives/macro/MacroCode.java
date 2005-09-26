@@ -53,7 +53,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public class MacroCode extends AbstractCode
         implements
@@ -271,7 +271,7 @@ public class MacroCode extends AbstractCode
             } else {
                 args[no] = scanTo(context, source, pattern.get(pi));
             }
-            return pi - 1;
+            return pi;
         }
 
         throw new HelpingException(getLocalizer(), "TTP.UseDoesntMatch",
