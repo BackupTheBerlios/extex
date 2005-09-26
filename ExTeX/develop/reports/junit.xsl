@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!-- ====================================================================== -->
-<!--  $Id: junit.xsl,v 1.2 2005/09/26 15:52:39 gene Exp $                -->
+<!--  $Id: junit.xsl,v 1.3 2005/09/26 15:59:47 gene Exp $                -->
 <!-- ====================================================================== -->
 
 <xsl:stylesheet version="1.0"
@@ -26,14 +26,14 @@
  </tr>
  <tr>
   <td class="tabOff"><img src="{$top}/image/tab.gif" align="top" /></td>
-  <td class="tabOFF"><a class="nav" href="development/index.html">Development</a></td>
+  <td class="tabOFF"><a class="nav" href="{$top}/development/index.html">Development</a></td>
   <td> </td>
 
   <td class="tabOff"><img src="{$top}/image/tabOff.gif" align="top" /></td>
-  <td class="tabOFF"><a class="nav" href="documentation/index.html">Documentation</a></td>
+  <td class="tabOFF"><a class="nav" href="{$top}/documentation/index.html">Documentation</a></td>
   <td> </td>
   <td class="tabOff"><img src="{$top}/image/tabOff.gif" align="top" /></td>
-  <td class="tabOFF"><a class="nav" href="sources/index.html">Download</a></td>
+  <td class="tabOFF"><a class="nav" href="{$top}/sources/index.html">Download</a></td>
   <td width="90%"> </td>
  </tr>
 
