@@ -42,19 +42,26 @@ import de.dante.extex.scanner.type.token.Token;
 import de.dante.util.exception.GeneralException;
 
 /**
- * This base class for test cases handles all the nitty gritty details of
- * running an instance of ExTeX.
+ * This base class for test cases handles all the nifty gritty details of
+ * running an instance of <logo>ExTeX</logo>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
 public class ExTeXLauncher extends TestCase {
+
+    /**
+     * The constant <tt>DEFINE_CATCODES</tt> contains the ...
+     */
+    public String DEFINE_CATCODES = "\\catcode`\\{=1 " + "\\catcode`\\}=2 "
+            + "\\catcode`\\$=3 " + "\\catcode`\\&=4 " + "\\catcode`\\#=6 "
+            + "\\catcode`\\^=7 " + "\\catcode`\\_=8 " + "\\catcode`\\^^I=10 ";
 
     /**
      * Inner class for the error handler.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.29 $
+     * @version $Revision: 1.30 $
      */
     private class EHandler implements ErrorHandler {
 
@@ -172,14 +179,14 @@ public class ExTeXLauncher extends TestCase {
     }
 
     /**
-     * Run some code through ExTeX.
+     * Run some code through <logo>ExTeX</logo>.
      *
      * @param properties the properties to start with
      * @param code the code to expand
      * @param log the expected output on the log stream
      * @param expect the expected output on the output stream
      *
-     * @return a new instance of the ExTeX class
+     * @return a new instance of the <logo>ExTeX</logo> class
      *
      * @throws InterpreterException in case of an error
      */
@@ -191,6 +198,7 @@ public class ExTeXLauncher extends TestCase {
         prepareProperties(properties);
         properties.setProperty("extex.code", code);
         properties.setProperty("extex.file", "");
+        properties.setProperty("extex.nobanner", "true");
 
         ExTeX extex = new ExTeX(properties);
 
@@ -231,7 +239,21 @@ public class ExTeXLauncher extends TestCase {
     }
 
     /**
-     * Run some code through ExTeX.
+     * Run some code through <logo>ExTeX</logo>.
+     *
+     * @param code the code to expand
+     * @param expect the expected output on the output stream
+     *
+     * @throws Exception in case of an error
+     */
+    public void runCode(final String code, final String expect)
+            throws Exception {
+
+        runCode(getProps(), code, "", expect);
+    }
+
+    /**
+     * Run some code through <logo>ExTeX</logo>.
      *
      * @param code the code to expand
      * @param log the expected output on the log stream
@@ -246,7 +268,21 @@ public class ExTeXLauncher extends TestCase {
     }
 
     /**
-     * Run ExTeX on a file.
+     * Run some code through <logo>ExTeX</logo> which is expected to fail.
+     *
+     * @param code the code to expand
+     * @param log the expected output on the log stream
+     *
+     * @throws Exception in case of an error
+     */
+    public void runFailureCode(final String code, final String log)
+            throws Exception {
+
+        runCode(getProps(), code, log, "");
+    }
+
+    /**
+     * Run <logo>ExTeX</logo> on a file.
      *
      * @param file the name of the file to read from
      *
@@ -260,7 +296,7 @@ public class ExTeXLauncher extends TestCase {
     }
 
     /**
-     * Run ExTeX on a file.
+     * Run <logo>ExTeX</logo> on a file.
      *
      * @param file the name of the file to read from
      * @param properties properties to start with
@@ -299,4 +335,5 @@ public class ExTeXLauncher extends TestCase {
         logger.removeHandler(handler);
         return bytes.toString();
     }
+
 }
