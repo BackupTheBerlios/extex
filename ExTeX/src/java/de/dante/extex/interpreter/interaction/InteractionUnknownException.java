@@ -17,7 +17,7 @@
  *
  */
 
-package de.dante.extex.interpreter;
+package de.dante.extex.interpreter.interaction;
 
 import de.dante.extex.interpreter.exception.InterpreterException;
 
@@ -26,7 +26,7 @@ import de.dante.extex.interpreter.exception.InterpreterException;
  * but specifies an invalid value for the mode.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
 public class InteractionUnknownException extends InterpreterException {
 

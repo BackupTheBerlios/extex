@@ -19,9 +19,9 @@
 
 package de.dante.extex.interpreter.context;
 
-import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.context.observer.InteractionObserver;
 import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.interaction.Interaction;
 
 /**
  * This interface describes the container for all data of an interpreter
@@ -29,7 +29,7 @@ import de.dante.extex.interpreter.exception.InterpreterException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface ContextInteraction {
 

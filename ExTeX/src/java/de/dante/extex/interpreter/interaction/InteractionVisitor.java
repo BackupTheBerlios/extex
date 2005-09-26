@@ -17,7 +17,7 @@
  *
  */
 
-package de.dante.extex.interpreter;
+package de.dante.extex.interpreter.interaction;
 
 import de.dante.util.exception.GeneralException;
 
@@ -42,7 +42,7 @@ import de.dante.util.exception.GeneralException;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.1 $
  */
 public interface InteractionVisitor {
 

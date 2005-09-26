@@ -19,15 +19,15 @@
 
 package de.dante.extex.interpreter.context.observer;
 
-import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.context.ContextInternals;
+import de.dante.extex.interpreter.interaction.Interaction;
 
 /**
  * This interface describes the ability to receive a notification about the
  * change of the interaction mode.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface InteractionObserver {
 

@@ -31,7 +31,6 @@ import de.dante.extex.font.FontFactory;
 import de.dante.extex.font.type.other.NullFont;
 import de.dante.extex.interpreter.Conditional;
 import de.dante.extex.interpreter.ConditionalSwitch;
-import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.Color;
@@ -47,6 +46,7 @@ import de.dante.extex.interpreter.context.observer.TokensObserver;
 import de.dante.extex.interpreter.context.observer.afterGroup.AfterGroupObserver;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
+import de.dante.extex.interpreter.interaction.Interaction;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.count.Count;
@@ -118,7 +118,7 @@ import de.dante.util.framework.i18n.Localizer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.90 $
+ * @version $Revision: 1.91 $
  */
 public class ContextImpl
         implements
