@@ -23,13 +23,13 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import de.dante.extex.interpreter.ErrorHandler;
-import de.dante.extex.interpreter.Interaction;
-import de.dante.extex.interpreter.InteractionVisitor;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.ImpossibleException;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
+import de.dante.extex.interpreter.interaction.Interaction;
+import de.dante.extex.interpreter.interaction.InteractionVisitor;
 import de.dante.extex.main.errorHandler.editHandler.EditHandler;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.util.Locator;
@@ -50,7 +50,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class ErrorHandlerImpl
         implements
