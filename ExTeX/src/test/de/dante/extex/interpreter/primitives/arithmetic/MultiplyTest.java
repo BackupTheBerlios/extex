@@ -19,15 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.arithmetic;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.test.NoFlagsButGlobalPrimitiveTester;
 
 /**
  * This is a test suite for the primitive <tt>\multiply</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class MultiplyTest extends ExTeXLauncher {
+public class MultiplyTest extends NoFlagsButGlobalPrimitiveTester {
 
     /**
      * Method for running the tests standalone.
@@ -46,7 +46,7 @@ public class MultiplyTest extends ExTeXLauncher {
      */
     public MultiplyTest(final String arg) {
 
-        super(arg);
+        super(arg, "multiply", "\\count1 1 ");
     }
 
     /**
@@ -58,12 +58,10 @@ public class MultiplyTest extends ExTeXLauncher {
      */
     public void testLetter1() throws Exception {
 
-        runCode(//--- input code ---
+        runFailureCode(//--- input code ---
                 "\\multiply a",
                 //--- log message ---
-                "You can\'t use `a\' after \\multiply",
-                //--- output channel ---
-                "");
+                "You can\'t use `a\' after \\multiply");
     }
 
     /**
@@ -76,12 +74,10 @@ public class MultiplyTest extends ExTeXLauncher {
      */
     public void testOther1() throws Exception {
 
-        runCode(//--- input code ---
+        runFailureCode(//--- input code ---
                 "\\multiply 12 ",
                 //--- log message ---
-                "You can\'t use `1\' after \\multiply",
-                //--- output channel ---
-                "");
+                "You can\'t use `1\' after \\multiply");
     }
 
     /**
@@ -94,13 +90,11 @@ public class MultiplyTest extends ExTeXLauncher {
      */
     public void testMacro1() throws Exception {
 
-        runCode(//--- input code ---
+        runFailureCode(//--- input code ---
                 "\\catcode`#=6 "
                 + "\\multiply #2 ",
                 //--- log message ---
-                "You can\'t use `#\' after \\multiply",
-                //--- output channel ---
-                "");
+                "You can\'t use `#\' after \\multiply");
     }
 
     /**
@@ -113,12 +107,10 @@ public class MultiplyTest extends ExTeXLauncher {
      */
     public void testRelax1() throws Exception {
 
-        runCode(//--- input code ---
+        runFailureCode(//--- input code ---
                 "\\multiply \\relax ",
                 //--- log message ---
-                "You can\'t use `\\relax\' after \\multiply",
-                //--- output channel ---
-                "");
+                "You can\'t use `\\relax\' after \\multiply");
     }
 
     /**
@@ -135,8 +127,24 @@ public class MultiplyTest extends ExTeXLauncher {
                 "\\count1 8 "
                 +"\\multiply \\count1 16 "
                 + "\\the\\count1 \\end",
-                //--- log message ---
-                "",
+                //--- output channel ---
+                "128\n\n");
+    }
+
+    /**
+     * <testcase primitive="\multiply">
+     *  Test case checking that <tt>\multiply</tt> on a count register name
+     *  works with the global flag.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testCount2() throws Exception {
+
+        runCode(//--- input code ---
+                "\\count1 8 "
+                +"\\begingroup\\global\\multiply \\count1 16 \\endgroup "
+                + "\\the\\count1 \\end",
                 //--- output channel ---
                 "128\n\n");
     }
@@ -153,11 +161,28 @@ public class MultiplyTest extends ExTeXLauncher {
 
         runCode(//--- input code ---
                 "\\dimen1 8pt "
-                +"\\multiply \\dimen1 16 "
+                + "\\multiply \\dimen1 16 "
                 + "\\the\\dimen1 \\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "128.0pt\n\n");
     }
+
+    /**
+     * <testcase primitive="\multiply">
+     *  Test case checking that <tt>\multiply</tt> on a dimen register name
+     *  works with the global flag.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testDimen2() throws Exception {
+
+        runCode(//--- input code ---
+                "\\dimen1 8pt "
+                + "\\begingroup\\global\\multiply \\dimen1 16 \\endgroup "
+                + "\\the\\dimen1 \\end",
+                //--- output channel ---
+                "128.0pt\n\n");
+    }
+
 }

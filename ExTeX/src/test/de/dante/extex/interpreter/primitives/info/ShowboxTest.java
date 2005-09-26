@@ -17,53 +17,42 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.group;
+package de.dante.extex.interpreter.primitives.info;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.test.NoFlagsButGlobalPrimitiveTester;
 
 /**
- * This is a test suite for the primitive <tt>\currentgrouplevel</tt>.
+ * This is a test suite for the primitive <tt>\showbox</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public class CurrentgrouplevelTest extends ExTeXLauncher {
+public class ShowboxTest extends NoFlagsButGlobalPrimitiveTester {
 
     /**
-     * Method for running the tests standalone.
-     *
-     * @param args command line parameter
-     */
-    public static void main(final String[] args) {
-
-        junit.textui.TestRunner.run(CurrentgrouplevelTest.class);
-    }
-
-    /**
-     * Creates a new object.
+     * Constructor for JobnameTest.
      *
      * @param arg the name
      */
-    public CurrentgrouplevelTest(final String arg) {
+    public ShowboxTest(final String arg) {
 
-        super(arg);
+        super(arg, "showbox", "1 ");
     }
 
     /**
-     * <testcase primitive="\currentgrouplevel">
-     *  Test case checking that a lonely <tt>\currentgrouplevel</tt> leads to an error.
+     * <testcase primitive="\showbox">
+     *  Test case checking that the <tt>\showbox</tt> of a void register works.
      * </testcase>
      *
      * @throws Exception in case of an error
      */
-    public void test1() throws Exception {
+    public void _____________testVoid1() throws Exception {
 
+        //TODO other test runner needed
         runCode(//--- input code ---
-                "\\catcode`{=1 "
-                + "\\catcode`}=2 "
-                + "\\the\\currentgrouplevel",
-                //--- log message ---
-                "0\n\n",
+                "\\showbox 1 ",
+                //--- error channel ---
+                "",
                 //--- output channel ---
                 "");
     }

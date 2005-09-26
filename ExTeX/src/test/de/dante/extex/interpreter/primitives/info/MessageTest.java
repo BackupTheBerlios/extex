@@ -19,15 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.info;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.test.NoFlagsPrimitiveTester;
 
 /**
- * This is a test suite for the primitive <tt>\jobname</tt>.
+ * This is a test suite for the primitive <tt>\message</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
-public class MessageTest extends ExTeXLauncher {
+public class MessageTest extends NoFlagsPrimitiveTester {
 
     /**
      * Constructor for JobnameTest.
@@ -36,12 +36,14 @@ public class MessageTest extends ExTeXLauncher {
      */
     public MessageTest(final String arg) {
 
-        super(arg);
+        super(arg, "message", "{}");
     }
 
     /**
-     * Test case checking that \message results in an error message, if the
-     * following token is not a left brace.
+     * <testcase primitive="\message">
+     *  Test case checking that <tt>\message</tt> results in an error message,
+     *  if the  following token is not a left brace.
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -59,8 +61,10 @@ public class MessageTest extends ExTeXLauncher {
     }
 
     /**
-     * Test case checking that \message results in an error message, if the
-     * following token is not a left brace.
+     * <testcase primitive="\message">
+     *  Test case checking that <tt>\message</tt> results in an error message,
+     *  if the following token is not a left brace.
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -76,7 +80,9 @@ public class MessageTest extends ExTeXLauncher {
     }
 
     /**
-     * Test case checking that \message prints its plain argument.
+     * <testcase primitive="\message">
+     *  Test case checking that \message prints its plain argument.
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -95,7 +101,9 @@ public class MessageTest extends ExTeXLauncher {
     }
 
     /**
-     * Test case checking that \message prints its plain argument.
+     * <testcase primitive="\message">
+     *  Test case checking that \message prints its plain argument.
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -113,7 +121,9 @@ public class MessageTest extends ExTeXLauncher {
                 "");
     }
     /**
-     * Test case checking that \message prints its plain argument.
+     * <testcase primitive="\message">
+     *  Test case checking that \message prints its plain argument.
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -132,7 +142,9 @@ public class MessageTest extends ExTeXLauncher {
     }
 
     /**
-     * Test case checking that \message prints its plain argument.
+     * <testcase primitive="\message">
+     *  Test case checking that \message prints its plain argument.
+     * </testcase>
      *
      * @throws Exception in case of an error
      */

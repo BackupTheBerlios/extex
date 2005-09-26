@@ -17,18 +17,17 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.group;
+package de.dante.extex.interpreter.primitives.file;
 
-import de.dante.test.NoFlagsPrimitiveTester;
-
+import de.dante.test.ExTeXLauncher;
 
 /**
- * This is a test suite for the primitive <tt>\aftergroup</tt>.
+ * This is a test suite for the primitive <tt>\read</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.1 $
  */
-public class AftergroupTest extends NoFlagsPrimitiveTester {
+public class ReadTest extends ExTeXLauncher {
 
     /**
      * Method for running the tests standalone.
@@ -37,7 +36,7 @@ public class AftergroupTest extends NoFlagsPrimitiveTester {
      */
     public static void main(final String[] args) {
 
-        junit.textui.TestRunner.run(AftergroupTest.class);
+        junit.textui.TestRunner.run(ReadTest.class);
     }
 
     /**
@@ -45,47 +44,41 @@ public class AftergroupTest extends NoFlagsPrimitiveTester {
      *
      * @param arg the name
      */
-    public AftergroupTest(final String arg) {
+    public ReadTest(final String arg) {
 
-        super(arg, "aftergroup", " x");
+        super(arg);
     }
 
     /**
-     * <testcase primitive="\aftergroup">
-     *  Test case checking that a <tt>\aftergroup</tt> token of type letter
-     *  is shifted to the end of the group.
+     * <testcase primitive="\read">
+     *  Test case checking that a <tt>\read</tt> works on unopened file
+     *  handles.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test0() throws Exception {
+
+        runFailureCode(//--- input code ---
+                "\\read 1",
+                //--- error channel ---
+                "Missing `to' inserted");
+    }
+
+    /**
+     * <testcase primitive="\read">
+     *  Test case checking that a <tt>\read</tt> works on unopened file
+     *  handles.
      * </testcase>
      *
      * @throws Exception in case of an error
      */
     public void test1() throws Exception {
 
-        runCode(//--- input code ---
-                "\\catcode`{=1"
-                + "\\catcode`}=2"
-                + "a{b\\aftergroup xd}e",
-                //--- output channel ---
-                "abdxe\n\n");
+        runFailureCode(//--- input code ---
+                "\\read 1 to ",
+                //--- error channel ---
+                "Missing control sequence inserted");
     }
-
-    /**
-     * <testcase primitive="\aftergroup">
-     *  Test case checking that a <tt>\aftergroup</tt> token of type control
-     *  sequence is expanded after the end of the group.
-     * </testcase>
-     *
-     * @throws Exception in case of an error
-     */
-    public void test2() throws Exception {
-
-        runCode(//--- input code ---
-                "\\catcode`{=1"
-                + "\\catcode`}=2"
-                + "\\def\\x{ttt}"
-                + "a{b\\aftergroup\\x d}e",
-                //--- output channel ---
-                "abdttte\n\n");
-    }
-
 
 }

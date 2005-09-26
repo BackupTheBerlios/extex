@@ -19,15 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.arithmetic;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.test.NoFlagsButGlobalPrimitiveTester;
 
 /**
  * This is a test suite for the primitive <tt>\advance</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class AdvanceTest extends ExTeXLauncher {
+public class AdvanceTest extends NoFlagsButGlobalPrimitiveTester {
 
     /**
      * Method for running the tests standalone.
@@ -46,7 +46,7 @@ public class AdvanceTest extends ExTeXLauncher {
      */
     public AdvanceTest(final String arg) {
 
-        super(arg);
+        super(arg, "advance", "\\count0 1 ");
     }
 
     /**
@@ -58,12 +58,10 @@ public class AdvanceTest extends ExTeXLauncher {
      */
     public void testLetter1() throws Exception {
 
-        runCode(//--- input code ---
+        runFailureCode(//--- input code ---
                 "\\advance a",
                 //--- log message ---
-                "You can\'t use `a\' after \\advance",
-                //--- output channel ---
-                "");
+                "You can\'t use `a\' after \\advance");
     }
 
     /**
@@ -76,12 +74,10 @@ public class AdvanceTest extends ExTeXLauncher {
      */
     public void testOther1() throws Exception {
 
-        runCode(//--- input code ---
+        runFailureCode(//--- input code ---
                 "\\advance 12 ",
                 //--- log message ---
-                "You can\'t use `1\' after \\advance",
-                //--- output channel ---
-                "");
+                "You can\'t use `1\' after \\advance");
     }
 
     /**
@@ -94,13 +90,11 @@ public class AdvanceTest extends ExTeXLauncher {
      */
     public void testMacro1() throws Exception {
 
-        runCode(//--- input code ---
+        runFailureCode(//--- input code ---
                 "\\catcode`#=6 "
                 + "\\advance #2 ",
                 //--- log message ---
-                "You can\'t use `#\' after \\advance",
-                //--- output channel ---
-                "");
+                "You can\'t use `#\' after \\advance");
     }
 
     /**
@@ -113,12 +107,10 @@ public class AdvanceTest extends ExTeXLauncher {
      */
     public void testRelax1() throws Exception {
 
-        runCode(//--- input code ---
+        runFailureCode(//--- input code ---
                 "\\advance \\relax ",
                 //--- log message ---
-                "You can\'t use `\\relax\' after \\advance",
-                //--- output channel ---
-                "");
+                "You can\'t use `\\relax\' after \\advance");
     }
 
     /**
@@ -133,10 +125,26 @@ public class AdvanceTest extends ExTeXLauncher {
 
         runCode(//--- input code ---
                 "\\count1 5 "
-                +"\\advance \\count1 123 "
+                + "\\advance \\count1 123 "
                 + "\\the\\count1 \\end",
-                //--- log message ---
-                "",
+                //--- output channel ---
+                "128\n\n");
+    }
+
+    /**
+     * <testcase primitive="\advance">
+     *  Test case checking that <tt>\advance</tt> on a count register name
+     *  works with a global flag.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testCount2() throws Exception {
+
+        runCode(//--- input code ---
+                "\\count1 5 "
+                + "\\begingroup\\global\\advance \\count1 123 \\endgroup "
+                + "\\the\\count1 \\end",
                 //--- output channel ---
                 "128\n\n");
     }
@@ -153,11 +161,28 @@ public class AdvanceTest extends ExTeXLauncher {
 
         runCode(//--- input code ---
                 "\\dimen1 5pt "
-                +"\\advance \\dimen1 123pt "
+                + "\\advance \\dimen1 123pt "
                 + "\\the\\dimen1 \\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "128.0pt\n\n");
     }
+
+    /**
+     * <testcase primitive="\advance">
+     *  Test case checking that <tt>\advance</tt> on a dimen register name
+     *  works with a global flag.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testDimen2() throws Exception {
+
+        runCode(//--- input code ---
+                "\\dimen1 5pt "
+                + "\\begingroup\\global\\advance \\dimen1 123pt \\endgroup "
+                + "\\the\\dimen1 \\end",
+                //--- output channel ---
+                "128.0pt\n\n");
+    }
+
 }

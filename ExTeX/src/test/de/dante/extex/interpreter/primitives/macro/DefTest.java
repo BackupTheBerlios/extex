@@ -22,10 +22,10 @@ package de.dante.extex.interpreter.primitives.macro;
 import de.dante.test.ExTeXLauncher;
 
 /**
- * This is a test suite for the primitive <tt>\cr</tt>.
+ * This is a test suite for the primitive <tt>\def</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class DefTest extends ExTeXLauncher {
 
@@ -40,24 +40,109 @@ public class DefTest extends ExTeXLauncher {
     }
 
     /**
-     * Test case checking that ...
+     * <testcase primitive="def">
+     *  Test case checking that ...
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
-    public void testDef1() throws Exception {
+    public void testImmediate1() throws Exception {
+
+        runFailureCode(//--- input code ---
+                DEFINE_CATCODES
+                + "\\immediate\\def\\aaa{}",
+                //--- log message ---
+                "You can't use the prefix `\\immediate' with the control sequence \\def");
+    }
+
+    /**
+     * <testcase primitive="def">
+     *  Test case checking that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test1() throws Exception {
 
         runCode(//--- input code ---
-                "\\catcode`{=1"
-                + "\\catcode`}=2"
-                + "\\catcode`#=6"
-                + ""
-                + "\\def\\aaa#1.{\\message{Hello #1 World}}"
-                + "\\aaa 2. \\aaa aaha 23."
+                DEFINE_CATCODES
+                + "\\def\\aaa{AAA}"
+                + "--\\aaa--",
+                //--- output message ---
+                "--AAA--\n\n");
+    }
+
+    /**
+     * <testcase primitive="def">
+     *  Test case checking that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testGloal1() throws Exception {
+
+        runCode(//--- input code ---
+                DEFINE_CATCODES
+                + "\\def\\aaa{AAA}"
+                + "{\\global\\def\\aaa{BBB}}"
+                + "--\\aaa--",
+                //--- output message ---
+                "--BBB--\n\n");
+    }
+
+    /**
+     * <testcase primitive="def">
+     *  Test case checking that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testLong1() throws Exception {
+
+        runCode(//--- input code ---
+                DEFINE_CATCODES
+                + "\\long\\def\\aaa{AAA}"
+                + "--\\aaa--",
+                //--- output message ---
+                "--AAA--\n\n");
+    }
+
+    /**
+     * <testcase primitive="def">
+     *  Test case checking that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testA1() throws Exception {
+
+        runCode(//--- input code ---
+                DEFINE_CATCODES
+                + "\\def\\aaa#1{A#1A}"
+                + "--\\aaa 1--",
+                //--- output message ---
+                "--A1A--\n\n");
+    }
+
+    /**
+     * <testcase primitive="def">
+     *  Test case checking that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testPattern1() throws Exception {
+
+        runCode(//--- input code ---
+                DEFINE_CATCODES
+                + "\\def\\aaa#1.{--#1--}"
+                + "\\aaa 2."
                 + "\\end ",
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "xxx"); //TODO gene:
+                "--2--\n\n");
     }
+
 
 }

@@ -17,36 +17,26 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.color;
+package de.dante.extex.interpreter.primitives.info;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.test.NoFlagsPrimitiveTester;
 
 /**
- * This is a test suite for the primitive <tt>\color</tt>.
+ * This is a test suite for the primitive <tt>\showthe</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @version $Revision: 1.1 $
  */
-public class ColorTest extends ExTeXLauncher {
+public class ShowtheTest extends NoFlagsPrimitiveTester {
 
     /**
-     * Method for running the tests standalone.
-     *
-     * @param args command line parameter
-     */
-    public static void main(final String[] args) {
-
-        junit.textui.TestRunner.run(ColorTest.class);
-    }
-
-    /**
-     * Creates a new object.
+     * Constructor for JobnameTest.
      *
      * @param arg the name
      */
-    public ColorTest(final String arg) {
+    public ShowtheTest(final String arg) {
 
-        super(arg);
+        super(arg, "showthe", "\\count1 ");
     }
 
 }

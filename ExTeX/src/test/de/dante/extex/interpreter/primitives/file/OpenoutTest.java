@@ -17,18 +17,17 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.group;
+package de.dante.extex.interpreter.primitives.file;
 
-import de.dante.test.NoFlagsPrimitiveTester;
-
+import de.dante.test.NoFlagsButGlobalAndImmediatePrimitiveTester;
 
 /**
- * This is a test suite for the primitive <tt>\aftergroup</tt>.
+ * This is a test suite for the primitive <tt>\openout</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.1 $
  */
-public class AftergroupTest extends NoFlagsPrimitiveTester {
+public class OpenoutTest extends NoFlagsButGlobalAndImmediatePrimitiveTester {
 
     /**
      * Method for running the tests standalone.
@@ -37,7 +36,7 @@ public class AftergroupTest extends NoFlagsPrimitiveTester {
      */
     public static void main(final String[] args) {
 
-        junit.textui.TestRunner.run(AftergroupTest.class);
+        junit.textui.TestRunner.run(OpenoutTest.class);
     }
 
     /**
@@ -45,47 +44,44 @@ public class AftergroupTest extends NoFlagsPrimitiveTester {
      *
      * @param arg the name
      */
-    public AftergroupTest(final String arg) {
+    public OpenoutTest(final String arg) {
 
-        super(arg, "aftergroup", " x");
+        super(arg, "openout", "1 texput.test");
     }
 
     /**
-     * <testcase primitive="\aftergroup">
-     *  Test case checking that a <tt>\aftergroup</tt> token of type letter
-     *  is shifted to the end of the group.
+     * <testcase primitive="\openout">
+     *  Test case checking that a lonely <tt>\openout</tt> leads to an error.
      * </testcase>
      *
      * @throws Exception in case of an error
      */
-    public void test1() throws Exception {
+    public void testEof1() throws Exception {
 
         runCode(//--- input code ---
-                "\\catcode`{=1"
-                + "\\catcode`}=2"
-                + "a{b\\aftergroup xd}e",
+                "\\openout ",
+                //--- log message ---
+                "Missing number, treated as zero",
                 //--- output channel ---
-                "abdxe\n\n");
+                "");
     }
 
     /**
-     * <testcase primitive="\aftergroup">
-     *  Test case checking that a <tt>\aftergroup</tt> token of type control
-     *  sequence is expanded after the end of the group.
+     * <testcase primitive="\openout">
+     *  Test case checking that a lonely <tt>\openout</tt> with an index
+     *  leads to an error.
      * </testcase>
      *
      * @throws Exception in case of an error
      */
-    public void test2() throws Exception {
+    public void testEof2() throws Exception {
 
         runCode(//--- input code ---
-                "\\catcode`{=1"
-                + "\\catcode`}=2"
-                + "\\def\\x{ttt}"
-                + "a{b\\aftergroup\\x d}e",
+                "\\openout 2",
+                //--- log message ---
+                "Unexpected end of file while processing \\openout",
                 //--- output channel ---
-                "abdttte\n\n");
+                "");
     }
-
 
 }

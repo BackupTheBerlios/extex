@@ -19,15 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.arithmetic;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.test.NoFlagsButGlobalPrimitiveTester;
 
 /**
  * This is a test suite for the primitive <tt>\divide</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class DivideTest extends ExTeXLauncher {
+public class DivideTest extends NoFlagsButGlobalPrimitiveTester {
 
     /**
      * Method for running the tests standalone.
@@ -46,7 +46,7 @@ public class DivideTest extends ExTeXLauncher {
      */
     public DivideTest(final String arg) {
 
-        super(arg);
+        super(arg, "divide", "\\count1 1 ");
     }
 
     /**
@@ -58,12 +58,10 @@ public class DivideTest extends ExTeXLauncher {
      */
     public void testLetter1() throws Exception {
 
-        runCode(//--- input code ---
+        runFailureCode(//--- input code ---
                 "\\divide a",
                 //--- log message ---
-                "You can\'t use `a\' after \\divide",
-                //--- output channel ---
-                "");
+                "You can\'t use `a\' after \\divide");
     }
 
     /**
@@ -76,12 +74,10 @@ public class DivideTest extends ExTeXLauncher {
      */
     public void testOther1() throws Exception {
 
-        runCode(//--- input code ---
+        runFailureCode(//--- input code ---
                 "\\divide 12 ",
                 //--- log message ---
-                "You can\'t use `1\' after \\divide",
-                //--- output channel ---
-                "");
+                "You can\'t use `1\' after \\divide");
     }
 
     /**
@@ -94,13 +90,11 @@ public class DivideTest extends ExTeXLauncher {
      */
     public void testMacro1() throws Exception {
 
-        runCode(//--- input code ---
+        runFailureCode(//--- input code ---
                 "\\catcode`#=6 "
                 + "\\divide #2 ",
                 //--- log message ---
-                "You can\'t use `#\' after \\divide",
-                //--- output channel ---
-                "");
+                "You can\'t use `#\' after \\divide");
     }
 
     /**
@@ -113,12 +107,10 @@ public class DivideTest extends ExTeXLauncher {
      */
     public void testRelax1() throws Exception {
 
-        runCode(//--- input code ---
+        runFailureCode(//--- input code ---
                 "\\divide \\relax ",
                 //--- log message ---
-                "You can\'t use `\\relax\' after \\divide",
-                //--- output channel ---
-                "");
+                "You can\'t use `\\relax\' after \\divide");
     }
 
     /**
@@ -131,14 +123,12 @@ public class DivideTest extends ExTeXLauncher {
      */
     public void testCount0() throws Exception {
 
-        runCode(//--- input code ---
+        runFailureCode(//--- input code ---
                 "\\count1 16 "
                 +"\\divide \\count1 0 "
                 + "\\the\\count1 \\end",
                 //--- log message ---
-                "Arithmetic overflow",
-                //--- output channel ---
-                "");
+                "Arithmetic overflow");
     }
 
     /**
@@ -153,10 +143,26 @@ public class DivideTest extends ExTeXLauncher {
 
         runCode(//--- input code ---
                 "\\count1 16 "
-                +"\\divide \\count1 8 "
+                + "\\divide \\count1 8 "
                 + "\\the\\count1 \\end",
-                //--- log message ---
-                "",
+                //--- output channel ---
+                "2\n\n");
+    }
+
+    /**
+     * <testcase primitive="\divide">
+     *  Test case checking that <tt>\divide</tt> on a count register name
+     *  works with the global flag.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testCount2() throws Exception {
+
+        runCode(//--- input code ---
+                "\\count1 16 "
+                + "\\begingroup\\global\\divide \\count1 8 \\endgroup "
+                + "\\the\\count1 \\end",
                 //--- output channel ---
                 "2\n\n");
     }
@@ -173,10 +179,26 @@ public class DivideTest extends ExTeXLauncher {
 
         runCode(//--- input code ---
                 "\\dimen1 8pt "
-                +"\\divide \\dimen1 16 "
+                + "\\divide \\dimen1 16 "
                 + "\\the\\dimen1 \\end",
-                //--- log message ---
-                "",
+                //--- output channel ---
+                "0.5pt\n\n");
+    }
+
+    /**
+     * <testcase primitive="\divide">
+     *  Test case checking that <tt>\divide</tt> on a dimen register name
+     *  works with the global flag.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testDimen2() throws Exception {
+
+        runCode(//--- input code ---
+                "\\dimen1 8pt "
+                + "\\begingroup\\global\\divide \\dimen1 16 \\endgroup "
+                + "\\the\\dimen1 \\end",
                 //--- output channel ---
                 "0.5pt\n\n");
     }
@@ -191,14 +213,12 @@ public class DivideTest extends ExTeXLauncher {
      */
     public void testDimen0() throws Exception {
 
-        runCode(//--- input code ---
+        runFailureCode(//--- input code ---
                 "\\dimen1 8pt "
                 +"\\divide \\dimen1 0 "
                 + "\\the\\dimen1 \\end",
                 //--- log message ---
-                "Arithmetic overflow",
-                //--- output channel ---
-                "");
+                "Arithmetic overflow");
     }
 
 }

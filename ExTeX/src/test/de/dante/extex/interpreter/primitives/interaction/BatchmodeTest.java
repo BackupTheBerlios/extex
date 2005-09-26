@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -17,18 +17,17 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.group;
+package de.dante.extex.interpreter.primitives.interaction;
 
 import de.dante.test.NoFlagsPrimitiveTester;
 
-
 /**
- * This is a test suite for the primitive <tt>\aftergroup</tt>.
+ * This is a test suite for the primitive <tt>\batchmode</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.1 $
  */
-public class AftergroupTest extends NoFlagsPrimitiveTester {
+public class BatchmodeTest extends NoFlagsPrimitiveTester {
 
     /**
      * Method for running the tests standalone.
@@ -37,23 +36,38 @@ public class AftergroupTest extends NoFlagsPrimitiveTester {
      */
     public static void main(final String[] args) {
 
-        junit.textui.TestRunner.run(AftergroupTest.class);
+        junit.textui.TestRunner.run(BatchmodeTest.class);
     }
 
     /**
-     * Creates a new object.
+     * Constructor for RelaxTest.
      *
      * @param arg the name
      */
-    public AftergroupTest(final String arg) {
+    public BatchmodeTest(final String arg) {
 
-        super(arg, "aftergroup", " x");
+        super(arg, "batchmode", "");
     }
 
     /**
-     * <testcase primitive="\aftergroup">
-     *  Test case checking that a <tt>\aftergroup</tt> token of type letter
-     *  is shifted to the end of the group.
+     * <testcase primitive="\batchmode">
+     *  Test case checking that batch mode is reported as 0.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test0() throws Exception {
+
+        runCode(//--- input code ---
+                "\\batchmode"
+                + " \\the\\interactionmode \\end",
+                //--- output channel ---
+                "0\n\n");
+    }
+
+    /**
+     * <testcase primitive="\batchmode">
+     *  Test case checking that batch mode is always global.
      * </testcase>
      *
      * @throws Exception in case of an error
@@ -61,31 +75,10 @@ public class AftergroupTest extends NoFlagsPrimitiveTester {
     public void test1() throws Exception {
 
         runCode(//--- input code ---
-                "\\catcode`{=1"
-                + "\\catcode`}=2"
-                + "a{b\\aftergroup xd}e",
+                "\\errorstopmode\\begingroup\\batchmode\\endgroup"
+                + " \\the\\interactionmode \\end",
                 //--- output channel ---
-                "abdxe\n\n");
+                "0\n\n");
     }
-
-    /**
-     * <testcase primitive="\aftergroup">
-     *  Test case checking that a <tt>\aftergroup</tt> token of type control
-     *  sequence is expanded after the end of the group.
-     * </testcase>
-     *
-     * @throws Exception in case of an error
-     */
-    public void test2() throws Exception {
-
-        runCode(//--- input code ---
-                "\\catcode`{=1"
-                + "\\catcode`}=2"
-                + "\\def\\x{ttt}"
-                + "a{b\\aftergroup\\x d}e",
-                //--- output channel ---
-                "abdttte\n\n");
-    }
-
 
 }

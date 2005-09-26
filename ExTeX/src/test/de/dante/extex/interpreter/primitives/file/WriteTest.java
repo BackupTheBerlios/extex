@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -17,17 +17,17 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives;
+package de.dante.extex.interpreter.primitives.file;
 
-import de.dante.test.NoFlagsPrimitiveTester;
+import de.dante.test.NoFlagsButImmediatePrimitiveTester;
 
 /**
- * This is a test suite for the primitive <tt>\relax</tt>.
+ * This is a test suite for the primitive <tt>\write</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.1 $
  */
-public class RelaxTest extends NoFlagsPrimitiveTester {
+public class WriteTest extends NoFlagsButImmediatePrimitiveTester {
 
     /**
      * Method for running the tests standalone.
@@ -36,101 +36,85 @@ public class RelaxTest extends NoFlagsPrimitiveTester {
      */
     public static void main(final String[] args) {
 
-        junit.textui.TestRunner.run(RelaxTest.class);
+        junit.textui.TestRunner.run(WriteTest.class);
     }
 
     /**
-     * Constructor for RelaxTest.
+     * Creates a new object.
      *
      * @param arg the name
      */
-    public RelaxTest(final String arg) {
+    public WriteTest(final String arg) {
 
-        super(arg, "relax", "");
+        super(arg, "write", "1 {abc}");
     }
 
     /**
-     * <testcase primitive="\relax">
-     *  Test case checking that a pure <tt>\relax</tt> has no effect.
+     * <testcase primitive="\write">
+     *  Test case checking that a lonely <tt>\write</tt> leads to an error.
      * </testcase>
      *
      * @throws Exception in case of an error
      */
-    public void test1() throws Exception {
+    public void testEof1() throws Exception {
 
         runCode(//--- input code ---
-                "\\relax",
+                "\\write ",
                 //--- log message ---
-                "",
+                "Missing number, treated as zero",
                 //--- output channel ---
                 "");
     }
 
     /**
-     * <testcase primitive="\relax">
-     *  Test case checking that a pure <tt>\relax</tt> has no effect in the
-     *  middle of a word.
+     * <testcase primitive="\write">
+     *  Test case checking that a lonely <tt>\write</tt> with an index
+     *  leads to an error.
      * </testcase>
      *
      * @throws Exception in case of an error
      */
-    public void test10() throws Exception {
+    public void testEof2() throws Exception {
 
         runCode(//--- input code ---
-                "abc\\relax def",
+                "\\write 2",
                 //--- log message ---
-                "",
-                //--- output channel ---
-                "abcdef\n\n");
-    }
-
-    /**
-     * <testcase primitive="\relax">
-     *  Test case checking that a white-space after a <tt>\relax</tt> is ignored.
-     * </testcase>
-     *
-     * @throws Exception in case of an error
-     */
-    public void test2() throws Exception {
-
-        runCode(//--- input code ---
-                "\\relax ",
-                //--- log message ---
-                "",
+                "Unexpected end of file while processing tokens", //TODO tokens should be \write
                 //--- output channel ---
                 "");
     }
 
     /**
-     * <testcase primitive="\relax">
-     *  Test case checking that more white-space after a <tt>\relax</tt> is ignored.
+     * <testcase primitive="\write">
+     *  Test case checking that a lonely <tt>\write</tt> leads to an error.
      * </testcase>
      *
      * @throws Exception in case of an error
      */
-    public void test4() throws Exception {
+    public void testEof3() throws Exception {
 
         runCode(//--- input code ---
-                "\\relax         ",
+                "\\immediate\\write ",
                 //--- log message ---
-                "",
+                "Missing number, treated as zero",
                 //--- output channel ---
                 "");
     }
 
     /**
-     * <testcase primitive="\relax">
-     *  Test case checking that a comment after a <tt>\relax</tt> is ignored.
+     * <testcase primitive="\write">
+     *  Test case checking that a lonely <tt>\write</tt> with an index
+     *  leads to an error.
      * </testcase>
      *
      * @throws Exception in case of an error
      */
-    public void test5() throws Exception {
+    public void testEof4() throws Exception {
 
         runCode(//--- input code ---
-                "\\relax %1234 ",
+                "\\immediate\\write 2",
                 //--- log message ---
-                "",
+                "Unexpected end of file while processing write", //TODO tokens should be \write
                 //--- output channel ---
                 "");
     }

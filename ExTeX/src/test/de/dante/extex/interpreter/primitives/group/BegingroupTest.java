@@ -19,15 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.group;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.test.NoFlagsPrimitiveTester;
 
 /**
  * This is a test suite for the primitive <tt>\begingroup</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class BegingroupTest extends ExTeXLauncher {
+public class BegingroupTest extends NoFlagsPrimitiveTester {
 
     /**
      * Method for running the tests standalone.
@@ -46,7 +46,7 @@ public class BegingroupTest extends ExTeXLauncher {
      */
     public BegingroupTest(final String arg) {
 
-        super(arg);
+        super(arg, "begingroup", "");
     }
 
     /**

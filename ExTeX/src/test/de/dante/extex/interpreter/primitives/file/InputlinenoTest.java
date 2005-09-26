@@ -17,18 +17,17 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.group;
+package de.dante.extex.interpreter.primitives.file;
 
-import de.dante.test.NoFlagsPrimitiveTester;
-
+import de.dante.test.ExTeXLauncher;
 
 /**
- * This is a test suite for the primitive <tt>\aftergroup</tt>.
+ * This is a test suite for the primitive <tt>\inputlineno</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.1 $
  */
-public class AftergroupTest extends NoFlagsPrimitiveTester {
+public class InputlinenoTest extends ExTeXLauncher {
 
     /**
      * Method for running the tests standalone.
@@ -37,7 +36,7 @@ public class AftergroupTest extends NoFlagsPrimitiveTester {
      */
     public static void main(final String[] args) {
 
-        junit.textui.TestRunner.run(AftergroupTest.class);
+        junit.textui.TestRunner.run(InputlinenoTest.class);
     }
 
     /**
@@ -45,47 +44,24 @@ public class AftergroupTest extends NoFlagsPrimitiveTester {
      *
      * @param arg the name
      */
-    public AftergroupTest(final String arg) {
+    public InputlinenoTest(final String arg) {
 
-        super(arg, "aftergroup", " x");
+        super(arg);
     }
 
     /**
-     * <testcase primitive="\aftergroup">
-     *  Test case checking that a <tt>\aftergroup</tt> token of type letter
-     *  is shifted to the end of the group.
+     * <testcase primitive="\inputlineno">
+     *  Test case checking that a <tt>\inputlineno</tt> works.
      * </testcase>
      *
      * @throws Exception in case of an error
      */
-    public void test1() throws Exception {
+    public void test0() throws Exception {
 
         runCode(//--- input code ---
-                "\\catcode`{=1"
-                + "\\catcode`}=2"
-                + "a{b\\aftergroup xd}e",
+                "\\the\\inputlineno ",
                 //--- output channel ---
-                "abdxe\n\n");
+                "1\n\n");
     }
-
-    /**
-     * <testcase primitive="\aftergroup">
-     *  Test case checking that a <tt>\aftergroup</tt> token of type control
-     *  sequence is expanded after the end of the group.
-     * </testcase>
-     *
-     * @throws Exception in case of an error
-     */
-    public void test2() throws Exception {
-
-        runCode(//--- input code ---
-                "\\catcode`{=1"
-                + "\\catcode`}=2"
-                + "\\def\\x{ttt}"
-                + "a{b\\aftergroup\\x d}e",
-                //--- output channel ---
-                "abdttte\n\n");
-    }
-
 
 }

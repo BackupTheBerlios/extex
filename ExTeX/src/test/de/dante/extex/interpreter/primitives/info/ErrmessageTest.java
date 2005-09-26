@@ -19,69 +19,41 @@
 
 package de.dante.extex.interpreter.primitives.info;
 
-import java.util.Properties;
-
-import de.dante.test.NoFlagsPrimitiveTester;
+import de.dante.test.ExTeXLauncher;
 
 /**
- * This is a test suite for the primitive <tt>\jobname</tt>.
+ * This is a test suite for the primitive <tt>\errmessage</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.1 $
  */
-public class JobnameTest extends NoFlagsPrimitiveTester {
+public class ErrmessageTest extends ExTeXLauncher {
 
     /**
      * Constructor for JobnameTest.
      *
      * @param arg the name
      */
-    public JobnameTest(final String arg) {
+    public ErrmessageTest(final String arg) {
 
-        super(arg, "jobname", "");
+        super(arg);
     }
 
     /**
-     * <testcase primitive="\jobname">
-     *  Test case checking that \jobname delivers a decent default value.
+     * <testcase primitive="\errmessage">
+     *  Test case checking that \errmessage delivers a decent value.
      * </testcase>
      *
      * @throws Exception in case of an error
      */
     public void testJobname1() throws Exception {
 
-        runCode(//--- input code ---
+        runFailureCode(//--- input code ---
                 "\\catcode`{=1"
                 + "\\catcode`}=2"
-                + "\\jobname"
-                + "\\end ",
+                + "\\errmessage{abc}",
                 //--- log message ---
-                "",
-                //--- output channel ---
-                "texput\n\n");
+                "abc");
     }
 
-    /**
-     * <testcase primitive="\jobname">
-     *  Test case checking that \jobname can be set properly.
-     * </testcase>
-     *
-     * @throws Exception in case of an error
-     */
-    public void testJobname2() throws Exception {
-
-        Properties properties = System.getProperties();
-        properties.setProperty("extex.jobname", "job");
-
-        runCode(properties,
-                //--- input code ---
-                "\\catcode`{=1"
-                + "\\catcode`}=2"
-                + "\\jobname"
-                + "\\end ",
-                //--- log message ---
-                "",
-                //--- output channel ---
-                "job\n\n");
-    }
 }

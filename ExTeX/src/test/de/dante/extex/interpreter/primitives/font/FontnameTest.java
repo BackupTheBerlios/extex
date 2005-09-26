@@ -19,15 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.font;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.test.NoFlagsPrimitiveTester;
 
 /**
  * This is a test suite for the primitive <tt>\fontname</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
-public class FontnameTest extends ExTeXLauncher {
+public class FontnameTest extends NoFlagsPrimitiveTester {
 
     /**
      * Constructor for FontnameTest.
@@ -36,7 +36,7 @@ public class FontnameTest extends ExTeXLauncher {
      */
     public FontnameTest(final String arg) {
 
-        super(arg);
+        super(arg, "fontname", "\\nullfont");
     }
 
     /**
@@ -85,15 +85,33 @@ public class FontnameTest extends ExTeXLauncher {
         runCode(//--- input code ---
                 "\\fontname \\x",
                 //--- log message ---
-                "Undefined control sequence",
+                "Undefined control sequence the control sequence \\x",
                 //--- output channel ---
                 null);
     }
 
     /**
      * <testcase primitive="\fontname">
+     *  Test case checking that a correct value is produced for the nullfont.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testFontname0() throws Exception {
+
+        runCode(//--- input code ---
+                "\\fontname\\nullfont "
+                + "\\end ",
+                //--- log message ---
+                "",
+                //--- output channel ---
+                "nullfont\n\n");
+    }
+
+    /**
+     * <testcase primitive="\fontname">
      *  Test case checking that a correct value is produced for a font loaded at
-     *  its deign size.
+     *  its design size.
      * </testcase>
      *
      * @throws Exception in case of an error

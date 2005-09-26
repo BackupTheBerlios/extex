@@ -19,15 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.font;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.test.NoFlagsPrimitiveTester;
 
 /**
  * This is a test suite for the primitive <tt>\fontdimen</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
-public class FontdimenTest extends ExTeXLauncher {
+public class FontdimenTest extends NoFlagsPrimitiveTester {
 
     /**
      * Constructor for FontdimenTest.
@@ -36,7 +36,7 @@ public class FontdimenTest extends ExTeXLauncher {
      */
     public FontdimenTest(final String arg) {
 
-        super(arg);
+        super(arg, "fontdimen", "0\\nullfont=123pt ");
     }
 
     /**

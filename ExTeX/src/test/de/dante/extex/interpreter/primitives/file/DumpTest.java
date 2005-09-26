@@ -17,17 +17,17 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.group;
+package de.dante.extex.interpreter.primitives.file;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.test.NoFlagsPrimitiveTester;
 
 /**
- * This is a test suite for the primitive <tt>\currentgrouplevel</tt>.
+ * This is a test suite for the primitive <tt>\dump</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public class CurrentgrouplevelTest extends ExTeXLauncher {
+public class DumpTest extends NoFlagsPrimitiveTester {
 
     /**
      * Method for running the tests standalone.
@@ -36,7 +36,7 @@ public class CurrentgrouplevelTest extends ExTeXLauncher {
      */
     public static void main(final String[] args) {
 
-        junit.textui.TestRunner.run(CurrentgrouplevelTest.class);
+        junit.textui.TestRunner.run(DumpTest.class);
     }
 
     /**
@@ -44,28 +44,9 @@ public class CurrentgrouplevelTest extends ExTeXLauncher {
      *
      * @param arg the name
      */
-    public CurrentgrouplevelTest(final String arg) {
+    public DumpTest(final String arg) {
 
-        super(arg);
-    }
-
-    /**
-     * <testcase primitive="\currentgrouplevel">
-     *  Test case checking that a lonely <tt>\currentgrouplevel</tt> leads to an error.
-     * </testcase>
-     *
-     * @throws Exception in case of an error
-     */
-    public void test1() throws Exception {
-
-        runCode(//--- input code ---
-                "\\catcode`{=1 "
-                + "\\catcode`}=2 "
-                + "\\the\\currentgrouplevel",
-                //--- log message ---
-                "0\n\n",
-                //--- output channel ---
-                "");
+        super(arg, "dump", "");
     }
 
 }
