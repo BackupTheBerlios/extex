@@ -25,7 +25,6 @@ import java.util.Calendar;
 import com.ibm.icu.lang.UCharacter;
 
 import de.dante.extex.interpreter.Flags;
-import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.Context;
@@ -36,6 +35,7 @@ import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.exception.helping.MissingLeftBraceException;
 import de.dante.extex.interpreter.exception.helping.MissingNumberException;
 import de.dante.extex.interpreter.exception.helping.UndefinedControlSequenceException;
+import de.dante.extex.interpreter.interaction.Interaction;
 import de.dante.extex.interpreter.observer.eof.EofObservable;
 import de.dante.extex.interpreter.observer.eof.EofObserver;
 import de.dante.extex.interpreter.observer.eof.EofObserverList;
@@ -98,7 +98,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.78 $
+ * @version $Revision: 1.79 $
  */
 public class Moritz extends Max
         implements
@@ -382,14 +382,17 @@ public class Moritz extends Max
     }
 
     /**
-     * @see de.dante.extex.interpreter.TokenSource#getFont(Context)
+     * @see de.dante.extex.interpreter.TokenSource#getFont(
+     *      de.dante.extex.interpreter.context.Context,
+     *      java.lang.String)
      */
-    public Font getFont(final Context context) throws InterpreterException {
+    public Font getFont(final Context context, final String primitive)
+            throws InterpreterException {
 
         Token t = getToken(context);
 
         if (t == null) {
-            throw new EofException(null);
+            throw new EofException(primitive);
 
         } else if (t instanceof CodeToken) {
             Code code = context.getCode((CodeToken) t);
@@ -958,17 +961,19 @@ public class Moritz extends Max
      *  the name of a Unicode character in braces.
      * </doc>
      *
-     * @see de.dante.extex.interpreter.TokenSource#scanCharacterCode(Context)
+     * @see de.dante.extex.interpreter.TokenSource#scanCharacterCode(
+     *      de.dante.extex.interpreter.context.Context,
+     *      java.lang.String)
      */
-    public UnicodeChar scanCharacterCode(final Context context)
-            throws InterpreterException {
+    public UnicodeChar scanCharacterCode(final Context context,
+            final String primitive) throws InterpreterException {
 
         long cc;
 
         Token t = getNonSpace(context);
         if (t instanceof LeftBraceToken) {
             push(t);
-            String name = scanTokensAsString(context);
+            String name = scanTokensAsString(context, primitive);
             if (name == null) {
                 throw new HelpingException(getLocalizer(), "BadCharName", "");
             }
@@ -1247,9 +1252,11 @@ public class Moritz extends Max
     }
 
     /**
-     * @see de.dante.extex.interpreter.TokenSource#scanRegisterName(Context)
+     * @see de.dante.extex.interpreter.TokenSource#scanRegisterName(
+     *      de.dante.extex.interpreter.context.Context,
+     *      java.lang.String)
      */
-    public String scanRegisterName(final Context context)
+    public String scanRegisterName(final Context context, final String primitive)
             throws InterpreterException {
 
         skipSpaces = true;
@@ -1262,7 +1269,7 @@ public class Moritz extends Max
 
         if (extendedRegisterNames && token.isa(Catcode.LEFTBRACE)) {
             push(token);
-            return scanTokensAsString(context);
+            return scanTokensAsString(context, primitive);
         }
 
         long registerNumber = scanNumber(context, token);
@@ -1291,18 +1298,21 @@ public class Moritz extends Max
     }
 
     /**
-     * @see de.dante.extex.interpreter.TokenSource#scanTokens(Context)
+     * @see de.dante.extex.interpreter.TokenSource#scanTokens(
+     *      de.dante.extex.interpreter.context.Context,
+     *      java.lang.String)
      */
-    public Tokens scanTokens(final Context context) throws InterpreterException {
+    public Tokens scanTokens(final Context context, final String primitive)
+            throws InterpreterException {
 
         Tokens toks = new Tokens();
         skipSpaces = true;
         Token token = getToken(context);
 
         if (token == null) {
-            throw new EofException(null);
+            throw new EofException(primitive);
         } else if (!token.isa(Catcode.LEFTBRACE)) {
-            throw new MissingLeftBraceException(null);
+            throw new MissingLeftBraceException(primitive);
         }
 
         int balance = 1;
@@ -1322,12 +1332,14 @@ public class Moritz extends Max
     }
 
     /**
-     * @see de.dante.extex.interpreter.TokenSource#scanTokensAsString()
+     * @see de.dante.extex.interpreter.TokenSource#scanTokensAsString(
+     *      de.dante.extex.interpreter.context.Context,
+     *      java.lang.String)
      */
-    public String scanTokensAsString(final Context context)
-            throws InterpreterException {
+    public String scanTokensAsString(final Context context,
+            final String primitive) throws InterpreterException {
 
-        return scanTokens(context).toText();
+        return scanTokens(context, primitive).toText();
     }
 
     /**

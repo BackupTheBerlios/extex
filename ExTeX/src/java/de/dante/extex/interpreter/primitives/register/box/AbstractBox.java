@@ -32,7 +32,7 @@ import de.dante.extex.interpreter.type.AbstractCode;
  * It provides a method to get the key of a box register.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public abstract class AbstractBox extends AbstractCode implements Serializable {
 
@@ -75,7 +75,7 @@ public abstract class AbstractBox extends AbstractCode implements Serializable {
     public static String getKey(final Context context,
             final TokenSource source) throws InterpreterException {
 
-        String name = source.scanRegisterName(context);
+        String name = source.scanRegisterName(context, "???"); //TODO gene: provide primitive name for error handling
 
         if (Namespace.SUPPORT_NAMESPACE_DIMEN) {
             return context.getNamespace() + "#box#" + name;

@@ -51,7 +51,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * @see java.text.DecimalFormat
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class PrintFormat extends AbstractCode implements Theable {
 
@@ -91,7 +91,7 @@ public class PrintFormat extends AbstractCode implements Theable {
 
         // \the\printformat{pattern}\real7
 
-        String pattern = source.scanTokensAsString(context);
+        String pattern = source.scanTokensAsString(context, getName());
 
         if (pattern == null || pattern.trim().length() == 0) {
             pattern = "0.00";

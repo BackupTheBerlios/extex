@@ -34,7 +34,7 @@ import de.dante.extex.interpreter.exception.InterpreterException;
  * </pre>
  *
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class InputFile extends Input {
 
@@ -64,6 +64,6 @@ public class InputFile extends Input {
     protected String scanFileName(final Context context,
             final TokenSource source) throws InterpreterException {
 
-        return source.scanTokensAsString(context);
+        return source.scanTokensAsString(context, getName());
     }
 }

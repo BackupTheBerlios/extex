@@ -109,7 +109,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class CatcodePrimitive extends AbstractAssignment
         implements
@@ -142,13 +142,14 @@ public class CatcodePrimitive extends AbstractAssignment
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        UnicodeChar charCode = source.scanCharacterCode(context);
+        UnicodeChar charCode = source.scanCharacterCode(context, getName());
         source.getOptionalEquals(context);
         long ccNumber = source.scanInteger(context, typesetter);
 
         try {
             context.setCatcode(charCode, Catcode.toCatcode((int) ccNumber),
                     prefix.isGlobal());
+            prefix.clearGlobal();
         } catch (CatcodeException e) {
             throw new HelpingException(getLocalizer(), "TTP.CodeOutOfRange",
                     Long.toString(ccNumber), //
@@ -166,7 +167,7 @@ public class CatcodePrimitive extends AbstractAssignment
     public long convertCount(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        UnicodeChar charCode = source.scanCharacterCode(context);
+        UnicodeChar charCode = source.scanCharacterCode(context, getName());
 
         return context.getCatcode(charCode).getCode();
     }

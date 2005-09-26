@@ -51,7 +51,7 @@ import de.dante.extex.typesetter.type.noad.OverlinedNoad;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Overline extends AbstractMathCode {
 
@@ -82,7 +82,7 @@ public class Overline extends AbstractMathCode {
             throws InterpreterException {
 
         NoadConsumer nc = getListMaker(context, typesetter);
-        Noad noad = nc.scanNoad(context, source, typesetter);
+        Noad noad = nc.scanNoad(context, source, typesetter, getName());
         nc.add(new OverlinedNoad(noad));
     }
 

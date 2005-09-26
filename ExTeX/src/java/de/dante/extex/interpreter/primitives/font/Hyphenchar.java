@@ -68,7 +68,7 @@ import de.dante.util.exception.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class Hyphenchar extends AbstractAssignment
         implements
@@ -103,7 +103,7 @@ public class Hyphenchar extends AbstractAssignment
             throws InterpreterException {
 
         try {
-            Font font = source.getFont(context);
+            Font font = source.getFont(context, getName());
             source.getOptionalEquals(context);
             long c = source.scanInteger(context, typesetter);
             if (c < 0) {
@@ -126,7 +126,7 @@ public class Hyphenchar extends AbstractAssignment
             final Typesetter typesetter) throws InterpreterException {
 
         try {
-            Font font = source.getFont(context);
+            Font font = source.getFont(context, getName());
             UnicodeChar uc = font.getHyphenChar();
             if (uc == null) {
                 return -1;
@@ -165,7 +165,7 @@ public class Hyphenchar extends AbstractAssignment
             throws InterpreterException {
 
         try {
-            Font font = source.getFont(context);
+            Font font = source.getFont(context, getName());
             UnicodeChar uc = font.getHyphenChar();
             if (uc == null) {
                 return new Tokens(context, "-1");

@@ -49,7 +49,7 @@ import de.dante.extex.typesetter.type.math.MathDelimiter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Middle extends AbstractTeXDelimter {
 
@@ -80,7 +80,7 @@ public class Middle extends AbstractTeXDelimter {
             throws InterpreterException {
 
         NoadConsumer nc = getListMaker(context, typesetter);
-        MathDelimiter del = parseDelimiter(context, source);
+        MathDelimiter del = parseDelimiter(context, source, getName());
         nc.left(del);
     }
 

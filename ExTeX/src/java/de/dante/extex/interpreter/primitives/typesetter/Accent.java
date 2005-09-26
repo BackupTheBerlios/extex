@@ -66,7 +66,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [1123]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Accent extends AbstractCode {
 
@@ -116,7 +116,7 @@ public class Accent extends AbstractCode {
                     "TTP.AccentInMathMode", printableControlSequence(context),
                     context.esc("mathaccent"));
         }
-        UnicodeChar accent = source.scanCharacterCode(context);
+        UnicodeChar accent = source.scanCharacterCode(context, getName());
         Token token = source.getToken(context);
         TypesettingContext tc = context.getTypesettingContext();
         Font currentFont = tc.getFont();

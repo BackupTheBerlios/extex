@@ -44,7 +44,7 @@ import de.dante.util.exception.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class MathExpression extends AbstractMath
         implements
@@ -97,7 +97,7 @@ public class MathExpression extends AbstractMath
         Real real = new Real(0);
 
         // \mathexpr{7+5+3}
-        String expr = source.scanTokensAsString(context);
+        String expr = source.scanTokensAsString(context, getName());
 
         // compile
         CompiledExpression compileexpr = null;

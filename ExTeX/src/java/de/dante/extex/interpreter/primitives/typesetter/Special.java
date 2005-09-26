@@ -65,7 +65,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Special extends AbstractCode {
 
@@ -96,7 +96,7 @@ public class Special extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String text = source.scanTokens(context).toText();
+        String text = source.scanTokens(context, getName()).toText();
         try {
             typesetter.add(new SpecialNode(text));
         } catch (GeneralException e) {

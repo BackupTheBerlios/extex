@@ -39,7 +39,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * files.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public abstract class AbstractFileCode extends AbstractCode
         implements
@@ -200,7 +200,7 @@ public abstract class AbstractFileCode extends AbstractCode
             // Fall through to error
         } else if (strictTeX && t.isa(Catcode.LEFTBRACE)) {
             source.push(t);
-            String name = source.scanTokensAsString(context);
+            String name = source.scanTokensAsString(context, getName());
             if (name != null) {
                 return name;
             }

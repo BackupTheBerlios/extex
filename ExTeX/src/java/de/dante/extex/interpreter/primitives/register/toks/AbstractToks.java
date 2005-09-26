@@ -30,7 +30,7 @@ import de.dante.extex.interpreter.type.AbstractAssignment;
  * numbered toks registers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public abstract class AbstractToks extends AbstractAssignment {
 
@@ -59,7 +59,7 @@ public abstract class AbstractToks extends AbstractAssignment {
     protected String getKey(final TokenSource source, final Context context)
             throws InterpreterException {
 
-        String name = source.scanRegisterName(context);
+        String name = source.scanRegisterName(context, getName());
 
         if (Namespace.SUPPORT_NAMESPACE_TOKS) {
             return context.getNamespace() + "toks#" + name;

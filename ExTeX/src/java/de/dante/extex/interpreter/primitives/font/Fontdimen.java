@@ -79,7 +79,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.30 $
+ * @version $Revision: 1.31 $
  */
 public class Fontdimen extends AbstractAssignment
         implements
@@ -114,7 +114,7 @@ public class Fontdimen extends AbstractAssignment
 
         String key = getKey(context, source, typesetter);
         source.skipSpace();
-        Font font = source.getFont(context);
+        Font font = source.getFont(context, getName());
         source.getOptionalEquals(context);
         Dimen size = new Dimen(context, source, typesetter);
         font.setFontDimen(key, size);
@@ -155,7 +155,7 @@ public class Fontdimen extends AbstractAssignment
             throw new EofException(printableControlSequence(context));
         } else if (t.isa(Catcode.LEFTBRACE)) {
             source.push(t);
-            String key = source.scanTokensAsString(context);
+            String key = source.scanTokensAsString(context, getName());
             if (key == null) {
                 throw new EofException(printableControlSequence(context));
             }
@@ -177,7 +177,7 @@ public class Fontdimen extends AbstractAssignment
         try {
             String key = getKey(context, source, typesetter);
             source.skipSpace();
-            Font font = source.getFont(context);
+            Font font = source.getFont(context, getName());
             Dimen size = font.getFontDimen(key);
             if (null == size) {
                 size = Dimen.ZERO_PT;

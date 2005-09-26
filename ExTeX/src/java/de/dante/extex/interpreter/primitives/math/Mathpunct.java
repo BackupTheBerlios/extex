@@ -50,7 +50,7 @@ import de.dante.extex.typesetter.type.noad.PunctationNoad;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Mathpunct extends AbstractMathCode {
 
@@ -81,7 +81,7 @@ public class Mathpunct extends AbstractMathCode {
             throws InterpreterException {
 
         NoadConsumer nc = getListMaker(context, typesetter);
-        Noad noad = nc.scanNoad(context, source, typesetter);
+        Noad noad = nc.scanNoad(context, source, typesetter, getName());
         nc.add(new PunctationNoad(noad));
     }
 

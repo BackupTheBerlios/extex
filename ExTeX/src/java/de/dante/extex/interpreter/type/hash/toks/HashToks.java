@@ -38,7 +38,7 @@ import de.dante.extex.scanner.type.token.Token;
  * A Hash for Tokens.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class HashToks implements Serializable {
 
@@ -79,7 +79,7 @@ public class HashToks implements Serializable {
         }
 
         while (true) {
-            String key = source.scanTokensAsString(context);
+            String key = source.scanTokensAsString(context, "???");
             if (key.trim().length() == 0) {
                 throw new InterpreterMissingHashKeyException();
             }

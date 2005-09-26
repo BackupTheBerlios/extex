@@ -55,7 +55,8 @@ import de.dante.extex.typesetter.Typesetter;
  *      &rarr;
  *       | <tt>\global</tt> &lang;prefix&rang;
  *       | <tt>\long</tt> &lang;prefix&rang;
- *       | <tt>\outer</tt> &lang;prefix&rang;</pre>
+ *       | <tt>\outer</tt> &lang;prefix&rang;
+ *       | <tt>\protected</tt> &lang;prefix&rang;</pre>
  * </p>
  * <p>
  *  Examples:
@@ -65,7 +66,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.37 $
+ * @version $Revision: 1.38 $
  */
 public class Def extends AbstractAssignment {
 
@@ -103,6 +104,10 @@ public class Def extends AbstractAssignment {
 
         context.setCode(cs, new MacroCode(cs.getName(), prefix, pattern, body),
                 prefix.isGlobal());
+        prefix.clearGlobal();
+        prefix.clearExpanded();
+        prefix.clearLong();
+        prefix.clearOuter();
     }
 
     /**
@@ -110,7 +115,7 @@ public class Def extends AbstractAssignment {
      *
      * @param context the interpreter context
      * @param source the source to acquire tokens from
-     * @param typesetter the typesetter to use as backend
+     * @param typesetter the typesetter to use as back-end
      *
      * @return the tokens making up the body
      *
@@ -120,7 +125,7 @@ public class Def extends AbstractAssignment {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        Tokens body = source.scanTokens(context);
+        Tokens body = source.scanTokens(context, getName());
         //TODO gene: maybe the treatment of # is incorrect
         return body;
     }

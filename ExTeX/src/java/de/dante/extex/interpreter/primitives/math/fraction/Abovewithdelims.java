@@ -52,7 +52,7 @@ import de.dante.extex.typesetter.type.math.MathDelimiter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Abovewithdelims extends AbstractTeXDelimter {
 
@@ -83,8 +83,8 @@ public class Abovewithdelims extends AbstractTeXDelimter {
             throws InterpreterException {
 
         NoadConsumer nc = getListMaker(context, typesetter);
-        MathDelimiter del1 = parseDelimiter(context, source);
-        MathDelimiter del2 = parseDelimiter(context, source);
+        MathDelimiter del1 = parseDelimiter(context, source, getName());
+        MathDelimiter del2 = parseDelimiter(context, source, getName());
         Dimen d = new Dimen(context, source, typesetter);
         nc.switchToFraction(del1, del2, d);
     }

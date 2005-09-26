@@ -52,7 +52,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Mark extends AbstractCode {
 
@@ -82,7 +82,7 @@ public class Mark extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        Tokens toks = source.scanTokens(context);
+        Tokens toks = source.scanTokens(context, getName());
         try {
             typesetter.add(new MarkNode(toks, 0));
         } catch (GeneralException e) {

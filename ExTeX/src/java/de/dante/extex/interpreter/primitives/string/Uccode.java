@@ -57,7 +57,7 @@ import de.dante.util.exception.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class Uccode extends AbstractAssignment
         implements
@@ -92,9 +92,9 @@ public class Uccode extends AbstractAssignment
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        UnicodeChar ucCode = source.scanCharacterCode(context);
+        UnicodeChar ucCode = source.scanCharacterCode(context, getName());
         source.getOptionalEquals(context);
-        UnicodeChar lcCode = source.scanCharacterCode(context);
+        UnicodeChar lcCode = source.scanCharacterCode(context, getName());
         context.setUccode(ucCode, lcCode);
     }
 
@@ -132,7 +132,7 @@ public class Uccode extends AbstractAssignment
             final Typesetter typesetter) throws InterpreterException {
 
         try {
-            UnicodeChar ucCode = source.scanCharacterCode(context);
+            UnicodeChar ucCode = source.scanCharacterCode(context, getName());
             return context.getUccode(ucCode).getCodePoint();
         } catch (GeneralException e) {
             throw new InterpreterException(e);

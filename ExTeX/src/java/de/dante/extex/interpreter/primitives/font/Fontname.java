@@ -65,7 +65,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class Fontname extends AbstractCode implements ExpandableCode {
 
@@ -102,7 +102,7 @@ public class Fontname extends AbstractCode implements ExpandableCode {
         source.skipSpace();
         Font font;
         try {
-            font = source.getFont(context);
+            font = source.getFont(context, getName());
         } catch (EofException e) {
             throw new EofException(printableControlSequence(context));
         }

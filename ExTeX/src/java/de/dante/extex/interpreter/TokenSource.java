@@ -49,7 +49,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.57 $
+ * @version $Revision: 1.58 $
  */
 public interface TokenSource {
 
@@ -179,7 +179,7 @@ public interface TokenSource {
      *
      * @throws InterpreterException in case of an error
      */
-    Font getFont(Context context) throws InterpreterException;
+    Font getFont(Context context, String primitive) throws InterpreterException;
 
     /**
      * Get tokens from the token stream searching for a sequence of letter
@@ -340,13 +340,15 @@ public interface TokenSource {
      * character code exist.
      *
      * @param context the interpreter context
+     * @param primitive the name of the invoking primitive for error handling
      *
      * @return the value of the integer scanned
      *
-     * @throws InterpreterException in case that no number is found or the end of
-     *  file has been reached before an integer could be acquired
+     * @throws InterpreterException in case that no number is found or the end
+     *  of file has been reached before an integer could be acquired
      */
-    UnicodeChar scanCharacterCode(Context context) throws InterpreterException;
+    UnicodeChar scanCharacterCode(Context context, String primitive)
+            throws InterpreterException;
 
     /**
      * Scan the input stream for tokens making up an integer, this is a number
@@ -441,12 +443,14 @@ public interface TokenSource {
      * Upon EOF <code>null</code> is returned.
      *
      * @param context the interpreter context
+     * @param primitive the name of the invoking primitive for error handling
      *
      * @return the register name encountered
      *
      * @throws InterpreterException in case of an error
      */
-    String scanRegisterName(Context context) throws InterpreterException;
+    String scanRegisterName(Context context, String primitive)
+            throws InterpreterException;
 
     /**
      * Get the next expanded token form the input streams. If the current input
@@ -477,12 +481,14 @@ public interface TokenSource {
      * </doc>
      *
      * @param context the interpreter context
+     * @param primitive the name of the invoking primitive for error handling
      *
      * @return the next tokens or <code>null</code>
      *
      * @throws InterpreterException in case of an error
      */
-    Tokens scanTokens(Context context) throws InterpreterException;
+    Tokens scanTokens(Context context, String primitive)
+            throws InterpreterException;
 
     /**
      * Get the next expanded token form the input streams between a left brace
@@ -493,12 +499,14 @@ public interface TokenSource {
      * <code>null</code> is returned.
      *
      * @param context the interpreter context
+     * @param primitive the name of the invoking primitive for error handling
      *
      * @return the next tokens as <code>String</code> or <code>null</code>
      *
      * @throws InterpreterException in case of an error
      */
-    String scanTokensAsString(Context context) throws InterpreterException;
+    String scanTokensAsString(Context context, String primitive)
+            throws InterpreterException;
 
     /**
      * Skip spaces and check whether any tokens are left.
