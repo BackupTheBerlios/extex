@@ -43,7 +43,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class NamedHashToks extends AbstractAssignment implements Theable {
 
@@ -76,6 +76,7 @@ public class NamedHashToks extends AbstractAssignment implements Theable {
 
             HashToks value = new HashToks(context, source);
             contextextex.setHashToks(key, value, prefix.isGlobal());
+            prefix.clearGlobal();
 
         } else {
             throw new InterpreterExtensionException();

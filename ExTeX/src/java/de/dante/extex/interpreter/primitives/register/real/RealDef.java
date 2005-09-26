@@ -37,7 +37,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class RealDef extends AbstractAssignment {
 
@@ -68,5 +68,6 @@ public class RealDef extends AbstractAssignment {
         String key = "real#"
                 + Long.toString(Count.scanCount(context, source, typesetter));
         context.setCode(tok, new NamedReal(key), prefix.isGlobal());
+        prefix.clearGlobal();
     }
 }

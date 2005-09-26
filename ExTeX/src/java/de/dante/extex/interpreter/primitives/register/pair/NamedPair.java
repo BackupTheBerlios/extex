@@ -43,7 +43,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class NamedPair extends AbstractAssignment
         implements
@@ -78,6 +78,7 @@ public class NamedPair extends AbstractAssignment
             source.getOptionalEquals(context);
             Pair value = new Pair(context, source);
             contextextex.setPair(key, value, prefix.isGlobal());
+            prefix.clearGlobal();
 
         } else {
             throw new InterpreterExtensionException();

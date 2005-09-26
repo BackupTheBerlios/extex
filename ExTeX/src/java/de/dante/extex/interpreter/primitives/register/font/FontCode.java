@@ -36,7 +36,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class FontCode extends AbstractCode implements FontConvertible, Theable {
 
@@ -75,6 +75,7 @@ public class FontCode extends AbstractCode implements FontConvertible, Theable {
 
         try {
             context.set(font, prefix.isGlobal());
+            prefix.clearGlobal();
         } catch (ConfigurationException e) {
             throw new InterpreterException(e);
         }

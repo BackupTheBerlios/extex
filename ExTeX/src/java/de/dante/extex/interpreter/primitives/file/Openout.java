@@ -67,7 +67,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class Openout extends AbstractFileCode {
 
@@ -107,6 +107,7 @@ public class Openout extends AbstractFileCode {
         if (prefix.isImmediate()) {
             file.open();
             context.setOutFile(key, file, prefix.isGlobal());
+            prefix.clearImmediate();
         } else {
             try {
                 typesetter.add(new WhatsItOpenNode(key, file));

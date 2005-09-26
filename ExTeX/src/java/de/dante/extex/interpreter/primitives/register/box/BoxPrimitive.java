@@ -55,7 +55,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class BoxPrimitive extends AbstractBox implements Boxable, Serializable {
 
@@ -96,6 +96,7 @@ public class BoxPrimitive extends AbstractBox implements Boxable, Serializable {
                 throw new InterpreterException(e);
             }
             context.setBox(key, null, prefix.isGlobal());
+            prefix.clearGlobal();
         }
     }
 

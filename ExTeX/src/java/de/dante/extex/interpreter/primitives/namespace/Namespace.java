@@ -56,7 +56,7 @@ import de.dante.extex.typesetter.Typesetter;
  * @see de.dante.extex.interpreter.primitives.namespace.Import
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Namespace extends AbstractAssignment
         implements
@@ -91,6 +91,7 @@ public class Namespace extends AbstractAssignment
 
         Tokens toks = source.getTokens(context);
         context.setNamespace(toks.toText(), prefix.isGlobal());
+        prefix.clearGlobal();
     }
 
     /**

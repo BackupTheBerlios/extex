@@ -36,7 +36,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  *
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class BoxParameter extends AbstractCode implements Code, Serializable {
 
@@ -70,6 +70,7 @@ public class BoxParameter extends AbstractCode implements Code, Serializable {
         source.getOptionalEquals(context);
         Box box = source.getBox(context, typesetter);
         context.setBox(key, box, prefix.isGlobal());
+        prefix.clearGlobal();
     }
 
     /**

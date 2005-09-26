@@ -41,7 +41,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class ToksPrimitive extends AbstractToks implements Theable {
 
@@ -75,6 +75,7 @@ public class ToksPrimitive extends AbstractToks implements Theable {
         source.getOptionalEquals(context);
         Tokens toks = source.getTokens(context);
         context.setToks(key, toks, prefix.isGlobal());
+        prefix.clearGlobal();
     }
 
     /**

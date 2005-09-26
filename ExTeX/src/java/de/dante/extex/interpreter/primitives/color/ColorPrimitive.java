@@ -76,7 +76,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class ColorPrimitive extends AbstractAssignment
         implements
@@ -87,7 +87,7 @@ public class ColorPrimitive extends AbstractAssignment
      * color models.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.7 $
+     * @version $Revision: 1.8 $
      */
     private interface ColorMode {
 
@@ -237,6 +237,7 @@ public class ColorPrimitive extends AbstractAssignment
         } catch (ConfigurationException e) {
             throw new InterpreterException(e);
         }
+        prefix.setGlobal(false);
     }
 
     /**

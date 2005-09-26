@@ -56,7 +56,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Unvbox extends AbstractBox {
 
@@ -105,6 +105,7 @@ public class Unvbox extends AbstractBox {
                 }
             }
         }
+        prefix.clearGlobal();
     }
 
 }

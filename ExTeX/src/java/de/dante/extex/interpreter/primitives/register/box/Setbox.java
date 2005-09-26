@@ -54,7 +54,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class Setbox extends AbstractBox implements Code, Serializable {
 
@@ -88,6 +88,7 @@ public class Setbox extends AbstractBox implements Code, Serializable {
         source.getOptionalEquals(context);
         Box box = source.getBox(context, typesetter);
         context.setBox(key, box, prefix.isGlobal());
+        prefix.clearGlobal();
     }
 
 }

@@ -20,11 +20,11 @@
 package de.dante.extex.interpreter.primitives.file;
 
 import de.dante.extex.interpreter.Flags;
-import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
+import de.dante.extex.interpreter.interaction.Interaction;
 import de.dante.extex.interpreter.primitives.macro.MacroCode;
 import de.dante.extex.interpreter.primitives.macro.MacroPattern;
 import de.dante.extex.interpreter.type.AbstractCode;
@@ -57,7 +57,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public class Read extends AbstractCode {
 
@@ -107,6 +107,7 @@ public class Read extends AbstractCode {
         }
         context.setCode(cs, new MacroCode(cs.getName(), prefix,
                 MacroPattern.EMPTY, toks), prefix.isGlobal());
+        prefix.clearGlobal();
     }
 
 }

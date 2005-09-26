@@ -39,7 +39,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class MuskipParameter extends AbstractAssignment {
 
@@ -92,6 +92,7 @@ public class MuskipParameter extends AbstractAssignment {
         source.getOptionalEquals(context);
         Muskip skip = new Muskip(context, source);
         context.setMuskip(key, skip, prefix.isGlobal());
+        prefix.clearGlobal();
     }
 
 }

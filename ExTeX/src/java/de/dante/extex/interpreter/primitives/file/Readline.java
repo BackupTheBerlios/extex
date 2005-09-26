@@ -20,13 +20,13 @@
 package de.dante.extex.interpreter.primitives.file;
 
 import de.dante.extex.interpreter.Flags;
-import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
+import de.dante.extex.interpreter.interaction.Interaction;
 import de.dante.extex.interpreter.primitives.macro.MacroCode;
 import de.dante.extex.interpreter.primitives.macro.MacroPattern;
 import de.dante.extex.interpreter.type.AbstractCode;
@@ -61,7 +61,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Readline extends AbstractCode {
 
@@ -74,7 +74,7 @@ public class Readline extends AbstractCode {
      * This class implements a tokenizer which returns only OTHER and SPACE.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.5 $
+     * @version $Revision: 1.6 $
      */
     private static class ReadlineTokenizer implements Tokenizer {
 
@@ -142,5 +142,6 @@ public class Readline extends AbstractCode {
         }
         context.setCode(cs, new MacroCode(cs.getName(), prefix,
                 MacroPattern.EMPTY, toks), prefix.isGlobal());
+        prefix.clearGlobal();
     }
 }

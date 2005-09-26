@@ -37,7 +37,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class HashToksDef extends AbstractAssignment {
 
@@ -67,5 +67,6 @@ public class HashToksDef extends AbstractAssignment {
         String key = "hashtoks#"
                 + Long.toString(Count.scanCount(context, source, typesetter));
         context.setCode(tok, new NamedHashToks(key), prefix.isGlobal());
+        prefix.clearGlobal();
     }
 }

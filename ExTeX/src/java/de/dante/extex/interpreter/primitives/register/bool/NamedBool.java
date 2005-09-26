@@ -48,7 +48,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class NamedBool extends AbstractAssignment
         implements
@@ -84,6 +84,7 @@ public class NamedBool extends AbstractAssignment
             source.getOptionalEquals(context);
             Bool value = new Bool(context, source);
             contextextex.setBool(key, value, prefix.isGlobal());
+            prefix.clearGlobal();
 
         } else {
             throw new InterpreterExtensionException();

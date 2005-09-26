@@ -48,7 +48,7 @@ import de.dante.util.exception.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class NamedReal extends AbstractAssignment
         implements
@@ -88,6 +88,7 @@ public class NamedReal extends AbstractAssignment
             source.getOptionalEquals(context);
             Real value = new Real(context, source);
             contextextex.setReal(key, value, prefix.isGlobal());
+            prefix.clearGlobal();
 
         } else {
             throw new InterpreterExtensionException();
@@ -168,7 +169,7 @@ public class NamedReal extends AbstractAssignment
      *      de.dante.extex.interpreter.TokenSource)
      */
     public void advance(final Flags prefix, final Context context,
-            final TokenSource source) throws InterpreterException {
+            final TokenSource source, Typesetter typesetter) throws InterpreterException {
 
         if (context instanceof ContextExtension) {
 

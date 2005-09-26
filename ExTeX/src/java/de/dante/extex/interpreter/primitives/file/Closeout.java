@@ -64,7 +64,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public class Closeout extends AbstractCode implements LogEnabled {
 
@@ -124,6 +124,7 @@ public class Closeout extends AbstractCode implements LogEnabled {
                     logger.info(e.getLocalizedMessage() + "\n");
                 }
             }
+            prefix.clearImmediate();
         } else {
             try {
                 typesetter.add(new WhatsItCloseNode(key));

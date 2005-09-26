@@ -42,7 +42,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class NamedTransform extends AbstractAssignment implements Theable {
 
@@ -74,6 +74,7 @@ public class NamedTransform extends AbstractAssignment implements Theable {
             source.getOptionalEquals(context);
             Transform value = new Transform(context, source);
             contextextex.setTransform(key, value, prefix.isGlobal());
+            prefix.clearGlobal();
 
         } else {
             throw new InterpreterExtensionException();
