@@ -31,7 +31,6 @@ import de.dante.extex.interpreter.Conditional;
 import de.dante.extex.interpreter.ErrorHandler;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.FlagsImpl;
-import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -42,6 +41,8 @@ import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.CantUseInException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.exception.helping.UndefinedControlSequenceException;
+import de.dante.extex.interpreter.exception.helping.UnusedPrefixException;
+import de.dante.extex.interpreter.interaction.Interaction;
 import de.dante.extex.interpreter.loader.LoaderException;
 import de.dante.extex.interpreter.loader.SerialLoader;
 import de.dante.extex.interpreter.observer.error.ErrorObservable;
@@ -106,7 +107,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.83 $
+ * @version $Revision: 1.84 $
  */
 public abstract class Max
         implements
@@ -236,12 +237,6 @@ public abstract class Max
     private Flags prefix = new FlagsImpl();
 
     /**
-     * The field <tt>typesetter</tt> contains the typesetter for handling
-     * "left-over" material.
-     */
-    private Typesetter typesetter = null;
-
-    /**
      * The field <tt>tv</tt> contains the ...
      */
     private TokenVisitor tv = new TokenVisitor() {
@@ -264,7 +259,8 @@ public abstract class Max
         }
 
         /**
-         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitCr(de.dante.extex.scanner.type.token.CrToken, java.lang.Object)
+         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitCr(
+         *      de.dante.extex.scanner.type.token.CrToken, java.lang.Object)
          */
         public Object visitCr(final CrToken token, final Object arg)
                 throws Exception {
@@ -274,7 +270,9 @@ public abstract class Max
         }
 
         /**
-         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitEscape(de.dante.extex.scanner.type.token.ControlSequenceToken, java.lang.Object)
+         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitEscape(
+         *      de.dante.extex.scanner.type.token.ControlSequenceToken,
+         *      java.lang.Object)
          */
         public Object visitEscape(final ControlSequenceToken token,
                 final Object arg) throws Exception {
@@ -294,7 +292,9 @@ public abstract class Max
         }
 
         /**
-         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitLeftBrace(de.dante.extex.scanner.type.token.LeftBraceToken, java.lang.Object)
+         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitLeftBrace(
+         *      de.dante.extex.scanner.type.token.LeftBraceToken,
+         *      java.lang.Object)
          */
         public Object visitLeftBrace(final LeftBraceToken token,
                 final Object arg) throws Exception {
@@ -304,7 +304,9 @@ public abstract class Max
         }
 
         /**
-         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitLetter(de.dante.extex.scanner.type.token.LetterToken, java.lang.Object)
+         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitLetter(
+         *      de.dante.extex.scanner.type.token.LetterToken,
+         *      java.lang.Object)
          */
         public Object visitLetter(final LetterToken token, final Object arg)
                 throws Exception {
@@ -313,7 +315,9 @@ public abstract class Max
         }
 
         /**
-         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitMacroParam(de.dante.extex.scanner.type.token.MacroParamToken, java.lang.Object)
+         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitMacroParam(
+         *      de.dante.extex.scanner.type.token.MacroParamToken,
+         *      java.lang.Object)
          */
         public Object visitMacroParam(final MacroParamToken token,
                 final Object arg) throws Exception {
@@ -323,7 +327,9 @@ public abstract class Max
         }
 
         /**
-         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitMathShift(de.dante.extex.scanner.type.token.MathShiftToken, java.lang.Object)
+         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitMathShift(
+         *      de.dante.extex.scanner.type.token.MathShiftToken,
+         *      java.lang.Object)
          */
         public Object visitMathShift(final MathShiftToken token,
                 final Object arg) throws Exception {
@@ -333,7 +339,9 @@ public abstract class Max
         }
 
         /**
-         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitOther(de.dante.extex.scanner.type.token.OtherToken, java.lang.Object)
+         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitOther(
+         *      de.dante.extex.scanner.type.token.OtherToken,
+         *      java.lang.Object)
          */
         public Object visitOther(final OtherToken token, final Object arg)
                 throws Exception {
@@ -342,7 +350,9 @@ public abstract class Max
         }
 
         /**
-         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitRightBrace(de.dante.extex.scanner.type.token.RightBraceToken, java.lang.Object)
+         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitRightBrace(
+         *      de.dante.extex.scanner.type.token.RightBraceToken,
+         *      java.lang.Object)
          */
         public Object visitRightBrace(final RightBraceToken token,
                 final Object arg) throws Exception {
@@ -352,7 +362,9 @@ public abstract class Max
         }
 
         /**
-         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitSpace(de.dante.extex.scanner.type.token.SpaceToken, java.lang.Object)
+         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitSpace(
+         *      de.dante.extex.scanner.type.token.SpaceToken,
+         *      java.lang.Object)
          */
         public Object visitSpace(final SpaceToken token, final Object arg)
                 throws Exception {
@@ -361,7 +373,9 @@ public abstract class Max
         }
 
         /**
-         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitSubMark(de.dante.extex.scanner.type.token.SubMarkToken, java.lang.Object)
+         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitSubMark(
+         *      de.dante.extex.scanner.type.token.SubMarkToken,
+         *      java.lang.Object)
          */
         public Object visitSubMark(final SubMarkToken token, final Object arg)
                 throws Exception {
@@ -371,7 +385,9 @@ public abstract class Max
         }
 
         /**
-         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitSupMark(de.dante.extex.scanner.type.token.SupMarkToken, java.lang.Object)
+         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitSupMark(
+         *      de.dante.extex.scanner.type.token.SupMarkToken,
+         *      java.lang.Object)
          */
         public Object visitSupMark(final SupMarkToken token, final Object arg)
                 throws Exception {
@@ -381,7 +397,9 @@ public abstract class Max
         }
 
         /**
-         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitTabMark(de.dante.extex.scanner.type.token.TabMarkToken, java.lang.Object)
+         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitTabMark(
+         *      de.dante.extex.scanner.type.token.TabMarkToken,
+         *      java.lang.Object)
          */
         public Object visitTabMark(final TabMarkToken token, final Object arg)
                 throws Exception {
@@ -391,6 +409,12 @@ public abstract class Max
         }
 
     };
+
+    /**
+     * The field <tt>typesetter</tt> contains the typesetter for handling
+     * "left-over" material.
+     */
+    private Typesetter typesetter = null;
 
     /**
      * Creates a new object.
@@ -885,6 +909,35 @@ public abstract class Max
     }
 
     /**
+     * Report that a flag has not been used by a macro.
+     *
+     * @param token the macro which has been invoked
+     *
+     * @throws HelpingException with the appropriate error message
+     */
+    private void reportDirtyFlag(final Token token) throws HelpingException {
+
+        String cause = "???";
+
+        if (prefix.isGlobal()) {
+            cause = "global";
+        } else if (prefix.isImmediate()) {
+            cause = "immediate";
+        } else if (prefix.isLong()) {
+            cause = "long";
+        } else if (prefix.isOuter()) {
+            cause = "outer";
+        } else if (prefix.isExpanded()) {
+            cause = "expanded";
+        } else if (prefix.isProtected()) {
+            cause = "protected";
+        }
+
+        prefix.clear();
+        throw new UnusedPrefixException(context.esc(cause), token);
+    }
+
+    /**
      * @see de.dante.extex.interpreter.Interpreter#run()
      */
     public void run() throws ConfigurationException, InterpreterException {
@@ -1042,8 +1095,8 @@ public abstract class Max
 
         code.execute(prefix, context, this, typesetter);
 
-        if (!(code instanceof PrefixCode)) {
-            prefix.clear();
+        if (!(code instanceof PrefixCode) && prefix.isDirty()) {
+            reportDirtyFlag(token);
         }
         return null;
     }
@@ -1066,6 +1119,9 @@ public abstract class Max
 
         typesetter
                 .cr(context, context.getTypesettingContext(), token.getChar());
+        if (prefix.isDirty()) {
+            reportDirtyFlag(token);
+        }
         return null;
     }
 
@@ -1097,8 +1153,8 @@ public abstract class Max
 
         code.execute(prefix, context, this, typesetter);
 
-        if (!(code instanceof PrefixCode)) {
-            prefix.clear();
+        if (!(code instanceof PrefixCode) && prefix.isDirty()) {
+            reportDirtyFlag(token);
         }
         return null;
     }
@@ -1126,6 +1182,9 @@ public abstract class Max
             throw new GeneralException(e);
         }
         typesetter.leftBrace();
+        if (prefix.isDirty()) {
+            reportDirtyFlag(token);
+        }
 
         return null;
     }
@@ -1147,6 +1206,9 @@ public abstract class Max
 
         typesetter.letter(context, context.getTypesettingContext(), token
                 .getChar());
+        if (prefix.isDirty()) {
+            reportDirtyFlag(token);
+        }
         return null;
     }
 
@@ -1176,7 +1238,6 @@ public abstract class Max
      * In <logo>TeX</logo> this normally is a <tt>$</tt>.
      *
      *
-     *
      * <doc name="everymath" type="register">
      * <h3>The Parameter <tt>\everymath</tt></h3>
      *
@@ -1198,7 +1259,7 @@ public abstract class Max
      *      de.dante.extex.scanner.MathShiftToken, java.lang.Object)
      */
     public Object visitMathShift(final MathShiftToken token, final Object ignore)
-            throws GeneralException {
+            throws InterpreterException {
 
         try {
             typesetter.mathShift(context, this, token);
@@ -1209,7 +1270,10 @@ public abstract class Max
             }
             throw e;
         } catch (ConfigurationException e) {
-            throw new GeneralException(e);
+            throw new InterpreterException(e);
+        }
+        if (prefix.isDirty()) {
+            reportDirtyFlag(token);
         }
         return null;
     }
@@ -1233,6 +1297,9 @@ public abstract class Max
         typesetter.letter(context, //
                 context.getTypesettingContext(), //
                 token.getChar());
+        if (prefix.isDirty()) {
+            reportDirtyFlag(token);
+        }
         return null;
     }
 
@@ -1255,6 +1322,9 @@ public abstract class Max
 
         context.closeGroup(typesetter, this);
         typesetter.rightBrace();
+        if (prefix.isDirty()) {
+            reportDirtyFlag(token);
+        }
         return null;
     }
 
@@ -1279,6 +1349,9 @@ public abstract class Max
         } catch (ConfigurationException e) {
             throw new GeneralException(e);
         }
+        if (prefix.isDirty()) {
+            reportDirtyFlag(token);
+        }
         return null;
     }
 
@@ -1299,6 +1372,9 @@ public abstract class Max
     public Object visitSubMark(final SubMarkToken token, final Object ignore)
             throws GeneralException {
 
+        if (prefix.isDirty()) {
+            reportDirtyFlag(token);
+        }
         try {
             typesetter.subscriptMark(context, this, typesetter, token);
         } catch (TypesetterException e) {
@@ -1328,6 +1404,9 @@ public abstract class Max
     public Object visitSupMark(final SupMarkToken token, final Object ignore)
             throws GeneralException {
 
+        if (prefix.isDirty()) {
+            reportDirtyFlag(token);
+        }
         try {
             typesetter.superscriptMark(context, this, typesetter, token);
         } catch (TypesetterException e) {
@@ -1357,6 +1436,9 @@ public abstract class Max
     public Object visitTabMark(final TabMarkToken token, final Object ignore)
             throws GeneralException {
 
+        if (prefix.isDirty()) {
+            reportDirtyFlag(token);
+        }
         try {
             typesetter.tab(context, this, token);
         } catch (ConfigurationException e) {
@@ -1364,4 +1446,5 @@ public abstract class Max
         }
         return null;
     }
+
 }
