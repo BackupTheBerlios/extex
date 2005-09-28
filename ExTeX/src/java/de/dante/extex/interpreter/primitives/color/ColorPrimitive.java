@@ -40,7 +40,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
 /**
  * This class provides an implementation for the primitive <code>\color</code>.
  *
- * <doc name="csname">
+ * <doc name="color">
  * <h3>The Primitive <tt>\color</tt></h3>
  * <p>
  *  TODO missing documentation
@@ -76,7 +76,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class ColorPrimitive extends AbstractAssignment
         implements
@@ -87,7 +87,7 @@ public class ColorPrimitive extends AbstractAssignment
      * color models.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.8 $
+     * @version $Revision: 1.9 $
      */
     private interface ColorMode {
 
