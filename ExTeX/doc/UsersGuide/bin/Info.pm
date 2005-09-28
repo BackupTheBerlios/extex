@@ -1,6 +1,6 @@
 #!/usr/local/bin/perl
 ##*****************************************************************************
-## $Id: Info.pm,v 1.3 2005/06/25 20:50:02 gene Exp $
+## $Id: Info.pm,v 1.4 2005/09/28 11:34:54 gene Exp $
 ##*****************************************************************************
 ## Author: Gerd Neugebauer
 ##=============================================================================
@@ -97,7 +97,7 @@ our @EXPORT_OK = qw();
 # Variable:	$VERSION
 # Description:	
 #
-our $VERSION = ('$Revision: 1.3 $ ' =~ m/[0-9.]+/ ? $& : '0.0' );
+our $VERSION = ('$Revision: 1.4 $ ' =~ m/[0-9.]+/ ? $& : '0.0' );
 
 use FileHandle;
 use File::Find;
@@ -187,7 +187,7 @@ sub analyzeJava {
     } elsif (m/<doc/) {
       $_ = new InfoItem ($_,
 			 $package,
-			 processDocTag((m/name="([^\"])*"/ ? $1 : ''),
+			 processDocTag((m/name="([^\"]*)"/ ? $1 : ''),
 				       $fd,
 				       ''));
       my $key  = $_->getKey();
