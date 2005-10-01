@@ -19,6 +19,8 @@
 
 package de.dante.extex.interpreter.primitives.font;
 
+import java.io.FileNotFoundException;
+
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -31,6 +33,7 @@ import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.Catcode;
+import de.dante.extex.scanner.type.CatcodeException;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.exception.GeneralException;
@@ -79,7 +82,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.31 $
+ * @version $Revision: 1.32 $
  */
 public class Fontdimen extends AbstractAssignment
         implements
@@ -183,7 +186,7 @@ public class Fontdimen extends AbstractAssignment
                 size = Dimen.ZERO_PT;
             }
             return size.toToks(context.getTokenFactory());
-        } catch (GeneralException e) {
+        } catch (CatcodeException e) {
             throw new InterpreterException(e);
         }
     }
