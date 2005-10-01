@@ -25,12 +25,12 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\fontchardp</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class FontchardpTest extends ExTeXLauncher {
 
     /**
-     * Constructor for FontnameTest.
+     * Creates a new object.
      *
      * @param arg the name
      */
