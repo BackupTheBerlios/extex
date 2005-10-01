@@ -30,7 +30,7 @@ import java.util.logging.LogRecord;
  * is honored.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class LogFormatter extends Formatter {
 
@@ -133,7 +133,7 @@ public class LogFormatter extends Formatter {
     }
 
     /**
-     * Find a break point at a whitespace and break the line there.
+     * Find a break point at a white-space and break the line there.
      *
      * @param out the target buffer
      * @param msg the message to process
@@ -141,7 +141,7 @@ public class LogFormatter extends Formatter {
     private CharSequence breakLine(final StringBuffer out,
             final CharSequence msg) {
 
-        for (int i = LINE_LENGTH - col; i >= 0; i--) {
+        for (int i = LINE_LENGTH - col - 1; i >= 0; i--) {
             char c = msg.charAt(i);
             if (c == ' ' || c == '\t') {
                 out.append(msg.subSequence(0, i));
