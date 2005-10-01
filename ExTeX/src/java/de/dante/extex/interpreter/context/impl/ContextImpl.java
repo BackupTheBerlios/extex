@@ -118,7 +118,7 @@ import de.dante.util.framework.i18n.Localizer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.91 $
+ * @version $Revision: 1.92 $
  */
 public class ContextImpl
         implements
@@ -1291,6 +1291,7 @@ public class ContextImpl
     public void setLanguageManager(final LanguageManager manager) {
 
         this.languageManager = manager;
+        typesettingContextFactory.setLanguageManager(languageManager);
     }
 
     /**
@@ -1317,7 +1318,7 @@ public class ContextImpl
 
         if (magnificationLock && this.magnification != mag) {
             throw new HelpingException(localizer, "TTP.IncompatibleMag", //
-                    Long.toString(mag));
+                    Long.toString(mag), Long.toString(magnification));
         }
 
         magnificationLock = true;
