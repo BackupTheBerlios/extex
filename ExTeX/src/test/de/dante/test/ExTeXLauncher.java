@@ -46,22 +46,29 @@ import de.dante.util.exception.GeneralException;
  * running an instance of <logo>ExTeX</logo>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.30 $
+ * @version $Revision: 1.31 $
  */
 public class ExTeXLauncher extends TestCase {
 
     /**
-     * The constant <tt>DEFINE_CATCODES</tt> contains the ...
+     * The constant <tt>DEFINE_CATCODES</tt> contains the definition of the
+     * usual catcodes.
      */
-    public String DEFINE_CATCODES = "\\catcode`\\{=1 " + "\\catcode`\\}=2 "
-            + "\\catcode`\\$=3 " + "\\catcode`\\&=4 " + "\\catcode`\\#=6 "
-            + "\\catcode`\\^=7 " + "\\catcode`\\_=8 " + "\\catcode`\\^^I=10 ";
+    public static final String DEFINE_CATCODES = "\\catcode`\\{=1 "
+            + "\\catcode`\\}=2 " + "\\catcode`\\$=3 " + "\\catcode`\\&=4 "
+            + "\\catcode`\\#=6 " + "\\catcode`\\^=7 " + "\\catcode`\\_=8 "
+            + "\\catcode`\\^^I=10 ";
+
+    /**
+     * The constant <tt>TERM</tt> contains the terminating string for output.
+     */
+    public static final String TERM = "\n\n";
 
     /**
      * Inner class for the error handler.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.30 $
+     * @version $Revision: 1.31 $
      */
     private class EHandler implements ErrorHandler {
 
