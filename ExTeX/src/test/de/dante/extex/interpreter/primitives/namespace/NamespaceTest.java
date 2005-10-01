@@ -27,7 +27,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\namespace</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class NamespaceTest extends ExTeXLauncher {
 
@@ -42,33 +42,76 @@ public class NamespaceTest extends ExTeXLauncher {
     }
 
     /**
-     * Test case checking that ...
+     * <testcase primitive="namespace">
+     *  Test case checking that <tt>\namespace</tt> is initially empty.
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
     public void test1() throws Exception {
 
-        Properties properties = System.getProperties();
+        Properties properties = getProps();
         properties.setProperty("extex.config", "nextex");
 
         runCode(properties,
                 //--- input code ---
-                "\\catcode`{=1"
-                + "\\catcode`}=2"
-                + "\\escapechar=`\\\\"
-                + "\\namespace{TeX}"
-                + ""
-                + "\\count1=123"
-                + "\\showthe\\count1"
-                + "\\namespace{abc}"
-                + "\\showthe\namespace"
-                + "\\showthe\\count1"
-                + ""
+                ":\\the\\namespace:"
                 + "\\end ",
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "\n");
+                "::\n\n");
+    }
+
+    /**
+     * <testcase primitive="namespace">
+     *  Test case checking that <tt>\namespace</tt> can be set and read.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test2() throws Exception {
+
+        Properties properties = getProps();
+        properties.setProperty("extex.config", "nextex");
+
+        runCode(properties,
+                //--- input code ---
+                DEFINE_CATCODES
+                + "\\namespace{TeX}"
+                + ":\\the\\namespace:"
+                + "\\end ",
+                //--- log message ---
+                "",
+                //--- output channel ---
+                ":TeX:\n\n");
+    }
+
+    /**
+     * Test case checking that ...
+     *
+     * @throws Exception in case of an error
+     */
+    public void test10() throws Exception {
+
+        Properties properties = getProps();
+        properties.setProperty("extex.config", "nextex");
+
+        runCode(properties,
+                //--- input code ---
+                DEFINE_CATCODES
+                + "\\let\\x a"
+                + "\\namespace{TeX}"
+                + "\\let\\x b"
+                + ".\\x."
+                + "\\namespace{abc}"
+                + "\\the\\namespace:"
+                + ".\\x."
+                + "\\end ",
+                //--- log message ---
+                "",
+                //--- output channel ---
+                ".b.abc:.a.\n\n");
     }
 
 }
