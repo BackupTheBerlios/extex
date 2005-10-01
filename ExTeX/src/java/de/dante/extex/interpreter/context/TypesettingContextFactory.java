@@ -35,7 +35,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationMissingAttri
  *  TypesettingContext}.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class TypesettingContextFactory extends AbstractFactory {
 
@@ -46,9 +46,9 @@ public class TypesettingContextFactory extends AbstractFactory {
     private static final String CLASS_ATTRIBUTE = "class";
 
     /**
-     * The field <tt>hyphenationManager</tt> contains the hyphenation manager.
+     * The field <tt>languageManager</tt> contains the language manager.
      */
-    private transient LanguageManager hyphenationManager = null;
+    private transient LanguageManager languageManager = null;
 
     /**
      * The field <tt>theClass</tt> contains the class to instantiate. It is
@@ -230,20 +230,19 @@ public class TypesettingContextFactory extends AbstractFactory {
 
         ModifiableTypesettingContext c = newInstance();
         c.set(context);
-        c.setLanguage(hyphenationManager.getLanguage(language));
+        c.setLanguage(languageManager.getLanguage(language));
 
         return c;
     }
 
     /**
-     * Setter for the hyphenation manager.
+     * Setter for the language manager.
      *
-     * @param hyphenationManager the new hyphenation manager
+     * @param languageManager the new language manager
      */
-    public void setLanguageManager(
-            final LanguageManager hyphenationManager) {
+    public void setLanguageManager(final LanguageManager languageManager) {
 
-        this.hyphenationManager = hyphenationManager;
+        this.languageManager = languageManager;
     }
 
 }
