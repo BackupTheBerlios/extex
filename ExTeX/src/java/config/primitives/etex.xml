@@ -133,8 +133,6 @@
           class=""/>
   <define name="tracingassigns"
           class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
-  <define name="tracingcommands"
-          class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
   <define name="tracinggroups"
           class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
   <define name="tracingifs"
