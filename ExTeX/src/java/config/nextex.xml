@@ -30,7 +30,7 @@
     -  Note that font files are also sought in TEXINPUTS but NOT requested from
     -  the user.
     -->
-  <Fonts class="de.dante.extex.font.FontFactoryImpl">
+  <Fonts class="de.dante.extex.font.FontFactory">
     <Type default="type1">
         <type1 class="de.dante.extex.font.type.efm.EFMType1AFMFount"/>        
         <ttf class="de.dante.extex.font.type.efm.EFMTTFFount"/>        
@@ -78,15 +78,15 @@
       -  The attribute "name" can be used to specify the font name. Default: nullfont
       -  The attribute "size" can be used to specify the size. Default: design size.
       -->
-    <Font/>
-
-    <!-- The configuration of the token factory.
-      -->
-    <TokenFactory class="de.dante.extex.scanner.type.token.TokenFactoryImpl"/>
+    <Font name=""/>
 
     <!-- The configuration for the language manager.
       -->
     <Language src="language/language.xml" />
+
+    <!-- The configuration of the token factory.
+      -->
+    <TokenFactory class="de.dante.extex.scanner.type.token.TokenFactoryImpl"/>
 
     <!-- The configuration of the context implementation to use.
       -->
@@ -105,10 +105,10 @@
     <!-- The implementation of the error handler to use.
       -->
 	<ErrorHandler default="ExTeX">
-     <ExTeX class="de.dante.extex.main.errorHandler.ErrorHandlerImpl">
+	 <ExTeX class="de.dante.extex.main.errorHandler.ErrorHandlerImpl">
        <EditHandler class="de.dante.extex.main.errorHandler.editHandler.EditHandlerTeXImpl"/>
      </ExTeX>
-     <TeX class="de.dante.extex.main.errorHandler.ErrorHandlerTeXImpl">
+	 <TeX class="de.dante.extex.main.errorHandler.ErrorHandlerTeXImpl">
        <EditHandler class="de.dante.extex.main.errorHandler.editHandler.EditHandlerTeXImpl"/>
      </TeX>
      <extex class="de.dante.extex.main.errorHandler.ErrorHandlerImpl"/>
@@ -129,15 +129,15 @@
     -  one of several typesetters programatically.
     -->
   <Typesetter default="TeX">
-    <TeX class="de.dante.extex.typesetter.impl.TypesetterImpl">
+	<TeX class="de.dante.extex.typesetter.impl.TypesetterImpl"
+         direction="lr">
       <PageBuilder class="de.dante.extex.typesetter.pageBuilder.impl.PageBuilderImpl"/>
       <ParagraphBuilder class="de.dante.extex.typesetter.paragraphBuilder.impl.ParagraphBuilderImpl"/>
-      <LigatureBuilder class="de.dante.extex.typesetter.ligatureBuilder.impl.LigatureBuilderImpl"/>
     </TeX>
-    <devel class="de.dante.extex.typesetter.impl.TypesetterImpl">
+    <devel class="de.dante.extex.typesetter.impl.TypesetterImpl"
+           direction="lr">
       <PageBuilder class="de.dante.extex.typesetter.pageBuilder.impl.PageBuilderImpl"/>
       <ParagraphBuilder class="de.dante.extex.typesetter.paragraphBuilder.trivial.TrivialBuilder"/>
-      <LigatureBuilder class="de.dante.extex.typesetter.ligatureBuilder.impl.LigatureBuilderImpl"/>
     </devel>
   </Typesetter>
 
@@ -166,26 +166,32 @@
     -  one of several backends programatically.
     -->
   <DocumentWriter default="out">
-    <pdf  class="de.dante.extex.documentWriter.pdf.PdfDocumentWriter"/>
-    <dvi  class="de.dante.extex.documentWriter.dvi.DviDocumentWriter"/>
-    <ps   class="de.dante.extex.documentWriter.postscript.PsWriter"/>
-    <eps  class="de.dante.extex.documentWriter.postscript.EpsWriter"/>
-    <out  class="de.dante.extex.documentWriter.dump.DumpDocumentWriter"/>
-    <dump class="de.dante.extex.documentWriter.dump.DumpDocumentWriter"/>
-    <text class="de.dante.extex.documentWriter.text.TextDocumentWriter"/>
-    <xml  class="de.dante.extex.documentWriter.xml.XMLDocumentWriter"
-          encoding="ISO-8859-1"
-          debug="false"
-          showvisible="true"
-          indent="  "
-          newlines="true"
-          trimallwhitespace="true"
-          usesp="false"
-          usebp="false"
-          usemm="true"/>
-    <svg  class="de.dante.extex.documentWriter.svg.SVGDocumentWriter"
-          encoding="ISO-8859-1"
-          debug="false"/>
+    <pdf     class="de.dante.extex.documentWriter.pdf.PdfDocumentWriter"/>
+    <dvi     class="de.dante.extex.documentWriter.dvi.DviDocumentWriter"/>
+    <ps      class="de.dante.extex.documentWriter.postscript.PsWriter"/>
+    <ps-box  class="de.dante.extex.documentWriter.postscript.PsWriter"
+             boxed="true"/>
+    <eps     class="de.dante.extex.documentWriter.postscript.EpsWriter"/>
+    <eps-box class="de.dante.extex.documentWriter.postscript.EpsWriter"
+             boxed="true"/>
+    <out     class="de.dante.extex.documentWriter.dump.DumpDocumentWriter"
+             tree="false"/>
+    <dump    class="de.dante.extex.documentWriter.dump.MultiDumpDocumentWriter"
+             tree="true"/>
+    <text    class="de.dante.extex.documentWriter.text.TextDocumentWriter"/>
+    <xml     class="de.dante.extex.documentWriter.xml.XMLDocumentWriter"
+             encoding="ISO-8859-1"
+             debug="false"
+             showvisible="true"
+             indent="  "
+             newlines="true"
+             trimallwhitespace="true"
+             usesp="false"
+             usebp="false"
+             usemm="true"/>
+    <svg     class="de.dante.extex.documentWriter.svg.SVGDocumentWriter"
+             encoding="ISO-8859-1"
+             debug="false"/>
   </DocumentWriter>
 
 </ExTeX>
