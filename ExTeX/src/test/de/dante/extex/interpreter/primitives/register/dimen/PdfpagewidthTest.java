@@ -21,12 +21,12 @@ package de.dante.extex.interpreter.primitives.register.dimen;
 
 
 /**
- * This is a test suite for the primitive <tt>\dimen</tt>.
+ * This is a test suite for the primitive <tt>\pdfpagewidth</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.1 $
  */
-public class DimenTest extends AbstractDimenRegisterTester {
+public class PdfpagewidthTest extends AbstractDimenRegisterTester {
 
     /**
      * Command line interface.
@@ -34,17 +34,29 @@ public class DimenTest extends AbstractDimenRegisterTester {
      */
     public static void main(final String[] args) {
 
-        junit.textui.TestRunner.run(DimenTest.class);
+        junit.textui.TestRunner.run(PdfpagewidthTest.class);
     }
 
     /**
-     * Constructor for DimenTest.
+     * Getter for the configuration name.
+     *
+     * @return the name of the configuration
+     */
+    protected String getConfig() {
+
+        return "pdftex.xml";
+    }
+
+    /**
+     * Creates a new object.
      *
      * @param arg the name
      */
-    public DimenTest(final String arg) {
+    public PdfpagewidthTest(final String arg) {
 
-        super(arg, "dimen", "42 ", "0.0pt");
+        super(arg, "pdfpagewidth", "", "0.0pt");
     }
+
+    //TODO implement the primitive specific test cases
 
 }

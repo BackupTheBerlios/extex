@@ -21,12 +21,12 @@ package de.dante.extex.interpreter.primitives.register.dimen;
 
 
 /**
- * This is a test suite for the primitive <tt>\dimen</tt>.
+ * This is a test suite for the primitive <tt>\pagestretch</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.1 $
  */
-public class DimenTest extends AbstractDimenRegisterTester {
+public class PagestretchTest extends AbstractDimenRegisterTester {
 
     /**
      * Command line interface.
@@ -34,17 +34,19 @@ public class DimenTest extends AbstractDimenRegisterTester {
      */
     public static void main(final String[] args) {
 
-        junit.textui.TestRunner.run(DimenTest.class);
+        junit.textui.TestRunner.run(PagestretchTest.class);
     }
 
     /**
-     * Constructor for DimenTest.
+     * Creates a new object.
      *
      * @param arg the name
      */
-    public DimenTest(final String arg) {
+    public PagestretchTest(final String arg) {
 
-        super(arg, "dimen", "42 ", "0.0pt");
+        super(arg, "pagestretch", "", "0.0pt");
     }
+
+    //TODO implement the primitive specific test cases
 
 }
