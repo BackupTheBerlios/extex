@@ -22,15 +22,14 @@ package de.dante.extex.interpreter.primitives.register.count;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import de.dante.test.IntegerParameterTester;
 
 /**
  * This is a test suite for the primitive <tt>\year</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class YearTest extends IntegerParameterTester {
+public class YearTest extends AbstractCountRegisterTester {
 
     /**
      * Provide the current year as default value for the comparison.

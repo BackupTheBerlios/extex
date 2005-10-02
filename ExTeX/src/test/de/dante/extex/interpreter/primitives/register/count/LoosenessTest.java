@@ -19,15 +19,14 @@
 
 package de.dante.extex.interpreter.primitives.register.count;
 
-import de.dante.test.IntegerParameterTester;
 
 /**
  * This is a test suite for the primitive <tt>\looseness</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class LoosenessTest extends IntegerParameterTester {
+public class LoosenessTest extends AbstractCountRegisterTester {
 
     /**
      * Command line interface.

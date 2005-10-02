@@ -19,15 +19,14 @@
 
 package de.dante.extex.interpreter.primitives.register.count;
 
-import de.dante.test.IntegerParameterTester;
 
 /**
  * This is a test suite for the primitive <tt>\endlinechar</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class EndlinecharTest extends IntegerParameterTester {
+public class EndlinecharTest extends AbstractCountRegisterTester {
 
     /**
      * Command line interface.

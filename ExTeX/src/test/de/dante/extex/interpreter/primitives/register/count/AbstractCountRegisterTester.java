@@ -17,15 +17,18 @@
  *
  */
 
-package de.dante.test;
+package de.dante.extex.interpreter.primitives.register.count;
+
+import de.dante.test.ExTeXLauncher;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This is a abstract base class for testing count registers.
+ * It provides some test cases common to all count registers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @version $Revision: 1.1 $
  */
-public abstract class IntegerParameterTester extends ExTeXLauncher {
+public abstract class AbstractCountRegisterTester extends ExTeXLauncher {
 
     /**
      * The field <tt>primitive</tt> contains the name of the primitive to test.
@@ -49,7 +52,7 @@ public abstract class IntegerParameterTester extends ExTeXLauncher {
      * @param primitive the name of the integer register to test
      * @param args ...
      */
-    public IntegerParameterTester(final String arg, final String primitive,
+    public AbstractCountRegisterTester(final String arg, final String primitive,
             final String args, final String init) {
 
         super(arg);

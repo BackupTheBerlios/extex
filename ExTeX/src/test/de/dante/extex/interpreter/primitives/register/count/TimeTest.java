@@ -21,15 +21,14 @@ package de.dante.extex.interpreter.primitives.register.count;
 
 import java.util.Calendar;
 
-import de.dante.test.IntegerParameterTester;
 
 /**
  * This is a test suite for the primitive <tt>\time</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class TimeTest extends IntegerParameterTester {
+public class TimeTest extends AbstractCountRegisterTester {
 
     /**
      * Provide the current time as default value for the comparison.

@@ -19,15 +19,14 @@
 
 package de.dante.extex.interpreter.primitives.register.count;
 
-import de.dante.test.IntegerParameterTester;
 
 /**
  * This is a test suite for the primitive <tt>\tracingonline</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class TracingonlineTest extends IntegerParameterTester {
+public class TracingonlineTest extends AbstractCountRegisterTester {
 
     /**
      * Command line interface.

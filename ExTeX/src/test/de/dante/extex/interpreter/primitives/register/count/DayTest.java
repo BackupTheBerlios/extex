@@ -22,15 +22,14 @@ package de.dante.extex.interpreter.primitives.register.count;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import de.dante.test.IntegerParameterTester;
 
 /**
  * This is a test suite for the primitive <tt>\day</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class DayTest extends IntegerParameterTester {
+public class DayTest extends AbstractCountRegisterTester {
 
     /**
      * Provide the current day as default value for the comparison.
