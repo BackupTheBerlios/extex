@@ -27,7 +27,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\namespace</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class NamespaceTest extends ExTeXLauncher {
 
@@ -42,6 +42,16 @@ public class NamespaceTest extends ExTeXLauncher {
     }
 
     /**
+     * Getter for the configuration name.
+     *
+     * @return the name of the configuration
+     */
+    protected String getConfig() {
+
+        return "nextex.xml";
+    }
+
+    /**
      * <testcase primitive="namespace">
      *  Test case checking that <tt>\namespace</tt> is initially empty.
      * </testcase>
@@ -50,15 +60,9 @@ public class NamespaceTest extends ExTeXLauncher {
      */
     public void test1() throws Exception {
 
-        Properties properties = getProps();
-        properties.setProperty("extex.config", "nextex");
-
-        runCode(properties,
-                //--- input code ---
+        runCode(//--- input code ---
                 ":\\the\\namespace:"
                 + "\\end ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "::\n\n");
     }
@@ -72,17 +76,11 @@ public class NamespaceTest extends ExTeXLauncher {
      */
     public void test2() throws Exception {
 
-        Properties properties = getProps();
-        properties.setProperty("extex.config", "nextex");
-
-        runCode(properties,
-                //--- input code ---
+        runCode(//--- input code ---
                 DEFINE_CATCODES
                 + "\\namespace{TeX}"
                 + ":\\the\\namespace:"
                 + "\\end ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 ":TeX:\n\n");
     }
@@ -94,11 +92,7 @@ public class NamespaceTest extends ExTeXLauncher {
      */
     public void test10() throws Exception {
 
-        Properties properties = getProps();
-        properties.setProperty("extex.config", "nextex");
-
-        runCode(properties,
-                //--- input code ---
+        runCode(//--- input code ---
                 DEFINE_CATCODES
                 + "\\let\\x a"
                 + "\\namespace{TeX}"
@@ -108,8 +102,6 @@ public class NamespaceTest extends ExTeXLauncher {
                 + "\\the\\namespace:"
                 + ".\\x."
                 + "\\end ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 ".b.abc:.a.\n\n");
     }

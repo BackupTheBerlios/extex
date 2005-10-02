@@ -46,29 +46,15 @@ import de.dante.util.exception.GeneralException;
  * running an instance of <logo>ExTeX</logo>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.31 $
+ * @version $Revision: 1.32 $
  */
 public class ExTeXLauncher extends TestCase {
-
-    /**
-     * The constant <tt>DEFINE_CATCODES</tt> contains the definition of the
-     * usual catcodes.
-     */
-    public static final String DEFINE_CATCODES = "\\catcode`\\{=1 "
-            + "\\catcode`\\}=2 " + "\\catcode`\\$=3 " + "\\catcode`\\&=4 "
-            + "\\catcode`\\#=6 " + "\\catcode`\\^=7 " + "\\catcode`\\_=8 "
-            + "\\catcode`\\^^I=10 ";
-
-    /**
-     * The constant <tt>TERM</tt> contains the terminating string for output.
-     */
-    public static final String TERM = "\n\n";
 
     /**
      * Inner class for the error handler.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.31 $
+     * @version $Revision: 1.32 $
      */
     private class EHandler implements ErrorHandler {
 
@@ -110,6 +96,20 @@ public class ExTeXLauncher extends TestCase {
 
         }
     }
+
+    /**
+     * The constant <tt>DEFINE_CATCODES</tt> contains the definition of the
+     * usual catcodes.
+     */
+    public static final String DEFINE_CATCODES = "\\catcode`\\{=1 "
+            + "\\catcode`\\}=2 " + "\\catcode`\\$=3 " + "\\catcode`\\&=4 "
+            + "\\catcode`\\#=6 " + "\\catcode`\\^=7 " + "\\catcode`\\_=8 "
+            + "\\catcode`\\^^I=10 ";
+
+    /**
+     * The constant <tt>TERM</tt> contains the terminating string for output.
+     */
+    public static final String TERM = "\n\n";
 
     /**
      * Set some properties to default values. The properties set are:
@@ -160,6 +160,16 @@ public class ExTeXLauncher extends TestCase {
     }
 
     /**
+     * Getter for the configuration name.
+     *
+     * @return the name of the configuration
+     */
+    protected String getConfig() {
+
+        return "extex.xml";
+    }
+
+    /**
      * Getter for props.
      *
      * @return the props
@@ -206,6 +216,7 @@ public class ExTeXLauncher extends TestCase {
         properties.setProperty("extex.code", code);
         properties.setProperty("extex.file", "");
         properties.setProperty("extex.nobanner", "true");
+        properties.setProperty("extex.config", getConfig());
 
         ExTeX extex = new ExTeX(properties);
 
