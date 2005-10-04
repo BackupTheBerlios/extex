@@ -26,7 +26,7 @@ import de.dante.test.ExTeXLauncher;
  * It provides some test cases common to all count registers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class AbstractCountRegisterTester extends ExTeXLauncher {
 
@@ -36,12 +36,13 @@ public abstract class AbstractCountRegisterTester extends ExTeXLauncher {
     private String primitive;
 
     /**
-     * The field <tt>invocation</tt> contains the ...
+     * The field <tt>invocation</tt> contains the concatenation of primitive
+     * name and arguments.
      */
     private String invocation;
 
     /**
-     * The field <tt>init</tt> contains the ...
+     * The field <tt>init</tt> contains the default value.
      */
     private String init;
 
