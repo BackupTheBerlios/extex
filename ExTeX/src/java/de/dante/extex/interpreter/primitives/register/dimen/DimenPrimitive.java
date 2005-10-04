@@ -62,7 +62,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class DimenPrimitive extends AbstractDimen
         implements
@@ -109,27 +109,6 @@ public class DimenPrimitive extends AbstractDimen
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.ExpandableCode#expand(
-     *      de.dante.extex.interpreter.Flags,
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.typesetter.Typesetter)
-     */
-    public void expand(final Flags prefix, final Context context,
-            final TokenSource source, final Typesetter typesetter)
-            throws InterpreterException {
-
-        String key = getKey(context, source);
-        try {
-            Tokens toks = context.getDimen(key).toToks(
-                    context.getTokenFactory());
-            source.push(toks);
-        } catch (CatcodeException e) {
-            throw new InterpreterException(e);
-        }
-    }
-
-    /**
      * @see de.dante.extex.interpreter.type.Code#execute(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
@@ -173,23 +152,6 @@ public class DimenPrimitive extends AbstractDimen
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.arithmetic.Multiplyable#multiply(
-     *      de.dante.extex.interpreter.Flags,
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
-     */
-    public void multiply(final Flags prefix, final Context context,
-            final TokenSource source) throws InterpreterException {
-
-        String key = getKey(context, source);
-        source.getKeyword(context, "by");
-        long value = Count.scanCount(context, source, null);
-        Dimen d = new Dimen(context.getDimen(key).getValue() * value);
-        context.setDimen(key, d, prefix.isGlobal());
-        prefix.clearGlobal();
-    }
-
-    /**
      * @see de.dante.extex.interpreter.type.arithmetic.Divideable#divide(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
@@ -208,6 +170,44 @@ public class DimenPrimitive extends AbstractDimen
         }
 
         Dimen d = new Dimen(context.getDimen(key).getValue() / value);
+        context.setDimen(key, d, prefix.isGlobal());
+        prefix.clearGlobal();
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.ExpandableCode#expand(
+     *      de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public void expand(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws InterpreterException {
+
+        String key = getKey(context, source);
+        try {
+            Tokens toks = context.getDimen(key).toToks(
+                    context.getTokenFactory());
+            source.push(toks);
+        } catch (CatcodeException e) {
+            throw new InterpreterException(e);
+        }
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.arithmetic.Multiplyable#multiply(
+     *      de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource)
+     */
+    public void multiply(final Flags prefix, final Context context,
+            final TokenSource source) throws InterpreterException {
+
+        String key = getKey(context, source);
+        source.getKeyword(context, "by");
+        long value = Count.scanCount(context, source, null);
+        Dimen d = new Dimen(context.getDimen(key).getValue() * value);
         context.setDimen(key, d, prefix.isGlobal());
         prefix.clearGlobal();
     }

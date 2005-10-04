@@ -113,7 +113,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Dimenexpr extends AbstractCode
         implements
@@ -137,12 +137,12 @@ public class Dimenexpr extends AbstractCode
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.dimen.DimenConvertible#convertDimen(
+     * @see de.dante.extex.interpreter.type.count.CountConvertible#convertCount(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public long convertDimen(final Context context, final TokenSource source,
+    public long convertCount(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
         long result = evalExpr(context, source, typesetter);
@@ -155,12 +155,12 @@ public class Dimenexpr extends AbstractCode
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.count.CountConvertible#convertCount(
+     * @see de.dante.extex.interpreter.type.dimen.DimenConvertible#convertDimen(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public long convertCount(final Context context, final TokenSource source,
+    public long convertDimen(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
         long result = evalExpr(context, source, typesetter);
@@ -206,6 +206,52 @@ public class Dimenexpr extends AbstractCode
         }
     }
 
+    /**
+     * Evaluate an operand.
+     *
+     * @param context the interpreter context
+     * @param source the source for new tokens
+     * @param typesetter the typesetter
+     *
+     * @return the result
+     *
+     * @throws InterpreterException in case of an error
+     */
+    private long evalOperand(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
+
+        long val = evalTerminal(context, source, typesetter, source
+                .getNonSpace(context));
+
+        for (Token t = source.getNonSpace(context); t != null; t = source
+                .getNonSpace(context)) {
+
+            if (t.equals(Catcode.OTHER, '*')) {
+                val *= evalOperand(context, source, typesetter);
+            } else if (t.equals(Catcode.OTHER, '/')) {
+                long x = evalOperand(context, source, typesetter);
+                if (x == 0) {
+                    throw new ArithmeticOverflowException(getName());
+                }
+                val /= x;
+            } else {
+                source.push(t);
+                return val;
+            }
+        }
+        return val;
+    }
+
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param context
+     * @param source
+     * @param typesetter
+     * @param start
+     * @return
+     * @throws InterpreterException
+     */
     private long evalTerminal(final Context context, final TokenSource source,
             final Typesetter typesetter, final Token start)
             throws InterpreterException {
@@ -273,42 +319,6 @@ public class Dimenexpr extends AbstractCode
                 throw new MissingNumberException();
             }
         }
-    }
-
-    /**
-     * Evaluate an operand.
-     *
-     * @param context the interpreter context
-     * @param source the source for new tokens
-     * @param typesetter the typesetter
-     *
-     * @return the result
-     *
-     * @throws InterpreterException in case of an error
-     */
-    private long evalOperand(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws InterpreterException {
-
-        long val = evalTerminal(context, source, typesetter, source
-                .getNonSpace(context));
-
-        for (Token t = source.getNonSpace(context); t != null; t = source
-                .getNonSpace(context)) {
-
-            if (t.equals(Catcode.OTHER, '*')) {
-                val *= evalOperand(context, source, typesetter);
-            } else if (t.equals(Catcode.OTHER, '/')) {
-                long x = evalOperand(context, source, typesetter);
-                if (x == 0) {
-                    throw new ArithmeticOverflowException(getName());
-                }
-                val /= x;
-            } else {
-                source.push(t);
-                return val;
-            }
-        }
-        return val;
     }
 
     /**
