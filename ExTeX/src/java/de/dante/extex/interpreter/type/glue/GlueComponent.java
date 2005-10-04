@@ -60,7 +60,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.38 $
+ * @version $Revision: 1.39 $
  */
 public class GlueComponent implements Serializable, FixedGlueComponent {
 
@@ -826,7 +826,7 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
     public Tokens toToks(final TokenFactory factory) throws CatcodeException {
 
         Tokens toks = new Tokens();
-        toToks(toks, factory);
+        toToks(toks, factory, 'p', 't');
         return toks;
     }
 
@@ -840,6 +840,8 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
      *
      * @param toks the tokens to append to
      * @param factory the token factory to get the required tokens from
+     * @param c1 ...
+     * @param c2 ...
      *
      * @throws CatcodeException in case of an error
      *
@@ -848,8 +850,8 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
      * @see #toString()
      * @see #toString(StringBuffer)
      */
-    public void toToks(final Tokens toks, final TokenFactory factory)
-            throws CatcodeException {
+    public void toToks(final Tokens toks, final TokenFactory factory,
+            final char c1, final char c2) throws CatcodeException {
 
         long val = getValue();
 
@@ -894,9 +896,9 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
         } while (val > delta);
 
         if (order == 0) {
-            toks.add(factory.createToken(Catcode.LETTER, 'p',
+            toks.add(factory.createToken(Catcode.LETTER, c1,
                     Namespace.DEFAULT_NAMESPACE));
-            toks.add(factory.createToken(Catcode.LETTER, 't',
+            toks.add(factory.createToken(Catcode.LETTER, c2,
                     Namespace.DEFAULT_NAMESPACE));
         } else if (order > 0) {
             toks.add(factory.createToken(Catcode.LETTER, 'f',

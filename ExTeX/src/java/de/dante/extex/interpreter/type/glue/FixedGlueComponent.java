@@ -29,7 +29,7 @@ import de.dante.util.exception.GeneralException;
  * which do not modify the value.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public interface FixedGlueComponent {
 
@@ -114,6 +114,6 @@ public interface FixedGlueComponent {
      * @see #toString()
      * @see #toString(StringBuffer)
      */
-    void toToks(final Tokens toks, final TokenFactory factory)
+    void toToks(final Tokens toks, final TokenFactory factory, char c1, char c2)
             throws GeneralException;
 }
