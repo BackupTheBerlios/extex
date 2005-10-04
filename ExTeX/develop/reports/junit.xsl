@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!-- ====================================================================== -->
-<!--  $Id: junit.xsl,v 1.3 2005/09/26 15:59:47 gene Exp $                -->
+<!--  $Id: junit.xsl,v 1.4 2005/10/04 08:44:21 gene Exp $                   -->
 <!-- ====================================================================== -->
 
 <xsl:stylesheet version="1.0"
@@ -78,7 +78,6 @@
  <!-- ===================================================================== -->
  <!-- Template: testcase                                                    -->
  <!--                                                                       -->
-
   <xsl:template match="testcase">
    <a name="{@name}"/>
    <xsl:choose>
@@ -97,8 +96,11 @@
    Time: <xsl:value-of select="@time"/>
   </xsl:template>
 
-
+ <!-- ===================================================================== -->
+ <!-- Template: summary                                                     -->
+ <!--                                                                       -->
   <xsl:template match="summary">
+   <xsl:variable name="all" select="file"/>
    <html>
     <head>
      <title>ExTeX Test Overview</title>
@@ -107,33 +109,69 @@
     <body>
      <xsl:call-template name="header"/>
      <h1>Test Summary</h1>
-     <xsl:value-of select="@date"/>
+     <small><xsl:value-of select="@date"/></small>
+
+     <xsl:value-of select="$all"/>
+
+     <xsl:variable name="ok"><xsl:call-template name="sel">
+      <xsl:with-param name="from" select="$all"/>
+      <xsl:with-param name="c">A</xsl:with-param>
+     </xsl:call-template></xsl:variable>
+     : <xsl:value-of select="$ok"/>
+
+     Test cases: <xsl:value-of select="count($all)"/>
+
      <table>
-      <xsl:apply-templates select="file"/>
+      <xsl:apply-templates select="file" mode="ok"/>
      </table>
+
      <address>
-     © 2005 <a href="{$top}/t.html">The ExTeX Group</a>
+      © 2005 <a href="{$top}/t.html">The ExTeX Group</a>
      </address>
     </body>
    </html>
   </xsl:template>
 
-  <xsl:template match="file">
+
+  <xsl:template name="sel">
+   <xsl:param name="from"/>
+   <xsl:param name="c"/>
+_<xsl:value-of select="$from"/>_
+
+   <xsl:if test="contains($from, $c)">
+    <xsl:call-template name="sel">
+     <xsl:with-param name="from" select="substring-after($from,$c)"/>
+     <xsl:with-param name="char" select="$c"/>
+    </xsl:call-template>
+   </xsl:if>
+  </xsl:template>
+
+
+ <!-- ===================================================================== -->
+ <!-- Template: file                                                        -->
+ <!--                                                                       -->
+  <xsl:template match="file" mode="ok">
    <tr>
-     <xsl:apply-templates select="document(@name)/testsuite" mode="index"/>
+     <xsl:apply-templates select="document(@name)/testsuite" mode="ok"/>
    </tr>
   </xsl:template>
 
-  <xsl:template match="testsuite" mode="index">
+ <!-- ===================================================================== -->
+ <!-- Template: testsuite                                                   -->
+ <!--                                                                       -->
+  <xsl:template match="testsuite" mode="ok">
    <td style="font-size:66%">
     <a href="TEST-{@name}.html"><xsl:value-of select="@name"/></a>
    </td>
    <td>
-     <xsl:apply-templates select="testcase" mode="index"/>
+     <xsl:apply-templates select="testcase" mode="ok"/>
    </td>
   </xsl:template>
 
-  <xsl:template match="testcase" mode="index">
+ <!-- ===================================================================== -->
+ <!-- Template: testcase                                                    -->
+ <!--                                                                       -->
+  <xsl:template match="testcase" mode="ok">
    <xsl:choose>
     <xsl:when test="count(error) > 0">
      <img src="{$top}/image/crossed.gif" title="{@name}"/>
@@ -147,5 +185,24 @@
    </xsl:choose>
   </xsl:template>
 
-</xsl:stylesheet>
 
+ <!-- ===================================================================== -->
+ <!-- Template: file                                                        -->
+ <!--                                                                       -->
+  <xsl:template match="file">
+    <xsl:apply-templates select="document(@name)/testsuite/testcase"/>
+  </xsl:template>
+
+ <!-- ===================================================================== -->
+ <!-- Template: testcase                                                    -->
+ <!--                                                                       -->
+  <xsl:template match="testcase">
+   <xsl:choose>
+    <xsl:when test="count(error) > 0">A</xsl:when>
+    <xsl:when test="count(failure) > 0">B</xsl:when>
+    <xsl:otherwise>C</xsl:otherwise>
+   </xsl:choose>
+  </xsl:template>
+
+
+</xsl:stylesheet>
