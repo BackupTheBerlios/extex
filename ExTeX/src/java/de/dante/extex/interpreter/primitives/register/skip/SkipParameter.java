@@ -42,7 +42,7 @@ import de.dante.util.exception.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class SkipParameter extends SkipPrimitive {
 
@@ -71,7 +71,7 @@ public class SkipParameter extends SkipPrimitive {
      *
      * @throws GeneralException in case oif an error
      */
-    protected String getKey(final TokenSource source, final Context context) {
+    protected String getKey(final Context context, final TokenSource source) {
 
         if (Namespace.SUPPORT_NAMESPACE_SKIP) {
             return context.getNamespace() + "\b" + getName();

@@ -68,7 +68,7 @@ import de.dante.extex.typesetter.Typesetter;
  * "#<i>name</i>" or "skip#<i>name</i>".
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class Skipdef extends AbstractSkip {
 
@@ -100,7 +100,7 @@ public class Skipdef extends AbstractSkip {
 
         CodeToken cs = source.getControlSequence(context);
         source.getOptionalEquals(context);
-        String key = getKey(source, context);
+        String key = getKey(context, source);
         context.setCode(cs, new SkipParameter(key), prefix.isGlobal());
         prefix.clearGlobal();
     }

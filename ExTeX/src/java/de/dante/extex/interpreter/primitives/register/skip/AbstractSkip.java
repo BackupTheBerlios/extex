@@ -30,7 +30,7 @@ import de.dante.extex.interpreter.type.AbstractAssignment;
  * numbered skip registers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public abstract class AbstractSkip extends AbstractAssignment {
 
@@ -56,7 +56,7 @@ public abstract class AbstractSkip extends AbstractAssignment {
      * @throws InterpreterException in case that a derived class needs to
      *  throw an Exception this one is declared.
      */
-    protected String getKey(final TokenSource source, final Context context)
+    protected String getKey(final Context context, final TokenSource source)
             throws InterpreterException {
 
         String name = source.scanRegisterName(context, getName());
