@@ -53,7 +53,7 @@ import de.dante.extex.typesetter.type.node.KernNode;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Lastkern extends AbstractCode
         implements
@@ -101,21 +101,6 @@ public class Lastkern extends AbstractCode
         Node node = typesetter.getLastNode();
         return (node instanceof KernNode ? ((KernNode) node).getWidth()
                 .getValue() : 0);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.type.Code#execute(
-     *      de.dante.extex.interpreter.Flags,
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.typesetter.Typesetter)
-     */
-    public void execute(final Flags prefix, final Context context,
-            final TokenSource source, final Typesetter typesetter)
-            throws InterpreterException {
-
-        throw new CantUseInException(printableControlSequence(context),
-                typesetter.getMode().toString());
     }
 
     /**

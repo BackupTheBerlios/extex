@@ -62,7 +62,7 @@ import de.dante.util.exception.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Fontcharwd extends AbstractCode
         implements
@@ -108,21 +108,6 @@ public class Fontcharwd extends AbstractCode
             final Typesetter typesetter) throws InterpreterException {
 
         return get(context, source, typesetter).getValue();
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.type.Code#execute(
-     *      de.dante.extex.interpreter.Flags,
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.typesetter.Typesetter)
-     */
-    public void execute(final Flags prefix, final Context context,
-            final TokenSource source, final Typesetter typesetter)
-            throws InterpreterException {
-
-        throw new CantUseInException(printableControlSequence(context),
-                typesetter.getMode().toString());
     }
 
     /**

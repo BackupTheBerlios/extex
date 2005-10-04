@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the scanner routines.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ScanDimenTest extends ExTeXLauncher {
 
@@ -55,7 +55,7 @@ public class ScanDimenTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "4.0pt\n\n");
+                "4.0pt" + TERM);
     }
 
     /**
@@ -75,7 +75,7 @@ public class ScanDimenTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "4\n\n");
+                "4" + TERM);
     }
 
     /**
@@ -95,7 +95,7 @@ public class ScanDimenTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "45\n\n");
+                "45" + TERM);
     }
 
     /**
@@ -115,7 +115,7 @@ public class ScanDimenTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "456\n\n");
+                "456" + TERM);
     }
 
     /**
@@ -135,7 +135,7 @@ public class ScanDimenTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "26\n\n");
+                "26" + TERM);
     }
 
     /**
@@ -155,7 +155,7 @@ public class ScanDimenTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "15\n\n");
+                "15" + TERM);
     }
 
     /**
@@ -192,7 +192,7 @@ public class ScanDimenTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "-456\n\n");
+                "-456" + TERM);
     }
 
     /**
@@ -213,7 +213,7 @@ public class ScanDimenTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "456\n\n");
+                "456" + TERM);
     }
 
     /**
@@ -234,7 +234,7 @@ public class ScanDimenTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "-456\n\n");
+                "-456" + TERM);
     }
 
 
@@ -256,7 +256,7 @@ public class ScanDimenTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "456\n\n");
+                "456" + TERM);
     }
 
     /**
@@ -277,7 +277,7 @@ public class ScanDimenTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "456\n\n");
+                "456" + TERM);
     }
 
     /**
@@ -298,7 +298,7 @@ public class ScanDimenTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "456\n\n");
+                "456" + TERM);
     }
 
 
@@ -320,7 +320,7 @@ public class ScanDimenTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "-456\n\n");
+                "-456" + TERM);
     }
 
     /**
@@ -341,7 +341,7 @@ public class ScanDimenTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "-456\n\n");
+                "-456" + TERM);
     }
 
     /**
@@ -362,7 +362,7 @@ public class ScanDimenTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "456\n\n");
+                "456" + TERM);
     }
 
     /**
@@ -383,7 +383,7 @@ public class ScanDimenTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "456\n\n");
+                "456" + TERM);
     }
 
     /**
@@ -404,7 +404,7 @@ public class ScanDimenTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "-456\n\n");
+                "-456" + TERM);
     }
 
     /**
@@ -427,7 +427,7 @@ public class ScanDimenTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "-456\n\n");
+                "-456" + TERM);
     }
 
     /**
@@ -450,7 +450,7 @@ public class ScanDimenTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "456\n\n");
+                "456" + TERM);
     }
 
     /**
@@ -473,7 +473,7 @@ public class ScanDimenTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "-456\n\n");
+                "-456" + TERM);
     }
 
     /**
@@ -496,7 +496,7 @@ public class ScanDimenTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "456\n\n");
+                "456" + TERM);
     }
 
     /**
@@ -519,7 +519,7 @@ public class ScanDimenTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "1456\n\n");
+                "1456" + TERM);
     }
 
     /**
@@ -542,7 +542,7 @@ public class ScanDimenTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "-14516\n\n");
+                "-14516" + TERM);
     }
 
 }

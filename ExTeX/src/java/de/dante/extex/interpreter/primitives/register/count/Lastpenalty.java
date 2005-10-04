@@ -50,7 +50,7 @@ import de.dante.extex.typesetter.type.node.PenaltyNode;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class Lastpenalty extends AbstractCode
         implements
@@ -84,21 +84,6 @@ public class Lastpenalty extends AbstractCode
         return (node instanceof PenaltyNode
                 ? ((PenaltyNode) node).getPenalty()
                 : 0);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.type.Code#execute(
-     *      de.dante.extex.interpreter.Flags,
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.typesetter.Typesetter)
-     */
-    public void execute(final Flags prefix, final Context context,
-            final TokenSource source, final Typesetter typesetter)
-            throws InterpreterException {
-
-        throw new CantUseInException(printableControlSequence(context),
-                typesetter.getMode().toString());
     }
 
     /**

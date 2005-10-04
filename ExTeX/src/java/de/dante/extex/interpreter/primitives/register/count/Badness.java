@@ -58,7 +58,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class Badness extends AbstractCode implements CountConvertible, Theable {
 
@@ -89,21 +89,6 @@ public class Badness extends AbstractCode implements CountConvertible, Theable {
         String key = getName();
         Count c = context.getCount(key);
         return (c != null ? c.getValue() : 0);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.type.Code#execute(
-     *      de.dante.extex.interpreter.Flags,
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.typesetter.Typesetter)
-     */
-    public void execute(final Flags prefix, final Context context,
-            final TokenSource source, final Typesetter typesetter)
-            throws InterpreterException {
-
-        throw new CantUseInException(printableControlSequence(context),
-                typesetter.getMode().toString());
     }
 
     /**

@@ -58,7 +58,7 @@ import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Parshapeindent extends AbstractCode
         implements
@@ -103,21 +103,6 @@ public class Parshapeindent extends AbstractCode
         int n = (int) source.scanInteger(context, typesetter);
         ParagraphShape parshape = context.getParshape();
         return (parshape == null || n < 0 ? 0 : parshape.getIndent(n).getValue());
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.type.Code#execute(
-     *      de.dante.extex.interpreter.Flags,
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.typesetter.Typesetter)
-     */
-    public void execute(final Flags prefix, final Context context,
-            final TokenSource source, final Typesetter typesetter)
-            throws InterpreterException {
-
-        throw new CantUseInException(printableControlSequence(context),
-                typesetter.getMode().toString());
     }
 
     /**
