@@ -56,7 +56,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.51 $
+ * @version $Revision: 1.52 $
  */
 public class GroupImpl implements Group, Tokenizer, Serializable {
 
@@ -846,7 +846,7 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * Setter for the namespace.
+     * Setter for the name space.
      *
      * @param theNamespace the new value for the namespace
      * @param global the scoping of the assignment
