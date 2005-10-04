@@ -24,7 +24,7 @@ package de.dante.extex.interpreter;
  * This is needed to pass controlling information to primitives.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class FlagsImpl implements Flags {
 
@@ -251,6 +251,21 @@ public class FlagsImpl implements Flags {
     public void setProtected() {
 
         protectedP = true;
+    }
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+
+        StringBuffer sb = new StringBuffer();
+        sb.append(globalP ? 'G' : '_');
+        sb.append(longP ? 'L' : '_');
+        sb.append(outerP ? 'O' : '_');
+        sb.append(immediateP ? 'I' : '_');
+        sb.append(protectedP ? 'P' : '_');
+        sb.append(expandedP ? 'X' : '_');
+        return sb.toString();
     }
 
 }
