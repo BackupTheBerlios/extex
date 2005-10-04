@@ -46,7 +46,7 @@ import de.dante.util.exception.GeneralException;
  * running an instance of <logo>ExTeX</logo>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.32 $
+ * @version $Revision: 1.33 $
  */
 public class ExTeXLauncher extends TestCase {
 
@@ -54,7 +54,7 @@ public class ExTeXLauncher extends TestCase {
      * Inner class for the error handler.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.32 $
+     * @version $Revision: 1.33 $
      */
     private class EHandler implements ErrorHandler {
 
@@ -96,6 +96,13 @@ public class ExTeXLauncher extends TestCase {
 
         }
     }
+
+    /**
+     * The constant <tt>DEFINE_CATCODES</tt> contains the definition of the
+     * usual catcodes.
+     */
+    public static final String DEFINE_BRACES = "\\catcode`\\{=1 "
+            + "\\catcode`\\}=2 ";
 
     /**
      * The constant <tt>DEFINE_CATCODES</tt> contains the definition of the
