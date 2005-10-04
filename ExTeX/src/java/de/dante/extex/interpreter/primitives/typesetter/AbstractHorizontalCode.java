@@ -29,9 +29,9 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This an abstract base class for primitives in horizontal mode.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
-public class AbstractHorizontalCode extends AbstractCode {
+public abstract class AbstractHorizontalCode extends AbstractCode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.

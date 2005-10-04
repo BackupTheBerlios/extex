@@ -40,9 +40,9 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This is the abstract base class for alignments.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
-public class AbstractAlign extends AbstractCode {
+public abstract class AbstractAlign extends AbstractCode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
