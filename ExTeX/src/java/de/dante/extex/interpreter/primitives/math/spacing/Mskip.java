@@ -50,7 +50,7 @@ import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Mskip extends AbstractMathCode {
 
@@ -81,7 +81,7 @@ public class Mskip extends AbstractMathCode {
             throws InterpreterException {
 
         NoadConsumer nc = getListMaker(context, typesetter);
-        Muskip glue = new Muskip(context, source);
+        Muskip glue = new Muskip(context, source, typesetter);
         nc.add(glue);
     }
 
