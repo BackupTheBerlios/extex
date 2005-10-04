@@ -27,8 +27,13 @@ import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.GlueComponent;
+import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.token.Token;
+import de.dante.extex.scanner.type.token.TokenFactory;
+import de.dante.extex.typesetter.Typesetter;
+import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
@@ -36,7 +41,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * The actual length is a multiple of math units (mu).
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class Muskip implements Serializable {
 
@@ -61,15 +66,15 @@ public class Muskip implements Serializable {
         Token t = source.getToken(context);
         if (t == null) {
             throw new EofException("mu");
-        /*
-        } else if (t instanceof CodeToken) {
-            Code code = context.getCode((CodeToken) t);
-            if (code instanceof MuskipConvertible) {
-                return ((MuskipConvertible) code).convertMuskip(context,
-                        source, null);
-            }
-        }
-        */
+            /*
+             } else if (t instanceof CodeToken) {
+             Code code = context.getCode((CodeToken) t);
+             if (code instanceof MuskipConvertible) {
+             return ((MuskipConvertible) code).convertMuskip(context,
+             source, null);
+             }
+             }
+             */
         }
         long value = GlueComponent.scanFloat(context, source, t);
         if (!source.getKeyword(context, "mu")) {
@@ -115,11 +120,12 @@ public class Muskip implements Serializable {
      *
      * @param context the processor context
      * @param source the source for new tokens
+     * @param typesetter the typesetter
      *
      * @throws InterpreterException in case of an error
      */
-    public Muskip(final Context context, final TokenSource source)
-            throws InterpreterException {
+    public Muskip(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
 
         super();
         this.length = new Dimen(scanMu(context, source));
@@ -140,7 +146,7 @@ public class Muskip implements Serializable {
     public Muskip(final Dimen theLength) {
 
         super();
-        this.length = theLength;
+        this.length = theLength.copy();
     }
 
     /**
@@ -154,10 +160,39 @@ public class Muskip implements Serializable {
             final GlueComponent theStretch, final GlueComponent theShrink) {
 
         super();
-        this.length = theLength;
-        this.stretch = theStretch;
-        this.shrink = theShrink;
+        this.length = theLength.copy();
+        this.stretch = theStretch.copy();
+        this.shrink = theShrink.copy();
     }
+
+    /**
+     * Creates a new object.
+     *
+     * @param theLength the natural length
+     * @param theStretch the stretchability
+     * @param theShrink the shrinkability
+     */
+    public Muskip(final Muskip x) {
+
+        super();
+        this.length = x.length.copy();
+        this.stretch = x.stretch.copy();
+        this.shrink = x.shrink.copy();
+    }
+
+    /**
+     * Add another muglue to this one.
+     * The addition is performed independently on the components.
+     *
+     * @param ms the muglue to add
+     */
+    public void add(final Muskip ms) {
+
+        this.length.add(ms.getLength().copy());
+        this.stretch.add(ms.getStretch().copy());
+        this.shrink.add(ms.getShrink().copy());
+    }
+
     /**
      * Getter for length.
      *
@@ -167,6 +202,7 @@ public class Muskip implements Serializable {
 
         return this.length;
     }
+
     /**
      * Getter for shrink.
      *
@@ -176,6 +212,7 @@ public class Muskip implements Serializable {
 
         return this.shrink;
     }
+
     /**
      * Getter for stretch.
      *
@@ -248,4 +285,48 @@ public class Muskip implements Serializable {
             shrink.toString(sb, 'm', 'u');
         }
     }
+
+    /**
+     * Determine the printable representation of the object.
+     * The value returned is exactly the string which would be produced by
+     * <logo>TeX</logo> to print the muskip register.
+     *
+     * @param factory the factory to get the tokens from
+     *
+     * @return the string representation of this glue
+     *
+     * @throws GeneralException in case of an error
+     *
+     * @see "<logo>TeX</logo> &ndash; The Program [178,177]"
+     */
+    public Tokens toToks(final TokenFactory factory) throws GeneralException {
+
+        Tokens toks = new Tokens();
+        length.toToks(toks, factory, 'm', 'u');
+
+        if (stretch.getValue() != 0) {
+            toks.add(factory, " plus ");
+            stretch.toToks(toks, factory, 'm', 'u');
+        }
+        if (shrink.getValue() != 0) {
+            toks.add(factory, " minus ");
+            shrink.toToks(toks, factory, 'm', 'u');
+        }
+        return toks;
+    }
+
+    /**
+     * Multiply all components by an integer fraction.
+     *
+     * @param nom nominator
+     * @param denom denominator
+     */
+    public void multiply(final long nom, final long denom) {
+
+        this.length.multiply(nom, denom);
+        this.shrink.multiply(nom, denom);
+        this.stretch.multiply(nom, denom);
+    }
+
+
 }
