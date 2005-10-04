@@ -23,7 +23,13 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.exception.helping.ArithmeticOverflowException;
 import de.dante.extex.interpreter.type.Theable;
+import de.dante.extex.interpreter.type.arithmetic.Advanceable;
+import de.dante.extex.interpreter.type.arithmetic.Divideable;
+import de.dante.extex.interpreter.type.arithmetic.Multiplyable;
+import de.dante.extex.interpreter.type.count.Count;
+import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.glue.GlueConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
@@ -41,10 +47,13 @@ import de.dante.util.exception.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class SkipPrimitive extends AbstractSkip
         implements
+            Advanceable,
+            Multiplyable,
+            Divideable,
             GlueConvertible,
             Theable {
 
@@ -64,6 +73,25 @@ public class SkipPrimitive extends AbstractSkip
     }
 
     /**
+     * @see de.dante.extex.interpreter.type.arithmetic.Advanceable#advance(
+     *      de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public void advance(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws InterpreterException {
+
+        String key = getKey(context, source);
+        source.getKeyword(context, "by");
+        Glue g = new Glue(source, context, typesetter);
+        g.add(context.getGlue(key));
+        context.setGlue(key, g, prefix.isGlobal());
+        prefix.clearGlobal();
+    }
+
+    /**
      * @see de.dante.extex.interpreter.type.Code#execute(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
@@ -74,7 +102,7 @@ public class SkipPrimitive extends AbstractSkip
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String key = getKey(source, context);
+        String key = getKey(context, source);
         source.getOptionalEquals(context);
         Glue g = new Glue(source, context, typesetter);
         context.setGlue(key, g, prefix.isGlobal());
@@ -90,8 +118,51 @@ public class SkipPrimitive extends AbstractSkip
     public Glue convertGlue(Context context, TokenSource source,
             Typesetter typesetter) throws InterpreterException {
 
-        String key = getKey(source, context);
+        String key = getKey(context, source);
         return context.getGlue(key);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.arithmetic.Divideable#divide(
+     *      de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource)
+     */
+    public void divide(final Flags prefix, final Context context,
+            final TokenSource source) throws InterpreterException {
+
+        String key = getKey(context, source);
+        source.getKeyword(context, "by");
+        long value = Count.scanCount(context, source, null);
+
+        if (value == 0) {
+            throw new ArithmeticOverflowException(
+                    printableControlSequence(context));
+        }
+
+        Glue g = new Glue(context.getGlue(key));
+        g.multiplyAll(1, value);
+        context.setGlue(key, g, prefix.isGlobal());
+        prefix.clearGlobal();
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.arithmetic.Multiplyable#multiply(
+     *      de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource)
+     */
+    public void multiply(final Flags prefix, final Context context,
+            final TokenSource source) throws InterpreterException {
+
+        String key = getKey(context, source);
+        source.getKeyword(context, "by");
+        long value = Count.scanCount(context, source, null);
+
+        Glue g = new Glue(context.getGlue(key));
+        g.multiplyAll(value, 1);
+        context.setGlue(key, g, prefix.isGlobal());
+        prefix.clearGlobal();
     }
 
     /**
@@ -102,7 +173,7 @@ public class SkipPrimitive extends AbstractSkip
     public Tokens the(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        String key = getKey(source, context);
+        String key = getKey(context, source);
         try {
             return context.getGlue(key).toToks(context.getTokenFactory());
         } catch (InterpreterException e) {
