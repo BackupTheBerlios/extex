@@ -41,7 +41,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class Glue implements Serializable, FixedGlue {
 
@@ -295,6 +295,19 @@ public class Glue implements Serializable, FixedGlue {
     }
 
     /**
+     * Multiply all components by an integer fraction.
+     *
+     * @param nom nominator
+     * @param denom denominator
+     */
+    public void multiplyAll(final long nom, final long denom) {
+
+        this.length.multiply(nom, denom);
+        this.shrink.multiply(nom, denom);
+        this.stretch.multiply(nom, denom);
+    }
+
+    /**
      * Multiply the shrink component by an integer fraction.
      * <p>
      *  <i>shrink</i> = <i>shrink</i> * <i>nom</i> / <i>denom</i>
@@ -305,7 +318,7 @@ public class Glue implements Serializable, FixedGlue {
      */
     public void multiplyShrink(final long nom, final long denom) {
 
-        this.length.multiply(nom, denom);
+        this.shrink.multiply(nom, denom);
     }
 
     /**
@@ -319,7 +332,7 @@ public class Glue implements Serializable, FixedGlue {
      */
     public void multiplyStretch(final long nom, final long denom) {
 
-        this.length.multiply(nom, denom);
+        this.stretch.multiply(nom, denom);
     }
 
     /**
@@ -386,11 +399,11 @@ public class Glue implements Serializable, FixedGlue {
 
         if (stretch.getValue() != 0) {
             toks.add(factory, " plus ");
-            stretch.toToks(toks, factory);
+            stretch.toToks(toks, factory, 'p', 't');
         }
         if (shrink.getValue() != 0) {
             toks.add(factory, " minus ");
-            shrink.toToks(toks, factory);
+            shrink.toToks(toks, factory, 'p', 't');
         }
         return toks;
     }
