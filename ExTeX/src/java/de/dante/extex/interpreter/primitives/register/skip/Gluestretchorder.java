@@ -25,6 +25,7 @@ import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.count.CountConvertible;
+import de.dante.extex.interpreter.type.dimen.DimenConvertible;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
@@ -59,11 +60,12 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Gluestretchorder extends AbstractCode
         implements
-            CountConvertible,
+        CountConvertible,
+        DimenConvertible,
             Theable {
 
     /**
@@ -88,6 +90,20 @@ public class Gluestretchorder extends AbstractCode
      *      de.dante.extex.typesetter.Typesetter)
      */
     public long convertCount(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
+
+        Glue glue = new Glue(source, context, typesetter);
+        int order = glue.getStretch().getOrder();
+        return (order < 2 ? order : order - 1);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.dimen.DimenConvertible#convertDimen(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public long convertDimen(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
         Glue glue = new Glue(source, context, typesetter);

@@ -19,12 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.register.skip;
 
+import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.exception.helping.CantUseInException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.count.CountConvertible;
+import de.dante.extex.interpreter.type.dimen.DimenConvertible;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
@@ -59,11 +62,12 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Glueshrinkorder extends AbstractCode
         implements
             CountConvertible,
+            DimenConvertible,
             Theable {
 
     /**
@@ -96,6 +100,20 @@ public class Glueshrinkorder extends AbstractCode
     }
 
     /**
+     * @see de.dante.extex.interpreter.type.dimen.DimenConvertible#convertDimen(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public long convertDimen(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
+
+        Glue glue = new Glue(source, context, typesetter);
+        int order = glue.getShrink().getOrder();
+        return (order < 2 ? order : order - 1);
+    }
+
+    /**
      * @see de.dante.extex.interpreter.type.Theable#the(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
@@ -107,4 +125,5 @@ public class Glueshrinkorder extends AbstractCode
         return new Tokens(context, Long.toString(convertCount(context, source,
                 typesetter)));
     }
+
 }
