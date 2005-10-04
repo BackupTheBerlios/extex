@@ -44,9 +44,9 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * to and from their <logo>TeX</logo> encoding as numbers to abstract math code.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
-public class AbstractTeXDelimter extends AbstractMathCode {
+public abstract class AbstractTeXDelimter extends AbstractMathCode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.

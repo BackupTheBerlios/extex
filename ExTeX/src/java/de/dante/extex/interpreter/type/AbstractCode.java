@@ -26,6 +26,7 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.exception.helping.CantUseInException;
 import de.dante.extex.scanner.type.token.ControlSequenceToken;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
@@ -40,9 +41,9 @@ import de.dante.util.framework.i18n.Localizer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
-public class AbstractCode implements Code, Localizable, Serializable {
+public abstract class AbstractCode implements Code, Localizable, Serializable {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
@@ -95,7 +96,10 @@ public class AbstractCode implements Code, Localizable, Serializable {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
+        throw new CantUseInException(printableControlSequence(context),
+                typesetter.getMode().toString());
     }
+
 
     /**
      * Getter for localizer.
