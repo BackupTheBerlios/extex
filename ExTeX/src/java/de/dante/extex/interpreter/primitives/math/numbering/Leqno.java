@@ -51,7 +51,7 @@ import de.dante.extex.typesetter.listMaker.math.EqConsumer;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Leqno extends AbstractMathCode {
 
@@ -79,22 +79,23 @@ public class Leqno extends AbstractMathCode {
      */
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws CantUseInException, InterpreterException {
+            throws CantUseInException,
+                InterpreterException {
 
         ListMaker lm = typesetter.getListMaker();
-        if (!(lm instanceof EqConsumer)) {
-            throw new CantUseInException(printableControlSequence(context), //
-                    typesetter.getMode().toString());
-        }
 
         try {
 
-            ((EqConsumer) lm).switchToNumber(true);
+            if (lm instanceof EqConsumer) {
+                ((EqConsumer) lm).switchToNumber(true);
+                return;
+            }
 
         } catch (CantUseInException e) {
-            throw new CantUseInException(printableControlSequence(context), //
-                    typesetter.getMode().toString());
+            // fall trough to exception
         }
+        throw new CantUseInException(printableControlSequence(context), //
+                typesetter.getMode().toString());
     }
 
 }
