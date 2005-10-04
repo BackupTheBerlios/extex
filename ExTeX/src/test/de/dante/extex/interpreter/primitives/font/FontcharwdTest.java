@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\fontcharwd</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class FontcharwdTest extends ExTeXLauncher {
 
@@ -101,7 +101,7 @@ public class FontcharwdTest extends ExTeXLauncher {
                 "\\font\\cmr cmr10 "
                 + "\\the\\fontcharwd\\cmr `.\\end",
                 //--- output message ---
-                "2.77779pt\n\n");
+                "2.77779pt" + TERM);
     }
 
     /**
@@ -118,7 +118,7 @@ public class FontcharwdTest extends ExTeXLauncher {
                 "\\font\\cmr cmr10 "
                 + "\\the\\fontcharwd\\cmr `g\\end",
                 //--- output message ---
-                "5.00002pt\n\n");
+                "5.00002pt" + TERM);
     }
 
     /**
@@ -135,7 +135,7 @@ public class FontcharwdTest extends ExTeXLauncher {
                 "\\font\\cmr cmr10 "
                 + "\\the\\fontcharwd\\cmr `+\\end",
                 //--- output message ---
-                "7.7778pt\n\n");
+                "7.7778pt" + TERM);
     }
 
     /**
@@ -152,7 +152,7 @@ public class FontcharwdTest extends ExTeXLauncher {
                 "\\font\\cmr cmr10 "
                 + "\\dimen0=\\fontcharwd\\cmr `+\\the\\dimen0\\end",
                 //--- output message ---
-                "7.7778pt\n\n");
+                "7.7778pt" + TERM);
     }
 
     /**
@@ -169,7 +169,7 @@ public class FontcharwdTest extends ExTeXLauncher {
                 "\\font\\cmr cmr10 "
                 + "\\count0=\\fontcharwd\\cmr `+\\the\\count0\\end",
                 //--- output message ---
-                "509726\n\n");
+                "509726" + TERM);
     }
 
 }

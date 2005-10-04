@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\scrollmode</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ScrollmodeTest extends NoFlagsPrimitiveTester {
 
@@ -62,7 +62,7 @@ public class ScrollmodeTest extends NoFlagsPrimitiveTester {
                 "\\scrollmode"
                 + " \\the\\interactionmode \\end",
                 //--- output channel ---
-                "2\n\n");
+                "2" + TERM);
     }
 
     /**
@@ -78,7 +78,7 @@ public class ScrollmodeTest extends NoFlagsPrimitiveTester {
                 "\\errorstopmode\\begingroup\\scrollmode\\endgroup"
                 + " \\the\\interactionmode \\end",
                 //--- output channel ---
-                "2\n\n");
+                "2" + TERM);
     }
 
 }

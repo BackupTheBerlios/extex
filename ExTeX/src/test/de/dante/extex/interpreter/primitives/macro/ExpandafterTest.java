@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\expandafter</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ExpandafterTest extends ExTeXLauncher {
 
@@ -51,7 +51,7 @@ public class ExpandafterTest extends ExTeXLauncher {
         runCode(//--- input code ---
                 DEFINE_CATCODES + "\\expandafter ab" + "\\end",
                 //--- output message ---
-                "ba\n\n");
+                "ba" + TERM);
     }
 
 }

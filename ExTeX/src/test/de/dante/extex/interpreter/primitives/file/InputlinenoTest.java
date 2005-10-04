@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\inputlineno</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class InputlinenoTest extends ExTeXLauncher {
 
@@ -61,7 +61,7 @@ public class InputlinenoTest extends ExTeXLauncher {
         runCode(//--- input code ---
                 "\\the\\inputlineno ",
                 //--- output channel ---
-                "1\n\n");
+                "1" + TERM);
     }
 
 }

@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\meaning</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class MeaningTest extends NoFlagsPrimitiveTester {
 
@@ -51,7 +51,7 @@ public class MeaningTest extends NoFlagsPrimitiveTester {
         runCode(//--- input code ---
                 "\\meaning a",
                 //--- output channel ---
-                "the letter a\n\n");
+                "the letter a" + TERM);
     }
 
     /**
@@ -66,7 +66,7 @@ public class MeaningTest extends NoFlagsPrimitiveTester {
         runCode(//--- input code ---
                 "\\meaning 1",
                 //--- output channel ---
-                "the character 1\n\n");
+                "the character 1" + TERM);
     }
 
     /**
@@ -82,7 +82,7 @@ public class MeaningTest extends NoFlagsPrimitiveTester {
         runCode(//--- input code ---
                 "\\catcode`{=1" + "\\meaning {",
                 //--- output channel ---
-                "begin-group character {\n\n");
+                "begin-group character {" + TERM);
     }
 
     /**
@@ -98,7 +98,7 @@ public class MeaningTest extends NoFlagsPrimitiveTester {
         runCode(//--- input code ---
                 "\\catcode`}=2" + "\\meaning }",
                 //--- output channel ---
-                "end-group character }\n\n");
+                "end-group character }" + TERM);
     }
 
     /**
@@ -114,7 +114,7 @@ public class MeaningTest extends NoFlagsPrimitiveTester {
         runCode(//--- input code ---
                 "\\catcode`$=3" + "\\meaning $",
                 //--- output channel ---
-                "math shift character $\n\n");
+                "math shift character $" + TERM);
     }
 
     /**
@@ -130,7 +130,7 @@ public class MeaningTest extends NoFlagsPrimitiveTester {
         runCode(//--- input code ---
                 "\\catcode`&=4" + "\\meaning &",
                 //--- output channel ---
-                "alignment tab character &\n\n");
+                "alignment tab character &" + TERM);
     }
 
     /**
@@ -146,7 +146,7 @@ public class MeaningTest extends NoFlagsPrimitiveTester {
         runCode(//--- input code ---
                 "\\catcode`#=6" + "\\meaning #",
                 //--- output channel ---
-                "macro parameter character #\n\n");
+                "macro parameter character #" + TERM);
     }
 
     /**
@@ -162,7 +162,7 @@ public class MeaningTest extends NoFlagsPrimitiveTester {
         runCode(//--- input code ---
                 "\\catcode`^=7" + "\\meaning ^",
                 //--- output channel ---
-                "superscript character ^\n\n");
+                "superscript character ^" + TERM);
     }
 
     /**
@@ -178,7 +178,7 @@ public class MeaningTest extends NoFlagsPrimitiveTester {
         runCode(//--- input code ---
                 "\\catcode`_=8" + "\\meaning _",
                 //--- output channel ---
-                "subscript character _\n\n");
+                "subscript character _" + TERM);
     }
 
     /**
@@ -194,7 +194,7 @@ public class MeaningTest extends NoFlagsPrimitiveTester {
         runCode(//--- input code ---
                 "\\catcode`~=13" + "\\meaning ~",
                 //--- output channel ---
-                "~=undefined\n\n");
+                "~=undefined" + TERM);
     }
 
     /**
@@ -210,7 +210,7 @@ public class MeaningTest extends NoFlagsPrimitiveTester {
         runCode(//--- input code ---
                 DEFINE_CATCODES + "\\catcode`~=13" + "\\def~{}" + "\\meaning ~",
                 //--- output channel ---
-                "~=macro:\n ->\n\n");
+                "~=macro:\n ->" + TERM);
     }
 
     /**
@@ -226,7 +226,7 @@ public class MeaningTest extends NoFlagsPrimitiveTester {
         runCode(//--- input code ---
                 DEFINE_CATCODES + "\\catcode`~=13" + "\\def~{abc}" + "\\meaning ~",
                 //--- output channel ---
-                "~=macro:\n ->abc\n\n");
+                "~=macro:\n ->abc" + TERM);
     }
 
     /**
@@ -242,7 +242,7 @@ public class MeaningTest extends NoFlagsPrimitiveTester {
         runCode(//--- input code ---
                 "\\meaning \\undef ",
                 //--- output channel ---
-                "\\undef=undefined\n\n");
+                "\\undef=undefined" + TERM);
     }
 
     /**
@@ -257,7 +257,7 @@ public class MeaningTest extends NoFlagsPrimitiveTester {
         runCode(//--- input code ---
                 "\\meaning \\relax ",
                 //--- output channel ---
-                "\\relax=\\relax\n\n");
+                "\\relax=\\relax" + TERM);
     }
 
     /**
@@ -272,7 +272,7 @@ public class MeaningTest extends NoFlagsPrimitiveTester {
         runCode(//--- input code ---
                 "\\meaning \\meaning ",
                 //--- output channel ---
-                "\\meaning=\\meaning\n\n");
+                "\\meaning=\\meaning" + TERM);
     }
 
     /**
@@ -288,7 +288,7 @@ public class MeaningTest extends NoFlagsPrimitiveTester {
         runCode(//--- input code ---
                 DEFINE_CATCODES + "\\def\\x{abc}" + "\\meaning \\x ",
                 //--- output channel ---
-                "\\x=macro:\n ->abc\n\n");
+                "\\x=macro:\n ->abc" + TERM);
     }
 
     /**
@@ -304,7 +304,7 @@ public class MeaningTest extends NoFlagsPrimitiveTester {
         runCode(//--- input code ---
                 DEFINE_CATCODES + "\\def\\x#1{ab#1cd}" + "\\meaning \\x ",
                 //--- output channel ---
-                "\\x=macro:\n#1 ->ab#1cd\n\n");
+                "\\x=macro:\n#1 ->ab#1cd" + TERM);
     }
 
     /**
@@ -320,7 +320,7 @@ public class MeaningTest extends NoFlagsPrimitiveTester {
         runCode(//--- input code ---
                 DEFINE_CATCODES + "\\def\\x A#1B#2{ab#1cd}" + "\\meaning \\x ",
                 //--- output channel ---
-                "\\x=macro:\nA#1B#2 ->ab#1cd\n\n");
+                "\\x=macro:\nA#1B#2 ->ab#1cd" + TERM);
     }
 
     /**
@@ -336,7 +336,7 @@ public class MeaningTest extends NoFlagsPrimitiveTester {
         runCode(//--- input code ---
                 "\\meaning \\day ",
                 //--- output channel ---
-                "\\day=\\day\n\n");
+                "\\day=\\day" + TERM);
     }
 
 

@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\csname</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class CsnameTest extends ExTeXLauncher {
 
@@ -57,7 +57,7 @@ public class CsnameTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "-a-b-c-\n\n");
+                "-a-b-c-" + TERM);
     }
 
     /**
@@ -78,7 +78,7 @@ public class CsnameTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "-a-b-c-\n\n");
+                "-a-b-c-" + TERM);
     }
 
     /**
@@ -99,7 +99,7 @@ public class CsnameTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "-a-b-c-\n\n");
+                "-a-b-c-" + TERM);
     }
 
     /**

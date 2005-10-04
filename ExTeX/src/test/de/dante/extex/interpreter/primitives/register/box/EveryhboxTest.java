@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\everyhbox</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class EveryhboxTest extends ExTeXLauncher {
 
@@ -84,7 +84,7 @@ public class EveryhboxTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "37.05002pt \n\n"); // checked wih TeX
+                "37.05002pt " + TERM); // checked wih TeX
     }
 
     /**
@@ -112,7 +112,7 @@ public class EveryhboxTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "55.57503pt \n\n"); // checked wih TeX
+                "55.57503pt " + TERM); // checked wih TeX
     }
 
 }

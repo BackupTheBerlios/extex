@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\numexpr</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class NumexprTest extends ExTeXLauncher {
 
@@ -137,7 +137,7 @@ public class NumexprTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "3\n\n");
+                "3" + TERM);
     }
 
     /**
@@ -155,7 +155,7 @@ public class NumexprTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "6\n\n");
+                "6" + TERM);
     }
 
     /**
@@ -173,7 +173,7 @@ public class NumexprTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "3\n\n");
+                "3" + TERM);
     }
 
     /**
@@ -191,7 +191,7 @@ public class NumexprTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "3\n\n");
+                "3" + TERM);
     }
 
     /**
@@ -209,7 +209,7 @@ public class NumexprTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "7\n\n");
+                "7" + TERM);
     }
 
     /**
@@ -227,7 +227,7 @@ public class NumexprTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "7\n\n");
+                "7" + TERM);
     }
 
     /**
@@ -245,7 +245,7 @@ public class NumexprTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "12\n\n");
+                "12" + TERM);
     }
 
 
@@ -264,7 +264,7 @@ public class NumexprTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "12\n\n");
+                "12" + TERM);
     }
 
     /**
@@ -282,7 +282,7 @@ public class NumexprTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "-5\n\n");
+                "-5" + TERM);
     }
 
     /**
@@ -300,7 +300,7 @@ public class NumexprTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "5\n\n");
+                "5" + TERM);
     }
 
     /**
@@ -318,7 +318,7 @@ public class NumexprTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "-8\n\n");
+                "-8" + TERM);
     }
 
 
@@ -337,7 +337,7 @@ public class NumexprTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "8\n\n");
+                "8" + TERM);
     }
 
     /**
@@ -355,7 +355,7 @@ public class NumexprTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "6\n\n");
+                "6" + TERM);
     }
 
     /**
@@ -374,7 +374,7 @@ public class NumexprTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "-6\n\n");
+                "-6" + TERM);
     }
 
     /**
@@ -393,7 +393,7 @@ public class NumexprTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "6\n\n");
+                "6" + TERM);
     }
 
 
@@ -413,7 +413,7 @@ public class NumexprTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "1\n\n");
+                "1" + TERM);
     }
 
     /**
@@ -432,7 +432,7 @@ public class NumexprTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "5\n\n");
+                "5" + TERM);
     }
 
     /**
@@ -450,7 +450,7 @@ public class NumexprTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "6\n\n");
+                "6" + TERM);
     }
 
 }

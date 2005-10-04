@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\begingroup</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class BegingroupTest extends NoFlagsPrimitiveTester {
 
@@ -80,7 +80,7 @@ public class BegingroupTest extends NoFlagsPrimitiveTester {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "abc\n\n");
+                "abc" + TERM);
     }
 
     /**
@@ -97,7 +97,7 @@ public class BegingroupTest extends NoFlagsPrimitiveTester {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "123\n\n");
+                "123" + TERM);
     }
 
     /**
@@ -118,7 +118,7 @@ public class BegingroupTest extends NoFlagsPrimitiveTester {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "456-123\n\n");
+                "456-123" + TERM);
     }
 
     /**
@@ -141,6 +141,6 @@ public class BegingroupTest extends NoFlagsPrimitiveTester {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "456-789-456-123\n\n");
+                "456-789-456-123" + TERM);
     }
 }

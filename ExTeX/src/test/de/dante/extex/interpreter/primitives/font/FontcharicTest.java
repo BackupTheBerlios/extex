@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\fontcharic</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class FontcharicTest extends ExTeXLauncher {
 
@@ -101,7 +101,7 @@ public class FontcharicTest extends ExTeXLauncher {
                 "\\font\\cmsl cmsl10 "
                 + "\\the\\fontcharic\\cmsl `.\\end",
                 //--- output message ---
-                "0.0pt\n\n");
+                "0.0pt" + TERM);
     }
 
     /**
@@ -118,7 +118,7 @@ public class FontcharicTest extends ExTeXLauncher {
                 "\\font\\cmsl cmsl10 "
                 + "\\the\\fontcharic\\cmsl `l\\end",
                 //--- output message ---
-                "0.39354pt\n\n");
+                "0.39354pt" + TERM);
     }
 
     /**
@@ -135,7 +135,7 @@ public class FontcharicTest extends ExTeXLauncher {
                 "\\font\\cmsl cmsl10 "
                 + "\\the\\fontcharic\\cmsl `x\\end",
                 //--- output message ---
-                "0.68982pt\n\n");
+                "0.68982pt" + TERM);
     }
 
     /**
@@ -152,7 +152,7 @@ public class FontcharicTest extends ExTeXLauncher {
                 "\\font\\cmsl cmsl10 "
                 + "\\dimen0=\\fontcharic\\cmsl `+\\the\\dimen0\\end",
                 //--- output message ---
-                "0.1389pt\n\n");
+                "0.1389pt" + TERM);
     }
 
     /**
@@ -169,7 +169,7 @@ public class FontcharicTest extends ExTeXLauncher {
                 "\\font\\cmsl cmsl10 "
                 + "\\count0=\\fontcharic\\cmsl `+\\the\\count0\\end",
                 //--- output message ---
-                "9103\n\n");
+                "9103" + TERM);
     }
 
 }

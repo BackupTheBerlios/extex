@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\fontchardp</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class FontchardpTest extends ExTeXLauncher {
 
@@ -101,7 +101,7 @@ public class FontchardpTest extends ExTeXLauncher {
                 "\\font\\cmr cmr10 "
                 + "\\the\\fontchardp\\cmr `a\\end",
                 //--- output message ---
-                "0.0pt\n\n");
+                "0.0pt" + TERM);
     }
 
     /**
@@ -118,7 +118,7 @@ public class FontchardpTest extends ExTeXLauncher {
                 "\\font\\cmr cmr10 "
                 + "\\the\\fontchardp\\cmr `g\\end",
                 //--- output message ---
-                "1.94444pt\n\n");
+                "1.94444pt" + TERM);
     }
 
     /**
@@ -135,7 +135,7 @@ public class FontchardpTest extends ExTeXLauncher {
                 "\\font\\cmr cmr10 "
                 + "\\the\\fontchardp\\cmr `+\\end",
                 //--- output message ---
-                "0.83333pt\n\n");
+                "0.83333pt" + TERM);
     }
 
     /**
@@ -152,7 +152,7 @@ public class FontchardpTest extends ExTeXLauncher {
                 "\\font\\cmr cmr10 "
                 + "\\dimen0\\fontchardp\\cmr `+\\the\\dimen0\\end",
                 //--- output message ---
-                "0.83333pt\n\n");
+                "0.83333pt" + TERM);
     }
 
     /**
@@ -169,7 +169,7 @@ public class FontchardpTest extends ExTeXLauncher {
                 "\\font\\cmr cmr10 "
                 + "\\count0=\\fontchardp\\cmr `+\\the\\count0\\end",
                 //--- output message ---
-                "54613\n\n");
+                "54613" + TERM);
     }
 
 }

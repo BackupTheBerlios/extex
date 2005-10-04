@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\batchmode</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class BatchmodeTest extends NoFlagsPrimitiveTester {
 
@@ -62,7 +62,7 @@ public class BatchmodeTest extends NoFlagsPrimitiveTester {
                 "\\batchmode"
                 + " \\the\\interactionmode \\end",
                 //--- output channel ---
-                "0\n\n");
+                "0" + TERM);
     }
 
     /**
@@ -78,7 +78,7 @@ public class BatchmodeTest extends NoFlagsPrimitiveTester {
                 "\\errorstopmode\\begingroup\\batchmode\\endgroup"
                 + " \\the\\interactionmode \\end",
                 //--- output channel ---
-                "0\n\n");
+                "0" + TERM);
     }
 
 }

@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsButGlobalPrimitiveTester;
  * This is a test suite for the primitive <tt>\divide</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class DivideTest extends NoFlagsButGlobalPrimitiveTester {
 
@@ -146,7 +146,7 @@ public class DivideTest extends NoFlagsButGlobalPrimitiveTester {
                 + "\\divide \\count1 8 "
                 + "\\the\\count1 \\end",
                 //--- output channel ---
-                "2\n\n");
+                "2" + TERM);
     }
 
     /**
@@ -164,7 +164,7 @@ public class DivideTest extends NoFlagsButGlobalPrimitiveTester {
                 + "\\begingroup\\global\\divide \\count1 8 \\endgroup "
                 + "\\the\\count1 \\end",
                 //--- output channel ---
-                "2\n\n");
+                "2" + TERM);
     }
 
     /**
@@ -182,7 +182,7 @@ public class DivideTest extends NoFlagsButGlobalPrimitiveTester {
                 + "\\divide \\dimen1 16 "
                 + "\\the\\dimen1 \\end",
                 //--- output channel ---
-                "0.5pt\n\n");
+                "0.5pt" + TERM);
     }
 
     /**
@@ -200,7 +200,7 @@ public class DivideTest extends NoFlagsButGlobalPrimitiveTester {
                 + "\\begingroup\\global\\divide \\dimen1 16 \\endgroup "
                 + "\\the\\dimen1 \\end",
                 //--- output channel ---
-                "0.5pt\n\n");
+                "0.5pt" + TERM);
     }
 
     /**

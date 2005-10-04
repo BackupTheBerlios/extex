@@ -27,7 +27,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\jobname</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class JobnameTest extends NoFlagsPrimitiveTester {
 
@@ -58,7 +58,7 @@ public class JobnameTest extends NoFlagsPrimitiveTester {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "texput\n\n");
+                "texput" + TERM);
     }
 
     /**
@@ -82,6 +82,6 @@ public class JobnameTest extends NoFlagsPrimitiveTester {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "job\n\n");
+                "job" + TERM);
     }
 }

@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\hyphenchar</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class HyphencharTest extends NoFlagsPrimitiveTester {
 
@@ -123,7 +123,7 @@ public class HyphencharTest extends NoFlagsPrimitiveTester {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "45\n\n");
+                "45" + TERM);
     }
 
     /**
@@ -143,7 +143,7 @@ public class HyphencharTest extends NoFlagsPrimitiveTester {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "123\n\n");
+                "123" + TERM);
     }
 
     /**
@@ -163,7 +163,7 @@ public class HyphencharTest extends NoFlagsPrimitiveTester {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "-1\n\n");
+                "-1" + TERM);
     }
 
     /**
@@ -183,7 +183,7 @@ public class HyphencharTest extends NoFlagsPrimitiveTester {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "123\n\n");
+                "123" + TERM);
     }
 
     /**
@@ -203,7 +203,7 @@ public class HyphencharTest extends NoFlagsPrimitiveTester {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "45\n\n");
+                "45" + TERM);
     }
 
     /**
@@ -224,7 +224,7 @@ public class HyphencharTest extends NoFlagsPrimitiveTester {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "123\n\n");
+                "123" + TERM);
     }
 
     /**
@@ -245,7 +245,7 @@ public class HyphencharTest extends NoFlagsPrimitiveTester {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "-1\n\n");
+                "-1" + TERM);
     }
 
     /**
@@ -266,7 +266,7 @@ public class HyphencharTest extends NoFlagsPrimitiveTester {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "123\n\n");
+                "123" + TERM);
     }
 
 }

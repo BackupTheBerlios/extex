@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\fontcharht</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class FontcharhtTest extends ExTeXLauncher {
 
@@ -101,7 +101,7 @@ public class FontcharhtTest extends ExTeXLauncher {
                 "\\font\\cmr cmr10 "
                 + "\\the\\fontcharht\\cmr `.\\end",
                 //--- output message ---
-                "1.05554pt\n\n");
+                "1.05554pt" + TERM);
     }
 
     /**
@@ -118,7 +118,7 @@ public class FontcharhtTest extends ExTeXLauncher {
                 "\\font\\cmr cmr10 "
                 + "\\the\\fontcharht\\cmr `g\\end",
                 //--- output message ---
-                "4.30554pt\n\n");
+                "4.30554pt" + TERM);
     }
 
     /**
@@ -135,7 +135,7 @@ public class FontcharhtTest extends ExTeXLauncher {
                 "\\font\\cmr cmr10 "
                 + "\\the\\fontcharht\\cmr `+\\end",
                 //--- output message ---
-                "5.83333pt\n\n");
+                "5.83333pt" + TERM);
     }
 
     /**
@@ -152,7 +152,7 @@ public class FontcharhtTest extends ExTeXLauncher {
                 "\\font\\cmr cmr10 "
                 + "\\dimen0=\\fontcharht\\cmr `+\\the\\dimen0\\end",
                 //--- output message ---
-                "5.83333pt\n\n");
+                "5.83333pt" + TERM);
     }
 
     /**
@@ -169,7 +169,7 @@ public class FontcharhtTest extends ExTeXLauncher {
                 "\\font\\cmr cmr10 "
                 + "\\count0=\\fontcharht\\cmr `+\\the\\count0\\end",
                 //--- output message ---
-                "382293\n\n");
+                "382293" + TERM);
     }
 
 }

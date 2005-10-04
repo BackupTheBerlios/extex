@@ -26,7 +26,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\aftergroup</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class AftergroupTest extends NoFlagsPrimitiveTester {
 
@@ -65,7 +65,7 @@ public class AftergroupTest extends NoFlagsPrimitiveTester {
                 + "\\catcode`}=2"
                 + "a{b\\aftergroup xd}e",
                 //--- output channel ---
-                "abdxe\n\n");
+                "abdxe" + TERM);
     }
 
     /**
@@ -84,7 +84,7 @@ public class AftergroupTest extends NoFlagsPrimitiveTester {
                 + "\\def\\x{ttt}"
                 + "a{b\\aftergroup\\x d}e",
                 //--- output channel ---
-                "abdttte\n\n");
+                "abdttte" + TERM);
     }
 
 

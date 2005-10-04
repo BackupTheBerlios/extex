@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\errorstopmode</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ErrorstopmodeTest extends NoFlagsPrimitiveTester {
 
@@ -62,7 +62,7 @@ public class ErrorstopmodeTest extends NoFlagsPrimitiveTester {
                 "\\errorstopmode"
                 + " \\the\\interactionmode \\end",
                 //--- output channel ---
-                "3\n\n");
+                "3" + TERM);
     }
 
     /**
@@ -78,7 +78,7 @@ public class ErrorstopmodeTest extends NoFlagsPrimitiveTester {
                 "\\batchmode\\begingroup\\errorstopmode\\endgroup"
                 + " \\the\\interactionmode \\end",
                 //--- output channel ---
-                "3\n\n");
+                "3" + TERM);
     }
 
 }

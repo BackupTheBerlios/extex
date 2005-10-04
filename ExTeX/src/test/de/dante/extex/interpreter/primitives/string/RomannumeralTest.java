@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\romannumeral</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class RomannumeralTest extends NoFlagsPrimitiveTester {
 
@@ -57,7 +57,7 @@ public class RomannumeralTest extends NoFlagsPrimitiveTester {
      */
     public void testCount1() throws Exception {
 
-        runCode("\\count0=2 \\romannumeral\\count0 \\end", "", "ii\n\n");
+        runCode("\\count0=2 \\romannumeral\\count0 \\end", "", "ii" + TERM);
     }
 
     /**
@@ -90,7 +90,7 @@ public class RomannumeralTest extends NoFlagsPrimitiveTester {
      */
     public void test1() throws Exception {
 
-        runCode("\\romannumeral 1 \\end", "", "i\n\n");
+        runCode("\\romannumeral 1 \\end", "", "i" + TERM);
     }
 
     /**
@@ -101,7 +101,7 @@ public class RomannumeralTest extends NoFlagsPrimitiveTester {
      */
     public void test2() throws Exception {
 
-        runCode("\\romannumeral 2 \\end", "", "ii\n\n");
+        runCode("\\romannumeral 2 \\end", "", "ii" + TERM);
     }
 
     /**
@@ -112,7 +112,7 @@ public class RomannumeralTest extends NoFlagsPrimitiveTester {
      */
     public void test3() throws Exception {
 
-        runCode("\\romannumeral 3 \\end", "", "iii\n\n");
+        runCode("\\romannumeral 3 \\end", "", "iii" + TERM);
     }
 
     /**
@@ -123,7 +123,7 @@ public class RomannumeralTest extends NoFlagsPrimitiveTester {
      */
     public void test4() throws Exception {
 
-        runCode("\\romannumeral 4 \\end", "", "iv\n\n");
+        runCode("\\romannumeral 4 \\end", "", "iv" + TERM);
     }
 
     /**
@@ -134,7 +134,7 @@ public class RomannumeralTest extends NoFlagsPrimitiveTester {
      */
     public void test5() throws Exception {
 
-        runCode("\\romannumeral 5 \\end", "", "v\n\n");
+        runCode("\\romannumeral 5 \\end", "", "v" + TERM);
     }
 
     /**
@@ -145,7 +145,7 @@ public class RomannumeralTest extends NoFlagsPrimitiveTester {
      */
     public void test6() throws Exception {
 
-        runCode("\\romannumeral 6 \\end", "", "vi\n\n");
+        runCode("\\romannumeral 6 \\end", "", "vi" + TERM);
     }
 
     /**
@@ -156,7 +156,7 @@ public class RomannumeralTest extends NoFlagsPrimitiveTester {
      */
     public void test7() throws Exception {
 
-        runCode("\\romannumeral 7 \\end", "", "vii\n\n");
+        runCode("\\romannumeral 7 \\end", "", "vii" + TERM);
     }
 
     /**
@@ -167,7 +167,7 @@ public class RomannumeralTest extends NoFlagsPrimitiveTester {
      */
     public void test8() throws Exception {
 
-        runCode("\\romannumeral 8 \\end", "", "viii\n\n");
+        runCode("\\romannumeral 8 \\end", "", "viii" + TERM);
     }
 
     /**
@@ -178,7 +178,7 @@ public class RomannumeralTest extends NoFlagsPrimitiveTester {
      */
     public void test9() throws Exception {
 
-        runCode("\\romannumeral 9 \\end", "", "ix\n\n");
+        runCode("\\romannumeral 9 \\end", "", "ix" + TERM);
     }
 
     /**
@@ -189,7 +189,7 @@ public class RomannumeralTest extends NoFlagsPrimitiveTester {
      */
     public void test10() throws Exception {
 
-        runCode("\\romannumeral 10 \\end", "", "x\n\n");
+        runCode("\\romannumeral 10 \\end", "", "x" + TERM);
     }
 
     /**
@@ -200,7 +200,7 @@ public class RomannumeralTest extends NoFlagsPrimitiveTester {
      */
     public void test11() throws Exception {
 
-        runCode("\\romannumeral 11 \\end", "", "xi\n\n");
+        runCode("\\romannumeral 11 \\end", "", "xi" + TERM);
     }
 
     /**
@@ -211,7 +211,7 @@ public class RomannumeralTest extends NoFlagsPrimitiveTester {
      */
     public void test12() throws Exception {
 
-        runCode("\\romannumeral 12 \\end", "", "xii\n\n");
+        runCode("\\romannumeral 12 \\end", "", "xii" + TERM);
     }
 
     /**
@@ -222,7 +222,7 @@ public class RomannumeralTest extends NoFlagsPrimitiveTester {
      */
     public void test13() throws Exception {
 
-        runCode("\\romannumeral 13 \\end", "", "xiii\n\n");
+        runCode("\\romannumeral 13 \\end", "", "xiii" + TERM);
     }
 
     /**
@@ -233,7 +233,7 @@ public class RomannumeralTest extends NoFlagsPrimitiveTester {
      */
     public void test14() throws Exception {
 
-        runCode("\\romannumeral 14 \\end", "", "xiv\n\n");
+        runCode("\\romannumeral 14 \\end", "", "xiv" + TERM);
     }
 
     /**
@@ -244,7 +244,7 @@ public class RomannumeralTest extends NoFlagsPrimitiveTester {
      */
     public void test15() throws Exception {
 
-        runCode("\\romannumeral 15 \\end", "", "xv\n\n");
+        runCode("\\romannumeral 15 \\end", "", "xv" + TERM);
     }
 
     /**
@@ -255,7 +255,7 @@ public class RomannumeralTest extends NoFlagsPrimitiveTester {
      */
     public void test49() throws Exception {
 
-        runCode("\\romannumeral 49 \\end", "", "xlix\n\n");
+        runCode("\\romannumeral 49 \\end", "", "xlix" + TERM);
     }
 
     /**
@@ -266,7 +266,7 @@ public class RomannumeralTest extends NoFlagsPrimitiveTester {
      */
     public void test50() throws Exception {
 
-        runCode("\\romannumeral 50 \\end", "", "l\n\n");
+        runCode("\\romannumeral 50 \\end", "", "l" + TERM);
     }
 
     /**
@@ -277,7 +277,7 @@ public class RomannumeralTest extends NoFlagsPrimitiveTester {
      */
     public void test51() throws Exception {
 
-        runCode("\\romannumeral 51 \\end", "", "li\n\n");
+        runCode("\\romannumeral 51 \\end", "", "li" + TERM);
     }
 
     /**
@@ -288,7 +288,7 @@ public class RomannumeralTest extends NoFlagsPrimitiveTester {
      */
     public void test99() throws Exception {
 
-        runCode("\\romannumeral 99 \\end", "", "xcix\n\n");
+        runCode("\\romannumeral 99 \\end", "", "xcix" + TERM);
     }
 
     /**
@@ -299,7 +299,7 @@ public class RomannumeralTest extends NoFlagsPrimitiveTester {
      */
     public void test100() throws Exception {
 
-        runCode("\\romannumeral 100 \\end", "", "c\n\n");
+        runCode("\\romannumeral 100 \\end", "", "c" + TERM);
     }
 
     /**
@@ -310,7 +310,7 @@ public class RomannumeralTest extends NoFlagsPrimitiveTester {
      */
     public void test101() throws Exception {
 
-        runCode("\\romannumeral 101 \\end", "", "ci\n\n");
+        runCode("\\romannumeral 101 \\end", "", "ci" + TERM);
     }
 
     /**
@@ -321,7 +321,7 @@ public class RomannumeralTest extends NoFlagsPrimitiveTester {
      */
     public void test499() throws Exception {
 
-        runCode("\\romannumeral 499 \\end", "", "cdxcix\n\n");
+        runCode("\\romannumeral 499 \\end", "", "cdxcix" + TERM);
     }
 
     /**
@@ -332,7 +332,7 @@ public class RomannumeralTest extends NoFlagsPrimitiveTester {
      */
     public void test500() throws Exception {
 
-        runCode("\\romannumeral 500 \\end", "", "d\n\n");
+        runCode("\\romannumeral 500 \\end", "", "d" + TERM);
     }
 
     /**
@@ -343,7 +343,7 @@ public class RomannumeralTest extends NoFlagsPrimitiveTester {
      */
     public void test501() throws Exception {
 
-        runCode("\\romannumeral 501 \\end", "", "di\n\n");
+        runCode("\\romannumeral 501 \\end", "", "di" + TERM);
     }
 
     /**
@@ -354,7 +354,7 @@ public class RomannumeralTest extends NoFlagsPrimitiveTester {
      */
     public void test999() throws Exception {
 
-        runCode("\\romannumeral 999 \\end", "", "cmxcix\n\n");
+        runCode("\\romannumeral 999 \\end", "", "cmxcix" + TERM);
     }
 
     /**
@@ -365,7 +365,7 @@ public class RomannumeralTest extends NoFlagsPrimitiveTester {
      */
     public void test1000() throws Exception {
 
-        runCode("\\romannumeral 1000 \\end", "", "m\n\n");
+        runCode("\\romannumeral 1000 \\end", "", "m" + TERM);
     }
 
     /**
@@ -376,7 +376,7 @@ public class RomannumeralTest extends NoFlagsPrimitiveTester {
      */
     public void test1001() throws Exception {
 
-        runCode("\\romannumeral 1001 \\end", "", "mi\n\n");
+        runCode("\\romannumeral 1001 \\end", "", "mi" + TERM);
     }
 
     /**
@@ -387,7 +387,7 @@ public class RomannumeralTest extends NoFlagsPrimitiveTester {
      */
     public void test1999() throws Exception {
 
-        runCode("\\romannumeral 1999 \\end", "", "mcmxcix\n\n");
+        runCode("\\romannumeral 1999 \\end", "", "mcmxcix" + TERM);
     }
 
     /**
@@ -398,7 +398,7 @@ public class RomannumeralTest extends NoFlagsPrimitiveTester {
      */
     public void test2000() throws Exception {
 
-        runCode("\\romannumeral 2000 \\end", "", "mm\n\n");
+        runCode("\\romannumeral 2000 \\end", "", "mm" + TERM);
     }
 
     /**
@@ -409,7 +409,7 @@ public class RomannumeralTest extends NoFlagsPrimitiveTester {
      */
     public void test3001() throws Exception {
 
-        runCode("\\romannumeral 3001 \\end", "", "mmmi\n\n");
+        runCode("\\romannumeral 3001 \\end", "", "mmmi" + TERM);
     }
 
     /**
@@ -420,7 +420,7 @@ public class RomannumeralTest extends NoFlagsPrimitiveTester {
      */
     public void test4001() throws Exception {
 
-        runCode("\\romannumeral 4001 \\end", "", "mmmmi\n\n");
+        runCode("\\romannumeral 4001 \\end", "", "mmmmi" + TERM);
     }
 
     /**
@@ -431,7 +431,7 @@ public class RomannumeralTest extends NoFlagsPrimitiveTester {
      */
     public void test5001() throws Exception {
 
-        runCode("\\romannumeral 5001 \\end", "", "mmmmmi\n\n");
+        runCode("\\romannumeral 5001 \\end", "", "mmmmmi" + TERM);
     }
 
     /**
@@ -442,6 +442,6 @@ public class RomannumeralTest extends NoFlagsPrimitiveTester {
      */
     public void test6001() throws Exception {
 
-        runCode("\\romannumeral 6001 \\end", "", "mmmmmmi\n\n");
+        runCode("\\romannumeral 6001 \\end", "", "mmmmmmi" + TERM);
     }
 }

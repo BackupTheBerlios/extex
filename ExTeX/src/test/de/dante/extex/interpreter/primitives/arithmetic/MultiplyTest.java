@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsButGlobalPrimitiveTester;
  * This is a test suite for the primitive <tt>\multiply</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class MultiplyTest extends NoFlagsButGlobalPrimitiveTester {
 
@@ -128,7 +128,7 @@ public class MultiplyTest extends NoFlagsButGlobalPrimitiveTester {
                 +"\\multiply \\count1 16 "
                 + "\\the\\count1 \\end",
                 //--- output channel ---
-                "128\n\n");
+                "128" + TERM);
     }
 
     /**
@@ -146,7 +146,7 @@ public class MultiplyTest extends NoFlagsButGlobalPrimitiveTester {
                 +"\\begingroup\\global\\multiply \\count1 16 \\endgroup "
                 + "\\the\\count1 \\end",
                 //--- output channel ---
-                "128\n\n");
+                "128" + TERM);
     }
 
     /**
@@ -164,7 +164,7 @@ public class MultiplyTest extends NoFlagsButGlobalPrimitiveTester {
                 + "\\multiply \\dimen1 16 "
                 + "\\the\\dimen1 \\end",
                 //--- output channel ---
-                "128.0pt\n\n");
+                "128.0pt" + TERM);
     }
 
     /**
@@ -182,7 +182,7 @@ public class MultiplyTest extends NoFlagsButGlobalPrimitiveTester {
                 + "\\begingroup\\global\\multiply \\dimen1 16 \\endgroup "
                 + "\\the\\dimen1 \\end",
                 //--- output channel ---
-                "128.0pt\n\n");
+                "128.0pt" + TERM);
     }
 
 }

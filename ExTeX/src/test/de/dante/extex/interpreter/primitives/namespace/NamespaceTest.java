@@ -27,7 +27,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\namespace</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class NamespaceTest extends ExTeXLauncher {
 
@@ -64,7 +64,7 @@ public class NamespaceTest extends ExTeXLauncher {
                 ":\\the\\namespace:"
                 + "\\end ",
                 //--- output channel ---
-                "::\n\n");
+                "::" + TERM);
     }
 
     /**
@@ -82,7 +82,7 @@ public class NamespaceTest extends ExTeXLauncher {
                 + ":\\the\\namespace:"
                 + "\\end ",
                 //--- output channel ---
-                ":TeX:\n\n");
+                ":TeX:" + TERM);
     }
 
     /**
@@ -103,7 +103,7 @@ public class NamespaceTest extends ExTeXLauncher {
                 + ".\\x."
                 + "\\end ",
                 //--- output channel ---
-                ".b.abc:.a.\n\n");
+                ".b.abc:.a." + TERM);
     }
 
 }

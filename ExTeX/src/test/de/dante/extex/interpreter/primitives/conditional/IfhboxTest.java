@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\ifhbox</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class IfhboxTest extends ExTeXLauncher {
 
@@ -64,7 +64,7 @@ public class IfhboxTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "b\n\n");
+                "b" + TERM);
     }
 
     /**
@@ -82,7 +82,7 @@ public class IfhboxTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "xx\n\n");
+                "xx" + TERM);
     }
 
     /**
@@ -103,7 +103,7 @@ public class IfhboxTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "a\n\n");
+                "a" + TERM);
     }
 
     /**
@@ -124,7 +124,7 @@ public class IfhboxTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "b\n\n");
+                "b" + TERM);
     }
 
 

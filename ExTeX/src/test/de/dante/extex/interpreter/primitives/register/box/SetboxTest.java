@@ -26,7 +26,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\setbox</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class SetboxTest extends ExTeXLauncher {
 
@@ -121,7 +121,7 @@ public class SetboxTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "0 \n\n");
+                "0 " + TERM);
     }
 
 }

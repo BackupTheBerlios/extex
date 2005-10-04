@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\chardef</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class ChardefTest extends ExTeXLauncher {
 
@@ -133,7 +133,7 @@ public class ChardefTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "65\n\n");
+                "65" + TERM);
     }
 
     /**
@@ -151,7 +151,7 @@ public class ChardefTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "65\n\n");
+                "65" + TERM);
     }
 
 

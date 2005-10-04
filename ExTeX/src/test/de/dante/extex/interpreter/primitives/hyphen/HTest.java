@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the hyphenation.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class HTest extends ExTeXLauncher {
 
@@ -55,7 +55,7 @@ public class HTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "a xxxabcyyy\n\n");
+                "a xxxabcyyy" + TERM);
     }
 
     /**
@@ -74,7 +74,7 @@ public class HTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "a xxxabcyyy\n\n");
+                "a xxxabcyyy" + TERM);
     }
 
 }

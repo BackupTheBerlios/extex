@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\dimenexpr</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class DimenexprTest extends ExTeXLauncher {
 
@@ -152,7 +152,7 @@ public class DimenexprTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "3.0pt\n\n");
+                "3.0pt" + TERM);
     }
 
     /**
@@ -169,7 +169,7 @@ public class DimenexprTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "6.0pt\n\n");
+                "6.0pt" + TERM);
     }
 
     /**
@@ -186,7 +186,7 @@ public class DimenexprTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "3.0pt\n\n");
+                "3.0pt" + TERM);
     }
 
     /**
@@ -203,7 +203,7 @@ public class DimenexprTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "3.0pt\n\n");
+                "3.0pt" + TERM);
     }
 
     /**
@@ -220,7 +220,7 @@ public class DimenexprTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "7.0pt\n\n");
+                "7.0pt" + TERM);
     }
 
     /**
@@ -237,7 +237,7 @@ public class DimenexprTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "7.0pt\n\n");
+                "7.0pt" + TERM);
     }
 
     /**
@@ -254,7 +254,7 @@ public class DimenexprTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "12.0pt\n\n");
+                "12.0pt" + TERM);
     }
 
     /**
@@ -271,7 +271,7 @@ public class DimenexprTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "12.0pt\n\n");
+                "12.0pt" + TERM);
     }
 
     /**
@@ -288,7 +288,7 @@ public class DimenexprTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "-5.0pt\n\n");
+                "-5.0pt" + TERM);
     }
 
     /**
@@ -305,7 +305,7 @@ public class DimenexprTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "5.0pt\n\n");
+                "5.0pt" + TERM);
     }
 
     /**
@@ -322,7 +322,7 @@ public class DimenexprTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "-8.0pt\n\n");
+                "-8.0pt" + TERM);
     }
 
     /**
@@ -339,7 +339,7 @@ public class DimenexprTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "8.0pt\n\n");
+                "8.0pt" + TERM);
     }
 
     /**
@@ -356,7 +356,7 @@ public class DimenexprTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "6.0pt\n\n");
+                "6.0pt" + TERM);
     }
 
     /**
@@ -374,7 +374,7 @@ public class DimenexprTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "-6.0pt\n\n");
+                "-6.0pt" + TERM);
     }
 
     /**
@@ -392,7 +392,7 @@ public class DimenexprTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "6.0pt\n\n");
+                "6.0pt" + TERM);
     }
 
     /**
@@ -410,7 +410,7 @@ public class DimenexprTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "1.0pt\n\n");
+                "1.0pt" + TERM);
     }
 
     /**
@@ -428,7 +428,7 @@ public class DimenexprTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "5.0pt\n\n");
+                "5.0pt" + TERM);
     }
 
     /**
@@ -446,7 +446,7 @@ public class DimenexprTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "6.0pt\n\n");
+                "6.0pt" + TERM);
     }
 
 }

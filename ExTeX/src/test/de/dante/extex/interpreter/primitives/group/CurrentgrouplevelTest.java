@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\currentgrouplevel</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class CurrentgrouplevelTest extends ExTeXLauncher {
 
@@ -63,7 +63,7 @@ public class CurrentgrouplevelTest extends ExTeXLauncher {
                 + "\\catcode`}=2 "
                 + "\\the\\currentgrouplevel",
                 //--- log message ---
-                "0\n\n",
+                "0" + TERM,
                 //--- output channel ---
                 "");
     }

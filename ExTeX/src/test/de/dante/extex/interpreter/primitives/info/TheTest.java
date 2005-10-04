@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\the</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TheTest extends NoFlagsPrimitiveTester {
 
@@ -81,7 +81,7 @@ public class TheTest extends NoFlagsPrimitiveTester {
         runCode(//--- input code ---
                 "\\the \\count1 ",
                 //--- output channel ---
-                "0\n\n");
+                "0" + TERM);
     }
 
     /**
@@ -96,7 +96,7 @@ public class TheTest extends NoFlagsPrimitiveTester {
         runCode(//--- input code ---
                 "\\count1=123 \\the \\count1 ",
                 //--- output channel ---
-                "123\n\n");
+                "123" + TERM);
     }
 
 

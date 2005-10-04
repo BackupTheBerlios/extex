@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\interactionmode</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class InteractionmodeTest extends ExTeXLauncher {
     
@@ -62,7 +62,7 @@ public class InteractionmodeTest extends ExTeXLauncher {
                 "\\batchmode\\count0=\\interactionmode"
                 + " \\the\\count0 \\end",
                 //--- output channel ---
-                "0\n\n");
+                "0" + TERM);
     }
 
     /**
@@ -78,7 +78,7 @@ public class InteractionmodeTest extends ExTeXLauncher {
                 "\\nonstopmode\\count0=\\interactionmode"
                 + " \\the\\count0 \\end",
                 //--- output channel ---
-                "1\n\n");
+                "1" + TERM);
     }
 
     /**
@@ -94,7 +94,7 @@ public class InteractionmodeTest extends ExTeXLauncher {
                 "\\scrollmode\\count0=\\interactionmode"
                 + " \\the\\count0 \\end",
                 //--- output channel ---
-                "2\n\n");
+                "2" + TERM);
     }
 
     /**
@@ -110,7 +110,7 @@ public class InteractionmodeTest extends ExTeXLauncher {
                 "\\errorstopmode\\count0=\\interactionmode"
                 + " \\the\\count0 \\end",
                 //--- output channel ---
-                "3\n\n");
+                "3" + TERM);
     }
 
     /**
@@ -127,7 +127,7 @@ public class InteractionmodeTest extends ExTeXLauncher {
                 "\\interactionmode=3 \\count0=\\interactionmode"
                 + " \\the\\count0 \\end",
                 //--- output channel ---
-                "3\n\n");
+                "3" + TERM);
     }
 
     /**
@@ -144,7 +144,7 @@ public class InteractionmodeTest extends ExTeXLauncher {
                 "\\interactionmode 3 \\count0=\\interactionmode"
                 + " \\the\\count0 \\end",
                 //--- output channel ---
-                "3\n\n");
+                "3" + TERM);
     }
 
     /**
