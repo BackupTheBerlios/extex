@@ -32,7 +32,7 @@ import de.dante.extex.typesetter.Typesetter;
  * to produce an exception. Thus the object is in fact immutable.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class ImmutableDimen extends Dimen implements Serializable {
 
@@ -100,7 +100,7 @@ public class ImmutableDimen extends Dimen implements Serializable {
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
-    public void set(final Context context, final TokenSource source, Typesetter typesetter)
+    public void set(final Context context, final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
         throw new RuntimeException("Unable to set an immutable object");

@@ -62,7 +62,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.73 $
+ * @version $Revision: 1.74 $
  */
 public class TypesetterImpl
         implements
@@ -570,7 +570,7 @@ public class TypesetterImpl
      *      Typesetter, de.dante.extex.scanner.type.Token)
      */
     public void superscriptMark(final Context context,
-            final TokenSource source, Typesetter typesetter, final Token t)
+            final TokenSource source, final Typesetter typesetter, final Token t)
             throws TypesetterException {
 
         listMaker.superscriptMark(context, source, typesetter, t);

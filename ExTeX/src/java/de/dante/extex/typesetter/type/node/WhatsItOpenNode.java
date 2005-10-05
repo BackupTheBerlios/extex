@@ -28,7 +28,7 @@ import de.dante.util.exception.GeneralException;
  * This WhatsIt node opens an out file on shipping.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class WhatsItOpenNode extends WhatsItNode {
 
@@ -70,7 +70,7 @@ public class WhatsItOpenNode extends WhatsItNode {
      * @see de.dante.extex.typesetter.type.Node#atShipping(
      *      de.dante.extex.interpreter.context.Context, Typesetter)
      */
-    public void atShipping(final Context context, Typesetter typesetter) throws GeneralException {
+    public void atShipping(final Context context, final Typesetter typesetter) throws GeneralException {
 
         file.open();
         context.setOutFile(key, file, false);
