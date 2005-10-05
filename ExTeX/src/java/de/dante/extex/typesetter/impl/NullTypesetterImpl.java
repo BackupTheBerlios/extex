@@ -52,7 +52,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class NullTypesetterImpl implements Typesetter {
 
@@ -63,11 +63,14 @@ public class NullTypesetterImpl implements Typesetter {
 
         super();
     }
+
     /**
      * @see de.dante.extex.typesetter.ListMaker#add(
      *     de.dante.extex.typesetter.type.Node)
      */
-    public void add(final Node c) throws TypesetterException, ConfigurationException {
+    public void add(final Node c)
+            throws TypesetterException,
+                ConfigurationException {
 
         // nothing to do
     }
@@ -87,7 +90,9 @@ public class NullTypesetterImpl implements Typesetter {
      *     de.dante.extex.interpreter.type.count.Count)
      */
     public void addSpace(final TypesettingContext typesettingContext,
-            final Count spacefactor) throws TypesetterException, ConfigurationException {
+            final Count spacefactor)
+            throws TypesetterException,
+                ConfigurationException {
 
         // nothing to do
     }
@@ -110,7 +115,8 @@ public class NullTypesetterImpl implements Typesetter {
      * @see de.dante.extex.typesetter.Typesetter#complete(TypesetterOptions)
      */
     public NodeList complete(final TypesetterOptions context)
-            throws TypesetterException, ConfigurationException {
+            throws TypesetterException,
+                ConfigurationException {
 
         return null;
     }
@@ -337,29 +343,36 @@ public class NullTypesetterImpl implements Typesetter {
     }
 
     /**
-     * @see de.dante.extex.typesetter.Typesetter#subscriptMark(
+     * @see de.dante.extex.typesetter.ListMaker#subscriptMark(
      *      de.dante.extex.interpreter.context.Context,
-     *      TokenSource, Typesetter, de.dante.extex.scanner.type.Token)
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter,
+     *      de.dante.extex.scanner.type.token.Token)
      */
     public void subscriptMark(final Context context, final TokenSource source,
-            Typesetter typesetter, final Token t) throws TypesetterException {
+            final Typesetter typesetter, final Token t)
+            throws TypesetterException {
 
     }
 
     /**
      * @see de.dante.extex.typesetter.Typesetter#superscriptMark(
      *      de.dante.extex.interpreter.context.Context,
-     *      TokenSource, Typesetter, de.dante.extex.scanner.type.Token)
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter,
+     *      de.dante.extex.scanner.type.token.Token)
      */
     public void superscriptMark(final Context context,
-            final TokenSource source, Typesetter typesetter, final Token t) throws TypesetterException {
+            final TokenSource source, final Typesetter typesetter, final Token t)
+            throws TypesetterException {
 
     }
 
     /**
      * @see de.dante.extex.typesetter.Typesetter#tab(
      *      de.dante.extex.interpreter.context.Context,
-     *      TokenSource, de.dante.extex.scanner.type.Token)
+     *      de.dante.extex.interpreter.context.TypesettingContext,
+     *      de.dante.extex.scanner.type.Token)
      */
     public void tab(final Context context, final TokenSource source,
             final Token t) throws TypesetterException, ConfigurationException {

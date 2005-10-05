@@ -30,7 +30,7 @@ import de.dante.extex.typesetter.Typesetter;
  * color.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface ColorConvertible {
 
@@ -48,7 +48,7 @@ public interface ColorConvertible {
      *
      * @throws InterpreterException in case of an error
      */
-    Color convertColor(Context context, TokenSource source, Typesetter typesetter)
-            throws InterpreterException;
+    Color convertColor(Context context, TokenSource source,
+            Typesetter typesetter) throws InterpreterException;
 
 }

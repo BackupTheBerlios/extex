@@ -30,7 +30,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface DimenConvertible {
 
@@ -41,6 +41,7 @@ public interface DimenConvertible {
      * this case the additional arguments Context and TokenSource can be used.
      *
      * The return value is the length in scaled points.
+     *
      * @param context the interpreter context
      * @param source the source for new tokens
      * @param typesetter the typesetter to use for conversion

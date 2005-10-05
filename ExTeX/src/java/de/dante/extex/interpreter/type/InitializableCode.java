@@ -29,12 +29,13 @@ import de.dante.extex.typesetter.Typesetter;
  * This is a life-cycle feature.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public interface InitializableCode {
 
     /**
      * Initialize the Code with some value coming from a String.
+     *
      * @param context the interpreter context
      * @param source the source of information for the initialization
      * @param typesetter the typesetter

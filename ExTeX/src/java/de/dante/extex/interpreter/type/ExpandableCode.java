@@ -16,6 +16,7 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.type;
 
 import de.dante.extex.interpreter.Flags;
@@ -28,7 +29,7 @@ import de.dante.extex.typesetter.Typesetter;
  * This interface describes the feature of being expandable code.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface ExpandableCode {
 
@@ -46,7 +47,7 @@ public interface ExpandableCode {
      *
      * @throws InterpreterException in case of an error
      */
-    void expand(Flags prefix, Context context,
-        TokenSource source, Typesetter typesetter) throws InterpreterException;
+    void expand(Flags prefix, Context context, TokenSource source,
+            Typesetter typesetter) throws InterpreterException;
 
 }
