@@ -111,7 +111,7 @@ import de.dante.util.UnicodeChar;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Delcode extends AbstractAssignment
         implements
@@ -143,7 +143,8 @@ public class Delcode extends AbstractAssignment
      *      de.dante.extex.interpreter.TokenSource)
      */
     public void advance(final Flags prefix, final Context context,
-            final TokenSource source, Typesetter typesetter) throws InterpreterException {
+            final TokenSource source, final Typesetter typesetter)
+            throws InterpreterException {
 
         UnicodeChar charCode = source.scanCharacterCode(context, getName());
         source.getKeyword(context, "by");
@@ -168,7 +169,8 @@ public class Delcode extends AbstractAssignment
 
         UnicodeChar charCode = source.scanCharacterCode(context, getName());
         source.getOptionalEquals(context);
-        MathDelimiter del = AbstractTeXDelimter.parseDelimiter(context, source, getName());
+        MathDelimiter del = AbstractTeXDelimter.parseDelimiter(context, source,
+                getName());
         context.setDelcode(charCode, del, prefix.isGlobal());
         prefix.clearGlobal();
     }
@@ -225,7 +227,8 @@ public class Delcode extends AbstractAssignment
      *      de.dante.extex.interpreter.TokenSource)
      */
     public void divide(final Flags prefix, final Context context,
-            final TokenSource source) throws InterpreterException {
+            final TokenSource source, final Typesetter typesetter)
+            throws InterpreterException {
 
         UnicodeChar charCode = source.scanCharacterCode(context, getName());
         source.getKeyword(context, "by");
@@ -248,7 +251,8 @@ public class Delcode extends AbstractAssignment
      *      de.dante.extex.interpreter.TokenSource)
      */
     public void multiply(final Flags prefix, final Context context,
-            final TokenSource source) throws InterpreterException {
+            final TokenSource source, final Typesetter typesetter)
+            throws InterpreterException {
 
         UnicodeChar charCode = source.scanCharacterCode(context, getName());
         source.getKeyword(context, "by");

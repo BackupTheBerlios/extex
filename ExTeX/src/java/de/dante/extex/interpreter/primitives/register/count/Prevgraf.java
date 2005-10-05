@@ -50,7 +50,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Prevgraf extends CountPrimitive {
 
@@ -86,7 +86,8 @@ public class Prevgraf extends CountPrimitive {
      *      de.dante.extex.interpreter.TokenSource)
      */
     public void advance(final Flags prefix, final Context context,
-            final TokenSource source, Typesetter typesetter) throws InterpreterException {
+            final TokenSource source, final Typesetter typesetter)
+            throws InterpreterException {
 
         String key = getKey(context, source);
         source.getKeyword(context, "by");
@@ -132,7 +133,8 @@ public class Prevgraf extends CountPrimitive {
      *      de.dante.extex.interpreter.TokenSource)
      */
     public void divide(final Flags prefix, final Context context,
-            final TokenSource source) throws InterpreterException {
+            final TokenSource source, final Typesetter typesetter)
+            throws InterpreterException {
 
         String key = getKey(context, source);
         source.getKeyword(context, "by");
@@ -160,7 +162,8 @@ public class Prevgraf extends CountPrimitive {
      *      de.dante.extex.interpreter.TokenSource)
      */
     public void multiply(final Flags prefix, final Context context,
-            final TokenSource source) throws InterpreterException {
+            final TokenSource source, final Typesetter typesetter)
+            throws InterpreterException {
 
         String key = getKey(context, source);
         source.getKeyword(context, "by");

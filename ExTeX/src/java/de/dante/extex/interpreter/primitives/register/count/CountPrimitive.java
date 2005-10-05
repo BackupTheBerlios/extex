@@ -71,7 +71,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class CountPrimitive extends AbstractCount
         implements
@@ -104,7 +104,7 @@ public class CountPrimitive extends AbstractCount
      *      de.dante.extex.interpreter.TokenSource)
      */
     public void advance(final Flags prefix, final Context context,
-            final TokenSource source, Typesetter typesetter)
+            final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
         String key = getKey(context, source);
@@ -171,7 +171,8 @@ public class CountPrimitive extends AbstractCount
      *      de.dante.extex.interpreter.TokenSource)
      */
     public void divide(final Flags prefix, final Context context,
-            final TokenSource source) throws InterpreterException {
+            final TokenSource source, final Typesetter typesetter)
+            throws InterpreterException {
 
         String key = getKey(context, source);
         source.getKeyword(context, "by");
@@ -195,7 +196,8 @@ public class CountPrimitive extends AbstractCount
      *      de.dante.extex.interpreter.TokenSource)
      */
     public void multiply(final Flags prefix, final Context context,
-            final TokenSource source) throws InterpreterException {
+            final TokenSource source, final Typesetter typesetter)
+            throws InterpreterException {
 
         String key = getKey(context, source);
         source.getKeyword(context, "by");

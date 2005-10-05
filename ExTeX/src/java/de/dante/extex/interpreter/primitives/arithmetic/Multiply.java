@@ -80,7 +80,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * @see de.dante.extex.interpreter.type.arithmetic.Multiplyable
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class Multiply extends AbstractAssignment {
 
@@ -117,7 +117,7 @@ public class Multiply extends AbstractAssignment {
 
             if (code instanceof Multiplyable) {
 
-                ((Multiplyable) code).multiply(prefix, context, source);
+                ((Multiplyable) code).multiply(prefix, context, source, typesetter);
                 return;
 
             } else if (code == null) {

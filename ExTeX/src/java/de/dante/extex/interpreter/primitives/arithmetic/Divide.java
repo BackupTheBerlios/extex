@@ -79,7 +79,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * @see de.dante.extex.interpreter.type.arithmetic.Divideable
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class Divide extends AbstractAssignment {
 
@@ -116,7 +116,7 @@ public class Divide extends AbstractAssignment {
 
             if (code instanceof Divideable) {
 
-                ((Divideable) code).divide(prefix, context, source);
+                ((Divideable) code).divide(prefix, context, source, typesetter);
                 return;
 
             } else if (code == null) {

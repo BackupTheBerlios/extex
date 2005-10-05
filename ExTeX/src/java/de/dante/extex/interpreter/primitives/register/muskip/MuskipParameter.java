@@ -47,7 +47,7 @@ import de.dante.util.exception.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class MuskipParameter extends AbstractAssignment
         implements
@@ -115,7 +115,8 @@ public class MuskipParameter extends AbstractAssignment
      *      de.dante.extex.interpreter.TokenSource)
      */
     public void divide(final Flags prefix, final Context context,
-            final TokenSource source) throws InterpreterException {
+            final TokenSource source, final Typesetter typesetter)
+            throws InterpreterException {
 
         String key = getKey(context, source);
         source.getKeyword(context, "by");
@@ -158,7 +159,8 @@ public class MuskipParameter extends AbstractAssignment
      *      de.dante.extex.interpreter.TokenSource)
      */
     public void multiply(final Flags prefix, final Context context,
-            final TokenSource source) throws InterpreterException {
+            final TokenSource source, final Typesetter typesetter)
+            throws InterpreterException {
 
         String key = getKey(context, source);
         source.getKeyword(context, "by");
