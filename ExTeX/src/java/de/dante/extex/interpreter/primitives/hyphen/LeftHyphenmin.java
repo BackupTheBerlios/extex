@@ -23,11 +23,17 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.exception.helping.ArithmeticOverflowException;
 import de.dante.extex.interpreter.type.Theable;
+import de.dante.extex.interpreter.type.arithmetic.Advanceable;
+import de.dante.extex.interpreter.type.arithmetic.Divideable;
+import de.dante.extex.interpreter.type.arithmetic.Multiplyable;
 import de.dante.extex.interpreter.type.count.CountConvertible;
+import de.dante.extex.interpreter.type.dimen.DimenConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.language.Language;
 import de.dante.extex.language.hyphenation.exception.HyphenationException;
+import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
@@ -61,11 +67,15 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class LeftHyphenmin extends AbstractHyphenationCode
         implements
             CountConvertible,
+            DimenConvertible,
+            Advanceable,
+            Multiplyable,
+            Divideable,
             Theable {
 
     /**
@@ -84,6 +94,44 @@ public class LeftHyphenmin extends AbstractHyphenationCode
     }
 
     /**
+     * @see de.dante.extex.interpreter.type.arithmetic.Advanceable#advance(
+     *      de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public void advance(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws InterpreterException {
+
+        long globaldef = context.getCount("globaldefs").getValue();
+        if (globaldef != 0) {
+            prefix.setGlobal((globaldef > 0));
+        }
+
+        Language table = getHyphenationTable(context);
+        source.getKeyword(context, "by");
+        long lefthyphenmin = table.getLeftHyphenmin();
+        lefthyphenmin += source.scanInteger(context, typesetter);
+
+        try {
+            table.setLeftHyphenmin(lefthyphenmin);
+        } catch (HyphenationException e) {
+            if (e.getCause() instanceof ConfigurationException) {
+                throw new InterpreterException(e.getCause());
+            }
+            throw new InterpreterException(e);
+        }
+
+        Token afterassignment = context.getAfterassignment();
+        if (afterassignment != null) {
+            context.setAfterassignment(null);
+            source.push(afterassignment);
+        }
+        prefix.clearGlobal(); //gene: not really useful but a little bit of compatibility
+    }
+
+    /**
      * @see de.dante.extex.interpreter.type.count.CountConvertible#convertCount(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
@@ -93,6 +141,60 @@ public class LeftHyphenmin extends AbstractHyphenationCode
             final Typesetter typesetter) throws InterpreterException {
 
         return getHyphenationTable(context).getLeftHyphenmin();
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.dimen.DimenConvertible#convertDimen(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public long convertDimen(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
+
+        return getHyphenationTable(context).getLeftHyphenmin();
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.arithmetic.Divideable#divide(
+     *      de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource)
+     */
+    public void divide(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws InterpreterException {
+
+        long globaldef = context.getCount("globaldefs").getValue();
+        if (globaldef != 0) {
+            prefix.setGlobal((globaldef > 0));
+        }
+
+        Language table = getHyphenationTable(context);
+        source.getKeyword(context, "by");
+        long lefthyphenmin = table.getLeftHyphenmin();
+        long arg = source.scanInteger(context, typesetter);
+        if (arg == 0) {
+            throw new ArithmeticOverflowException(
+                    printableControlSequence(context));
+        }
+        lefthyphenmin /= arg;
+
+        try {
+            table.setLeftHyphenmin(lefthyphenmin);
+        } catch (HyphenationException e) {
+            if (e.getCause() instanceof ConfigurationException) {
+                throw new InterpreterException(e.getCause());
+            }
+            throw new InterpreterException(e);
+        }
+
+        Token afterassignment = context.getAfterassignment();
+        if (afterassignment != null) {
+            context.setAfterassignment(null);
+            source.push(afterassignment);
+        }
+        prefix.clearGlobal(); //gene: not really useful but a little bit of compatibility
     }
 
     /**
@@ -109,6 +211,11 @@ public class LeftHyphenmin extends AbstractHyphenationCode
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
+        long globaldef = context.getCount("globaldefs").getValue();
+        if (globaldef != 0) {
+            prefix.setGlobal((globaldef > 0));
+        }
+
         Language table = getHyphenationTable(context);
         source.getOptionalEquals(context);
         long lefthyphenmin = source.scanInteger(context, typesetter);
@@ -121,6 +228,51 @@ public class LeftHyphenmin extends AbstractHyphenationCode
             }
             throw new InterpreterException(e);
         }
+
+        Token afterassignment = context.getAfterassignment();
+        if (afterassignment != null) {
+            context.setAfterassignment(null);
+            source.push(afterassignment);
+        }
+        prefix.clearGlobal(); //gene: not really useful but a little bit of compatibility
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.arithmetic.Multiplyable#multiply(
+     *      de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public void multiply(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws InterpreterException {
+
+        long globaldef = context.getCount("globaldefs").getValue();
+        if (globaldef != 0) {
+            prefix.setGlobal((globaldef > 0));
+        }
+
+        Language table = getHyphenationTable(context);
+        source.getKeyword(context, "by");
+        long lefthyphenmin = table.getLeftHyphenmin();
+        lefthyphenmin *= source.scanInteger(context, typesetter);
+
+        try {
+            table.setLeftHyphenmin(lefthyphenmin);
+        } catch (HyphenationException e) {
+            if (e.getCause() instanceof ConfigurationException) {
+                throw new InterpreterException(e.getCause());
+            }
+            throw new InterpreterException(e);
+        }
+
+        Token afterassignment = context.getAfterassignment();
+        if (afterassignment != null) {
+            context.setAfterassignment(null);
+            source.push(afterassignment);
+        }
+        prefix.clearGlobal(); //gene: not really useful but a little bit of compatibility
     }
 
     /**
@@ -143,4 +295,5 @@ public class LeftHyphenmin extends AbstractHyphenationCode
             throw new InterpreterException(e);
         }
     }
+
 }
