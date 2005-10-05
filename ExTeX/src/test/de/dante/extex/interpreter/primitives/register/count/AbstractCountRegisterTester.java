@@ -26,7 +26,7 @@ import de.dante.test.ExTeXLauncher;
  * It provides some test cases common to all count registers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public abstract class AbstractCountRegisterTester extends ExTeXLauncher {
 
@@ -52,6 +52,7 @@ public abstract class AbstractCountRegisterTester extends ExTeXLauncher {
      * @param arg the name of the test suite
      * @param primitive the name of the integer register to test
      * @param args ...
+     * @param init ...
      */
     public AbstractCountRegisterTester(final String arg, final String primitive,
             final String args, final String init) {

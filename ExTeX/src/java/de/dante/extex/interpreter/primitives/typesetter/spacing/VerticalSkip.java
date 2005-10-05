@@ -26,10 +26,10 @@ import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.typesetter.Typesetter;
 
 /**
- * This interfac describes macros which produce a vertical glue.
+ * This interface describes macros which produce a vertical glue.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface VerticalSkip {
 
@@ -37,7 +37,7 @@ public interface VerticalSkip {
      * This method acquires a vertical glue.
      * @param context the interpreter context
      * @param source the source for new tokens
-     * @param typesetter TODO
+     * @param typesetter the typesetter
      *
      * @return the amount of vertical skip
      *
