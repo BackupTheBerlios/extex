@@ -26,7 +26,7 @@ import de.dante.test.ExTeXLauncher;
  * It provides some test cases common to all muskip registers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class AbstractMuskipRegisterTester extends ExTeXLauncher {
 
@@ -47,11 +47,18 @@ public abstract class AbstractMuskipRegisterTester extends ExTeXLauncher {
     private String init;
 
     /**
+     * The field <tt>prepare</tt> contains the the preparation code inserted
+     * before each test.
+     */
+    private String prepare = "";
+
+    /**
      * Creates a new object.
      *
      * @param arg the name of the test suite
-     * @param primitive the name of the integer register to test
+     * @param primitive the name of the muskip register to test
      * @param args the parameters for the invocation
+     * @param init the default value
      */
     public AbstractMuskipRegisterTester(final String arg,
             final String primitive, final String args, final String init) {
@@ -60,6 +67,23 @@ public abstract class AbstractMuskipRegisterTester extends ExTeXLauncher {
         this.primitive = primitive;
         this.invocation = primitive + args;
         this.init = init;
+    }
+
+    /**
+     * Creates a new object.
+     *
+     * @param arg the name of the test suite
+     * @param primitive the name of the muskip register to test
+     * @param args the arguments for the invocation
+     * @param init the default value
+     * @param prepare the preparation code inserted before each test
+     */
+    public AbstractMuskipRegisterTester(final String arg,
+            final String primitive, final String args, final String init,
+            final String prepare) {
+
+        this(arg, primitive, args, init);
+        this.prepare = prepare;
     }
 
     /**
@@ -72,7 +96,7 @@ public abstract class AbstractMuskipRegisterTester extends ExTeXLauncher {
     public void testMuskipRegisterImmediatePrefix1() throws Exception {
 
         runFailureCode(//--- input code ---
-                "\\immediate\\" + invocation + "= 2mu ",
+                prepare + "\\immediate\\" + invocation + "= 2mu ",
                 //--- error channel ---
                 "You can't use the prefix `\\immediate' with the control sequence"
                         + (primitive.length() > 14 ? "\n" : " ") + "\\"
@@ -89,7 +113,7 @@ public abstract class AbstractMuskipRegisterTester extends ExTeXLauncher {
     public void testMuskipRegisterLongPrefix1() throws Exception {
 
         runFailureCode(//--- input code ---
-                "\\long\\" + invocation + "= 2mu ",
+                prepare + "\\long\\" + invocation + "= 2mu ",
                 //--- error channel ---
                 "You can't use the prefix `\\long' with the control sequence"
                         + (primitive.length() > 19 ? "\n" : " ") + "\\"
@@ -106,7 +130,7 @@ public abstract class AbstractMuskipRegisterTester extends ExTeXLauncher {
     public void testMuskipRegisterOuterPrefix1() throws Exception {
 
         runFailureCode(//--- input code ---
-                "\\outer\\" + invocation + "= 2mu ",
+                prepare + "\\outer\\" + invocation + "= 2mu ",
                 //--- error channel ---
                 "You can't use the prefix `\\outer' with the control sequence"
                         + (primitive.length() > 18 ? "\n" : " ") + "\\"
@@ -124,7 +148,7 @@ public abstract class AbstractMuskipRegisterTester extends ExTeXLauncher {
     public void testMuskipRegisterDefault1() throws Exception {
 
         runCode(//--- input code ---
-                "\\the\\" + invocation + "\\end",
+                prepare + "\\the\\" + invocation + "\\end",
                 //--- output channel ---
                 init + TERM);
     }
@@ -140,8 +164,9 @@ public abstract class AbstractMuskipRegisterTester extends ExTeXLauncher {
     public void testMuskipRegisterAssign1() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + "=12.3mu plus 1mu minus 2mu\\the\\"
-                        + invocation + "\\end",
+                prepare + "\\" + invocation
+                        + "=12.3mu plus 1mu minus 2mu\\the\\" + invocation
+                        + "\\end",
                 //--- output channel ---
                 "12.3mu plus 1.0mu minus 2.0mu" + TERM);
     }
@@ -157,8 +182,9 @@ public abstract class AbstractMuskipRegisterTester extends ExTeXLauncher {
     public void testMuskipRegisterAssign2() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + " 12.3mu plus 1mu minus 2mu\\the\\"
-                        + invocation + "\\end",
+                prepare + "\\" + invocation
+                        + " 12.3mu plus 1mu minus 2mu\\the\\" + invocation
+                        + "\\end",
                 //--- output channel ---
                 "12.3mu plus 1.0mu minus 2.0mu" + TERM);
     }
@@ -174,8 +200,9 @@ public abstract class AbstractMuskipRegisterTester extends ExTeXLauncher {
     public void testMuskipRegisterAssign3() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + "=-12.3mu plus 1mu minus 2mu \\the\\"
-                        + invocation + "\\end",
+                prepare + "\\" + invocation
+                        + "=-12.3mu plus 1mu minus 2mu \\the\\" + invocation
+                        + "\\end",
                 //--- output channel ---
                 "-12.3mu plus 1.0mu minus 2.0mu" + TERM);
     }
@@ -191,8 +218,9 @@ public abstract class AbstractMuskipRegisterTester extends ExTeXLauncher {
     public void testMuskipRegisterAssign4() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + "-12.3mu plus 1mu minus 2mu \\the\\"
-                        + invocation + "\\end",
+                prepare + "\\" + invocation
+                        + "-12.3mu plus 1mu minus 2mu \\the\\" + invocation
+                        + "\\end",
                 //--- output channel ---
                 "-12.3mu plus 1.0mu minus 2.0mu" + TERM);
     }
@@ -208,7 +236,7 @@ public abstract class AbstractMuskipRegisterTester extends ExTeXLauncher {
     public void testMuskipRegisterAssign5() throws Exception {
 
         runCode(//--- input code ---
-                "\\globaldefs=1 " + "\\begingroup\\" + invocation
+                prepare + "\\globaldefs=1 " + "\\begingroup\\" + invocation
                         + "-12.3mu plus 1.0mu minus 2.0mu\\endgroup"
                         + "\\the\\" + invocation + "\\end",
                 //--- output channel ---
@@ -225,8 +253,8 @@ public abstract class AbstractMuskipRegisterTester extends ExTeXLauncher {
     public void testMuskipRegisterAfterassignment1() throws Exception {
 
         runCode(//--- input code ---
-                "\\afterassignment b a" + "\\" + invocation + "-12.3muc\\the\\"
-                        + invocation + "\\end",
+                prepare + "\\afterassignment b a" + "\\" + invocation
+                        + "-12.3muc\\the\\" + invocation + "\\end",
                 //--- output channel ---
                 "abc-12.3mu" + TERM);
     }
@@ -241,8 +269,8 @@ public abstract class AbstractMuskipRegisterTester extends ExTeXLauncher {
     public void ___testMuskipRegisterConvertible1() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + "-12.3mu \\dimen0=\\" + invocation
-                        + " \\the\\dimen0 \\end",
+                prepare + "\\" + invocation + "-12.3mu \\dimen0=\\"
+                        + invocation + " \\the\\dimen0 \\end",
                 //--- output channel ---
                 "-12.3mu" + TERM);
     }
@@ -257,8 +285,8 @@ public abstract class AbstractMuskipRegisterTester extends ExTeXLauncher {
     public void ___testMuskipRegisterConvertible2() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + "-12.3mu \\count0=\\" + invocation
-                        + " \\the\\count0 \\end",
+                prepare + "\\" + invocation + "-12.3mu \\count0=\\"
+                        + invocation + " \\the\\count0 \\end",
                 //--- output channel ---
                 "-806093" + TERM);
     }
@@ -273,7 +301,7 @@ public abstract class AbstractMuskipRegisterTester extends ExTeXLauncher {
     public void testMuskipRegisterGroup1() throws Exception {
 
         runCode(//--- input code ---
-                "\\begingroup\\" + invocation
+                prepare + "\\begingroup\\" + invocation
                         + "=12.3mu plus 1mu minus 2mu\\endgroup" + " \\the\\"
                         + invocation + "\\end",
                 //--- output channel ---
@@ -291,7 +319,7 @@ public abstract class AbstractMuskipRegisterTester extends ExTeXLauncher {
     public void testMuskipRegisterGlobalAssign1() throws Exception {
 
         runCode(//--- input code ---
-                "\\begingroup\\global\\" + invocation
+                prepare + "\\begingroup\\global\\" + invocation
                         + "=12.3mu plus 1mu minus 2mu \\endgroup" + "\\the\\"
                         + invocation + "\\end",
                 //--- output channel ---
@@ -309,7 +337,7 @@ public abstract class AbstractMuskipRegisterTester extends ExTeXLauncher {
     public void testMuskipRegisterGlobalAssign2() throws Exception {
 
         runCode(//--- input code ---
-                "\\begingroup\\global\\" + invocation
+                prepare + "\\begingroup\\global\\" + invocation
                         + " 12.3mu plus 1mu minus 2mu \\endgroup" + "\\the\\"
                         + invocation + "\\end",
                 //--- output channel ---
@@ -326,7 +354,7 @@ public abstract class AbstractMuskipRegisterTester extends ExTeXLauncher {
     public void testMuskipRegisterAdvance1() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + "=23mu plus 1.0mu minus 2.0mu "
+                prepare + "\\" + invocation + "=23mu plus 1.0mu minus 2.0mu "
                         + "\\advance\\" + invocation + " 12mu " + "\\the\\"
                         + invocation + "\\end",
                 //--- output channel ---
@@ -344,9 +372,9 @@ public abstract class AbstractMuskipRegisterTester extends ExTeXLauncher {
     public void testMuskipRegisterAdvance2() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + "=23mu plus 1mu minus 2mu " + "\\advance\\"
-                        + invocation + " by 12mu " + "\\the\\" + invocation
-                        + "\\end",
+                prepare + "\\" + invocation + "=23mu plus 1mu minus 2mu "
+                        + "\\advance\\" + invocation + " by 12mu " + "\\the\\"
+                        + invocation + "\\end",
                 //--- output channel ---
                 "35.0mu plus 1.0mu minus 2.0mu" + TERM);
     }
@@ -361,7 +389,7 @@ public abstract class AbstractMuskipRegisterTester extends ExTeXLauncher {
     public void testMuskipRegisterAdvance3() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + "=23mu  plus 1.0mu minus 2.0mu"
+                prepare + "\\" + invocation + "=23mu  plus 1.0mu minus 2.0mu"
                         + "\\advance\\" + invocation + "-12mu " + "\\the\\"
                         + invocation + "\\end",
                 //--- output channel ---
@@ -379,9 +407,9 @@ public abstract class AbstractMuskipRegisterTester extends ExTeXLauncher {
     public void testMuskipRegisterAdvance4() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + "=23mu plus 1mu minus 2mu" + "\\advance\\"
-                        + invocation + " by -12mu " + "\\the\\" + invocation
-                        + "\\end",
+                prepare + "\\" + invocation + "=23mu plus 1mu minus 2mu"
+                        + "\\advance\\" + invocation + " by -12mu " + "\\the\\"
+                        + invocation + "\\end",
                 //--- output channel ---
                 "11.0mu plus 1.0mu minus 2.0mu" + TERM);
     }
@@ -397,7 +425,7 @@ public abstract class AbstractMuskipRegisterTester extends ExTeXLauncher {
     public void testMuskipRegisterAdvance5() throws Exception {
 
         runCode(//--- input code ---
-                "\\globaldefs=1 " + "\\begingroup\\" + invocation
+                prepare + "\\globaldefs=1 " + "\\begingroup\\" + invocation
                         + "-12.3mu plus 1mu minus 2mu \\endgroup" + "\\the\\"
                         + invocation + "\\end",
                 //--- output channel ---
@@ -414,7 +442,7 @@ public abstract class AbstractMuskipRegisterTester extends ExTeXLauncher {
     public void testMuskipRegisterAfterassignment2() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + "=0mu" + "\\afterassignment b a"
+                prepare + "\\" + invocation + "=0mu" + "\\afterassignment b a"
                         + "\\advance\\" + invocation
                         + "-12.3mu plus 1mu minus 2muc\\the\\" + invocation
                         + "\\end",
@@ -432,7 +460,7 @@ public abstract class AbstractMuskipRegisterTester extends ExTeXLauncher {
     public void testMuskipRegisterGroup2() throws Exception {
 
         runCode(//--- input code ---
-                "\\begingroup\\advance\\" + invocation
+                prepare + "\\begingroup\\advance\\" + invocation
                         + " 12.3mu plus 1mu minus 2mu \\endgroup" + " \\the\\"
                         + invocation + "\\end",
                 //--- output channel ---
@@ -449,7 +477,7 @@ public abstract class AbstractMuskipRegisterTester extends ExTeXLauncher {
     public void testMuskipRegisterMultiply0() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + "=3mu plus 1.0mu minus 2.0mu "
+                prepare + "\\" + invocation + "=3mu plus 1.0mu minus 2.0mu "
                         + "\\multiply\\" + invocation + " 0 " + "\\the\\"
                         + invocation + "\\end",
                 //--- output channel ---
@@ -466,9 +494,9 @@ public abstract class AbstractMuskipRegisterTester extends ExTeXLauncher {
     public void testMuskipRegisterMultiply1() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + "=3mu plus 1mu minus 2mu " + "\\multiply\\"
-                        + invocation + " 12 " + "\\the\\" + invocation
-                        + "\\end",
+                prepare + "\\" + invocation + "=3mu plus 1mu minus 2mu "
+                        + "\\multiply\\" + invocation + " 12 " + "\\the\\"
+                        + invocation + "\\end",
                 //--- output channel ---
                 "36.0mu plus 12.0mu minus 24.0mu" + TERM);
     }
@@ -484,9 +512,9 @@ public abstract class AbstractMuskipRegisterTester extends ExTeXLauncher {
     public void testMuskipRegisterMultiply2() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + "=3mu plus 1mu minus 2mu " + "\\multiply\\"
-                        + invocation + " by 12 " + "\\the\\" + invocation
-                        + "\\end",
+                prepare + "\\" + invocation + "=3mu plus 1mu minus 2mu "
+                        + "\\multiply\\" + invocation + " by 12 " + "\\the\\"
+                        + invocation + "\\end",
                 //--- output channel ---
                 "36.0mu plus 12.0mu minus 24.0mu" + TERM);
     }
@@ -501,9 +529,9 @@ public abstract class AbstractMuskipRegisterTester extends ExTeXLauncher {
     public void testMuskipRegisterMultiply3() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + "=3mu plus 1mu minus 2mu " + "\\multiply\\"
-                        + invocation + "-12 " + "\\the\\" + invocation
-                        + "\\end",
+                prepare + "\\" + invocation + "=3mu plus 1mu minus 2mu "
+                        + "\\multiply\\" + invocation + "-12 " + "\\the\\"
+                        + invocation + "\\end",
                 //--- output channel ---
                 "-36.0mu plus -12.0mu minus -24.0mu" + TERM);
     }
@@ -519,9 +547,9 @@ public abstract class AbstractMuskipRegisterTester extends ExTeXLauncher {
     public void testMuskipRegisterMultiply4() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + "=3mu plus 1mu minus 2mu " + "\\multiply\\"
-                        + invocation + " by -12 " + "\\the\\" + invocation
-                        + "\\end",
+                prepare + "\\" + invocation + "=3mu plus 1mu minus 2mu "
+                        + "\\multiply\\" + invocation + " by -12 " + "\\the\\"
+                        + invocation + "\\end",
                 //--- output channel ---
                 "-36.0mu plus -12.0mu minus -24.0mu" + TERM);
     }
@@ -537,7 +565,7 @@ public abstract class AbstractMuskipRegisterTester extends ExTeXLauncher {
     public void testMuskipRegisterMultiply5() throws Exception {
 
         runCode(//--- input code ---
-                "\\globaldefs=1 " + "\\" + invocation
+                prepare + "\\globaldefs=1 " + "\\" + invocation
                         + "=12mu plus 1mu minus 2mu "
                         + "\\begingroup\\multiply\\" + invocation
                         + " 3 \\endgroup" + "\\the\\" + invocation + "\\end",
@@ -555,7 +583,7 @@ public abstract class AbstractMuskipRegisterTester extends ExTeXLauncher {
     public void testMuskipRegisterAfterassignment3() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + "=0mu " + "\\afterassignment b a"
+                prepare + "\\" + invocation + "=0mu " + "\\afterassignment b a"
                         + "\\multiply\\" + invocation + "-12 c\\the\\"
                         + invocation + "\\end",
                 //--- output channel ---
@@ -572,7 +600,7 @@ public abstract class AbstractMuskipRegisterTester extends ExTeXLauncher {
     public void testMuskipRegisterGroup3() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + "=3mu plus 1mu minus 2mu "
+                prepare + "\\" + invocation + "=3mu plus 1mu minus 2mu "
                         + "\\begingroup\\multiply\\" + invocation
                         + " 12 \\endgroup" + " \\the\\" + invocation + "\\end",
                 //--- output channel ---
@@ -588,9 +616,10 @@ public abstract class AbstractMuskipRegisterTester extends ExTeXLauncher {
      */
     public void testMuskipRegisterDivide0() throws Exception {
 
-        runFailureCode(//--- input code ---
-                "\\" + invocation + "=3.6mu " + "\\divide\\" + invocation
-                        + " 0 " + "\\the\\" + invocation + "\\end",
+        runFailureCode(
+                //--- input code ---
+                prepare + "\\" + invocation + "=3.6mu " + "\\divide\\"
+                        + invocation + " 0 " + "\\the\\" + invocation + "\\end",
                 //--- error channel ---
                 "Arithmetic overflow");
     }
@@ -605,7 +634,7 @@ public abstract class AbstractMuskipRegisterTester extends ExTeXLauncher {
     public void testMuskipRegisterDivide1() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + "=3.6mu plus 12mu minus 24mu "
+                prepare + "\\" + invocation + "=3.6mu plus 12mu minus 24mu "
                         + "\\divide\\" + invocation + " 12 " + "\\the\\"
                         + invocation + "\\end",
                 //--- output channel ---
@@ -623,7 +652,7 @@ public abstract class AbstractMuskipRegisterTester extends ExTeXLauncher {
     public void testMuskipRegisterDivide2() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + "=3.6mu plus 12mu minus 24mu "
+                prepare + "\\" + invocation + "=3.6mu plus 12mu minus 24mu "
                         + "\\divide\\" + invocation + " by 12 " + "\\the\\"
                         + invocation + "\\end",
                 //--- output channel ---
@@ -640,7 +669,7 @@ public abstract class AbstractMuskipRegisterTester extends ExTeXLauncher {
     public void testMuskipRegisterDivide3() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + "=3.6mu plus 12mu minus 24mu "
+                prepare + "\\" + invocation + "=3.6mu plus 12mu minus 24mu "
                         + "\\divide\\" + invocation + "-12 " + "\\the\\"
                         + invocation + "\\end",
                 //--- output channel ---
@@ -658,7 +687,7 @@ public abstract class AbstractMuskipRegisterTester extends ExTeXLauncher {
     public void testMuskipRegisterDivide4() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + "=3.6mu plus 12mu minus 24mu "
+                prepare + "\\" + invocation + "=3.6mu plus 12mu minus 24mu "
                         + "\\divide\\" + invocation + " by -12 " + "\\the\\"
                         + invocation + "\\end",
                 //--- output channel ---
@@ -676,7 +705,7 @@ public abstract class AbstractMuskipRegisterTester extends ExTeXLauncher {
     public void testMuskipRegisterDivide5() throws Exception {
 
         runCode(//--- input code ---
-                "\\globaldefs=1 " + "\\" + invocation + "=-246mu "
+                prepare + "\\globaldefs=1 " + "\\" + invocation + "=-246mu "
                         + "\\begingroup\\divide\\" + invocation
                         + "-123 \\endgroup" + "\\the\\" + invocation + "\\end",
                 //--- output channel ---
@@ -693,7 +722,7 @@ public abstract class AbstractMuskipRegisterTester extends ExTeXLauncher {
     public void testMuskipRegisterAfterassignment4() throws Exception {
 
         runCode(//--- input code ---
-                "\\afterassignment b a" + "\\divide\\" + invocation
+                prepare + "\\afterassignment b a" + "\\divide\\" + invocation
                         + "-12 c\\end",
                 //--- output channel ---
                 "abc" + TERM);
@@ -710,7 +739,7 @@ public abstract class AbstractMuskipRegisterTester extends ExTeXLauncher {
     public void testMuskipRegisterDivide6() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + "=-3.6mu plus -12mu minus -24mu "
+                prepare + "\\" + invocation + "=-3.6mu plus -12mu minus -24mu "
                         + "\\divide\\" + invocation + " by -12 " + "\\the\\"
                         + invocation + "\\end",
                 //--- output channel ---
@@ -728,7 +757,7 @@ public abstract class AbstractMuskipRegisterTester extends ExTeXLauncher {
 
         runCode(
                 //--- input code ---
-                "\\" + invocation + "=3mu plus 1mu minus 2mu "
+                prepare + "\\" + invocation + "=3mu plus 1mu minus 2mu "
                         + "\\begingroup\\divide\\" + invocation
                         + " 123 \\endgroup" + " \\the\\" + invocation + "\\end",
                 //--- output channel ---

@@ -26,7 +26,7 @@ import de.dante.test.ExTeXLauncher;
  * It provides some test cases common to all skip registers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
 
@@ -47,11 +47,18 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
     private String init;
 
     /**
+     * The field <tt>prepare</tt> contains the the preparation code inserted
+     * before each test.
+     */
+    private String prepare = "";
+
+    /**
      * Creates a new object.
      *
      * @param arg the name of the test suite
-     * @param primitive the name of the integer register to test
+     * @param primitive the name of the skip register to test
      * @param args the parameters for the invocation
+     * @param init the default value
      */
     public AbstractSkipRegisterTester(final String arg, final String primitive,
             final String args, final String init) {
@@ -60,6 +67,22 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
         this.primitive = primitive;
         this.invocation = primitive + args;
         this.init = init;
+    }
+
+    /**
+     * Creates a new object.
+     *
+     * @param arg the name of the test suite
+     * @param primitive the name of the skip register to test
+     * @param args the arguments for the invocation
+     * @param init the default value
+     * @param prepare the preparation code inserted before each test
+     */
+    public AbstractSkipRegisterTester(final String arg, final String primitive,
+            final String args, final String init, final String prepare) {
+
+        this(arg, primitive, args, init);
+        this.prepare = prepare;
     }
 
     /**
@@ -72,7 +95,7 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
     public void testSkipRegisterImmediatePrefix1() throws Exception {
 
         runFailureCode(//--- input code ---
-                "\\immediate\\" + invocation + "= 2pt ",
+                prepare + "\\immediate\\" + invocation + "= 2pt ",
                 //--- error channel ---
                 "You can't use the prefix `\\immediate' with the control sequence"
                         + (primitive.length() > 14 ? "\n" : " ") + "\\"
@@ -89,7 +112,7 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
     public void testSkipRegisterLongPrefix1() throws Exception {
 
         runFailureCode(//--- input code ---
-                "\\long\\" + invocation + "= 2pt ",
+                prepare + "\\long\\" + invocation + "= 2pt ",
                 //--- error channel ---
                 "You can't use the prefix `\\long' with the control sequence"
                         + (primitive.length() > 19 ? "\n" : " ") + "\\"
@@ -106,7 +129,7 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
     public void testSkipRegisterOuterPrefix1() throws Exception {
 
         runFailureCode(//--- input code ---
-                "\\outer\\" + invocation + "= 2pt ",
+                prepare + "\\outer\\" + invocation + "= 2pt ",
                 //--- error channel ---
                 "You can't use the prefix `\\outer' with the control sequence"
                         + (primitive.length() > 18 ? "\n" : " ") + "\\"
@@ -124,7 +147,7 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
     public void testSkipRegisterDefault1() throws Exception {
 
         runCode(//--- input code ---
-                "\\the\\" + invocation + "\\end",
+                prepare + "\\the\\" + invocation + "\\end",
                 //--- output channel ---
                 init + TERM);
     }
@@ -140,8 +163,9 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
     public void testSkipRegisterAssign1() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + "=12.3pt plus 1pt minus 2pt\\the\\"
-                        + invocation + "\\end",
+                prepare + "\\" + invocation
+                        + "=12.3pt plus 1pt minus 2pt\\the\\" + invocation
+                        + "\\end",
                 //--- output channel ---
                 "12.3pt plus 1.0pt minus 2.0pt" + TERM);
     }
@@ -157,8 +181,9 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
     public void testSkipRegisterAssign2() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + " 12.3pt plus 1pt minus 2pt\\the\\"
-                        + invocation + "\\end",
+                prepare + "\\" + invocation
+                        + " 12.3pt plus 1pt minus 2pt\\the\\" + invocation
+                        + "\\end",
                 //--- output channel ---
                 "12.3pt plus 1.0pt minus 2.0pt" + TERM);
     }
@@ -174,8 +199,9 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
     public void testSkipRegisterAssign3() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + "=-12.3pt plus 1pt minus 2pt \\the\\"
-                        + invocation + "\\end",
+                prepare + "\\" + invocation
+                        + "=-12.3pt plus 1pt minus 2pt \\the\\" + invocation
+                        + "\\end",
                 //--- output channel ---
                 "-12.3pt plus 1.0pt minus 2.0pt" + TERM);
     }
@@ -191,8 +217,9 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
     public void testSkipRegisterAssign4() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + "-12.3pt plus 1pt minus 2pt \\the\\"
-                        + invocation + "\\end",
+                prepare + "\\" + invocation
+                        + "-12.3pt plus 1pt minus 2pt \\the\\" + invocation
+                        + "\\end",
                 //--- output channel ---
                 "-12.3pt plus 1.0pt minus 2.0pt" + TERM);
     }
@@ -208,7 +235,7 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
     public void testSkipRegisterAssign5() throws Exception {
 
         runCode(//--- input code ---
-                "\\globaldefs=1 " + "\\begingroup\\" + invocation
+                prepare + "\\globaldefs=1 " + "\\begingroup\\" + invocation
                         + "-12.3pt plus 1.0pt minus 2.0pt\\endgroup"
                         + "\\the\\" + invocation + "\\end",
                 //--- output channel ---
@@ -225,8 +252,8 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
     public void testSkipRegisterAfterassignment1() throws Exception {
 
         runCode(//--- input code ---
-                "\\afterassignment b a" + "\\" + invocation + "-12.3ptc\\the\\"
-                        + invocation + "\\end",
+                prepare + "\\afterassignment b a" + "\\" + invocation
+                        + "-12.3ptc\\the\\" + invocation + "\\end",
                 //--- output channel ---
                 "abc-12.3pt" + TERM);
     }
@@ -241,8 +268,8 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
     public void ___testSkipRegisterConvertible1() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + "-12.3pt \\dimen0=\\" + invocation
-                        + " \\the\\dimen0 \\end",
+                prepare + "\\" + invocation + "-12.3pt \\dimen0=\\"
+                        + invocation + " \\the\\dimen0 \\end",
                 //--- output channel ---
                 "-12.3pt" + TERM);
     }
@@ -257,8 +284,8 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
     public void ___testSkipRegisterConvertible2() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + "-12.3pt \\count0=\\" + invocation
-                        + " \\the\\count0 \\end",
+                prepare + "\\" + invocation + "-12.3pt \\count0=\\"
+                        + invocation + " \\the\\count0 \\end",
                 //--- output channel ---
                 "-806093" + TERM);
     }
@@ -273,7 +300,7 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
     public void testSkipRegisterGroup1() throws Exception {
 
         runCode(//--- input code ---
-                "\\begingroup\\" + invocation
+                prepare + "\\begingroup\\" + invocation
                         + "=12.3pt plus 1pt minus 2pt\\endgroup" + " \\the\\"
                         + invocation + "\\end",
                 //--- output channel ---
@@ -291,7 +318,7 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
     public void testSkipRegisterGlobalAssign1() throws Exception {
 
         runCode(//--- input code ---
-                "\\begingroup\\global\\" + invocation
+                prepare + "\\begingroup\\global\\" + invocation
                         + "=12.3pt plus 1pt minus 2pt \\endgroup" + "\\the\\"
                         + invocation + "\\end",
                 //--- output channel ---
@@ -309,7 +336,7 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
     public void testSkipRegisterGlobalAssign2() throws Exception {
 
         runCode(//--- input code ---
-                "\\begingroup\\global\\" + invocation
+                prepare + "\\begingroup\\global\\" + invocation
                         + " 12.3pt plus 1pt minus 2pt \\endgroup" + "\\the\\"
                         + invocation + "\\end",
                 //--- output channel ---
@@ -326,7 +353,7 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
     public void testSkipRegisterAdvance1() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + "=23pt plus 1.0pt minus 2.0pt "
+                prepare + "\\" + invocation + "=23pt plus 1.0pt minus 2.0pt "
                         + "\\advance\\" + invocation + " 12pt " + "\\the\\"
                         + invocation + "\\end",
                 //--- output channel ---
@@ -344,9 +371,9 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
     public void testSkipRegisterAdvance2() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + "=23pt plus 1pt minus 2pt " + "\\advance\\"
-                        + invocation + " by 12pt " + "\\the\\" + invocation
-                        + "\\end",
+                prepare + "\\" + invocation + "=23pt plus 1pt minus 2pt "
+                        + "\\advance\\" + invocation + " by 12pt " + "\\the\\"
+                        + invocation + "\\end",
                 //--- output channel ---
                 "35.0pt plus 1.0pt minus 2.0pt" + TERM);
     }
@@ -361,7 +388,7 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
     public void testSkipRegisterAdvance3() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + "=23pt  plus 1.0pt minus 2.0pt"
+                prepare + "\\" + invocation + "=23pt  plus 1.0pt minus 2.0pt"
                         + "\\advance\\" + invocation + "-12pt " + "\\the\\"
                         + invocation + "\\end",
                 //--- output channel ---
@@ -379,9 +406,9 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
     public void testSkipRegisterAdvance4() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + "=23pt plus 1pt minus 2pt" + "\\advance\\"
-                        + invocation + " by -12pt " + "\\the\\" + invocation
-                        + "\\end",
+                prepare + "\\" + invocation + "=23pt plus 1pt minus 2pt"
+                        + "\\advance\\" + invocation + " by -12pt " + "\\the\\"
+                        + invocation + "\\end",
                 //--- output channel ---
                 "11.0pt plus 1.0pt minus 2.0pt" + TERM);
     }
@@ -397,7 +424,7 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
     public void testSkipRegisterAdvance5() throws Exception {
 
         runCode(//--- input code ---
-                "\\globaldefs=1 " + "\\begingroup\\" + invocation
+                prepare + "\\globaldefs=1 " + "\\begingroup\\" + invocation
                         + "-12.3pt plus 1pt minus 2pt \\endgroup" + "\\the\\"
                         + invocation + "\\end",
                 //--- output channel ---
@@ -414,7 +441,7 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
     public void testSkipRegisterAfterassignment2() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + "=0pt" + "\\afterassignment b a"
+                prepare + "\\" + invocation + "=0pt" + "\\afterassignment b a"
                         + "\\advance\\" + invocation
                         + "-12.3pt plus 1pt minus 2ptc\\the\\" + invocation
                         + "\\end",
@@ -432,7 +459,7 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
     public void testSkipRegisterGroup2() throws Exception {
 
         runCode(//--- input code ---
-                "\\begingroup\\advance\\" + invocation
+                prepare + "\\begingroup\\advance\\" + invocation
                         + " 12.3pt plus 1pt minus 2pt \\endgroup" + " \\the\\"
                         + invocation + "\\end",
                 //--- output channel ---
@@ -449,7 +476,7 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
     public void testSkipRegisterMultiply0() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + "=3pt plus 1.0pt minus 2.0pt "
+                prepare + "\\" + invocation + "=3pt plus 1.0pt minus 2.0pt "
                         + "\\multiply\\" + invocation + " 0 " + "\\the\\"
                         + invocation + "\\end",
                 //--- output channel ---
@@ -466,9 +493,9 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
     public void testSkipRegisterMultiply1() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + "=3pt plus 1pt minus 2pt " + "\\multiply\\"
-                        + invocation + " 12 " + "\\the\\" + invocation
-                        + "\\end",
+                prepare + "\\" + invocation + "=3pt plus 1pt minus 2pt "
+                        + "\\multiply\\" + invocation + " 12 " + "\\the\\"
+                        + invocation + "\\end",
                 //--- output channel ---
                 "36.0pt plus 12.0pt minus 24.0pt" + TERM);
     }
@@ -484,9 +511,9 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
     public void testSkipRegisterMultiply2() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + "=3pt plus 1pt minus 2pt " + "\\multiply\\"
-                        + invocation + " by 12 " + "\\the\\" + invocation
-                        + "\\end",
+                prepare + "\\" + invocation + "=3pt plus 1pt minus 2pt "
+                        + "\\multiply\\" + invocation + " by 12 " + "\\the\\"
+                        + invocation + "\\end",
                 //--- output channel ---
                 "36.0pt plus 12.0pt minus 24.0pt" + TERM);
     }
@@ -501,9 +528,9 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
     public void testSkipRegisterMultiply3() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + "=3pt plus 1pt minus 2pt " + "\\multiply\\"
-                        + invocation + "-12 " + "\\the\\" + invocation
-                        + "\\end",
+                prepare + "\\" + invocation + "=3pt plus 1pt minus 2pt "
+                        + "\\multiply\\" + invocation + "-12 " + "\\the\\"
+                        + invocation + "\\end",
                 //--- output channel ---
                 "-36.0pt plus -12.0pt minus -24.0pt" + TERM);
     }
@@ -519,9 +546,9 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
     public void testSkipRegisterMultiply4() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + "=3pt plus 1pt minus 2pt " + "\\multiply\\"
-                        + invocation + " by -12 " + "\\the\\" + invocation
-                        + "\\end",
+                prepare + "\\" + invocation + "=3pt plus 1pt minus 2pt "
+                        + "\\multiply\\" + invocation + " by -12 " + "\\the\\"
+                        + invocation + "\\end",
                 //--- output channel ---
                 "-36.0pt plus -12.0pt minus -24.0pt" + TERM);
     }
@@ -537,7 +564,7 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
     public void testSkipRegisterMultiply5() throws Exception {
 
         runCode(//--- input code ---
-                "\\globaldefs=1 " + "\\" + invocation
+                prepare + "\\globaldefs=1 " + "\\" + invocation
                         + "=12pt plus 1pt minus 2pt "
                         + "\\begingroup\\multiply\\" + invocation
                         + " 3 \\endgroup" + "\\the\\" + invocation + "\\end",
@@ -555,7 +582,7 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
     public void testSkipRegisterAfterassignment3() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + "=0pt " + "\\afterassignment b a"
+                prepare + "\\" + invocation + "=0pt " + "\\afterassignment b a"
                         + "\\multiply\\" + invocation + "-12 c\\the\\"
                         + invocation + "\\end",
                 //--- output channel ---
@@ -572,7 +599,7 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
     public void testSkipRegisterGroup3() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + "=3pt plus 1pt minus 2pt "
+                prepare + "\\" + invocation + "=3pt plus 1pt minus 2pt "
                         + "\\begingroup\\multiply\\" + invocation
                         + " 12 \\endgroup" + " \\the\\" + invocation + "\\end",
                 //--- output channel ---
@@ -588,9 +615,10 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
      */
     public void testSkipRegisterDivide0() throws Exception {
 
-        runFailureCode(//--- input code ---
-                "\\" + invocation + "=3.6pt " + "\\divide\\" + invocation
-                        + " 0 " + "\\the\\" + invocation + "\\end",
+        runFailureCode(
+                //--- input code ---
+                prepare + "\\" + invocation + "=3.6pt " + "\\divide\\"
+                        + invocation + " 0 " + "\\the\\" + invocation + "\\end",
                 //--- error channel ---
                 "Arithmetic overflow");
     }
@@ -605,7 +633,7 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
     public void testSkipRegisterDivide1() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + "=3.6pt plus 12pt minus 24pt "
+                prepare + "\\" + invocation + "=3.6pt plus 12pt minus 24pt "
                         + "\\divide\\" + invocation + " 12 " + "\\the\\"
                         + invocation + "\\end",
                 //--- output channel ---
@@ -623,7 +651,7 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
     public void testSkipRegisterDivide2() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + "=3.6pt plus 12pt minus 24pt "
+                prepare + "\\" + invocation + "=3.6pt plus 12pt minus 24pt "
                         + "\\divide\\" + invocation + " by 12 " + "\\the\\"
                         + invocation + "\\end",
                 //--- output channel ---
@@ -640,7 +668,7 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
     public void testSkipRegisterDivide3() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + "=3.6pt plus 12pt minus 24pt "
+                prepare + "\\" + invocation + "=3.6pt plus 12pt minus 24pt "
                         + "\\divide\\" + invocation + "-12 " + "\\the\\"
                         + invocation + "\\end",
                 //--- output channel ---
@@ -658,7 +686,7 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
     public void testSkipRegisterDivide4() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + "=3.6pt plus 12pt minus 24pt "
+                prepare + "\\" + invocation + "=3.6pt plus 12pt minus 24pt "
                         + "\\divide\\" + invocation + " by -12 " + "\\the\\"
                         + invocation + "\\end",
                 //--- output channel ---
@@ -676,7 +704,7 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
     public void testSkipRegisterDivide5() throws Exception {
 
         runCode(//--- input code ---
-                "\\globaldefs=1 " + "\\" + invocation + "=-246pt "
+                prepare + "\\globaldefs=1 " + "\\" + invocation + "=-246pt "
                         + "\\begingroup\\divide\\" + invocation
                         + "-123 \\endgroup" + "\\the\\" + invocation + "\\end",
                 //--- output channel ---
@@ -693,7 +721,7 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
     public void testSkipRegisterAfterassignment4() throws Exception {
 
         runCode(//--- input code ---
-                "\\afterassignment b a" + "\\divide\\" + invocation
+                prepare + "\\afterassignment b a" + "\\divide\\" + invocation
                         + "-12 c\\end",
                 //--- output channel ---
                 "abc" + TERM);
@@ -710,7 +738,7 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
     public void testSkipRegisterDivide6() throws Exception {
 
         runCode(//--- input code ---
-                "\\" + invocation + "=-3.6pt plus -12pt minus -24pt "
+                prepare + "\\" + invocation + "=-3.6pt plus -12pt minus -24pt "
                         + "\\divide\\" + invocation + " by -12 " + "\\the\\"
                         + invocation + "\\end",
                 //--- output channel ---
@@ -728,7 +756,7 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
 
         runCode(
                 //--- input code ---
-                "\\" + invocation + "=3pt plus 1pt minus 2pt "
+                prepare + "\\" + invocation + "=3pt plus 1pt minus 2pt "
                         + "\\begingroup\\divide\\" + invocation
                         + " 123 \\endgroup" + " \\the\\" + invocation + "\\end",
                 //--- output channel ---
