@@ -19,15 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.register;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.test.NoFlagsButGlobalPrimitiveTester;
 
 /**
  * This is a test suite for the primitive <tt>\chardef</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
-public class ChardefTest extends ExTeXLauncher {
+public class ChardefTest extends NoFlagsButGlobalPrimitiveTester {
 
     /**
      * Command line interface.
@@ -39,13 +39,13 @@ public class ChardefTest extends ExTeXLauncher {
     }
 
     /**
-     * Constructor for MathchardefTest.
+     * Creates a new object.
      *
      * @param arg the name
      */
     public ChardefTest(final String arg) {
 
-        super(arg);
+        super(arg, "chardef", "\\x=42 ");
     }
 
     /**
@@ -57,12 +57,10 @@ public class ChardefTest extends ExTeXLauncher {
      */
     public void testEOF1() throws Exception {
 
-        runCode(//--- input code ---
+        runFailureCode(//--- input code ---
                 "\\chardef",
                 //--- log message ---
-                "Missing control sequence inserted",
-                //--- output channel ---
-                "");
+                "Missing control sequence inserted");
     }
 
     /**
@@ -74,12 +72,10 @@ public class ChardefTest extends ExTeXLauncher {
      */
     public void testEOF2() throws Exception {
 
-        runCode(//--- input code ---
+        runFailureCode(//--- input code ---
                 "\\chardef\\x",
                 //--- log message ---
-                "Missing number, treated as zero",
-                //--- output channel ---
-                "");
+                "Missing number, treated as zero");
     }
 
     /**
@@ -92,12 +88,10 @@ public class ChardefTest extends ExTeXLauncher {
      */
     public void testNonCode1() throws Exception {
 
-        runCode(//--- input code ---
+        runFailureCode(//--- input code ---
                 "\\chardef a =123",
                 //--- log message ---
-                "Missing control sequence inserted",
-                //--- output channel ---
-                "");
+                "Missing control sequence inserted");
     }
 
     /**
@@ -110,12 +104,10 @@ public class ChardefTest extends ExTeXLauncher {
      */
     public void testNonCode2() throws Exception {
 
-        runCode(//--- input code ---
+        runFailureCode(//--- input code ---
                 "\\chardef 12=123",
                 //--- log message ---
-                "Missing control sequence inserted",
-                //--- output channel ---
-                "");
+                "Missing control sequence inserted");
     }
 
     /**
@@ -130,8 +122,6 @@ public class ChardefTest extends ExTeXLauncher {
 
         runCode(//--- input code ---
                 "\\chardef\\x=65 \\the\\x\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "65" + TERM);
     }
@@ -148,11 +138,8 @@ public class ChardefTest extends ExTeXLauncher {
 
         runCode(//--- input code ---
                 "\\chardef\\x=65 \\count0=\\x\\the\\count0\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "65" + TERM);
     }
-
 
 }
