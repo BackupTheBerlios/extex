@@ -25,12 +25,12 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\showthe</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ShowtheTest extends NoFlagsPrimitiveTester {
 
     /**
-     * Constructor for JobnameTest.
+     * Creates a new object.
      *
      * @param arg the name
      */
@@ -38,5 +38,23 @@ public class ShowtheTest extends NoFlagsPrimitiveTester {
 
         super(arg, "showthe", "\\count1 ");
     }
+
+    /**
+     * <testcase primitive="showthe">
+     *  Test case checking that <tt>\showthe</tt> does not accept the flag
+     *  <tt>\global</tt>.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test1() throws Exception {
+
+        runCode(//--- input code ---
+                "\\showthe\\count1 \\end",
+                //--- log message ---
+                "");
+    }
+
+    //TODO implement the primitive specific test cases
 
 }
