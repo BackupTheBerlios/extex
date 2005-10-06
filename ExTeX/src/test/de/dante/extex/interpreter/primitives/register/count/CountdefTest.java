@@ -19,15 +19,13 @@
 
 package de.dante.extex.interpreter.primitives.register.count;
 
-import de.dante.test.ExTeXLauncher;
-
 /**
  * This is a test suite for the primitive <tt>\countdef</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class CountdefTest extends ExTeXLauncher {
+public class CountdefTest extends AbstractCountRegisterTester {
 
     /**
      * Command line interface.
@@ -39,15 +37,66 @@ public class CountdefTest extends ExTeXLauncher {
     }
 
     /**
+     * The field <tt>prepare</tt> contains the ...
+     */
+    private String prepare = "";
+
+    /**
      * Creates a new object.
      *
      * @param arg the name
      */
     public CountdefTest(final String arg) {
 
-        super(arg);
+        super(arg, "x", "", "0", "\\countdef\\x=42 ");
     }
 
-    //TODO implement the primitive specific test cases
+    /**
+     * <testcase primitive="\countdef">
+     *  Test case checking that <tt>\countdef</tt> creates a count assignable
+     *  control sequence which is equivalent to the <tt>\count</tt>.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test1() throws Exception {
+
+        runCode(
+                //--- input code ---
+                "\\countdef\\x=42 " + "\\count42=123 " + "\\the\\count42 \\end",
+                //--- output channel ---
+                "123" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\countdef">
+     *  Test case checking that <tt>\countdef</tt> respects a group.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testGlobal1() throws Exception {
+
+        runFailureCode(//--- input code ---
+                "\\begingroup\\countdef\\x=42 \\endgroup" + "\\the\\x \\end",
+                //--- error channel ---
+                "You can't use `the control sequence \\x' after \\the");
+    }
+
+    /**
+     * <testcase primitive="\countdef">
+     *  Test case checking that <tt>\countdef</tt> respects a group.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testGlobal2() throws Exception {
+
+        runCode(//--- input code ---
+                "\\begingroup\\global\\countdef\\x=42 \\endgroup"
+                        + "\\the\\x \\end",
+                //--- output channel ---
+                "0" + TERM);
+    }
 
 }

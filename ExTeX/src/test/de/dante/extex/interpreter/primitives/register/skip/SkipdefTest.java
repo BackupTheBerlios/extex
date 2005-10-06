@@ -19,15 +19,14 @@
 
 package de.dante.extex.interpreter.primitives.register.skip;
 
-import de.dante.test.ExTeXLauncher;
 
 /**
  * This is a test suite for the primitive <tt>\skipdef</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class SkipdefTest extends ExTeXLauncher {
+public class SkipdefTest extends AbstractSkipRegisterTester {
 
     /**
      * Command line interface.
@@ -45,9 +44,55 @@ public class SkipdefTest extends ExTeXLauncher {
      */
     public SkipdefTest(final String arg) {
 
-        super(arg);
+        super(arg, "x", "", "0.0pt", "\\skipdef\\x=42 ");
     }
 
-    //TODO implement the primitive specific test cases
+    /**
+     * <testcase primitive="\skipdef">
+     *  Test case checking that <tt>\skipdef</tt> creates a skip assignable
+     *  control sequence which is equivalent to the <tt>\skip</tt>.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test1() throws Exception {
+
+        runCode(//--- input code ---
+                "\\skipdef\\x=42 " + "\\skip42=123pt "
+                        + "\\the\\skip42 \\end",
+                //--- output channel ---
+                "123.0pt" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\skipdef">
+     *  Test case checking that <tt>\skipdef</tt> respects a group.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testGlobal1() throws Exception {
+
+        runFailureCode(//--- input code ---
+                "\\begingroup\\skipdef\\x=42 \\endgroup" + "\\the\\x \\end",
+                //--- error channel ---
+                "You can't use `the control sequence \\x' after \\the");
+    }
+
+    /**
+     * <testcase primitive="\skipdef">
+     *  Test case checking that <tt>\skipdef</tt> respects a group.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testGlobal2() throws Exception {
+
+        runCode(//--- input code ---
+                "\\begingroup\\global\\skipdef\\x=42 \\endgroup"
+                        + "\\the\\x \\end",
+                //--- output channel ---
+                "0.0pt" + TERM);
+    }
 
 }

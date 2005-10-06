@@ -19,15 +19,13 @@
 
 package de.dante.extex.interpreter.primitives.register.dimen;
 
-import de.dante.test.ExTeXLauncher;
-
 /**
  * This is a test suite for the primitive <tt>\dimendef</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class DimendefTest extends ExTeXLauncher {
+public class DimendefTest extends AbstractDimenRegisterTester {
 
     /**
      * Command line interface.
@@ -45,9 +43,55 @@ public class DimendefTest extends ExTeXLauncher {
      */
     public DimendefTest(final String arg) {
 
-        super(arg);
+        super(arg, "x", "", "0.0pt", "\\dimendef\\x=42 ");
     }
 
-    //TODO implement the primitive specific test cases
+    /**
+     * <testcase primitive="\dimendef">
+     *  Test case checking that <tt>\dimendef</tt> creates a dimen assignable
+     *  control sequence which is equivalent to the <tt>\dimen</tt>.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test1() throws Exception {
+
+        runCode(//--- input code ---
+                "\\dimendef\\x=42 " + "\\dimen42=123pt "
+                        + "\\the\\dimen42 \\end",
+                //--- output channel ---
+                "123.0pt" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\dimendef">
+     *  Test case checking that <tt>\dimendef</tt> respects a group.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testGlobal1() throws Exception {
+
+        runFailureCode(//--- input code ---
+                "\\begingroup\\dimendef\\x=42 \\endgroup" + "\\the\\x \\end",
+                //--- error channel ---
+                "You can't use `the control sequence \\x' after \\the");
+    }
+
+    /**
+     * <testcase primitive="\dimendef">
+     *  Test case checking that <tt>\dimendef</tt> respects a group.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testGlobal2() throws Exception {
+
+        runCode(//--- input code ---
+                "\\begingroup\\global\\dimendef\\x=42 \\endgroup"
+                        + "\\the\\x \\end",
+                //--- output channel ---
+                "0.0pt" + TERM);
+    }
 
 }

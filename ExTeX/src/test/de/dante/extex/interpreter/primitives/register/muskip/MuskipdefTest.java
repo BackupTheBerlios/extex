@@ -19,15 +19,13 @@
 
 package de.dante.extex.interpreter.primitives.register.muskip;
 
-import de.dante.test.ExTeXLauncher;
-
 /**
  * This is a test suite for the primitive <tt>\muskipdef</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class MuskipdefTest extends ExTeXLauncher {
+public class MuskipdefTest extends AbstractMuskipRegisterTester {
 
     /**
      * Command line interface.
@@ -45,9 +43,56 @@ public class MuskipdefTest extends ExTeXLauncher {
      */
     public MuskipdefTest(final String arg) {
 
-        super(arg);
+        super(arg, "x", "", "0.0mu", "\\muskipdef\\x=42 ");
     }
 
-    //TODO implement the primitive specific test cases
+    /**
+     * <testcase primitive="\muskipdef">
+     *  Test case checking that <tt>\muskipdef</tt> creates a muskip assignable
+     *  control sequence which is equivalent to the <tt>\muskip</tt>.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test1() throws Exception {
+
+        runCode(
+        //--- input code ---
+                "\\muskipdef\\x=42 " + "\\muskip42=123mu "
+                        + "\\the\\muskip42 \\end",
+                //--- output channel ---
+                "123.0mu" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\muskipdef">
+     *  Test case checking that <tt>\muskipdef</tt> respects a group.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testGlobal1() throws Exception {
+
+        runFailureCode(//--- input code ---
+                "\\begingroup\\muskipdef\\x=42 \\endgroup" + "\\the\\x \\end",
+                //--- error channel ---
+                "You can't use `the control sequence \\x' after \\the");
+    }
+
+    /**
+     * <testcase primitive="\muskipdef">
+     *  Test case checking that <tt>\muskipdef</tt> respects a group.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testGlobal2() throws Exception {
+
+        runCode(//--- input code ---
+                "\\begingroup\\global\\muskipdef\\x=42 \\endgroup"
+                        + "\\the\\x \\end",
+                //--- output channel ---
+                "0.0mu" + TERM);
+    }
 
 }
