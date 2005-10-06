@@ -47,7 +47,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class Showthe extends The implements LogEnabled {
 
@@ -103,6 +103,7 @@ public class Showthe extends The implements LogEnabled {
             if (code != null && code instanceof Theable) {
                 Tokens toks = ((Theable) code).the(context, source, typesetter);
                 logger.info(toks.toText());
+                return;
             }
         }
 
