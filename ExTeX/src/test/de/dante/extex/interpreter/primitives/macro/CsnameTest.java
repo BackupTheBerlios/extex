@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\csname</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class CsnameTest extends ExTeXLauncher {
 
@@ -50,12 +50,8 @@ public class CsnameTest extends ExTeXLauncher {
     public void testLetters1() throws Exception {
 
         runCode(//--- input code ---
-                "\\catcode`{=1"
-                + "\\catcode`}=2"
-                + "\\def\\abc{-a-b-c-}"
-                + "\\csname abc\\endcsname\\end",
-                //--- log message ---
-                "",
+                DEFINE_BRACES + "\\def\\abc{-a-b-c-}"
+                        + "\\csname abc\\endcsname\\end",
                 //--- output channel ---
                 "-a-b-c-" + TERM);
     }
@@ -71,12 +67,8 @@ public class CsnameTest extends ExTeXLauncher {
     public void testLetters2() throws Exception {
 
         runCode(//--- input code ---
-                "\\catcode`{=1"
-                + "\\catcode`}=2"
-                + "\\def\\abc{-a-b-c-}"
-                + "\\csname a b  c\\endcsname\\end",
-                //--- log message ---
-                "",
+                DEFINE_BRACES + "\\def\\abc{-a-b-c-}"
+                        + "\\csname a b  c\\endcsname\\end",
                 //--- output channel ---
                 "-a-b-c-" + TERM);
     }
@@ -92,12 +84,8 @@ public class CsnameTest extends ExTeXLauncher {
     public void testLetters3() throws Exception {
 
         runCode(//--- input code ---
-                "\\catcode`{=1"
-                + "\\catcode`}=2"
-                + "\\def\\abc{-a-b-c-}"
-                + "\\csname a b \\relax c\\endcsname\\end",
-                //--- log message ---
-                "",
+                DEFINE_BRACES + "\\def\\abc{-a-b-c-}"
+                        + "\\csname a b \\relax c\\endcsname\\end",
                 //--- output channel ---
                 "-a-b-c-" + TERM);
     }
@@ -113,11 +101,7 @@ public class CsnameTest extends ExTeXLauncher {
     public void testString1() throws Exception {
 
         runCode(//--- input code ---
-                "\\catcode`{=1"
-                + "\\catcode`}=2"
-                + "\\csname \\string\\par \\endcsname\\end",
-                //--- log message ---
-                "",
+                DEFINE_BRACES + "\\csname \\string\\par \\endcsname\\end",
                 //--- output channel ---
                 "");
     }
@@ -134,12 +118,8 @@ public class CsnameTest extends ExTeXLauncher {
     public void testMixed1() throws Exception {
 
         runCode(//--- input code ---
-                "\\catcode`{=1"
-                + "\\catcode`}=2"
-                + "\\def\\abc{-a-b-c-}"
-                + "\\csname abc 123\\endcsname\\end",
-                //--- log message ---
-                "",
+                DEFINE_BRACES + "\\def\\abc{-a-b-c-}"
+                        + "\\csname abc 123\\endcsname\\end",
                 //--- output channel ---
                 "");
     }
@@ -156,13 +136,9 @@ public class CsnameTest extends ExTeXLauncher {
     public void testMixed2() throws Exception {
 
         runCode(//--- input code ---
-                "\\catcode`{=1"
-                + "\\catcode`}=2"
-                + "\\catcode`#=6"
-                + "\\def\\abc{-a-b-c-}"
-                + "\\csname abc # 123\\endcsname\\end",
-                //--- log message ---
-                "",
+                "\\catcode`{=1" + "\\catcode`}=2" + "\\catcode`#=6"
+                        + "\\def\\abc{-a-b-c-}"
+                        + "\\csname abc # 123\\endcsname\\end",
                 //--- output channel ---
                 "");
     }
@@ -177,12 +153,10 @@ public class CsnameTest extends ExTeXLauncher {
      */
     public void testError1() throws Exception {
 
-        runCode(//--- input code ---
+        runFailureCode(//--- input code ---
                 "\\csname abc \\par\\endcsname\\end",
                 //--- log message ---
-                "Missing \\endcsname inserted",
-                //--- output channel ---
-                "");
+                "Missing \\endcsname inserted");
     }
 
     /**
@@ -192,14 +166,12 @@ public class CsnameTest extends ExTeXLauncher {
      *
      * @throws Exception in case of an error
      */
-    public void testEOF1() throws Exception {
+    public void ___testEOF1() throws Exception {
 
-        runCode(//--- input code ---
+        runFailureCode(//--- input code ---
                 "\\expandafter\\meaning\\csname ",
                 //--- log message ---
-                "Unexpected end of file while processing \\meaning",
-                //--- output channel ---
-                "");
+                "Unexpected end of file while processing \\meaning");
     }
 
 }

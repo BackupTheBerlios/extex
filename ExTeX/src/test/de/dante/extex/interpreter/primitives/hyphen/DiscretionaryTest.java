@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\discretionary</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class DiscretionaryTest extends ExTeXLauncher {
 
@@ -53,8 +53,6 @@ public class DiscretionaryTest extends ExTeXLauncher {
                 + "\\hsize=123pt "
                 + "\\discretionary{a}{b}{c}"
                 + "\\end ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "--" + TERM);//TODO check
     }

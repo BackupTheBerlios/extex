@@ -19,14 +19,13 @@
 
 package de.dante.extex.interpreter.primitives.register.box;
 
-import de.dante.extex.interpreter.type.dimen.DimenRegisterTest;
 import de.dante.test.ExTeXLauncher;
 
 /**
  * This is a test suite for the primitive <tt>\setbox</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class SetboxTest extends ExTeXLauncher {
 
@@ -36,7 +35,7 @@ public class SetboxTest extends ExTeXLauncher {
      */
     public static void main(final String[] args) {
 
-        junit.textui.TestRunner.run(DimenRegisterTest.class);
+        junit.textui.TestRunner.run(SetboxTest.class);
     }
 
     /**
@@ -50,35 +49,40 @@ public class SetboxTest extends ExTeXLauncher {
     }
 
     /**
-     * Test case checking that \setbox throws an error on eof.
+     * <testcase primitive="\setbox">
+     *  Test case checking that \setbox throws an error on eof.
+     * </testcase>
+     *
      * @throws Exception in case of an error
      */
     public void testEOF1() throws Exception {
 
-        runCode(//--- input code ---
+        runFailureCode(//--- input code ---
                 "\\setbox",
                 //--- log message ---
-                "Missing number, treated as zero",
-                //--- output channel ---
-                "");
+                "Missing number, treated as zero");
     }
 
     /**
-     * Test case checking that \setbox throws an error on eof.
+     * <testcase primitive="\setbox">
+     *  Test case checking that \setbox throws an error on eof.
+     * </testcase>
+     *
      * @throws Exception in case of an error
      */
     public void testEOF2() throws Exception {
 
-        runCode(//--- input code ---
+        runFailureCode(//--- input code ---
                 "\\setbox33",
                 //--- log message ---
-                "A <box> was supposed to be here",
-                //--- output channel ---
-                "");
+                "A <box> was supposed to be here");
     }
 
     /**
-     * Test case checking that \setbox throws an error on eof.
+     * <testcase primitive="\setbox">
+     *  Test case checking that \setbox throws an error on eof.
+     * </testcase>
+     *
      * @throws Exception in case of an error
      */
     public void testEOF3() throws Exception {
@@ -92,36 +96,37 @@ public class SetboxTest extends ExTeXLauncher {
     }
 
     /**
-     * Test case checking that \setbox needs a box as second argument.
+     * <testcase primitive="\setbox">
+     *  Test case checking that \setbox needs a box as second argument.
+     * </testcase>
+     *
      * @throws Exception in case of an error
      */
     public void testNonBox1() throws Exception {
 
-        runCode(//--- input code ---
+        runFailureCode(//--- input code ---
                 "\\setbox33=123",
                 //--- log message ---
-                "A <box> was supposed to be here",
-                //--- output channel ---
-                "");
+                "A <box> was supposed to be here");
     }
 
     /**
-     * Test case ...
+     * <testcase primitive="\setbox">
+     *  Test case ...
+     * </testcase>
+     *
      * @throws Exception in case of an error
      */
     public void testOK1() throws Exception {
 
         runCode(//--- input code ---
-                "\\catcode`{=1 "
-                + "\\catcode`}=2 "
+                DEFINE_BRACES
                 + "\\setbox 12=\\hbox{abc}"
                 + "\\count0=\\wd12 "
                 + "\\the\\count0 "
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
-                "0 " + TERM);
+                "0" + TERM);
     }
 
 }
