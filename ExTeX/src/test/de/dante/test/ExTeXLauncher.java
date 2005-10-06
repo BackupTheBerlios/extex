@@ -46,7 +46,7 @@ import de.dante.util.exception.GeneralException;
  * running an instance of <logo>ExTeX</logo>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.33 $
+ * @version $Revision: 1.34 $
  */
 public class ExTeXLauncher extends TestCase {
 
@@ -54,7 +54,7 @@ public class ExTeXLauncher extends TestCase {
      * Inner class for the error handler.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.33 $
+     * @version $Revision: 1.34 $
      */
     private class EHandler implements ErrorHandler {
 
@@ -203,6 +203,15 @@ public class ExTeXLauncher extends TestCase {
     }
 
     /**
+     * Initialize the ExTeX object just before the code is run.
+     *
+     * @param extex the ExTeX object
+     */
+    private void init(final ExTeX extex) {
+
+    }
+
+    /**
      * Run some code through <logo>ExTeX</logo>.
      *
      * @param properties the properties to start with
@@ -241,6 +250,14 @@ public class ExTeXLauncher extends TestCase {
         extex.setErrorHandler(new EHandler(logger));
         extex.setLogger(logger);
 
+        if (Boolean.valueOf(
+                properties.getProperty("extex.launcher.verbose", "false"))
+                .booleanValue()) {
+            System.err.println(code);
+        }
+
+        init(extex);
+
         try {
             extex.run();
         } catch (MainException e) {
@@ -271,10 +288,10 @@ public class ExTeXLauncher extends TestCase {
      *
      * @throws Exception in case of an error
      */
-    public void runCode(final String code, final String expect)
+    public ExTeX runCode(final String code, final String expect)
             throws Exception {
 
-        runCode(getProps(), code, "", expect);
+        return runCode(getProps(), code, "", expect);
     }
 
     /**
@@ -286,10 +303,10 @@ public class ExTeXLauncher extends TestCase {
      *
      * @throws Exception in case of an error
      */
-    public void runCode(final String code, final String log, final String expect)
-            throws Exception {
+    public ExTeX runCode(final String code, final String log,
+            final String expect) throws Exception {
 
-        runCode(getProps(), code, log, expect);
+        return runCode(getProps(), code, log, expect);
     }
 
     /**
@@ -300,10 +317,10 @@ public class ExTeXLauncher extends TestCase {
      *
      * @throws Exception in case of an error
      */
-    public void runFailureCode(final String code, final String log)
+    public ExTeX runFailureCode(final String code, final String log)
             throws Exception {
 
-        runCode(getProps(), code, log, "");
+        return runCode(getProps(), code, log, "");
     }
 
     /**
