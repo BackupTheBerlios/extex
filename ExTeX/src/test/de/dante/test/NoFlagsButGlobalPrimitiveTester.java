@@ -20,10 +20,11 @@
 package de.dante.test;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This abstract test suite contains some tests to check that all flags but the
+ * global flag lead to an error.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class NoFlagsButGlobalPrimitiveTester extends ExTeXLauncher {
 
@@ -59,8 +60,8 @@ public abstract class NoFlagsButGlobalPrimitiveTester extends ExTeXLauncher {
     public void testNoImmediateFlag() throws Exception {
 
         runFailureCode(//--- input code ---
-                "\\catcode`{=1 " + "\\catcode`}=2 " + "\\immediate\\"
-                        + primitive + args,
+                DEFINE_BRACES + "\\catcode`{=1 " + "\\catcode`}=2 "
+                        + "\\immediate\\" + primitive + args,
                 //--- log message ---
                 "You can\'t use the prefix `\\immediate\' with the control sequence \\"
                         + primitive);
@@ -73,8 +74,7 @@ public abstract class NoFlagsButGlobalPrimitiveTester extends ExTeXLauncher {
     public void testNoLongFlag() throws Exception {
 
         runFailureCode(//--- input code ---
-                "\\catcode`{=1 " + "\\catcode`}=2 " + "\\long\\" + primitive
-                        + args,
+                DEFINE_BRACES + "\\long\\" + primitive + args,
                 //--- log message ---
                 "You can\'t use the prefix `\\long\' with the control sequence \\"
                         + primitive);
@@ -87,8 +87,7 @@ public abstract class NoFlagsButGlobalPrimitiveTester extends ExTeXLauncher {
     public void testNoOuterFlag() throws Exception {
 
         runFailureCode(//--- input code ---
-                "\\catcode`{=1 " + "\\catcode`}=2 " + "\\outer\\" + primitive
-                        + args,
+                DEFINE_BRACES + "\\outer\\" + primitive + args,
                 //--- log message ---
                 "You can\'t use the prefix `\\outer\' with the control sequence \\"
                         + primitive);
@@ -101,8 +100,7 @@ public abstract class NoFlagsButGlobalPrimitiveTester extends ExTeXLauncher {
     public void testNoProtectedFlag() throws Exception {
 
         runFailureCode(//--- input code ---
-                "\\catcode`{=1 " + "\\catcode`}=2 " + "\\protected\\"
-                        + primitive + args,
+                DEFINE_BRACES + "\\protected\\" + primitive + args,
                 //--- log message ---
                 "You can\'t use the prefix `\\protected\' with the control sequence \\"
                         + primitive);
