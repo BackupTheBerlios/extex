@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!-- ====================================================================== -->
-<!--  $Id: junit.xsl,v 1.4 2005/10/04 08:44:21 gene Exp $                   -->
+<!--  $Id: junit.xsl,v 1.5 2005/10/06 10:49:59 gene Exp $                   -->
 <!-- ====================================================================== -->
 
 <xsl:stylesheet version="1.0"
@@ -67,7 +67,7 @@
        <td>Time:</td><td><xsl:value-of select="@time"/></td>
       </tr>
      </table>
-     <xsl:apply-templates select="testcase"/>
+     <xsl:apply-templates select="testcase" mode="details"/>
      <address>
      © 2005 <a href="{$top}/imprint.html">The ExTeX Group</a>
      </address>
@@ -78,7 +78,7 @@
  <!-- ===================================================================== -->
  <!-- Template: testcase                                                    -->
  <!--                                                                       -->
-  <xsl:template match="testcase">
+  <xsl:template match="testcase" mode="details">
    <a name="{@name}"/>
    <xsl:choose>
     <xsl:when test="count(error) > 0">
@@ -100,7 +100,6 @@
  <!-- Template: summary                                                     -->
  <!--                                                                       -->
   <xsl:template match="summary">
-   <xsl:variable name="all" select="file"/>
    <html>
     <head>
      <title>ExTeX Test Overview</title>
@@ -111,15 +110,20 @@
      <h1>Test Summary</h1>
      <small><xsl:value-of select="@date"/></small>
 
-     <xsl:value-of select="$all"/>
+     <xsl:variable name="all" select="file"/>
+     <xsl:copy-of select="$all"/>
 
+<!--
      <xsl:variable name="ok"><xsl:call-template name="sel">
-      <xsl:with-param name="from" select="$all"/>
+      <xsl:with-param name="from"><xsl:copy-of select="$all"/></xsl:with-param>
       <xsl:with-param name="c">A</xsl:with-param>
      </xsl:call-template></xsl:variable>
      : <xsl:value-of select="$ok"/>
+-->
 
-     Test cases: <xsl:value-of select="count($all)"/>
+     <p>
+      Test cases: <xsl:value-of select="count($all)"/>
+     </p>
 
      <table>
       <xsl:apply-templates select="file" mode="ok"/>
@@ -144,6 +148,25 @@ _<xsl:value-of select="$from"/>_
      <xsl:with-param name="char" select="$c"/>
     </xsl:call-template>
    </xsl:if>
+  </xsl:template>
+
+
+ <!-- ===================================================================== -->
+ <!-- Template: file                                                        -->
+ <!--                                                                       -->
+  <xsl:template match="file" mode="s">
+    <xsl:apply-templates select="document(@name)/testsuite/testcase" mode="s"/>
+  </xsl:template>
+
+ <!-- ===================================================================== -->
+ <!-- Template: testcase                                                    -->
+ <!--                                                                       -->
+  <xsl:template match="testcase" mode="s">
+   <xsl:choose>
+    <xsl:when test="count(error) > 0">A</xsl:when>
+    <xsl:when test="count(failure) > 0">B</xsl:when>
+    <xsl:otherwise>C</xsl:otherwise>
+   </xsl:choose>
   </xsl:template>
 
 
@@ -182,25 +205,6 @@ _<xsl:value-of select="$from"/>_
     <xsl:otherwise>
      <img src="{$top}/image/checked.gif" title="{@name}"/>
     </xsl:otherwise>
-   </xsl:choose>
-  </xsl:template>
-
-
- <!-- ===================================================================== -->
- <!-- Template: file                                                        -->
- <!--                                                                       -->
-  <xsl:template match="file">
-    <xsl:apply-templates select="document(@name)/testsuite/testcase"/>
-  </xsl:template>
-
- <!-- ===================================================================== -->
- <!-- Template: testcase                                                    -->
- <!--                                                                       -->
-  <xsl:template match="testcase">
-   <xsl:choose>
-    <xsl:when test="count(error) > 0">A</xsl:when>
-    <xsl:when test="count(failure) > 0">B</xsl:when>
-    <xsl:otherwise>C</xsl:otherwise>
    </xsl:choose>
   </xsl:template>
 
