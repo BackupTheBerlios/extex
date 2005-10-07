@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\fontname</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class FontnameTest extends NoFlagsPrimitiveTester {
 
@@ -85,7 +85,7 @@ public class FontnameTest extends NoFlagsPrimitiveTester {
         runCode(//--- input code ---
                 "\\fontname \\x",
                 //--- log message ---
-                "Undefined control sequence the control sequence \\x",
+                "Undefined control sequence \\x",
                 //--- output channel ---
                 null);
     }

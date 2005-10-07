@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\hyphenchar</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class HyphencharTest extends NoFlagsPrimitiveTester {
 
@@ -102,7 +102,7 @@ public class HyphencharTest extends NoFlagsPrimitiveTester {
         runCode(//--- input code ---
                 "\\hyphenchar \\x",
                 //--- log message ---
-                "Undefined control sequence the control sequence \\x",
+                "Undefined control sequence \\x",
                 //--- output channel ---
                 "");
     }
