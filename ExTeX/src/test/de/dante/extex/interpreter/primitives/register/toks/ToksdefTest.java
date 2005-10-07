@@ -19,15 +19,13 @@
 
 package de.dante.extex.interpreter.primitives.register.toks;
 
-import de.dante.test.ExTeXLauncher;
-
 /**
  * This is a test suite for the primitive <tt>\toksdef</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class ToksdefTest extends ExTeXLauncher {
+public class ToksdefTest extends AbstractToksRegisterTester {
 
     /**
      * Command line interface.
@@ -45,9 +43,57 @@ public class ToksdefTest extends ExTeXLauncher {
      */
     public ToksdefTest(final String arg) {
 
-        super(arg);
+        super(arg, "x", "", "", "\\toksdef\\x=42 ");
     }
 
-    //TODO implement the primitive specific test cases
+    /**
+     * <testcase primitive="\toksdef">
+     *  Test case checking that <tt>\toksdef</tt> creates a toks assignable
+     *  control sequence which is equivalent to the <tt>\toks</tt>.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test1() throws Exception {
+
+        runCode(//--- input code ---
+                DEFINE_BRACES + "\\toksdef\\x=42 " + "\\toks42={abc}"
+                        + "\\the\\toks42 \\end",
+                //--- output channel ---
+                "abc" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\toksdef">
+     *  Test case checking that <tt>\toksdef</tt> respects a group.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testGlobal1() throws Exception {
+
+        runFailureCode(//--- input code ---
+                "\\begingroup\\toksdef\\x=42 \\endgroup" + "\\the\\x \\end",
+                //--- error channel ---
+                "You can't use `the control sequence \\x' after \\the");
+    }
+
+    /**
+     * <testcase primitive="\toksdef">
+     *  Test case checking that <tt>\toksdef</tt> respects a group.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testGlobal2() throws Exception {
+
+        runCode(
+                //--- input code ---
+                DEFINE_BRACES
+                        + "\\begingroup\\global\\toksdef\\x=42 \\x={abc}\\endgroup"
+                        + "\\the\\x \\end",
+                //--- output channel ---
+                "");
+    }
 
 }
