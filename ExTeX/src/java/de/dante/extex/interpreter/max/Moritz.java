@@ -49,6 +49,7 @@ import de.dante.extex.interpreter.observer.streamClose.StreamCloseObservable;
 import de.dante.extex.interpreter.observer.streamClose.StreamCloseObserver;
 import de.dante.extex.interpreter.observer.streamClose.StreamCloseObserverList;
 import de.dante.extex.interpreter.primitives.register.toks.ToksParameter;
+import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.CsConvertible;
 import de.dante.extex.interpreter.type.ExpandableCode;
@@ -98,7 +99,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.79 $
+ * @version $Revision: 1.80 $
  */
 public class Moritz extends Max
         implements
@@ -397,7 +398,8 @@ public class Moritz extends Max
         } else if (t instanceof CodeToken) {
             Code code = context.getCode((CodeToken) t);
             if (code == null) {
-                throw new UndefinedControlSequenceException(t.toString());
+                throw new UndefinedControlSequenceException(AbstractCode
+                        .printable(context, t));
 
             } else if (code instanceof FontConvertible) {
                 return ((FontConvertible) code).convertFont(context, this);

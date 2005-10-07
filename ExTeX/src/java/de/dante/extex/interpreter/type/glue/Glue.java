@@ -25,6 +25,7 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.UndefinedControlSequenceException;
+import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
@@ -41,7 +42,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class Glue implements Serializable, FixedGlue {
 
@@ -140,7 +141,8 @@ public class Glue implements Serializable, FixedGlue {
                 this.stretch = g.getStretch().copy();
                 return;
             } else if (code == null) {
-                throw new UndefinedControlSequenceException(context.esc(t));
+                throw new UndefinedControlSequenceException(AbstractCode
+                        .printable(context, t));
             }
         }
         source.push(t);

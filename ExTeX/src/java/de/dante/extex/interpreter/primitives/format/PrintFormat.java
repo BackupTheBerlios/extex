@@ -27,6 +27,7 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.CantUseAfterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
+import de.dante.extex.interpreter.exception.helping.UndefinedControlSequenceException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.Theable;
@@ -51,7 +52,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * @see java.text.DecimalFormat
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class PrintFormat extends AbstractCode implements Theable {
 
@@ -107,8 +108,8 @@ public class PrintFormat extends AbstractCode implements Theable {
         Code code = context.getCode((CodeToken) cs);
 
         if (code == null) {
-            throw new HelpingException(getLocalizer(), "TTP.UndefinedToken", cs
-                    .toString());
+            throw new UndefinedControlSequenceException(printable(context, cs));
+
         } else if (code instanceof RealConvertible) {
             Real val = ((RealConvertible) code).convertReal(context, source);
             DecimalFormat form = new DecimalFormat(pattern);

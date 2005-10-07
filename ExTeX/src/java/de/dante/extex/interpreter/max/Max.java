@@ -63,6 +63,7 @@ import de.dante.extex.interpreter.observer.start.StartObserverList;
 import de.dante.extex.interpreter.observer.stop.StopObservable;
 import de.dante.extex.interpreter.observer.stop.StopObserver;
 import de.dante.extex.interpreter.observer.stop.StopObserverList;
+import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.PrefixCode;
@@ -107,7 +108,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.85 $
+ * @version $Revision: 1.86 $
  */
 public abstract class Max
         implements
@@ -249,7 +250,8 @@ public abstract class Max
                 ((ExpandableCode) code).expand(Flags.NONE, context,
                         (TokenSource) arg, typesetter);
             } else if (code == null) {
-                throw new UndefinedControlSequenceException(token.toString());
+                throw new UndefinedControlSequenceException(AbstractCode
+                        .printable(context, token));
             } else {
                 //TODO gene: unimplemented
                 throw new RuntimeException("unimplemented");
@@ -282,7 +284,8 @@ public abstract class Max
                 ((ExpandableCode) code).expand(Flags.NONE, context,
                         (TokenSource) arg, typesetter);
             } else if (code == null) {
-                throw new UndefinedControlSequenceException(token.toString());
+                throw new UndefinedControlSequenceException(AbstractCode
+                        .printable(context, token));
             } else {
                 //TODO gene: unimplemented
                 throw new RuntimeException("unimplemented");
@@ -1089,8 +1092,8 @@ public abstract class Max
 
         Code code = context.getCode(token);
         if (code == null) {
-            throw new HelpingException(getLocalizer(), "TTP.UndefinedToken",
-                    token.toString());
+            throw new UndefinedControlSequenceException(AbstractCode
+                    .printable(context, token));
         }
 
         code.execute(prefix, context, this, typesetter);
@@ -1147,8 +1150,8 @@ public abstract class Max
             observersMacro.update(token, code);
         }
         if (code == null) {
-            throw new HelpingException(getLocalizer(), "TTP.UndefinedToken", //
-                    token.toString());
+            throw new UndefinedControlSequenceException(AbstractCode
+                    .printable(context, token));
         }
 
         code.execute(prefix, context, this, typesetter);

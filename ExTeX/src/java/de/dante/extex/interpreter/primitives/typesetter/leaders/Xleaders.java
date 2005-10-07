@@ -62,9 +62,9 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
-public class Xleaders extends AbstractCode  {
+public class Xleaders extends AbstractCode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
@@ -96,8 +96,7 @@ public class Xleaders extends AbstractCode  {
         Code code = context.getCode(cs);
 
         if (code == null) {
-            throw new UndefinedControlSequenceException(//
-                    context.esc(cs.getName()));
+            throw new UndefinedControlSequenceException(printable(context, cs));
         }
 
         Node node = null;
@@ -121,7 +120,8 @@ public class Xleaders extends AbstractCode  {
             throw new HelpingException(getLocalizer(),
                     "TTP.BadGlueAfterLeaders");
         }
-        Glue skip = ((VerticalSkip) code).verticalSkip(context, source, typesetter);
+        Glue skip = ((VerticalSkip) code).verticalSkip(context, source,
+                typesetter);
 
         try {
             typesetter.add(new ExpandedLeadersNode(node, skip));

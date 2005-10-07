@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsButGlobalPrimitiveTester;
  * This is a test suite for the primitive <tt>\let</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class LetTest extends NoFlagsButGlobalPrimitiveTester {
 
@@ -123,7 +123,7 @@ public class LetTest extends NoFlagsButGlobalPrimitiveTester {
                 + "\\let\\a\\a"
                 + "\\a",
                 //--- err message ---
-                "Undefined control sequence the control sequence \\a");
+                "Undefined control sequence \\a");
     }
 
     /**

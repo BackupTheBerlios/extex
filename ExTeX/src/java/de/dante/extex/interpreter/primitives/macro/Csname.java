@@ -84,7 +84,7 @@ import de.dante.util.UnicodeChar;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
 public class Csname extends AbstractCode implements ExpandableCode {
 
@@ -209,7 +209,8 @@ public class Csname extends AbstractCode implements ExpandableCode {
 
                 } else if (code == null) {
 
-                    throw new UndefinedControlSequenceException(context.esc(t));
+                    throw new UndefinedControlSequenceException(printable(
+                            context, t));
 
                 } else if (!(code instanceof Relax)) {
 

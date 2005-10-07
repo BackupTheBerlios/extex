@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the interpreter Max.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class MaxTest extends ExTeXLauncher {
 
@@ -46,14 +46,12 @@ public class MaxTest extends ExTeXLauncher {
      */
     public void testTabMark() throws Exception {
 
-        runCode(//--- input code ---
+        runFailureCode(//--- input code ---
                 "\\catcode`&=4\\relax"
                 + "&"
                 + "\\end ",
                 //--- log message ---
-                "Misplaced alignment tab character &",
-                //--- output channel ---
-                "");
+                "Misplaced alignment tab character &");
     }
 
     /**
@@ -63,14 +61,12 @@ public class MaxTest extends ExTeXLauncher {
      */
     public void testSupMark() throws Exception {
 
-        runCode(//--- input code ---
+        runFailureCode(//--- input code ---
                 "\\catcode`^=7\\relax"
                 + "^"
                 + "\\end ",
                 //--- log message ---
-                "Missing $ inserted",
-                //--- output channel ---
-                "");
+                "Missing $ inserted");
     }
 
     /**
@@ -80,14 +76,12 @@ public class MaxTest extends ExTeXLauncher {
      */
     public void testSubMark() throws Exception {
 
-        runCode(//--- input code ---
+        runFailureCode(//--- input code ---
                 "\\catcode`_=8\\relax"
                 + "_"
                 + "\\end ",
                 //--- log message ---
-                "Missing $ inserted",
-                //--- output channel ---
-                "");
+                "Missing $ inserted");
     }
 
     /**
@@ -97,14 +91,12 @@ public class MaxTest extends ExTeXLauncher {
      */
     public void testMacroParam() throws Exception {
 
-        runCode(//--- input code ---
+        runFailureCode(//--- input code ---
                 "\\catcode`#=6\\relax"
                 + "#"
                 + "\\end ",
                 //--- log message ---
-                "You can't use `macro parameter character #' in vertical mode",
-                //--- output channel ---
-                "");
+                "You can't use `macro parameter character #' in vertical mode");
     }
 
     /**
@@ -115,14 +107,12 @@ public class MaxTest extends ExTeXLauncher {
      */
     public void testUndefinedAcive() throws Exception {
 
-        runCode(//--- input code ---
+        runFailureCode(//--- input code ---
                 "\\catcode`~=13\\relax"
                 + "~"
                 + "\\end ",
                 //--- log message ---
-                "Undefined control sequence",
-                //--- output channel ---
-                "");
+                "Undefined control sequence ~");
     }
 
     /**
@@ -133,13 +123,11 @@ public class MaxTest extends ExTeXLauncher {
      */
     public void testUndefinedCs() throws Exception {
 
-        runCode(//--- input code ---
+        runFailureCode(//--- input code ---
                 "\\UNDEF"
                 + "\\end ",
                 //--- log message ---
-                "Undefined control sequence",
-                //--- output channel ---
-                "");
+                "Undefined control sequence \\UNDEF");
     }
 
 }
