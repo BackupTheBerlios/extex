@@ -19,13 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.register.toks;
 
+import de.dante.test.NoFlagsButGlobalPrimitiveTester;
+
 /**
  * This is a test suite for the primitive <tt>\output</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class OutputTest extends AbstractToksRegisterTester {
+public class OutputTest extends NoFlagsButGlobalPrimitiveTester {
 
     /**
      * Command line interface.
@@ -43,7 +45,7 @@ public class OutputTest extends AbstractToksRegisterTester {
      */
     public OutputTest(final String arg) {
 
-        super(arg, "output", "", "");
+        super(arg, "output", "{}", "");
     }
 
     //TODO implement the primitive specific test cases
