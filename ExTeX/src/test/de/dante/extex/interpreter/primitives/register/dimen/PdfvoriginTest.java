@@ -24,7 +24,7 @@ package de.dante.extex.interpreter.primitives.register.dimen;
  * This is a test suite for the primitive <tt>\pdfvorigin</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class PdfvoriginTest extends AbstractDimenRegisterTester {
 
@@ -54,7 +54,7 @@ public class PdfvoriginTest extends AbstractDimenRegisterTester {
      */
     public PdfvoriginTest(final String arg) {
 
-        super(arg, "pdfvorigin", "", "0.0pt");
+        super(arg, "pdfvorigin", "", "72.26999pt");
     }
 
     //TODO implement the primitive specific test cases
