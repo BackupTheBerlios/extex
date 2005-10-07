@@ -26,7 +26,7 @@ import de.dante.test.ExTeXLauncher;
  * It provides some test cases common to all toks registers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class AbstractToksRegisterTester extends ExTeXLauncher {
 
@@ -47,6 +47,11 @@ public abstract class AbstractToksRegisterTester extends ExTeXLauncher {
     private String init;
 
     /**
+     * The field <tt>prepare</tt> contains the ...
+     */
+    private String prepare = DEFINE_BRACES;
+
+    /**
      * Creates a new object.
      *
      * @param arg the name of the test suite
@@ -63,16 +68,30 @@ public abstract class AbstractToksRegisterTester extends ExTeXLauncher {
     }
 
     /**
+     * Creates a new object.
+     *
+     * @param arg the name of the test suite
+     * @param primitive the name of the integer register to test
+     * @param args the parameters for the invocation
+     */
+    public AbstractToksRegisterTester(final String arg, final String primitive,
+            final String args, final String init, final String prepare) {
+
+        this(arg, primitive, args, init);
+        this.prepare = DEFINE_BRACES + prepare;
+    }
+
+    /**
      * <testcase>
      *  Test case showing that the prefix <tt>\immediate</tt> is not applicable.
      * </testcase>
      *
      * @throws Exception in case of an error
      */
-    public void testMuskipRegisterImmediatePrefix1() throws Exception {
+    public void testToksRegisterImmediatePrefix1() throws Exception {
 
         runFailureCode(//--- input code ---
-                DEFINE_BRACES + "\\immediate\\" + invocation + "= {} ",
+                prepare + "\\immediate\\" + invocation + "= {} ",
                 //--- error channel ---
                 "You can't use the prefix `\\immediate' with the control sequence"
                         + (primitive.length() > 14 ? "\n" : " ") + "\\"
@@ -86,10 +105,10 @@ public abstract class AbstractToksRegisterTester extends ExTeXLauncher {
      *
      * @throws Exception in case of an error
      */
-    public void testMuskipRegisterLongPrefix1() throws Exception {
+    public void testToksRegisterLongPrefix1() throws Exception {
 
         runFailureCode(//--- input code ---
-                DEFINE_BRACES + "\\long\\" + invocation + "= {} ",
+                prepare + "\\long\\" + invocation + "= {} ",
                 //--- error channel ---
                 "You can't use the prefix `\\long' with the control sequence"
                         + (primitive.length() > 19 ? "\n" : " ") + "\\"
@@ -103,10 +122,10 @@ public abstract class AbstractToksRegisterTester extends ExTeXLauncher {
      *
      * @throws Exception in case of an error
      */
-    public void testMuskipRegisterOuterPrefix1() throws Exception {
+    public void testToksRegisterOuterPrefix1() throws Exception {
 
         runFailureCode(//--- input code ---
-                DEFINE_BRACES + "\\outer\\" + invocation + "= {} ",
+                prepare + "\\outer\\" + invocation + "= {} ",
                 //--- error channel ---
                 "You can't use the prefix `\\outer' with the control sequence"
                         + (primitive.length() > 18 ? "\n" : " ") + "\\"
@@ -121,10 +140,10 @@ public abstract class AbstractToksRegisterTester extends ExTeXLauncher {
      *
      * @throws Exception in case of an error
      */
-    public void testMuskipRegisterDefault1() throws Exception {
+    public void testToksRegisterDefault1() throws Exception {
 
         runCode(//--- input code ---
-                DEFINE_BRACES + "\\the\\" + invocation + "\\end",
+                prepare + "\\the\\" + invocation + "\\end",
                 //--- output channel ---
                 init + (init.length() != 0 ? TERM : ""));
     }
@@ -137,11 +156,11 @@ public abstract class AbstractToksRegisterTester extends ExTeXLauncher {
      *
      * @throws Exception in case of an error
      */
-    public void testMuskipRegisterAssign1() throws Exception {
+    public void testToksRegisterAssign1() throws Exception {
 
         runCode(//--- input code ---
-                DEFINE_BRACES + "\\" + invocation + "={abc}\\the\\"
-                        + invocation + "\\end",
+                prepare + "\\" + invocation + "={abc}\\the\\" + invocation
+                        + "\\end",
                 //--- output channel ---
                 "abc" + TERM);
     }
@@ -154,11 +173,11 @@ public abstract class AbstractToksRegisterTester extends ExTeXLauncher {
      *
      * @throws Exception in case of an error
      */
-    public void testMuskipRegisterAssign2() throws Exception {
+    public void testToksRegisterAssign2() throws Exception {
 
         runCode(//--- input code ---
-                DEFINE_BRACES + "\\" + invocation + " {abc}\\the\\"
-                        + invocation + "\\end",
+                prepare + "\\" + invocation + " {abc}\\the\\" + invocation
+                        + "\\end",
                 //--- output channel ---
                 "abc" + TERM);
     }
@@ -171,13 +190,13 @@ public abstract class AbstractToksRegisterTester extends ExTeXLauncher {
      *
      * @throws Exception in case of an error
      */
-    public void testMuskipRegisterAssign3() throws Exception {
+    public void testToksRegisterAssign3() throws Exception {
 
         runCode(//--- input code ---
-                DEFINE_BRACES + "\\" + invocation + " {a{b}c}\\the\\"
-                        + invocation + "\\end",
+                prepare + "\\" + invocation + " {a{b}c}\\the\\" + invocation
+                        + "\\end",
                 //--- output channel ---
-                "a{b}c" + TERM);
+                "abc" + TERM);
     }
 
     /**
@@ -188,11 +207,11 @@ public abstract class AbstractToksRegisterTester extends ExTeXLauncher {
      *
      * @throws Exception in case of an error
      */
-    public void testMuskipRegisterAssign4() throws Exception {
+    public void testToksRegisterAssign4() throws Exception {
 
         runCode(//--- input code ---
-                DEFINE_BRACES + "\\" + invocation + " {a#c}\\the\\"
-                        + invocation + "\\end",
+                prepare + "\\" + invocation + " {a#c}\\the\\" + invocation
+                        + "\\end",
                 //--- output channel ---
                 "a#c" + TERM);
     }
@@ -205,13 +224,13 @@ public abstract class AbstractToksRegisterTester extends ExTeXLauncher {
      *
      * @throws Exception in case of an error
      */
-    public void testMuskipRegisterAssign5() throws Exception {
+    public void testToksRegisterAssign5() throws Exception {
 
         runCode(//--- input code ---
                 DEFINE_CATCODES + "\\" + invocation + " {a#c}\\the\\"
                         + invocation + "\\end",
                 //--- output channel ---
-                "a##c" + TERM);
+                "a#c" + TERM); //TODO check: maybe double the #
     }
 
     /**
@@ -221,10 +240,10 @@ public abstract class AbstractToksRegisterTester extends ExTeXLauncher {
      *
      * @throws Exception in case of an error
      */
-    public void testMuskipRegisterAfterassignment1() throws Exception {
+    public void testToksRegisterAfterassignment1() throws Exception {
 
         runCode(//--- input code ---
-                DEFINE_BRACES + "\\afterassignment b a" + "\\" + invocation
+                prepare + "\\afterassignment b a" + "\\" + invocation
                         + "{xyz}c\\the\\" + invocation + "\\end",
                 //--- output channel ---
                 "abcxyz" + TERM);
@@ -237,10 +256,10 @@ public abstract class AbstractToksRegisterTester extends ExTeXLauncher {
      *
      * @throws Exception in case of an error
      */
-    public void testMuskipRegisterGroup1() throws Exception {
+    public void testToksRegisterGroup1() throws Exception {
 
         runCode(//--- input code ---
-                DEFINE_BRACES + "\\" + invocation + "={xyz}\\begingroup\\"
+                prepare + "\\" + invocation + "={xyz}\\begingroup\\"
                         + invocation + "={abc}\\endgroup" + " \\the\\"
                         + invocation + "\\end",
                 //--- output channel ---
@@ -255,11 +274,11 @@ public abstract class AbstractToksRegisterTester extends ExTeXLauncher {
      *
      * @throws Exception in case of an error
      */
-    public void testMuskipRegisterGlobalAssign1() throws Exception {
+    public void testToksRegisterGlobalAssign1() throws Exception {
 
         runCode(
                 //--- input code ---
-                DEFINE_BRACES + "\\begingroup\\global\\" + invocation
+                prepare + "\\begingroup\\global\\" + invocation
                         + "={abc}\\endgroup" + "\\the\\" + invocation + "\\end",
                 //--- output channel ---
                 "abc" + TERM);
@@ -273,11 +292,11 @@ public abstract class AbstractToksRegisterTester extends ExTeXLauncher {
      *
      * @throws Exception in case of an error
      */
-    public void testMuskipRegisterGlobalAssign2() throws Exception {
+    public void testToksRegisterGlobalAssign2() throws Exception {
 
         runCode(
                 //--- input code ---
-                DEFINE_BRACES + "\\begingroup\\global\\" + invocation
+                prepare + "\\begingroup\\global\\" + invocation
                         + " {abc}\\endgroup" + "\\the\\" + invocation + "\\end",
                 //--- output channel ---
                 "abc" + TERM);
