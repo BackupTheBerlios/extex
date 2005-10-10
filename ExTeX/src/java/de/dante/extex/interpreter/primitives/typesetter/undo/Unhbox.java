@@ -56,7 +56,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class Unhbox extends AbstractBox {
 
@@ -88,7 +88,7 @@ public class Unhbox extends AbstractBox {
 
         String key = getKey(context, source);
         Box b = context.getBox(key);
-        if (b.isVoid()) {
+        if (b == null || b.isVoid()) {
             // nothing to do
         } else if (!b.isHbox()) {
             throw new HelpingException(getLocalizer(), "TTP.IncompatibleUnbox");
