@@ -29,7 +29,7 @@ import de.dante.extex.interpreter.type.dimen.FixedDimen;
  * This class defines an arbitray paragraph shape.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class ParagraphShape {
 
@@ -75,7 +75,7 @@ public class ParagraphShape {
         if (index < 0) {
             return Dimen.ZERO_PT;
         }
-        int i = points.size() / 2;
+        int i = (points.size() - 1) / 2;
         return (FixedDimen) points.get((index > i ? i : index) * 2);
     }
 
@@ -94,7 +94,7 @@ public class ParagraphShape {
         if (index < 0) {
             return Dimen.ZERO_PT;
         }
-        int i = points.size() / 2;
+        int i = (points.size() - 1) / 2;
         return (FixedDimen) points.get((index > i ? i : index) * 2 + 1);
     }
 
