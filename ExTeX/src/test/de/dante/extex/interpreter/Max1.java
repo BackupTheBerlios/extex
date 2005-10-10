@@ -56,7 +56,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.64 $
+ * @version $Revision: 1.65 $
  */
 public class Max1 extends TestCase {
 
@@ -82,7 +82,9 @@ public class Max1 extends TestCase {
          * @see de.dante.extex.typesetter.Typesetter#add(
          *      de.dante.extex.interpreter.type.node.CharNode)
          */
-        public void add(final Node c) throws TypesetterException, ConfigurationException {
+        public void add(final Node c)
+                throws TypesetterException,
+                    ConfigurationException {
 
             // nothing to do
         }
@@ -102,7 +104,9 @@ public class Max1 extends TestCase {
          *      de.dante.extex.interpreter.type.count.Count)
          */
         public void addSpace(final TypesettingContext typesettingContext,
-                final Count spacefactor) throws TypesetterException, ConfigurationException {
+                final Count spacefactor)
+                throws TypesetterException,
+                    ConfigurationException {
 
             sb.append(" ");
         }
@@ -125,7 +129,8 @@ public class Max1 extends TestCase {
          * @see de.dante.extex.typesetter.Typesetter#complete(TypesetterOptions)
          */
         public NodeList complete(final TypesetterOptions context)
-                throws TypesetterException, ConfigurationException {
+                throws TypesetterException,
+                    ConfigurationException {
 
             return null;
         }
@@ -236,7 +241,9 @@ public class Max1 extends TestCase {
          *      Context, TokenSource, de.dante.extex.scanner.type.Token)
          */
         public void mathShift(final Context context, final TokenSource source,
-                final Token t) throws TypesetterException, ConfigurationException {
+                final Token t)
+                throws TypesetterException,
+                    ConfigurationException {
 
         }
 
@@ -373,8 +380,8 @@ public class Max1 extends TestCase {
          *      TokenSource, Typesetter, de.dante.extex.scanner.type.Token)
          */
         public void subscriptMark(final Context context,
-                final TokenSource source, final Typesetter typesetter, final Token t)
-                throws TypesetterException {
+                final TokenSource source, final Typesetter typesetter,
+                final Token t) throws TypesetterException {
 
         }
 
@@ -384,8 +391,8 @@ public class Max1 extends TestCase {
          *      TokenSource, Typesetter, de.dante.extex.scanner.type.Token)
          */
         public void superscriptMark(final Context context,
-                final TokenSource source, final Typesetter typesetter, final Token t)
-                throws TypesetterException {
+                final TokenSource source, final Typesetter typesetter,
+                final Token t) throws TypesetterException {
 
         }
 
@@ -395,7 +402,9 @@ public class Max1 extends TestCase {
          *      TokenSource, de.dante.extex.scanner.type.Token)
          */
         public void tab(final Context context, final TokenSource source,
-                final Token t) throws TypesetterException, ConfigurationException {
+                final Token t)
+                throws TypesetterException,
+                    ConfigurationException {
 
         }
 
