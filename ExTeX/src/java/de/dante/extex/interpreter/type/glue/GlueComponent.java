@@ -60,7 +60,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.39 $
+ * @version $Revision: 1.40 $
  */
 public class GlueComponent implements Serializable, FixedGlueComponent {
 
@@ -476,7 +476,7 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
 
         Token t;
         for (;;) {
-            t = source.scanNonSpace(context);
+            t = source.getNonSpace(context);
             if (t == null) {
                 throw new HelpingException(getMyLocalizer(), "TTP.IllegalUnit");
             } else if (t instanceof CodeToken) {
