@@ -19,18 +19,20 @@
 
 package de.dante.extex.interpreter.primitives.typesetter.paragraph;
 
-import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.exception.helping.CantUseInException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.count.CountConvertible;
+import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.DimenConvertible;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.scanner.type.CatcodeException;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
+import de.dante.util.exception.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\relax</code>.
@@ -58,7 +60,7 @@ import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Parshapeindent extends AbstractCode
         implements
@@ -84,7 +86,7 @@ public class Parshapeindent extends AbstractCode
     /**
      * @see de.dante.extex.interpreter.type.count.CountConvertible#convertCount(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource, final Typesetter)
+     *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
     public long convertCount(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
@@ -102,7 +104,8 @@ public class Parshapeindent extends AbstractCode
 
         int n = (int) source.scanInteger(context, typesetter);
         ParagraphShape parshape = context.getParshape();
-        return (parshape == null || n < 0 ? 0 : parshape.getIndent(n).getValue());
+        return (parshape == null || n < 0 ? 0 : parshape.getIndent(n)
+                .getValue());
     }
 
     /**
@@ -113,6 +116,19 @@ public class Parshapeindent extends AbstractCode
     public Tokens the(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        return new Tokens(context, convertCount(context, source, typesetter));
+        int n = (int) source.scanInteger(context, typesetter);
+        ParagraphShape parshape = context.getParshape();
+        FixedDimen d = (parshape == null || n < 0 ? Dimen.ZERO_PT : parshape
+                .getIndent(n));
+
+        try {
+            return d.toToks(context.getTokenFactory());
+        } catch (CatcodeException e) {
+            throw new InterpreterException(e);
+        } catch (InterpreterException e) {
+            throw e;
+        } catch (GeneralException e) {
+            throw new InterpreterException(e);
+        }
     }
 }
