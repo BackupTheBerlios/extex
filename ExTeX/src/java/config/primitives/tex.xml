@@ -25,7 +25,7 @@
           class="de.dante.extex.interpreter.primitives.typesetter.spacing.Space"/>
   <define name="/"
           class="de.dante.extex.interpreter.primitives.typesetter.spacing.ItalicCorrection"/>
-  <define name="\\"
+  <define name="\"
           class="de.dante.extex.interpreter.primitives.typesetter.paragraph.NewLine"/>
   <define name="above"
           class="de.dante.extex.interpreter.primitives.math.fraction.Above"/>
