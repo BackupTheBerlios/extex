@@ -17,7 +17,7 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.typesetter;
+package de.dante.extex.interpreter;
 
 import java.util.Properties;
 
