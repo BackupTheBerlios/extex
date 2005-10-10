@@ -26,7 +26,7 @@ import de.dante.util.framework.i18n.Localizer;
  * This is the base class for all exceptions of the interpreter.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class InterpreterException extends GeneralException {
 
@@ -41,11 +41,28 @@ public class InterpreterException extends GeneralException {
     private Localizer localizer = null;
 
     /**
+     * The field <tt>processed</tt> contains the indicator that the exception
+     * has been processed by an error handler already.
+     */
+    private boolean processed = false;
+
+    /**
      * Creates a new object.
      */
     public InterpreterException() {
 
         super();
+    }
+
+    /**
+     * Creates a new object.
+     *
+     * @param localizer the localizer
+     */
+    public InterpreterException(final Localizer localizer) {
+
+        super();
+        this.localizer = localizer;
     }
 
     /**
@@ -69,17 +86,6 @@ public class InterpreterException extends GeneralException {
     }
 
     /**
-     * Creates a new object.
-     *
-     * @param localizer the localizer
-     */
-    public InterpreterException(final Localizer localizer) {
-
-        super();
-        this.localizer = localizer;
-    }
-
-    /**
      * Getter for localizer.
      * If no localizer is stored within the current instance than the localizer
      * is created with the class name as key.
@@ -89,5 +95,25 @@ public class InterpreterException extends GeneralException {
     public Localizer getLocalizer() {
 
         return (this.localizer != null ? this.localizer : super.getLocalizer());
+    }
+
+    /**
+     * Getter for processed.
+     *
+     * @return the processed
+     */
+    public boolean isProcessed() {
+
+        return this.processed;
+    }
+
+    /**
+     * Setter for processed.
+     *
+     * @param processed the processed to set
+     */
+    public void setProcessed(boolean processed) {
+
+        this.processed = processed;
     }
 }
