@@ -19,10 +19,14 @@
 
 package de.dante.extex.interpreter.primitives.string;
 
+import com.ibm.icu.lang.UCharacter;
+
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.exception.helping.InvalidCharacterException;
+import de.dante.extex.interpreter.exception.helping.InvalidCodeException;
 import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.Theable;
@@ -31,7 +35,6 @@ import de.dante.extex.interpreter.type.dimen.DimenConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.UnicodeChar;
-import de.dante.util.exception.GeneralException;
 
 /**
  * This class provides an implementation for the primitive
@@ -57,7 +60,7 @@ import de.dante.util.exception.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class Uccode extends AbstractAssignment
         implements
@@ -92,10 +95,42 @@ public class Uccode extends AbstractAssignment
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        UnicodeChar ucCode = source.scanCharacterCode(context, getName());
+        UnicodeChar ucCode = source.scanCharacterCode(context, typesetter,
+                getName());
         source.getOptionalEquals(context);
-        UnicodeChar lcCode = source.scanCharacterCode(context, getName());
-        context.setUccode(ucCode, lcCode);
+        try {
+            UnicodeChar lcCode = source.scanCharacterCode(context, typesetter,
+                    getName());
+            context.setUccode(ucCode, lcCode, prefix.isGlobal());
+            prefix.clearGlobal();
+        } catch (InvalidCharacterException e) {
+            throw new InvalidCodeException(e.getChar(), Integer
+                    .toString(UCharacter.MAX_VALUE));
+        }
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.count.CountConvertible#convertCount(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource, Typesetter)
+     */
+    public long convertCount(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
+
+        UnicodeChar ucCode = source.scanCharacterCode(context, typesetter,
+                getName());
+        return context.getUccode(ucCode).getCodePoint();
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.dimen.DimenConvertible#convertDimen(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource, Typesetter)
+     */
+    public long convertDimen(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
+
+        return convertCount(context, source, typesetter);
     }
 
     /**
@@ -121,32 +156,5 @@ public class Uccode extends AbstractAssignment
             final Typesetter typesetter) throws InterpreterException {
 
         return new Tokens(context, convertCount(context, source, typesetter));
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.type.count.CountConvertible#convertCount(
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource, Typesetter)
-     */
-    public long convertCount(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws InterpreterException {
-
-        try {
-            UnicodeChar ucCode = source.scanCharacterCode(context, getName());
-            return context.getUccode(ucCode).getCodePoint();
-        } catch (GeneralException e) {
-            throw new InterpreterException(e);
-        }
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.type.dimen.DimenConvertible#convertDimen(
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource, Typesetter)
-     */
-    public long convertDimen(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws InterpreterException {
-
-        return convertCount(context, source, typesetter);
     }
 }

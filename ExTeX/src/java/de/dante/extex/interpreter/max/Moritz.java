@@ -32,6 +32,8 @@ import de.dante.extex.interpreter.exception.IllegalRegisterException;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
+import de.dante.extex.interpreter.exception.helping.InvalidCharacterException;
+import de.dante.extex.interpreter.exception.helping.InvalidCharacterNameException;
 import de.dante.extex.interpreter.exception.helping.MissingLeftBraceException;
 import de.dante.extex.interpreter.exception.helping.MissingNumberException;
 import de.dante.extex.interpreter.exception.helping.UndefinedControlSequenceException;
@@ -59,6 +61,7 @@ import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.font.FontConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.scanner.exception.ScannerException;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.extex.scanner.stream.observer.file.OpenFileObservable;
@@ -99,7 +102,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.80 $
+ * @version $Revision: 1.81 $
  */
 public class Moritz extends Max
         implements
@@ -682,9 +685,7 @@ public class Moritz extends Max
 
                     closeStream(context);
                 }
-            } catch (InterpreterException e) {
-                throw e;
-            } catch (GeneralException e) {
+            } catch (ScannerException e) {
                 throw new InterpreterException(e);
             }
 
@@ -701,9 +702,7 @@ public class Moritz extends Max
                     }
                     closeStream(context);
                 }
-            } catch (InterpreterException e) {
-                throw e;
-            } catch (GeneralException e) {
+            } catch (ScannerException e) {
                 throw new InterpreterException(e);
             }
         }
@@ -965,10 +964,12 @@ public class Moritz extends Max
      *
      * @see de.dante.extex.interpreter.TokenSource#scanCharacterCode(
      *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.typesetter.Typesetter,
      *      java.lang.String)
      */
     public UnicodeChar scanCharacterCode(final Context context,
-            final String primitive) throws InterpreterException {
+            final Typesetter typesetter, final String primitive)
+            throws InterpreterException {
 
         long cc;
 
@@ -977,20 +978,20 @@ public class Moritz extends Max
             push(t);
             String name = scanTokensAsString(context, primitive);
             if (name == null) {
-                throw new HelpingException(getLocalizer(), "BadCharName", "");
+                throw new InvalidCharacterNameException("");
             }
             cc = UCharacter.getCharFromName(name);
 
             if (cc < 0 || cc > MAX_CHAR_CODE) {
-                throw new HelpingException(getLocalizer(), "BadCharName", name);
+                throw new InvalidCharacterNameException(name);
             }
         } else {
 
-            cc = scanNumber(context, t);
+            push(t);
+            cc = scanInteger(context, typesetter);
 
             if (cc < 0 || cc > MAX_CHAR_CODE) {
-                throw new HelpingException(getLocalizer(), "TTP.BadCharCode", //
-                        Long.toString(cc), "0", Long.toString(MAX_CHAR_CODE));
+                throw new InvalidCharacterException(Long.toString(cc));
             }
         }
 
@@ -1030,14 +1031,20 @@ public class Moritz extends Max
 
             } else if (t.equals(Catcode.OTHER, '+')) {
                 // + is absorbed
+
             } else if (t instanceof CodeToken) {
                 Code code = context.getCode((CodeToken) t);
+
                 if (code instanceof CountConvertible) {
+
                     return ((CountConvertible) code).convertCount(context,
                             this, typesetter);
+
                 } else if (code instanceof ExpandableCode) {
+
                     ((ExpandableCode) code).expand(Flags.NONE, context, this,
                             typesetter);
+
                 } else {
                     break;
                 }

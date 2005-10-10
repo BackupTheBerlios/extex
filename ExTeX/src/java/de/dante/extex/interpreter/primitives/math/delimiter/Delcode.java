@@ -111,7 +111,7 @@ import de.dante.util.UnicodeChar;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Delcode extends AbstractAssignment
         implements
@@ -146,7 +146,7 @@ public class Delcode extends AbstractAssignment
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        UnicodeChar charCode = source.scanCharacterCode(context, getName());
+        UnicodeChar charCode = source.scanCharacterCode(context, typesetter, getName());
         source.getKeyword(context, "by");
 
         long value = Count.scanCount(context, source, null);
@@ -167,10 +167,10 @@ public class Delcode extends AbstractAssignment
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        UnicodeChar charCode = source.scanCharacterCode(context, getName());
+        UnicodeChar charCode = source.scanCharacterCode(context, typesetter, getName());
         source.getOptionalEquals(context);
         MathDelimiter del = AbstractTeXDelimter.parseDelimiter(context, source,
-                getName());
+                typesetter, getName());
         context.setDelcode(charCode, del, prefix.isGlobal());
         prefix.clearGlobal();
     }
@@ -215,7 +215,7 @@ public class Delcode extends AbstractAssignment
     public long convertCount(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        UnicodeChar charCode = source.scanCharacterCode(context, getName());
+        UnicodeChar charCode = source.scanCharacterCode(context, typesetter, getName());
         MathDelimiter delcode = context.getDelcode(charCode);
         return AbstractTeXDelimter.toTeX(delcode);
     }
@@ -230,7 +230,7 @@ public class Delcode extends AbstractAssignment
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        UnicodeChar charCode = source.scanCharacterCode(context, getName());
+        UnicodeChar charCode = source.scanCharacterCode(context, typesetter, getName());
         source.getKeyword(context, "by");
 
         long value = Count.scanCount(context, source, null);
@@ -254,7 +254,7 @@ public class Delcode extends AbstractAssignment
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        UnicodeChar charCode = source.scanCharacterCode(context, getName());
+        UnicodeChar charCode = source.scanCharacterCode(context, typesetter, getName());
         source.getKeyword(context, "by");
 
         long value = Count.scanCount(context, source, null);
@@ -272,7 +272,7 @@ public class Delcode extends AbstractAssignment
     public Tokens the(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        UnicodeChar charCode = source.scanCharacterCode(context, getName());
+        UnicodeChar charCode = source.scanCharacterCode(context, typesetter, getName());
         MathDelimiter delcode = context.getDelcode(charCode);
         long value = AbstractTeXDelimter.toTeX(delcode);
         return new Tokens(context, value);

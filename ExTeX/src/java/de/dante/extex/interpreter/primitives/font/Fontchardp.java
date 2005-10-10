@@ -63,7 +63,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Fontchardp extends AbstractCode
         implements
@@ -142,7 +142,7 @@ public class Fontchardp extends AbstractCode
 
         try {
             Font fnt = source.getFont(context, getName());
-            UnicodeChar uc = source.scanCharacterCode(context, null);
+            UnicodeChar uc = source.scanCharacterCode(context, typesetter, null);
             Glyph glyph = fnt.getGlyph(uc);
             Dimen depth = (glyph != null ? glyph.getDepth() : null);
             return (depth != null ? depth : Dimen.ZERO_PT);

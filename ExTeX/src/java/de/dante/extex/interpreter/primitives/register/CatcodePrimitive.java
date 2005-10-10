@@ -24,6 +24,7 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
+import de.dante.extex.interpreter.exception.helping.InvalidCodeException;
 import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.count.CountConvertible;
@@ -109,7 +110,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class CatcodePrimitive extends AbstractAssignment
         implements
@@ -142,7 +143,7 @@ public class CatcodePrimitive extends AbstractAssignment
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        UnicodeChar charCode = source.scanCharacterCode(context, getName());
+        UnicodeChar charCode = source.scanCharacterCode(context, typesetter, getName());
         source.getOptionalEquals(context);
         long ccNumber = source.scanInteger(context, typesetter);
 
@@ -151,8 +152,7 @@ public class CatcodePrimitive extends AbstractAssignment
                     prefix.isGlobal());
             prefix.clearGlobal();
         } catch (CatcodeException e) {
-            throw new HelpingException(getLocalizer(), "TTP.CodeOutOfRange",
-                    Long.toString(ccNumber), //
+            throw new InvalidCodeException(Long.toString(ccNumber), //
                     Integer.toString(Catcode.getCatcodeMax()));
         }
 
@@ -167,7 +167,7 @@ public class CatcodePrimitive extends AbstractAssignment
     public long convertCount(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        UnicodeChar charCode = source.scanCharacterCode(context, getName());
+        UnicodeChar charCode = source.scanCharacterCode(context, typesetter, getName());
 
         return context.getCatcode(charCode).getCode();
     }

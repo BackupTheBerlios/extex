@@ -19,10 +19,14 @@
 
 package de.dante.extex.interpreter.primitives.string;
 
+import com.ibm.icu.lang.UCharacter;
+
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.exception.helping.InvalidCharacterException;
+import de.dante.extex.interpreter.exception.helping.InvalidCodeException;
 import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.Theable;
@@ -31,7 +35,6 @@ import de.dante.extex.interpreter.type.dimen.DimenConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.UnicodeChar;
-import de.dante.util.exception.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\lccode</code>.
@@ -56,7 +59,7 @@ import de.dante.util.exception.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class Lccode extends AbstractAssignment
         implements
@@ -91,10 +94,18 @@ public class Lccode extends AbstractAssignment
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        UnicodeChar ucCode = source.scanCharacterCode(context, getName());
+        UnicodeChar ucCode = source.scanCharacterCode(context, typesetter,
+                getName());
         source.getOptionalEquals(context);
-        UnicodeChar lcCode = source.scanCharacterCode(context, getName());
-        context.setLccode(ucCode, lcCode);
+        try {
+            UnicodeChar lcCode = source.scanCharacterCode(context, typesetter,
+                    getName());
+            context.setLccode(ucCode, lcCode, prefix.isGlobal());
+            prefix.clearGlobal();
+        } catch (InvalidCharacterException e) {
+            throw new InvalidCodeException(e.getChar(), Integer
+                    .toString(UCharacter.MAX_VALUE));
+        }
     }
 
     /**
@@ -130,12 +141,9 @@ public class Lccode extends AbstractAssignment
     public long convertCount(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        try {
-            UnicodeChar ucCode = source.scanCharacterCode(context, getName());
-            return context.getLccode(ucCode).getCodePoint();
-        } catch (GeneralException e) {
-            throw new InterpreterException(e);
-        }
+        UnicodeChar ucCode = source.scanCharacterCode(context, typesetter,
+                getName());
+        return context.getLccode(ucCode).getCodePoint();
     }
 
     /**

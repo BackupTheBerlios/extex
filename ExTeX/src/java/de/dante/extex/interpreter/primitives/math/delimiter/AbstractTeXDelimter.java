@@ -30,6 +30,7 @@ import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.scanner.type.token.CodeToken;
 import de.dante.extex.scanner.type.token.OtherToken;
 import de.dante.extex.scanner.type.token.Token;
+import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.math.MathClass;
 import de.dante.extex.typesetter.type.math.MathClassVisitor;
 import de.dante.extex.typesetter.type.math.MathDelimiter;
@@ -44,7 +45,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * to and from their <logo>TeX</logo> encoding as numbers to abstract math code.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public abstract class AbstractTeXDelimter extends AbstractMathCode {
 
@@ -254,6 +255,7 @@ public abstract class AbstractTeXDelimter extends AbstractMathCode {
      *
      * @param context the interpreter context
      * @param source the token source to read from
+     * @param typesetter the typesetter
      * @param mClass the math class
      * @param primitive the name of the primitive for error handling
      *
@@ -262,13 +264,16 @@ public abstract class AbstractTeXDelimter extends AbstractMathCode {
      * @throws InterpreterException in case of an error
      */
     private static MathDelimiter parse(final Context context,
-            final TokenSource source, final MathClass mClass,
-            final String primitive) throws InterpreterException {
+            final TokenSource source, Typesetter typesetter,
+            final MathClass mClass, final String primitive)
+            throws InterpreterException {
 
         int smallFam = (int) source.scanNumber(context);
-        UnicodeChar smallChar = source.scanCharacterCode(context, primitive);
+        UnicodeChar smallChar = source.scanCharacterCode(context, typesetter,
+                primitive);
         int largeFam = (int) source.scanNumber(context);
-        UnicodeChar largeChar = source.scanCharacterCode(context, primitive);
+        UnicodeChar largeChar = source.scanCharacterCode(context, typesetter,
+                primitive);
 
         return new MathDelimiter(mClass, new MathGlyph(smallFam, smallChar),
                 new MathGlyph(largeFam, largeChar));
@@ -284,6 +289,7 @@ public abstract class AbstractTeXDelimter extends AbstractMathCode {
      *
      * @param context the interpreter context
      * @param source the token source to read from
+     * @param typesetter the typesetter
      * @param primitive the name of the primitive for error handling
      *
      * @return the MathDelimiter acquired
@@ -291,8 +297,8 @@ public abstract class AbstractTeXDelimter extends AbstractMathCode {
      * @throws InterpreterException in case of an error
      */
     public static MathDelimiter parseDelimiter(final Context context,
-            final TokenSource source, final String primitive)
-            throws InterpreterException {
+            final TokenSource source, final Typesetter typesetter,
+            final String primitive) throws InterpreterException {
 
         Token t = source.getToken(context);
         if (t == null) {
@@ -321,47 +327,47 @@ public abstract class AbstractTeXDelimter extends AbstractMathCode {
                 switch (t.getChar().getCodePoint()) {
                     case 'b':
                         if (source.getKeyword(context, "bin")) {
-                            return parse(context, source, MathClass.BINARY,
-                                    primitive);
+                            return parse(context, source, typesetter,
+                                    MathClass.BINARY, primitive);
                         }
                         break;
                     case 'c':
                         if (source.getKeyword(context, "close")) {
-                            return parse(context, source, MathClass.CLOSING,
-                                    primitive);
+                            return parse(context, source, typesetter,
+                                    MathClass.CLOSING, primitive);
                         }
                         break;
                     case 'l':
                         if (source.getKeyword(context, "large")) {
-                            return parse(context, source, MathClass.LARGE,
-                                    primitive);
+                            return parse(context, source, typesetter,
+                                    MathClass.LARGE, primitive);
                         }
                         break;
                     case 'o':
                         if (source.getKeyword(context, "open")) {
-                            return parse(context, source, MathClass.OPENING,
-                                    primitive);
+                            return parse(context, source, typesetter,
+                                    MathClass.OPENING, primitive);
                         } else if (source.getKeyword(context, "ord")) {
-                            return parse(context, source, MathClass.ORDINARY,
-                                    primitive);
+                            return parse(context, source, typesetter,
+                                    MathClass.ORDINARY, primitive);
                         }
                         break;
                     case 'p':
                         if (source.getKeyword(context, "punct")) {
-                            return parse(context, source,
+                            return parse(context, source, typesetter,
                                     MathClass.PUNCTUATION, primitive);
                         }
                         break;
                     case 'r':
                         if (source.getKeyword(context, "rel")) {
-                            return parse(context, source, MathClass.RELATION,
-                                    primitive);
+                            return parse(context, source, typesetter,
+                                    MathClass.RELATION, primitive);
                         }
                         break;
                     case 'v':
                         if (source.getKeyword(context, "var")) {
-                            return parse(context, source, MathClass.VARIABLE,
-                                    primitive);
+                            return parse(context, source, typesetter,
+                                    MathClass.VARIABLE, primitive);
                         }
                         break;
                     default:
