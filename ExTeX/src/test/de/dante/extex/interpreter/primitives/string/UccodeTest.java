@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -17,42 +17,34 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.table;
+package de.dante.extex.interpreter.primitives.string;
 
-import de.dante.test.NoFlagsPrimitiveTester;
 
 /**
- * This is a test suite for the primitive <tt>\cr</tt>.
+ * This is a test suite for the primitive <tt>&#x5c;uccode</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.1 $
  */
-public class CrTest extends NoFlagsPrimitiveTester {
+public class UccodeTest extends AbstractCharMapTester {
 
     /**
-     * Creates a new object.
-     *
-     * @param arg the name
+     * Command line interface.
+     * @param args the arguments
      */
-    public CrTest(final String arg) {
+    public static void main(final String[] args) {
 
-        super(arg, "cr", "", DEFINE_CATCODES + "\\halign{#\\");
+        junit.textui.TestRunner.run(UccodeTest.class);
     }
 
     /**
-     * <testcase primitive="\cr">
-     *  Test case checking that <tt>\cr</tt> outside of an alignment context
-     *  produces an error.
-     * </testcase>
+     * Constructor for UccodeTest.
      *
-     * @throws Exception in case of an error
+     * @param arg the name
      */
-    public void testLonelyCr() throws Exception {
+    public UccodeTest(final String arg) {
 
-        assertFailure(//--- input code ---
-                "\\cr" + "\\end ",
-                //--- log message ---
-                "Misplaced \\cr");
+        super(arg, "uccode", "65", "65", "1114111");
     }
 
 }

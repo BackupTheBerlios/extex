@@ -19,15 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.table;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.test.NoFlagsPrimitiveTester;
 
 /**
- * This is a test suite for the primitive <tt>\cr</tt>.
+ * This is a test suite for the primitive <tt>\crcr</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
-public class CrcrTest extends ExTeXLauncher {
+public class CrcrTest extends NoFlagsPrimitiveTester {
 
     /**
      * Creates a new object.
@@ -36,29 +36,23 @@ public class CrcrTest extends ExTeXLauncher {
      */
     public CrcrTest(final String arg) {
 
-        super(arg);
+        super(arg, "crcr", "");
     }
 
     /**
-     * Test case checking that \crcr outside of an alignment context produces an
-     * error.
+     * <testcase primitive="\crcr">
+     *  Test case checking that <tt>\crcr</tt> outside of an alignment context
+     *  produces an error.
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
     public void testLonelyCr() throws Exception {
 
-        runCode(//--- input code ---
-                "\\catcode`{=1"
-                + "\\catcode`}=2"
-                + "\\catcode`&=4"
-                + "\\catcode`#=6"
-                + ""
-                + "\\crcr"
-                + "\\end ",
+        assertFailure(//--- input code ---
+                "\\crcr" + "\\end ",
                 //--- log message ---
-                "Misplaced \\crcr",
-                //--- output channel ---
-                "");
+                "Misplaced \\crcr");
     }
 
 }

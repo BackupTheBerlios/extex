@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -17,42 +17,35 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.table;
+package de.dante.extex.interpreter.primitives.typesetter;
 
-import de.dante.test.NoFlagsPrimitiveTester;
+import de.dante.test.ExTeXLauncher;
 
 /**
- * This is a test suite for the primitive <tt>\cr</tt>.
+ * This is a test suite for the primitive <tt>\penalty</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.1 $
  */
-public class CrTest extends NoFlagsPrimitiveTester {
+public class PenaltyTest extends ExTeXLauncher {
 
     /**
-     * Creates a new object.
-     *
-     * @param arg the name
+     * Command line interface.
+     * @param args the arguments
      */
-    public CrTest(final String arg) {
+    public static void main(final String[] args) {
 
-        super(arg, "cr", "", DEFINE_CATCODES + "\\halign{#\\");
+        junit.textui.TestRunner.run(PenaltyTest.class);
     }
 
     /**
-     * <testcase primitive="\cr">
-     *  Test case checking that <tt>\cr</tt> outside of an alignment context
-     *  produces an error.
-     * </testcase>
+     * Constructor for PenaltyTest.
      *
-     * @throws Exception in case of an error
+     * @param arg the name
      */
-    public void testLonelyCr() throws Exception {
+    public PenaltyTest(final String arg) {
 
-        assertFailure(//--- input code ---
-                "\\cr" + "\\end ",
-                //--- log message ---
-                "Misplaced \\cr");
+        super(arg);
     }
 
 }

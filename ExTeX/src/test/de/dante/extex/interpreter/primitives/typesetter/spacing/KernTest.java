@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -17,42 +17,37 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.table;
+package de.dante.extex.interpreter.primitives.typesetter.spacing;
 
 import de.dante.test.NoFlagsPrimitiveTester;
 
 /**
- * This is a test suite for the primitive <tt>\cr</tt>.
+ * This is a test suite for the primitive <tt>\kern</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.1 $
  */
-public class CrTest extends NoFlagsPrimitiveTester {
+public class KernTest extends NoFlagsPrimitiveTester {
 
     /**
-     * Creates a new object.
+     * Command line interface.
+     * @param args the arguments
+     */
+    public static void main(final String[] args) {
+
+        junit.textui.TestRunner.run(KernTest.class);
+    }
+
+    /**
+     * Constructor for KernTest.
      *
      * @param arg the name
      */
-    public CrTest(final String arg) {
+    public KernTest(final String arg) {
 
-        super(arg, "cr", "", DEFINE_CATCODES + "\\halign{#\\");
+        super(arg, "kern", "1pt");
     }
 
-    /**
-     * <testcase primitive="\cr">
-     *  Test case checking that <tt>\cr</tt> outside of an alignment context
-     *  produces an error.
-     * </testcase>
-     *
-     * @throws Exception in case of an error
-     */
-    public void testLonelyCr() throws Exception {
-
-        assertFailure(//--- input code ---
-                "\\cr" + "\\end ",
-                //--- log message ---
-                "Misplaced \\cr");
-    }
+    //TODO implement primitive specific test cases
 
 }
