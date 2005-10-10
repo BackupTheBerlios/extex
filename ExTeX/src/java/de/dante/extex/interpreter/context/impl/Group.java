@@ -53,7 +53,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.33 $
+ * @version $Revision: 1.34 $
  */
 public interface Group extends Tokenizer, Serializable {
 
@@ -444,7 +444,7 @@ public interface Group extends Tokenizer, Serializable {
      * @param uc upper case character
      * @param lc lower case equivalent
      */
-    void setLccode(UnicodeChar uc, UnicodeChar lc);
+    void setLccode(UnicodeChar uc, UnicodeChar lc, boolean global);
 
     /**
      * Setter for the mathcode of a character.
@@ -537,6 +537,6 @@ public interface Group extends Tokenizer, Serializable {
      * @param lc lower  case character
      * @param uc uppercase equivalent
      */
-    void setUccode(UnicodeChar lc, UnicodeChar uc);
+    void setUccode(UnicodeChar lc, UnicodeChar uc, boolean global);
 
 }

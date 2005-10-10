@@ -48,7 +48,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.60 $
+ * @version $Revision: 1.61 $
  */
 public interface Context
         extends
@@ -346,7 +346,7 @@ public interface Context
      * @param uc upper case character
      * @param lc lower case equivalent
      */
-    void setLccode(UnicodeChar uc, UnicodeChar lc);
+    void setLccode(UnicodeChar uc, UnicodeChar lc, boolean global);
 
     /**
      * Setter for the magnification. The magnification is a global value which
@@ -485,6 +485,6 @@ public interface Context
      * @param lc lower  case character
      * @param uc uppercase equivalent
      */
-    void setUccode(UnicodeChar lc, UnicodeChar uc);
+    void setUccode(UnicodeChar lc, UnicodeChar uc, boolean global);
 
 }
