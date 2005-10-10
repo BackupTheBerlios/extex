@@ -19,15 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.parameter;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.extex.interpreter.primitives.string.AbstractCharMapTester;
 
 /**
  * This is a test suite for the primitive <tt>\sfcode</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class SfcodeTest extends ExTeXLauncher {
+public class SfcodeTest extends AbstractCharMapTester {
 
     /**
      * Creates a new object.
@@ -36,7 +36,7 @@ public class SfcodeTest extends ExTeXLauncher {
      */
     public SfcodeTest(final String arg) {
 
-        super(arg);
+        super(arg, "sfcode", "65", "999", "32767");
     }
 
 }
