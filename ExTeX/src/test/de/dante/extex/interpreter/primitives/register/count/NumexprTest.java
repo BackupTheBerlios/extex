@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\numexpr</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class NumexprTest extends ExTeXLauncher {
 
@@ -49,7 +49,7 @@ public class NumexprTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="numexpr">
+     * <testcase primitive="\numexpr">
      *  Test case checking that <tt>\numexpr</tt> without any term produces an
      *  error.
      * </testcase>
@@ -67,7 +67,7 @@ public class NumexprTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="numexpr">
+     * <testcase primitive="\numexpr">
      *  Test case checking that <tt>\numexpr</tt> with a non-balanced
      *  parenthesis produces an error.
      * </testcase>
@@ -85,7 +85,7 @@ public class NumexprTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="numexpr">
+     * <testcase primitive="\numexpr">
      *  Test case checking that <tt>\numexpr</tt> with a non-balanced
      *  parenthesis produces an error.
      * </testcase>
@@ -103,7 +103,7 @@ public class NumexprTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="numexpr">
+     * <testcase primitive="\numexpr">
      *  Test case checking that <tt>\numexpr</tt> produces an error for
      *  division by zero.
      * </testcase>
@@ -123,7 +123,7 @@ public class NumexprTest extends ExTeXLauncher {
 
 
     /**
-     * <testcase primitive="numexpr">
+     * <testcase primitive="\numexpr">
      *  Test case checking that <tt>\numexpr</tt> can add two numbers.
      * </testcase>
      *
@@ -141,7 +141,7 @@ public class NumexprTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="numexpr">
+     * <testcase primitive="\numexpr">
      *  Test case checking that <tt>\numexpr</tt> can add multiply numbers.
      * </testcase>
      *
@@ -159,7 +159,7 @@ public class NumexprTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="numexpr">
+     * <testcase primitive="\numexpr">
      *  Test case checking that <tt>\numexpr</tt> can subtract two numbers.
      * </testcase>
      *
@@ -177,7 +177,7 @@ public class NumexprTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="numexpr">
+     * <testcase primitive="\numexpr">
      *  Test case checking that <tt>\numexpr</tt> can divide two numbers.
      * </testcase>
      *
@@ -195,7 +195,7 @@ public class NumexprTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="numexpr">
+     * <testcase primitive="\numexpr">
      *  Test case checking that in <tt>\numexpr</tt> * binds more than +.
      * </testcase>
      *
@@ -213,7 +213,7 @@ public class NumexprTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="numexpr">
+     * <testcase primitive="\numexpr">
      *  Test case checking that in <tt>\numexpr</tt> * binds more than +.
      * </testcase>
      *
@@ -231,7 +231,7 @@ public class NumexprTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="numexpr">
+     * <testcase primitive="\numexpr">
      *  Test case checking that in <tt>\numexpr</tt> / binds more than +.
      * </testcase>
      *
@@ -250,7 +250,7 @@ public class NumexprTest extends ExTeXLauncher {
 
 
     /**
-     * <testcase primitive="numexpr">
+     * <testcase primitive="\numexpr">
      *  Test case checking that in <tt>\numexpr</tt> / binds more than +.
      * </testcase>
      *
@@ -268,7 +268,7 @@ public class NumexprTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="numexpr">
+     * <testcase primitive="\numexpr">
      *  Test case checking that in <tt>\numexpr</tt> * binds more than -.
      * </testcase>
      *
@@ -286,7 +286,7 @@ public class NumexprTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="numexpr">
+     * <testcase primitive="\numexpr">
      *  Test case checking that in <tt>\numexpr</tt> * binds more than -.
      * </testcase>
      *
@@ -304,7 +304,7 @@ public class NumexprTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="numexpr">
+     * <testcase primitive="\numexpr">
      *  Test case checking that in <tt>\numexpr</tt> / binds more than -.
      * </testcase>
      *
@@ -323,7 +323,7 @@ public class NumexprTest extends ExTeXLauncher {
 
 
     /**
-     * <testcase primitive="numexpr">
+     * <testcase primitive="\numexpr">
      *  Test case checking that in <tt>\numexpr</tt> / binds more than -.
      * </testcase>
      *
@@ -341,7 +341,7 @@ public class NumexprTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="numexpr">
+     * <testcase primitive="\numexpr">
      *  Test case checking that in <tt>\numexpr</tt> parentheses work.
      * </testcase>
      *
@@ -359,7 +359,7 @@ public class NumexprTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="numexpr">
+     * <testcase primitive="\numexpr">
      *  Test case checking that in <tt>\numexpr</tt> the unary minus is
      *  treated correctly.
      * </testcase>
@@ -378,7 +378,7 @@ public class NumexprTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="numexpr">
+     * <testcase primitive="\numexpr">
      *  Test case checking that in <tt>\numexpr</tt> the unary minus is
      *  treated correctly &ndash; even if repeated twice.
      * </testcase>
@@ -398,7 +398,7 @@ public class NumexprTest extends ExTeXLauncher {
 
 
     /**
-     * <testcase primitive="numexpr">
+     * <testcase primitive="\numexpr">
      *  Test case checking that in <tt>\numexpr</tt> the unary minus is
      *  treated correctly.
      * </testcase>
@@ -417,7 +417,7 @@ public class NumexprTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="numexpr">
+     * <testcase primitive="\numexpr">
      *  Test case checking that in <tt>\numexpr</tt> the unary minus is
      *  treated correctly &ndash; even if repeated twice.
      * </testcase>
@@ -436,7 +436,7 @@ public class NumexprTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="numexpr">
+     * <testcase primitive="\numexpr">
      *  Test case checking that <tt>\numexpr</tt> can be used after
      *  <tt>\the</tt>.
      * </testcase>
