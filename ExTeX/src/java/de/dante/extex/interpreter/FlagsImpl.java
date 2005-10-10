@@ -24,7 +24,7 @@ package de.dante.extex.interpreter;
  * This is needed to pass controlling information to primitives.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class FlagsImpl implements Flags {
 
@@ -129,6 +129,33 @@ public class FlagsImpl implements Flags {
     }
 
     /**
+     * @see de.dante.extex.interpreter.Flags#copy()
+     */
+    public Flags copy() {
+
+        Flags f = new FlagsImpl();
+        if (expandedP) {
+            f.setExpanded();
+        }
+        if (globalP) {
+            f.setGlobal();
+        }
+        if (longP) {
+            f.setLong();
+        }
+        if (outerP) {
+            f.setOuter();
+        }
+        if (immediateP) {
+            f.setImmediate();
+        }
+        if (protectedP) {
+            f.setProtected();
+        }
+        return f;
+    }
+
+    /**
      * @see de.dante.extex.interpreter.Flags#isDirty()
      */
     public boolean isDirty() {
@@ -193,6 +220,20 @@ public class FlagsImpl implements Flags {
     public boolean isProtected() {
 
         return protectedP;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.Flags#set(
+     *      de.dante.extex.interpreter.Flags)
+     */
+    public void set(final Flags flags) {
+
+        globalP = flags.isGlobal();
+        immediateP = flags.isImmediate();
+        longP = flags.isLong();
+        outerP = flags.isOuter();
+        expandedP = flags.isExpanded();
+        protectedP = flags.isProtected();
     }
 
     /**

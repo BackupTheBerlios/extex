@@ -76,7 +76,7 @@ package de.dante.extex.interpreter;
  * </table>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public interface Flags {
 
@@ -120,6 +120,13 @@ public interface Flags {
      * Setter for the protected flag.
      */
     void clearProtected();
+
+    /**
+     * Clone an instance.
+     *
+     * @return a copy of the instance
+     */
+    Flags copy();
 
     /**
      * Test if all flags are cleared.
@@ -206,5 +213,12 @@ public interface Flags {
      * Setter for the protected flag.
      */
     void setProtected();
+
+    /**
+     * Copy the flag settings from a given instance int this instance.
+     *
+     * @param flags the flags to copy
+     */
+    void set(Flags flags);
 
 }
