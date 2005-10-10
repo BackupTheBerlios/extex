@@ -108,7 +108,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.86 $
+ * @version $Revision: 1.87 $
  */
 public abstract class Max
         implements
@@ -574,23 +574,14 @@ public abstract class Max
 
             } catch (InterpreterException e) {
 
-                if (observersError != null) {
-                    observersError.update(e);
-                }
+                handleException(token, context, e, typesetter);
 
-                if (context.incrementErrorCount() > maxErrors) { // cf. TTP[82]
-                    throw new ErrorLimitException(maxErrors);
-                } else if (errorHandler != null && //
-                        !errorHandler.handleError(e, token, this, context)) {
-                    throw e;
-                } else {
-                    throw e;
-                }
             } catch (RuntimeException e) {
                 if (observersError != null) {
                     observersError.update(e);
                 }
                 throw e;
+
             } catch (Exception e) {
                 if (observersError != null) {
                     observersError.update(e);
@@ -620,17 +611,14 @@ public abstract class Max
 
         } catch (InterpreterException e) {
 
+            handleException(token, theContext, e, theTypesetter);
+
+        } catch (RuntimeException e) {
             if (observersError != null) {
                 observersError.update(e);
             }
-
-            if (theContext.incrementErrorCount() > maxErrors) { // cf. TTP[82]
-                throw new ErrorLimitException(maxErrors);
-            } else if (errorHandler != null && //
-                    errorHandler.handleError(e, token, this, theContext)) {
-                return;
-            }
             throw e;
+
         } catch (Exception e) {
             if (observersError != null) {
                 observersError.update(e);
@@ -760,9 +748,45 @@ public abstract class Max
     }
 
     /**
+     * This method represents the error handler invocation.
+     *
+     * @param token the current token
+     * @param theContext the current context
+     * @param e the current exception
+     *
+     * @throws ErrorLimitException in case that the error limit has been
+     *  exceeded.
+     * @throws InterpreterException in case of another error
+     */
+    private void handleException(final Token token, final Context theContext,
+            final InterpreterException e, final Typesetter typesetter)
+            throws ErrorLimitException,
+                InterpreterException {
+
+        if (e.isProcessed()) {
+            typesetter.getManager().pop();
+            return;
+        }
+
+        if (observersError != null) {
+            observersError.update(e);
+        }
+
+        if (theContext.incrementErrorCount() > maxErrors) { // cf. TTP[82]
+            throw new ErrorLimitException(maxErrors);
+        } else if (errorHandler != null && //
+                errorHandler.handleError(e, token, this, theContext)) {
+            return;
+        }
+        e.setProcessed(true);
+        throw e;
+    }
+
+    /**
      * Initialize the date and time related primitives.
      *
-     * @param calendar the time and date when <logo>ExTeX</logo> has been started
+     * @param calendar the time and date when <logo>ExTeX</logo> has been
+     *  started
      *
      * @throws InterpreterException in case of an error
      */
@@ -1092,8 +1116,8 @@ public abstract class Max
 
         Code code = context.getCode(token);
         if (code == null) {
-            throw new UndefinedControlSequenceException(AbstractCode
-                    .printable(context, token));
+            throw new UndefinedControlSequenceException(AbstractCode.printable(
+                    context, token));
         }
 
         code.execute(prefix, context, this, typesetter);
@@ -1150,8 +1174,8 @@ public abstract class Max
             observersMacro.update(token, code);
         }
         if (code == null) {
-            throw new UndefinedControlSequenceException(AbstractCode
-                    .printable(context, token));
+            throw new UndefinedControlSequenceException(AbstractCode.printable(
+                    context, token));
         }
 
         code.execute(prefix, context, this, typesetter);
