@@ -53,7 +53,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Insert extends AbstractBox {
 
@@ -84,7 +84,7 @@ public class Insert extends AbstractBox {
             throws InterpreterException {
 
         if (!typesetter.getMode().isVmode()) {
-            throw new HelpingException(getLocalizer(), "???");
+            throw new HelpingException(getLocalizer(), "TTP.MisplacedInsert");
         }
         long index = source.scanNumber(context);
         Box b = new Box(context, source, typesetter, false, null);
