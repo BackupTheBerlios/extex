@@ -70,7 +70,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * classes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class MockContext implements Context, TypesetterOptions {
 
@@ -705,7 +705,7 @@ public class MockContext implements Context, TypesetterOptions {
     /**
      * @see de.dante.extex.interpreter.context.Context#setLccode(de.dante.util.UnicodeChar, de.dante.util.UnicodeChar)
      */
-    public void setLccode(final UnicodeChar uc, final UnicodeChar lc) {
+    public void setLccode(final UnicodeChar uc, final UnicodeChar lc, boolean global) {
 
         throw new RuntimeException("unimplemented");
     }
@@ -806,7 +806,7 @@ public class MockContext implements Context, TypesetterOptions {
     /**
      * @see de.dante.extex.interpreter.context.Context#setUccode(de.dante.util.UnicodeChar, de.dante.util.UnicodeChar)
      */
-    public void setUccode(final UnicodeChar lc, final UnicodeChar uc) {
+    public void setUccode(final UnicodeChar lc, final UnicodeChar uc, boolean global) {
 
         throw new RuntimeException("unimplemented");
     }
