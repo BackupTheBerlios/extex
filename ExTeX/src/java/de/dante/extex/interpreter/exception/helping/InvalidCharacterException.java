@@ -20,17 +20,18 @@
 package de.dante.extex.interpreter.exception.helping;
 
 import de.dante.util.UnicodeChar;
+import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
- * This exception is raised when an unexpected end of file is encountered.
+ * This exception is raised when an unexpected character code is encountered.
  * <p>
  *  The localization format is taken from the Localizer under the key
  *  <tt>UnexpectedEofIn</tt>.
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class InvalidCharacterException extends HelpingException {
 
@@ -40,6 +41,11 @@ public class InvalidCharacterException extends HelpingException {
     private static final long serialVersionUID = 1L;
 
     /**
+     * The field <tt>cc</tt> contains the ...
+     */
+    private String cc;
+
+    /**
      * Creates a new object.
      *
      * @param uc the invalid character
@@ -47,8 +53,45 @@ public class InvalidCharacterException extends HelpingException {
     public InvalidCharacterException(final UnicodeChar uc) {
 
         super(LocalizerFactory.getLocalizer(//
-                InvalidCharacterException.class.getName()),
-                "TTP.InvalidChar", uc.toString());
+                InvalidCharacterException.class.getName()), "TTP.InvalidChar",
+                uc.toString());
+        cc = uc.toString();
+    }
+
+    /**
+     * Creates a new object.
+     *
+     * @param uc the invalid character
+     */
+    public InvalidCharacterException(final String uc) {
+
+        super(LocalizerFactory.getLocalizer(//
+                InvalidCharacterException.class.getName()), "TTP.InvalidChar",
+                uc);
+        cc = uc;
+    }
+
+    /**
+     * Creates a new object.
+     *
+     * @param theLocalizer
+     * @param messageTag
+     * @param a1
+     */
+    public InvalidCharacterException(final Localizer localizer,
+            final String messageTag, final String a1) {
+
+        super(localizer, messageTag, a1);
+    }
+
+    /**
+     * Getter for cc.
+     *
+     * @return the cc
+     */
+    public String getChar() {
+
+        return this.cc;
     }
 
 }
