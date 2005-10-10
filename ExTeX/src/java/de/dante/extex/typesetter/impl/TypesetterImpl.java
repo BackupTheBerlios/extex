@@ -62,7 +62,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.74 $
+ * @version $Revision: 1.75 $
  */
 public class TypesetterImpl
         implements
@@ -367,7 +367,7 @@ public class TypesetterImpl
     }
 
     /**
-     * Notification method to deal the case that a left brace hs been
+     * Notification method to deal the case that a left brace has been
      * encountered.
      */
     public void leftBrace() {
