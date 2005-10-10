@@ -27,7 +27,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\namespace</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class NamespaceTest extends ExTeXLauncher {
 
@@ -52,7 +52,7 @@ public class NamespaceTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="namespace">
+     * <testcase primitive="\namespace">
      *  Test case checking that <tt>\namespace</tt> is initially empty.
      * </testcase>
      *
@@ -60,7 +60,7 @@ public class NamespaceTest extends ExTeXLauncher {
      */
     public void test1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 ":\\the\\namespace:"
                 + "\\end ",
                 //--- output channel ---
@@ -68,7 +68,7 @@ public class NamespaceTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="namespace">
+     * <testcase primitive="\namespace">
      *  Test case checking that <tt>\namespace</tt> can be set and read.
      * </testcase>
      *
@@ -76,7 +76,7 @@ public class NamespaceTest extends ExTeXLauncher {
      */
     public void test2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 DEFINE_CATCODES
                 + "\\namespace{TeX}"
                 + ":\\the\\namespace:"
@@ -92,7 +92,7 @@ public class NamespaceTest extends ExTeXLauncher {
      */
     public void test10() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 DEFINE_CATCODES
                 + "\\let\\x a"
                 + "\\namespace{TeX}"

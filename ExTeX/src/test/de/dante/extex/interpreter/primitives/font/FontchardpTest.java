@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\fontchardp</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class FontchardpTest extends ExTeXLauncher {
 
@@ -49,7 +49,7 @@ public class FontchardpTest extends ExTeXLauncher {
      */
     public void testVertical1() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\fontchardp ",
                 //--- log message ---
                 "You can't use `\\fontchardp' in vertical mode");
@@ -65,7 +65,7 @@ public class FontchardpTest extends ExTeXLauncher {
      */
     public void testEof1() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\dimen0=\\fontchardp ",
                 //--- log message ---
                 "Unexpected end of file while processing \\fontchardp");
@@ -81,7 +81,7 @@ public class FontchardpTest extends ExTeXLauncher {
      */
     public void testEof2() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\dimen0=\\fontchardp\\nullfont ",
                 //--- log message ---
                 "Missing number, treated as zero");
@@ -97,7 +97,7 @@ public class FontchardpTest extends ExTeXLauncher {
      */
     public void testCmrA() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\font\\cmr cmr10 "
                 + "\\the\\fontchardp\\cmr `a\\end",
                 //--- output message ---
@@ -114,7 +114,7 @@ public class FontchardpTest extends ExTeXLauncher {
      */
     public void testCmrG() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\font\\cmr cmr10 "
                 + "\\the\\fontchardp\\cmr `g\\end",
                 //--- output message ---
@@ -131,7 +131,7 @@ public class FontchardpTest extends ExTeXLauncher {
      */
     public void testCmrPlus() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\font\\cmr cmr10 "
                 + "\\the\\fontchardp\\cmr `+\\end",
                 //--- output message ---
@@ -148,7 +148,7 @@ public class FontchardpTest extends ExTeXLauncher {
      */
     public void testCmrPlus2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\font\\cmr cmr10 "
                 + "\\dimen0\\fontchardp\\cmr `+\\the\\dimen0\\end",
                 //--- output message ---
@@ -165,7 +165,7 @@ public class FontchardpTest extends ExTeXLauncher {
      */
     public void testCmrPlus3() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\font\\cmr cmr10 "
                 + "\\count0=\\fontchardp\\cmr `+\\the\\count0\\end",
                 //--- output message ---

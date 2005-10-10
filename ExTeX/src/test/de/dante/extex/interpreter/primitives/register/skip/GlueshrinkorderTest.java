@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\glueshrinkorder</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class GlueshrinkorderTest extends ExTeXLauncher {
 
@@ -58,7 +58,7 @@ public class GlueshrinkorderTest extends ExTeXLauncher {
      */
     public void testErr1() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\glueshrinkorder\\skip0=1 ",
                 //--- error channel ---
                 "You can't use `\\glueshrinkorder\' in vertical mode");
@@ -76,7 +76,7 @@ public class GlueshrinkorderTest extends ExTeXLauncher {
      */
     public void test1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\skip0=1pt plus 2pt minus 3pt" + "\\the\\glueshrinkorder\\skip0 "
                         + "\\end",
                 //--- output channel ---
@@ -95,7 +95,7 @@ public class GlueshrinkorderTest extends ExTeXLauncher {
      */
     public void test2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\skip0=1pt plus 2pt minus 3pt"
                         + "\\dimen0=\\glueshrinkorder\\skip0 " + "\\the\\dimen0"
                         + "\\end",
@@ -115,7 +115,7 @@ public class GlueshrinkorderTest extends ExTeXLauncher {
      */
     public void test3() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\skip0=1pt plus 2pt minus 3pt"
                         + "\\count0=\\glueshrinkorder\\skip0 " + "\\the\\count0"
                         + "\\end",
@@ -135,7 +135,7 @@ public class GlueshrinkorderTest extends ExTeXLauncher {
      */
     public void test11() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\skip0=1pt plus 2fil minus 3fil" + "\\the\\glueshrinkorder\\skip0 "
                         + "\\end",
                 //--- output channel ---
@@ -154,7 +154,7 @@ public class GlueshrinkorderTest extends ExTeXLauncher {
      */
     public void test12() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\skip0=1pt plus 2fil minus 3fil"
                         + "\\dimen0=\\glueshrinkorder\\skip0 " + "\\the\\dimen0"
                         + "\\end",
@@ -174,7 +174,7 @@ public class GlueshrinkorderTest extends ExTeXLauncher {
      */
     public void test13() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\skip0=1pt plus 2fil minus 3fil"
                         + "\\count0=\\glueshrinkorder\\skip0 " + "\\the\\count0"
                         + "\\end",
@@ -194,7 +194,7 @@ public class GlueshrinkorderTest extends ExTeXLauncher {
      */
     public void test21() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\skip0=1pt plus 2fill minus 3fill" + "\\the\\glueshrinkorder\\skip0 "
                         + "\\end",
                 //--- output channel ---
@@ -213,7 +213,7 @@ public class GlueshrinkorderTest extends ExTeXLauncher {
      */
     public void test22() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\skip0=1pt plus 2fill minus 3fill"
                         + "\\dimen0=\\glueshrinkorder\\skip0 " + "\\the\\dimen0"
                         + "\\end",
@@ -233,7 +233,7 @@ public class GlueshrinkorderTest extends ExTeXLauncher {
      */
     public void test23() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\skip0=1pt plus 2fill minus 3fill"
                         + "\\count0=\\glueshrinkorder\\skip0 " + "\\the\\count0"
                         + "\\end",
@@ -253,7 +253,7 @@ public class GlueshrinkorderTest extends ExTeXLauncher {
      */
     public void test31() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\skip0=1pt plus 2filll minus 3filll" + "\\the\\glueshrinkorder\\skip0 "
                         + "\\end",
                 //--- output channel ---
@@ -272,7 +272,7 @@ public class GlueshrinkorderTest extends ExTeXLauncher {
      */
     public void test32() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\skip0=1pt plus 2filll minus 3filll"
                         + "\\dimen0=\\glueshrinkorder\\skip0 " + "\\the\\dimen0"
                         + "\\end",
@@ -292,7 +292,7 @@ public class GlueshrinkorderTest extends ExTeXLauncher {
      */
     public void test33() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\skip0=1pt plus 2filll minus 3filll"
                         + "\\count0=\\glueshrinkorder\\skip0 " + "\\the\\count0"
                         + "\\end",

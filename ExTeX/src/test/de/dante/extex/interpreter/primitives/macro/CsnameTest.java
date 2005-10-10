@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\csname</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class CsnameTest extends ExTeXLauncher {
 
@@ -40,7 +40,7 @@ public class CsnameTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="csname">
+     * <testcase primitive="\csname">
      *  Test case checking that the normal operation is performed on letter
      *  inputs only.
      * </testcase>
@@ -49,7 +49,7 @@ public class CsnameTest extends ExTeXLauncher {
      */
     public void testLetters1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 DEFINE_BRACES + "\\def\\abc{-a-b-c-}"
                         + "\\csname abc\\endcsname\\end",
                 //--- output channel ---
@@ -57,7 +57,7 @@ public class CsnameTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="csname">
+     * <testcase primitive="\csname">
      *  Test case checking that the normal operation is performed on letter
      *  inputs only and white-space is ignored.
      * </testcase>
@@ -66,7 +66,7 @@ public class CsnameTest extends ExTeXLauncher {
      */
     public void testLetters2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 DEFINE_BRACES + "\\def\\abc{-a-b-c-}"
                         + "\\csname a b  c\\endcsname\\end",
                 //--- output channel ---
@@ -74,7 +74,7 @@ public class CsnameTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="csname">
+     * <testcase primitive="\csname">
      *  Test case checking that the normal operation is performed on letter
      *  inputs only and white-space and \relax is ignored.
      * </testcase>
@@ -83,7 +83,7 @@ public class CsnameTest extends ExTeXLauncher {
      */
     public void testLetters3() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 DEFINE_BRACES + "\\def\\abc{-a-b-c-}"
                         + "\\csname a b \\relax c\\endcsname\\end",
                 //--- output channel ---
@@ -91,7 +91,7 @@ public class CsnameTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="csname">
+     * <testcase primitive="\csname">
      *  Test case checking that the primitive \string can be used to insert
      *  special characters.
      * </testcase>
@@ -100,14 +100,14 @@ public class CsnameTest extends ExTeXLauncher {
      */
     public void testString1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 DEFINE_BRACES + "\\csname \\string\\par \\endcsname\\end",
                 //--- output channel ---
                 "");
     }
 
     /**
-     * <testcase primitive="csname">
+     * <testcase primitive="\csname">
      *  Test case checking that the normal operation is performed on letter
      *  and digit inputs only. Undefined control sequences are treated as
      *  <tt>\relax</tt>.
@@ -117,7 +117,7 @@ public class CsnameTest extends ExTeXLauncher {
      */
     public void testMixed1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 DEFINE_BRACES + "\\def\\abc{-a-b-c-}"
                         + "\\csname abc 123\\endcsname\\end",
                 //--- output channel ---
@@ -125,7 +125,7 @@ public class CsnameTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="csname">
+     * <testcase primitive="\csname">
      *  Test case checking that the normal operation is performed on letter
      *  and digit inputs only. Undefined control sequences are treated as
      *  <tt>\relax</tt>.
@@ -135,7 +135,7 @@ public class CsnameTest extends ExTeXLauncher {
      */
     public void testMixed2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\catcode`{=1" + "\\catcode`}=2" + "\\catcode`#=6"
                         + "\\def\\abc{-a-b-c-}"
                         + "\\csname abc # 123\\endcsname\\end",
@@ -144,7 +144,7 @@ public class CsnameTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="csname">
+     * <testcase primitive="\csname">
      *  Test case checking that the normal operation is performed on letter
      *  and digit inputs only.
      * </testcase>
@@ -153,14 +153,14 @@ public class CsnameTest extends ExTeXLauncher {
      */
     public void testError1() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\csname abc \\par\\endcsname\\end",
                 //--- log message ---
                 "Missing \\endcsname inserted");
     }
 
     /**
-     * <testcase primitive="csname">
+     * <testcase primitive="\csname">
      *  Test case checking that eof is recognized.
      * </testcase>
      *
@@ -168,7 +168,7 @@ public class CsnameTest extends ExTeXLauncher {
      */
     public void ___testEOF1() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\expandafter\\meaning\\csname ",
                 //--- log message ---
                 "Unexpected end of file while processing \\meaning");

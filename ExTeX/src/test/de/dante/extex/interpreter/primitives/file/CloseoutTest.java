@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsButImmediatePrimitiveTester;
  * This is a test suite for the primitive <tt>\closeout</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class CloseoutTest extends NoFlagsButImmediatePrimitiveTester {
 
@@ -59,7 +59,7 @@ public class CloseoutTest extends NoFlagsButImmediatePrimitiveTester {
      */
     public void test0() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\closeout1",
                 //--- output channel ---
                 "\n");
@@ -75,7 +75,7 @@ public class CloseoutTest extends NoFlagsButImmediatePrimitiveTester {
      */
     public void test1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\immediate\\closeout1",
                 //--- output channel ---
                 "");

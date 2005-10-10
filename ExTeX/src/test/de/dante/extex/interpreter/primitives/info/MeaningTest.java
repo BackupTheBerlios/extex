@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\meaning</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class MeaningTest extends NoFlagsPrimitiveTester {
 
@@ -48,7 +48,7 @@ public class MeaningTest extends NoFlagsPrimitiveTester {
      */
     public void testLetter1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\meaning a",
                 //--- output channel ---
                 "the letter a" + TERM);
@@ -63,7 +63,7 @@ public class MeaningTest extends NoFlagsPrimitiveTester {
      */
     public void testOther1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\meaning 1",
                 //--- output channel ---
                 "the character 1" + TERM);
@@ -79,7 +79,7 @@ public class MeaningTest extends NoFlagsPrimitiveTester {
      */
     public void testLeft1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\catcode`{=1" + "\\meaning {",
                 //--- output channel ---
                 "begin-group character {" + TERM);
@@ -95,7 +95,7 @@ public class MeaningTest extends NoFlagsPrimitiveTester {
      */
     public void testRight1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\catcode`}=2" + "\\meaning }",
                 //--- output channel ---
                 "end-group character }" + TERM);
@@ -111,7 +111,7 @@ public class MeaningTest extends NoFlagsPrimitiveTester {
      */
     public void testMath1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\catcode`$=3" + "\\meaning $",
                 //--- output channel ---
                 "math shift character $" + TERM);
@@ -127,7 +127,7 @@ public class MeaningTest extends NoFlagsPrimitiveTester {
      */
     public void testTab1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\catcode`&=4" + "\\meaning &",
                 //--- output channel ---
                 "alignment tab character &" + TERM);
@@ -143,7 +143,7 @@ public class MeaningTest extends NoFlagsPrimitiveTester {
      */
     public void testHash1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\catcode`#=6" + "\\meaning #",
                 //--- output channel ---
                 "macro parameter character #" + TERM);
@@ -159,7 +159,7 @@ public class MeaningTest extends NoFlagsPrimitiveTester {
      */
     public void testSuper1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\catcode`^=7" + "\\meaning ^",
                 //--- output channel ---
                 "superscript character ^" + TERM);
@@ -175,7 +175,7 @@ public class MeaningTest extends NoFlagsPrimitiveTester {
      */
     public void testSub1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\catcode`_=8" + "\\meaning _",
                 //--- output channel ---
                 "subscript character _" + TERM);
@@ -191,7 +191,7 @@ public class MeaningTest extends NoFlagsPrimitiveTester {
      */
     public void testActive1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\catcode`~=13" + "\\meaning ~",
                 //--- output channel ---
                 "~=undefined" + TERM);
@@ -207,7 +207,7 @@ public class MeaningTest extends NoFlagsPrimitiveTester {
      */
     public void testActive2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 DEFINE_CATCODES + "\\catcode`~=13" + "\\def~{}" + "\\meaning ~",
                 //--- output channel ---
                 "~=macro:\n ->" + TERM);
@@ -223,7 +223,7 @@ public class MeaningTest extends NoFlagsPrimitiveTester {
      */
     public void testActive3() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 DEFINE_CATCODES + "\\catcode`~=13" + "\\def~{abc}" + "\\meaning ~",
                 //--- output channel ---
                 "~=macro:\n ->abc" + TERM);
@@ -239,7 +239,7 @@ public class MeaningTest extends NoFlagsPrimitiveTester {
      */
     public void test0() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\meaning \\undef ",
                 //--- output channel ---
                 "\\undef=undefined" + TERM);
@@ -254,7 +254,7 @@ public class MeaningTest extends NoFlagsPrimitiveTester {
      */
     public void test1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\meaning \\relax ",
                 //--- output channel ---
                 "\\relax=\\relax" + TERM);
@@ -269,7 +269,7 @@ public class MeaningTest extends NoFlagsPrimitiveTester {
      */
     public void test2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\meaning \\meaning ",
                 //--- output channel ---
                 "\\meaning=\\meaning" + TERM);
@@ -285,7 +285,7 @@ public class MeaningTest extends NoFlagsPrimitiveTester {
      */
     public void testMacro0() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 DEFINE_CATCODES + "\\def\\x{abc}" + "\\meaning \\x ",
                 //--- output channel ---
                 "\\x=macro:\n ->abc" + TERM);
@@ -301,7 +301,7 @@ public class MeaningTest extends NoFlagsPrimitiveTester {
      */
     public void testMacro1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 DEFINE_CATCODES + "\\def\\x#1{ab#1cd}" + "\\meaning \\x ",
                 //--- output channel ---
                 "\\x=macro:\n#1 ->ab#1cd" + TERM);
@@ -317,7 +317,7 @@ public class MeaningTest extends NoFlagsPrimitiveTester {
      */
     public void testMacro2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 DEFINE_CATCODES + "\\def\\x A#1B#2{ab#1cd}" + "\\meaning \\x ",
                 //--- output channel ---
                 "\\x=macro:\nA#1B#2 ->ab#1cd" + TERM);
@@ -333,7 +333,7 @@ public class MeaningTest extends NoFlagsPrimitiveTester {
      */
     public void testRegister1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\meaning \\day ",
                 //--- output channel ---
                 "\\day=\\day" + TERM);

@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\dimenexpr</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class DimenexprTest extends ExTeXLauncher {
 
@@ -49,7 +49,7 @@ public class DimenexprTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="dimenexpr">
+     * <testcase primitive="\dimenexpr">
      *  Test case checking that <tt>\dimenexpr</tt> without any term produces an
      *  error.
      * </testcase>
@@ -67,7 +67,7 @@ public class DimenexprTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="dimenexpr">
+     * <testcase primitive="\dimenexpr">
      *  Test case checking that <tt>\dimenexpr</tt> with a non-balanced
      *  parenthesis produces an error.
      * </testcase>
@@ -85,7 +85,7 @@ public class DimenexprTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="dimenexpr">
+     * <testcase primitive="\dimenexpr">
      *  Test case checking that <tt>\dimenexpr</tt> with a non-balanced
      *  parenthesis produces an error.
      * </testcase>
@@ -103,7 +103,7 @@ public class DimenexprTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="dimenexpr">
+     * <testcase primitive="\dimenexpr">
      *  Test case checking that <tt>\dimenexpr</tt> with a non-balanced
      *  parenthesis produces an error.
      * </testcase>
@@ -121,7 +121,7 @@ public class DimenexprTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="dimenexpr">
+     * <testcase primitive="\dimenexpr">
      *  Test case checking that <tt>\dimenexpr</tt> produces an error for
      *  division by zero.
      * </testcase>
@@ -139,7 +139,7 @@ public class DimenexprTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="dimenexpr">
+     * <testcase primitive="\dimenexpr">
      *  Test case checking that <tt>\dimenexpr</tt> can add two numbers.
      * </testcase>
      *
@@ -156,7 +156,7 @@ public class DimenexprTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="dimenexpr">
+     * <testcase primitive="\dimenexpr">
      *  Test case checking that <tt>\dimenexpr</tt> can add multiply numbers.
      * </testcase>
      *
@@ -173,7 +173,7 @@ public class DimenexprTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="dimenexpr">
+     * <testcase primitive="\dimenexpr">
      *  Test case checking that <tt>\dimenexpr</tt> can subtract two numbers.
      * </testcase>
      *
@@ -190,7 +190,7 @@ public class DimenexprTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="dimenexpr">
+     * <testcase primitive="\dimenexpr">
      *  Test case checking that <tt>\dimenexpr</tt> can divide two numbers.
      * </testcase>
      *
@@ -207,7 +207,7 @@ public class DimenexprTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="dimenexpr">
+     * <testcase primitive="\dimenexpr">
      *  Test case checking that in <tt>\dimenexpr</tt> * binds more than +.
      * </testcase>
      *
@@ -224,7 +224,7 @@ public class DimenexprTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="dimenexpr">
+     * <testcase primitive="\dimenexpr">
      *  Test case checking that in <tt>\dimenexpr</tt> * binds more than +.
      * </testcase>
      *
@@ -241,7 +241,7 @@ public class DimenexprTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="dimenexpr">
+     * <testcase primitive="\dimenexpr">
      *  Test case checking that in <tt>\dimenexpr</tt> / binds more than +.
      * </testcase>
      *
@@ -258,7 +258,7 @@ public class DimenexprTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="dimenexpr">
+     * <testcase primitive="\dimenexpr">
      *  Test case checking that in <tt>\dimenexpr</tt> / binds more than +.
      * </testcase>
      *
@@ -275,7 +275,7 @@ public class DimenexprTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="dimenexpr">
+     * <testcase primitive="\dimenexpr">
      *  Test case checking that in <tt>\dimenexpr</tt> * binds more than -.
      * </testcase>
      *
@@ -292,7 +292,7 @@ public class DimenexprTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="dimenexpr">
+     * <testcase primitive="\dimenexpr">
      *  Test case checking that in <tt>\dimenexpr</tt> * binds more than -.
      * </testcase>
      *
@@ -309,7 +309,7 @@ public class DimenexprTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="dimenexpr">
+     * <testcase primitive="\dimenexpr">
      *  Test case checking that in <tt>\dimenexpr</tt> / binds more than -.
      * </testcase>
      *
@@ -326,7 +326,7 @@ public class DimenexprTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="dimenexpr">
+     * <testcase primitive="\dimenexpr">
      *  Test case checking that in <tt>\dimenexpr</tt> / binds more than -.
      * </testcase>
      *
@@ -343,7 +343,7 @@ public class DimenexprTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="dimenexpr">
+     * <testcase primitive="\dimenexpr">
      *  Test case checking that in <tt>\dimenexpr</tt> parentheses work.
      * </testcase>
      *
@@ -360,7 +360,7 @@ public class DimenexprTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="dimenexpr">
+     * <testcase primitive="\dimenexpr">
      *  Test case checking that in <tt>\dimenexpr</tt> the unary minus is
      *  treated correctly.
      * </testcase>
@@ -378,7 +378,7 @@ public class DimenexprTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="dimenexpr">
+     * <testcase primitive="\dimenexpr">
      *  Test case checking that in <tt>\dimenexpr</tt> the unary minus is
      *  treated correctly &ndash; even if repeated twice.
      * </testcase>
@@ -396,7 +396,7 @@ public class DimenexprTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="dimenexpr">
+     * <testcase primitive="\dimenexpr">
      *  Test case checking that in <tt>\dimenexpr</tt> the unary minus is
      *  treated correctly.
      * </testcase>
@@ -414,7 +414,7 @@ public class DimenexprTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="dimenexpr">
+     * <testcase primitive="\dimenexpr">
      *  Test case checking that in <tt>\dimenexpr</tt> the unary minus is
      *  treated correctly &ndash; even if repeated twice.
      * </testcase>
@@ -432,7 +432,7 @@ public class DimenexprTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="dimenexpr">
+     * <testcase primitive="\dimenexpr">
      *  Test case checking that <tt>\dimenexpr</tt> can be used after
      *  <tt>\the</tt>.
      * </testcase>

@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsButGlobalPrimitiveTester;
  * This is a test suite for the primitive <tt>\divide</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class DivideTest extends NoFlagsButGlobalPrimitiveTester {
 
@@ -58,7 +58,7 @@ public class DivideTest extends NoFlagsButGlobalPrimitiveTester {
      */
     public void testLetter1() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\divide a",
                 //--- log message ---
                 "You can\'t use `a\' after \\divide");
@@ -74,7 +74,7 @@ public class DivideTest extends NoFlagsButGlobalPrimitiveTester {
      */
     public void testOther1() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\divide 12 ",
                 //--- log message ---
                 "You can\'t use `1\' after \\divide");
@@ -90,7 +90,7 @@ public class DivideTest extends NoFlagsButGlobalPrimitiveTester {
      */
     public void testMacro1() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\catcode`#=6 "
                 + "\\divide #2 ",
                 //--- log message ---
@@ -107,7 +107,7 @@ public class DivideTest extends NoFlagsButGlobalPrimitiveTester {
      */
     public void testRelax1() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\divide \\relax ",
                 //--- log message ---
                 "You can\'t use `\\relax\' after \\divide");
@@ -123,7 +123,7 @@ public class DivideTest extends NoFlagsButGlobalPrimitiveTester {
      */
     public void testCount0() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\count1 16 "
                 +"\\divide \\count1 0 "
                 + "\\the\\count1 \\end",
@@ -141,7 +141,7 @@ public class DivideTest extends NoFlagsButGlobalPrimitiveTester {
      */
     public void testCount1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\count1 16 "
                 + "\\divide \\count1 8 "
                 + "\\the\\count1 \\end",
@@ -159,7 +159,7 @@ public class DivideTest extends NoFlagsButGlobalPrimitiveTester {
      */
     public void testCount2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\count1 16 "
                 + "\\begingroup\\global\\divide \\count1 8 \\endgroup "
                 + "\\the\\count1 \\end",
@@ -177,7 +177,7 @@ public class DivideTest extends NoFlagsButGlobalPrimitiveTester {
      */
     public void testDimen1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\dimen1 8pt "
                 + "\\divide \\dimen1 16 "
                 + "\\the\\dimen1 \\end",
@@ -195,7 +195,7 @@ public class DivideTest extends NoFlagsButGlobalPrimitiveTester {
      */
     public void testDimen2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\dimen1 8pt "
                 + "\\begingroup\\global\\divide \\dimen1 16 \\endgroup "
                 + "\\the\\dimen1 \\end",
@@ -213,7 +213,7 @@ public class DivideTest extends NoFlagsButGlobalPrimitiveTester {
      */
     public void testDimen0() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\dimen1 8pt "
                 +"\\divide \\dimen1 0 "
                 + "\\the\\dimen1 \\end",

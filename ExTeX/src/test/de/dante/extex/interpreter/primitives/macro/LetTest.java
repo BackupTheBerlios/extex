@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsButGlobalPrimitiveTester;
  * This is a test suite for the primitive <tt>\let</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class LetTest extends NoFlagsButGlobalPrimitiveTester {
 
@@ -40,7 +40,7 @@ public class LetTest extends NoFlagsButGlobalPrimitiveTester {
     }
 
     /**
-     * <testcase primitive="let">
+     * <testcase primitive="\let">
      *  Test case checking that let can assign a letter to a control sequence.
      * </testcase>
      *
@@ -48,7 +48,7 @@ public class LetTest extends NoFlagsButGlobalPrimitiveTester {
      */
     public void testLetLetter1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 DEFINE_CATCODES
                 + "\\let\\a A"
                 + "--\\a--",
@@ -57,7 +57,7 @@ public class LetTest extends NoFlagsButGlobalPrimitiveTester {
     }
 
     /**
-     * <testcase primitive="let">
+     * <testcase primitive="\let">
      *  Test case checking that let can assign a letter to a control sequence.
      * </testcase>
      *
@@ -65,7 +65,7 @@ public class LetTest extends NoFlagsButGlobalPrimitiveTester {
      */
     public void testLetLetterLocal1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 DEFINE_CATCODES
                 + "\\let\\a A"
                 + "\\begingroup \\let\\a B\\endgroup"
@@ -75,7 +75,7 @@ public class LetTest extends NoFlagsButGlobalPrimitiveTester {
     }
 
     /**
-     * <testcase primitive="let">
+     * <testcase primitive="\let">
      *  Test case checking that let can assign a letter to a control sequence.
      * </testcase>
      *
@@ -83,7 +83,7 @@ public class LetTest extends NoFlagsButGlobalPrimitiveTester {
      */
     public void testLetLetterGlobal1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 DEFINE_CATCODES
                 + "\\let\\a A"
                 + "\\begingroup \\global\\let\\a B\\endgroup"
@@ -93,7 +93,7 @@ public class LetTest extends NoFlagsButGlobalPrimitiveTester {
     }
 
     /**
-     * <testcase primitive="let">
+     * <testcase primitive="\let">
      *  Test case checking that let can assign a digit to a control sequence.
      * </testcase>
      *
@@ -101,7 +101,7 @@ public class LetTest extends NoFlagsButGlobalPrimitiveTester {
      */
     public void testLetOther1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 DEFINE_CATCODES
                 + "\\let\\a 1"
                 + "--\\a--",
@@ -110,7 +110,7 @@ public class LetTest extends NoFlagsButGlobalPrimitiveTester {
     }
 
     /**
-     * <testcase primitive="let">
+     * <testcase primitive="\let">
      *  Test case checking that let can assign a digit to a control sequence.
      * </testcase>
      *
@@ -118,7 +118,7 @@ public class LetTest extends NoFlagsButGlobalPrimitiveTester {
      */
     public void testLet1() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 DEFINE_CATCODES
                 + "\\let\\a\\a"
                 + "\\a",
@@ -127,7 +127,7 @@ public class LetTest extends NoFlagsButGlobalPrimitiveTester {
     }
 
     /**
-     * <testcase primitive="let">
+     * <testcase primitive="\let">
      *  Test case checking that let can assign a letter to a control sequence.
      * </testcase>
      *
@@ -135,7 +135,7 @@ public class LetTest extends NoFlagsButGlobalPrimitiveTester {
      */
     public void testLetOtherLocal1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 DEFINE_CATCODES
                 + "\\let\\a 1"
                 + "\\begingroup \\let\\a 2\\endgroup"
@@ -145,7 +145,7 @@ public class LetTest extends NoFlagsButGlobalPrimitiveTester {
     }
 
     /**
-     * <testcase primitive="let">
+     * <testcase primitive="\let">
      *  Test case checking that let can assign a letter to a control sequence.
      * </testcase>
      *
@@ -153,7 +153,7 @@ public class LetTest extends NoFlagsButGlobalPrimitiveTester {
      */
     public void testLetOtherGlobal1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 DEFINE_CATCODES
                 + "\\let\\a 1"
                 + "\\begingroup \\global\\let\\a 2\\endgroup"
@@ -163,7 +163,7 @@ public class LetTest extends NoFlagsButGlobalPrimitiveTester {
     }
 
     /**
-     * <testcase primitive="let">
+     * <testcase primitive="\let">
      *  Test case checking that let can assign a digit to a control sequence.
      * </testcase>
      *
@@ -171,7 +171,7 @@ public class LetTest extends NoFlagsButGlobalPrimitiveTester {
      */
     public void testLetCs1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 DEFINE_CATCODES
                 + "\\let\\x 1"
                 + "\\let\\a \\x"
@@ -182,7 +182,7 @@ public class LetTest extends NoFlagsButGlobalPrimitiveTester {
 
 
     /**
-     * <testcase primitive="let">
+     * <testcase primitive="\let">
      *  Test case checking that let can assign a letter to a control sequence.
      * </testcase>
      *
@@ -190,7 +190,7 @@ public class LetTest extends NoFlagsButGlobalPrimitiveTester {
      */
     public void testLetCsLocal1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 DEFINE_CATCODES
                 + "\\let\\x 1"
                 + "\\let\\a \\x"
@@ -201,7 +201,7 @@ public class LetTest extends NoFlagsButGlobalPrimitiveTester {
     }
 
     /**
-     * <testcase primitive="let">
+     * <testcase primitive="\let">
      *  Test case checking that let can assign a letter to a control sequence.
      * </testcase>
      *
@@ -209,7 +209,7 @@ public class LetTest extends NoFlagsButGlobalPrimitiveTester {
      */
     public void testLetCsGlobal1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 DEFINE_CATCODES
                 + "\\let\\x 2"
                 + "\\let\\a A"

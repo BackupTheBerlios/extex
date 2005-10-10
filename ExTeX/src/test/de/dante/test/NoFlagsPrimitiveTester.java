@@ -20,10 +20,11 @@
 package de.dante.test;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This class provides an abstract base class containing some test cases for
+ * primitives. They verify that prefix macros always lead to an error.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class NoFlagsPrimitiveTester extends ExTeXLauncher {
 
@@ -37,6 +38,11 @@ public abstract class NoFlagsPrimitiveTester extends ExTeXLauncher {
      * flag test.
      */
     private String args;
+
+    /**
+     * The field <tt>prepare</tt> contains the preparation code.
+     */
+    private String prepare = DEFINE_BRACES;
 
     /**
      * Creates a new object.
@@ -54,13 +60,28 @@ public abstract class NoFlagsPrimitiveTester extends ExTeXLauncher {
     }
 
     /**
+     * Creates a new object.
+     *
+     * @param arg the name of the test suite
+     * @param primitive the name of the integer register to test
+     * @param args the parameters for the invocation
+     * @param prepare the preparation code
+     */
+    public NoFlagsPrimitiveTester(final String arg, final String primitive,
+            final String args, final String prepare) {
+
+        this(arg, primitive, args);
+        this.prepare = DEFINE_BRACES + prepare;
+    }
+
+    /**
      *
      * @throws Exception in case of an error
      */
     public void testNoGlobalFlag() throws Exception {
 
-        runFailureCode(//--- input code ---
-                DEFINE_CATCODES + "\\global\\" + primitive + args,
+        assertFailure(//--- input code ---
+                prepare + "\\global\\" + primitive + args + "\\end",
                 //--- log message ---
                 "You can\'t use the prefix `\\global\' with the control sequence \\"
                         + primitive);
@@ -72,8 +93,8 @@ public abstract class NoFlagsPrimitiveTester extends ExTeXLauncher {
      */
     public void testNoImmediateFlag() throws Exception {
 
-        runFailureCode(//--- input code ---
-                DEFINE_CATCODES + "\\immediate\\" + primitive + args,
+        assertFailure(//--- input code ---
+                prepare + "\\immediate\\" + primitive + args + "\\end",
                 //--- log message ---
                 "You can\'t use the prefix `\\immediate\' with the control sequence \\"
                         + primitive);
@@ -85,8 +106,8 @@ public abstract class NoFlagsPrimitiveTester extends ExTeXLauncher {
      */
     public void testNoLongFlag() throws Exception {
 
-        runFailureCode(//--- input code ---
-                DEFINE_CATCODES + "\\long\\" + primitive + args,
+        assertFailure(//--- input code ---
+                prepare + "\\long\\" + primitive + args + "\\end",
                 //--- log message ---
                 "You can\'t use the prefix `\\long\' with the control sequence \\"
                         + primitive);
@@ -98,8 +119,8 @@ public abstract class NoFlagsPrimitiveTester extends ExTeXLauncher {
      */
     public void testNoOuterFlag() throws Exception {
 
-        runFailureCode(//--- input code ---
-                DEFINE_CATCODES + "\\outer\\" + primitive + args,
+        assertFailure(//--- input code ---
+                prepare + "\\outer\\" + primitive + args + "\\end",
                 //--- log message ---
                 "You can\'t use the prefix `\\outer\' with the control sequence \\"
                         + primitive);
@@ -111,8 +132,8 @@ public abstract class NoFlagsPrimitiveTester extends ExTeXLauncher {
      */
     public void testNoProtectedFlag() throws Exception {
 
-        runFailureCode(//--- input code ---
-                DEFINE_CATCODES + "\\protected\\" + primitive + args,
+        assertFailure(//--- input code ---
+                prepare + "\\protected\\" + primitive + args,
                 //--- log message ---
                 "You can\'t use the prefix `\\protected\' with the control sequence \\"
                         + primitive);

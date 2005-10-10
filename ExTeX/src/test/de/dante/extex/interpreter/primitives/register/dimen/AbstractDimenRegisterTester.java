@@ -26,7 +26,7 @@ import de.dante.test.ExTeXLauncher;
  * It provides some test cases common to all dimen registers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
 
@@ -91,7 +91,7 @@ public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
      */
     public void testDimenRegisterImmediatePrefix1() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 prepare + "\\immediate\\" + invocation + "= 2pt ",
                 //--- error channel ---
                 "You can't use the prefix `\\immediate' with the control sequence"
@@ -108,7 +108,7 @@ public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
      */
     public void testDimenRegisterLongPrefix1() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 prepare + "\\long\\" + invocation + "= 2pt ",
                 //--- error channel ---
                 "You can't use the prefix `\\long' with the control sequence"
@@ -125,7 +125,7 @@ public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
      */
     public void testDimenRegisterOuterPrefix1() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 prepare + "\\outer\\" + invocation + "= 2pt ",
                 //--- error channel ---
                 "You can't use the prefix `\\outer' with the control sequence"
@@ -143,7 +143,7 @@ public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
      */
     public void testDimenRegisterDefault1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 prepare + "\\the\\" + invocation + "\\end",
                 //--- output channel ---
                 init + TERM);
@@ -159,7 +159,7 @@ public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
      */
     public void testDimenRegisterAssign1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 prepare + "\\" + invocation + "=12.3pt \\the\\" + invocation
                         + "\\end",
                 //--- output channel ---
@@ -176,7 +176,7 @@ public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
      */
     public void testDimenRegisterAssign2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 prepare + "\\" + invocation + " 12.3pt \\the\\" + invocation
                         + "\\end",
                 //--- output channel ---
@@ -193,7 +193,7 @@ public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
      */
     public void testDimenRegisterAssign3() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 prepare + "\\" + invocation + "=-12.3pt \\the\\" + invocation
                         + "\\end",
                 //--- output channel ---
@@ -210,7 +210,7 @@ public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
      */
     public void testDimenRegisterAssign4() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 prepare + "\\" + invocation + "-12.3pt \\the\\" + invocation
                         + "\\end",
                 //--- output channel ---
@@ -227,7 +227,7 @@ public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
      */
     public void testDimenRegisterAssign5() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 prepare + "\\globaldefs=1 " + "\\begingroup\\" + invocation
                         + "-12.3pt \\endgroup" + "\\the\\" + invocation
                         + "\\end",
@@ -244,7 +244,7 @@ public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
      */
     public void testDimenRegisterAfterassignment1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 prepare + "\\afterassignment b a" + "\\" + invocation
                         + "-12.3ptc\\the\\" + invocation + "\\end",
                 //--- output channel ---
@@ -260,7 +260,7 @@ public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
      */
     public void testDimenRegisterConvertible1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 prepare + "\\" + invocation + "-12.3pt \\dimen0=\\"
                         + invocation + " \\the\\dimen0 \\end",
                 //--- output channel ---
@@ -276,7 +276,7 @@ public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
      */
     public void testDimenRegisterConvertible2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 prepare + "\\" + invocation + "-12.3pt \\count0=\\"
                         + invocation + " \\the\\count0 \\end",
                 //--- output channel ---
@@ -292,7 +292,7 @@ public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
      */
     public void testDimenRegisterGroup1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 prepare + "\\begingroup\\" + invocation + "=12.3pt \\endgroup"
                         + " \\the\\" + invocation + "\\end",
                 //--- output channel ---
@@ -309,7 +309,7 @@ public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
      */
     public void testDimenRegisterGlobalAssign1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 prepare + "\\begingroup\\global\\" + invocation
                         + "=12.3pt \\endgroup" + "\\the\\" + invocation
                         + "\\end",
@@ -327,7 +327,7 @@ public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
      */
     public void testDimenRegisterGlobalAssign2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 prepare + "\\begingroup\\global\\" + invocation
                         + " 12.3pt \\endgroup" + "\\the\\" + invocation
                         + "\\end",
@@ -344,7 +344,7 @@ public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
      */
     public void testDimenRegisterAdvance1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 prepare + "\\" + invocation + "=23pt " + "\\advance\\"
                         + invocation + " 12pt " + "\\the\\" + invocation
                         + "\\end",
@@ -362,7 +362,7 @@ public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
      */
     public void testDimenRegisterAdvance2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 prepare + "\\" + invocation + "=23pt " + "\\advance\\"
                         + invocation + " by 12pt " + "\\the\\" + invocation
                         + "\\end",
@@ -379,7 +379,7 @@ public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
      */
     public void testDimenRegisterAdvance3() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 prepare + "\\" + invocation + "=23pt " + "\\advance\\"
                         + invocation + "-12pt " + "\\the\\" + invocation
                         + "\\end",
@@ -397,7 +397,7 @@ public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
      */
     public void testDimenRegisterAdvance4() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 prepare + "\\" + invocation + "=23pt" + "\\advance\\"
                         + invocation + " by -12pt " + "\\the\\" + invocation
                         + "\\end",
@@ -415,7 +415,7 @@ public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
      */
     public void testDimenRegisterAdvance5() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 prepare + "\\globaldefs=1 " + "\\begingroup\\" + invocation
                         + "-12.3pt \\endgroup" + "\\the\\" + invocation
                         + "\\end",
@@ -432,7 +432,7 @@ public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
      */
     public void testDimenRegisterAfterassignment2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 prepare + "\\" + invocation + "=0pt" + "\\afterassignment b a"
                         + "\\advance\\" + invocation + "-12.3ptc\\the\\"
                         + invocation + "\\end",
@@ -449,7 +449,7 @@ public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
      */
     public void testDimenRegisterGroup2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 prepare + "\\begingroup\\advance\\" + invocation
                         + " 12.3pt \\endgroup" + " \\the\\" + invocation
                         + "\\end",
@@ -466,7 +466,7 @@ public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
      */
     public void testDimenRegisterMultiply0() throws Exception {
 
-        runCode(
+        assertSuccess(
                 //--- input code ---
                 prepare + "\\" + invocation + "=3pt " + "\\multiply\\"
                         + invocation + " 0 " + "\\the\\" + invocation + "\\end",
@@ -483,7 +483,7 @@ public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
      */
     public void testDimenRegisterMultiply1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 prepare + "\\" + invocation + "=3pt " + "\\multiply\\"
                         + invocation + " 12 " + "\\the\\" + invocation
                         + "\\end",
@@ -501,7 +501,7 @@ public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
      */
     public void testDimenRegisterMultiply2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 prepare + "\\" + invocation + "=3pt " + "\\multiply\\"
                         + invocation + " by 12 " + "\\the\\" + invocation
                         + "\\end",
@@ -518,7 +518,7 @@ public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
      */
     public void testDimenRegisterMultiply3() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 prepare + "\\" + invocation + "=3pt " + "\\multiply\\"
                         + invocation + "-12 " + "\\the\\" + invocation
                         + "\\end",
@@ -536,7 +536,7 @@ public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
      */
     public void testDimenRegisterMultiply4() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 prepare + "\\" + invocation + "=3pt " + "\\multiply\\"
                         + invocation + " by -12 " + "\\the\\" + invocation
                         + "\\end",
@@ -554,7 +554,7 @@ public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
      */
     public void testDimenRegisterMultiply5() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 prepare + "\\globaldefs=1 " + "\\" + invocation + "=12pt "
                         + "\\begingroup\\multiply\\" + invocation
                         + " 3 \\endgroup" + "\\the\\" + invocation + "\\end",
@@ -571,7 +571,7 @@ public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
      */
     public void testDimenRegisterAfterassignment3() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 prepare + "\\" + invocation + "=0pt " + "\\afterassignment b a"
                         + "\\multiply\\" + invocation + "-12 c\\the\\"
                         + invocation + "\\end",
@@ -588,7 +588,7 @@ public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
      */
     public void testDimenRegisterGroup3() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 prepare + "\\" + invocation + "=3pt "
                         + "\\begingroup\\multiply\\" + invocation
                         + " 12 \\endgroup" + " \\the\\" + invocation + "\\end",
@@ -605,7 +605,7 @@ public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
      */
     public void testDimenRegisterDivide0() throws Exception {
 
-        runFailureCode(
+        assertFailure(
                 //--- input code ---
                 prepare + "\\" + invocation + "=3.6pt " + "\\divide\\"
                         + invocation + " 0 " + "\\the\\" + invocation + "\\end",
@@ -622,7 +622,7 @@ public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
      */
     public void testDimenRegisterDivide1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 prepare + "\\" + invocation + "=3.6pt " + "\\divide\\"
                         + invocation + " 12 " + "\\the\\" + invocation
                         + "\\end",
@@ -640,7 +640,7 @@ public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
      */
     public void testDimenRegisterDivide2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 prepare + "\\" + invocation + "=3.6pt " + "\\divide\\"
                         + invocation + " by 12 " + "\\the\\" + invocation
                         + "\\end",
@@ -657,7 +657,7 @@ public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
      */
     public void testDimenRegisterDivide3() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 prepare + "\\" + invocation + "=3.6pt " + "\\divide\\"
                         + invocation + "-12 " + "\\the\\" + invocation
                         + "\\end",
@@ -675,7 +675,7 @@ public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
      */
     public void testDimenRegisterDivide4() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 prepare + "\\" + invocation + "=3.6pt " + "\\divide\\"
                         + invocation + " by -12 " + "\\the\\" + invocation
                         + "\\end",
@@ -693,7 +693,7 @@ public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
      */
     public void testDimenRegisterDivide5() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 prepare + "\\globaldefs=1 " + "\\" + invocation + "=-246pt "
                         + "\\begingroup\\divide\\" + invocation
                         + "-123 \\endgroup" + "\\the\\" + invocation + "\\end",
@@ -710,7 +710,7 @@ public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
      */
     public void testDimenRegisterAfterassignment4() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 prepare + "\\afterassignment b a" + "\\divide\\" + invocation
                         + "-12 c\\end",
                 //--- output channel ---
@@ -727,7 +727,7 @@ public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
      */
     public void testDimenRegisterDivide6() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 prepare + "\\" + invocation + "=-3.6pt " + "\\divide\\"
                         + invocation + " by -12 " + "\\the\\" + invocation
                         + "\\end",
@@ -744,7 +744,7 @@ public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
      */
     public void testDimenRegisterGroup4() throws Exception {
 
-        runCode(
+        assertSuccess(
                 //--- input code ---
                 prepare + "\\" + invocation + "=3pt "
                         + "\\begingroup\\divide\\" + invocation

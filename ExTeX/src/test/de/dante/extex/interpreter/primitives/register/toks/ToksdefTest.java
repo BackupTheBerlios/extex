@@ -23,7 +23,7 @@ package de.dante.extex.interpreter.primitives.register.toks;
  * This is a test suite for the primitive <tt>\toksdef</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ToksdefTest extends AbstractToksRegisterTester {
 
@@ -56,7 +56,7 @@ public class ToksdefTest extends AbstractToksRegisterTester {
      */
     public void test1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 DEFINE_BRACES + "\\toksdef\\x=42 " + "\\toks42={abc}"
                         + "\\the\\toks42 \\end",
                 //--- output channel ---
@@ -72,7 +72,7 @@ public class ToksdefTest extends AbstractToksRegisterTester {
      */
     public void testGlobal1() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\begingroup\\toksdef\\x=42 \\endgroup" + "\\the\\x \\end",
                 //--- error channel ---
                 "You can't use `the control sequence \\x' after \\the");
@@ -87,7 +87,7 @@ public class ToksdefTest extends AbstractToksRegisterTester {
      */
     public void testGlobal2() throws Exception {
 
-        runCode(
+        assertSuccess(
                 //--- input code ---
                 DEFINE_BRACES
                         + "\\begingroup\\global\\toksdef\\x=42 \\x={abc}\\endgroup"

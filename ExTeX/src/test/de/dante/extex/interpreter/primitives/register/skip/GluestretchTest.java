@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\gluestretch</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class GluestretchTest extends ExTeXLauncher {
 
@@ -58,7 +58,7 @@ public class GluestretchTest extends ExTeXLauncher {
      */
     public void testErr1() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\gluestretch\\skip0=1pt ",
                 //--- error channel ---
                 "You can't use `\\gluestretch\' in vertical mode");
@@ -75,7 +75,7 @@ public class GluestretchTest extends ExTeXLauncher {
      */
     public void test1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\skip0=1pt plus 2pt minus 3pt" + "\\the\\gluestretch\\skip0 "
                         + "\\end",
                 //--- output channel ---
@@ -93,7 +93,7 @@ public class GluestretchTest extends ExTeXLauncher {
      */
     public void test2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\skip0=1pt plus 2pt minus 3pt"
                         + "\\dimen0=\\gluestretch\\skip0 " + "\\the\\dimen0"
                         + "\\end",
@@ -112,7 +112,7 @@ public class GluestretchTest extends ExTeXLauncher {
      */
     public void test3() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\skip0=1pt plus 2pt minus 3pt"
                         + "\\count0=\\gluestretch\\skip0 " + "\\the\\count0"
                         + "\\end",
@@ -132,7 +132,7 @@ public class GluestretchTest extends ExTeXLauncher {
      */
     public void test10() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\skip0=1pt plus 2pt minus 3fill" + "\\the\\gluestretch\\skip0 "
                         + "\\end",
                 //--- output channel ---

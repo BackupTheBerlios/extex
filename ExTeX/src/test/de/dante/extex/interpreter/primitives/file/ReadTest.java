@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\read</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ReadTest extends ExTeXLauncher {
 
@@ -59,7 +59,7 @@ public class ReadTest extends ExTeXLauncher {
      */
     public void test0() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\read 1",
                 //--- error channel ---
                 "Missing `to' inserted");
@@ -75,7 +75,7 @@ public class ReadTest extends ExTeXLauncher {
      */
     public void test1() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\read 1 to ",
                 //--- error channel ---
                 "Missing control sequence inserted");

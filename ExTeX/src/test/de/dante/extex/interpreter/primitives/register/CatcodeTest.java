@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\catcode</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class CatcodeTest extends ExTeXLauncher {
 
@@ -49,7 +49,7 @@ public class CatcodeTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="catcode">
+     * <testcase primitive="\catcode">
      *  Test case checking that <tt>\catcode</tt> throws an error on eof.
      * </testcase>
      *
@@ -66,7 +66,7 @@ public class CatcodeTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="catcode">
+     * <testcase primitive="\catcode">
      *  Test case checking that <tt>\catcode</tt> throws an error on eof.
      * </testcase>
      *
@@ -83,7 +83,7 @@ public class CatcodeTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="catcode">
+     * <testcase primitive="\catcode">
      *  Test case checking that <tt>\catcode</tt> throws an error on eof.
      * </testcase>
      *
@@ -100,7 +100,7 @@ public class CatcodeTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="catcode">
+     * <testcase primitive="\catcode">
      *  Test case checking that <tt>\catcode</tt> throws an error when an
      *  illegal catcode is passed in.
      * </testcase>
@@ -118,7 +118,7 @@ public class CatcodeTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="catcode">
+     * <testcase primitive="\catcode">
      *  Test case checking that <tt>\catcode</tt> throws an error when an
      *  illegal catcode is passed in.
      * </testcase>
@@ -136,7 +136,7 @@ public class CatcodeTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="catcode">
+     * <testcase primitive="\catcode">
      *  Test case checking that <tt>\catcode</tt> is theable.
      * </testcase>
      *
@@ -154,7 +154,7 @@ public class CatcodeTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="catcode">
+     * <testcase primitive="\catcode">
      *  Test case checking that <tt>\catcode</tt> is count convertible.
      * </testcase>
      *

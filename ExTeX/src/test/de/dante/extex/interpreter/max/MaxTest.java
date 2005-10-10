@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the interpreter Max.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class MaxTest extends ExTeXLauncher {
 
@@ -46,7 +46,7 @@ public class MaxTest extends ExTeXLauncher {
      */
     public void testTabMark() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\catcode`&=4\\relax"
                 + "&"
                 + "\\end ",
@@ -61,7 +61,7 @@ public class MaxTest extends ExTeXLauncher {
      */
     public void testSupMark() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\catcode`^=7\\relax"
                 + "^"
                 + "\\end ",
@@ -76,7 +76,7 @@ public class MaxTest extends ExTeXLauncher {
      */
     public void testSubMark() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\catcode`_=8\\relax"
                 + "_"
                 + "\\end ",
@@ -91,7 +91,7 @@ public class MaxTest extends ExTeXLauncher {
      */
     public void testMacroParam() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\catcode`#=6\\relax"
                 + "#"
                 + "\\end ",
@@ -107,7 +107,7 @@ public class MaxTest extends ExTeXLauncher {
      */
     public void testUndefinedAcive() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\catcode`~=13\\relax"
                 + "~"
                 + "\\end ",
@@ -123,7 +123,7 @@ public class MaxTest extends ExTeXLauncher {
      */
     public void testUndefinedCs() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\UNDEF"
                 + "\\end ",
                 //--- log message ---

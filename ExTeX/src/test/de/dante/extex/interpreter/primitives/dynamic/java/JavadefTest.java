@@ -28,7 +28,7 @@ import de.dante.test.NoFlagsButGlobalPrimitiveTester;
  * This is a test suite for the primitive <tt>\javadef</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class JavadefTest extends NoFlagsButGlobalPrimitiveTester {
 
@@ -60,7 +60,7 @@ public class JavadefTest extends NoFlagsButGlobalPrimitiveTester {
      */
     public void test1() throws Exception {
 
-        runCode(
+        assertSuccess(
                 //--- input code ---
                 DEFINE_BRACES
                         + "\\javadef\\t{de.dante.extex.interpreter.primitives.info.The}"
@@ -78,7 +78,7 @@ public class JavadefTest extends NoFlagsButGlobalPrimitiveTester {
      */
     public void testGlobal1() throws Exception {
 
-        runCode(
+        assertSuccess(
                 //--- input code ---
                 DEFINE_BRACES
                         + "\\begingroup\\global\\javadef\\t{de.dante.extex.interpreter.primitives.info.The}\\endgroup"
@@ -96,7 +96,7 @@ public class JavadefTest extends NoFlagsButGlobalPrimitiveTester {
      */
     public void testGlobal2() throws Exception {
 
-        runFailureCode(
+        assertFailure(
                 //--- input code ---
                 DEFINE_BRACES
                         + "\\begingroup\\javadef\\t{de.dante.extex.interpreter.primitives.info.The}\\endgroup"

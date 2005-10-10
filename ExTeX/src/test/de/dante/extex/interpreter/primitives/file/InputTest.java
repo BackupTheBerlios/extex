@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\input</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class InputTest extends NoFlagsPrimitiveTester {
 
@@ -58,7 +58,7 @@ public class InputTest extends NoFlagsPrimitiveTester {
      */
     public void test0() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\input src/test/data/empty.tex",
                 //--- output channel ---
                 "");
@@ -73,7 +73,7 @@ public class InputTest extends NoFlagsPrimitiveTester {
      */
     public void ________________________testErr0() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\input src/test/data/DoesNotExist",
                 //--- output channel ---
                 "");

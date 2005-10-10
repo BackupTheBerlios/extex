@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\afterassignment</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class AfterassignmentTest extends ExTeXLauncher {
 
@@ -49,7 +49,7 @@ public class AfterassignmentTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="afterassignment">
+     * <testcase primitive="\afterassignment">
      *  Test case checking that <tt>\afterassignment</tt> throws an error on eof.
      * <testcase>
      *
@@ -66,7 +66,7 @@ public class AfterassignmentTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="afterassignment">
+     * <testcase primitive="\afterassignment">
      *  Test case checking that <tt>\afterassignment</tt> can take a letter.
      * <testcase>
      *
@@ -74,14 +74,14 @@ public class AfterassignmentTest extends ExTeXLauncher {
      */
     public void testLetter1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\afterassignment b a\\count0=123 \\end",
                 //--- output channel ---
                 "ab" + TERM);
     }
 
     /**
-     * <testcase primitive="afterassignment">
+     * <testcase primitive="\afterassignment">
      *  Test case checking that <tt>\afterassignment</tt> can take a digit.
      * <testcase>
      *
@@ -89,14 +89,14 @@ public class AfterassignmentTest extends ExTeXLauncher {
      */
     public void testOther1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\afterassignment 1 a\\count0=123 \\end",
                 //--- output channel ---
                 "a1" + TERM);
     }
 
     /**
-     * <testcase primitive="afterassignment">
+     * <testcase primitive="\afterassignment">
      *  Test case checking that <tt>\afterassignment</tt> can take only one
      *  token.
      * <testcase>
@@ -105,14 +105,14 @@ public class AfterassignmentTest extends ExTeXLauncher {
      */
     public void testDouble1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\afterassignment x\\afterassignment b a\\count0=123 \\end",
                 //--- output channel ---
                 "ab" + TERM);
     }
 
     /**
-     * <testcase primitive="afterassignment">
+     * <testcase primitive="\afterassignment">
      *  Test case checking that <tt>\afterassignment</tt> does not interact with
      *  groups.
      * <testcase>
@@ -121,7 +121,7 @@ public class AfterassignmentTest extends ExTeXLauncher {
      */
     public void testGroup1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\afterassignment x\\begingroup\\afterassignment ba\\endgroup"
                         + "\\count0=12 \\end",
                 //--- output channel ---

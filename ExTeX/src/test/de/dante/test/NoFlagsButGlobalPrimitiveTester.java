@@ -24,7 +24,7 @@ package de.dante.test;
  * global flag lead to an error.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public abstract class NoFlagsButGlobalPrimitiveTester extends ExTeXLauncher {
 
@@ -40,7 +40,7 @@ public abstract class NoFlagsButGlobalPrimitiveTester extends ExTeXLauncher {
     private String args;
 
     /**
-     * The field <tt>prepare</tt> contains the ...
+     * The field <tt>prepare</tt> contains the preparation code.
      */
     private String prepare = "";
 
@@ -49,6 +49,7 @@ public abstract class NoFlagsButGlobalPrimitiveTester extends ExTeXLauncher {
      *
      * @param arg the name of the test case
      * @param primitive the name of the primitive
+     * @param args the arguments for assignment
      */
     public NoFlagsButGlobalPrimitiveTester(final String arg,
             final String primitive, final String args) {
@@ -63,6 +64,8 @@ public abstract class NoFlagsButGlobalPrimitiveTester extends ExTeXLauncher {
      *
      * @param arg the name of the test case
      * @param primitive the name of the primitive
+     * @param args the arguments for assignment
+     * @param prepare the preparation code
      */
     public NoFlagsButGlobalPrimitiveTester(final String arg,
             final String primitive, final String args, final String prepare) {
@@ -80,7 +83,7 @@ public abstract class NoFlagsButGlobalPrimitiveTester extends ExTeXLauncher {
      */
     public void testNoImmediateFlag() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 prepare + "\\immediate\\" + primitive + args,
                 //--- log message ---
                 "You can\'t use the prefix `\\immediate\' with the control sequence \\"
@@ -96,7 +99,7 @@ public abstract class NoFlagsButGlobalPrimitiveTester extends ExTeXLauncher {
      */
     public void testNoLongFlag() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 prepare + "\\long\\" + primitive + args,
                 //--- log message ---
                 "You can\'t use the prefix `\\long\' with the control sequence \\"
@@ -112,7 +115,7 @@ public abstract class NoFlagsButGlobalPrimitiveTester extends ExTeXLauncher {
      */
     public void testNoOuterFlag() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 prepare + "\\outer\\" + primitive + args,
                 //--- log message ---
                 "You can\'t use the prefix `\\outer\' with the control sequence \\"
@@ -128,7 +131,7 @@ public abstract class NoFlagsButGlobalPrimitiveTester extends ExTeXLauncher {
      */
     public void testNoProtectedFlag() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 prepare + "\\protected\\" + primitive + args,
                 //--- log message ---
                 "You can\'t use the prefix `\\protected\' with the control sequence \\"

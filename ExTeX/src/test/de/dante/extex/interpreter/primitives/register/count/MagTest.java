@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\mag</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class MagTest extends ExTeXLauncher {
 
@@ -49,7 +49,7 @@ public class MagTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="mag">
+     * <testcase primitive="\mag">
      *  Test case checking that <tt>\mag</tt> has initially the value 1000.
      * </testcase>
      *
@@ -57,14 +57,14 @@ public class MagTest extends ExTeXLauncher {
      */
     public void testDefault1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\the\\mag \\end",
                 //--- output channel ---
                 "1000" + TERM);
     }
 
     /**
-     * <testcase primitive="mag">
+     * <testcase primitive="\mag">
      *  Test case checking that <tt>\mag</tt> can be assigned a positive value.
      * </testcase>
      *
@@ -72,14 +72,14 @@ public class MagTest extends ExTeXLauncher {
      */
     public void testAssign1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\mag=1 \\the\\mag \\end",
                 //--- output channel ---
                 "1" + TERM);
     }
 
     /**
-     * <testcase primitive="mag">
+     * <testcase primitive="\mag">
      *  Test case checking that <tt>\mag</tt> can be assigned a positive value.
      * </testcase>
      *
@@ -87,14 +87,14 @@ public class MagTest extends ExTeXLauncher {
      */
     public void testAssign2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\mag=10000 \\the\\mag \\end",
                 //--- output channel ---
                 "10000" + TERM);
     }
 
     /**
-     * <testcase primitive="mag">
+     * <testcase primitive="\mag">
      *  Test case checking that <tt>\mag</tt> can not be assigned 0.
      * </testcase>
      *
@@ -102,14 +102,14 @@ public class MagTest extends ExTeXLauncher {
      */
     public void testAssignZero() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\mag=0 \\the\\mag \\end",
                 //--- error channel ---
                 "Illegal magnification has been changed to 1000 (0)");
     }
 
     /**
-     * <testcase primitive="mag">
+     * <testcase primitive="\mag">
      *  Test case checking that <tt>\mag</tt> can not be assigned a negative
      *  value.
      * </testcase>
@@ -118,14 +118,14 @@ public class MagTest extends ExTeXLauncher {
      */
     public void testAssignNegative() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\mag=-1 \\the\\mag \\end",
                 //--- error channel ---
                 "Illegal magnification has been changed to 1000 (-1)");
     }
 
     /**
-     * <testcase primitive="mag">
+     * <testcase primitive="\mag">
      *  Test case checking that <tt>\mag</tt> can not be assigned twice with
      *  different values.
      * </testcase>
@@ -134,7 +134,7 @@ public class MagTest extends ExTeXLauncher {
      */
     public void testAssignTwice() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\mag=1 \\mag=2 \\end",
                 //--- error channel ---
                 "Incompatible magnification (2);\n"
@@ -142,7 +142,7 @@ public class MagTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="mag">
+     * <testcase primitive="\mag">
      *  Test case checking that <tt>\mag</tt> can be assigned twice if the value
      *  is the same.
      * </testcase>
@@ -151,7 +151,7 @@ public class MagTest extends ExTeXLauncher {
      */
     public void testAssignTwiceSame() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\mag=2 \\mag=2 \\the\\mag \\end",
                 //--- output channel ---
                 "2" + TERM);

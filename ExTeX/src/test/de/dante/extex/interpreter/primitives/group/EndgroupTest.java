@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\endgroup</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class EndgroupTest extends ExTeXLauncher {
 
@@ -58,7 +58,7 @@ public class EndgroupTest extends ExTeXLauncher {
      */
     public void test1() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\endgroup",
                 //--- log message ---
                 "Too many }'s");
@@ -73,7 +73,7 @@ public class EndgroupTest extends ExTeXLauncher {
      */
     public void test2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\begingroup \\endgroup",
                 //--- output channel ---
                 "");

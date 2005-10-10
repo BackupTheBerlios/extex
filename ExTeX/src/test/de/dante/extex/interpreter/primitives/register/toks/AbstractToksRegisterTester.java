@@ -26,7 +26,7 @@ import de.dante.test.ExTeXLauncher;
  * It provides some test cases common to all toks registers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public abstract class AbstractToksRegisterTester extends ExTeXLauncher {
 
@@ -47,7 +47,7 @@ public abstract class AbstractToksRegisterTester extends ExTeXLauncher {
     private String init;
 
     /**
-     * The field <tt>prepare</tt> contains the ...
+     * The field <tt>prepare</tt> contains the preparation code.
      */
     private String prepare = DEFINE_BRACES;
 
@@ -73,6 +73,7 @@ public abstract class AbstractToksRegisterTester extends ExTeXLauncher {
      * @param arg the name of the test suite
      * @param primitive the name of the integer register to test
      * @param args the parameters for the invocation
+     * @param prepare the preparation code
      */
     public AbstractToksRegisterTester(final String arg, final String primitive,
             final String args, final String init, final String prepare) {
@@ -90,7 +91,7 @@ public abstract class AbstractToksRegisterTester extends ExTeXLauncher {
      */
     public void testToksRegisterImmediatePrefix1() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 prepare + "\\immediate\\" + invocation + "= {} ",
                 //--- error channel ---
                 "You can't use the prefix `\\immediate' with the control sequence"
@@ -107,7 +108,7 @@ public abstract class AbstractToksRegisterTester extends ExTeXLauncher {
      */
     public void testToksRegisterLongPrefix1() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 prepare + "\\long\\" + invocation + "= {} ",
                 //--- error channel ---
                 "You can't use the prefix `\\long' with the control sequence"
@@ -124,7 +125,7 @@ public abstract class AbstractToksRegisterTester extends ExTeXLauncher {
      */
     public void testToksRegisterOuterPrefix1() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 prepare + "\\outer\\" + invocation + "= {} ",
                 //--- error channel ---
                 "You can't use the prefix `\\outer' with the control sequence"
@@ -142,7 +143,7 @@ public abstract class AbstractToksRegisterTester extends ExTeXLauncher {
      */
     public void testToksRegisterDefault1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 prepare + "\\the\\" + invocation + "\\end",
                 //--- output channel ---
                 init + (init.length() != 0 ? TERM : ""));
@@ -158,7 +159,7 @@ public abstract class AbstractToksRegisterTester extends ExTeXLauncher {
      */
     public void testToksRegisterAssign1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 prepare + "\\" + invocation + "={abc}\\the\\" + invocation
                         + "\\end",
                 //--- output channel ---
@@ -175,7 +176,7 @@ public abstract class AbstractToksRegisterTester extends ExTeXLauncher {
      */
     public void testToksRegisterAssign2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 prepare + "\\" + invocation + " {abc}\\the\\" + invocation
                         + "\\end",
                 //--- output channel ---
@@ -192,7 +193,7 @@ public abstract class AbstractToksRegisterTester extends ExTeXLauncher {
      */
     public void testToksRegisterAssign3() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 prepare + "\\" + invocation + " {a{b}c}\\the\\" + invocation
                         + "\\end",
                 //--- output channel ---
@@ -209,7 +210,7 @@ public abstract class AbstractToksRegisterTester extends ExTeXLauncher {
      */
     public void testToksRegisterAssign4() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 prepare + "\\" + invocation + " {a#c}\\the\\" + invocation
                         + "\\end",
                 //--- output channel ---
@@ -226,7 +227,7 @@ public abstract class AbstractToksRegisterTester extends ExTeXLauncher {
      */
     public void testToksRegisterAssign5() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 DEFINE_CATCODES + "\\" + invocation + " {a#c}\\the\\"
                         + invocation + "\\end",
                 //--- output channel ---
@@ -242,7 +243,7 @@ public abstract class AbstractToksRegisterTester extends ExTeXLauncher {
      */
     public void testToksRegisterAfterassignment1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 prepare + "\\afterassignment b a" + "\\" + invocation
                         + "{xyz}c\\the\\" + invocation + "\\end",
                 //--- output channel ---
@@ -258,7 +259,7 @@ public abstract class AbstractToksRegisterTester extends ExTeXLauncher {
      */
     public void testToksRegisterGroup1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 prepare + "\\" + invocation + "={xyz}\\begingroup\\"
                         + invocation + "={abc}\\endgroup" + " \\the\\"
                         + invocation + "\\end",
@@ -276,7 +277,7 @@ public abstract class AbstractToksRegisterTester extends ExTeXLauncher {
      */
     public void testToksRegisterGlobalAssign1() throws Exception {
 
-        runCode(
+        assertSuccess(
                 //--- input code ---
                 prepare + "\\begingroup\\global\\" + invocation
                         + "={abc}\\endgroup" + "\\the\\" + invocation + "\\end",
@@ -294,7 +295,7 @@ public abstract class AbstractToksRegisterTester extends ExTeXLauncher {
      */
     public void testToksRegisterGlobalAssign2() throws Exception {
 
-        runCode(
+        assertSuccess(
                 //--- input code ---
                 prepare + "\\begingroup\\global\\" + invocation
                         + " {abc}\\endgroup" + "\\the\\" + invocation + "\\end",

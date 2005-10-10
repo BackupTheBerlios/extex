@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\the</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class TheTest extends NoFlagsPrimitiveTester {
 
@@ -48,7 +48,7 @@ public class TheTest extends NoFlagsPrimitiveTester {
      */
     public void testErrorLetter() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\the a ",
                 //--- error channel ---
                 "You can't use `the letter a' after \\the");
@@ -63,7 +63,7 @@ public class TheTest extends NoFlagsPrimitiveTester {
      */
     public void testErrorOther() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\the 1 ",
                 //--- error channel ---
                 "You can't use `the character 1' after \\the");
@@ -78,7 +78,7 @@ public class TheTest extends NoFlagsPrimitiveTester {
      */
     public void testCount1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\the \\count1 ",
                 //--- output channel ---
                 "0" + TERM);
@@ -93,7 +93,7 @@ public class TheTest extends NoFlagsPrimitiveTester {
      */
     public void testCount2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\count1=123 \\the \\count1 ",
                 //--- output channel ---
                 "123" + TERM);

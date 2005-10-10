@@ -23,7 +23,7 @@ package de.dante.extex.interpreter.primitives.register.toks;
  * This is a test suite for the primitive <tt>\everyhbox</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class EveryhboxTest extends AbstractToksRegisterTester {
 
@@ -47,7 +47,7 @@ public class EveryhboxTest extends AbstractToksRegisterTester {
     }
 
     /**
-     * <testcase primitive="everyhbox">
+     * <testcase primitive="\everyhbox">
      *   Test case checking that a hbox containing "abc" in font cmtt12 has the
      *   width 37.05002pt where "123" is added to the box by an
      *   <tt>\everyhbox</tt>.
@@ -57,7 +57,7 @@ public class EveryhboxTest extends AbstractToksRegisterTester {
      */
     public void testErr1() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\catcode`{=1 "
                 + "\\catcode`}=2 "
                 + "\\everyhbox123"
@@ -67,7 +67,7 @@ public class EveryhboxTest extends AbstractToksRegisterTester {
     }
 
     /**
-     * <testcase primitive="everyhbox">
+     * <testcase primitive="\everyhbox">
      *   Test case checking that a hbox containing "abc" in font cmtt12 has the
      *   width 37.05002pt where "123" is added to the box by an
      *   <tt>\everyhbox</tt>.
@@ -77,7 +77,7 @@ public class EveryhboxTest extends AbstractToksRegisterTester {
      */
     public void testEveryHbox1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\catcode`{=1"
                 + "\\catcode`}=2"
                 + "\\relax"
@@ -91,7 +91,7 @@ public class EveryhboxTest extends AbstractToksRegisterTester {
     }
 
     /**
-     * <testcase primitive="everyhbox">
+     * <testcase primitive="\everyhbox">
      *   Test case checking that a hbox containing "abc" in font cmtt12 has the
      *   width 55.57503pt where "123" is added to the box by an \everyhbox and
      *   "..." is prepended by \afterassignment.
@@ -101,7 +101,7 @@ public class EveryhboxTest extends AbstractToksRegisterTester {
      */
     public void testEveryHboxAfterassignment1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\catcode`{=1"
                 + "\\catcode`}=2"
                 + "\\relax"
@@ -113,7 +113,7 @@ public class EveryhboxTest extends AbstractToksRegisterTester {
                 + "\\the\\wd1 "
                 + "\\end",
                 //--- output channel ---
-                "55.57503pt" + TERM); // checked wih TeX
+                "55.57503pt" + TERM); // checked with TeX
     }
 
     //TODO implement the primitive specific test cases

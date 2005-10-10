@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\def</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class DefTest extends ExTeXLauncher {
 
@@ -40,7 +40,7 @@ public class DefTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="def">
+     * <testcase primitive="\def">
      *  Test case checking that ...
      * </testcase>
      *
@@ -48,7 +48,7 @@ public class DefTest extends ExTeXLauncher {
      */
     public void testImmediate1() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 DEFINE_CATCODES
                 + "\\immediate\\def\\aaa{}",
                 //--- log message ---
@@ -56,7 +56,7 @@ public class DefTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="def">
+     * <testcase primitive="\def">
      *  Test case checking that ...
      * </testcase>
      *
@@ -64,7 +64,7 @@ public class DefTest extends ExTeXLauncher {
      */
     public void test1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 DEFINE_CATCODES
                 + "\\def\\aaa{AAA}"
                 + "--\\aaa--",
@@ -73,7 +73,7 @@ public class DefTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="def">
+     * <testcase primitive="\def">
      *  Test case checking that ...
      * </testcase>
      *
@@ -81,7 +81,7 @@ public class DefTest extends ExTeXLauncher {
      */
     public void testGloal1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 DEFINE_CATCODES
                 + "\\def\\aaa{AAA}"
                 + "{\\global\\def\\aaa{BBB}}"
@@ -91,7 +91,7 @@ public class DefTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="def">
+     * <testcase primitive="\def">
      *  Test case checking that ...
      * </testcase>
      *
@@ -99,7 +99,7 @@ public class DefTest extends ExTeXLauncher {
      */
     public void testLong1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 DEFINE_CATCODES
                 + "\\long\\def\\aaa{AAA}"
                 + "--\\aaa--",
@@ -108,7 +108,7 @@ public class DefTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="def">
+     * <testcase primitive="\def">
      *  Test case checking that ...
      * </testcase>
      *
@@ -116,7 +116,7 @@ public class DefTest extends ExTeXLauncher {
      */
     public void testA1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 DEFINE_CATCODES
                 + "\\def\\aaa#1{A#1A}"
                 + "--\\aaa 1--",
@@ -125,7 +125,7 @@ public class DefTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="def">
+     * <testcase primitive="\def">
      *  Test case checking that ...
      * </testcase>
      *

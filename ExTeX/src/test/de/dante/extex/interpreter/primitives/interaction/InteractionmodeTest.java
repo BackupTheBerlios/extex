@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\interactionmode</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class InteractionmodeTest extends ExTeXLauncher {
     
@@ -58,7 +58,7 @@ public class InteractionmodeTest extends ExTeXLauncher {
      */
     public void test0() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\batchmode\\count0=\\interactionmode"
                 + " \\the\\count0 \\end",
                 //--- output channel ---
@@ -74,7 +74,7 @@ public class InteractionmodeTest extends ExTeXLauncher {
      */
     public void test1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\nonstopmode\\count0=\\interactionmode"
                 + " \\the\\count0 \\end",
                 //--- output channel ---
@@ -90,7 +90,7 @@ public class InteractionmodeTest extends ExTeXLauncher {
      */
     public void test2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\scrollmode\\count0=\\interactionmode"
                 + " \\the\\count0 \\end",
                 //--- output channel ---
@@ -106,7 +106,7 @@ public class InteractionmodeTest extends ExTeXLauncher {
      */
     public void test3() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\errorstopmode\\count0=\\interactionmode"
                 + " \\the\\count0 \\end",
                 //--- output channel ---
@@ -123,7 +123,7 @@ public class InteractionmodeTest extends ExTeXLauncher {
      */
     public void testSet1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\interactionmode=3 \\count0=\\interactionmode"
                 + " \\the\\count0 \\end",
                 //--- output channel ---
@@ -140,7 +140,7 @@ public class InteractionmodeTest extends ExTeXLauncher {
      */
     public void testSet2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\interactionmode 3 \\count0=\\interactionmode"
                 + " \\the\\count0 \\end",
                 //--- output channel ---
@@ -156,7 +156,7 @@ public class InteractionmodeTest extends ExTeXLauncher {
      */
     public void testSetErr1() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\interactionmode=4 ",
                 //--- log message ---
                 "Interaction 4 is unknown\n");
@@ -171,7 +171,7 @@ public class InteractionmodeTest extends ExTeXLauncher {
      */
     public void testSetErr2() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\interactionmode=-1 ",
                 //--- log message ---
                 "Missing number, treated as zero");

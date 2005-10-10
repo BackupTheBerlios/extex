@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsButGlobalPrimitiveTester;
  * This is a test suite for the primitive <tt>\chardef</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class ChardefTest extends NoFlagsButGlobalPrimitiveTester {
 
@@ -49,7 +49,7 @@ public class ChardefTest extends NoFlagsButGlobalPrimitiveTester {
     }
 
     /**
-     * <testcase primitive="chardef">
+     * <testcase primitive="\chardef">
      *  Test case checking that <tt>\chardef</tt> throws an error on eof.
      * </testcase>
      *
@@ -57,14 +57,14 @@ public class ChardefTest extends NoFlagsButGlobalPrimitiveTester {
      */
     public void testEOF1() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\chardef",
                 //--- log message ---
                 "Missing control sequence inserted");
     }
 
     /**
-     * <testcase primitive="chardef">
+     * <testcase primitive="\chardef">
      *  Test case checking that <tt>\chardef</tt> throws an error on eof.
      * </testcase>
      *
@@ -72,14 +72,14 @@ public class ChardefTest extends NoFlagsButGlobalPrimitiveTester {
      */
     public void testEOF2() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\chardef\\x",
                 //--- log message ---
                 "Missing number, treated as zero");
     }
 
     /**
-     * <testcase primitive="chardef">
+     * <testcase primitive="\chardef">
      *  Test case checking that <tt>\chardef</tt> needs a code token as
      *  first argument.
      * </testcase>
@@ -88,14 +88,14 @@ public class ChardefTest extends NoFlagsButGlobalPrimitiveTester {
      */
     public void testNonCode1() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\chardef a =123",
                 //--- log message ---
                 "Missing control sequence inserted");
     }
 
     /**
-     * <testcase primitive="chardef">
+     * <testcase primitive="\chardef">
      *  Test case checking that <tt>\chardef</tt> needs a code token as
      *  first argument.
      * </testcase>
@@ -104,14 +104,14 @@ public class ChardefTest extends NoFlagsButGlobalPrimitiveTester {
      */
     public void testNonCode2() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\chardef 12=123",
                 //--- log message ---
                 "Missing control sequence inserted");
     }
 
     /**
-     * <testcase primitive="chardef">
+     * <testcase primitive="\chardef">
      *  Test case checking that <tt>\chardef</tt> needs a code token as
      *  first argument.
      * </testcase>
@@ -120,14 +120,14 @@ public class ChardefTest extends NoFlagsButGlobalPrimitiveTester {
      */
     public void test1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\chardef\\x=65 \\the\\x\\end",
                 //--- output channel ---
                 "65" + TERM);
     }
 
     /**
-     * <testcase primitive="chardef">
+     * <testcase primitive="\chardef">
      *  Test case checking that <tt>\chardef</tt> needs a code token as
      *  first argument.
      * </testcase>
@@ -136,7 +136,7 @@ public class ChardefTest extends NoFlagsButGlobalPrimitiveTester {
      */
     public void test2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\chardef\\x=65 \\count0=\\x\\the\\count0\\end",
                 //--- output channel ---
                 "65" + TERM);

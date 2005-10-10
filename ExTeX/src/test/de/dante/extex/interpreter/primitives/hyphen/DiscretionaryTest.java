@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\discretionary</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class DiscretionaryTest extends ExTeXLauncher {
 
@@ -46,7 +46,7 @@ public class DiscretionaryTest extends ExTeXLauncher {
      */
     public void testDisc1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\catcode`{=1 "
                 + "\\catcode`}=2 "
                 + "\\catcode`$=3 "

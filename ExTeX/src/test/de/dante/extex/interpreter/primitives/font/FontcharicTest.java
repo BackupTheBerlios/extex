@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\fontcharic</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class FontcharicTest extends ExTeXLauncher {
 
@@ -49,7 +49,7 @@ public class FontcharicTest extends ExTeXLauncher {
      */
     public void testVertical1() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\fontcharic ",
                 //--- log message ---
                 "You can't use `\\fontcharic' in vertical mode");
@@ -65,7 +65,7 @@ public class FontcharicTest extends ExTeXLauncher {
      */
     public void testEof1() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\dimen0=\\fontcharic ",
                 //--- log message ---
                 "Unexpected end of file while processing \\fontcharic");
@@ -81,7 +81,7 @@ public class FontcharicTest extends ExTeXLauncher {
      */
     public void testEof2() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\dimen0=\\fontcharic\\nullfont ",
                 //--- log message ---
                 "Missing number, treated as zero");
@@ -97,7 +97,7 @@ public class FontcharicTest extends ExTeXLauncher {
      */
     public void testCmslPoint() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\font\\cmsl cmsl10 "
                 + "\\the\\fontcharic\\cmsl `.\\end",
                 //--- output message ---
@@ -114,7 +114,7 @@ public class FontcharicTest extends ExTeXLauncher {
      */
     public void testCmslL() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\font\\cmsl cmsl10 "
                 + "\\the\\fontcharic\\cmsl `l\\end",
                 //--- output message ---
@@ -131,7 +131,7 @@ public class FontcharicTest extends ExTeXLauncher {
      */
     public void testCmslX() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\font\\cmsl cmsl10 "
                 + "\\the\\fontcharic\\cmsl `x\\end",
                 //--- output message ---
@@ -148,7 +148,7 @@ public class FontcharicTest extends ExTeXLauncher {
      */
     public void testCmslPlus2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\font\\cmsl cmsl10 "
                 + "\\dimen0=\\fontcharic\\cmsl `+\\the\\dimen0\\end",
                 //--- output message ---
@@ -165,7 +165,7 @@ public class FontcharicTest extends ExTeXLauncher {
      */
     public void testCmslPlus3() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\font\\cmsl cmsl10 "
                 + "\\count0=\\fontcharic\\cmsl `+\\the\\count0\\end",
                 //--- output message ---

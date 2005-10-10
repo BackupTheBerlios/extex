@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\errmessage</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ErrmessageTest extends ExTeXLauncher {
 
@@ -48,7 +48,7 @@ public class ErrmessageTest extends ExTeXLauncher {
      */
     public void testJobname1() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\catcode`{=1"
                 + "\\catcode`}=2"
                 + "\\errmessage{abc}",

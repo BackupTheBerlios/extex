@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\hbox</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class HboxTest extends ExTeXLauncher {
 
@@ -40,7 +40,7 @@ public class HboxTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="hbox">
+     * <testcase primitive="\hbox">
      *   Test case checking that a missing left brace directly after the macro
      *   token leads to an error.
      * </testcase>
@@ -62,7 +62,7 @@ public class HboxTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="hbox">
+     * <testcase primitive="\hbox">
      *   Test case checking that a missing left brace after a "to" specification
      *   leads to an error.
      * </testcase>
@@ -84,7 +84,7 @@ public class HboxTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="hbox">
+     * <testcase primitive="\hbox">
      *   Test case checking that an outer macro in the preamble leads to an
      *   error.
      * </testcase>
@@ -105,7 +105,7 @@ public class HboxTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="hbox">
+     * <testcase primitive="\hbox">
      *   Test case checking that a correct hbox passes its contents to the
      *   typesetter.
      * </testcase>
@@ -127,7 +127,7 @@ public class HboxTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="hbox">
+     * <testcase primitive="\hbox">
      *   Test case checking that an outer macro in the preamble leads to an
      *   error.
      * </testcase>
@@ -148,7 +148,7 @@ public class HboxTest extends ExTeXLauncher {
     }
 
     /**
-     * <testcase primitive="hbox">
+     * <testcase primitive="\hbox">
      *   Test case checking that a hbox containing "abc" in font cmtt12 has the
      *   width 18.52501pt. This value has been computed with <logo>TeX</logo>.
      * </testcase>

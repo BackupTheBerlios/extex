@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the prefix primitives.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class PrefixTester extends ExTeXLauncher {
 
@@ -54,7 +54,7 @@ public abstract class PrefixTester extends ExTeXLauncher {
      */
     public void testPrefixLetter1() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\" + primitive + " a",
                 //--- log message ---
                 "You can\'t use the prefix `\\" + primitive
@@ -70,7 +70,7 @@ public abstract class PrefixTester extends ExTeXLauncher {
      */
     public void testPrefixOther1() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\" + primitive + " 1",
                 //--- log message ---
                 "You can\'t use the prefix `\\" + primitive
@@ -87,7 +87,7 @@ public abstract class PrefixTester extends ExTeXLauncher {
      */
     public void testPrefixBeginGroup1() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 DEFINE_CATCODES + "\\" + primitive + " {",
                 //--- log message ---
                 "You can\'t use the prefix `\\" + primitive
@@ -104,7 +104,7 @@ public abstract class PrefixTester extends ExTeXLauncher {
      */
     public void testPrefixEndGroup1() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 DEFINE_CATCODES + "{\\" + primitive + " }",
                 //--- log message ---
                 "You can\'t use the prefix `\\" + primitive
@@ -121,7 +121,7 @@ public abstract class PrefixTester extends ExTeXLauncher {
      */
     public void testPrefixMathShift1() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 DEFINE_CATCODES + "\\" + primitive + " $ ",
                 //--- log message ---
                 "You can\'t use the prefix `\\" + primitive
@@ -138,7 +138,7 @@ public abstract class PrefixTester extends ExTeXLauncher {
      */
     public void testPrefixTab1() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 DEFINE_CATCODES + "\\" + primitive + " &",
                 //--- log message ---
                 "You can\'t use the prefix `\\" + primitive
@@ -155,7 +155,7 @@ public abstract class PrefixTester extends ExTeXLauncher {
      */
     public void testPrefixSub1() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 DEFINE_CATCODES + "$\\" + primitive + " _",
                 //--- log message ---
                 "You can\'t use the prefix `\\" + primitive
@@ -172,7 +172,7 @@ public abstract class PrefixTester extends ExTeXLauncher {
      */
     public void testPrefixSuper1() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 DEFINE_CATCODES + "$\\" + primitive + " ^",
                 //--- log message ---
                 "You can\'t use the prefix `\\" + primitive

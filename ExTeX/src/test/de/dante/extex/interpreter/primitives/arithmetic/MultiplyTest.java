@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsButGlobalPrimitiveTester;
  * This is a test suite for the primitive <tt>\multiply</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class MultiplyTest extends NoFlagsButGlobalPrimitiveTester {
 
@@ -58,7 +58,7 @@ public class MultiplyTest extends NoFlagsButGlobalPrimitiveTester {
      */
     public void testLetter1() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\multiply a",
                 //--- log message ---
                 "You can\'t use `a\' after \\multiply");
@@ -74,7 +74,7 @@ public class MultiplyTest extends NoFlagsButGlobalPrimitiveTester {
      */
     public void testOther1() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\multiply 12 ",
                 //--- log message ---
                 "You can\'t use `1\' after \\multiply");
@@ -90,7 +90,7 @@ public class MultiplyTest extends NoFlagsButGlobalPrimitiveTester {
      */
     public void testMacro1() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\catcode`#=6 "
                 + "\\multiply #2 ",
                 //--- log message ---
@@ -107,7 +107,7 @@ public class MultiplyTest extends NoFlagsButGlobalPrimitiveTester {
      */
     public void testRelax1() throws Exception {
 
-        runFailureCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\multiply \\relax ",
                 //--- log message ---
                 "You can\'t use `\\relax\' after \\multiply");
@@ -123,7 +123,7 @@ public class MultiplyTest extends NoFlagsButGlobalPrimitiveTester {
      */
     public void testCount1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\count1 8 "
                 +"\\multiply \\count1 16 "
                 + "\\the\\count1 \\end",
@@ -141,7 +141,7 @@ public class MultiplyTest extends NoFlagsButGlobalPrimitiveTester {
      */
     public void testCount2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\count1 8 "
                 +"\\begingroup\\global\\multiply \\count1 16 \\endgroup "
                 + "\\the\\count1 \\end",
@@ -159,7 +159,7 @@ public class MultiplyTest extends NoFlagsButGlobalPrimitiveTester {
      */
     public void testDimen1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\dimen1 8pt "
                 + "\\multiply \\dimen1 16 "
                 + "\\the\\dimen1 \\end",
@@ -177,7 +177,7 @@ public class MultiplyTest extends NoFlagsButGlobalPrimitiveTester {
      */
     public void testDimen2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\dimen1 8pt "
                 + "\\begingroup\\global\\multiply \\dimen1 16 \\endgroup "
                 + "\\the\\dimen1 \\end",

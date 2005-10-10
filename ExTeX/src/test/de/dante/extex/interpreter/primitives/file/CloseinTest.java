@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsButGlobalAndImmediatePrimitiveTester;
  * This is a test suite for the primitive <tt>\closein</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class CloseinTest extends NoFlagsButGlobalAndImmediatePrimitiveTester {
 
@@ -59,7 +59,7 @@ public class CloseinTest extends NoFlagsButGlobalAndImmediatePrimitiveTester {
      */
     public void test0() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\closein 1",
                 //--- output channel ---
                 "");

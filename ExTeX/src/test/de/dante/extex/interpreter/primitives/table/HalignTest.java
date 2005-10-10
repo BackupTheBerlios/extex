@@ -27,7 +27,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\halign</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class HalignTest extends ExTeXLauncher {
 
@@ -48,18 +48,12 @@ public class HalignTest extends ExTeXLauncher {
      */
     public void testMissingBrace1() throws Exception {
 
-        runCode(//--- input code ---
-                "\\catcode`{=1"
-                + "\\catcode`}=2"
-                + "\\catcode`&=4"
-                + "\\catcode`#=6"
-                + ""
+        assertFailure(//--- input code ---
+                DEFINE_CATCODES
                 + "\\halign a"
                 + "\\end ",
                 //--- log message ---
-                "Missing `{' inserted",
-                //--- output channel ---
-                "");
+                "Missing `{' inserted");
     }
 
     /**
@@ -69,17 +63,11 @@ public class HalignTest extends ExTeXLauncher {
      */
     public void testEof1() throws Exception {
 
-        runCode(//--- input code ---
-                "\\catcode`{=1"
-                + "\\catcode`}=2"
-                + "\\catcode`&=4"
-                + "\\catcode`#=6"
-                + ""
+        assertFailure(//--- input code ---
+                DEFINE_CATCODES
                 + "\\halign",
                 //--- log message ---
-                "Unexpected end of file while processing \\halign",
-                //--- output channel ---
-                "");
+                "Unexpected end of file while processing \\halign");
     }
 
     /**
@@ -89,19 +77,14 @@ public class HalignTest extends ExTeXLauncher {
      */
     public void testOuter1() throws Exception {
 
-        runCode(//--- input code ---
-                "\\catcode`{=1"
-                + "\\catcode`}=2"
-                + "\\catcode`&=4"
-                + "\\catcode`#=6"
+        assertFailure(//--- input code ---
+                DEFINE_CATCODES
                 + "\\outer\\def\\x{}"
                 + ""
                 + "\\halign{\\x#&\\cr}"
                 + "\\end ",
                 //--- log message ---
-                "Forbidden control sequence found while scanning preamble of \\halign",
-                //--- output channel ---
-                "");
+                "Forbidden control sequence found while scanning preamble of \\halign");
     }
 
     /**
@@ -111,19 +94,14 @@ public class HalignTest extends ExTeXLauncher {
      */
     public void testOuter2() throws Exception {
 
-        runCode(//--- input code ---
-                "\\catcode`{=1"
-                + "\\catcode`}=2"
-                + "\\catcode`&=4"
-                + "\\catcode`#=6"
+        assertFailure(//--- input code ---
+                DEFINE_CATCODES
                 + "\\outer\\def\\x{}"
                 + ""
                 + "\\halign{a#\\x&\\cr}"
                 + "\\end ",
                 //--- log message ---
-                "Forbidden control sequence found while scanning preamble of \\halign",
-                //--- output channel ---
-                "");
+                "Forbidden control sequence found while scanning preamble of \\halign");
     }
 
     /**
@@ -133,19 +111,14 @@ public class HalignTest extends ExTeXLauncher {
      */
     public void testOuter3() throws Exception {
 
-        runCode(//--- input code ---
-                "\\catcode`{=1"
-                + "\\catcode`}=2"
-                + "\\catcode`&=4"
-                + "\\catcode`#=6"
+        assertFailure(//--- input code ---
+                DEFINE_CATCODES
                 + "\\outer\\def\\x{}"
                 + ""
                 + "\\halign{a#b&a#\\x&\\cr}"
                 + "\\end ",
                 //--- log message ---
-                "Forbidden control sequence found while scanning preamble of \\halign",
-                //--- output channel ---
-                "");
+                "Forbidden control sequence found while scanning preamble of \\halign");
     }
 
     /**
@@ -155,18 +128,12 @@ public class HalignTest extends ExTeXLauncher {
      */
     public void testMissingSharp1() throws Exception {
 
-        runCode(//--- input code ---
-                "\\catcode`{=1"
-                + "\\catcode`}=2"
-                + "\\catcode`&=4"
-                + "\\catcode`#=6"
-                + ""
+        assertFailure(//--- input code ---
+                DEFINE_CATCODES
                 + "\\halign{a&#\\cr}"
                 + "\\end ",
                 //--- log message ---
-                "Missing # inserted in alignment preamble",
-                //--- output channel ---
-                "");
+                "Missing # inserted in alignment preamble");
     }
 
     /**
@@ -176,18 +143,12 @@ public class HalignTest extends ExTeXLauncher {
      */
     public void testMissingSharp2() throws Exception {
 
-        runCode(//--- input code ---
-                "\\catcode`{=1"
-                + "\\catcode`}=2"
-                + "\\catcode`&=4"
-                + "\\catcode`#=6"
-                + ""
+        assertFailure(//--- input code ---
+                DEFINE_CATCODES
                 + "\\halign{#a&abc\\cr}"
                 + "\\end ",
                 //--- log message ---
-                "Missing # inserted in alignment preamble",
-                //--- output channel ---
-                "");
+                "Missing # inserted in alignment preamble");
     }
 
     /**
@@ -197,18 +158,12 @@ public class HalignTest extends ExTeXLauncher {
      */
     public void testSharp1() throws Exception {
 
-        runCode(//--- input code ---
-                "\\catcode`{=1"
-                + "\\catcode`}=2"
-                + "\\catcode`&=4"
-                + "\\catcode`#=6"
-                + ""
+        assertFailure(//--- input code ---
+                DEFINE_CATCODES
                 + "\\halign{#a#\\cr}"
                 + "\\end ",
                 //--- log message ---
-                "Only one # is allowed per tab",
-                //--- output channel ---
-                "");
+                "Only one # is allowed per tab");
     }
 
     /**
@@ -223,11 +178,7 @@ public class HalignTest extends ExTeXLauncher {
 
         runCode(properties,
                 //--- input code ---
-                "\\catcode`{=1"
-                + "\\catcode`}=2"
-                + "\\catcode`&=4"
-                + "\\catcode`#=6"
-                + ""
+                DEFINE_CATCODES
                 + "\\halign{a#b&c#d\\cr1&2\\cr}"
                 + "\\end ",
                 //--- log message ---
