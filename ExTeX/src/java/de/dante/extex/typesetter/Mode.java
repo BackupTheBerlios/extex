@@ -26,7 +26,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This class provides type-safe constants for the modes of a typesetter.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public abstract class Mode {
 
@@ -34,7 +34,7 @@ public abstract class Mode {
      * This inner class represents vertical modes.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.8 $
+     * @version $Revision: 1.9 $
      */
     private static class HorizontalMode extends Mode {
 
@@ -63,7 +63,7 @@ public abstract class Mode {
      * This inner class represents math modes.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.8 $
+     * @version $Revision: 1.9 $
      */
     private static class MathMode extends Mode {
 
@@ -92,7 +92,7 @@ public abstract class Mode {
      * This inner class represents vertical modes.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.8 $
+     * @version $Revision: 1.9 $
      */
     private static class VerticalMode extends Mode {
 
@@ -135,7 +135,7 @@ public abstract class Mode {
      * the typesetter.
      */
     public static final Mode INNER_VERTICAL = new VerticalMode(
-            "Mode.VerticalMode");
+            "Mode.InnerVerticalMode");
 
     /**
      * The constant <tt>MATH</tt> contains the math mode of the typesetter.
@@ -147,7 +147,7 @@ public abstract class Mode {
      * horizontal mode of the typesetter.
      */
     public static final Mode RESTRICTED_HORIZONTAL = new HorizontalMode(
-            "Mode.HorizontalMode");
+            "Mode.RestrictedHorizontalMode");
 
     /**
      * The constant <tt>VERTICAL</tt> contains the vertical mode of the
