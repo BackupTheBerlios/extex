@@ -25,9 +25,7 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.exception.helping.MissingLeftBraceException;
-import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.box.Box;
-import de.dante.extex.interpreter.type.box.Boxable;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.token.Token;
@@ -81,9 +79,9 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
-public class Vbox extends AbstractCode implements Boxable {
+public class Vbox extends AbstractBoxPrimitive {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
@@ -98,27 +96,6 @@ public class Vbox extends AbstractCode implements Boxable {
     public Vbox(final String name) {
 
         super(name);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.type.Code#execute(
-     *      de.dante.extex.interpreter.Flags,
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.typesetter.Typesetter)
-     */
-    public void execute(final Flags prefix, final Context context,
-            final TokenSource source, final Typesetter typesetter)
-            throws InterpreterException {
-
-        Box b = getBox(context, source, typesetter);
-        try {
-            typesetter.add(b.getNodes());
-        } catch (GeneralException e) {
-            throw new InterpreterException(e);
-        } catch (ConfigurationException e) {
-            throw new InterpreterException(e);
-        }
     }
 
     /**

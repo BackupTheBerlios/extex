@@ -23,8 +23,14 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.exception.helping.CantUseInException;
 import de.dante.extex.interpreter.primitives.register.box.AbstractBox;
+import de.dante.extex.interpreter.type.box.Box;
+import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.exception.TypesetterException;
+import de.dante.extex.typesetter.type.node.AdjustNode;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * This class provides an implementation for the primitive <code>\vadjust</code>.
@@ -48,7 +54,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Vadjust extends AbstractBox {
 
@@ -78,10 +84,23 @@ public class Vadjust extends AbstractBox {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        //Box b = new Box(context, source, typesetter, false, null);
+        Mode mode = typesetter.getMode();
+        if (!mode.isHmode()) {
+            throw new CantUseInException(printableControlSequence(context),
+                    mode.toString());
+        }
+        Flags flags = prefix.copy();
+        prefix.clear();
+        Box b = new Box(context, source, typesetter, false, null);
 
-        //TODO gene: execute() unimplemented
-        throw new RuntimeException("unimplemented");
+        try {
+            typesetter.add(new AdjustNode(b.getNodes()));
+        } catch (TypesetterException e) {
+            throw new InterpreterException(e);
+        } catch (ConfigurationException e) {
+            throw new InterpreterException(e);
+        }
+        prefix.set(flags);
     }
 
 }

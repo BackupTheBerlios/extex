@@ -23,12 +23,12 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.primitives.typesetter.box.AbstractBoxPrimitive;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.box.Boxable;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
@@ -70,9 +70,9 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
-public class Lower extends AbstractCode implements Boxable {
+public class Lower extends AbstractBoxPrimitive {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
@@ -90,26 +90,6 @@ public class Lower extends AbstractCode implements Boxable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Code#execute(de.dante.extex.interpreter.Flags,
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.typesetter.Typesetter)
-     */
-    public void execute(final Flags prefix, final Context context,
-            final TokenSource source, final Typesetter typesetter)
-            throws InterpreterException {
-
-        Box box = getBox(context, source, typesetter);
-        try {
-            typesetter.add(box.getNodes());
-        } catch (GeneralException e) {
-            throw new InterpreterException(e);
-        } catch (ConfigurationException e) {
-            throw new InterpreterException(e);
-        }
-    }
-
-    /**
      * @see de.dante.extex.interpreter.type.box.Boxable#getBox(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
@@ -120,8 +100,10 @@ public class Lower extends AbstractCode implements Boxable {
 
         Dimen amount = new Dimen(context, source, typesetter);
         Box box = source.getBox(context, typesetter);
-        amount.add(box.getShift());
-        box.setShift(amount);
+        if (box != null) {
+            amount.add(box.getShift());
+            box.setShift(amount);
+        }
         return box;
     }
 
