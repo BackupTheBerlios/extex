@@ -25,13 +25,16 @@ import de.dante.extex.typesetter.type.NodeVisitor;
 import de.dante.util.exception.GeneralException;
 
 /**
+ * Te adjust node is used to insert material which should be pushed out the the
+ * enclosing vertical list.
+ *
  * TODO gene: missing JavaDoc.
  *
  * @see "<logo>TeX</logo> &ndash; The Program [142]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class AdjustNode extends AbstractNode implements Node {
 
@@ -41,16 +44,29 @@ public class AdjustNode extends AbstractNode implements Node {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The field <tt>nodes</tt> contains the ...
+     * The field <tt>nodes</tt> contains the list of nodes contained.
      */
     private NodeList nodes;
 
     /**
      * Creates a new object.
+     *
+     * @param nodes the list of nodes contained
      */
-    public AdjustNode() {
+    public AdjustNode(final NodeList nodes) {
 
         super();
+        this.nodes = nodes;
+    }
+
+    /**
+     * Getter for nodes.
+     *
+     * @return the nodes
+     */
+    public NodeList getNodes() {
+
+        return this.nodes;
     }
 
     /**
@@ -67,7 +83,8 @@ public class AdjustNode extends AbstractNode implements Node {
      */
     public void toString(final StringBuffer sb, final String prefix) {
 
-        sb.append(getLocalizer().format("String.Format",
+        sb
+                .append(getLocalizer().format("String.Format",
                         getWidth().toString()));
         nodes.toString(sb, prefix);
     }
