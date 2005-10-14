@@ -24,7 +24,7 @@ package de.dante.test;
  * primitives. They verify that prefix macros always lead to an error.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public abstract class NoFlagsPrimitiveTester extends ExTeXLauncher {
 
@@ -34,10 +34,10 @@ public abstract class NoFlagsPrimitiveTester extends ExTeXLauncher {
     private String primitive;
 
     /**
-     * The field <tt>args</tt> contains the additional arguments for the
+     * The field <tt>arguments</tt> contains the additional arguments for the
      * flag test.
      */
-    private String args;
+    private String arguments;
 
     /**
      * The field <tt>prepare</tt> contains the preparation code.
@@ -52,11 +52,11 @@ public abstract class NoFlagsPrimitiveTester extends ExTeXLauncher {
      * @param args additional arguments for the flag test
      */
     public NoFlagsPrimitiveTester(final String name, final String primitive,
-            final String args) {
+            final String arguments) {
 
         super(name);
         this.primitive = primitive;
-        this.args = args;
+        this.arguments = arguments;
     }
 
     /**
@@ -64,13 +64,13 @@ public abstract class NoFlagsPrimitiveTester extends ExTeXLauncher {
      *
      * @param arg the name of the test suite
      * @param primitive the name of the integer register to test
-     * @param args the parameters for the invocation
+     * @param arguments the parameters for the invocation
      * @param prepare the preparation code
      */
     public NoFlagsPrimitiveTester(final String arg, final String primitive,
-            final String args, final String prepare) {
+            final String arguments, final String prepare) {
 
-        this(arg, primitive, args);
+        this(arg, primitive, arguments);
         this.prepare = DEFINE_BRACES + prepare;
     }
 
@@ -81,10 +81,10 @@ public abstract class NoFlagsPrimitiveTester extends ExTeXLauncher {
     public void testNoGlobalFlag() throws Exception {
 
         assertFailure(//--- input code ---
-                prepare + "\\global\\" + primitive + args + "\\end",
+                prepare + "\\global\\" + primitive + arguments + "\\end",
                 //--- log message ---
-                "You can\'t use the prefix `\\global\' with the control sequence \\"
-                        + primitive);
+                "You can\'t use the prefix `\\global\' with"
+                        + " the control sequence \\" + primitive);
     }
 
     /**
@@ -94,10 +94,10 @@ public abstract class NoFlagsPrimitiveTester extends ExTeXLauncher {
     public void testNoImmediateFlag() throws Exception {
 
         assertFailure(//--- input code ---
-                prepare + "\\immediate\\" + primitive + args + "\\end",
+                prepare + "\\immediate\\" + primitive + arguments + "\\end",
                 //--- log message ---
-                "You can\'t use the prefix `\\immediate\' with the control sequence \\"
-                        + primitive);
+                "You can\'t use the prefix `\\immediate\' with"
+                        + " the control sequence \\" + primitive);
     }
 
     /**
@@ -107,10 +107,10 @@ public abstract class NoFlagsPrimitiveTester extends ExTeXLauncher {
     public void testNoLongFlag() throws Exception {
 
         assertFailure(//--- input code ---
-                prepare + "\\long\\" + primitive + args + "\\end",
+                prepare + "\\long\\" + primitive + arguments + "\\end",
                 //--- log message ---
-                "You can\'t use the prefix `\\long\' with the control sequence \\"
-                        + primitive);
+                "You can\'t use the prefix `\\long\' with"
+                        + " the control sequence \\" + primitive);
     }
 
     /**
@@ -120,10 +120,10 @@ public abstract class NoFlagsPrimitiveTester extends ExTeXLauncher {
     public void testNoOuterFlag() throws Exception {
 
         assertFailure(//--- input code ---
-                prepare + "\\outer\\" + primitive + args + "\\end",
+                prepare + "\\outer\\" + primitive + arguments + "\\end",
                 //--- log message ---
-                "You can\'t use the prefix `\\outer\' with the control sequence \\"
-                        + primitive);
+                "You can\'t use the prefix `\\outer\' with"
+                        + " the control sequence \\" + primitive);
     }
 
     /**
@@ -133,10 +133,10 @@ public abstract class NoFlagsPrimitiveTester extends ExTeXLauncher {
     public void testNoProtectedFlag() throws Exception {
 
         assertFailure(//--- input code ---
-                prepare + "\\protected\\" + primitive + args,
+                prepare + "\\protected\\" + primitive + arguments + "\\end",
                 //--- log message ---
-                "You can\'t use the prefix `\\protected\' with the control sequence \\"
-                        + primitive);
+                "You can\'t use the prefix `\\protected\' with"
+                        + " the control sequence \\" + primitive);
     }
 
 }
