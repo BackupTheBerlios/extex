@@ -19,14 +19,13 @@
 
 package de.dante.extex.interpreter.primitives.parameter;
 
-import de.dante.extex.interpreter.primitives.register.box.WdTest;
 import de.dante.test.ExTeXLauncher;
 
 /**
  * This is a test suite for the primitive <tt>\spacefactor</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class SpacefactorTest extends ExTeXLauncher {
 
@@ -36,7 +35,7 @@ public class SpacefactorTest extends ExTeXLauncher {
      */
     public static void main(final String[] args) {
 
-        junit.textui.TestRunner.run(WdTest.class);
+        junit.textui.TestRunner.run(SpacefactorTest.class);
     }
 
     /**
