@@ -53,7 +53,7 @@ import de.dante.extex.typesetter.type.noad.RadicalNoad;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Radical extends AbstractTeXDelimter {
 
@@ -85,7 +85,7 @@ public class Radical extends AbstractTeXDelimter {
 
         NoadConsumer nc = getListMaker(context, typesetter);
         MathDelimiter delcode = parseDelimiter(context, source, typesetter, getName());
-        Noad noad = nc.scanNoad(context, source, typesetter, getName());
+        Noad noad = nc.scanNoad(prefix, context, source, typesetter, getName());
         nc.add(new RadicalNoad(delcode, noad));
     }
 

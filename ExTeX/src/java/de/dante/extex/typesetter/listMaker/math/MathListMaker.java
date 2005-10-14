@@ -22,6 +22,7 @@ package de.dante.extex.typesetter.listMaker.math;
 import java.util.Stack;
 import java.util.logging.Logger;
 
+import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
@@ -71,7 +72,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This is the list maker for the inline math formulae.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public class MathListMaker extends AbstractListMaker implements NoadConsumer {
 
@@ -80,7 +81,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      * It is used to store to the stack and restore the state from the stack.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.26 $
+     * @version $Revision: 1.27 $
      */
     private class MathMemento {
 
@@ -495,10 +496,15 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      *      de.dante.extex.typesetter.Typesetter,
      *      java.lang.String)
      */
-    public Noad scanNoad(final Context context, final TokenSource source,
-            final Typesetter typesetter, final String primitive)
-            throws TypesetterException {
+    public Noad scanNoad(final Flags flags, final Context context,
+            final TokenSource source, final Typesetter typesetter,
+            final String primitive) throws TypesetterException {
 
+        Flags f = null;
+        if (flags != null) {
+            f = flags.copy();
+            flags.clear();
+        }
         try {
             Token t = source.getToken(context);
             if (t == null) {
@@ -514,6 +520,9 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
             throw e;
         } catch (InterpreterException e) {
             throw new TypesetterException(e);
+        }
+        if (flags != null) {
+            flags.set(f);
         }
         return (((MathListMaker) getManager().pop())).getIp();
     }
@@ -538,7 +547,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
             final Typesetter typesetter, final Token token)
             throws TypesetterException {
 
-        Noad sub = scanNoad(context, source, typesetter, token.toString());
+        Noad sub = scanNoad(null, context, source, typesetter, token.toString());
         if (insertionPoint.size() == 0) {
             add(new MathList());
         }
@@ -561,7 +570,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
             final TokenSource source, final Typesetter typesetter,
             final Token token) throws TypesetterException {
 
-        Noad sup = scanNoad(context, source, typesetter, token.toString());
+        Noad sup = scanNoad(null, context, source, typesetter, token.toString());
         if (insertionPoint.size() == 0) {
             add(new MathList());
         }

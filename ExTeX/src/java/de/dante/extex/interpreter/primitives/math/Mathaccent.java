@@ -53,7 +53,7 @@ import de.dante.extex.typesetter.type.noad.Noad;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Mathaccent extends AbstractMathCode {
 
@@ -95,7 +95,7 @@ public class Mathaccent extends AbstractMathCode {
             throw new HelpingException(getLocalizer(), "TTP.BadMathCharCode",
                     Long.toHexString(accent));
         }
-        Noad noad = nc.scanNoad(context, source, typesetter, getName());
+        Noad noad = nc.scanNoad(prefix, context, source, typesetter, getName());
         nc.add(new AccentNoad(new MathGlyph((int) accent), noad));
     }
 

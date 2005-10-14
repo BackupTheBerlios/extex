@@ -51,7 +51,7 @@ import de.dante.extex.typesetter.type.noad.UnderlinedNoad;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Underline extends AbstractMathCode {
 
@@ -82,7 +82,7 @@ public class Underline extends AbstractMathCode {
             throws InterpreterException {
 
         NoadConsumer nc = getListMaker(context, typesetter);
-        Noad noad = nc.scanNoad(context, source, typesetter, getName());
+        Noad noad = nc.scanNoad(prefix, context, source, typesetter, getName());
         nc.add(new UnderlinedNoad(noad));
     }
 
