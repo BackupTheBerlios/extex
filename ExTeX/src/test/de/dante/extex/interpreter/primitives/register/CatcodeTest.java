@@ -19,15 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.register;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.test.NoFlagsButGlobalPrimitiveTester;
 
 /**
  * This is a test suite for the primitive <tt>\catcode</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class CatcodeTest extends ExTeXLauncher {
+public class CatcodeTest extends NoFlagsButGlobalPrimitiveTester {
 
     /**
      * Command line interface.
@@ -45,7 +45,7 @@ public class CatcodeTest extends ExTeXLauncher {
      */
     public CatcodeTest(final String arg) {
 
-        super(arg);
+        super(arg, "catcode", "1=2 ");
     }
 
     /**
@@ -57,12 +57,10 @@ public class CatcodeTest extends ExTeXLauncher {
      */
     public void testEOF1() throws Exception {
 
-        runCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\catcode",
                 //--- log message ---
-                "Missing number, treated as zero",
-                //--- output channel ---
-                "");
+                "Missing number, treated as zero");
     }
 
     /**
@@ -74,12 +72,10 @@ public class CatcodeTest extends ExTeXLauncher {
      */
     public void testEOF2() throws Exception {
 
-        runCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\catcode 65 ",
                 //--- log message ---
-                "Missing number, treated as zero",
-                //--- output channel ---
-                "");
+                "Missing number, treated as zero");
     }
 
     /**
@@ -91,12 +87,10 @@ public class CatcodeTest extends ExTeXLauncher {
      */
     public void testEOF3() throws Exception {
 
-        runCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\catcode 65 =",
                 //--- log message ---
-                "Missing number, treated as zero",
-                //--- output channel ---
-                "");
+                "Missing number, treated as zero");
     }
 
     /**
@@ -109,12 +103,10 @@ public class CatcodeTest extends ExTeXLauncher {
      */
     public void testIllegal1() throws Exception {
 
-        runCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\catcode 65 = -1",
                 //--- log message ---
-                "Invalid code (-1), should be in the range 0..15",
-                //--- output channel ---
-                "");
+                "Invalid code (-1), should be in the range 0..15");
     }
 
     /**
@@ -127,12 +119,10 @@ public class CatcodeTest extends ExTeXLauncher {
      */
     public void testIllegal2() throws Exception {
 
-        runCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\catcode 65 = 16",
                 //--- log message ---
-                "Invalid code (16), should be in the range 0..15",
-                //--- output channel ---
-                "");
+                "Invalid code (16), should be in the range 0..15");
     }
 
     /**
@@ -144,13 +134,28 @@ public class CatcodeTest extends ExTeXLauncher {
      */
     public void test1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\catcode`A=10 "
                 + "\\the\\catcode`A\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "10" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\catcode">
+     *  Test case checking that <tt>\catcode</tt> is an array value.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test2() throws Exception {
+
+        assertSuccess(//--- input code ---
+                "\\catcode`A=10 "
+                + "\\catcode`B=12 "
+                + "\\the\\catcode`A:\\the\\catcode`B\\end",
+                //--- output channel ---
+                "10:12" + TERM);
     }
 
     /**
@@ -162,14 +167,28 @@ public class CatcodeTest extends ExTeXLauncher {
      */
     public void test10() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\catcode`A=10 "
                 + "\\count1=\\catcode`A \\the\\count1\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "10" + TERM);
     }
 
+    /**
+     * <testcase primitive="\catcode">
+     *  Test case checking that <tt>\catcode</tt> is interacts with groups.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test20() throws Exception {
+
+        assertSuccess(//--- input code ---
+                "\\catcode`A=10 "
+                + "\\begingroup\\catcode`A=12 \\endgroup"
+                + "\\the\\catcode`A\\end",
+                //--- output channel ---
+                "10" + TERM);
+    }
 
 }

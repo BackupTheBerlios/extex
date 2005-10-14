@@ -19,24 +19,79 @@
 
 package de.dante.extex.interpreter.primitives.register.box;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.test.NoFlagsPrimitiveTester;
 
 /**
  * This is a test suite for the primitive <tt>\copy</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class CopyTest extends ExTeXLauncher {
+public class CopyTest extends NoFlagsPrimitiveTester {
 
     /**
-     * Constructor for HboxTest.
+     * Command line interface.
+     * @param args the arguments
+     */
+    public static void main(final String[] args) {
+
+        junit.textui.TestRunner.run(CopyTest.class);
+    }
+
+    /**
+     * Constructor for CopyTest.
      *
      * @param arg the name
      */
     public CopyTest(final String arg) {
 
-        super(arg);
+        super(arg, "copy", "1", DEFINE_BRACES);
+    }
+
+    /**
+     * <testcase primitive="\copy">
+     *  Test case checking that <tt>\copy</tt> throws an error if a number is
+     *  missing.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testError1() throws Exception {
+
+        assertFailure(//--- input code ---
+                "\\copy a",
+                //--- log message ---
+                "Missing number, treated as zero");
+    }
+
+    /**
+     * <testcase primitive="\copy">
+     *  Test case checking that <tt>\copy</tt>
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test1() throws Exception {
+
+        assertSuccess(//--- input code ---
+                DEFINE_BRACES + "\\setbox1\\hbox{A}\\copy1\\end",
+                //--- output channel ---
+                "A" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\copy">
+     *  Test case checking that <tt>\copy</tt> preserves the contents of the copy
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test2() throws Exception {
+
+        assertSuccess(//--- input code ---
+                DEFINE_BRACES + "\\setbox1\\hbox{A}\\copy1\\copy1\\end",
+                //--- output channel ---
+                "A\nA" + TERM);
     }
 
 }

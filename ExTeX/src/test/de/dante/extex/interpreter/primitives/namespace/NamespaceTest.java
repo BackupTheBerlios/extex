@@ -19,17 +19,24 @@
 
 package de.dante.extex.interpreter.primitives.namespace;
 
-import java.util.Properties;
-
-import de.dante.test.ExTeXLauncher;
+import de.dante.test.NoFlagsButGlobalPrimitiveTester;
 
 /**
  * This is a test suite for the primitive <tt>\namespace</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
-public class NamespaceTest extends ExTeXLauncher {
+public class NamespaceTest extends NoFlagsButGlobalPrimitiveTester {
+
+    /**
+     * Command line interface.
+     * @param args the arguments
+     */
+    public static void main(final String[] args) {
+
+        junit.textui.TestRunner.run(NamespaceTest.class);
+    }
 
     /**
      * Constructor for NamespaceTest.
@@ -38,7 +45,7 @@ public class NamespaceTest extends ExTeXLauncher {
      */
     public NamespaceTest(final String arg) {
 
-        super(arg);
+        super(arg, "namespace", "{a}", DEFINE_BRACES);
     }
 
     /**
@@ -86,7 +93,9 @@ public class NamespaceTest extends ExTeXLauncher {
     }
 
     /**
-     * Test case checking that ...
+     * <testcase primitive="\namespace">
+     *  Test case checking that <tt>\namespace</tt> ...
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -105,5 +114,26 @@ public class NamespaceTest extends ExTeXLauncher {
                 //--- output channel ---
                 ".b.abc:.a." + TERM);
     }
+
+    /**
+     * <testcase primitive="\namespace">
+     *  Test case checking that <tt>\namespace</tt> interacts with groups.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test20() throws Exception {
+
+        assertSuccess(//--- input code ---
+                DEFINE_CATCODES
+                + "\\namespace{A}"
+                + "\\begingroup\\global\\namespace{TeX}\\endgroup"
+                + ":\\the\\namespace:"
+                + "\\end ",
+                //--- output channel ---
+                ":TeX:" + TERM);
+    }
+
+    //TODO implement the primitive specific test cases
 
 }
