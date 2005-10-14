@@ -46,7 +46,7 @@ import de.dante.util.exception.GeneralException;
  * running an instance of <logo>ExTeX</logo>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.35 $
+ * @version $Revision: 1.36 $
  */
 public class ExTeXLauncher extends TestCase {
 
@@ -54,7 +54,7 @@ public class ExTeXLauncher extends TestCase {
      * Inner class for the error handler.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.35 $
+     * @version $Revision: 1.36 $
      */
     private class EHandler implements ErrorHandler {
 
@@ -98,8 +98,8 @@ public class ExTeXLauncher extends TestCase {
     }
 
     /**
-     * The constant <tt>DEFINE_CATCODES</tt> contains the definition of the
-     * usual catcodes.
+     * The constant <tt>DEFINE_BRACES</tt> contains the definition of the
+     * usual catcodes for braces.
      */
     public static final String DEFINE_BRACES = "\\catcode`\\{=1 "
             + "\\catcode`\\}=2 ";
@@ -164,6 +164,34 @@ public class ExTeXLauncher extends TestCase {
     public ExTeXLauncher(final String arg) {
 
         super(arg);
+    }
+
+    /**
+     * Run some code through <logo>ExTeX</logo> which is expected to fail.
+     *
+     * @param code the code to expand
+     * @param log the expected output on the log stream
+     *
+     * @throws Exception in case of an error
+     */
+    public ExTeX assertFailure(final String code, final String log)
+            throws Exception {
+
+        return runCode(getProps(), code, log, "");
+    }
+
+    /**
+     * Run some code through <logo>ExTeX</logo>.
+     *
+     * @param code the code to expand
+     * @param expect the expected output on the output stream
+     *
+     * @throws Exception in case of an error
+     */
+    public ExTeX assertSuccess(final String code, final String expect)
+            throws Exception {
+
+        return runCode(getProps(), code, "", expect);
     }
 
     /**
@@ -284,20 +312,6 @@ public class ExTeXLauncher extends TestCase {
      * Run some code through <logo>ExTeX</logo>.
      *
      * @param code the code to expand
-     * @param expect the expected output on the output stream
-     *
-     * @throws Exception in case of an error
-     */
-    public ExTeX assertSuccess(final String code, final String expect)
-            throws Exception {
-
-        return runCode(getProps(), code, "", expect);
-    }
-
-    /**
-     * Run some code through <logo>ExTeX</logo>.
-     *
-     * @param code the code to expand
      * @param log the expected output on the log stream
      * @param expect the expected output on the output stream
      *
@@ -307,20 +321,6 @@ public class ExTeXLauncher extends TestCase {
             final String expect) throws Exception {
 
         return runCode(getProps(), code, log, expect);
-    }
-
-    /**
-     * Run some code through <logo>ExTeX</logo> which is expected to fail.
-     *
-     * @param code the code to expand
-     * @param log the expected output on the log stream
-     *
-     * @throws Exception in case of an error
-     */
-    public ExTeX assertFailure(final String code, final String log)
-            throws Exception {
-
-        return runCode(getProps(), code, log, "");
     }
 
     /**
