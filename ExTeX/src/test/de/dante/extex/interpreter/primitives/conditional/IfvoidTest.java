@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\ifvoid</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class IfvoidTest extends ExTeXLauncher {
 
@@ -59,10 +59,8 @@ public class IfvoidTest extends ExTeXLauncher {
      */
     public void test1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\ifvoid42 a\\else b\\fi",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "a" + TERM);
     }
@@ -77,10 +75,8 @@ public class IfvoidTest extends ExTeXLauncher {
      */
     public void test2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "x\\ifvoid42 a\\fi x",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "xax" + TERM);
     }
@@ -95,13 +91,11 @@ public class IfvoidTest extends ExTeXLauncher {
      */
     public void test3() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\catcode`{=1 "
                 + "\\catcode`}=2 "
                 + "\\setbox42\\hbox{}"
                 + "\\ifvoid42 a\\else b\\fi",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "b" + TERM);
     }
@@ -116,13 +110,11 @@ public class IfvoidTest extends ExTeXLauncher {
      */
     public void test4() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\catcode`{=1 "
                 + "\\catcode`}=2 "
                 + "\\setbox42\\vbox{}"
                 + "\\ifvoid42 a\\else b\\fi",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "b" + TERM);
     }

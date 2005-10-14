@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\ifnum</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class IfnumTest extends ExTeXLauncher {
 
@@ -59,10 +59,8 @@ public class IfnumTest extends ExTeXLauncher {
      */
     public void testLess1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "x\\ifnum 0<1 a\\else b\\fi x",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "xax" + TERM);
     }
@@ -77,10 +75,8 @@ public class IfnumTest extends ExTeXLauncher {
      */
     public void testLess2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "x\\ifnum 1<1 a\\else b\\fi x",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "xbx" + TERM);
     }
@@ -95,10 +91,8 @@ public class IfnumTest extends ExTeXLauncher {
      */
     public void testLess3() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "x\\ifnum 2<1 a\\else b\\fi x",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "xbx" + TERM);
     }
@@ -113,10 +107,8 @@ public class IfnumTest extends ExTeXLauncher {
      */
     public void testEquals1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "x\\ifnum 0=1 a\\else b\\fi x",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "xbx" + TERM);
     }
@@ -131,10 +123,8 @@ public class IfnumTest extends ExTeXLauncher {
      */
     public void testEquals2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "x\\ifnum 1=1 a\\else b\\fi x",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "xax" + TERM);
     }
@@ -149,10 +139,8 @@ public class IfnumTest extends ExTeXLauncher {
      */
     public void testEquals3() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "x\\ifnum 2=1 a\\else b\\fi x",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "xbx" + TERM);
     }
@@ -167,10 +155,8 @@ public class IfnumTest extends ExTeXLauncher {
      */
     public void testGreater1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "x\\ifnum 0>1 a\\else b\\fi x",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "xbx" + TERM);
     }
@@ -185,10 +171,8 @@ public class IfnumTest extends ExTeXLauncher {
      */
     public void testGreater2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "x\\ifnum 1>1 a\\else b\\fi x",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "xbx" + TERM);
     }
@@ -203,10 +187,8 @@ public class IfnumTest extends ExTeXLauncher {
      */
     public void testGreater3() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "x\\ifnum 2>1 a\\else b\\fi x",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "xax" + TERM);
     }

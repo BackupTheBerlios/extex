@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\ifdim</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class IfdimTest extends ExTeXLauncher {
 
@@ -59,10 +59,8 @@ public class IfdimTest extends ExTeXLauncher {
      */
     public void testLess1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "x\\ifdim 0pt<1pt a\\else b\\fi x",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "xax" + TERM);
     }
@@ -77,10 +75,8 @@ public class IfdimTest extends ExTeXLauncher {
      */
     public void testLess2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "x\\ifdim 1pt<1pt a\\else b\\fi x",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "xbx" + TERM);
     }
@@ -95,10 +91,8 @@ public class IfdimTest extends ExTeXLauncher {
      */
     public void testLess3() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "x\\ifdim 2pt<1pt a\\else b\\fi x",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "xbx" + TERM);
     }
@@ -113,10 +107,8 @@ public class IfdimTest extends ExTeXLauncher {
      */
     public void testEquals1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "x\\ifdim 0pt=1pt a\\else b\\fi x",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "xbx" + TERM);
     }
@@ -131,10 +123,8 @@ public class IfdimTest extends ExTeXLauncher {
      */
     public void testEquals2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "x\\ifdim 1pt=1pt a\\else b\\fi x",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "xax" + TERM);
     }
@@ -149,10 +139,8 @@ public class IfdimTest extends ExTeXLauncher {
      */
     public void testEquals3() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "x\\ifdim 2pt=1pt a\\else b\\fi x",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "xbx" + TERM);
     }
@@ -167,10 +155,8 @@ public class IfdimTest extends ExTeXLauncher {
      */
     public void testGreater1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "x\\ifdim 0pt>1pt a\\else b\\fi x",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "xbx" + TERM);
     }
@@ -185,10 +171,8 @@ public class IfdimTest extends ExTeXLauncher {
      */
     public void testGreater2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "x\\ifdim 1pt>1pt a\\else b\\fi x",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "xbx" + TERM);
     }
@@ -203,10 +187,8 @@ public class IfdimTest extends ExTeXLauncher {
      */
     public void testGreater3() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "x\\ifdim 2pt>1pt a\\else b\\fi x",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "xax" + TERM);
     }
@@ -221,10 +203,8 @@ public class IfdimTest extends ExTeXLauncher {
      */
     public void testLess11() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "x\\ifdim 0.pt<1.pt a\\else b\\fi x",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "xax" + TERM);
     }
@@ -239,10 +219,8 @@ public class IfdimTest extends ExTeXLauncher {
      */
     public void testLess12() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "x\\ifdim 1.pt<1.pt a\\else b\\fi x",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "xbx" + TERM);
     }
@@ -257,10 +235,8 @@ public class IfdimTest extends ExTeXLauncher {
      */
     public void testLess13() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "x\\ifdim 2.pt<1.pt a\\else b\\fi x",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "xbx" + TERM);
     }
@@ -275,10 +251,8 @@ public class IfdimTest extends ExTeXLauncher {
      */
     public void testEquals11() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "x\\ifdim 0.pt=1.pt a\\else b\\fi x",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "xbx" + TERM);
     }
@@ -293,10 +267,8 @@ public class IfdimTest extends ExTeXLauncher {
      */
     public void testEquals12() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "x\\ifdim 1.pt=1.pt a\\else b\\fi x",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "xax" + TERM);
     }
@@ -311,10 +283,8 @@ public class IfdimTest extends ExTeXLauncher {
      */
     public void testEquals13() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "x\\ifdim 2.pt=1.pt a\\else b\\fi x",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "xbx" + TERM);
     }
@@ -329,10 +299,8 @@ public class IfdimTest extends ExTeXLauncher {
      */
     public void testGreater11() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "x\\ifdim 0.pt>1.pt a\\else b\\fi x",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "xbx" + TERM);
     }
@@ -347,10 +315,8 @@ public class IfdimTest extends ExTeXLauncher {
      */
     public void testGreater12() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "x\\ifdim 1.pt>1.pt a\\else b\\fi x",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "xbx" + TERM);
     }
@@ -365,10 +331,8 @@ public class IfdimTest extends ExTeXLauncher {
      */
     public void testGreater13() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "x\\ifdim 2.pt>1.pt a\\else b\\fi x",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "xax" + TERM);
     }
@@ -383,10 +347,8 @@ public class IfdimTest extends ExTeXLauncher {
      */
     public void testLess21() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "x\\ifdim .0pt<.1pt a\\else b\\fi x",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "xax" + TERM);
     }
@@ -401,10 +363,8 @@ public class IfdimTest extends ExTeXLauncher {
      */
     public void testLess22() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "x\\ifdim .1pt<.1pt a\\else b\\fi x",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "xbx" + TERM);
     }
@@ -419,10 +379,8 @@ public class IfdimTest extends ExTeXLauncher {
      */
     public void testLess23() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "x\\ifdim .2pt<.1pt a\\else b\\fi x",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "xbx" + TERM);
     }
@@ -437,10 +395,8 @@ public class IfdimTest extends ExTeXLauncher {
      */
     public void testEquals21() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "x\\ifdim .0pt=.1pt a\\else b\\fi x",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "xbx" + TERM);
     }
@@ -455,10 +411,8 @@ public class IfdimTest extends ExTeXLauncher {
      */
     public void testEquals22() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "x\\ifdim .1pt=.1pt a\\else b\\fi x",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "xax" + TERM);
     }
@@ -473,10 +427,8 @@ public class IfdimTest extends ExTeXLauncher {
      */
     public void testEquals23() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "x\\ifdim .2pt=.1pt a\\else b\\fi x",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "xbx" + TERM);
     }
@@ -491,10 +443,8 @@ public class IfdimTest extends ExTeXLauncher {
      */
     public void testGreater21() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "x\\ifdim .0pt>.1pt a\\else b\\fi x",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "xbx" + TERM);
     }
@@ -509,10 +459,8 @@ public class IfdimTest extends ExTeXLauncher {
      */
     public void testGreater22() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "x\\ifdim .1pt>.1pt a\\else b\\fi x",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "xbx" + TERM);
     }
@@ -527,10 +475,8 @@ public class IfdimTest extends ExTeXLauncher {
      */
     public void testGreater23() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "x\\ifdim .2pt>.1pt a\\else b\\fi x",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "xax" + TERM);
     }

@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\skewchar</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class SkewcharTest extends NoFlagsPrimitiveTester {
 
@@ -48,12 +48,10 @@ public class SkewcharTest extends NoFlagsPrimitiveTester {
      */
     public void testEof1() throws Exception {
 
-        runCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\skewchar ",
                 //--- log message ---
-                "Unexpected end of file while processing \\skewchar",
-                //--- output channel ---
-                "");
+                "Unexpected end of file while processing \\skewchar");
     }
 
     /**
@@ -65,12 +63,10 @@ public class SkewcharTest extends NoFlagsPrimitiveTester {
      */
     public void testEof2() throws Exception {
 
-        runCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\skewchar\\nullfont ",
                 //--- log message ---
-                "Missing number, treated as zero",
-                //--- output channel ---
-                "");
+                "Missing number, treated as zero");
     }
 
     /**
@@ -82,12 +78,10 @@ public class SkewcharTest extends NoFlagsPrimitiveTester {
      */
     public void testMissing1() throws Exception {
 
-        runCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\skewchar x",
                 //--- log message ---
-                "Missing font identifier",
-                //--- output channel ---
-                "");
+                "Missing font identifier");
     }
 
     /**
@@ -99,12 +93,10 @@ public class SkewcharTest extends NoFlagsPrimitiveTester {
      */
     public void testMissing2() throws Exception {
 
-        runCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\skewchar \\x",
                 //--- log message ---
-                "Undefined control sequence \\x",
-                //--- output channel ---
-                "");
+                "Undefined control sequence \\x");
     }
 
     /**
@@ -117,11 +109,9 @@ public class SkewcharTest extends NoFlagsPrimitiveTester {
      */
     public void testSkewcharNullfont0() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\the\\skewchar\\nullfont"
                 + "\\end ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "-1" + TERM);
     }
@@ -136,12 +126,10 @@ public class SkewcharTest extends NoFlagsPrimitiveTester {
      */
     public void testSkewcharNullfont1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\skewchar\\nullfont =123 \\relax"
                 + "\\the\\skewchar\\nullfont"
                 + "\\end ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "123" + TERM);
     }
@@ -156,12 +144,10 @@ public class SkewcharTest extends NoFlagsPrimitiveTester {
      */
     public void testSkewcharNullfont2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\skewchar\\nullfont =-1 \\relax"
                 + "\\the\\skewchar\\nullfont"
                 + "\\end ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "-1" + TERM);
     }
@@ -175,13 +161,11 @@ public class SkewcharTest extends NoFlagsPrimitiveTester {
      */
     public void testSkewcharNullfont3() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\skewchar\\nullfont =123 \\relax"
                 + "\\count1=\\skewchar\\nullfont"
                 + "\\the\\count 1"
                 + "\\end ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "123" + TERM);
     }
@@ -196,12 +180,10 @@ public class SkewcharTest extends NoFlagsPrimitiveTester {
      */
     public void testSkewchar0() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\font\\x=cmtt12"
                 + "\\the\\skewchar\\x"
                 + "\\end ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "-1" + TERM);
     }
@@ -216,13 +198,11 @@ public class SkewcharTest extends NoFlagsPrimitiveTester {
      */
     public void testSkewchar1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\font\\x=cmtt12"
                 + "\\skewchar\\x =123 \\relax"
                 + "\\the\\skewchar\\x"
                 + "\\end ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "123" + TERM);
     }
@@ -237,13 +217,11 @@ public class SkewcharTest extends NoFlagsPrimitiveTester {
      */
     public void testSkewchar2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\font\\x=cmtt12"
                 + "\\skewchar\\x =-1 \\relax"
                 + "\\the\\skewchar\\x"
                 + "\\end ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "-1" + TERM);
     }
@@ -257,14 +235,12 @@ public class SkewcharTest extends NoFlagsPrimitiveTester {
      */
     public void testSkewchar3() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\font\\x=cmtt12"
                 + "\\skewchar\\x =123 \\relax"
                 + "\\count1=\\skewchar\\x"
                 + "\\the\\count 1"
                 + "\\end ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "123" + TERM);
     }

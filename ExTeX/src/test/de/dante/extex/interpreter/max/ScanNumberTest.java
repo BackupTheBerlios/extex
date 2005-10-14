@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the scanner routines.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ScanNumberTest extends ExTeXLauncher {
 
@@ -48,12 +48,10 @@ public class ScanNumberTest extends ExTeXLauncher {
      */
     public void testscanNumber1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\escapechar=4\\relax"
                 + "\\the\\escapechar"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "4" + TERM);
     }
@@ -67,12 +65,10 @@ public class ScanNumberTest extends ExTeXLauncher {
      */
     public void testscanNumber2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\escapechar=45\\relax"
                 + "\\the\\escapechar"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "45" + TERM);
     }
@@ -86,12 +82,10 @@ public class ScanNumberTest extends ExTeXLauncher {
      */
     public void testscanNumber3() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\escapechar=456\\relax"
                 + "\\the\\escapechar"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "456" + TERM);
     }
@@ -105,12 +99,10 @@ public class ScanNumberTest extends ExTeXLauncher {
      */
     public void testscanNumber4() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\escapechar=456 "
                 + "\\the\\escapechar"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "456" + TERM);
     }
@@ -124,12 +116,10 @@ public class ScanNumberTest extends ExTeXLauncher {
      */
     public void testscanNumber5() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\escapechar=\"1a "
                 + "\\the\\escapechar"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "26" + TERM);
     }
@@ -143,12 +133,10 @@ public class ScanNumberTest extends ExTeXLauncher {
      */
     public void testscanNumber6() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\escapechar='17 "
                 + "\\the\\escapechar"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "15" + TERM);
     }
@@ -162,12 +150,10 @@ public class ScanNumberTest extends ExTeXLauncher {
      */
     public void testscanNumberErr1() throws Exception {
 
-        runCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\escapechar=' ",
                 //--- log message ---
-                "Missing number, treated as zero",
-                //--- output channel ---
-                "");
+                "Missing number, treated as zero");
     }
 
     /**
@@ -179,12 +165,10 @@ public class ScanNumberTest extends ExTeXLauncher {
      */
     public void testscanNumber11() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\escapechar=-456\\relax"
                 + "\\the\\escapechar"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "-456" + TERM);
     }
@@ -199,12 +183,10 @@ public class ScanNumberTest extends ExTeXLauncher {
      */
     public void testscanNumber12() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\escapechar=--456\\relax"
                 + "\\the\\escapechar"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "456" + TERM);
     }
@@ -219,12 +201,10 @@ public class ScanNumberTest extends ExTeXLauncher {
      */
     public void testscanNumber13() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\escapechar=---456\\relax"
                 + "\\the\\escapechar"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "-456" + TERM);
     }
@@ -240,12 +220,10 @@ public class ScanNumberTest extends ExTeXLauncher {
      */
     public void testscanNumber21() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\escapechar=+456\\relax"
                 + "\\the\\escapechar"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "456" + TERM);
     }
@@ -260,12 +238,10 @@ public class ScanNumberTest extends ExTeXLauncher {
      */
     public void testscanNumber22() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\escapechar=++456\\relax"
                 + "\\the\\escapechar"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "456" + TERM);
     }
@@ -280,12 +256,10 @@ public class ScanNumberTest extends ExTeXLauncher {
      */
     public void testscanNumber23() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\escapechar=+++456\\relax"
                 + "\\the\\escapechar"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "456" + TERM);
     }
@@ -301,12 +275,10 @@ public class ScanNumberTest extends ExTeXLauncher {
      */
     public void testscanNumber31() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\escapechar=-+456\\relax"
                 + "\\the\\escapechar"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "-456" + TERM);
     }
@@ -321,12 +293,10 @@ public class ScanNumberTest extends ExTeXLauncher {
      */
     public void testscanNumber32() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\escapechar=+-456\\relax"
                 + "\\the\\escapechar"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "-456" + TERM);
     }
@@ -341,12 +311,10 @@ public class ScanNumberTest extends ExTeXLauncher {
      */
     public void testscanNumber33() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\escapechar=-+-456\\relax"
                 + "\\the\\escapechar"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "456" + TERM);
     }
@@ -361,12 +329,10 @@ public class ScanNumberTest extends ExTeXLauncher {
      */
     public void testscanNumber34() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\escapechar=-+-+456\\relax"
                 + "\\the\\escapechar"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "456" + TERM);
     }
@@ -381,12 +347,10 @@ public class ScanNumberTest extends ExTeXLauncher {
      */
     public void testscanNumber35() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\escapechar=-+-+-456\\relax"
                 + "\\the\\escapechar"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "-456" + TERM);
     }
@@ -400,15 +364,13 @@ public class ScanNumberTest extends ExTeXLauncher {
      */
     public void testscanNumber40() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\catcode`{=1"
                 + "\\catcode`}=2"
                 + "\\def\\mac{}"
                 + "\\escapechar=\\mac-456\\relax"
                 + "\\the\\escapechar"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "-456" + TERM);
     }
@@ -422,15 +384,13 @@ public class ScanNumberTest extends ExTeXLauncher {
      */
     public void testscanNumber41() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\catcode`{=1"
                 + "\\catcode`}=2"
                 + "\\def\\mac{-}"
                 + "\\escapechar=\\mac-456\\relax"
                 + "\\the\\escapechar"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "456" + TERM);
     }
@@ -444,15 +404,13 @@ public class ScanNumberTest extends ExTeXLauncher {
      */
     public void testscanNumber42() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\catcode`{=1"
                 + "\\catcode`}=2"
                 + "\\def\\mac{}"
                 + "\\escapechar=-\\mac456\\relax"
                 + "\\the\\escapechar"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "-456" + TERM);
     }
@@ -466,15 +424,13 @@ public class ScanNumberTest extends ExTeXLauncher {
      */
     public void testscanNumber43() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\catcode`{=1"
                 + "\\catcode`}=2"
                 + "\\def\\mac{-}"
                 + "\\escapechar=-\\mac456\\relax"
                 + "\\the\\escapechar"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "456" + TERM);
     }
@@ -488,15 +444,13 @@ public class ScanNumberTest extends ExTeXLauncher {
      */
     public void testscanNumber44() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\catcode`{=1"
                 + "\\catcode`}=2"
                 + "\\def\\mac{-1}"
                 + "\\escapechar=-\\mac456\\relax"
                 + "\\the\\escapechar"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "1456" + TERM);
     }
@@ -510,15 +464,13 @@ public class ScanNumberTest extends ExTeXLauncher {
      */
     public void testscanNumber45() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\catcode`{=1"
                 + "\\catcode`}=2"
                 + "\\def\\mac{1}"
                 + "\\escapechar=-\\mac45\\mac6\\relax"
                 + "\\the\\escapechar"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "-14516" + TERM);
     }

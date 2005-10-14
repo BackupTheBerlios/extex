@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\ifcase</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class IfcaseTest extends ExTeXLauncher {
 
@@ -58,10 +58,8 @@ public class IfcaseTest extends ExTeXLauncher {
      */
     public void testConst0() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\ifcase 0 a\\or b\\or c\\or d\\else e\\fi \\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "a" + TERM);
     }
@@ -75,10 +73,8 @@ public class IfcaseTest extends ExTeXLauncher {
      */
     public void testConst1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\ifcase 1 a\\or b\\or c\\or d\\else e\\fi \\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "b" + TERM);
     }
@@ -92,10 +88,8 @@ public class IfcaseTest extends ExTeXLauncher {
      */
     public void testConst2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\ifcase 2 a\\or b\\or c\\or d\\else e\\fi \\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "c" + TERM);
     }
@@ -109,10 +103,8 @@ public class IfcaseTest extends ExTeXLauncher {
      */
     public void testConst12() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\ifcase -1 a\\or b\\or c\\or d\\else e\\fi \\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "e" + TERM);
     }
@@ -126,10 +118,8 @@ public class IfcaseTest extends ExTeXLauncher {
      */
     public void testConst12b() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\ifcase -1 a\\or b\\or c\\or d\\fi \\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "");
     }
@@ -144,10 +134,8 @@ public class IfcaseTest extends ExTeXLauncher {
      */
     public void testConst_1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\ifcase -1 a\\or b\\or c\\or d\\else e\\fi \\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "e" + TERM);
     }
@@ -161,10 +149,8 @@ public class IfcaseTest extends ExTeXLauncher {
      */
     public void testConst_1b() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\ifcase -1 a\\or b\\or c\\or d\\fi \\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "");
     }

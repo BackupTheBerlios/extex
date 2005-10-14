@@ -27,7 +27,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\font</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class FontPrimitiveTest extends ExTeXLauncher {
 
@@ -47,12 +47,10 @@ public class FontPrimitiveTest extends ExTeXLauncher {
      */
     public void testNoMacro1() throws Exception {
 
-        runCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\font noFont at 10pt " + "\\end",
                 //--- log message ---
-                "Missing control sequence inserted",
-                //--- output channel ---
-                "");
+                "Missing control sequence inserted");
     }
 
     /**
@@ -61,12 +59,10 @@ public class FontPrimitiveTest extends ExTeXLauncher {
      */
     public void testUndefined1() throws Exception {
 
-        runCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\font\\abc=noFont at 10pt " + "\\end",
                 //--- log message ---
-                "Font \\abc=noFont not loadable: Metric (TFM) file not found",
-                //--- output channel ---
-                "");
+                "Font \\abc=noFont not loadable: Metric (TFM) file not found");
     }
 
     /**
@@ -95,10 +91,8 @@ public class FontPrimitiveTest extends ExTeXLauncher {
      */
     public void testFont2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\font\\abc=cmtt12 at 10pt " + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "");
     }
@@ -110,10 +104,8 @@ public class FontPrimitiveTest extends ExTeXLauncher {
      */
     public void testFont3() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\font\\abc=cmtt12 scaled 2000 " + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "");
     }
@@ -125,10 +117,8 @@ public class FontPrimitiveTest extends ExTeXLauncher {
      */
     public void testFont4() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\catcode`/=13 " + "\\font/=cmtt12 " + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "");
     }
@@ -140,12 +130,10 @@ public class FontPrimitiveTest extends ExTeXLauncher {
      */
     public void testNegativeScale1() throws Exception {
 
-        runCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\font\\abc=cmtt12 scaled -2000 " + "\\end",
                 //--- log message ---
-                "Illegal magnification has been changed to 1000",
-                //--- output channel ---
-                "");
+                "Illegal magnification has been changed to 1000");
     }
 
     /**
@@ -154,11 +142,9 @@ public class FontPrimitiveTest extends ExTeXLauncher {
      */
     public void testNonEmf1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\font\\abc=cmr10\\relax "
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "");
     }

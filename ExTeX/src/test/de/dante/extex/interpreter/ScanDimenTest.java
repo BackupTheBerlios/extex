@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the scanner routines.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ScanDimenTest extends ExTeXLauncher {
 
@@ -48,12 +48,10 @@ public class ScanDimenTest extends ExTeXLauncher {
      */
     public void testScanDimen0() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\boxmaxdepth=4pt"
                 + "\\the\\boxmaxdepth"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "4.0pt" + TERM);
     }
@@ -67,13 +65,11 @@ public class ScanDimenTest extends ExTeXLauncher {
      */
     public void testScanDimen1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\boxmaxdepth=4sp"
                 +"\\escapechar=\\boxmaxdepth"
                 + "\\the\\escapechar"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "4" + TERM);
     }
@@ -87,13 +83,11 @@ public class ScanDimenTest extends ExTeXLauncher {
      */
     public void testScanDimen2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\boxmaxdepth=45sp"
                 +"\\escapechar=\\boxmaxdepth"
                 + "\\the\\escapechar"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "45" + TERM);
     }
@@ -107,13 +101,11 @@ public class ScanDimenTest extends ExTeXLauncher {
      */
     public void testScanDimen3() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\boxmaxdepth=456sp"
                 +"\\escapechar=\\boxmaxdepth"
                 + "\\the\\escapechar"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "456" + TERM);
     }
@@ -127,13 +119,11 @@ public class ScanDimenTest extends ExTeXLauncher {
      */
     public void testScanDimen5() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\boxmaxdepth=\"1asp "
                 +"\\escapechar=\\boxmaxdepth"
                 + "\\the\\escapechar"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "26" + TERM);
     }
@@ -147,13 +137,11 @@ public class ScanDimenTest extends ExTeXLauncher {
      */
     public void testScanDimen6() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\boxmaxdepth='17sp "
                 +"\\escapechar=\\boxmaxdepth"
                 + "\\the\\escapechar"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "15" + TERM);
     }
@@ -167,12 +155,10 @@ public class ScanDimenTest extends ExTeXLauncher {
      */
     public void testScanDimenErr1() throws Exception {
 
-        runCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\boxmaxdepth=' ",
                 //--- log message ---
-                "Missing number, treated as zero",
-                //--- output channel ---
-                "");
+                "Missing number, treated as zero");
     }
 
     /**
@@ -184,13 +170,11 @@ public class ScanDimenTest extends ExTeXLauncher {
      */
     public void testScanDimen11() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\boxmaxdepth=-456sp"
                 +"\\escapechar=\\boxmaxdepth"
                 + "\\the\\escapechar"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "-456" + TERM);
     }
@@ -205,13 +189,11 @@ public class ScanDimenTest extends ExTeXLauncher {
      */
     public void testScanDimen12() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\boxmaxdepth=--456sp"
                 +"\\escapechar=\\boxmaxdepth"
                 + "\\the\\escapechar"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "456" + TERM);
     }
@@ -226,13 +208,11 @@ public class ScanDimenTest extends ExTeXLauncher {
      */
     public void testScanDimen13() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\boxmaxdepth=---456sp"
                 +"\\escapechar=\\boxmaxdepth"
                 + "\\the\\escapechar"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "-456" + TERM);
     }
@@ -248,13 +228,11 @@ public class ScanDimenTest extends ExTeXLauncher {
      */
     public void testScanDimen21() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\boxmaxdepth=+456sp"
                 +"\\escapechar=\\boxmaxdepth"
                 + "\\the\\escapechar"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "456" + TERM);
     }
@@ -269,13 +247,11 @@ public class ScanDimenTest extends ExTeXLauncher {
      */
     public void testScanDimen22() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\boxmaxdepth=++456sp"
                 +"\\escapechar=\\boxmaxdepth"
                 + "\\the\\escapechar"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "456" + TERM);
     }
@@ -290,13 +266,11 @@ public class ScanDimenTest extends ExTeXLauncher {
      */
     public void testScanDimen23() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\boxmaxdepth=+++456sp"
                 +"\\escapechar=\\boxmaxdepth"
                 + "\\the\\escapechar"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "456" + TERM);
     }
@@ -312,13 +286,11 @@ public class ScanDimenTest extends ExTeXLauncher {
      */
     public void testScanDimen31() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\boxmaxdepth=-+456sp"
                 +"\\escapechar=\\boxmaxdepth"
                 + "\\the\\escapechar"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "-456" + TERM);
     }
@@ -333,13 +305,11 @@ public class ScanDimenTest extends ExTeXLauncher {
      */
     public void testScanDimen32() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\boxmaxdepth=+-456sp"
                 +"\\escapechar=\\boxmaxdepth"
                 + "\\the\\escapechar"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "-456" + TERM);
     }
@@ -354,13 +324,11 @@ public class ScanDimenTest extends ExTeXLauncher {
      */
     public void testScanDimen33() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\boxmaxdepth=-+-456sp"
                 +"\\escapechar=\\boxmaxdepth"
                 + "\\the\\escapechar"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "456" + TERM);
     }
@@ -375,13 +343,11 @@ public class ScanDimenTest extends ExTeXLauncher {
      */
     public void testScanDimen34() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\boxmaxdepth=-+-+456sp"
                 +"\\escapechar=\\boxmaxdepth"
                 + "\\the\\escapechar"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "456" + TERM);
     }
@@ -396,13 +362,11 @@ public class ScanDimenTest extends ExTeXLauncher {
      */
     public void testScanDimen35() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\boxmaxdepth=-+-+-456sp"
                 +"\\escapechar=\\boxmaxdepth"
                 + "\\the\\escapechar"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "-456" + TERM);
     }
@@ -416,7 +380,7 @@ public class ScanDimenTest extends ExTeXLauncher {
      */
     public void testScanDimen40() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\catcode`{=1"
                 + "\\catcode`}=2"
                 + "\\def\\mac{}"
@@ -424,8 +388,6 @@ public class ScanDimenTest extends ExTeXLauncher {
                 +"\\escapechar=\\boxmaxdepth"
                 + "\\the\\escapechar"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "-456" + TERM);
     }
@@ -439,7 +401,7 @@ public class ScanDimenTest extends ExTeXLauncher {
      */
     public void testScanDimen41() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\catcode`{=1"
                 + "\\catcode`}=2"
                 + "\\def\\mac{-}"
@@ -447,8 +409,6 @@ public class ScanDimenTest extends ExTeXLauncher {
                 +"\\escapechar=\\boxmaxdepth"
                 + "\\the\\escapechar"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "456" + TERM);
     }
@@ -462,7 +422,7 @@ public class ScanDimenTest extends ExTeXLauncher {
      */
     public void testScanDimen42() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\catcode`{=1"
                 + "\\catcode`}=2"
                 + "\\def\\mac{}"
@@ -470,8 +430,6 @@ public class ScanDimenTest extends ExTeXLauncher {
                 +"\\escapechar=\\boxmaxdepth"
                 + "\\the\\escapechar"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "-456" + TERM);
     }
@@ -485,7 +443,7 @@ public class ScanDimenTest extends ExTeXLauncher {
      */
     public void testScanDimen43() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\catcode`{=1"
                 + "\\catcode`}=2"
                 + "\\def\\mac{-}"
@@ -493,8 +451,6 @@ public class ScanDimenTest extends ExTeXLauncher {
                 +"\\escapechar=\\boxmaxdepth"
                 + "\\the\\escapechar"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "456" + TERM);
     }
@@ -508,7 +464,7 @@ public class ScanDimenTest extends ExTeXLauncher {
      */
     public void testScanDimen44() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\catcode`{=1"
                 + "\\catcode`}=2"
                 + "\\def\\mac{-1}"
@@ -516,8 +472,6 @@ public class ScanDimenTest extends ExTeXLauncher {
                 +"\\escapechar=\\boxmaxdepth"
                 + "\\the\\escapechar"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "1456" + TERM);
     }
@@ -531,7 +485,7 @@ public class ScanDimenTest extends ExTeXLauncher {
      */
     public void testScanDimen45() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\catcode`{=1"
                 + "\\catcode`}=2"
                 + "\\def\\mac{1}"
@@ -539,8 +493,6 @@ public class ScanDimenTest extends ExTeXLauncher {
                 +"\\escapechar=\\boxmaxdepth"
                 + "\\the\\escapechar"
                 + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "-14516" + TERM);
     }

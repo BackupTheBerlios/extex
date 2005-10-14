@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\message</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class MessageTest extends NoFlagsPrimitiveTester {
 
@@ -49,15 +49,12 @@ public class MessageTest extends NoFlagsPrimitiveTester {
      */
     public void testMissingBrace1() throws Exception {
 
-        runCode(//--- input code ---
-                "\\catcode`{=1"
-                + "\\catcode`}=2"
+        assertFailure(//--- input code ---
+                DEFINE_BRACES
                 + "\\message }"
                 + "\\end ",
                 //--- log message ---
-                "Missing `{' inserted",
-                //--- output channel ---
-                "");
+                "Missing `{' inserted");
     }
 
     /**
@@ -70,13 +67,11 @@ public class MessageTest extends NoFlagsPrimitiveTester {
      */
     public void testMissingBrace2() throws Exception {
 
-        runCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\message {"
                 + "\\end ",
                 //--- log message ---
-                "Missing `{' inserted",
-                //--- output channel ---
-                "");
+                "Missing `{' inserted");
     }
 
     /**
@@ -88,16 +83,13 @@ public class MessageTest extends NoFlagsPrimitiveTester {
      */
     public void testMessage1() throws Exception {
 
-        runCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\errorstopmode"
-                + "\\catcode`{=1"
-                + "\\catcode`}=2"
+                + DEFINE_BRACES
                 + "\\message{Hello world!}"
                 + "\\end ",
                 //--- log message ---
-                "Hello world!",
-                //--- output channel ---
-                "");
+                "Hello world!");
     }
 
     /**
@@ -109,16 +101,13 @@ public class MessageTest extends NoFlagsPrimitiveTester {
      */
     public void testMessage2() throws Exception {
 
-        runCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\batchmode"
-                + "\\catcode`{=1"
-                + "\\catcode`}=2"
+                + DEFINE_BRACES
                 + "\\message{Hello world!}"
                 + "\\end ",
                 //--- log message ---
-                "Hello world!",
-                //--- output channel ---
-                "");
+                "Hello world!");
     }
     /**
      * <testcase primitive="\message">
@@ -129,16 +118,13 @@ public class MessageTest extends NoFlagsPrimitiveTester {
      */
     public void testMessage3() throws Exception {
 
-        runCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\nonstopmode"
-                + "\\catcode`{=1"
-                + "\\catcode`}=2"
+                + DEFINE_BRACES
                 + "\\message{Hello world!}"
                 + "\\end ",
                 //--- log message ---
-                "Hello world!",
-                //--- output channel ---
-                "");
+                "Hello world!");
     }
 
     /**
@@ -150,16 +136,13 @@ public class MessageTest extends NoFlagsPrimitiveTester {
      */
     public void testMessage4() throws Exception {
 
-        runCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\scrollmode"
-                + "\\catcode`{=1"
-                + "\\catcode`}=2"
+                + DEFINE_BRACES
                 + "\\message{Hello world!}"
                 + "\\end ",
                 //--- log message ---
-                "Hello world!",
-                //--- output channel ---
-                "");
+                "Hello world!");
     }
 
 }

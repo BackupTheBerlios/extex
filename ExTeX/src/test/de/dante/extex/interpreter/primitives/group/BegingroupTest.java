@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\begingroup</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class BegingroupTest extends NoFlagsPrimitiveTester {
 
@@ -58,12 +58,10 @@ public class BegingroupTest extends NoFlagsPrimitiveTester {
      */
     public void testUnbalanced1() throws Exception {
 
-        runCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\begingroup",
                 //--- log message ---
-                "(\\end occurred inside a group at level 1)",
-                //--- output channel ---
-                "");
+                "(\\end occurred inside a group at level 1)");
     }
 
     /**
@@ -75,10 +73,8 @@ public class BegingroupTest extends NoFlagsPrimitiveTester {
      */
     public void testGroup1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\begingroup abc\\endgroup",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "abc" + TERM);
     }
@@ -92,10 +88,8 @@ public class BegingroupTest extends NoFlagsPrimitiveTester {
      */
     public void testGroup2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\count0=123 \\begingroup \\the\\count0\\endgroup",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "123" + TERM);
     }
@@ -110,13 +104,10 @@ public class BegingroupTest extends NoFlagsPrimitiveTester {
      */
     public void testGroup3() throws Exception {
 
-        runCode(
-        //--- input code ---
+        assertSuccess(//--- input code ---
                 "\\count0=123 "
                         + "\\begingroup \\count0=456 \\the\\count0\\endgroup "
                         + "-\\the\\count0",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "456-123" + TERM);
     }
@@ -131,16 +122,12 @@ public class BegingroupTest extends NoFlagsPrimitiveTester {
      */
     public void testGroup4() throws Exception {
 
-        runCode(
-        //--- input code ---
-                "\\count0=123 "
-                        + "\\begingroup \\count0=456 \\the\\count0 "
+        assertSuccess(//--- input code ---
+                "\\count0=123 " + "\\begingroup \\count0=456 \\the\\count0 "
                         + "\\begingroup \\count0=789 -\\the\\count0\\endgroup "
-                        + "-\\the\\count0\\endgroup"
-                        + "-\\the\\count0",
-                //--- log message ---
-                "",
+                        + "-\\the\\count0\\endgroup" + "-\\the\\count0",
                 //--- output channel ---
                 "456-789-456-123" + TERM);
     }
+
 }

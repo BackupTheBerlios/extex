@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsButImmediatePrimitiveTester;
  * This is a test suite for the primitive <tt>\write</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class WriteTest extends NoFlagsButImmediatePrimitiveTester {
 
@@ -58,12 +58,10 @@ public class WriteTest extends NoFlagsButImmediatePrimitiveTester {
      */
     public void testEof1() throws Exception {
 
-        runCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\write ",
                 //--- log message ---
-                "Missing number, treated as zero",
-                //--- output channel ---
-                "");
+                "Missing number, treated as zero");
     }
 
     /**
@@ -76,12 +74,11 @@ public class WriteTest extends NoFlagsButImmediatePrimitiveTester {
      */
     public void testEof2() throws Exception {
 
-        runCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\write 2",
                 //--- log message ---
-                "Unexpected end of file while processing tokens", //TODO tokens should be \write
-                //--- output channel ---
-                "");
+                "Unexpected end of file while processing tokens" //TODO tokens should be \write
+                );
     }
 
     /**
@@ -93,12 +90,10 @@ public class WriteTest extends NoFlagsButImmediatePrimitiveTester {
      */
     public void testEof3() throws Exception {
 
-        runCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\immediate\\write ",
                 //--- log message ---
-                "Missing number, treated as zero",
-                //--- output channel ---
-                "");
+                "Missing number, treated as zero");
     }
 
     /**
@@ -111,12 +106,11 @@ public class WriteTest extends NoFlagsButImmediatePrimitiveTester {
      */
     public void testEof4() throws Exception {
 
-        runCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\immediate\\write 2",
                 //--- log message ---
-                "Unexpected end of file while processing write", //TODO tokens should be \write
-                //--- output channel ---
-                "");
+                "Unexpected end of file while processing write" //TODO tokens should be \write
+                );
     }
 
 }

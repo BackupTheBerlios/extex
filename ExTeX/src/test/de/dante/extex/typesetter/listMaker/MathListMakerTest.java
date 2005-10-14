@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the math typesetting.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class MathListMakerTest extends ExTeXLauncher {
 
@@ -46,13 +46,11 @@ public class MathListMakerTest extends ExTeXLauncher {
      */
     public void testEmpty1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\catcode`\\$=3 \\relax"
                 + ""
                 + "$ $"
                 + "\\end ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "" + TERM);
     }
@@ -64,13 +62,11 @@ public class MathListMakerTest extends ExTeXLauncher {
      */
     public void test1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\catcode`\\$=3 \\relax"
                 + ""
                 + "$a$"
                 + "\\end ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "\n\\nullfont a\n");
     }

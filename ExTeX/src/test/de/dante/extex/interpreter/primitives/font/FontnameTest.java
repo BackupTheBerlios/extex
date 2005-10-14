@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\fontname</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class FontnameTest extends NoFlagsPrimitiveTester {
 
@@ -48,12 +48,10 @@ public class FontnameTest extends NoFlagsPrimitiveTester {
      */
     public void testEof1() throws Exception {
 
-        runCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\fontname ",
                 //--- log message ---
-                "Unexpected end of file while processing \\fontname",
-                //--- output channel ---
-                null);
+                "Unexpected end of file while processing \\fontname");
     }
 
     /**
@@ -65,12 +63,10 @@ public class FontnameTest extends NoFlagsPrimitiveTester {
      */
     public void testMissing1() throws Exception {
 
-        runCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\fontname x",
                 //--- log message ---
-                "Missing font identifier",
-                //--- output channel ---
-                null);
+                "Missing font identifier");
     }
 
     /**
@@ -82,12 +78,10 @@ public class FontnameTest extends NoFlagsPrimitiveTester {
      */
     public void testMissing2() throws Exception {
 
-        runCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\fontname \\x",
                 //--- log message ---
-                "Undefined control sequence \\x",
-                //--- output channel ---
-                null);
+                "Undefined control sequence \\x");
     }
 
     /**
@@ -99,11 +93,9 @@ public class FontnameTest extends NoFlagsPrimitiveTester {
      */
     public void testFontname0() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\fontname\\nullfont "
                 + "\\end ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "nullfont" + TERM);
     }
@@ -118,12 +110,10 @@ public class FontnameTest extends NoFlagsPrimitiveTester {
      */
     public void testFontname1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\font\\x=cmtt12"
                 + "\\fontname\\x "
                 + "\\end ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "cmtt12" + TERM);
     }
@@ -138,12 +128,10 @@ public class FontnameTest extends NoFlagsPrimitiveTester {
      */
     public void testFontname2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\font\\x=cmmi10"
                 + "\\fontname\\x "
                 + "\\end ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "cmmi10" + TERM);
     }
@@ -158,12 +146,10 @@ public class FontnameTest extends NoFlagsPrimitiveTester {
      */
     public void testFontname3() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\font\\x=cmtt12 at 12 pt"
                 + "\\fontname\\x "
                 + "\\end ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "cmtt12" + TERM);
     }
@@ -178,12 +164,10 @@ public class FontnameTest extends NoFlagsPrimitiveTester {
      */
     public void testFontname4() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\font\\x=cmtt12 at 24 pt"
                 + "\\fontname\\x "
                 + "\\end ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "cmtt12 at 24.0pt" + TERM);
     }

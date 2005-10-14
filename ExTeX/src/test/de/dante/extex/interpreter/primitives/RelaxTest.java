@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\relax</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class RelaxTest extends NoFlagsPrimitiveTester {
 
@@ -58,10 +58,8 @@ public class RelaxTest extends NoFlagsPrimitiveTester {
      */
     public void test1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\relax",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "");
     }
@@ -76,44 +74,40 @@ public class RelaxTest extends NoFlagsPrimitiveTester {
      */
     public void test10() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "abc\\relax def",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "abcdef" + TERM);
     }
 
     /**
      * <testcase primitive="\relax">
-     *  Test case checking that a white-space after a <tt>\relax</tt> is ignored.
+     *  Test case checking that a white-space after a <tt>\relax</tt> is
+     *  ignored.
      * </testcase>
      *
      * @throws Exception in case of an error
      */
     public void test2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\relax ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "");
     }
 
     /**
      * <testcase primitive="\relax">
-     *  Test case checking that more white-space after a <tt>\relax</tt> is ignored.
+     *  Test case checking that more white-space after a <tt>\relax</tt> is
+     *  ignored.
      * </testcase>
      *
      * @throws Exception in case of an error
      */
     public void test4() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\relax         ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "");
     }
@@ -127,10 +121,8 @@ public class RelaxTest extends NoFlagsPrimitiveTester {
      */
     public void test5() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\relax %1234 ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "");
     }

@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\hyphenchar</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class HyphencharTest extends NoFlagsPrimitiveTester {
 
@@ -48,12 +48,10 @@ public class HyphencharTest extends NoFlagsPrimitiveTester {
      */
     public void testEof1() throws Exception {
 
-        runCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\hyphenchar ",
                 //--- log message ---
-                "Unexpected end of file while processing \\hyphenchar",
-                //--- output channel ---
-                "");
+                "Unexpected end of file while processing \\hyphenchar");
     }
 
     /**
@@ -65,12 +63,10 @@ public class HyphencharTest extends NoFlagsPrimitiveTester {
      */
     public void testEof2() throws Exception {
 
-        runCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\hyphenchar\\nullfont ",
                 //--- log message ---
-                "Missing number, treated as zero",
-                //--- output channel ---
-                "");
+                "Missing number, treated as zero");
     }
 
     /**
@@ -82,12 +78,10 @@ public class HyphencharTest extends NoFlagsPrimitiveTester {
      */
     public void testMissing1() throws Exception {
 
-        runCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\hyphenchar x",
                 //--- log message ---
-                "Missing font identifier",
-                //--- output channel ---
-                "");
+                "Missing font identifier");
     }
 
     /**
@@ -99,12 +93,10 @@ public class HyphencharTest extends NoFlagsPrimitiveTester {
      */
     public void testMissing2() throws Exception {
 
-        runCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\hyphenchar \\x",
                 //--- log message ---
-                "Undefined control sequence \\x",
-                //--- output channel ---
-                "");
+                "Undefined control sequence \\x");
     }
 
     /**
@@ -117,11 +109,9 @@ public class HyphencharTest extends NoFlagsPrimitiveTester {
      */
     public void testHyphencharNullfont0() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\the\\hyphenchar\\nullfont"
                 + "\\end ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "45" + TERM);
     }
@@ -136,12 +126,10 @@ public class HyphencharTest extends NoFlagsPrimitiveTester {
      */
     public void testHyphencharNullfont1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\hyphenchar\\nullfont =123 \\relax"
                 + "\\the\\hyphenchar\\nullfont"
                 + "\\end ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "123" + TERM);
     }
@@ -156,12 +144,10 @@ public class HyphencharTest extends NoFlagsPrimitiveTester {
      */
     public void testHyphencharNullfont2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\hyphenchar\\nullfont =-1 \\relax"
                 + "\\the\\hyphenchar\\nullfont"
                 + "\\end ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "-1" + TERM);
     }
@@ -175,13 +161,11 @@ public class HyphencharTest extends NoFlagsPrimitiveTester {
      */
     public void testHyphencharNullfont3() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\hyphenchar\\nullfont =123 \\relax"
                 + "\\count1=\\hyphenchar\\nullfont"
                 + "\\the\\count 1"
                 + "\\end ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "123" + TERM);
     }
@@ -196,12 +180,10 @@ public class HyphencharTest extends NoFlagsPrimitiveTester {
      */
     public void testHyphenchar0() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\font\\x=cmtt12"
                 + "\\the\\hyphenchar\\x"
                 + "\\end ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "45" + TERM);
     }
@@ -216,13 +198,11 @@ public class HyphencharTest extends NoFlagsPrimitiveTester {
      */
     public void testHyphenchar1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\font\\x=cmtt12"
                 + "\\hyphenchar\\x =123 \\relax"
                 + "\\the\\hyphenchar\\x"
                 + "\\end ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "123" + TERM);
     }
@@ -237,13 +217,11 @@ public class HyphencharTest extends NoFlagsPrimitiveTester {
      */
     public void testHyphenchar2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\font\\x=cmtt12"
                 + "\\hyphenchar\\x =-1 \\relax"
                 + "\\the\\hyphenchar\\x"
                 + "\\end ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "-1" + TERM);
     }
@@ -257,14 +235,12 @@ public class HyphencharTest extends NoFlagsPrimitiveTester {
      */
     public void testHyphenchar3() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\font\\x=cmtt12"
                 + "\\hyphenchar\\x =123 \\relax"
                 + "\\count1=\\hyphenchar\\x"
                 + "\\the\\count 1"
                 + "\\end ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "123" + TERM);
     }

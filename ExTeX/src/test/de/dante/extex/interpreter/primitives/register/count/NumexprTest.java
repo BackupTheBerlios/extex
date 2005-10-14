@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\numexpr</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class NumexprTest extends ExTeXLauncher {
 
@@ -58,12 +58,10 @@ public class NumexprTest extends ExTeXLauncher {
      */
     public void testEOF1() throws Exception {
 
-        runCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\count1=\\numexpr \\relax",
                 //--- log message ---
-                "Missing number, treated as zero",
-                //--- output channel ---
-                "");
+                "Missing number, treated as zero");
     }
 
     /**
@@ -76,12 +74,10 @@ public class NumexprTest extends ExTeXLauncher {
      */
     public void testError2() throws Exception {
 
-        runCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\count1=\\numexpr ( 123 \\relax",
                 //--- log message ---
-                "Missing ) inserted for expression",
-                //--- output channel ---
-                "");
+                "Missing ) inserted for expression");
     }
 
     /**
@@ -94,12 +90,10 @@ public class NumexprTest extends ExTeXLauncher {
      */
     public void testError1() throws Exception {
 
-        runCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\count1=\\numexpr ( \\relax",
                 //--- log message ---
-                "Missing number, treated as zero",
-                //--- output channel ---
-                "");
+                "Missing number, treated as zero");
     }
 
     /**
@@ -112,15 +106,12 @@ public class NumexprTest extends ExTeXLauncher {
      */
     public void testError3() throws Exception {
 
-        runCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\count1=\\numexpr 6/0\\relax"
                 + "\\the\\count1 ",
                 //--- log message ---
-                "Arithmetic overflow",
-                //--- output channel ---
-                "");
+                "Arithmetic overflow");
     }
-
 
     /**
      * <testcase primitive="\numexpr">
@@ -131,11 +122,9 @@ public class NumexprTest extends ExTeXLauncher {
      */
     public void test1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\count1=\\numexpr 1+2\\relax"
                 + "\\the\\count1 ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "3" + TERM);
     }
@@ -149,11 +138,9 @@ public class NumexprTest extends ExTeXLauncher {
      */
     public void test2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\count1=\\numexpr 2*3\\relax"
                 + "\\the\\count1 ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "6" + TERM);
     }
@@ -167,11 +154,9 @@ public class NumexprTest extends ExTeXLauncher {
      */
     public void test3() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\count1=\\numexpr 5-2\\relax"
                 + "\\the\\count1 ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "3" + TERM);
     }
@@ -185,11 +170,9 @@ public class NumexprTest extends ExTeXLauncher {
      */
     public void test4() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\count1=\\numexpr 6/2\\relax"
                 + "\\the\\count1 ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "3" + TERM);
     }
@@ -203,11 +186,9 @@ public class NumexprTest extends ExTeXLauncher {
      */
     public void test10() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\count1=\\numexpr 1+2*3\\relax"
                 + "\\the\\count1 ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "7" + TERM);
     }
@@ -221,11 +202,9 @@ public class NumexprTest extends ExTeXLauncher {
      */
     public void test11() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\count1=\\numexpr 2*3+1\\relax"
                 + "\\the\\count1 ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "7" + TERM);
     }
@@ -239,11 +218,9 @@ public class NumexprTest extends ExTeXLauncher {
      */
     public void test12() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\count1=\\numexpr 4/2+10\\relax"
                 + "\\the\\count1 ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "12" + TERM);
     }
@@ -258,11 +235,9 @@ public class NumexprTest extends ExTeXLauncher {
      */
     public void test13() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\count1=\\numexpr 10+4/2\\relax"
                 + "\\the\\count1 ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "12" + TERM);
     }
@@ -276,11 +251,9 @@ public class NumexprTest extends ExTeXLauncher {
      */
     public void test14() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\count1=\\numexpr 1-2*3\\relax"
                 + "\\the\\count1 ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "-5" + TERM);
     }
@@ -294,11 +267,9 @@ public class NumexprTest extends ExTeXLauncher {
      */
     public void test15() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\count1=\\numexpr 2*3-1\\relax"
                 + "\\the\\count1 ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "5" + TERM);
     }
@@ -312,11 +283,9 @@ public class NumexprTest extends ExTeXLauncher {
      */
     public void test16() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\count1=\\numexpr 4/2-10\\relax"
                 + "\\the\\count1 ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "-8" + TERM);
     }
@@ -331,11 +300,9 @@ public class NumexprTest extends ExTeXLauncher {
      */
     public void test17() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\count1=\\numexpr 10-4/2\\relax"
                 + "\\the\\count1 ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "8" + TERM);
     }
@@ -349,11 +316,9 @@ public class NumexprTest extends ExTeXLauncher {
      */
     public void test21() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\count1=\\numexpr 2*(1+2)\\relax"
                 + "\\the\\count1 ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "6" + TERM);
     }
@@ -368,11 +333,9 @@ public class NumexprTest extends ExTeXLauncher {
      */
     public void test31() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\count1=\\numexpr 2*-3\\relax"
                 + "\\the\\count1 ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "-6" + TERM);
     }
@@ -387,11 +350,9 @@ public class NumexprTest extends ExTeXLauncher {
      */
     public void test32() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\count1=\\numexpr 2*--3\\relax"
                 + "\\the\\count1 ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "6" + TERM);
     }
@@ -407,11 +368,9 @@ public class NumexprTest extends ExTeXLauncher {
      */
     public void test33() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\count1=\\numexpr -2+3\\relax"
                 + "\\the\\count1 ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "1" + TERM);
     }
@@ -426,11 +385,9 @@ public class NumexprTest extends ExTeXLauncher {
      */
     public void test34() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\count1=\\numexpr --2+3\\relax"
                 + "\\the\\count1 ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "5" + TERM);
     }
@@ -445,10 +402,8 @@ public class NumexprTest extends ExTeXLauncher {
      */
     public void testThe0() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\the\\numexpr 2*3\\relax",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "6" + TERM);
     }

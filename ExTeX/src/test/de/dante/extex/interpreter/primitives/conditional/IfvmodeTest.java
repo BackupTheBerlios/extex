@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\ifvmode</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class IfvmodeTest extends ExTeXLauncher {
 
@@ -58,10 +58,8 @@ public class IfvmodeTest extends ExTeXLauncher {
      */
     public void test1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\ifvmode a\\else b\\fi",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "a" + TERM);
     }
@@ -75,10 +73,8 @@ public class IfvmodeTest extends ExTeXLauncher {
      */
     public void test2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "x\\ifvmode a\\else b\\fi x",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "xbx" + TERM);
     }
@@ -92,12 +88,10 @@ public class IfvmodeTest extends ExTeXLauncher {
      */
     public void test3() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\catcode`{=1 "
                 + "\\catcode`}=2 "
                 + "\\vbox{\\ifvmode42 a\\else b\\fi}",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "a" + TERM);
     }
@@ -111,12 +105,10 @@ public class IfvmodeTest extends ExTeXLauncher {
      */
     public void test4() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\catcode`{=1 "
                 + "\\catcode`}=2 "
                 + "\\hbox{\\ifvmode42 a\\else b\\fi}",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "b" + TERM);
     }

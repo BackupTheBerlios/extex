@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\ifodd</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class IfoddTest extends ExTeXLauncher {
 
@@ -59,10 +59,8 @@ public class IfoddTest extends ExTeXLauncher {
      */
     public void test1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\ifodd 1 a\\else b\\fi",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "a" + TERM);
     }
@@ -77,10 +75,8 @@ public class IfoddTest extends ExTeXLauncher {
      */
     public void test2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "x\\ifodd 1 a\\fi x",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "xax" + TERM);
     }
@@ -95,10 +91,8 @@ public class IfoddTest extends ExTeXLauncher {
      */
     public void test3() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\ifodd -1 a\\else b\\fi",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "a" + TERM);
     }
@@ -113,10 +107,8 @@ public class IfoddTest extends ExTeXLauncher {
      */
     public void test4() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "x\\ifodd -1 a\\fi x",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "xax" + TERM);
     }
@@ -131,10 +123,8 @@ public class IfoddTest extends ExTeXLauncher {
      */
     public void test5() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\ifodd 0 a\\else b\\fi",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "b" + TERM);
     }
@@ -149,10 +139,8 @@ public class IfoddTest extends ExTeXLauncher {
      */
     public void test6() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "x\\ifodd 0 a\\fi x",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "xx" + TERM);
     }

@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\else</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ElseTest extends ExTeXLauncher {
 
@@ -58,12 +58,10 @@ public class ElseTest extends ExTeXLauncher {
      */
     public void testConst0() throws Exception {
 
-        runCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\else",
                 //--- log message ---
-                "Extra \\else",
-                //--- output channel ---
-                "");
+                "Extra \\else");
     }
 
 }
