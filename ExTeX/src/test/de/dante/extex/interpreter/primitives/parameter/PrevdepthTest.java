@@ -19,15 +19,25 @@
 
 package de.dante.extex.interpreter.primitives.parameter;
 
+import de.dante.extex.interpreter.primitives.register.box.WdTest;
 import de.dante.test.ExTeXLauncher;
 
 /**
  * This is a test suite for the primitive <tt>\prevdepth</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class PrevdepthTest extends ExTeXLauncher {
+
+    /**
+     * Command line interface.
+     * @param args the arguments
+     */
+    public static void main(final String[] args) {
+
+        junit.textui.TestRunner.run(WdTest.class);
+    }
 
     /**
      * Creates a new object.

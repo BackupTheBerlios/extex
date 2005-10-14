@@ -19,15 +19,25 @@
 
 package de.dante.extex.interpreter.primitives.parameter;
 
+import de.dante.extex.interpreter.primitives.register.box.WdTest;
 import de.dante.extex.interpreter.primitives.string.AbstractCharMapTester;
 
 /**
  * This is a test suite for the primitive <tt>\sfcode</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class SfcodeTest extends AbstractCharMapTester {
+
+    /**
+     * Command line interface.
+     * @param args the arguments
+     */
+    public static void main(final String[] args) {
+
+        junit.textui.TestRunner.run(WdTest.class);
+    }
 
     /**
      * Creates a new object.
