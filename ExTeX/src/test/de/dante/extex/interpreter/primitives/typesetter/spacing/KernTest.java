@@ -19,13 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.typesetter.spacing;
 
+import java.util.Properties;
+
 import de.dante.test.NoFlagsPrimitiveTester;
 
 /**
  * This is a test suite for the primitive <tt>\kern</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class KernTest extends NoFlagsPrimitiveTester {
 
@@ -46,6 +48,42 @@ public class KernTest extends NoFlagsPrimitiveTester {
     public KernTest(final String arg) {
 
         super(arg, "kern", "1pt");
+    }
+
+    /**
+     * Test case checking that a correct value is produced.
+     *
+     * @throws Exception in case of an error
+     */
+    public void testKern1() throws Exception {
+
+        Properties properties = System.getProperties();
+        properties.setProperty("extex.output", "dump");
+
+        runCode(properties,
+                //--- input code ---
+                "x\\kern 123pt"
+                + "\\end ",
+                //--- log message ---
+                "",
+                //--- output channel ---
+                "\\vbox(0.0pt+0.0pt)x123.0pt\n"
+                + ".\\hbox(0.0pt+0.0pt)x123.0pt\n"
+                + "..x\n"
+                + "..\\kern123.0pt\n");
+    }
+
+    /**
+     * Test case checking that a missing dimen leads to an error.
+     *
+     * @throws Exception in case of an error
+     */
+    public void testEof1() throws Exception {
+
+        assertFailure(//--- input code ---
+                "x\\kern ",
+                //--- log message ---
+                "Illegal unit of measure (pt inserted)");
     }
 
     //TODO implement primitive specific test cases

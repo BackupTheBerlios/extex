@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\hbox</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class HboxTest extends NoFlagsPrimitiveTester {
 
@@ -71,6 +71,117 @@ public class HboxTest extends NoFlagsPrimitiveTester {
                 //
                 "abc" + TERM);
     }
+
+    /**
+     * <testcase primitive="\hbox">
+     *   Test case checking that a missing left brace directly after the macro
+     *   token leads to an error.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testMissingBrace1() throws Exception {
+
+        assertFailure(//--- input code ---
+                DEFINE_BRACES
+                + ""
+                + "\\hbox a"
+                + "\\end ",
+                //--- log message ---
+                "Missing `{' inserted");
+    }
+
+    /**
+     * <testcase primitive="\hbox">
+     *   Test case checking that a missing left brace after a "to" specification
+     *   leads to an error.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testMissingBrace2() throws Exception {
+
+        assertFailure(//--- input code ---
+                DEFINE_BRACES
+                + "\\hbox to 2pt a"
+                + "\\end ",
+                //--- log message ---
+                "Missing `{' inserted");
+    }
+
+    /**
+     * <testcase primitive="\hbox">
+     *   Test case checking that an outer macro in the preamble leads to an
+     *   error.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testEof1() throws Exception {
+
+        assertFailure(//--- input code ---
+                DEFINE_BRACES
+                + "\\hbox ",
+                //--- log message ---
+                "Unexpected end of file while processing \\hbox");
+    }
+
+    /**
+     * <testcase primitive="\hbox">
+     *   Test case checking that a correct hbox passes its contents to the
+     *   typesetter.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testHbox1() throws Exception {
+
+        assertSuccess(//--- input code ---
+                DEFINE_BRACES
+                + "\\font\\fnt cmtt12 \\fnt"
+                + "\\hbox{abc}"
+                + "\\end ",
+                //--- output channel ---
+                "abc" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\hbox">
+     *   Test case checking that an outer macro in the preamble leads to an
+     *   error.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testHbox2() throws Exception {
+
+        assertSuccess(//--- input code ---
+                DEFINE_BRACES
+                + "\\hbox{}",
+                //--- output channel ---
+                "" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\hbox">
+     *   Test case checking that a hbox containing "abc" in font cmtt12 has the
+     *   width 18.52501pt. This value has been computed with <logo>TeX</logo>.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testHbox3() throws Exception {
+
+        assertFailure(//--- input code ---
+                DEFINE_BRACES
+                + "\\font\\fnt cmtt12 \\fnt"
+                + "\\setbox1=\\hbox{abc} "
+                + "\\the\\wd1 "
+                + "\\end",
+                //--- output channel ---
+                "18.52501pt " + TERM); // checked wih TeX
+    }
+
 
     //TODO implement primitive specific test cases
 
