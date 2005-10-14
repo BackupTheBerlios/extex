@@ -17,7 +17,7 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.register;
+package de.dante.extex.interpreter.primitives.register.bool;
 
 import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.context.Context;
@@ -34,7 +34,7 @@ import junit.framework.TestCase;
  * </p>
  *
  * @author <a href="mailto:m.g.sn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.1 $
  */
 public class BoolRegisterTest extends TestCase {
 

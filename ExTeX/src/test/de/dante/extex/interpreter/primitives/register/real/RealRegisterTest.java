@@ -17,7 +17,7 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.register;
+package de.dante.extex.interpreter.primitives.register.real;
 
 import junit.framework.TestCase;
 import de.dante.extex.interpreter.Interpreter;
@@ -36,7 +36,7 @@ import de.dante.util.framework.configuration.ConfigurationFactory;
  * </p>
  *
  * @author <a href="mailto:m.g.sn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.1 $
  */
 public class RealRegisterTest extends TestCase {
 
