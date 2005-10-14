@@ -20,51 +20,49 @@
 package de.dante.extex.interpreter.primitives.math;
 
 import de.dante.test.ExTeXLauncher;
+import de.dante.test.NoFlagsPrimitiveTester;
 
 /**
- * This is a test suite for math.
+ * This is an abstract base class for testing math primitives.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.1 $
  */
-public class MathTest extends ExTeXLauncher {
+public class AbstractMathTester extends NoFlagsPrimitiveTester {
+
+    /**
+     * The field <tt>primitive</tt> contains the name of the primitive to test.
+     */
+    private String primitive;
+
+    /**
+     * The field <tt>arguments</tt> contains the ...
+     */
+    private String arguments;
 
     /**
      * Constructor for MathaccentTest.
      *
      * @param arg the name
      */
-    public MathTest(final String arg) {
+    public AbstractMathTester(final String arg, final String primitive,
+            final String arguments) {
 
-        super(arg);
+        super(arg, primitive, arguments, DEFINE_CATCODES +"$");
+        this.primitive = primitive;
+        this.arguments = arguments;
     }
 
     /**
      * Test case checking that \mathaccent needs the math mode.
      * @throws Exception in case of an error
      */
-    public void testMath1() throws Exception {
+    public void testNonMathMode() throws Exception {
 
-        assertSuccess(//--- input code ---
-                "\\catcode`$=3 "
-                + "$a$ \\end",
-                //--- output channel ---
-                "a\n");
-    }
-
-    /**
-     * Test case checking that \mathaccent needs the math mode.
-     * @throws Exception in case of an error
-     */
-    public void testMath2() throws Exception {
-
-        assertSuccess(//--- input code ---
-                "\\catcode`\\{=1 "
-                + "\\catcode`\\}=2 "
-                + "\\catcode`$=3 "
-                + "${a \\over b}$ \\end",
-                //--- output channel ---
-                "???"); //TODO gene: check
+        assertFailure(//--- input code ---
+                "\\" + primitive + arguments + " ",
+                //--- log message ---
+                "Missing $ inserted");
     }
 
 }

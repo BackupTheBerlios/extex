@@ -19,15 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.math.limits;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.extex.interpreter.primitives.math.AbstractMathTester;
 
 /**
  * This is a test suite for the primitive <tt>\displaylimits</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class DisplaylimitsTest extends ExTeXLauncher {
+public class DisplaylimitsTest extends AbstractMathTester {
 
     /**
      * Constructor for DisplaylimitsTest.
@@ -36,21 +36,7 @@ public class DisplaylimitsTest extends ExTeXLauncher {
      */
     public DisplaylimitsTest(final String arg) {
 
-        super(arg);
-    }
-
-    /**
-     * Test case checking that \displaylimits needs the math mode.
-     * @throws Exception in case of an error
-     */
-    public void testNonMathMode() throws Exception {
-
-        runCode(//--- input code ---
-                "\\displaylimits \\end",
-                //--- log message ---
-                "Missing $ inserted",
-                //--- output channel ---
-                "");
+        super(arg, "displaylimits", "\\mathop123 ");
     }
 
 }

@@ -19,15 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.math;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.test.NoFlagsButGlobalPrimitiveTester;
 
 /**
  * This is a test suite for the primitive <tt>\mathcode</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class MathcodeTest extends ExTeXLauncher {
+public class MathcodeTest extends NoFlagsButGlobalPrimitiveTester {
 
     /**
      * Constructor for MathcodeTest.
@@ -36,8 +36,7 @@ public class MathcodeTest extends ExTeXLauncher {
      */
     public MathcodeTest(final String arg) {
 
-        super(arg);
+        super(arg, "mathcode", "12 32 ");
     }
-
 
 }

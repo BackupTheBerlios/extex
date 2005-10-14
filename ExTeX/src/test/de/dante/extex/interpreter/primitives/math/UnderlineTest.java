@@ -19,15 +19,13 @@
 
 package de.dante.extex.interpreter.primitives.math;
 
-import de.dante.test.ExTeXLauncher;
-
 /**
  * This is a test suite for the primitive <tt>&#x5c;underline</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class UnderlineTest extends ExTeXLauncher {
+public class UnderlineTest extends AbstractMathTester {
 
     /**
      * Constructor for UnderlineTest.
@@ -36,21 +34,7 @@ public class UnderlineTest extends ExTeXLauncher {
      */
     public UnderlineTest(final String arg) {
 
-        super(arg);
-    }
-
-    /**
-     * Test case checking that &#x5c;underline needs the math mode.
-     * @throws Exception in case of an error
-     */
-    public void testNonMathMode() throws Exception {
-
-        runCode(//--- input code ---
-                "\\underline \\end",
-                //--- log message ---
-                "Missing $ inserted",
-                //--- output channel ---
-                "");
+        super(arg, "underline", " x");
     }
 
 }

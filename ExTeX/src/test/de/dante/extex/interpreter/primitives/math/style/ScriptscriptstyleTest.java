@@ -19,15 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.math.style;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.extex.interpreter.primitives.math.AbstractMathTester;
 
 /**
  * This is a test suite for the primitive <tt>\scriptscriptstyle</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class ScriptscriptstyleTest extends ExTeXLauncher {
+public class ScriptscriptstyleTest extends AbstractMathTester {
 
     /**
      * Constructor for ScriptscriptstyleTest.
@@ -36,21 +36,7 @@ public class ScriptscriptstyleTest extends ExTeXLauncher {
      */
     public ScriptscriptstyleTest(final String arg) {
 
-        super(arg);
-    }
-
-    /**
-     * Test case checking that \scriptscriptstyle needs the math mode.
-     * @throws Exception in case of an error
-     */
-    public void testNonMathMode() throws Exception {
-
-        runCode(//--- input code ---
-                "\\scriptscriptstyle \\end",
-                //--- log message ---
-                "Missing $ inserted",
-                //--- output channel ---
-                null);
+        super(arg, "scriptscriptstyle", "");
     }
 
 }

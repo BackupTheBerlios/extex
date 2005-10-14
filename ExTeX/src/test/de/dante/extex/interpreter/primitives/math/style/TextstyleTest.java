@@ -19,15 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.math.style;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.extex.interpreter.primitives.math.AbstractMathTester;
 
 /**
  * This is a test suite for the primitive <tt>\textstyle</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class TextstyleTest extends ExTeXLauncher {
+public class TextstyleTest extends AbstractMathTester {
 
     /**
      * Constructor for TextstyleTest.
@@ -36,21 +36,7 @@ public class TextstyleTest extends ExTeXLauncher {
      */
     public TextstyleTest(final String arg) {
 
-        super(arg);
-    }
-
-    /**
-     * Test case checking that \textstyle needs the math mode.
-     * @throws Exception in case of an error
-     */
-    public void testNonMathMode() throws Exception {
-
-        runCode(//--- input code ---
-                "\\textstyle \\end",
-                //--- log message ---
-                "Missing $ inserted",
-                //--- output channel ---
-                "");
+        super(arg, "textstyle", "");
     }
 
 }

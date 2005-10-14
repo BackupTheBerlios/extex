@@ -19,15 +19,13 @@
 
 package de.dante.extex.interpreter.primitives.math;
 
-import de.dante.test.ExTeXLauncher;
-
 /**
  * This is a test suite for the primitive <tt>\mathpunct</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class MathpunctTest extends ExTeXLauncher {
+public class MathpunctTest extends AbstractMathTester {
 
     /**
      * Constructor for MathpunctTest.
@@ -36,21 +34,7 @@ public class MathpunctTest extends ExTeXLauncher {
      */
     public MathpunctTest(final String arg) {
 
-        super(arg);
-    }
-
-    /**
-     * Test case checking that \mathpunct needs the math mode.
-     * @throws Exception in case of an error
-     */
-    public void testNonMathMode() throws Exception {
-
-        runCode(//--- input code ---
-                "\\mathpunct \\end",
-                //--- log message ---
-                "Missing $ inserted",
-                //--- output channel ---
-                "");
+        super(arg, "mathpunc", " x");
     }
 
 }

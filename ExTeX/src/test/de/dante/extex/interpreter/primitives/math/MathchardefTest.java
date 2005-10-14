@@ -19,15 +19,16 @@
 
 package de.dante.extex.interpreter.primitives.math;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.test.NoFlagsButGlobalPrimitiveTester;
+
 
 /**
  * This is a test suite for the primitive <tt>\mathchardef</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class MathchardefTest extends ExTeXLauncher {
+public class MathchardefTest extends NoFlagsButGlobalPrimitiveTester {
 
     /**
      * Constructor for MathchardefTest.
@@ -36,7 +37,9 @@ public class MathchardefTest extends ExTeXLauncher {
      */
     public MathchardefTest(final String arg) {
 
-        super(arg);
+        super(arg, "mathchardef", "\\a=\"32 ");
     }
+
+    //TODO implement the primitive specific test cases
 
 }

@@ -19,15 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.math.delimiter;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.extex.interpreter.primitives.math.AbstractMathTester;
 
 /**
  * This is a test suite for the primitive <tt>\right</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class RightTest extends ExTeXLauncher {
+public class RightTest extends AbstractMathTester {
 
     /**
      * Constructor for RightTest.
@@ -36,21 +36,7 @@ public class RightTest extends ExTeXLauncher {
      */
     public RightTest(final String arg) {
 
-        super(arg);
-    }
-
-    /**
-     * Test case checking that \right needs the math mode.
-     * @throws Exception in case of an error
-     */
-    public void testNonMathMode() throws Exception {
-
-        runCode(//--- input code ---
-                "\\right \\end",
-                //--- log message ---
-                "Missing $ inserted",
-                //--- output channel ---
-                "");
+        super(arg, "right", "(");
     }
 
 }

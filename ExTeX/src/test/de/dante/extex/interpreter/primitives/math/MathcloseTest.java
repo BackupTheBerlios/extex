@@ -19,15 +19,13 @@
 
 package de.dante.extex.interpreter.primitives.math;
 
-import de.dante.test.ExTeXLauncher;
-
 /**
  * This is a test suite for the primitive <tt>\mathclose</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class MathcloseTest extends ExTeXLauncher {
+public class MathcloseTest extends AbstractMathTester {
 
     /**
      * Constructor for MathcloseTest.
@@ -36,21 +34,7 @@ public class MathcloseTest extends ExTeXLauncher {
      */
     public MathcloseTest(final String arg) {
 
-        super(arg);
-    }
-
-    /**
-     * Test case checking that \mathclose needs the math mode.
-     * @throws Exception in case of an error
-     */
-    public void testNonMathMode() throws Exception {
-
-        runCode(//--- input code ---
-                "\\mathclose \\end",
-                //--- log message ---
-                "Missing $ inserted",
-                //--- output channel ---
-                "");
+        super(arg, "mathclose", "1234 ");
     }
 
 }

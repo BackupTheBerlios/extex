@@ -19,15 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.math.limits;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.extex.interpreter.primitives.math.AbstractMathTester;
 
 /**
  * This is a test suite for the primitive <tt>\limits</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class LimitsTest extends ExTeXLauncher {
+public class LimitsTest extends AbstractMathTester {
 
     /**
      * Constructor for LimitsTest.
@@ -36,21 +36,7 @@ public class LimitsTest extends ExTeXLauncher {
      */
     public LimitsTest(final String arg) {
 
-        super(arg);
-    }
-
-    /**
-     * Test case checking that \limits needs the math mode.
-     * @throws Exception in case of an error
-     */
-    public void testNonMathMode() throws Exception {
-
-        runCode(//--- input code ---
-                "\\limits \\end",
-                //--- log message ---
-                "Missing $ inserted",
-                //--- output channel ---
-                "");
+        super(arg, "limits", "");
     }
 
 }

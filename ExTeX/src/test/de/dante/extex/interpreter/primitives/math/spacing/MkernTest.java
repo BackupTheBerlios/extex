@@ -19,15 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.math.spacing;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.extex.interpreter.primitives.math.AbstractMathTester;
 
 /**
  * This is a test suite for the primitive <tt>\mkern</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class MkernTest extends ExTeXLauncher {
+public class MkernTest extends AbstractMathTester {
 
     /**
      * Constructor for MkernTest.
@@ -36,21 +36,7 @@ public class MkernTest extends ExTeXLauncher {
      */
     public MkernTest(final String arg) {
 
-        super(arg);
-    }
-
-    /**
-     * Test case checking that \mkern needs the math mode.
-     * @throws Exception in case of an error
-     */
-    public void testNonMathMode() throws Exception {
-
-        runCode(//--- input code ---
-                "\\mkern \\end",
-                //--- log message ---
-                "Missing $ inserted",
-                //--- output channel ---
-                "");
+        super(arg, "mkern", "1mu");
     }
 
 }

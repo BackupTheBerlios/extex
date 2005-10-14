@@ -19,15 +19,14 @@
 
 package de.dante.extex.interpreter.primitives.math;
 
-import de.dante.test.ExTeXLauncher;
 
 /**
  * This is a test suite for the primitive <tt>\mathaccent</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class MathaccentTest extends ExTeXLauncher {
+public class MathaccentTest extends AbstractMathTester {
 
     /**
      * Constructor for MathaccentTest.
@@ -36,21 +35,9 @@ public class MathaccentTest extends ExTeXLauncher {
      */
     public MathaccentTest(final String arg) {
 
-        super(arg);
+        super(arg, "mathaccent", "12 a");
     }
 
-    /**
-     * Test case checking that \mathaccent needs the math mode.
-     * @throws Exception in case of an error
-     */
-    public void testNonMathMode() throws Exception {
-
-        runCode(//--- input code ---
-                "\\mathaccent \\end",
-                //--- log message ---
-                "Missing $ inserted",
-                //--- output channel ---
-                "");
-    }
+    //TODO implement the primitive specific test cases
 
 }

@@ -19,15 +19,13 @@
 
 package de.dante.extex.interpreter.primitives.math;
 
-import de.dante.test.ExTeXLauncher;
-
 /**
  * This is a test suite for the primitive <tt>\mathrel</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class MathrelTest extends ExTeXLauncher {
+public class MathrelTest extends AbstractMathTester {
 
     /**
      * Constructor for MathrelTest.
@@ -36,21 +34,7 @@ public class MathrelTest extends ExTeXLauncher {
      */
     public MathrelTest(final String arg) {
 
-        super(arg);
-    }
-
-    /**
-     * Test case checking that \mathrel needs the math mode.
-     * @throws Exception in case of an error
-     */
-    public void testNonMathMode() throws Exception {
-
-        runCode(//--- input code ---
-                "\\mathrel \\end",
-                //--- log message ---
-                "Missing $ inserted",
-                //--- output channel ---
-                "");
+        super(arg, "mathrel", " x");
     }
 
 }

@@ -19,15 +19,13 @@
 
 package de.dante.extex.interpreter.primitives.math;
 
-import de.dante.test.ExTeXLauncher;
-
 /**
  * This is a test suite for the primitive <tt>\mathinner</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class MathinnerTest extends ExTeXLauncher {
+public class MathinnerTest extends AbstractMathTester {
 
     /**
      * Constructor for MathinnerTest.
@@ -36,21 +34,7 @@ public class MathinnerTest extends ExTeXLauncher {
      */
     public MathinnerTest(final String arg) {
 
-        super(arg);
-    }
-
-    /**
-     * Test case checking that \mathinner needs the math mode.
-     * @throws Exception in case of an error
-     */
-    public void testNonMathMode() throws Exception {
-
-        runCode(//--- input code ---
-                "\\mathinner \\end",
-                //--- log message ---
-                "Missing $ inserted",
-                //--- output channel ---
-                "");
+        super(arg, "mathinner", " x");
     }
 
 }
