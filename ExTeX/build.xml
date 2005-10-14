@@ -250,6 +250,18 @@
     </xslt>
   </target>
 
+  <target name="junitreport"
+          description="">
+    <junitreport todir="${target.tests}">
+      <fileset dir="${target.tests}">
+        <include name="TEST-*.xml"/>
+      </fileset>
+      <report format="noframes"
+              styledir="develop/reports"
+ 	      todir="${target}/www/reports/t"/>
+    </junitreport>
+  </target>
+
   <target name="checkstyle"
           description="Generates a report of violations of the coding conventions.">
     <checkstyle config="develop/eclipse/checkstyle.cfg"
