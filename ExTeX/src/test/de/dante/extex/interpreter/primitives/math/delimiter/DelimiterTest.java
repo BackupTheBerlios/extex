@@ -19,24 +19,24 @@
 
 package de.dante.extex.interpreter.primitives.math.delimiter;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.extex.interpreter.primitives.math.AbstractMathTester;
 
 /**
- * This is a test suite for the primitive <tt>\mathdelimiter</tt>.
+ * This is a test suite for the primitive <tt>\delimiter</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public class MathDelimiterTest extends ExTeXLauncher {
+public class DelimiterTest extends AbstractMathTester {
 
     /**
      * Constructor for MathdelimiterTest.
      *
      * @param arg the name
      */
-    public MathDelimiterTest(final String arg) {
+    public DelimiterTest(final String arg) {
 
-        super(arg);
+        super(arg, "delimiter", "123 ");
     }
 
 }
