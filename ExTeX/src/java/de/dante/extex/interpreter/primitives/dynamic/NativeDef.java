@@ -28,6 +28,7 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.framework.AbstractFactory;
@@ -70,27 +71,30 @@ import de.dante.util.framework.logger.LogEnabled;
  * instance is bound as code to the <i>&lang;control sequence&rang;</i>.
  * </p>
  * <p>
- * The primitive <tt>\javadef</tt> is local to the enclosing group as
+ * The primitive <tt>\nativedef</tt> is local to the enclosing group as
  * is <tt>\def</tt>. And similar to <tt>\def</tt> the modifier
  * <tt>\global</tt> can be used to make the definition in all groups
  * instead of the current group only.
+ * </p>
+ * <p>
+ * The primitive <tt>\nativedef</tt> also respects the count register
+ * <tt>\globaldefs</tt> to enable general global assignment. 
+ * </p>
+ * <p>
+ * Since the primitive is classified as assignment the value of
+ * <tt>\afterassignment</tt> is applied.
  * </p>
  *
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
-public class NativeDef extends AbstractCode
+public class NativeDef extends AbstractAssignment
         implements
             Configurable,
             LogEnabled {
-
-    /**
-     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
-     */
-    private static final long serialVersionUID = 1L;
 
     /**
      * This inner class provides access to the functionality of an abstract
@@ -98,7 +102,7 @@ public class NativeDef extends AbstractCode
      * inheritance in Java.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.5 $
+     * @version $Revision: 1.6 $
      */
     protected class Factory extends AbstractFactory {
 
@@ -115,6 +119,11 @@ public class NativeDef extends AbstractCode
                     Definer.class);
         }
     }
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * The field <tt>logger</tt> contains the logger to use.
@@ -138,6 +147,34 @@ public class NativeDef extends AbstractCode
     }
 
     /**
+     * @see de.dante.extex.interpreter.type.AbstractAssignment#assign(
+     *       de.dante.extex.interpreter.Flags,
+     *       de.dante.extex.interpreter.context.Context,
+     *       de.dante.extex.interpreter.TokenSource,
+     *       de.dante.extex.typesetter.Typesetter)
+     */
+    public void assign(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws InterpreterException {
+
+        String name = source.getTokens(context).toText();
+        Configuration cfg = (Configuration) map.get(name);
+        if (cfg == null) {
+            throw new InterpreterException(getLocalizer().format("UnknownType",
+                    name, getName()));
+        }
+
+        Factory factory = new Factory();
+        factory.enableLogging(logger);
+        try {
+            factory.configure(cfg);
+            factory.createLoad().define(prefix, context, source);
+        } catch (ConfigurationException e) {
+            throw new InterpreterException(e);
+        }
+    }
+
+    /**
      * @see de.dante.util.framework.configuration.Configurable#configure(
      *      de.dante.util.configuration.Configuration)
      */
@@ -158,34 +195,6 @@ public class NativeDef extends AbstractCode
     public void enableLogging(final Logger theLogger) {
 
         this.logger = theLogger;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.type.Code#execute(
-     *       de.dante.extex.interpreter.Flags,
-     *       de.dante.extex.interpreter.context.Context,
-     *       de.dante.extex.interpreter.TokenSource,
-     *       de.dante.extex.typesetter.Typesetter)
-     */
-    public void execute(final Flags prefix, final Context context,
-            final TokenSource source, final Typesetter typesetter)
-            throws InterpreterException {
-
-        String name = source.getTokens(context).toText();
-        Configuration cfg = (Configuration) map.get(name);
-        if (cfg == null) {
-            throw new InterpreterException(getLocalizer().format("UnknownType",
-                    name, getName()));
-        }
-
-        Factory factory = new Factory();
-        factory.enableLogging(logger);
-        try {
-            factory.configure(cfg);
-            factory.createLoad().define(prefix, context, source);
-        } catch (ConfigurationException e) {
-            throw new InterpreterException(e);
-        }
     }
 
     /**
