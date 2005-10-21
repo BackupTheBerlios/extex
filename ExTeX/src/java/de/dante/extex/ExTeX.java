@@ -326,7 +326,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.116 $
+ * @version $Revision: 1.117 $
  */
 public class ExTeX {
 
@@ -550,7 +550,7 @@ public class ExTeX {
     protected static void logException(final Logger logger, final String text,
             final Throwable e) {
 
-        logger.severe(text == null ? "" : text);
+        logger.log(Level.SEVERE, text == null ? "" : text);
         logger.log(Level.FINE, "", e);
     }
 
@@ -897,9 +897,9 @@ public class ExTeX {
                 throw new HelpingException(localizer, "TTP.FormatFileError",
                         format);
             }
-            logger.config(localizer.format("ExTeX.FormatDate", format, time));
+            logger.finer(localizer.format("ExTeX.FormatDate", format, time));
         } else {
-            logger.config(localizer.format("ExTeX.NoFormatDate", time));
+            logger.finer(localizer.format("ExTeX.NoFormatDate", time));
         }
         interpreter.setJobname(jobname);
     }
@@ -1286,7 +1286,7 @@ public class ExTeX {
      *
      * @throws MainException in case of an error
      */
-    public void run() throws MainException {
+    public Interpreter run() throws MainException {
 
         final String jobname = determineJobname();
         final String logFile = new File(properties.getProperty(PROP_OUTPUTDIR),
@@ -1340,10 +1340,13 @@ public class ExTeX {
             interpreter.run();
 
             int pages = docWriter.getPages();
-            logger.info(localizer.format((pages == 0
+            logger.finer(localizer.format((pages == 0
                     ? "ExTeX.NoPages"
                     : pages == 1 ? "ExTeX.Page" : "ExTeX.Pages"), //
                     outFactory.getDestination(), Integer.toString(pages)));
+
+            return interpreter;
+
         } catch (ConfigurationException e) {
             logger.throwing(this.getClass().getName(), "run", e);
             throw new MainConfigurationException(e);
@@ -1366,9 +1369,10 @@ public class ExTeX {
                 fileHandler.close();
                 logger.removeHandler(fileHandler);
                 // see "TeX -- The Program [1333]"
-                logger.info(localizer.format("ExTeX.Logfile", logFile));
+                logger.finer(localizer.format("ExTeX.Logfile", logFile));
             }
         }
+        return null;
     }
 
     /**
