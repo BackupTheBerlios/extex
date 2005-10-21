@@ -56,12 +56,12 @@ import de.dante.util.framework.logger.LogEnabled;
  * <p>
  *  Examples:
  *  <pre class="TeXSample">
- *    \vsplit ...  </pre>
+ *    \vsplit 2 to 123pt  </pre>
  * </p>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Vsplit extends AbstractBox implements Boxable, LogEnabled {
 

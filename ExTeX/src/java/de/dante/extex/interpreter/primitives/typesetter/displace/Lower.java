@@ -70,7 +70,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Lower extends AbstractBoxPrimitive {
 
@@ -99,7 +99,7 @@ public class Lower extends AbstractBoxPrimitive {
             final Typesetter typesetter) throws InterpreterException {
 
         Dimen amount = new Dimen(context, source, typesetter);
-        Box box = source.getBox(context, typesetter);
+        Box box = source.getBox(null, context, typesetter);
         if (box != null) {
             amount.add(box.getShift());
             box.setShift(amount);

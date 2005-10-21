@@ -54,9 +54,9 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
-public class Setbox extends AbstractBox implements Code, Serializable {
+public class Setbox extends AbstractBox implements Code {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
@@ -86,11 +86,8 @@ public class Setbox extends AbstractBox implements Code, Serializable {
 
         String key = getKey(context, source);
         source.getOptionalEquals(context);
-        Flags flags = prefix.copy();
-        prefix.clear();
-        Box box = source.getBox(context, typesetter);
+        Box box = source.getBox(prefix, context, typesetter);
         context.setBox(key, box, prefix.isGlobal());
-        prefix.set(flags);
         prefix.clearGlobal();
     }
 

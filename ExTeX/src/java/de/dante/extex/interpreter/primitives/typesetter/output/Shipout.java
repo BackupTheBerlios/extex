@@ -59,7 +59,7 @@ import de.dante.util.exception.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Shipout extends AbstractCode {
 
@@ -89,15 +89,12 @@ public class Shipout extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        Flags flags = prefix.copy();
-        prefix.clear();
-        Box box = source.getBox(context, typesetter);
+        Box box = source.getBox(prefix, context, typesetter);
 
         if (box != null) {
             typesetter.shipout(box.getNodes());
             context.getCount("deadcyles").set(0);
         }
-        prefix.set(flags);
     }
 
 }

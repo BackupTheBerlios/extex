@@ -51,7 +51,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.60 $
+ * @version $Revision: 1.61 $
  */
 public interface TokenSource {
 
@@ -135,7 +135,7 @@ public interface TokenSource {
      *
      * @throws InterpreterException in case of an error
      */
-    Box getBox(Context context, Typesetter typesetter)
+    Box getBox(Flags flags, Context context, Typesetter typesetter)
             throws InterpreterException;
 
     /**

@@ -27,8 +27,8 @@ import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.primitives.register.box.AbstractBox;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
-import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
@@ -56,7 +56,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Unhbox extends AbstractBox {
 
@@ -93,19 +93,18 @@ public class Unhbox extends AbstractBox {
         } else if (!b.isHbox()) {
             throw new HelpingException(getLocalizer(), "TTP.IncompatibleUnbox");
         } else {
-            context.setBox(key, null, prefix.isGlobal());
+            context.setBox(key, null, false);
             NodeList nl = b.getNodes();
             for (int i = 0; i < nl.size(); i++) {
                 try {
                     typesetter.add(nl.get(i));
-                } catch (GeneralException e) {
+                } catch (TypesetterException e) {
                     throw new InterpreterException(e);
                 } catch (ConfigurationException e) {
                     throw new InterpreterException(e);
                 }
             }
         }
-        prefix.clearGlobal();
     }
 
 }

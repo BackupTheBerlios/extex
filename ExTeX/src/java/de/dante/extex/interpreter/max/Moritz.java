@@ -102,7 +102,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.81 $
+ * @version $Revision: 1.82 $
  */
 public class Moritz extends Max
         implements
@@ -330,15 +330,25 @@ public class Moritz extends Max
 
     /**
      * @see de.dante.extex.interpreter.TokenSource#getBox(
-     *      Context, de.dante.extex.typesetter.Typesetter)
+     *      de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.typesetter.Typesetter)
      */
-    public Box getBox(final Context context, final Typesetter typesetter)
-            throws InterpreterException {
+    public Box getBox(final Flags flags, final Context context,
+            final Typesetter typesetter) throws InterpreterException {
 
+        Flags f = null;
+        if (flags != null) {
+            f = flags.copy();
+            flags.clear();
+        }
         Token t = getToken(context);
         if (t instanceof CodeToken) {
             Code code = context.getCode((CodeToken) t);
             if (code instanceof Boxable) {
+                if (flags != null) {
+                    flags.set(f);
+                }
                 return ((Boxable) code).getBox(context, this, typesetter);
             }
         }
@@ -1141,10 +1151,16 @@ public class Moritz extends Max
                             n = n * 10 + t.getChar().getCodePoint() - '0';
                         }
 
-                        while (t instanceof SpaceToken) {
-                            t = getToken(context);
+                        /*
+                         while (t instanceof SpaceToken) {
+                         t = getToken(context);
+                         }
+                         */
+                        if (t instanceof SpaceToken) {
+                            skipSpaces = true;
+                        } else {
+                            put(t);
                         }
-                        put(t);
                         return n;
 
                     case '`':
