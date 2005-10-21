@@ -17,22 +17,23 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.math;
+package de.dante.extex.interpreter.primitives.math.symbol;
 
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.primitives.math.AbstractMathCode;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
 import de.dante.extex.typesetter.type.noad.Noad;
-import de.dante.extex.typesetter.type.noad.RelationNoad;
+import de.dante.extex.typesetter.type.noad.OpenNoad;
 
 /**
- * This class provides an implementation for the primitive <code>\mathrel</code>.
+ * This class provides an implementation for the primitive <code>\mathopen</code>.
  *
- * <doc name="mathrel">
- * <h3>The Math Primitive <tt>\mathrel</tt></h3>
+ * <doc name="mathopen">
+ * <h3>The Math Primitive <tt>\mathopen</tt></h3>
  * <p>
  *  TODO missing documentation
  * </p>
@@ -40,19 +41,19 @@ import de.dante.extex.typesetter.type.noad.RelationNoad;
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    &lang;mathrel&rang;
- *       &rarr; <tt>\mathrel</tt>  </pre>
+ *    &lang;mathopen&rang;
+ *       &rarr; <tt>\mathopen</tt>  </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
- *    \mathrel  </pre>
+ *    \mathopen  </pre>
  *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.1 $
  */
-public class Mathrel extends AbstractMathCode {
+public class Mathopen extends AbstractMathCode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
@@ -64,7 +65,7 @@ public class Mathrel extends AbstractMathCode {
      *
      * @param name the name for tracing and debugging
      */
-    public Mathrel(final String name) {
+    public Mathopen(final String name) {
 
         super(name);
     }
@@ -82,7 +83,7 @@ public class Mathrel extends AbstractMathCode {
 
         NoadConsumer nc = getListMaker(context, typesetter);
         Noad noad = nc.scanNoad(prefix, context, source, typesetter, getName());
-        nc.add(new RelationNoad(noad));
+        nc.add(new OpenNoad(noad));
     }
 
 }

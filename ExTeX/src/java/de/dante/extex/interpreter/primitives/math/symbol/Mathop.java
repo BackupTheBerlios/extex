@@ -17,22 +17,23 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.math;
+package de.dante.extex.interpreter.primitives.math.symbol;
 
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.primitives.math.AbstractMathCode;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
 import de.dante.extex.typesetter.type.noad.Noad;
-import de.dante.extex.typesetter.type.noad.PunctationNoad;
+import de.dante.extex.typesetter.type.noad.OperatorNoad;
 
 /**
- * This class provides an implementation for the primitive <code>\mathpunct</code>.
+ * This class provides an implementation for the primitive <code>\mathop</code>.
  *
- * <doc name="mathpunct">
- * <h3>The Math Primitive <tt>\mathpunct</tt></h3>
+ * <doc name="mathop">
+ * <h3>The Math Primitive <tt>\mathop</tt></h3>
  * <p>
  *  TODO missing documentation
  * </p>
@@ -40,19 +41,19 @@ import de.dante.extex.typesetter.type.noad.PunctationNoad;
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    &lang;mathpunct&rang;
- *       &rarr; <tt>\mathpunct</tt>  </pre>
+ *    &lang;mathop&rang;
+ *       &rarr; <tt>\mathop</tt>  </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
- *    \mathpunct  </pre>
+ *    \mathop  </pre>
  *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.1 $
  */
-public class Mathpunct extends AbstractMathCode {
+public class Mathop extends AbstractMathCode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
@@ -64,7 +65,7 @@ public class Mathpunct extends AbstractMathCode {
      *
      * @param name the name for tracing and debugging
      */
-    public Mathpunct(final String name) {
+    public Mathop(final String name) {
 
         super(name);
     }
@@ -82,7 +83,7 @@ public class Mathpunct extends AbstractMathCode {
 
         NoadConsumer nc = getListMaker(context, typesetter);
         Noad noad = nc.scanNoad(prefix, context, source, typesetter, getName());
-        nc.add(new PunctationNoad(noad));
+        nc.add(new OperatorNoad(noad));
     }
 
 }

@@ -17,23 +17,24 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.math;
+package de.dante.extex.interpreter.primitives.math.symbol;
 
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.primitives.math.AbstractMathCode;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
-import de.dante.extex.typesetter.type.noad.BinaryNoad;
+import de.dante.extex.typesetter.type.noad.InnerNoad;
 import de.dante.extex.typesetter.type.noad.Noad;
 
 /**
  * This class provides an implementation for the primitive
- * <code>\mathbin</code>.
+ * <code>\mathinner</code>.
  *
- * <doc name="mathbin">
- * <h3>The Math Primitive <tt>\mathbin</tt></h3>
+ * <doc name="mathinner">
+ * <h3>The Math Primitive <tt>\mathinner</tt></h3>
  * <p>
  *  TODO missing documentation
  * </p>
@@ -41,19 +42,19 @@ import de.dante.extex.typesetter.type.noad.Noad;
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    &lang;mathbin&rang;
- *       &rarr; <tt>\mathbin</tt>  </pre>
+ *    &lang;mathinner&rang;
+ *       &rarr; <tt>\mathinner</tt> &lang;math block&rang; </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
- *    \mathbin  </pre>
+ *    \mathinner{a^b}  </pre>
  *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.1 $
  */
-public class Mathbin extends AbstractMathCode {
+public class Mathinner extends AbstractMathCode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
@@ -65,7 +66,7 @@ public class Mathbin extends AbstractMathCode {
      *
      * @param name the name for tracing and debugging
      */
-    public Mathbin(final String name) {
+    public Mathinner(final String name) {
 
         super(name);
     }
@@ -83,7 +84,7 @@ public class Mathbin extends AbstractMathCode {
 
         NoadConsumer nc = getListMaker(context, typesetter);
         Noad noad = nc.scanNoad(prefix, context, source, typesetter, getName());
-        nc.add(new BinaryNoad(noad));
+        nc.add(new InnerNoad(noad));
     }
 
 }
