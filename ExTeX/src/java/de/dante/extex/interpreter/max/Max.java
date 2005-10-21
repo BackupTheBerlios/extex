@@ -108,7 +108,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.87 $
+ * @version $Revision: 1.88 $
  */
 public abstract class Max
         implements
@@ -1106,13 +1106,13 @@ public abstract class Max
      *
      * @return <code>null</code>
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      *
      * @see de.dante.extex.scanner.type.token.TokenVisitor#visitActive(
      *      de.dante.extex.scanner.ActiveCharacterToken, java.lang.Object)
      */
     public Object visitActive(final ActiveCharacterToken token,
-            final Object ignore) throws GeneralException {
+            final Object ignore) throws InterpreterException {
 
         Code code = context.getCode(token);
         if (code == null) {
@@ -1136,19 +1136,19 @@ public abstract class Max
      *
      * @return <code>null</code>
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      *
      * @see de.dante.extex.scanner.type.token.TokenVisitor#visitCr(
      *      de.dante.extex.scanner.CrToken, java.lang.Object)
      */
     public Object visitCr(final CrToken token, final Object ignore)
-            throws GeneralException {
+            throws InterpreterException {
 
-        typesetter
-                .cr(context, context.getTypesettingContext(), token.getChar());
         if (prefix.isDirty()) {
             reportDirtyFlag(token);
         }
+        typesetter
+                .cr(context, context.getTypesettingContext(), token.getChar());
         return null;
     }
 
@@ -1161,13 +1161,13 @@ public abstract class Max
      *
      * @return <code>null</code>
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      *
      * @see de.dante.extex.scanner.type.token.TokenVisitor#visitEscape(
      *      de.dante.extex.scanner.ControlSequenceToken, java.lang.Object)
      */
     public Object visitEscape(final ControlSequenceToken token,
-            final Object ignore) throws GeneralException {
+            final Object ignore) throws InterpreterException {
 
         Code code = context.getCode(token);
         if (observersMacro != null) {
@@ -1194,24 +1194,24 @@ public abstract class Max
      *
      * @return <code>null</code>
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      *
      * @see "<logo>TeX</logo> &ndash; The Program [1063]"
      * @see de.dante.extex.scanner.type.token.TokenVisitor#visitLeftBrace(
      *      de.dante.extex.scanner.LeftBraceToken, java.lang.Object)
      */
     public Object visitLeftBrace(final LeftBraceToken token, final Object ignore)
-            throws GeneralException {
+            throws InterpreterException {
 
-        try {
-            context.openGroup();
-        } catch (ConfigurationException e) {
-            throw new GeneralException(e);
-        }
-        typesetter.leftBrace();
         if (prefix.isDirty()) {
             reportDirtyFlag(token);
         }
+        try {
+            context.openGroup();
+        } catch (ConfigurationException e) {
+            throw new InterpreterException(e);
+        }
+        typesetter.leftBrace();
 
         return null;
     }
@@ -1223,19 +1223,20 @@ public abstract class Max
      *
      * @return <code>null</code>
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      *
      * @see de.dante.extex.scanner.type.token.TokenVisitor#visitLetter(
      *      de.dante.extex.scanner.LetterToken, java.lang.Object)
      */
     public Object visitLetter(final LetterToken token, final Object ignore)
-            throws GeneralException {
+            throws InterpreterException {
 
-        typesetter.letter(context, context.getTypesettingContext(), token
-                .getChar());
         if (prefix.isDirty()) {
             reportDirtyFlag(token);
         }
+        typesetter.letter(context, context.getTypesettingContext(), token
+                .getChar(), getLocator());
+
         return null;
     }
 
@@ -1288,19 +1289,13 @@ public abstract class Max
     public Object visitMathShift(final MathShiftToken token, final Object ignore)
             throws InterpreterException {
 
-        try {
-            typesetter.mathShift(context, this, token);
-        } catch (TypesetterException e) {
-            Throwable cause = e.getCause();
-            if (cause instanceof InterpreterException) {
-                throw (InterpreterException) cause;
-            }
-            throw e;
-        } catch (ConfigurationException e) {
-            throw new InterpreterException(e);
-        }
         if (prefix.isDirty()) {
             reportDirtyFlag(token);
+        }
+        try {
+            typesetter.mathShift(context, this, token);
+        } catch (ConfigurationException e) {
+            throw new InterpreterException(e);
         }
         return null;
     }
@@ -1313,20 +1308,20 @@ public abstract class Max
      *
      * @return <code>null</code>
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      *
      * @see de.dante.extex.scanner.type.token.TokenVisitor#visitOther(
      *      de.dante.extex.scanner.OtherToken, java.lang.Object)
      */
     public Object visitOther(final OtherToken token, final Object ignore)
-            throws GeneralException {
+            throws InterpreterException {
 
-        typesetter.letter(context, //
-                context.getTypesettingContext(), //
-                token.getChar());
         if (prefix.isDirty()) {
             reportDirtyFlag(token);
         }
+        typesetter.letter(context, //
+                context.getTypesettingContext(), //
+                token.getChar(), getLocator());
         return null;
     }
 
@@ -1338,20 +1333,21 @@ public abstract class Max
      *
      * @return <code>null</code>
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      *
      * @see "<logo>TeX</logo> &ndash; The Program [1067]"
      * @see de.dante.extex.scanner.type.token.TokenVisitor#visitRightBrace(
      *      de.dante.extex.scanner.RightBraceToken, java.lang.Object)
      */
     public Object visitRightBrace(final RightBraceToken token,
-            final Object ignore) throws GeneralException {
+            final Object ignore) throws InterpreterException {
 
-        context.closeGroup(typesetter, this);
-        typesetter.rightBrace();
         if (prefix.isDirty()) {
             reportDirtyFlag(token);
         }
+        context.closeGroup(typesetter, this);
+        typesetter.rightBrace();
+
         return null;
     }
 
@@ -1363,7 +1359,7 @@ public abstract class Max
      *
      * @return <code>null</code>
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      *
      * @see de.dante.extex.scanner.type.token.TokenVisitor#visitSpace(
      *      de.dante.extex.scanner.SpaceToken, java.lang.Object)
@@ -1374,7 +1370,7 @@ public abstract class Max
         try {
             typesetter.addSpace(context.getTypesettingContext(), null);
         } catch (ConfigurationException e) {
-            throw new GeneralException(e);
+            throw new InterpreterException(e);
         }
         if (prefix.isDirty()) {
             reportDirtyFlag(token);
@@ -1391,26 +1387,28 @@ public abstract class Max
      *
      * @return <code>null</code>
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      *
      * @see de.dante.extex.scanner.type.token.TokenVisitor#visitSubMark(
      *      de.dante.extex.scanner.SubMarkToken, java.lang.Object)
      */
     public Object visitSubMark(final SubMarkToken token, final Object ignore)
-            throws GeneralException {
+            throws InterpreterException {
 
         if (prefix.isDirty()) {
             reportDirtyFlag(token);
         }
+
         try {
             typesetter.subscriptMark(context, this, typesetter, token);
         } catch (TypesetterException e) {
-            Throwable cause = e.getCause();
-            if (cause instanceof InterpreterException) {
-                throw (InterpreterException) cause;
+            Throwable t = e.getCause();
+            if (t instanceof InterpreterException) {
+                throw (InterpreterException) t;
             }
             throw e;
         }
+
         return null;
     }
 
@@ -1423,26 +1421,28 @@ public abstract class Max
      *
      * @return <code>null</code>
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      *
      * @see de.dante.extex.scanner.type.token.TokenVisitor#visitSupMark(
      *      de.dante.extex.scanner.SupMarkToken, java.lang.Object)
      */
     public Object visitSupMark(final SupMarkToken token, final Object ignore)
-            throws GeneralException {
+            throws InterpreterException {
 
         if (prefix.isDirty()) {
             reportDirtyFlag(token);
         }
+
         try {
             typesetter.superscriptMark(context, this, typesetter, token);
         } catch (TypesetterException e) {
-            Throwable cause = e.getCause();
-            if (cause instanceof InterpreterException) {
-                throw (InterpreterException) cause;
+            Throwable t = e.getCause();
+            if (t instanceof InterpreterException) {
+                throw (InterpreterException) t;
             }
             throw e;
         }
+
         return null;
     }
 
@@ -1455,13 +1455,13 @@ public abstract class Max
      *
      * @return <code>null</code>
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      *
      * @see de.dante.extex.scanner.type.token.TokenVisitor#visitTabMark(
      *      de.dante.extex.scanner.TabMarkToken, java.lang.Object)
      */
     public Object visitTabMark(final TabMarkToken token, final Object ignore)
-            throws GeneralException {
+            throws InterpreterException {
 
         if (prefix.isDirty()) {
             reportDirtyFlag(token);
@@ -1469,8 +1469,9 @@ public abstract class Max
         try {
             typesetter.tab(context, this, token);
         } catch (ConfigurationException e) {
-            throw new GeneralException(e);
+            throw new InterpreterException(e);
         }
+
         return null;
     }
 
