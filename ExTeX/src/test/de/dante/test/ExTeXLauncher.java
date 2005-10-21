@@ -23,6 +23,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -32,6 +34,7 @@ import java.util.logging.StreamHandler;
 import junit.framework.TestCase;
 import de.dante.extex.ExTeX;
 import de.dante.extex.interpreter.ErrorHandler;
+import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
@@ -46,7 +49,7 @@ import de.dante.util.exception.GeneralException;
  * running an instance of <logo>ExTeX</logo>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.36 $
+ * @version $Revision: 1.37 $
  */
 public class ExTeXLauncher extends TestCase {
 
@@ -54,7 +57,7 @@ public class ExTeXLauncher extends TestCase {
      * Inner class for the error handler.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.36 $
+     * @version $Revision: 1.37 $
      */
     private class EHandler implements ErrorHandler {
 
@@ -114,6 +117,11 @@ public class ExTeXLauncher extends TestCase {
             + "\\catcode`\\^^I=10 ";
 
     /**
+     * The field <tt>levelMap</tt> contains the ...
+     */
+    private static final Map LEVEL_MAP = new HashMap();
+
+    /**
      * The constant <tt>TERM</tt> contains the terminating string for output.
      */
     public static final String TERM = "\n\n";
@@ -126,7 +134,7 @@ public class ExTeXLauncher extends TestCase {
      * <dt><tt>extex.fonts</tt></dt><dd>Preset to <tt>src/fonts</tt></dd>
      * </dl>
      *
-     * @param properties to properties to adapt
+     * @param properties the properties to adapt
      */
     private static void prepareProperties(final Properties properties) {
 
@@ -138,7 +146,7 @@ public class ExTeXLauncher extends TestCase {
     /**
      * Set a property if it has not been set yet.
      *
-     * @param properties th properties o modify
+     * @param properties the properties to modify
      * @param name the name of the property
      * @param value the new value
      */
@@ -148,6 +156,16 @@ public class ExTeXLauncher extends TestCase {
         if (properties.getProperty(name) == null) {
             properties.setProperty(name, value);
         }
+    }
+
+    {
+        LEVEL_MAP.put("config", Level.CONFIG);
+        LEVEL_MAP.put("info", Level.INFO);
+        LEVEL_MAP.put("warning", Level.WARNING);
+        LEVEL_MAP.put("severe", Level.SEVERE);
+        LEVEL_MAP.put("fine", Level.FINE);
+        LEVEL_MAP.put("finer", Level.FINER);
+        LEVEL_MAP.put("finest", Level.FINEST);
     }
 
     /**
@@ -167,17 +185,120 @@ public class ExTeXLauncher extends TestCase {
     }
 
     /**
-     * Run some code through <logo>ExTeX</logo> which is expected to fail.
+     * Run some code through <tt>Interpreter</tt> which is expected to fail.
+     *
+     * @param properties the properties to modify
+     * @param code the code to expand
+     * @param log the expected output on the log stream
+     *
+     * @throws Exception in case of an error
+     */
+    public Interpreter assertFailure(final Properties properties, final String code,
+            final String log) throws Exception {
+
+        return assertOutput(properties, code, log, "");
+    }
+
+    /**
+     * Run some code through <tt>Interpreter</tt> which is expected to fail.
      *
      * @param code the code to expand
      * @param log the expected output on the log stream
      *
      * @throws Exception in case of an error
      */
-    public ExTeX assertFailure(final String code, final String log)
+    public Interpreter assertFailure(final String code, final String log)
             throws Exception {
 
-        return runCode(getProps(), code, log, "");
+        return assertOutput(getProps(), code, log, "");
+    }
+
+    /**
+     * Run some code through <logo>ExTeX</logo>.
+     *
+     * @param properties the properties to start with
+     * @param code the code to expand
+     * @param log the expected output on the log stream
+     * @param expect the expected output on the output stream
+     *
+     * @return a new instance of the <tt>Interpreter</tt> class which has been
+     *  used for the test run. This object can be inspected in additional
+     *  asserts.
+     *
+     * @throws InterpreterException in case of an error
+     */
+    public Interpreter assertOutput(final Properties properties, final String code,
+            final String log, final String expect) throws InterpreterException {
+
+        boolean errorP = false;
+
+        prepareProperties(properties);
+        properties.setProperty("extex.code", code);
+        properties.setProperty("extex.file", "");
+        properties.setProperty("extex.nobanner", "true");
+        properties.setProperty("extex.config", getConfig());
+
+        ExTeX extex = new ExTeX(properties);
+
+        Level level = getLogLevel(properties);
+        Logger logger = Logger.getLogger("test");
+        logger.setUseParentHandlers(false);
+        logger.setLevel(level);
+
+        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+        Handler handler = new StreamHandler(byteStream, new LogFormatter());
+        handler.setLevel(level);
+        logger.addHandler(handler);
+
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        extex.setOutStream(stream);
+        extex.setErrorHandler(new EHandler(logger));
+        extex.setLogger(logger);
+
+        if (Boolean.valueOf(
+                properties.getProperty("extex.launcher.verbose", "false"))
+                .booleanValue()) {
+            System.err.println(code);
+        }
+
+        init(extex);
+
+        Interpreter interpreter = null;
+        try {
+            interpreter = extex.run();
+        } catch (MainException e) {
+            errorP = true;
+        } catch (Throwable e) {
+            e.printStackTrace();
+            assertTrue(false);
+        }
+
+        handler.close();
+        logger.removeHandler(handler);
+        if (log != null) {
+            assertEquals(log, byteStream.toString());
+        } else {
+            assertFalse("No error expected", errorP);
+        }
+        if (expect != null) {
+            assertEquals(expect, stream.toString());
+        }
+        return interpreter;
+    }
+
+    /**
+     * Run some code through <logo>ExTeX</logo>.
+     *
+     * @param properties the properties to modify
+     * @param code the code to expand
+     * @param expect the expected output on the output stream
+     *
+     * @throws Exception in case of an error
+     */
+    public Interpreter assertSuccess(final Properties properties, final String code,
+            final String expect) throws Exception {
+
+        return assertOutput(properties, code, "", expect);
     }
 
     /**
@@ -188,10 +309,10 @@ public class ExTeXLauncher extends TestCase {
      *
      * @throws Exception in case of an error
      */
-    public ExTeX assertSuccess(final String code, final String expect)
+    public Interpreter assertSuccess(final String code, final String expect)
             throws Exception {
 
-        return runCode(getProps(), code, "", expect);
+        return assertOutput(getProps(), code, "", expect);
     }
 
     /**
@@ -202,6 +323,21 @@ public class ExTeXLauncher extends TestCase {
     protected String getConfig() {
 
         return "extex.xml";
+    }
+
+    /**
+     * Determine the log level.
+     *
+     * @param properties the properties
+     *
+     * @return the log level
+     */
+    private Level getLogLevel(final Properties properties) {
+
+        Level level = (Level) LEVEL_MAP.get(properties.getProperty(
+                "extex.launcher.loglevel", "info"));
+
+        return level == null ? Level.INFO : level;
     }
 
     /**
@@ -237,90 +373,6 @@ public class ExTeXLauncher extends TestCase {
      */
     private void init(final ExTeX extex) {
 
-    }
-
-    /**
-     * Run some code through <logo>ExTeX</logo>.
-     *
-     * @param properties the properties to start with
-     * @param code the code to expand
-     * @param log the expected output on the log stream
-     * @param expect the expected output on the output stream
-     *
-     * @return a new instance of the <logo>ExTeX</logo> class
-     *
-     * @throws InterpreterException in case of an error
-     */
-    public ExTeX runCode(final Properties properties, final String code,
-            final String log, final String expect) throws InterpreterException {
-
-        boolean errorP = false;
-
-        prepareProperties(properties);
-        properties.setProperty("extex.code", code);
-        properties.setProperty("extex.file", "");
-        properties.setProperty("extex.nobanner", "true");
-        properties.setProperty("extex.config", getConfig());
-
-        ExTeX extex = new ExTeX(properties);
-
-        Logger logger = Logger.getLogger("test");
-        logger.setUseParentHandlers(false);
-        logger.setLevel(Level.WARNING);
-
-        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-        Handler handler = new StreamHandler(byteStream, new LogFormatter());
-        handler.setLevel(Level.WARNING);
-        logger.addHandler(handler);
-
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        extex.setOutStream(stream);
-        extex.setErrorHandler(new EHandler(logger));
-        extex.setLogger(logger);
-
-        if (Boolean.valueOf(
-                properties.getProperty("extex.launcher.verbose", "false"))
-                .booleanValue()) {
-            System.err.println(code);
-        }
-
-        init(extex);
-
-        try {
-            extex.run();
-        } catch (MainException e) {
-            errorP = true;
-        } catch (Throwable e) {
-            e.printStackTrace();
-            assertTrue(false);
-        }
-
-        handler.close();
-        logger.removeHandler(handler);
-        if (log != null) {
-            assertEquals(log, byteStream.toString());
-        } else {
-            assertFalse("No error expected", errorP);
-        }
-        if (expect != null) {
-            assertEquals(expect, stream.toString());
-        }
-        return extex;
-    }
-
-    /**
-     * Run some code through <logo>ExTeX</logo>.
-     *
-     * @param code the code to expand
-     * @param log the expected output on the log stream
-     * @param expect the expected output on the output stream
-     *
-     * @throws Exception in case of an error
-     */
-    public ExTeX runCode(final String code, final String log,
-            final String expect) throws Exception {
-
-        return runCode(getProps(), code, log, expect);
     }
 
     /**

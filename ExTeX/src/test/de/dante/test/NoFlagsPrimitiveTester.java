@@ -24,7 +24,7 @@ package de.dante.test;
  * primitives. They verify that prefix macros always lead to an error.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public abstract class NoFlagsPrimitiveTester extends ExTeXLauncher {
 
@@ -43,6 +43,11 @@ public abstract class NoFlagsPrimitiveTester extends ExTeXLauncher {
      * The field <tt>prepare</tt> contains the preparation code.
      */
     private String prepare = DEFINE_BRACES;
+
+    /**
+     * The field <tt>out</tt> contains the ...
+     */
+    private String out = "";
 
     /**
      * Creates a new object.
@@ -75,6 +80,26 @@ public abstract class NoFlagsPrimitiveTester extends ExTeXLauncher {
     }
 
     /**
+     * Creates a new object.
+     *
+     * @param arg the name of the test suite
+     * @param primitive the name of the integer register to test
+     * @param arguments the parameters for the invocation
+     * @param prepare the preparation code
+     */
+    public NoFlagsPrimitiveTester(final String arg, final String primitive,
+            final String arguments, final String prepare, final String out) {
+
+        this(arg, primitive, arguments);
+        this.prepare = DEFINE_BRACES + prepare;
+        this.out = out;
+    }
+
+    /**
+     * <testcase>
+     *  Test case checking that the prefix <tt>\global</tt> leads to the
+     *  expected error message
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -83,11 +108,15 @@ public abstract class NoFlagsPrimitiveTester extends ExTeXLauncher {
         assertFailure(//--- input code ---
                 prepare + "\\global\\" + primitive + arguments + "\\end",
                 //--- log message ---
-                "You can\'t use the prefix `\\global\' with"
+                out + "You can\'t use the prefix `\\global\' with"
                         + " the control sequence \\" + primitive);
     }
 
     /**
+     * <testcase>
+     *  Test case checking that the prefix <tt>\immediate</tt> leads to the
+     *  expected error message
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -96,11 +125,17 @@ public abstract class NoFlagsPrimitiveTester extends ExTeXLauncher {
         assertFailure(//--- input code ---
                 prepare + "\\immediate\\" + primitive + arguments + "\\end",
                 //--- log message ---
-                "You can\'t use the prefix `\\immediate\' with"
-                        + " the control sequence \\" + primitive);
+                out + "You can\'t use the prefix `\\immediate\' with"
+                        + " the control sequence"
+                        + (primitive.length() >= 17 ? "\n" : " ") + "\\"
+                        + primitive);
     }
 
     /**
+     * <testcase>
+     *  Test case checking that the prefix <tt>\long</tt> leads to the
+     *  expected error message
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -109,11 +144,15 @@ public abstract class NoFlagsPrimitiveTester extends ExTeXLauncher {
         assertFailure(//--- input code ---
                 prepare + "\\long\\" + primitive + arguments + "\\end",
                 //--- log message ---
-                "You can\'t use the prefix `\\long\' with"
+                out + "You can\'t use the prefix `\\long\' with"
                         + " the control sequence \\" + primitive);
     }
 
     /**
+     * <testcase>
+     *  Test case checking that the prefix <tt>\outer</tt> leads to the
+     *  expected error message
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -122,11 +161,15 @@ public abstract class NoFlagsPrimitiveTester extends ExTeXLauncher {
         assertFailure(//--- input code ---
                 prepare + "\\outer\\" + primitive + arguments + "\\end",
                 //--- log message ---
-                "You can\'t use the prefix `\\outer\' with"
+                out + "You can\'t use the prefix `\\outer\' with"
                         + " the control sequence \\" + primitive);
     }
 
     /**
+     * <testcase>
+     *  Test case checking that the prefix <tt>\protected</tt> leads to the
+     *  expected error message
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -135,8 +178,10 @@ public abstract class NoFlagsPrimitiveTester extends ExTeXLauncher {
         assertFailure(//--- input code ---
                 prepare + "\\protected\\" + primitive + arguments + "\\end",
                 //--- log message ---
-                "You can\'t use the prefix `\\protected\' with"
-                        + " the control sequence \\" + primitive);
+                out + "You can\'t use the prefix `\\protected\' with"
+                        + " the control sequence"
+                        + (primitive.length() >= 17 ? "\n" : " ") + "\\"
+                        + primitive);
     }
 
 }
