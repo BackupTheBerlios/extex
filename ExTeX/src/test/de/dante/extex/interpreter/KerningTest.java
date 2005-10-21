@@ -27,7 +27,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the kerning.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class KerningTest extends ExTeXLauncher {
 
@@ -51,7 +51,9 @@ public class KerningTest extends ExTeXLauncher {
     }
 
     /**
-     * Test case checking that ...
+     * <testcase>
+     *  Test case checking that ...
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -61,12 +63,10 @@ public class KerningTest extends ExTeXLauncher {
         properties.setProperty("extex.jobname", "job");
         properties.setProperty("extex.output", "dump");
 
-        runCode(properties,
+        assertSuccess(properties,
                 //--- input code ---
                 "\\font\\f=cmr10 \\f "
                 + "AVAV",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "?");
     }

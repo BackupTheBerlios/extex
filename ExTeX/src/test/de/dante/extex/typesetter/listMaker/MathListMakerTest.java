@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the math typesetting.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class MathListMakerTest extends ExTeXLauncher {
 
@@ -68,6 +68,6 @@ public class MathListMakerTest extends ExTeXLauncher {
                 + "$a$"
                 + "\\end ",
                 //--- output channel ---
-                "\n\\nullfont a\n");
+                "a" + TERM);
     }
 }

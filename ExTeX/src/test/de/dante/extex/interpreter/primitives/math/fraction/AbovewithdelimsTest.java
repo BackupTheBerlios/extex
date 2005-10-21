@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\abovewithdelims</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class AbovewithdelimsTest extends ExTeXLauncher {
 
@@ -45,12 +45,10 @@ public class AbovewithdelimsTest extends ExTeXLauncher {
      */
     public void testNonMathMode() throws Exception {
 
-        runCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\abovewithdelims \\end",
                 //--- log message ---
-                "Missing $ inserted",
-                //--- output channel ---
-                "");
+                "Missing $ inserted");
     }
 
 }

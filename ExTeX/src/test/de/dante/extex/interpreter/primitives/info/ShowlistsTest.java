@@ -19,13 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.info;
 
+import java.util.Properties;
+
 import de.dante.test.NoFlagsPrimitiveTester;
 
 /**
  * This is a test suite for the primitive <tt>\showlists</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ShowlistsTest extends NoFlagsPrimitiveTester {
 
@@ -37,6 +39,57 @@ public class ShowlistsTest extends NoFlagsPrimitiveTester {
     public ShowlistsTest(final String arg) {
 
         super(arg, "showlists", "");
+    }
+
+    /**
+     * <testcase primitive="\showlists">
+     *  Test case checking that the <tt>\showlists</tt> ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test1() throws Exception {
+
+        Properties p = prepare();
+
+        assertFailure(p, //--- input code ---
+                "\\showlists\\end ",
+                //--- error channel ---
+                "### vertical mode entered at line 0\n" + "prevdepth ignored\n");
+    }
+
+    /**
+     * <testcase primitive="\showlists">
+     *  Test case checking that the <tt>\showlists</tt> ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test2() throws Exception {
+
+        Properties p = prepare();
+
+        assertOutput(p, //--- input code ---
+                DEFINE_BRACES + "\\hbox{\\showlists}\\end ",
+                //--- error channel ---
+                "### restricted horizontal mode entered at line 1\n"
+                        + "spacefactor 1000\n"
+                        + "### vertical mode entered at line 0\n"
+                        + "prevdepth ignored\n",
+                //
+                TERM);
+    }
+
+    /**
+     * Prepar the properties to use a fine log level.
+     *
+     * @return te properties to use
+     */
+    private Properties prepare() {
+
+        Properties p = getProps();
+        p.setProperty("extex.launcher.loglevel", "fine");
+        return p;
     }
 
 }

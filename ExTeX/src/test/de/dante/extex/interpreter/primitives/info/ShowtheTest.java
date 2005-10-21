@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\showthe</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class ShowtheTest extends NoFlagsPrimitiveTester {
 
@@ -36,7 +36,7 @@ public class ShowtheTest extends NoFlagsPrimitiveTester {
      */
     public ShowtheTest(final String arg) {
 
-        super(arg, "showthe", "\\count1 ");
+        super(arg, "showthe", "\\count1 ", "", "0");
     }
 
     /**
@@ -49,10 +49,10 @@ public class ShowtheTest extends NoFlagsPrimitiveTester {
      */
     public void test1() throws Exception {
 
-        assertSuccess(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\showthe\\count1 \\end",
                 //--- log message ---
-                "");
+                "0");
     }
 
     //TODO implement the primitive specific test cases

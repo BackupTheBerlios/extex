@@ -19,15 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.typesetter.undo;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.test.NoFlagsPrimitiveTester;
 
 /**
  * This is a test suite for the primitive <tt>&#x5c;unhcopy</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class UnhcopyTest extends ExTeXLauncher {
+public class UnhcopyTest extends NoFlagsPrimitiveTester {
 
     /**
      * Command line interface.
@@ -45,7 +45,7 @@ public class UnhcopyTest extends ExTeXLauncher {
      */
     public UnhcopyTest(final String arg) {
 
-        super(arg);
+        super(arg, "unhcopy", "42 ");
     }
 
     //TODO implement primitive specific test cases

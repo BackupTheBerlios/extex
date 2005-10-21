@@ -19,15 +19,16 @@
 
 package de.dante.extex.interpreter.primitives.dynamic;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.extex.interpreter.primitives.dynamic.java.JavaloadSensor;
+import de.dante.test.NoFlagsPrimitiveTester;
 
 /**
  * This is a test suite for the primitive <tt>\nativeload</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class NativeloadTest extends ExTeXLauncher {
+public class NativeloadTest extends NoFlagsPrimitiveTester {
 
     /**
      * Constructor for SkewcharTest.
@@ -36,7 +37,38 @@ public class NativeloadTest extends ExTeXLauncher {
      */
     public NativeloadTest(final String arg) {
 
-        super(arg);
+        super(arg, "nativeload",
+        "{java}{de.dante.extex.interpreter.primitives.dynamic.NativeloadSensor}");
+    }
+
+
+    /**
+     * @see de.dante.test.ExTeXLauncher#getConfig()
+     */
+    protected String getConfig() {
+
+        return "extex-native.xml";
+    }
+
+
+    /**
+     * <testcase primitive="\nativeload">
+     *  Test case checking that <tt>\nativeload</tt> ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test1() throws Exception {
+
+        assertSuccess(
+                //--- input code ---
+                DEFINE_BRACES
+                        + "\\nativeload{java}"
+                        + "{de.dante.extex.interpreter.primitives.dynamic.NativeloadSensor}"
+                        + " \\end",
+                //--- log message ---
+                "");
+        assertTrue(NativeloadSensor.isKilroy());
     }
 
 }

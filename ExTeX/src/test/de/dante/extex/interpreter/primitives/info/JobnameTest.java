@@ -27,7 +27,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\jobname</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class JobnameTest extends NoFlagsPrimitiveTester {
 
@@ -50,13 +50,11 @@ public class JobnameTest extends NoFlagsPrimitiveTester {
      */
     public void testJobname1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\catcode`{=1"
                 + "\\catcode`}=2"
                 + "\\jobname"
                 + "\\end ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "texput" + TERM);
     }
@@ -73,14 +71,12 @@ public class JobnameTest extends NoFlagsPrimitiveTester {
         Properties properties = System.getProperties();
         properties.setProperty("extex.jobname", "job");
 
-        runCode(properties,
+        assertSuccess(properties,
                 //--- input code ---
                 "\\catcode`{=1"
                 + "\\catcode`}=2"
                 + "\\jobname"
                 + "\\end ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "job" + TERM);
     }

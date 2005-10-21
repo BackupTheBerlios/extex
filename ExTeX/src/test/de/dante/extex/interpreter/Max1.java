@@ -39,7 +39,9 @@ import de.dante.extex.typesetter.OutputRoutine;
 import de.dante.extex.typesetter.ParagraphObserver;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
+import de.dante.extex.typesetter.exception.InvalidSpacefactorException;
 import de.dante.extex.typesetter.exception.TypesetterException;
+import de.dante.extex.typesetter.exception.TypesetterUnsupportedException;
 import de.dante.extex.typesetter.listMaker.ListManager;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
@@ -48,6 +50,7 @@ import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.noad.Noad;
 import de.dante.extex.typesetter.type.node.CharNodeFactory;
+import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
 import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.Configuration;
@@ -56,7 +59,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.65 $
+ * @version $Revision: 1.66 $
  */
 public class Max1 extends TestCase {
 
@@ -156,13 +159,6 @@ public class Max1 extends TestCase {
         }
 
         /**
-         * @see de.dante.extex.typesetter.ListMaker#dump(java.util.logging.Logger, long, long)
-         */
-        public void dump(final Logger logger, final long width, final long depth) {
-
-        }
-
-        /**
          * @see de.dante.extex.typesetter.Typesetter#finish()
          */
         public void finish() throws ConfigurationException {
@@ -195,6 +191,14 @@ public class Max1 extends TestCase {
         }
 
         /**
+         * @see de.dante.extex.typesetter.ListMaker#getLocator()
+         */
+        public Locator getLocator() {
+
+            return null;
+        }
+
+        /**
          * @see de.dante.extex.typesetter.Typesetter#getManager()
          */
         public ListManager getManager() {
@@ -208,6 +212,22 @@ public class Max1 extends TestCase {
         public Mode getMode() {
 
             return null;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.ListMaker#getPrevDepth()
+         */
+        public Dimen getPrevDepth() throws TypesetterUnsupportedException {
+
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.ListMaker#getSpacefactor()
+         */
+        public long getSpacefactor() throws TypesetterUnsupportedException {
+
+            return 0;
         }
 
         /**
@@ -232,7 +252,8 @@ public class Max1 extends TestCase {
          *      de.dante.util.UnicodeChar)
          */
         public void letter(final Context context, final TypesettingContext tc,
-                final UnicodeChar uc) throws TypesetterException {
+                final UnicodeChar uc, Locator locator)
+                throws TypesetterException {
 
         }
 
@@ -269,7 +290,6 @@ public class Max1 extends TestCase {
          */
         public void push(final ListMaker listMaker) throws TypesetterException {
 
-            // TODO unimplemented
         }
 
         /**
@@ -352,7 +372,7 @@ public class Max1 extends TestCase {
          * @see de.dante.extex.typesetter.ListMaker#setPrevDepth(
          *      de.dante.extex.interpreter.type.dimen.Dimen)
          */
-        public void setPrevDepth(final Dimen pd) throws TypesetterException {
+        public void setPrevDepth(final Dimen pd) {
 
             // nothing to do
         }
@@ -360,7 +380,7 @@ public class Max1 extends TestCase {
         /**
          * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(int)
          */
-        public void setSpacefactor(final Count f) throws TypesetterException {
+        public void setSpacefactor(final Count f) throws InvalidSpacefactorException  {
 
             // nothing to do
         }
@@ -372,6 +392,22 @@ public class Max1 extends TestCase {
         public void shipout(final NodeList nodes) {
 
             // nothing to do
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.ListMaker#showlist(
+         *      java.lang.StringBuffer, long, long)
+         */
+        public void showlist(final StringBuffer sb, final long l, final long m) {
+
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.Typesetter#showlists(
+         *      java.lang.StringBuffer, long, long)
+         */
+        public void showlists(final StringBuffer sb, final long l, final long m) {
+
         }
 
         /**
@@ -442,6 +478,7 @@ public class Max1 extends TestCase {
                 throws GeneralException {
 
         }
+
     }
 
     /**

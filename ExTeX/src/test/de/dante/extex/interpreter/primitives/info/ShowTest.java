@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\show</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ShowTest extends NoFlagsPrimitiveTester {
 
@@ -36,7 +36,43 @@ public class ShowTest extends NoFlagsPrimitiveTester {
      */
     public ShowTest(final String arg) {
 
-        super(arg, "show", "\\count1 ");
+        super(arg, "show", "\\count1 ", "", "> \\count=\\count.\n");
     }
+
+    /**
+     * <testcase primitive="\show">
+     *  Test case checking that <tt>\show</tt> works with
+     *  <tt>\relax</tt>.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test1() throws Exception {
+
+        assertFailure(//--- input code ---
+                "\\show\\relax"
+                        + "\\end",
+                //--- output channel ---
+                "> \\relax=\\relax.\n");
+    }
+
+    /**
+     * <testcase primitive="\show">
+     *  Test case checking that <tt>\show</tt> works with
+     *  <tt>\relax</tt>.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test2() throws Exception {
+
+        assertFailure(//--- input code ---
+                DEFINE_BRACES + "\\def\\x{abc}\\show\\x"
+                        + "\\end",
+                //--- output channel ---
+                "> \\x=macro:\n->abc.\n");
+    }
+
+    //TODO implement the primitive specific test cases
 
 }

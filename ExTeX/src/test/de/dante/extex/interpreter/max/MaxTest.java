@@ -19,15 +19,35 @@
 
 package de.dante.extex.interpreter.max;
 
+import de.dante.extex.scanner.type.Catcode;
 import de.dante.test.ExTeXLauncher;
 
 /**
  * This is a test suite for the interpreter Max.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class MaxTest extends ExTeXLauncher {
+
+    /**
+     * <testcase>
+     *  Test case checking that the prefix leads to the
+     *  expected error message
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    private void tryFlag(final String prefix, final String tag,
+            final Catcode catcode, final String longName) throws Exception {
+
+        assertFailure(//--- input code ---
+                "\\catcode`\\" + tag + "=" + catcode.getCode() + " \\" + prefix
+                        + " " + tag + "\\end",
+                //--- log message ---
+                "You can\'t use the prefix `\\" + prefix + "\' with "
+                        + longName);
+    }
 
     /**
      * Constructor for MaxTest.
@@ -47,9 +67,7 @@ public class MaxTest extends ExTeXLauncher {
     public void testTabMark() throws Exception {
 
         assertFailure(//--- input code ---
-                "\\catcode`&=4\\relax"
-                + "&"
-                + "\\end ",
+                "\\catcode`&=4\\relax" + "&" + "\\end ",
                 //--- log message ---
                 "Misplaced alignment tab character &");
     }
@@ -62,9 +80,7 @@ public class MaxTest extends ExTeXLauncher {
     public void testSupMark() throws Exception {
 
         assertFailure(//--- input code ---
-                "\\catcode`^=7\\relax"
-                + "^"
-                + "\\end ",
+                "\\catcode`^=7\\relax" + "^" + "\\end ",
                 //--- log message ---
                 "Missing $ inserted");
     }
@@ -77,9 +93,7 @@ public class MaxTest extends ExTeXLauncher {
     public void testSubMark() throws Exception {
 
         assertFailure(//--- input code ---
-                "\\catcode`_=8\\relax"
-                + "_"
-                + "\\end ",
+                "\\catcode`_=8\\relax" + "_" + "\\end ",
                 //--- log message ---
                 "Missing $ inserted");
     }
@@ -92,9 +106,7 @@ public class MaxTest extends ExTeXLauncher {
     public void testMacroParam() throws Exception {
 
         assertFailure(//--- input code ---
-                "\\catcode`#=6\\relax"
-                + "#"
-                + "\\end ",
+                "\\catcode`#=6\\relax" + "#" + "\\end ",
                 //--- log message ---
                 "You can't use `macro parameter character #' in vertical mode");
     }
@@ -108,9 +120,7 @@ public class MaxTest extends ExTeXLauncher {
     public void testUndefinedAcive() throws Exception {
 
         assertFailure(//--- input code ---
-                "\\catcode`~=13\\relax"
-                + "~"
-                + "\\end ",
+                "\\catcode`~=13\\relax" + "~" + "\\end ",
                 //--- log message ---
                 "Undefined control sequence ~");
     }
@@ -124,10 +134,449 @@ public class MaxTest extends ExTeXLauncher {
     public void testUndefinedCs() throws Exception {
 
         assertFailure(//--- input code ---
-                "\\UNDEF"
-                + "\\end ",
+                "\\UNDEF" + "\\end ",
                 //--- log message ---
                 "Undefined control sequence \\UNDEF");
+    }
+
+    /**
+     * <testcase>
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testTabNoGlobalFlag() throws Exception {
+
+        tryFlag("global", "&", Catcode.TABMARK, "alignment tab character &");
+    }
+
+    /**
+     * <testcase>
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testTabNoImmediateFlag() throws Exception {
+
+        tryFlag("immediate", "&", Catcode.TABMARK, "alignment tab character &");
+    }
+
+    /**
+     * <testcase>
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testTabNoLongFlag() throws Exception {
+
+        tryFlag("long", "&", Catcode.TABMARK, "alignment tab character &");
+    }
+
+    /**
+     * <testcase>
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testTabNoOuterFlag() throws Exception {
+
+        tryFlag("outer", "&", Catcode.TABMARK, "alignment tab character &");
+    }
+
+    /**
+     * <testcase>
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testTabNoProtectedFlag() throws Exception {
+
+        tryFlag("protected", "&", Catcode.TABMARK, "alignment tab character &");
+    }
+
+    /**
+     * <testcase>
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testSubNoGlobalFlag() throws Exception {
+
+        tryFlag("global", "_", Catcode.SUBMARK, "subscript character _");
+    }
+
+    /**
+     * <testcase>
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testSubNoImmediateFlag() throws Exception {
+
+        tryFlag("immediate", "_", Catcode.SUBMARK, "subscript character _");
+    }
+
+    /**
+     * <testcase>
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testSubNoLongFlag() throws Exception {
+
+        tryFlag("long", "_", Catcode.SUBMARK, "subscript character _");
+    }
+
+    /**
+     * <testcase>
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testSubNoOuterFlag() throws Exception {
+
+        tryFlag("outer", "_", Catcode.SUBMARK, "subscript character _");
+    }
+
+    /**
+     * <testcase>
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testSubNoProtectedFlag() throws Exception {
+
+        tryFlag("protected", "_", Catcode.SUBMARK, "subscript character _");
+    }
+
+    /**
+     * <testcase>
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testSuperNoGlobalFlag() throws Exception {
+
+        tryFlag("global", "^", Catcode.SUPMARK, "superscript character ^");
+    }
+
+    /**
+     * <testcase>
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testSuperNoImmediateFlag() throws Exception {
+
+        tryFlag("immediate", "^", Catcode.SUPMARK, "superscript character ^");
+    }
+
+    /**
+     * <testcase>
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testSuperNoLongFlag() throws Exception {
+
+        tryFlag("long", "^", Catcode.SUPMARK, "superscript character ^");
+    }
+
+    /**
+     * <testcase>
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testSuperNoOuterFlag() throws Exception {
+
+        tryFlag("outer", "^", Catcode.SUPMARK, "superscript character ^");
+    }
+
+    /**
+     * <testcase>
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testSuperNoProtectedFlag() throws Exception {
+
+        tryFlag("protected", "^", Catcode.SUPMARK, "superscript character ^");
+    }
+
+    /**
+     * <testcase>
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testLetterNoGlobalFlag() throws Exception {
+
+        tryFlag("global", "A", Catcode.LETTER, "the letter A");
+    }
+
+    /**
+     * <testcase>
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testLetterNoImmediateFlag() throws Exception {
+
+        tryFlag("immediate", "A", Catcode.LETTER, "the letter A");
+    }
+
+    /**
+     * <testcase>
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testLetterNoLongFlag() throws Exception {
+
+        tryFlag("long", "A", Catcode.LETTER, "the letter A");
+    }
+
+    /**
+     * <testcase>
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testLetterNoOuterFlag() throws Exception {
+
+        tryFlag("outer", "A", Catcode.LETTER, "the letter A");
+    }
+
+    /**
+     * <testcase>
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testLetterNoProtectedFlag() throws Exception {
+
+        tryFlag("protected", "A", Catcode.LETTER, "the letter A");
+    }
+
+    /**
+     * <testcase>
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testOtherNoGlobalFlag() throws Exception {
+
+        tryFlag("global", "1", Catcode.OTHER, "the character 1");
+    }
+
+    /**
+     * <testcase>
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testOtherNoImmediateFlag() throws Exception {
+
+        tryFlag("immediate", "1", Catcode.OTHER, "the character 1");
+    }
+
+    /**
+     * <testcase>
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testOtherNoLongFlag() throws Exception {
+
+        tryFlag("long", "1", Catcode.OTHER, "the character 1");
+    }
+
+    /**
+     * <testcase>
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testOtherNoOuterFlag() throws Exception {
+
+        tryFlag("outer", "1", Catcode.OTHER, "the character 1");
+    }
+
+    /**
+     * <testcase>
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testOtherNoProtectedFlag() throws Exception {
+
+        tryFlag("protected", "1", Catcode.OTHER, "the character 1");
+    }
+
+    /**
+     * <testcase>
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testMathshiftNoGlobalFlag() throws Exception {
+
+        tryFlag("global", "$", Catcode.MATHSHIFT, "math shift character $");
+    }
+
+    /**
+     * <testcase>
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testMathshiftNoImmediateFlag() throws Exception {
+
+        tryFlag("immediate", "$", Catcode.MATHSHIFT, "math shift character $");
+    }
+
+    /**
+     * <testcase>
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testMathshiftNoLongFlag() throws Exception {
+
+        tryFlag("long", "$", Catcode.MATHSHIFT, "math shift character $");
+    }
+
+    /**
+     * <testcase>
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testMathshiftNoOuterFlag() throws Exception {
+
+        tryFlag("outer", "$", Catcode.MATHSHIFT, "math shift character $");
+    }
+
+    /**
+     * <testcase>
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testMathshiftNoProtectedFlag() throws Exception {
+
+        tryFlag("protected", "$", Catcode.MATHSHIFT, "math shift character $");
+    }
+
+    /**
+     * <testcase>
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testBegingroupNoGlobalFlag() throws Exception {
+
+        tryFlag("global", "{", Catcode.LEFTBRACE, "begin-group character {");
+    }
+
+    /**
+     * <testcase>
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testBegingroupNoImmediateFlag() throws Exception {
+
+        tryFlag("immediate", "{", Catcode.LEFTBRACE, "begin-group character {");
+    }
+
+    /**
+     * <testcase>
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testBegingroupNoLongFlag() throws Exception {
+
+        tryFlag("long", "{", Catcode.LEFTBRACE, "begin-group character {");
+    }
+
+    /**
+     * <testcase>
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testBegingroupNoOuterFlag() throws Exception {
+
+        tryFlag("outer", "{", Catcode.LEFTBRACE, "begin-group character {");
+    }
+
+    /**
+     * <testcase>
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testBegingroupNoProtectedFlag() throws Exception {
+
+        tryFlag("protected", "{", Catcode.LEFTBRACE, "begin-group character {");
+    }
+
+    /**
+     * <testcase>
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testEndgroupNoGlobalFlag() throws Exception {
+
+        tryFlag("global", "}", Catcode.RIGHTBRACE, "end-group character }");
+    }
+
+    /**
+     * <testcase>
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testEndgroupNoImmediateFlag() throws Exception {
+
+        tryFlag("immediate", "}", Catcode.RIGHTBRACE, "end-group character }");
+    }
+
+    /**
+     * <testcase>
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testEndgroupNoLongFlag() throws Exception {
+
+        tryFlag("long", "}", Catcode.RIGHTBRACE, "end-group character }");
+    }
+
+    /**
+     * <testcase>
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testEndgroupNoOuterFlag() throws Exception {
+
+        tryFlag("outer", "}", Catcode.RIGHTBRACE, "end-group character }");
+    }
+
+    /**
+     * <testcase>
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testEndgroupNoProtectedFlag() throws Exception {
+
+        tryFlag("protected", "}", Catcode.RIGHTBRACE, "end-group character }");
     }
 
 }

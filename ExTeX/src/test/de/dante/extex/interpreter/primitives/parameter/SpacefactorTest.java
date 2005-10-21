@@ -19,15 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.parameter;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.test.NoFlagsPrimitiveTester;
 
 /**
  * This is a test suite for the primitive <tt>\spacefactor</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class SpacefactorTest extends ExTeXLauncher {
+public class SpacefactorTest extends NoFlagsPrimitiveTester {
 
     /**
      * Command line interface.
@@ -45,7 +45,7 @@ public class SpacefactorTest extends ExTeXLauncher {
      */
     public SpacefactorTest(final String arg) {
 
-        super(arg);
+        super(arg, "spacefactor", "1024", "a");
     }
 
 }

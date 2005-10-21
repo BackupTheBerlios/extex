@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\def</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class DefTest extends ExTeXLauncher {
 
@@ -133,13 +133,11 @@ public class DefTest extends ExTeXLauncher {
      */
     public void testPattern1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 DEFINE_CATCODES
                 + "\\def\\aaa#1.{--#1--}"
                 + "\\aaa 2."
                 + "\\end ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "--2--" + TERM);
     }

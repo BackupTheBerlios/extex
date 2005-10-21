@@ -27,7 +27,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\halign</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class HalignTest extends ExTeXLauncher {
 
@@ -176,13 +176,11 @@ public class HalignTest extends ExTeXLauncher {
         Properties properties = System.getProperties();
         properties.setProperty("extex.output", "dump");
 
-        runCode(properties,
+        assertSuccess(properties,
                 //--- input code ---
                 DEFINE_CATCODES
                 + "\\halign{a#b&c#d\\cr1&2\\cr}"
                 + "\\end ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "???"); //TODO gene: check
     }

@@ -19,15 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.typesetter.undo;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.test.NoFlagsPrimitiveTester;
 
 /**
  * This is a test suite for the primitive <tt>\vsplit</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class VsplitTest extends ExTeXLauncher {
+public class VsplitTest extends NoFlagsPrimitiveTester {
 
     /**
      * Command line interface.
@@ -45,7 +45,7 @@ public class VsplitTest extends ExTeXLauncher {
      */
     public VsplitTest(final String arg) {
 
-        super(arg);
+        super(arg, "vsplit", "42 to 1pt", "\\setbox42=\\vbox{A}");
     }
 
     //TODO implement primitive specific test cases

@@ -24,7 +24,7 @@ package de.dante.extex.interpreter.primitives.register.count;
  * This is a test suite for the primitive <tt>\escapechar</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class EscapecharTest extends AbstractCountRegisterTester {
 
@@ -45,6 +45,40 @@ public class EscapecharTest extends AbstractCountRegisterTester {
     public EscapecharTest(final String arg) {
 
         super(arg, "escapechar", "", "92");
+    }
+
+    /**
+     * <testcase primitive="\escapechar">
+     *  Test case checking that <tt>\escapechar</tt> works with
+     *  <tt>\meaning</tt>.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test1() throws Exception {
+
+        assertSuccess(//--- input code ---
+                "\\escapechar=`\\:\\meaning\\relax"
+                        + "\\end",
+                //--- output channel ---
+                ":relax=:relax" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\escapechar">
+     *  Test case checking that <tt>\escapechar</tt> works with
+     *  <tt>\string</tt>.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test2() throws Exception {
+
+        assertSuccess(//--- input code ---
+                "\\escapechar=`\\:\\string\\relax"
+                        + "\\end",
+                //--- output channel ---
+                ":relax" + TERM);
     }
 
     //TODO implement the primitive specific test cases

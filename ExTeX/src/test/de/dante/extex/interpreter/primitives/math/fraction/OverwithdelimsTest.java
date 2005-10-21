@@ -19,15 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.math.fraction;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.extex.interpreter.primitives.math.AbstractMathTester;
 
 /**
  * This is a test suite for the primitive <tt>\overwithdelims</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class OverwithdelimsTest extends ExTeXLauncher {
+public class OverwithdelimsTest extends AbstractMathTester {
 
     /**
      * Constructor for OverwithdelimsTest.
@@ -36,21 +36,7 @@ public class OverwithdelimsTest extends ExTeXLauncher {
      */
     public OverwithdelimsTest(final String arg) {
 
-        super(arg);
-    }
-
-    /**
-     * Test case checking that \overwithdelims needs the math mode.
-     * @throws Exception in case of an error
-     */
-    public void testNonMathMode() throws Exception {
-
-        runCode(//--- input code ---
-                "\\overwithdelims \\end",
-                //--- log message ---
-                "Missing $ inserted",
-                //--- output channel ---
-                "");
+        super(arg, "overwithdelims", " 123 456 a$", "b");
     }
 
 }

@@ -17,24 +17,29 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.math;
+package de.dante.extex.interpreter.primitives.math.symbol;
+
+import de.dante.extex.interpreter.primitives.math.AbstractMathTester;
+
 
 /**
- * This is a test suite for the primitive <tt>\mathrel</tt>.
+ * This is a test suite for the primitive <tt>\mathbin</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.1 $
  */
-public class MathrelTest extends AbstractMathTester {
+public class MathbinTest extends AbstractMathTester {
 
     /**
-     * Constructor for MathrelTest.
+     * Constructor for MathbinTest.
      *
      * @param arg the name
      */
-    public MathrelTest(final String arg) {
+    public MathbinTest(final String arg) {
 
-        super(arg, "mathrel", " x");
+        super(arg, "mathbin", " x");
     }
+
+    //TODO implement the primitive specific test cases
 
 }

@@ -19,12 +19,11 @@
 
 package de.dante.extex.interpreter.primitives.prefix;
 
-
 /**
  * This is a test suite for the primitive <tt>\global</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class GlobalTest extends PrefixTester {
 
@@ -46,6 +45,23 @@ public class GlobalTest extends PrefixTester {
     public GlobalTest(final String arg) {
 
         super(arg, "global");
+    }
+
+    /**
+     * <testcase primitive="\global">
+     *  Test case checking that double <tt>\global</tt> has the same effect as
+     *  one.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test1() throws Exception {
+
+        assertSuccess(//--- input code ---
+                "\\begingroup\\global\\global\\count0=123\\endgroup"
+                        + "\\the\\count0\\end",
+                //--- output channel ---
+                "123" + TERM);
     }
 
 }

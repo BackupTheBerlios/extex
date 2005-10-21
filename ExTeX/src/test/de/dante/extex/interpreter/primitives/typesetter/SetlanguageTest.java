@@ -19,15 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.typesetter;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.test.NoFlagsPrimitiveTester;
 
 /**
  * This is a test suite for the primitive <tt>\setlanguage</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class SetlanguageTest extends ExTeXLauncher {
+public class SetlanguageTest extends NoFlagsPrimitiveTester {
 
     /**
      * Command line interface.
@@ -45,7 +45,9 @@ public class SetlanguageTest extends ExTeXLauncher {
      */
     public SetlanguageTest(final String arg) {
 
-        super(arg);
+        super(arg, "setlanguage", "1");
     }
+
+    //TODO implement the primitive specific test cases
 
 }

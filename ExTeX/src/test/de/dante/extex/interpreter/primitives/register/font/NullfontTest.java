@@ -17,24 +17,45 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.math;
+package de.dante.extex.interpreter.primitives.register.font;
+
+import java.util.Properties;
+
+import de.dante.test.ExTeXLauncher;
 
 /**
- * This is a test suite for the primitive <tt>\mathop</tt>.
+ * This is a test suite for the primitive <tt>\nullfont</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.1 $
  */
-public class MathopTest extends AbstractMathTester {
+public class NullfontTest extends ExTeXLauncher {
 
     /**
-     * Constructor for MathopTest.
+     * Constructor for the test.
      *
      * @param arg the name
      */
-    public MathopTest(final String arg) {
+    public NullfontTest(final String arg) {
 
-        super(arg, "mathop", " x");
+        super(arg);
+    }
+
+    /**
+     * Test case checking that \font can load a font (cmtt12) without
+     * additional attributes.
+     * @throws Exception in case of an error
+     */
+    public void testFont1() throws Exception {
+
+        Properties properties = System.getProperties();
+        properties.setProperty("extex.output", "text");
+
+        assertSuccess(properties,
+                //--- input code ---
+                "\\nullfont " + "x" + "\\end",
+                //--- output channel ---
+                "");
     }
 
 }

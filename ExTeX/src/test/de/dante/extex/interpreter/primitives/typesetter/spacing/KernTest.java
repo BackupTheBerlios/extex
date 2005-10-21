@@ -27,7 +27,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\kern</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class KernTest extends NoFlagsPrimitiveTester {
 
@@ -60,12 +60,10 @@ public class KernTest extends NoFlagsPrimitiveTester {
         Properties properties = System.getProperties();
         properties.setProperty("extex.output", "dump");
 
-        runCode(properties,
+        assertSuccess(properties,
                 //--- input code ---
                 "x\\kern 123pt"
                 + "\\end ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "\\vbox(0.0pt+0.0pt)x123.0pt\n"
                 + ".\\hbox(0.0pt+0.0pt)x123.0pt\n"

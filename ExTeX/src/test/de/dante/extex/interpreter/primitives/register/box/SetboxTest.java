@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsButGlobalPrimitiveTester;
  * This is a test suite for the primitive <tt>\setbox</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class SetboxTest extends NoFlagsButGlobalPrimitiveTester {
 
@@ -87,12 +87,10 @@ public class SetboxTest extends NoFlagsButGlobalPrimitiveTester {
      */
     public void testEOF3() throws Exception {
 
-        runCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\setbox33=",
                 //--- log message ---
-                "A <box> was supposed to be here",
-                //--- output channel ---
-                "");
+                "A <box> was supposed to be here");
     }
 
     /**

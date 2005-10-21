@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\hbox</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class HboxTest extends NoFlagsPrimitiveTester {
 
@@ -56,7 +56,7 @@ public class HboxTest extends NoFlagsPrimitiveTester {
     public void testEmpty1() throws Exception {
 
         assertSuccess(DEFINE_BRACES + "\\hbox{}\\end",
-                //
+        //
                 "" + TERM);
     }
 
@@ -68,7 +68,7 @@ public class HboxTest extends NoFlagsPrimitiveTester {
     public void test1() throws Exception {
 
         assertSuccess(DEFINE_BRACES + "\\hbox{abc}\\end",
-                //
+        //
                 "abc" + TERM);
     }
 
@@ -83,10 +83,7 @@ public class HboxTest extends NoFlagsPrimitiveTester {
     public void testMissingBrace1() throws Exception {
 
         assertFailure(//--- input code ---
-                DEFINE_BRACES
-                + ""
-                + "\\hbox a"
-                + "\\end ",
+                DEFINE_BRACES + "" + "\\hbox a" + "\\end ",
                 //--- log message ---
                 "Missing `{' inserted");
     }
@@ -102,9 +99,7 @@ public class HboxTest extends NoFlagsPrimitiveTester {
     public void testMissingBrace2() throws Exception {
 
         assertFailure(//--- input code ---
-                DEFINE_BRACES
-                + "\\hbox to 2pt a"
-                + "\\end ",
+                DEFINE_BRACES + "\\hbox to 2pt a" + "\\end ",
                 //--- log message ---
                 "Missing `{' inserted");
     }
@@ -120,8 +115,7 @@ public class HboxTest extends NoFlagsPrimitiveTester {
     public void testEof1() throws Exception {
 
         assertFailure(//--- input code ---
-                DEFINE_BRACES
-                + "\\hbox ",
+                DEFINE_BRACES + "\\hbox ",
                 //--- log message ---
                 "Unexpected end of file while processing \\hbox");
     }
@@ -137,10 +131,8 @@ public class HboxTest extends NoFlagsPrimitiveTester {
     public void testHbox1() throws Exception {
 
         assertSuccess(//--- input code ---
-                DEFINE_BRACES
-                + "\\font\\fnt cmtt12 \\fnt"
-                + "\\hbox{abc}"
-                + "\\end ",
+                DEFINE_BRACES + "\\font\\fnt cmtt12 \\fnt" + "\\hbox{abc}"
+                        + "\\end ",
                 //--- output channel ---
                 "abc" + TERM);
     }
@@ -156,10 +148,24 @@ public class HboxTest extends NoFlagsPrimitiveTester {
     public void testHbox2() throws Exception {
 
         assertSuccess(//--- input code ---
-                DEFINE_BRACES
-                + "\\hbox{}",
+                DEFINE_BRACES + "\\hbox{}",
                 //--- output channel ---
                 "" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\hbox">
+     *   Test case checking that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testHbox3() throws Exception {
+
+        assertSuccess(//--- input code ---
+                DEFINE_BRACES + "\\hbox{abc}",
+                //--- output channel ---
+                "abc" + TERM);
     }
 
     /**
@@ -170,18 +176,14 @@ public class HboxTest extends NoFlagsPrimitiveTester {
      *
      * @throws Exception in case of an error
      */
-    public void testHbox3() throws Exception {
+    public void testHbox4() throws Exception {
 
         assertFailure(//--- input code ---
-                DEFINE_BRACES
-                + "\\font\\fnt cmtt12 \\fnt"
-                + "\\setbox1=\\hbox{abc} "
-                + "\\the\\wd1 "
-                + "\\end",
+                DEFINE_BRACES + "\\font\\fnt cmtt12 \\fnt"
+                        + "\\setbox1=\\hbox{abc} " + "\\the\\wd1 " + "\\end",
                 //--- output channel ---
                 "18.52501pt " + TERM); // checked wih TeX
     }
-
 
     //TODO implement primitive specific test cases
 

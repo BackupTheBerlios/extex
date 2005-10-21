@@ -17,14 +17,16 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.math;
+package de.dante.extex.interpreter.primitives.math.symbol;
+
+import de.dante.extex.interpreter.primitives.math.AbstractMathTester;
 
 
 /**
  * This is a test suite for the primitive <tt>\mathchar</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.1 $
  */
 public class MathcharTest extends AbstractMathTester {
 

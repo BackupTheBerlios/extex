@@ -70,7 +70,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * classes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class MockContext implements Context, TypesetterOptions {
 
@@ -298,6 +298,14 @@ public class MockContext implements Context, TypesetterOptions {
     public String getId() {
 
         throw new RuntimeException("unimplemented");
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getIfLevel()
+     */
+    public long getIfLevel() {
+
+        return 0;
     }
 
     /**

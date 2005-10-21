@@ -25,7 +25,7 @@ import de.dante.extex.interpreter.primitives.math.AbstractMathTester;
  * This is a test suite for the primitive <tt>\right</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class RightTest extends AbstractMathTester {
 
@@ -36,7 +36,7 @@ public class RightTest extends AbstractMathTester {
      */
     public RightTest(final String arg) {
 
-        super(arg, "right", "(");
+        super(arg, "right", "123 ");
     }
 
 }

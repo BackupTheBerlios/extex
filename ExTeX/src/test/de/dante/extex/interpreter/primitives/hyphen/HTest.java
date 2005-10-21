@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the hyphenation.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class HTest extends ExTeXLauncher {
 
@@ -46,14 +46,12 @@ public class HTest extends ExTeXLauncher {
      */
     public void testPattern1() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\catcode`{=1"
                 + "\\catcode`}=2"
                 + "\\patterns{a3b ab4c}"
                 + "a xxxabcyyy"
                 + "\\end ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "a xxxabcyyy" + TERM);
     }
@@ -65,14 +63,12 @@ public class HTest extends ExTeXLauncher {
      */
     public void testPattern2() throws Exception {
 
-        runCode(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\catcode`{=1"
                 + "\\catcode`}=2"
                 + "\\patterns{ab4c a3b}"
                 + "a xxxabcyyy"
                 + "\\end ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "a xxxabcyyy" + TERM);
     }

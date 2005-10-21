@@ -19,15 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.typesetter;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.test.NoFlagsPrimitiveTester;
 
 /**
  * This is a test suite for the primitive <tt>\penalty</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class PenaltyTest extends ExTeXLauncher {
+public class PenaltyTest extends NoFlagsPrimitiveTester {
 
     /**
      * Command line interface.
@@ -45,7 +45,7 @@ public class PenaltyTest extends ExTeXLauncher {
      */
     public PenaltyTest(final String arg) {
 
-        super(arg);
+        super(arg, "penalty", "12");
     }
 
 }

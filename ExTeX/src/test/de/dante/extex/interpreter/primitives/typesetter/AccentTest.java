@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\accent</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class AccentTest extends ExTeXLauncher {
 
@@ -54,12 +54,10 @@ public class AccentTest extends ExTeXLauncher {
      */
     public void testAccentInMathMode() throws Exception {
 
-        runCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\catcode`$=3 \\relax"
                 + "$\\accent $\\end",
                 //--- log message ---
-                "?",
-                //--- output channel ---
                 "?");
     }
 

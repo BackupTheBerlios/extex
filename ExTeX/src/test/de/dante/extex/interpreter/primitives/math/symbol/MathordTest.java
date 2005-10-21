@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -17,36 +17,26 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.color;
+package de.dante.extex.interpreter.primitives.math.symbol;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.extex.interpreter.primitives.math.AbstractMathTester;
 
 /**
- * This is a test suite for the primitive <tt>\color</tt>.
+ * This is a test suite for the primitive <tt>\mathord</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @version $Revision: 1.1 $
  */
-public class ColorPrimitiveTest extends ExTeXLauncher {
+public class MathordTest extends AbstractMathTester {
 
     /**
-     * Method for running the tests standalone.
-     *
-     * @param args command line parameter
-     */
-    public static void main(final String[] args) {
-
-        junit.textui.TestRunner.run(ColorPrimitiveTest.class);
-    }
-
-    /**
-     * Creates a new object.
+     * Constructor for MathordTest.
      *
      * @param arg the name
      */
-    public ColorPrimitiveTest(final String arg) {
+    public MathordTest(final String arg) {
 
-        super(arg);
+        super(arg, "mathord", " x");
     }
 
 }

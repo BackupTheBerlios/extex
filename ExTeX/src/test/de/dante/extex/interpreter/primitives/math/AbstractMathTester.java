@@ -19,14 +19,13 @@
 
 package de.dante.extex.interpreter.primitives.math;
 
-import de.dante.test.ExTeXLauncher;
 import de.dante.test.NoFlagsPrimitiveTester;
 
 /**
  * This is an abstract base class for testing math primitives.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class AbstractMathTester extends NoFlagsPrimitiveTester {
 
@@ -41,14 +40,30 @@ public class AbstractMathTester extends NoFlagsPrimitiveTester {
     private String arguments;
 
     /**
-     * Constructor for MathaccentTest.
+     * Creates a new object.
      *
      * @param arg the name
+     * @param primitive the name of the primitive to test
+     * @param arguments the arguments for the invocation
      */
     public AbstractMathTester(final String arg, final String primitive,
             final String arguments) {
 
-        super(arg, primitive, arguments, DEFINE_CATCODES +"$");
+        this(arg, primitive, arguments, "");
+    }
+
+    /**
+     * Creates a new object.
+     *
+     * @param arg the name
+     * @param primitive the name of the primitive to test
+     * @param arguments the arguments for the invocation
+     * @param prepare the code to insert before the invocation
+     */
+    public AbstractMathTester(final String arg, final String primitive,
+            final String arguments, final String prepare) {
+
+        super(arg, primitive, arguments + "$", "\\catcode`\\$=3 $" + prepare);
         this.primitive = primitive;
         this.arguments = arguments;
     }

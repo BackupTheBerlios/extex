@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\currentgrouplevel</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class CurrentgrouplevelTest extends ExTeXLauncher {
 
@@ -51,21 +51,85 @@ public class CurrentgrouplevelTest extends ExTeXLauncher {
 
     /**
      * <testcase primitive="\currentgrouplevel">
-     *  Test case checking that a lonely <tt>\currentgrouplevel</tt> leads to an error.
+     *  Test case checking that a lonely <tt>\currentgrouplevel</tt>
+     *  leads to an error.
      * </testcase>
      *
      * @throws Exception in case of an error
      */
-    public void test1() throws Exception {
+    public void testError1() throws Exception {
 
-        runCode(//--- input code ---
-                "\\catcode`{=1 "
-                + "\\catcode`}=2 "
-                + "\\the\\currentgrouplevel",
+        assertFailure(//--- input code ---
+                "\\currentgrouplevel ",
+                //--- error message ---
+                "You can't use `\\currentgrouplevel' in vertical mode");
+    }
+
+    /**
+     * <testcase primitive="\currentgrouplevel">
+     *  Test case checking that <tt>\currentgrouplevel</tt> outside any group
+     *  returns 0.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testLevel0() throws Exception {
+
+        assertSuccess(//--- input code ---
+                "\\the\\currentgrouplevel \\end",
                 //--- log message ---
-                "0" + TERM,
-                //--- output channel ---
-                "");
+                "0" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\currentgrouplevel">
+     *  Test case checking that <tt>\currentgrouplevel</tt> inside a group
+     *  returns 1.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testLevel1() throws Exception {
+
+        assertSuccess(//--- input code ---
+                DEFINE_BRACES
+                + "{\\the\\currentgrouplevel}\\end",
+                //--- log message ---
+                "1" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\currentgrouplevel">
+     *  Test case checking that <tt>\currentgrouplevel</tt> inside a group
+     *  in a group returns 2.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testLevel2() throws Exception {
+
+        assertSuccess(//--- input code ---
+                DEFINE_BRACES
+                + "{{\\the\\currentgrouplevel}}\\end",
+                //--- log message ---
+                "2" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\currentgrouplevel">
+     *  Test case checking that <tt>\currentgrouplevel</tt> is count
+     *  convertible.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testConvertible1() throws Exception {
+
+        assertSuccess(//--- input code ---
+                DEFINE_BRACES
+                + "{{\\count0=\\currentgrouplevel \\the\\count0}}\\end",
+                //--- log message ---
+                "2" + TERM);
     }
 
 }

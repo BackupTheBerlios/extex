@@ -25,7 +25,7 @@ import de.dante.extex.interpreter.primitives.math.AbstractMathTester;
  * This is a test suite for the primitive <tt>\middle</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class MiddleTest extends AbstractMathTester {
 
@@ -36,7 +36,7 @@ public class MiddleTest extends AbstractMathTester {
      */
     public MiddleTest(final String arg) {
 
-        super(arg, "middle", "(");
+        super(arg, "middle", "123 ");
     }
 
 }

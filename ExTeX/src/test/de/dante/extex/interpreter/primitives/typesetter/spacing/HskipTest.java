@@ -19,15 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.typesetter.spacing;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.test.NoFlagsPrimitiveTester;
 
 /**
  * This is a test suite for the primitive <tt>\hskip</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class HskipTest extends ExTeXLauncher {
+public class HskipTest extends NoFlagsPrimitiveTester {
 
     /**
      * Command line interface.
@@ -45,7 +45,9 @@ public class HskipTest extends ExTeXLauncher {
      */
     public HskipTest(final String arg) {
 
-        super(arg);
+        super(arg, "hskip", "12pt", "A");
     }
+
+    //TODO implement primitive specific test cases
 
 }

@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\afterassignment</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class AfterassignmentTest extends ExTeXLauncher {
 
@@ -57,12 +57,10 @@ public class AfterassignmentTest extends ExTeXLauncher {
      */
     public void testEOF1() throws Exception {
 
-        runCode(//--- input code ---
+        assertFailure(//--- input code ---
                 "\\afterassignment",
                 //--- log message ---
-                "Unexpected end of file while processing \\afterassignment",
-                //--- output channel ---
-                "");
+                "Unexpected end of file while processing \\afterassignment");
     }
 
     /**

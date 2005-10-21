@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\dump</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class DumpTest extends NoFlagsPrimitiveTester {
 
@@ -46,7 +46,7 @@ public class DumpTest extends NoFlagsPrimitiveTester {
      */
     public DumpTest(final String arg) {
 
-        super(arg, "dump", "");
+        super(arg, "dump", "", "", "Beginning to dump on file texput.fmt\n");
     }
 
 }

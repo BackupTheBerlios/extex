@@ -19,15 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.dynamic;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.test.NoFlagsButGlobalPrimitiveTester;
 
 /**
  * This is a test suite for the primitive <tt>\nativedef</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class NativedefTest extends ExTeXLauncher {
+public class NativedefTest extends NoFlagsButGlobalPrimitiveTester {
 
     /**
      * Constructor for SkewcharTest.
@@ -36,7 +36,108 @@ public class NativedefTest extends ExTeXLauncher {
      */
     public NativedefTest(final String arg) {
 
-        super(arg);
+        super(arg, "nativedef",
+                "{java}\\t{de.dante.extex.interpreter.primitives.Relax}");
+    }
+
+    /**
+     * @see de.dante.test.ExTeXLauncher#getConfig()
+     */
+    protected String getConfig() {
+
+        return "extex-native.xml";
+    }
+
+    /**
+     * <testcase primitive="\nativedef">
+     *  Test case checking that <tt>\nativedef</tt> ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test1() throws Exception {
+
+        assertSuccess(
+        //--- input code ---
+                DEFINE_BRACES + "\\nativedef{java}"
+                        + "\\t{de.dante.extex.interpreter.primitives.info.The}"
+                        + "\\t\\count42" + " \\end",
+                //--- log message ---
+                "0" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\nativedef">
+     *  Test case checking that <tt>\nativedef</tt> respects the global keyword.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testGlobal1() throws Exception {
+
+        assertSuccess(
+        //--- input code ---
+                DEFINE_BRACES + "\\begingroup" + "\\global\\nativedef{java}"
+                        + "\\t{de.dante.extex.interpreter.primitives.info.The}"
+                        + "\\endgroup" + "\\t\\count42" + " \\end",
+                //--- log message ---
+                "0" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\nativedef">
+     *  Test case checking that <tt>\nativedef</tt> respects the \global keyword.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testGlobal2() throws Exception {
+
+        assertFailure(
+        //--- input code ---
+                DEFINE_BRACES + "\\begingroup" + "\\nativedef{java}"
+                        + "\\t{de.dante.extex.interpreter.primitives.info.The}"
+                        + "\\endgroup" + "\\t\\count42" + " \\end",
+                //--- log message ---
+                "Undefined control sequence \\t");
+    }
+
+    /**
+     * <testcase primitive="\nativedef">
+     *  Test case checking that <tt>\nativedef</tt> respects \globaldefs.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testGlobal3() throws Exception {
+
+        assertSuccess(
+        //--- input code ---
+                DEFINE_BRACES + "\\globaldefs=1 " + "\\begingroup"
+                        + "\\nativedef{java}"
+                        + "\\t{de.dante.extex.interpreter.primitives.info.The}"
+                        + "\\endgroup" + "\\t\\count42" + " \\end",
+                //--- log message ---
+                "0" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\nativedef">
+     *  Test case checking that <tt>\nativedef</tt> respects \afterassignment.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testAfterassignment1() throws Exception {
+
+        assertFailure(
+        //--- input code ---
+                DEFINE_BRACES + "\\afterassignment\\x " + "\\begingroup"
+                        + "\\nativedef{java}"
+                        + "\\t{de.dante.extex.interpreter.primitives.info.The}"
+                        + "\\endgroup",
+                //--- log message ---
+                "Undefined control sequence \\x");
     }
 
 }

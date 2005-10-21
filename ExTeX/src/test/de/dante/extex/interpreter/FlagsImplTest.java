@@ -25,7 +25,7 @@ import junit.framework.TestCase;
  * Test cases for the flags implementation.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class FlagsImplTest extends TestCase {
 
@@ -42,6 +42,20 @@ public class FlagsImplTest extends TestCase {
      */
     public void testClear() {
 
+        Flags f = new FlagsImpl();
+        f.setExpanded();
+        f.setGlobal();
+        f.setImmediate();
+        f.setLong();
+        f.setOuter();
+        f.setProtected();
+        f.clear();
+        assertFalse(f.isExpanded());
+        assertFalse(f.isGlobal());
+        assertFalse(f.isImmediate());
+        assertFalse(f.isLong());
+        assertFalse(f.isOuter());
+        assertFalse(f.isProtected());
     }
 
     /*

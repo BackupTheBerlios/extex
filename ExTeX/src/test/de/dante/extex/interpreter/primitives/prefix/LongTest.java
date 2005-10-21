@@ -19,12 +19,11 @@
 
 package de.dante.extex.interpreter.primitives.prefix;
 
-
 /**
  * This is a test suite for the primitive <tt>\long</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class LongTest extends PrefixTester {
 

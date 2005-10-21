@@ -19,24 +19,53 @@
 
 package de.dante.extex.interpreter.primitives.dynamic.java;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.test.NoFlagsPrimitiveTester;
 
 /**
  * This is a test suite for the primitive <tt>\javaload</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class JavaloadTest extends ExTeXLauncher {
+public class JavaloadTest extends NoFlagsPrimitiveTester {
 
     /**
-     * Constructor for SkewcharTest.
+     * @see de.dante.test.ExTeXLauncher#getConfig()
+     */
+    protected String getConfig() {
+
+        return "extex-jx.xml";
+    }
+
+    /**
+     * Creates a new object.
      *
      * @param arg the name
      */
     public JavaloadTest(final String arg) {
 
-        super(arg);
+        super(arg, "javaload",
+                "{de.dante.extex.interpreter.primitives.dynamic.java.JavaloadSensor}");
+    }
+
+    /**
+     * <testcase primitive="\javaload">
+     *  Test case checking that <tt>\javaload</tt> ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test1() throws Exception {
+
+        assertSuccess(
+                //--- input code ---
+                DEFINE_BRACES
+                        + "\\javaload"
+                        + "{de.dante.extex.interpreter.primitives.dynamic.java.JavaloadSensor}"
+                        + " \\end",
+                //--- log message ---
+                "");
+        assertTrue(JavaloadSensor.isKilroy());
     }
 
 }

@@ -27,16 +27,16 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\font</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.1 $
  */
-public class FontPrimitiveTest extends ExTeXLauncher {
+public class FontTest extends ExTeXLauncher {
 
     /**
      * Constructor for the test.
      *
      * @param arg the name
      */
-    public FontPrimitiveTest(final String arg) {
+    public FontTest(final String arg) {
 
         super(arg);
     }
@@ -75,11 +75,9 @@ public class FontPrimitiveTest extends ExTeXLauncher {
         Properties properties = System.getProperties();
         properties.setProperty("extex.output", "text");
 
-        runCode(properties,
-        //--- input code ---
+        assertSuccess(properties,
+                //--- input code ---
                 "\\font\\abc=cmtt12 " + "\\abc x" + "\\end",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "\nx\n");
     }
@@ -143,8 +141,7 @@ public class FontPrimitiveTest extends ExTeXLauncher {
     public void testNonEmf1() throws Exception {
 
         assertSuccess(//--- input code ---
-                "\\font\\abc=cmr10\\relax "
-                + "\\end",
+                "\\font\\abc=cmr10\\relax " + "\\end",
                 //--- output channel ---
                 "");
     }

@@ -25,7 +25,7 @@ import de.dante.extex.interpreter.primitives.math.AbstractMathTester;
  * This is a test suite for the primitive <tt>\nolimits</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class NolimitsTest extends AbstractMathTester {
 
@@ -36,7 +36,7 @@ public class NolimitsTest extends AbstractMathTester {
      */
     public NolimitsTest(final String arg) {
 
-        super(arg, "nolimitis", "");
+        super(arg, "nolimits", "", "\\mathop 123");
     }
 
 }

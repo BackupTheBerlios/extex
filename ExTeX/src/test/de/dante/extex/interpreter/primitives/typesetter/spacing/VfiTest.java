@@ -19,15 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.typesetter.spacing;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.test.NoFlagsPrimitiveTester;
 
 /**
  * This is a test suite for the primitive <tt>\vfi</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class VfiTest extends ExTeXLauncher {
+public class VfiTest extends NoFlagsPrimitiveTester {
 
     /**
      * Command line interface.
@@ -45,7 +45,7 @@ public class VfiTest extends ExTeXLauncher {
      */
     public VfiTest(final String arg) {
 
-        super(arg);
+        super(arg, "vfi", "");
     }
 
     //TODO implement primitive specific test cases

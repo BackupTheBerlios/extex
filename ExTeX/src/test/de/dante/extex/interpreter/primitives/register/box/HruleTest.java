@@ -27,7 +27,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\hrule</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class HruleTest extends ExTeXLauncher {
 
@@ -53,13 +53,11 @@ public class HruleTest extends ExTeXLauncher {
         Properties properties = System.getProperties();
         properties.setProperty("extex.output", "dump");
 
-        runCode(properties,
+        assertSuccess(properties,
                 //--- input code ---
                 "\\hsize=123pt "
                 + "\\hrule"
                 + "\\end ",
-                //--- log message ---
-                "",
                 //--- output channel ---
                 "\\vbox(0.4pt+0.0pt)x0.0pt\n.\\rule0.4pt+0.0ptx0.0pt\n");
         //TODO gene: is this correct?
