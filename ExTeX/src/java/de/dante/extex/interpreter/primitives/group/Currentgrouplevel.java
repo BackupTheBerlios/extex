@@ -19,11 +19,9 @@
 
 package de.dante.extex.interpreter.primitives.group;
 
-import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.count.CountConvertible;
@@ -60,7 +58,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Currentgrouplevel extends AbstractCode
         implements
@@ -75,22 +73,6 @@ public class Currentgrouplevel extends AbstractCode
     public Currentgrouplevel(final String name) {
 
         super(name);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.type.Code#execute(
-     *      de.dante.extex.interpreter.Flags,
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.typesetter.Typesetter)
-     */
-    public void execute(final Flags prefix, final Context context,
-            final TokenSource source, final Typesetter typesetter)
-            throws InterpreterException {
-
-        throw new HelpingException(getLocalizer(), "TTP.CantUseIn",
-                printableControlSequence(context), typesetter.getMode()
-                        .toString());
     }
 
     /**
@@ -114,7 +96,6 @@ public class Currentgrouplevel extends AbstractCode
     public Tokens the(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        String level = Long.toString(context.getGroupLevel());
-        return new Tokens(context, level);
+        return new Tokens(context, context.getGroupLevel());
     }
 }
