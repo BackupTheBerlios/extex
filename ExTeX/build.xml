@@ -116,7 +116,6 @@
       <fileset dir="src/java">
         <include name="**/*.properties" />
         <include name="**/*.xml" />
-        <include name="**/ExTeX-PL" />
       </fileset>
     </copy>
   </target>
@@ -193,7 +192,7 @@
         <pathelement path="${classes}" />
       </classpath>
       <classpath refid="test.class.path" />
-      <formatter type="plain" />
+      <formatter type="brief" />
       <batchtest fork="yes" todir="${target.tests}">
         <fileset dir="${src.tests}">
           <include name="${cases}" />
@@ -220,12 +219,6 @@
     </junit>
     <delete dir="${target}/www/reports/tests" />
     <mkdir dir="${target}/www/reports/tests" />
-    <xslt basedir="${target.tests}"
-          destdir="${target}/www/reports/tests"
-	  extension=".html"
-	  style="develop/reports/junit.xsl">
-      <classpath refid="develop.class.path" />
-    </xslt>
   </target>
 
   <target name="site"
@@ -251,6 +244,7 @@
   </target>
 
   <target name="junitreport"
+       	  depends="test.report"
           description="">
     <junitreport todir="${target.tests}">
       <fileset dir="${target.tests}">
