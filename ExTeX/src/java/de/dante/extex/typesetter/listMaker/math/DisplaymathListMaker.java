@@ -29,13 +29,14 @@ import de.dante.extex.typesetter.type.noad.MathList;
 import de.dante.extex.typesetter.type.noad.StyleNoad;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
+import de.dante.util.Locator;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * This is the list maker for the display math formulae.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class DisplaymathListMaker extends MathListMaker implements EqConsumer {
 
@@ -57,16 +58,17 @@ public class DisplaymathListMaker extends MathListMaker implements EqConsumer {
      *
      * @param manager the manager to ask for global changes
      */
-    public DisplaymathListMaker(final ListManager manager) {
+    public DisplaymathListMaker(final ListManager manager, final Locator locator) {
 
-        super(manager);
+        super(manager, locator);
     }
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#complete(TypesetterOptions)
      */
     public NodeList complete(final TypesetterOptions context)
-            throws TypesetterException, ConfigurationException {
+            throws TypesetterException,
+                ConfigurationException {
 
         HorizontalListNode list = new HorizontalListNode();
 

@@ -20,7 +20,6 @@
 package de.dante.extex.typesetter.listMaker.math;
 
 import java.util.Stack;
-import java.util.logging.Logger;
 
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
@@ -65,6 +64,7 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
 import de.dante.extex.typesetter.type.node.DiscretionaryNode;
 import de.dante.extex.typesetter.type.node.GlueNode;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
+import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
@@ -72,7 +72,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This is the list maker for the inline math formulae.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public class MathListMaker extends AbstractListMaker implements NoadConsumer {
 
@@ -81,7 +81,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      * It is used to store to the stack and restore the state from the stack.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.27 $
+     * @version $Revision: 1.28 $
      */
     private class MathMemento {
 
@@ -120,11 +120,11 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
         }
 
         /**
-         * Getter for ip.
+         * Getter for the insertion point.
          *
-         * @return the ip
+         * @return the insertion point
          */
-        public MathList getIp() {
+        public MathList getInsertionPoint() {
 
             return this.ip;
         }
@@ -167,9 +167,9 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      *
      * @param manager the manager to ask for global changes
      */
-    public MathListMaker(final ListManager manager) {
+    public MathListMaker(final ListManager manager, final Locator locator) {
 
-        super(manager);
+        super(manager, locator);
         insertionPoint = new MathList();
         noads = insertionPoint;
     }
@@ -314,25 +314,14 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#dump(java.util.logging.Logger, long, long)
-     */
-    public void dump(final Logger logger, final long width, final long depth) {
-
-        StringBuffer sb = new StringBuffer();
-        noads.toString(sb, (int) depth);
-        logger.fine(sb.toString());
-        //TODO gene: use width for dump
-    }
-
-    /**
      * Getter for the contents of the insertion point. If the insertion point
      * does not contain an element then <code>null</code> is returned. If it
-     * contains only one element then this element is returned. Otherwiese the
+     * contains only one element then this element is returned. Otherwise the
      * complete list is returned.
      *
      * @return the contents of the insertion point
      */
-    protected Noad getIp() {
+    protected Noad getInsertionPoint() {
 
         switch (insertionPoint.size()) {
             case 0:
@@ -413,7 +402,8 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      *      de.dante.util.UnicodeChar)
      */
     public void letter(final Context context, final TypesettingContext tc,
-            final UnicodeChar symbol) throws TypesetterException {
+            final UnicodeChar symbol, Locator locator)
+            throws TypesetterException {
 
         Count mcode = context.getMathcode(symbol);
         insertionPoint.add(noadFactory.getNoad((mcode == null ? 0 : mcode
@@ -484,7 +474,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
         }
         Noad n = noads;
         MathMemento memento = (MathMemento) stack.pop();
-        insertionPoint = memento.getIp();
+        insertionPoint = memento.getInsertionPoint();
         noads = memento.getNoads();
         insertionPoint.add(n);
     }
@@ -510,7 +500,8 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
             if (t == null) {
                 throw new EofException(primitive);
             }
-            getManager().push(new MathListMaker(getManager()));
+            getManager().push(
+                    new MathListMaker(getManager(), source.getLocator()));
             if (t.isa(Catcode.LEFTBRACE)) {
                 source.executeGroup();
             } else {
@@ -524,7 +515,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
         if (flags != null) {
             flags.set(f);
         }
-        return (((MathListMaker) getManager().pop())).getIp();
+        return (((MathListMaker) getManager().pop())).getInsertionPoint();
     }
 
     /**
@@ -535,6 +526,14 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
     protected void setInsertionPoint(final MathList insertionPoint) {
 
         this.insertionPoint = insertionPoint;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#showlist(
+     *      java.lang.StringBuffer, long, long)
+     */
+    public void showlist(final StringBuffer sb, final long l, final long m) {
+
     }
 
     /**
@@ -601,4 +600,5 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
         noads = new FractionNoad((MathList) noads, insertionPoint,
                 leftDelimiter, rightDelimiter, ruleWidth);
     }
+
 }
