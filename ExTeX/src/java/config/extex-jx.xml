@@ -18,7 +18,7 @@
   -
   -->
 <ExTeX>
-  <banner>Java extensions</banner>
+  <banner>ExTeX with Java extensions</banner>
 
   <!-- 
     -  The section "Resource" contains the search specification for input files.
