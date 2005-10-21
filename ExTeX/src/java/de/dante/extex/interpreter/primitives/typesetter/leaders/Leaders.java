@@ -62,7 +62,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Leaders extends AbstractCode {
 
@@ -111,7 +111,7 @@ public class Leaders extends AbstractCode {
         }
 
         CodeToken vskip = source.getControlSequence(context);
-        code = context.getCode(cs);
+        code = context.getCode(vskip);
 
         if (code == null) {
             throw new UndefinedControlSequenceException(//

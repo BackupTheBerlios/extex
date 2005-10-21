@@ -57,12 +57,12 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * <p>
  *  Examples:
  *  <pre class="TeXSample">
- *    \cleaders\hrul\hfill  </pre>
+ *    \cleaders\hrule\hfill  </pre>
  * </p>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Cleaders extends AbstractCode {
 
@@ -102,7 +102,7 @@ public class Cleaders extends AbstractCode {
         Node node = null;
         if (code instanceof Boxable) {
             Box b = ((Boxable) code).getBox(context, source, typesetter);
-            node = b.getNodes();
+            node = (b != null ? b.getNodes() : null); // TODO gene: null???
         } else if (code instanceof RuleConvertible) {
             node = ((RuleConvertible) code)
                     .getRule(context, source, typesetter);
@@ -111,7 +111,7 @@ public class Cleaders extends AbstractCode {
         }
 
         CodeToken vskip = source.getControlSequence(context);
-        code = context.getCode(cs);
+        code = context.getCode(vskip);
 
         if (code == null) {
             throw new UndefinedControlSequenceException(//
