@@ -1,0 +1,200 @@
+<?xml version="1.0"?>
+<!--
+  -  Copyright (C) 2005 The ExTeX Group
+  -
+  -  This library is free software; you can redistribute it and/or modify it
+  -  under the terms of the GNU Lesser General Public License as published by
+  -  the Free Software Foundation; either version 2.1 of the License, or (at
+  -  your option) any later version.
+  -
+  -  This library is distributed in the hope that it will be useful, but
+  -  WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  -  or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+  -  License for more details.
+  -
+  -  You should have received a copy of the GNU Lesser General Public License
+  -  along with this library; if not, write to the Free Software Foundation,
+  -  Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+  -
+  -->
+<ExTeX >
+  <banner>ExTeX with color extension</banner>
+
+  <!-- 
+    -  The section "Resource" contains the search specification for input files.
+    -->
+  <Resource src="path/fileFinder.xml"/>
+
+  <!-- 
+    -  The section "Fonts" contains the search specification for font files.
+    -  Note that font files are also sought in TEXINPUTS but NOT requested from
+    -  the user.
+    -->
+  <Fonts class="de.dante.extex.font.FontFactory">
+    <Type default="type1">
+        <type1 class="de.dante.extex.font.type.efm.EFMType1AFMFount"/>        
+        <ttf class="de.dante.extex.font.type.efm.EFMTTFFount"/>        
+        <tfm-mathsyml class="de.dante.extex.font.type.efm.EFMType1TFMMathsymlFount"/>        
+        <tfm-mathext class="de.dante.extex.font.type.efm.EFMType1TFMMathextFount"/>
+        <tfm-normal class="de.dante.extex.font.type.efm.EFMType1TFMNOFount"/>
+    </Type>
+  </Fonts>
+
+  <!-- 
+    -  The section "ColorConverter" contains the specification for the
+    -  color converter.
+    -->
+  <ColorConverter default="basic">
+    <basic class="de.dante.extex.color.BasicColorConverter"/>
+    <no class="de.dante.extex.color.NoColorConverter"/>
+  </ColorConverter>
+
+  <!-- 
+    -  The section "Scanner" contains the specification for the scanner, i.e. the
+    -  token stream.
+    -->
+  <Scanner default="base">
+    <base class="de.dante.extex.scanner.stream.impl.TokenStreamImpl"
+          buffersize=""/>
+    <base32 class="de.dante.extex.scanner.stream.impl32.TokenStreamImpl"
+            buffersize=""/>
+  </Scanner>
+
+  <!-- 
+    -  The section "Interpreter" contains the specification for the core
+    -  interpreter.
+    -->
+  <Interpreter class="de.dante.extex.interpreter.max.Moritz">
+
+    <!-- The maximum number of errors before an abort is forced.
+      -->
+    <maxErrors>100</maxErrors>
+
+    <!-- Tokens to be inserted at every job.
+      -->
+    <everyjob></everyjob>
+
+    <!-- The default font if nothing else is done.
+      -  The attribute "name" can be used to specify the font name. Default: nullfont
+      -  The attribute "size" can be used to specify the size. Default: design size.
+      -->
+    <Font name=""/>
+
+    <!-- The configuration for the language manager.
+      -->
+    <Language src="language/language.xml" />
+
+    <!-- The configuration of the token factory.
+      -->
+    <TokenFactory class="de.dante.extex.scanner.type.token.TokenFactoryImpl"/>
+
+    <!-- The configuration of the context implementation to use.
+      -->
+    <Context default="ExTeX">
+	  <ExTeX class="de.dante.extex.interpreter.context.impl.ContextImpl">
+        <!-- The implementation of the group to use.
+          -->
+        <Group class="de.dante.extex.interpreter.context.impl.GroupImpl"/>
+
+        <!-- The implementation of the typesetting context to use.
+          -->
+        <TypesettingContext class="de.dante.extex.interpreter.context.TypesettingContextImpl"/>
+      </ExTeX>
+    </Context>
+
+    <!-- The implementation of the error handler to use.
+      -->
+	<ErrorHandler default="ExTeX">
+	 <ExTeX class="de.dante.extex.main.errorHandler.ErrorHandlerImpl">
+       <EditHandler class="de.dante.extex.main.errorHandler.editHandler.EditHandlerTeXImpl"/>
+     </ExTeX>
+	 <TeX class="de.dante.extex.main.errorHandler.ErrorHandlerTeXImpl">
+       <EditHandler class="de.dante.extex.main.errorHandler.editHandler.EditHandlerTeXImpl"/>
+     </TeX>
+     <extex class="de.dante.extex.main.errorHandler.ErrorHandlerImpl"/>
+     <tex class="de.dante.extex.main.errorHandler.ErrorHandlerTeXImpl"/>
+	</ErrorHandler>
+
+    <primitives src="primitives/tex.xml"/>
+    <primitives src="primitives/etex.xml"/>
+    <primitives>
+     <define name="color"
+             class="de.dante.extex.interpreter.primitives.color.ColorPrimitive"/>
+    </primitives>
+
+    <ExtendedRegisterNames>true</ExtendedRegisterNames>
+
+  </Interpreter>
+
+  <!-- 
+    -  The section "Typesetter" contains the specification for the typesetter.
+    -  Here another level of indirection is introduced which allows us to select
+    -  one of several typesetters programatically.
+    -->
+  <Typesetter default="TeX">
+	<TeX class="de.dante.extex.typesetter.impl.TypesetterImpl"
+         direction="lr">
+      <PageBuilder class="de.dante.extex.typesetter.pageBuilder.impl.PageBuilderImpl"/>
+      <ParagraphBuilder class="de.dante.extex.typesetter.paragraphBuilder.impl.ParagraphBuilderImpl"/>
+    </TeX>
+    <devel class="de.dante.extex.typesetter.impl.TypesetterImpl"
+           direction="lr">
+      <PageBuilder class="de.dante.extex.typesetter.pageBuilder.impl.PageBuilderImpl"/>
+      <ParagraphBuilder class="de.dante.extex.typesetter.paragraphBuilder.trivial.TrivialBuilder"/>
+    </devel>
+  </Typesetter>
+
+  <!--
+    -  The section "Output" contains the specification for the output file.
+    -  The format attribute contains a format according to the MessageFormat
+    -  specification of Java.
+    -  {0} is replaced with the bease name of the output file. 
+    -  {1} is replaced with the name supplied or the empty string if null.
+    -  {2} is replaced with the number. This can be formatted freely.
+    -  {3} is replaced by the type preceeded by  period (.).
+    -->
+  <Output default="default">
+    <default format="{0}{1}{2,number,0000}{3}"/>
+    <pdf format="{0}{1}{2,number,0000}.pdf"/>
+    <dvi format="{0}{1}{2,number,0000}.dvi"/>
+    <xml format="{0}{1}{2,number,0000}.xml"/>
+    <out format="{0}{1}{2,number,0000}.out"/>
+    <dump format="{0}{1}{2,number,0000}.out"/>
+    <text format="{0}{1}{2,number,0000}.txt"/>
+  </Output>
+ 
+  <!-- 
+    -  The section "DocumentWriter" contains the specification for the backend.
+    -  Here another level of indirection is introduced which allows us to select
+    -  one of several backends programatically.
+    -->
+  <DocumentWriter default="out">
+    <pdf     class="de.dante.extex.documentWriter.pdf.PdfDocumentWriter"/>
+    <dvi     class="de.dante.extex.documentWriter.dvi.DviDocumentWriter"/>
+    <ps      class="de.dante.extex.documentWriter.postscript.PsWriter"/>
+    <ps-box  class="de.dante.extex.documentWriter.postscript.PsWriter"
+             boxed="true"/>
+    <eps     class="de.dante.extex.documentWriter.postscript.EpsWriter"/>
+    <eps-box class="de.dante.extex.documentWriter.postscript.EpsWriter"
+             boxed="true"/>
+    <out     class="de.dante.extex.documentWriter.dump.DumpDocumentWriter"
+             tree="false"/>
+    <dump    class="de.dante.extex.documentWriter.dump.MultiDumpDocumentWriter"
+             tree="true"/>
+    <text    class="de.dante.extex.documentWriter.text.TextDocumentWriter"/>
+    <xml     class="de.dante.extex.documentWriter.xml.XMLDocumentWriter"
+             encoding="ISO-8859-1"
+             debug="false"
+             showvisible="true"
+             indent="  "
+             newlines="true"
+             trimallwhitespace="true"
+             usesp="false"
+             usebp="false"
+             usemm="true"/>
+    <svg     class="de.dante.extex.documentWriter.svg.SVGDocumentWriter"
+             encoding="ISO-8859-1"
+             debug="false"/>
+  </DocumentWriter>
+
+</ExTeX>
