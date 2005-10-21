@@ -19,12 +19,15 @@
 package de.dante.extex.interpreter.primitives.register.font;
 
 import de.dante.extex.font.type.other.NullFont;
+import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.font.FontConvertible;
+import de.dante.extex.typesetter.Typesetter;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 
 /**
@@ -49,7 +52,7 @@ import de.dante.extex.interpreter.type.font.FontConvertible;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class NullfontPrimitive extends AbstractCode
         implements FontConvertible {
@@ -74,6 +77,26 @@ public class NullfontPrimitive extends AbstractCode
 
         super(name);
     }
+
+    /**
+     * @see de.dante.extex.interpreter.type.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public void execute(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws InterpreterException {
+
+        try {
+            context.set(nullFont, prefix.isGlobal());
+            prefix.clearGlobal();
+        } catch (ConfigurationException e) {
+            throw new InterpreterException(e);
+        }
+    }
+
 
     /**
      * @see de.dante.extex.interpreter.type.font.FontConvertible#convertFont(
