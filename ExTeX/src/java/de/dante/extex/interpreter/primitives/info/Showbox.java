@@ -27,6 +27,7 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.primitives.register.box.AbstractBox;
 import de.dante.extex.interpreter.type.box.Box;
+import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.framework.logger.LogEnabled;
 
@@ -54,7 +55,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class Showbox extends AbstractBox implements LogEnabled {
 
@@ -105,6 +106,9 @@ public class Showbox extends AbstractBox implements LogEnabled {
             logger.info(getLocalizer().format("TTP.Show.void", //
                     context.esc(key)));
         } else {
+            Count depth = context.getCount("showboxdepth");
+            Count width = context.getCount("showboxbreadth");
+
             logger.info(b.getNodes().toString());
             //TODO gene: correct??
         }
