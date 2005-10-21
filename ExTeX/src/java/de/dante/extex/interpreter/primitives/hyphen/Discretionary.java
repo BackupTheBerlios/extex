@@ -34,6 +34,7 @@ import de.dante.extex.typesetter.listMaker.ListManager;
 import de.dante.extex.typesetter.listMaker.RestrictedHorizontalListMaker;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.node.DiscretionaryNode;
+import de.dante.util.Locator;
 import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
@@ -74,7 +75,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class Discretionary extends AbstractCode {
 
@@ -109,12 +110,13 @@ public class Discretionary extends AbstractCode {
         Tokens nobreak = source.getTokens(context);
         //CharNodeFactory cnf = new CharNodeFactory();
         TypesettingContext tc = context.getTypesettingContext();
+        Locator locator = source.getLocator();
 
         try {
             typesetter.add(new DiscretionaryNode(fill(pre, tc, typesetter,
-                    context), //
-                    fill(post, tc, typesetter, context), //
-                    fill(nobreak, tc, typesetter, context)));
+                    context, locator ), //
+                    fill(post, tc, typesetter, context, locator), //
+                    fill(nobreak, tc, typesetter, context, locator)));
         } catch (GeneralException e) {
             throw new InterpreterException(e);
         } catch (ConfigurationException e) {
@@ -129,6 +131,7 @@ public class Discretionary extends AbstractCode {
      * @param tc the typesetting context
      * @param typesetter the typesetter
      * @param context the interpreter context
+     * @param locator the locator pointing to the start
      *
      * @return the node list or <code>null</code> if there are no tokens to
      *  put into the list
@@ -136,7 +139,8 @@ public class Discretionary extends AbstractCode {
      * @throws ConfigurationException in case of a configuration error
      */
     private NodeList fill(final Tokens tokens, final TypesettingContext tc,
-            final Typesetter typesetter, final Context context)
+            final Typesetter typesetter, final Context context,
+            final Locator locator)
             throws TypesetterException,
                 ConfigurationException {
 
@@ -145,11 +149,11 @@ public class Discretionary extends AbstractCode {
         }
 
         ListManager man = typesetter.getManager();
-        ListMaker hlist = new RestrictedHorizontalListMaker(man);
+        ListMaker hlist = new RestrictedHorizontalListMaker(man, locator);
         //NodeList nodes = new HorizontalListNode();
 
         for (int i = 0; i < tokens.length(); i++) {
-            hlist.letter(context, tc, tokens.get(i).getChar());
+            hlist.letter(context, tc, tokens.get(i).getChar(), locator);
         }
         return hlist.complete((TypesetterOptions) context);
     }
