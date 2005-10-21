@@ -118,7 +118,7 @@ import de.dante.util.framework.i18n.Localizer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.93 $
+ * @version $Revision: 1.94 $
  */
 public class ContextImpl
         implements
@@ -1522,5 +1522,13 @@ public class ContextImpl
                 // just removing the observer is enough
             }
         }
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getIfLevel()
+     */
+    public long getIfLevel() {
+
+        return conditionalStack.size();
     }
 }

@@ -37,8 +37,8 @@
           class=""/>
   <Define name="currentifbranch"
           class=""/>
-  <Define name="currentiflevel"
-          class=""/>
+  <define name="currentiflevel"
+          class="de.dante.extex.interpreter.primitives.conditional.analyze.Currentiflevel"/>
   <Define name="currentiftype"
           class=""/>
   <Define name="detokenize"

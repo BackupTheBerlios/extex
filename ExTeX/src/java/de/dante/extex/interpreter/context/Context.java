@@ -48,7 +48,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.61 $
+ * @version $Revision: 1.62 $
  */
 public interface Context
         extends
@@ -143,6 +143,13 @@ public interface Context
      * @return the id string
      */
     String getId();
+
+    /**
+     * Getter for the current if level.
+     *
+     * @return the current if level
+     */
+    long getIfLevel();
 
     /**
      * Getter for the hyphenation record for a given language. The language is
@@ -269,6 +276,60 @@ public interface Context
      *  operation
      */
     void pushConditional(Locator locator, boolean value, String primitive);
+
+    /**
+     * Setter for the color in the current typesetting context.
+     *
+     * @param color the new color
+     * @param global the indicator for the scope; <code>true</code> means all
+     *            groups; otherwise the current group is affected only
+     *
+     * @throws ConfigurationException in case of an error in the configuration.
+     */
+    void set(Color color, boolean global) throws ConfigurationException;
+
+    /**
+     * Setter for the direction in the current typesetting context.
+     *
+     * @param direction the new direction
+     * @param global the indicator for the scope; <code>true</code> means all
+     *            groups; otherwise the current group is affected only
+     *
+     * @throws ConfigurationException in case of an error in the configuration.
+     */
+    void set(Direction direction, boolean global)
+            throws ConfigurationException;
+
+    /**
+     * Setter for the font in the current typesetting context.
+     *
+     * @param font the new font
+     * @param global the indicator for the scope; <code>true</code> means all
+     *            groups; otherwise the current group is affected only
+     *
+     * @throws ConfigurationException in case of an error in the configuration.
+     */
+    void set(Font font, boolean global) throws ConfigurationException;
+
+    /**
+     * Setter for the language in the current typesetting context.
+     *
+     * @param language the new language
+     * @param global the indicator for the scope; <code>true</code> means all
+     *            groups; otherwise the current group is affected only
+     *
+     * @throws ConfigurationException in case of an error in the configuration.
+     */
+    void set(Language language, boolean global) throws ConfigurationException;
+
+    /**
+     * Setter for the typesetting context in the specified groups.
+     *
+     * @param context the processor context
+     * @param global the indicator for the scope; <code>true</code> means all
+     *            groups; otherwise the current group is affected only
+     */
+    void set(TypesettingContext context, boolean global);
 
     /**
      * Setter for the afterassignment token.
@@ -423,60 +484,6 @@ public interface Context
      * @param factory the new token factory
      */
     void setTokenFactory(TokenFactory factory);
-
-    /**
-     * Setter for the color in the current typesetting context.
-     *
-     * @param color the new color
-     * @param global the indicator for the scope; <code>true</code> means all
-     *            groups; otherwise the current group is affected only
-     *
-     * @throws ConfigurationException in case of an error in the configuration.
-     */
-    void set(Color color, boolean global) throws ConfigurationException;
-
-    /**
-     * Setter for the direction in the current typesetting context.
-     *
-     * @param direction the new direction
-     * @param global the indicator for the scope; <code>true</code> means all
-     *            groups; otherwise the current group is affected only
-     *
-     * @throws ConfigurationException in case of an error in the configuration.
-     */
-    void set(Direction direction, boolean global)
-            throws ConfigurationException;
-
-    /**
-     * Setter for the font in the current typesetting context.
-     *
-     * @param font the new font
-     * @param global the indicator for the scope; <code>true</code> means all
-     *            groups; otherwise the current group is affected only
-     *
-     * @throws ConfigurationException in case of an error in the configuration.
-     */
-    void set(Font font, boolean global) throws ConfigurationException;
-
-    /**
-     * Setter for the language in the current typesetting context.
-     *
-     * @param language the new language
-     * @param global the indicator for the scope; <code>true</code> means all
-     *            groups; otherwise the current group is affected only
-     *
-     * @throws ConfigurationException in case of an error in the configuration.
-     */
-    void set(Language language, boolean global) throws ConfigurationException;
-
-    /**
-     * Setter for the typesetting context in the specified groups.
-     *
-     * @param context the processor context
-     * @param global the indicator for the scope; <code>true</code> means all
-     *            groups; otherwise the current group is affected only
-     */
-    void set(TypesettingContext context, boolean global);
 
     /**
      * Declare the translation from a lower case character to an upper case
