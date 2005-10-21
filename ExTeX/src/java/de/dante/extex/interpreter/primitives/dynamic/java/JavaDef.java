@@ -27,7 +27,7 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.primitives.dynamic.Definer;
-import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.token.CodeToken;
@@ -81,6 +81,16 @@ import de.dante.extex.typesetter.Typesetter;
  * </pre>
  * </p>
  * <p>
+ * The primitive <tt>\javadef</tt> also respects the count register
+ * <tt>\globaldefs</tt> to enable general global assignment. 
+ * </p>
+ * <p>
+ * Since the primitive is classified as assignment the value of
+ * <tt>\afterassignment</tt> is applied.
+ * </p>
+ *
+ * <h4>Java Implementation</h4>
+ * <p>
  * Now we come to the Java side of the definition. The class given as
  * <i>&lang;tokens&rang;</i> must implement the interface {@link
  * de.dante.extex.interpreter.type.Code Code}. The easiest way to achieve
@@ -121,14 +131,24 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
-public class JavaDef extends AbstractCode implements Definer {
+public class JavaDef extends AbstractAssignment implements Definer {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
     private static final long serialVersionUID = 1L;
+
+    /**
+     * Creates a new object.
+     * This method is needed for the nativedef wrapper.
+     *
+     */
+    public JavaDef() {
+
+        super("");
+    }
 
     /**
      * Creates a new object.
@@ -141,13 +161,13 @@ public class JavaDef extends AbstractCode implements Definer {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Code#execute(
+     * @see de.dante.extex.interpreter.type.AbstractAssignment#assign(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(final Flags prefix, final Context context,
+    public void assign(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
@@ -161,8 +181,7 @@ public class JavaDef extends AbstractCode implements Definer {
      *      de.dante.extex.interpreter.TokenSource)
      */
     public void define(final Flags prefix, final Context context,
-            final TokenSource source)
-            throws InterpreterException {
+            final TokenSource source) throws InterpreterException {
 
         CodeToken cs = source.getControlSequence(context);
         Tokens name = source.getTokens(context);
@@ -196,4 +215,5 @@ public class JavaDef extends AbstractCode implements Definer {
         context.setCode(cs, code, prefix.isGlobal());
         prefix.setGlobal(false);
     }
+
 }
