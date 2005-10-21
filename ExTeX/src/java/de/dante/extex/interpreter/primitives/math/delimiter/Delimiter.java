@@ -55,7 +55,7 @@ import de.dante.extex.typesetter.type.math.MathDelimiter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Delimiter extends AbstractMathCode {
 
@@ -86,7 +86,7 @@ public class Delimiter extends AbstractMathCode {
             throws InterpreterException {
 
         NoadConsumer nc = getListMaker(context, typesetter);
-        MathDelimiter del = AbstractTeXDelimter.parseDelimiter(context, source, typesetter, getName());
+        MathDelimiter del = AbstractTeXDelimiter.parseDelimiter(context, source, typesetter, getName());
         nc.add(del);
     }
 

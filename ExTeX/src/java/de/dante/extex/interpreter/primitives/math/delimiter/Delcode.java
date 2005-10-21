@@ -111,7 +111,7 @@ import de.dante.util.UnicodeChar;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Delcode extends AbstractAssignment
         implements
@@ -151,7 +151,7 @@ public class Delcode extends AbstractAssignment
 
         long value = Count.scanCount(context, source, null);
         MathDelimiter delcode = context.getDelcode(charCode);
-        value += AbstractTeXDelimter.toTeX(delcode);
+        value += AbstractTeXDelimiter.toTeX(delcode);
 
         assign(prefix, context, source, charCode, value);
     }
@@ -169,7 +169,7 @@ public class Delcode extends AbstractAssignment
 
         UnicodeChar charCode = source.scanCharacterCode(context, typesetter, getName());
         source.getOptionalEquals(context);
-        MathDelimiter del = AbstractTeXDelimter.parseDelimiter(context, source,
+        MathDelimiter del = AbstractTeXDelimiter.parseDelimiter(context, source,
                 typesetter, getName());
         context.setDelcode(charCode, del, prefix.isGlobal());
         prefix.clearGlobal();
@@ -195,7 +195,7 @@ public class Delcode extends AbstractAssignment
             prefix.setGlobal((globaldef > 0));
         }
 
-        context.setDelcode(charCode, AbstractTeXDelimter
+        context.setDelcode(charCode, AbstractTeXDelimiter
                 .newMathDelimiter(value), //
                 prefix.isGlobal());
 
@@ -217,7 +217,7 @@ public class Delcode extends AbstractAssignment
 
         UnicodeChar charCode = source.scanCharacterCode(context, typesetter, getName());
         MathDelimiter delcode = context.getDelcode(charCode);
-        return AbstractTeXDelimter.toTeX(delcode);
+        return AbstractTeXDelimiter.toTeX(delcode);
     }
 
     /**
@@ -240,7 +240,7 @@ public class Delcode extends AbstractAssignment
                     printableControlSequence(context));
         }
 
-        value = AbstractTeXDelimter.toTeX(delcode) / value;
+        value = AbstractTeXDelimiter.toTeX(delcode) / value;
         assign(prefix, context, source, charCode, value);
     }
 
@@ -259,7 +259,7 @@ public class Delcode extends AbstractAssignment
 
         long value = Count.scanCount(context, source, null);
         MathDelimiter delcode = context.getDelcode(charCode);
-        value *= AbstractTeXDelimter.toTeX(delcode);
+        value *= AbstractTeXDelimiter.toTeX(delcode);
         assign(prefix, context, source, charCode, value);
     }
 
@@ -274,7 +274,7 @@ public class Delcode extends AbstractAssignment
 
         UnicodeChar charCode = source.scanCharacterCode(context, typesetter, getName());
         MathDelimiter delcode = context.getDelcode(charCode);
-        long value = AbstractTeXDelimter.toTeX(delcode);
+        long value = AbstractTeXDelimiter.toTeX(delcode);
         return new Tokens(context, value);
     }
 
