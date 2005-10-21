@@ -23,11 +23,16 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.exception.helping.CantUseInException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.count.Count;
+import de.dante.extex.interpreter.type.count.CountConvertible;
+import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.exception.GeneralException;
+import de.dante.extex.typesetter.exception.InvalidSpacefactorException;
+import de.dante.extex.typesetter.exception.TypesetterUnsupportedException;
 
 /**
  * This class provides an implementation for the primitive
@@ -52,9 +57,12 @@ import de.dante.util.exception.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
-public class Spacefactor extends AbstractCode {
+public class Spacefactor extends AbstractCode
+        implements
+            CountConvertible,
+            Theable {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
@@ -69,6 +77,26 @@ public class Spacefactor extends AbstractCode {
     public Spacefactor(final String name) {
 
         super(name);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.count.CountConvertible#convertCount(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public long convertCount(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
+
+        long spacefactor;
+        try {
+            spacefactor = typesetter.getListMaker().getSpacefactor();
+        } catch (TypesetterUnsupportedException e) {
+            throw new HelpingException(getLocalizer(), "TTP.ImproperSForPD",
+                    printableControlSequence(context));
+        }
+
+        return spacefactor;
     }
 
     /**
@@ -87,9 +115,24 @@ public class Spacefactor extends AbstractCode {
 
         try {
             typesetter.setSpacefactor(new Count(factor));
-        } catch (GeneralException e) {
-            throw new HelpingException(getLocalizer(), "TTP.ImproperSForPD",
-                    printableControlSequence(context));
+        } catch (TypesetterUnsupportedException e) {
+            throw new CantUseInException(printableControlSequence(context),
+                    typesetter.getMode().toString());
+        } catch (InvalidSpacefactorException e) {
+            throw new HelpingException(getLocalizer(), "TTP.BadSpaceFactor",
+                    Long.toString(factor));
         }
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.Theable#the(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public Tokens the(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
+
+        return new Tokens(context, convertCount(context, source, typesetter));
     }
 }

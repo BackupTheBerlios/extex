@@ -23,11 +23,17 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.exception.helping.CantUseInException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
-import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.interpreter.type.AbstractAssignment;
+import de.dante.extex.interpreter.type.Theable;
+import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.DimenConvertible;
+import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.scanner.type.CatcodeException;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.exception.GeneralException;
+import de.dante.extex.typesetter.exception.TypesetterUnsupportedException;
 
 /**
  * This class provides an implementation for the primitive
@@ -52,9 +58,24 @@ import de.dante.util.exception.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
-public class Prevdepth extends AbstractCode {
+public class Prevdepth extends AbstractAssignment
+        implements
+            CountConvertible,
+            DimenConvertible,
+            Theable {
+
+    /**
+     * The field <tt>IGNORE</tt> contains the numerical value which represents
+     * the ignored value. This will be mapped to null.
+     */
+    private static final long IGNORE = -65536000;
+
+    /**
+     * The field <tt>IGNORE_DIMEN</tt> contains the ...
+     */
+    private static final Dimen IGNORE_DIMEN = new Dimen(IGNORE);
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
@@ -78,17 +99,88 @@ public class Prevdepth extends AbstractCode {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(final Flags prefix, final Context context,
+    public void assign(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
         source.getOptionalEquals(context);
         Dimen pd = new Dimen(context, source, typesetter);
+        if (pd.getValue() == IGNORE) {
+            pd = null;
+        }
         try {
             typesetter.setPrevDepth(pd);
-        } catch (GeneralException e) {
+        } catch (TypesetterUnsupportedException e) {
+            throw new CantUseInException(printableControlSequence(context),
+                    typesetter.getMode().toString());
+        }
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.count.CountConvertible#convertCount(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public long convertCount(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
+
+        Dimen prevDepth;
+        try {
+            prevDepth = typesetter.getListMaker().getPrevDepth();
+        } catch (TypesetterUnsupportedException e) {
             throw new HelpingException(getLocalizer(), "TTP.ImproperSForPD",
                     printableControlSequence(context));
+        }
+
+        return prevDepth != null ? prevDepth.getValue() : IGNORE;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.dimen.DimenConvertible#convertDimen(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public long convertDimen(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
+
+        Dimen prevDepth;
+        try {
+            prevDepth = typesetter.getListMaker().getPrevDepth();
+        } catch (TypesetterUnsupportedException e) {
+            throw new HelpingException(getLocalizer(), "TTP.ImproperSForPD",
+                    printableControlSequence(context));
+        }
+
+        return prevDepth != null ? prevDepth.getValue() : IGNORE;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.Theable#the(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public Tokens the(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
+
+        Dimen prevDepth;
+        try {
+            prevDepth = typesetter.getListMaker().getPrevDepth();
+        } catch (TypesetterUnsupportedException e) {
+            throw new HelpingException(getLocalizer(), "TTP.ImproperSForPD",
+                    printableControlSequence(context));
+        }
+
+        if (prevDepth ==null) {
+            prevDepth = IGNORE_DIMEN;
+        }
+
+        try {
+            return prevDepth.toToks(context.getTokenFactory());
+        } catch (CatcodeException e) {
+            throw new InterpreterException(e);
         }
     }
 }
