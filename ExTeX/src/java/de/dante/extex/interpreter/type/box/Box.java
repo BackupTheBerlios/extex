@@ -34,6 +34,7 @@ import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.token.Token;
+import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.listMaker.InnerVerticalListMaker;
@@ -51,7 +52,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
 public class Box implements BoxOrRule, Serializable {
 
@@ -98,13 +99,16 @@ public class Box implements BoxOrRule, Serializable {
             throw new MissingLeftBraceException(null);
         }
 
+        ListMaker lm;
+
         if (isHorizontal) {
-            typesetter.push(new RestrictedHorizontalListMaker(typesetter
-                    .getManager()));
+            lm = new RestrictedHorizontalListMaker(typesetter.getManager(),
+                    source.getLocator());
         } else {
-            typesetter
-                    .push(new InnerVerticalListMaker(typesetter.getManager()));
+            lm = new InnerVerticalListMaker(typesetter.getManager(), source
+                    .getLocator());
         }
+        typesetter.push(lm);
 
         try {
             context.openGroup();
@@ -115,6 +119,11 @@ public class Box implements BoxOrRule, Serializable {
         source.push(insert);
         source.executeGroup();
         try {
+            while (typesetter.getListMaker() != lm) {
+                typesetter
+                        .add(typesetter.complete((TypesetterOptions) context));
+            }
+
             nodes = typesetter.complete((TypesetterOptions) context);
         } catch (ConfigurationException e) {
             throw new InterpreterException(e);
