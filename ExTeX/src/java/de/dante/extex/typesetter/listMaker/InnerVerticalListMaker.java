@@ -20,12 +20,13 @@
 package de.dante.extex.typesetter.listMaker;
 
 import de.dante.extex.typesetter.Mode;
+import de.dante.util.Locator;
 
 /**
  * This is the derived class for a list maker in inner vertical list mode.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class InnerVerticalListMaker extends VerticalListMaker {
 
@@ -34,9 +35,10 @@ public class InnerVerticalListMaker extends VerticalListMaker {
      *
      * @param manager the manager to ask for global changes
      */
-    public InnerVerticalListMaker(final ListManager manager) {
+    public InnerVerticalListMaker(final ListManager manager,
+            final Locator locator) {
 
-        super(manager);
+        super(manager, locator);
     }
 
     /**

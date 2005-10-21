@@ -37,7 +37,9 @@ import de.dante.extex.typesetter.OutputRoutine;
 import de.dante.extex.typesetter.ParagraphObserver;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
+import de.dante.extex.typesetter.exception.InvalidSpacefactorException;
 import de.dante.extex.typesetter.exception.TypesetterException;
+import de.dante.extex.typesetter.exception.TypesetterUnsupportedException;
 import de.dante.extex.typesetter.listMaker.ListManager;
 import de.dante.extex.typesetter.listMaker.VerticalListMaker;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
@@ -50,6 +52,7 @@ import de.dante.extex.typesetter.type.node.HorizontalListNode;
 import de.dante.extex.typesetter.type.node.InsertionNode;
 import de.dante.extex.typesetter.type.node.PenaltyNode;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
+import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 import de.dante.util.framework.i18n.Localizable;
@@ -62,7 +65,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.75 $
+ * @version $Revision: 1.76 $
  */
 public class TypesetterImpl
         implements
@@ -141,7 +144,7 @@ public class TypesetterImpl
 
         super();
 
-        listMaker = new VerticalListMaker(this);
+        listMaker = new VerticalListMaker(this, new Locator("", 0, "", 0)); //TODO gene: find better initial locator
     }
 
     /**
@@ -238,14 +241,6 @@ public class TypesetterImpl
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#dump(java.util.logging.Logger, long, long)
-     */
-    public void dump(final Logger logger, final long width, final long depth) {
-
-        listMaker.dump(logger, width, depth);
-    }
-
-    /**
      * Setter for the localizer.
      *
      * @param theLocalizer the new localizer
@@ -330,6 +325,14 @@ public class TypesetterImpl
     }
 
     /**
+     * @see de.dante.extex.typesetter.ListMaker#getLocator()
+     */
+    public Locator getLocator() {
+
+        return listMaker.getLocator();
+    }
+
+    /**
      * Getter for the manager of the list maker stack.
      * This instance also acts as a manager.
      *
@@ -359,6 +362,22 @@ public class TypesetterImpl
     }
 
     /**
+     * @see de.dante.extex.typesetter.ListMaker#getPrevDepth()
+     */
+    public Dimen getPrevDepth() throws TypesetterUnsupportedException {
+
+        return this.listMaker.getPrevDepth();
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#getSpacefactor()
+     */
+    public long getSpacefactor() throws TypesetterUnsupportedException {
+
+        return this.listMaker.getSpacefactor();
+    }
+
+    /**
      * @see de.dante.extex.typesetter.Typesetter#isShipoutMark()
      */
     public boolean isShipoutMark() {
@@ -382,9 +401,9 @@ public class TypesetterImpl
      *      de.dante.util.UnicodeChar)
      */
     public void letter(final Context context, final TypesettingContext tc,
-            final UnicodeChar uc) throws TypesetterException {
+            final UnicodeChar uc, Locator locator) throws TypesetterException {
 
-        listMaker.letter(context, tc, uc);
+        listMaker.letter(context, tc, uc, locator);
     }
 
     /**
@@ -517,11 +536,11 @@ public class TypesetterImpl
     }
 
     /**
-     * Setter for the previous depth.
-     *
-     * @param pd the value for previous depth
+     * @see de.dante.extex.typesetter.ListMaker#setPrevDepth(
+     *      de.dante.extex.interpreter.type.dimen.Dimen)
      */
-    public void setPrevDepth(final Dimen pd) throws TypesetterException {
+    public void setPrevDepth(final Dimen pd)
+            throws TypesetterUnsupportedException {
 
         listMaker.setPrevDepth(pd);
     }
@@ -530,7 +549,8 @@ public class TypesetterImpl
      * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(
      *     de.dante.extex.interpreter.type.count.Count)
      */
-    public void setSpacefactor(final Count sf) throws TypesetterException {
+    public void setSpacefactor(final Count sf)
+            throws TypesetterUnsupportedException, InvalidSpacefactorException {
 
         listMaker.setSpacefactor(sf);
     }
@@ -543,12 +563,41 @@ public class TypesetterImpl
      *
      * @throws TypesetterException in case of an error
      *
-     * @see de.dante.extex.typesetter.Typesetter#shipout(de.dante.extex.typesetter.type.NodeList)
+     * @see de.dante.extex.typesetter.Typesetter#shipout(
+     *      de.dante.extex.typesetter.type.NodeList)
      */
     public void shipout(final NodeList nodes) throws TypesetterException {
 
         pageBuilder.flush(nodes);
         shipoutMark = true;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#showlist(java.lang.StringBuffer, long, long)
+     */
+    public void showlist(final StringBuffer sb, final long l, final long m) {
+
+        listMaker.showlist(sb, l, m);
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.Typesetter#showlists(
+     *      java.lang.StringBuffer, long, long)
+     */
+    public void showlists(final StringBuffer sb, final long l, final long m) {
+
+        sb.append(localizer.format("Showlist.Format", listMaker.getMode()
+                .toString(), Integer.toString(listMaker.getLocator()
+                .getLineno())));
+        listMaker.showlist(sb, l, m);
+
+        for (int i = saveStack.size() - 1; i >= 0; i--) {
+            ListMaker lm = (ListMaker) saveStack.get(i);
+            sb.append(localizer.format("Showlist.Format", lm.getMode()
+                    .toString(), Integer.toString(listMaker.getLocator()
+                    .getLineno())));
+            lm.showlist(sb, l, m);
+        }
     }
 
     /**
@@ -586,4 +635,5 @@ public class TypesetterImpl
 
         listMaker.tab(context, source, t);
     }
+
 }

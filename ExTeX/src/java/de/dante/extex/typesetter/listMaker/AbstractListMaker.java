@@ -30,10 +30,13 @@ import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.exception.InvalidSpacefactorException;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.exception.TypesetterHelpingException;
+import de.dante.extex.typesetter.exception.TypesetterUnsupportedException;
 import de.dante.extex.typesetter.listMaker.math.DisplaymathListMaker;
 import de.dante.extex.typesetter.listMaker.math.MathListMaker;
+import de.dante.util.Locator;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.i18n.LocalizerFactory;
@@ -42,9 +45,14 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This abstract class provides some methods common to all ListMakers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public abstract class AbstractListMaker implements ListMaker {
+
+    /**
+     * The field <tt>locator</tt> contains the locator pointing to the start.
+     */
+    private Locator locator;
 
     /**
      * The field <tt>manager</tt> contains the manager to ask for global
@@ -56,11 +64,13 @@ public abstract class AbstractListMaker implements ListMaker {
      * Creates a new object.
      *
      * @param theManager the manager to ask for global changes
+     * @param locator the locator
      */
-    public AbstractListMaker(final ListManager theManager) {
+    public AbstractListMaker(final ListManager theManager, final Locator locator) {
 
         super();
         this.manager = theManager;
+        this.locator = locator;
     }
 
     /**
@@ -71,6 +81,14 @@ public abstract class AbstractListMaker implements ListMaker {
     protected Localizer getLocalizer() {
 
         return LocalizerFactory.getLocalizer(this.getClass().getName());
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#getLocator()
+     */
+    public Locator getLocator() {
+
+        return locator;
     }
 
     /**
@@ -99,88 +117,19 @@ public abstract class AbstractListMaker implements ListMaker {
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#mathShift(
-     *      Context, TokenSource, de.dante.extex.scanner.type.Token)
+     * @see de.dante.extex.typesetter.ListMaker#getPrevDepth()
      */
-    public void mathShift(final Context context, final TokenSource source,
-            final Token t) throws TypesetterException, ConfigurationException {
+    public Dimen getPrevDepth() throws TypesetterUnsupportedException {
 
-        try {
-            Token next = source.getToken(context);
-
-            if (next == null) {
-                throw new TypesetterException(
-                        new MissingMathException(t.toString()));
-            } else if (!next.isa(Catcode.MATHSHIFT)) {
-                source.push(next);
-                manager.push(new MathListMaker(manager));
-                source.push(context.getToks("everymath"));
-            } else {
-                manager.push(new DisplaymathListMaker(manager));
-                source.push(context.getToks("everydisplay"));
-            }
-            //TODO gene: ??? context.setCount("fam", -1, false);
-
-        } catch (TypesetterException e) {
-            throw e;
-        } catch (InterpreterException e) {
-            throw new TypesetterException(e);
-        }    }
-
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#setPrevDepth(
-     *      de.dante.extex.interpreter.type.dimen.Dimen)
-     */
-    public void setPrevDepth(final Dimen pd) throws TypesetterException {
-
-        throw new UnsupportedOperationException();
+        throw new TypesetterUnsupportedException();
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(
-     *      de.dante.extex.interpreter.type.count.Count)
+     * @see de.dante.extex.typesetter.ListMaker#getSpacefactor()
      */
-    public void setSpacefactor(final Count f) throws TypesetterException {
+    public long getSpacefactor() throws TypesetterUnsupportedException {
 
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#subscriptMark(
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource,
-     *      Typesetter, de.dante.extex.scanner.type.Token)
-     */
-    public void subscriptMark(final Context context, final TokenSource source,
-            Typesetter typesetter, final Token token) throws TypesetterException {
-
-        throw new TypesetterException(new MissingMathException(token.toString()));
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#superscriptMark(
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource,
-     *      Typesetter, de.dante.extex.scanner.type.Token)
-     */
-    public void superscriptMark(final Context context,
-            final TokenSource source, final Typesetter typesetter, final Token token)
-            throws TypesetterException {
-
-        throw new TypesetterException(new MissingMathException(token.toString()));
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#tab(
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.scanner.type.Token)
-     */
-    public void tab(final Context context, final TokenSource source,
-            final Token token) throws TypesetterException, ConfigurationException {
-
-        throw new TypesetterHelpingException(getMyLocalizer(),
-                "TTP.MisplacedTabMark", token.toString());
+        throw new TypesetterUnsupportedException();
     }
 
     /**
@@ -191,10 +140,104 @@ public abstract class AbstractListMaker implements ListMaker {
     }
 
     /**
+     * @see de.dante.extex.typesetter.ListMaker#mathShift(
+     *      Context, TokenSource, de.dante.extex.scanner.type.Token)
+     */
+    public void mathShift(final Context context, final TokenSource source,
+            final Token t) throws TypesetterException, ConfigurationException {
+
+        try {
+            Token next = source.getToken(context);
+
+            if (next == null) {
+                throw new TypesetterException(new MissingMathException(t
+                        .toString()));
+            } else if (!next.isa(Catcode.MATHSHIFT)) {
+                source.push(next);
+                manager.push(new MathListMaker(manager, source.getLocator()));
+                source.push(context.getToks("everymath"));
+            } else {
+                manager.push(new DisplaymathListMaker(manager, source
+                        .getLocator()));
+                source.push(context.getToks("everydisplay"));
+            }
+            //TODO gene: ??? context.setCount("fam", -1, false);
+
+        } catch (TypesetterException e) {
+            throw e;
+        } catch (InterpreterException e) {
+            throw new TypesetterException(e);
+        }
+    }
+
+    /**
      * @see de.dante.extex.typesetter.ListMaker#rightBrace()
      */
     public void rightBrace() throws TypesetterException {
 
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#setPrevDepth(
+     *      de.dante.extex.interpreter.type.dimen.Dimen)
+     */
+    public void setPrevDepth(final Dimen pd)
+            throws TypesetterUnsupportedException {
+
+        throw new TypesetterUnsupportedException();
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(
+     *      de.dante.extex.interpreter.type.count.Count)
+     */
+    public void setSpacefactor(final Count f)
+            throws TypesetterUnsupportedException, InvalidSpacefactorException {
+
+        throw new TypesetterUnsupportedException();
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#subscriptMark(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      Typesetter, de.dante.extex.scanner.type.Token)
+     */
+    public void subscriptMark(final Context context, final TokenSource source,
+            Typesetter typesetter, final Token token)
+            throws TypesetterException {
+
+        throw new TypesetterException(
+                new MissingMathException(token.toString()));
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#superscriptMark(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      Typesetter, de.dante.extex.scanner.type.Token)
+     */
+    public void superscriptMark(final Context context,
+            final TokenSource source, final Typesetter typesetter,
+            final Token token) throws TypesetterException {
+
+        throw new TypesetterException(
+                new MissingMathException(token.toString()));
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#tab(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.scanner.type.Token)
+     */
+    public void tab(final Context context, final TokenSource source,
+            final Token token)
+            throws TypesetterException,
+                ConfigurationException {
+
+        throw new TypesetterHelpingException(getMyLocalizer(),
+                "TTP.MisplacedTabMark", token.toString());
     }
 
 }

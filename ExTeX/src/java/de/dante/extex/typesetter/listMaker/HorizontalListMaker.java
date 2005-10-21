@@ -21,7 +21,6 @@ package de.dante.extex.typesetter.listMaker;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import de.dante.extex.font.Glyph;
 import de.dante.extex.interpreter.context.Context;
@@ -36,8 +35,9 @@ import de.dante.extex.language.Language;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.ParagraphObserver;
 import de.dante.extex.typesetter.TypesetterOptions;
+import de.dante.extex.typesetter.exception.InvalidSpacefactorException;
 import de.dante.extex.typesetter.exception.TypesetterException;
-import de.dante.extex.typesetter.exception.TypesetterHelpingException;
+import de.dante.extex.typesetter.exception.TypesetterUnsupportedException;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.node.AfterMathNode;
@@ -46,6 +46,7 @@ import de.dante.extex.typesetter.type.node.CharNode;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
 import de.dante.extex.typesetter.type.node.ImplicitKernNode;
 import de.dante.extex.typesetter.type.node.SpaceNode;
+import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
@@ -58,7 +59,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class HorizontalListMaker extends AbstractListMaker {
 
@@ -98,9 +99,17 @@ public class HorizontalListMaker extends AbstractListMaker {
      *
      * @param manager the manager to ask for global changes
      */
-    public HorizontalListMaker(final ListManager manager) {
+    public HorizontalListMaker(final ListManager manager, final Locator locator) {
 
-        super(manager);
+        super(manager, locator);
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#getSpacefactor()
+     */
+    public long getSpacefactor() {
+
+        return spaceFactor;
     }
 
     /**
@@ -216,18 +225,6 @@ public class HorizontalListMaker extends AbstractListMaker {
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#dump(java.util.logging.Logger, long, long)
-     */
-    public void dump(final Logger logger, final long width, final long depth) {
-
-        for (int i = 0; i < nodes.size(); i++) {
-            //TODO gene: unimplemented
-
-        }
-        throw new RuntimeException("unimplemented");
-    }
-
-    /**
      * @see de.dante.extex.typesetter.ListMaker#getLastNode()
      */
     public Node getLastNode() {
@@ -266,7 +263,7 @@ public class HorizontalListMaker extends AbstractListMaker {
      * @see "The TeXbook [p.76]"
      */
     public void letter(final Context context, final TypesettingContext tc,
-            final UnicodeChar symbol) {
+            final UnicodeChar symbol, Locator locator) {
 
         int size = nodes.size();
         if (size > 0) {
@@ -392,14 +389,25 @@ public class HorizontalListMaker extends AbstractListMaker {
      * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(
      *      de.dante.extex.interpreter.type.count.Count)
      */
-    public void setSpacefactor(final Count f) throws TypesetterException {
+    public void setSpacefactor(final Count f)
+            throws TypesetterUnsupportedException, InvalidSpacefactorException {
 
         long sf = f.getValue();
         if (sf <= 0) {
-            throw new TypesetterHelpingException(getLocalizer(),
-                    "TTP.BadSpaceFactor", Long.toString(sf));
+            throw new InvalidSpacefactorException();
         }
         spaceFactor = sf;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#showlist(
+     *      java.lang.StringBuffer, long, long)
+     */
+    public void showlist(final StringBuffer sb, final long l, final long m) {
+
+        sb.append("spacefactor ");
+        sb.append(spaceFactor);
+        sb.append('\n');
     }
 
 }

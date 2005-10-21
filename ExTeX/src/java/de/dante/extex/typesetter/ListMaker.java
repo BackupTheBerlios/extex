@@ -19,8 +19,6 @@
 
 package de.dante.extex.typesetter;
 
-import java.util.logging.Logger;
-
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
@@ -28,9 +26,12 @@ import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.scanner.type.token.Token;
+import de.dante.extex.typesetter.exception.InvalidSpacefactorException;
 import de.dante.extex.typesetter.exception.TypesetterException;
+import de.dante.extex.typesetter.exception.TypesetterUnsupportedException;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
+import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
@@ -40,7 +41,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "<logo>TeX</logo> &ndash; The Program [211]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.44 $
+ * @version $Revision: 1.45 $
  */
 public interface ListMaker {
 
@@ -120,16 +121,6 @@ public interface ListMaker {
             throws TypesetterException;
 
     /**
-     * Print the current internal list to a logger. The display is truncated
-     * to a certain size.
-     *
-     * @param logger the target logger
-     * @param width the width
-     * @param depth the depth
-     */
-    void dump(Logger logger, long width, long depth);
-
-    /**
      * Access the last node on the list.
      *
      * @return the last node in the current list or <code>null</code> if the
@@ -138,12 +129,33 @@ public interface ListMaker {
     Node getLastNode();
 
     /**
+     * Getter for the locator.
+     *
+     * @return the locator
+     */
+    Locator getLocator();
+
+    /**
      * Getter for the current mode.
      *
      * @return the mode which is one of the values defined in
      * {@link de.dante.extex.typesetter.Mode Mode}.
      */
     Mode getMode();
+
+    /**
+     * Getter for the previous depth parameter.
+     *
+     * @throws TypesetterUnsupportedException in case of an error
+     */
+    Dimen getPrevDepth() throws TypesetterUnsupportedException;
+
+    /**
+     * Getter for the space factor.
+     *
+     * @throws TypesetterUnsupportedException in case of an error
+     */
+    long getSpacefactor() throws TypesetterUnsupportedException;
 
     /**
      * Notification method to deal the case that a left brace has been
@@ -161,7 +173,7 @@ public interface ListMaker {
      *
      * @throws TypesetterException in case of an error
      */
-    void letter(Context context, TypesettingContext tc, UnicodeChar uc)
+    void letter(Context context, TypesettingContext tc, UnicodeChar uc, Locator locator)
             throws TypesetterException;
 
     /**
@@ -208,18 +220,27 @@ public interface ListMaker {
      *
      * @param pd the previous depth parameter
      *
-     * @throws TypesetterException in case of an error
+     * @throws TypesetterUnsupportedException in case of an error
      */
-    void setPrevDepth(Dimen pd) throws TypesetterException;
+    void setPrevDepth(Dimen pd) throws TypesetterUnsupportedException;
 
     /**
      * Setter for the space factor.
      *
      * @param sf the space factor to set
      *
-     * @throws TypesetterException in case of an error
+     * @throws TypesetterUnsupportedException in case of an error
      */
-    void setSpacefactor(Count sf) throws TypesetterException;
+    void setSpacefactor(Count sf) throws TypesetterUnsupportedException, InvalidSpacefactorException;
+
+    /**
+     * Print the status for <tt>\showlists</tt>.
+     *
+     * @param sb the target buffer
+     * @param l ...
+     * @param m ...
+     */
+    void showlist(StringBuffer sb, long l, long m);
 
     /**
      * Treat a subscript mark. This might be meaningful in math mode only.
@@ -260,5 +281,4 @@ public interface ListMaker {
     void tab(Context context, TokenSource source, Token t)
             throws TypesetterException,
                 ConfigurationException;
-
 }

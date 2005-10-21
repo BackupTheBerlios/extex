@@ -52,7 +52,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Showlists extends AbstractBox implements LogEnabled {
 
@@ -97,10 +97,14 @@ public class Showlists extends AbstractBox implements LogEnabled {
             throws InterpreterException {
 
         Count depth = context.getCount("showboxdepth");
-        Count width = context.getCount("showboxbreadth");
-        typesetter.getListMaker().dump(logger,
+        Count width = context.getCount("showboxbreadth");//TODO gene: needed?
+        StringBuffer sb = new StringBuffer();
+
+        typesetter.showlists(sb,
                 depth != null ? depth.getValue() : Long.MAX_VALUE,
                 width != null ? width.getValue() : Long.MAX_VALUE);
+
+        logger.fine(sb.toString());
     }
 
 }

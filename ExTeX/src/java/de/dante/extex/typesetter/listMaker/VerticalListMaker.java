@@ -21,7 +21,6 @@ package de.dante.extex.typesetter.listMaker;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
@@ -34,9 +33,11 @@ import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.ParagraphObserver;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
+import de.dante.extex.typesetter.exception.TypesetterUnsupportedException;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
+import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
@@ -45,7 +46,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class VerticalListMaker extends AbstractListMaker {
 
@@ -68,16 +69,16 @@ public class VerticalListMaker extends AbstractListMaker {
      *
      * @see "<logo>TeX</logo> &ndash; The Program [212]"
      */
-    private Dimen prevDepth = new Dimen(-1000 * Dimen.ONE);
+    private Dimen prevDepth = null;
 
     /**
      * Creates a new object.
      *
      * @param manager the manager to ask for global changes
      */
-    public VerticalListMaker(final ListManager manager) {
+    public VerticalListMaker(final ListManager manager, final Locator locator) {
 
-        super(manager);
+        super(manager, locator);
     }
 
     /**
@@ -142,15 +143,6 @@ public class VerticalListMaker extends AbstractListMaker {
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#dump(java.util.logging.Logger, long, long)
-     */
-    public void dump(final Logger logger, final long width, final long depth) {
-
-        //TODO gene: unimplemented
-        throw new RuntimeException("unimplemented");
-    }
-
-    /**
      * @see de.dante.extex.typesetter.ListMaker#getLastNode()
      */
     public Node getLastNode() {
@@ -167,17 +159,26 @@ public class VerticalListMaker extends AbstractListMaker {
     }
 
     /**
+     * @see de.dante.extex.typesetter.ListMaker#getPrevDepth()
+     */
+    public Dimen getPrevDepth() throws TypesetterUnsupportedException {
+
+        return prevDepth;
+    }
+
+    /**
      * @see de.dante.extex.typesetter.ListMaker#letter(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.context.TypesettingContext,
      *      de.dante.util.UnicodeChar)
      */
     public void letter(final Context context, final TypesettingContext font,
-            final UnicodeChar symbol) throws TypesetterException {
+            final UnicodeChar symbol, Locator locator)
+            throws TypesetterException {
 
         ListManager man = getManager();
-        ListMaker hlist = new HorizontalListMaker(man);
-        hlist.letter(context, font, symbol);
+        ListMaker hlist = new HorizontalListMaker(man, locator);
+        hlist.letter(context, font, symbol, locator);
         man.push(hlist);
     }
 
@@ -213,9 +214,28 @@ public class VerticalListMaker extends AbstractListMaker {
      * @see de.dante.extex.typesetter.ListMaker#setPrevDepth(
      *      de.dante.extex.interpreter.type.dimen.Dimen)
      */
-    public void setPrevDepth(final Dimen pd) throws TypesetterException {
+    public void setPrevDepth(final Dimen pd) {
 
-        prevDepth.set(pd);
+        if (prevDepth == null) {
+            prevDepth = new Dimen(pd);
+        } else {
+            prevDepth.set(pd);
+        }
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#showlist(
+     *      java.lang.StringBuffer, long, long)
+     */
+    public void showlist(final StringBuffer sb, final long l, final long m) {
+
+        sb.append("prevdepth ");
+        if (prevDepth == null) {
+            sb.append("ignored");
+        } else {
+            prevDepth.toString(sb);
+        }
+        sb.append('\n');
     }
 
 }

@@ -37,7 +37,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @see "<logo>TeX</logo> &ndash; The Program [211]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
 public interface Typesetter extends ListMaker {
 
@@ -153,4 +153,13 @@ public interface Typesetter extends ListMaker {
      * @see #clearShipoutMark()
      */
     void shipout(NodeList nodes) throws TypesetterException;
+
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param sb
+     * @param l
+     * @param m
+     */
+    void showlists(StringBuffer sb, long l, long m);
 }
