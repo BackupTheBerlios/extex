@@ -30,6 +30,7 @@ import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.ExpandableCode;
+import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.DimenConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
@@ -60,7 +61,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.40 $
+ * @version $Revision: 1.41 $
  */
 public class GlueComponent implements Serializable, FixedGlueComponent {
 
@@ -465,8 +466,8 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
      * @param source the source for next tokens
      * @param typesetter the typesetter
      * @param fixed this argument indicates that no fil parts of the object
-     * should be filled. This means that the component is in fact a fixed
-     * Dimen value.
+     *  should be filled. This means that the component is in fact a fixed
+     *  Dimen value.
      *
      * @throws InterpreterException in case of an error
      */
@@ -485,8 +486,8 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
                     value = ((DimenConvertible) code).convertDimen(context,
                             source, typesetter);
                     return;
-                } else if (t instanceof ExpandableCode) {
-                    ((ExpandableCode) t).expand(Flags.NONE, context, source,
+                } else if (code instanceof ExpandableCode) {
+                    ((ExpandableCode) code).expand(Flags.NONE, context, source,
                             typesetter);
                 } else {
                     break;
@@ -498,14 +499,13 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
 
         value = scanFloat(context, source, t);
 
-        t = source.getNonSpace(context);
-
         long mag = 1000;
         if (source.getKeyword(context, "true")) { // cf. TTP[453], TTP[457]
             source.push(t);
             mag = context.getMagnification();
-            t = source.scanNonSpace(context);
         }
+
+        t = source.scanNonSpace(context);
 
         // cf. TTP[458]
         if (t instanceof CodeToken) {
