@@ -25,12 +25,14 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.ImpossibleException;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
+import de.dante.extex.interpreter.primitives.typesetter.paragraph.Par;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.Showable;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.Catcode;
+import de.dante.extex.scanner.type.token.CodeToken;
 import de.dante.extex.scanner.type.token.LeftBraceToken;
 import de.dante.extex.scanner.type.token.MacroParamToken;
 import de.dante.extex.scanner.type.token.OtherToken;
@@ -53,7 +55,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public class MacroCode extends AbstractCode
         implements
@@ -124,7 +126,7 @@ public class MacroCode extends AbstractCode
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        Tokens[] args = matchPattern(context, source);
+        Tokens[] args = matchPattern(context, source, typesetter);
         Tokens toks = new Tokens();
         int len = body.length();
         int no = 1;
@@ -185,13 +187,15 @@ public class MacroCode extends AbstractCode
      *
      * @param context the processor context
      * @param source the source for new tokens
+     * @param typesetter the typesetter
      *
      * @return the tokens accumulated
      *
      * @throws InterpreterException in case of an error
      */
     private Tokens getTokenOrBlock(final Context context,
-            final TokenSource source) throws InterpreterException {
+            final TokenSource source, final Typesetter typesetter)
+            throws InterpreterException {
 
         Token t = source.getToken(context);
 
@@ -200,7 +204,7 @@ public class MacroCode extends AbstractCode
                     printableControlSequence(context));
         } else if (t instanceof LeftBraceToken) {
             source.push(t);
-            Tokens toks = source.getTokens(context);
+            Tokens toks = source.getTokens(context, source, typesetter);
             if (toks == null) {
                 throw new HelpingException(getLocalizer(), "TTP.EOFinMatch",
                         printableControlSequence(context));
@@ -234,6 +238,7 @@ public class MacroCode extends AbstractCode
      *
      * @param context the processor context
      * @param source the source for new tokens
+     * @param typesetter the typesetter
      * @param args the array of Tokens to fill
      * @param len the length of the patterns
      * @param i the starting index
@@ -243,8 +248,8 @@ public class MacroCode extends AbstractCode
      * @throws InterpreterException in case of an error
      */
     private int matchParameter(final Context context, final TokenSource source,
-            final Tokens[] args, final int len, final int i)
-            throws InterpreterException {
+            final Typesetter typesetter, final Tokens[] args, final int len,
+            final int i) throws InterpreterException {
 
         int pi = i + 1;
         if (pi >= len) {
@@ -263,11 +268,11 @@ public class MacroCode extends AbstractCode
             int no = ti.getChar().getCodePoint() - '0';
             ++pi;
             if (pi >= len) {
-                args[no] = getTokenOrBlock(context, source);
+                args[no] = getTokenOrBlock(context, source, typesetter);
             } else if (pattern.get(pi) instanceof MacroParamToken
             //TODO gene: #1##
             ) {
-                args[no] = getTokenOrBlock(context, source);
+                args[no] = getTokenOrBlock(context, source, typesetter);
             } else {
                 args[no] = scanTo(context, source, pattern.get(pi));
             }
@@ -286,6 +291,7 @@ public class MacroCode extends AbstractCode
      *
      * @param context the processor context
      * @param source the source for new tokens
+     * @param typesetter the typesetter
      *
      * @return a new array of parameters which have been found during the
      *         matching. Note that some of th elements of the array might be
@@ -294,7 +300,8 @@ public class MacroCode extends AbstractCode
      * @throws InterpreterException in case of an error
      */
     private Tokens[] matchPattern(final Context context,
-            final TokenSource source) throws InterpreterException {
+            final TokenSource source, final Typesetter typesetter)
+            throws InterpreterException {
 
         Tokens[] args = new Tokens[pattern.getArity()];
         Token ti;
@@ -304,8 +311,8 @@ public class MacroCode extends AbstractCode
         for (int pi = 0; pi < len; pi++) {
             ti = pattern.get(pi);
             if (ti instanceof MacroParamToken) {
-                pi = matchParameter(context, source, args, len, pi);
-            } else if (notLong && ti.equals(Catcode.ESCAPE, "par")) {
+                pi = matchParameter(context, source, typesetter, args, len, pi);
+            } else if (notLong && ti.equals(Catcode.ESCAPE, "par")) { //TODO gene: reconstruct to use the code and not the name
                 throw new HelpingException(getLocalizer(), "TTP.RunawayArg",
                         printableControlSequence(context));
             } else {
@@ -341,6 +348,12 @@ public class MacroCode extends AbstractCode
                 .getToken(context)) {
             if (t.equals(to)) {
                 return toks;
+            } else if (notLong && t instanceof CodeToken) {
+                Code code = context.getCode((CodeToken) t);
+                if (code instanceof Par) {
+                    throw new HelpingException(getLocalizer(),
+                            "TTP.RunawayArg", printableControlSequence(context));
+                }
             }
             toks.add(t);
         }
