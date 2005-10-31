@@ -24,14 +24,13 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractAssignment;
-import de.dante.util.exception.GeneralException;
 
 /**
  * This abstract base class provides the methods to compute the keys for
  * numbered dimen registers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public abstract class AbstractDimen extends AbstractAssignment {
 
@@ -64,8 +63,6 @@ public abstract class AbstractDimen extends AbstractAssignment {
             name = source.scanRegisterName(context, getName());
         } catch (InterpreterException e) {
             throw e;
-        } catch (GeneralException e) {
-            throw new InterpreterException(e);
         }
 
         if (Namespace.SUPPORT_NAMESPACE_DIMEN) {
