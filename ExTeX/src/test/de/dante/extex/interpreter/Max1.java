@@ -19,8 +19,6 @@
 
 package de.dante.extex.interpreter;
 
-import java.util.logging.Logger;
-
 import junit.framework.TestCase;
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.interpreter.context.Context;
@@ -59,7 +57,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.66 $
+ * @version $Revision: 1.67 $
  */
 public class Max1 extends TestCase {
 

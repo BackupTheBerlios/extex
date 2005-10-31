@@ -47,12 +47,13 @@ import de.dante.extex.typesetter.Typesetter;
  *  the compatibility with <logo>eTeX</logo> which does not have this unit. This
  *  unit has been introduced by <logo>Omega</logo>.
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;gluestretchorder&rang;
  *      &rarr; <tt>\gluestretchorder</tt> &lang;glue&rang; </pre>
- * </p>
+ *
  * <h4>Examples</h4>
  * <pre class="TeXSample">
  *   \gluestretchorder\skip1  </pre>
@@ -60,7 +61,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Gluestretchorder extends AbstractCode
         implements

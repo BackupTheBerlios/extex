@@ -19,11 +19,9 @@
 
 package de.dante.extex.interpreter.primitives.register.count;
 
-import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.exception.helping.CantUseInException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.count.Count;
@@ -37,7 +35,7 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="badness">
  * <h3>The Primitive <tt>\badness</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  TODO gene: missing documentation
  * </p>
  * <p>
  *  The formal description of this primitive is the following:
@@ -58,7 +56,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Badness extends AbstractCode implements CountConvertible, Theable {
 

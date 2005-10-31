@@ -22,7 +22,6 @@ package de.dante.extex.interpreter.primitives.register.skip;
 import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.util.exception.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\skip</code>.
@@ -42,7 +41,7 @@ import de.dante.util.exception.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class SkipParameter extends SkipPrimitive {
 

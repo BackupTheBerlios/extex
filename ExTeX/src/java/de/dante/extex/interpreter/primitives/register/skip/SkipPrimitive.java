@@ -29,7 +29,6 @@ import de.dante.extex.interpreter.type.arithmetic.Advanceable;
 import de.dante.extex.interpreter.type.arithmetic.Divideable;
 import de.dante.extex.interpreter.type.arithmetic.Multiplyable;
 import de.dante.extex.interpreter.type.count.Count;
-import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.glue.GlueConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
@@ -47,7 +46,7 @@ import de.dante.util.exception.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class SkipPrimitive extends AbstractSkip
         implements

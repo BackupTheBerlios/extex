@@ -19,11 +19,9 @@
 
 package de.dante.extex.interpreter.primitives.register.skip;
 
-import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.exception.helping.CantUseInException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.count.CountConvertible;
@@ -49,12 +47,13 @@ import de.dante.extex.typesetter.Typesetter;
  *  the compatibility with <logo>eTeX</logo> which does not have this unit. This
  *  unit has been introduced by <logo>Omega</logo>.
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;glueshrinkorder&rang;
  *      &rarr; <tt>\glueshrinkorder</tt> &lang;glue&rang; </pre>
- * </p>
+ *
  * <h4>Examples</h4>
  * <pre class="TeXSample">
  *   \glueshrinkorder\skip1  </pre>
@@ -62,7 +61,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Glueshrinkorder extends AbstractCode
         implements

@@ -22,7 +22,6 @@ package de.dante.extex.interpreter.primitives.register.count;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.typesetter.Typesetter;
 
 
@@ -31,7 +30,7 @@ import de.dante.extex.typesetter.Typesetter;
  * primitive.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 
 public class EtexVersion extends AbstractReadonlyCount {

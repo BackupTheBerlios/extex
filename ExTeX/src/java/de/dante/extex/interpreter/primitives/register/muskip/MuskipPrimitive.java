@@ -19,18 +19,10 @@
 
 package de.dante.extex.interpreter.primitives.register.muskip;
 
-import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.type.Theable;
-import de.dante.extex.interpreter.type.arithmetic.Advanceable;
-import de.dante.extex.interpreter.type.arithmetic.Divideable;
-import de.dante.extex.interpreter.type.arithmetic.Multiplyable;
-import de.dante.extex.interpreter.type.tokens.Tokens;
-import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.exception.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\muskip</code>.
@@ -51,7 +43,7 @@ import de.dante.util.exception.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class MuskipPrimitive extends MuskipParameter {
 
