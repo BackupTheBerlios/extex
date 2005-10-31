@@ -91,7 +91,7 @@
     <!-- The configuration of the context implementation to use.
       -->
     <Context default="ExTeX">
-	  <ExTeX class="de.dante.extex.interpreter.context.impl.ContextImpl">
+      <ExTeX class="de.dante.extex.interpreter.context.impl.ContextImpl">
         <!-- The implementation of the group to use.
           -->
         <Group class="de.dante.extex.interpreter.context.impl.GroupImpl"/>
@@ -104,16 +104,16 @@
 
     <!-- The implementation of the error handler to use.
       -->
-	<ErrorHandler default="ExTeX">
-	 <ExTeX class="de.dante.extex.main.errorHandler.ErrorHandlerImpl">
+    <ErrorHandler default="ExTeX">
+     <ExTeX class="de.dante.extex.main.errorHandler.ErrorHandlerImpl">
        <EditHandler class="de.dante.extex.main.errorHandler.editHandler.EditHandlerTeXImpl"/>
      </ExTeX>
-	 <TeX class="de.dante.extex.main.errorHandler.ErrorHandlerTeXImpl">
+     <TeX class="de.dante.extex.main.errorHandler.ErrorHandlerTeXImpl">
        <EditHandler class="de.dante.extex.main.errorHandler.editHandler.EditHandlerTeXImpl"/>
      </TeX>
      <extex class="de.dante.extex.main.errorHandler.ErrorHandlerImpl"/>
      <tex class="de.dante.extex.main.errorHandler.ErrorHandlerTeXImpl"/>
-	</ErrorHandler>
+    </ErrorHandler>
 
     <primitives src="primitives/tex.xml"/>
     <primitives src="primitives/etex.xml"/>
@@ -129,7 +129,7 @@
     -  one of several typesetters programatically.
     -->
   <Typesetter default="TeX">
-	<TeX class="de.dante.extex.typesetter.impl.TypesetterImpl"
+    <TeX class="de.dante.extex.typesetter.impl.TypesetterImpl"
          direction="lr">
       <PageBuilder class="de.dante.extex.typesetter.pageBuilder.impl.PageBuilderImpl"/>
       <ParagraphBuilder class="de.dante.extex.typesetter.paragraphBuilder.impl.ParagraphBuilderImpl"/>
