@@ -24,7 +24,6 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.exception.helping.CantUseInException;
 import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.ExpandableCode;
@@ -32,7 +31,6 @@ import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.DimenConvertible;
-import de.dante.extex.interpreter.type.dimen.ImmutableDimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.CatcodeException;
@@ -46,24 +44,24 @@ import de.dante.util.UnicodeChar;
  * <doc name="fontchardp">
  * <h3>The Primitive <tt>\fontchardp</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  TODO gene: missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;fontchardp&rang;
  *      &rarr; <tt>\fontchardp</tt> &lang;font&rang; &lang;number&rang;  </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \dimen0 = \fontchardp\tenrm `a  </pre>
- * </p>
+ *
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Fontchardp extends AbstractCode
         implements

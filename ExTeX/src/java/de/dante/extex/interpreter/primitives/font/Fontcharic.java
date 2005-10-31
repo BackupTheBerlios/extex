@@ -24,7 +24,6 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.exception.helping.CantUseInException;
 import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.ExpandableCode;
@@ -37,7 +36,6 @@ import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.CatcodeException;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.UnicodeChar;
-import de.dante.util.exception.GeneralException;
 
 /**
  * This class provides an implementation for the primitive
@@ -46,23 +44,23 @@ import de.dante.util.exception.GeneralException;
  * <doc name="fontcharic">
  * <h3>The Primitive <tt>\fontcharic</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  TODO gene: missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    <tt>\fontcharic</tt>    </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \fontcharic\tenrm `a  </pre>
- * </p>
+ *
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Fontcharic extends AbstractCode
         implements

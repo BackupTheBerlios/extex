@@ -19,8 +19,6 @@
 
 package de.dante.extex.interpreter.primitives.font;
 
-import java.io.FileNotFoundException;
-
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -36,7 +34,6 @@ import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.CatcodeException;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.exception.GeneralException;
 
 /**
  * This class provides an implementation for the primitive
@@ -54,7 +51,8 @@ import de.dante.util.exception.GeneralException;
  *  The primitive expands to the value of the font dimension in a right hand
  *  context.
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    <tt>\fontdimen</tt> {@linkplain
@@ -67,22 +65,21 @@ import de.dante.util.exception.GeneralException;
  *      de.dante.extex.interpreter.type.dimen#Dimen(Context,TokenSource)
  *      &lang;dimen&rang;}   </pre>
  *  TODO gene: document Extension
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \fontdimen13\ff=5pt  </pre>
  *  <pre class="TeXSample">
  *    \the\fontdimen13\ff  </pre>
  *  <pre class="TeXSample">
  *    \the\fontdimen{em}\ff=8pt  </pre>
- * </p>
+ *
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.32 $
+ * @version $Revision: 1.33 $
  */
 public class Fontdimen extends AbstractAssignment
         implements
