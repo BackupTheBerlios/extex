@@ -35,7 +35,7 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="if">
  * <h3>The Primitive <tt>\currentiflevel</tt></h3>
  * <p>
- *  ...
+ *  TODO gene: missing documentation
  * </p>
  *
  * <h4>Syntax</h4>
@@ -51,7 +51,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Currentiflevel extends AbstractCode
         implements
