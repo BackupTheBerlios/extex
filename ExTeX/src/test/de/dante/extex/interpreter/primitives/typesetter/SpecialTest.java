@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\special</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class SpecialTest extends NoFlagsPrimitiveTester {
 
@@ -45,7 +45,7 @@ public class SpecialTest extends NoFlagsPrimitiveTester {
      */
     public SpecialTest(final String arg) {
 
-        super(arg, "\\special", "{}");
+        super(arg, "special", "{}");
     }
 
 }

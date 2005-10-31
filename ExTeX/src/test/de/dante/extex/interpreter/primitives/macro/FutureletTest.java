@@ -17,25 +17,27 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.math;
+package de.dante.extex.interpreter.primitives.macro;
 
+import de.dante.test.NoFlagsButGlobalPrimitiveTester;
 
 /**
- * This is a test suite for the primitive <tt>\overline</tt>.
+ * This is a test suite for the primitive <tt>\futurelet</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.1 $
  */
-public class OverlineTest extends AbstractMathTester {
+public class FutureletTest extends NoFlagsButGlobalPrimitiveTester {
 
     /**
-     * Constructor for OverlineTest.
+     * Creates a new object.
      *
      * @param arg the name
      */
-    public OverlineTest(final String arg) {
+    public FutureletTest(final String arg) {
 
-        super(arg, "overline", " x");
+        super(arg, "futurelet", "\\relax\\relax\\relax");
     }
+
 
 }

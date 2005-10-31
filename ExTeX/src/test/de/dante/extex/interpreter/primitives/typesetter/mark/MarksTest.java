@@ -19,15 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.typesetter.mark;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.test.NoFlagsPrimitiveTester;
 
 /**
  * This is a test suite for the primitive <tt>\marks</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class MarksTest extends ExTeXLauncher {
+public class MarksTest extends NoFlagsPrimitiveTester {
 
     /**
      * Command line interface.
@@ -45,7 +45,7 @@ public class MarksTest extends ExTeXLauncher {
      */
     public MarksTest(final String arg) {
 
-        super(arg);
+        super(arg, "marks", "1{}");
     }
 
     //TODO implement primitive specific test cases

@@ -19,14 +19,13 @@
 
 package de.dante.extex.interpreter.primitives.dynamic;
 
-import de.dante.extex.interpreter.primitives.dynamic.java.JavaloadSensor;
 import de.dante.test.NoFlagsPrimitiveTester;
 
 /**
  * This is a test suite for the primitive <tt>\nativeload</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class NativeloadTest extends NoFlagsPrimitiveTester {
 

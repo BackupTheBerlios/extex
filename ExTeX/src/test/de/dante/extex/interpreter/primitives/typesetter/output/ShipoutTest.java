@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\shipout</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ShipoutTest extends NoFlagsPrimitiveTester {
 
@@ -45,7 +45,7 @@ public class ShipoutTest extends NoFlagsPrimitiveTester {
      */
     public ShipoutTest(final String arg) {
 
-        super(arg, "shipout", "\\hbox{}");
+        super(arg, "shipout", "\\box0");
     }
 
     /**

@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\input</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class InputTest extends NoFlagsPrimitiveTester {
 
@@ -46,8 +46,7 @@ public class InputTest extends NoFlagsPrimitiveTester {
      */
     public InputTest(final String arg) {
 
-        super(arg, "input", " src/test/data/empty.tex ", "\\nonstopmode",
-                "(src/test/data/empty.tex");
+        super(arg, "input", " src/test/data/empty.tex ", "\\nonstopmode");
     }
 
     /**
@@ -59,10 +58,10 @@ public class InputTest extends NoFlagsPrimitiveTester {
      */
     public void test0() throws Exception {
 
-        assertFailure(//--- input code ---
+        assertSuccess(//--- input code ---
                 "\\input src/test/data/empty.tex",
                 //--- output channel ---
-                "(src/test/data/empty.tex");
+                "");
     }
 
     /**

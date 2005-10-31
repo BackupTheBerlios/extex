@@ -23,7 +23,7 @@ package de.dante.extex.interpreter.primitives.register.count;
  * This is a test suite for the primitive <tt>\countdef</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class CountdefTest extends AbstractCountRegisterTester {
 
@@ -35,11 +35,6 @@ public class CountdefTest extends AbstractCountRegisterTester {
 
         junit.textui.TestRunner.run(CountdefTest.class);
     }
-
-    /**
-     * The field <tt>prepare</tt> contains the ...
-     */
-    private String prepare = "";
 
     /**
      * Creates a new object.

@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\hbox</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class HboxTest extends NoFlagsPrimitiveTester {
 
@@ -178,11 +178,11 @@ public class HboxTest extends NoFlagsPrimitiveTester {
      */
     public void testHbox4() throws Exception {
 
-        assertFailure(//--- input code ---
+        assertSuccess(//--- input code ---
                 DEFINE_BRACES + "\\font\\fnt cmtt12 \\fnt"
                         + "\\setbox1=\\hbox{abc} " + "\\the\\wd1 " + "\\end",
                 //--- output channel ---
-                "18.52501pt " + TERM); // checked wih TeX
+                "18.52501pt" + TERM); // checked wih TeX
     }
 
     //TODO implement primitive specific test cases

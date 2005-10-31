@@ -19,9 +19,7 @@
 
 package de.dante.extex.interpreter.primitives.dynamic;
 
-import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.primitives.dynamic.java.Loadable;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.exception.GeneralException;
@@ -30,7 +28,7 @@ import de.dante.util.exception.GeneralException;
  * TODO gene: missing JavaDoc.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class NativeloadSensor implements Loadable {
 

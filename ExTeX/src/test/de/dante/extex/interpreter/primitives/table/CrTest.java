@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\cr</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class CrTest extends NoFlagsPrimitiveTester {
 
@@ -36,7 +36,7 @@ public class CrTest extends NoFlagsPrimitiveTester {
      */
     public CrTest(final String arg) {
 
-        super(arg, "cr", "", DEFINE_CATCODES + "\\halign{#\\");
+        super(arg, "cr", "}", DEFINE_HASH + "\\halign{#\\cr");
     }
 
     /**

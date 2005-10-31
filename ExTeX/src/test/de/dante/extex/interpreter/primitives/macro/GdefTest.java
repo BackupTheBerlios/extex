@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -17,25 +17,42 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.math;
+package de.dante.extex.interpreter.primitives.macro;
 
+import de.dante.test.ExTeXLauncher;
 
 /**
- * This is a test suite for the primitive <tt>\overline</tt>.
+ * This is a test suite for the primitive <tt>\gdef</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.1 $
  */
-public class OverlineTest extends AbstractMathTester {
+public class GdefTest extends ExTeXLauncher {
 
     /**
-     * Constructor for OverlineTest.
+     * Creates a new object.
      *
      * @param arg the name
      */
-    public OverlineTest(final String arg) {
+    public GdefTest(final String arg) {
 
-        super(arg, "overline", " x");
+        super(arg);
+    }
+
+    /**
+     * <testcase primitive="\gdef">
+     *  Test case checking that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testImmediate1() throws Exception {
+
+        assertFailure(//--- input code ---
+                DEFINE_CATCODES
+                + "\\immediate\\gdef\\aaa{}",
+                //--- log message ---
+                "You can't use the prefix `\\immediate' with the control sequence \\gdef");
     }
 
 }

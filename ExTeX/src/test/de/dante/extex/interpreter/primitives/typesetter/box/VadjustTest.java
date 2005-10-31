@@ -19,14 +19,13 @@
 
 package de.dante.extex.interpreter.primitives.typesetter.box;
 
-import de.dante.test.ExTeXLauncher;
 import de.dante.test.NoFlagsPrimitiveTester;
 
 /**
  * This is a test suite for the primitive <tt>\vadjust</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class VadjustTest extends NoFlagsPrimitiveTester {
 

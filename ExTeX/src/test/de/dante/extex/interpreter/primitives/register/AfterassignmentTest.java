@@ -19,15 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.register;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.test.NoFlagsPrimitiveTester;
 
 /**
  * This is a test suite for the primitive <tt>\afterassignment</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class AfterassignmentTest extends ExTeXLauncher {
+public class AfterassignmentTest extends NoFlagsPrimitiveTester {
 
     /**
      * Command line interface.
@@ -45,7 +45,7 @@ public class AfterassignmentTest extends ExTeXLauncher {
      */
     public AfterassignmentTest(final String arg) {
 
-        super(arg);
+        super(arg, "afterassignment", " x");
     }
 
     /**

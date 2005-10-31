@@ -19,15 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.typesetter.mark;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.test.NoFlagsPrimitiveTester;
 
 /**
  * This is a test suite for the primitive <tt>\botmark</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class BotmarkTest extends ExTeXLauncher {
+public class BotmarkTest extends NoFlagsPrimitiveTester {
 
     /**
      * Command line interface.
@@ -45,7 +45,7 @@ public class BotmarkTest extends ExTeXLauncher {
      */
     public BotmarkTest(final String arg) {
 
-        super(arg);
+        super(arg, "botmark", "");
     }
 
     //TODO implement primitive specific test cases

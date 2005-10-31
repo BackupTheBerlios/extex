@@ -19,15 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.typesetter.mark;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.test.NoFlagsPrimitiveTester;
 
 /**
  * This is a test suite for the primitive <tt>\splitbotmark</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class SplitbotmarkTest extends ExTeXLauncher {
+public class SplitbotmarkTest extends NoFlagsPrimitiveTester {
 
     /**
      * Command line interface.
@@ -45,7 +45,7 @@ public class SplitbotmarkTest extends ExTeXLauncher {
      */
     public SplitbotmarkTest(final String arg) {
 
-        super(arg);
+        super(arg, "splitbotmark", "");
     }
 
     //TODO implement primitive specific test cases

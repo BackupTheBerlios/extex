@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\inputlineno</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class InputlinenoTest extends ExTeXLauncher {
 
@@ -62,6 +62,21 @@ public class InputlinenoTest extends ExTeXLauncher {
                 "\\the\\inputlineno ",
                 //--- output channel ---
                 "1" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\inputlineno">
+     *  Test case checking that a <tt>\inputlineno</tt> works.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test1() throws Exception {
+
+        assertFailure(//--- input code ---
+                "\\inputlineno=123 ",
+                //--- error channel ---
+                "You can't use `\\inputlineno' in vertical mode");
     }
 
 }

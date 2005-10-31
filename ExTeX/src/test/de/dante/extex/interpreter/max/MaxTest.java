@@ -26,7 +26,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the interpreter Max.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class MaxTest extends ExTeXLauncher {
 
@@ -577,6 +577,20 @@ public class MaxTest extends ExTeXLauncher {
     public void testEndgroupNoProtectedFlag() throws Exception {
 
         tryFlag("protected", "}", Catcode.RIGHTBRACE, "end-group character }");
+    }
+
+    /**
+     * <testcase>
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testEndgroup1() throws Exception {
+
+        assertFailure( //
+                DEFINE_BRACES + "}",
+                //
+                "Too many }'s");
     }
 
 }

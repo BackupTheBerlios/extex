@@ -47,15 +47,15 @@ import de.dante.util.UnicodeChar;
  * TODO gene: missing JavaDoc.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class BaseHyphenationTableTest extends TestCase {
 
     /**
-     * TODO gene: missing JavaDoc.
+     * Mock implementation of a font.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.5 $
+     * @version $Revision: 1.6 $
      */
     private class MockFont implements Font {
 
@@ -228,7 +228,7 @@ public class BaseHyphenationTableTest extends TestCase {
      * This is a mock implementation of a glyph.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.5 $
+     * @version $Revision: 1.6 $
      */
     private class MockGlyph implements Glyph {
 
@@ -374,7 +374,7 @@ public class BaseHyphenationTableTest extends TestCase {
      * This mock implementation is for test purposes only.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.5 $
+     * @version $Revision: 1.6 $
      */
     private class MyMockContext extends MockContext {
 

@@ -23,7 +23,7 @@ package de.dante.extex.interpreter.primitives.register.toks;
  * This is a test suite for the primitive <tt>\toks</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ToksTest extends AbstractToksRegisterTester {
 
@@ -45,5 +45,22 @@ public class ToksTest extends AbstractToksRegisterTester {
 
         super(arg, "toks", "42", "");
     }
+
+    /**
+     * <testcase primitive="\toks">
+     *   Test case checking that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testAssign1() throws Exception {
+
+        assertSuccess(//--- input code ---
+                "\\toks12=\\toks23 "
+                + "\\end",
+                //--- output channel ---
+                "");
+    }
+
 
 }

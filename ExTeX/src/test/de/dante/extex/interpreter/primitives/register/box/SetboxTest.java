@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsButGlobalPrimitiveTester;
  * This is a test suite for the primitive <tt>\setbox</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class SetboxTest extends NoFlagsButGlobalPrimitiveTester {
 
@@ -45,7 +45,7 @@ public class SetboxTest extends NoFlagsButGlobalPrimitiveTester {
      */
     public SetboxTest(final String arg) {
 
-        super(arg, "setbox", "2\\hbox{}", DEFINE_BRACES);
+        super(arg, "setbox", "2\\hbox{}");
     }
 
     /**

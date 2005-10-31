@@ -25,14 +25,9 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for horizontal filling primitives.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class AbstractHfillTester extends NoFlagsPrimitiveTester {
-
-    /**
-     * The field <tt>primitive</tt> contains the name of the primitive to test.
-     */
-    private String primitive;
 
     /**
      * The field <tt>invocation</tt> contains the concatenation of primitive
@@ -45,7 +40,6 @@ public abstract class AbstractHfillTester extends NoFlagsPrimitiveTester {
      */
     private String prepare = DEFINE_BRACES;
 
-
     /**
      * Constructor for HfillTest.
      *
@@ -55,7 +49,6 @@ public abstract class AbstractHfillTester extends NoFlagsPrimitiveTester {
             final String args) {
 
         super(arg, primitive, args);
-        this.primitive = primitive;
         this.invocation = primitive + args;
     }
 
@@ -71,7 +64,7 @@ public abstract class AbstractHfillTester extends NoFlagsPrimitiveTester {
         assertSuccess(//--- input code ---
                 prepare + "\\vbox{a\\" + invocation + " b} \\end",
                 //--- error channel ---
-                "..."); //TODO
+                "ab\n" + TERM);
     }
 
     /**
@@ -86,7 +79,7 @@ public abstract class AbstractHfillTester extends NoFlagsPrimitiveTester {
         assertSuccess(//--- input code ---
                 prepare + "\\hbox{a\\" + invocation + " b} \\end",
                 //--- error channel ---
-                "..."); //TODO
+                "ab" + TERM);
     }
 
     //TODO implement primitive specific test cases

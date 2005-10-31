@@ -43,7 +43,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * Test cases for the string implementation of atoken stream.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class TokenStreamStringImplTest extends TestCase {
 
@@ -51,7 +51,7 @@ public class TokenStreamStringImplTest extends TestCase {
      * Mock configuration class.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.19 $
+     * @version $Revision: 1.20 $
      */
     private static class MockConfiguration implements Configuration {
 
@@ -365,9 +365,11 @@ public class TokenStreamStringImplTest extends TestCase {
      */
     public void testCr2() throws Exception {
 
-        TokenStream stream = makeStream("\n\n"); // mgn: changed
-        assertEquals("the control sequence \\par", stream.get(fac, tokenizer)
-                .toString());
+        TokenStream stream = makeStream("x\n\n");
+        assertEquals("the letter x", stream.get(fac, tokenizer).toString());
+        Token t = stream.get(fac, tokenizer);
+        assertNotNull(t);
+        assertEquals("the control sequence \\par", t.toString());
         assertNull(stream.get(fac, tokenizer));
     }
 

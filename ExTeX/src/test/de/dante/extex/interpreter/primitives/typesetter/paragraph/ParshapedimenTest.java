@@ -25,7 +25,7 @@ import de.dante.test.NonExecuteTester;
  * This is a test suite for the primitive <tt>\parshapedimen</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ParshapedimenTest extends NonExecuteTester {
 
@@ -46,6 +46,43 @@ public class ParshapedimenTest extends NonExecuteTester {
     public ParshapedimenTest(final String arg) {
 
         super(arg, "parshapedimen", "0");
+    }
+
+    /**
+     * <testcase>
+     *  Test case showing that the primitive can not be used in inner
+     *  vertical mode.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testInnerVerticalMode1() throws Exception {
+
+        assertOutput(//--- input code ---
+                DEFINE_BRACES + "\\vbox{\\parshapedimen0}\\end",
+                //--- error channel ---
+                "You can't use `\\parshapedimen' in inner vertical mode",
+                //
+                "0" + TERM);
+    }
+
+    /**
+     * <testcase>
+     *  Test case showing that the primitive can not be used in restricted
+     *  horizontal mode.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testRestrictedHorizontalMode1() throws Exception {
+
+        assertOutput(//--- input code ---
+                DEFINE_BRACES + "\\hbox{\\parshapedimen0}\\end",
+                //--- error channel ---
+                "You can't use `\\parshapedimen"
+                        + "' in restricted horizontal mode",
+                //
+                "0" + TERM);
     }
 
     /**
@@ -209,7 +246,8 @@ public class ParshapedimenTest extends NonExecuteTester {
      */
     public void test20() throws Exception {
 
-        assertSuccess(//--- input code ---
+        assertSuccess(
+                //--- input code ---
                 "\\parshape2 12pt 24pt 36pt 48pt \\the\\parshapedimen222 \\end",
                 //--- output channel ---
                 "36.0pt" + TERM);
