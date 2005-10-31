@@ -307,9 +307,9 @@
   <define name="lastbox"
           class="de.dante.extex.interpreter.primitives.typesetter.undo.Lastbox"/>
   <define name="lastkern"
-          class="de.dante.extex.interpreter.primitives.register.dimen.Lastkern"/>
+          class="de.dante.extex.interpreter.primitives.typesetter.undo.Lastkern"/>
   <define name="lastpenalty"
-          class="de.dante.extex.interpreter.primitives.register.count.Lastpenalty"/>
+          class="de.dante.extex.interpreter.primitives.typesetter.undo.Lastpenalty"/>
   <define name="lastskip"
           class="de.dante.extex.interpreter.primitives.register.skip.SkipParameter"/>
   <define name="lccode"
@@ -487,7 +487,7 @@
   <define name="pretolerance"
           class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
   <define name="prevdepth"
-          class="de.dante.extex.interpreter.primitives.parameter.Prevdepth"/>
+          class="de.dante.extex.interpreter.primitives.typesetter.Prevdepth"/>
   <define name="prevgraf"
           class="de.dante.extex.interpreter.primitives.register.count.Prevgraf"/>
   <define name="radical"
@@ -525,7 +525,7 @@
   <define name="setlanguage"
           class="de.dante.extex.interpreter.primitives.typesetter.Setlanguage"/>
   <define name="sfcode"
-          class="de.dante.extex.interpreter.primitives.parameter.Sfcode"/>
+          class="de.dante.extex.interpreter.primitives.typesetter.Sfcode"/>
   <define name="shipout"
           class="de.dante.extex.interpreter.primitives.typesetter.output.Shipout"/>
   <define name="show"
@@ -547,7 +547,7 @@
   <define name="skipdef"
           class="de.dante.extex.interpreter.primitives.register.skip.Skipdef"/>
   <define name="spacefactor"
-          class="de.dante.extex.interpreter.primitives.parameter.Spacefactor"/>
+          class="de.dante.extex.interpreter.primitives.typesetter.Spacefactor"/>
   <define name="spaceskip"
           class="de.dante.extex.interpreter.primitives.register.skip.SkipParameter"/>
   <define name="span"
