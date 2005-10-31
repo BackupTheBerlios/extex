@@ -28,7 +28,7 @@
 <xsl:template match="testsuites">
     <html>
         <head>
-            <title>Unit Test Results</title>
+            <title>Unit Test Results for ExTeX</title>
     <style type="text/css">
       body {
         font:normal 68% sans-serif;
