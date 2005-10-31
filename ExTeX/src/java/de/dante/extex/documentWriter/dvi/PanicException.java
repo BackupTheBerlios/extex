@@ -21,7 +21,7 @@
  * Panic exception in dvi writer.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 
 package de.dante.extex.documentWriter.dvi;
@@ -29,6 +29,11 @@ package de.dante.extex.documentWriter.dvi;
 import de.dante.util.exception.GeneralException;
 
 public class PanicException extends GeneralException {
+
+    /**
+     * The field <tt>serialVersionUID</tt> contains the ...
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a new <code>PanicException</code> instance.
