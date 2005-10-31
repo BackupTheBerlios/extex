@@ -33,7 +33,8 @@ import de.dante.extex.typesetter.Typesetter;
  *  The primitive takes one expanded integer argument.
  *  The conditional is true iff the argument is odd.
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;ifodd&rang;
@@ -43,16 +44,15 @@ import de.dante.extex.typesetter.Typesetter;
  *      | <tt>\ifodd</tt> {@linkplain
  *        de.dante.extex.interpreter.TokenSource#scanInteger(Context,Typesetter)
  *        &lang;number&rang;} &lang;true text&rang; <tt>\else</tt> &lang;false text&rang; <tt>\fi</tt> </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \ifodd\count0 abc \fi  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Ifodd extends AbstractIf {
 

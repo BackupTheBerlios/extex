@@ -36,28 +36,28 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="import">
  * <h3>The Primitive <tt>\import</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  TODO gene: missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;import&rang;
  *      &rarr; <tt>\import</tt> {@linkplain
  *      de.dante.extex.interpreter.TokenSource#getTokens()
  *      &lang;replacement text&rang;}  </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \import{de.dante.dtk}  </pre>
- * </p>
+ *
  * </doc>
  *
  * @see de.dante.extex.interpreter.primitives.namespace.Export
  * @see de.dante.extex.interpreter.primitives.namespace.Namespace
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Import extends Let {
 
@@ -87,7 +87,7 @@ public class Import extends Let {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String ns = source.getTokens(context).toText();
+        String ns = source.getTokens(context, source, typesetter).toText();
         Tokens export = context.getToks(ns + "\bexport");
         String namespace = context.getNamespace();
         int length = export.length();

@@ -35,7 +35,8 @@ import de.dante.extex.typesetter.Typesetter;
  *  are found. The conditional is true iff the character codes of the two tokens
  *  agree.
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;if&rang;
@@ -49,16 +50,15 @@ import de.dante.extex.typesetter.Typesetter;
  *       &lang;token<sub>1</sub>&rang;} {@linkplain
  *       de.dante.extex.interpreter.TokenSource#getToken(Context)
  *       &lang;token<sub>2</sub>&rang;} &lang;true text&rang; <tt>\else</tt> &lang;false text&rang; <tt>\fi</tt> </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \if\a\x ok \fi  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class If extends AbstractIf {
 

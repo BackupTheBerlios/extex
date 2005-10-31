@@ -33,7 +33,7 @@ import de.dante.util.exception.GeneralException;
  * This is a abstract base class for DocumentWriters.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public abstract class AbstractDocumentWriter
         implements
@@ -51,7 +51,7 @@ public abstract class AbstractDocumentWriter
     protected Map parameter = new HashMap();
 
     /**
-     * The field <tt>writerFactory</tt> contains the ...
+     * The field <tt>writerFactory</tt> contains the output stream factory.
      */
     private OutputStreamFactory writerFactory;
 

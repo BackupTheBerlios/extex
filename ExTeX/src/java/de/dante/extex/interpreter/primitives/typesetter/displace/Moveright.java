@@ -35,7 +35,8 @@ import de.dante.extex.typesetter.Typesetter;
  * <p>
  *  TODO missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;moveright&rang;
@@ -44,25 +45,24 @@ import de.dante.extex.typesetter.Typesetter;
  *        &lang;dimen&rang;} {@linkplain
  *        de.dante.extex.interpreter.TokenSource#getBox(Context,de.dante.extex.typesetter.Typesetter)
  *        &lang;box&rang;}  </pre>
- * </p>
+ *
  * <p>
  *  The color from the typographic context is taken as foregroud color for the
  *  rule. The default color is black.
  * </p>
- * <p>
- *  Examples:
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \moveright 2em \hbox{abc}  </pre>
  *  <pre class="TeXSample">
  *    \moveright -1pt \hbox to 120pt {abc}  </pre>
  *  <pre class="TeXSample">
  *    \moveright 2mm \hbox spread 12pt {abc}  </pre>
- * </p>
+ *
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Moveright extends AbstractBoxPrimitive {
 

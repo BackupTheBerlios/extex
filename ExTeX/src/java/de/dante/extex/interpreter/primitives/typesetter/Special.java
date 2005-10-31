@@ -16,6 +16,7 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.typesetter;
 
 import de.dante.extex.interpreter.Flags;
@@ -24,8 +25,8 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.node.SpecialNode;
-import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
@@ -41,21 +42,21 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *  a {@link de.dante.extex.typesetter.type.node.SpecialNode SpecialNode} to
  *  the typesetter for passing it down.
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;special&rang;
  *        &rarr; <tt>\special</tt> {@linkplain
  *           de.dante.extex.interpreter.TokenSource#scanTokens(Context)
  *           &lang;general text&rang;}  </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \special{hello world}  </pre>
  *  <pre class="TeXSample">
  *    \special{ps: \abc}  </pre>
- * </p>
+ *
  * <p>
  *  For several backend drivers for <logo>TeX</logo> a quasi-standard has
  *  emerged which uses a prefix ended by a colon to indicate the backend driver
@@ -65,7 +66,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Special extends AbstractCode {
 
@@ -80,14 +81,16 @@ public class Special extends AbstractCode {
      * @param name the name for tracing and debugging
      */
     public Special(final String name) {
+
         super(name);
     }
 
     /**
      * Scan the next tokens (between braces) and send the value (as text) to the
-     * typesetter for the backend driver.
+     * typesetter for the back-end driver.
      *
-     * @see de.dante.extex.interpreter.type.Code#execute(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.type.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
@@ -99,7 +102,7 @@ public class Special extends AbstractCode {
         String text = source.scanTokens(context, getName()).toText();
         try {
             typesetter.add(new SpecialNode(text));
-        } catch (GeneralException e) {
+        } catch (TypesetterException e) {
             throw new InterpreterException(e);
         } catch (ConfigurationException e) {
             throw new InterpreterException(e);

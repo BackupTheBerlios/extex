@@ -42,7 +42,8 @@ import de.dante.extex.typesetter.Typesetter;
  *  This primitive implements an assignment. The variable given as next tokens
  *  is divided by the quantity given after the optional <tt>by</tt>.
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *   &lang;divide&rang;
@@ -66,20 +67,19 @@ import de.dante.extex.typesetter.Typesetter;
  *     &rarr; [by]
  *      |  &lang;optional spaces&rang;
  *   </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \divide\count12 345  </pre>
  *  <pre class="TeXSample">
  *    \divide\count12 by -345  </pre>
- * </p>
+ *
  * </doc>
  *
  *
  * @see de.dante.extex.interpreter.type.arithmetic.Divideable
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class Divide extends AbstractAssignment {
 

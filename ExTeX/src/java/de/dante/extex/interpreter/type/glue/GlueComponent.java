@@ -30,7 +30,6 @@ import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.ExpandableCode;
-import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.DimenConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
@@ -61,7 +60,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.41 $
+ * @version $Revision: 1.42 $
  */
 public class GlueComponent implements Serializable, FixedGlueComponent {
 
@@ -840,8 +839,8 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
      *
      * @param toks the tokens to append to
      * @param factory the token factory to get the required tokens from
-     * @param c1 ...
-     * @param c2 ...
+     * @param c1 the first character of the unit
+     * @param c2 the second character of the unit
      *
      * @throws CatcodeException in case of an error
      *

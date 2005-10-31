@@ -43,22 +43,22 @@ import de.dante.util.UnicodeChar;
  * <p>
  *  TODO missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;uppercase&rang;
  *        &rarr; <tt>&#x5c;uppercase</tt> &lang;...&rang; </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    &#x5c;uppercase ...  </pre>
- * </p>
+ *
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class Uppercase extends AbstractCode {
 
@@ -102,7 +102,7 @@ public class Uppercase extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        Tokens toks = source.getTokens(context);
+        Tokens toks = source.getTokens(context, source, typesetter);
         String namespace = context.getNamespace();
 
         if (toks == null) {

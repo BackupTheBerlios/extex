@@ -42,24 +42,24 @@ import de.dante.extex.typesetter.Typesetter;
  *  Otherwise it is a single character token containing the character code of
  *  the token.
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;string&rang;
  *        &rarr; <tt>\string</tt> &lang;token&rang; </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \string ...  </pre>
- * </p>
+ *
  * </doc>
  *
  *
  * @see "<logo>TeX</logo> &ndash; the Program [69]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class StringPrimitive extends AbstractCode implements ExpandableCode {
 

@@ -97,18 +97,18 @@ import de.dante.util.exception.GeneralException;
  *
  * <h4>Conversion to a Count</h4>
  * <p>
- *  TODO missing documentation
+ *  TODO gene: missing documentation
  * </p>
  *
  * <h4>Interaction with <tt>\the</tt></h4>
  * <p>
- *  TODO missing documentation
+ *  TODO gene: missing documentation
  * </p>
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
 public class Dp extends Setbox
         implements

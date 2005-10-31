@@ -35,7 +35,7 @@ import de.dante.extex.typesetter.type.noad.StyleNoad;
  * <doc name="displaystyle">
  * <h3>The Math Primitive <tt>\displaystyle</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  TODO gene: missing documentation
  * </p>
  *
  * <h4>Syntax</h4>
@@ -51,7 +51,7 @@ import de.dante.extex.typesetter.type.noad.StyleNoad;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Displaystyle extends AbstractMathCode {
 

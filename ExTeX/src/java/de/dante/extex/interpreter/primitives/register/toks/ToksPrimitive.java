@@ -25,6 +25,7 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.interpreter.type.tokens.TokensConvertible;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.exception.GeneralException;
 
@@ -33,17 +34,39 @@ import de.dante.util.exception.GeneralException;
  * It sets the named toks register to the value given, and as a side effect all
  * prefixes are zeroed.
  *
- * Example
+ * <doc name="toks">
+ * <h3>The Primitive <tt>\toks</tt></h3>
+ * <p>
+ *  TODO missing documentation
+ * </p>
  *
- * <pre>
- *  \encoding{UTF-8}
- * </pre>
+ * <h4>Syntax</h4>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\toks</tt> {@linkplain
+ *      de.dante.extex.interpreter.TokenSource#scanNumber(Context)
+ *      &lang;8-bit&nbsp;number&rang;} {@linkplain
+ *    de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+ *    &lang;equals&rang;} ... </pre>
+ *
+ * <h4>Examples</h4>
+ *  <pre class="TeXSample">
+ *    \toks2={UTF-8}  </pre>
+ *  <pre class="TeXSample">
+ *    \toks42={UTF-8}  </pre>
+ *
+ * </doc>
+ *
+ *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
-public class ToksPrimitive extends AbstractToks implements Theable {
+public class ToksPrimitive extends AbstractToks
+        implements
+            TokensConvertible,
+            Theable {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
@@ -73,9 +96,46 @@ public class ToksPrimitive extends AbstractToks implements Theable {
 
         String key = getKey(source, context);
         source.getOptionalEquals(context);
-        Tokens toks = source.getTokens(context);
+        Tokens toks = source.getTokens(context, source, typesetter);
         context.setToks(key, toks, prefix.isGlobal());
         prefix.clearGlobal();
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.tokens.TokensConvertible#convertTokens(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public Tokens convertTokens(final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws InterpreterException {
+
+        String key = getKey(source, context);
+        return context.getToks(key);
+    }
+
+    /**
+     * Expand
+     * <p>
+     * Scan the tokens between <code>{</code> and <code>}</code> and store
+     * them in the named tokens register.
+     *
+     * @param prefix the prefix flags
+     * @param context the interpreter context
+     * @param source the token source
+     * @param typesetter the typesetter
+     * @param key the key
+     *
+     * @throws GeneralException in case of an error
+     */
+    protected void expand(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter,
+            final String key) throws GeneralException {
+
+        Tokens toks = source.getTokens(context, source, typesetter);
+        context.setToks(key, toks, prefix.isGlobal());
+        prefix.clear();
     }
 
     /**
@@ -89,27 +149,6 @@ public class ToksPrimitive extends AbstractToks implements Theable {
             final Typesetter typesetter) throws InterpreterException {
 
         return context.getToks(getKey(source, context));
-    }
-
-    /**
-     * Expand
-     * <p>
-     * Scan the tokens between <code>{</code> and <code>}</code> and store
-     * them in the named tokens register.
-     *
-     * @param prefix the prefix flags
-     * @param context the interpreter context
-     * @param source the token source
-     * @param key the key
-     *
-     * @throws GeneralException in case of an error
-     */
-    protected void expand(final Flags prefix, final Context context,
-            final TokenSource source, final String key) throws GeneralException {
-
-        Tokens toks = source.getTokens(context);
-        context.setToks(key, toks, prefix.isGlobal());
-        prefix.clear();
     }
 
 }

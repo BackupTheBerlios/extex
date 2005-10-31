@@ -40,24 +40,24 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *  an effect in horizontal or restricted horizontal modes only. In other modes
  *  it has no effect.
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;space primitive&rang;
  *        &rarr; <tt>\ </tt>  </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    123\ 456  </pre>
  *  <pre class="TeXSample">
  *    123\ \  456  </pre>
- * </p>
+ *
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Space extends AbstractCode {
 

@@ -41,7 +41,8 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *  specified dimensions. If not overwritten the width and depth are 0pt and
  *  the height is 0.4&nbsp;pt (26214&nbsp;sp).
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;hrule&rang;
@@ -63,25 +64,24 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *         |  <tt>depth</tt> {@linkplain
  *        de.dante.extex.interpreter.type.dimen#Dimen(Context,TokenSource)
  *        &lang;dimen&rang;}   </pre>
- * </p>
+ *
  * <p>
  *  The color from the typographic context is taken as foreground color for the
  *  rule. The default color is black.
  * </p>
- * <p>
- *  Examples:
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \hrule  </pre>
  *  <pre class="TeXSample">
  *    \hrule width 2pt  </pre>
  *  <pre class="TeXSample">
  *    \hrule width 2pt depth 3mm height \dimen4  </pre>
- * </p>
+ *
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Hrule extends AbstractCode implements RuleConvertible {
 

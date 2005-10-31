@@ -39,21 +39,21 @@ import de.dante.extex.typesetter.Typesetter;
  *  can not be determined &ndash; e.g. because the input is not coming from a
  *  file &ndash; then the fallback <tt>texput</tt> is usd as default value.
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;jobname&rang;
  *      &rarr; <tt>\jobname</tt>  </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \jobname  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class Jobname extends AbstractCode implements ExpandableCode {
 

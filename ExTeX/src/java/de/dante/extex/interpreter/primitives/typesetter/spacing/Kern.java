@@ -27,7 +27,6 @@ import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.node.ExplicitKernNode;
-import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
@@ -41,23 +40,23 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *  typesetter. In vertical modes it means a vertival adjustment. Otherwise it
  *  means a horizontal adjustment.
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;kern&rang;
  *      &rarr; <tt>\kern</tt> {@linkplain
  *      de.dante.extex.interpreter.type.dimen#Dimen(Context,TokenSource)
  *      &lang;dimen&rang;}   </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \kern 12pt  </pre>
  *  <pre class="TeXSample">
  *    \kern -3mm  </pre>
  *  <pre class="TeXSample">
  *    \kern -\dimen123  </pre>
- * </p>
+ *
  * </doc>
  *
  * <p>
@@ -67,7 +66,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Kern extends AbstractCode {
 

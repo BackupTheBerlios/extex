@@ -19,7 +19,6 @@
 
 package de.dante.extex.interpreter.primitives.typesetter.box;
 
-import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
@@ -32,8 +31,6 @@ import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
-import de.dante.util.exception.GeneralException;
-import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * This class provides an implementation for the primitive <code>\vbox</code>.
@@ -47,7 +44,8 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *  The contents of the toks register <tt>\everyvbox</tt> is inserted at the
  *  beginning of the vertical material of the box.
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;vbox&rang;
@@ -57,16 +55,15 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *      &rarr;
  *         | <tt>to</tt> &lang;rule dimension&rang;
  *         | <tt>spread</tt> &lang;rule dimension&rang;  </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \vbox{abc}  </pre>
  *  <pre class="TeXSample">
  *    \vbox to 120pt{abc}  </pre>
  *  <pre class="TeXSample">
  *    \vbox spread 12pt{abc}  </pre>
- * </p>
+ *
  * </doc>
  *
  * <doc type="parameter" name="everyvbox">
@@ -79,7 +76,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class Vbox extends AbstractBoxPrimitive {
 

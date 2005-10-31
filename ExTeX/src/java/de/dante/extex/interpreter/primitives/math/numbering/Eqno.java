@@ -35,7 +35,7 @@ import de.dante.extex.typesetter.listMaker.math.EqConsumer;
  * <doc name="eqno">
  * <h3>The Math Primitive <tt>\eqno</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  TODO gene: missing documentation
  * </p>
  *
  * <h4>Syntax</h4>
@@ -51,7 +51,7 @@ import de.dante.extex.typesetter.listMaker.math.EqConsumer;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Eqno extends AbstractMathCode {
 

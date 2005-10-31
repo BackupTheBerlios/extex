@@ -36,7 +36,7 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="immediate">
  * <h3>The Prefix Primitive <tt>\immediate</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  TODO gene: missing documentation
  * </p>
  * <p>
  *  The formal description of this primitive is the following:
@@ -52,7 +52,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class Immediate extends AbstractCode implements PrefixCode {
 

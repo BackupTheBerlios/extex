@@ -40,23 +40,23 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * <p>
  *  TODO missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;unhbox&rang;
  *       &rarr; <tt>&#x5c;unhbox</tt> {@linkplain
  *          de.dante.extex.interpreter.TokenSource#scanNumber(Context)
  *          &lang;8-bit&nbsp;number&rang;} </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    &#x5c;unhbox42  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Unhbox extends AbstractBox {
 

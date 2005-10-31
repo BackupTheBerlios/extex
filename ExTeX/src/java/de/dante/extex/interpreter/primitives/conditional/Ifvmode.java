@@ -35,22 +35,22 @@ import de.dante.extex.typesetter.Typesetter;
  *  The conditional is true iff the typesetter is in a vertical mode. This is
  *  either the internal vertical mode or the vertical mode.
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;ifvmode&rang;
  *      &rarr; <tt>\ifvmode</tt> &lang;true text&rang; <tt>\fi</tt>
  *      | <tt>\ifvmode</tt> &lang;true text&rang; <tt>\else</tt> &lang;false text&rang; <tt>\fi</tt> </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \ifvmode abc \fi  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Ifvmode extends AbstractIf {
 

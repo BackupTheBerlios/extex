@@ -36,7 +36,7 @@ import de.dante.extex.typesetter.type.math.MathDelimiter;
  * <doc name="atopwithdelims">
  * <h3>The Math Primitive <tt>\atopwithdelims</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  TODO gene: missing documentation
  * </p>
  *
  * <h4>Syntax</h4>
@@ -52,7 +52,7 @@ import de.dante.extex.typesetter.type.math.MathDelimiter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Atopwithdelims extends AbstractTeXDelimiter {
 

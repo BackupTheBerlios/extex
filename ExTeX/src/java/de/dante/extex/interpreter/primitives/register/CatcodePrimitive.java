@@ -43,7 +43,7 @@ import de.dante.util.UnicodeChar;
  *  The primitive <tt>\catcode</tt> can be used to influence the tokenizer of
  *  <logo>ExTeX</logo>. This is done by assigning category codes to single
  *  characters.
- *  TODO missing documentation
+ *  TODO gene: missing documentation
  * </p>
  * <p>
  *  The assignment is controlled by the prefix macro <tt>\global</tt> and the
@@ -109,7 +109,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class CatcodePrimitive extends AbstractAssignment
         implements

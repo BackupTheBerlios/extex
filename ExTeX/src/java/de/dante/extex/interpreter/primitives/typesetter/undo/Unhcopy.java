@@ -40,23 +40,23 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * <p>
  *  TODO missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;unhcopy&rang;
  *       &rarr; <tt>&#x5c;unhcopy</tt> {@linkplain
  *          de.dante.extex.interpreter.TokenSource#scanNumber(Context)
  *          &lang;8-bit&nbsp;number&rang;} </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    &#x5c;unhcopy42  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Unhcopy extends AbstractBox {
 
@@ -88,7 +88,7 @@ public class Unhcopy extends AbstractBox {
 
         String key = getKey(context, source);
         Box b = context.getBox(key);
-        if (b.isVoid()) {
+        if (b == null || b.isVoid()) {
             // nothing to do
         } else if (!b.isHbox()) {
             throw new HelpingException(getLocalizer(), "TTP.IncompatibleUnbox");

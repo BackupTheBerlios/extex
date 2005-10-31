@@ -40,21 +40,21 @@ import de.dante.extex.typesetter.type.NodeList;
  * <p>
  *  TODO missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;setlanguage&rang;
  *       &rarr; <tt>\setlanguage</tt> &lang;number&rang; </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \setlanguage2  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Setlanguage extends AbstractBox {
 
@@ -68,7 +68,7 @@ public class Setlanguage extends AbstractBox {
      * <tt>language</tt> and <tt>lang</tt> t the end of a paragraph.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.9 $
+     * @version $Revision: 1.10 $
      */
     private class ParObserver implements ParagraphObserver {
 
@@ -141,7 +141,7 @@ public class Setlanguage extends AbstractBox {
         source.push(token);
 
         if (token instanceof LeftBraceToken) {
-            Tokens tokens = source.getTokens(context);
+            Tokens tokens = source.getTokens(context, source, typesetter);
             context.setToks("lang", tokens, false);
         } else {
             long no = source.scanInteger(context, typesetter);

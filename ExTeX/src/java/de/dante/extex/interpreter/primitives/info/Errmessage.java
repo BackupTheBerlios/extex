@@ -37,24 +37,24 @@ import de.dante.extex.typesetter.Typesetter;
  *  The primitive <tt>\errmessage</tt> takes one argument. This argument is an
  *  expanded list of tokens. Those tokens are presented as error message
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;eqno&rang;
  *       &rarr; <tt>\errmessage</tt> {@linkplain
  *        de.dante.extex.interpreter.TokenSource#scanTokens(Context)
  *        &lang;tokens&rang;}  </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \errmessage{}  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Errmessage extends AbstractCode {
 

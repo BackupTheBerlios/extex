@@ -38,24 +38,24 @@ import de.dante.extex.typesetter.type.NodeList;
  * <p>
  *  TODO missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;lastbox&rang;
  *    &rarr; <tt>\lastbox</tt>  </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \lastbox  </pre>
  *  <pre class="TeXSample">
  *    \box1=\lastbox  </pre>
- * </p>
+ *
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Lastbox extends AbstractCode implements Boxable {
 

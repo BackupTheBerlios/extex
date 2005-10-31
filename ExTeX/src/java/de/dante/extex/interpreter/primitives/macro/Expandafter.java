@@ -35,7 +35,7 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="expandafter">
  * <h3>The Primitive <tt>\expandafter</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  TODO gene: missing documentation
  * </p>
  * <p class="TeXbook">
  *  <logo>TeX</logo> first reads the token that comes immediately after
@@ -45,24 +45,24 @@ import de.dante.extex.typesetter.Typesetter;
  *  expansion. Finally <logo>TeX</logo> puts <i>t</i> back in front of that
  *  expansion.
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;expandafter&rang;
  *     &rarr; <tt>\expandafter</tt> {@linkplain
  *         de.dante.extex.interpreter.TokenSource#getControlSequence(Context)
  *         &lang;control sequence&rang;} ...  </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \expandafter ...  </pre>
- * </p>
+ *
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Expandafter extends AbstractCode implements ExpandableCode {
 

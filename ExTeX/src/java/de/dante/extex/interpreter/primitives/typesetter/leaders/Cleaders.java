@@ -46,23 +46,23 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * <doc name="cleaders">
  * <h3>The Primitive <tt>\cleaders</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  TODO gene: missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;cleaders&rang;
  *      &rarr; <tt>\cleaders</tt> ...  </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \cleaders\hrule\hfill  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class Cleaders extends AbstractCode {
 

@@ -36,7 +36,8 @@ import de.dante.extex.typesetter.Typesetter;
  *  The conditional is true iff the box denoted by the argument is a horizontal
  *  box.
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;ifhbox&rang;
@@ -46,18 +47,17 @@ import de.dante.extex.typesetter.Typesetter;
  *      | <tt>\ifhbox</tt> {@linkplain
  *        de.dante.extex.interpreter.TokenSource#scanInteger(Context,Typesetter)
  *        &lang;number&rang;} &lang;true text&rang; <tt>\else</tt> &lang;false text&rang; <tt>\fi</tt> </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \ifhbox255 abc \fi  </pre>
  *  <pre class="TeXSample">
  *    \ifhbox\count120 abc \fi  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class Ifhbox extends AbstractIf {
 

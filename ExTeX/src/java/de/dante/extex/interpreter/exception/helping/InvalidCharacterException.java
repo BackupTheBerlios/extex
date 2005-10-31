@@ -31,7 +31,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class InvalidCharacterException extends HelpingException {
 
@@ -41,7 +41,7 @@ public class InvalidCharacterException extends HelpingException {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The field <tt>cc</tt> contains the ...
+     * The field <tt>cc</tt> contains the invalid character.
      */
     private String cc;
 

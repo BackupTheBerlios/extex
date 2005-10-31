@@ -35,7 +35,8 @@ import de.dante.extex.typesetter.Typesetter;
  *  The primitive takes one expanded integer argument.
  *  The conditional is true iff the box denoted by the argument is void.
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;ifvoid&rang;
@@ -45,18 +46,17 @@ import de.dante.extex.typesetter.Typesetter;
  *      | <tt>\ifvoid</tt> {@linkplain
  *        de.dante.extex.interpreter.TokenSource#scanInteger(Context,Typesetter)
  *        &lang;number&rang;} &lang;true text&rang; <tt>\else</tt> &lang;false text&rang; <tt>\fi</tt> </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \ifvoid255 abc \fi  </pre>
  *  <pre class="TeXSample">
  *    \ifvoid\count120 abc \fi  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class Ifvoid extends AbstractIf {
 

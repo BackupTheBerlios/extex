@@ -35,7 +35,7 @@ import de.dante.util.UnicodeChar;
  * <doc name="chardef">
  * <h3>The Primitive <tt>\chardef</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  TODO gene: missing documentation
  * </p>
  *
  * <h4>Syntax</h4>
@@ -61,7 +61,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class Chardef extends AbstractAssignment {
 

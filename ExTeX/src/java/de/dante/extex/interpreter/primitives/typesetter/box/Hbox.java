@@ -36,13 +36,14 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="hbox">
  * <h3>The Primitive <tt>\hbox</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  TODO gene: missing documentation
  * </p>
  * <p>
  *  The contents of the toks register <tt>\everyhbox</tt> is inserted at the
  *  beginning of the horizontal material of the box.
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;hbox&rang;
@@ -52,16 +53,15 @@ import de.dante.extex.typesetter.Typesetter;
  *        &rarr;
  *         | <tt>to</tt> &lang;rule dimension&rang;
  *         | <tt>spread</tt> &lang;rule dimension&rang;  </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \hbox{abc}  </pre>
  *  <pre class="TeXSample">
  *    \hbox to 120pt{abc}  </pre>
  *  <pre class="TeXSample">
  *    \hbox spread 12pt{abc}  </pre>
- * </p>
+ *
  * </doc>
  *
  * <doc type="parameter" name="everyhbox">
@@ -74,7 +74,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Hbox extends AbstractBoxPrimitive {
 

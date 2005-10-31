@@ -32,9 +32,10 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="ifx">
  * <h3>The Primitive <tt>\ifx</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  TODO gene: missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;ifx&rang;
@@ -48,16 +49,15 @@ import de.dante.extex.typesetter.Typesetter;
  *        &lang;token<sub>1</sub>&rang;} {@linkplain
  *        de.dante.extex.interpreter.TokenSource#getToken(Context)
  *        &lang;token<sub>2</sub>&rang;} &lang;true text&rang; <tt>\else</tt> &lang;false text&rang; <tt>\fi</tt> </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \ifx\a\x ok \fi  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class Ifx extends AbstractIf {
 

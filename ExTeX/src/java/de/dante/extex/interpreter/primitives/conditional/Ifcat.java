@@ -32,7 +32,7 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="ifcat">
  * <h3>The Primitive <tt>\ifcat</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  TODO gene: missing documentation
  * </p>
  *  <pre class="syntax">
  *    &lang;ifcat&rang;
@@ -40,7 +40,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class Ifcat extends AbstractIf {
 

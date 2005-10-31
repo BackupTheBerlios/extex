@@ -19,17 +19,13 @@
 
 package de.dante.extex.interpreter.primitives.typesetter.displace;
 
-import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.primitives.typesetter.box.AbstractBoxPrimitive;
-import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.box.Box;
-import de.dante.extex.interpreter.type.box.Boxable;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * This class provides an implementation for the primitive <code>\lower</code>.
@@ -39,7 +35,8 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * <p>
  *  TODO missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;lower&rang;
@@ -48,29 +45,20 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *        &lang;dimen&rang;} {@linkplain
  *        de.dante.extex.interpreter.TokenSource#getBox(Context,de.dante.extex.typesetter.Typesetter)
  *        &lang;box&rang;} </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \lower 2em \hbox{abc}  </pre>
  *  <pre class="TeXSample">
  *    \lower -1pt \hbox to 120pt {abc}  </pre>
  *  <pre class="TeXSample">
  *    \lower 2mm \hbox spread 12pt {abc}  </pre>
- * </p>
+ *
  * </doc>
  *
- * <p>
- * Examples
- * </p>
- * <pre>
- *  \lower 2em \hbox{abc}
- *  \lower -1pt \hbox to 120pt {abc}
- *  \lower 2mm \hbox spread 12pt {abc}
- * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Lower extends AbstractBoxPrimitive {
 

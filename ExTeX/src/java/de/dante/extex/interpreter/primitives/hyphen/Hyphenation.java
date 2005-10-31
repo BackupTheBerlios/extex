@@ -49,7 +49,7 @@ import de.dante.util.UnicodeChar;
  * <doc name="hyphenation">
  * <h3>The Primitive <tt>\hyphenation</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  TODO gene: missing documentation
  * </p>
  *
  * <h4>Syntax</h4>
@@ -66,7 +66,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Hyphenation extends AbstractHyphenationCode {
 

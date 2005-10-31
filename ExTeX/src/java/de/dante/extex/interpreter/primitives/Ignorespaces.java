@@ -33,23 +33,23 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="ignorespaces">
  * <h3>The Primitive <tt>\ignorespaces</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  TODO gene: missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;ignorespaces&rang;
  *      &rarr; <tt>\ignorespaces</tt> </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \ignorespaces  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class Ignorespaces extends AbstractCode {
 

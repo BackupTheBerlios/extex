@@ -37,7 +37,7 @@ import de.dante.extex.typesetter.type.noad.OperatorNoad;
  * <doc name="displaylimits">
  * <h3>The Math Primitive <tt>\displaylimits</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  TODO gene: missing documentation
  * </p>
  *
  * <h4>Syntax</h4>
@@ -53,7 +53,7 @@ import de.dante.extex.typesetter.type.noad.OperatorNoad;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Displaylimits extends AbstractMathCode {
 

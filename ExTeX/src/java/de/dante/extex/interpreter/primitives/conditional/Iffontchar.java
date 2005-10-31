@@ -38,22 +38,22 @@ import de.dante.util.UnicodeChar;
  *  character and performs the test. If the character exists the then branch is
  *  expanded otherwise the else branch.
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;iffontchar&rang;
  *      &rarr; <tt>\iffontchar</tt> ... &lang;true text&rang; <tt>\fi</tt>
  *      | <tt>\iffontchar</tt> ... &lang;true text&rang; <tt>\else</tt> &lang;false text&rang; <tt>\fi</tt> </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \iffontchar abc \fi  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Iffontchar extends AbstractIf {
 

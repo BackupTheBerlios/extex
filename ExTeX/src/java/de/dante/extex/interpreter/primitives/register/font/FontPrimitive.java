@@ -62,15 +62,16 @@ import de.dante.util.framework.logger.LogEnabled;
  *  following this keyword determines the size of the font.
  * </p>
  * <p>
- *  The design size can be multiplied by a scale factor. This scale fator is
+ *  The design size can be multiplied by a scale factor. This scale factor is
  *  given as number after the keyword <tt>scaled</tt>. The value given is 1000
  *  times the scale factor to be used.
  * </p>
- *  TODO missing documentation of the extensions
+ *  TODO gene: missing documentation of the extensions
  * <p>
  *  This primitive is an assignment.
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;font&rang;
@@ -92,7 +93,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *       | [noligatures]
  *       | [nokerning]
  *       | [letterspaced]  </pre>
- * </p>
+ *
  *
  * <h4>Examples</h4>
  * <p>
@@ -134,7 +135,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.36 $
+ * @version $Revision: 1.37 $
  */
 public class FontPrimitive extends AbstractAssignment
         implements

@@ -40,7 +40,8 @@ import de.dante.extex.typesetter.type.NodeList;
  *  The contents of the toks register <tt>\everyvbox</tt> is inserted at the
  *  beginning of the vertical material of the box.
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;vtop&rang;
@@ -50,20 +51,19 @@ import de.dante.extex.typesetter.type.NodeList;
  *      &rarr;
  *         | <tt>to</tt> &lang;rule dimension&rang;
  *         | <tt>spread</tt> &lang;rule dimension&rang;  </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \vtop{abc}  </pre>
  *  <pre class="TeXSample">
  *    \vtop to 120pt{abc}  </pre>
  *  <pre class="TeXSample">
  *    \vtop spread 12pt{abc}  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Vtop extends Vbox {
 

@@ -22,7 +22,6 @@ package de.dante.extex.interpreter.primitives;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.typesetter.Typesetter;
 
@@ -42,12 +41,13 @@ import de.dante.extex.typesetter.Typesetter;
  *  number is parsed <tt>\relax</tt> terminates the parsing even if the
  *  following token is a digit.
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;relax&rang;
  *      &rarr; <tt>\relax</tt>  </pre>
- * </p>
+ *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \relax  </pre>
@@ -57,7 +57,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Relax extends AbstractCode {
 

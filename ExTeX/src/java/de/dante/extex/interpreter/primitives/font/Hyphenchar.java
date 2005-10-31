@@ -41,9 +41,10 @@ import de.dante.util.exception.GeneralException;
  * <doc name="hyphenchar">
  * <h3>The Primitive <tt>\hyphenchar</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  TODO gene: missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    <tt>\hyphenchar</tt> &lang;font&rang; {@linkplain
@@ -51,12 +52,10 @@ import de.dante.util.exception.GeneralException;
  *    &lang;equals&rang;} {@linkplain
  *    de.dante.extex.interpreter.TokenSource#scanNumber(Context)
  *    &lang;8-bit&nbsp;number&rang;} </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \hyphenchar\font=132  </pre>
- * </p>
  *
  * <h4>Incompatibility</h4>
  * <p>
@@ -68,7 +67,7 @@ import de.dante.util.exception.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class Hyphenchar extends AbstractAssignment
         implements

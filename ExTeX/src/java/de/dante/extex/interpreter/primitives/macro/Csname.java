@@ -44,7 +44,7 @@ import de.dante.util.UnicodeChar;
  * <doc name="csname">
  * <h3>The Primitive <tt>\csname</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  TODO gene: missing documentation
  * </p>
  * <p class="TeXbook">
  *  When <logo>TeX</logo> expands <tt>\csname</tt> it reads to the matching
@@ -84,7 +84,7 @@ import de.dante.util.UnicodeChar;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
 public class Csname extends AbstractCode implements ExpandableCode {
 

@@ -35,9 +35,10 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="ifdim">
  * <h3>The Primitive <tt>\ifdim</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  TODO gene: missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;ifdim&rang;
@@ -56,11 +57,11 @@ import de.dante.extex.typesetter.Typesetter;
  *      &rarr; [&lt;]
  *      | [=]
  *      | [&gt;]  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class Ifdim extends AbstractIf {
 

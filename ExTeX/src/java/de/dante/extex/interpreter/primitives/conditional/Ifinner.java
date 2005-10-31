@@ -36,22 +36,22 @@ import de.dante.extex.typesetter.Typesetter;
  *  either the internal vertical mode, the restricted horizontal mode, or the
  *  math mode (non-display).
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;ifinner&rang;
  *      &rarr; <tt>\ifinner</tt> &lang;true text&rang; <tt>\fi</tt>
  *      | <tt>\ifinner</tt> &lang;true text&rang; <tt>\else</tt> &lang;false text&rang; <tt>\fi</tt> </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \ifinner abc \fi  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Ifinner extends AbstractIf {
 

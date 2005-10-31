@@ -35,7 +35,8 @@ import de.dante.extex.typesetter.Typesetter;
  *  This primitive tests for end of file on the given read register. The read
  *  register is specified as a (expanded) number.
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;ifeof&rang;
@@ -45,16 +46,15 @@ import de.dante.extex.typesetter.Typesetter;
  *      | <tt>\ifeof</tt> {@linkplain
  *        de.dante.extex.interpreter.TokenSource#scanInteger(Context,Typesetter)
  *        &lang;number&rang;} &lang;true text&rang; <tt>\else</tt> &lang;false text&rang; <tt>\fi</tt> </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \ifeof 3 -E-O-F- \else ready \fi  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class Ifeof extends AbstractIf {
 
