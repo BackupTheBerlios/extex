@@ -62,13 +62,7 @@ import de.dante.extex.interpreter.loader.LoaderException;
 import de.dante.extex.interpreter.output.TeXOutputRoutine;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
-import de.dante.extex.main.Version;
-import de.dante.extex.main.exception.MainCodingException;
-import de.dante.extex.main.exception.MainConfigurationException;
-import de.dante.extex.main.exception.MainException;
-import de.dante.extex.main.exception.MainIOException;
 import de.dante.extex.main.logging.LogFormatter;
-import de.dante.extex.main.observer.FileOpenObserver;
 import de.dante.extex.main.observer.InteractionModeObserver;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
@@ -326,33 +320,15 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.117 $
+ * @version $Revision: 1.118 $
  */
 public class ExTeX {
-
-    /**
-     * The constant <tt>EXIT_INTERNAL_ERROR</tt> contains the exit code for
-     * internal errors.
-     */
-    protected static final int EXIT_INTERNAL_ERROR = -666;
-
-    /**
-     * The field <tt>EXIT_NO_FORMAT</tt> contains the exit code when no format
-     * is found.
-     */
-    private static final int EXIT_NO_FORMAT = 42;
-
-    /**
-     * The constant <tt>EXIT_OK</tt> contains the exit code of the program for
-     * the success case.
-     */
-    protected static final int EXIT_OK = 0;
 
     /**
      * The constant <tt>VERSION</tt> contains the manually incremented version
      * string.
      */
-    private static final String EXTEX_VERSION = new Version().toString();
+    protected static final String EXTEX_VERSION = new Version().toString();
 
     /**
      * The field <tt>FORMAT_FALLBACK</tt> contains the fallback to be tried if
@@ -424,7 +400,9 @@ public class ExTeX {
     protected static final String PROP_INTERACTION = "extex.interaction";
 
     /**
-     * The field <tt>PROP_INTERNAL_STACKTRACE</tt> contains the ...
+     * The field <tt>PROP_INTERNAL_STACKTRACE</tt> contains the name of the
+     * property indicating that a stack trace should be written for internal
+     * errors.
      */
     protected static final String PROP_INTERNAL_STACKTRACE = "extex.stacktrace.on.internal.error";
 
@@ -731,7 +709,7 @@ public class ExTeX {
                         .substring(3, 4), lang.substring(6, 7)));
 
             } else {
-                // TODO ignored on purpose?
+                // TODO gene: ignored on purpose?
             }
         }
 
@@ -821,13 +799,11 @@ public class ExTeX {
      * @return <code>true</code> if the stream have not been initialized
      *
      * @throws ConfigurationException in case of a configuration error
-     * @throws MainIOException in case of an IO error
+     * @throws IOException in case of an IO error
      */
 
     protected boolean initializeStreams(final Interpreter interpreter,
-            final Properties prop)
-            throws ConfigurationException,
-                MainIOException {
+            final Properties prop) throws ConfigurationException, IOException {
 
         TokenStreamFactory factory = interpreter.getTokenStreamFactory();
         boolean notInitialized = true;
@@ -888,8 +864,7 @@ public class ExTeX {
                 stream = finder.findResource(FORMAT_FALLBACK, "fmt");
             }
             if (stream == null) {
-                throw new MainException(EXIT_NO_FORMAT, localizer.format(
-                        "FormatNotFound", format));
+                throw new HelpingException(localizer, "FormatNotFound", format);
             }
             try {
                 interpreter.loadFormat(stream, fmt);
@@ -1049,7 +1024,7 @@ public class ExTeX {
         if (docWriter instanceof ResourceConsumer) {
             ((ResourceConsumer) docWriter).setResourceFinder(finder);
         }
-        docWriter.setParameter("Creator", "ExTeX " + new Version().toString());
+        docWriter.setParameter("Creator", "ExTeX " + EXTEX_VERSION.toString());
         docWriter.setParameter("Title", "");
         docWriter.setParameter("Paper", "A4");
         docWriter.setParameter("Orientation", "Portrait");
@@ -1121,12 +1096,14 @@ public class ExTeX {
      * been detected in the configuration
      * @throws GeneralException in case of an error of some other kind
      * @throws FontException in case of problems with the font itself
+     * @throws IOException in case of an IO error
      */
     protected Interpreter makeInterpreter(final Configuration config,
             final TokenStreamFactory factory, final FontFactory fontFactory)
             throws ConfigurationException,
                 GeneralException,
-                FontException {
+                FontException,
+                IOException {
 
         InterpreterFactory interpreterFactory = new InterpreterFactory();
         interpreterFactory.configure(config);
@@ -1236,7 +1213,6 @@ public class ExTeX {
 
         factory.enableLogging(logger);
         factory.setResourceFinder(finder);
-        factory.registerObserver(new FileOpenObserver(logger));
 
         return factory;
     }
@@ -1284,9 +1260,18 @@ public class ExTeX {
     /**
      * Run the program with the parameters already stored in the properties.
      *
-     * @throws MainException in case of an error
+     * @return
+     *
+     * @throws ConfigurationException
+     * @throws CharacterCodingException
+     * @throws IOException
+     * @throws GeneralException
      */
-    public Interpreter run() throws MainException {
+    public Interpreter run()
+            throws ConfigurationException,
+                CharacterCodingException,
+                IOException,
+                GeneralException {
 
         final String jobname = determineJobname();
         final String logFile = new File(properties.getProperty(PROP_OUTPUTDIR),
@@ -1349,19 +1334,16 @@ public class ExTeX {
 
         } catch (ConfigurationException e) {
             logger.throwing(this.getClass().getName(), "run", e);
-            throw new MainConfigurationException(e);
+            throw e;
         } catch (CharacterCodingException e) {
             logger.throwing(this.getClass().getName(), "run", e);
-            throw new MainCodingException(e);
+            throw e;
         } catch (IOException e) {
-            logger.throwing(this.getClass().getName(), "run", e);
-            throw new MainIOException(e);
-        } catch (MainException e) {
             logger.throwing(this.getClass().getName(), "run", e);
             throw e;
         } catch (GeneralException e) {
             logger.throwing(this.getClass().getName(), "run", e);
-            throw new MainException(e);
+            throw e;
         } catch (Throwable e) {
             logInternalError(e);
         } finally {
@@ -1422,11 +1404,9 @@ public class ExTeX {
      *
      * @param configuration the configuration to use
      * @param priority the log level
-     *
-     * @throws MainException in case of an error
      */
     protected void showBanner(final Configuration configuration,
-            final Level priority) throws MainException {
+            final Level priority) {
 
         if (showBanner) {
             String banner;
