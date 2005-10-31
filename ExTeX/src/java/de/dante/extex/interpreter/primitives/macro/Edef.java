@@ -31,9 +31,10 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="edef">
  * <h3>The Primitive <tt>\edef</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  TODO gene: missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;edef&rang;
@@ -46,16 +47,15 @@ import de.dante.extex.typesetter.Typesetter;
  *       | <tt>\global</tt> &lang;prefix&rang;
  *       | <tt>\long</tt> &lang;prefix&rang;
  *       | <tt>\outer</tt> &lang;prefix&rang;</pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \edef#1{--#1--}  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Edef extends Def {
 
@@ -86,7 +86,7 @@ public class Edef extends Def {
             throws InterpreterException {
 
         prefix.setExpanded();
-        super.execute(prefix, context, source, typesetter);
+        super.assign(prefix, context, source, typesetter);
     }
 
 }
