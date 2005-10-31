@@ -33,12 +33,13 @@ import de.dante.extex.interpreter.type.hash.toks.exception.InterpreterMissingRig
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.token.Token;
+import de.dante.extex.typesetter.Typesetter;
 
 /**
  * A Hash for Tokens.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class HashToks implements Serializable {
 
@@ -63,8 +64,8 @@ public class HashToks implements Serializable {
      * @param source    the token source
      * @throws InterpreterException if an error occurs.
      */
-    public HashToks(final Context context, final TokenSource source)
-            throws InterpreterException {
+    public HashToks(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
 
         super();
         map = new HashMap();
@@ -83,7 +84,7 @@ public class HashToks implements Serializable {
             if (key.trim().length() == 0) {
                 throw new InterpreterMissingHashKeyException();
             }
-            Tokens toks = source.getTokens(context);
+            Tokens toks = source.getTokens(context, source, typesetter);
             if (toks == null) {
                 throw new InterpreterMissingHashValueException();
             }

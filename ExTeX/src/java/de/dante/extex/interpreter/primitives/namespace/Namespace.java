@@ -37,26 +37,26 @@ import de.dante.extex.typesetter.Typesetter;
  * <p>
  *  TODO missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;namespace&rang;
  *      &rarr; <tt>\namespace</tt> {@linkplain
  *      de.dante.extex.interpreter.TokenSource#getTokens()
  *      &lang;replacement text&rang;}  </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \namespace{org.dante.dtk}  </pre>
- * </p>
+ *
  * </doc>
  *
  * @see de.dante.extex.interpreter.primitives.namespace.Export
  * @see de.dante.extex.interpreter.primitives.namespace.Import
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Namespace extends AbstractAssignment
         implements
@@ -89,7 +89,7 @@ public class Namespace extends AbstractAssignment
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        Tokens toks = source.getTokens(context);
+        Tokens toks = source.getTokens(context, source, typesetter);
         context.setNamespace(toks.toText(), prefix.isGlobal());
         prefix.clearGlobal();
     }

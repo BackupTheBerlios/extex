@@ -51,7 +51,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * The primitive can be used outside of any group only.
  * </p>
  * <p>
- *  TODO missing documentation
+ *  TODO gene: missing documentation
  * </p>
  *
  * <h4>Syntax</h4>
@@ -67,7 +67,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.36 $
+ * @version $Revision: 1.37 $
  */
 public class Dump extends AbstractCode implements LogEnabled {
 

@@ -61,6 +61,7 @@ import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.font.FontConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.interpreter.type.tokens.TokensConvertible;
 import de.dante.extex.scanner.exception.ScannerException;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
@@ -102,7 +103,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.82 $
+ * @version $Revision: 1.83 $
  */
 public class Moritz extends Max
         implements
@@ -723,33 +724,45 @@ public class Moritz extends Max
     }
 
     /**
-     * @see de.dante.extex.interpreter.TokenSource#getTokens()
+     * @see de.dante.extex.interpreter.TokenSource#getTokens(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
      */
-    public Tokens getTokens(final Context context) throws InterpreterException {
+    public Tokens getTokens(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
 
         Tokens toks = new Tokens();
         Token token = getToken(context);
 
-        if (token == null) {
-            throw new EofException(getLocalizer().format("Tokens.Text"));
-        } else if (!token.isa(Catcode.LEFTBRACE)) {
-            throw new MissingLeftBraceException("???");
-        }
+        if (token instanceof LeftBraceToken) {
+            int balance = 1;
 
-        int balance = 1;
+            for (token = getToken(context); token != null; token = getToken(context)) {
 
-        for (token = getToken(context); token != null; token = getToken(context)) {
+                if (token.isa(Catcode.LEFTBRACE)) {
+                    ++balance;
+                } else if (token instanceof RightBraceToken && --balance <= 0) {
+                    return toks;
+                }
 
-            if (token.isa(Catcode.LEFTBRACE)) {
-                ++balance;
-            } else if (token instanceof RightBraceToken && --balance <= 0) {
-                return toks;
+                toks.add(token);
             }
 
-            toks.add(token);
+            return toks;
+
+        } else if (token instanceof CodeToken) {
+            Code code = context.getCode((CodeToken) token);
+            if (code instanceof TokensConvertible) {
+                return ((TokensConvertible) code).convertTokens(context,
+                        source, typesetter);
+            }
+
+        } else if (token == null) {
+            throw new EofException(getLocalizer().format("Tokens.Text"));
         }
 
-        return toks;
+        throw new MissingLeftBraceException("???");
     }
 
     /**

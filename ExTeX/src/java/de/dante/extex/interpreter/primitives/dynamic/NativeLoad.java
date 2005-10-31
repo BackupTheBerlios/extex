@@ -56,7 +56,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class NativeLoad extends AbstractCode
         implements
@@ -74,7 +74,7 @@ public class NativeLoad extends AbstractCode
      * inheritance in Java.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.7 $
+     * @version $Revision: 1.8 $
      */
     protected class Factory extends AbstractFactory {
 
@@ -147,7 +147,7 @@ public class NativeLoad extends AbstractCode
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String name = source.getTokens(context).toText();
+        String name = source.getTokens(context, source, typesetter).toText();
         Configuration cfg = (Configuration) map.get(name);
         if (cfg == null) {
             throw new InterpreterException(getLocalizer().format("UnknownType",

@@ -41,9 +41,10 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="def">
  * <h3>The Primitive <tt>\def</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  TODO gene: missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;def&rang;
@@ -57,16 +58,15 @@ import de.dante.extex.typesetter.Typesetter;
  *       | <tt>\long</tt> &lang;prefix&rang;
  *       | <tt>\outer</tt> &lang;prefix&rang;
  *       | <tt>\protected</tt> &lang;prefix&rang;</pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \def#1{--#1--}  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.38 $
+ * @version $Revision: 1.39 $
  */
 public class Def extends AbstractAssignment {
 
@@ -100,7 +100,7 @@ public class Def extends AbstractAssignment {
         MacroPattern pattern = getPattern(context, source);
         Tokens body = (prefix.isExpanded() //
                 ? expandedBody(context, source, typesetter)//
-                : source.getTokens(context));
+                : source.getTokens(context, source, typesetter));
 
         context.setCode(cs, new MacroCode(cs.getName(), prefix, pattern, body),
                 prefix.isGlobal());
@@ -108,6 +108,7 @@ public class Def extends AbstractAssignment {
         prefix.clearExpanded();
         prefix.clearLong();
         prefix.clearOuter();
+        prefix.clearProtected();
     }
 
     /**

@@ -92,7 +92,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class JavaLoad extends AbstractCode implements Loader {
 
@@ -145,7 +145,7 @@ public class JavaLoad extends AbstractCode implements Loader {
             final Typesetter typesetter)
             throws InterpreterException {
 
-        Tokens name = source.getTokens(context);
+        Tokens name = source.getTokens(context, source, typesetter);
         String classname = name.toText();
         if ("".equals(classname)) {
             throw new HelpingException(getLocalizer(), "ClassNotFound",
