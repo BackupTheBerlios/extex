@@ -17,60 +17,65 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.parameter;
+package de.dante.extex.interpreter.primitives.typesetter;
 
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.exception.helping.InvalidCodeException;
+import de.dante.extex.interpreter.exception.helping.CantUseInException;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.AbstractAssignment;
-import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.Theable;
-import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.count.CountConvertible;
+import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.DimenConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.scanner.type.CatcodeException;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.UnicodeChar;
-import de.dante.util.exception.GeneralException;
+import de.dante.extex.typesetter.exception.TypesetterUnsupportedException;
 
 /**
  * This class provides an implementation for the primitive
- * <code>\sfcode</code>.
+ * <code>\prevdepth</code>.
  *
- * <doc name="sfcode">
- * <h3>The Primitive <tt>\sfcode</tt></h3>
+ * <doc name="prevdepth">
+ * <h3>The Primitive <tt>\prevdepth</tt></h3>
  * <p>
  *  TODO missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    &lang;sfcode&rang;
- *      &rarr; <tt>\sfcode ...</tt>  </pre>
- * </p>
- * <p>
- *  Examples:
+ *    &lang;prevdepth&rang;
+ *      &rarr; <tt>\prevdepth ...</tt>  </pre>
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
- *    \sfcode ...  </pre>
- * </p>
+ *    \prevdepth ...  </pre>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.1 $
  */
-public class Sfcode extends AbstractAssignment
+public class Prevdepth extends AbstractAssignment
         implements
-            ExpandableCode,
             CountConvertible,
             DimenConvertible,
             Theable {
 
     /**
-     * The field <tt>MAX_SF_CODE</tt> contains the ...
+     * The field <tt>IGNORE</tt> contains the numerical value which represents
+     * the ignored value. This will be mapped to null.
      */
-    private static final int MAX_SF_CODE = 32767;
+    private static final long IGNORE = -65536000;
+
+    /**
+     * The field <tt>IGNORE_DIMEN</tt> contains the ...
+     */
+    private static final Dimen IGNORE_DIMEN = new Dimen(IGNORE);
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
@@ -82,7 +87,7 @@ public class Sfcode extends AbstractAssignment
      *
      * @param name the name for debugging
      */
-    public Sfcode(final String name) {
+    public Prevdepth(final String name) {
 
         super(name);
     }
@@ -98,67 +103,84 @@ public class Sfcode extends AbstractAssignment
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        UnicodeChar charCode = source.scanCharacterCode(context, typesetter,
-                getName());
         source.getOptionalEquals(context);
-        Count sfCode = new Count(source.scanInteger(context, typesetter));
-
-        if (sfCode.lt(Count.ZERO) || sfCode.getValue() > MAX_SF_CODE) {
-            throw new InvalidCodeException(sfCode.toString(), //
-                    Integer.toString(MAX_SF_CODE));
+        Dimen pd = new Dimen(context, source, typesetter);
+        if (pd.getValue() == IGNORE) {
+            pd = null;
         }
-
-        context.setSfcode(charCode, sfCode, prefix.isGlobal());
-        prefix.clearGlobal();
+        try {
+            typesetter.setPrevDepth(pd);
+        } catch (TypesetterUnsupportedException e) {
+            throw new CantUseInException(printableControlSequence(context),
+                    typesetter.getMode().toString());
+        }
     }
 
     /**
      * @see de.dante.extex.interpreter.type.count.CountConvertible#convertCount(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource, Typesetter)
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
      */
     public long convertCount(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        UnicodeChar ucCode = source.scanCharacterCode(context, typesetter,
-                getName());
-        return context.getSfcode(ucCode).getValue();
+        Dimen prevDepth;
+        try {
+            prevDepth = typesetter.getListMaker().getPrevDepth();
+        } catch (TypesetterUnsupportedException e) {
+            throw new HelpingException(getLocalizer(), "TTP.ImproperSForPD",
+                    printableControlSequence(context));
+        }
+
+        return prevDepth != null ? prevDepth.getValue() : IGNORE;
     }
 
     /**
      * @see de.dante.extex.interpreter.type.dimen.DimenConvertible#convertDimen(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource, Typesetter)
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
      */
     public long convertDimen(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        return convertCount(context, source, typesetter);
-    }
+        Dimen prevDepth;
+        try {
+            prevDepth = typesetter.getListMaker().getPrevDepth();
+        } catch (TypesetterUnsupportedException e) {
+            throw new HelpingException(getLocalizer(), "TTP.ImproperSForPD",
+                    printableControlSequence(context));
+        }
 
-    /**
-     * @see de.dante.extex.interpreter.type.ExpandableCode#expand(
-     *      de.dante.extex.interpreter.Flags,
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.typesetter.Typesetter)
-     */
-    public void expand(final Flags prefix, final Context context,
-            final TokenSource source, final Typesetter typesetter)
-            throws InterpreterException {
-
-        source.push(the(context, source, typesetter));
+        return prevDepth != null ? prevDepth.getValue() : IGNORE;
     }
 
     /**
      * @see de.dante.extex.interpreter.type.Theable#the(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource, Typesetter)
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
      */
     public Tokens the(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        return new Tokens(context, convertCount(context, source, typesetter));
-    }
+        Dimen prevDepth;
+        try {
+            prevDepth = typesetter.getListMaker().getPrevDepth();
+        } catch (TypesetterUnsupportedException e) {
+            throw new HelpingException(getLocalizer(), "TTP.ImproperSForPD",
+                    printableControlSequence(context));
+        }
 
+        if (prevDepth ==null) {
+            prevDepth = IGNORE_DIMEN;
+        }
+
+        try {
+            return prevDepth.toToks(context.getTokenFactory());
+        } catch (CatcodeException e) {
+            throw new InterpreterException(e);
+        }
+    }
 }

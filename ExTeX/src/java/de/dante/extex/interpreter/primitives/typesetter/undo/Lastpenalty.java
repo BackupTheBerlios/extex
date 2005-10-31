@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -17,51 +17,44 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.parameter;
+package de.dante.extex.interpreter.primitives.typesetter.undo;
 
-import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.exception.helping.CantUseInException;
-import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Theable;
-import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.count.CountConvertible;
+import de.dante.extex.interpreter.type.dimen.DimenConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.extex.typesetter.exception.InvalidSpacefactorException;
-import de.dante.extex.typesetter.exception.TypesetterUnsupportedException;
+import de.dante.extex.typesetter.type.Node;
+import de.dante.extex.typesetter.type.node.PenaltyNode;
 
 /**
  * This class provides an implementation for the primitive
- * <code>\spacefactor</code>.
+ * <code>\lastpenalty</code>.
  *
- * <doc name="spacefactor">
- * <h3>The Primitive <tt>\spacefactor</tt></h3>
+ * <doc name="lastpenalty">
+ * <h3>The Primitive <tt>\lastpenalty</tt></h3>
  * <p>
  *  TODO missing documentation
  * </p>
  * <p>
- *  The formal description of this primitive is the following:
- *  <pre class="syntax">
- *    &lang;spacefactor&rang;
- *      &rarr; <tt>\spacefactor ...</tt>  </pre>
- * </p>
- * <p>
  *  Examples:
  *  <pre class="TeXSample">
- *    \spacefactor 1200  </pre>
+ *    \count1=\lastpenalty  </pre>
  * </p>
  * </doc>
  *
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.1 $
  */
-public class Spacefactor extends AbstractCode
+public class Lastpenalty extends AbstractCode
         implements
             CountConvertible,
+            DimenConvertible,
             Theable {
 
     /**
@@ -74,7 +67,7 @@ public class Spacefactor extends AbstractCode
      *
      * @param name the name for debugging
      */
-    public Spacefactor(final String name) {
+    public Lastpenalty(final String name) {
 
         super(name);
     }
@@ -88,40 +81,25 @@ public class Spacefactor extends AbstractCode
     public long convertCount(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        long spacefactor;
-        try {
-            spacefactor = typesetter.getListMaker().getSpacefactor();
-        } catch (TypesetterUnsupportedException e) {
-            throw new HelpingException(getLocalizer(), "TTP.ImproperSForPD",
-                    printableControlSequence(context));
-        }
-
-        return spacefactor;
+        Node node = typesetter.getLastNode();
+        return (node instanceof PenaltyNode
+                ? ((PenaltyNode) node).getPenalty()
+                : 0);
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Code#execute(
-     *      de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.type.dimen.DimenConvertible#convertDimen(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(final Flags prefix, final Context context,
-            final TokenSource source, final Typesetter typesetter)
-            throws InterpreterException {
+    public long convertDimen(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
 
-        source.getOptionalEquals(context);
-        long factor = source.scanInteger(context, typesetter);
-
-        try {
-            typesetter.setSpacefactor(new Count(factor));
-        } catch (TypesetterUnsupportedException e) {
-            throw new CantUseInException(printableControlSequence(context),
-                    typesetter.getMode().toString());
-        } catch (InvalidSpacefactorException e) {
-            throw new HelpingException(getLocalizer(), "TTP.BadSpaceFactor",
-                    Long.toString(factor));
-        }
+        Node node = typesetter.getLastNode();
+        return (node instanceof PenaltyNode
+                ? ((PenaltyNode) node).getPenalty()
+                : 0);
     }
 
     /**
@@ -133,6 +111,10 @@ public class Spacefactor extends AbstractCode
     public Tokens the(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        return new Tokens(context, convertCount(context, source, typesetter));
+        Node node = typesetter.getLastNode();
+        long pen = (node instanceof PenaltyNode ? ((PenaltyNode) node)
+                .getPenalty() : 0);
+        return new Tokens(context, Long.toString(pen));
     }
+
 }

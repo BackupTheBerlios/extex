@@ -17,7 +17,7 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.register.count;
+package de.dante.extex.interpreter.primitives.typesetter.undo;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -25,33 +25,35 @@ import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.count.CountConvertible;
+import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.DimenConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.scanner.type.CatcodeException;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.Node;
-import de.dante.extex.typesetter.type.node.PenaltyNode;
+import de.dante.extex.typesetter.type.node.KernNode;
 
 /**
  * This class provides an implementation for the primitive
- * <code>\lastpenalty</code>.
+ * <code>\lastkern</code>.
  *
- * <doc name="lastpenalty">
- * <h3>The Primitive <tt>\lastpenalty</tt></h3>
+ * <doc name="lastkern">
+ * <h3>The Primitive <tt>\lastkern</tt></h3>
  * <p>
  *  TODO missing documentation
  * </p>
  * <p>
  *  Examples:
  *  <pre class="TeXSample">
- *    \count1=\lastpenalty  </pre>
+ *    \dimen1=\lastkern  </pre>
  * </p>
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.1 $
  */
-public class Lastpenalty extends AbstractCode
+public class Lastkern extends AbstractCode
         implements
             CountConvertible,
             DimenConvertible,
@@ -67,7 +69,7 @@ public class Lastpenalty extends AbstractCode
      *
      * @param name the name for debugging
      */
-    public Lastpenalty(final String name) {
+    public Lastkern(final String name) {
 
         super(name);
     }
@@ -75,16 +77,14 @@ public class Lastpenalty extends AbstractCode
     /**
      * @see de.dante.extex.interpreter.type.count.CountConvertible#convertCount(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.typesetter.Typesetter)
+     *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
     public long convertCount(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
         Node node = typesetter.getLastNode();
-        return (node instanceof PenaltyNode
-                ? ((PenaltyNode) node).getPenalty()
-                : 0);
+        return (node instanceof KernNode ? ((KernNode) node).getWidth()
+                .getValue() : 0);
     }
 
     /**
@@ -97,24 +97,27 @@ public class Lastpenalty extends AbstractCode
             final Typesetter typesetter) throws InterpreterException {
 
         Node node = typesetter.getLastNode();
-        return (node instanceof PenaltyNode
-                ? ((PenaltyNode) node).getPenalty()
-                : 0);
+        return (node instanceof KernNode ? ((KernNode) node).getWidth()
+                .getValue() : 0);
     }
 
     /**
      * @see de.dante.extex.interpreter.type.Theable#the(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.typesetter.Typesetter)
+     *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
     public Tokens the(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
         Node node = typesetter.getLastNode();
-        long pen = (node instanceof PenaltyNode ? ((PenaltyNode) node)
-                .getPenalty() : 0);
-        return new Tokens(context, Long.toString(pen));
+        Dimen pen = (node instanceof KernNode
+                ? ((KernNode) node).getWidth()
+                : Dimen.ZERO_PT);
+        try {
+            return pen.toToks(context.getTokenFactory());
+        } catch (CatcodeException e) {
+            throw new InterpreterException(e);
+        }
     }
 
 }

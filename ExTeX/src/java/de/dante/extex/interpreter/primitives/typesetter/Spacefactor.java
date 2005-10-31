@@ -17,7 +17,7 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.parameter;
+package de.dante.extex.interpreter.primitives.typesetter;
 
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
@@ -25,57 +25,44 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.CantUseInException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
-import de.dante.extex.interpreter.type.AbstractAssignment;
+import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Theable;
+import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.count.CountConvertible;
-import de.dante.extex.interpreter.type.dimen.Dimen;
-import de.dante.extex.interpreter.type.dimen.DimenConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
-import de.dante.extex.scanner.type.CatcodeException;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.exception.InvalidSpacefactorException;
 import de.dante.extex.typesetter.exception.TypesetterUnsupportedException;
 
 /**
  * This class provides an implementation for the primitive
- * <code>\prevdepth</code>.
+ * <code>\spacefactor</code>.
  *
- * <doc name="prevdepth">
- * <h3>The Primitive <tt>\prevdepth</tt></h3>
+ * <doc name="spacefactor">
+ * <h3>The Primitive <tt>\spacefactor</tt></h3>
  * <p>
  *  TODO missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    &lang;prevdepth&rang;
- *      &rarr; <tt>\prevdepth ...</tt>  </pre>
- * </p>
- * <p>
- *  Examples:
+ *    &lang;spacefactor&rang;
+ *      &rarr; <tt>\spacefactor ...</tt>  </pre>
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
- *    \prevdepth ...  </pre>
- * </p>
+ *    \spacefactor 1200  </pre>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.1 $
  */
-public class Prevdepth extends AbstractAssignment
+public class Spacefactor extends AbstractCode
         implements
             CountConvertible,
-            DimenConvertible,
             Theable {
-
-    /**
-     * The field <tt>IGNORE</tt> contains the numerical value which represents
-     * the ignored value. This will be mapped to null.
-     */
-    private static final long IGNORE = -65536000;
-
-    /**
-     * The field <tt>IGNORE_DIMEN</tt> contains the ...
-     */
-    private static final Dimen IGNORE_DIMEN = new Dimen(IGNORE);
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
@@ -87,33 +74,9 @@ public class Prevdepth extends AbstractAssignment
      *
      * @param name the name for debugging
      */
-    public Prevdepth(final String name) {
+    public Spacefactor(final String name) {
 
         super(name);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.type.Code#execute(
-     *      de.dante.extex.interpreter.Flags,
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.typesetter.Typesetter)
-     */
-    public void assign(final Flags prefix, final Context context,
-            final TokenSource source, final Typesetter typesetter)
-            throws InterpreterException {
-
-        source.getOptionalEquals(context);
-        Dimen pd = new Dimen(context, source, typesetter);
-        if (pd.getValue() == IGNORE) {
-            pd = null;
-        }
-        try {
-            typesetter.setPrevDepth(pd);
-        } catch (TypesetterUnsupportedException e) {
-            throw new CantUseInException(printableControlSequence(context),
-                    typesetter.getMode().toString());
-        }
     }
 
     /**
@@ -125,35 +88,40 @@ public class Prevdepth extends AbstractAssignment
     public long convertCount(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        Dimen prevDepth;
+        long spacefactor;
         try {
-            prevDepth = typesetter.getListMaker().getPrevDepth();
+            spacefactor = typesetter.getListMaker().getSpacefactor();
         } catch (TypesetterUnsupportedException e) {
             throw new HelpingException(getLocalizer(), "TTP.ImproperSForPD",
                     printableControlSequence(context));
         }
 
-        return prevDepth != null ? prevDepth.getValue() : IGNORE;
+        return spacefactor;
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.dimen.DimenConvertible#convertDimen(
+     * @see de.dante.extex.interpreter.type.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public long convertDimen(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws InterpreterException {
+    public void execute(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws InterpreterException {
 
-        Dimen prevDepth;
+        source.getOptionalEquals(context);
+        long factor = source.scanInteger(context, typesetter);
+
         try {
-            prevDepth = typesetter.getListMaker().getPrevDepth();
+            typesetter.setSpacefactor(new Count(factor));
         } catch (TypesetterUnsupportedException e) {
-            throw new HelpingException(getLocalizer(), "TTP.ImproperSForPD",
-                    printableControlSequence(context));
+            throw new CantUseInException(printableControlSequence(context),
+                    typesetter.getMode().toString());
+        } catch (InvalidSpacefactorException e) {
+            throw new HelpingException(getLocalizer(), "TTP.BadSpaceFactor",
+                    Long.toString(factor));
         }
-
-        return prevDepth != null ? prevDepth.getValue() : IGNORE;
     }
 
     /**
@@ -165,22 +133,6 @@ public class Prevdepth extends AbstractAssignment
     public Tokens the(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        Dimen prevDepth;
-        try {
-            prevDepth = typesetter.getListMaker().getPrevDepth();
-        } catch (TypesetterUnsupportedException e) {
-            throw new HelpingException(getLocalizer(), "TTP.ImproperSForPD",
-                    printableControlSequence(context));
-        }
-
-        if (prevDepth ==null) {
-            prevDepth = IGNORE_DIMEN;
-        }
-
-        try {
-            return prevDepth.toToks(context.getTokenFactory());
-        } catch (CatcodeException e) {
-            throw new InterpreterException(e);
-        }
+        return new Tokens(context, convertCount(context, source, typesetter));
     }
 }
