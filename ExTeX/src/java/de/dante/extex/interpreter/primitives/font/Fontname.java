@@ -47,7 +47,6 @@ import de.dante.extex.typesetter.Typesetter;
  *  are <i>other</i> tokens except of the spaces. Ths means that even the
  *  letters are of category <i>other</i>.
  * </p>
- * </doc>
  *
  * <h4>Example</h4>
  * <pre>
@@ -65,7 +64,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class Fontname extends AbstractCode implements ExpandableCode {
 
