@@ -72,7 +72,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This is the list maker for the inline math formulae.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
 public class MathListMaker extends AbstractListMaker implements NoadConsumer {
 
@@ -81,7 +81,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      * It is used to store to the stack and restore the state from the stack.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.28 $
+     * @version $Revision: 1.29 $
      */
     private class MathMemento {
 
@@ -495,14 +495,17 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
             f = flags.copy();
             flags.clear();
         }
+        ListManager man = getManager();
         try {
             Token t = source.getToken(context);
             if (t == null) {
                 throw new EofException(primitive);
             }
-            getManager().push(
-                    new MathListMaker(getManager(), source.getLocator()));
+            MathListMaker lm = new MathListMaker(man, source.getLocator());
+            man.push(lm);
             if (t.isa(Catcode.LEFTBRACE)) {
+                lm.leftBrace();
+                context.openGroup();
                 source.executeGroup();
             } else {
                 source.execute(t, context, typesetter);
@@ -511,11 +514,13 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
             throw e;
         } catch (InterpreterException e) {
             throw new TypesetterException(e);
+        } catch (ConfigurationException e) {
+            throw new TypesetterException(e);
         }
         if (flags != null) {
             flags.set(f);
         }
-        return (((MathListMaker) getManager().pop())).getInsertionPoint();
+        return (((MathListMaker) man.pop())).getInsertionPoint();
     }
 
     /**

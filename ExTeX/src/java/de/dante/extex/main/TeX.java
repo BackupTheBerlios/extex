@@ -25,6 +25,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.CharacterCodingException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -49,6 +50,8 @@ import de.dante.extex.interpreter.observer.push.PushObservable;
 import de.dante.extex.interpreter.observer.push.PushObserver;
 import de.dante.extex.interpreter.observer.streamClose.StreamCloseObservable;
 import de.dante.extex.interpreter.observer.streamClose.StreamCloseObserver;
+import de.dante.extex.main.exception.MainCodingException;
+import de.dante.extex.main.exception.MainConfigurationException;
 import de.dante.extex.main.exception.MainException;
 import de.dante.extex.main.exception.MainIOException;
 import de.dante.extex.main.exception.MainMissingArgumentException;
@@ -56,6 +59,7 @@ import de.dante.extex.main.exception.MainUnknownOptionException;
 import de.dante.extex.main.inputHandler.TeXInputReader;
 import de.dante.extex.main.logging.LogFormatter;
 import de.dante.extex.main.observer.FileCloseObserver;
+import de.dante.extex.main.observer.FileOpenObserver;
 import de.dante.extex.main.observer.TokenObserver;
 import de.dante.extex.main.observer.TokenPushObserver;
 import de.dante.extex.main.observer.TraceObserver;
@@ -69,6 +73,8 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
 import de.dante.util.framework.configuration.exception.ConfigurationUnsupportedEncodingException;
 import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.i18n.LocalizerFactory;
+import de.dante.util.observer.NotObservableException;
+import de.dante.util.resource.ResourceFinder;
 
 /**
  * This is the command line interface to <logo>ExTeX</logo>.
@@ -584,7 +590,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class TeX extends ExTeX {
 
@@ -603,10 +609,16 @@ public class TeX extends ExTeX {
     private static final String DOT_EXTEX = ".extex";
 
     /**
-     * The constant <tt>VERSION</tt> contains the manually incremented version
-     * string.
+     * The constant <tt>EXIT_INTERNAL_ERROR</tt> contains the exit code for
+     * internal errors.
      */
-    private static final String EXTEX_VERSION = new Version().toString();
+    protected static final int EXIT_INTERNAL_ERROR = -666;
+
+    /**
+     * The constant <tt>EXIT_OK</tt> contains the exit code of the program for
+     * the success case.
+     */
+    protected static final int EXIT_OK = 0;
 
     /**
      * The constant <tt>TRACE_MAP</tt> contains the mapping from single
@@ -707,7 +719,8 @@ public class TeX extends ExTeX {
      * @see de.dante.extex.ExTeX#ExTeX(java.util.Properties, java.lang.String)
      */
     public TeX(final Properties theProperties, final String dotFile)
-            throws InterpreterException, IOException {
+            throws InterpreterException,
+                IOException {
 
         super(theProperties, dotFile);
         localizer = LocalizerFactory.getLocalizer(TeX.class.getName());
@@ -749,7 +762,7 @@ public class TeX extends ExTeX {
      * @return <code>true</code> if the stream have not been initialized
      *
      * @throws ConfigurationException in case of a configuration error
-     * @throws MainIOException in case of an IO error
+     * @throws IOException in case of an IO error
      *
      * @see de.dante.extex.ExTeX#initializeStreams(
      *      de.dante.extex.interpreter.Interpreter,
@@ -758,7 +771,7 @@ public class TeX extends ExTeX {
     protected boolean initializeStreams(final Interpreter interpreter,
             final Properties properties)
             throws ConfigurationException,
-                MainIOException {
+                IOException {
 
         TokenStreamFactory factory = interpreter.getTokenStreamFactory();
         boolean notInitialized = true;
@@ -830,7 +843,8 @@ public class TeX extends ExTeX {
             final TokenStreamFactory factory, final FontFactory fontFactory)
             throws ConfigurationException,
                 GeneralException,
-                FontException {
+                FontException,
+                IOException {
 
         Interpreter interpreter = super.makeInterpreter(config, factory,
                 fontFactory);
@@ -864,6 +878,32 @@ public class TeX extends ExTeX {
         }
 
         return interpreter;
+    }
+
+    /**
+     * Create a TokenStreamFactory.
+     * Implicitly the logger is used.
+     *
+     * @param config the configuration object for the token stream factory
+     * @param finder the file finder for the token stream factory
+     *
+     * @return the token stream factory
+     *
+     * @throws ConfigurationException in case that some kind of problems have
+     * been detected in the configuration
+     * @throws NotObservableException in case that the observer for file
+     * events could not be registered
+     */
+    protected TokenStreamFactory makeTokenStreamFactory(
+            final Configuration config, final ResourceFinder finder)
+            throws ConfigurationException,
+                NotObservableException {
+
+        TokenStreamFactory factory = super.makeTokenStreamFactory(config,
+                finder);
+        factory.registerObserver(new FileOpenObserver(getLogger()));
+
+        return factory;
     }
 
     /**
@@ -974,19 +1014,11 @@ public class TeX extends ExTeX {
                 runWithoutFile();
             }
         } catch (MainException e) {
-            try {
-                showBanner(null, Level.INFO);
-            } catch (MainException e1) {
-                logException(getLogger(), e1.getLocalizedMessage(), e1);
-            }
+            showBanner(null, Level.INFO);
             logException(getLogger(), e.getLocalizedMessage(), e);
             returnCode = e.getCode();
         } catch (Throwable e) {
-            try {
-                showBanner(null, Level.INFO);
-            } catch (MainException e1) {
-                logException(getLogger(), e1.getLocalizedMessage(), e1);
-            }
+            showBanner(null, Level.INFO);
             logInternalError(e);
             getLogger().info(
                     getLocalizer().format("ExTeX.Logfile",
@@ -996,6 +1028,28 @@ public class TeX extends ExTeX {
         }
 
         return returnCode;
+    }
+
+    /**
+     * Run super.run() and remap the Exceptions
+     *
+     * @return the interpreter instance used
+     *
+     * @throws MainException in case of an error
+     */
+    private Interpreter run2() throws MainException {
+
+        try {
+            return run();
+        } catch (CharacterCodingException e) {
+            throw new MainCodingException(e);
+        } catch (ConfigurationException e) {
+            throw new MainConfigurationException(e);
+        } catch (IOException e) {
+            throw new MainIOException(e);
+        } catch (GeneralException e) {
+            throw new MainException(e);
+        }
     }
 
     /**
@@ -1022,7 +1076,7 @@ public class TeX extends ExTeX {
             setProperty(PROP_CODE, in.toString());
         }
 
-        run();
+        run2();
     }
 
     /**
@@ -1063,7 +1117,7 @@ public class TeX extends ExTeX {
         QueryFileHandler queryFileHandler = getQueryFileHandler();
         setInputFileName((queryFileHandler != null ? queryFileHandler
                 .query(getLogger()) : null));
-        run();
+        run2();
     }
 
     /**

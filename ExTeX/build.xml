@@ -201,26 +201,6 @@
     </junit>
   </target>
 
-  <target name="test.report" depends="jar,jar.tests"
-          description="Run JUnit tests and produce an HTML test report">
-    <delete dir="${target.tests}" />
-    <mkdir dir="${target.tests}" />
-    <junit printsummary="on" haltonfailure="no">
-      <classpath>
-        <pathelement path="${classes}" />
-      </classpath>
-      <classpath refid="test.class.path" />
-      <formatter type="xml"/>
-      <batchtest fork="yes" todir="${target.tests}">
-        <fileset dir="${src.tests}">
-          <include name="${cases}" />
-        </fileset>
-      </batchtest>
-    </junit>
-    <delete dir="${target}/www/reports/tests" />
-    <mkdir dir="${target}/www/reports/tests" />
-  </target>
-
   <target name="site"
           description="">
     <mkdir dir="${target}/tmp" />
@@ -243,16 +223,48 @@
     </xslt>
   </target>
 
+  <target name="tests99" depends="jar,jar.tests"
+          description="Run JUnit tests and produce an HTML test report">
+    <delete dir="${target.tests}" />
+    <mkdir dir="${target.tests}" />
+    <junit printsummary="on" haltonfailure="no">
+      <classpath>
+        <pathelement path="${classes}" />
+      </classpath>
+      <classpath refid="test.class.path" />
+      <formatter type="xml"/>
+      <batchtest fork="yes" todir="${target.tests}">
+        <fileset dir="${src.tests}">
+          <include name="${cases}" />
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+
   <target name="junitreport"
-       	  depends="test.report"
-          description="">
+       	  depends="jar,jar.tests"
+          description="Run JUnit tests and produce an HTML test report">
+    <delete dir="${target.tests}" />
+    <mkdir dir="${target.tests}" />
+    <junit printsummary="on" haltonfailure="no">
+      <classpath>
+        <pathelement path="${classes}" />
+      </classpath>
+      <classpath refid="test.class.path" />
+      <formatter type="xml"/>
+      <batchtest fork="yes" todir="${target.tests}">
+        <fileset dir="${src.tests}">
+          <include name="${cases}" />
+        </fileset>
+      </batchtest>
+    </junit>
     <junitreport todir="${target.tests}">
       <fileset dir="${target.tests}">
         <include name="TEST-*.xml"/>
       </fileset>
       <report format="noframes"
               styledir="develop/reports"
- 	      todir="${target}/www/reports/t"/>
+ 	      todir="${target}/www/reports/tests"/>
     </junitreport>
   </target>
 

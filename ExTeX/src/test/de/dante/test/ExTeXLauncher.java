@@ -23,6 +23,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.charset.CharacterCodingException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -39,17 +40,17 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.main.errorHandler.editHandler.EditHandler;
-import de.dante.extex.main.exception.MainException;
 import de.dante.extex.main.logging.LogFormatter;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.util.exception.GeneralException;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * This base class for test cases handles all the nifty gritty details of
  * running an instance of <logo>ExTeX</logo>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.37 $
+ * @version $Revision: 1.38 $
  */
 public class ExTeXLauncher extends TestCase {
 
@@ -57,7 +58,7 @@ public class ExTeXLauncher extends TestCase {
      * Inner class for the error handler.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.37 $
+     * @version $Revision: 1.38 $
      */
     private class EHandler implements ErrorHandler {
 
@@ -115,6 +116,12 @@ public class ExTeXLauncher extends TestCase {
             + "\\catcode`\\}=2 " + "\\catcode`\\$=3 " + "\\catcode`\\&=4 "
             + "\\catcode`\\#=6 " + "\\catcode`\\^=7 " + "\\catcode`\\_=8 "
             + "\\catcode`\\^^I=10 ";
+
+    /**
+     * The constant <tt>DEFINE_HASH</tt> contains the definition of the
+     * usual catcodes.
+     */
+    public static final String DEFINE_HASH = "\\catcode`\\#=6 ";
 
     /**
      * The field <tt>levelMap</tt> contains the ...
@@ -191,10 +198,14 @@ public class ExTeXLauncher extends TestCase {
      * @param code the code to expand
      * @param log the expected output on the log stream
      *
+     * @return a new instance of the <tt>Interpreter</tt> class which has been
+     *  used for the test run. This object can be inspected in additional
+     *  asserts.
+     *
      * @throws Exception in case of an error
      */
-    public Interpreter assertFailure(final Properties properties, final String code,
-            final String log) throws Exception {
+    public Interpreter assertFailure(final Properties properties,
+            final String code, final String log) throws Exception {
 
         return assertOutput(properties, code, log, "");
     }
@@ -204,6 +215,10 @@ public class ExTeXLauncher extends TestCase {
      *
      * @param code the code to expand
      * @param log the expected output on the log stream
+     *
+     * @return a new instance of the <tt>Interpreter</tt> class which has been
+     *  used for the test run. This object can be inspected in additional
+     *  asserts.
      *
      * @throws Exception in case of an error
      */
@@ -227,8 +242,9 @@ public class ExTeXLauncher extends TestCase {
      *
      * @throws InterpreterException in case of an error
      */
-    public Interpreter assertOutput(final Properties properties, final String code,
-            final String log, final String expect) throws InterpreterException {
+    public Interpreter assertOutput(final Properties properties,
+            final String code, final String log, final String expect)
+            throws InterpreterException {
 
         boolean errorP = false;
 
@@ -266,7 +282,13 @@ public class ExTeXLauncher extends TestCase {
         Interpreter interpreter = null;
         try {
             interpreter = extex.run();
-        } catch (MainException e) {
+        } catch (CharacterCodingException e) {
+            errorP = true;
+        } catch (ConfigurationException e) {
+            errorP = true;
+        } catch (IOException e) {
+            errorP = true;
+        } catch (GeneralException e) {
             errorP = true;
         } catch (Throwable e) {
             e.printStackTrace();
@@ -289,14 +311,37 @@ public class ExTeXLauncher extends TestCase {
     /**
      * Run some code through <logo>ExTeX</logo>.
      *
+     * @param code the code to expand
+     * @param log the expected output on the log stream
+     * @param expect the expected output on the output stream
+     *
+     * @return a new instance of the <tt>Interpreter</tt> class which has been
+     *  used for the test run. This object can be inspected in additional
+     *  asserts.
+     *
+     * @throws Exception in case of an error
+     */
+    public Interpreter assertOutput(final String code, final String log,
+            final String expect) throws Exception {
+
+        return assertOutput(getProps(), code, log, expect);
+    }
+
+    /**
+     * Run some code through <logo>ExTeX</logo>.
+     *
      * @param properties the properties to modify
      * @param code the code to expand
      * @param expect the expected output on the output stream
      *
+     * @return a new instance of the <tt>Interpreter</tt> class which has been
+     *  used for the test run. This object can be inspected in additional
+     *  asserts.
+     *
      * @throws Exception in case of an error
      */
-    public Interpreter assertSuccess(final Properties properties, final String code,
-            final String expect) throws Exception {
+    public Interpreter assertSuccess(final Properties properties,
+            final String code, final String expect) throws Exception {
 
         return assertOutput(properties, code, "", expect);
     }
@@ -306,6 +351,10 @@ public class ExTeXLauncher extends TestCase {
      *
      * @param code the code to expand
      * @param expect the expected output on the output stream
+     *
+     * @return a new instance of the <tt>Interpreter</tt> class which has been
+     *  used for the test run. This object can be inspected in additional
+     *  asserts.
      *
      * @throws Exception in case of an error
      */
@@ -371,7 +420,7 @@ public class ExTeXLauncher extends TestCase {
      *
      * @param extex the ExTeX object
      */
-    private void init(final ExTeX extex) {
+    protected void init(final ExTeX extex) {
 
     }
 

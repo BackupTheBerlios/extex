@@ -59,7 +59,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class HorizontalListMaker extends AbstractListMaker {
 
@@ -263,7 +263,7 @@ public class HorizontalListMaker extends AbstractListMaker {
      * @see "The TeXbook [p.76]"
      */
     public void letter(final Context context, final TypesettingContext tc,
-            final UnicodeChar symbol, Locator locator) {
+            final UnicodeChar symbol, final Locator locator) {
 
         int size = nodes.size();
         if (size > 0) {

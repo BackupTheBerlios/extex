@@ -24,7 +24,7 @@ package de.dante.test;
  * primitives. They verify that prefix macros always lead to an error.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public abstract class NoFlagsPrimitiveTester extends ExTeXLauncher {
 
@@ -127,7 +127,7 @@ public abstract class NoFlagsPrimitiveTester extends ExTeXLauncher {
                 //--- log message ---
                 out + "You can\'t use the prefix `\\immediate\' with"
                         + " the control sequence"
-                        + (primitive.length() >= 17 ? "\n" : " ") + "\\"
+                        + (primitive.length() >= 15 ? "\n" : " ") + "\\"
                         + primitive);
     }
 
@@ -180,7 +180,7 @@ public abstract class NoFlagsPrimitiveTester extends ExTeXLauncher {
                 //--- log message ---
                 out + "You can\'t use the prefix `\\protected\' with"
                         + " the control sequence"
-                        + (primitive.length() >= 17 ? "\n" : " ") + "\\"
+                        + (primitive.length() >= 15 ? "\n" : " ") + "\\"
                         + primitive);
     }
 
