@@ -23,7 +23,6 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.primitives.register.box.AbstractBox;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.typesetter.Typesetter;
@@ -39,21 +38,21 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * <p>
  *  TODO missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;insert&rang;
  *       &rarr; <tt>\insert</tt>  </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \insert42{abc}  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class Insert extends AbstractBox {
 
@@ -83,9 +82,8 @@ public class Insert extends AbstractBox {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        if (!typesetter.getMode().isVmode()) {
-            throw new HelpingException(getLocalizer(), "TTP.MisplacedInsert");
-        }
+        Flags f = prefix.copy();
+        prefix.clear();
         long index = source.scanNumber(context);
         Box b = new Box(context, source, typesetter, false, null);
 
@@ -94,6 +92,7 @@ public class Insert extends AbstractBox {
         } catch (ConfigurationException e) {
             throw new InterpreterException(e);
         }
+        prefix.set(f);
     }
 
 }

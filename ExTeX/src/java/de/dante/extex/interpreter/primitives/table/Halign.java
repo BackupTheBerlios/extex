@@ -46,9 +46,10 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * <doc name="halign">
  * <h3>The Primitive <tt>\halign</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  TODO gene: missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;halign&rang;
@@ -65,16 +66,15 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  *    &lang;preamble&rang;
  *       &rarr; ...   </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \halign  </pre>
- * </p>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public class Halign extends AbstractAlign implements Boxable {
 
@@ -104,6 +104,8 @@ public class Halign extends AbstractAlign implements Boxable {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
+        Flags f = prefix.copy();
+        prefix.clear();
         try {
             typesetter.add(getNodes(context, source, typesetter));
         } catch (InterpreterException e) {
@@ -111,6 +113,7 @@ public class Halign extends AbstractAlign implements Boxable {
         } catch (ConfigurationException e) {
             throw new InterpreterException(e);
         }
+        prefix.set(f);
     }
 
     /**
