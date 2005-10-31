@@ -29,7 +29,6 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractAssignment;
-import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.framework.AbstractFactory;
 import de.dante.util.framework.configuration.Configurable;
@@ -89,7 +88,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class NativeDef extends AbstractAssignment
         implements
@@ -102,7 +101,7 @@ public class NativeDef extends AbstractAssignment
      * inheritance in Java.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.6 $
+     * @version $Revision: 1.7 $
      */
     protected class Factory extends AbstractFactory {
 
@@ -157,7 +156,7 @@ public class NativeDef extends AbstractAssignment
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String name = source.getTokens(context).toText();
+        String name = source.getTokens(context, source, typesetter).toText();
         Configuration cfg = (Configuration) map.get(name);
         if (cfg == null) {
             throw new InterpreterException(getLocalizer().format("UnknownType",
@@ -168,7 +167,7 @@ public class NativeDef extends AbstractAssignment
         factory.enableLogging(logger);
         try {
             factory.configure(cfg);
-            factory.createLoad().define(prefix, context, source);
+            factory.createLoad().define(prefix, context, source, typesetter);
         } catch (ConfigurationException e) {
             throw new InterpreterException(e);
         }

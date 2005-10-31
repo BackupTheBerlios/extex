@@ -131,7 +131,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public class JavaDef extends AbstractAssignment implements Definer {
 
@@ -171,20 +171,22 @@ public class JavaDef extends AbstractAssignment implements Definer {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        define(prefix, context, source);
+        define(prefix, context, source, typesetter);
     }
 
     /**
      * @see de.dante.extex.interpreter.primitives.dynamic.Definer#define(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
      */
     public void define(final Flags prefix, final Context context,
-            final TokenSource source) throws InterpreterException {
+            final TokenSource source, final Typesetter typesetter)
+            throws InterpreterException {
 
         CodeToken cs = source.getControlSequence(context);
-        Tokens name = source.getTokens(context);
+        Tokens name = source.getTokens(context, source, typesetter);
         String classname = name.toText();
         if ("".equals(classname)) {
             throw new HelpingException(getLocalizer(), "ClassNotFound",
