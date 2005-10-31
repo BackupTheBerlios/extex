@@ -65,7 +65,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.76 $
+ * @version $Revision: 1.77 $
  */
 public class TypesetterImpl
         implements
@@ -594,7 +594,7 @@ public class TypesetterImpl
         for (int i = saveStack.size() - 1; i >= 0; i--) {
             ListMaker lm = (ListMaker) saveStack.get(i);
             sb.append(localizer.format("Showlist.Format", lm.getMode()
-                    .toString(), Integer.toString(listMaker.getLocator()
+                    .toString(), Integer.toString(lm.getLocator()
                     .getLineno())));
             lm.showlist(sb, l, m);
         }
