@@ -24,6 +24,7 @@ import java.io.InputStream;
 
 import de.dante.extex.font.FontFactory;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.context.observer.count.CountObserver;
 import de.dante.extex.interpreter.exception.ErrorLimitException;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.interaction.Interaction;
@@ -42,7 +43,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.31 $
+ * @version $Revision: 1.32 $
  */
 public interface Interpreter extends TokenSource {
 
