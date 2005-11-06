@@ -25,12 +25,7 @@ import de.dante.extex.interpreter.Conditional;
 import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.Tokenizer;
-import de.dante.extex.interpreter.context.observer.CodeObserver;
-import de.dante.extex.interpreter.context.observer.CountObserver;
-import de.dante.extex.interpreter.context.observer.DimenObserver;
-import de.dante.extex.interpreter.context.observer.InteractionObserver;
-import de.dante.extex.interpreter.context.observer.TokensObserver;
-import de.dante.extex.interpreter.context.observer.afterGroup.AfterGroupObserver;
+import de.dante.extex.interpreter.context.observer.group.AfterGroupObserver;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.interaction.Interaction;
@@ -70,7 +65,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * classes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class MockContext implements Context, TypesetterOptions {
 
@@ -200,6 +195,14 @@ public class MockContext implements Context, TypesetterOptions {
      * @see de.dante.extex.interpreter.context.ContextColor#getColorConverter()
      */
     public ColorConverter getColorConverter() {
+
+        return null;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getConditional()
+     */
+    public Conditional getConditional() {
 
         return null;
     }
@@ -472,7 +475,7 @@ public class MockContext implements Context, TypesetterOptions {
     /**
      * @see de.dante.extex.interpreter.context.ContextGroup#openGroup()
      */
-    public void openGroup() throws ConfigurationException {
+    public void openGroup() throws ConfigurationException, InterpreterException {
 
         throw new RuntimeException("unimplemented");
     }
@@ -489,51 +492,7 @@ public class MockContext implements Context, TypesetterOptions {
      * @see de.dante.extex.interpreter.context.Context#pushConditional(de.dante.util.Locator, boolean, String)
      */
     public void pushConditional(final Locator locator, final boolean value,
-            String primitive) {
-
-        throw new RuntimeException("unimplemented");
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.ContextCode#registerCodeChangeObserver(de.dante.extex.scanner.type.Token, de.dante.extex.interpreter.context.observer.CodeObserver)
-     */
-    public void registerCodeChangeObserver(final Token token,
-            final CodeObserver observer) {
-
-        throw new RuntimeException("unimplemented");
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.ContextCount#registerCountObserver(java.lang.String, de.dante.extex.interpreter.context.observer.CountObserver)
-     */
-    public void registerCountObserver(final String name,
-            final CountObserver observer) {
-
-        throw new RuntimeException("unimplemented");
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.ContextDimen#registerDimenObserver(java.lang.String, de.dante.extex.interpreter.context.observer.DimenObserver)
-     */
-    public void registerDimenObserver(final String name,
-            final DimenObserver observer) {
-
-        throw new RuntimeException("unimplemented");
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.ContextInteraction#registerInteractionObserver(de.dante.extex.interpreter.context.observer.InteractionObserver)
-     */
-    public void registerInteractionObserver(final InteractionObserver observer) {
-
-        throw new RuntimeException("unimplemented");
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.ContextTokens#registerTokensObserver(java.lang.String, de.dante.extex.interpreter.context.observer.TokensObserver)
-     */
-    public void registerTokensObserver(final String name,
-            final TokensObserver observer) {
+            Code primitive, long branch) {
 
         throw new RuntimeException("unimplemented");
     }
@@ -697,7 +656,8 @@ public class MockContext implements Context, TypesetterOptions {
     /**
      * @see de.dante.extex.interpreter.context.Context#setInteraction(de.dante.extex.interpreter.Interaction)
      */
-    public void setInteraction(final Interaction interaction) throws InterpreterException {
+    public void setInteraction(final Interaction interaction)
+            throws InterpreterException {
 
         throw new RuntimeException("unimplemented");
     }
@@ -713,7 +673,8 @@ public class MockContext implements Context, TypesetterOptions {
     /**
      * @see de.dante.extex.interpreter.context.Context#setLccode(de.dante.util.UnicodeChar, de.dante.util.UnicodeChar)
      */
-    public void setLccode(final UnicodeChar uc, final UnicodeChar lc, boolean global) {
+    public void setLccode(final UnicodeChar uc, final UnicodeChar lc,
+            boolean global) {
 
         throw new RuntimeException("unimplemented");
     }
@@ -814,51 +775,8 @@ public class MockContext implements Context, TypesetterOptions {
     /**
      * @see de.dante.extex.interpreter.context.Context#setUccode(de.dante.util.UnicodeChar, de.dante.util.UnicodeChar)
      */
-    public void setUccode(final UnicodeChar lc, final UnicodeChar uc, boolean global) {
-
-        throw new RuntimeException("unimplemented");
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.ContextCode#unregisterCodeObserver(de.dante.extex.scanner.type.Token, de.dante.extex.interpreter.context.observer.CodeObserver)
-     */
-    public void unregisterCodeObserver(final Token name,
-            final CodeObserver observer) {
-
-        throw new RuntimeException("unimplemented");
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.ContextCount#unregisterCountObserver(java.lang.String, de.dante.extex.interpreter.context.observer.CountObserver)
-     */
-    public void unregisterCountObserver(final String name,
-            final CountObserver observer) {
-
-        throw new RuntimeException("unimplemented");
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.ContextDimen#unregisterDimenObserver(java.lang.String, de.dante.extex.interpreter.context.observer.DimenObserver)
-     */
-    public void unregisterDimenObserver(final String name,
-            final DimenObserver observer) {
-
-        throw new RuntimeException("unimplemented");
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.ContextInteraction#unregisterInteractionObserver(de.dante.extex.interpreter.context.observer.InteractionObserver)
-     */
-    public void unregisterInteractionObserver(final InteractionObserver observer) {
-
-        throw new RuntimeException("unimplemented");
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.ContextTokens#unregisterTokensChangeObserver(java.lang.String, de.dante.extex.interpreter.context.observer.TokensObserver)
-     */
-    public void unregisterTokensChangeObserver(final String name,
-            final TokensObserver observer) {
+    public void setUccode(final UnicodeChar lc, final UnicodeChar uc,
+            boolean global) {
 
         throw new RuntimeException("unimplemented");
     }
