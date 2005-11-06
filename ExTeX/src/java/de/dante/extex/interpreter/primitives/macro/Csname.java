@@ -37,6 +37,7 @@ import de.dante.extex.scanner.type.token.SpaceToken;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.UnicodeChar;
+import de.dante.util.framework.i18n.Localizer;
 
 /**
  * This class provides an implementation for the primitive <code>\csname</code>.
@@ -84,7 +85,7 @@ import de.dante.util.UnicodeChar;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.30 $
+ * @version $Revision: 1.31 $
  */
 public class Csname extends AbstractCode implements ExpandableCode {
 
@@ -92,6 +93,59 @@ public class Csname extends AbstractCode implements ExpandableCode {
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
     private static final long serialVersionUID = 1L;
+
+    /**
+     * Expand tokens and collect the result until <tt>\endcsname</tt> is found.
+     * In fact the termination condition is that a Token is found which is
+     * assigned to {@link Endcsname Endcsname}.
+     *
+     * @param context the interpreter context
+     * @param source the source for new tokens
+     * @param typesetter the typesetter
+     *
+     * @return the Tokens found while scanning the input tokens
+     *
+     * @throws InterpreterException in case of an error
+     */
+    public static Tokens scanToEndCsname(final Context context,
+            final TokenSource source, final Typesetter typesetter,
+            final Localizer localizer2) throws InterpreterException {
+
+        Tokens toks = new Tokens();
+        for (Token t = source.getToken(context); t != null; t = source
+                .getToken(context)) {
+
+            if (t instanceof CodeToken) {
+                Code code = context.getCode((CodeToken) t);
+
+                if (code instanceof Endcsname) {
+
+                    return toks;
+
+                } else if (code instanceof ExpandableCode) {
+
+                    ((ExpandableCode) code).expand(Flags.NONE, context, source,
+                            typesetter);
+
+                } else if (code == null) {
+
+                    throw new UndefinedControlSequenceException(printable(
+                            context, t));
+
+                } else if (!(code instanceof Relax)) {
+
+                    throw new HelpingException(localizer2,
+                            "TTP.MissingEndcsname", context.esc("endcsname"),
+                            context.esc(t));
+                }
+
+            } else if (!(t instanceof SpaceToken)) {
+
+                toks.add(t);
+            }
+        }
+        return toks;
+    }
 
     /**
      * Creates a new object.
@@ -108,10 +162,11 @@ public class Csname extends AbstractCode implements ExpandableCode {
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */
-    public Token convertCs(final Context context, final TokenSource source)
-            throws InterpreterException {
+    public Token convertCs(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
 
-        Tokens toks = scanToEndCsname(context, source, null);
+        Tokens toks = scanToEndCsname(context, source, typesetter,
+                getLocalizer());
 
         try {
             return context.getTokenFactory().createToken(Catcode.ESCAPE,
@@ -133,7 +188,8 @@ public class Csname extends AbstractCode implements ExpandableCode {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        Tokens toks = scanToEndCsname(context, source, typesetter);
+        Tokens toks = scanToEndCsname(context, source, typesetter,
+                getLocalizer());
         String s = toks.toText();
 
         try {
@@ -161,7 +217,8 @@ public class Csname extends AbstractCode implements ExpandableCode {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        Tokens toks = scanToEndCsname(context, source, typesetter);
+        Tokens toks = scanToEndCsname(context, source, typesetter,
+                getLocalizer());
         String s = toks.toText();
 
         try {
@@ -172,59 +229,6 @@ public class Csname extends AbstractCode implements ExpandableCode {
             throw new InterpreterException(e);
         }
         //gene: this might not be correct
-    }
-
-    /**
-     * Expand tokens and collect the result until <tt>\endcsname</tt> is found.
-     * In fact the termination condition is that a Token is found which is
-     * assigned to {@link Endcsname Endcsname}.
-     *
-     * @param context the interpreter context
-     * @param source the source for new tokens
-     * @param typesetter the typesetter
-     *
-     * @return the Tokens found while scanning the input tokens
-     *
-     * @throws InterpreterException in case of an error
-     */
-    private Tokens scanToEndCsname(final Context context,
-            final TokenSource source, final Typesetter typesetter)
-            throws InterpreterException {
-
-        Tokens toks = new Tokens();
-        for (Token t = source.getToken(context); t != null; t = source
-                .getToken(context)) {
-
-            if (t instanceof CodeToken) {
-                Code code = context.getCode((CodeToken) t);
-
-                if (code instanceof Endcsname) {
-
-                    return toks;
-
-                } else if (code instanceof ExpandableCode) {
-
-                    ((ExpandableCode) code).expand(Flags.NONE, context, source,
-                            typesetter);
-
-                } else if (code == null) {
-
-                    throw new UndefinedControlSequenceException(printable(
-                            context, t));
-
-                } else if (!(code instanceof Relax)) {
-
-                    throw new HelpingException(getLocalizer(),
-                            "TTP.MissingEndcsname", context.esc("endcsname"),
-                            context.esc(t));
-                }
-
-            } else if (!(t instanceof SpaceToken)) {
-
-                toks.add(t);
-            }
-        }
-        return toks;
     }
 
 }
