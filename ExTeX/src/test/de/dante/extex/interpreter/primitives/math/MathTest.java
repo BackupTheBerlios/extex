@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for math.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class MathTest extends ExTeXLauncher {
 
@@ -49,7 +49,7 @@ public class MathTest extends ExTeXLauncher {
                 "\\catcode`$=3 "
                 + "$a$ \\end",
                 //--- output channel ---
-                "a\n");
+                "a" + TERM);
     }
 
     /**
