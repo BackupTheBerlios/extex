@@ -20,8 +20,8 @@
 package de.dante.extex.interpreter.context.impl;
 
 import de.dante.extex.interpreter.context.ContextInternals;
-import de.dante.extex.interpreter.context.observer.CountObserver;
-import de.dante.extex.interpreter.context.observer.TokensObserver;
+import de.dante.extex.interpreter.context.observer.count.CountObserver;
+import de.dante.extex.interpreter.context.observer.tokens.TokensObserver;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
@@ -32,11 +32,11 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * <p>
  *  The toks register <tt>\lang</tt> is considered first. Only if this register
  *  is not set or it is empty then the count register <tt>\language</tt> is
- *  taken into accout.
+ *  taken into account.
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class LanguageObserver implements CountObserver, TokensObserver {
 
