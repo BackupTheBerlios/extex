@@ -45,7 +45,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public class Ifcase extends AbstractIf {
 
@@ -91,22 +91,20 @@ public class Ifcase extends AbstractIf {
             throws InterpreterException {
 
         //prefix.clear(); //TODO gene: most probably not needed
-        long val = source.scanInteger(context, typesetter);
-        if (val < 0) {
+        long branch = source.scanInteger(context, typesetter);
+        if (branch < 0) {
             if (skipToElseOrFi(context, source)) {
-                context.pushConditional(source.getLocator(), true,
-                        printableControlSequence(context));
+                context.pushConditional(source.getLocator(), true, this, branch);
             }
             return;
         }
 
-        while (val > 0) {
+        while (branch > 0) {
             Tag tag = skipToOrOrElseOrFi(context, source);
             if (tag == OR) {
-                val--;
+                branch--;
             } else if (tag == ELSE) {
-                context.pushConditional(source.getLocator(), true,
-                        printableControlSequence(context));
+                context.pushConditional(source.getLocator(), true, this, branch);
                 return;
 
             } else if (tag == FI) {
@@ -117,8 +115,7 @@ public class Ifcase extends AbstractIf {
 
             }
         }
-        context.pushConditional(source.getLocator(), true,
-                printableControlSequence(context));
+        context.pushConditional(source.getLocator(), true, this, branch);
     }
 
     /**
@@ -196,7 +193,7 @@ public class Ifcase extends AbstractIf {
      * This is an internal class for type-safe values.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.26 $
+     * @version $Revision: 1.27 $
      */
     protected static final class Tag {
 
