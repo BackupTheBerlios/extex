@@ -23,7 +23,7 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 
 import de.dante.extex.interpreter.context.ContextInternals;
-import de.dante.extex.interpreter.context.observer.InteractionObserver;
+import de.dante.extex.interpreter.context.observer.interaction.InteractionObserver;
 import de.dante.extex.interpreter.interaction.Interaction;
 
 /**
@@ -31,7 +31,7 @@ import de.dante.extex.interpreter.interaction.Interaction;
  * logger. Thus it is guaranteed that only the appropriate messages are shown.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class InteractionModeObserver implements InteractionObserver {
 
