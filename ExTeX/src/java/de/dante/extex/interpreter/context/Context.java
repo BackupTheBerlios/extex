@@ -25,6 +25,7 @@ import de.dante.extex.interpreter.Conditional;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
+import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.font.Font;
@@ -48,7 +49,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.62 $
+ * @version $Revision: 1.63 $
  */
 public interface Context
         extends
@@ -66,7 +67,8 @@ public interface Context
 
     /**
      * Attach the current escape character in front of a name and return the
-     * result.
+     * result. If the escape character is not set then the argument is returned
+     * unchanged.
      * <p>
      * This method is meant to produce a printable version of a control
      * sequence for error messages.
@@ -117,6 +119,13 @@ public interface Context
     Box getBox(String name);
 
     /**
+     * Getter for the currently active conditional.
+     *
+     * @return the currently active conditional or <code>null</code> if none
+     */
+    Conditional getConditional();
+
+    /**
      * Getter for the delimiter code mapping.
      *
      * @param c the character to which the delcode is assigned
@@ -163,8 +172,7 @@ public interface Context
      *
      * @throws InterpreterException in case of an error
      */
-    Language getLanguage(String language)
-            throws InterpreterException;
+    Language getLanguage(String language) throws InterpreterException;
 
     /**
      * Getter for the lccode mapping of upper case characters to their
@@ -275,7 +283,7 @@ public interface Context
      * @param primitive the name of the primitive which triggered this
      *  operation
      */
-    void pushConditional(Locator locator, boolean value, String primitive);
+    void pushConditional(Locator locator, boolean value, Code primitive, long branch);
 
     /**
      * Setter for the color in the current typesetting context.
@@ -297,8 +305,7 @@ public interface Context
      *
      * @throws ConfigurationException in case of an error in the configuration.
      */
-    void set(Direction direction, boolean global)
-            throws ConfigurationException;
+    void set(Direction direction, boolean global) throws ConfigurationException;
 
     /**
      * Setter for the font in the current typesetting context.
