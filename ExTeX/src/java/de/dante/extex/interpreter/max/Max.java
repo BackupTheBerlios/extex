@@ -35,7 +35,7 @@ import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.ContextFactory;
-import de.dante.extex.interpreter.context.observer.afterGroup.SwitchObserver;
+import de.dante.extex.interpreter.context.observer.group.SwitchObserver;
 import de.dante.extex.interpreter.exception.ErrorLimitException;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.CantUseInException;
@@ -108,7 +108,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.88 $
+ * @version $Revision: 1.89 $
  */
 public abstract class Max
         implements
@@ -1011,8 +1011,8 @@ public abstract class Max
             Localizer localizer = getLocalizer();
             String endPrimitive = localizer.format("TTP.EndPrimitive");
             String message = localizer.format("TTP.EndIf", context
-                    .esc(endPrimitive), cond.getPrimitive(), cond.getLocator()
-                    .toString());
+                    .esc(endPrimitive), context.esc(cond.getPrimitiveName()),
+                    cond.getLocator().toString());
             logger.warning(message);
             InterpreterException e = new InterpreterException(message);
             if (observersError != null) {
