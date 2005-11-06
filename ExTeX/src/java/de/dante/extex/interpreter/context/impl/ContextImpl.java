@@ -40,12 +40,21 @@ import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.context.TypesettingContextFactory;
 import de.dante.extex.interpreter.context.extension.ContextExtensionPoint;
 import de.dante.extex.interpreter.context.extension.ExtensionPoint;
-import de.dante.extex.interpreter.context.observer.CodeObserver;
-import de.dante.extex.interpreter.context.observer.CountObserver;
-import de.dante.extex.interpreter.context.observer.DimenObserver;
-import de.dante.extex.interpreter.context.observer.InteractionObserver;
-import de.dante.extex.interpreter.context.observer.TokensObserver;
-import de.dante.extex.interpreter.context.observer.afterGroup.AfterGroupObserver;
+import de.dante.extex.interpreter.context.observer.code.CodeObservable;
+import de.dante.extex.interpreter.context.observer.code.CodeObserver;
+import de.dante.extex.interpreter.context.observer.conditional.ConditionalObservable;
+import de.dante.extex.interpreter.context.observer.conditional.ConditionalObserver;
+import de.dante.extex.interpreter.context.observer.count.CountObservable;
+import de.dante.extex.interpreter.context.observer.count.CountObserver;
+import de.dante.extex.interpreter.context.observer.dimen.DimenObservable;
+import de.dante.extex.interpreter.context.observer.dimen.DimenObserver;
+import de.dante.extex.interpreter.context.observer.group.AfterGroupObserver;
+import de.dante.extex.interpreter.context.observer.group.GroupObservable;
+import de.dante.extex.interpreter.context.observer.group.GroupObserver;
+import de.dante.extex.interpreter.context.observer.interaction.InteractionObservable;
+import de.dante.extex.interpreter.context.observer.interaction.InteractionObserver;
+import de.dante.extex.interpreter.context.observer.tokens.TokensObservable;
+import de.dante.extex.interpreter.context.observer.tokens.TokensObserver;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.interaction.Interaction;
@@ -82,6 +91,7 @@ import de.dante.util.framework.configuration.Configurable;
 import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 import de.dante.util.framework.configuration.exception.ConfigurationMissingException;
+import de.dante.util.framework.configuration.exception.ConfigurationWrapperException;
 import de.dante.util.framework.i18n.Localizable;
 import de.dante.util.framework.i18n.Localizer;
 
@@ -120,12 +130,19 @@ import de.dante.util.framework.i18n.Localizer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.95 $
+ * @version $Revision: 1.96 $
  */
 public class ContextImpl
         implements
             ContextInternals,
             ContextExtensionPoint,
+            CodeObservable,
+            ConditionalObservable,
+            CountObservable,
+            DimenObservable,
+            GroupObservable,
+            InteractionObservable,
+            TokensObservable,
             Tokenizer,
             DocumentWriterOptions,
             TypesetterOptions,
@@ -133,11 +150,6 @@ public class ContextImpl
             Localizable,
             Configurable,
             Serializable {
-
-    /**
-     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
-     */
-    private static final long serialVersionUID = 1L;
 
     /**
      * The constant <tt>GROUP_TAG</tt> contains the name of the tag for the
@@ -151,6 +163,11 @@ public class ContextImpl
      * the configuration.
      */
     private static final long MAGNIFICATION_MAX = 0x8000;
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * The constant <tt>TYPESETTING_CONTEXT_TAG</tt> contains the name of the
@@ -197,6 +214,11 @@ public class ContextImpl
     private transient Map changeToksObservers;
 
     /**
+     * The field <tt>conditionalObservers</tt> contains the ...
+     */
+    private transient List conditionalObservers = null;
+
+    /**
      * The field <tt>conditionalStack</tt> contains the stack for conditionals.
      */
     private List conditionalStack = new ArrayList();
@@ -205,6 +227,12 @@ public class ContextImpl
      * The field <tt>errorCount</tt> contains the error counter.
      */
     private int errorCount = 0;
+
+    /**
+     * The field <tt>extensionMap</tt> contains the registered extension points
+     * for this context.
+     */
+    private Map extensionMap = new HashMap();
 
     /**
      * The field <tt>fontFactory</tt> contains the font factory to use.
@@ -222,6 +250,12 @@ public class ContextImpl
      * a new group.
      */
     private transient GroupFactory groupFactory;
+
+    /**
+     * The field <tt>groupObservers</tt> contains the list of observers
+     * registered for change event on groups.
+     */
+    private transient List groupObservers;
 
     /**
      * The field <tt>id</tt> contains the is string.
@@ -361,6 +395,19 @@ public class ContextImpl
             source.push(toks);
         }
 
+        if (groupObservers != null) {
+            int size = groupObservers.size();
+            for (int i = 0; i < size; i++) {
+                try {
+                    ((GroupObserver) groupObservers.get(i))
+                            .receiveCloseGroup(this);
+                } catch (InterpreterException e) {
+                    throw e;
+                } catch (Exception e) {
+                    throw new InterpreterException(e);
+                }
+            }
+        }
     }
 
     /**
@@ -372,7 +419,11 @@ public class ContextImpl
 
         groupFactory = new GroupFactory(configuration
                 .getConfiguration(GROUP_TAG));
-        openGroup();
+        try {
+            openGroup();
+        } catch (InterpreterException e) {
+            throw new ConfigurationWrapperException(e);
+        }
 
         Configuration typesettingConfig = configuration
                 .getConfiguration(TYPESETTING_CONTEXT_TAG);
@@ -488,6 +539,18 @@ public class ContextImpl
     }
 
     /**
+     * @see de.dante.extex.interpreter.context.Context#getConditional()
+     */
+    public Conditional getConditional() {
+
+        int size = conditionalStack.size();
+        if (size <= 0) {
+            return null;
+        }
+        return ((Conditional) conditionalStack.get(size - 1));
+    }
+
+    /**
      * @see de.dante.extex.interpreter.context.Context#getCount(
      *      java.lang.String)
      */
@@ -536,6 +599,37 @@ public class ContextImpl
     public int getErrorCount() {
 
         return errorCount;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.extension.ContextExtensionPoint#getExtension(
+     *      java.lang.Class)
+     */
+    public ExtensionPoint getExtension(final Class c) {
+
+        ExtensionPoint ep = (ExtensionPoint) extensionMap.get(c);
+        if (ep != null) {
+            return ep;
+        }
+
+        if (!c.isAssignableFrom(ExtensionPoint.class)) {
+            // TODO gene: error handling unimplemented
+            throw new RuntimeException("invalid class");
+        }
+
+        try {
+            ep = (ExtensionPoint) c.newInstance();
+            ep.init();
+            extensionMap.put(c, ep);
+        } catch (InstantiationException e) {
+            // TODO gene: error handling unimplemented
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            // TODO gene: error handling unimplemented
+            throw new RuntimeException(e);
+        }
+
+        return ep;
     }
 
     /**
@@ -605,6 +699,14 @@ public class ContextImpl
     public String getId() {
 
         return id;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getIfLevel()
+     */
+    public long getIfLevel() {
+
+        return conditionalStack.size();
     }
 
     /**
@@ -810,6 +912,7 @@ public class ContextImpl
         changeDimenObservers = new HashMap();
         changeToksObservers = new HashMap();
         changeInteractionObservers = new ArrayList();
+        groupObservers = null;
 
         LanguageObserver languageObserver = new LanguageObserver();
         registerCountObserver("language", languageObserver);
@@ -827,10 +930,23 @@ public class ContextImpl
     /**
      * @see de.dante.extex.interpreter.context.Context#openGroup()
      */
-    public void openGroup() throws ConfigurationException {
+    public void openGroup() throws ConfigurationException, InterpreterException {
 
         group = groupFactory.newInstance(group);
         group.setStandardTokenStream(standardTokenStream);
+        if (groupObservers != null) {
+            int size = groupObservers.size();
+            for (int i = 0; i < size; i++) {
+                try {
+                    ((GroupObserver) groupObservers.get(i))
+                            .receiveOpenGroup(this);
+                } catch (InterpreterException e) {
+                    throw e;
+                } catch (Exception e) {
+                    throw new InterpreterException(e);
+                }
+            }
+        }
     }
 
     /**
@@ -838,27 +954,58 @@ public class ContextImpl
      */
     public Conditional popConditional() {
 
-        int size = conditionalStack.size();
-        if (size <= 0) {
+        int len = conditionalStack.size();
+        if (len <= 0) {
             return null;
         }
-        return ((Conditional) conditionalStack.remove(size - 1));
+        Conditional cond = ((Conditional) conditionalStack.remove(len - 1));
+
+        if (conditionalObservers != null) {
+            int size = conditionalObservers.size();
+            for (int i = 0; i < size; i++) {
+                try {
+                    ((ConditionalObserver) conditionalObservers.get(i))
+                            .receiveEndConditional(this, cond);
+                } catch (Exception e) {
+                    // TODO gene: error handling unimplemented
+                    e.printStackTrace();
+                }
+            }
+        }
+        return cond;
     }
 
     /**
      * @see de.dante.extex.interpreter.context.Context#pushConditional(
-     *      de.dante.util.Locator, boolean, String)
+     *      de.dante.util.Locator,
+     *      boolean,
+     *      de.dante.extex.interpreter.type.Code, int)
      */
     public void pushConditional(final Locator locator,
-            final boolean isIfThenElse, final String primitive) {
+            final boolean isIfThenElse, final Code primitive, final long branch) {
 
-        conditionalStack.add(isIfThenElse
-                ? new Conditional(locator, primitive)
-                : new ConditionalSwitch(locator, primitive));
+        Conditional cond = isIfThenElse
+                //
+                ? new Conditional(locator, primitive, branch)
+                : new ConditionalSwitch(locator, primitive, branch);
+        conditionalStack.add(cond);
+
+        if (conditionalObservers != null) {
+            int size = conditionalObservers.size();
+            for (int i = 0; i < size; i++) {
+                try {
+                    ((ConditionalObserver) conditionalObservers.get(i))
+                            .receiveStartConditional(this, cond);
+                } catch (Exception e) {
+                    // TODO gene: error handling unimplemented
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     /**
-     * This method is mapps instances to their normal representations if
+     * This method is maps instances to their normal representations if
      * required. It is used during the deserialization.
      *
      * @return the normalized object
@@ -885,6 +1032,19 @@ public class ContextImpl
             changeCodeObservers.put(name, observerList);
         }
         observerList.add(observer);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.observer.conditional.ConditionalObservable#registerConditionalObserver(
+     *      de.dante.extex.interpreter.context.observer.conditional.ConditionalObserver)
+     */
+    public synchronized void registerConditionalObserver(
+            final ConditionalObserver observer) {
+
+        if (conditionalObservers == null) {
+            conditionalObservers = new ArrayList();
+        }
+        conditionalObservers.add(observer);
     }
 
     /**
@@ -917,6 +1077,18 @@ public class ContextImpl
             changeDimenObservers.put(name, list);
         }
         list.add(observer);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.ContextGroup#registerGroupObserver(
+     *      de.dante.extex.interpreter.context.observer.GroupObserver)
+     */
+    public synchronized void registerGroupObserver(final GroupObserver observer) {
+
+        if (groupObservers == null) {
+            groupObservers = new ArrayList();
+        }
+        groupObservers.add(observer);
     }
 
     /**
@@ -1458,7 +1630,7 @@ public class ContextImpl
      *      de.dante.extex.scanner.type.Token,
      *      de.dante.extex.interpreter.context.observer.CodeObserver)
      */
-    public void unregisterCodeObserver(final Token name,
+    public void unregisterCodeChangeObserver(final Token name,
             final CodeObserver observer) {
 
         List observerList = (List) changeCodeObservers.get(name);
@@ -1466,6 +1638,18 @@ public class ContextImpl
             return;
         }
         observerList.remove(observer);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.observer.conditional.ConditionalObservable#unregisterConditionalObserver(
+     *      de.dante.extex.interpreter.context.observer.conditional.ConditionalObserver)
+     */
+    public void unregisterConditionalObserver(final ConditionalObserver observer) {
+
+        conditionalObservers.remove(observer);
+        if (conditionalObservers.size() == 0) {
+            conditionalObservers = null;
+        }
     }
 
     /**
@@ -1501,6 +1685,18 @@ public class ContextImpl
     }
 
     /**
+     * @see de.dante.extex.interpreter.context.ContextGroup#unregisterGroupObserver(
+     *      de.dante.extex.interpreter.context.observer.GroupObserver)
+     */
+    public void unregisterGroupObserver(final GroupObserver observer) {
+
+        groupObservers.remove(observer);
+        if (groupObservers.size() == 0) {
+            groupObservers = null;
+        }
+    }
+
+    /**
      * @see de.dante.extex.interpreter.context.ContextInteraction#unregisterInteractionObserver(
      *      de.dante.extex.interpreter.context.observer.InteractionObserver)
      */
@@ -1527,48 +1723,4 @@ public class ContextImpl
         }
     }
 
-    /**
-     * @see de.dante.extex.interpreter.context.Context#getIfLevel()
-     */
-    public long getIfLevel() {
-
-        return conditionalStack.size();
-    }
-
-    /**
-     * The field <tt>extensionMap</tt> contains the registered extension points
-     * for this context.
-     */
-    private Map extensionMap = new HashMap();
-
-    /**
-     * @see de.dante.extex.interpreter.context.extension.ContextExtensionPoint#getExtension(
-     *      java.lang.Class)
-     */
-    public ExtensionPoint getExtension(final Class c) {
-
-        ExtensionPoint ep = (ExtensionPoint) extensionMap.get(c);
-        if (ep != null) {
-            return ep;
-        }
-
-        if (! c.isAssignableFrom(ExtensionPoint.class)) {
-            // TODO gene: error handling unimplemented
-            throw new RuntimeException("invalid class");
-        }
-
-        try {
-            ep = (ExtensionPoint) c.newInstance();
-            ep.init();
-            extensionMap.put(c, ep);
-        } catch (InstantiationException e) {
-            // TODO gene: error handling unimplemented
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
-            // TODO gene: error handling unimplemented
-            throw new RuntimeException(e);
-        }
-        
-        return ep;
-    }
 }
