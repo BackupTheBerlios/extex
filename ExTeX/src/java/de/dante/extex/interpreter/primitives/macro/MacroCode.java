@@ -36,6 +36,7 @@ import de.dante.extex.scanner.type.token.CodeToken;
 import de.dante.extex.scanner.type.token.LeftBraceToken;
 import de.dante.extex.scanner.type.token.MacroParamToken;
 import de.dante.extex.scanner.type.token.OtherToken;
+import de.dante.extex.scanner.type.token.RightBraceToken;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.exception.GeneralException;
@@ -55,7 +56,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public class MacroCode extends AbstractCode
         implements
@@ -251,32 +252,28 @@ public class MacroCode extends AbstractCode
             final Typesetter typesetter, final Tokens[] args, final int len,
             final int i) throws InterpreterException {
 
-        int pi = i + 1;
-        if (pi >= len) {
+        if (i >= len) {
             throw new HelpingException(getLocalizer(), "TTP.UseDoesntMatch",
                     printableControlSequence(context));
         }
-        Token ti = pattern.get(pi);
+        Token ti = pattern.get(i);
         if (ti instanceof MacroParamToken) {
             Token t = source.getToken(context);
             if (!ti.equals(t)) {
                 throw new HelpingException(getLocalizer(),
                         "TTP.UseDoesntMatch", printableControlSequence(context));
             }
-            return pi;
+            return i;
         } else if (ti instanceof OtherToken && ti.getChar().isDigit()) {
             int no = ti.getChar().getCodePoint() - '0';
-            ++pi;
-            if (pi >= len) {
-                args[no] = getTokenOrBlock(context, source, typesetter);
-            } else if (pattern.get(pi) instanceof MacroParamToken
-            //TODO gene: #1##
-            ) {
-                args[no] = getTokenOrBlock(context, source, typesetter);
-            } else {
-                args[no] = scanTo(context, source, pattern.get(pi));
+            int i1 = i + 1;
+            if (i1 < len && !(pattern.get(i1) instanceof MacroParamToken)) {
+                //TODO gene: #1##
+                args[no] = scanTo(context, source, pattern.get(i1));
+                return i + 2;
             }
-            return pi;
+            args[no] = getTokenOrBlock(context, source, typesetter);
+            return i1;
         }
 
         throw new HelpingException(getLocalizer(), "TTP.UseDoesntMatch",
@@ -284,7 +281,7 @@ public class MacroCode extends AbstractCode
     }
 
     /**
-     * Match the pattern of this macro with the next tokens of the token
+     * Match the pattern of this macro with the next tokens from the token
      * source. As a result the matching arguments are stored in an array of
      * {@link de.dante.extex.interpreter.type.tokens.Tokens Tokens}. This array
      * is returned.
@@ -297,7 +294,7 @@ public class MacroCode extends AbstractCode
      *         matching. Note that some of th elements of the array might be
      *         <code>null</code>.
      *
-     * @throws InterpreterException in case of an error
+     * @throws InterpreterException in case of an error during the matching
      */
     private Tokens[] matchPattern(final Context context,
             final TokenSource source, final Typesetter typesetter)
@@ -305,22 +302,23 @@ public class MacroCode extends AbstractCode
 
         Tokens[] args = new Tokens[pattern.getArity()];
         Token ti;
-        Token t;
         int len = pattern.length();
+        int i = 0;
 
-        for (int pi = 0; pi < len; pi++) {
-            ti = pattern.get(pi);
+        while (i < len) {
+            ti = pattern.get(i++);
             if (ti instanceof MacroParamToken) {
-                pi = matchParameter(context, source, typesetter, args, len, pi);
-            } else if (notLong && ti.equals(Catcode.ESCAPE, "par")) { //TODO gene: reconstruct to use the code and not the name
-                throw new HelpingException(getLocalizer(), "TTP.RunawayArg",
-                        printableControlSequence(context));
+                i = matchParameter(context, source, typesetter, args, len, i);
             } else {
-                t = source.getToken(context);
-                if (!t.equals(ti)) {
+                Token t = source.getToken(context);
+                if (!ti.equals(t)) {
                     throw new HelpingException(getLocalizer(),
                             "TTP.UseDoesntMatch",
                             printableControlSequence(context));
+                } else if (notLong && t.equals(Catcode.ESCAPE, "par")) {
+                    //TODO gene: reconstruct to use the code and not the name
+                    throw new HelpingException(getLocalizer(),
+                            "TTP.RunawayArg", printableControlSequence(context));
                 }
             }
         }
@@ -343,11 +341,21 @@ public class MacroCode extends AbstractCode
             final Token to) throws InterpreterException {
 
         Tokens toks = new Tokens();
+        int depth = 0;
 
         for (Token t = source.getToken(context); t != null; t = source
                 .getToken(context)) {
-            if (t.equals(to)) {
+            if (depth == 0 && t.equals(to)) {
                 return toks;
+            } else if (t instanceof LeftBraceToken) {
+                depth++;
+            } else if (t instanceof RightBraceToken) {
+                depth--;
+                if (depth < 0) {
+                    throw new HelpingException(getLocalizer(),
+                            "TTP.ExtraRightBrace",
+                            printableControlSequence(context));
+                }
             } else if (notLong && t instanceof CodeToken) {
                 Code code = context.getCode((CodeToken) t);
                 if (code instanceof Par) {
@@ -379,4 +387,5 @@ public class MacroCode extends AbstractCode
             throw new InterpreterException(e);
         }
     }
+
 }
