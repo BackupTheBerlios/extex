@@ -19,11 +19,9 @@
 
 package de.dante.extex.interpreter.context;
 
-import de.dante.extex.interpreter.context.observer.CodeObserver;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.scanner.type.token.CodeToken;
-import de.dante.extex.scanner.type.token.Token;
 
 /**
  * This interface describes the container for all data of an interpreter
@@ -31,7 +29,7 @@ import de.dante.extex.scanner.type.token.Token;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public interface ContextCode {
 
@@ -50,17 +48,6 @@ public interface ContextCode {
     Code getCode(CodeToken t) throws InterpreterException;
 
     /**
-     * Register an observer for code change events.
-     * Code change events are triggered when the assignment of a macro or
-     * active character changes. In this case the appropriate method in the
-     * observer is invoked.
-     * @param token the token to be observed. This should be a macro or
-     * active character token.
-     * @param observer the observer to receive the events
-     */
-    void registerCodeChangeObserver(Token token, CodeObserver observer);
-
-    /**
      * Setter for the code assigned to a Token.
      * The Token has to be either a
      * {@link de.dante.extex.scanner.type.token.ActiveCharacterToken ActiveCharacterToken}
@@ -75,17 +62,5 @@ public interface ContextCode {
      */
     void setCode(CodeToken t, Code code, boolean global)
             throws InterpreterException;
-
-    /**
-     * Remove a registered observer for code change events.
-     * Code change events are triggered when the assignment of a macro or
-     * active character changes. In this case the appropriate method in the
-     * observer is invoked.
-     *
-     * @param name the token to be observed. This should be a macro or
-     * active character token.
-     * @param observer the observer to receive the events
-     */
-    void unregisterCodeObserver(Token name, CodeObserver observer);
 
 }

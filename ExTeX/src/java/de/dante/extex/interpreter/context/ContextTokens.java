@@ -19,7 +19,6 @@
 
 package de.dante.extex.interpreter.context;
 
-import de.dante.extex.interpreter.context.observer.TokensObserver;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 
@@ -29,7 +28,7 @@ import de.dante.extex.interpreter.type.tokens.Tokens;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface ContextTokens {
 
@@ -60,18 +59,6 @@ public interface ContextTokens {
     Tokens getToksOrNull(String name);
 
     /**
-     * Register an observer for toks change events.
-     * Toks change events are triggered when an assignment to a toks register
-     * is performed. In this case the appropriate method in the
-     * observer is invoked.
-     *
-     * @param name the token to be observed. This should be a macro or
-     * active character token.
-     * @param observer the observer to receive the events
-     */
-    void registerTokensObserver(String name, TokensObserver observer);
-
-    /**
      * Setter for the {@link de.dante.extex.interpreter.type.tokens.Tokens toks}
      * register in the specified groups. Tokens registers are named, either with
      * a number or an arbitrary string. The numbered registers where limited to
@@ -87,17 +74,5 @@ public interface ContextTokens {
      */
     void setToks(String name, Tokens toks, boolean global)
             throws InterpreterException;
-
-    /**
-     * Remove a registered observer for toks change events.
-     * Toks change events are triggered when an assignment to a toks register
-     * is performed. In this case the appropriate method in the
-     * observer is invoked.
-     *
-     * @param name the token to be observed. This should be a macro or
-     * active character token.
-     * @param observer the observer to receive the events
-     */
-    void unregisterTokensChangeObserver(String name, TokensObserver observer);
 
 }

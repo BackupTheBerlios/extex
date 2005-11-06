@@ -19,7 +19,6 @@
 
 package de.dante.extex.interpreter.context;
 
-import de.dante.extex.interpreter.context.observer.CountObserver;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.count.Count;
 
@@ -29,7 +28,7 @@ import de.dante.extex.interpreter.type.count.Count;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface ContextCount {
 
@@ -45,23 +44,6 @@ public interface ContextCount {
      * @return the count register or <code>null</code> if it is not defined
      */
     Count getCount(String name);
-
-    /**
-     * Register an observer for count change events.
-     * Count change events are triggered when a value is assigned to a count
-     * register. In this case the appropriate method in the
-     * observer is invoked.
-     * <p>
-     *  A single count register can be observed by giving a name of the count
-     *  register to observe. Only changes to this register tigger the
-     *  notification. If this name is <code>null</code> the changes to all
-     *  registers are reported to the observer.
-     * </p>
-     *
-     * @param name the name or the number of the register
-     * @param observer the observer to receive the events
-     */
-    void registerCountObserver(String name, CountObserver observer);
 
     /**
      * Setter for the {@link de.dante.extex.interpreter.type.count.Count count}
@@ -80,26 +62,5 @@ public interface ContextCount {
      */
     void setCount(String name, long value, boolean global)
             throws InterpreterException;
-
-    /**
-     * Remove a registered observer for count change events.
-     * Count change events are triggered when a value is assigned to a count
-     * register. In this case the appropriate method in the
-     * observer is invoked.
-     * <p>
-     *  A single count register can be observed by giving a name of the count
-     *  register to observe. The deregistration removes all instances of the
-     *  observer for this register. If none is registered then nothing happens.
-     * </p>
-     * <p>
-     *  If this name is <code>null</code> then the observer for all registers
-     *  is removed. Note that the observers for named registeres are not
-     *  effected. They have to be unregistered individually.
-     * </p>
-     *
-     * @param name the name or the number of the register
-     * @param observer the observer to receive the events
-     */
-    void unregisterCountObserver(String name, CountObserver observer);
 
 }

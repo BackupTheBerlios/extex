@@ -19,7 +19,6 @@
 
 package de.dante.extex.interpreter.context;
 
-import de.dante.extex.interpreter.context.observer.InteractionObserver;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.interaction.Interaction;
 
@@ -29,7 +28,7 @@ import de.dante.extex.interpreter.interaction.Interaction;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface ContextInteraction {
 
@@ -43,22 +42,6 @@ public interface ContextInteraction {
     Interaction getInteraction();
 
     /**
-     * Register an observer for interaction mode change events.
-     * Interaction mode change events are triggered when a new value is assigned
-     * to the interaction mode. In this case the appropriate method in the
-     * observer is invoked.
-     * <p>
-     *  A single count register can be observed by giving a name of the count
-     *  register to observe. Only changes to this register tigger the
-     *  notification. If this name is <code>null</code> the changes to all
-     *  registers are reported to the observer.
-     * </p>
-     *
-     * @param observer the observer to receive the events
-     */
-    void registerInteractionObserver(InteractionObserver observer);
-
-    /**
      * Setter for the interaction in all requested groups. The interaction
      * determines how verbose the actions are reported and how the interaction
      * with the user is performed in case of an error.
@@ -68,15 +51,5 @@ public interface ContextInteraction {
      */
     void setInteraction(Interaction interaction)
             throws InterpreterException;
-
-    /**
-     * Remove a registered observer for interaction mode change events.
-     * Interaction mode change events are triggered when a new value is assigned
-     * to the interaction mode. In this case the appropriate method in the
-     * observer is invoked.
-     *
-     * @param observer the observer to receive the events
-     */
-    void unregisterInteractionObserver(InteractionObserver observer);
 
 }

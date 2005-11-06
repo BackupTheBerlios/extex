@@ -19,7 +19,6 @@
 
 package de.dante.extex.interpreter.context;
 
-import de.dante.extex.interpreter.context.observer.DimenObserver;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 
@@ -28,7 +27,7 @@ import de.dante.extex.interpreter.type.dimen.Dimen;
  * context.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface ContextDimen {
 
@@ -40,23 +39,6 @@ public interface ContextDimen {
      * @return the dimen register for the given name
      */
     Dimen getDimen(String name);
-
-    /**
-     * Register an observer for dimen change events.
-     * Count change events are triggered when a value is assigned to a dimen
-     * register. In this case the appropriate method in the
-     * observer is invoked.
-     * <p>
-     *  A single dimen register can be observed by giving a name of the dimen
-     *  register to observe. Only changes to this register tigger the
-     *  notification. If this name is <code>null</code> the changes to all
-     *  registers are reported to the observer.
-     * </p>
-     *
-     * @param name the name or the number of the register
-     * @param observer the observer to receive the events
-     */
-    void registerDimenObserver(String name, DimenObserver observer);
 
     /**
      * Setter for the {@link de.dante.extex.interpreter.type.dimen.Dimen Dimen}
@@ -91,26 +73,5 @@ public interface ContextDimen {
      */
     void setDimen(String name, long value, boolean global)
             throws InterpreterException;
-
-    /**
-     * Remove a registered observer for dimen change events.
-     * Count change events are triggered when a value is assigned to a dimen
-     * register. In this case the appropriate method in the
-     * observer is invoked.
-     * <p>
-     *  A single dimen register can be observed by giving a name of the dimen
-     *  register to observe. The deregistration removes all instances of the
-     *  observer for this register. If none is registered then nothing happens.
-     * </p>
-     * <p>
-     *  If this name is <code>null</code> then the observer for all registers
-     *  is removed. Note that the observers for named registeres are not
-     *  effected. They have to be unregistered individually.
-     * </p>
-     *
-     * @param name the name or the number of the register
-     * @param observer the observer to receive the events
-     */
-    void unregisterDimenObserver(String name, DimenObserver observer);
 
 }
