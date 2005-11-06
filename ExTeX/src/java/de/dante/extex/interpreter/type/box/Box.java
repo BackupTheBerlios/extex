@@ -52,7 +52,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.30 $
+ * @version $Revision: 1.31 $
  */
 public class Box implements BoxOrRule, Serializable {
 
@@ -362,7 +362,7 @@ public class Box implements BoxOrRule, Serializable {
             throw new OperationNotSupportedException("vsplit");
         }
 
-        return ((VerticalListNode) nodes).split(height, logger, logger); //TODO gene:
+        return ((VerticalListNode) nodes).split(height, logger, logger);
     }
 
 }
