@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsButImmediatePrimitiveTester;
  * This is a test suite for the primitive <tt>\write</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class WriteTest extends NoFlagsButImmediatePrimitiveTester {
 
@@ -111,6 +111,21 @@ public class WriteTest extends NoFlagsButImmediatePrimitiveTester {
                 //--- log message ---
                 "Unexpected end of file while processing write" //TODO tokens should be \write
                 );
+    }
+
+    /**
+     * <testcase primitive="\write">
+     *  Test case checking that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testImmediate1() throws Exception {
+
+        assertOutput(//--- input code ---
+                DEFINE_BRACES + "\\immediate\\write 2{abc} \\end",
+                //--- log message ---
+                "abc", "");
     }
 
 }
