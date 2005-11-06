@@ -61,7 +61,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.30 $
+ * @version $Revision: 1.31 $
  */
 public class Write extends AbstractCode
         implements
@@ -151,6 +151,7 @@ public class Write extends AbstractCode
 
             Tokens toks = source.scanTokens(context, getName());
             write(key, toks, context);
+            prefix.clearImmediate();
 
         } else {
 
