@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the scanner routines.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ScanDimenTest extends ExTeXLauncher {
 
@@ -355,7 +355,7 @@ public class ScanDimenTest extends ExTeXLauncher {
     /**
      * <testcase >
      *  This test case checks that the parser can decode a number with three
-     *  minus signs and two plus signsin front.
+     *  minus signs and two plus signs in front.
      * </testcase>
      *
      * @throws Exception in case of an error
@@ -373,7 +373,7 @@ public class ScanDimenTest extends ExTeXLauncher {
 
     /**
      * <testcase >
-     *  This test case checks that the parser expands macros on the way.
+     *  This test case checks that the parser expands macros on the fly.
      * </testcase>
      *
      * @throws Exception in case of an error
@@ -393,7 +393,7 @@ public class ScanDimenTest extends ExTeXLauncher {
 
     /**
      * <testcase >
-     *  This test case checks that the parser expands macros on the way.
+     *  This test case checks that the parser expands macros on the fly.
      * </testcase>
      *
      * @throws Exception in case of an error
@@ -413,7 +413,7 @@ public class ScanDimenTest extends ExTeXLauncher {
 
     /**
      * <testcase >
-     *  This test case checks that the parser expands macros on the way.
+     *  This test case checks that the parser expands macros on the fly.
      * </testcase>
      *
      * @throws Exception in case of an error
@@ -421,8 +421,7 @@ public class ScanDimenTest extends ExTeXLauncher {
     public void testScanDimen42() throws Exception {
 
         assertSuccess(//--- input code ---
-                "\\catcode`{=1"
-                + "\\catcode`}=2"
+                DEFINE_BRACES
                 + "\\def\\mac{}"
                 + "\\boxmaxdepth=-\\mac456sp"
                 + "\\escapechar=\\boxmaxdepth"
@@ -434,7 +433,7 @@ public class ScanDimenTest extends ExTeXLauncher {
 
     /**
      * <testcase >
-     *  This test case checks that the parser expands macros on the way.
+     *  This test case checks that the parser expands macros on the fly.
      * </testcase>
      *
      * @throws Exception in case of an error
@@ -442,8 +441,7 @@ public class ScanDimenTest extends ExTeXLauncher {
     public void testScanDimen43() throws Exception {
 
         assertSuccess(//--- input code ---
-                "\\catcode`{=1"
-                + "\\catcode`}=2"
+                DEFINE_BRACES
                 + "\\def\\mac{-}"
                 + "\\boxmaxdepth=-\\mac456sp"
                 + "\\escapechar=\\boxmaxdepth"
@@ -455,7 +453,7 @@ public class ScanDimenTest extends ExTeXLauncher {
 
     /**
      * <testcase >
-     *  This test case checks that the parser expands macros on the way.
+     *  This test case checks that the parser expands macros on the fly.
      * </testcase>
      *
      * @throws Exception in case of an error
@@ -463,8 +461,7 @@ public class ScanDimenTest extends ExTeXLauncher {
     public void testScanDimen44() throws Exception {
 
         assertSuccess(//--- input code ---
-                "\\catcode`{=1"
-                + "\\catcode`}=2"
+                DEFINE_BRACES
                 + "\\def\\mac{-1}"
                 + "\\boxmaxdepth=-\\mac456sp"
                 + "\\escapechar=\\boxmaxdepth"
@@ -476,7 +473,7 @@ public class ScanDimenTest extends ExTeXLauncher {
 
     /**
      * <testcase >
-     *  This test case checks that the parser expands macros on the way.
+     *  This test case checks that the parser expands macros on the fly.
      * </testcase>
      *
      * @throws Exception in case of an error
@@ -484,8 +481,7 @@ public class ScanDimenTest extends ExTeXLauncher {
     public void testScanDimen45() throws Exception {
 
         assertSuccess(//--- input code ---
-                "\\catcode`{=1"
-                + "\\catcode`}=2"
+                DEFINE_BRACES
                 + "\\def\\mac{1}"
                 + "\\boxmaxdepth=-\\mac45\\mac6sp"
                 + "\\escapechar=\\boxmaxdepth"
