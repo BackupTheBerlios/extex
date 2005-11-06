@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\ifvbox</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class IfvboxTest extends ExTeXLauncher {
 
@@ -60,7 +60,7 @@ public class IfvboxTest extends ExTeXLauncher {
     public void test1() throws Exception {
 
         assertSuccess(//--- input code ---
-                "\\ifvbox42 a\\else b\\fi",
+                "\\ifvbox42 a\\else b\\fi\\end",
                 //--- output channel ---
                 "b" + TERM);
     }
@@ -76,7 +76,7 @@ public class IfvboxTest extends ExTeXLauncher {
     public void test2() throws Exception {
 
         assertSuccess(//--- input code ---
-                "x\\ifvbox42 a\\fi x",
+                "x\\ifvbox42 a\\fi x\\end",
                 //--- output channel ---
                 "xx" + TERM);
     }
@@ -95,7 +95,7 @@ public class IfvboxTest extends ExTeXLauncher {
                 "\\catcode`{=1 "
                 + "\\catcode`}=2 "
                 + "\\setbox42\\vbox{}"
-                + "\\ifvbox42 a\\else b\\fi",
+                + "\\ifvbox42 a\\else b\\fi\\end",
                 //--- output channel ---
                 "a" + TERM);
     }
@@ -114,7 +114,7 @@ public class IfvboxTest extends ExTeXLauncher {
                 "\\catcode`{=1 "
                 + "\\catcode`}=2 "
                 + "\\setbox42\\hbox{}"
-                + "\\ifvbox42 a\\else b\\fi",
+                + "\\ifvbox42 a\\else b\\fi\\end",
                 //--- output channel ---
                 "b" + TERM);
     }

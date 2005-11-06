@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsButGlobalPrimitiveTester;
  * This is a test suite for the primitive <tt>\let</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class LetTest extends NoFlagsButGlobalPrimitiveTester {
 
@@ -51,7 +51,7 @@ public class LetTest extends NoFlagsButGlobalPrimitiveTester {
         assertSuccess(//--- input code ---
                 DEFINE_CATCODES
                 + "\\let\\a A"
-                + "--\\a--",
+                + "--\\a--\\end",
                 //--- output message ---
                 "--A--" + TERM);
     }
@@ -69,7 +69,7 @@ public class LetTest extends NoFlagsButGlobalPrimitiveTester {
                 DEFINE_CATCODES
                 + "\\let\\a A"
                 + "\\begingroup \\let\\a B\\endgroup"
-                + "--\\a--",
+                + "--\\a--\\end",
                 //--- output message ---
                 "--A--" + TERM);
     }
@@ -87,7 +87,7 @@ public class LetTest extends NoFlagsButGlobalPrimitiveTester {
                 DEFINE_CATCODES
                 + "\\let\\a A"
                 + "\\begingroup \\global\\let\\a B\\endgroup"
-                + "--\\a--",
+                + "--\\a--\\end",
                 //--- output message ---
                 "--B--" + TERM);
     }
@@ -104,7 +104,7 @@ public class LetTest extends NoFlagsButGlobalPrimitiveTester {
         assertSuccess(//--- input code ---
                 DEFINE_CATCODES
                 + "\\let\\a 1"
-                + "--\\a--",
+                + "--\\a--\\end",
                 //--- output message ---
                 "--1--" + TERM);
     }
@@ -139,7 +139,7 @@ public class LetTest extends NoFlagsButGlobalPrimitiveTester {
                 DEFINE_CATCODES
                 + "\\let\\a 1"
                 + "\\begingroup \\let\\a 2\\endgroup"
-                + "--\\a--",
+                + "--\\a--\\end",
                 //--- output message ---
                 "--1--" + TERM);
     }
@@ -157,7 +157,7 @@ public class LetTest extends NoFlagsButGlobalPrimitiveTester {
                 DEFINE_CATCODES
                 + "\\let\\a 1"
                 + "\\begingroup \\global\\let\\a 2\\endgroup"
-                + "--\\a--",
+                + "--\\a--\\end",
                 //--- output message ---
                 "--2--" + TERM);
     }
@@ -175,7 +175,7 @@ public class LetTest extends NoFlagsButGlobalPrimitiveTester {
                 DEFINE_CATCODES
                 + "\\let\\x 1"
                 + "\\let\\a \\x"
-                + "--\\a--",
+                + "--\\a--\\end",
                 //--- output message ---
                 "--1--" + TERM);
     }
@@ -195,7 +195,7 @@ public class LetTest extends NoFlagsButGlobalPrimitiveTester {
                 + "\\let\\x 1"
                 + "\\let\\a \\x"
                 + "\\begingroup \\let\\a \\a\\endgroup"
-                + "--\\a--",
+                + "--\\a--\\end",
                 //--- output message ---
                 "--1--" + TERM);
     }
@@ -214,7 +214,7 @@ public class LetTest extends NoFlagsButGlobalPrimitiveTester {
                 + "\\let\\x 2"
                 + "\\let\\a A"
                 + "\\begingroup \\global\\let\\a \\x\\endgroup"
-                + "--\\a--",
+                + "--\\a--\\end",
                 //--- output message ---
                 "--2--" + TERM);
     }

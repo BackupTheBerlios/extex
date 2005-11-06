@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\iftrue</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class IftrueTest extends ExTeXLauncher {
 
@@ -59,7 +59,7 @@ public class IftrueTest extends ExTeXLauncher {
     public void test1() throws Exception {
 
         assertSuccess(//--- input code ---
-                "\\iftrue a\\else b\\fi",
+                "\\iftrue a\\else b\\fi\\end",
                 //--- output channel ---
                 "a" + TERM);
     }
@@ -75,7 +75,7 @@ public class IftrueTest extends ExTeXLauncher {
     public void test2() throws Exception {
 
         assertSuccess(//--- input code ---
-                "x\\iftrue a\\fi x",
+                "x\\iftrue a\\fi x\\end",
                 //--- output channel ---
                 "xax" + TERM);
     }

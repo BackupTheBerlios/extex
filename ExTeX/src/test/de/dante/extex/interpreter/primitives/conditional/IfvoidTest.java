@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\ifvoid</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class IfvoidTest extends ExTeXLauncher {
 
@@ -60,7 +60,7 @@ public class IfvoidTest extends ExTeXLauncher {
     public void test1() throws Exception {
 
         assertSuccess(//--- input code ---
-                "\\ifvoid42 a\\else b\\fi",
+                "\\ifvoid42 a\\else b\\fi\\end",
                 //--- output channel ---
                 "a" + TERM);
     }
@@ -76,7 +76,7 @@ public class IfvoidTest extends ExTeXLauncher {
     public void test2() throws Exception {
 
         assertSuccess(//--- input code ---
-                "x\\ifvoid42 a\\fi x",
+                "x\\ifvoid42 a\\fi x\\end",
                 //--- output channel ---
                 "xax" + TERM);
     }
@@ -95,7 +95,7 @@ public class IfvoidTest extends ExTeXLauncher {
                 "\\catcode`{=1 "
                 + "\\catcode`}=2 "
                 + "\\setbox42\\hbox{}"
-                + "\\ifvoid42 a\\else b\\fi",
+                + "\\ifvoid42 a\\else b\\fi\\end",
                 //--- output channel ---
                 "b" + TERM);
     }
@@ -114,10 +114,9 @@ public class IfvoidTest extends ExTeXLauncher {
                 "\\catcode`{=1 "
                 + "\\catcode`}=2 "
                 + "\\setbox42\\vbox{}"
-                + "\\ifvoid42 a\\else b\\fi",
+                + "\\ifvoid42 a\\else b\\fi\\end",
                 //--- output channel ---
                 "b" + TERM);
     }
-
 
 }

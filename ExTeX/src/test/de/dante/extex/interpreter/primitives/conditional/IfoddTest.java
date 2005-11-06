@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\ifodd</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class IfoddTest extends ExTeXLauncher {
 
@@ -60,7 +60,7 @@ public class IfoddTest extends ExTeXLauncher {
     public void test1() throws Exception {
 
         assertSuccess(//--- input code ---
-                "\\ifodd 1 a\\else b\\fi",
+                "\\ifodd 1 a\\else b\\fi\\end",
                 //--- output channel ---
                 "a" + TERM);
     }
@@ -76,7 +76,7 @@ public class IfoddTest extends ExTeXLauncher {
     public void test2() throws Exception {
 
         assertSuccess(//--- input code ---
-                "x\\ifodd 1 a\\fi x",
+                "x\\ifodd 1 a\\fi x\\end",
                 //--- output channel ---
                 "xax" + TERM);
     }
@@ -92,7 +92,7 @@ public class IfoddTest extends ExTeXLauncher {
     public void test3() throws Exception {
 
         assertSuccess(//--- input code ---
-                "\\ifodd -1 a\\else b\\fi",
+                "\\ifodd -1 a\\else b\\fi\\end",
                 //--- output channel ---
                 "a" + TERM);
     }
@@ -108,7 +108,7 @@ public class IfoddTest extends ExTeXLauncher {
     public void test4() throws Exception {
 
         assertSuccess(//--- input code ---
-                "x\\ifodd -1 a\\fi x",
+                "x\\ifodd -1 a\\fi x\\end",
                 //--- output channel ---
                 "xax" + TERM);
     }
@@ -124,7 +124,7 @@ public class IfoddTest extends ExTeXLauncher {
     public void test5() throws Exception {
 
         assertSuccess(//--- input code ---
-                "\\ifodd 0 a\\else b\\fi",
+                "\\ifodd 0 a\\else b\\fi\\end",
                 //--- output channel ---
                 "b" + TERM);
     }
@@ -140,7 +140,7 @@ public class IfoddTest extends ExTeXLauncher {
     public void test6() throws Exception {
 
         assertSuccess(//--- input code ---
-                "x\\ifodd 0 a\\fi x",
+                "x\\ifodd 0 a\\fi x\\end",
                 //--- output channel ---
                 "xx" + TERM);
     }

@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\relax</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class RelaxTest extends NoFlagsPrimitiveTester {
 
@@ -59,7 +59,7 @@ public class RelaxTest extends NoFlagsPrimitiveTester {
     public void test1() throws Exception {
 
         assertSuccess(//--- input code ---
-                "\\relax",
+                "\\relax\\end",
                 //--- output channel ---
                 "");
     }
@@ -75,7 +75,7 @@ public class RelaxTest extends NoFlagsPrimitiveTester {
     public void test10() throws Exception {
 
         assertSuccess(//--- input code ---
-                "abc\\relax def",
+                "abc\\relax def\\end",
                 //--- output channel ---
                 "abcdef" + TERM);
     }
@@ -91,7 +91,7 @@ public class RelaxTest extends NoFlagsPrimitiveTester {
     public void test2() throws Exception {
 
         assertSuccess(//--- input code ---
-                "\\relax ",
+                "\\relax \\end",
                 //--- output channel ---
                 "");
     }
@@ -107,7 +107,7 @@ public class RelaxTest extends NoFlagsPrimitiveTester {
     public void test4() throws Exception {
 
         assertSuccess(//--- input code ---
-                "\\relax         ",
+                "\\relax         \\end",
                 //--- output channel ---
                 "");
     }
@@ -122,7 +122,7 @@ public class RelaxTest extends NoFlagsPrimitiveTester {
     public void test5() throws Exception {
 
         assertSuccess(//--- input code ---
-                "\\relax %1234 ",
+                "\\relax %1234 \n\r\\end",
                 //--- output channel ---
                 "");
     }
