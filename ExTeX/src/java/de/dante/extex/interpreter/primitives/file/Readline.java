@@ -61,7 +61,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Readline extends AbstractCode {
 
@@ -71,12 +71,10 @@ public class Readline extends AbstractCode {
     private static final long serialVersionUID = 1L;
 
     /**
-     * This class implements a tokenizer which returns only OTHER and SPACE.
-     *
-     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.6 $
+     * The field <tt>TOKENIZER</tt> contains the tokenizer to use for this
+     * primitive.
      */
-    private static class ReadlineTokenizer implements Tokenizer {
+    private static final Tokenizer TOKENIZER = new Tokenizer() {
 
         /**
          * @see de.dante.extex.interpreter.Tokenizer#getCatcode(
@@ -94,13 +92,8 @@ public class Readline extends AbstractCode {
 
             return Namespace.DEFAULT_NAMESPACE;
         }
-    }
 
-    /**
-     * The field <tt>TOKENIZER</tt> contains the tokenizer to use for this
-     * primitive.
-     */
-    private static final ReadlineTokenizer TOKENIZER = new ReadlineTokenizer();
+    };
 
     /**
      * Creates a new object.
@@ -123,7 +116,8 @@ public class Readline extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String key = AbstractFileCode.scanInFileKey(context, source, typesetter);
+        String key = AbstractFileCode
+                .scanInFileKey(context, source, typesetter);
 
         if (!source.getKeyword(context, "to")) {
             throw new HelpingException(getLocalizer(), "TTP.MissingToForRead");
