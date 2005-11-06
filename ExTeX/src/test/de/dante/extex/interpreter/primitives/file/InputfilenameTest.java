@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\inputfilename</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class InputfilenameTest extends NoFlagsPrimitiveTester {
 
@@ -40,13 +40,22 @@ public class InputfilenameTest extends NoFlagsPrimitiveTester {
     }
 
     /**
+     * @see de.dante.test.ExTeXLauncher#getConfig()
+     */
+    protected String getConfig() {
+
+        return "extex-jx.xml";
+    }
+
+    /**
      * Creates a new object.
      *
      * @param arg the name
      */
     public InputfilenameTest(final String arg) {
 
-        super(arg, "inputfilename", "");
+        super(arg, "inputfilename", "", "\\javadef\\inputfilename{"
+                + Inputfilename.class.getName() + "}");
     }
 
 }
