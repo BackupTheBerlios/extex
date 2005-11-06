@@ -21,6 +21,7 @@ package de.dante.extex.interpreter;
 
 import java.io.Serializable;
 
+import de.dante.extex.interpreter.type.Code;
 import de.dante.util.Locator;
 
 /**
@@ -29,7 +30,7 @@ import de.dante.util.Locator;
  * happened.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class Conditional implements Serializable {
 
@@ -37,6 +38,11 @@ public class Conditional implements Serializable {
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
     private static final long serialVersionUID = 1L;
+
+    /**
+     * The field <tt>branch</tt> contains the ...
+     */
+    private long branch;
 
     /**
      * The field <tt>locator</tt> contains the locator to the position of the
@@ -48,19 +54,32 @@ public class Conditional implements Serializable {
      * The field <tt>primitive</tt> contains the name of the primitive which
      * has lead to this conditional.
      */
-    private String primitive;
+    private Code primitive;
 
     /**
      * Creates a new object.
      *
      * @param locator the locator
      * @param primitive the primitive which started this conditional
+     * @param branch <code>true</code> iff the then branch is taken
      */
-    public Conditional(final Locator locator, final String primitive) {
+    public Conditional(final Locator locator, final Code primitive,
+            final long branch) {
 
         super();
         this.locator = locator;
         this.primitive = primitive;
+        this.branch = branch;
+    }
+
+    /**
+     * Getter for branch.
+     *
+     * @return the branch
+     */
+    public long getBranch() {
+
+        return this.branch;
     }
 
     /**
@@ -75,13 +94,23 @@ public class Conditional implements Serializable {
     }
 
     /**
-     * Getter for the primitive which started this conditional.
+     * Getter for primitive.
      *
      * @return the primitive
      */
-    public String getPrimitive() {
+    public Code getPrimitive() {
 
         return this.primitive;
+    }
+
+    /**
+     * Getter for the primitive which started this conditional.
+     *
+     * @return the primitive name
+     */
+    public String getPrimitiveName() {
+
+        return this.primitive.getName();
     }
 
     /**

@@ -19,13 +19,14 @@
 
 package de.dante.extex.interpreter;
 
+import de.dante.extex.interpreter.type.Code;
 import de.dante.util.Locator;
 
 /**
  * This class represents a conditional for an <tt>\ifcase</tt> construct.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class ConditionalSwitch extends Conditional {
 
@@ -39,10 +40,12 @@ public class ConditionalSwitch extends Conditional {
      *
      * @param locator the locator
      * @param primitive the primitive which started this conditional
+     * @param branch <code>true</code> iff the then branch is taken
      */
-    public ConditionalSwitch(final Locator locator, final String primitive) {
+    public ConditionalSwitch(final Locator locator, final Code primitive,
+            final long branch) {
 
-        super(locator, primitive);
+        super(locator, primitive, branch);
     }
 
     /**
