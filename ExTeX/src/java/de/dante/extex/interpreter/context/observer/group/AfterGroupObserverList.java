@@ -17,7 +17,7 @@
  *
  */
 
-package de.dante.extex.interpreter.context.observer.afterGroup;
+package de.dante.extex.interpreter.context.observer.group;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,7 @@ import java.util.List;
  * This class provides a type-safe list of observers for the group close event.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
 public final class AfterGroupObserverList implements AfterGroupObserver {
 

@@ -17,29 +17,35 @@
  *
  */
 
-package de.dante.extex.interpreter.context.observer;
+package de.dante.extex.interpreter.context.observer.group;
 
 import de.dante.extex.interpreter.context.ContextInternals;
-import de.dante.extex.interpreter.interaction.Interaction;
 
 /**
  * This interface describes the ability to receive a notification about the
- * change of the interaction mode.
+ * opening and closing of groups.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public interface InteractionObserver {
+public interface GroupObserver {
 
     /**
-     * Receive a notification on a count change.
+     * Receive a notification that a group has been closed.
      *
      * @param context the interpreter context
-     * @param mode the new interaction mode.
      *
-     * @throws Exception in case of a problem
+     * @throws Exception in case of an error
      */
-    void receiveInteractionChange(ContextInternals context, Interaction mode)
-            throws Exception;
+    void receiveCloseGroup(ContextInternals context) throws Exception;
+
+    /**
+     * Receive a notification that a group has been opened.
+     *
+     * @param context the interpreter context
+     *
+     * @throws Exception in case of an error
+     */
+    void receiveOpenGroup(ContextInternals context) throws Exception;
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -17,31 +17,22 @@
  *
  */
 
-package de.dante.extex.interpreter.context.observer;
-
-import de.dante.extex.interpreter.context.ContextInternals;
-import de.dante.extex.interpreter.type.count.Count;
+package de.dante.extex.interpreter.context.observer.group;
 
 /**
- * This interface describes the ability to receive a notification about the
- * change of a count register.
+ * This interface describes the possibility to register an observer for an
+ * expansion event.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @version $Revision: 1.1 $
  */
-public interface CountObserver {
+public interface AfterGroupObservable {
 
     /**
-     * Receive a notification on a count change.
+     * Register an expand observer for later use.
      *
-     * @param context the interpreter context
-     * @param name the token containing the name of the changed Count.
-     * @param value the new value assigned to the name. In case of
-     *  <code>null</code> the name is unbound.
-     *
-     * @throws Exception in case of a problem
+     * @param observer the observer to be registered
      */
-    void receiveCountChange(ContextInternals context, String name, Count value)
-            throws Exception;
+    void registerObserver(AfterGroupObserver observer);
 
 }

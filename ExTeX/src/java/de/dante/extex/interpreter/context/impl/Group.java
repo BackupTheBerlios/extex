@@ -23,7 +23,7 @@ import java.io.Serializable;
 
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.TypesettingContext;
-import de.dante.extex.interpreter.context.observer.afterGroup.AfterGroupObserver;
+import de.dante.extex.interpreter.context.observer.group.AfterGroupObserver;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.box.Box;
@@ -53,7 +53,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.34 $
+ * @version $Revision: 1.35 $
  */
 public interface Group extends Tokenizer, Serializable {
 

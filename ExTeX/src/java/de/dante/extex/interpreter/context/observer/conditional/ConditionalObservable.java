@@ -17,31 +17,35 @@
  *
  */
 
-package de.dante.extex.interpreter.context.observer;
-
-import de.dante.extex.interpreter.context.ContextInternals;
-import de.dante.extex.interpreter.type.tokens.Tokens;
+package de.dante.extex.interpreter.context.observer.conditional;
 
 /**
- * This interface describes the ability to receive a notification about the
- * change of a toks register.
+ * This interface describes the possibility to register an observer for an
+ * expansion event.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @version $Revision: 1.1 $
  */
-public interface TokensObserver {
+public interface ConditionalObservable {
 
     /**
-     * Receive a notification on a toks change.
+     * Register an observer for conditional events.
+     * Conditional events are triggered when a conditional is started or ended.
      *
-     * @param context the interpreter context
-     * @param name the token containing the name of the changed toks.
-     * @param value the new value assigned to the name. In case of
-     *  <code>null</code> the name is unbound.
-     *
-     * @throws Exception in case of a problem
+     * @param token the token to be observed. This should be a macro or
+     * active character token.
+     * @param observer the observer to receive the events
      */
-    void receiveTokensChange(ContextInternals context, String name, Tokens value)
-            throws Exception;
+    void registerConditionalObserver(ConditionalObserver observer);
+
+    /**
+     * Remove a registered observer for conditional events.
+     * Conditional events are triggered when a conditional is started or ended.
+     *
+     * @param name the token to be observed. This should be a macro or
+     * active character token.
+     * @param observer the observer to receive the events
+     */
+    void unregisterConditionalObserver(ConditionalObserver observer);
 
 }

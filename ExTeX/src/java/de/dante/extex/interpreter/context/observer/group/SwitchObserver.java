@@ -17,7 +17,7 @@
  *
  */
 
-package de.dante.extex.interpreter.context.observer.afterGroup;
+package de.dante.extex.interpreter.context.observer.group;
 
 import de.dante.util.Switch;
 
@@ -26,7 +26,7 @@ import de.dante.util.Switch;
  * {@link de.dante.util.Switch Switch} when an event is received.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
 public class SwitchObserver implements AfterGroupObserver {
 

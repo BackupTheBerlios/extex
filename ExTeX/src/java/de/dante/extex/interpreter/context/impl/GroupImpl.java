@@ -28,8 +28,8 @@ import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.context.TypesettingContextImpl;
-import de.dante.extex.interpreter.context.observer.afterGroup.AfterGroupObserver;
-import de.dante.extex.interpreter.context.observer.afterGroup.AfterGroupObserverList;
+import de.dante.extex.interpreter.context.observer.group.AfterGroupObserver;
+import de.dante.extex.interpreter.context.observer.group.AfterGroupObserverList;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.box.Box;
@@ -56,7 +56,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.53 $
+ * @version $Revision: 1.54 $
  */
 public class GroupImpl implements Group, Tokenizer, Serializable {
 

@@ -17,22 +17,35 @@
  *
  */
 
-package de.dante.extex.interpreter.context.observer.afterGroup;
+package de.dante.extex.interpreter.context.observer.group;
 
 /**
  * This interface describes the possibility to register an observer for an
- * expansion event.
+ * group event.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @version $Revision: 1.1 $
  */
-public interface AfterGroupObservable {
+public interface GroupObservable {
 
     /**
-     * Register an expand observer for later use.
+     * Register an observer for group change events.
+     * Group change events are triggered when a group is opened or closed.
+     * In this case the appropriate method in the observer is invoked.
      *
-     * @param observer the observer to be registered
+     * @param name the name or the number of the register
+     * @param observer the observer to receive the events
      */
-    void registerObserver(AfterGroupObserver observer);
+    void registerGroupObserver(GroupObserver observer);
+
+    /**
+     * Remove a registered observer for group change events.
+     * Group change events are triggered when a group is opened or closed.
+     * In this case the appropriate method in the observer is invoked.
+     *
+     * @param name the name or the number of the register
+     * @param observer the observer to receive the events
+     */
+    void unregisterGroupObserver(GroupObserver observer);
 
 }

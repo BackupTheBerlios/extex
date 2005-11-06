@@ -17,33 +17,31 @@
  *
  */
 
-package de.dante.extex.interpreter.context.observer;
+package de.dante.extex.interpreter.context.observer.count;
 
 import de.dante.extex.interpreter.context.ContextInternals;
-import de.dante.extex.interpreter.type.Code;
-import de.dante.extex.scanner.type.token.Token;
+import de.dante.extex.interpreter.type.count.Count;
 
 /**
  * This interface describes the ability to receive a notification about the
- * change of a code assignment for a macro or an  active character.
+ * change of a count register.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.1 $
  */
-public interface CodeObserver {
+public interface CountObserver {
 
     /**
-     * Receive a notification on a code change.
+     * Receive a notification on a count change.
      *
      * @param context the interpreter context
-     * @param name the token containing the name of the changed entity.
-     *  This is a macro or an active character.
+     * @param name the token containing the name of the changed Count.
      * @param value the new value assigned to the name. In case of
      *  <code>null</code> the name is unbound.
      *
      * @throws Exception in case of a problem
      */
-    void receiveCodeChange(ContextInternals context, Token name, Code value)
+    void receiveCountChange(ContextInternals context, String name, Count value)
             throws Exception;
 
 }
