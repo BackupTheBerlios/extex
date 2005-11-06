@@ -35,12 +35,12 @@
           class="de.dante.extex.interpreter.primitives.group.Currentgrouplevel"/>
   <Define name="currentgrouptype"
           class=""/>
-  <Define name="currentifbranch"
-          class=""/>
+  <define name="currentifbranch"
+          class="de.dante.extex.interpreter.primitives.conditional.analyze.Currentifbranch"/>
   <define name="currentiflevel"
           class="de.dante.extex.interpreter.primitives.conditional.analyze.Currentiflevel"/>
-  <Define name="currentiftype"
-          class=""/>
+  <define name="currentiftype"
+          class="de.dante.extex.interpreter.primitives.conditional.analyze.Currentiftype"/>
   <Define name="detokenize"
           class=""/>
   <define name="dimenexpr"
@@ -77,8 +77,8 @@
           class="de.dante.extex.interpreter.primitives.register.skip.Glueshrink"/>
   <define name="glueshrinkorder"
           class="de.dante.extex.interpreter.primitives.register.skip.Glueshrinkorder"/>
-  <Define name="ifcsname"
-          class=""/>
+  <define name="ifcsname"
+          class="de.dante.extex.interpreter.primitives.conditional.Ifcsname"/>
   <define name="ifdefined"
           class="de.dante.extex.interpreter.primitives.conditional.Ifdefined"/>
   <define name="iffontchar"
