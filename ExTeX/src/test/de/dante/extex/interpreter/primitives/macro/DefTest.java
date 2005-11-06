@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\def</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class DefTest extends ExTeXLauncher {
 
@@ -67,7 +67,7 @@ public class DefTest extends ExTeXLauncher {
         assertSuccess(//--- input code ---
                 DEFINE_CATCODES
                 + "\\def\\aaa{AAA}"
-                + "--\\aaa--",
+                + "--\\aaa--\\end",
                 //--- output message ---
                 "--AAA--" + TERM);
     }
@@ -79,20 +79,20 @@ public class DefTest extends ExTeXLauncher {
      *
      * @throws Exception in case of an error
      */
-    public void testGloal1() throws Exception {
+    public void testGlobal1() throws Exception {
 
         assertSuccess(//--- input code ---
                 DEFINE_CATCODES
                 + "\\def\\aaa{AAA}"
                 + "{\\global\\def\\aaa{BBB}}"
-                + "--\\aaa--",
+                + "--\\aaa--\\end",
                 //--- output message ---
                 "--BBB--" + TERM);
     }
 
     /**
      * <testcase primitive="\def">
-     *  Test case checking that ...
+     *  Test case checking that long is an accepted prefix.
      * </testcase>
      *
      * @throws Exception in case of an error
@@ -102,9 +102,26 @@ public class DefTest extends ExTeXLauncher {
         assertSuccess(//--- input code ---
                 DEFINE_CATCODES
                 + "\\long\\def\\aaa{AAA}"
-                + "--\\aaa--",
+                + "--\\aaa--\\end",
                 //--- output message ---
                 "--AAA--" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\def">
+     *  Test case checking that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testLong2() throws Exception {
+
+        assertSuccess(//--- input code ---
+                DEFINE_CATCODES
+                + "\\long\\def\\aaa{AAA\\par BBB}"
+                + "--\\aaa--\\end",
+                //--- output message ---
+                "--AAA\n\nBBB--" + TERM);
     }
 
     /**
@@ -119,9 +136,61 @@ public class DefTest extends ExTeXLauncher {
         assertSuccess(//--- input code ---
                 DEFINE_CATCODES
                 + "\\def\\aaa#1{A#1A}"
-                + "--\\aaa 1--",
+                + "--\\aaa 1--\\end",
                 //--- output message ---
                 "--A1A--" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\def">
+     *  Test case checking that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testA2() throws Exception {
+
+        assertSuccess(//--- input code ---
+                DEFINE_CATCODES
+                + "\\def\\aaa#1{A#1A}"
+                + "--\\aaa {1}--\\end",
+                //--- output message ---
+                "--A1A--" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\def">
+     *  Test case checking that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testA3() throws Exception {
+
+        assertSuccess(//--- input code ---
+                DEFINE_CATCODES
+                + "\\def\\aaa#1{A#1A}"
+                + "--\\aaa {12}--\\end",
+                //--- output message ---
+                "--A12A--" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\def">
+     *  Test case checking that two arguments are parsed.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testTwo1() throws Exception {
+
+        assertSuccess(//--- input code ---
+                DEFINE_CATCODES
+                + "\\def\\a#1#2{--#1--#2--}"
+                + "\\a 2."
+                + "\\end ",
+                //--- output channel ---
+                "--2--.--" + TERM);
     }
 
     /**
@@ -142,5 +211,39 @@ public class DefTest extends ExTeXLauncher {
                 "--2--" + TERM);
     }
 
+    /**
+     * <testcase primitive="\def">
+     *  Test case checking that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testPattern2() throws Exception {
+
+        assertSuccess(//--- input code ---
+                DEFINE_CATCODES
+                + "\\def\\aaa#1.{--#1--}"
+                + "\\aaa {2.1}."
+                + "\\end ",
+                //--- output channel ---
+                "--2.1--" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\def">
+     *  Test case checking that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testBrace1() throws Exception {
+
+        assertFailure(//--- input code ---
+                DEFINE_CATCODES
+                + "\\def\\aaa#1.{--#1--}"
+                + "\\aaa }.",
+                //--- output channel ---
+                "Argument of \\aaa has an extra }");
+    }
 
 }
