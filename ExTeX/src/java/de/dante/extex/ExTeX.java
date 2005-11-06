@@ -53,7 +53,8 @@ import de.dante.extex.interpreter.ErrorHandlerFactory;
 import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.InterpreterFactory;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.context.observer.InteractionObserver;
+import de.dante.extex.interpreter.context.observer.interaction.InteractionObservable;
+import de.dante.extex.interpreter.context.observer.interaction.InteractionObserver;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.interaction.Interaction;
@@ -320,7 +321,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.118 $
+ * @version $Revision: 1.119 $
  */
 public class ExTeX {
 
@@ -1130,7 +1131,12 @@ public class ExTeX {
         interpreter.setFontFactory(fontFactory);
         interpreter.setInteraction(Interaction.get(properties
                 .getProperty(PROP_INTERACTION)));
-        context.registerInteractionObserver(interactionObserver);
+        if (context instanceof InteractionObservable) {
+            ((InteractionObservable) context)
+                    .registerInteractionObserver(interactionObserver);
+        } else {
+            logger.info(localizer.format("InteractionNotSupported"));
+        }
 
         Configuration fontConfiguration = config.getConfiguration(TAG_FONT);
 
