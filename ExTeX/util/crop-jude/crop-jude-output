@@ -1,0 +1,84 @@
+#! /bin/sh
+
+# Rolf Niepraschk, Rolf.Niepraschk@ptb.de, 2005-08-07
+
+# Es wird angenommen, dass die Eingabedatei (.ps oder .pdf)
+# im A4-Format liegend vorliegt. Es wird am linken Rand ein
+# Streifen der Breite LEFTOFFSET (Wert in bp) abgeschnitten.
+# "--norotate" unterdrückt die Drehung der Ausgabegrafiken
+# um -90 Grad. Standardmäßig werden Ausgabegrafiken im
+# pdf-Format erzeugt, was mit "--eps" geändert werden kann.
+
+version=1.4
+
+pdfout="true"
+rotate=",angle=-90"
+
+usage()
+{
+  echo "$0 [--eps|--norotate] <file.ps|.pdf>"
+  echo "Creates eps/pdf pictures from JUDE output."
+}
+
+# look for optional things first
+while
+  case $1 in
+   --help) usage; exit 0;;
+   --version) echo "$progname version $version"; exit 0;;
+   --eps) pdfout=false;;
+   --norotate) rotate="";;
+    -*) echo "$progname: unknown option $1 ignored";;
+    *) break;;
+  esac
+do
+  shift
+done
+
+if test -z $1; then usage; exit 1; fi
+
+INFILE="$1"
+# Siehe `ps4pdf', `texdoc'.
+SHORTNAME=`echo "x$1" | sed 's@x@@; s@.*/@@'`
+BASENAME=`echo "x$1" | sed 's@x@@; s@.*/@@; s@\.[^.]*$@@'`
+EXT=`echo $SHORTNAME | sed -n 's%.*\.\([^/]*\)$%\1%p'`
+TEMPNAMEPDF=temp`date +"%y%m%d%H%M%S"`.pdf
+LEFTOFFSET=64 # ca. 22mm
+
+if test $EXT = "ps"; then
+ GS_OPTIONS=-dAutoRotatePages=/None ps2pdf $INFILE $TEMPNAMEPDF
+else
+ cp $INFILE $TEMPNAMEPDF
+fi
+
+# Linken Rand aller Seiten beschneiden sowie Rotieren.
+pdflatex <<-EOF 
+\\documentclass{minimal}
+\\usepackage{pdfpages}
+\\begin{document}
+\\includepdf[pages=-,viewport=0 0 842 596,trim=$LEFTOFFSET 0 0 0,%
+  clip$rotate]{$TEMPNAMEPDF}
+\\end{document}
+EOF
+
+pdfcrop texput.pdf
+
+# Anzahl der Seiten feststellen.
+n=`pdfinfo texput-crop.pdf | awk '($1 ~ /Pages:/) {print $2}'`
+
+# eps- und ggf. pdf-Dateien erzeugen.
+for i in `seq $n` ; do
+  epsfile=$BASENAME-$i.eps
+  pdftops -f $i -l $i -eps texput-crop.pdf $epsfile
+  if test $pdfout = true; then
+    tmp=$BASENAME-$i.pdf
+    GS_OPTIONS=-dAutoRotatePages=/None epstopdf $epsfile --outfile=$tmp
+  else
+    tmp=$epsfile
+  fi
+  echo "create $tmp"
+done
+
+# Temporäre Dateien löschen.
+rm -f texput.aux texput.log texput.pdf texput-crop.pdf $TEMPNAMEPDF
+
+exit 0
