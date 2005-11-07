@@ -16,17 +16,18 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.conditional;
 
+import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.exception.helping.HelpingException;
+import de.dante.extex.interpreter.exception.helping.CantUseAfterException;
+import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.scanner.type.token.CodeToken;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.framework.i18n.Localizable;
-import de.dante.util.framework.i18n.Localizer;
 
 /**
  * This class provides an implementation for the primitive <code>\if</code>.
@@ -57,16 +58,17 @@ import de.dante.util.framework.i18n.Localizer;
  * </p>
  * </doc>
  *
+ * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
-public class Unless extends AbstractIf implements Localizable {
-    /**
-     * Object for localize strings messages.
-     *
-     */
-    private Localizer localizer = null;
+public class Unless extends AbstractCode {
 
+    /**
+     * The field <tt>serialVersionUID</tt> contains the version number for
+     * the serialization.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a new object.
@@ -74,48 +76,48 @@ public class Unless extends AbstractIf implements Localizable {
      * @param name the name for debugging
      */
     public Unless(final String name) {
+
         super(name);
     }
 
-
     /**
-     * @see de.dante.extex.interpreter.primitives.conditional.AbstractIf#conditional(
+     * @see de.dante.extex.interpreter.type.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    protected boolean conditional(final Context context,
+    public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-
         CodeToken token = source.getControlSequence(context);
-        Code code;
-        AbstractIf abstractIf;
+        Code code = context.getCode(token);
 
-        code = context.getCode(token);
-
-        // TODO: this does not work with \def-ifs (TE)
-        if (code instanceof AbstractIf) {
-            abstractIf = (AbstractIf) code;
-        } else {
-             // TODO: message (TE)
-            throw new HelpingException(localizer, "Except If Conditional",
-                                       printableControlSequence(context));
+        if (!code.isIf() || code instanceof Ifcase) {
+            throw new CantUseAfterException(token.toText(),
+                    printableControlSequence(context));
         }
 
-        return !abstractIf.conditional(context, source, typesetter);
+        if (!((AbstractIf) code).conditional(context, source, typesetter)) {
+            context.pushConditional(source.getLocator(), true, code, 1, true);
+        } else if (AbstractIf.skipToElseOrFi(context, source)) {
+            context.pushConditional(source.getLocator(), true, code, -1, true);
+        }
     }
 
     /**
-     * Set the <code>Localizer</code> here.
-     *
-     * @param theLocalizer a <code>Localizer</code> value
-     * @see de.dante.util.framework.i18n.Localizable#enableLocalization(
-     *      de.dante.util.framework.i18n.Localizer)
+     * @see de.dante.extex.interpreter.type.ExpandableCode#expand(
+     *      de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
      */
-    public void enableLocalization(final Localizer theLocalizer) {
-        localizer = theLocalizer;
+    public void expand(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws InterpreterException {
+
+        execute(prefix, context, source, typesetter);
     }
 
 }

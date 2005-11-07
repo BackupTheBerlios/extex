@@ -16,15 +16,15 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.conditional;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.scanner.type.token.CodeToken;
+import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
-
 
 /**
  * This class provides an implementation for the primitive <code>\if</code>.
@@ -49,8 +49,9 @@ import de.dante.extex.typesetter.Typesetter;
  * </p>
  * </doc>
  *
+ * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Ifdefined extends AbstractIf {
 
@@ -65,9 +66,9 @@ public class Ifdefined extends AbstractIf {
      * @param name the name for debugging
      */
     public Ifdefined(final String name) {
+
         super(name);
     }
-
 
     /**
      * @see de.dante.extex.interpreter.primitives.conditional.AbstractIf#conditional(
@@ -79,12 +80,10 @@ public class Ifdefined extends AbstractIf {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
+        Token token = source.getToken(context);
 
-        CodeToken token = source.getControlSequence(context);
-        Code code = context.getCode(token);
-
-        // TODO: is this correct? (TE)
-        return code != null;
+        return (token instanceof CodeToken && context
+                .getCode((CodeToken) token) != null);
     }
 
 }
