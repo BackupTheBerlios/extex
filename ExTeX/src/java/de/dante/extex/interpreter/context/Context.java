@@ -49,7 +49,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.63 $
+ * @version $Revision: 1.64 $
  */
 public interface Context
         extends
@@ -283,7 +283,7 @@ public interface Context
      * @param primitive the name of the primitive which triggered this
      *  operation
      */
-    void pushConditional(Locator locator, boolean value, Code primitive, long branch);
+    void pushConditional(Locator locator, boolean value, Code primitive, long branch, boolean neg);
 
     /**
      * Setter for the color in the current typesetting context.
@@ -390,7 +390,7 @@ public interface Context
      * @param global the indicator for the scope; <code>true</code> means all
      *            groups; otherwise the current group is affected only
      */
-    void setGlue(String name, Glue value, boolean global);
+    void setGlue(String name, Glue value, boolean global) throws InterpreterException;
 
     /**
      * Setter for the id string. The id string is the classification of the

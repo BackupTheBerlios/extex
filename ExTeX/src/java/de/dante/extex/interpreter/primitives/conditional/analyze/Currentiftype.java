@@ -75,7 +75,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Currentiftype extends AbstractCode
         implements
@@ -140,8 +140,8 @@ public class Currentiftype extends AbstractCode
             return 0;
         }
         Long l = (Long) map.get(conditional.getPrimitive().getClass());
-        //TODO gene: treat \ unless
-        return (l == null ? 0 : l.longValue());
+        return (l == null ? 0 : //
+                conditional.isNeg() ? -l.longValue() : l.longValue());
     }
 
     /**

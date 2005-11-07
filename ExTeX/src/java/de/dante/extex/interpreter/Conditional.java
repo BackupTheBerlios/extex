@@ -30,7 +30,7 @@ import de.dante.util.Locator;
  * happened.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Conditional implements Serializable {
 
@@ -40,7 +40,7 @@ public class Conditional implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The field <tt>branch</tt> contains the ...
+     * The field <tt>branch</tt> contains the branch indicator.
      */
     private long branch;
 
@@ -49,6 +49,12 @@ public class Conditional implements Serializable {
      * opening <tt>\if</tt>.
      */
     private Locator locator;
+
+    /**
+     * The field <tt>neg</tt> contains the indicator that the conditional has
+     * been negated.
+     */
+    private boolean neg;
 
     /**
      * The field <tt>primitive</tt> contains the name of the primitive which
@@ -62,14 +68,16 @@ public class Conditional implements Serializable {
      * @param locator the locator
      * @param primitive the primitive which started this conditional
      * @param branch <code>true</code> iff the then branch is taken
+     * @param neg indicator that the conditional has been negated
      */
     public Conditional(final Locator locator, final Code primitive,
-            final long branch) {
+            final long branch, final boolean neg) {
 
         super();
         this.locator = locator;
         this.primitive = primitive;
         this.branch = branch;
+        this.neg = neg;
     }
 
     /**
@@ -125,6 +133,17 @@ public class Conditional implements Serializable {
         return true;
     }
 
+    /**
+     * Getter for neg.
+     *
+     * @return the neg
+     */
+    public boolean isNeg() {
+    
+        return this.neg;
+    }
+
+    
     /**
      * @see java.lang.Object#toString()
      */

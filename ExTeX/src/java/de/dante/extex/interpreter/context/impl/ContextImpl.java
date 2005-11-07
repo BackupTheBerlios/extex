@@ -48,6 +48,8 @@ import de.dante.extex.interpreter.context.observer.count.CountObservable;
 import de.dante.extex.interpreter.context.observer.count.CountObserver;
 import de.dante.extex.interpreter.context.observer.dimen.DimenObservable;
 import de.dante.extex.interpreter.context.observer.dimen.DimenObserver;
+import de.dante.extex.interpreter.context.observer.glue.GlueObservable;
+import de.dante.extex.interpreter.context.observer.glue.GlueObserver;
 import de.dante.extex.interpreter.context.observer.group.AfterGroupObserver;
 import de.dante.extex.interpreter.context.observer.group.GroupObservable;
 import de.dante.extex.interpreter.context.observer.group.GroupObserver;
@@ -130,7 +132,7 @@ import de.dante.util.framework.i18n.Localizer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.96 $
+ * @version $Revision: 1.97 $
  */
 public class ContextImpl
         implements
@@ -140,6 +142,7 @@ public class ContextImpl
             ConditionalObservable,
             CountObservable,
             DimenObservable,
+            GlueObservable,
             GroupObservable,
             InteractionObservable,
             TokensObservable,
@@ -182,22 +185,28 @@ public class ContextImpl
     private Token afterassignment = null;
 
     /**
-     * The field <tt>codeChangeObservers</tt> contains the list of observers
+     * The field <tt>changeCodeObservers</tt> contains the list of observers
      * registered for change event on the code.
      */
     private transient Map changeCodeObservers;
 
     /**
-     * The field <tt>countChangeObservers</tt> contains the list of observers
+     * The field <tt>changeCountObservers</tt> contains the list of observers
      * registered for change event on the count registers.
      */
     private transient Map changeCountObservers;
 
     /**
-     * The field <tt>dimenChangeObservers</tt> contains the list of observers
-     * registered for change event on the count registers.
+     * The field <tt>changeDimenObservers</tt> contains the list of observers
+     * registered for change event on the dimen registers.
      */
     private transient Map changeDimenObservers;
+
+    /**
+     * The field <tt>dimenChangeObservers</tt> contains the list of observers
+     * registered for change event on the glue (skip) registers.
+     */
+    private transient Map changeGlueObservers;
 
     /**
      * The field <tt>observersInteraction</tt> contains the observer list which
@@ -910,6 +919,7 @@ public class ContextImpl
         changeCodeObservers = new HashMap();
         changeCountObservers = new HashMap();
         changeDimenObservers = new HashMap();
+        changeGlueObservers = new HashMap();
         changeToksObservers = new HashMap();
         changeInteractionObservers = new ArrayList();
         groupObservers = null;
@@ -979,15 +989,18 @@ public class ContextImpl
      * @see de.dante.extex.interpreter.context.Context#pushConditional(
      *      de.dante.util.Locator,
      *      boolean,
-     *      de.dante.extex.interpreter.type.Code, int)
+     *      de.dante.extex.interpreter.type.Code,
+     *      long,
+     *      boolean)
      */
     public void pushConditional(final Locator locator,
-            final boolean isIfThenElse, final Code primitive, final long branch) {
+            final boolean isIfThenElse, final Code primitive,
+            final long branch, final boolean neg) {
 
         Conditional cond = isIfThenElse
                 //
-                ? new Conditional(locator, primitive, branch)
-                : new ConditionalSwitch(locator, primitive, branch);
+                ? new Conditional(locator, primitive, branch, neg)
+                : new ConditionalSwitch(locator, primitive, branch, neg);
         conditionalStack.add(cond);
 
         if (conditionalObservers != null) {
@@ -1023,7 +1036,7 @@ public class ContextImpl
      *      de.dante.extex.scanner.type.Token,
      *      de.dante.extex.interpreter.context.observer.CodeObserver)
      */
-    public void registerCodeChangeObserver(final Token name,
+    public synchronized void registerCodeChangeObserver(final Token name,
             final CodeObserver observer) {
 
         List observerList = (List) changeCodeObservers.get(name);
@@ -1052,7 +1065,7 @@ public class ContextImpl
      *      java.lang.String,
      *      de.dante.extex.interpreter.context.observer.CountObserver)
      */
-    public void registerCountObserver(final String name,
+    public synchronized void registerCountObserver(final String name,
             final CountObserver observer) {
 
         List list = (List) changeCountObservers.get(name);
@@ -1068,13 +1081,29 @@ public class ContextImpl
      *      java.lang.String,
      *      de.dante.extex.interpreter.context.observer.DimenObserver)
      */
-    public void registerDimenObserver(final String name,
+    public synchronized void registerDimenObserver(final String name,
             final DimenObserver observer) {
 
         List list = (List) changeDimenObservers.get(name);
         if (list == null) {
             list = new ArrayList();
             changeDimenObservers.put(name, list);
+        }
+        list.add(observer);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.observer.glue.GlueObservable#registerGlueObserver(
+     *      java.lang.String,
+     *      de.dante.extex.interpreter.context.observer.glue.GlueObserver)
+     */
+    public synchronized void registerGlueObserver(final String name,
+            final GlueObserver observer) {
+
+        List list = (List) changeGlueObservers.get(name);
+        if (list == null) {
+            list = new ArrayList();
+            changeGlueObservers.put(name, list);
         }
         list.add(observer);
     }
@@ -1095,7 +1124,8 @@ public class ContextImpl
      * @see de.dante.extex.interpreter.context.ContextInteraction#registerInteractionObserver(
      *      de.dante.extex.interpreter.context.observer.InteractionObserver)
      */
-    public void registerInteractionObserver(final InteractionObserver observer) {
+    public synchronized void registerInteractionObserver(
+            final InteractionObserver observer) {
 
         changeInteractionObservers.add(observer);
     }
@@ -1105,7 +1135,7 @@ public class ContextImpl
      *      java.lang.String,
      *      de.dante.extex.interpreter.context.observer.TokensObserver)
      */
-    public void registerTokensObserver(final String name,
+    public synchronized void registerTokensObserver(final String name,
             final TokensObserver observer) {
 
         List list = (List) changeToksObservers.get(name);
@@ -1184,6 +1214,31 @@ public class ContextImpl
             for (int i = 0; i < len; i++) {
                 ((DimenObserver) observerList.get(i)).receiveDimenChange(this,
                         name, dimen);
+            }
+        } catch (InterpreterException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new InterpreterException(e);
+        }
+    }
+
+    /**
+     * This method is able to invoke all observers for a glue change event.
+     *
+     * @param name the name of the count register
+     * @param glue the new value
+     * @param observerList the list of observers
+     *
+     * @throws InterpreterException in case of a problem in an observer
+     */
+    private void runGlueObservers(final String name, final Glue glue,
+            final List observerList) throws InterpreterException {
+
+        try {
+            int len = observerList.size();
+            for (int i = 0; i < len; i++) {
+                ((GlueObserver) observerList.get(i)).receiveGlueChange(this,
+                        name, glue);
             }
         } catch (InterpreterException e) {
             throw e;
@@ -1410,9 +1465,18 @@ public class ContextImpl
      *      de.dante.extex.interpreter.type.glue.Glue, boolean)
      */
     public void setGlue(final String name, final Glue value,
-            final boolean global) {
+            final boolean global) throws InterpreterException {
 
         group.setSkip(name, value, global);
+
+        List observerList = (List) changeGlueObservers.get(name);
+        if (null != observerList) {
+            runGlueObservers(name, value, observerList);
+        }
+        observerList = (List) changeGlueObservers.get(null);
+        if (null != observerList) {
+            runGlueObservers(name, value, observerList);
+        }
     }
 
     /**
@@ -1630,7 +1694,7 @@ public class ContextImpl
      *      de.dante.extex.scanner.type.Token,
      *      de.dante.extex.interpreter.context.observer.CodeObserver)
      */
-    public void unregisterCodeChangeObserver(final Token name,
+    public synchronized void unregisterCodeChangeObserver(final Token name,
             final CodeObserver observer) {
 
         List observerList = (List) changeCodeObservers.get(name);
@@ -1644,7 +1708,8 @@ public class ContextImpl
      * @see de.dante.extex.interpreter.context.observer.conditional.ConditionalObservable#unregisterConditionalObserver(
      *      de.dante.extex.interpreter.context.observer.conditional.ConditionalObserver)
      */
-    public void unregisterConditionalObserver(final ConditionalObserver observer) {
+    public synchronized void unregisterConditionalObserver(
+            final ConditionalObserver observer) {
 
         conditionalObservers.remove(observer);
         if (conditionalObservers.size() == 0) {
@@ -1657,7 +1722,7 @@ public class ContextImpl
      *      java.lang.String,
      *      de.dante.extex.interpreter.context.observer.CountObserver)
      */
-    public void unregisterCountObserver(final String name,
+    public synchronized void unregisterCountObserver(final String name,
             final CountObserver observer) {
 
         List list = (List) changeCountObservers.get(name);
@@ -1673,7 +1738,7 @@ public class ContextImpl
      *      java.lang.String,
      *      de.dante.extex.interpreter.context.observer.DimenObserver)
      */
-    public void unregisterDimenObserver(final String name,
+    public synchronized void unregisterDimenObserver(final String name,
             final DimenObserver observer) {
 
         List list = (List) changeDimenObservers.get(name);
@@ -1685,10 +1750,27 @@ public class ContextImpl
     }
 
     /**
+     * @see de.dante.extex.interpreter.context.observer.glue.GlueObservable#unregisterGlueObserver(
+     *      java.lang.String,
+     *      de.dante.extex.interpreter.context.observer.glue.GlueObserver)
+     */
+    public synchronized void unregisterGlueObserver(final String name,
+            final GlueObserver observer) {
+
+        List list = (List) changeGlueObservers.get(name);
+        if (list != null) {
+            while (list.remove(observer)) {
+                // just removing the observer is enough
+            }
+        }
+    }
+
+    /**
      * @see de.dante.extex.interpreter.context.ContextGroup#unregisterGroupObserver(
      *      de.dante.extex.interpreter.context.observer.GroupObserver)
      */
-    public void unregisterGroupObserver(final GroupObserver observer) {
+    public synchronized void unregisterGroupObserver(
+            final GroupObserver observer) {
 
         groupObservers.remove(observer);
         if (groupObservers.size() == 0) {
@@ -1700,7 +1782,8 @@ public class ContextImpl
      * @see de.dante.extex.interpreter.context.ContextInteraction#unregisterInteractionObserver(
      *      de.dante.extex.interpreter.context.observer.InteractionObserver)
      */
-    public void unregisterInteractionObserver(final InteractionObserver observer) {
+    public synchronized void unregisterInteractionObserver(
+            final InteractionObserver observer) {
 
         while (changeInteractionObservers.remove(observer)) {
             // just removing the observer is enough
@@ -1712,7 +1795,7 @@ public class ContextImpl
      *      java.lang.String,
      *      de.dante.extex.interpreter.context.observer.TokensObserver)
      */
-    public void unregisterTokensChangeObserver(final String name,
+    public synchronized void unregisterTokensChangeObserver(final String name,
             final TokensObserver observer) {
 
         List list = (List) changeToksObservers.get(name);
