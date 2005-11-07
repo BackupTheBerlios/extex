@@ -24,7 +24,7 @@ package de.dante.extex.interpreter.context.observer.count;
  * expansion event.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface CountObservable {
 
@@ -35,7 +35,7 @@ public interface CountObservable {
      * observer is invoked.
      * <p>
      *  A single count register can be observed by giving a name of the count
-     *  register to observe. Only changes to this register tigger the
+     *  register to observe. Only changes to this register trigger the
      *  notification. If this name is <code>null</code> the changes to all
      *  registers are reported to the observer.
      * </p>
@@ -44,7 +44,6 @@ public interface CountObservable {
      * @param observer the observer to receive the events
      */
     void registerCountObserver(String name, CountObserver observer);
-
 
     /**
      * Remove a registered observer for count change events.
