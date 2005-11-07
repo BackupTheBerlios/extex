@@ -23,10 +23,10 @@
     -->
   <define name="TeXXeTstate" 
           class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
-  <Define name="beginL"
-          class=""/>
-  <Define name="beginR"
-          class=""/>
+  <define name="beginL"
+          class="de.dante.extex.interpreter.primitives.hyphen.BeginL"/>
+  <define name="beginR"
+          class="de.dante.extex.interpreter.primitives.hyphen.BeginR"/>
   <Define name="botmarks"
           class=""/>
   <Define name="clubpenalties"
@@ -51,10 +51,10 @@
           class="de.dante.extex.interpreter.primitives.register.toks.ToksParameter">.141592</define>
   <define name="eTeXversion"
           class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter">3</define>
-  <Define name="endL"
-          class=""/>
-  <Define name="endR"
-          class=""/>
+  <define name="endL"
+          class="de.dante.extex.interpreter.primitives.hyphen.EndL"/>
+  <define name="endR"
+          class="de.dante.extex.interpreter.primitives.hyphen.EndR"/>
   <define name="everyeof"
           class="de.dante.extex.interpreter.primitives.register.toks.ToksParameter"/>
   <Define name="firstmarks"
