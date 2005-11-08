@@ -51,7 +51,7 @@ import de.dante.extex.typesetter.listMaker.AlignmentList;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Span extends AbstractCode {
 
@@ -85,7 +85,7 @@ public class Span extends AbstractCode {
         if (maker instanceof AlignmentList) {
             ((AlignmentList) maker).cr(context, source);
         } else {
-            throw new HelpingException(getLocalizer(), "TTP.MisplacedCrSpan",
+            throw new HelpingException(getLocalizer(), "TTP.MisplacedSpan",
                     printableControlSequence(context));
         }
     }
