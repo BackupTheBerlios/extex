@@ -262,7 +262,7 @@
       <fileset dir="${target.tests}">
         <include name="TEST-*.xml"/>
       </fileset>
-      <report format="noframes"
+      <report format="frames"
               styledir="develop/reports"
  	      todir="${target}/www/reports/tests"/>
     </junitreport>
