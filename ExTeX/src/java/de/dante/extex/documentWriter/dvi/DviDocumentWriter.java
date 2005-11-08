@@ -24,8 +24,8 @@ import java.io.OutputStream;
 
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.documentWriter.DocumentWriterOptions;
-import de.dante.extex.documentWriter.NoOutputStreamException;
 import de.dante.extex.documentWriter.SingleDocumentStream;
+import de.dante.extex.documentWriter.exception.NoOutputStreamException;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.type.InspectableNodeVisitor;
@@ -62,7 +62,7 @@ import de.dante.util.framework.i18n.Localizer;
  * This is a implementation of a dvi document writer.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class DviDocumentWriter
         implements

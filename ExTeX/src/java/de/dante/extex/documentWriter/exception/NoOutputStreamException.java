@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -17,17 +17,16 @@
  *
  */
 
-package de.dante.extex.documentWriter;
-
-import de.dante.util.exception.GeneralException;
+package de.dante.extex.documentWriter.exception;
 
 /**
- * A documentwriter throws is exception when no outputstream was set before calling shipout.
+ * A document writer throws is exception when no output stream was set before
+ * calling shipout.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.1 $
  */
-public class NoOutputStreamException extends GeneralException {
+public class NoOutputStreamException extends DocumentWriterException {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
@@ -40,6 +39,7 @@ public class NoOutputStreamException extends GeneralException {
      */
     public NoOutputStreamException() {
 
-        super();
+        super("");
     }
+
 }
