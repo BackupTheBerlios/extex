@@ -44,18 +44,18 @@ import de.dante.extex.typesetter.Typesetter;
  *  It takes a font specification as argument. It expands to the name of the
  *  font. If this font is not loaded at its design size then the actual size
  *  is appended after the tokens <tt> at </tt>. All tokens produced this way
- *  are <i>other</i> tokens except of the spaces. Ths means that even the
+ *  are <i>other</i> tokens except of the spaces. This means that even the
  *  letters are of category <i>other</i>.
  * </p>
  *
  * <h4>Example</h4>
- * <pre>
+ * <pre class="TeXSample">
  * \font\myFont=cmr12
  * \fontname\myfont
  * &rArr; cmr12
  * </pre>
  *
- * <pre>
+ * <pre class="TeXSample">
  * \font\myFont=cmr12 at 24pt
  * \fontname\myfont
  * &rArr; cmr12 at 24pt
@@ -64,7 +64,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class Fontname extends AbstractCode implements ExpandableCode {
 
