@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\span</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class SpanTest extends ExTeXLauncher {
 
@@ -46,6 +46,22 @@ public class SpanTest extends ExTeXLauncher {
     public SpanTest(final String arg) {
 
         super(arg);
+    }
+
+    /**
+     * <testcase primitive="\span">
+     *  Test case checking that <tt>\span</tt> needs to be used in a
+     *  tabuling context.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testLonelyCr() throws Exception {
+
+        assertFailure(//--- input code ---
+                "\\span" + "\\end ",
+                //--- log message ---
+                "Misplaced \\span");
     }
 
 }
