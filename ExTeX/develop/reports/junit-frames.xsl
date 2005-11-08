@@ -23,6 +23,12 @@
 
 <!--
 
+  Modified 2005 Gerd Neugebauer
+
+-->
+
+<!--
+
  Sample stylesheet to be used with Ant JUnitReport output.
 
  It creates a set of HTML files a la javadoc where you can browse easily
@@ -143,7 +149,7 @@
 <xsl:template name="index.html">
 <html>
     <head>
-        <title>Unit Test Results.</title>
+        <title>Unit Test Results for ExTeX</title>
     </head>
     <frameset cols="20%,80%">
         <frameset rows="30%,70%">
@@ -164,7 +170,7 @@
 <!-- this is the stylesheet css to use for nearly everything -->
 <xsl:template name="stylesheet.css">
 body {
-    font:normal 68% verdana,arial,helvetica;
+    font:normal 68% helvetica;
     color:#000000;
 }
 table tr td, table tr th {
@@ -184,28 +190,28 @@ p {
     margin-top:0.5em; margin-bottom:1.0em;
 }
 h1 {
-    margin: 0px 0px 5px; font: 165% verdana,arial,helvetica
+    margin: 0px 0px 5px; font: 165% helvetica
 }
 h2 {
-    margin-top: 1em; margin-bottom: 0.5em; font: bold 125% verdana,arial,helvetica
+    margin-top: 1em; margin-bottom: 0.5em; font: bold 125% helvetica
 }
 h3 {
-    margin-bottom: 0.5em; font: bold 115% verdana,arial,helvetica
+    margin-bottom: 0.5em; font: bold 115% helvetica
 }
 h4 {
-    margin-bottom: 0.5em; font: bold 100% verdana,arial,helvetica
+    margin-bottom: 0.5em; font: bold 100% helvetica
 }
 h5 {
     margin-bottom: 0.5em; font: bold 100% verdana,arial,helvetica
 }
 h6 {
-    margin-bottom: 0.5em; font: bold 100% verdana,arial,helvetica
+    margin-bottom: 0.5em; font: bold 100% helvetica
 }
 .Error {
     font-weight:bold; color:red;
 }
 .Failure {
-    font-weight:bold; color:purple;
+    font-weight:bold; color:orange;
 }
 .Properties {
   text-align:right;
@@ -303,12 +309,12 @@ h6 {
           doc.open();
           doc.write("<html><head><title>Properties of " + name + "</title>");
           doc.write("<style type=\"text/css\">");
-          doc.write("body {font:normal 68% verdana,arial,helvetica; color:#000000; }");
+          doc.write("body {font:normal 68% helvetica; color:#000000; }");
           doc.write("table tr td, table tr th { font-size: 68%; }");
           doc.write("table.properties { border-collapse:collapse; border-left:solid 1 #cccccc; border-top:solid 1 #cccccc; padding:5px; }");
           doc.write("table.properties th { text-align:left; border-right:solid 1 #cccccc; border-bottom:solid 1 #cccccc; background-color:#eeeeee; }");
           doc.write("table.properties td { font:normal; text-align:left; border-right:solid 1 #cccccc; border-bottom:solid 1 #cccccc; background-color:#fffffff; }");
-          doc.write("h3 { margin-bottom: 0.5em; font: bold 115% verdana,arial,helvetica }");
+          doc.write("h3 { margin-bottom: 0.5em; font: bold 115% helvetica }");
           doc.write("</style>");
           doc.write("</head><body>");
           doc.write("<h3>Properties of " + name + "</h3>");
@@ -685,13 +691,7 @@ h6 {
 
 <!-- Page HEADER -->
 <xsl:template name="pageHeader">
-    <h1>Unit Test Results</h1>
-    <table width="100%">
-    <tr>
-        <td align="left"></td>
-        <td align="right">Designed for use with <a href="http://www.junit.org/">JUnit</a> and <a href="http://jakarta.apache.org/">Ant</a>.</td>
-    </tr>
-    </table>
+    <h1>Unit Test Results for ExTeX</h1>
     <hr size="1"/>
 </xsl:template>
 
