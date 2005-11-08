@@ -32,10 +32,13 @@ import de.dante.extex.typesetter.Typesetter;
  * This class provides an implementation for the primitive
  * <code>\currentiflevel</code>.
  *
- * <doc name="if">
+ * <doc name="currentiflevel">
  * <h3>The Primitive <tt>\currentiflevel</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  The primitive <tt>\currentiflevel</tt> is an internal integer quantity. It
+ *  reflects the current level of open conditionals. Whenever an <tt>\if</tt>
+ *  is opened then this quantity is incremented by one. If the <tt>\if</tt> is
+ *  closed it is decremented. Initially the quantity is zero.
  * </p>
  *
  * <h4>Syntax</h4>
@@ -51,7 +54,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Currentiflevel extends AbstractCode
         implements
