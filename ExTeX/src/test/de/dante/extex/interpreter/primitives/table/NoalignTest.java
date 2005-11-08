@@ -19,15 +19,16 @@
 
 package de.dante.extex.interpreter.primitives.table;
 
+import de.dante.test.ExTeXLauncher;
 import de.dante.test.NoFlagsPrimitiveTester;
 
 /**
  * This is a test suite for the primitive <tt>\noalign</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class NoalignTest extends NoFlagsPrimitiveTester {
+public class NoalignTest extends ExTeXLauncher {
 
     /**
      * Command line interface.
@@ -45,7 +46,23 @@ public class NoalignTest extends NoFlagsPrimitiveTester {
      */
     public NoalignTest(final String arg) {
 
-        super(arg, "noalign", "}", "\\halign{#\\");
+        super(arg);
+    }
+
+    /**
+     * <testcase primitive="\noalign">
+     *  Test case checking that <tt>\noalign</tt> needs to be used in a
+     *  tabuling context.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testLonelyCr() throws Exception {
+
+        assertFailure(//--- input code ---
+                "\\noalign" + "\\end ",
+                //--- log message ---
+                "Misplaced \\noalign");
     }
 
 }
