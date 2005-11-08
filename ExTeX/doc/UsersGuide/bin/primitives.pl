@@ -1,6 +1,6 @@
 #!/bin/perl -w
 ##*****************************************************************************
-## $Id: primitives.pl,v 1.4 2005/06/20 10:31:02 gene Exp $
+## $Id: primitives.pl,v 1.5 2005/11/08 17:17:52 gene Exp $
 ##*****************************************************************************
 ## Author: Gerd Neugebauer
 ##=============================================================================
@@ -152,6 +152,7 @@ sub processPrimitive {
     print $out "\n\\macro{$name} is not implemented yet.\n\n";
   }
   $_ = ($name eq ' '? '\\[': $name);
+  $_ = ($_ eq '\\'? '\\char`\\\\': $_);
   print $out "The primitive \\macro{$_} is defined in the set \\texttt{$primUse{$name}}.\n";
 }
 
@@ -215,6 +216,7 @@ __EOF__
     s|\\\\|\\char`\\\\|g; #`
     #s| |\\ {}|g; #`
     $_ = "\\[" if $_ eq ' ';
+    $_ = "\\char`\\\\" if $_ eq '\\';
     print $out "   \\macro{$_}\n";
   }
   print $out "\\end{primitives}\n";
