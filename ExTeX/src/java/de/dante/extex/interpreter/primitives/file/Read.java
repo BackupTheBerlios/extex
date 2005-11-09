@@ -49,15 +49,15 @@ import de.dante.extex.typesetter.Typesetter;
  *       &rarr; <tt>\read</tt> &lang;read&rang; <tt>to</tt> &lang;control sequence&rang;</pre>
  *
  * <h4>Examples</h4>
- * <pre class="TeXSample">
- * \openin3= abc.def
- * \read3 to \line
- * \closein3 </pre>
+ *  <pre class="TeXSample">
+ *   \openin3= abc.def
+ *   \read3 to \line
+ *   \closein3 </pre>
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
 public class Read extends AbstractCode {
 
@@ -87,18 +87,26 @@ public class Read extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String key = AbstractFileCode.scanInFileKey(context, source, typesetter);
+        String key = AbstractFileCode
+                .scanInFileKey(context, source, typesetter);
 
         if (!source.getKeyword(context, "to")) {
             throw new HelpingException(getLocalizer(), "TTP.MissingToForRead");
         }
         CodeToken cs = source.getControlSequence(context);
 
-        Interaction interaction = context.getInteraction();
-        if (interaction != Interaction.ERRORSTOPMODE) {
-            throw new HelpingException(getLocalizer(), "TTP.NoTermRead");
-        }
         InFile file = context.getInFile(key);
+
+        if (!file.isOpen()) {
+
+        }
+        if (!file.isFileStream()) {
+
+            Interaction interaction = context.getInteraction();
+            if (interaction != Interaction.ERRORSTOPMODE) {
+                throw new HelpingException(getLocalizer(), "TTP.NoTermRead");
+            }
+        }
 
         Tokens toks = file.read(context.getTokenFactory(), context
                 .getTokenizer());
