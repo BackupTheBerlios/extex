@@ -74,7 +74,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class Openin extends AbstractFileCode {
 
@@ -118,8 +118,7 @@ public class Openin extends AbstractFileCode {
         } catch (ConfigurationException e) {
             throw new InterpreterException(e);
         }
-        context.setInFile(key, file, prefix.isGlobal());
-        prefix.setGlobal(false);
+        context.setInFile(key, file, true);
     }
 
 }
