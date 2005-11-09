@@ -19,15 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.file;
 
-import de.dante.test.NoFlagsButGlobalAndImmediatePrimitiveTester;
+import de.dante.test.NoFlagsPrimitiveTester;
 
 /**
  * This is a test suite for the primitive <tt>\openin</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class OpeninTest extends NoFlagsButGlobalAndImmediatePrimitiveTester {
+public class OpeninTest extends NoFlagsPrimitiveTester {
 
     /**
      * Method for running the tests standalone.
@@ -46,7 +46,7 @@ public class OpeninTest extends NoFlagsButGlobalAndImmediatePrimitiveTester {
      */
     public OpeninTest(final String arg) {
 
-        super(arg, "openin", "1 src/test/data/empty.tex");
+        super(arg, "openin", "1 src/test/data/empty.tex ");
     }
 
     /**
@@ -76,22 +76,6 @@ public class OpeninTest extends NoFlagsButGlobalAndImmediatePrimitiveTester {
 
         assertFailure(//--- input code ---
                 "\\openin 2",
-                //--- log message ---
-                "Unexpected end of file while processing \\openin");
-    }
-
-    /**
-     * <testcase primitive="\openin">
-     *  Test case checking that a <tt>\openin</tt> on a missing file
-     *  leads to an error.
-     * </testcase>
-     *
-     * @throws Exception in case of an error
-     */
-    public void ________________________test0() throws Exception {
-
-        assertFailure(//--- input code ---
-                "\\openin 2 src/test/data/VeryUnlikelyToExist",
                 //--- log message ---
                 "Unexpected end of file while processing \\openin");
     }
