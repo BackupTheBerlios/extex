@@ -56,7 +56,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.54 $
+ * @version $Revision: 1.55 $
  */
 public class GroupImpl implements Group, Tokenizer, Serializable {
 
@@ -299,8 +299,7 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
                 return Catcode.SPACE;
             case '\\':
                 return Catcode.ESCAPE;
-            case '\r':
-            case '\n':
+            case 13:
                 return Catcode.CR;
             case '%':
                 return Catcode.COMMENT;
