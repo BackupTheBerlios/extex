@@ -19,15 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.file;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.test.NoFlagsButGlobalPrimitiveTester;
 
 /**
  * This is a test suite for the primitive <tt>\read</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class ReadTest extends ExTeXLauncher {
+public class ReadTest extends NoFlagsButGlobalPrimitiveTester {
 
     /**
      * Method for running the tests standalone.
@@ -46,7 +46,7 @@ public class ReadTest extends ExTeXLauncher {
      */
     public ReadTest(final String arg) {
 
-        super(arg);
+        super(arg, "read", "1 to \\x", "\\openin1 src/test/data/read_data.tex ");
     }
 
     /**
@@ -57,7 +57,23 @@ public class ReadTest extends ExTeXLauncher {
      *
      * @throws Exception in case of an error
      */
-    public void test0() throws Exception {
+    public void testTerm0() throws Exception {
+
+        assertFailure(//--- input code ---
+                "\\read 1 to \\x ",
+                //--- error channel ---
+                "*** (cannot \\read from terminal in nonstop modes)");
+    }
+
+    /**
+     * <testcase primitive="\read">
+     *  Test case checking that a <tt>\read</tt> works on unopened file
+     *  handles.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testErr0() throws Exception {
 
         assertFailure(//--- input code ---
                 "\\read 1",
@@ -73,12 +89,63 @@ public class ReadTest extends ExTeXLauncher {
      *
      * @throws Exception in case of an error
      */
-    public void test1() throws Exception {
+    public void testErr1() throws Exception {
 
         assertFailure(//--- input code ---
                 "\\read 1 to ",
                 //--- error channel ---
                 "Missing control sequence inserted");
+    }
+
+    /**
+     * <testcase primitive="\read">
+     *  Test case checking that a <tt>\read</tt> can read the first line of the
+     *  test file.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test1() throws Exception {
+
+        assertSuccess(//--- input code ---
+                DEFINE_CATCODES + "\\openin1 src/test/data/read_data.tex " +
+                "\\read 1 to \\x " + "\\x" + "\\end",
+                //--- output channel ---
+                "123xyz" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\read">
+     *  Test case checking that a <tt>\read</tt> honors the <tt>\global</tt>
+     *  prefix b defining the macro globally.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test2() throws Exception {
+
+        assertSuccess(//--- input code ---
+                DEFINE_CATCODES + "\\openin1 src/test/data/read_data.tex " +
+                "{\\global\\read 1 to \\x}" + "\\x" + "\\end",
+                //--- output channel ---
+                "123xyz" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\read">
+     *  Test case checking that a <tt>\read</tt> makes its definition locally
+     *  to the current group per default.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test3() throws Exception {
+
+        assertFailure(//--- input code ---
+                DEFINE_CATCODES + "\\openin1 src/test/data/read_data.tex " +
+                "{\\read 1 to \\x}" + "\\x" + "\\end",
+                //--- output channel ---
+                "Undefined control sequence \\x");
     }
 
 }
