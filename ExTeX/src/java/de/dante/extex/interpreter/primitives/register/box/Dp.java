@@ -68,8 +68,9 @@ import de.dante.util.exception.GeneralException;
  *      &rarr;
  *       |  <tt>\global</tt> &lang;optional prefix&rang;  </pre>
  * </p>
+ *
+ * <h4>Examples</h4>
  * <p>
- *  Examples:
  *  <pre class="TeXSample">
  *    \dp42 = 12mm  </pre>
  *  <pre class="TeXSample">
@@ -82,6 +83,8 @@ import de.dante.util.exception.GeneralException;
  *  the given box register. In case that the box register is empty the result
  *  is 0&nbsp;pt.
  * </p>
+ *
+ * <h4>Syntax</h4>
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
@@ -89,26 +92,32 @@ import de.dante.util.exception.GeneralException;
  *      de.dante.extex.interpreter.TokenSource#scanNumber(Context)
  *      &lang;8-bit&nbsp;number&rang;} </pre>
  * </p>
+ *
+ * <h4>Examples</h4>
  * <p>
- *  Examples:
  *  <pre class="TeXSample">
  *    \dimen0 = \dp42  </pre>
+ *
+ *  <pre class="TeXSample">
+ *    \the\dp42  </pre>
  * </p>
  *
  * <h4>Conversion to a Count</h4>
  * <p>
- *  TODO gene: missing documentation
+ *  The primitive is convertible into a count. It can be used wherever an
+ *  integer quantity is expected.
  * </p>
  *
  * <h4>Interaction with <tt>\the</tt></h4>
  * <p>
- *  TODO gene: missing documentation
+ *  The primitive <tt>\the</tt> can be applied to this primitive. In this case
+ *  it results in a token list representing the value in points.
  * </p>
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
 public class Dp extends Setbox
         implements

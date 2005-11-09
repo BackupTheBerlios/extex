@@ -51,7 +51,8 @@ import de.dante.util.framework.logger.LogEnabled;
  * The primitive can be used outside of any group only.
  * </p>
  * <p>
- *  TODO gene: missing documentation
+ *  The name of the format file is derived from the job name. The extension
+ *  <tt>.fmt</tt> is attached to the job name.
  * </p>
  *
  * <h4>Syntax</h4>
@@ -67,7 +68,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.37 $
+ * @version $Revision: 1.38 $
  */
 public class Dump extends AbstractCode implements LogEnabled {
 
@@ -141,7 +142,7 @@ public class Dump extends AbstractCode implements LogEnabled {
 
         context.setId(jobname + " " + //
                 calendar.get(Calendar.YEAR) + "."
-                + calendar.get(Calendar.MONTH) + "."
+                + (calendar.get(Calendar.MONTH)+1) + "."
                 + calendar.get(Calendar.DAY_OF_MONTH));
 
         OutputStream stream = null;

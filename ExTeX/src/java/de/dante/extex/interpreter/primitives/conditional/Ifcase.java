@@ -39,13 +39,22 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * <p>
  *  TODO gene: missing documentation
  * </p>
+ *
+ * <h4>Syntax</h4>
+ *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;ifcase&rang;
  *     &rarr; <tt>\ifcase</tt> ...  </pre>
+ *
+ * <h4>Examples</h4>
+ *  <pre class="TeXSample">
+ *    \ifcase\count0 a\or b\or c\else x\fi  </pre>
+ *
  * </doc>
  *
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
 public class Ifcase extends AbstractIf {
 
@@ -90,11 +99,11 @@ public class Ifcase extends AbstractIf {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        //prefix.clear(); //TODO gene: most probably not needed
         long branch = source.scanInteger(context, typesetter);
         if (branch < 0) {
             if (skipToElseOrFi(context, source)) {
-                context.pushConditional(source.getLocator(), true, this, branch, false);
+                context.pushConditional(source.getLocator(), true, this,
+                        branch, false);
             }
             return;
         }
@@ -104,7 +113,8 @@ public class Ifcase extends AbstractIf {
             if (tag == OR) {
                 branch--;
             } else if (tag == ELSE) {
-                context.pushConditional(source.getLocator(), true, this, branch, false);
+                context.pushConditional(source.getLocator(), true, this,
+                        branch, false);
                 return;
 
             } else if (tag == FI) {
@@ -193,7 +203,7 @@ public class Ifcase extends AbstractIf {
      * This is an internal class for type-safe values.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.28 $
+     * @version $Revision: 1.29 $
      */
     protected static final class Tag {
 
