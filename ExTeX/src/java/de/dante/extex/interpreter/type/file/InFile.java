@@ -35,7 +35,7 @@ import de.dante.extex.scanner.type.token.TokenFactory;
  * This class holds an input file from which tokens can be read.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class InFile implements Serializable {
 
@@ -43,11 +43,6 @@ public class InFile implements Serializable {
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
     private static final long serialVersionUID = 1L;
-
-    /**
-     * The field <tt>file</tt> contains name of the underlying file.
-     */
-    private File file;
 
     /**
      * The field <tt>stream</tt> contains the stream.
@@ -62,8 +57,15 @@ public class InFile implements Serializable {
     public InFile(final TokenStream inStream) {
 
         super();
-        this.file = null;
         this.stream = inStream;
+    }
+
+    /**
+     * Close the current stream. No reading operation is possible afterwards.
+     */
+    public void close() {
+
+        stream = null;
     }
 
     /**
@@ -81,7 +83,15 @@ public class InFile implements Serializable {
     }
 
     /**
-     * Check whether this InFile is curretly opened for reading.
+     * @see de.dante.extex.scanner.stream.TokenStream#isFileStream()
+     */
+    public boolean isFileStream() {
+
+        return stream != null && this.stream.isFileStream();
+    }
+
+    /**
+     * Check whether this InFile is currently opened for reading.
      *
      * @return <tt>true</tt> iff the input stream has still a stream assigned
      * to it.
@@ -89,15 +99,6 @@ public class InFile implements Serializable {
     public boolean isOpen() {
 
         return (stream != null);
-    }
-
-    /**
-     * Close the current stream. No reading operation is possible afterwards.
-     */
-    public void close() {
-
-        stream = null;
-        file = null;
     }
 
     /**
@@ -120,18 +121,18 @@ public class InFile implements Serializable {
         Tokens toks = new Tokens();
         Token t;
 
-        for (;;) {
-            try {
+        try {
+            for (;;) {
                 t = stream.get(factory, tokenizer);
-            } catch (ScannerException e) {
-                throw new InterpreterException(e);
+                if (t == null) {
+                    return (toks.length() > 0 ? toks : null);
+                } else if (stream.isEol()) {
+                    return toks;
+                }
+                toks.add(t);
             }
-            if (t == null) {
-                return (toks.length() > 0 ? toks : null);
-            } else if (t instanceof CrToken) { //TODO gene: correct?
-                return toks;
-            }
-            toks.add(t);
+        } catch (ScannerException e) {
+            throw new InterpreterException(e);
         }
     }
 }
