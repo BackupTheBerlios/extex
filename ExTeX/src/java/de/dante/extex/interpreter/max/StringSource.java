@@ -37,7 +37,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This class provides a token source which is fed from a string.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class StringSource extends Moritz {
 
@@ -45,20 +45,20 @@ public class StringSource extends Moritz {
      * This Token stream is fed from a CharSequence.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.23 $
+     * @version $Revision: 1.24 $
      */
     private class TStream implements TokenStream {
-
-        /**
-         * The field <tt>next</tt> contains the pointer to the next char to read.
-         */
-        private int next = 0;
 
         /**
          * The field <tt>cs</tt> contains the char sequence containing the chars
          * to read.
          */
         private CharSequence cs;
+
+        /**
+         * The field <tt>next</tt> contains the pointer to the next char to read.
+         */
+        private int next = 0;
 
         /**
          * The field <tt>stack</tt> contains the stack for pushed tokens.
@@ -122,6 +122,14 @@ public class StringSource extends Moritz {
         public boolean isEof() throws ScannerException {
 
             return next >= cs.length();
+        }
+
+        /**
+         * @see de.dante.extex.scanner.stream.TokenStream#isEol()
+         */
+        public boolean isEol() throws ScannerException {
+
+            return isEof();
         }
 
         /**

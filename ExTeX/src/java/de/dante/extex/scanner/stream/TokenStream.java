@@ -37,7 +37,7 @@ import de.dante.util.Locator;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public interface TokenStream {
 
@@ -85,6 +85,17 @@ public interface TokenStream {
      *  exception in a ScannerException.
      */
     boolean isEof() throws ScannerException;
+
+    /**
+     * Check to see if the token stream is currently at the end of line.
+     *
+     * @return <code>true</code> if the stream is at end of line
+     *
+     * @throws ScannerException in case that an error has been encountered.
+     *  Especially if an IO exceptions occurs it is delivered as chained
+     *  exception in a ScannerException.
+     */
+    boolean isEol() throws ScannerException;
 
     /**
      * Check whether the current stream is associated with a file to read from.

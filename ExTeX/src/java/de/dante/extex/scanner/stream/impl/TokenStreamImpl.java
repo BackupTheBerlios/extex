@@ -51,7 +51,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationSyntaxExcept
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.45 $
+ * @version $Revision: 1.46 $
  */
 public class TokenStreamImpl extends TokenStreamBaseImpl implements TokenStream {
 
@@ -59,17 +59,33 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements TokenStream 
      * This is a type-safe class to represent state information.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.45 $
+     * @version $Revision: 1.46 $
      */
     private static final class State {
 
         /**
+         * The field <tt>name</tt> contains the print name of this state for
+         * debugging.
+         */
+        private String name;
+
+        /**
          * Creates a new object.
          */
-        public State() {
+        public State(final String name) {
 
             super();
+            this.name = name;
         }
+
+        /**
+         * @see java.lang.Object#toString()
+         */
+        public String toString() {
+
+            return name;
+        }
+
     }
 
     /**
@@ -93,19 +109,19 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements TokenStream 
      * The constant <tt>MID_LINE</tt> contains the state for the processing in
      * the middle of a line.
      */
-    private static final State MID_LINE = new State();
+    private static final State MID_LINE = new State("mid line");
 
     /**
      * The constant <tt>NEW_LINE</tt> contains the state for the processing at
      * the beginning of a new line.
      */
-    private static final State NEW_LINE = new State();
+    private static final State NEW_LINE = new State("new line");
 
     /**
      * The constant <tt>SKIP_BLANKS</tt> contains the state for the processing
      * when spaces are ignored.
      */
-    private static final State SKIP_BLANKS = new State();
+    private static final State SKIP_BLANKS = new State("skip blanks");
 
     /**
      * The field <tt>in</tt> contains the buffered reader for lines.
@@ -192,6 +208,8 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements TokenStream 
             } else if (state == NEW_LINE) {
                 t = factory.createToken(Catcode.ESCAPE, (UnicodeChar) uchar,
                         "par", tokenizer.getNamespace());
+            } else {
+                //drop the character
             }
 
             endLine();
@@ -695,6 +713,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements TokenStream 
         }
     }
 
+
     /**
      * @see de.dante.extex.scanner.stream.TokenStream#isEof()
      */
@@ -711,6 +730,14 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements TokenStream 
         } while (refill());
 
         return true;
+    }
+
+    /**
+     * @see de.dante.extex.scanner.stream.TokenStream#isEol()
+     */
+    public boolean isEol() {
+
+        return pointer > line.length();
     }
 
     /**

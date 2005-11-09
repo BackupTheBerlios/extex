@@ -35,7 +35,7 @@ import de.dante.util.UnicodeChar;
  * with push() or reduced with pop().
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public abstract class AbstractTokenStreamImpl implements TokenStream {
 
@@ -203,4 +203,14 @@ public abstract class AbstractTokenStreamImpl implements TokenStream {
         // TODO mgn incomplete
         return false;
     }
+
+    /**
+     * @see de.dante.extex.scanner.stream.TokenStream#isEol()
+     */
+    public boolean isEol() {
+
+        // TODO mgn incomplete
+        return false;
+    }
+
 }

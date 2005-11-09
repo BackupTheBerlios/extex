@@ -45,7 +45,7 @@ import de.dante.util.exception.GeneralException;
  * It use 32 bit characters!
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public abstract class TokenStreamBaseImpl32
         implements
@@ -865,4 +865,14 @@ public abstract class TokenStreamBaseImpl32
         // TODO mgn incomplete
         return false;
     }
+
+    /**
+     * @see de.dante.extex.scanner.stream.TokenStream#isEol()
+     */
+    public boolean isEol() {
+
+        // TODO mgn incomplete
+        return false;
+    }
+
 }

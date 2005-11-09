@@ -34,7 +34,7 @@ import de.dante.util.Locator;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public class TokenStreamBaseImpl implements TokenStream {
 
@@ -184,6 +184,14 @@ public class TokenStreamBaseImpl implements TokenStream {
     public void skipSpaces() {
 
         this.skipSpaces = true;
+    }
+
+    /**
+     * @see de.dante.extex.scanner.stream.TokenStream#isEol()
+     */
+    public boolean isEol() throws ScannerException {
+
+        return (stack.length() == 0);
     }
 
 }
