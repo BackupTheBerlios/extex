@@ -31,6 +31,7 @@ import de.dante.extex.documentWriter.exception.DocumentWriterIOException;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.NodeVisitor;
+import de.dante.extex.typesetter.type.page.Page;
 import de.dante.util.Unit;
 import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.Configuration;
@@ -39,7 +40,7 @@ import de.dante.util.framework.configuration.Configuration;
  * Implementation of a pdf document writer.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class PdfSinglePageDocumentWriter
         implements
@@ -171,8 +172,9 @@ public class PdfSinglePageDocumentWriter
      * @see de.dante.extex.documentWriter.DocumentWriter#shipout(
      *      de.dante.extex.typesetter.type.NodeList)
      */
-    public void shipout(final NodeList nodes) throws DocumentWriterException {
+    public int shipout(final Page page) throws DocumentWriterException {
 
+        NodeList nodes = page.getNodes();
         try {
 
             // get the output from the factory
@@ -254,6 +256,7 @@ public class PdfSinglePageDocumentWriter
         } catch (IOException e) {
             throw new DocumentWriterIOException(e);
         }
+        return 1;
     }
 
     //    /**

@@ -30,20 +30,22 @@ import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
+import de.dante.extex.typesetter.type.page.Page;
+import de.dante.extex.typesetter.type.page.PageFactory;
 import de.dante.util.exception.GeneralException;
 
 /**
  * This is a first reference implementation of a page builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class PageBuilderImpl implements PageBuilder {
 
     /**
      * The field <tt>context</tt> contains the interpreter context.
      */
-    private Context context = null;
+    //private Context context = null;
 
     /**
      * The field <tt>documentWriter</tt> contains the document writer to receive
@@ -60,6 +62,11 @@ public class PageBuilderImpl implements PageBuilder {
      * The field <tt>output</tt> contains the output routine.
      */
     private OutputRoutine outputRoutine = null;
+
+    /**
+     * The field <tt>pageFactory</tt> contains the ...
+     */
+    private PageFactory pageFactory = new PageFactory();
 
     /**
      * Creates a new object.
@@ -96,11 +103,12 @@ public class PageBuilderImpl implements PageBuilder {
     public void flush(final NodeList nodes) throws TypesetterException {
 
         if (nodes.size() > 0) {
+            Page page = pageFactory.newInstance(nodes);
             try {
                 if (this.outputRoutine != null) {
-                    this.outputRoutine.output(nodes, documentWriter);
+                    this.outputRoutine.output(page, documentWriter);
                 } else {
-                    this.documentWriter.shipout(nodes);
+                    documentWriter.shipout(page);
                 }
                 nodes.clear();
             } catch (IOException e) {
@@ -140,7 +148,7 @@ public class PageBuilderImpl implements PageBuilder {
      */
     public void setContext(final Context context) {
 
-        this.context = context;
+        //this.context = context;
     }
 
     /**

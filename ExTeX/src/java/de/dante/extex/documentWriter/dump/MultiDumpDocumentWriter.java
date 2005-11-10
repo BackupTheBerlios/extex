@@ -50,6 +50,7 @@ import de.dante.extex.typesetter.type.node.SpaceNode;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
 import de.dante.extex.typesetter.type.node.VirtualCharNode;
 import de.dante.extex.typesetter.type.node.WhatsItNode;
+import de.dante.extex.typesetter.type.page.Page;
 import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.Configurable;
 import de.dante.util.framework.configuration.Configuration;
@@ -60,7 +61,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * and as tool for testing.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class MultiDumpDocumentWriter
         implements
@@ -480,8 +481,9 @@ public class MultiDumpDocumentWriter
      * @see de.dante.extex.documentWriter.DocumentWriter#shipout(
      *      de.dante.extex.typesetter.type.NodeList)
      */
-    public void shipout(final NodeList nodes) throws DocumentWriterException {
+    public int shipout(final Page page) throws DocumentWriterException {
 
+        NodeList nodes = page.getNodes();
         out = outputStreamFactory.getOutputStream();
         try {
             if (tree) {
@@ -506,6 +508,7 @@ public class MultiDumpDocumentWriter
         }
         shippedPages++;
         out = null;
+        return 1;
     }
 
 }

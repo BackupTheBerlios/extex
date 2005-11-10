@@ -40,6 +40,7 @@ import de.dante.extex.documentWriter.pdf.exception.DocumentWriterPdfException;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.NodeVisitor;
+import de.dante.extex.typesetter.type.page.Page;
 import de.dante.util.Unit;
 import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.Configuration;
@@ -49,7 +50,7 @@ import de.dante.util.framework.configuration.Configuration;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:Rolf.Niepraschk@ptb.de">Rolf Niepraschk</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public class PdfDocumentWriter implements DocumentWriter, SingleDocumentStream {
 
@@ -199,8 +200,9 @@ public class PdfDocumentWriter implements DocumentWriter, SingleDocumentStream {
      * @see de.dante.extex.documentWriter.DocumentWriter#shipout(
      *      de.dante.extex.typesetter.type.NodeList)
      */
-    public void shipout(final NodeList nodes) throws DocumentWriterException {
+    public int shipout(Page p) throws DocumentWriterException {
 
+        NodeList nodes = p.getNodes();
         try {
 
             if (document == null) {
@@ -273,5 +275,6 @@ public class PdfDocumentWriter implements DocumentWriter, SingleDocumentStream {
         } catch (GeneralException e) {
             throw new DocumentWriterException(e);
         }
+        return 1;
     }
 }

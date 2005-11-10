@@ -27,13 +27,14 @@ import java.util.Map;
 import de.dante.extex.documentWriter.exception.DocumentWriterException;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.type.NodeList;
+import de.dante.extex.typesetter.type.page.Page;
 import de.dante.util.exception.GeneralException;
 
 /**
  * This is a abstract base class for DocumentWriters.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public abstract class AbstractDocumentWriter
         implements
@@ -121,16 +122,18 @@ public abstract class AbstractDocumentWriter
      * @see de.dante.extex.documentWriter.DocumentWriter#shipout(
      *      de.dante.extex.typesetter.type.NodeList)
      */
-    public final void shipout(final NodeList nodes)
+    public final int shipout(final Page page)
             throws GeneralException,
                 IOException {
 
+        NodeList nodes = page.getNodes();
         Dimen width = new Dimen(Dimen.ONE_INCH);
         width.multiply(2100, 254); // A4 paper
         Dimen height = new Dimen(Dimen.ONE_INCH);
         height.multiply(2970, 254); // A4 paper
 
         pages += shipout(nodes, width, height);
+        return 1;
     }
 
     /**

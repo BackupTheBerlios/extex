@@ -30,13 +30,14 @@ import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
+import de.dante.extex.typesetter.type.page.PageFactory;
 import de.dante.util.exception.GeneralException;
 
 /**
  * This is a first reference implementation of a page builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class TrivialPageBuilder implements PageBuilder {
 
@@ -55,6 +56,11 @@ public class TrivialPageBuilder implements PageBuilder {
      * The field <tt>output</tt> contains the output routine.
      */
     private OutputRoutine outputRoutine = null;
+
+    /**
+     * The field <tt>pageFactory</tt> contains the ...
+     */
+    private PageFactory pageFactory = new PageFactory();
 
     /**
      * Creates a new object.
@@ -92,7 +98,7 @@ public class TrivialPageBuilder implements PageBuilder {
 
         if (nodes.size() > 0) {
             try {
-                documentWriter.shipout(nodes);
+                documentWriter.shipout(pageFactory.newInstance(nodes));
                 nodes.clear();
             } catch (IOException e) {
                 throw new TypesetterException(e);

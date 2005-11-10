@@ -34,7 +34,8 @@ import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.scanner.type.token.TokenFactory;
 import de.dante.extex.typesetter.OutputRoutine;
-import de.dante.extex.typesetter.type.NodeList;
+import de.dante.extex.typesetter.type.page.Page;
+import de.dante.extex.typesetter.type.page.PageImpl;
 import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 import de.dante.util.framework.i18n.LocalizerFactory;
@@ -48,7 +49,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * interpreter.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class TeXOutputRoutine implements OutputRoutine {
 
@@ -87,10 +88,10 @@ public class TeXOutputRoutine implements OutputRoutine {
 
     /**
      * @see de.dante.extex.typesetter.OutputRoutine#output(
-     *      de.dante.extex.typesetter.type.NodeList,
+     *      de.dante.extex.typesetter.type.page.Page,
      *      de.dante.extex.documentWriter.DocumentWriter)
      */
-    public void output(final NodeList vlist, final DocumentWriter documentWriter)
+    public void output(final Page page, final DocumentWriter documentWriter)
             throws GeneralException {
 
         Context context = interpreter.getContext();
@@ -99,7 +100,7 @@ public class TeXOutputRoutine implements OutputRoutine {
         Tokens output = context.getToks("output");
         if (output.length() == 0) {
             try {
-                documentWriter.shipout(vlist);
+                documentWriter.shipout(page);
                 deadcyles.set(0);
             } catch (IOException e) {
                 throw new GeneralException(e);
@@ -120,7 +121,7 @@ public class TeXOutputRoutine implements OutputRoutine {
                     "TTP.NonEmptyOutBox", context.esc("box"), OUTPUT_BOX);
         }
 
-        context.setBox(OUTPUT_BOX, new Box(vlist), true);
+        context.setBox(OUTPUT_BOX, new Box(page.getNodes()), true);
         interpreter.push(rightBrace);
         interpreter.push(output);
         try {

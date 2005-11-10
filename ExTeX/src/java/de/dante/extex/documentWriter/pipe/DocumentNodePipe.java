@@ -26,7 +26,7 @@ import de.dante.extex.documentWriter.DocumentWriterOptions;
 import de.dante.extex.documentWriter.MultipleDocumentStream;
 import de.dante.extex.documentWriter.OutputStreamFactory;
 import de.dante.extex.documentWriter.exception.DocumentWriterException;
-import de.dante.extex.typesetter.type.NodeList;
+import de.dante.extex.typesetter.type.page.Page;
 import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.Configurable;
 import de.dante.util.framework.configuration.Configuration;
@@ -36,7 +36,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This document writer can be used to combine several components.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class DocumentNodePipe
         implements
@@ -124,13 +124,13 @@ public class DocumentNodePipe
      * @see de.dante.extex.documentWriter.DocumentWriter#shipout(
      *      de.dante.extex.typesetter.type.NodeList)
      */
-    public void shipout(final NodeList nodes)
+    public int shipout(Page page)
             throws DocumentWriterException,
                 GeneralException,
                 IOException {
 
         // TODO gene: shipout unimplemented
-
+        return 1;
     }
 
 }

@@ -53,6 +53,7 @@ import de.dante.extex.typesetter.type.node.SpaceNode;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
 import de.dante.extex.typesetter.type.node.VirtualCharNode;
 import de.dante.extex.typesetter.type.node.WhatsItNode;
+import de.dante.extex.typesetter.type.page.Page;
 import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.i18n.Localizable;
@@ -62,7 +63,7 @@ import de.dante.util.framework.i18n.Localizer;
  * This is a implementation of a dvi document writer.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class DviDocumentWriter
         implements
@@ -485,10 +486,11 @@ public class DviDocumentWriter
      * @exception GeneralException if an error occurs
      * @exception IOException if an error occurs
      */
-    public void shipout(final NodeList nodes)
+    public int shipout(final Page page)
             throws GeneralException,
                 IOException {
 
+        NodeList nodes = page.getNodes();
         GeneralException error;
 
         if (dviWriter == null) {
@@ -513,5 +515,6 @@ public class DviDocumentWriter
         if (error != null) {
             throw new GeneralException(error);
         }
+        return 1;
     }
 }

@@ -53,7 +53,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 
 public class DviXmlTest extends TestCase {
@@ -162,8 +162,8 @@ public class DviXmlTest extends TestCase {
     private Properties props = null;
 
     /**
-     * make a font factroy
-     * @return  Return the fontfactory
+     * make a font factory
+     * @return  Return the font factory
      * @throws Exception if an error occurs.
      */
 
@@ -173,7 +173,8 @@ public class DviXmlTest extends TestCase {
                 .newInstance("config/extex.xml");
 
         FontFactory fontFactory = makeFontFactory(config
-                .getConfiguration("Fonts"));
+                .getConfiguration("Fonts"), config.getConfiguration("Resource"));
+        fontFactory.setProperties(getProps());
 
         return fontFactory;
     }
@@ -188,8 +189,8 @@ public class DviXmlTest extends TestCase {
      * @throws ConfigurationException in case that some kind of problems have
      * been detected in the configuration
      */
-    protected FontFactory makeFontFactory(final Configuration config)
-            throws ConfigurationException {
+    protected FontFactory makeFontFactory(final Configuration config,
+            final Configuration finderCfg) throws ConfigurationException {
 
         FontFactory fontFactory;
         String fontClass = config.getAttribute("class");
@@ -199,8 +200,7 @@ public class DviXmlTest extends TestCase {
         }
 
         ResourceFinder fontFinder = (new ResourceFinderFactory())
-                .createResourceFinder(config.getConfiguration("Resource"),
-                        null, getProps());
+                .createResourceFinder(finderCfg, null, getProps());
         if (Boolean.valueOf(getProps().getProperty("extex.trace.font.files"))
                 .booleanValue()) {
             fontFinder.enableTracing(true);

@@ -20,7 +20,7 @@
 package de.dante.extex.typesetter;
 
 import de.dante.extex.documentWriter.DocumentWriter;
-import de.dante.extex.typesetter.type.NodeList;
+import de.dante.extex.typesetter.type.page.Page;
 import de.dante.util.exception.GeneralException;
 
 /**
@@ -30,7 +30,7 @@ import de.dante.util.exception.GeneralException;
  * extension language.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public interface OutputRoutine {
 
@@ -39,11 +39,11 @@ public interface OutputRoutine {
      * material on the page. In fact it should find its way to the document
      * writer &ndash; either immediately or later on.
      *
-     * @param vlist the nodes to put onto the page
+     * @param page the nodes to put onto the page
      * @param documentWriter the document writer to target the nodes to
      *
      * @throws GeneralException in case of an error
      */
-    void output(NodeList vlist, DocumentWriter documentWriter)
+    void output(Page page, DocumentWriter documentWriter)
             throws GeneralException;
 }

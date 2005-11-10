@@ -52,6 +52,7 @@ import de.dante.extex.typesetter.type.node.SpaceNode;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
 import de.dante.extex.typesetter.type.node.VirtualCharNode;
 import de.dante.extex.typesetter.type.node.WhatsItNode;
+import de.dante.extex.typesetter.type.page.Page;
 import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.Configuration;
 
@@ -59,7 +60,7 @@ import de.dante.util.framework.configuration.Configuration;
  * This is a text dummy implementation of a document writer (very simple).
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class TextDocumentWriter
         implements
@@ -162,8 +163,9 @@ public class TextDocumentWriter
      * @see de.dante.extex.documentWriter.DocumentWriter#shipout(
      *      de.dante.extex.typesetter.type.NodeList)
      */
-    public void shipout(final NodeList nodes) throws DocumentWriterException {
+    public int shipout(final Page page) throws DocumentWriterException {
 
+        NodeList nodes = page.getNodes();
         try {
             processNodes(nodes);
             out.write('\n');
@@ -172,6 +174,7 @@ public class TextDocumentWriter
             throw new DocumentWriterIOException(e);
         }
         shippedPages++;
+        return 1;
     }
 
     /**

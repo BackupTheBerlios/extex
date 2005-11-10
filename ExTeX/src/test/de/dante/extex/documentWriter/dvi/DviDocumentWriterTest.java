@@ -43,6 +43,7 @@ import de.dante.extex.typesetter.type.node.GlueNode;
 import de.dante.extex.typesetter.type.node.InsertionNode;
 import de.dante.extex.typesetter.type.node.MarkNode;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
+import de.dante.extex.typesetter.type.page.PageImpl;
 import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.Configuration;
 
@@ -50,7 +51,7 @@ import de.dante.util.framework.configuration.Configuration;
  * JUnit tests for class <code>DviDocumentWriter</code>.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 
 public class DviDocumentWriterTest extends TestCase {
@@ -81,7 +82,7 @@ public class DviDocumentWriterTest extends TestCase {
         nodeList.add(node);
 
         try {
-            documentWriter.shipout(nodeList);
+            documentWriter.shipout(new PageImpl(nodeList));
         } catch (Exception e) {
             if (exception.isInstance(e)) {
                 gotException = true;
@@ -149,7 +150,7 @@ public class DviDocumentWriterTest extends TestCase {
         documentWriter = new DviDocumentWriter(configuration,
                 documentWriterOptions);
         try {
-            documentWriter.shipout(nodeList);
+            documentWriter.shipout(new PageImpl(nodeList));
         } catch (GeneralException e) {
             if (e instanceof NoOutputStreamException) {
                 noOutputStream = true;
@@ -167,7 +168,7 @@ public class DviDocumentWriterTest extends TestCase {
      */
     public void testEmptyList() throws Exception {
 
-        documentWriter.shipout(nodeList);
+        documentWriter.shipout(new PageImpl(nodeList));
     }
 
     /**
@@ -204,7 +205,7 @@ public class DviDocumentWriterTest extends TestCase {
         // TODO: nodeList.add(new SpecialNode("Test")); (TE)
         //nodeList.add(new WhatsItNode("Test"));
 
-        documentWriter.shipout(nodeList);
+        documentWriter.shipout(new PageImpl(nodeList));
     }
 
     /**
@@ -219,7 +220,7 @@ public class DviDocumentWriterTest extends TestCase {
         documentWriter = new DviDocumentWriter(configuration,
                 documentWriterOptions);
         ((SingleDocumentStream) documentWriter).setOutputStream(outputStream);
-        documentWriter.shipout(nodeList);
+        documentWriter.shipout(new PageImpl(nodeList));
     }
 
     /**
