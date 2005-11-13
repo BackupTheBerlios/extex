@@ -17,18 +17,20 @@
  *
  */
 
-package de.dante.extex.interpreter.max;
+package de.dante.extex.interpreter.max.util;
 
 import java.util.Iterator;
 import java.util.logging.Logger;
 
-import de.dante.extex.documentWriter.OutputStreamFactory;
+import de.dante.extex.backend.documentWriter.OutputStreamFactory;
 import de.dante.extex.interpreter.Namespace;
+import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.max.StringSource;
+import de.dante.extex.interpreter.primitives.dynamic.util.LoaderFactory;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.InitializableCode;
 import de.dante.extex.interpreter.type.OutputStreamConsumer;
-import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.token.CodeToken;
 import de.dante.extex.scanner.type.token.TokenFactory;
@@ -44,17 +46,29 @@ import de.dante.util.framework.logger.LogEnabled;
  * This is a factory to deliver primitives from a configuration.
  *
  * <pre>
- *  &lt;cfg&gt;
+ *  &lt;primitive&gt;
  *    &lt;define name="<i>name</i>" class="<i>class</i>"/&gt;
  *    &lt;define name="<i>name</i>" class="<i>class</i>"&gt;<i>value</i>&lt;/define&gt;
  *    &lt;define name="<i>name</i>" class="<i>class</i>"/&gt;
- *  &lt;/cfg&gt;
+ *  &lt;/primitive&gt;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.1 $
  */
-public class PrimitiveFactory extends AbstractFactory {
+public class LoadUnit extends AbstractFactory {
+
+    /**
+     * The field <tt>DEFINE_TAG</tt> contains the tag name used to find
+     * definitions for primitives.
+     */
+    private static final String DEFINE_TAG = "define";
+
+    /**
+     * The field <tt>NAMESPACE_ATTRIBUTE</tt> contains the attribute name
+     * to find the name space for the new primitive.
+     */
+    private static final String NAMESPACE_ATTRIBUTE = "namespace";
 
     /**
      * The constant <tt>NAME_ATTRIBUTE</tt> contains the name of the attribute
@@ -63,19 +77,54 @@ public class PrimitiveFactory extends AbstractFactory {
     private static final String NAME_ATTRIBUTE = "name";
 
     /**
-     * The field <tt>factory</tt> contains the factory for new tokens.
+     * Prepare the primitives according to their configuration. The given
+     * configuration may contain sub-configurations with the name
+     * <tt>primitives</tt> which includes the definition of primitives. Those
+     * primitives are defined no matter if they are already defined or not.
+     *
+     * @param configuration the configuration
+     * @param context the interpreter context
+     * @param source the source for new tokens
+     * @param typesetter the typesetter
+     * @param logger the logger to use
+     * @param outputFactory the output stream factory
+     *
+     * @throws ConfigurationException in case of a configuration error
+     * @throws GeneralException in case of an error
      */
-    private TokenStreamFactory factory;
+    public static void loadUnit(final Configuration configuration,
+            final Context context, final TokenSource source,
+            final Typesetter typesetter, final Logger logger,
+            final OutputStreamFactory outputFactory)
+            throws ConfigurationException,
+                GeneralException {
+
+        TokenFactory tokenFactory = context.getTokenFactory();
+        LoadUnit primitiveFactory = new LoadUnit();
+        Iterator iterator = configuration.iterator("primitives");
+
+        Configuration setup = configuration.findConfiguration("setup");
+        if (setup != null) {
+            LoaderFactory factory = new LoaderFactory();
+            factory.enableLogging(logger);
+            factory.configure(setup);
+            factory.createLoad().load(context, source, typesetter);
+        }
+
+        while (iterator.hasNext()) {
+            primitiveFactory.define((Configuration) iterator.next(),
+                    tokenFactory, context, typesetter, logger, outputFactory);
+        }
+    }
 
     /**
      * Creates a new object.
      *
      * @param factory the factory for token streams
      */
-    public PrimitiveFactory(final TokenStreamFactory factory) {
+    private LoadUnit() {
 
         super();
-        this.factory = factory;
     }
 
     /**
@@ -84,6 +133,7 @@ public class PrimitiveFactory extends AbstractFactory {
      * @param configuration the configuration to scan
      * @param tokenFactory the token factory to use
      * @param context the interpreter context to register the primitive in
+     * @param typesetter the typesetter
      * @param outputLogger the logger to produce output to
      * @param outputFactory the factory for new output streams
      *
@@ -102,12 +152,13 @@ public class PrimitiveFactory extends AbstractFactory {
      */
     public void define(final Configuration configuration,
             final TokenFactory tokenFactory, final Context context,
-            final Logger outputLogger, final OutputStreamFactory outputFactory)
+            final Typesetter typesetter, final Logger outputLogger,
+            final OutputStreamFactory outputFactory)
             throws GeneralException,
                 ConfigurationException {
 
-        Iterator iterator = configuration.iterator("define");
-        Typesetter typesetter = null; //gene: it might be ok to have none
+        UnicodeChar esc = new UnicodeChar('\\');
+        Iterator iterator = configuration.iterator(DEFINE_TAG);
 
         while (iterator.hasNext()) {
             Configuration cfg = (Configuration) iterator.next();
@@ -116,14 +167,13 @@ public class PrimitiveFactory extends AbstractFactory {
             Code code = (Code) createInstanceForConfiguration(cfg, Code.class,
                     name);
 
-            String namespace = cfg.getAttribute("namespace");
+            String namespace = cfg.getAttribute(NAMESPACE_ATTRIBUTE);
             if (namespace == null) {
                 namespace = Namespace.DEFAULT_NAMESPACE;
             }
 
             context.setCode((CodeToken) tokenFactory.createToken(
-                    Catcode.ESCAPE, new UnicodeChar('\\'), name, namespace),
-                    code, true);
+                    Catcode.ESCAPE, esc, name, namespace), code, true);
             if (code instanceof LogEnabled) {
                 ((LogEnabled) code).enableLogging(outputLogger);
             }
@@ -140,4 +190,5 @@ public class PrimitiveFactory extends AbstractFactory {
             }
         }
     }
+
 }
