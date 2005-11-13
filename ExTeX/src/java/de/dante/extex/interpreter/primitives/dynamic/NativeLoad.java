@@ -28,9 +28,9 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.primitives.dynamic.util.LoaderFactory;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.framework.AbstractFactory;
 import de.dante.util.framework.configuration.Configurable;
 import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
@@ -56,7 +56,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class NativeLoad extends AbstractCode
         implements
@@ -67,30 +67,6 @@ public class NativeLoad extends AbstractCode
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
     private static final long serialVersionUID = 1L;
-
-    /**
-     * This inner class provides access to the functionality of an abstract
-     * factory. It is here to overcome the deficiency of a missing multiple
-     * inheritance in Java.
-     *
-     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.8 $
-     */
-    protected class Factory extends AbstractFactory {
-
-        /**
-         * Create a new instance of the class given by the attribute
-         * <tt>class</tt> of the configuration.
-         *
-         * @return the Code loaded
-         * @throws ConfigurationException in case of an error
-         */
-        public Loader createLoad() throws ConfigurationException {
-
-            return (Loader) createInstanceForConfiguration(getConfiguration(),
-                    Loader.class);
-        }
-    }
 
     /**
      * The field <tt>logger</tt> contains the logger to use.
@@ -154,7 +130,7 @@ public class NativeLoad extends AbstractCode
                     name, getName()));
         }
 
-        Factory factory = new Factory();
+        LoaderFactory factory = new LoaderFactory();
         factory.enableLogging(logger);
         try {
             factory.configure(cfg);
