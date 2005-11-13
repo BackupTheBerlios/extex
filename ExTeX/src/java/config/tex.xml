@@ -115,7 +115,7 @@
      <tex class="de.dante.extex.main.errorHandler.ErrorHandlerTeXImpl"/>
 	</ErrorHandler>
 
-    <primitives src="primitives/tex.xml"/>
+    <unit src="unit/tex.xml"/>
 
     <ExtendedRegisterNames>false</ExtendedRegisterNames>
     <RegisterMax>255</RegisterMax>
@@ -165,16 +165,16 @@
     -  one of several backends programatically.
     -->
   <DocumentWriter default="out">
-    <pdf  class="de.dante.extex.documentWriter.pdf.PdfDocumentWriter"/>
-    <dvi  class="de.dante.extex.documentWriter.dvi.DviDocumentWriter"/>
-    <ps   class="de.dante.extex.documentWriter.postscript.PsWriter"/>
-    <eps  class="de.dante.extex.documentWriter.postscript.EpsWriter"/>
-    <out  class="de.dante.extex.documentWriter.dump.DumpDocumentWriter"
+    <pdf  class="de.dante.extex.backend.documentWriter.pdf.PdfDocumentWriter"/>
+    <dvi  class="de.dante.extex.backend.documentWriter.dvi.DviDocumentWriter"/>
+    <ps   class="de.dante.extex.backend.documentWriter.postscript.PsWriter"/>
+    <eps  class="de.dante.extex.backend.documentWriter.postscript.EpsWriter"/>
+    <out  class="de.dante.extex.backend.documentWriter.dump.DumpDocumentWriter"
           tree="false"/>
-    <dump class="de.dante.extex.documentWriter.dump.MultiDumpDocumentWriter"
+    <dump class="de.dante.extex.backend.documentWriter.dump.MultiDumpDocumentWriter"
           tree="true"/>
-    <text class="de.dante.extex.documentWriter.text.TextDocumentWriter"/>
-    <xml  class="de.dante.extex.documentWriter.xml.XMLDocumentWriter"
+    <text class="de.dante.extex.backend.documentWriter.text.TextDocumentWriter"/>
+    <xml  class="de.dante.extex.backend.documentWriter.xml.XMLDocumentWriter"
           encoding="ISO-8859-1"
           debug="false"
           showvisible="true"
@@ -184,7 +184,7 @@
           usesp="false"
           usebp="false"
           usemm="true"/>
-    <svg  class="de.dante.extex.documentWriter.svg.SVGDocumentWriter"
+    <svg  class="de.dante.extex.backend.documentWriter.svg.SVGDocumentWriter"
           encoding="ISO-8859-1"
           debug="false"/>
   </DocumentWriter>

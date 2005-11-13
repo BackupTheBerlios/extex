@@ -91,7 +91,7 @@
     <!-- The configuration of the context implementation to use.
       -->
     <Context default="ExTeX">
-	  <ExTeX class="de.dante.extex.interpreter.context.impl.ContextImpl">
+      <ExTeX class="de.dante.extex.interpreter.context.impl.ContextImpl">
         <!-- The implementation of the group to use.
           -->
         <Group class="de.dante.extex.interpreter.context.impl.GroupImpl"/>
@@ -104,23 +104,25 @@
 
     <!-- The implementation of the error handler to use.
       -->
-	<ErrorHandler default="ExTeX">
-	 <ExTeX class="de.dante.extex.main.errorHandler.ErrorHandlerImpl">
+    <ErrorHandler default="ExTeX">
+     <ExTeX class="de.dante.extex.main.errorHandler.ErrorHandlerImpl">
        <EditHandler class="de.dante.extex.main.errorHandler.editHandler.EditHandlerTeXImpl"/>
      </ExTeX>
-	 <TeX class="de.dante.extex.main.errorHandler.ErrorHandlerTeXImpl">
+     <TeX class="de.dante.extex.main.errorHandler.ErrorHandlerTeXImpl">
        <EditHandler class="de.dante.extex.main.errorHandler.editHandler.EditHandlerTeXImpl"/>
      </TeX>
      <extex class="de.dante.extex.main.errorHandler.ErrorHandlerImpl"/>
      <tex class="de.dante.extex.main.errorHandler.ErrorHandlerTeXImpl"/>
-	</ErrorHandler>
+    </ErrorHandler>
 
-    <primitives src="primitives/tex.xml"/>
-    <primitives src="primitives/etex.xml"/>
-    <primitives>
-     <define name="color"
-             class="de.dante.extex.interpreter.primitives.color.ColorPrimitive"/>
-    </primitives>
+    <unit src="unit/tex.xml"/>
+    <unit src="unit/etex.xml"/>
+    <unit>
+      <primitives>
+        <define name="color"
+                class="de.dante.extex.interpreter.primitives.color.ColorPrimitive"/>
+      </primitives>
+    </unit>
 
     <ExtendedRegisterNames>true</ExtendedRegisterNames>
 
@@ -132,7 +134,7 @@
     -  one of several typesetters programatically.
     -->
   <Typesetter default="TeX">
-	<TeX class="de.dante.extex.typesetter.impl.TypesetterImpl"
+    <TeX class="de.dante.extex.typesetter.impl.TypesetterImpl"
          direction="lr">
       <PageBuilder class="de.dante.extex.typesetter.pageBuilder.impl.PageBuilderImpl"/>
       <ParagraphBuilder class="de.dante.extex.typesetter.paragraphBuilder.impl.ParagraphBuilderImpl"/>
@@ -169,20 +171,20 @@
     -  one of several backends programatically.
     -->
   <DocumentWriter default="out">
-    <pdf     class="de.dante.extex.documentWriter.pdf.PdfDocumentWriter"/>
-    <dvi     class="de.dante.extex.documentWriter.dvi.DviDocumentWriter"/>
-    <ps      class="de.dante.extex.documentWriter.postscript.PsWriter"/>
-    <ps-box  class="de.dante.extex.documentWriter.postscript.PsWriter"
+    <pdf     class="de.dante.extex.backend.documentWriter.pdf.PdfDocumentWriter"/>
+    <dvi     class="de.dante.extex.backend.documentWriter.dvi.DviDocumentWriter"/>
+    <ps      class="de.dante.extex.backend.documentWriter.postscript.PsWriter"/>
+    <ps-box  class="de.dante.extex.backend.documentWriter.postscript.PsWriter"
              boxed="true"/>
-    <eps     class="de.dante.extex.documentWriter.postscript.EpsWriter"/>
-    <eps-box class="de.dante.extex.documentWriter.postscript.EpsWriter"
+    <eps     class="de.dante.extex.backend.documentWriter.postscript.EpsWriter"/>
+    <eps-box class="de.dante.extex.backend.documentWriter.postscript.EpsWriter"
              boxed="true"/>
-    <out     class="de.dante.extex.documentWriter.dump.DumpDocumentWriter"
+    <out     class="de.dante.extex.backend.documentWriter.dump.DumpDocumentWriter"
              tree="false"/>
-    <dump    class="de.dante.extex.documentWriter.dump.MultiDumpDocumentWriter"
+    <dump    class="de.dante.extex.backend.documentWriter.dump.MultiDumpDocumentWriter"
              tree="true"/>
-    <text    class="de.dante.extex.documentWriter.text.TextDocumentWriter"/>
-    <xml     class="de.dante.extex.documentWriter.xml.XMLDocumentWriter"
+    <text    class="de.dante.extex.backend.documentWriter.text.TextDocumentWriter"/>
+    <xml     class="de.dante.extex.backend.documentWriter.xml.XMLDocumentWriter"
              encoding="ISO-8859-1"
              debug="false"
              showvisible="true"
@@ -192,7 +194,7 @@
              usesp="false"
              usebp="false"
              usemm="true"/>
-    <svg     class="de.dante.extex.documentWriter.svg.SVGDocumentWriter"
+    <svg     class="de.dante.extex.backend.documentWriter.svg.SVGDocumentWriter"
              encoding="ISO-8859-1"
              debug="false"/>
   </DocumentWriter>

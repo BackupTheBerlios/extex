@@ -1,0 +1,129 @@
+<?xml version="1.0"?>
+<!--
+  -  Copyright (C) 2004-2005 The ExTeX Group
+  -
+  -  This library is free software; you can redistribute it and/or modify it
+  -  under the terms of the GNU Lesser General Public License as published by
+  -  the Free Software Foundation; either version 2.1 of the License, or (at
+  -  your option) any later version.
+  -
+  -  This library is distributed in the hope that it will be useful, but
+  -  WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  -  or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+  -  License for more details.
+  -
+  -  You should have received a copy of the GNU Lesser General Public License
+  -  along with this library; if not, write to the Free Software Foundation,
+  -  Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+  -
+  -->
+<unit>
+  <primitives>
+    <!-- The following definitions describe the primitives available
+      -  and their association to implementing Java classes.
+      -->
+    <Define name="efcode"
+            class=""/><!-- (integer) -->
+    <Define name="font"
+            class=""/><!-- [ hfont speci ] [ stretch hintegeri ] [ shrink hintegeri ] [ step hintegeri ] -->
+    <define name="pdfadjustspacing"
+            class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
+    <Define name="pdfannot"
+            class=""/><!-- [ hrule speci ] hgeneral texti -->
+    <Define name="pdfannotlink"
+            class=""/>
+    <Define name="pdfannottext"
+            class=""/>
+    <Define name="pdfcatalog"
+            class=""/><!-- hgeneral texti [ openaction haction speci ] -->
+    <define name="pdfcompresslevel"
+            class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"
+            >9</define>
+    <define name="pdfdecimaldigits"
+            class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"
+            >3</define>
+    <Define name="pdfdest"
+            class=""/><!-- hdest speci -->
+    <Define name="pdfendlink"
+            class=""/><!-- -->
+    <Define name="pdfendthread"
+            class=""/>
+    <Define name="pdffontname"
+            class=""/><!-- hfonti (expandable) -->
+    <Define name="pdffontobjnum"
+            class=""/><!-- hfonti (read-only integer) -->
+    <define name="pdfhorigin"
+          class="de.dante.extex.interpreter.primitives.register.dimen.DimenParameter"/>
+    <Define name="pdfimage"
+            class=""/>
+    <define name="pdfimageresolution"
+            class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
+    <Define name="pdfincludechars"
+            class=""/><!-- hfonti hgeneral texti -->
+    <Define name="pdfinfo"
+            class=""/><!-- hgeneral texti -->
+    <Define name="pdflastannot"
+            class=""/><!-- (read-only integer) -->
+    <Define name="pdflastobj"
+            class=""/><!-- (read-only integer) -->
+    <Define name="pdflastxform"
+            class=""/><!-- (read-only integer) -->
+    <Define name="pdflastximage"
+            class=""/><!-- (read-only integer) -->
+    <define name="pdflinkmargin"
+            class="de.dante.extex.interpreter.primitives.register.dimen.DimenParameter"/>
+    <Define name="pdfliteral"
+            class=""/><!-- [ direct ] hgeneral texti -->
+    <define name="pdfmovechars"
+            class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
+    <Define name="pdfnames"
+            class=""/><!-- hgeneral texti -->
+    <Define name="pdfobj"
+            class=""/><!-- [ hobject type speci ] hgeneral texti -->
+    <Define name="pdfoutline"
+            class=""/><!-- haction speci [ count hintegeri ] hgeneral texti -->
+    <define name="pdfoutput"
+            class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
+    <Define name="pdfpageattr"
+            class=""/><!-- (tokens) -->
+    <define name="pdfpageheight"
+            class="de.dante.extex.interpreter.primitives.register.dimen.DimenParameter"/>
+    <Define name="pdfpagesattr"
+            class=""/><!-- (tokens) -->
+    <define name="pdfpagewidth"
+            class="de.dante.extex.interpreter.primitives.register.dimen.DimenParameter"/>
+    <Define name="pdfpkresolution"
+            class=""/><!-- (integer) -->
+    <define name="pdfpkresolution"
+            class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
+    <Define name="pdfrefobj"
+            class=""/><!-- hintegeri -->
+    <Define name="pdfrefxform"
+            class=""/><!-- hintegeri -->
+    <Define name="pdfrefximage"
+            class=""/><!-- hintegeri -->
+    <Define name="pdfstartlink"
+            class=""/><!-- [ hrule speci ] [ hattr speci ] haction speci -->
+    <Define name="pdftexrevision"
+            class=""/><!-- (expandable) -->
+    <define name="pdftexversion"
+            class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"
+            >111</define><!-- (read-only integer) -->
+    <Define name="pdfthread"
+            class=""/><!-- hrule speci [ hattr speci ] hid speci -->
+    <Define name="pdfthreadhoffset"
+            class=""/>
+    <define name="pdfthreadmargin"
+            class="de.dante.extex.interpreter.primitives.register.dimen.DimenParameter"/>
+    <Define name="pdfthreadvoffset"
+            class=""/>
+    <define name="pdfvorigin"
+            class="de.dante.extex.interpreter.primitives.register.dimen.DimenParameter"
+            >1in</define>
+    <Define name="pdfxform"
+            class=""/><!-- [ hattr speci ] [ hresources speci ] hbox numberi -->
+    <Define name="pdfximage"
+            class=""/><!-- [ hrule speci ] [ hattr speci ] [ hpage speci ] hfile speci -->
+  </primitives>
+ </unit>
+ 

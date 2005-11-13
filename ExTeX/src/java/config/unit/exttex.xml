@@ -17,14 +17,16 @@
   -  Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
   -
   -->
-<primitives>
-  <define name="inputencoding" 
-          class="de.dante.extex.interpreter.primitives.register.toks.NamedToks"
-          >ISO8859-1</define>
-  <define name="inputfile" 
-          class="de.dante.extex.interpreter.primitives.file.InputFile"/>
-  <define name="inputfileencoding" 
-          class="de.dante.extex.interpreter.primitives.file.InputFileEncoding"/>
-  <define name="printformat" 
-          class="de.dante.extex.interpreter.primitives.format.PrintFormat"/>
+<unit>
+  <primitives>
+    <define name="inputencoding" 
+            class="de.dante.extex.interpreter.primitives.register.toks.NamedToks"
+            >ISO8859-1</define>
+    <define name="inputfile" 
+            class="de.dante.extex.interpreter.primitives.file.InputFile"/>
+    <define name="inputfileencoding" 
+            class="de.dante.extex.interpreter.primitives.file.InputFileEncoding"/>
+    <define name="printformat" 
+            class="de.dante.extex.interpreter.primitives.format.PrintFormat"/>
+  </unit>
 </primitives>

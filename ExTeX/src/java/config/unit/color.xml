@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--
-  -  Copyright (C) 2004 The ExTeX Group
+  -  Copyright (C) 2005 The ExTeX Group
   -
   -  This library is free software; you can redistribute it and/or modify it
   -  under the terms of the GNU Lesser General Public License as published by
@@ -17,12 +17,10 @@
   -  Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
   -
   -->
-<primitives>
-  <!-- The following definitions describe the primitives available
-    -  and their association to implementing Java classes.
-    -->
-    <define name="javadef"
-            class="de.dante.extex.interpreter.primitives.dynamic.java.JavaDef"/>
-    <define name="javaload"
-            class="de.dante.extex.interpreter.primitives.dynamic.java.JavaLoad"/>
-</primitives>
+<unit>
+  <primitives>
+    <define name="color"
+            class="de.dante.extex.interpreter.primitives.color.ColorPrimitive"/>
+  </primitives>
+ </unit>
+ 

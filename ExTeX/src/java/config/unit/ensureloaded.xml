@@ -17,18 +17,10 @@
   -  Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
   -
   -->
-<primitives>
-  <!-- The following definitions describe the primitives available
-    -  and their association to implementing Java classes.
-    -->
-    <define name="nativedef"
-            class="de.dante.extex.interpreter.primitives.dynamic.NativeDef">
-      <load name="java"
-            class="de.dante.extex.interpreter.primitives.dynamic.java.JavaDef"/>
-    </define>
-    <define name="nativeload"
-            class="de.dante.extex.interpreter.primitives.dynamic.NativeLoad">
-      <load name="java"
-            class="de.dante.extex.interpreter.primitives.dynamic.java.JavaLoad"/>
-    </define>
-</primitives>
+<unit>
+  <primitives>
+    <define name="ensureloaded"
+            class="de.dante.extex.interpreter.primitives.dynamic.EnsureLoaded"/>
+  </primitives>
+ </unit>
+ 
