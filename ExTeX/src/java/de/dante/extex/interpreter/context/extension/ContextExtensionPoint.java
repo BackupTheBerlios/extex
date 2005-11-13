@@ -19,6 +19,8 @@
 
 package de.dante.extex.interpreter.context.extension;
 
+import de.dante.extex.interpreter.exception.InterpreterException;
+
 /**
  * This class provides an extension mechanism for contexts.
  * <p>
@@ -32,7 +34,7 @@ package de.dante.extex.interpreter.context.extension;
  * TODO gene: missing JavaDoc.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface ContextExtensionPoint {
 
@@ -43,5 +45,5 @@ public interface ContextExtensionPoint {
      *
      * @return ...
      */
-    ExtensionPoint getExtension(Class c);
+    ExtensionPoint getExtension(Class c) throws InterpreterException;
 }
