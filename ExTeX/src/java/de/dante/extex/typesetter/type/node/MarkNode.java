@@ -34,7 +34,7 @@ import de.dante.util.exception.GeneralException;
  * @see "<logo>TeX</logo> &ndash; The Program [141]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class MarkNode extends AbstractNode implements Node {
 
@@ -48,7 +48,7 @@ public class MarkNode extends AbstractNode implements Node {
      * The index 0 corresponds to the original mark of <logo>TeX</logo>.
      * I.e. \marks0 == \mark
      */
-    private long index;
+    private String index;
 
     /**
      * The field <tt>mark</tt> contains the tokens of the mark.
@@ -58,14 +58,14 @@ public class MarkNode extends AbstractNode implements Node {
     /**
      * Creates a new object.
      *
-     * @param theMark the mark tokens to store
-     * @param theIndex the index of the mark
+     * @param mark the mark tokens to store
+     * @param index the index of the mark
      */
-    public MarkNode(final Tokens theMark, final long theIndex) {
+    public MarkNode(final Tokens mark, final String index) {
 
         super();
-        mark = theMark;
-        index = theIndex;
+        this.mark = mark;
+        this.index = index;
     }
 
     /**
@@ -73,7 +73,7 @@ public class MarkNode extends AbstractNode implements Node {
      *
      * @return the index.
      */
-    public long getIndex() {
+    public String getIndex() {
 
         return this.index;
     }
