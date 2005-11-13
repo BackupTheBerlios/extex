@@ -65,7 +65,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * classes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class MockContext implements Context, TypesetterOptions {
 
@@ -101,6 +101,13 @@ public class MockContext implements Context, TypesetterOptions {
     public void afterGroup(final Token t) throws InterpreterException {
 
         throw new RuntimeException("unimplemented");
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.ContextMark#clearSplitMarks()
+     */
+    public void clearSplitMarks() {
+
     }
 
     /**
@@ -151,6 +158,14 @@ public class MockContext implements Context, TypesetterOptions {
     public Token getAfterassignment() {
 
         throw new RuntimeException("unimplemented");
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.ContextMark#getBottomMark(java.lang.String)
+     */
+    public Tokens getBottomMark(final Object name) {
+
+        return null;
     }
 
     /**
@@ -253,6 +268,14 @@ public class MockContext implements Context, TypesetterOptions {
     public int getErrorCount() {
 
         return 0;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.ContextMark#getFirstMark(java.lang.String)
+     */
+    public Tokens getFirstMark(final Object name) {
+
+        return null;
     }
 
     /**
@@ -401,6 +424,22 @@ public class MockContext implements Context, TypesetterOptions {
     }
 
     /**
+     * @see de.dante.extex.interpreter.context.ContextMark#getSplitBottomMark(java.lang.String)
+     */
+    public Tokens getSplitBottomMark(final Object name) {
+
+        throw new RuntimeException("unimplemented");
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.ContextMark#getSplitFirstMark(java.lang.String)
+     */
+    public Tokens getSplitFirstMark(final Object name) {
+
+        throw new RuntimeException("unimplemented");
+    }
+
+    /**
      * @see de.dante.extex.interpreter.context.Context#getTokenFactory()
      */
     public TokenFactory getTokenFactory() {
@@ -430,6 +469,14 @@ public class MockContext implements Context, TypesetterOptions {
     public Tokens getToksOrNull(final String name) {
 
         throw new RuntimeException("unimplemented");
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.ContextMark#getTopMark(java.lang.String)
+     */
+    public Tokens getTopMark(final Object name) {
+
+        return null;
     }
 
     /**
@@ -688,6 +735,14 @@ public class MockContext implements Context, TypesetterOptions {
     }
 
     /**
+     * @see de.dante.extex.interpreter.context.Context#setMark(java.lang.String, de.dante.extex.interpreter.type.tokens.Tokens)
+     */
+    public void setMark(Object name, Tokens mark) {
+
+        throw new RuntimeException("unimplemented");
+    }
+
+    /**
      * @see de.dante.extex.interpreter.context.Context#setMathcode(de.dante.util.UnicodeChar, de.dante.extex.interpreter.type.count.Count, boolean)
      */
     public void setMathcode(final UnicodeChar uc, final Count code,
@@ -740,6 +795,13 @@ public class MockContext implements Context, TypesetterOptions {
     }
 
     /**
+     * @see de.dante.extex.interpreter.context.ContextMark#setSplitMark(java.lang.String, de.dante.extex.interpreter.type.tokens.Tokens)
+     */
+    public void setSplitMark(final Object name, final Tokens mark) {
+
+    }
+
+    /**
      * @see de.dante.extex.interpreter.context.Context#setStandardTokenStream(de.dante.extex.scanner.stream.TokenStream)
      */
     public void setStandardTokenStream(final TokenStream standardTokenStream) {
@@ -777,6 +839,14 @@ public class MockContext implements Context, TypesetterOptions {
      */
     public void setUccode(final UnicodeChar lc, final UnicodeChar uc,
             boolean global) {
+
+        throw new RuntimeException("unimplemented");
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#startMarks()
+     */
+    public void startMarks() {
 
         throw new RuntimeException("unimplemented");
     }
