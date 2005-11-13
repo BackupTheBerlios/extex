@@ -21,7 +21,7 @@ package de.dante.extex.interpreter.output;
 
 import java.io.IOException;
 
-import de.dante.extex.documentWriter.DocumentWriter;
+import de.dante.extex.backend.documentWriter.DocumentWriter;
 import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.context.Context;
@@ -35,7 +35,6 @@ import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.scanner.type.token.TokenFactory;
 import de.dante.extex.typesetter.OutputRoutine;
 import de.dante.extex.typesetter.type.page.Page;
-import de.dante.extex.typesetter.type.page.PageImpl;
 import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 import de.dante.util.framework.i18n.LocalizerFactory;
@@ -49,7 +48,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * interpreter.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class TeXOutputRoutine implements OutputRoutine {
 
