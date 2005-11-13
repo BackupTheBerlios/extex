@@ -38,14 +38,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
 
+import de.dante.extex.backend.documentWriter.DocumentWriter;
+import de.dante.extex.backend.documentWriter.DocumentWriterFactory;
+import de.dante.extex.backend.documentWriter.DocumentWriterOptions;
+import de.dante.extex.backend.documentWriter.OutputStreamFactory;
+import de.dante.extex.backend.documentWriter.exception.DocumentWriterException;
 import de.dante.extex.color.ColorAware;
 import de.dante.extex.color.ColorConverter;
 import de.dante.extex.color.ColorConverterFacory;
-import de.dante.extex.documentWriter.DocumentWriter;
-import de.dante.extex.documentWriter.DocumentWriterFactory;
-import de.dante.extex.documentWriter.DocumentWriterOptions;
-import de.dante.extex.documentWriter.OutputStreamFactory;
-import de.dante.extex.documentWriter.exception.DocumentWriterException;
 import de.dante.extex.font.FontFactory;
 import de.dante.extex.font.exception.FontException;
 import de.dante.extex.interpreter.ErrorHandler;
@@ -321,7 +321,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.119 $
+ * @version $Revision: 1.120 $
  */
 public class ExTeX {
 
@@ -520,7 +520,8 @@ public class ExTeX {
     private static final String TAG_FONT = "Font";
 
     /**
-     * Log a Throwable including its stack trace to the logger.
+     * Log a {@link java.lang.Throwable Throwable} including its stack trace
+     * to the logger.
      *
      * @param logger the target logger
      * @param text the prefix text to log
@@ -554,7 +555,7 @@ public class ExTeX {
     /**
      * The field <tt>logger</tt> contains the logger currently in use.
      */
-    private Logger logger;
+    private Logger logger = Logger.getLogger(ExTeX.class.getName());
 
     /**
      * The field <tt>outStream</tt> contains the output stream for the document
@@ -574,6 +575,16 @@ public class ExTeX {
      * cases where errors show up before the normal banner has been printed.
      */
     private boolean showBanner = true;
+
+    /**
+     * The field <tt>formatType</tt> contains the type for the format.
+     */
+    private String formatType = "fmt";
+
+    /**
+     * The field <tt>ini</tt> contains the indicator for iniTeX.
+     */
+    private boolean ini;
 
     /**
      * Creates a new object and supplies some properties for those keys which
@@ -619,6 +630,7 @@ public class ExTeX {
 
         showBanner = !Boolean.valueOf(properties.getProperty(PROP_NO_BANNER))
                 .booleanValue();
+        ini = !Boolean.valueOf(properties.getProperty(PROP_INI)).booleanValue();
 
         applyLanguage();
 
@@ -646,7 +658,7 @@ public class ExTeX {
      *            that this value is <code>null</code> no user properties
      *            will be considered.
      *
-     * @throws InterpreterException in case of an invalid inetraction mode
+     * @throws InterpreterException in case of an invalid interaction mode
      * @throws IOException in case of an IO Error during the reading of the
      *             properties file
      *
@@ -686,13 +698,15 @@ public class ExTeX {
 
     /**
      * Try to determine which language to use and configure the localizer
-     * accordingly.
+     * accordingly. If no locale has been given then the default locale is used.
+     * If the given locale is not supported then the default locale is used and
+     * a warning is logged.
      */
     protected void applyLanguage() {
 
         String lang = (String) properties.get(PROP_LANG);
 
-        if (lang != null) {
+        if (lang != null && !"".equals(lang)) {
             int len = lang.length();
             if (len == 2) {
                 Locale.setDefault(new Locale(lang));
@@ -710,7 +724,11 @@ public class ExTeX {
                         .substring(3, 4), lang.substring(6, 7)));
 
             } else {
-                // TODO gene: ignored on purpose?
+                localizer = LocalizerFactory
+                        .getLocalizer(ExTeX.class.getName());
+                getLogger().warning(
+                        localizer.format("ExTeX.locale.error", lang));
+                return;
             }
         }
 
@@ -856,13 +874,13 @@ public class ExTeX {
                 DateFormat.SHORT, Locale.ENGLISH).format(new Date());
 
         if (format != null && !format.equals("")) {
-            InputStream stream = finder.findResource(fmt, "fmt");
+            InputStream stream = finder.findResource(fmt, formatType);
 
             if (stream == null && !format.equals(FORMAT_FALLBACK)) {
                 logger.warning(localizer.format("FormatSubstituted", format,
                         FORMAT_FALLBACK));
                 format = FORMAT_FALLBACK;
-                stream = finder.findResource(FORMAT_FALLBACK, "fmt");
+                stream = finder.findResource(FORMAT_FALLBACK, formatType);
             }
             if (stream == null) {
                 throw new HelpingException(localizer, "FormatNotFound", format);
@@ -874,6 +892,8 @@ public class ExTeX {
                         format);
             }
             logger.finer(localizer.format("ExTeX.FormatDate", format, time));
+        } else if (!ini) {
+            throw new GeneralException();
         } else {
             logger.finer(localizer.format("ExTeX.NoFormatDate", time));
         }
@@ -1037,6 +1057,7 @@ public class ExTeX {
 
     /**
      * Create a new font factory.
+     *
      * @param config the configuration object for the font factory
      * @param finder the resource finder to use
      *
@@ -1266,12 +1287,16 @@ public class ExTeX {
     /**
      * Run the program with the parameters already stored in the properties.
      *
-     * @return
+     * @return the interpreter used for running
      *
-     * @throws ConfigurationException
-     * @throws CharacterCodingException
-     * @throws IOException
-     * @throws GeneralException
+     * @throws CharacterCodingException in case of problems with the character
+     *  encoding
+     * @throws IOException in case of a reading error
+     * @throws ConfigurationException in case of a configuration error
+     * @throws ErrorLimitException in case that the error limit has been
+     *  reached
+     * @throws InterpreterException in case of another error
+     * @throws GeneralException in case of an error
      */
     public Interpreter run()
             throws ConfigurationException,
@@ -1331,7 +1356,7 @@ public class ExTeX {
             interpreter.run();
 
             int pages = docWriter.getPages();
-            logger.finer(localizer.format((pages == 0
+            logger.info(localizer.format((pages == 0
                     ? "ExTeX.NoPages"
                     : pages == 1 ? "ExTeX.Page" : "ExTeX.Pages"), //
                     outFactory.getDestination(), Integer.toString(pages)));
@@ -1357,7 +1382,7 @@ public class ExTeX {
                 fileHandler.close();
                 logger.removeHandler(fileHandler);
                 // see "TeX -- The Program [1333]"
-                logger.finer(localizer.format("ExTeX.Logfile", logFile));
+                logger.info(localizer.format("ExTeX.Logfile", logFile));
             }
         }
         return null;
