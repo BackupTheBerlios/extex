@@ -23,7 +23,6 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.node.MarkNode;
@@ -52,9 +51,9 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
-public class Marks extends AbstractCode {
+public class Marks extends AbstractMarkCode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
@@ -82,7 +81,7 @@ public class Marks extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        long index = source.scanNumber(context);
+        String index = getKey(context, source, typesetter);
         Tokens toks = source.scanTokens(context, getName());
         try {
             typesetter.add(new MarkNode(toks, index));
@@ -92,4 +91,5 @@ public class Marks extends AbstractCode {
             throw new InterpreterException(e);
         }
     }
+
 }

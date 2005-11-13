@@ -19,16 +19,10 @@
 
 package de.dante.extex.interpreter.primitives.typesetter.mark;
 
-import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.type.AbstractCode;
-import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.extex.typesetter.type.node.MarkNode;
-import de.dante.util.exception.GeneralException;
-import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * This class provides an implementation for the primitive
@@ -52,9 +46,9 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
-public class Mark extends AbstractCode {
+public class Mark extends Marks {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
@@ -72,23 +66,15 @@ public class Mark extends AbstractCode {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Code#execute(
-     *      de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.primitives.typesetter.mark.AbstractMarkCode#getKey(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(final Flags prefix, final Context context,
-            final TokenSource source, final Typesetter typesetter)
-            throws InterpreterException {
+    protected String getKey(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
 
-        Tokens toks = source.scanTokens(context, getName());
-        try {
-            typesetter.add(new MarkNode(toks, 0));
-        } catch (GeneralException e) {
-            throw new InterpreterException(e);
-        } catch (ConfigurationException e) {
-            throw new InterpreterException(e);
-        }
+        return "0";
     }
+
 }

@@ -19,10 +19,10 @@
 
 package de.dante.extex.interpreter.primitives.typesetter.mark;
 
-import de.dante.extex.interpreter.Flags;
-import de.dante.extex.interpreter.primitives.macro.MacroCode;
-import de.dante.extex.interpreter.primitives.macro.MacroPattern;
-import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.interpreter.TokenSource;
+import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.typesetter.Typesetter;
 
 /**
  * This class provides an implementation for the primitive
@@ -31,24 +31,24 @@ import de.dante.extex.interpreter.type.tokens.Tokens;
  * <doc name="topmark">
  * <h3>The Primitive <tt>\topmark</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  TODO gene: missing documentation
  * </p>
  *
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\topmark ...</tt>  </pre>
+ *    <tt>\topmark</tt>  </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
- *    \topmark ...  </pre>
+ *    \topmark  </pre>
  *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
-public class Topmark extends MacroCode {
+public class Topmark extends Topmarks {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
@@ -62,7 +62,19 @@ public class Topmark extends MacroCode {
      */
     public Topmark(final String name) {
 
-        super(name, Flags.NONE, MacroPattern.EMPTY, Tokens.EMPTY);
+        super(name);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.primitives.typesetter.mark.AbstractMarkCode#getKey(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    protected String getKey(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
+
+        return "0";
     }
 
 }

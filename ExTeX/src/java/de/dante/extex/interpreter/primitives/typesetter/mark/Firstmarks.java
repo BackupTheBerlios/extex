@@ -19,17 +19,16 @@
 
 package de.dante.extex.interpreter.primitives.typesetter.mark;
 
-import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.interpreter.type.tokens.Tokens;
 
 /**
  * This class provides an implementation for the primitive
- * <code>\botmark</code>.
+ * <code>\firstmarks</code>.
  *
- * <doc name="botmark">
- * <h3>The Primitive <tt>\botmark</tt></h3>
+ * <doc name="firstmarks">
+ * <h3>The Primitive <tt>\firstmarks</tt></h3>
  * <p>
  *  TODO gene: missing documentation
  * </p>
@@ -37,18 +36,20 @@ import de.dante.extex.typesetter.Typesetter;
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\botmark</tt>  </pre>
+ *    <tt>\firstmarks</tt> ...  </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
- *    \botmark  </pre>
+ *    \firstmarks42  </pre>
+ *  <pre class="TeXSample">
+ *    \firstmarks\count0  </pre>
  *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.1 $
  */
-public class Botmark extends Botmarks {
+public class Firstmarks extends AbstractMarksCode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
@@ -60,21 +61,20 @@ public class Botmark extends Botmarks {
      *
      * @param name the name for debugging
      */
-    public Botmark(final String name) {
+    public Firstmarks(final String name) {
 
         super(name);
     }
 
     /**
-     * @see de.dante.extex.interpreter.primitives.typesetter.mark.AbstractMarkCode#getKey(
+     * @see de.dante.extex.interpreter.primitives.typesetter.mark.AbstractMarkCode#getValue(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.typesetter.Typesetter)
+     *      java.lang.String)
      */
-    protected String getKey(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws InterpreterException {
+    protected Tokens getValue(final Context context, final String key)
+            throws InterpreterException {
 
-        return "0";
+        return context.getFirstMark(key);
     }
 
 }
