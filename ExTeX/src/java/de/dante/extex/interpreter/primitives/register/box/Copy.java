@@ -55,7 +55,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class Copy extends BoxPrimitive implements Boxable, Serializable {
 
@@ -85,7 +85,7 @@ public class Copy extends BoxPrimitive implements Boxable, Serializable {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String key = getKey(context, source);
+        String key = getKey(context, source, getName());
         Box box = context.getBox(key);
         if (box != null) {
             try {

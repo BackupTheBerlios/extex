@@ -52,7 +52,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class Setbox extends AbstractBox implements Code {
 
@@ -84,7 +84,7 @@ public class Setbox extends AbstractBox implements Code {
 
         Flags f = prefix.copy();
         prefix.clear();
-        String key = getKey(context, source);
+        String key = getKey(context, source, getName());
         source.getOptionalEquals(context);
         Box box = source.getBox(prefix, context, typesetter);
         context.setBox(key, box, prefix.isGlobal());
