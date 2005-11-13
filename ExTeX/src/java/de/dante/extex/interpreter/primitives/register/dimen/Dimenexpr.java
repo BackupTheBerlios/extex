@@ -113,7 +113,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Dimenexpr extends AbstractCode
         implements
@@ -243,14 +243,16 @@ public class Dimenexpr extends AbstractCode
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * Evaluate a terminal symbol.
      *
-     * @param context
-     * @param source
-     * @param typesetter
-     * @param start
-     * @return
-     * @throws InterpreterException
+     * @param context the interpreter context
+     * @param source the source for new tokens
+     * @param typesetter the typesetter
+     * @param start the first token to start with
+     *
+     * @return the value
+     *
+     * @throws InterpreterException in case of an error
      */
     private long evalTerminal(final Context context, final TokenSource source,
             final Typesetter typesetter, final Token start)
