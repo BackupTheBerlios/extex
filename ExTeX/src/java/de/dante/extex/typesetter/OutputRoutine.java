@@ -19,7 +19,7 @@
 
 package de.dante.extex.typesetter;
 
-import de.dante.extex.documentWriter.DocumentWriter;
+import de.dante.extex.backend.documentWriter.DocumentWriter;
 import de.dante.extex.typesetter.type.page.Page;
 import de.dante.util.exception.GeneralException;
 
@@ -30,7 +30,7 @@ import de.dante.util.exception.GeneralException;
  * extension language.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public interface OutputRoutine {
 

@@ -20,7 +20,7 @@
 package de.dante.extex.interpreter;
 
 import junit.framework.TestCase;
-import de.dante.extex.documentWriter.DocumentWriter;
+import de.dante.extex.backend.documentWriter.DocumentWriter;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
@@ -57,7 +57,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.67 $
+ * @version $Revision: 1.68 $
  */
 public class Max1 extends TestCase {
 

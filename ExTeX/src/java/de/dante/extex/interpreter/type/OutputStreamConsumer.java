@@ -19,13 +19,13 @@
 
 package de.dante.extex.interpreter.type;
 
-import de.dante.extex.documentWriter.OutputStreamFactory;
+import de.dante.extex.backend.documentWriter.OutputStreamFactory;
 
 /**
  * This interface describes a consumer of an output stream factory.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface OutputStreamConsumer {
 

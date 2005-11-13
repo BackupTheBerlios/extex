@@ -22,7 +22,7 @@ package de.dante.extex.typesetter.impl;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
-import de.dante.extex.documentWriter.DocumentWriter;
+import de.dante.extex.backend.documentWriter.DocumentWriter;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
@@ -52,8 +52,6 @@ import de.dante.extex.typesetter.type.node.HorizontalListNode;
 import de.dante.extex.typesetter.type.node.InsertionNode;
 import de.dante.extex.typesetter.type.node.PenaltyNode;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
-import de.dante.extex.typesetter.type.page.Page;
-import de.dante.extex.typesetter.type.page.PageFactory;
 import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
@@ -67,7 +65,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.78 $
+ * @version $Revision: 1.79 $
  */
 public class TypesetterImpl
         implements
@@ -116,19 +114,9 @@ public class TypesetterImpl
     private OutputRoutine outputRoutine = null;
 
     /**
-     * The field <tt>page</tt> contains the ...
-     */
-    private Page page = null;
-
-    /**
      * The field <tt>pageBuilder</tt> contains the current page builder.
      */
     private PageBuilder pageBuilder = null;
-
-    /**
-     * The field <tt>pageFactory</tt> contains the ...
-     */
-    private PageFactory pageFactory = new PageFactory();
 
     /**
      * The field <tt>paragraphBuilder</tt> contains the current paragraph
@@ -562,7 +550,8 @@ public class TypesetterImpl
      *     de.dante.extex.interpreter.type.count.Count)
      */
     public void setSpacefactor(final Count sf)
-            throws TypesetterUnsupportedException, InvalidSpacefactorException {
+            throws TypesetterUnsupportedException,
+                InvalidSpacefactorException {
 
         listMaker.setSpacefactor(sf);
     }
@@ -605,9 +594,10 @@ public class TypesetterImpl
 
         for (int i = saveStack.size() - 1; i >= 0; i--) {
             ListMaker lm = (ListMaker) saveStack.get(i);
-            sb.append(localizer.format("Showlist.Format", lm.getMode()
-                    .toString(), Integer.toString(lm.getLocator()
-                    .getLineno())));
+            sb
+                    .append(localizer.format("Showlist.Format", lm.getMode()
+                            .toString(), Integer.toString(lm.getLocator()
+                            .getLineno())));
             lm.showlist(sb, l, m);
         }
     }

@@ -25,10 +25,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 
 import junit.framework.TestCase;
-import de.dante.extex.documentWriter.DocumentWriter;
-import de.dante.extex.documentWriter.DocumentWriterOptions;
-import de.dante.extex.documentWriter.SingleDocumentStream;
-import de.dante.extex.documentWriter.exception.NoOutputStreamException;
+import de.dante.extex.backend.documentWriter.DocumentWriter;
+import de.dante.extex.backend.documentWriter.DocumentWriterOptions;
+import de.dante.extex.backend.documentWriter.SingleDocumentStream;
+import de.dante.extex.backend.documentWriter.dvi.DviDocumentWriter;
+import de.dante.extex.backend.documentWriter.dvi.PanicException;
+import de.dante.extex.backend.documentWriter.exception.NoOutputStreamException;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.count.FixedCount;
@@ -51,7 +53,7 @@ import de.dante.util.framework.configuration.Configuration;
  * JUnit tests for class <code>DviDocumentWriter</code>.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 
 public class DviDocumentWriterTest extends TestCase {
@@ -178,7 +180,7 @@ public class DviDocumentWriterTest extends TestCase {
      */
     public void testMarkNode() throws Exception {
 
-        checkException(new MarkNode(Tokens.EMPTY, 0), PanicException.class);
+        checkException(new MarkNode(Tokens.EMPTY, "0"), PanicException.class);
     }
 
     /**

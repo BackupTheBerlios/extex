@@ -19,7 +19,7 @@
 
 package de.dante.extex.typesetter;
 
-import de.dante.extex.documentWriter.DocumentWriter;
+import de.dante.extex.backend.documentWriter.DocumentWriter;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.listMaker.ListManager;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
@@ -37,7 +37,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @see "<logo>TeX</logo> &ndash; The Program [211]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.30 $
+ * @version $Revision: 1.31 $
  */
 public interface Typesetter extends ListMaker {
 

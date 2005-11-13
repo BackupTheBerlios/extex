@@ -29,9 +29,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import de.dante.extex.documentWriter.OutputStreamFactory;
-import de.dante.extex.documentWriter.exception.DocumentWriterException;
-import de.dante.extex.documentWriter.exception.OutputStreamOpenException;
+import de.dante.extex.backend.documentWriter.OutputStreamFactory;
+import de.dante.extex.backend.documentWriter.exception.DocumentWriterException;
+import de.dante.extex.backend.documentWriter.exception.OutputStreamOpenException;
 import de.dante.util.framework.AbstractFactory;
 import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
@@ -42,7 +42,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationMissingExcep
  * configuration.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class OutputFactory extends AbstractFactory
         implements
@@ -52,7 +52,7 @@ public class OutputFactory extends AbstractFactory
      * This class provides a mutable Integer.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.14 $
+     * @version $Revision: 1.15 $
      */
     private class Int {
 
