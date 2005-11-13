@@ -26,7 +26,7 @@ import de.dante.util.framework.i18n.Localizer;
  * This is the base class for all exceptions of the interpreter.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class InterpreterException extends GeneralException {
 
@@ -83,6 +83,17 @@ public class InterpreterException extends GeneralException {
     public InterpreterException(final Throwable cause) {
 
         super(cause);
+    }
+
+    /**
+     * Creates a new object.
+     *
+     * @param message the message field
+     * @param cause the root of all evil
+     */
+    public InterpreterException(final String message, final Throwable cause) {
+
+        super(message, cause);
     }
 
     /**
