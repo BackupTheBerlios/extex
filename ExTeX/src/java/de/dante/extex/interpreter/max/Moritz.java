@@ -21,9 +21,11 @@ package de.dante.extex.interpreter.max;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
 
 import com.ibm.icu.lang.UCharacter;
 
+import de.dante.extex.backend.documentWriter.OutputStreamFactory;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.Tokenizer;
@@ -38,6 +40,7 @@ import de.dante.extex.interpreter.exception.helping.MissingLeftBraceException;
 import de.dante.extex.interpreter.exception.helping.MissingNumberException;
 import de.dante.extex.interpreter.exception.helping.UndefinedControlSequenceException;
 import de.dante.extex.interpreter.interaction.Interaction;
+import de.dante.extex.interpreter.max.util.LoadUnit;
 import de.dante.extex.interpreter.observer.eof.EofObservable;
 import de.dante.extex.interpreter.observer.eof.EofObserver;
 import de.dante.extex.interpreter.observer.eof.EofObserverList;
@@ -103,7 +106,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.84 $
+ * @version $Revision: 1.85 $
  */
 public class Moritz extends Max
         implements
@@ -302,15 +305,23 @@ public class Moritz extends Max
             throws ConfigurationException {
 
         super.configure(configuration);
+        OutputStreamFactory outputFactory = null; //TODO gene: provide OutputStreamFactory
 
         try {
             getContext().setInteraction(Interaction.ERRORSTOPMODE);
-            configurePrimitives(configuration, getContext().getTokenFactory(),
-                    tokenStreamFactory);
+
+            Iterator iterator = configuration.iterator("unit");
+
+            while (iterator.hasNext()) {
+                LoadUnit.loadUnit((Configuration) iterator.next(),
+                        getContext(), this, getTypesetter(), getLogger(),
+                        outputFactory);
+            }
+
             initializeDate(Calendar.getInstance());
         } catch (ConfigurationException e) {
             throw e;
-        } catch (InterpreterException e) {
+        } catch (GeneralException e) {
             Throwable cause = e.getCause();
             if (cause instanceof ConfigurationException) {
                 throw (ConfigurationException) cause;

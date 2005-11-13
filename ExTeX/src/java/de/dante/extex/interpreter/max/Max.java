@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InvalidClassException;
 import java.util.Calendar;
-import java.util.Iterator;
 import java.util.logging.Logger;
 
 import de.dante.extex.font.FontFactory;
@@ -70,7 +69,6 @@ import de.dante.extex.interpreter.type.PrefixCode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.language.LanguageManagerFactory;
 import de.dante.extex.scanner.stream.TokenStream;
-import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.extex.scanner.type.token.ActiveCharacterToken;
 import de.dante.extex.scanner.type.token.CodeToken;
 import de.dante.extex.scanner.type.token.ControlSequenceToken;
@@ -97,7 +95,6 @@ import de.dante.util.framework.configuration.Configurable;
 import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 import de.dante.util.framework.configuration.exception.ConfigurationMissingException;
-import de.dante.util.framework.configuration.exception.ConfigurationWrapperException;
 import de.dante.util.framework.i18n.Localizable;
 import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.logger.LogEnabled;
@@ -108,7 +105,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.89 $
+ * @version $Revision: 1.90 $
  */
 public abstract class Max
         implements
@@ -480,33 +477,6 @@ public abstract class Max
     }
 
     /**
-     * Prepare the primitives according to their configuration.
-     *
-     * @param configuration the configuration
-     * @param tokenFactory the token factory
-     * @param streamFactory the token stream factory
-     *
-     * @throws ConfigurationException in case of a configuration error
-     */
-    protected void configurePrimitives(final Configuration configuration,
-            final TokenFactory tokenFactory,
-            final TokenStreamFactory streamFactory)
-            throws ConfigurationException {
-
-        PrimitiveFactory primitiveFactory = new PrimitiveFactory(streamFactory);
-        Iterator iterator = configuration.iterator("primitives");
-
-        try {
-            while (iterator.hasNext()) {
-                primitiveFactory.define((Configuration) iterator.next(),
-                        tokenFactory, context, logger, null); //TODO gene: provide OutputStreamFactory
-            }
-        } catch (GeneralException e) {
-            throw new ConfigurationWrapperException(e);
-        }
-    }
-
-    /**
      * Prepare the token factory according to its configuration.
      *
      * @param config the configuration
@@ -737,6 +707,16 @@ public abstract class Max
     protected Localizer getLocalizer() {
 
         return this.localizer;
+    }
+
+    /**
+     * Getter for logger.
+     *
+     * @return the logger
+     */
+    protected Logger getLogger() {
+    
+        return this.logger;
     }
 
     /**
@@ -1446,6 +1426,7 @@ public abstract class Max
         return null;
     }
 
+    
     /**
      * This visit method is invoked on a tab mark token.
      * In <logo>TeX</logo> this normally is a <tt>&amp;</tt>.
