@@ -57,7 +57,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class Ifhbox extends AbstractIf {
 
@@ -86,7 +86,7 @@ public class Ifhbox extends AbstractIf {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String key = AbstractBox.getKey(context, source);
+        String key = AbstractBox.getKey(context, source, getName());
         Box box = context.getBox(key);
         return (box != null && box.isHbox());
     }
