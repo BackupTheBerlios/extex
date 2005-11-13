@@ -21,7 +21,7 @@ package de.dante.extex.typesetter.pageBuilder.impl;
 
 import java.io.IOException;
 
-import de.dante.extex.documentWriter.DocumentWriter;
+import de.dante.extex.backend.documentWriter.DocumentWriter;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.OutputRoutine;
@@ -38,14 +38,14 @@ import de.dante.util.exception.GeneralException;
  * This is a first reference implementation of a page builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class PageBuilderImpl implements PageBuilder {
 
     /**
      * The field <tt>context</tt> contains the interpreter context.
      */
-    //private Context context = null;
+    private Context context = null;
 
     /**
      * The field <tt>documentWriter</tt> contains the document writer to receive
@@ -103,7 +103,7 @@ public class PageBuilderImpl implements PageBuilder {
     public void flush(final NodeList nodes) throws TypesetterException {
 
         if (nodes.size() > 0) {
-            Page page = pageFactory.newInstance(nodes);
+            Page page = pageFactory.newInstance(nodes, context);
             try {
                 if (this.outputRoutine != null) {
                     this.outputRoutine.output(page, documentWriter);
@@ -148,7 +148,7 @@ public class PageBuilderImpl implements PageBuilder {
      */
     public void setContext(final Context context) {
 
-        //this.context = context;
+        this.context = context;
     }
 
     /**
