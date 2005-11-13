@@ -58,7 +58,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Shipout extends AbstractCode {
 
@@ -92,7 +92,7 @@ public class Shipout extends AbstractCode {
 
         if (box != null) {
             typesetter.shipout(box.getNodes());
-            context.getCount("deadcyles").set(0);
+            context.setCount("deadcyles", 0, true);
         }
     }
 
