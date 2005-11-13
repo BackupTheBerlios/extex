@@ -49,7 +49,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.64 $
+ * @version $Revision: 1.65 $
  */
 public interface Context
         extends
@@ -62,6 +62,7 @@ public interface Context
             ContextErrorCount,
             ContextInteraction,
             ContextTokens,
+            ContextMark,
             Tokenizer,
             Serializable {
 
@@ -218,7 +219,7 @@ public interface Context
     String getNamespace();
 
     /**
-     * Getter fot the paragraph shape.
+     * Getter for the paragraph shape.
      *
      * @return the paragraph shape or <code>null</code> if no special shape
      *   is present
@@ -283,7 +284,8 @@ public interface Context
      * @param primitive the name of the primitive which triggered this
      *  operation
      */
-    void pushConditional(Locator locator, boolean value, Code primitive, long branch, boolean neg);
+    void pushConditional(Locator locator, boolean value, Code primitive,
+            long branch, boolean neg);
 
     /**
      * Setter for the color in the current typesetting context.
@@ -390,7 +392,8 @@ public interface Context
      * @param global the indicator for the scope; <code>true</code> means all
      *            groups; otherwise the current group is affected only
      */
-    void setGlue(String name, Glue value, boolean global) throws InterpreterException;
+    void setGlue(String name, Glue value, boolean global)
+            throws InterpreterException;
 
     /**
      * Setter for the id string. The id string is the classification of the
@@ -451,9 +454,9 @@ public interface Context
     void setMuskip(String name, Muskip value, boolean global);
 
     /**
-     * Setter for the namespace.
+     * Setter for the name space.
      *
-     * @param namespace the new namespace
+     * @param namespace the new name space
      * @param global the indicator for the scope; <code>true</code> means all
      *  groups; otherwise the current group is affected only
      */
@@ -467,7 +470,7 @@ public interface Context
     void setParshape(ParagraphShape shape);
 
     /**
-     * Setter for the spece factor code in the specified groups.
+     * Setter for the space factor code in the specified groups.
      * Any character has an associated space factor. This value can be set
      * with the current method.
      *

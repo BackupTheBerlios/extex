@@ -23,10 +23,11 @@ import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
-import de.dante.extex.documentWriter.DocumentWriterOptions;
+import de.dante.extex.backend.documentWriter.DocumentWriterOptions;
 import de.dante.extex.font.FontFactory;
 import de.dante.extex.font.type.other.NullFont;
 import de.dante.extex.interpreter.Conditional;
@@ -58,6 +59,7 @@ import de.dante.extex.interpreter.context.observer.interaction.InteractionObserv
 import de.dante.extex.interpreter.context.observer.tokens.TokensObservable;
 import de.dante.extex.interpreter.context.observer.tokens.TokensObserver;
 import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.exception.InterpreterExtensionInvalidException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.interaction.Interaction;
 import de.dante.extex.interpreter.type.Code;
@@ -132,7 +134,7 @@ import de.dante.util.framework.i18n.Localizer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.97 $
+ * @version $Revision: 1.98 $
  */
 public class ContextImpl
         implements
@@ -155,6 +157,16 @@ public class ContextImpl
             Serializable {
 
     /**
+     * The field <tt>bottommarks</tt> contains the ...
+     */
+    private static Map bottommarks = new HashMap();
+
+    /**
+     * The field <tt>firstmarks</tt> contains the ...
+     */
+    private static Map firstmarks = new HashMap();
+
+    /**
      * The constant <tt>GROUP_TAG</tt> contains the name of the tag for the
      * sub-configuration for the group factory.
      */
@@ -171,6 +183,11 @@ public class ContextImpl
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
     private static final long serialVersionUID = 1L;
+
+    /**
+     * The field <tt>topmarks</tt> contains the ...
+     */
+    private static Map topmarks = new HashMap();
 
     /**
      * The constant <tt>TYPESETTING_CONTEXT_TAG</tt> contains the name of the
@@ -319,6 +336,16 @@ public class ContextImpl
     private ParagraphShape parshape = null;
 
     /**
+     * The field <tt>splitBottomMarks</tt> contains the split bottom marks.
+     */
+    private Map splitBottomMarks = new Hashtable();
+
+    /**
+     * The field <tt>splitFirstMarks</tt> contains the split first marks.
+     */
+    private Map splitFirstMarks = new Hashtable();
+
+    /**
      * The field <tt>standardTokenStream</tt> contains the standard token
      * stream. This token stream usually is fed by the user.
      */
@@ -379,6 +406,15 @@ public class ContextImpl
     public void afterGroup(final Token t) {
 
         group.afterGroup(t);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.ContextMark#clearSplitMarks()
+     */
+    public void clearSplitMarks() {
+
+        splitFirstMarks.clear();
+        splitBottomMarks.clear();
     }
 
     /**
@@ -517,6 +553,22 @@ public class ContextImpl
     }
 
     /**
+     * @see de.dante.extex.interpreter.context.ContextMark#getBottomMark(
+     *      java.lang.Object)
+     */
+    public Tokens getBottomMark(final Object name) {
+
+        Tokens mark = (Tokens) bottommarks.get(name);
+        if (mark == null) {
+            mark = (Tokens) firstmarks.get(name);
+            if (mark == null) {
+                mark = (Tokens) topmarks.get(name);
+            }
+        }
+        return mark;
+    }
+
+    /**
      * @see de.dante.extex.interpreter.context.Context#getBox(java.lang.String)
      */
     public Box getBox(final String name) {
@@ -614,7 +666,8 @@ public class ContextImpl
      * @see de.dante.extex.interpreter.context.extension.ContextExtensionPoint#getExtension(
      *      java.lang.Class)
      */
-    public ExtensionPoint getExtension(final Class c) {
+    public ExtensionPoint getExtension(final Class c)
+            throws InterpreterException {
 
         ExtensionPoint ep = (ExtensionPoint) extensionMap.get(c);
         if (ep != null) {
@@ -622,8 +675,7 @@ public class ContextImpl
         }
 
         if (!c.isAssignableFrom(ExtensionPoint.class)) {
-            // TODO gene: error handling unimplemented
-            throw new RuntimeException("invalid class");
+            throw new InterpreterExtensionInvalidException(c.getName());
         }
 
         try {
@@ -631,14 +683,25 @@ public class ContextImpl
             ep.init();
             extensionMap.put(c, ep);
         } catch (InstantiationException e) {
-            // TODO gene: error handling unimplemented
-            throw new RuntimeException(e);
+            throw new InterpreterExtensionInvalidException(c.getName(), e);
         } catch (IllegalAccessException e) {
-            // TODO gene: error handling unimplemented
-            throw new RuntimeException(e);
+            throw new InterpreterExtensionInvalidException(c.getName(), e);
         }
 
         return ep;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.ContextMark#getFirstMark(
+     *      java.lang.Object)
+     */
+    public Tokens getFirstMark(final Object name) {
+
+        Tokens mark = (Tokens) firstmarks.get(name);
+        if (mark == null) {
+            mark = (Tokens) topmarks.get(name);
+        }
+        return mark;
     }
 
     /**
@@ -822,6 +885,24 @@ public class ContextImpl
     }
 
     /**
+     * @see de.dante.extex.interpreter.context.ContextMark#getSplitBottomMark(
+     *      java.lang.Object)
+     */
+    public Tokens getSplitBottomMark(final Object name) {
+
+        return (Tokens) splitBottomMarks.get(name);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.ContextMark#getSplitFirstMark(
+     *      java.lang.Object)
+     */
+    public Tokens getSplitFirstMark(final Object name) {
+
+        return (Tokens) splitFirstMarks.get(name);
+    }
+
+    /**
      * Getter for the token factory.
      *
      * @return the token factory
@@ -872,6 +953,15 @@ public class ContextImpl
     public Tokens getToksOrNull(final String name) {
 
         return group.getToksOrNull(name);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.ContextMark#getTopMark(
+     *      java.lang.Object)
+     */
+    public Tokens getTopMark(final Object name) {
+
+        return (Tokens) topmarks.get(name);
     }
 
     /**
@@ -1573,6 +1663,19 @@ public class ContextImpl
     }
 
     /**
+     * @see de.dante.extex.interpreter.context.Context#setMark(
+     *      java.lang.Object,
+     *      de.dante.extex.interpreter.type.tokens.Tokens)
+     */
+    public void setMark(final Object name, final Tokens mark) {
+
+        if (firstmarks.get(name) == null) {
+            firstmarks.put(name, mark);
+        }
+        bottommarks.put(name, mark);
+    }
+
+    /**
      * @see de.dante.extex.interpreter.context.Context#setMathcode(
      *      de.dante.util.UnicodeChar,
      *      Count, boolean)
@@ -1635,6 +1738,19 @@ public class ContextImpl
     }
 
     /**
+     * @see de.dante.extex.interpreter.context.ContextMark#setSplitMark(
+     *      java.lang.Object,
+     *      de.dante.extex.interpreter.type.tokens.Tokens)
+     */
+    public void setSplitMark(final Object name, final Tokens mark) {
+
+        if (splitFirstMarks.get(name) == null) {
+            splitFirstMarks.put(name, mark);
+        }
+        splitBottomMarks.put(name, mark);
+    }
+
+    /**
      * Setter for standardTokenStream.
      *
      * @param standardTokenStream the standardTokenStream to set.
@@ -1687,6 +1803,17 @@ public class ContextImpl
             final boolean global) {
 
         group.setUccode(lc, uc, global);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#startMarks()
+     */
+    public void startMarks() {
+
+        topmarks.putAll(firstmarks);
+        topmarks.putAll(bottommarks);
+        firstmarks.clear();
+        bottommarks.clear();
     }
 
     /**
