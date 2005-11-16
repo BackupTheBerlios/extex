@@ -38,6 +38,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
 
+import de.dante.extex.backend.BackendDriver;
+import de.dante.extex.backend.BackendDriverImpl;
 import de.dante.extex.backend.documentWriter.DocumentWriter;
 import de.dante.extex.backend.documentWriter.DocumentWriterFactory;
 import de.dante.extex.backend.documentWriter.DocumentWriterOptions;
@@ -321,7 +323,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.120 $
+ * @version $Revision: 1.121 $
  */
 public class ExTeX {
 
@@ -1022,13 +1024,14 @@ public class ExTeX {
      * @throws DocumentWriterException in case of an error
      * @throws ConfigurationException in case of a configuration problem
      */
-    protected DocumentWriter makeDocumentWriter(final Configuration config,
+    protected BackendDriver makeBackend(final Configuration config,
             final String jobname, final OutputStreamFactory outFactory,
             final DocumentWriterOptions options,
             final Configuration colorConfig, final ResourceFinder finder)
             throws DocumentWriterException,
                 ConfigurationException {
 
+        BackendDriver backend = new BackendDriverImpl(options);
         DocumentWriterFactory factory = new DocumentWriterFactory(config);
         factory.enableLogging(logger);
         DocumentWriter docWriter = factory.newInstance(//
@@ -1052,7 +1055,8 @@ public class ExTeX {
         docWriter.setParameter("Pages", "*");
         docWriter.setParameter("PageOrder", "Ascend");
 
-        return docWriter;
+        backend.setDocumentWriter(docWriter);
+        return backend;
     }
 
     /**
@@ -1337,7 +1341,7 @@ public class ExTeX {
                     config.getConfiguration("Interpreter"), //
                     tokenStreamFactory, fontFactory);
 
-            DocumentWriter docWriter = makeDocumentWriter(//
+            BackendDriver backend = makeBackend(//
                     config.getConfiguration("DocumentWriter"), //
                     jobname, //
                     outFactory, //
@@ -1345,8 +1349,8 @@ public class ExTeX {
                     config.getConfiguration("ColorConverter"), finder);
 
             Typesetter typesetter = makeTypesetter(//
-                    config.getConfiguration("Typesetter"), docWriter,
-                    interpreter.getContext());
+                    config.getConfiguration("Typesetter"), backend, interpreter
+                            .getContext());
             typesetter.setOutputRoutine(new TeXOutputRoutine(interpreter));
             interpreter.setTypesetter(typesetter);
 
@@ -1355,11 +1359,13 @@ public class ExTeX {
 
             interpreter.run();
 
-            int pages = docWriter.getPages();
-            logger.info(localizer.format((pages == 0
-                    ? "ExTeX.NoPages"
-                    : pages == 1 ? "ExTeX.Page" : "ExTeX.Pages"), //
-                    outFactory.getDestination(), Integer.toString(pages)));
+            int pages = backend.getPages();
+            logger.log((showBanner ? Level.INFO : Level.FINE), localizer
+                    .format((pages == 0 ? "ExTeX.NoPages" : pages == 1
+                            ? "ExTeX.Page"
+                            : "ExTeX.Pages"), //
+                            outFactory.getDestination(), Integer
+                                    .toString(pages)));
 
             return interpreter;
 
@@ -1382,7 +1388,8 @@ public class ExTeX {
                 fileHandler.close();
                 logger.removeHandler(fileHandler);
                 // see "TeX -- The Program [1333]"
-                logger.info(localizer.format("ExTeX.Logfile", logFile));
+                logger.log((showBanner ? Level.INFO : Level.FINE), localizer
+                        .format("ExTeX.Logfile", logFile));
             }
         }
         return null;
