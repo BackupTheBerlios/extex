@@ -60,7 +60,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * and as tool for testing.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class DumpDocumentWriter
         implements
@@ -69,8 +69,8 @@ public class DumpDocumentWriter
             Configurable {
 
     /**
-     * The field <tt>nv</tt> contains the node visitor instance to use in the
-     * form of an anonymous inner class.
+     * The field <tt>nodeVisitor</tt> contains the node visitor instance to use
+     * in the form of an anonymous inner class.
      */
     private NodeVisitor nodeVisitor = new NodeVisitor() {
 
@@ -404,12 +404,6 @@ public class DumpDocumentWriter
     private OutputStream out = null;
 
     /**
-     * The field <tt>shippedPages</tt> contains the number of pages already
-     * shipped out.
-     */
-    private int shippedPages = 0;
-
-    /**
      * The field <tt>tree</tt> contains the indicator whether to use the tree
      * representation.
      */
@@ -455,14 +449,6 @@ public class DumpDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#getPages()
-     */
-    public int getPages() {
-
-        return shippedPages;
-    }
-
-    /**
      * @see de.dante.extex.documentWriter.SingleDocumentStream#setOutputStream(
      *      java.io.OutputStream)
      */
@@ -504,7 +490,6 @@ public class DumpDocumentWriter
                     ? (DocumentWriterException) ex //
                     : new DocumentWriterException(e.getLocalizedMessage()));
         }
-        shippedPages++;
         return 1;
     }
 
