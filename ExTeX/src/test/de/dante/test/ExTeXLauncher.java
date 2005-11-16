@@ -50,7 +50,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * running an instance of <logo>ExTeX</logo>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.38 $
+ * @version $Revision: 1.39 $
  */
 public class ExTeXLauncher extends TestCase {
 
@@ -58,7 +58,7 @@ public class ExTeXLauncher extends TestCase {
      * Inner class for the error handler.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.38 $
+     * @version $Revision: 1.39 $
      */
     private class EHandler implements ErrorHandler {
 
@@ -148,6 +148,8 @@ public class ExTeXLauncher extends TestCase {
         provide(properties, "extex.output", "out");
         provide(properties, "extex.interaction", "batchmode");
         provide(properties, "extex.fonts", "src/font");
+        provide(properties, "extex.nobanner", "true");
+
     }
 
     /**
