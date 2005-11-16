@@ -21,8 +21,13 @@ package de.dante.extex.backend.documentWriter.postscript;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
-import de.dante.extex.backend.documentWriter.AbstractDocumentWriter;
+import de.dante.extex.backend.documentWriter.DocumentWriter;
+import de.dante.extex.backend.documentWriter.MultipleDocumentStream;
+import de.dante.extex.backend.documentWriter.OutputStreamFactory;
+import de.dante.extex.backend.documentWriter.exception.DocumentWriterException;
 import de.dante.extex.backend.documentWriter.postscript.util.FontManager;
 import de.dante.extex.backend.documentWriter.postscript.util.HeaderManager;
 import de.dante.extex.backend.documentWriter.postscript.util.PsBasicConverter;
@@ -32,6 +37,9 @@ import de.dante.extex.color.ColorAware;
 import de.dante.extex.color.ColorConverter;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
+import de.dante.extex.typesetter.type.NodeList;
+import de.dante.extex.typesetter.type.page.Page;
+import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.Configurable;
 import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
@@ -43,11 +51,13 @@ import de.dante.util.resource.ResourceFinder;
  * code. Here some utility methods of general nature are collected.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public abstract class AbstractPostscriptWriter extends AbstractDocumentWriter
+public abstract class AbstractPostscriptWriter
         implements
+            DocumentWriter,
             Configurable,
+            MultipleDocumentStream,
             ResourceConsumer,
             ColorAware {
 
@@ -70,6 +80,16 @@ public abstract class AbstractPostscriptWriter extends AbstractDocumentWriter
     private ResourceFinder finder = null;
 
     /**
+     * The field <tt>parameter</tt> contains the map for parameters.
+     */
+    protected Map parameter = new HashMap();
+
+    /**
+     * The field <tt>writerFactory</tt> contains the output stream factory.
+     */
+    private OutputStreamFactory writerFactory;
+
+    /**
      * Creates a new object.
      */
     public AbstractPostscriptWriter() {
@@ -89,6 +109,18 @@ public abstract class AbstractPostscriptWriter extends AbstractDocumentWriter
 
         String b = config.getAttribute("boxed");
         boxed = (b == null ? false : Boolean.valueOf(b).booleanValue());
+    }
+
+    /**
+     * Getter for a named parameter.
+     *
+     * @param name the name of the parameter
+     *
+     * @return the value of the parameter or <code>null</code> if none exists
+     */
+    protected String getParameter(final String name) {
+
+        return (String) parameter.get(name);
     }
 
     /**
@@ -125,6 +157,21 @@ public abstract class AbstractPostscriptWriter extends AbstractDocumentWriter
     }
 
     /**
+     * Acquire a new output stream.
+     *
+     * @param type the type for the reference to the configuration file
+     *
+     * @return the new output stream
+     *
+     * @throws DocumentWriterException in case of an error
+     */
+    protected OutputStream newOutputStream(final String type)
+            throws DocumentWriterException {
+
+        return writerFactory.getOutputStream(type);
+    }
+
+    /**
      * @see de.dante.extex.color.ColorAware#setColorConverter(
      *      de.dante.extex.color.ColorConverter)
      */
@@ -134,12 +181,69 @@ public abstract class AbstractPostscriptWriter extends AbstractDocumentWriter
     }
 
     /**
+     * @see de.dante.extex.documentWriter.MultipleDocumentStream#setOutputStreamFactory(
+     *      de.dante.extex.documentWriter.OutputStreamFactory)
+     */
+    public void setOutputStreamFactory(final OutputStreamFactory factory) {
+
+        this.writerFactory = factory;
+    }
+
+    /**
+     * @see de.dante.extex.documentWriter.DocumentWriter#setParameter(
+     *      java.lang.String,
+     *      java.lang.String)
+     */
+    public void setParameter(final String name, final String value) {
+
+        parameter.put(name, value);
+    }
+
+    /**
      * @see de.dante.util.resource.ResourceConsumer#setResourceFinder(
      *      de.dante.util.resource.ResourceFinder)
      */
     public void setResourceFinder(final ResourceFinder resourceFinder) {
 
         this.finder = resourceFinder;
+    }
+
+    /**
+     * This is the entry point for the document writer. Here it receives a
+     * complete node list to be sent to the output writer. It can be assumed
+     * that all values for width, height, and depth of the node lists are
+     * properly filled. Thus all information should be present to place the
+     * ink on the paper.
+     *
+     * @param nodes the nodes to put on the paper
+     * @param width the width of the page
+     * @param height the height of the page
+     *
+     * @return the number of pages shipped out in this step. This is usually 1.
+     *  But it can also be 0 if the page is skipped or a greater number is the
+     *  page is split.
+     *
+     * @throws IOException in case of an IO error
+     * @throws GeneralException in case of another error
+     */
+    protected abstract int shipout(final NodeList nodes, final Dimen width,
+            final Dimen height) throws GeneralException, IOException;
+
+    /**
+     * @see de.dante.extex.documentWriter.DocumentWriter#shipout(
+     *      de.dante.extex.typesetter.type.NodeList)
+     */
+    public final int shipout(final Page page)
+            throws GeneralException,
+                IOException {
+
+        NodeList nodes = page.getNodes();
+        Dimen width = new Dimen(Dimen.ONE_INCH);
+        width.multiply(2100, 254); // A4 paper
+        Dimen height = new Dimen(Dimen.ONE_INCH);
+        height.multiply(2970, 254); // A4 paper
+
+        return shipout(nodes, width, height);
     }
 
     /**
