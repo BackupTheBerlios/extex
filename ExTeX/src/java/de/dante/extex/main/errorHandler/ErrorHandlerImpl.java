@@ -50,7 +50,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class ErrorHandlerImpl
         implements
@@ -280,7 +280,7 @@ public class ErrorHandlerImpl
                         .format("ErrorHandler.Prompt"));
                 logger.config(line);
 
-                if (line.equals("")) {
+                if (line.equals("") || line.equals("\n")) {
                     return true;
                 } else {
                     switch (line.charAt(0)) {
@@ -358,8 +358,7 @@ public class ErrorHandlerImpl
                             return true;
                         case 's':
                         case 'S':
-                            context
-                                    .setInteraction(Interaction.SCROLLMODE);
+                            context.setInteraction(Interaction.SCROLLMODE);
                             logger.info(localizer
                                     .format("ErrorHandler.scrollmode")
                                     + NL);
