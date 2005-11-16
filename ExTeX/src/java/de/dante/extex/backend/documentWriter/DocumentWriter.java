@@ -31,7 +31,7 @@ import de.dante.util.exception.GeneralException;
  * after the production of the output.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface DocumentWriter {
 
@@ -43,13 +43,6 @@ public interface DocumentWriter {
      * @return the appropriate extension for file names
      */
     String getExtension();
-
-    /**
-     * Getter for the number of pages already produced.
-     *
-     * @return the number of pages already shipped out
-     */
-    int getPages();
 
     /**
      * This is the entry point for the document writer. Here it receives a
