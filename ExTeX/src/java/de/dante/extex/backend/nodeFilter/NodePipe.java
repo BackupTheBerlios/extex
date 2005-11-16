@@ -19,18 +19,27 @@
 
 package de.dante.extex.backend.nodeFilter;
 
-import de.dante.extex.backend.documentWriter.DocumentWriter;
+import java.io.IOException;
+
 import de.dante.extex.backend.documentWriter.exception.DocumentWriterException;
-import de.dante.extex.typesetter.type.NodeList;
+import de.dante.extex.typesetter.type.page.Page;
+import de.dante.util.exception.GeneralException;
 
 /**
  * A node pipe describes the ability to process a node list &ndash; resulting
  * in a new node list.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public interface NodePipe extends DocumentWriter {
+public interface NodePipe {
+
+    /**
+     * This method is invoked upon the end of the processing.
+     *
+     * @throws DocumentWriterException in case of an error
+     */
+    void close() throws DocumentWriterException, GeneralException, IOException;
 
     /**
      * This is the entry point for the document writer. Here it receives a
@@ -43,6 +52,17 @@ public interface NodePipe extends DocumentWriter {
      *
      * @throws DocumentWriterException in case of an error
      */
-    NodeList process(NodeList nodes) throws DocumentWriterException;
+    Page process(Page nodes) throws DocumentWriterException;
+
+    /**
+     * Setter for a named parameter.
+     * Parameters are a general mechanism to influence the behavior of the
+     * document writer. Any parameter not known by the document writer has to
+     * be ignored.
+     *
+     * @param name the name of the parameter
+     * @param value the value of the parameter
+     */
+    void setParameter(String name, String value);
 
 }
