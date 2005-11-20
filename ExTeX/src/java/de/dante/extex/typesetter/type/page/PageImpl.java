@@ -27,19 +27,20 @@ import de.dante.extex.typesetter.type.NodeList;
  * contains additional administrative information.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class PageImpl implements Page {
 
     /**
      * The field <tt>mediaHeight</tt> contains the ...
      */
-    private Dimen mediaHeight;
+    private Dimen mediaHeight = new Dimen(
+            Dimen.ONE_INCH.getValue() * 2970 / 254);
 
     /**
      * The field <tt>mediaWidth</tt> contains the ...
      */
-    private Dimen mediaWidth;
+    private Dimen mediaWidth = new Dimen(Dimen.ONE_INCH.getValue() * 2100 / 254);
 
     /**
      * The field <tt>nodes</tt> contains the ...
@@ -54,10 +55,6 @@ public class PageImpl implements Page {
 
         super();
         this.nodes = nodes;
-        mediaWidth = new Dimen(Dimen.ONE_INCH);
-        mediaWidth.multiply(2100, 254); // A4 paper
-        mediaHeight = new Dimen(Dimen.ONE_INCH);
-        mediaHeight.multiply(2970, 254); // A4 paper
     }
 
     /**
@@ -84,6 +81,26 @@ public class PageImpl implements Page {
     public NodeList getNodes() {
 
         return this.nodes;
+    }
+
+    /**
+     * Setter for mediaHeight.
+     *
+     * @param mediaHeight the mediaHeight to set
+     */
+    public void setMediaHeight(final Dimen mediaHeight) {
+
+        this.mediaHeight = mediaHeight;
+    }
+
+    /**
+     * Setter for mediaWidth.
+     *
+     * @param mediaWidth the mediaWidth to set
+     */
+    public void setMediaWidth(final Dimen mediaWidth) {
+
+        this.mediaWidth = mediaWidth;
     }
 
 }
