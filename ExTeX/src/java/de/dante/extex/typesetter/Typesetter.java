@@ -37,7 +37,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @see "<logo>TeX</logo> &ndash; The Program [211]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.31 $
+ * @version $Revision: 1.32 $
  */
 public interface Typesetter extends ListMaker {
 
@@ -155,11 +155,12 @@ public interface Typesetter extends ListMaker {
     void shipout(NodeList nodes) throws TypesetterException;
 
     /**
-     * TODO gene: missing JavaDoc
+     * This method produces a diagnostic representation of the current lists in
+     * a StringBuffer.
      *
-     * @param sb
-     * @param l
-     * @param m
+     * @param sb the target string buffer
+     * @param l ...
+     * @param m ...
      */
     void showlists(StringBuffer sb, long l, long m);
 }
