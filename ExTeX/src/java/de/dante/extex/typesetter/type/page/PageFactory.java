@@ -19,18 +19,42 @@
 
 package de.dante.extex.typesetter.type.page;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.max.StringSource;
+import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.node.MarkNode;
+import de.dante.extex.typesetter.type.node.SpecialNode;
+import de.dante.extex.typesetter.type.node.WhatsItNode;
+import de.dante.util.exception.GeneralException;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
+import de.dante.util.framework.logger.LogEnabled;
 
 /**
  * This class provides a factory for page instances.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class PageFactory {
+public class PageFactory implements LogEnabled {
+
+    /**
+     * The field <tt>logger</tt> contains the logger.
+     */
+    private Logger logger = null;
+
+    /**
+     * The field <tt>sizePattern</tt> contains the ...
+     */
+    private Pattern sizePattern;
 
     /**
      * Creates a new object.
@@ -39,6 +63,17 @@ public class PageFactory {
     public PageFactory() {
 
         super();
+        sizePattern = Pattern
+                .compile("papersize=([0-9.]+[a-z][a-z]),([0-9.]+[a-z][a-z])");
+    }
+
+    /**
+     * @see de.dante.util.framework.logger.LogEnabled#enableLogging(
+     *      java.util.logging.Logger)
+     */
+    public void enableLogging(final Logger log) {
+
+        logger = log;
     }
 
     /**
@@ -46,19 +81,72 @@ public class PageFactory {
      *
      * @param nodes the nodes contained
      * @param context the interpreter context
+     * @param typesetter the typesetter
      *
      * @return the new instance
+     *
+     * @throws GeneralException in case of an error
      */
-    public Page newInstance(final NodeList nodes, final Context context) {
+    public Page newInstance(final NodeList nodes, final Context context,
+            final Typesetter typesetter) throws GeneralException {
 
         PageImpl page = new PageImpl(nodes);
         int size = nodes.size();
-        for (int i=0;i<size;i++) {
+        for (int i = 0; i < size; i++) {
             Node node = nodes.get(i);
-            if ( node instanceof MarkNode) {
-                
+            if (node instanceof MarkNode) {
+                //TODO gene: unimplemented
+                throw new RuntimeException("unimplemented");
+
+            } else if (node instanceof WhatsItNode) {
+                node.atShipping(context, typesetter);
+
+                if (node instanceof SpecialNode) {
+                    processSpecialNode((SpecialNode) node, page, context,
+                            typesetter);
+                }
             }
         }
         return page;
     }
+
+    /**
+     * Have a closer look at a special node.
+     *
+     * @param node the node encountered
+     * @param page the page under consideration
+     * @param context the interpreter context
+     * @param typesetter the typesetter
+     */
+    protected void processSpecialNode(final SpecialNode node, final Page page,
+            final Context context, final Typesetter typesetter)
+            throws InterpreterException {
+
+        String text = node.getText();
+
+        if (text.startsWith("papersize=")) {
+            Matcher m = sizePattern.matcher(text);
+            if (m.matches()) {
+                try {
+                    Dimen width = new Dimen(context, //
+                            new StringSource(m.group(1)), typesetter);
+                    Dimen height = new Dimen(context, //
+                            new StringSource(m.group(2)), typesetter);
+                    page.setMediaWidth(width);
+                    page.setMediaHeight(height);
+                } catch (ConfigurationException e) {
+                    logger.log(Level.SEVERE, "", e);
+                }
+            } else {
+                logger.warning("...");
+            }
+
+        } else if (text.equals("landscape")) {
+
+            Dimen h = page.getMediaHeight();
+            page.setMediaHeight(page.getMediaWidth());
+            page.setMediaWidth(h);
+        }
+    }
+
 }
