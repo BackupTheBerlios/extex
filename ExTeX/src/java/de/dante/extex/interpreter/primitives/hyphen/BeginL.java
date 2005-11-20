@@ -53,7 +53,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class BeginL extends AbstractCode {
 
@@ -83,7 +83,7 @@ public class BeginL extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        if (context.getCount("TeXXetstate").le(Count.ZERO)) {
+        if (context.getCount("TeXXeTstate").le(Count.ZERO)) {
             throw new ExtensionDisabledException(
                     printableControlSequence(context));
         }
