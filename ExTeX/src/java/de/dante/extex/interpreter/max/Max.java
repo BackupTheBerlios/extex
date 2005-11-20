@@ -35,6 +35,7 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.ContextFactory;
 import de.dante.extex.interpreter.context.observer.group.SwitchObserver;
+import de.dante.extex.interpreter.context.observer.load.LoadedObservable;
 import de.dante.extex.interpreter.exception.ErrorLimitException;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.CantUseInException;
@@ -44,6 +45,9 @@ import de.dante.extex.interpreter.exception.helping.UnusedPrefixException;
 import de.dante.extex.interpreter.interaction.Interaction;
 import de.dante.extex.interpreter.loader.LoaderException;
 import de.dante.extex.interpreter.loader.SerialLoader;
+import de.dante.extex.interpreter.observer.command.CommandObservable;
+import de.dante.extex.interpreter.observer.command.CommandObserver;
+import de.dante.extex.interpreter.observer.command.CommandObserverList;
 import de.dante.extex.interpreter.observer.error.ErrorObservable;
 import de.dante.extex.interpreter.observer.error.ErrorObserver;
 import de.dante.extex.interpreter.observer.error.ErrorObserverList;
@@ -69,8 +73,11 @@ import de.dante.extex.interpreter.type.PrefixCode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.language.LanguageManagerFactory;
 import de.dante.extex.scanner.stream.TokenStream;
-import de.dante.extex.scanner.type.token.ActiveCharacterToken;
 import de.dante.extex.scanner.type.token.CodeToken;
+import de.dante.extex.scanner.type.token.Token;
+import de.dante.extex.scanner.type.token.TokenFactory;
+import de.dante.extex.scanner.type.token.TokenVisitor;
+import de.dante.extex.scanner.type.token.ActiveCharacterToken;
 import de.dante.extex.scanner.type.token.ControlSequenceToken;
 import de.dante.extex.scanner.type.token.CrToken;
 import de.dante.extex.scanner.type.token.LeftBraceToken;
@@ -83,9 +90,6 @@ import de.dante.extex.scanner.type.token.SpaceToken;
 import de.dante.extex.scanner.type.token.SubMarkToken;
 import de.dante.extex.scanner.type.token.SupMarkToken;
 import de.dante.extex.scanner.type.token.TabMarkToken;
-import de.dante.extex.scanner.type.token.Token;
-import de.dante.extex.scanner.type.token.TokenFactory;
-import de.dante.extex.scanner.type.token.TokenVisitor;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.util.Switch;
@@ -105,13 +109,14 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.90 $
+ * @version $Revision: 1.91 $
  */
 public abstract class Max
         implements
             Interpreter,
             Localizable,
             LogEnabled,
+            CommandObservable,
             ExpandObservable,
             ExpandMacroObservable,
             ErrorObservable,
@@ -187,6 +192,13 @@ public abstract class Max
      * configuration.
      */
     private int maxErrors = MAX_ERRORS_DEFAULT;
+
+    /**
+     * This observer list is used for the observers which are registered to
+     * receive a notification when a new token is about to be expanded. The
+     * argument is the token to be executed.
+     */
+    private CommandObserver observersCommand = null;
 
     /**
      * This observer list is used for the observers which are registered to
@@ -535,8 +547,8 @@ public abstract class Max
 
         for (Token token = getToken(context); token != null; token = getToken(context)) {
 
-            if (observersExpand != null) {
-                observersExpand.update(token);
+            if (observersCommand != null) {
+                observersCommand.update(token);
             }
             try {
 
@@ -567,13 +579,13 @@ public abstract class Max
 
     /**
      * @see de.dante.extex.interpreter.TokenSource#execute(
-     *      de.dante.extex.scanner.type.Token, Context, Typesetter)
+     *      de.dante.extex.scanner.type.token.Token, Context, Typesetter)
      */
     public void execute(final Token token, final Context theContext,
             final Typesetter theTypesetter) throws InterpreterException {
 
-        if (observersExpand != null) {
-            observersExpand.update(token);
+        if (observersCommand != null) {
+            observersCommand.update(token);
         }
         try {
 
@@ -609,7 +621,7 @@ public abstract class Max
 
     /**
      * @see de.dante.extex.interpreter.max.Moritz#expand(
-     *      de.dante.extex.scanner.type.Token)
+     *      de.dante.extex.scanner.type.token.Token)
      */
     protected Token expand(final Token token) throws InterpreterException {
 
@@ -715,7 +727,7 @@ public abstract class Max
      * @return the logger
      */
     protected Logger getLogger() {
-    
+
         return this.logger;
     }
 
@@ -829,6 +841,14 @@ public abstract class Max
         newContext.setTokenFactory(context.getTokenFactory());
         context = newContext;
 
+        if (context instanceof LoadedObservable) {
+            try {
+                ((LoadedObservable) context).receiveLoad(this);
+            } catch (InterpreterException e) {
+                throw new LoaderException(e);
+            }
+        }
+
         if (observersLoad != null) {
             observersLoad.update(context);
         }
@@ -852,6 +872,17 @@ public abstract class Max
         ContextFactory contextFactory = new ContextFactory(cfg);
         contextFactory.enableLogging(logger);
         context = contextFactory.newInstance(null);
+    }
+
+    /**
+     * Add an observer for the expand event.
+     *
+     * @param observer the observer to add
+     */
+    public void registerObserver(final CommandObserver observer) {
+
+        observersCommand = CommandObserverList.register(observersCommand,
+                observer);
     }
 
     /**
@@ -888,7 +919,7 @@ public abstract class Max
 
     /**
      * @see de.dante.extex.interpreter.observer.load.LoadObservable#registerObserver(
-     *      de.dante.extex.interpreter.observer.undump.UndumpObserver)
+     *      de.dante.extex.interpreter.observer.load.LoadObserver)
      */
     public void registerObserver(final LoadObserver observer) {
 
@@ -1426,7 +1457,6 @@ public abstract class Max
         return null;
     }
 
-    
     /**
      * This visit method is invoked on a tab mark token.
      * In <logo>TeX</logo> this normally is a <tt>&amp;</tt>.
