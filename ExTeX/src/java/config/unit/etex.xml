@@ -85,8 +85,8 @@
             class="de.dante.extex.interpreter.primitives.interaction.Interactionmode"/>
     <Define name="interlinepenalties"
             class=""/>
-    <Define name="lastlinefit"
-            class=""/>
+    <define name="lastlinefit"
+            class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
     <define name="lastnodetype"
             class="de.dante.extex.interpreter.primitives.register.count.Lastnodetype"/>
     <define name="marks"
@@ -111,10 +111,10 @@
             class="de.dante.extex.interpreter.primitives.prefix.Protected"/>
     <define name="readline"
             class="de.dante.extex.interpreter.primitives.file.Readline"/>
-    <Define name="savinghyphcodes"
-            class=""/>
-    <Define name="savingvdiscarts"
-            class=""/>
+    <define name="savinghyphcodes"
+            class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
+    <define name="savingvdiscarts"
+            class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
     <Define name="scantokens"
             class=""/>
     <Define name="showgroups"

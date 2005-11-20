@@ -92,8 +92,8 @@
             class=""/><!-- (tokens) -->
     <define name="pdfpagewidth"
             class="de.dante.extex.interpreter.primitives.register.dimen.DimenParameter"/>
-    <Define name="pdfpkresolution"
-            class=""/><!-- (integer) -->
+    <define name="pdfpkresolution"
+            class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/><!-- (integer) -->
     <define name="pdfpkresolution"
             class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
     <Define name="pdfrefobj"
@@ -111,12 +111,12 @@
             >111</define><!-- (read-only integer) -->
     <Define name="pdfthread"
             class=""/><!-- hrule speci [ hattr speci ] hid speci -->
-    <Define name="pdfthreadhoffset"
-            class=""/>
+    <define name="pdfthreadhoffset"
+            class="de.dante.extex.interpreter.primitives.register.dimen.DimenParameter"/>
     <define name="pdfthreadmargin"
             class="de.dante.extex.interpreter.primitives.register.dimen.DimenParameter"/>
-    <Define name="pdfthreadvoffset"
-            class=""/>
+    <define name="pdfthreadvoffset"
+            class="de.dante.extex.interpreter.primitives.register.dimen.DimenParameter"/>
     <define name="pdfvorigin"
             class="de.dante.extex.interpreter.primitives.register.dimen.DimenParameter"
             >1in</define>
