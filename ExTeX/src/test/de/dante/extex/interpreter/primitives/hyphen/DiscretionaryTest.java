@@ -19,15 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.hyphen;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.test.NoFlagsPrimitiveTester;
 
 /**
  * This is a test suite for the primitive <tt>\discretionary</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
-public class DiscretionaryTest extends ExTeXLauncher {
+public class DiscretionaryTest extends NoFlagsPrimitiveTester {
 
     /**
      * Creates a new object.
@@ -36,29 +36,31 @@ public class DiscretionaryTest extends ExTeXLauncher {
      */
     public DiscretionaryTest(final String arg) {
 
-        super(arg);
+        super(arg, "discretionary", "{-}{}{}", DEFINE_BRACES);
     }
 
     /**
-     * Test case checking that ...
+     * <testcase primitive="\discretionary">
+     *  Test case checking that <tt>\discretionary</tt> ...
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
     public void testDisc1() throws Exception {
 
         assertSuccess(//--- input code ---
-                "\\catcode`{=1 "
-                + "\\catcode`}=2 "
-                + "\\catcode`$=3 "
+                DEFINE_BRACES
                 + "\\hsize=123pt "
                 + "\\discretionary{a}{b}{c}"
                 + "\\end ",
                 //--- output channel ---
-                "--" + TERM);//TODO check
+                "--" + TERM);
     }
 
     /**
-     * Test case checking that ...
+     * <testcase primitive="\discretionary">
+     *  Test case checking that <tt>\discretionary</tt> ...
+     * </testcase>
      *
      * @throws Exception in case of an error
      */

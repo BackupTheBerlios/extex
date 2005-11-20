@@ -20,10 +20,12 @@
 package de.dante.test;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This class is an abstract base class for test suited containing some test
+ * cases to verify that the prefixes <tt>\global</tt>, <tt>\long</tt>,
+ * <tt>\outer</tt>, and <tt>\protected</tt> lead to an error.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public abstract class NoFlagsButImmediatePrimitiveTester extends ExTeXLauncher {
 
@@ -41,7 +43,7 @@ public abstract class NoFlagsButImmediatePrimitiveTester extends ExTeXLauncher {
     /**
      * Creates a new object.
      *
-     * @param arg the name of the test case
+     * @param name the name of the test case
      * @param primitive the name of the primitive
      * @param args additional arguments for the flag test
      */

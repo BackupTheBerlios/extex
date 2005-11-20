@@ -20,10 +20,10 @@
 package de.dante.test;
 
 /**
- * This is a test suite for the primitive <tt>\parshapelength</tt>.
+ * This is a test suite for ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class NonExecuteTester extends ExTeXLauncher {
 
@@ -46,7 +46,7 @@ public abstract class NonExecuteTester extends ExTeXLauncher {
     /**
      * Creates a new object.
      *
-     * @param arg the name of the test case
+     * @param name the name of the test case
      * @param primitive the name of the primitive
      * @param args additional arguments for the flag test
      */
