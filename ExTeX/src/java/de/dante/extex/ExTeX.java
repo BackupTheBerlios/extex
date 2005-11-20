@@ -323,7 +323,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.121 $
+ * @version $Revision: 1.122 $
  */
 public class ExTeX {
 
@@ -437,7 +437,7 @@ public class ExTeX {
     /**
      * The field <tt>PROP_OUTPUT_TYPE</tt> contains the name of the property for
      * the output driver. This value is resolved by the
-     * {@link de.dante.extex.documentWriter.DocumentWriterFactory DocumentWriterFactory}
+     * {@link de.dante.extex.backend.documentWriter.DocumentWriterFactory DocumentWriterFactory}
      * to find the appropriate class.
      */
     protected static final String PROP_OUTPUT_TYPE = "extex.output";
@@ -492,6 +492,13 @@ public class ExTeX {
      * macros should produce tracing output.
      */
     protected static final String PROP_TRACE_MACROS = "extex.trace.macros";
+
+    /**
+     * The field <tt>PROP_TRACING_ONLINE</tt> contains the name of the
+     * property for the Boolean determining whether or not the tracing should
+     * produce log output in the log file only.
+     */
+    protected static final String PROP_TRACING_ONLINE = "extex.tracing.online";
 
     /**
      * The field <tt>PROP_TRACE_TOKENIZER</tt> contains the name of the
@@ -589,6 +596,11 @@ public class ExTeX {
     private boolean ini;
 
     /**
+     * The field <tt>noBanner</tt> contains the ...
+     */
+    private boolean noBanner;
+
+    /**
      * Creates a new object and supplies some properties for those keys which
      * are not contained in the properties already.
      * A detailed list of the properties supported can be found in section
@@ -627,11 +639,13 @@ public class ExTeX {
         propertyDefault(PROP_TRACE_FONT_FILES, "");
         propertyDefault(PROP_TRACE_MACROS, "");
         propertyDefault(PROP_TRACE_TOKENIZER, "");
+        propertyDefault(PROP_TRACING_ONLINE, "");
         propertyDefault(PROP_TYPESETTER_TYPE, "");
         propertyDefault(PROP_INTERNAL_STACKTRACE, "");
 
-        showBanner = !Boolean.valueOf(properties.getProperty(PROP_NO_BANNER))
+        noBanner = !Boolean.valueOf(properties.getProperty(PROP_NO_BANNER))
                 .booleanValue();
+        showBanner = noBanner;
         ini = !Boolean.valueOf(properties.getProperty(PROP_INI)).booleanValue();
 
         applyLanguage();
@@ -1170,6 +1184,10 @@ public class ExTeX {
         }
         context.set(makeDefaultFont(fontConfiguration, fontFactory), true);
         context.set(context.getLanguage("0"), true);
+        if (Boolean.valueOf((String) properties.get(PROP_TRACING_ONLINE))
+                .booleanValue()) {
+            context.setCount("tracingonline", 1, true);
+        }
 
         initializeStreams(interpreter, properties);
 
@@ -1360,12 +1378,11 @@ public class ExTeX {
             interpreter.run();
 
             int pages = backend.getPages();
-            logger.log((showBanner ? Level.INFO : Level.FINE), localizer
-                    .format((pages == 0 ? "ExTeX.NoPages" : pages == 1
+            logger.log((noBanner ? Level.INFO : Level.FINE), localizer.format(
+                    (pages == 0 ? "ExTeX.NoPages" : pages == 1
                             ? "ExTeX.Page"
                             : "ExTeX.Pages"), //
-                            outFactory.getDestination(), Integer
-                                    .toString(pages)));
+                    outFactory.getDestination(), Integer.toString(pages)));
 
             return interpreter;
 
@@ -1388,7 +1405,7 @@ public class ExTeX {
                 fileHandler.close();
                 logger.removeHandler(fileHandler);
                 // see "TeX -- The Program [1333]"
-                logger.log((showBanner ? Level.INFO : Level.FINE), localizer
+                logger.log((noBanner ? Level.INFO : Level.FINE), localizer
                         .format("ExTeX.Logfile", logFile));
             }
         }
