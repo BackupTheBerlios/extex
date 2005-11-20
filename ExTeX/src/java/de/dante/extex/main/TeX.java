@@ -42,8 +42,6 @@ import de.dante.extex.font.FontFactory;
 import de.dante.extex.font.exception.FontException;
 import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.observer.expand.ExpandObservable;
-import de.dante.extex.interpreter.observer.expand.ExpandObserver;
 import de.dante.extex.interpreter.observer.pop.PopObservable;
 import de.dante.extex.interpreter.observer.pop.PopObserver;
 import de.dante.extex.interpreter.observer.push.PushObservable;
@@ -62,7 +60,6 @@ import de.dante.extex.main.observer.FileCloseObserver;
 import de.dante.extex.main.observer.FileOpenObserver;
 import de.dante.extex.main.observer.TokenObserver;
 import de.dante.extex.main.observer.TokenPushObserver;
-import de.dante.extex.main.observer.TraceObserver;
 import de.dante.extex.main.queryFile.QueryFileHandler;
 import de.dante.extex.main.queryFile.QueryFileHandlerTeXImpl;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
@@ -590,7 +587,7 @@ import de.dante.util.resource.ResourceFinder;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class TeX extends ExTeX {
 
@@ -627,6 +624,7 @@ public class TeX extends ExTeX {
     private static final Map TRACE_MAP = new HashMap();
 
     static {
+        TRACE_MAP.put("+", PROP_TRACING_ONLINE);
         TRACE_MAP.put("F", PROP_TRACE_INPUT_FILES);
         TRACE_MAP.put("f", PROP_TRACE_FONT_FILES);
         TRACE_MAP.put("M", PROP_TRACE_MACROS);
@@ -835,7 +833,7 @@ public class TeX extends ExTeX {
 
     /**
      * @see de.dante.extex.ExTeX#makeInterpreter(
-     *      de.dante.util.configuration.Configuration,
+     *      de.dante.util.framework.configuration.Configuration,
      *      de.dante.extex.scanner.stream.TokenStreamFactory,
      *      de.dante.extex.font.FontFactory)
      */
@@ -870,13 +868,28 @@ public class TeX extends ExTeX {
             }
         }
         if (Boolean.valueOf(getProperties().getProperty(PROP_TRACE_MACROS))
-                .booleanValue()
-                && interpreter instanceof ExpandObservable) {
-            ExpandObserver observer = new TraceObserver(logger);
-            ((ExpandObservable) interpreter).registerObserver(observer);
-            observers.add(observer);
+                .booleanValue()) {
+            interpreter.getContext().setCount("tracingcommands", 1, true);
         }
 
+        /*
+         interpreter.getContext().registerCountObserver("escapechar",
+         new CountObserver() {
+         **
+         * @see de.dante.extex.interpreter.context.observer.CountObserver#receiveCountChange(
+         *      de.dante.extex.interpreter.context.ContextInternals,
+         *      java.lang.String,
+         *      de.dante.extex.interpreter.type.count.Count)
+         *
+         public void receiveCountChange(
+         final ContextInternals context, final String name,
+         final Count value) throws Exception {
+
+         System.err.println("change " + name + " to "
+         + value.toString());
+         }
+         });
+         */
         return interpreter;
     }
 
