@@ -22,11 +22,11 @@ package de.dante.extex.typesetter.type.node;
 import de.dante.extex.typesetter.type.Node;
 
 /**
- * This node contains text which shoiuld be passed to the backend driver.
+ * This node contains text which should be passed to the back-end driver.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class SpecialNode extends WhatsItNode implements Node {
 
@@ -36,19 +36,19 @@ public class SpecialNode extends WhatsItNode implements Node {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The field <tt>text</tt> contains the text to pass to the backend driver.
+     * The field <tt>text</tt> contains the text to pass to the back-end driver.
      */
     private String text;
 
     /**
      * Creates a new object.
      *
-     * @param theText the text to pass to the backend driver
+     * @param text the text to pass to the backend driver
      */
-    public SpecialNode(final String theText) {
+    public SpecialNode(final String text) {
 
         super();
-        this.text = theText;
+        this.text = text;
     }
 
     /**
