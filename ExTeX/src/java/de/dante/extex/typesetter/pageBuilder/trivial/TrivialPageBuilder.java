@@ -25,6 +25,7 @@ import de.dante.extex.backend.documentWriter.DocumentWriter;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.OutputRoutine;
+import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
@@ -37,7 +38,7 @@ import de.dante.util.exception.GeneralException;
  * This is a first reference implementation of a page builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class TrivialPageBuilder implements PageBuilder {
 
@@ -60,8 +61,7 @@ public class TrivialPageBuilder implements PageBuilder {
     /**
      * The field <tt>output</tt> contains the output routine.
      */
-    private OutputRoutine outputRoutine = null;
-
+    //private OutputRoutine outputRoutine = null;
     /**
      * The field <tt>pageFactory</tt> contains the ...
      */
@@ -102,8 +102,10 @@ public class TrivialPageBuilder implements PageBuilder {
     public void flush(final NodeList nodes) throws TypesetterException {
 
         if (nodes.size() > 0) {
+            Typesetter typesetter = null; //TODO gene: provide typesetter?
             try {
-                documentWriter.shipout(pageFactory.newInstance(nodes, context));
+                documentWriter.shipout(pageFactory.newInstance(nodes, context,
+                        typesetter));
                 nodes.clear();
             } catch (IOException e) {
                 throw new TypesetterException(e);
@@ -152,7 +154,7 @@ public class TrivialPageBuilder implements PageBuilder {
      * @param docWriter the new document writer to use
      *
      * @see de.dante.extex.typesetter.pageBuilder.PageBuilder#setDocumentWriter(
-     *      de.dante.extex.documentWriter.DocumentWriter)
+     *      de.dante.extex.backend.documentWriter.DocumentWriter)
      */
     public void setDocumentWriter(final DocumentWriter docWriter) {
 
@@ -178,7 +180,7 @@ public class TrivialPageBuilder implements PageBuilder {
      */
     public void setOutputRoutine(final OutputRoutine output) {
 
-        this.outputRoutine = output;
+        //this.outputRoutine = output;
     }
 
 }
