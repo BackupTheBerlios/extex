@@ -16,17 +16,17 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.observer.expand;
 
 import de.dante.extex.scanner.type.token.Token;
 
-
 /**
  * This interface describes the ability to receive a notification just before
- * a token is expanded.
+ * a token is executed.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface ExpandObserver {
 

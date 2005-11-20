@@ -99,7 +99,7 @@ import de.dante.extex.typesetter.Typesetter;
  * <pre class="JavaSample">
  *   <b>package</b> my.package;
  *
- *   <b>import</b> de.dante.extex.interpreter.AbstractCode;
+ *   <b>import</b> de.dante.extex.interpreter.type.AbstractCode;
  *   <b>import</b> de.dante.extex.interpreter.contect.Context;
  *   <b>import</b> de.dante.extex.interpreter.Flags;
  *   <b>import</b> de.dante.extex.interpreter.TokenSource;
@@ -131,7 +131,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public class JavaDef extends AbstractAssignment implements Definer {
 
