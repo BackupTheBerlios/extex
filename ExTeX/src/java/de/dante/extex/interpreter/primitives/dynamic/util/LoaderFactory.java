@@ -19,7 +19,7 @@
 
 package de.dante.extex.interpreter.primitives.dynamic.util;
 
-import de.dante.extex.interpreter.primitives.dynamic.Loader;
+import de.dante.extex.interpreter.unit.Loader;
 import de.dante.util.framework.AbstractFactory;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
