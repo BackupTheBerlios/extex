@@ -62,7 +62,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class DimenPrimitive extends AbstractDimen
         implements
@@ -93,7 +93,8 @@ public class DimenPrimitive extends AbstractDimen
      * @see de.dante.extex.interpreter.type.arithmetic.Advanceable#advance(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
      */
     public void advance(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)

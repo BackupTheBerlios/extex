@@ -60,7 +60,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * and as tool for testing.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class DumpDocumentWriter
         implements
@@ -420,7 +420,7 @@ public class DumpDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#close()
+     * @see de.dante.extex.backend.documentWriter.DocumentWriter#close()
      */
     public void close() throws IOException {
 
@@ -432,7 +432,7 @@ public class DumpDocumentWriter
 
     /**
      * @see de.dante.util.framework.configuration.Configurable#configure(
-     *      de.dante.util.configuration.Configuration)
+     *      de.dante.util.framework.configuration.Configuration)
      */
     public void configure(final Configuration config)
             throws ConfigurationException {
@@ -441,7 +441,7 @@ public class DumpDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#getExtension()
+     * @see de.dante.extex.backend.documentWriter.DocumentWriter#getExtension()
      */
     public String getExtension() {
 
@@ -449,7 +449,7 @@ public class DumpDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.documentWriter.SingleDocumentStream#setOutputStream(
+     * @see de.dante.extex.backend.documentWriter.SingleDocumentStream#setOutputStream(
      *      java.io.OutputStream)
      */
     public void setOutputStream(final OutputStream outStream) {
@@ -458,7 +458,7 @@ public class DumpDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#setParameter(
+     * @see de.dante.extex.backend.documentWriter.DocumentWriter#setParameter(
      *      java.lang.String, java.lang.String)
      */
     public void setParameter(final String name, final String value) {
@@ -466,8 +466,8 @@ public class DumpDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#shipout(
-     *     de.dante.extex.typesetter.type.NodeList)
+     * @see de.dante.extex.backend.documentWriter.DocumentWriter#shipout(
+     *      de.dante.extex.typesetter.type.page.Page)
      */
     public int shipout(final Page page) throws DocumentWriterException {
 

@@ -35,7 +35,7 @@ import de.dante.util.exception.GeneralException;
  * This document writer produces Encapsulated Postscript documents.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class EpsWriter extends AbstractPostscriptWriter {
 
@@ -72,14 +72,14 @@ public class EpsWriter extends AbstractPostscriptWriter {
     }
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#close()
+     * @see de.dante.extex.backend.documentWriter.DocumentWriter#close()
      */
     public void close() {
 
     }
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#getExtension()
+     * @see de.dante.extex.backend.documentWriter.DocumentWriter#getExtension()
      */
     public String getExtension() {
 
@@ -87,7 +87,7 @@ public class EpsWriter extends AbstractPostscriptWriter {
     }
 
     /**
-     * @see de.dante.extex.documentWriter.AbstractDocumentWriter#shipout(
+     * @see de.dante.extex.backend.documentWriter.postscript.AbstractPostscriptWriter#shipout(
      *      de.dante.extex.typesetter.type.NodeList,
      *      de.dante.extex.interpreter.type.dimen.Dimen,
      *      de.dante.extex.interpreter.type.dimen.Dimen)

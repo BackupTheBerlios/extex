@@ -51,7 +51,7 @@ import de.dante.util.resource.ResourceFinder;
  * code. Here some utility methods of general nature are collected.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public abstract class AbstractPostscriptWriter
         implements
@@ -102,7 +102,7 @@ public abstract class AbstractPostscriptWriter
 
     /**
      * @see de.dante.util.framework.configuration.Configurable#configure(
-     *      de.dante.util.configuration.Configuration)
+     *      de.dante.util.framework.configuration.Configuration)
      */
     public void configure(final Configuration config)
             throws ConfigurationException {
@@ -181,8 +181,8 @@ public abstract class AbstractPostscriptWriter
     }
 
     /**
-     * @see de.dante.extex.documentWriter.MultipleDocumentStream#setOutputStreamFactory(
-     *      de.dante.extex.documentWriter.OutputStreamFactory)
+     * @see de.dante.extex.backend.documentWriter.MultipleDocumentStream#setOutputStreamFactory(
+     *      de.dante.extex.backend.documentWriter.OutputStreamFactory)
      */
     public void setOutputStreamFactory(final OutputStreamFactory factory) {
 
@@ -190,7 +190,7 @@ public abstract class AbstractPostscriptWriter
     }
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#setParameter(
+     * @see de.dante.extex.backend.documentWriter.DocumentWriter#setParameter(
      *      java.lang.String,
      *      java.lang.String)
      */
@@ -230,8 +230,8 @@ public abstract class AbstractPostscriptWriter
             final Dimen height) throws GeneralException, IOException;
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#shipout(
-     *      de.dante.extex.typesetter.type.NodeList)
+     * @see de.dante.extex.backend.documentWriter.DocumentWriter#shipout(
+     *      de.dante.extex.typesetter.type.page.Page)
      */
     public final int shipout(final Page page)
             throws GeneralException,

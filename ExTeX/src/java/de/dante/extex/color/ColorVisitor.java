@@ -159,13 +159,13 @@ import de.dante.util.exception.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface ColorVisitor {
 
     /**
      * This method is called when an
-     * {@link de.dante.extex.color.CmykColor CmykColor}
+     * {@link de.dante.extex.color.model.CmykColor CmykColor}
      * has been encountered.
      *
      * @param color the first parameter for the visitor is the color visited
@@ -179,7 +179,7 @@ public interface ColorVisitor {
 
     /**
      * This method is called when an
-     * {@link de.dante.extex.color.GrayscaleColor GrayscaleColor}
+     * {@link de.dante.extex.color.model.GrayscaleColor GrayscaleColor}
      * has been encountered.
      *
      * @param color the first parameter for the visitor is the color visited
@@ -194,7 +194,7 @@ public interface ColorVisitor {
 
     /**
      * This method is called when an
-     * {@link de.dante.extex.color.HsvColor HsvColor}
+     * {@link de.dante.extex.color.model.HsvColor HsvColor}
      * has been encountered.
      *
      * @param color the first parameter for the visitor is the color visited
@@ -208,7 +208,7 @@ public interface ColorVisitor {
 
     /**
      * This method is called when an
-     * {@link de.dante.extex.color.RgbColor RgbColor}
+     * {@link de.dante.extex.color.model.RgbColor RgbColor}
      * has been encountered.
      *
      * @param color the first parameter for the visitor is the color visited

@@ -30,7 +30,7 @@ import de.dante.extex.scanner.type.token.Token;
  * This class provides a type-safe list of observers for the expand event.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public final class ExpandMacroObserverList implements ExpandMacroObserver {
 
@@ -78,7 +78,7 @@ public final class ExpandMacroObserverList implements ExpandMacroObserver {
 
     /**
      * @see de.dante.extex.interpreter.observer.expandMacro.ExpandMacroObserver#update(
-     *      de.dante.extex.scanner.type.Token,
+     *      de.dante.extex.scanner.type.token.Token,
      *      de.dante.extex.interpreter.type.Code)
      */
     public void update(final Token token, final Code code) {

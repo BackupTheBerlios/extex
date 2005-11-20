@@ -50,7 +50,7 @@ import de.dante.util.framework.configuration.Configuration;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:Rolf.Niepraschk@ptb.de">Rolf Niepraschk</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class PdfDocumentWriter implements DocumentWriter, SingleDocumentStream {
 
@@ -104,7 +104,7 @@ public class PdfDocumentWriter implements DocumentWriter, SingleDocumentStream {
     private PDDocument document = null;
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#close()
+     * @see de.dante.extex.backend.documentWriter.DocumentWriter#close()
      */
     public void close() throws DocumentWriterException {
 
@@ -128,7 +128,7 @@ public class PdfDocumentWriter implements DocumentWriter, SingleDocumentStream {
     }
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#getExtension()
+     * @see de.dante.extex.backend.documentWriter.DocumentWriter#getExtension()
      */
     public String getExtension() {
 
@@ -136,7 +136,7 @@ public class PdfDocumentWriter implements DocumentWriter, SingleDocumentStream {
     }
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#getPages()
+     * @see de.dante.extex.backend.documentWriter.DocumentWriter#getPages()
      */
     public int getPages() {
 
@@ -144,7 +144,7 @@ public class PdfDocumentWriter implements DocumentWriter, SingleDocumentStream {
     }
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#setOutputStream(java.io.OutputStream)
+     * @see de.dante.extex.backend.documentWriter.DocumentWriter#setOutputStream(java.io.OutputStream)
      */
     public void setOutputStream(final OutputStream outStream) {
 
@@ -157,7 +157,7 @@ public class PdfDocumentWriter implements DocumentWriter, SingleDocumentStream {
     private Map param = new HashMap();
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#setParameter(
+     * @see de.dante.extex.backend.documentWriter.DocumentWriter#setParameter(
      *      java.lang.String,
      *      java.lang.String)
      */
@@ -197,7 +197,7 @@ public class PdfDocumentWriter implements DocumentWriter, SingleDocumentStream {
     private NodeVisitor nodeVisitor;
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#shipout(
+     * @see de.dante.extex.backend.documentWriter.DocumentWriter#shipout(
      *      de.dante.extex.typesetter.type.NodeList)
      */
     public int shipout(Page p) throws DocumentWriterException {

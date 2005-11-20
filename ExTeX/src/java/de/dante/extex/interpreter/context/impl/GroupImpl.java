@@ -56,7 +56,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.55 $
+ * @version $Revision: 1.56 $
  */
 public class GroupImpl implements Group, Tokenizer, Serializable {
 
@@ -241,7 +241,7 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
 
     /**
      * @see de.dante.extex.interpreter.context.impl.Group#afterGroup(
-     *      de.dante.extex.scanner.type.Token)
+     *      de.dante.extex.scanner.type.token.Token)
      */
     public void afterGroup(final Token t) {
 
@@ -333,7 +333,7 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     /**
      * Recurse down the group stack and search for the definition of a token.
      *
-     * @param token the token to look-up the definmition for
+     * @param token the token to look-up the definition for
      *
      * @return the code assigned to the token or <code>null</code> if none is
      *  found.
@@ -416,7 +416,7 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
             font = next.getFont(name);
         }
 
-        return new NullFont(); //TODO gene: is a distinction of "not found" needed?
+        return new NullFont();
     }
 
     /**
@@ -703,7 +703,7 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
 
     /**
      * @see de.dante.extex.interpreter.context.impl.Group#setCode(
-     *      de.dante.extex.scanner.type.Token,
+     *      de.dante.extex.scanner.type.token.Token,
      *      de.dante.extex.interpreter.type.Code, boolean)
      */
     public void setCode(final Token token, final Code code, final boolean global) {

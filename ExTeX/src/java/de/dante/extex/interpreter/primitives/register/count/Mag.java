@@ -62,7 +62,7 @@ import de.dante.extex.typesetter.Typesetter;
  * @see de.dante.extex.interpreter.type.Theable
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class Mag extends AbstractCount
         implements
@@ -92,7 +92,8 @@ public class Mag extends AbstractCount
      * @see de.dante.extex.interpreter.type.arithmetic.Advanceable#advance(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
      */
     public void advance(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
@@ -153,7 +154,8 @@ public class Mag extends AbstractCount
      * @see de.dante.extex.interpreter.type.arithmetic.Divideable#divide(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
      */
     public void divide(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
@@ -176,7 +178,8 @@ public class Mag extends AbstractCount
      * @see de.dante.extex.interpreter.type.arithmetic.Multiplyable#multiply(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
      */
     public void multiply(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
@@ -192,7 +195,8 @@ public class Mag extends AbstractCount
     /**
      * @see de.dante.extex.interpreter.type.Theable#the(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource, Typesetter)
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
      */
     public Tokens the(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {

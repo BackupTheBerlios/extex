@@ -48,7 +48,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * interpreter.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class TeXOutputRoutine implements OutputRoutine {
 
@@ -88,7 +88,7 @@ public class TeXOutputRoutine implements OutputRoutine {
     /**
      * @see de.dante.extex.typesetter.OutputRoutine#output(
      *      de.dante.extex.typesetter.type.page.Page,
-     *      de.dante.extex.documentWriter.DocumentWriter)
+     *      de.dante.extex.backend.documentWriter.DocumentWriter)
      */
     public void output(final Page page, final DocumentWriter documentWriter)
             throws GeneralException {

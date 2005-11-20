@@ -106,7 +106,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.85 $
+ * @version $Revision: 1.86 $
  */
 public class Moritz extends Max
         implements
@@ -299,7 +299,7 @@ public class Moritz extends Max
      * </pre>
      *
      * @see de.dante.util.framework.configuration.Configurable#configure(
-     *      de.dante.util.configuration.Configuration)
+     *      de.dante.util.framework.configuration.Configuration)
      */
     public void configure(final Configuration configuration)
             throws ConfigurationException {
@@ -796,7 +796,7 @@ public class Moritz extends Max
      * @throws InterpreterException in case of an error
      *
      * @see de.dante.extex.interpreter.TokenSource#push(
-     *      de.dante.extex.scanner.type.Token)
+     *      de.dante.extex.scanner.type.token.Token)
      */
     public void push(final Token token) throws InterpreterException {
 
@@ -825,7 +825,7 @@ public class Moritz extends Max
      * @throws InterpreterException in case of an error
      *
      * @see de.dante.extex.interpreter.TokenSource#push(
-     *      de.dante.extex.scanner.type.Token[])
+     *      de.dante.extex.scanner.type.token.Token[])
      */
     public void push(final Token[] tokens) throws InterpreterException {
 
@@ -1145,7 +1145,7 @@ public class Moritz extends Max
      *  end of file has been reached before an integer could be acquired
      *
      * @see de.dante.extex.interpreter.TokenSource#scanNumber(
-     *      de.dante.extex.scanner.type.Token)
+     *      de.dante.extex.scanner.type.token.Token)
      */
     public long scanNumber(final Context context, final Token token)
             throws InterpreterException,

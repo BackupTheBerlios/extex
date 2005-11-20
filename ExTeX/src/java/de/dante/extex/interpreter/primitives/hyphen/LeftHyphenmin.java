@@ -67,7 +67,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class LeftHyphenmin extends AbstractHyphenationCode
         implements
@@ -159,7 +159,8 @@ public class LeftHyphenmin extends AbstractHyphenationCode
      * @see de.dante.extex.interpreter.type.arithmetic.Divideable#divide(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
      */
     public void divide(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)

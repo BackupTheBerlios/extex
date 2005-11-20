@@ -37,7 +37,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This class provides a token source which is fed from a string.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class StringSource extends Moritz {
 
@@ -45,7 +45,7 @@ public class StringSource extends Moritz {
      * This Token stream is fed from a CharSequence.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.24 $
+     * @version $Revision: 1.25 $
      */
     private class TStream implements TokenStream {
 
@@ -86,7 +86,7 @@ public class StringSource extends Moritz {
 
         /**
          * @see de.dante.extex.scanner.stream.TokenStream#get(
-         *      de.dante.extex.scanner.type.TokenFactory,
+         *      de.dante.extex.scanner.type.token.TokenFactory,
          *      de.dante.extex.interpreter.Tokenizer)
          */
         public Token get(final TokenFactory factory, final Tokenizer tokenizer)
@@ -142,7 +142,7 @@ public class StringSource extends Moritz {
 
         /**
          * @see de.dante.extex.scanner.stream.TokenStream#put(
-         *      de.dante.extex.scanner.type.Token)
+         *      de.dante.extex.scanner.type.token.Token)
          */
         public void put(final Token token) {
 

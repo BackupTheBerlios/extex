@@ -37,7 +37,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This document writer can be used to combine several components.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class BackendDriverImpl
         implements
@@ -71,7 +71,7 @@ public class BackendDriverImpl
     private int pages = 0;
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#close()
+     * @see de.dante.extex.backend.documentWriter.DocumentWriter#close()
      */
     public void close()
             throws DocumentWriterException,
@@ -87,7 +87,8 @@ public class BackendDriverImpl
     }
 
     /**
-     * @see de.dante.util.framework.configuration.Configurable#configure(de.dante.util.configuration.Configuration)
+     * @see de.dante.util.framework.configuration.Configurable#configure(
+     *      de.dante.util.framework.configuration.Configuration)
      */
     public void configure(final Configuration config)
             throws ConfigurationException {
@@ -95,7 +96,7 @@ public class BackendDriverImpl
     }
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#getExtension()
+     * @see de.dante.extex.backend.documentWriter.DocumentWriter#getExtension()
      */
     public String getExtension() {
 
@@ -103,7 +104,7 @@ public class BackendDriverImpl
     }
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#getPages()
+     * @see de.dante.extex.backend.documentWriter.DocumentWriter#getPages()
      */
     public int getPages() {
 
@@ -111,8 +112,8 @@ public class BackendDriverImpl
     }
 
     /**
-     * @see de.dante.extex.documentWriter.MultipleDocumentStream#setOutputStreamFactory(
-     *      de.dante.extex.documentWriter.OutputStreamFactory)
+     * @see de.dante.extex.backend.documentWriter.MultipleDocumentStream#setOutputStreamFactory(
+     *      de.dante.extex.backend.documentWriter.OutputStreamFactory)
      */
     public void setOutputStreamFactory(final OutputStreamFactory writerFactory) {
 
@@ -120,7 +121,7 @@ public class BackendDriverImpl
     }
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#setParameter(
+     * @see de.dante.extex.backend.documentWriter.DocumentWriter#setParameter(
      *      java.lang.String,
      *      java.lang.String)
      */
@@ -132,8 +133,8 @@ public class BackendDriverImpl
     }
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#shipout(
-     *      de.dante.extex.typesetter.type.NodeList)
+     * @see de.dante.extex.backend.documentWriter.DocumentWriter#shipout(
+     *      de.dante.extex.typesetter.type.page.Page)
      */
     public int shipout(final Page page)
             throws DocumentWriterException,

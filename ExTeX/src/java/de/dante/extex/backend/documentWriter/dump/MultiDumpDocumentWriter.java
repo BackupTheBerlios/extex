@@ -61,7 +61,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * and as tool for testing.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class MultiDumpDocumentWriter
         implements
@@ -426,7 +426,7 @@ public class MultiDumpDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#close()
+     * @see de.dante.extex.backend.documentWriter.DocumentWriter#close()
      */
     public void close() throws IOException {
 
@@ -434,7 +434,7 @@ public class MultiDumpDocumentWriter
 
     /**
      * @see de.dante.util.framework.configuration.Configurable#configure(
-     *      de.dante.util.configuration.Configuration)
+     *      de.dante.util.framework.configuration.Configuration)
      */
     public void configure(final Configuration config)
             throws ConfigurationException {
@@ -443,7 +443,7 @@ public class MultiDumpDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#getExtension()
+     * @see de.dante.extex.backend.documentWriter.DocumentWriter#getExtension()
      */
     public String getExtension() {
 
@@ -451,7 +451,7 @@ public class MultiDumpDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.documentWriter.MultipleDocumentStream#setOutputStreamFactory(de.dante.extex.documentWriter.OutputStreamFactory)
+     * @see de.dante.extex.backend.documentWriter.MultipleDocumentStream#setOutputStreamFactory(de.dante.extex.backend.documentWriter.OutputStreamFactory)
      */
     public void setOutputStreamFactory(final OutputStreamFactory writerFactory) {
 
@@ -459,7 +459,7 @@ public class MultiDumpDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#setParameter(
+     * @see de.dante.extex.backend.documentWriter.DocumentWriter#setParameter(
      *      java.lang.String, java.lang.String)
      */
     public void setParameter(final String name, final String value) {
@@ -467,8 +467,8 @@ public class MultiDumpDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#shipout(
-     *      de.dante.extex.typesetter.type.NodeList)
+     * @see de.dante.extex.backend.documentWriter.DocumentWriter#shipout(
+     *      de.dante.extex.typesetter.type.page.Page)
      */
     public int shipout(final Page page) throws DocumentWriterException {
 

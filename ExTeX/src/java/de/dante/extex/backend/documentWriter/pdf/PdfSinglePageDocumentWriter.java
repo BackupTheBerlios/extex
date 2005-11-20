@@ -40,7 +40,7 @@ import de.dante.util.framework.configuration.Configuration;
  * Implementation of a pdf document writer.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class PdfSinglePageDocumentWriter
         implements
@@ -102,7 +102,7 @@ public class PdfSinglePageDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#close()
+     * @see de.dante.extex.backend.documentWriter.DocumentWriter#close()
      */
     public void close() throws DocumentWriterIOException {
 
@@ -110,7 +110,7 @@ public class PdfSinglePageDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#getExtension()
+     * @see de.dante.extex.backend.documentWriter.DocumentWriter#getExtension()
      */
     public String getExtension() {
 
@@ -118,7 +118,7 @@ public class PdfSinglePageDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#getPages()
+     * @see de.dante.extex.backend.documentWriter.DocumentWriter#getPages()
      */
     public int getPages() {
 
@@ -126,8 +126,8 @@ public class PdfSinglePageDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.documentWriter.MultipleDocumentStream#setOutputStreamFactory(
-     *      de.dante.extex.documentWriter.OutputStreamFactory)
+     * @see de.dante.extex.backend.documentWriter.MultipleDocumentStream#setOutputStreamFactory(
+     *      de.dante.extex.backend.documentWriter.OutputStreamFactory)
      */
     public void setOutputStreamFactory(final OutputStreamFactory writerFactory) {
 
@@ -135,7 +135,7 @@ public class PdfSinglePageDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#setParameter(
+     * @see de.dante.extex.backend.documentWriter.DocumentWriter#setParameter(
      *      java.lang.String,
      *      java.lang.String)
      */
@@ -169,7 +169,7 @@ public class PdfSinglePageDocumentWriter
     private NodeVisitor nodeVisitor;
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#shipout(
+     * @see de.dante.extex.backend.documentWriter.DocumentWriter#shipout(
      *      de.dante.extex.typesetter.type.NodeList)
      */
     public int shipout(final Page page) throws DocumentWriterException {

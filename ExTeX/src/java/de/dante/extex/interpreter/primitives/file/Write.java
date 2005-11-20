@@ -61,7 +61,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.31 $
+ * @version $Revision: 1.32 $
  */
 public class Write extends AbstractCode
         implements
@@ -115,7 +115,7 @@ public class Write extends AbstractCode
 
     /**
      * @see de.dante.util.framework.configuration.Configurable#configure(
-     *      de.dante.util.configuration.Configuration)
+     *      de.dante.util.framework.configuration.Configuration)
      */
     public void configure(final Configuration config)
             throws ConfigurationException {

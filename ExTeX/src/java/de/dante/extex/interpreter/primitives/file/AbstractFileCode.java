@@ -38,7 +38,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * files.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
 public abstract class AbstractFileCode extends AbstractCode
         implements
@@ -128,7 +128,7 @@ public abstract class AbstractFileCode extends AbstractCode
      * @throws ConfigurationException in case of an error
      *
      * @see de.dante.util.framework.configuration.Configurable#configure(
-     *      de.dante.util.configuration.Configuration)
+     *      de.dante.util.framework.configuration.Configuration)
      */
     public void configure(final Configuration config)
             throws ConfigurationException {

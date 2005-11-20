@@ -35,7 +35,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationMissingAttri
  *  TypesettingContext}.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class TypesettingContextFactory extends AbstractFactory {
 
@@ -82,7 +82,7 @@ public class TypesettingContextFactory extends AbstractFactory {
      * </ul>
      *
      * @see de.dante.util.framework.configuration.Configurable#configure(
-     *      de.dante.util.configuration.Configuration)
+     *      de.dante.util.framework.configuration.Configuration)
      */
     public void configure(final Configuration configuration)
             throws ConfigurationException {
