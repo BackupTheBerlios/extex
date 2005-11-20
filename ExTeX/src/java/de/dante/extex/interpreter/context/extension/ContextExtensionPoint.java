@@ -31,19 +31,24 @@ import de.dante.extex.interpreter.exception.InterpreterException;
  *  {@link de.dante.extex.interpreter.type.InitializableCode InitializableCode}.
  *  Here it is possible to acquire an extension point for a given class.
  * </p>
- * TODO gene: missing JavaDoc.
+ * TODO gene: missing JavaDoc (incomplete).
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface ContextExtensionPoint {
 
     /**
-     * TODO gene: missing JavaDoc
+     * Getter for the extension point for a certain class.
+     * The extension point is a instance of the index class. This instance is
+     * kept and delivered whenever the extension is requested. If the
+     * extension point has not been requested before then a new instance of the
+     * given class is created, registered, and returned.
      *
-     * @param c ...
+     * @param c the class to be used as reference for the extension. This class
+     *  needs to implement the interface {@link ExtensionPoint ExtensionPoint}.
      *
-     * @return ...
+     * @return the extension; either an existing or a new one.
      */
     ExtensionPoint getExtension(Class c) throws InterpreterException;
 }

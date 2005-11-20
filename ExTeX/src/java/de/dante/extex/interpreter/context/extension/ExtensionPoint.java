@@ -21,23 +21,27 @@ package de.dante.extex.interpreter.context.extension;
 
 import java.io.Serializable;
 
-
 /**
- * TODO gene: missing JavaDoc.
+ * This interface describes the callbacks used for an extension point.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface ExtensionPoint extends Serializable {
 
     /**
-     * TODO gene: missing JavaDoc
-     *
+     * This method is invoked upon initialization.
      */
     void init();
 
+    /**
+     * This method is invoked when a group is opened.
+     */
     void beginGroup();
-    
+
+    /**
+     * This method is invoked when a group is closed.
+     */
     void endGroup();
 
 }
