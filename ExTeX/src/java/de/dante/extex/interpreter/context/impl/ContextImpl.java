@@ -26,6 +26,8 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import de.dante.extex.backend.documentWriter.DocumentWriterOptions;
 import de.dante.extex.font.FontFactory;
@@ -56,6 +58,8 @@ import de.dante.extex.interpreter.context.observer.group.GroupObservable;
 import de.dante.extex.interpreter.context.observer.group.GroupObserver;
 import de.dante.extex.interpreter.context.observer.interaction.InteractionObservable;
 import de.dante.extex.interpreter.context.observer.interaction.InteractionObserver;
+import de.dante.extex.interpreter.context.observer.load.LoadedObservable;
+import de.dante.extex.interpreter.context.observer.load.LoadedObserver;
 import de.dante.extex.interpreter.context.observer.tokens.TokensObservable;
 import de.dante.extex.interpreter.context.observer.tokens.TokensObserver;
 import de.dante.extex.interpreter.exception.InterpreterException;
@@ -98,6 +102,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationMissingExcep
 import de.dante.util.framework.configuration.exception.ConfigurationWrapperException;
 import de.dante.util.framework.i18n.Localizable;
 import de.dante.util.framework.i18n.Localizer;
+import de.dante.util.framework.logger.LogEnabled;
 
 /**
  * This is a reference implementation for an interpreter context.
@@ -134,7 +139,7 @@ import de.dante.util.framework.i18n.Localizer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.98 $
+ * @version $Revision: 1.99 $
  */
 public class ContextImpl
         implements
@@ -147,22 +152,24 @@ public class ContextImpl
             GlueObservable,
             GroupObservable,
             InteractionObservable,
+            LoadedObservable,
             TokensObservable,
             Tokenizer,
             DocumentWriterOptions,
             TypesetterOptions,
             TokenStreamOptions,
             Localizable,
+            LogEnabled,
             Configurable,
             Serializable {
 
     /**
-     * The field <tt>bottommarks</tt> contains the ...
+     * The field <tt>bottommarks</tt> contains the bottom marks.
      */
     private static Map bottommarks = new HashMap();
 
     /**
-     * The field <tt>firstmarks</tt> contains the ...
+     * The field <tt>firstmarks</tt> contains the first marks.
      */
     private static Map firstmarks = new HashMap();
 
@@ -185,7 +192,7 @@ public class ContextImpl
     private static final long serialVersionUID = 1L;
 
     /**
-     * The field <tt>topmarks</tt> contains the ...
+     * The field <tt>topmarks</tt> contains the top marks.
      */
     private static Map topmarks = new HashMap();
 
@@ -240,7 +247,8 @@ public class ContextImpl
     private transient Map changeToksObservers;
 
     /**
-     * The field <tt>conditionalObservers</tt> contains the ...
+     * The field <tt>conditionalObservers</tt> contains the observer for
+     * conditionals. The value <code>null</code> is treated like the empty list.
      */
     private transient List conditionalObservers = null;
 
@@ -303,9 +311,22 @@ public class ContextImpl
     private LanguageManager languageManager;
 
     /**
+     * The field <tt>loadObserver</tt> contains the list of observers for the
+     * load event.
+     * Note that this list is stored within the format. Thus it is <i>not</i>
+     * <tt>transient</tt>.
+     */
+    private List loadObservers = null;
+
+    /**
      * The field <tt>localizer</tt> contains the localizer to use.
      */
     private transient Localizer localizer = null;
+
+    /**
+     * The field <tt>logger</tt> contains the logger.
+     */
+    private transient Logger logger = null;
 
     /**
      * The field <tt>magnification</tt> contains the magnification for the
@@ -401,7 +422,7 @@ public class ContextImpl
 
     /**
      * @see de.dante.extex.interpreter.context.Context#afterGroup(
-     *      de.dante.extex.scanner.type.Token)
+     *      de.dante.extex.scanner.type.token.Token)
      */
     public void afterGroup(final Token t) {
 
@@ -457,7 +478,7 @@ public class ContextImpl
 
     /**
      * @see de.dante.util.framework.configuration.Configurable#configure(
-     *      de.dante.util.configuration.Configuration)
+     *      de.dante.util.framework.configuration.Configuration)
      */
     public void configure(final Configuration configuration)
             throws ConfigurationException {
@@ -517,6 +538,15 @@ public class ContextImpl
     }
 
     /**
+     * @see de.dante.util.framework.logger.LogEnabled#enableLogging(
+     *      java.util.logging.Logger)
+     */
+    public void enableLogging(final Logger logger) {
+
+        this.logger = logger;
+    }
+
+    /**
      * @see de.dante.extex.interpreter.context.Context#esc(java.lang.String)
      */
     public String esc(final String name) {
@@ -527,7 +557,7 @@ public class ContextImpl
 
     /**
      * @see de.dante.extex.interpreter.context.Context#esc(
-     *      de.dante.extex.scanner.type.Token)
+     *      de.dante.extex.scanner.type.token.Token)
      */
     public String esc(final Token token) {
 
@@ -761,7 +791,7 @@ public class ContextImpl
 
     /**
      * Getter for the id string. The id string is the classification of the
-     * original source as given in the fmt file. The id string can be
+     * original source as given in the format file. The id string can be
      * <code>null</code> if not known yet.
      *
      * @return the id string
@@ -923,7 +953,7 @@ public class ContextImpl
     }
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriterOptions#getTokensOption(java.lang.String)
+     * @see de.dante.extex.backend.documentWriter.DocumentWriterOptions#getTokensOption(java.lang.String)
      */
     public Tokens getTokensOption(final String name) {
 
@@ -1067,8 +1097,7 @@ public class ContextImpl
                     ((ConditionalObserver) conditionalObservers.get(i))
                             .receiveEndConditional(this, cond);
                 } catch (Exception e) {
-                    // TODO gene: error handling unimplemented
-                    e.printStackTrace();
+                    logger.log(Level.INFO, "", e);
                 }
             }
         }
@@ -1100,8 +1129,7 @@ public class ContextImpl
                     ((ConditionalObserver) conditionalObservers.get(i))
                             .receiveStartConditional(this, cond);
                 } catch (Exception e) {
-                    // TODO gene: error handling unimplemented
-                    e.printStackTrace();
+                    logger.log(Level.INFO, "", e);
                 }
             }
         }
@@ -1122,8 +1150,23 @@ public class ContextImpl
     }
 
     /**
+     * @see de.dante.extex.interpreter.context.observer.load.LoadedObservable#receiveLoad(
+     *      de.dante.extex.interpreter.TokenSource)
+     */
+    public void receiveLoad(final TokenSource source)
+            throws InterpreterException {
+
+        if (loadObservers != null) {
+            for (int i = 0; i < loadObservers.size(); i++) {
+                ((LoadedObserver) loadObservers.get(i)).receiveLoaded(this,
+                        source);
+            }
+        }
+    }
+
+    /**
      * @see de.dante.extex.interpreter.context.ContextCode#registerCodeChangeObserver(
-     *      de.dante.extex.scanner.type.Token,
+     *      de.dante.extex.scanner.type.token.Token,
      *      de.dante.extex.interpreter.context.observer.CodeObserver)
      */
     public synchronized void registerCodeChangeObserver(final Token name,
@@ -1218,6 +1261,18 @@ public class ContextImpl
             final InteractionObserver observer) {
 
         changeInteractionObservers.add(observer);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.observer.load.LoadedObservable#registerLoadObserver(
+     *      de.dante.extex.interpreter.context.observer.load.LoadedObserver)
+     */
+    public void registerLoadObserver(final LoadedObserver observer) {
+
+        if (loadObservers == null) {
+            loadObservers = new ArrayList();
+        }
+        loadObservers.add(observer);
     }
 
     /**
@@ -1420,7 +1475,7 @@ public class ContextImpl
 
     /**
      * @see de.dante.extex.interpreter.context.Context#setAfterassignment(
-     *      de.dante.extex.scanner.type.Token)
+     *      de.dante.extex.scanner.type.token.Token)
      */
     public void setAfterassignment(final Token token) {
 
@@ -1767,7 +1822,7 @@ public class ContextImpl
      * @param factory the new value of the factory
      *
      * @see de.dante.extex.interpreter.context.Context#setTokenFactory(
-     *      de.dante.extex.scanner.type.TokenFactory)
+     *      de.dante.extex.scanner.type.token.TokenFactory)
      */
     public void setTokenFactory(final TokenFactory factory) {
 
@@ -1818,7 +1873,7 @@ public class ContextImpl
 
     /**
      * @see de.dante.extex.interpreter.context.ContextCode#unregisterCodeObserver(
-     *      de.dante.extex.scanner.type.Token,
+     *      de.dante.extex.scanner.type.token.Token,
      *      de.dante.extex.interpreter.context.observer.CodeObserver)
      */
     public synchronized void unregisterCodeChangeObserver(final Token name,
@@ -1914,6 +1969,20 @@ public class ContextImpl
 
         while (changeInteractionObservers.remove(observer)) {
             // just removing the observer is enough
+        }
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.observer.load.LoadedObservable#unregisterLoadObserver(
+     *      de.dante.extex.interpreter.context.observer.load.LoadedObserver)
+     */
+    public void unregisterLoadObserver(final LoadedObserver observer) {
+
+        if (loadObservers != null) {
+            loadObservers.remove(observer);
+            if (loadObservers.size() == 0) {
+                loadObservers = null;
+            }
         }
     }
 
