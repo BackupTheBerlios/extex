@@ -45,7 +45,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This abstract class provides some methods common to all ListMakers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public abstract class AbstractListMaker implements ListMaker {
 
@@ -141,7 +141,9 @@ public abstract class AbstractListMaker implements ListMaker {
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#mathShift(
-     *      Context, TokenSource, de.dante.extex.scanner.type.Token)
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.scanner.type.token.Token)
      */
     public void mathShift(final Context context, final TokenSource source,
             final Token t) throws TypesetterException, ConfigurationException {
@@ -201,7 +203,8 @@ public abstract class AbstractListMaker implements ListMaker {
      * @see de.dante.extex.typesetter.ListMaker#subscriptMark(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
-     *      Typesetter, de.dante.extex.scanner.type.Token)
+     *      de.dante.extex.typesetter.Typesetter,
+     *      de.dante.extex.scanner.type.token.Token)
      */
     public void subscriptMark(final Context context, final TokenSource source,
             Typesetter typesetter, final Token token)
@@ -215,7 +218,8 @@ public abstract class AbstractListMaker implements ListMaker {
      * @see de.dante.extex.typesetter.ListMaker#superscriptMark(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
-     *      Typesetter, de.dante.extex.scanner.type.Token)
+     *      de.dante.extex.typesetter.Typesetter,
+     *      de.dante.extex.scanner.type.token.Token)
      */
     public void superscriptMark(final Context context,
             final TokenSource source, final Typesetter typesetter,
@@ -229,7 +233,7 @@ public abstract class AbstractListMaker implements ListMaker {
      * @see de.dante.extex.typesetter.ListMaker#tab(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.scanner.type.Token)
+     *      de.dante.extex.scanner.type.token.Token)
      */
     public void tab(final Context context, final TokenSource source,
             final Token token)

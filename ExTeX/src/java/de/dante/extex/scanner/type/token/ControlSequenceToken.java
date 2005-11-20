@@ -39,7 +39,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class ControlSequenceToken extends AbstractToken implements CodeToken {
 
@@ -238,7 +238,7 @@ public class ControlSequenceToken extends AbstractToken implements CodeToken {
 
     /**
      * @see de.dante.extex.scanner.type.token.Token#visit(
-     *      de.dante.extex.scanner.type.TokenVisitor,
+     *      de.dante.extex.scanner.type.token.TokenVisitor,
      *      java.lang.Object)
      */
     public Object visit(final TokenVisitor visitor, final Object arg1)

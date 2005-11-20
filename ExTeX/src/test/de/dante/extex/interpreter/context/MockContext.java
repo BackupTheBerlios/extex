@@ -65,7 +65,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * classes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public class MockContext implements Context, TypesetterOptions {
 
@@ -96,7 +96,7 @@ public class MockContext implements Context, TypesetterOptions {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.ContextGroup#afterGroup(de.dante.extex.scanner.type.Token)
+     * @see de.dante.extex.interpreter.context.ContextGroup#afterGroup(de.dante.extex.scanner.type.token.Token)
      */
     public void afterGroup(final Token t) throws InterpreterException {
 
@@ -128,7 +128,7 @@ public class MockContext implements Context, TypesetterOptions {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#esc(de.dante.extex.scanner.type.Token)
+     * @see de.dante.extex.interpreter.context.Context#esc(de.dante.extex.scanner.type.token.Token)
      */
     public String esc(final Token token) {
 
@@ -589,7 +589,7 @@ public class MockContext implements Context, TypesetterOptions {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setAfterassignment(de.dante.extex.scanner.type.Token)
+     * @see de.dante.extex.interpreter.context.Context#setAfterassignment(de.dante.extex.scanner.type.token.Token)
      */
     public void setAfterassignment(final Token token) {
 
@@ -810,7 +810,7 @@ public class MockContext implements Context, TypesetterOptions {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setTokenFactory(de.dante.extex.scanner.type.TokenFactory)
+     * @see de.dante.extex.interpreter.context.Context#setTokenFactory(de.dante.extex.scanner.type.token.TokenFactory)
      */
     public void setTokenFactory(final TokenFactory factory) {
 

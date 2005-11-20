@@ -42,7 +42,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationMissingExcep
  * configuration.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class OutputFactory extends AbstractFactory
         implements
@@ -52,7 +52,7 @@ public class OutputFactory extends AbstractFactory
      * This class provides a mutable Integer.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.15 $
+     * @version $Revision: 1.16 $
      */
     private class Int {
 
@@ -168,7 +168,7 @@ public class OutputFactory extends AbstractFactory
     }
 
     /**
-     * @see de.dante.extex.documentWriter.OutputStreamFactory#getDestination()
+     * @see de.dante.extex.backend.documentWriter.OutputStreamFactory#getDestination()
      */
     public String getDestination() {
 
@@ -176,7 +176,7 @@ public class OutputFactory extends AbstractFactory
     }
 
     /**
-     * @see de.dante.extex.documentWriter.OutputStreamFactory#getOutputStream()
+     * @see de.dante.extex.backend.documentWriter.OutputStreamFactory#getOutputStream()
      */
     public OutputStream getOutputStream() throws DocumentWriterException {
 
@@ -184,7 +184,7 @@ public class OutputFactory extends AbstractFactory
     }
 
     /**
-     * @see de.dante.extex.documentWriter.OutputStreamFactory#getOutputStream(
+     * @see de.dante.extex.backend.documentWriter.OutputStreamFactory#getOutputStream(
      *      java.lang.String)
      */
     public OutputStream getOutputStream(final String type)
@@ -206,7 +206,7 @@ public class OutputFactory extends AbstractFactory
      *
      * @throws DocumentWriterException in case of an error
      *
-     * @see de.dante.extex.documentWriter.OutputStreamFactory#getOutputStream(
+     * @see de.dante.extex.backend.documentWriter.OutputStreamFactory#getOutputStream(
      *      java.lang.String, java.lang.String)
      */
     public OutputStream getOutputStream(final String name, final String type)
@@ -312,7 +312,7 @@ public class OutputFactory extends AbstractFactory
     }
 
     /**
-     * @see de.dante.extex.documentWriter.OutputStreamFactory#setExtension(
+     * @see de.dante.extex.backend.documentWriter.OutputStreamFactory#setExtension(
      *      java.lang.String)
      */
     public void setExtension(final String extension) {

@@ -28,7 +28,7 @@ import de.dante.extex.scanner.type.token.Token;
  * Observer for tokens which are read from the token stream.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class TokenObserver implements PopObserver {
 
@@ -50,7 +50,7 @@ public class TokenObserver implements PopObserver {
 
     /**
      * @see de.dante.extex.interpreter.observer.pop.PopObserver#update(
-     *      de.dante.extex.scanner.type.Token)
+     *      de.dante.extex.scanner.type.token.Token)
      */
     public void update(final Token token) {
 

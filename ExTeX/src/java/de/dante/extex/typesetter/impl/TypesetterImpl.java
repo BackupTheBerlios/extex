@@ -65,7 +65,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.79 $
+ * @version $Revision: 1.80 $
  */
 public class TypesetterImpl
         implements
@@ -410,7 +410,7 @@ public class TypesetterImpl
      * @see de.dante.extex.typesetter.ListMaker#mathShift(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.scanner.type.Token)
+     *      de.dante.extex.scanner.type.token.Token)
      */
     public void mathShift(final Context context, final TokenSource source,
             final Token t) throws TypesetterException, ConfigurationException {
@@ -474,7 +474,7 @@ public class TypesetterImpl
 
     /**
      * @see de.dante.extex.typesetter.Typesetter#setDocumentWriter(
-     *     de.dante.extex.documentWriter.DocumentWriter)
+     *     de.dante.extex.backend.documentWriter.DocumentWriter)
      */
     public void setDocumentWriter(final DocumentWriter writer) {
 
@@ -606,7 +606,7 @@ public class TypesetterImpl
      * @see de.dante.extex.typesetter.ListMaker#subscriptMark(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
-     *      Typesetter, de.dante.extex.scanner.type.Token)
+     *      Typesetter, de.dante.extex.scanner.type.token.Token)
      */
     public void subscriptMark(final Context context, final TokenSource source,
             Typesetter typesetter, final Token t) throws TypesetterException {
@@ -618,7 +618,7 @@ public class TypesetterImpl
      * @see de.dante.extex.typesetter.Typesetter#superscriptMark(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
-     *      Typesetter, de.dante.extex.scanner.type.Token)
+     *      Typesetter, de.dante.extex.scanner.type.token.Token)
      */
     public void superscriptMark(final Context context,
             final TokenSource source, final Typesetter typesetter, final Token t)
@@ -630,7 +630,7 @@ public class TypesetterImpl
     /**
      * @see de.dante.extex.typesetter.Typesetter#tab(
      *      Context,
-     *      TokenSource, de.dante.extex.scanner.type.Token)
+     *      TokenSource, de.dante.extex.scanner.type.token.Token)
      */
     public void tab(final Context context, final TokenSource source,
             final Token t) throws TypesetterException, ConfigurationException {

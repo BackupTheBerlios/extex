@@ -28,7 +28,7 @@ import de.dante.extex.scanner.type.token.Token;
  * Observer for the operation of pushing a token to the token stream.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class TokenPushObserver implements PushObserver {
 
@@ -50,7 +50,7 @@ public class TokenPushObserver implements PushObserver {
 
     /**
      * @see de.dante.extex.interpreter.observer.push.PushObserver#update(
-     *      de.dante.extex.scanner.type.Token)
+     *      de.dante.extex.scanner.type.token.Token)
      */
     public void update(final Token token) {
 

@@ -34,7 +34,7 @@ import de.dante.util.Locator;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public class TokenStreamBaseImpl implements TokenStream {
 
@@ -96,7 +96,7 @@ public class TokenStreamBaseImpl implements TokenStream {
 
     /**
      * @see de.dante.extex.scanner.stream.TokenStream#get(
-     *      de.dante.extex.scanner.type.TokenFactory,
+     *      de.dante.extex.scanner.type.token.TokenFactory,
      *      de.dante.extex.interpreter.Tokenizer)
      */
     public Token get(final TokenFactory factory, final Tokenizer tokenizer)
@@ -169,7 +169,7 @@ public class TokenStreamBaseImpl implements TokenStream {
 
     /**
      * @see de.dante.extex.scanner.stream.TokenStream#put(
-     *      de.dante.extex.scanner.type.Token)
+     *      de.dante.extex.scanner.type.token.Token)
      */
     public void put(final Token token) {
 

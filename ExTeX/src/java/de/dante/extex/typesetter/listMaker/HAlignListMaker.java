@@ -47,7 +47,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [770]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class HAlignListMaker extends RestrictedHorizontalListMaker
         implements
@@ -57,7 +57,7 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
      * This inner class is a container for the cell information in an alignment.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.15 $
+     * @version $Revision: 1.16 $
      */
     protected class Cell {
 
@@ -157,7 +157,7 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
 
     /**
      * The field <tt>width</tt> contains the target width or <code>null</code>
-     * to indicate that the natural width sould be used.
+     * to indicate that the natural width should be used.
      */
     private FixedDimen width;
 
@@ -346,7 +346,7 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
      * @see de.dante.extex.typesetter.ListMaker#tab(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.scanner.type.Token)
+     *      de.dante.extex.scanner.type.token.Token)
      */
     public void tab(final Context context, final TokenSource source,
             final Token token)
@@ -370,4 +370,5 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
         col++;
         startCell(context, source);
     }
+
 }

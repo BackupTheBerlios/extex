@@ -53,7 +53,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class NullTypesetterImpl implements Typesetter {
 
@@ -124,7 +124,7 @@ public class NullTypesetterImpl implements Typesetter {
 
     /**
      * @see de.dante.util.framework.configuration.Configurable#configure(
-     *     de.dante.util.configuration.Configuration)
+     *     de.dante.util.framework.configuration.Configuration)
      */
     public void configure(final Configuration config) {
 
@@ -245,7 +245,7 @@ public class NullTypesetterImpl implements Typesetter {
      * @see de.dante.extex.typesetter.ListMaker#mathShift(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.scanner.type.Token)
+     *      de.dante.extex.scanner.type.token.Token)
      */
     public void mathShift(final Context context, final TokenSource source,
             final Token t) throws TypesetterException, ConfigurationException {
@@ -284,7 +284,7 @@ public class NullTypesetterImpl implements Typesetter {
 
     /**
      * @see de.dante.extex.typesetter.Typesetter#setDocumentWriter(
-     *     de.dante.extex.documentWriter.DocumentWriter)
+     *     de.dante.extex.backend.documentWriter.DocumentWriter)
      */
     public void setDocumentWriter(final DocumentWriter doc) {
 
@@ -408,7 +408,7 @@ public class NullTypesetterImpl implements Typesetter {
      * @see de.dante.extex.typesetter.Typesetter#tab(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.context.TypesettingContext,
-     *      de.dante.extex.scanner.type.Token)
+     *      de.dante.extex.scanner.type.token.Token)
      */
     public void tab(final Context context, final TokenSource source,
             final Token t) throws TypesetterException, ConfigurationException {
@@ -419,7 +419,7 @@ public class NullTypesetterImpl implements Typesetter {
      * @see de.dante.extex.typesetter.Typesetter#letter(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.context.TypesettingContext,
-     *      de.dante.extex.scanner.type.Token)
+     *      de.dante.extex.scanner.type.token.Token)
      */
     public void treatLetter(final TypesettingContext context, final Token t)
             throws GeneralException {

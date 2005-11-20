@@ -72,7 +72,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This is the list maker for the inline math formulae.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
 public class MathListMaker extends AbstractListMaker implements NoadConsumer {
 
@@ -81,7 +81,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      * It is used to store to the stack and restore the state from the stack.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.29 $
+     * @version $Revision: 1.30 $
      */
     private class MathMemento {
 
@@ -414,7 +414,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      * @see de.dante.extex.typesetter.ListMaker#mathShift(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.scanner.type.Token)
+     *      de.dante.extex.scanner.type.token.Token)
      */
     public void mathShift(final Context context, final TokenSource source,
             final Token t) throws TypesetterException, ConfigurationException {
@@ -545,7 +545,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      * @see de.dante.extex.typesetter.ListMaker#subscriptMark(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
-     *      Typesetter, de.dante.extex.scanner.type.Token)
+     *      Typesetter, de.dante.extex.scanner.type.token.Token)
      */
     public void subscriptMark(final Context context, final TokenSource source,
             final Typesetter typesetter, final Token token)
@@ -568,7 +568,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      * @see de.dante.extex.typesetter.ListMaker#superscriptMark(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
-     *      Typesetter, de.dante.extex.scanner.type.Token)
+     *      Typesetter, de.dante.extex.scanner.type.token.Token)
      */
     public void superscriptMark(final Context context,
             final TokenSource source, final Typesetter typesetter,

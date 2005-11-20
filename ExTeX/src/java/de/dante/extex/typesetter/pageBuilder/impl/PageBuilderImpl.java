@@ -25,6 +25,7 @@ import de.dante.extex.backend.documentWriter.DocumentWriter;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.OutputRoutine;
+import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
@@ -38,7 +39,7 @@ import de.dante.util.exception.GeneralException;
  * This is a first reference implementation of a page builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class PageBuilderImpl implements PageBuilder {
 
@@ -103,8 +104,10 @@ public class PageBuilderImpl implements PageBuilder {
     public void flush(final NodeList nodes) throws TypesetterException {
 
         if (nodes.size() > 0) {
-            Page page = pageFactory.newInstance(nodes, context);
+            Typesetter typesetter = null; //TODO gene: provide typesetter?
             try {
+                Page page = pageFactory.newInstance(nodes, context, typesetter);
+
                 if (this.outputRoutine != null) {
                     this.outputRoutine.output(page, documentWriter);
                 } else {
@@ -158,7 +161,7 @@ public class PageBuilderImpl implements PageBuilder {
      * @param docWriter the new document writer to use
      *
      * @see de.dante.extex.typesetter.pageBuilder.PageBuilder#setDocumentWriter(
-     *      de.dante.extex.documentWriter.DocumentWriter)
+     *      de.dante.extex.backend.documentWriter.DocumentWriter)
      */
     public void setDocumentWriter(final DocumentWriter docWriter) {
 

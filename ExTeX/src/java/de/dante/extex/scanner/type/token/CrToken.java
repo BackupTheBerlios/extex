@@ -31,7 +31,7 @@ import de.dante.util.UnicodeChar;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class CrToken extends AbstractToken implements Token {
 
@@ -120,7 +120,7 @@ public class CrToken extends AbstractToken implements Token {
 
     /**
      * @see de.dante.extex.scanner.type.token.Token#visit(
-     *      de.dante.extex.scanner.type.TokenVisitor,
+     *      de.dante.extex.scanner.type.token.TokenVisitor,
      *      java.lang.Object)
      */
     public Object visit(final TokenVisitor visitor, final Object arg1)

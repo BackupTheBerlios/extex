@@ -55,7 +55,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationSyntaxExcept
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class TokenStreamTeXImpl extends AbstractTokenStreamImpl
         implements
@@ -228,7 +228,7 @@ public class TokenStreamTeXImpl extends AbstractTokenStreamImpl
 
     /**
      * @see de.dante.extex.scanner.stream.impl.TokenStreamBaseImpl#getNext(
-     *      de.dante.extex.scanner.type.TokenFactory,
+     *      de.dante.extex.scanner.type.token.TokenFactory,
      *      de.dante.extex.interpreter.Tokenizer)
      */
     protected Token getNext(final TokenFactory factory,

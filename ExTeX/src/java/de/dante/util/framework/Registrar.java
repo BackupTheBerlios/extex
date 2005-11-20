@@ -29,7 +29,7 @@ import java.util.List;
  *
  * <p>
  *  Whenever an object is deserialized Java tries to invoke the method
- *  {@link readResolve() readResolve()}. This method can be used to get a hand
+ *  <tt>readResolve()</tt>. This method can be used to get a hand
  *  on the object which has just been reconstructed. Here the object can be
  *  replaced by another one or some other action can be applied.
  * </p>
@@ -66,7 +66,7 @@ import java.util.List;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public final class Registrar {
 
@@ -74,7 +74,7 @@ public final class Registrar {
      * This class provides a container for a pair of a class and an observer.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.3 $
+     * @version $Revision: 1.4 $
      */
     private static final class Obs {
 

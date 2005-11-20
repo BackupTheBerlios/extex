@@ -149,7 +149,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * Treat segments of a paragraph separated by forced breaks separately.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public class ParagraphBuilderImpl
         implements
@@ -282,7 +282,7 @@ public class ParagraphBuilderImpl
 
     /**
      * @see de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder#build(
-     *      de.dante.extex.interpreter.type.node.HorizontalListNode)
+     *      de.dante.extex.typesetter.type.node.HorizontalListNode)
      */
     public NodeList build(final HorizontalListNode nodes) {
 

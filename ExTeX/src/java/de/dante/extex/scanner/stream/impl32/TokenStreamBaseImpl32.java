@@ -45,7 +45,7 @@ import de.dante.util.exception.GeneralException;
  * It use 32 bit characters!
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public abstract class TokenStreamBaseImpl32
         implements
@@ -253,7 +253,7 @@ public abstract class TokenStreamBaseImpl32
 
     /**
      * @see de.dante.extex.scanner.stream.impl32.TokenStreamBaseImpl#getNext(
-     *      de.dante.extex.scanner.type.TokenFactory,de.dante.extex.interpreter.Tokenizer)
+     *      de.dante.extex.scanner.type.token.TokenFactory,de.dante.extex.interpreter.Tokenizer)
      */
     public Token getNext(final TokenFactory factory, final Tokenizer tokenizer)
             throws ScannerException {

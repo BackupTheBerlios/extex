@@ -35,7 +35,7 @@ import de.dante.util.UnicodeChar;
  * with push() or reduced with pop().
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public abstract class AbstractTokenStreamImpl implements TokenStream {
 
@@ -80,7 +80,7 @@ public abstract class AbstractTokenStreamImpl implements TokenStream {
 
     /**
      * @see de.dante.extex.scanner.stream.TokenStream#get(
-     *      de.dante.extex.scanner.type.TokenFactory,
+     *      de.dante.extex.scanner.type.token.TokenFactory,
      *      de.dante.extex.interpreter.Tokenizer)
      */
     public Token get(final TokenFactory factory, final Tokenizer tokenizer)
@@ -92,7 +92,7 @@ public abstract class AbstractTokenStreamImpl implements TokenStream {
 
     /**
      * @see de.dante.extex.scanner.stream.TokenStream#put(
-     *      de.dante.extex.scanner.type.Token)
+     *      de.dante.extex.scanner.type.token.Token)
      */
     public void put(final Token token) {
 

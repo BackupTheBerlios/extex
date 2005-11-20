@@ -30,7 +30,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [682]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class RelationNoad extends AbstractNucleusNoad {
 
@@ -46,7 +46,7 @@ public class RelationNoad extends AbstractNucleusNoad {
 
     /**
      * @see "TTP [696]"
-     * @see de.dante.extex.typesetter.type.noad.Noad#toStringAdd(
+     * @see de.dante.extex.typesetter.type.noad.AbstractNoad#toStringAdd(
      *      java.lang.StringBuffer,
      *      int)
      */

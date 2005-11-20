@@ -53,7 +53,7 @@ import de.dante.util.framework.configuration.Configuration;
  * JUnit tests for class <code>DviDocumentWriter</code>.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 
 public class DviDocumentWriterTest extends TestCase {
@@ -134,13 +134,13 @@ public class DviDocumentWriterTest extends TestCase {
 
     /**
      * Test if {@link
-     *   de.dante.extex.documentWriter.dvi.DviDocumentWriter
+     *   de.dante.extex.backend.documentWriter.dvi.DviDocumentWriter
      *   DviDocumentWriter }
      * throws a {@link
-     *   de.dante.extex.documentWriter.NoOutputStreamException
+     *   de.dante.extex.backend.documentWriter.NoOutputStreamException
      * NoOutputStreamException},
      * if there is no OutputStream set before {@link
-     *   de.dante.extex.documentWriter.DocumentWriter#shipout(
+     *   de.dante.extex.backend.documentWriter.DocumentWriter#shipout(
      *   de.dante.extex.typesetter.type.NodeList) shipout()}.
      *
      * @exception Exception if an error occurs
@@ -330,7 +330,7 @@ public class DviDocumentWriterTest extends TestCase {
     private class MockDocumentWriterOptions implements DocumentWriterOptions {
 
         /**
-         * @see de.dante.extex.documentWriter.DocumentWriterOptions#getTokensOption(java.lang.String)
+         * @see de.dante.extex.backend.documentWriter.DocumentWriterOptions#getTokensOption(java.lang.String)
          */
         public Tokens getTokensOption(String name) {
 

@@ -23,10 +23,10 @@ import junit.framework.TestCase;
 import de.dante.extex.backend.documentWriter.util.PageManager;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This class contains a test suite for the PageManager.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class PageManagerTest extends TestCase {
 
