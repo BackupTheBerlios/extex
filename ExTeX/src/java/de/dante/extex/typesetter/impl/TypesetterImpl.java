@@ -65,7 +65,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.80 $
+ * @version $Revision: 1.81 $
  */
 public class TypesetterImpl
         implements
@@ -523,13 +523,13 @@ public class TypesetterImpl
     }
 
     /**
-     * Setter for paragraphBuilder.
+     * Setter for paragraph builder.
      *
-     * @param theParagraphBuilder the paragraphBuilder to set.
+     * @param parBuilder the paragraph builder to set.
      */
-    public void setParagraphBuilder(final ParagraphBuilder theParagraphBuilder) {
+    public void setParagraphBuilder(final ParagraphBuilder parBuilder) {
 
-        paragraphBuilder = theParagraphBuilder;
+        paragraphBuilder = parBuilder;
         if (paragraphBuilder instanceof LogEnabled) {
             ((LogEnabled) paragraphBuilder).enableLogging(logger);
         }
