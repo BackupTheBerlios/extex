@@ -39,7 +39,7 @@ import de.dante.util.exception.GeneralException;
  * This is a first reference implementation of a page builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class PageBuilderImpl implements PageBuilder {
 
@@ -65,9 +65,9 @@ public class PageBuilderImpl implements PageBuilder {
     private OutputRoutine outputRoutine = null;
 
     /**
-     * The field <tt>pageFactory</tt> contains the ...
+     * The field <tt>pageFactory</tt> contains the page factory to use.
      */
-    private PageFactory pageFactory = new PageFactory();
+    private PageFactory pageFactory = null;
 
     /**
      * Creates a new object.
@@ -185,6 +185,15 @@ public class PageBuilderImpl implements PageBuilder {
     public void setOutputRoutine(final OutputRoutine output) {
 
         this.outputRoutine = output;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.pageBuilder.PageBuilder#setPageFactory(
+     *      de.dante.extex.typesetter.type.page.PageFactory)
+     */
+    public void setPageFactory(PageFactory factory) {
+
+        pageFactory = factory;
     }
 
 }

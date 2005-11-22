@@ -26,12 +26,13 @@ import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
+import de.dante.extex.typesetter.type.page.PageFactory;
 
 /**
  * This interface describes the capabilities of a page builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public interface PageBuilder {
 
@@ -99,5 +100,12 @@ public interface PageBuilder {
      * @param output the output routine
      */
     void setOutputRoutine(OutputRoutine output);
+
+    /**
+     * Setter for the page factory.
+     *
+     * @param factory the page factory
+     */
+    void setPageFactory(PageFactory factory);
 
 }
