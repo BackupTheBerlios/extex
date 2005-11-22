@@ -42,7 +42,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * This class provides a factory for page instances.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class PageFactory implements LogEnabled {
 
@@ -52,7 +52,8 @@ public class PageFactory implements LogEnabled {
     private Logger logger = null;
 
     /**
-     * The field <tt>sizePattern</tt> contains the ...
+     * The field <tt>sizePattern</tt> contains the pattern for matching the
+     * papersize special.
      */
     private Pattern sizePattern;
 
@@ -91,6 +92,13 @@ public class PageFactory implements LogEnabled {
             final Typesetter typesetter) throws GeneralException {
 
         PageImpl page = new PageImpl(nodes);
+
+        page.setMediaWidth(context.getDimen("mediawidth"));
+        page.setMediaHeight(context.getDimen("mediaheight"));
+        //page.setMediaHOffset(context.getDimen("mediawidth"));
+        //page.setMediaVOffset(context.getDimen("mediaheight"));
+
+        
         int size = nodes.size();
         for (int i = 0; i < size; i++) {
             Node node = nodes.get(i);
@@ -98,6 +106,8 @@ public class PageFactory implements LogEnabled {
                 //TODO gene: unimplemented
                 throw new RuntimeException("unimplemented");
 
+            } else if (node instanceof NodeList) {
+                process(page, (NodeList) node, context, typesetter);
             } else if (node instanceof WhatsItNode) {
                 node.atShipping(context, typesetter);
 
@@ -108,6 +118,36 @@ public class PageFactory implements LogEnabled {
             }
         }
         return page;
+    }
+
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param page
+     * @param nodes the nodes to traverse
+     * @param context the interpreter context
+     * @param typesetter the typesetter
+     *
+     * @throws GeneralException in case of an error
+     */
+    private void process(Page page, final NodeList nodes,
+            final Context context, final Typesetter typesetter)
+            throws GeneralException {
+
+        int size = nodes.size();
+        for (int i = 0; i < size; i++) {
+            Node node = nodes.get(i);
+            if (node instanceof NodeList) {
+                process(page, (NodeList) node, context, typesetter);
+            } else if (node instanceof WhatsItNode) {
+                node.atShipping(context, typesetter);
+
+                if (node instanceof SpecialNode) {
+                    processSpecialNode((SpecialNode) node, page, context,
+                            typesetter);
+                }
+            }
+        }
     }
 
     /**
