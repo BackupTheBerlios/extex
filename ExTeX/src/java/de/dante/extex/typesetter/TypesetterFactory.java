@@ -24,9 +24,11 @@ import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.hyphenator.Hyphenator;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
+import de.dante.extex.typesetter.type.page.PageFactory;
 import de.dante.util.framework.AbstractFactory;
 import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
+import de.dante.util.framework.logger.LogEnabled;
 
 /**
  * This is the factory for instances of
@@ -47,7 +49,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class TypesetterFactory extends AbstractFactory {
 
@@ -88,6 +90,11 @@ public class TypesetterFactory extends AbstractFactory {
         PageBuilder pageBuilder = (PageBuilder) createInstanceForConfiguration(
                 cfg, PageBuilder.class);
         pageBuilder.setContext(context);
+        PageFactory pageFactory = new PageFactory();
+        if (pageFactory instanceof LogEnabled) {
+            ((LogEnabled) pageFactory).enableLogging(getLogger());
+        }
+        pageBuilder.setPageFactory(pageFactory);
         return pageBuilder;
     }
 
