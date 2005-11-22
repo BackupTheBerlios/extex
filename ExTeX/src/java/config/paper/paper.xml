@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!--
+  -  Copyright (C) 2005 The ExTeX Group
+  -
+  -  This library is free software; you can redistribute it and/or modify it
+  -  under the terms of the GNU Lesser General Public License as published by
+  -  the Free Software Foundation; either version 2.1 of the License, or (at
+  -  your option) any later version.
+  -
+  -  This library is distributed in the hope that it will be useful, but
+  -  WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  -  or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+  -  License for more details.
+  -
+  -  You should have received a copy of the GNU Lesser General Public License
+  -  along with this library; if not, write to the Free Software Foundation,
+  -  Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+  -
+  -->
+<paper>
+  <letter     name="Letter"  width="8.5in" height="11in" />
+  <legal      name="Legal"   width="8.5in" height="14in" />
+  <folio      name="Folio"   width="8.5in" height="13in" />
+  <ledger     name="Ledger"  width="17in"  height="11in" />
+  <tabloid    name="Tabloid" width="11in"  height="17in" />
+  <a6         name="A6"      width="105mm" height="148mm" />
+  <a5         name="A5"      width="148mm" height="210mm" />
+  <a4         name="A4"      width="210mm" height="297mm" />
+  <a3         name="A3"      width="297mm" height="420mm" />
+  <a2         name="A2"      width="420mm" height="594mm" />
+  <a1         name="A1"      width="594mm" height="841mm" />
+  <a0         name="A0"      width="841mm" height="1189mm" />
+  <b6         name="B6"      width="128mm" height="182mm" />
+  <b5         name="B5"      width="182mm" height="257mm" />
+  <b4         name="B4"      width="257mm" height="364mm" />
+  <b3         name="B3"      width="364mm" height="515mm" />
+</paper>
