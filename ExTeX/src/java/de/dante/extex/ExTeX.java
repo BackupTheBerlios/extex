@@ -62,6 +62,7 @@ import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.interaction.Interaction;
 import de.dante.extex.interpreter.interaction.InteractionUnknownException;
 import de.dante.extex.interpreter.loader.LoaderException;
+import de.dante.extex.interpreter.max.StringSource;
 import de.dante.extex.interpreter.output.TeXOutputRoutine;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
@@ -248,6 +249,13 @@ import de.dante.util.resource.ResourceFinderFactory;
  *    property for the fallback if the output directory fails to be writable.
  *   </dd>
  *
+ *   <dt><a name="extex.paper"/><tt>extex.paper</tt></dt>
+ *   <dd>
+ *    This parameter contains the default size of the paper. It can be one of
+ *    the symbolic names defined in <tt>paper/paper.xml</tt>. Otherwise the
+ *    value is interpreted as a pair of width and height separated by a space.
+ *   </dd>
+ *
  *   <dt><a name="extex.progname"/><tt>extex.progname</tt></dt>
  *   <dd>
  *    This parameter can be used to overrule the name of the program shown in
@@ -323,7 +331,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.122 $
+ * @version $Revision: 1.123 $
  */
 public class ExTeX {
 
@@ -437,8 +445,8 @@ public class ExTeX {
     /**
      * The field <tt>PROP_OUTPUT_TYPE</tt> contains the name of the property for
      * the output driver. This value is resolved by the
-     * {@link de.dante.extex.backend.documentWriter.DocumentWriterFactory DocumentWriterFactory}
-     * to find the appropriate class.
+     * {@link de.dante.extex.backend.documentWriter.DocumentWriterFactory
+     * DocumentWriterFactory} to find the appropriate class.
      */
     protected static final String PROP_OUTPUT_TYPE = "extex.output";
 
@@ -453,6 +461,12 @@ public class ExTeX {
      * property for the fallback if the output directory fails to be writable.
      */
     protected static final String PROP_OUTPUTDIR_FALLBACK = "extex.outputdir.fallback";
+
+    /**
+     * The field <tt>PROP_PAGE</tt> contains the name of the
+     * property for the default page dimensions.
+     */
+    protected static final String PROP_PAGE = "extex.page";
 
     /**
      * The field <tt>PROP_PROGNAME</tt> contains the name of the
@@ -632,6 +646,7 @@ public class ExTeX {
         propertyDefault(PROP_OUTPUT_TYPE, "");
         propertyDefault(PROP_OUTPUTDIR, ".");
         propertyDefault(PROP_OUTPUTDIR_FALLBACK, ".");
+        propertyDefault(PROP_PAGE, "");
         propertyDefault(PROP_PROGNAME, "ExTeX");
         propertyDefault(PROP_TEXINPUTS, null);
         propertyDefault(PROP_TOKEN_STREAM, "base");
@@ -1177,6 +1192,8 @@ public class ExTeX {
             logger.info(localizer.format("InteractionNotSupported"));
         }
 
+        makePageSize(context);
+
         Configuration fontConfiguration = config.getConfiguration(TAG_FONT);
 
         if (fontConfiguration == null) {
@@ -1192,6 +1209,46 @@ public class ExTeX {
         initializeStreams(interpreter, properties);
 
         return interpreter;
+    }
+
+    /**
+     * Determine the default paper size.
+     *
+     * @param context the context
+     *
+     * @throws ConfigurationException in case of an configuration error
+     * @throws GeneralException in case of another error
+     */
+    private void makePageSize(final Context context)
+            throws ConfigurationException,
+                GeneralException {
+
+        String page = (String) properties.get(PROP_PAGE);
+        Configuration cfg = new ConfigurationFactory().newInstance(
+                "config/paper/paper").findConfiguration(page);
+        String w = "210mm";
+        String h = "297mm";
+        int i = page.indexOf(' ');
+        if (cfg != null) {
+            w = cfg.getAttribute("width");
+            h = cfg.getAttribute("height");
+        } else if (i > 0) {
+            w = page.substring(0, i);
+            h = page.substring(i + 1);
+        } else if (!"".equals(page)) {
+            throw new GeneralException(localizer.format(
+                    "ExTeX.InvalidPageSize", page));
+        }
+        try {
+            Dimen width = new Dimen(context, new StringSource(w), null);
+            Dimen height = new Dimen(context, new StringSource(h), null);
+
+            context.setDimen("mediawidth", width, true);
+            context.setDimen("mediaheight", height, true);
+        } catch (Exception e) {
+            throw new GeneralException(localizer.format(
+                    "ExTeX.InvalidPageSize", page), e);
+        }
     }
 
     /**

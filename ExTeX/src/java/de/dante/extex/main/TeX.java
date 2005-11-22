@@ -479,6 +479,13 @@ import de.dante.util.resource.ResourceFinder;
  *   <dd>Command line:
  *    <a href="#-texmfoutputs"><tt>-texmfoutputs &lang;dir&rang;</tt></a> </dd>
  *
+ *   <dt><a name="extex.paper"/><tt>extex.paper</tt></dt>
+ *   <dd>
+ *    This parameter contains the default size of the paper. It can be one of
+ *    the symbolic names defined in <tt>paper/paper.xml</tt>. Otherwise the
+ *    value is interpreted as a pair of width and height separated by a space.
+ *   </dd>
+ *
  *   <dt><a name="extex.progname"/><tt>extex.progname</tt></dt>
  *   <dd>
  *    This parameter can be used to overrule the name of the program shown in
@@ -587,7 +594,7 @@ import de.dante.util.resource.ResourceFinder;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class TeX extends ExTeX {
 
