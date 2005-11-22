@@ -27,9 +27,37 @@ import de.dante.extex.typesetter.type.NodeList;
  * access to additional parameters.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface Page {
+
+    /**
+     * Getter for the height of the media.
+     *
+     * @return the height of the media
+     */
+    Dimen getMediaHeight();
+
+    /**
+     * Getter for the horizontal offset of the media.
+     *
+     * @return the horizontal offset of the media
+     */
+    Dimen getMediaHOffset();
+
+    /**
+     * Getter for the vertical offset of the media.
+     *
+     * @return the vertical offset of the media
+     */
+    Dimen getMediaVOffset();
+
+    /**
+     * Getter for the width of the media.
+     *
+     * @return the width of the media
+     */
+    Dimen getMediaWidth();
 
     /**
      * Getter for the node list.
@@ -41,18 +69,25 @@ public interface Page {
     NodeList getNodes();
 
     /**
-     * Getter for the width of the media.
+     * Setter for the height of the media.
      *
-     * @return the width of the media
+     * @param height the media height
      */
-    Dimen getMediaWidth();
+    void setMediaHeight(Dimen height);
 
     /**
-     * Getter for the height of the media.
+     * Setter for the horizontal offset of the media.
      *
-     * @return the height of the media
+     * @param offset the media horizontal offset
      */
-    Dimen getMediaHeight();
+    void setMediaHOffset(Dimen offset);
+
+    /**
+     * Setter for the vertical offset of the media.
+     *
+     * @param offset the media vertical offset
+     */
+    void setMediaVOffset(Dimen offset);
 
     /**
      * Setter for the width of the media.
@@ -61,10 +96,4 @@ public interface Page {
      */
     void setMediaWidth(Dimen width);
 
-    /**
-     * Setter for the height of the media.
-     *
-     * @param height the media height
-     */
-    void setMediaHeight(Dimen  height);
 }

@@ -27,7 +27,7 @@ import de.dante.extex.typesetter.type.NodeList;
  * contains additional administrative information.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class PageImpl implements Page {
 
@@ -36,6 +36,10 @@ public class PageImpl implements Page {
      */
     private Dimen mediaHeight = new Dimen(
             Dimen.ONE_INCH.getValue() * 2970 / 254);
+
+    private Dimen mediaHOffset = new Dimen(Dimen.ONE_INCH);
+
+    private Dimen mediaVOffset = new Dimen(Dimen.ONE_INCH);
 
     /**
      * The field <tt>mediaWidth</tt> contains the ...
@@ -66,6 +70,22 @@ public class PageImpl implements Page {
     }
 
     /**
+     * @see de.dante.extex.typesetter.type.page.Page#getMediaHOffset()
+     */
+    public Dimen getMediaHOffset() {
+
+        return mediaHOffset;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.page.Page#getMediaVOffset()
+     */
+    public Dimen getMediaVOffset() {
+
+        return mediaVOffset;
+    }
+
+    /**
      * @see de.dante.extex.typesetter.type.page.Page#getMediaWidth()
      */
     public Dimen getMediaWidth() {
@@ -90,17 +110,35 @@ public class PageImpl implements Page {
      */
     public void setMediaHeight(final Dimen mediaHeight) {
 
-        this.mediaHeight = mediaHeight;
+        mediaHeight.set(mediaHeight);
     }
 
     /**
-     * Setter for mediaWidth.
-     *
-     * @param mediaWidth the mediaWidth to set
+     * @see de.dante.extex.typesetter.type.page.Page#setMediaHOffset(
+     *      de.dante.extex.interpreter.type.dimen.Dimen)
      */
-    public void setMediaWidth(final Dimen mediaWidth) {
+    public void setMediaHOffset(final Dimen offset) {
 
-        this.mediaWidth = mediaWidth;
+        mediaHOffset.set(offset);
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.page.Page#setMediaVOffset(
+     *      de.dante.extex.interpreter.type.dimen.Dimen)
+     */
+    public void setMediaVOffset(final Dimen offset) {
+
+        mediaVOffset.set(offset);
+    }
+
+    /**
+     * Setter for media width.
+     *
+     * @param width the mediaWidth to set
+     */
+    public void setMediaWidth(final Dimen width) {
+
+        mediaWidth.set(width);
     }
 
 }
