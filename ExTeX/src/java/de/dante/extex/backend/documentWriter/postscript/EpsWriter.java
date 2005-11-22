@@ -29,13 +29,14 @@ import de.dante.extex.backend.documentWriter.postscript.util.PsConverter;
 import de.dante.extex.backend.documentWriter.postscript.util.PsUnit;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.type.NodeList;
+import de.dante.extex.typesetter.type.page.Page;
 import de.dante.util.exception.GeneralException;
 
 /**
  * This document writer produces Encapsulated Postscript documents.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class EpsWriter extends AbstractPostscriptWriter {
 
@@ -87,31 +88,27 @@ public class EpsWriter extends AbstractPostscriptWriter {
     }
 
     /**
-     * @see de.dante.extex.backend.documentWriter.postscript.AbstractPostscriptWriter#shipout(
-     *      de.dante.extex.typesetter.type.NodeList,
-     *      de.dante.extex.interpreter.type.dimen.Dimen,
-     *      de.dante.extex.interpreter.type.dimen.Dimen)
+     * @see de.dante.extex.backend.documentWriter.DocumentWriter#shipout(
+     *      de.dante.extex.typesetter.type.page.Page)
      */
-    public int shipout(final NodeList nodes, final Dimen width,
-            final Dimen height) throws GeneralException, IOException {
+    public int shipout(final Page p) throws GeneralException, IOException {
 
         if (init) {
-            init = false;
-
             headerManager.reset();
             converter = makeConverter(headerManager);
+            init = false;
         }
 
         OutputStream stream = newOutputStream("eps");
 
-        byte[] bytes = converter.nodesToPostScript(nodes, fontManager,
+        byte[] bytes = converter.toPostScript(p, fontManager,
                 headerManager);
 
         stream.write("%!PS-Adobe-2.0 EPSF-2.0\n".getBytes());
         writeDsc(stream, "Creator", getParameter("Creator"));
         writeDsc(stream, "Title", getParameter("Title"));
-        writeBB(stream, "BoundingBox", nodes);
-        writeHRBB(stream, "HiResBoundingBox", nodes);
+        writeBB(stream, "BoundingBox", p.getNodes());
+        writeHRBB(stream, "HiResBoundingBox", p.getNodes());
         writeFonts(stream, fontManager);
         writeDsc(stream, "EndComments");
         fontManager.write(stream);

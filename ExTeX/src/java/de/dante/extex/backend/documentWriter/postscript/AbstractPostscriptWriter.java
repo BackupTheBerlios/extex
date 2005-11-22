@@ -35,11 +35,7 @@ import de.dante.extex.backend.documentWriter.postscript.util.PsBoxConverter;
 import de.dante.extex.backend.documentWriter.postscript.util.PsConverter;
 import de.dante.extex.color.ColorAware;
 import de.dante.extex.color.ColorConverter;
-import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
-import de.dante.extex.typesetter.type.NodeList;
-import de.dante.extex.typesetter.type.page.Page;
-import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.Configurable;
 import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
@@ -51,7 +47,7 @@ import de.dante.util.resource.ResourceFinder;
  * code. Here some utility methods of general nature are collected.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public abstract class AbstractPostscriptWriter
         implements
@@ -135,16 +131,11 @@ public abstract class AbstractPostscriptWriter
     protected PsConverter makeConverter(final HeaderManager headerManager)
             throws IOException {
 
-        Dimen width = new Dimen(Dimen.ONE_INCH);
-        width.multiply(2100, 254); // A4 paper
-        Dimen height = new Dimen(Dimen.ONE_INCH);
-        height.multiply(2970, 254); // A4 paper
-
         PsConverter converter;
         if (boxed) {
-            converter = new PsBoxConverter(width, height);
+            converter = new PsBoxConverter();
         } else {
-            converter = new PsBasicConverter(width, height);
+            converter = new PsBasicConverter();
         }
         if (converter instanceof ColorAware) {
             ((ColorAware) converter).setColorConverter(colorConverter);
@@ -206,44 +197,6 @@ public abstract class AbstractPostscriptWriter
     public void setResourceFinder(final ResourceFinder resourceFinder) {
 
         this.finder = resourceFinder;
-    }
-
-    /**
-     * This is the entry point for the document writer. Here it receives a
-     * complete node list to be sent to the output writer. It can be assumed
-     * that all values for width, height, and depth of the node lists are
-     * properly filled. Thus all information should be present to place the
-     * ink on the paper.
-     *
-     * @param nodes the nodes to put on the paper
-     * @param width the width of the page
-     * @param height the height of the page
-     *
-     * @return the number of pages shipped out in this step. This is usually 1.
-     *  But it can also be 0 if the page is skipped or a greater number is the
-     *  page is split.
-     *
-     * @throws IOException in case of an IO error
-     * @throws GeneralException in case of another error
-     */
-    protected abstract int shipout(final NodeList nodes, final Dimen width,
-            final Dimen height) throws GeneralException, IOException;
-
-    /**
-     * @see de.dante.extex.backend.documentWriter.DocumentWriter#shipout(
-     *      de.dante.extex.typesetter.type.page.Page)
-     */
-    public final int shipout(final Page page)
-            throws GeneralException,
-                IOException {
-
-        NodeList nodes = page.getNodes();
-        Dimen width = new Dimen(Dimen.ONE_INCH);
-        width.multiply(2100, 254); // A4 paper
-        Dimen height = new Dimen(Dimen.ONE_INCH);
-        height.multiply(2970, 254); // A4 paper
-
-        return shipout(nodes, width, height);
     }
 
     /**
