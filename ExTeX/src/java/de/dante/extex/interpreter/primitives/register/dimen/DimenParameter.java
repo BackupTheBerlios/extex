@@ -26,6 +26,9 @@ import de.dante.extex.interpreter.type.InitializableCode;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.util.framework.configuration.Configurable;
+import de.dante.util.framework.configuration.Configuration;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * This class provides an implementation for the primitive <code>\dimen</code>.
@@ -38,14 +41,22 @@ import de.dante.extex.typesetter.Typesetter;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
-public class DimenParameter extends DimenPrimitive implements InitializableCode {
+public class DimenParameter extends DimenPrimitive
+        implements
+            InitializableCode,
+            Configurable {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
     private static final long serialVersionUID = 1L;
+
+    /**
+     * The field <tt>key</tt> contains the key.
+     */
+    private String key;
 
     /**
      * Creates a new object.
@@ -55,6 +66,20 @@ public class DimenParameter extends DimenPrimitive implements InitializableCode 
     public DimenParameter(final String name) {
 
         super(name);
+        key = name;
+    }
+
+    /**
+     * @see de.dante.util.framework.configuration.Configurable#configure(
+     *      de.dante.util.framework.configuration.Configuration)
+     */
+    public void configure(final Configuration config)
+            throws ConfigurationException {
+
+        String k = config.getAttribute("key");
+        if (k != null) {
+            key = k;
+        }
     }
 
     /**
@@ -71,7 +96,7 @@ public class DimenParameter extends DimenPrimitive implements InitializableCode 
      */
     protected String getKey(final Context context, final TokenSource source) {
 
-        return getName();
+        return key;
     }
 
     /**

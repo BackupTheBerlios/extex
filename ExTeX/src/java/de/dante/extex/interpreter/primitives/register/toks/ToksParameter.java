@@ -27,6 +27,9 @@ import de.dante.extex.interpreter.type.InitializableCode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.util.framework.configuration.Configurable;
+import de.dante.util.framework.configuration.Configuration;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * This class provides an implementation for the primitive <code>\toks</code>.
@@ -40,9 +43,12 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
-public class ToksParameter extends ToksPrimitive implements InitializableCode {
+public class ToksParameter extends ToksPrimitive
+        implements
+            InitializableCode,
+            Configurable {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
@@ -67,6 +73,11 @@ public class ToksParameter extends ToksPrimitive implements InitializableCode {
     }
 
     /**
+     * The field <tt>key</tt> contains the key.
+     */
+    private String key;
+
+    /**
      * Creates a new object.
      *
      * @param name the name for debugging
@@ -74,6 +85,19 @@ public class ToksParameter extends ToksPrimitive implements InitializableCode {
     public ToksParameter(final String name) {
 
         super(name);
+    }
+
+    /**
+     * @see de.dante.util.framework.configuration.Configurable#configure(
+     *      de.dante.util.framework.configuration.Configuration)
+     */
+    public void configure(final Configuration config)
+            throws ConfigurationException {
+
+        String k = config.getAttribute("key");
+        if (k != null) {
+            key = k;
+        }
     }
 
     /**
@@ -87,9 +111,9 @@ public class ToksParameter extends ToksPrimitive implements InitializableCode {
     protected String getKey(final TokenSource source, final Context context) {
 
         if (Namespace.SUPPORT_NAMESPACE_TOKS) {
-            return context.getNamespace() + "\b" + getName();
+            return context.getNamespace() + "\b" + key;
         } else {
-            return getName();
+            return key;
         }
     }
 

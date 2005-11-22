@@ -25,6 +25,9 @@ import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.InitializableCode;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.util.framework.configuration.Configurable;
+import de.dante.util.framework.configuration.Configuration;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * This class provides an implementation for the count valued primitives like
@@ -41,16 +44,22 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class IntegerParameter extends CountPrimitive
         implements
-            InitializableCode {
+            InitializableCode,
+            Configurable {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
     private static final long serialVersionUID = 1L;
+
+    /**
+     * The field <tt>key</tt> contains the key.
+     */
+    private String key;
 
     /**
      * Creates a new object.
@@ -60,6 +69,20 @@ public class IntegerParameter extends CountPrimitive
     public IntegerParameter(final String name) {
 
         super(name);
+        key = name;
+    }
+
+    /**
+     * @see de.dante.util.framework.configuration.Configurable#configure(
+     *      de.dante.util.framework.configuration.Configuration)
+     */
+    public void configure(final Configuration config)
+            throws ConfigurationException {
+
+        String k = config.getAttribute("key");
+        if (k != null) {
+            key = k;
+        }
     }
 
     /**
@@ -69,7 +92,7 @@ public class IntegerParameter extends CountPrimitive
      */
     protected String getKey(final Context context, final TokenSource source) {
 
-        return getName();
+        return key;
     }
 
     /**
