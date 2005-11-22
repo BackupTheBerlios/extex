@@ -22,14 +22,14 @@ package de.dante.extex.backend.documentWriter.postscript.util;
 import java.io.IOException;
 
 import de.dante.extex.backend.documentWriter.exception.DocumentWriterException;
-import de.dante.extex.typesetter.type.NodeList;
+import de.dante.extex.typesetter.type.page.Page;
 
 /**
  * This interface describes the ability to translate some nodes into
  * PostScript code.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface PsConverter {
 
@@ -45,14 +45,14 @@ public interface PsConverter {
     /**
      * Translate nodes into PostScript code.
      *
-     * @param nodes the nodes to translate into PostScript code
+     * @param page the nodes to translate into PostScript code
      * @param fontManager the font manager to inform about characters
      * @param headerManager the container fro the headers
      * @return the bytes representing the current page
      *
      * @throws DocumentWriterException in case of an error
      */
-    public byte[] nodesToPostScript(final NodeList nodes,
+    public byte[] toPostScript(final Page page,
             final FontManager fontManager, HeaderManager headerManager)
             throws DocumentWriterException;
 }

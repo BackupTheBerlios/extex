@@ -29,7 +29,6 @@ import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.typesetter.type.Node;
-import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.NodeVisitor;
 import de.dante.extex.typesetter.type.node.AdjustNode;
 import de.dante.extex.typesetter.type.node.AfterMathNode;
@@ -52,6 +51,7 @@ import de.dante.extex.typesetter.type.node.SpecialNode;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
 import de.dante.extex.typesetter.type.node.VirtualCharNode;
 import de.dante.extex.typesetter.type.node.WhatsItNode;
+import de.dante.extex.typesetter.type.page.Page;
 import de.dante.util.UnicodeChar;
 import de.dante.util.exception.GeneralException;
 
@@ -60,7 +60,7 @@ import de.dante.util.exception.GeneralException;
  * boxes of the characters.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class PsBoxConverter implements PsConverter, NodeVisitor {
 
@@ -68,16 +68,6 @@ public class PsBoxConverter implements PsConverter, NodeVisitor {
      * The field <tt>fm</tt> contains the font manager.
      */
     private FontManager fm = null;
-
-    /**
-     * The field <tt>paperHeight</tt> contains the height of the paper.
-     */
-    private Dimen paperHeight = new Dimen();
-
-    /**
-     * The field <tt>paperWidth</tt> contains the width of the paper.
-     */
-    private Dimen paperWidth = new Dimen();
 
     /**
      * The field <tt>showChars</tt> contains the indicator whether the
@@ -108,11 +98,9 @@ public class PsBoxConverter implements PsConverter, NodeVisitor {
      * @param width the width of the paper
      * @param height the height of the paper
      */
-    public PsBoxConverter(final Dimen width, final Dimen height) {
+    public PsBoxConverter() {
 
         super();
-        paperWidth.set(width);
-        paperHeight.set(height);
     }
 
     /**
@@ -188,7 +176,7 @@ public class PsBoxConverter implements PsConverter, NodeVisitor {
      * This method traverses the nodes tree recursively and produces the
      * corresponding PostScript code for each node visited.
      *
-     * @param nodes the nodes to translate into PostScript code
+     * @param page the nodes to translate into PostScript code
      * @param fontManager the font manager to inform about characters
      * @param headerManager the header manager
      *
@@ -196,21 +184,21 @@ public class PsBoxConverter implements PsConverter, NodeVisitor {
      *
      * @throws DocumentWriterException in case of an error
      */
-    public byte[] nodesToPostScript(final NodeList nodes,
+    public byte[] toPostScript(final Page page,
             final FontManager fontManager, final HeaderManager headerManager)
             throws DocumentWriterException {
 
         fm = fontManager;
 
-        x.set(Dimen.ONE_INCH);
-        y.set(paperHeight);
-        y.subtract(Dimen.ONE_INCH);
+        x.set(page.getMediaHOffset());
+        y.set(page.getMediaHeight());
+        y.subtract(page.getMediaVOffset());
 
         StringBuffer out = new StringBuffer();
         out.append("TeXDict begin\n");
 
         try {
-            nodes.visit(this, out);
+            page.getNodes().visit(this, out);
         } catch (GeneralException e) {
             Throwable cause = e.getCause();
             if (cause instanceof FileNotFoundException) {
