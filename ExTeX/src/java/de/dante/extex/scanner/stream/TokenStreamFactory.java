@@ -123,7 +123,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.33 $
+ * @version $Revision: 1.34 $
  */
 public class TokenStreamFactory extends AbstractFactory
         implements
@@ -423,4 +423,14 @@ public class TokenStreamFactory extends AbstractFactory
 
         this.resourceFinder = finder;
     }
+
+    /**
+     * Returns the file finder.
+     *
+     * @return Returns the file finder.
+     */
+    public ResourceFinder getResourceFinder() {
+        return this.resourceFinder;
+    }
+
 }
