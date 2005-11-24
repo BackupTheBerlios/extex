@@ -27,27 +27,38 @@ import de.dante.extex.typesetter.type.NodeList;
  * contains additional administrative information.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class PageImpl implements Page {
 
     /**
-     * The field <tt>mediaHeight</tt> contains the ...
+     * The field <tt>mediaHeight</tt> contains the height of the paper.
      */
     private Dimen mediaHeight = new Dimen(
             Dimen.ONE_INCH.getValue() * 2970 / 254);
 
+    /**
+     * The field <tt>mediaHOffset</tt> contains the horizontal offset of the
+     * upper left corner of the contents on the page. In <logo>TeX</logo>
+     * this value is defined to be 1 in.
+     */
     private Dimen mediaHOffset = new Dimen(Dimen.ONE_INCH);
 
+    /**
+     * The field <tt>mediaVOffset</tt> contains the vertical offset of the
+     * upper left corner of the contents on the page. In <logo>TeX</logo>
+     * this value is defined to be 1 in.
+     */
     private Dimen mediaVOffset = new Dimen(Dimen.ONE_INCH);
 
     /**
-     * The field <tt>mediaWidth</tt> contains the ...
+     * The field <tt>mediaWidth</tt> contains the width of the physical paper.
      */
     private Dimen mediaWidth = new Dimen(Dimen.ONE_INCH.getValue() * 2100 / 254);
 
     /**
-     * The field <tt>nodes</tt> contains the ...
+     * The field <tt>nodes</tt> contains the nodes describing the objects on
+     * the page.
      */
     private NodeList nodes;
 
