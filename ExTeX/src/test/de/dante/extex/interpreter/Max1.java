@@ -29,7 +29,7 @@ import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.language.ligature.LigatureBuilder;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
-import de.dante.extex.scanner.stream.impl32.TokenStreamStringImpl;
+import de.dante.extex.scanner.stream.impl.TokenStreamImpl;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Mode;
@@ -57,7 +57,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.69 $
+ * @version $Revision: 1.70 $
  */
 public class Max1 extends TestCase {
 
@@ -378,7 +378,8 @@ public class Max1 extends TestCase {
         /**
          * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(int)
          */
-        public void setSpacefactor(final Count f) throws InvalidSpacefactorException  {
+        public void setSpacefactor(final Count f)
+                throws InvalidSpacefactorException {
 
             // nothing to do
         }
@@ -512,19 +513,18 @@ public class Max1 extends TestCase {
         Configuration config = new ConfigurationFactory()
                 .newInstance("config/extex.xml");
 
-        // TODO gene: use FileFinder?
         InterpreterFactory interpreterFactory = new InterpreterFactory();
         interpreterFactory.configure(config.getConfiguration("Interpreter"));
         Interpreter interpreter = interpreterFactory.newInstance();
         TokenStreamFactory factory = new TokenStreamFactory(config
-                .getConfiguration("Reader"), "base");
+                .getConfiguration("Scanner"), "base");
         interpreter.setTokenStreamFactory(factory);
 
         TestTypesetter typesetter = new TestTypesetter();
 
         interpreter.setTypesetter(typesetter);
 
-        TokenStream stream = new TokenStreamStringImpl(in);
+        TokenStream stream = new TokenStreamImpl(null, null, in, "");
         interpreter.run(stream);
         return typesetter.toString();
     }
