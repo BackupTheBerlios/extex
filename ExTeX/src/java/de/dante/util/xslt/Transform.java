@@ -23,8 +23,13 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.Writer;
 
+import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
@@ -34,10 +39,10 @@ import org.jdom.input.SAXBuilder;
 import org.jdom.transform.JDOMSource;
 
 /**
- * Tranforam a xml-file with a xslt-file.
+ * Transform a xml-file with a xslt-file.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public final class Transform {
@@ -56,7 +61,7 @@ public final class Transform {
 
     /**
      * main
-     * @param args      the comandlinearguments
+     * @param args      the command line arguments
      * @throws Exception  in case of an error
      */
     public static void main(final String[] args) throws Exception {
@@ -71,14 +76,47 @@ public final class Transform {
         Document xmldoc = builder.build(new BufferedInputStream(
                 new FileInputStream(args[0])));
 
-        Transformer transformer = TransformerFactory.newInstance()
-                .newTransformer(new StreamSource(args[1]));
-
         BufferedOutputStream out = new BufferedOutputStream(
                 new FileOutputStream(args[2]));
 
+        transform(new JDOMSource(xmldoc), new StreamSource(args[1]), out);
+    }
+
+    /**
+     * transform a xml file with xslt.
+     * @param xml   The xml source.
+     * @param xsl   The xsl source.
+     * @param out   The output.
+     * @throws TransformerException if a transformer error occurred.
+     * @throws IOException if a IO error occurred.
+     */
+    public static void transform(final Source xml, final Source xsl,
+            final OutputStream out) throws TransformerException, IOException {
+
         StreamResult result = new StreamResult(out);
-        transformer.transform(new JDOMSource(xmldoc), result);
+        Transformer transformer = TransformerFactory.newInstance()
+                .newTransformer(xsl);
+
+        transformer.transform(xml, result);
+        out.close();
+    }
+
+    /**
+     * transform a xml file with xslt.
+     * @param xml   The xml source.
+     * @param xsl   The xsl source.
+     * @param out   The output.
+     * @throws TransformerException if a transformer error occurred.
+     * @throws IOException if a IO error occurred.
+     */
+    public static void transform(final Source xml, final Source xsl,
+            final Writer out) throws TransformerException, IOException {
+
+        StreamResult result = new StreamResult(out);
+        Transformer transformer = TransformerFactory.newInstance()
+                .newTransformer(xsl);
+
+        transformer.transform(xml, result);
         out.close();
     }
 }
