@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -17,38 +17,33 @@
  *
  */
 
-package de.dante.util.file;
+package de.dante.extex.scanner.stream.exception;
 
-import java.io.IOException;
-import java.nio.CharBuffer;
+import de.dante.extex.scanner.exception.ScannerException;
 
 /**
- * Interface for all InputLines.
+ * ScannerException, if a wrong Unicode name is given.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @version $Revision: 1.1 $
  */
 
-public interface InputLineDecoder {
+public class ScannerNoUnicodeNameException extends ScannerException {
 
     /**
-     * Read a line from a input.
-     *
-     * @param   encoding    the encoding for this line.
-     * @return  the line in a <code>CharBuffer</code>
-     * @throws  java.io.IOException if an IO-error occurs
+     * Create a new Object
      */
-    CharBuffer readLine(final String encoding) throws IOException;
+    public ScannerNoUnicodeNameException() {
+
+        super();
+    }
 
     /**
-     * Close the inputline.
-     * @throws IOException if an IO-error occurs
+     * Create a new Object.
+     * @param wrongUnicodeName   The wrong name.
      */
-    void close() throws IOException;
+    public ScannerNoUnicodeNameException(final String wrongUnicodeName) {
 
-    /**
-     * Returns the linenumber.
-     * @return Returns the linenumber.
-     */
-    int getLineNumber();
+        super(wrongUnicodeName);
+    }
 }

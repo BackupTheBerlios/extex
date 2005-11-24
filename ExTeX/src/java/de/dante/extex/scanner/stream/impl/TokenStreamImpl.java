@@ -51,7 +51,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationSyntaxExcept
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.47 $
+ * @version $Revision: 1.48 $
  */
 public class TokenStreamImpl extends TokenStreamBaseImpl implements TokenStream {
 
@@ -59,7 +59,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements TokenStream 
      * This is a type-safe class to represent state information.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.47 $
+     * @version $Revision: 1.48 $
      */
     private static final class State {
 
@@ -98,7 +98,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements TokenStream 
      * The constant <tt>CARET_LIMIT</tt> contains the threshold for the ^
      * notation.
      */
-    private static final int CARET_LIMIT = 0100; // 0100 = 64
+    protected static final int CARET_LIMIT = 0100; // 0100 = 64
 
     /**
      * The constant <tt>CR</tt> contains the one and only CR character.
@@ -109,19 +109,19 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements TokenStream 
      * The constant <tt>MID_LINE</tt> contains the state for the processing in
      * the middle of a line.
      */
-    private static final State MID_LINE = new State("mid line");
+    protected static final State MID_LINE = new State("mid line");
 
     /**
      * The constant <tt>NEW_LINE</tt> contains the state for the processing at
      * the beginning of a new line.
      */
-    private static final State NEW_LINE = new State("new line");
+    protected static final State NEW_LINE = new State("new line");
 
     /**
      * The constant <tt>SKIP_BLANKS</tt> contains the state for the processing
      * when spaces are ignored.
      */
-    private static final State SKIP_BLANKS = new State("skip blanks");
+    protected static final State SKIP_BLANKS = new State("skip blanks");
 
     /**
      * The field <tt>in</tt> contains the buffered reader for lines.
@@ -138,12 +138,12 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements TokenStream 
      * is an invariant: after a character is read this pointer has to be
      * advanced.
      */
-    private int pointer = 1;
+    protected int pointer = 1;
 
     /**
      * The field <tt>saveChar</tt> contains the saved lookahead character.
      */
-    private UnicodeChar saveChar = null;
+    protected UnicodeChar saveChar = null;
 
     /**
      * The field <tt>source</tt> contains the description of the source for
@@ -154,7 +154,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements TokenStream 
     /**
      * The field <tt>state</tt> contains the current state of operation.
      */
-    private State state = NEW_LINE;
+    protected State state = NEW_LINE;
 
     /**
      * The field <tt>visitor</tt> contains the visitor to separate the cases
@@ -575,14 +575,12 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements TokenStream 
      * </p>
      *
      * @param tokenizer the classifier for characters
-     *
      * @return the character or <code>null</code> if no more character is
-     *  available
-     *
+     *          available
      * @throws ScannerException in the rare case that an IO Exception has
-     *  occurred.
+     *         occurred.
      */
-    private UnicodeChar getChar(final Tokenizer tokenizer)
+    protected UnicodeChar getChar(final Tokenizer tokenizer)
             throws ScannerException {
 
         if (saveChar != null) {
@@ -654,7 +652,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements TokenStream 
 
     /**
      * @see de.dante.extex.scanner.stream.impl.TokenStreamBaseImpl#getNext(
-     *      de.dante.extex.scanner.type.token.TokenFactory,
+     *      de.dante.extex.scanner.type.TokenFactory,
      *      de.dante.extex.interpreter.Tokenizer)
      */
     protected Token getNext(final TokenFactory factory,
@@ -702,7 +700,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements TokenStream 
      *
      * @return the integer value of a hex digit or -1 if no hex digit is given
      */
-    private int hex2int(final int c) {
+    protected int hex2int(final int c) {
 
         if ('0' <= c && c <= '9') {
             return c - '0';
