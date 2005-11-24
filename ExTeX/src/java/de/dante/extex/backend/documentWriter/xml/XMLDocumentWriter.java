@@ -62,20 +62,23 @@ import de.dante.extex.typesetter.type.page.Page;
 import de.dante.util.UnicodeChar;
 import de.dante.util.Unit;
 import de.dante.util.exception.GeneralException;
+import de.dante.util.framework.configuration.Configurable;
 import de.dante.util.framework.configuration.Configuration;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 import de.dante.util.xml.XMLStreamWriter;
 
 /**
  * This is a xml implementation of a document writer.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class XMLDocumentWriter
         implements
             DocumentWriter,
             SingleDocumentStream,
-            NodeVisitor {
+            NodeVisitor,
+            Configurable {
 
     /**
      * DIN-A4 height
@@ -104,7 +107,7 @@ public class XMLDocumentWriter
     private Dimen currentX = new Dimen();
 
     /**
-     * current y postition
+     * current y position
      */
     private Dimen currentY = new Dimen();
 
@@ -114,12 +117,12 @@ public class XMLDocumentWriter
     private boolean debug = true;
 
     /**
-     * documentwriter options
+     * document writer options
      */
     private DocumentWriterOptions docoptions;
 
     /**
-     * encdoing
+     * encoding
      */
     private String encoding = "ISO-8859-1";
 
@@ -139,17 +142,17 @@ public class XMLDocumentWriter
     private OutputStream out = null;
 
     /**
-     * paperheight
+     * paper height
      */
     private Dimen paperheight;
 
     /**
-     * paperwidth
+     * paper width
      */
     private Dimen paperwidth;
 
     /**
-     * The number of pages, wich are ship out.
+     * The number of pages, which are ship out.
      */
     private int shippedPages = 0;
 
@@ -261,7 +264,7 @@ public class XMLDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.backend.documentWriter.DocumentWriter#close()
+     * @see de.dante.extex.documentWriter.DocumentWriter#close()
      */
     public void close() throws DocumentWriterException {
 
@@ -283,7 +286,7 @@ public class XMLDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.backend.documentWriter.DocumentWriter#getExtension()
+     * @see de.dante.extex.documentWriter.DocumentWriter#getExtension()
      */
     public String getExtension() {
 
@@ -291,7 +294,7 @@ public class XMLDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.backend.documentWriter.DocumentWriter#getPages()
+     * @see de.dante.extex.documentWriter.DocumentWriter#getPages()
      */
     public int getPages() {
 
@@ -325,7 +328,7 @@ public class XMLDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.backend.documentWriter.DocumentWriter#setOutputStream(
+     * @see de.dante.extex.documentWriter.DocumentWriter#setOutputStream(
      *      java.io.OutputStream)
      */
     public void setOutputStream(final OutputStream outStream) {
@@ -339,7 +342,7 @@ public class XMLDocumentWriter
     private Map param = new HashMap();
 
     /**
-     * @see de.dante.extex.backend.documentWriter.DocumentWriter#setParameter(
+     * @see de.dante.extex.documentWriter.DocumentWriter#setParameter(
      *      java.lang.String,
      *      java.lang.String)
      */
@@ -390,7 +393,7 @@ public class XMLDocumentWriter
     private XMLStreamWriter writer;
 
     /**
-     * @see de.dante.extex.backend.documentWriter.DocumentWriter#shipout(
+     * @see de.dante.extex.documentWriter.DocumentWriter#shipout(
      *      de.dante.extex.typesetter.type.NodeList)
      */
     public int shipout(final Page page) throws GeneralException {
@@ -447,6 +450,53 @@ public class XMLDocumentWriter
             throw new DocumentWriterIOException(e);
         }
         return 1;
+    }
+
+    /**
+     * @see de.dante.util.framework.configuration.Configurable#configure(
+     *      de.dante.util.framework.configuration.Configuration)
+     */
+    public void configure(final Configuration cfg)
+            throws ConfigurationException {
+
+        if (cfg != null) {
+            String tmp = cfg.getAttribute("encoding");
+            if (tmp != null && !tmp.equals("")) {
+                encoding = tmp;
+            }
+            tmp = cfg.getAttribute("debug");
+            if (tmp != null) {
+                debug = Boolean.valueOf(tmp).booleanValue();
+            }
+            tmp = cfg.getAttribute("showvisible");
+            if (tmp != null) {
+                showvisible = Boolean.valueOf(tmp).booleanValue();
+            }
+            tmp = cfg.getAttribute("indent");
+            if (tmp != null) {
+                indent = tmp;
+            }
+            tmp = cfg.getAttribute("newlines");
+            if (tmp != null) {
+                newlines = Boolean.valueOf(tmp).booleanValue();
+            }
+            tmp = cfg.getAttribute("trimallwhitespace");
+            if (tmp != null) {
+                trimallwhitespace = Boolean.valueOf(tmp).booleanValue();
+            }
+            tmp = cfg.getAttribute("usesp");
+            if (tmp != null) {
+                usesp = Boolean.valueOf(tmp).booleanValue();
+            }
+            tmp = cfg.getAttribute("usebp");
+            if (tmp != null) {
+                usebp = Boolean.valueOf(tmp).booleanValue();
+            }
+            tmp = cfg.getAttribute("usemm");
+            if (tmp != null) {
+                usemm = Boolean.valueOf(tmp).booleanValue();
+            }
+        }
     }
 
     // ----------------------------------------------
