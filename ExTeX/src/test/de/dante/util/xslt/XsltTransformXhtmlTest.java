@@ -46,10 +46,14 @@ import de.dante.util.resource.ResourceFinder;
  * <p> !!!!!!!!!!!!!!!!!!
  * Die Datei xhtml2latex.xsl wird über xsl:import nachgeladen
  * und muss im Moment unter extex-root sein!!!!
+ * <p>
+ * cd <extex>
+ * ln -s src/xslt/xhtml2latex.xsl .
+ * </p>
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class XsltTransformXhtmlTest extends ExTeXLauncher {
