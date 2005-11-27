@@ -16,19 +16,19 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.backend.documentWriter.exception;
 
-import de.dante.util.exception.GeneralException;
-
+import de.dante.extex.backend.exception.BackendException;
 
 /**
  * This is the base class for all document writer exception visible through the
  * interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class DocumentWriterException extends GeneralException {
+public class DocumentWriterException extends BackendException {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
