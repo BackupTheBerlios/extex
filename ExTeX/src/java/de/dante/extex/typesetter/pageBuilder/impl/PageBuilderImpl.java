@@ -19,9 +19,7 @@
 
 package de.dante.extex.typesetter.pageBuilder.impl;
 
-import java.io.IOException;
-
-import de.dante.extex.backend.documentWriter.DocumentWriter;
+import de.dante.extex.backend.BackendDriver;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.OutputRoutine;
@@ -39,7 +37,7 @@ import de.dante.util.exception.GeneralException;
  * This is a first reference implementation of a page builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class PageBuilderImpl implements PageBuilder {
 
@@ -52,7 +50,7 @@ public class PageBuilderImpl implements PageBuilder {
      * The field <tt>documentWriter</tt> contains the document writer to receive
      * the pages.
      */
-    private DocumentWriter documentWriter = null;
+    private BackendDriver backendDriver = null;
 
     /**
      * The field <tt>options</tt> contains the options to control the behaviour.
@@ -83,9 +81,7 @@ public class PageBuilderImpl implements PageBuilder {
     public void close() throws TypesetterException {
 
         try {
-            documentWriter.close();
-        } catch (IOException e) {
-            throw new TypesetterException(e);
+            backendDriver.close();
         } catch (GeneralException e) {
             throw new TypesetterException(e);
         }
@@ -99,23 +95,23 @@ public class PageBuilderImpl implements PageBuilder {
      * Nevertheless some shipouts might come afterwards.
      * </p>
      *
-     * @see de.dante.extex.typesetter.pageBuilder.PageBuilder#flush()
+     * @see de.dante.extex.typesetter.pageBuilder.PageBuilder#flush(
+     *     de.dante.extex.typesetter.type.NodeList,
+     *     de.dante.extex.typesetter.Typesetter)
      */
-    public void flush(final NodeList nodes) throws TypesetterException {
+    public void flush(final NodeList nodes, final Typesetter typesetter)
+            throws TypesetterException {
 
         if (nodes.size() > 0) {
-            Typesetter typesetter = null; //TODO gene: provide typesetter?
             try {
                 Page page = pageFactory.newInstance(nodes, context, typesetter);
 
                 if (this.outputRoutine != null) {
-                    this.outputRoutine.output(page, documentWriter);
+                    this.outputRoutine.output(page, backendDriver);
                 } else {
-                    documentWriter.shipout(page);
+                    backendDriver.shipout(page);
                 }
                 nodes.clear();
-            } catch (IOException e) {
-                throw new TypesetterException(e);
             } catch (GeneralException e) {
                 throw new TypesetterException(e);
             }
@@ -133,15 +129,16 @@ public class PageBuilderImpl implements PageBuilder {
      * @throws TypesetterException in case of an error
      *
      * @see de.dante.extex.typesetter.pageBuilder.PageBuilder#inspectAndBuild(
-     *      VerticalNodeList)
+     *      de.dante.extex.typesetter.type.node.VerticalListNode,
+     *      de.dante.extex.typesetter.Typesetter)
      */
-    public void inspectAndBuild(final VerticalListNode nodes)
-            throws TypesetterException {
+    public void inspectAndBuild(final VerticalListNode nodes,
+            final Typesetter typesetter) throws TypesetterException {
 
         Dimen d = nodes.getVerticalSize();
         if (d.ge(options.getDimenOption("vsize"))) {
 
-            flush(nodes);
+            flush(nodes, typesetter);
         }
     }
 
@@ -163,9 +160,9 @@ public class PageBuilderImpl implements PageBuilder {
      * @see de.dante.extex.typesetter.pageBuilder.PageBuilder#setDocumentWriter(
      *      de.dante.extex.backend.documentWriter.DocumentWriter)
      */
-    public void setDocumentWriter(final DocumentWriter docWriter) {
+    public void setBackend(final BackendDriver backend) {
 
-        this.documentWriter = docWriter;
+        this.backendDriver = backend;
     }
 
     /**

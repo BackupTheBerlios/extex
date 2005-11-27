@@ -19,9 +19,10 @@
 
 package de.dante.extex.typesetter.pageBuilder;
 
-import de.dante.extex.backend.documentWriter.DocumentWriter;
+import de.dante.extex.backend.BackendDriver;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.typesetter.OutputRoutine;
+import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
@@ -32,7 +33,7 @@ import de.dante.extex.typesetter.type.page.PageFactory;
  * This interface describes the capabilities of a page builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public interface PageBuilder {
 
@@ -55,7 +56,7 @@ public interface PageBuilder {
      *
      * @throws TypesetterException in case of an error
      */
-    void flush(NodeList nodes) throws TypesetterException;
+    void flush(NodeList nodes, Typesetter typesetter) throws TypesetterException;
 
     /**
      * This is the entry point for the page builder. Here it receives a
@@ -68,7 +69,7 @@ public interface PageBuilder {
      *
      * @throws TypesetterException in case of an error
      */
-    void inspectAndBuild(VerticalListNode nodes) throws TypesetterException;
+    void inspectAndBuild(VerticalListNode nodes, Typesetter typesetter) throws TypesetterException;
 
     /**
      * Setter for the interpreter context
@@ -80,12 +81,12 @@ public interface PageBuilder {
     void setContext(Context context) throws TypesetterException;
 
     /**
-     * Setter for the document writer.
+     * Setter for the back-end.
      * This has to be provided before the page builder can be active.
      *
-     * @param docWriter the new document writer to use
+     * @param backend the new document writer to use
      */
-    void setDocumentWriter(DocumentWriter docWriter);
+    void setBackend(BackendDriver backend);
 
     /**
      * Setter for options.
