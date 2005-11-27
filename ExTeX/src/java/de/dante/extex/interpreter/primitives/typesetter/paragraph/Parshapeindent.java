@@ -40,7 +40,8 @@ import de.dante.util.exception.GeneralException;
  * <doc name="parshapeindent">
  * <h3>The Primitive <tt>\parshapeindent</tt></h3>
  * <p>
- *  The primitive <tt>\parshapeindent</tt> ...
+ *  The primitive <tt>\parshapeindent</tt>
+ *  TODO gene: missing documentation
  * </p>
  *
  * <h4>Syntax</h4>
@@ -60,7 +61,7 @@ import de.dante.util.exception.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Parshapeindent extends AbstractCode
         implements

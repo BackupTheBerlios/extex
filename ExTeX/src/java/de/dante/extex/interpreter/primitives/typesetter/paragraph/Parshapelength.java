@@ -40,7 +40,8 @@ import de.dante.util.exception.GeneralException;
  * <doc name="parshapelength">
  * <h3>The Primitive <tt>\parshapelength</tt></h3>
  * <p>
- *  The primitive <tt>\parshapelength</tt> ...
+ *  The primitive <tt>\parshapelength</tt>
+ *  TODO gene: missing documentation
  * </p>
  *
  * <h4>Syntax</h4>
@@ -60,7 +61,7 @@ import de.dante.util.exception.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Parshapelength extends AbstractCode
         implements
