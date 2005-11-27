@@ -61,7 +61,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Vsplit extends AbstractBox implements Boxable, LogEnabled {
 
@@ -152,7 +152,7 @@ public class Vsplit extends AbstractBox implements Boxable, LogEnabled {
             throw new HelpingException(getLocalizer(), "TTP.SplittingNonVbox",
                     printableControlSequence(context), context.esc("vbox"));
         }
-        // TODO gene: set splitmark ...
+        // TODO gene: set splitmark etc
         try {
             return b.vsplit(ht, //
                     (Count.ONE.le(context.getCount("tracingpages"))
