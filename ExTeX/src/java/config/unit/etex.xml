@@ -97,7 +97,7 @@
             class=""/>
     <define name="numexpr"
             class="de.dante.extex.interpreter.primitives.register.count.Numexpr"/>
-    <Define name="pagediscarts"
+    <Define name="pagediscards"
             class=""/>
     <define name="parshapedimen"
             class="de.dante.extex.interpreter.primitives.typesetter.paragraph.Parshapedimen"/>
@@ -113,7 +113,7 @@
             class="de.dante.extex.interpreter.primitives.file.Readline"/>
     <define name="savinghyphcodes"
             class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
-    <define name="savingvdiscarts"
+    <define name="savingvdiscards"
             class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
     <Define name="scantokens"
             class=""/>
@@ -123,7 +123,7 @@
             class=""/>
     <define name="splitbotmarks"
             class="de.dante.extex.interpreter.primitives.typesetter.mark.Splitbotmarks"/>
-    <Define name="splitdiscarts"
+    <Define name="splitdiscards"
             class=""/>
     <define name="splitfirstmarks"
             class="de.dante.extex.interpreter.primitives.typesetter.mark.Splitfirstmarks"/>
