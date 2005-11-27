@@ -48,509 +48,143 @@ import de.dante.extex.typesetter.type.node.WhatsItNode;
 import de.dante.util.exception.GeneralException;
 
 /**
- * This class provides an implementation for the primitive <code>\lastnodetype</code>.
+ * This class provides an implementation for the primitive
+ * <code>\lastnodetype</code>.
  *
  * <doc name="lastnodetype">
  * <h3>The Primitive <tt>\lastnodetype</tt></h3>
  * <p>
  *  TODO missing documentation
  * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Syntax</h4>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;lastnodetype&rang;
+ *       &rarr; <tt>\lastnodetype</tt>  </pre>
+ *
+ * <h4>Examples</h4>
+ *  <pre class="TeXSample">
+ *    \count42=\lastnodetype  </pre>
  *  <pre class="TeXSample">
  *    Test\the\lastnodetype  </pre>
- * </p>
+ *
  * </doc>
  *
  *
+ * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 
 public class Lastnodetype extends AbstractReadonlyCount {
 
     /**
-     * The field <tt>serialVersionUID</tt> contains the ...
-     */
-    private static final long serialVersionUID = 1L;
-
-    /**
-     * Class for getting the type of a node.
-     *
-     */
-    private static final NodetypeReader NODETYPE_READER = new NodetypeReader();
-
-    // TODO: type 14 (unset) is missing (TE)
-
-    /**
      * A class for getting the type number of an node.
-     *
      */
     static class NodetypeReader implements NodeVisitor {
 
         /**
          * Type number for an empty list.
-         *
          */
-
         private static final int NODE_TYPE_EMPTY_LIST = -1;
 
         /**
          * Type number for adjust nodes.
-         *
          */
-        private static final int NODETYPE_ADJUST = 6;
+        private static final Integer NODETYPE_ADJUST = new Integer(6);
 
         /**
          * Type number for aftermath nodes.
-         *
          */
         // TODO: is this correct? (TE)
-        private static final int NODETYPE_AFTERMATH = 15;
+        private static final Integer NODETYPE_AFTERMATH = new Integer(15);
 
         /**
-         * Type number for alignedleaders nodes.
-         *
+         * Type number for aligned leaders nodes.
          */
         // TODO
         //private static final int NODETYPE_ALIGNEDLEADERS = 4444;
         /**
-         * Type number for beforemath nodes.
-         *
+         * Type number for before math nodes.
          */
         // TODO: is this correct? (TE)
-        private static final int NODETYPE_BEFOREMATH = 10;
+        private static final Integer NODETYPE_BEFOREMATH = new Integer(10);
 
         /**
-         * Type number for centeredleaders nodes.
-         *
+         * Type number for centered leaders nodes.
          */
         // TODO
         //private static final int NODETYPE_CENTEREDLEADERS = 4444;
         /**
          * Type number for char nodes.
-         *
          */
-        private static final int NODETYPE_CHAR = 0;
+        private static final Integer NODETYPE_CHAR = new Integer(0);
 
         /**
          * Type number for discretionary nodes.
-         *
          */
-        private static final int NODETYPE_DISCRETIONARY = 8;
+        private static final Integer NODETYPE_DISCRETIONARY = new Integer(8);
 
         /**
-         * Type number for expandedleaders nodes.
-         *
+         * Type number for expanded leaders nodes.
          */
         // TODO
         //private static final int NODETYPE_EXPANDEDLEADERS = 4444;
         /**
          * Type number for glue nodes.
-         *
          */
-        private static final int NODETYPE_GLUE = 11;
+        private static final Integer NODETYPE_GLUE = new Integer(11);
 
         /**
          * Type number for horizontallist nodes.
-         *
          */
-        private static final int NODETYPE_HORIZONTALLIST = 1;
+        private static final Integer NODETYPE_HORIZONTALLIST = new Integer(1);
 
         /**
          * Type number for insertion nodes.
-         *
          */
-        private static final int NODETYPE_INSERTION = 4;
+        private static final Integer NODETYPE_INSERTION = new Integer(4);
 
         /**
          * Type number for kern nodes.
-         *
          */
-        private static final int NODETYPE_KERN = 12;
+        private static final Integer NODETYPE_KERN = new Integer(12);
 
         /**
          * Type number for ligature nodes.
-         *
          */
-        private static final int NODETYPE_LIGATURE = 7;
+        private static final Integer NODETYPE_LIGATURE = new Integer(7);
 
         /**
          * Type number for mark nodes.
-         *
          */
-        private static final int NODETYPE_MARK = 5;
+        private static final Integer NODETYPE_MARK = new Integer(5);
 
         /**
          * Type number for penalty nodes.
-         *
          */
-        private static final int NODETYPE_PENALTY = 13;
+        private static final Integer NODETYPE_PENALTY = new Integer(13);
 
         /**
          * Type number for rule nodes.
-         *
          */
-        private static final int NODETYPE_RULE = 3;
+        private static final Integer NODETYPE_RULE = new Integer(3);
 
         /**
          * Type number for space nodes.
-         *
          */
         // TODO
         //private static final int NODETYPE_SPACE = 4444;
         /**
-         * Type number for verticallist nodes.
-         *
+         * Type number for vertical list nodes.
          */
-        private static final int NODETYPE_VERTICALLIST = 2;
+        private static final Integer NODETYPE_VERTICALLIST = new Integer(2);
 
         /**
          * Type number for whatsit nodes.
-         *
          */
-        private static final int NODETYPE_WHATSIT = 9;
-
-        /**
-         * Return type number for adjust nodes.  Both arguments are
-         * not used.
-         *
-         * @param node the visited node
-         * @param arg null
-         * @return typenumber of node as <code>Integer</code>
-         * @exception GeneralException if an error occurs
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitAdjust(AdjustNode,
-         *     java.lang.Object)
-         */
-        public Object visitAdjust(final AdjustNode node, final Object arg)
-                throws GeneralException {
-
-            return new Integer(NODETYPE_ADJUST);
-        }
-
-        /**
-         * Return type number for aftermath nodes.  Both arguments are
-         * not used.
-         *
-         * @param node the visited node
-         * @param arg null
-         * @return typenumber of node as <code>Integer</code>
-         * @exception GeneralException if an error occurs
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitAfterMath(AfterMathNode,
-         *     java.lang.Object)
-         */
-        public Object visitAfterMath(final AfterMathNode node, final Object arg)
-                throws GeneralException {
-
-            return new Integer(NODETYPE_AFTERMATH);
-        }
-
-        /**
-         * Return type number for alignedleaders nodes.  Both arguments are
-         * not used.
-         *
-         * @param node the visited node
-         * @param arg null
-         * @return typenumber of node as <code>Integer</code>
-         * @exception GeneralException if an error occurs
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitAlignedLeaders(AlignedLeadersNode,
-         *     java.lang.Object)
-         */
-        public Object visitAlignedLeaders(final AlignedLeadersNode node,
-                final Object arg) throws GeneralException {
-
-            //TODO unimplemented
-            throw new RuntimeException("unimplemented");
-            // return new Integer(NODETYPE_ALIGNEDLEADERS);
-        }
-
-        /**
-         * Return type number for beforemath nodes.  Both arguments are
-         * not used.
-         *
-         * @param node the visited node
-         * @param arg null
-         * @return typenumber of node as <code>Integer</code>
-         * @exception GeneralException if an error occurs
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitBeforeMath(BeforeMathNode,
-         *     java.lang.Object)
-         */
-        public Object visitBeforeMath(final BeforeMathNode node,
-                final Object arg) throws GeneralException {
-
-            return new Integer(NODETYPE_BEFOREMATH);
-        }
-
-        /**
-         * Return type number for centeredleaders nodes.  Both arguments are
-         * not used.
-         *
-         * @param node the visited node
-         * @param arg null
-         * @return typenumber of node as <code>Integer</code>
-         * @exception GeneralException if an error occurs
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitCenteredLeaders(CenteredLeadersNode,
-         *     java.lang.Object)
-         */
-        public Object visitCenteredLeaders(final CenteredLeadersNode node,
-                final Object arg) throws GeneralException {
-
-            //TODO unimplemented
-            throw new RuntimeException("unimplemented");
-            // return new Integer(NODETYPE_CENTEREDLEADERS);
-        }
-
-        /**
-         * Return type number for char nodes.  Both arguments are
-         * not used.
-         *
-         * @param node the visited node
-         * @param arg null
-         * @return typenumber of node as <code>Integer</code>
-         * @exception GeneralException if an error occurs
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitChar(CharNode,
-         *     java.lang.Object)
-         */
-        public Object visitChar(final CharNode node, final Object arg)
-                throws GeneralException {
-
-            return new Integer(NODETYPE_CHAR);
-        }
-
-        /**
-         * Return type number for discretionary nodes.  Both arguments are
-         * not used.
-         *
-         * @param node the visited node
-         * @param arg null
-         * @return typenumber of node as <code>Integer</code>
-         * @exception GeneralException if an error occurs
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitDiscretionary(DiscretionaryNode,
-         *     java.lang.Object)
-         */
-        public Object visitDiscretionary(final DiscretionaryNode node,
-                final Object arg) throws GeneralException {
-
-            return new Integer(NODETYPE_DISCRETIONARY);
-        }
-
-        /**
-         * Return type number for expandedleaders nodes.  Both arguments are
-         * not used.
-         *
-         * @param node the visited node
-         * @param arg null
-         * @return typenumber of node as <code>Integer</code>
-         * @exception GeneralException if an error occurs
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitExpandedLeaders(ExpandedLeadersNode,
-         *     java.lang.Object)
-         */
-        public Object visitExpandedLeaders(final ExpandedLeadersNode node,
-                final Object arg) throws GeneralException {
-
-            //TODO unimplemented
-            throw new RuntimeException("unimplemented");
-            //return new Integer(NODETYPE_EXPANDEDLEADERS);
-        }
-
-        /**
-         * Return type number for glue nodes.  Both arguments are
-         * not used.
-         *
-         * @param node the visited node
-         * @param arg null
-         * @return typenumber of node as <code>Integer</code>
-         * @exception GeneralException if an error occurs
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitGlue(GlueNode,
-         *     java.lang.Object)
-         */
-        public Object visitGlue(final GlueNode node, final Object arg)
-                throws GeneralException {
-
-            return new Integer(NODETYPE_GLUE);
-        }
-
-        /**
-         * Return type number for horizontallist nodes.  Both arguments are
-         * not used.
-         *
-         * @param node the visited node
-         * @param arg null
-         * @return typenumber of node as <code>Integer</code>
-         * @exception GeneralException if an error occurs
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitHorizontalList(HorizontalListNode,
-         *     java.lang.Object)
-         */
-        public Object visitHorizontalList(final HorizontalListNode node,
-                final Object arg) throws GeneralException {
-
-            return new Integer(NODETYPE_HORIZONTALLIST);
-        }
-
-        /**
-         * Return type number for insertion nodes.  Both arguments are
-         * not used.
-         *
-         * @param node the visited node
-         * @param arg null
-         * @return typenumber of node as <code>Integer</code>
-         * @exception GeneralException if an error occurs
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitInsertion(InsertionNode,
-         *     java.lang.Object)
-         */
-        public Object visitInsertion(final InsertionNode node, final Object arg)
-                throws GeneralException {
-
-            return new Integer(NODETYPE_INSERTION);
-        }
-
-        /**
-         * Return type number for kern nodes.  Both arguments are
-         * not used.
-         *
-         * @param node the visited node
-         * @param arg null
-         * @return typenumber of node as <code>Integer</code>
-         * @exception GeneralException if an error occurs
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitKern(KernNode,
-         *     java.lang.Object)
-         */
-        public Object visitKern(final KernNode node, final Object arg)
-                throws GeneralException {
-
-            return new Integer(NODETYPE_KERN);
-        }
-
-        /**
-         * Return type number for ligature nodes.  Both arguments are
-         * not used.
-         *
-         * @param node the visited node
-         * @param arg null
-         * @return typenumber of node as <code>Integer</code>
-         * @exception GeneralException if an error occurs
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitLigature(LigatureNode,
-         *     java.lang.Object)
-         */
-        public Object visitLigature(final LigatureNode node, final Object arg)
-                throws GeneralException {
-
-            return new Integer(NODETYPE_LIGATURE);
-        }
-
-        /**
-         * Return type number for mark nodes.  Both arguments are
-         * not used.
-         *
-         * @param node the visited node
-         * @param arg null
-         * @return typenumber of node as <code>Integer</code>
-         * @exception GeneralException if an error occurs
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitMark(MarkNode,
-         *     java.lang.Object)
-         */
-        public Object visitMark(final MarkNode node, final Object arg)
-                throws GeneralException {
-
-            return new Integer(NODETYPE_MARK);
-        }
-
-        /**
-         * Return type number for penalty nodes.  Both arguments are
-         * not used.
-         *
-         * @param node the visited node
-         * @param arg null
-         * @return typenumber of node as <code>Integer</code>
-         * @exception GeneralException if an error occurs
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitPenalty(PenaltyNode,
-         *     java.lang.Object)
-         */
-        public Object visitPenalty(final PenaltyNode node, final Object arg)
-                throws GeneralException {
-
-            return new Integer(NODETYPE_PENALTY);
-        }
-
-        /**
-         * Return type number for rule nodes.  Both arguments are
-         * not used.
-         *
-         * @param node the visited node
-         * @param arg null
-         * @return typenumber of node as <code>Integer</code>
-         * @exception GeneralException if an error occurs
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitRule(RuleNode,
-         *     java.lang.Object)
-         */
-        public Object visitRule(final RuleNode node, final Object arg)
-                throws GeneralException {
-
-            return new Integer(NODETYPE_RULE);
-        }
-
-        /**
-         * Return type number for SPACE nodes.  Both arguments are
-         * not used.
-         *
-         * @param node the visited node
-         * @param arg null
-         * @return typenumber of node as <code>Integer</code>
-         * @exception GeneralException if an error occurs
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitSpace(SpaceNode,
-         *     java.lang.Object)
-         */
-        public Object visitSpace(final SpaceNode node, final Object arg)
-                throws GeneralException {
-
-            //TODO unimplemented
-            throw new RuntimeException("unimplemented");
-            // return new Integer(NODETYPE_SPACE);
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitVirtualChar(de.dante.extex.typesetter.type.node.VirtualCharNode, java.lang.Object)
-         */
-        public Object visitVirtualChar(final VirtualCharNode node,
-                final Object value) throws GeneralException {
-
-            // TODO visitVirtualChar unimplemented
-            return null;
-        }
-
-        /**
-         * Return type number for verticallist nodes.  Both arguments are
-         * not used.
-         *
-         * @param node the visited node
-         * @param arg null
-         * @return typenumber of node as <code>Integer</code>
-         * @exception GeneralException if an error occurs
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitVerticalList(VerticalListNode,
-         *     java.lang.Object)
-         */
-        public Object visitVerticalList(final VerticalListNode node,
-                final Object arg) throws GeneralException {
-
-            return new Integer(NODETYPE_VERTICALLIST);
-        }
-
-        /**
-         * Return type number for whatsit nodes.  Both arguments are
-         * not used.
-         *
-         * @param node the visited node
-         * @param arg null
-         * @return typenumber of node as <code>Integer</code>
-         * @exception GeneralException if an error occurs
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitWhatsIt(WhatsItNode,
-         *     java.lang.Object)
-         */
-        public Object visitWhatsIt(final WhatsItNode node, final Object arg)
-                throws GeneralException {
-
-            return new Integer(NODETYPE_WHATSIT);
-        }
+        private static final Integer NODETYPE_WHATSIT = new Integer(9);
 
         /**
          * Returns the Node for an specified node.
@@ -563,12 +197,351 @@ public class Lastnodetype extends AbstractReadonlyCount {
 
             if (node == null) {
                 return NODE_TYPE_EMPTY_LIST;
-            } else {
-                Integer integer = (Integer) node.visit(this, null);
-                return integer.intValue();
             }
+
+            return ((Integer) node.visit(this, null)).intValue();
+        }
+
+        /**
+         * Return type number for adjust nodes.  Both arguments are
+         * not used.
+         *
+         * @param node the visited node
+         * @param arg null
+         * @return type number of node as <code>Integer</code>
+         * @exception GeneralException if an error occurs
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitAdjust(AdjustNode,
+         *     java.lang.Object)
+         */
+        public Object visitAdjust(final AdjustNode node, final Object arg) {
+
+            return NODETYPE_ADJUST;
+        }
+
+        /**
+         * Return type number for aftermath nodes.  Both arguments are
+         * not used.
+         *
+         * @param node the visited node
+         * @param arg null
+         * @return type number of node as <code>Integer</code>
+         * @exception GeneralException if an error occurs
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitAfterMath(AfterMathNode,
+         *     java.lang.Object)
+         */
+        public Object visitAfterMath(final AfterMathNode node, final Object arg) {
+
+            return NODETYPE_AFTERMATH;
+        }
+
+        /**
+         * Return type number for aligned leaders nodes.  Both arguments are
+         * not used.
+         *
+         * @param node the visited node
+         * @param arg null
+         * @return type number of node as <code>Integer</code>
+         * @exception GeneralException if an error occurs
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitAlignedLeaders(AlignedLeadersNode,
+         *     java.lang.Object)
+         */
+        public Object visitAlignedLeaders(final AlignedLeadersNode node,
+                final Object arg) {
+
+            //TODO unimplemented
+            throw new RuntimeException("unimplemented");
+            // return new Integer(NODETYPE_ALIGNEDLEADERS);
+        }
+
+        /**
+         * Return type number for before math nodes.  Both arguments are
+         * not used.
+         *
+         * @param node the visited node
+         * @param arg null
+         * @return type number of node as <code>Integer</code>
+         * @exception GeneralException if an error occurs
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitBeforeMath(BeforeMathNode,
+         *     java.lang.Object)
+         */
+        public Object visitBeforeMath(final BeforeMathNode node,
+                final Object arg) {
+
+            return NODETYPE_BEFOREMATH;
+        }
+
+        /**
+         * Return type number for centered leaders nodes.  Both arguments are
+         * not used.
+         *
+         * @param node the visited node
+         * @param arg null
+         * @return type number of node as <code>Integer</code>
+         * @exception GeneralException if an error occurs
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitCenteredLeaders(CenteredLeadersNode,
+         *     java.lang.Object)
+         */
+        public Object visitCenteredLeaders(final CenteredLeadersNode node,
+                final Object arg) {
+
+            //TODO unimplemented
+            throw new RuntimeException("unimplemented");
+            // return new Integer(NODETYPE_CENTEREDLEADERS);
+        }
+
+        /**
+         * Return type number for char nodes.  Both arguments are
+         * not used.
+         *
+         * @param node the visited node
+         * @param arg null
+         * @return type number of node as <code>Integer</code>
+         * @exception GeneralException if an error occurs
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitChar(CharNode,
+         *     java.lang.Object)
+         */
+        public Object visitChar(final CharNode node, final Object arg) {
+
+            return NODETYPE_CHAR;
+        }
+
+        /**
+         * Return type number for discretionary nodes.  Both arguments are
+         * not used.
+         *
+         * @param node the visited node
+         * @param arg null
+         * @return type number of node as <code>Integer</code>
+         * @exception GeneralException if an error occurs
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitDiscretionary(DiscretionaryNode,
+         *     java.lang.Object)
+         */
+        public Object visitDiscretionary(final DiscretionaryNode node,
+                final Object arg) {
+
+            return NODETYPE_DISCRETIONARY;
+        }
+
+        /**
+         * Return type number for expanded leaders nodes.  Both arguments are
+         * not used.
+         *
+         * @param node the visited node
+         * @param arg null
+         * @return type number of node as <code>Integer</code>
+         * @exception GeneralException if an error occurs
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitExpandedLeaders(ExpandedLeadersNode,
+         *     java.lang.Object)
+         */
+        public Object visitExpandedLeaders(final ExpandedLeadersNode node,
+                final Object arg) {
+
+            //TODO unimplemented
+            throw new RuntimeException("unimplemented");
+            //return new Integer(NODETYPE_EXPANDEDLEADERS);
+        }
+
+        /**
+         * Return type number for glue nodes.  Both arguments are
+         * not used.
+         *
+         * @param node the visited node
+         * @param arg null
+         * @return type number of node as <code>Integer</code>
+         * @exception GeneralException if an error occurs
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitGlue(GlueNode,
+         *     java.lang.Object)
+         */
+        public Object visitGlue(final GlueNode node, final Object arg) {
+
+            return NODETYPE_GLUE;
+        }
+
+        /**
+         * Return type number for horizontallist nodes.  Both arguments are
+         * not used.
+         *
+         * @param node the visited node
+         * @param arg null
+         * @return type number of node as <code>Integer</code>
+         * @exception GeneralException if an error occurs
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitHorizontalList(HorizontalListNode,
+         *     java.lang.Object)
+         */
+        public Object visitHorizontalList(final HorizontalListNode node,
+                final Object arg) {
+
+            return NODETYPE_HORIZONTALLIST;
+        }
+
+        /**
+         * Return type number for insertion nodes.  Both arguments are
+         * not used.
+         *
+         * @param node the visited node
+         * @param arg null
+         * @return type number of node as <code>Integer</code>
+         * @exception GeneralException if an error occurs
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitInsertion(InsertionNode,
+         *     java.lang.Object)
+         */
+        public Object visitInsertion(final InsertionNode node, final Object arg) {
+
+            return NODETYPE_INSERTION;
+        }
+
+        /**
+         * Return type number for kern nodes.  Both arguments are
+         * not used.
+         *
+         * @param node the visited node
+         * @param arg null
+         * @return type number of node as <code>Integer</code>
+         * @exception GeneralException if an error occurs
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitKern(KernNode,
+         *     java.lang.Object)
+         */
+        public Object visitKern(final KernNode node, final Object arg) {
+
+            return NODETYPE_KERN;
+        }
+
+        /**
+         * Return type number for ligature nodes.  Both arguments are
+         * not used.
+         *
+         * @param node the visited node
+         * @param arg null
+         * @return type number of node as <code>Integer</code>
+         * @exception GeneralException if an error occurs
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitLigature(LigatureNode,
+         *     java.lang.Object)
+         */
+        public Object visitLigature(final LigatureNode node, final Object arg) {
+
+            return NODETYPE_LIGATURE;
+        }
+
+        /**
+         * Return type number for mark nodes.  Both arguments are
+         * not used.
+         *
+         * @param node the visited node
+         * @param arg null
+         * @return type number of node as <code>Integer</code>
+         * @exception GeneralException if an error occurs
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitMark(MarkNode,
+         *     java.lang.Object)
+         */
+        public Object visitMark(final MarkNode node, final Object arg) {
+
+            return NODETYPE_MARK;
+        }
+
+        /**
+         * Return type number for penalty nodes.  Both arguments are
+         * not used.
+         *
+         * @param node the visited node
+         * @param arg null
+         * @return type number of node as <code>Integer</code>
+         * @exception GeneralException if an error occurs
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitPenalty(PenaltyNode,
+         *     java.lang.Object)
+         */
+        public Object visitPenalty(final PenaltyNode node, final Object arg) {
+
+            return NODETYPE_PENALTY;
+        }
+
+        /**
+         * Return type number for rule nodes.  Both arguments are
+         * not used.
+         *
+         * @param node the visited node
+         * @param arg null
+         * @return type number of node as <code>Integer</code>
+         * @exception GeneralException if an error occurs
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitRule(RuleNode,
+         *     java.lang.Object)
+         */
+        public Object visitRule(final RuleNode node, final Object arg) {
+
+            return NODETYPE_RULE;
+        }
+
+        /**
+         * Return type number for SPACE nodes.  Both arguments are
+         * not used.
+         *
+         * @param node the visited node
+         * @param arg null
+         * @return type number of node as <code>Integer</code>
+         * @exception GeneralException if an error occurs
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitSpace(SpaceNode,
+         *     java.lang.Object)
+         */
+        public Object visitSpace(final SpaceNode node, final Object arg) {
+
+            //TODO unimplemented
+            throw new RuntimeException("unimplemented");
+            // return new Integer(NODETYPE_SPACE);
+        }
+
+        /**
+         * Return type number for vertical list nodes.  Both arguments are
+         * not used.
+         *
+         * @param node the visited node
+         * @param arg null
+         * @return type number of node as <code>Integer</code>
+         * @exception GeneralException if an error occurs
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitVerticalList(VerticalListNode,
+         *     java.lang.Object)
+         */
+        public Object visitVerticalList(final VerticalListNode node,
+                final Object arg) {
+
+            return NODETYPE_VERTICALLIST;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitVirtualChar(de.dante.extex.typesetter.type.node.VirtualCharNode, java.lang.Object)
+         */
+        public Object visitVirtualChar(final VirtualCharNode node,
+                final Object value) {
+
+            return NODETYPE_CHAR;
+        }
+
+        /**
+         * Return type number for whatsit nodes.  Both arguments are
+         * not used.
+         *
+         * @param node the visited node
+         * @param arg null
+         * @return type number of node as <code>Integer</code>
+         * @exception GeneralException if an error occurs
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitWhatsIt(WhatsItNode,
+         *     java.lang.Object)
+         */
+        public Object visitWhatsIt(final WhatsItNode node, final Object arg) {
+
+            return NODETYPE_WHATSIT;
         }
     }
+
+    /**
+     * Class for getting the type of a node.
+     */
+    private static final NodetypeReader NODETYPE_READER = new NodetypeReader();
+
+    // TODO: type 14 (unset) is missing (TE)
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a new object.
@@ -598,4 +571,5 @@ public class Lastnodetype extends AbstractReadonlyCount {
             throw new InterpreterException(e);
         }
     }
+
 }
