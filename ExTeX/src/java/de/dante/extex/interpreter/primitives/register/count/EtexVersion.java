@@ -29,14 +29,14 @@ import de.dante.extex.typesetter.Typesetter;
  * primitive.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 
 public class EtexVersion extends AbstractReadonlyCount {
     // TODO: this is the same as in eTeX, put this in etex.xml (TE)
 
     /**
-     * The field <tt>serialVersionUID</tt> contains the ...
+     * The field <tt>serialVersionUID</tt> contains the id for serialization.
      */
     private static final long serialVersionUID = 1L;
 
