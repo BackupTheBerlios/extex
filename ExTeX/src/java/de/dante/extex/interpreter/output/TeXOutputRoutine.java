@@ -19,9 +19,7 @@
 
 package de.dante.extex.interpreter.output;
 
-import java.io.IOException;
-
-import de.dante.extex.backend.documentWriter.DocumentWriter;
+import de.dante.extex.backend.BackendDriver;
 import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.context.Context;
@@ -48,7 +46,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * interpreter.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class TeXOutputRoutine implements OutputRoutine {
 
@@ -90,7 +88,7 @@ public class TeXOutputRoutine implements OutputRoutine {
      *      de.dante.extex.typesetter.type.page.Page,
      *      de.dante.extex.backend.documentWriter.DocumentWriter)
      */
-    public void output(final Page page, final DocumentWriter documentWriter)
+    public void output(final Page page, final BackendDriver backend)
             throws GeneralException {
 
         Context context = interpreter.getContext();
@@ -98,12 +96,8 @@ public class TeXOutputRoutine implements OutputRoutine {
 
         Tokens output = context.getToks("output");
         if (output.length() == 0) {
-            try {
-                documentWriter.shipout(page);
-                deadcyles.set(0);
-            } catch (IOException e) {
-                throw new GeneralException(e);
-            }
+            backend.shipout(page);
+            deadcyles.set(0);
             return;
         }
 
