@@ -17,29 +17,28 @@
  *
  */
 
-package de.dante.extex.backend.nodeFilter;
+package de.dante.extex.backend.pageFilter;
 
-import java.io.IOException;
-
-import de.dante.extex.backend.documentWriter.exception.DocumentWriterException;
+import de.dante.extex.backend.exception.BackendException;
 import de.dante.extex.typesetter.type.page.Page;
-import de.dante.util.exception.GeneralException;
 
 /**
- * A node pipe describes the ability to process a node list &ndash; resulting
+ * A page pipe describes the ability to process a node list &ndash; resulting
  * in a new node list.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public interface NodePipe {
+public interface PagePipe {
 
     /**
      * This method is invoked upon the end of the processing.
      *
      * @throws DocumentWriterException in case of an error
+     * @throws BackendException in case of a back-end error
+     * @throws IOException in case of an IO error
      */
-    void close() throws DocumentWriterException, GeneralException, IOException;
+    void close() throws BackendException;
 
     /**
      * This is the entry point for the document writer. Here it receives a
@@ -50,9 +49,16 @@ public interface NodePipe {
      *
      * @param nodes the nodes to send
      *
-     * @throws DocumentWriterException in case of an error
+     * @throws BackendException in case of an error
      */
-    Page process(Page nodes) throws DocumentWriterException;
+    void shipout(Page nodes) throws BackendException;
+
+    /**
+     * Setter for the output node pipe.
+     *
+     * @param out the output node pipe
+     */
+    void setOutput(PagePipe out);
 
     /**
      * Setter for a named parameter.
