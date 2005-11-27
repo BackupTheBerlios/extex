@@ -19,7 +19,7 @@
 
 package de.dante.extex.typesetter;
 
-import de.dante.extex.backend.documentWriter.DocumentWriter;
+import de.dante.extex.backend.BackendDriver;
 import de.dante.extex.typesetter.type.page.Page;
 import de.dante.util.exception.GeneralException;
 
@@ -30,7 +30,7 @@ import de.dante.util.exception.GeneralException;
  * extension language.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public interface OutputRoutine {
 
@@ -40,10 +40,10 @@ public interface OutputRoutine {
      * writer &ndash; either immediately or later on.
      *
      * @param page the nodes to put onto the page
-     * @param documentWriter the document writer to target the nodes to
+     * @param backend the back-end driver to target the nodes to
      *
      * @throws GeneralException in case of an error
      */
-    void output(Page page, DocumentWriter documentWriter)
+    void output(Page page, BackendDriver backend)
             throws GeneralException;
 }

@@ -19,6 +19,7 @@
 
 package de.dante.extex.typesetter.impl;
 
+import de.dante.extex.backend.BackendDriver;
 import de.dante.extex.backend.documentWriter.DocumentWriter;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -53,9 +54,15 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class NullTypesetterImpl implements Typesetter {
+
+    /**
+     * The field <tt>backend</tt> contains the back-end driver for
+     * producing the output.
+     */
+    private BackendDriver backend = null;
 
     /**
      * Creates a new object.
@@ -156,6 +163,14 @@ public class NullTypesetterImpl implements Typesetter {
     public CharNodeFactory getCharNodeFactory() {
 
         return null;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.Typesetter#getDocumentWriter()
+     */
+    public DocumentWriter getDocumentWriter() {
+
+        return backend.getDocumentWriter();
     }
 
     /**
@@ -283,12 +298,12 @@ public class NullTypesetterImpl implements Typesetter {
     }
 
     /**
-     * @see de.dante.extex.typesetter.Typesetter#setDocumentWriter(
-     *     de.dante.extex.backend.documentWriter.DocumentWriter)
+     * @see de.dante.extex.typesetter.Typesetter#setBackend(
+     *      de.dante.extex.backend.BackendDriver)
      */
-    public void setDocumentWriter(final DocumentWriter doc) {
+    public void setBackend(final BackendDriver driver) {
 
-        // nothing to do
+        backend = driver;
     }
 
     /**
@@ -346,7 +361,8 @@ public class NullTypesetterImpl implements Typesetter {
      * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(
      *     de.dante.extex.interpreter.type.count.Count)
      */
-    public void setSpacefactor(final Count f) throws InvalidSpacefactorException  {
+    public void setSpacefactor(final Count f)
+            throws InvalidSpacefactorException {
 
         // nothing to do
     }

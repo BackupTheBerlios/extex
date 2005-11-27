@@ -22,6 +22,7 @@ package de.dante.extex.typesetter.impl;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
+import de.dante.extex.backend.BackendDriver;
 import de.dante.extex.backend.documentWriter.DocumentWriter;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -65,7 +66,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.81 $
+ * @version $Revision: 1.82 $
  */
 public class TypesetterImpl
         implements
@@ -75,16 +76,16 @@ public class TypesetterImpl
             LogEnabled {
 
     /**
+     * The field <tt>backend</tt> contains the back-end driver for
+     * producing the output.
+     */
+    private BackendDriver backend = null;
+
+    /**
      * The field <tt>charNodeFactory</tt> contains the factory to produce glyph
      * nodes.
      */
     private CharNodeFactory charNodeFactory = new CharNodeFactory();
-
-    /**
-     * The field <tt>documentWriter</tt> contains the document writer for
-     * producing the output.
-     */
-    private DocumentWriter documentWriter;
 
     /**
      * The field <tt>listMaker</tt> contains the current list maker for
@@ -164,7 +165,7 @@ public class TypesetterImpl
                 || node instanceof VerticalListNode)) {
 
             pageBuilder.inspectAndBuild((VerticalListNode) listMaker
-                    .complete(options));
+                    .complete(options), this);
         }
     }
 
@@ -293,7 +294,7 @@ public class TypesetterImpl
     public void finish() throws TypesetterException, ConfigurationException {
 
         par();
-        pageBuilder.flush(listMaker.complete(options));
+        pageBuilder.flush(listMaker.complete(options), this);
         if (saveStack != null && saveStack.size() != 0) {
             throw new InternalError("typesetter.saveStack.notEmpty");
         }
@@ -306,6 +307,14 @@ public class TypesetterImpl
     public CharNodeFactory getCharNodeFactory() {
 
         return charNodeFactory;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.Typesetter#getDocumentWriter()
+     */
+    public DocumentWriter getDocumentWriter() {
+
+        return backend.getDocumentWriter();
     }
 
     /**
@@ -427,7 +436,7 @@ public class TypesetterImpl
 
         if (saveStack.size() == 0) {
             pageBuilder.inspectAndBuild((VerticalListNode) listMaker
-                    .complete(options));
+                    .complete(options), this);
         }
     }
 
@@ -476,10 +485,10 @@ public class TypesetterImpl
      * @see de.dante.extex.typesetter.Typesetter#setDocumentWriter(
      *     de.dante.extex.backend.documentWriter.DocumentWriter)
      */
-    public void setDocumentWriter(final DocumentWriter writer) {
+    public void setBackend(final BackendDriver driver) {
 
-        documentWriter = writer;
-        pageBuilder.setDocumentWriter(writer);
+        backend = driver;
+        pageBuilder.setBackend(driver);
     }
 
     /**
@@ -515,7 +524,7 @@ public class TypesetterImpl
     public void setPageBuilder(final PageBuilder pageBuilder) {
 
         this.pageBuilder = pageBuilder;
-        pageBuilder.setDocumentWriter(documentWriter);
+        pageBuilder.setBackend(backend);
         pageBuilder.setOutputRoutine(this.outputRoutine);
         if (pageBuilder instanceof LogEnabled) {
             ((LogEnabled) pageBuilder).enableLogging(logger);
@@ -569,28 +578,30 @@ public class TypesetterImpl
      */
     public void shipout(final NodeList nodes) throws TypesetterException {
 
-        pageBuilder.flush(nodes);
+        pageBuilder.flush(nodes, this);
         shipoutMark = true;
     }
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#showlist(java.lang.StringBuffer, long, long)
      */
-    public void showlist(final StringBuffer sb, final long l, final long m) {
+    public void showlist(final StringBuffer sb, final long depth,
+            final long breadth) {
 
-        listMaker.showlist(sb, l, m);
+        listMaker.showlist(sb, depth, breadth);
     }
 
     /**
      * @see de.dante.extex.typesetter.Typesetter#showlists(
      *      java.lang.StringBuffer, long, long)
      */
-    public void showlists(final StringBuffer sb, final long l, final long m) {
+    public void showlists(final StringBuffer sb, final long depth,
+            final long breadth) {
 
         sb.append(localizer.format("Showlist.Format", listMaker.getMode()
                 .toString(), Integer.toString(listMaker.getLocator()
                 .getLineno())));
-        listMaker.showlist(sb, l, m);
+        listMaker.showlist(sb, depth, breadth);
 
         for (int i = saveStack.size() - 1; i >= 0; i--) {
             ListMaker lm = (ListMaker) saveStack.get(i);
@@ -598,7 +609,7 @@ public class TypesetterImpl
                     .append(localizer.format("Showlist.Format", lm.getMode()
                             .toString(), Integer.toString(lm.getLocator()
                             .getLineno())));
-            lm.showlist(sb, l, m);
+            lm.showlist(sb, depth, breadth);
         }
     }
 

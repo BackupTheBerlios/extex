@@ -20,6 +20,7 @@
 package de.dante.extex.interpreter;
 
 import junit.framework.TestCase;
+import de.dante.extex.backend.BackendDriver;
 import de.dante.extex.backend.documentWriter.DocumentWriter;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
@@ -57,7 +58,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.70 $
+ * @version $Revision: 1.71 $
  */
 public class Max1 extends TestCase {
 
@@ -168,6 +169,14 @@ public class Max1 extends TestCase {
          * @see de.dante.extex.typesetter.Typesetter#getCharNodeFactory()
          */
         public CharNodeFactory getCharNodeFactory() {
+
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.Typesetter#getDocumentWriter()
+         */
+        public DocumentWriter getDocumentWriter() {
 
             return null;
         }
@@ -309,7 +318,7 @@ public class Max1 extends TestCase {
          * @see de.dante.extex.typesetter.Typesetter#setDocumentWriter(
          *      de.dante.extex.backend.documentWriter.DocumentWriter)
          */
-        public void setDocumentWriter(final DocumentWriter doc) {
+        public void setBackend(final BackendDriver doc) {
 
             // nothing to do
         }

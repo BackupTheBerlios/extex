@@ -19,6 +19,7 @@
 
 package de.dante.extex.typesetter;
 
+import de.dante.extex.backend.BackendDriver;
 import de.dante.extex.backend.documentWriter.DocumentWriter;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.listMaker.ListManager;
@@ -37,7 +38,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @see "<logo>TeX</logo> &ndash; The Program [211]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.32 $
+ * @version $Revision: 1.33 $
  */
 public interface Typesetter extends ListMaker {
 
@@ -67,7 +68,14 @@ public interface Typesetter extends ListMaker {
     CharNodeFactory getCharNodeFactory();
 
     /**
-     * Getter for the current list maker..
+     * Getter for the document writer.
+     *
+     * @return the document writer
+     */
+    DocumentWriter getDocumentWriter();
+
+    /**
+     * Getter for the current list maker.
      *
      * @return the top list maker or <code>null</code> if the stack is empty
      */
@@ -106,13 +114,13 @@ public interface Typesetter extends ListMaker {
     void push(ListMaker listMaker) throws TypesetterException;
 
     /**
-     * Setter for the document writer.
-     * The document writer is addressed whenever a complete page has to be
+     * Setter for the back-end driver.
+     * The back-end driver is addressed whenever a complete page has to be
      * shipped out.
      *
-     * @param doc the new document writer
+     * @param driver the new back-end driver
      */
-    void setDocumentWriter(DocumentWriter doc);
+    void setBackend(BackendDriver driver);
 
     /**
      * Setter for the typesetter specific options.
@@ -159,8 +167,8 @@ public interface Typesetter extends ListMaker {
      * a StringBuffer.
      *
      * @param sb the target string buffer
-     * @param l ...
-     * @param m ...
+     * @param depth the depth for the display
+     * @param breadth the breadth of the display
      */
-    void showlists(StringBuffer sb, long l, long m);
+    void showlists(StringBuffer sb, long depth, long breadth);
 }
