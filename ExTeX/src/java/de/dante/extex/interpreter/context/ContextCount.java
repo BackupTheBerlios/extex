@@ -28,16 +28,22 @@ import de.dante.extex.interpreter.type.count.Count;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface ContextCount {
 
     /**
      * Getter for the {@link de.dante.extex.interpreter.type.count.Count count}
      * register. Count registers are named, either with a number or an
-     * arbitrary string. The numbered registers where limited to 256 in
-     * <logo>TeX</logo>.
-     * This restriction does not longer hold for <logo>ExTeX</logo>.
+     * arbitrary string.
+     * <p>
+     *  The numbered registers where limited to 256 in <logo>TeX</logo>.
+     *  This restriction does not longer hold for <logo>ExTeX</logo>.
+     * </p>
+     * <p>
+     *  The return value is guaranteed to be a valid object. <code>null</code>
+     *  will never be returned.
+     * </p>
      *
      * @param name the name or number of the count register
      *

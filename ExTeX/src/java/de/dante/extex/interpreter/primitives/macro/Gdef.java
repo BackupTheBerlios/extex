@@ -30,7 +30,8 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="gdef">
  * <h3>The Primitive <tt>\gdef</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  This primitive is an abbreviation for <tt>\global</tt><tt>\def</tt>. Thus
+ *  the description of <tt>\def</tt> can be consulted for details.
  * </p>
  *
  * <h4>Syntax</h4>
@@ -45,7 +46,8 @@ import de.dante.extex.typesetter.Typesetter;
  *      &rarr;
  *       | <tt>\global</tt> &lang;prefix&rang;
  *       | <tt>\long</tt> &lang;prefix&rang;
- *       | <tt>\outer</tt> &lang;prefix&rang;</pre>
+ *       | <tt>\outer</tt> &lang;prefix&rang;
+ *       | <tt>\proteced</tt> &lang;prefix&rang;</pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
@@ -54,7 +56,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class Gdef extends Def {
 

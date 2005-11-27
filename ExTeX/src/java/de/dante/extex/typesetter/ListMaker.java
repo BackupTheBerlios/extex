@@ -41,7 +41,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "<logo>TeX</logo> &ndash; The Program [211]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.45 $
+ * @version $Revision: 1.46 $
  */
 public interface ListMaker {
 
@@ -237,10 +237,10 @@ public interface ListMaker {
      * Print the status for <tt>\showlists</tt>.
      *
      * @param sb the target buffer
-     * @param l ...
-     * @param m ...
+     * @param depth the depth of the list display
+     * @param breadth the breadth of the list display
      */
-    void showlist(StringBuffer sb, long l, long m);
+    void showlist(StringBuffer sb, long depth, long breadth);
 
     /**
      * Treat a subscript mark. This might be meaningful in math mode only.

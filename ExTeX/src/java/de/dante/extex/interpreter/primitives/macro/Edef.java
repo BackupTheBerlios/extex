@@ -31,7 +31,8 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="edef">
  * <h3>The Primitive <tt>\edef</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  This primitive is an abbreviation for <tt>\global</tt><tt>\xdef</tt>. Thus
+ *  the description of <tt>\xdef</tt> can be consulted for details.
  * </p>
  *
  * <h4>Syntax</h4>
@@ -46,7 +47,8 @@ import de.dante.extex.typesetter.Typesetter;
  *      &rarr;
  *       | <tt>\global</tt> &lang;prefix&rang;
  *       | <tt>\long</tt> &lang;prefix&rang;
- *       | <tt>\outer</tt> &lang;prefix&rang;</pre>
+ *       | <tt>\outer</tt> &lang;prefix&rang;
+ *       | <tt>\proteced</tt> &lang;prefix&rang;</pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
@@ -55,7 +57,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class Edef extends Def {
 

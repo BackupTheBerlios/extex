@@ -46,7 +46,11 @@ import de.dante.util.framework.logger.LogEnabled;
  * <doc name="ensureloaded">
  * <h3>The Primitive <tt>\ensureloaded</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The primitive <tt>\ensureloaded</tt> dynamically requests that a unit of
+ *  <logo>ExTeX</logo> is loaded.
+ * </p>
+ * <p>
+ *  A unit consists of primitives and some initializing actions.
  * </p>
  *
  * <h4>Syntax</h4>
@@ -55,16 +59,23 @@ import de.dante.util.framework.logger.LogEnabled;
  *   &lang;ensureloaded&rang;
  *       &rarr; <tt>\ensureloaded</tt> <i>&lang;tokens&rang;</i> </pre>
  *
+ * <h4>Examples</h4>
+ *  <pre class="TeXSample">
+ *    \ensureloaded{etex}  </pre>
+ *  <pre class="TeXSample">
+ *    \ensureloaded\toks0  </pre>
+ *
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class EnsureLoaded extends AbstractCode implements LogEnabled {
 
     /**
-     * The field <tt>CONFIG_UNIT</tt> contains the ...
+     * The constant <tt>CONFIG_UNIT</tt> contains the prefix for the
+     * path of the configuration.
      */
     private static final String CONFIG_UNIT = "config/unit/";
 

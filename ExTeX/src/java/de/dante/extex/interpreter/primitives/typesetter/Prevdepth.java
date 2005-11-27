@@ -42,7 +42,7 @@ import de.dante.extex.typesetter.exception.TypesetterUnsupportedException;
  * <doc name="prevdepth">
  * <h3>The Primitive <tt>\prevdepth</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  TODO gene: missing documentation
  * </p>
  *
  * <h4>Syntax</h4>
@@ -53,12 +53,14 @@ import de.dante.extex.typesetter.exception.TypesetterUnsupportedException;
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
- *    \prevdepth ...  </pre>
+ *    \prevdepth=123pt  </pre>
+ *  <pre class="TeXSample">
+ *    \dimen0=\prevdepth  </pre>
  *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Prevdepth extends AbstractAssignment
         implements
@@ -73,7 +75,8 @@ public class Prevdepth extends AbstractAssignment
     private static final long IGNORE = -65536000;
 
     /**
-     * The field <tt>IGNORE_DIMEN</tt> contains the ...
+     * The field <tt>IGNORE_DIMEN</tt> contains the value which represents
+     * the ignored value. This will be mapped to null.
      */
     private static final Dimen IGNORE_DIMEN = new Dimen(IGNORE);
 

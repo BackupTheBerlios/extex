@@ -28,12 +28,6 @@ import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
 
-/*
- * TODO:
- * - getCounter does not work???
- * (TE)
- */
-
 /**
  * This class provides an implementation for the primitive
  * <code>\currentgrouplevel</code>.
@@ -41,23 +35,24 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="currentgrouplevel">
  * <h3>The Primitive <tt>\currentgrouplevel</tt></h3>
  * <p>
- *  ...
+ *  TODO gene: missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;currentgrouplevel&rang;
  *      &rarr; <tt>\currentgrouplevel</tt>  </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \the\currentgrouplevel  </pre>
- * </p>
+ *
  * </doc>
  *
+ * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Currentgrouplevel extends AbstractCode
         implements
@@ -65,7 +60,7 @@ public class Currentgrouplevel extends AbstractCode
             Theable {
 
     /**
-     * The field <tt>serialVersionUID</tt> contains the ...
+     * The field <tt>serialVersionUID</tt> contains the id for serialization.
      */
     private static final long serialVersionUID = 1L;
 
@@ -102,4 +97,5 @@ public class Currentgrouplevel extends AbstractCode
 
         return new Tokens(context, context.getGroupLevel());
     }
+
 }

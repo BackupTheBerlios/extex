@@ -57,7 +57,7 @@ import de.dante.util.UnicodeChar;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Sfcode extends AbstractAssignment
         implements
@@ -67,7 +67,8 @@ public class Sfcode extends AbstractAssignment
             Theable {
 
     /**
-     * The field <tt>MAX_SF_CODE</tt> contains the ...
+     * The field <tt>MAX_SF_CODE</tt> contains the maximal value for a space
+     * factor code.
      */
     private static final int MAX_SF_CODE = 32767;
 

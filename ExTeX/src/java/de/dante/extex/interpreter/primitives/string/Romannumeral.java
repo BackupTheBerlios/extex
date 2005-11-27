@@ -64,14 +64,15 @@ import de.dante.extex.typesetter.Typesetter;
  * @see "<logo>TeX</logo> &ndash; the Program [69]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class Romannumeral extends AbstractCode implements ExpandableCode {
 
     /**
-     * The field <tt>magic</tt> contains the ...
+     * The field <tt>magic</tt> contains the magical values used to compute the
+     * string representation.
      */
-    private static final char[] magic = {'m', '2', 'd', '5', 'c', '2', 'l',
+    private static final char[] MAGIC = {'m', '2', 'd', '5', 'c', '2', 'l',
             '5', 'x', '2', 'v', '5', 'i'};
 
     /**
@@ -123,7 +124,7 @@ public class Romannumeral extends AbstractCode implements ExpandableCode {
         try {
             for (;;) {
                 while (n >= v) {
-                    toks.add(factory.createToken(Catcode.LETTER, magic[j],
+                    toks.add(factory.createToken(Catcode.LETTER, MAGIC[j],
                             Namespace.DEFAULT_NAMESPACE));
                     n = n - v;
                 }
@@ -134,17 +135,17 @@ public class Romannumeral extends AbstractCode implements ExpandableCode {
                 }
 
                 int k = j + 2;
-                int u = v / (magic[k - 1] - '0');
-                if (magic[k - 1] == '2') {
+                int u = v / (MAGIC[k - 1] - '0');
+                if (MAGIC[k - 1] == '2') {
                     k = k + 2;
-                    u = u / (magic[k - 1] - '0');
+                    u = u / (MAGIC[k - 1] - '0');
                 }
                 if (n + u >= v) {
-                    toks.add(factory.createToken(Catcode.LETTER, magic[k], ""));
+                    toks.add(factory.createToken(Catcode.LETTER, MAGIC[k], ""));
                     n = n + u;
                 } else {
                     j = j + 2;
-                    v = v / (magic[j - 1] - '0');
+                    v = v / (MAGIC[j - 1] - '0');
                 }
             }
         } catch (CatcodeException e) {

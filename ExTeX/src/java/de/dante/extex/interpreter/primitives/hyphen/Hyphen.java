@@ -56,14 +56,15 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Hyphen extends AbstractCode {
 
     /**
-     * The field <tt>HYPHEN</tt> contains the ...
+     * The field <tt>HYPHEN</tt> contains the Unicode character for the hyphen.
      */
     private static final UnicodeChar HYPHEN = new UnicodeChar('-');
+
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */

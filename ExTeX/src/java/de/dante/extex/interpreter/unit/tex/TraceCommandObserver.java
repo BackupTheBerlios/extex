@@ -34,7 +34,7 @@ import de.dante.extex.scanner.type.token.Token;
  * log file enclosed in braces.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TraceCommandObserver implements CommandObserver {
 
@@ -49,7 +49,9 @@ public class TraceCommandObserver implements CommandObserver {
     private Context context;
 
     /**
-     * The field <tt>prefix</tt> contains the ...
+     * The field <tt>prefix</tt> contains the indicator that the last token
+     * encountered has been a prefix primitive. This is used to suppress the
+     * following trace output in <logo>TeX</logo> compatibility mode.
      */
     private boolean prefix = false;
 

@@ -27,7 +27,7 @@ import de.dante.extex.interpreter.context.ContextInternals;
  * change in the conditional processing.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface ConditionalObserver {
 
@@ -35,7 +35,7 @@ public interface ConditionalObserver {
      * Receive a notification on a start event.
      *
      * @param context the interpreter context
-     * @param conditional ...
+     * @param conditional the current conditional
      *
      * @throws Exception in case of a problem
      */
@@ -46,7 +46,7 @@ public interface ConditionalObserver {
      * Receive a notification on a end event.
      *
      * @param context the interpreter context
-     * @param conditional ...
+     * @param conditional the current conditional
      *
      * @throws Exception in case of a problem
      */
