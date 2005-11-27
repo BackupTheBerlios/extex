@@ -177,14 +177,14 @@
     
     <!-- big -->
     <xsl:template match="big">
-        <xsl:text>{\Large</xsl:text>
+        <xsl:text>{\Large </xsl:text>
         <xsl:apply-templates/>
         <xsl:text>}</xsl:text>
     </xsl:template>
     
     <!-- small -->
     <xsl:template match="small">
-        <xsl:text>{\footnotesize</xsl:text>
+        <xsl:text>{\footnotesize </xsl:text>
         <xsl:apply-templates/>
         <xsl:text>}</xsl:text>
     </xsl:template>

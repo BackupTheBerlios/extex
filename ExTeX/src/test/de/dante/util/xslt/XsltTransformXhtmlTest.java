@@ -53,10 +53,20 @@ import de.dante.util.resource.ResourceFinder;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 
 public class XsltTransformXhtmlTest extends ExTeXLauncher {
+
+    /**
+     * Getter for the configuration name.
+     *
+     * @return the name of the configuration
+     */
+    protected String getConfig() {
+
+        return "extex-jx.xml";
+    }
 
     /**
      * Create a new object.
@@ -86,7 +96,9 @@ public class XsltTransformXhtmlTest extends ExTeXLauncher {
      */
     protected void setUp() throws Exception {
 
-        extex = new MyExTeX(System.getProperties(), ".extex-test");
+        Properties prop = System.getProperties();
+        prop.setProperty("extex.launcher.verbose", "false");
+        extex = new MyExTeX(prop, ".extex-test");
         finder = extex.getResourceFinder();
 
         InputStream xsl = finder.findResource("xhtml2latex_noheader.xsl", "");
@@ -103,36 +115,6 @@ public class XsltTransformXhtmlTest extends ExTeXLauncher {
      * html foot
      */
     private static final String FOOT = "</body></html>";
-
-//    /**
-//     * test item 01
-//     * @throws Exception if an error occurred.
-//     */
-//    public void testItem01() throws Exception {
-//
-//        String text = "Dies ist der Text mit der Nummer ";
-//        StringBuffer buf = new StringBuffer();
-//
-//        buf.append(HEAD);
-//        buf.append("<ul>\n");
-//        for (int i = 1; i < 6; i++) {
-//            buf.append("<li>").append(text).append(i).append("</li>");
-//        }
-//        buf.append("</ul>\n");
-//        buf.append(FOOT);
-//
-//        StringWriter out = new StringWriter();
-//        StringReader xml = new StringReader(buf.toString());
-//
-//        Transform.transform(new StreamSource(xml), xslstream, out);
-//
-//        String erg = "\\begin{itemize}\n\n" + "\\item " + text + "1\n\n"
-//                + "\\item " + text + "2\n\n" + "\\item " + text + "3\n\n"
-//                + "\\item " + text + "4\n\n" + "\\item " + text + "5\n\n"
-//                + "\\end{itemize}";
-//
-//        assertEquals(out.toString().trim(), erg);
-//    }
 
     /**
      * test section 01
@@ -237,6 +219,301 @@ public class XsltTransformXhtmlTest extends ExTeXLauncher {
     }
 
     /**
+     * test quote 01
+     * @throws Exception if an error occurred.
+     */
+    public void testQuote01() throws Exception {
+
+        String text = "Text";
+        String html = HEAD + "<quote>" + text + "</quote>" + FOOT;
+
+        StringWriter out = new StringWriter();
+        StringReader xml = new StringReader(html);
+
+        Transform.transform(new StreamSource(xml), xslstream, out);
+
+        assertEquals("``Text''", out.toString().trim());
+    }
+
+    /**
+     * test code 01
+     * @throws Exception if an error occurred.
+     */
+    public void testCode01() throws Exception {
+
+        String text = "Text";
+        String html = HEAD + "<code>" + text + "</code>" + FOOT;
+
+        StringWriter out = new StringWriter();
+        StringReader xml = new StringReader(html);
+
+        Transform.transform(new StreamSource(xml), xslstream, out);
+
+        assertEquals("\\texttt{Text}", out.toString().trim());
+    }
+
+    /**
+     * test b 01
+     * @throws Exception if an error occurred.
+     */
+    public void testB01() throws Exception {
+
+        String text = "Text";
+        String html = HEAD + "<b>" + text + "</b>" + FOOT;
+
+        StringWriter out = new StringWriter();
+        StringReader xml = new StringReader(html);
+
+        Transform.transform(new StreamSource(xml), xslstream, out);
+
+        assertEquals("\\textbf{Text}", out.toString().trim());
+    }
+
+    /**
+     * test strong 01
+     * @throws Exception if an error occurred.
+     */
+    public void testStrong01() throws Exception {
+
+        String text = "Text";
+        String html = HEAD + "<strong>" + text + "</strong>" + FOOT;
+
+        StringWriter out = new StringWriter();
+        StringReader xml = new StringReader(html);
+
+        Transform.transform(new StreamSource(xml), xslstream, out);
+
+        assertEquals("\\textbf{Text}", out.toString().trim());
+    }
+
+    /**
+     * test it 01
+     * @throws Exception if an error occurred.
+     */
+    public void testIt01() throws Exception {
+
+        String text = "Text";
+        String html = HEAD + "<it>" + text + "</it>" + FOOT;
+
+        StringWriter out = new StringWriter();
+        StringReader xml = new StringReader(html);
+
+        Transform.transform(new StreamSource(xml), xslstream, out);
+
+        assertEquals("\\emph{Text}", out.toString().trim());
+    }
+
+    /**
+     * test em 01
+     * @throws Exception if an error occurred.
+     */
+    public void testEm01() throws Exception {
+
+        String text = "Text";
+        String html = HEAD + "<em>" + text + "</em>" + FOOT;
+
+        StringWriter out = new StringWriter();
+        StringReader xml = new StringReader(html);
+
+        Transform.transform(new StreamSource(xml), xslstream, out);
+
+        assertEquals("\\emph{Text}", out.toString().trim());
+    }
+
+    /**
+     * test tt 01
+     * @throws Exception if an error occurred.
+     */
+    public void testTt01() throws Exception {
+
+        String text = "Text";
+        String html = HEAD + "<tt>" + text + "</tt>" + FOOT;
+
+        StringWriter out = new StringWriter();
+        StringReader xml = new StringReader(html);
+
+        Transform.transform(new StreamSource(xml), xslstream, out);
+
+        assertEquals("\\texttt{Text}", out.toString().trim());
+    }
+
+    /**
+     * test big 01
+     * @throws Exception if an error occurred.
+     */
+    public void testBig01() throws Exception {
+
+        String text = "Text";
+        String html = HEAD + "<big>" + text + "</big>" + FOOT;
+
+        StringWriter out = new StringWriter();
+        StringReader xml = new StringReader(html);
+
+        Transform.transform(new StreamSource(xml), xslstream, out);
+
+        assertEquals("{\\Large Text}", out.toString().trim());
+    }
+
+    /**
+     * test small 01
+     * @throws Exception if an error occurred.
+     */
+    public void testSmall01() throws Exception {
+
+        String text = "Text";
+        String html = HEAD + "<small>" + text + "</small>" + FOOT;
+
+        StringWriter out = new StringWriter();
+        StringReader xml = new StringReader(html);
+
+        Transform.transform(new StreamSource(xml), xslstream, out);
+
+        assertEquals("{\\footnotesize Text}", out.toString().trim());
+    }
+
+    /**
+     * test par 01
+     * @throws Exception if an error occurred.
+     */
+    public void testPar01() throws Exception {
+
+        String text = "Dies ist ein Text.";
+        String html = HEAD + "<p>" + text + "</p>" + FOOT;
+
+        StringWriter out = new StringWriter();
+        StringReader xml = new StringReader(html);
+
+        Transform.transform(new StreamSource(xml), xslstream, out);
+
+        assertEquals(text + "\n\n\n", removeRightSpace(out.toString()));
+    }
+
+    /**
+     * item number
+     */
+    private static final int ITEMNUMBER = 6;
+
+    /**
+     * test item 01
+     * @throws Exception if an error occurred.
+     */
+    public void testItem01() throws Exception {
+
+        String text = "Dies ist der Text mit der Nummer ";
+        StringBuffer buf = new StringBuffer();
+        StringBuffer result = new StringBuffer();
+
+        result.append("/begin (itemize) /par ");
+
+        buf.append(HEAD);
+        buf.append("<ul>\n");
+        for (int i = 1; i < ITEMNUMBER; i++) {
+            buf.append("<li>").append(text).append(i).append("</li>");
+            result.append("/item ").append(text).append(i).append(" /par ");
+        }
+        buf.append("</ul>\n");
+        buf.append(FOOT);
+        result.append("/end (itemize) /par /par ");
+        result.append("\n\n");
+
+        StringWriter out = new StringWriter();
+        StringReader xml = new StringReader(buf.toString());
+
+        Transform.transform(new StreamSource(xml), xslstream, out);
+
+        assertSuccess(
+                //--- input code ---
+                DEFINE_BRACES
+                        + "\\javadef\\t{"
+                        + "de.dante.extex.interpreter.primitives.dynamic.ReadTokenUntilNull}"
+                        + "\\t " + out.toString(),
+                //--- log message ---
+                result.toString());
+    }
+
+    /**
+     * test item 02
+     * @throws Exception if an error occurred.
+     */
+    public void testItem02() throws Exception {
+
+        String text = "Dies ist der Text mit der Nummer ";
+        StringBuffer buf = new StringBuffer();
+        StringBuffer result = new StringBuffer();
+
+        result.append("/begin (enumerate) /par ");
+
+        buf.append(HEAD);
+        buf.append("<ol>\n");
+        for (int i = 1; i < ITEMNUMBER; i++) {
+            buf.append("<li>").append(text).append(i).append("</li>");
+            result.append("/item ").append(text).append(i).append(" /par ");
+        }
+        buf.append("</ol>\n");
+        buf.append(FOOT);
+        result.append("/end (enumerate) /par /par ");
+        result.append("\n\n");
+
+        StringWriter out = new StringWriter();
+        StringReader xml = new StringReader(buf.toString());
+
+        Transform.transform(new StreamSource(xml), xslstream, out);
+
+        assertSuccess(
+                //--- input code ---
+                DEFINE_BRACES
+                        + "\\javadef\\t{"
+                        + "de.dante.extex.interpreter.primitives.dynamic.ReadTokenUntilNull}"
+                        + "\\t " + out.toString(),
+                //--- log message ---
+                result.toString());
+    }
+
+    /**
+     * test item 03
+     * @throws Exception if an error occurred.
+     */
+    public void testItem03() throws Exception {
+
+        String text = "Dies ist der Text mit der Nummer ";
+        StringBuffer buf = new StringBuffer();
+        StringBuffer result = new StringBuffer();
+
+        result.append("/begin (description) /par ");
+
+        buf.append(HEAD);
+        buf.append("<dl>\n");
+        for (int i = 1; i < ITEMNUMBER; i++) {
+            buf.append("<li>").append(text).append(i).append("</li>");
+            result.append("/item ").append(text).append(i).append(" /par ");
+        }
+        buf.append("</dl>\n");
+        buf.append(FOOT);
+        result.append("/end (description) /par /par ");
+        result.append("\n\n");
+
+        StringWriter out = new StringWriter();
+        StringReader xml = new StringReader(buf.toString());
+
+        Transform.transform(new StreamSource(xml), xslstream, out);
+
+        assertSuccess(
+                //--- input code ---
+                DEFINE_BRACES
+                        + "\\javadef\\t{"
+                        + "de.dante.extex.interpreter.primitives.dynamic.ReadTokenUntilNull}"
+                        + "\\t " + out.toString(),
+                //--- log message ---
+                result.toString());
+    }
+
+    // ----------------------------------------------------
+    // ----------------------------------------------------
+    // ----------------------------------------------------
+    // ----------------------------------------------------
+    // ----------------------------------------------------
+
+    /**
      * inner ExTeX class.
      */
     public class MyExTeX extends ExTeX {
@@ -290,7 +567,7 @@ public class XsltTransformXhtmlTest extends ExTeXLauncher {
          */
         private void makeConfig() throws ConfigurationException {
 
-            config = new ConfigurationFactory().newInstance("config/extex.xml");
+            config = new ConfigurationFactory().newInstance(getConfig());
 
         }
 
@@ -395,4 +672,24 @@ public class XsltTransformXhtmlTest extends ExTeXLauncher {
         junit.textui.TestRunner.run(XsltTransformXhtmlTest.class);
     }
 
+    /**
+     * Remove the right space of a string.
+     * @param text  The String
+     * @return Returns the string without right spaces.
+     */
+    private String removeRightSpace(final String text) {
+
+        StringBuffer buf = new StringBuffer(text);
+
+        while (true) {
+            char ch = buf.charAt(buf.length() - 1);
+            if (ch == ' ') {
+                buf.deleteCharAt(buf.length() - 1);
+            } else {
+                break;
+            }
+        }
+
+        return buf.toString();
+    }
 }
