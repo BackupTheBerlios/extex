@@ -48,7 +48,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @see de.dante.extex.scanner.stream.impl.TokenStreamImpl
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class TokenStreamImpl32 extends TokenStreamImpl {
@@ -239,7 +239,7 @@ public class TokenStreamImpl32 extends TokenStreamImpl {
      */
     private char hex2char(final int c) {
 
-        char ch = (char) Character.toLowerCase(c);
+        char ch = (char) Character.toLowerCase((char)c);
 
         if ('0' <= ch && ch <= '9' || 'a' <= ch && ch <= 'f') {
             return ch;
