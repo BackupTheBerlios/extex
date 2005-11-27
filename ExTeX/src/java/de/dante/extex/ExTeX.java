@@ -331,7 +331,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.123 $
+ * @version $Revision: 1.124 $
  */
 public class ExTeX {
 
@@ -610,7 +610,8 @@ public class ExTeX {
     private boolean ini;
 
     /**
-     * The field <tt>noBanner</tt> contains the ...
+     * The field <tt>noBanner</tt> contains the indicator that a banner has
+     * already been printed and a repetition should be avoided.
      */
     private boolean noBanner;
 
@@ -1337,7 +1338,7 @@ public class ExTeX {
      * @throws TypesetterException in case of an error
      */
     protected Typesetter makeTypesetter(final Configuration config,
-            final DocumentWriter docWriter, final Context context)
+            final BackendDriver docWriter, final Context context)
             throws TypesetterException,
                 ConfigurationException {
 
@@ -1345,7 +1346,7 @@ public class ExTeX {
         factory.enableLogging(logger);
         Typesetter typesetter = factory.newInstance(properties
                 .getProperty(PROP_TYPESETTER_TYPE), context);
-        typesetter.setDocumentWriter(docWriter);
+        typesetter.setBackend(docWriter);
 
         return typesetter;
     }
