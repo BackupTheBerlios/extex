@@ -26,7 +26,8 @@ import de.dante.extex.backend.documentWriter.DocumentWriterOptions;
 import de.dante.extex.backend.documentWriter.MultipleDocumentStream;
 import de.dante.extex.backend.documentWriter.OutputStreamFactory;
 import de.dante.extex.backend.documentWriter.exception.DocumentWriterException;
-import de.dante.extex.backend.nodeFilter.NodePipe;
+import de.dante.extex.backend.exception.BackendException;
+import de.dante.extex.backend.pageFilter.PagePipe;
 import de.dante.extex.typesetter.type.page.Page;
 import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.Configurable;
@@ -37,7 +38,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This document writer can be used to combine several components.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class BackendDriverImpl
         implements
@@ -46,19 +47,99 @@ public class BackendDriverImpl
             Configurable {
 
     /**
-     * The field <tt>pipe</tt> contains the elements of the pipe.
+     * This internal class acts as page counter as last element in the node pipe.
+     *
+     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+     * @version $Revision: 1.3 $
      */
-    private NodePipe[] pipe = null;
+    private class Counter implements PagePipe {
+
+        /**
+         * @see de.dante.extex.backend.nodeFilter.NodePipe#close()
+         */
+        public void close() throws BackendException {
+
+            try {
+                documentWriter.close();
+            } catch (GeneralException e) {
+                new BackendException(e);
+            } catch (IOException e) {
+                new BackendException(e);
+            }
+            documentWriter = null;
+        }
+
+        /**
+         * @see de.dante.extex.backend.nodeFilter.NodePipe#setNext(
+         *      de.dante.extex.backend.nodeFilter.NodePipe)
+         */
+        public void setOutput(final PagePipe next) {
+
+            throw new RuntimeException("this should not happen");
+        }
+
+        /**
+         * @see de.dante.extex.backend.nodeFilter.NodePipe#setParameter(
+         *      java.lang.String,
+         *      java.lang.String)
+         */
+        public void setParameter(final String name, final String value) {
+
+        }
+
+        /**
+         * @see de.dante.extex.backend.nodeFilter.NodePipe#process(
+         *      de.dante.extex.typesetter.type.page.Page)
+         */
+        public void shipout(final Page nodes) throws BackendException {
+
+            try {
+                documentWriter.shipout(nodes);
+            } catch (DocumentWriterException e) {
+                throw e;
+            } catch (GeneralException e) {
+                throw new DocumentWriterException(e);
+            } catch (IOException e) {
+                throw new DocumentWriterException(e);
+            }
+            pages++;
+        }
+
+    }
 
     /**
-     * The field <tt>documentWriter</tt> contains the ...
+     * The field <tt>counter</tt> contains the counter page pipe  which will
+     * always be placed at the end of the of the pipe.
+     */
+    private PagePipe counter = new Counter();
+
+    /**
+     * The field <tt>documentWriter</tt> contains the document writer.
      */
     private DocumentWriter documentWriter = null;
 
     /**
+     * The field <tt>pages</tt> contains the number of pages already sent to the
+     * document writer.
+     */
+    private int pages = 0;
+
+    /**
+     * The field <tt>pipeFirst</tt> contains the elements of the pipe.
+     */
+    private PagePipe pipeFirst = counter;
+
+    /**
+     * The field <tt>pipeLast</tt> contains the last item in the pipe. Initially
+     * it is the counter. If the pipe is longer this value is the last item
+     * before the counter.
+     */
+    private PagePipe pipeLast = counter;
+
+    /**
      * Creates a new object.
      *
-     * @param options
+     * @param options the options
      */
     public BackendDriverImpl(final DocumentWriterOptions options) {
 
@@ -66,24 +147,39 @@ public class BackendDriverImpl
     }
 
     /**
-     * The field <tt>pages</tt> contains the ...
+     * @see de.dante.extex.backend.BackendDriver#add(
+     *      de.dante.extex.backend.nodeFilter.NodePipe)
      */
-    private int pages = 0;
+    public void add(final PagePipe processor) {
+
+        processor.setOutput(counter);
+
+        if (pipeFirst == counter) {
+            pipeFirst = processor;
+        } else {
+            pipeLast.setOutput(processor);
+        }
+
+        pipeLast = processor;
+    }
 
     /**
-     * @see de.dante.extex.backend.documentWriter.DocumentWriter#close()
+     * @see de.dante.extex.backend.BackendDriver#close()
      */
-    public void close()
-            throws DocumentWriterException,
-                GeneralException,
-                IOException {
+    public void close() throws BackendException {
 
-        if (pipe != null) {
-            for (int i = 0; i < pipe.length; i++) {
-                pipe[i].close();
+        pipeFirst.close();
+
+        if (documentWriter != null) {
+            try {
+                documentWriter.close();
+            } catch (GeneralException e) {
+                throw new BackendException(e);
+            } catch (IOException e) {
+                throw new BackendException(e);
             }
+            documentWriter = null;
         }
-        documentWriter.close();
     }
 
     /**
@@ -93,6 +189,14 @@ public class BackendDriverImpl
     public void configure(final Configuration config)
             throws ConfigurationException {
 
+    }
+
+    /**
+     * @see de.dante.extex.backend.BackendDriver#getDocumentWriter()
+     */
+    public DocumentWriter getDocumentWriter() {
+
+        return documentWriter;
     }
 
     /**
@@ -112,12 +216,24 @@ public class BackendDriverImpl
     }
 
     /**
+     * @see de.dante.extex.backend.BackendDriver#setDocumentWriter(
+     *      de.dante.extex.backend.documentWriter.DocumentWriter)
+     */
+    public void setDocumentWriter(final DocumentWriter docWriter) {
+
+        documentWriter = docWriter;
+    }
+
+    /**
      * @see de.dante.extex.backend.documentWriter.MultipleDocumentStream#setOutputStreamFactory(
      *      de.dante.extex.backend.documentWriter.OutputStreamFactory)
      */
     public void setOutputStreamFactory(final OutputStreamFactory writerFactory) {
 
-        // TODO gene: setOutputStreamFactory unimplemented
+        if (documentWriter instanceof MultipleDocumentStream) {
+            ((MultipleDocumentStream) documentWriter)
+                    .setOutputStreamFactory(writerFactory);
+        }
     }
 
     /**
@@ -127,42 +243,18 @@ public class BackendDriverImpl
      */
     public void setParameter(final String name, final String value) {
 
-        for (int i = 0; i < pipe.length; i++) {
-            pipe[i].setParameter(name, value);
-        }
+        // ignored
     }
 
     /**
-     * @see de.dante.extex.backend.documentWriter.DocumentWriter#shipout(
+     * @see de.dante.extex.backend.BackendDriver#shipout(
      *      de.dante.extex.typesetter.type.page.Page)
      */
-    public int shipout(final Page page)
-            throws DocumentWriterException,
-                GeneralException,
-                IOException {
+    public int shipout(final Page page) throws BackendException {
 
-        Page p = page;
-
-        if (pipe != null) {
-            for (int i = 0; i < pipe.length; i++) {
-                p = pipe[i].process(p);
-                if (p == null) {
-                    return 0;
-                }
-            }
-        }
-        int n = documentWriter.shipout(p);
-        pages += n;
-        return n;
-    }
-
-    /**
-     * @see de.dante.extex.backend.BackendDriver#setDocumentWriter(
-     *      de.dante.extex.backend.documentWriter.DocumentWriter)
-     */
-    public void setDocumentWriter(final DocumentWriter docWriter) {
-
-        documentWriter = docWriter;
+        int n = pages;
+        pipeFirst.shipout(page);
+        return pages - n;
     }
 
 }
