@@ -48,7 +48,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationSyntaxExcept
  * This class provides means to deal with configurations stored as XML files.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class ConfigurationXMLImpl implements Configuration, Serializable {
 
@@ -160,28 +160,28 @@ public class ConfigurationXMLImpl implements Configuration, Serializable {
     /**
      * Creates a new object.
      * <p>
-     * The path given is the location of the XML file containing the
-     * configuration information. This path is used to determine the XML file
-     * utilizing the class loader for this class. Thus it is possible to place
-     * the XML file into a jar archive.
+     *  The path given is the location of the XML file containing the
+     *  configuration information. This path is used to determine the XML file
+     *  utilizing the class loader for this class. Thus it is possible to place
+     *  the XML file into a jar archive.
      * </p>
      * <p>
-     * Beside of the class loader a search is performed by appending
-     * <tt>.xml</tt> and/or prepending <tt>config/</tt> if the path is not
-     * sufficient to find the resource.
+     *  Beside of the class loader a search is performed by appending
+     *  <tt>.xml</tt> and/or prepending <tt>config/</tt> if the path is not
+     *  sufficient to find the resource.
      * </p>
      *
      * <h3>Example</h3>
      * <p>
-     * Consider the following creation of an instance of this class
-     * <pre>
-     *  cfg = new ConfigurationXMLImpl("cfg");
-     * </pre>
-     * Then the following files are searched on the classpath until one is
-     * found:
-     * <pre>
-     *    cfg   cfg.xml   config/cfg   config/cfg.xml
-     * </pre>
+     *  Consider the following creation of an instance of this class
+     *  <pre>
+     *   cfg = new ConfigurationXMLImpl("cfg");
+     *  </pre>
+     *  Then the following files are searched on the classpath until one is
+     *  found:
+     *  <pre>
+     *     cfg   cfg.xml   config/cfg   config/cfg.xml
+     *  </pre>
      * </p>
      *
      *
@@ -223,8 +223,8 @@ public class ConfigurationXMLImpl implements Configuration, Serializable {
     /**
      * Extract a sub-configuration with a given name.
      * <p>
-     * Consider the following example with the configuration currently rooted
-     * at cfg:
+     *  Consider the following example with the configuration currently rooted
+     *  at cfg:
      * </p>
      *
      * <pre>
@@ -238,15 +238,15 @@ public class ConfigurationXMLImpl implements Configuration, Serializable {
      * </pre>
      *
      * <p>
-     * Then <tt>findConfiguration("abc")</tt> returns a new XMLConfig
-     * rooted at abc.
+     *  Then <tt>findConfiguration("abc")</tt> returns a new XMLConfig
+     *  rooted at abc.
      * </p>
      * <p>
-     * If there are more than one tags with the same name then the first one is
-     * used.
+     *  If there are more than one tags with the same name then the first one is
+     *  used.
      * </p>
      * <p>
-     * If there are no tags with the given name then an exception is thrown.
+     *  If there are no tags with the given name then an exception is thrown.
      * </p>
      *
      * @param name the tag name of the sub-configuration
@@ -262,7 +262,9 @@ public class ConfigurationXMLImpl implements Configuration, Serializable {
      * @throws ConfigurationIOException in case of an IO exception while
      *  reading the resource
      *
-     * @see #getConfiguration(String)
+     * @see #getConfiguration(java.lang.String)
+     * @see de.dante.util.framework.configuration.Configuration#findConfiguration(
+     *      java.lang.String)
      */
     public Configuration findConfiguration(final String name)
             throws ConfigurationInvalidResourceException,
@@ -273,16 +275,38 @@ public class ConfigurationXMLImpl implements Configuration, Serializable {
         for (Node node = root.getFirstChild(); node != null; node = node
                 .getNextSibling()) {
             if (node.getNodeName().equals(name)) {
+
                 String src = ((Element) node).getAttribute("src");
 
-                return (src != null && !src.equals("") //
-                        ? new ConfigurationXMLImpl(base + src)
-                        : new ConfigurationXMLImpl((Element) node, base,
-                                resource));
+                if (src == null || src.equals("")) {
+                    return new ConfigurationXMLImpl((Element) node, base,
+                            resource);
+                }
+
+                return new ConfigurationXMLImpl(base + src).src(name, node);
             }
         }
 
         return null;
+    }
+
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param name
+     * @return
+     */
+    protected Configuration src(final String name, final Node node)
+            throws ConfigurationInvalidResourceException,
+                ConfigurationNotFoundException,
+                ConfigurationSyntaxException,
+                ConfigurationIOException {
+
+        String src = ((Element) root).getAttribute("src");
+
+        return (src == null || src.equals("")
+                ? this
+                : new ConfigurationXMLImpl(base + src).src(name, root));
     }
 
     /**
@@ -644,11 +668,12 @@ public class ConfigurationXMLImpl implements Configuration, Serializable {
                 .getNextSibling()) {
             if (key.equals(node.getNodeName())) {
                 String src = ((Element) node).getAttribute("src");
-                if (src != null && !src.equals("")) {
-                    list.add(new ConfigurationXMLImpl(base + src));
-                } else {
+                if (src == null || src.equals("")) {
                     list.add(new ConfigurationXMLImpl((Element) node, base,
                             resource));
+                } else {
+                    list.add(new ConfigurationXMLImpl(base + src)
+                            .src(key, node));
                 }
             }
         }
