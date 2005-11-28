@@ -40,21 +40,26 @@ import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.AbstractFactory;
 import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
-import de.dante.util.framework.logger.LogEnabled;
 
 /**
- * This is a factory to deliver primitives from a configuration.
+ * This is a factory to units from a configuration.
+ * A unit is a configuration consisting of an optional setup class and a set of
+ * primitives. When the unit is loaded the setup class is instantiated and run.
+ * Then the primitives are created and registered in the context.
  *
  * <pre>
- *  &lt;primitive&gt;
- *    &lt;define name="<i>name</i>" class="<i>class</i>"/&gt;
- *    &lt;define name="<i>name</i>" class="<i>class</i>"&gt;<i>value</i>&lt;/define&gt;
- *    &lt;define name="<i>name</i>" class="<i>class</i>"/&gt;
- *  &lt;/primitive&gt;
+ *  &lt;unit&gt;
+ *    &lt;setup class="the.setup.Class"/&gt;
+ *    &lt;primitive&gt;
+ *      &lt;define name="<i>name</i>" class="<i>class</i>"/&gt;
+ *      &lt;define name="<i>name</i>" class="<i>class</i>"&gt;<i>value</i>&lt;/define&gt;
+ *      &lt;define name="<i>name</i>" class="<i>class</i>"/&gt;
+ *    &lt;/primitive&gt;
+ *  &lt;/unit&gt;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class LoadUnit extends AbstractFactory {
 
