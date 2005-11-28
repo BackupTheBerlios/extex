@@ -22,25 +22,20 @@ package de.dante.extex.typesetter.type.node.pdftex;
 import de.dante.extex.typesetter.type.node.WhatsItNode;
 
 /**
- * This node signals the end of a link.
+ * This node carries an annotation for PDF.
  * This node type represents the extension node from the perspective of
  * <logo>TeX</logo>.
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public class PdfLiteral extends WhatsItNode {
+public class PdfAnnotation extends WhatsItNode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
     private static final long serialVersionUID = 1L;
-
-    /**
-     * The field <tt>direct</tt> contains the direct indicator.
-     */
-    private boolean direct;
 
     /**
      * The field <tt>text</tt> contains the text to pass to the back-end driver.
@@ -49,12 +44,13 @@ public class PdfLiteral extends WhatsItNode {
 
     /**
      * Creates a new object.
+     *
+     * @param text
      */
-    public PdfLiteral(final String text, final boolean direct) {
+    public PdfAnnotation(final String text) {
 
         super();
         this.text = text;
-        this.direct = direct;
     }
 
     /**
@@ -68,22 +64,12 @@ public class PdfLiteral extends WhatsItNode {
     }
 
     /**
-     * Getter for direct.
-     *
-     * @return the direct
-     */
-    public boolean isDirect() {
-
-        return this.direct;
-    }
-
-    /**
      * @see de.dante.extex.typesetter.type.Node#toString(java.lang.StringBuffer,
      *      java.lang.String)
      */
     public void toString(final StringBuffer sb, final String prefix) {
 
-        sb.append("(pdfliteral " + (direct ? "direct " : "") + text + ")");
+        sb.append("(pdfannot " + text + ")");
     }
 
 }

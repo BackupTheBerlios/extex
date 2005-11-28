@@ -19,18 +19,19 @@
 
 package de.dante.extex.typesetter.type.node.pdftex;
 
+import de.dante.extex.interpreter.primitives.pdftex.util.DestType;
 import de.dante.extex.typesetter.type.node.WhatsItNode;
 
 /**
- * This node signals the end of a link.
+ * This node marks the target for a link.
  * This node type represents the extension node from the perspective of
  * <logo>TeX</logo>.
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public class PdfLiteral extends WhatsItNode {
+public class PdfDest extends WhatsItNode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
@@ -38,43 +39,27 @@ public class PdfLiteral extends WhatsItNode {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The field <tt>direct</tt> contains the direct indicator.
+     * The field <tt>type</tt> contains the ...
      */
-    private boolean direct;
-
-    /**
-     * The field <tt>text</tt> contains the text to pass to the back-end driver.
-     */
-    private String text;
+    private DestType type;
 
     /**
      * Creates a new object.
      */
-    public PdfLiteral(final String text, final boolean direct) {
+    public PdfDest(final DestType type) {
 
         super();
-        this.text = text;
-        this.direct = direct;
+        this.type = type;
     }
 
     /**
-     * Getter for text.
+     * Getter for type.
      *
-     * @return the text
+     * @return the type
      */
-    public String getText() {
+    public DestType getType() {
 
-        return this.text;
-    }
-
-    /**
-     * Getter for direct.
-     *
-     * @return the direct
-     */
-    public boolean isDirect() {
-
-        return this.direct;
+        return this.type;
     }
 
     /**
@@ -83,7 +68,7 @@ public class PdfLiteral extends WhatsItNode {
      */
     public void toString(final StringBuffer sb, final String prefix) {
 
-        sb.append("(pdfliteral " + (direct ? "direct " : "") + text + ")");
+        sb.append("(pdfdest " + ")");
     }
 
 }

@@ -19,18 +19,19 @@
 
 package de.dante.extex.typesetter.type.node.pdftex;
 
+import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.node.WhatsItNode;
 
 /**
- * This node signals the end of a link.
+ * This node contains an PDF Object.
  * This node type represents the extension node from the perspective of
  * <logo>TeX</logo>.
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public class PdfLiteral extends WhatsItNode {
+public class PdfObject extends WhatsItNode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
@@ -38,43 +39,27 @@ public class PdfLiteral extends WhatsItNode {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The field <tt>direct</tt> contains the direct indicator.
+     * The field <tt>nodes</tt> contains the ...
      */
-    private boolean direct;
-
-    /**
-     * The field <tt>text</tt> contains the text to pass to the back-end driver.
-     */
-    private String text;
+    private NodeList nodes;
 
     /**
      * Creates a new object.
      */
-    public PdfLiteral(final String text, final boolean direct) {
+    public PdfObject(final NodeList nodes) {
 
         super();
-        this.text = text;
-        this.direct = direct;
+        this.nodes = nodes;
     }
 
     /**
-     * Getter for text.
+     * Getter for nodes.
      *
-     * @return the text
+     * @return the nodes
      */
-    public String getText() {
+    public NodeList getNodes() {
 
-        return this.text;
-    }
-
-    /**
-     * Getter for direct.
-     *
-     * @return the direct
-     */
-    public boolean isDirect() {
-
-        return this.direct;
+        return this.nodes;
     }
 
     /**
@@ -83,7 +68,7 @@ public class PdfLiteral extends WhatsItNode {
      */
     public void toString(final StringBuffer sb, final String prefix) {
 
-        sb.append("(pdfliteral " + (direct ? "direct " : "") + text + ")");
+        sb.append("(pdfobject " + nodes.toString() + ")");
     }
 
 }

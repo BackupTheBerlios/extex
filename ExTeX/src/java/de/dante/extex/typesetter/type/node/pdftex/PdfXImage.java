@@ -19,18 +19,19 @@
 
 package de.dante.extex.typesetter.type.node.pdftex;
 
+import de.dante.extex.typesetter.type.node.RuleNode;
 import de.dante.extex.typesetter.type.node.WhatsItNode;
 
 /**
- * This node signals the end of a link.
+ * This node denotes an ximage.
  * This node type represents the extension node from the perspective of
  * <logo>TeX</logo>.
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public class PdfLiteral extends WhatsItNode {
+public class PdfXImage extends WhatsItNode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
@@ -38,43 +39,76 @@ public class PdfLiteral extends WhatsItNode {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The field <tt>direct</tt> contains the direct indicator.
+     * The field <tt>attr</tt> contains the ...
      */
-    private boolean direct;
+    private String attr;
 
     /**
-     * The field <tt>text</tt> contains the text to pass to the back-end driver.
+     * The field <tt>page</tt> contains the ...
      */
-    private String text;
+    private long page;
+
+    /**
+     * The field <tt>resource</tt> contains the name of the object.
+     */
+    private String resource;
+
+    /**
+     * The field <tt>rule</tt> contains the ...
+     */
+    private RuleNode rule;
 
     /**
      * Creates a new object.
      */
-    public PdfLiteral(final String text, final boolean direct) {
+    public PdfXImage(final String resource, final RuleNode rule,
+            final String attr, final long page) {
 
         super();
-        this.text = text;
-        this.direct = direct;
+        this.resource = resource;
+        this.rule = rule;
+        this.attr = attr;
+        this.page = page;
     }
 
     /**
-     * Getter for text.
+     * Getter for attr.
      *
-     * @return the text
+     * @return the attr
      */
-    public String getText() {
+    public String getAttr() {
 
-        return this.text;
+        return this.attr;
     }
 
     /**
-     * Getter for direct.
+     * Getter for page.
      *
-     * @return the direct
+     * @return the page
      */
-    public boolean isDirect() {
+    public long getPage() {
 
-        return this.direct;
+        return this.page;
+    }
+
+    /**
+     * Getter for resource.
+     *
+     * @return the resource
+     */
+    public String getResource() {
+
+        return this.resource;
+    }
+
+    /**
+     * Getter for rule.
+     *
+     * @return the rule
+     */
+    public RuleNode getRule() {
+
+        return this.rule;
     }
 
     /**
@@ -83,7 +117,7 @@ public class PdfLiteral extends WhatsItNode {
      */
     public void toString(final StringBuffer sb, final String prefix) {
 
-        sb.append("(pdfliteral " + (direct ? "direct " : "") + text + ")");
+        sb.append("(pdfximage " + resource + ")");
     }
 
 }

@@ -19,18 +19,20 @@
 
 package de.dante.extex.typesetter.type.node.pdftex;
 
+import de.dante.extex.interpreter.primitives.pdftex.util.ActionSpec;
+import de.dante.extex.typesetter.type.node.RuleNode;
 import de.dante.extex.typesetter.type.node.WhatsItNode;
 
 /**
- * This node signals the end of a link.
+ * This node signals the start of a link.
  * This node type represents the extension node from the perspective of
  * <logo>TeX</logo>.
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public class PdfLiteral extends WhatsItNode {
+public class PdfStartLink extends WhatsItNode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
@@ -38,43 +40,64 @@ public class PdfLiteral extends WhatsItNode {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The field <tt>direct</tt> contains the direct indicator.
+     * The field <tt>action</tt> contains the ...
      */
-    private boolean direct;
+    private ActionSpec action;
 
     /**
-     * The field <tt>text</tt> contains the text to pass to the back-end driver.
+     * The field <tt>attr</tt> contains the ...
      */
-    private String text;
+    private String attr;
+
+    /**
+     * The field <tt>rule</tt> contains the ...
+     */
+    private RuleNode rule;
 
     /**
      * Creates a new object.
+     *
+     * @param rule
+     * @param attr the attribute string. This can be <code>null</code>.
+     * @param action
      */
-    public PdfLiteral(final String text, final boolean direct) {
+    public PdfStartLink(final RuleNode rule, final String attr,
+            final ActionSpec action) {
 
         super();
-        this.text = text;
-        this.direct = direct;
+        this.rule = rule;
+        this.attr = attr;
+        this.action = action;
     }
 
     /**
-     * Getter for text.
+     * Getter for action.
      *
-     * @return the text
+     * @return the action
      */
-    public String getText() {
+    public ActionSpec getAction() {
 
-        return this.text;
+        return this.action;
     }
 
     /**
-     * Getter for direct.
+     * Getter for attr.
      *
-     * @return the direct
+     * @return the attr
      */
-    public boolean isDirect() {
+    public String getAttr() {
 
-        return this.direct;
+        return this.attr;
+    }
+
+    /**
+     * Getter for rule.
+     *
+     * @return the rule
+     */
+    public RuleNode getRule() {
+
+        return this.rule;
     }
 
     /**
@@ -83,7 +106,7 @@ public class PdfLiteral extends WhatsItNode {
      */
     public void toString(final StringBuffer sb, final String prefix) {
 
-        sb.append("(pdfliteral " + (direct ? "direct " : "") + text + ")");
+        sb.append("(pdfstartlink)");
     }
 
 }

@@ -22,15 +22,15 @@ package de.dante.extex.typesetter.type.node.pdftex;
 import de.dante.extex.typesetter.type.node.WhatsItNode;
 
 /**
- * This node signals the end of a link.
+ * This node denotes the reference to an xform.
  * This node type represents the extension node from the perspective of
  * <logo>TeX</logo>.
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public class PdfLiteral extends WhatsItNode {
+public class PdfRefXForm extends WhatsItNode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
@@ -38,43 +38,27 @@ public class PdfLiteral extends WhatsItNode {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The field <tt>direct</tt> contains the direct indicator.
+     * The field <tt>index</tt> contains the index of the object.
      */
-    private boolean direct;
-
-    /**
-     * The field <tt>text</tt> contains the text to pass to the back-end driver.
-     */
-    private String text;
+    private long index;
 
     /**
      * Creates a new object.
      */
-    public PdfLiteral(final String text, final boolean direct) {
+    public PdfRefXForm(final long index) {
 
         super();
-        this.text = text;
-        this.direct = direct;
+        this.index = index;
     }
 
     /**
-     * Getter for text.
+     * Getter for index.
      *
-     * @return the text
+     * @return the index
      */
-    public String getText() {
+    public long getIndex() {
 
-        return this.text;
-    }
-
-    /**
-     * Getter for direct.
-     *
-     * @return the direct
-     */
-    public boolean isDirect() {
-
-        return this.direct;
+        return this.index;
     }
 
     /**
@@ -83,7 +67,7 @@ public class PdfLiteral extends WhatsItNode {
      */
     public void toString(final StringBuffer sb, final String prefix) {
 
-        sb.append("(pdfliteral " + (direct ? "direct " : "") + text + ")");
+        sb.append("(pdfrefxform " + index + ")");
     }
 
 }
