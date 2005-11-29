@@ -17,7 +17,7 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.dynamic.xslt;
+package de.dante.extex.interpreter.primitives.file.xslt;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

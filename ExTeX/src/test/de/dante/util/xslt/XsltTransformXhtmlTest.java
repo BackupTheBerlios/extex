@@ -53,7 +53,7 @@ import de.dante.util.resource.ResourceFinder;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 
 public class XsltTransformXhtmlTest extends ExTeXLauncher {
@@ -425,7 +425,7 @@ public class XsltTransformXhtmlTest extends ExTeXLauncher {
                 //--- input code ---
                 DEFINE_BRACES
                         + "\\javadef\\t{"
-                        + "de.dante.extex.interpreter.primitives.dynamic.ReadTokenUntilNull}"
+                        + "de.dante.extex.interpreter.primitives.file.xslt.ReadTokenUntilNull}"
                         + "\\t " + out.toString(),
                 //--- log message ---
                 result.toString());
@@ -463,7 +463,7 @@ public class XsltTransformXhtmlTest extends ExTeXLauncher {
                 //--- input code ---
                 DEFINE_BRACES
                         + "\\javadef\\t{"
-                        + "de.dante.extex.interpreter.primitives.dynamic.ReadTokenUntilNull}"
+                        + "de.dante.extex.interpreter.primitives.file.xslt.ReadTokenUntilNull}"
                         + "\\t " + out.toString(),
                 //--- log message ---
                 result.toString());
@@ -501,7 +501,7 @@ public class XsltTransformXhtmlTest extends ExTeXLauncher {
                 //--- input code ---
                 DEFINE_BRACES
                         + "\\javadef\\t{"
-                        + "de.dante.extex.interpreter.primitives.dynamic.ReadTokenUntilNull}"
+                        + "de.dante.extex.interpreter.primitives.file.xslt.ReadTokenUntilNull}"
                         + "\\t " + out.toString(),
                 //--- log message ---
                 result.toString());

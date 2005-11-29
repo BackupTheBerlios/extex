@@ -17,7 +17,7 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.dynamic;
+package de.dante.extex.interpreter.primitives.file.xslt;
 
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;

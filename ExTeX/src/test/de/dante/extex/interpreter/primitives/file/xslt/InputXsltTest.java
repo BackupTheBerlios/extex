@@ -17,7 +17,7 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.dynamic.xslt;
+package de.dante.extex.interpreter.primitives.file.xslt;
 
 import de.dante.test.NoFlagsButGlobalPrimitiveTester;
 
@@ -47,7 +47,7 @@ public class InputXsltTest extends NoFlagsButGlobalPrimitiveTester {
     public InputXsltTest(final String arg) {
 
         super(arg, "javadef",
-                "\\inputXSLT{de.dante.extex.interpreter.primitives.dynamic.xslt.InputXslt}");
+                "\\inputXSLT{de.dante.extex.interpreter.primitives.file.xslt.InputXslt}");
 
     }
 
@@ -74,7 +74,7 @@ public class InputXsltTest extends NoFlagsButGlobalPrimitiveTester {
                 //--- input code ---
                 DEFINE_BRACES
                         + "\\javadef\\inputXSLT{"
-                        + "de.dante.extex.interpreter.primitives.dynamic.xslt.InputXslt}"
+                        + "de.dante.extex.interpreter.primitives.file.xslt.InputXslt}"
                         + "\\inputXSLT{xslt_01.xhtml}{xhtml2latex.xsl}"
                         + " \\end",
                 //--- log message ---
