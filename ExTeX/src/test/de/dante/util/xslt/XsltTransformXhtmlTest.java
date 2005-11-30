@@ -39,6 +39,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationMissingAttri
 import de.dante.util.framework.configuration.exception.ConfigurationNoSuchMethodException;
 import de.dante.util.resource.PropertyConfigurable;
 import de.dante.util.resource.ResourceFinder;
+import de.dante.util.resource.UriResolverRf;
 
 /**
  * Testcase for the xslt transformer.
@@ -53,7 +54,7 @@ import de.dante.util.resource.ResourceFinder;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 
 public class XsltTransformXhtmlTest extends ExTeXLauncher {
@@ -92,6 +93,11 @@ public class XsltTransformXhtmlTest extends ExTeXLauncher {
     private StreamSource xslstream;
 
     /**
+     * The resolver for the TransformerFactory
+     */
+    private UriResolverRf resolver;
+
+    /**
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() throws Exception {
@@ -104,6 +110,7 @@ public class XsltTransformXhtmlTest extends ExTeXLauncher {
         InputStream xsl = finder.findResource("xhtml2latex_noheader.xsl", "");
         xslstream = new StreamSource(xsl);
 
+        resolver = new UriResolverRf(finder);
     }
 
     /**
@@ -128,7 +135,7 @@ public class XsltTransformXhtmlTest extends ExTeXLauncher {
         StringWriter out = new StringWriter();
         StringReader xml = new StringReader(html);
 
-        Transform.transform(new StreamSource(xml), xslstream, out);
+        Transform.transform(new StreamSource(xml), xslstream, resolver, out);
 
         assertEquals(out.toString().trim(), "\\section{" + text + "}");
     }
@@ -145,7 +152,7 @@ public class XsltTransformXhtmlTest extends ExTeXLauncher {
         StringWriter out = new StringWriter();
         StringReader xml = new StringReader(html);
 
-        Transform.transform(new StreamSource(xml), xslstream, out);
+        Transform.transform(new StreamSource(xml), xslstream, resolver, out);
 
         assertEquals(out.toString().trim(), "\\subsection{" + text + "}");
     }
@@ -162,7 +169,7 @@ public class XsltTransformXhtmlTest extends ExTeXLauncher {
         StringWriter out = new StringWriter();
         StringReader xml = new StringReader(html);
 
-        Transform.transform(new StreamSource(xml), xslstream, out);
+        Transform.transform(new StreamSource(xml), xslstream, resolver, out);
 
         assertEquals(out.toString().trim(), "\\subsubsection{" + text + "}");
     }
@@ -179,7 +186,7 @@ public class XsltTransformXhtmlTest extends ExTeXLauncher {
         StringWriter out = new StringWriter();
         StringReader xml = new StringReader(html);
 
-        Transform.transform(new StreamSource(xml), xslstream, out);
+        Transform.transform(new StreamSource(xml), xslstream, resolver, out);
 
         assertEquals(out.toString().trim(), "\\paragraph{" + text + "}");
     }
@@ -196,7 +203,7 @@ public class XsltTransformXhtmlTest extends ExTeXLauncher {
         StringWriter out = new StringWriter();
         StringReader xml = new StringReader(html);
 
-        Transform.transform(new StreamSource(xml), xslstream, out);
+        Transform.transform(new StreamSource(xml), xslstream, resolver, out);
 
         assertEquals(out.toString().trim(), "\\subparagraph{" + text + "}");
     }
@@ -213,7 +220,7 @@ public class XsltTransformXhtmlTest extends ExTeXLauncher {
         StringWriter out = new StringWriter();
         StringReader xml = new StringReader(html);
 
-        Transform.transform(new StreamSource(xml), xslstream, out);
+        Transform.transform(new StreamSource(xml), xslstream, resolver, out);
 
         assertEquals(out.toString().trim(), "\\textbf{" + text + "}\\newline");
     }
@@ -230,7 +237,7 @@ public class XsltTransformXhtmlTest extends ExTeXLauncher {
         StringWriter out = new StringWriter();
         StringReader xml = new StringReader(html);
 
-        Transform.transform(new StreamSource(xml), xslstream, out);
+        Transform.transform(new StreamSource(xml), xslstream, resolver, out);
 
         assertEquals("``Text''", out.toString().trim());
     }
@@ -247,7 +254,7 @@ public class XsltTransformXhtmlTest extends ExTeXLauncher {
         StringWriter out = new StringWriter();
         StringReader xml = new StringReader(html);
 
-        Transform.transform(new StreamSource(xml), xslstream, out);
+        Transform.transform(new StreamSource(xml), xslstream, resolver, out);
 
         assertEquals("\\texttt{Text}", out.toString().trim());
     }
@@ -264,7 +271,7 @@ public class XsltTransformXhtmlTest extends ExTeXLauncher {
         StringWriter out = new StringWriter();
         StringReader xml = new StringReader(html);
 
-        Transform.transform(new StreamSource(xml), xslstream, out);
+        Transform.transform(new StreamSource(xml), xslstream, resolver, out);
 
         assertEquals("\\textbf{Text}", out.toString().trim());
     }
@@ -281,7 +288,7 @@ public class XsltTransformXhtmlTest extends ExTeXLauncher {
         StringWriter out = new StringWriter();
         StringReader xml = new StringReader(html);
 
-        Transform.transform(new StreamSource(xml), xslstream, out);
+        Transform.transform(new StreamSource(xml), xslstream, resolver, out);
 
         assertEquals("\\textbf{Text}", out.toString().trim());
     }
@@ -298,7 +305,7 @@ public class XsltTransformXhtmlTest extends ExTeXLauncher {
         StringWriter out = new StringWriter();
         StringReader xml = new StringReader(html);
 
-        Transform.transform(new StreamSource(xml), xslstream, out);
+        Transform.transform(new StreamSource(xml), xslstream, resolver, out);
 
         assertEquals("\\emph{Text}", out.toString().trim());
     }
@@ -315,7 +322,7 @@ public class XsltTransformXhtmlTest extends ExTeXLauncher {
         StringWriter out = new StringWriter();
         StringReader xml = new StringReader(html);
 
-        Transform.transform(new StreamSource(xml), xslstream, out);
+        Transform.transform(new StreamSource(xml), xslstream, resolver, out);
 
         assertEquals("\\emph{Text}", out.toString().trim());
     }
@@ -332,7 +339,7 @@ public class XsltTransformXhtmlTest extends ExTeXLauncher {
         StringWriter out = new StringWriter();
         StringReader xml = new StringReader(html);
 
-        Transform.transform(new StreamSource(xml), xslstream, out);
+        Transform.transform(new StreamSource(xml), xslstream, resolver, out);
 
         assertEquals("\\texttt{Text}", out.toString().trim());
     }
@@ -349,7 +356,7 @@ public class XsltTransformXhtmlTest extends ExTeXLauncher {
         StringWriter out = new StringWriter();
         StringReader xml = new StringReader(html);
 
-        Transform.transform(new StreamSource(xml), xslstream, out);
+        Transform.transform(new StreamSource(xml), xslstream, resolver, out);
 
         assertEquals("{\\Large Text}", out.toString().trim());
     }
@@ -366,7 +373,7 @@ public class XsltTransformXhtmlTest extends ExTeXLauncher {
         StringWriter out = new StringWriter();
         StringReader xml = new StringReader(html);
 
-        Transform.transform(new StreamSource(xml), xslstream, out);
+        Transform.transform(new StreamSource(xml), xslstream, resolver, out);
 
         assertEquals("{\\footnotesize Text}", out.toString().trim());
     }
@@ -383,7 +390,7 @@ public class XsltTransformXhtmlTest extends ExTeXLauncher {
         StringWriter out = new StringWriter();
         StringReader xml = new StringReader(html);
 
-        Transform.transform(new StreamSource(xml), xslstream, out);
+        Transform.transform(new StreamSource(xml), xslstream, resolver, out);
 
         assertEquals(text + "\n\n\n", removeRightSpace(out.toString()));
     }
@@ -419,7 +426,7 @@ public class XsltTransformXhtmlTest extends ExTeXLauncher {
         StringWriter out = new StringWriter();
         StringReader xml = new StringReader(buf.toString());
 
-        Transform.transform(new StreamSource(xml), xslstream, out);
+        Transform.transform(new StreamSource(xml), xslstream, resolver, out);
 
         assertSuccess(
                 //--- input code ---
@@ -457,7 +464,7 @@ public class XsltTransformXhtmlTest extends ExTeXLauncher {
         StringWriter out = new StringWriter();
         StringReader xml = new StringReader(buf.toString());
 
-        Transform.transform(new StreamSource(xml), xslstream, out);
+        Transform.transform(new StreamSource(xml), xslstream, resolver, out);
 
         assertSuccess(
                 //--- input code ---
@@ -495,7 +502,7 @@ public class XsltTransformXhtmlTest extends ExTeXLauncher {
         StringWriter out = new StringWriter();
         StringReader xml = new StringReader(buf.toString());
 
-        Transform.transform(new StreamSource(xml), xslstream, out);
+        Transform.transform(new StreamSource(xml), xslstream, resolver, out);
 
         assertSuccess(
                 //--- input code ---

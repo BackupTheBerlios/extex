@@ -74,7 +74,7 @@ import de.dante.util.xslt.Transform;
  * </doc>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class InputXslt extends AbstractFileCode {
@@ -116,7 +116,7 @@ public class InputXslt extends AbstractFileCode {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
 
             Transform.transform(new StreamSource(xmlin),
-                    new StreamSource(xslin), out);
+                    new StreamSource(xslin), null, out);
 
             Reader reader = new InputStreamReader(new ByteArrayInputStream(out
                     .toByteArray()));
