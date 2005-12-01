@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
+<!--
+   Tranformation from xhtml to latex.
+   
+   @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+   @version $Revision: 1.3 $
+-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     
     <!-- output -->
     <xsl:output method="text" encoding="iso-8859-1" indent="no"/>
-    <!-- <xsl:strip-space elements="*"/> -->
     
     <!-- root -->
     <xsl:template match="/">
@@ -12,7 +17,7 @@
     
     <!-- html -->
     <xsl:template match="html">
-        <!--  <xsl:apply-templates select="head"/> -->
+        <xsl:apply-templates select="head"/>
         <xsl:apply-templates select="body"/>
     </xsl:template>
     
@@ -193,20 +198,40 @@
     <xsl:template match="table">
         <xsl:text>\begin{table}&#10;</xsl:text>
         <xsl:text>\begin{tabular}{</xsl:text>
-        <xsl:for-each select="col | colgroup/col">
-            <xsl:text>|</xsl:text>
-            <xsl:choose>
-                <xsl:when test="@align='right'">
-                    <xsl:text>r</xsl:text>
-                </xsl:when>
-                <xsl:when test="@align='center'">
-                    <xsl:text>c</xsl:text>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:text>l</xsl:text>
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:for-each>
+        <xsl:choose>
+            <xsl:when test="count(col)>0 or count(colgroup/col)>0">
+                <xsl:for-each select="col | colgroup/col">
+                    <xsl:text>|</xsl:text>
+                    <xsl:choose>
+                        <xsl:when test="@align='right'">
+                            <xsl:text>r</xsl:text>
+                        </xsl:when>
+                        <xsl:when test="@align='center'">
+                            <xsl:text>c</xsl:text>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:text>l</xsl:text>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:for-each>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:for-each select="descendant::tr[position()=1]/td">
+                    <xsl:text>|</xsl:text>
+                    <xsl:choose>
+                        <xsl:when test="@align='right'">
+                            <xsl:text>r</xsl:text>
+                        </xsl:when>
+                        <xsl:when test="@align='center'">
+                            <xsl:text>c</xsl:text>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:text>l</xsl:text>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:for-each>
+            </xsl:otherwise>
+        </xsl:choose>
         <xsl:text>|}&#10;</xsl:text>
         <xsl:text>\hline&#10;</xsl:text>
         <xsl:apply-templates select="thead | tfoot | tbody | tr"/>

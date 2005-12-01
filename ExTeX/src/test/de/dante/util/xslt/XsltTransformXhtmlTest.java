@@ -43,18 +43,10 @@ import de.dante.util.resource.UriResolverRf;
 
 /**
  * Testcase for the xslt transformer.
- *
- * <p> !!!!!!!!!!!!!!!!!!
- * Die Datei xhtml2latex.xsl wird über xsl:import nachgeladen
- * und muss im Moment unter extex-root sein!!!!
- * <p>
- * cd <extex>
- * ln -s src/xslt/xhtml2latex.xsl .
- * </p>
- * </p>
+ * <p>sample xhtml2latex.xsl</p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 
 public class XsltTransformXhtmlTest extends ExTeXLauncher {
@@ -104,6 +96,7 @@ public class XsltTransformXhtmlTest extends ExTeXLauncher {
 
         Properties prop = System.getProperties();
         prop.setProperty("extex.launcher.verbose", "false");
+        // prop.setProperty("extex.launcher.verbose", "true");
         extex = new MyExTeX(prop, ".extex-test");
         finder = extex.getResourceFinder();
 
@@ -393,6 +386,68 @@ public class XsltTransformXhtmlTest extends ExTeXLauncher {
         Transform.transform(new StreamSource(xml), xslstream, resolver, out);
 
         assertEquals(text + "\n\n\n", removeRightSpace(out.toString()));
+    }
+
+    /**
+     * test table 01
+     * @throws Exception if an error occurred.
+     */
+    public void testTable01() throws Exception {
+
+        String text = "Dies ist der Text mit der Nummer ";
+        StringBuffer buf = new StringBuffer();
+        StringBuffer result = new StringBuffer();
+
+        buf.append(HEAD);
+        buf.append("<table>");
+        buf.append("<tbody>");
+        buf.append("<tr>");
+        buf.append("<td>H1</td>");
+        buf.append("<td>H2</td>");
+        buf.append("<td>H3</td>");
+        buf.append("<td>H4</td>");
+        buf.append("<td>H5</td>");
+        buf.append("</tr>");
+        buf.append("<tr>");
+        buf.append("<td>1</td>");
+        buf.append("<td>2</td>");
+        buf.append("<td>3</td>");
+        buf.append("<td>4</td>");
+        buf.append("<td>5</td>");
+        buf.append("</tr>");
+        buf.append("<tr>");
+        buf.append("<td>a</td>");
+        buf.append("<td>b</td>");
+        buf.append("<td>c</td>");
+        buf.append("<td>d</td>");
+        buf.append("<td>e</td>");
+        buf.append("</tr>");
+        buf.append("</tbody>");
+        buf.append("</table>");
+
+        buf.append(FOOT);
+
+        result.append("/begin (table) ");
+        result.append("/begin (tabular)(|l|l|l|l|l|) /hline ");
+        result.append("H1& H2& H3& H4& H5/  /hline ");
+        result.append("1& 2& 3& 4& 5/  /hline ");
+        result.append("a& b& c& d& e/  /hline ");
+        result.append("/end (tabular) /end (table)");
+        result.append(" \n\n");
+
+        StringWriter out = new StringWriter();
+        StringReader xml = new StringReader(buf.toString());
+
+        Transform.transform(new StreamSource(xml), xslstream, resolver, out);
+
+        assertSuccess(
+                //--- input code ---
+                DEFINE_BRACES
+                        + "\\javadef\\t{"
+                        + "de.dante.extex.interpreter.primitives.file.xslt.ReadTokenUntilNull}"
+                        + "\\t " + out.toString(),
+                //--- log message ---
+                result.toString());
     }
 
     /**
