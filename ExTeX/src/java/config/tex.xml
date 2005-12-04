@@ -171,8 +171,10 @@
     <eps  class="de.dante.extex.backend.documentWriter.postscript.EpsWriter"/>
     <out  class="de.dante.extex.backend.documentWriter.dump.DumpDocumentWriter"
           tree="false"/>
-    <dump class="de.dante.extex.backend.documentWriter.dump.MultiDumpDocumentWriter"
-          tree="true"/>
+    <dump    class="de.dante.extex.backend.documentWriter.dump.DumpDocumentWriter"
+             tree="true"/>
+    <dumps   class="de.dante.extex.backend.documentWriter.dump.MultiDumpDocumentWriter"
+             tree="true"/>
     <text class="de.dante.extex.backend.documentWriter.text.TextDocumentWriter"/>
     <xml  class="de.dante.extex.backend.documentWriter.xml.XMLDocumentWriter"
           encoding="ISO-8859-1"
