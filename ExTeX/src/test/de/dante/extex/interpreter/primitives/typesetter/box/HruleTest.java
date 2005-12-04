@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\hrule</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class HruleTest extends NoFlagsPrimitiveTester {
 
@@ -41,13 +41,65 @@ public class HruleTest extends NoFlagsPrimitiveTester {
     /**
      * Constructor for HruleTest.
      *
-     * @param arg the name
+     * @param name the name
      */
-    public HruleTest(final String arg) {
+    public HruleTest(final String name) {
 
-        super(arg, "hrule", "");
+        super(name, "hrule", "");
     }
 
-    //TODO implement primitive specific test cases
+    /**
+     * <testcase primitive="\hrule">
+     *  Test case checking that <tt>\hrule</tt> switches to vertical mode and
+     *  inserts a rule node. The default height is 0.4pt.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test1() throws Exception {
+
+        assertSuccess(showNodesProperties(),
+        //--- input code ---
+                "\\hrule\\end ",
+                //--- output channel ---
+                "\\vbox(0.4pt+0.0pt)x0.0pt\n" + //
+                ".\\rule0.4pt+0.0ptx0.0pt\n");
+    }
+
+    /**
+     * <testcase primitive="\hrule">
+     *  Test case checking that <tt>\hrule</tt> switches to vertical mode and
+     *  inserts a rule node of given height.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test2() throws Exception {
+
+        assertSuccess(showNodesProperties(),
+        //--- input code ---
+                "\\hrule height 1pt\\end ",
+                //--- output channel ---
+                "\\vbox(1.0pt+0.0pt)x0.0pt\n" + //
+                ".\\rule1.0pt+0.0ptx0.0pt\n");
+    }
+
+    /**
+     * <testcase primitive="\hrule">
+     *  Test case checking that <tt>\hrule</tt> switches to vertical mode and
+     *  inserts a rule node of given height, width, and depth.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test4() throws Exception {
+
+        assertSuccess(showNodesProperties(),
+        //--- input code ---
+                "\\hrule height 2pt depth 1pt width 42pt\\end ",
+                //--- output channel ---
+                "\\vbox(2.0pt+1.0pt)x42.0pt\n" + //
+                ".\\rule2.0pt+1.0ptx42.0pt\n");
+    }
 
 }

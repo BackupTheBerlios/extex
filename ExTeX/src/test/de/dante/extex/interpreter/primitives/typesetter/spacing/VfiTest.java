@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\vfi</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class VfiTest extends NoFlagsPrimitiveTester {
 
@@ -46,6 +46,24 @@ public class VfiTest extends NoFlagsPrimitiveTester {
     public VfiTest(final String arg) {
 
         super(arg, "vfi", "");
+    }
+
+    /**
+     * <testcase primitive="\vfi">
+     *  Test case checking that <tt>\vfi</tt> switches to vertical mode and
+     *  inserts a glue node with 1fi.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test1() throws Exception {
+
+        assertSuccess(showNodesProperties(),
+        //--- input code ---
+                "\\vfi\\end ",
+                //--- output channel ---
+                "\\vbox(0.0pt+0.0pt)x0.0pt\n" + //
+                ".\\glue0.0pt plus 1.0fi\n");
     }
 
     //TODO implement primitive specific test cases

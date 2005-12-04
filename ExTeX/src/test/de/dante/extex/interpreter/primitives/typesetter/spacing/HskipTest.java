@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\hskip</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class HskipTest extends NoFlagsPrimitiveTester {
 
@@ -48,6 +48,42 @@ public class HskipTest extends NoFlagsPrimitiveTester {
         super(arg, "hskip", "12pt", "A");
     }
 
-    //TODO implement primitive specific test cases
+    /**
+     * <testcase primitive="\hskip">
+     *  Test case checking that <tt>\hskip</tt> switches to vertical mode and
+     *  inserts a glue node with the appropriate value.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test1() throws Exception {
+
+        assertSuccess(showNodesProperties(),
+        //--- input code ---
+                "\\hskip 123pt\\end ",
+                //--- output channel ---
+                "\\vbox(0.0pt+0.0pt)x123.0pt\n" + //
+                ".\\hbox(0.0pt+0.0pt)x123.0pt\n" + //
+                "..\\glue123.0pt\n");
+    }
+
+    /**
+     * <testcase primitive="\hskip">
+     *  Test case checking that <tt>\hskip</tt> switches to vertical mode and
+     *  inserts a glue node with the appropriate value.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test2() throws Exception {
+
+        assertSuccess(showNodesProperties(),
+        //--- input code ---
+                "\\hskip 123pt plus 1.2fil\\end ",
+                //--- output channel ---
+                "\\vbox(0.0pt+0.0pt)x123.0pt\n" + //
+                ".\\hbox(0.0pt+0.0pt)x123.0pt\n" + //
+                "..\\glue123.0pt plus 1.2fil\n");
+    }
 
 }

@@ -23,7 +23,7 @@ package de.dante.extex.interpreter.primitives.typesetter.spacing;
  * This is a test suite for the primitive <tt>\hfi</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class HfiTest extends AbstractHfillTester {
 
@@ -44,6 +44,25 @@ public class HfiTest extends AbstractHfillTester {
     public HfiTest(final String arg) {
 
         super(arg, "hfi", "");
+    }
+
+    /**
+     * <testcase primitive="\hfi">
+     *  Test case checking that <tt>\hfi</tt> switches to vertical mode and
+     *  inserts a glue node with 1fi.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test1() throws Exception {
+
+        assertSuccess(showNodesProperties(),
+        //--- input code ---
+                "\\hfi\\end ",
+                //--- output channel ---
+                "\\vbox(0.0pt+0.0pt)x0.0pt\n" + //
+                ".\\hbox(0.0pt+0.0pt)x0.0pt\n" + //
+                "..\\glue0.0pt plus 1.0fi\n");
     }
 
 }

@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\vrule</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class VruleTest extends NoFlagsPrimitiveTester {
 
@@ -46,6 +46,60 @@ public class VruleTest extends NoFlagsPrimitiveTester {
     public VruleTest(final String arg) {
 
         super(arg, "vrule", "");
+    }
+
+    /**
+     * <testcase primitive="\vrule">
+     *  Test case checking that <tt>\vrule</tt> switches to vertical mode and
+     *  inserts a glue node with the given value.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test1() throws Exception {
+
+        assertSuccess(showNodesProperties(),
+        //--- input code ---
+                "\\vrule width 12pt\\end ",
+                //--- output channel ---
+                "\\vbox(0.0pt+0.0pt)x12.0pt\n" + //
+                ".\\rule0.0pt+0.0ptx12.0pt\n");
+    }
+
+    /**
+     * <testcase primitive="\vrule">
+     *  Test case checking that <tt>\vrule</tt> switches to vertical mode and
+     *  inserts a glue node with the given value.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test2() throws Exception {
+
+        assertSuccess(showNodesProperties(),
+        //--- input code ---
+                "\\vrule height 12pt\\end ",
+                //--- output channel ---
+                "\\vbox(12.0pt+0.0pt)x0.4pt\n" + //
+                ".\\rule12.0pt+0.0ptx0.4pt\n");
+    }
+
+    /**
+     * <testcase primitive="\vrule">
+     *  Test case checking that <tt>\vrule</tt> switches to vertical mode and
+     *  inserts a glue node with the given value.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test3() throws Exception {
+
+        assertSuccess(showNodesProperties(),
+        //--- input code ---
+                "\\vrule depth 12pt\\end ",
+                //--- output channel ---
+                "\\vbox(0.0pt+12.0pt)x0.4pt\n" + //
+                ".\\rule0.0pt+12.0ptx0.4pt\n");
     }
 
     //TODO implement primitive specific test cases

@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\vskip</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class VskipTest extends NoFlagsPrimitiveTester {
 
@@ -46,6 +46,42 @@ public class VskipTest extends NoFlagsPrimitiveTester {
     public VskipTest(final String arg) {
 
         super(arg, "vskip", "12pt");
+    }
+
+    /**
+     * <testcase primitive="\vskip">
+     *  Test case checking that <tt>\vskip</tt> switches to vertical mode and
+     *  inserts a glue node with the given value.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test1() throws Exception {
+
+        assertSuccess(showNodesProperties(),
+        //--- input code ---
+                "\\vskip 12pt\\end ",
+                //--- output channel ---
+                "\\vbox(12.0pt+0.0pt)x0.0pt\n" + //
+                ".\\glue12.0pt\n");
+    }
+
+    /**
+     * <testcase primitive="\vskip">
+     *  Test case checking that <tt>\vskip</tt> switches to vertical mode and
+     *  inserts a glue node with the given value.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test2() throws Exception {
+
+        assertSuccess(showNodesProperties(),
+        //--- input code ---
+                "\\vskip 12pt plus 3pt minus 4pt\\end ",
+                //--- output channel ---
+                "\\vbox(12.0pt+0.0pt)x0.0pt\n" + //
+                ".\\glue12.0pt plus 3.0pt minus 4.0pt\n");
     }
 
     //TODO implement primitive specific test cases
