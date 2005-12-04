@@ -35,14 +35,14 @@ import com.ibm.icu.text.UTF16;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class UnicodeChar implements Serializable {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 1L;
 
     /**
      * The constant <tt>NULL</tt> contains the Unicode character with the
@@ -69,23 +69,25 @@ public class UnicodeChar implements Serializable {
     }
 
     /**
-     * Init with a char32 from a <code>CharBuffer</code> at position idx.
+     * Create a new instance with a char32 from a <code>CharBuffer</code>
+     * at position index.
      * <p>
-     * This use the code from <code>UTF16.charAt(String,int)</code> and
-     * change String to CharBuffer.
+     *  This use the code from <code>UTF16.charAt(String,int)</code> and
+     *  change String to CharBuffer.
+     * </p>
      *
-     * @param cb the <code>CharBuffer</code>
-     * @param idx the position in the char buffer
+     * @param buffer the <code>CharBuffer</code>
+     * @param index the position in the char buffer
      */
-    public UnicodeChar(final CharBuffer cb, final int idx) {
+    public UnicodeChar(final CharBuffer buffer, final int index) {
 
         super();
 
-        if (idx < 0 || idx >= cb.length()) {
-            throw new StringIndexOutOfBoundsException(idx);
+        if (index < 0 || index >= buffer.length()) {
+            throw new StringIndexOutOfBoundsException(index);
         }
 
-        char single = cb.charAt(idx);
+        char single = buffer.charAt(index);
         if (single < UTF16.LEAD_SURROGATE_MIN_VALUE
                 || single > UTF16.TRAIL_SURROGATE_MAX_VALUE) {
             this.code = single;
@@ -97,8 +99,8 @@ public class UnicodeChar implements Serializable {
             // For simplicity in usage, and because the frequency of pairs is
             // low, look both directions.
             if (single <= UTF16.LEAD_SURROGATE_MAX_VALUE) {
-                if (cb.length() > (idx + 1)) {
-                    char trail = cb.charAt(idx + 1);
+                if (buffer.length() > (index + 1)) {
+                    char trail = buffer.charAt(index + 1);
                     if (trail >= UTF16.TRAIL_SURROGATE_MIN_VALUE
                             && trail <= UTF16.TRAIL_SURROGATE_MAX_VALUE) {
                         this.code = UCharacterProperty.getRawSupplementary(
@@ -109,8 +111,8 @@ public class UnicodeChar implements Serializable {
                 } else {
                     throw new RuntimeException("This can't happen?");
                 }
-            } else if (idx > 0) {
-                char lead = cb.charAt(idx - 1);
+            } else if (index > 0) {
+                char lead = buffer.charAt(index - 1);
                 if (lead >= UTF16.LEAD_SURROGATE_MIN_VALUE
                         && lead <= UTF16.LEAD_SURROGATE_MAX_VALUE) {
                     this.code = UCharacterProperty.getRawSupplementary(lead,
@@ -144,20 +146,6 @@ public class UnicodeChar implements Serializable {
 
         super();
         this.code = UCharacter.getCharFromName(unicodeName);
-    }
-
-    /**
-     * Creates a new instance from a String at position index.
-     *
-     * @param s the <code>String</code>
-     * @param index the position in the string
-     *
-     * @deprecated use UnicodeChar(int) instead
-     */
-    public UnicodeChar(final String s, final int index) {
-
-        super();
-        this.code = UTF16.charAt(s, index);
     }
 
     /**
