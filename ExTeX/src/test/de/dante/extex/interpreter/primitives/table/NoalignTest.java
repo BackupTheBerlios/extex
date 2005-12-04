@@ -20,13 +20,12 @@
 package de.dante.extex.interpreter.primitives.table;
 
 import de.dante.test.ExTeXLauncher;
-import de.dante.test.NoFlagsPrimitiveTester;
 
 /**
  * This is a test suite for the primitive <tt>\noalign</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class NoalignTest extends ExTeXLauncher {
 
@@ -52,7 +51,7 @@ public class NoalignTest extends ExTeXLauncher {
     /**
      * <testcase primitive="\noalign">
      *  Test case checking that <tt>\noalign</tt> needs to be used in a
-     *  tabuling context.
+     *  tabulating context.
      * </testcase>
      *
      * @throws Exception in case of an error
