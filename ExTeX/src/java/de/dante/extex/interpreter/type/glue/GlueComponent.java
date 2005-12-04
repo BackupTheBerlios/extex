@@ -60,7 +60,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.42 $
+ * @version $Revision: 1.43 $
  */
 public class GlueComponent implements Serializable, FixedGlueComponent {
 
@@ -96,30 +96,30 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
     private static final int MAX_ORDER = 4;
 
     /**
-     * The constant <tt>MINUS_ONE_FIL</tt> contains the value of -1 fil.
-     */
-    public static final GlueComponent MINUS_ONE_FIL = new GlueComponent(-1, 1);
-
-    /**
      * The constant <tt>ONE</tt> contains the internal representation for 1pt.
      * @see "<logo>TeX</logo> &ndash; The Program [101]"
      */
     public static final long ONE = 1 << 16;
 
     /**
+     * The constant <tt>MINUS_ONE_FIL</tt> contains the value of -1 fil.
+     */
+    public static final GlueComponent MINUS_ONE_FIL = new GlueComponent(-ONE, 2);
+
+    /**
      * The constant <tt>ONE_FI</tt> contains the value of 1 fi.
      */
-    public static final GlueComponent ONE_FI = new GlueComponent(1, 1);
+    public static final GlueComponent ONE_FI = new GlueComponent(ONE, 1);
 
     /**
      * The constant <tt>ONE_FIL</tt> contains the value of 1 fil.
      */
-    public static final GlueComponent ONE_FIL = new GlueComponent(1, 2);
+    public static final GlueComponent ONE_FIL = new GlueComponent(ONE, 2);
 
     /**
      * The constant <tt>ONE_FIL</tt> contains the value of 1 fill.
      */
-    public static final GlueComponent ONE_FILL = new GlueComponent(1, 3);
+    public static final GlueComponent ONE_FILL = new GlueComponent(ONE, 3);
 
     /**
      * The field <tt>POINT_PER_100_IN</tt> contains the conversion factor from
