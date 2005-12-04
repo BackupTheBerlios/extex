@@ -36,23 +36,32 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="immediate">
  * <h3>The Prefix Primitive <tt>\immediate</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  The primitive <tt>\immediate</tt> is a prefix modifying the operation of a
+ *  following primitive. If the immediately following token denotes another
+ *  prefix primitives then the functionality is accumulated. This means that
+ *  the next non-prefix primitive is modified by any directly preceding prefix
+ *  primitives.
  * </p>
  * <p>
+ *  Multiple <tt>\immediate</tt> prefixes act identical to a single one.
+ * </p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;immediate&rang;
- *      &rarr; <tt>\immediate ...</tt>  </pre>
- * </p>
- * <p>
- *  Examples:
+ *      &rarr; <tt>\immediate</tt>  </pre>
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \immediate\write1{abc}  </pre>
- * </p>
+ *  <pre class="TeXSample">
+ *    \immediate\immediate\write1{abc}  </pre>
  * </doc>
  *
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class Immediate extends AbstractCode implements PrefixCode {
 

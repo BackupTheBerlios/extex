@@ -35,23 +35,31 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="outer">
  * <h3>The Prefix Primitive <tt>\outer</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The primitive <tt>\outer</tt> is a prefix modifying the operation of a
+ *  following primitive. If the immediately following token denotes another
+ *  prefix primitives then the functionality is accumulated. This means that
+ *  the next non-prefix primitive is modified by any directly preceding prefix
+ *  primitives.
  * </p>
  * <p>
+ *  Multiple <tt>\outer</tt> prefixes act identical to a single one.
+ * </p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;outer&rang;
- *      &rarr; <tt>\outer ...</tt>  </pre>
- * </p>
- * <p>
- *  Examples:
+ *      &rarr; <tt>\outer</tt>  </pre>
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \outer\def#1{--#1--}  </pre>
- * </p>
+ *  <pre class="TeXSample">
+ *    \outer\outer\def#1{--#1--}  </pre>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class Outer extends AbstractCode implements PrefixCode {
 

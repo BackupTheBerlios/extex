@@ -36,23 +36,30 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="protected" extension="yes">
  * <h3>The Prefix Primitive <tt>\protected</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The primitive <tt>\protected</tt> is a prefix modifying the operation of a
+ *  following primitive. If the immediately following token denotes another
+ *  prefix primitives then the functionality is accumulated. This means that
+ *  the next non-prefix primitive is modified by any directly preceding prefix
+ *  primitives.
  * </p>
  * <p>
+ *  Multiple <tt>\protected</tt> prefixes act identical to a single one.
+ * </p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;protected&rang;
  *      &rarr; <tt>\protected</tt>  </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \protected\def\abc{123}  </pre>
  * </p>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Protected extends AbstractCode implements PrefixCode {
 
@@ -79,7 +86,8 @@ public class Protected extends AbstractCode implements PrefixCode {
      *      de.dante.extex.typesetter.Typesetter)
      */
     public void execute(final Flags prefix, final Context context,
-            final TokenSource source, final Typesetter typesetter) throws InterpreterException {
+            final TokenSource source, final Typesetter typesetter)
+            throws InterpreterException {
 
         prefix.setProtected();
     }

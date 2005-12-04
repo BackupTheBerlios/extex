@@ -35,23 +35,31 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="long">
  * <h3>The Prefix Primitive <tt>\long</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The primitive <tt>\long</tt> is a prefix modifying the operation of a
+ *  following primitive. If the immediately following token denotes another
+ *  prefix primitives then the functionality is accumulated. This means that
+ *  the next non-prefix primitive is modified by any directly preceding prefix
+ *  primitives.
  * </p>
  * <p>
+ *  Multiple <tt>\long</tt> prefixes act identical to a single one.
+ * </p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;long&rang;
- *      &rarr; <tt>\long ...</tt>  </pre>
- * </p>
- * <p>
- *  Examples:
+ *      &rarr; <tt>\long</tt>  </pre>
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \long\def#1{--#1--}  </pre>
- * </p>
+ *  <pre class="TeXSample">
+ *    \long\long\def#1{--#1--}  </pre>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class Long extends AbstractCode implements PrefixCode {
 

@@ -38,7 +38,7 @@ import de.dante.extex.typesetter.Typesetter;
  *  The primitive <tt>\global</tt> is a prefix macro. It does not do anything
  *  by its own but works in combination with a following primitive token only.
  *  If the following token constitutes an assignment then the assignment is not
- *  restricted to the current group but acts globallay in all groups.
+ *  restricted to the current group but acts globally in all groups.
  * </p>
  * <p>
  *  If the following command token does not happen to be an operation for
@@ -48,8 +48,9 @@ import de.dante.extex.typesetter.Typesetter;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;global&rang;
- *      &rarr; <tt>\global</tt> &lang;...&rang; </pre>
+ *      &rarr; <tt>\global</tt>  </pre>
  * </p>
+ *
  * <h4>Examples</h4>
  * <p>
  *  The following example shows that two macros defined in a group. The first
@@ -75,8 +76,9 @@ import de.dante.extex.typesetter.Typesetter;
  *   \endgroup  </pre>
  * </doc>
  *
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class Global extends AbstractCode implements PrefixCode {
 

@@ -42,15 +42,17 @@ import de.dante.util.UnicodeChar;
  * <p>
  *  The primitive <tt>\catcode</tt> can be used to influence the tokenizer of
  *  <logo>ExTeX</logo>. This is done by assigning category codes to single
- *  characters.
- *  TODO gene: missing documentation
+ *  characters. Whenever characters are read tokens are generated and passed on.
+ *  Those tokens carry the category code into the interpreter. The interpreter
+ *  considers always tokens, i.e. characters and catcodes. Thus the same
+ *  character can be treated differently depending on the catcode of the token.
  * </p>
  * <p>
- *  The assignment is controlled by the prefix macro <tt>\global</tt> and the
- *  count parameter <tt>\globaldefs</tt>. Usually the assignment is acting on
- *  the current group only. If the count parameter <tt>\globaldefs</tt> is
- *  greater than 0 or the prefix <tt>\global</tt> is given then the assignment
- *  is applied to all groups.
+ *  The assignment of a catcode for a character is controlled by the prefix
+ *  primitive <tt>\global</tt> and the count parameter <tt>\globaldefs</tt>.
+ *  Usually the assignment is acting on the current group only. If the count
+ *  parameter <tt>\globaldefs</tt> is greater than 0 or the prefix
+ *  <tt>\global</tt> is given then the assignment is applied to all groups.
  * </p>
  * <p>
  *  The following table contains the category codes with their meaning and the
@@ -100,7 +102,7 @@ import de.dante.util.UnicodeChar;
  * <h4><tt>\catcode</tt> as a Count Value</h4>
  *
  * <p>
- *  <tt>\catcode</tt> can be used wherever a count value is required. 
+ *  <tt>\catcode</tt> can be used wherever a count value is required.
  * </p>
  *
  *
@@ -109,7 +111,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public class CatcodePrimitive extends AbstractAssignment
         implements
@@ -119,7 +121,7 @@ public class CatcodePrimitive extends AbstractAssignment
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 1L;
 
     /**
      * Creates a new object.
@@ -142,7 +144,8 @@ public class CatcodePrimitive extends AbstractAssignment
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        UnicodeChar charCode = source.scanCharacterCode(context, typesetter, getName());
+        UnicodeChar charCode = source.scanCharacterCode(context, typesetter,
+                getName());
         source.getOptionalEquals(context);
         long ccNumber = source.scanInteger(context, typesetter);
 
@@ -166,7 +169,8 @@ public class CatcodePrimitive extends AbstractAssignment
     public long convertCount(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        UnicodeChar charCode = source.scanCharacterCode(context, typesetter, getName());
+        UnicodeChar charCode = source.scanCharacterCode(context, typesetter,
+                getName());
 
         return context.getCatcode(charCode).getCode();
     }
@@ -182,4 +186,5 @@ public class CatcodePrimitive extends AbstractAssignment
 
         return new Tokens(context, convertCount(context, source, typesetter));
     }
+
 }
