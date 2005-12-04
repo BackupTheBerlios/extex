@@ -21,11 +21,10 @@ package de.dante.extex.interpreter.exception.helping;
 
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.util.framework.i18n.Localizer;
-import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
  * This class provides an Exception with the possibility to provide additional
- * help on the error encoutered. Thus it has two levels of information: the
+ * help on the error encountered. Thus it has two levels of information: the
  * first level is the message and the second level is the additional help.
  * <p>
  * Both information strings are mapped via the
@@ -44,7 +43,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * abc.def.help = This is the help text. \
  *               It can even span several lines.
  * </pre>
- * Then the following instruction can savely be used:
+ * Then the following instruction can be used save:
  * <pre>
  *     throw new HelpingException(localizer, "abc.def");
  * </pre>
@@ -80,14 +79,14 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class HelpingException extends InterpreterException {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 1L;
 
     /**
      * The constant <tt>DEFAULT_TAG</tt> contains the tag to be used if none
@@ -212,58 +211,6 @@ public class HelpingException extends InterpreterException {
         this.arg1 = a1;
         this.arg2 = a2;
         this.arg3 = a3;
-    }
-
-    /**
-     * Creates a new object without variable arguments.
-     *
-     * @param messageTag the message
-     *
-     * @deprecated use the method with the explicit localizer instead: add getLocalizer() as first argument in primitives
-     */
-    public HelpingException(final String messageTag) {
-
-        super();
-        this.tag = messageTag;
-        this.localizer = LocalizerFactory.getLocalizer(HelpingException.class
-                .getName());
-    }
-
-    /**
-     * Creates a new object with one variable argument.
-     *
-     * @param messageTag the message
-     * @param a1 the first argument
-     *
-     * @deprecated use the method with the explicit localizer instead: add getLocalizer() as first argument in primitives
-     */
-    public HelpingException(final String messageTag, final String a1) {
-
-        super();
-        this.tag = messageTag;
-        this.localizer = LocalizerFactory.getLocalizer(HelpingException.class
-                .getName());
-        this.arg1 = a1;
-    }
-
-    /**
-     * Creates a new object with two variable arguments.
-     *
-     * @param messageTag the message
-     * @param a1 the first argument
-     * @param a2 the second argument
-     *
-     * @deprecated use the method with the explicit localizer instead: add getLocalizer() as first argument in primitives
-     */
-    public HelpingException(final String messageTag, final String a1,
-            final String a2) {
-
-        super();
-        this.tag = messageTag;
-        this.localizer = LocalizerFactory.getLocalizer(HelpingException.class
-                .getName());
-        this.arg1 = a1;
-        this.arg2 = a2;
     }
 
     /**
