@@ -19,6 +19,7 @@
 
 package de.dante.extex.typesetter.type.node;
 
+import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.FixedGlueComponent;
@@ -43,7 +44,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class GlueNode extends AbstractNode implements Node, Discardable {
 
@@ -60,13 +61,22 @@ public class GlueNode extends AbstractNode implements Node, Discardable {
 
     /**
      * Creates a new object.
+     * The size is used to determine the width in horizontal mode and the height
+     * in vertical mode.
      *
-     * @param theSize the actual size
+     * @param size the actual size
+     * @param horizontal indicator that the glue is used in horizontal
+     *  mode
      */
-    public GlueNode(final FixedGlue theSize) {
+    public GlueNode(final FixedGlue size, final boolean horizontal) {
 
-        super(theSize.getLength());
-        this.size = new Glue(theSize);
+        super(Dimen.ZERO_PT);
+        this.size = new Glue(size);
+        if (horizontal) {
+            setWidth(size.getLength());
+        } else {
+            setHeight(size.getLength());
+        }
     }
 
     /**

@@ -38,7 +38,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class VerticalListNode extends AbstractNodeList implements NodeList {
 
@@ -63,7 +63,7 @@ public class VerticalListNode extends AbstractNodeList implements NodeList {
      */
     public void addSkip(final FixedGlue glue) {
 
-        Node gNode = new GlueNode(glue);
+        Node gNode = new GlueNode(glue, false);
         gNode.setHeight(glue.getLength());
         add(gNode);
     }

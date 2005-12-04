@@ -16,6 +16,7 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.typesetter.type.noad;
 
 import de.dante.extex.interpreter.type.muskip.Muskip;
@@ -25,13 +26,12 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
 import de.dante.extex.typesetter.type.node.GlueNode;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
-
 /**
  * This Noad carries a muglue value. This value is translated into a GlueNode
  * with the translated glue value.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class GlueNoad extends AbstractNoad {
 
@@ -61,7 +61,7 @@ public class GlueNoad extends AbstractNoad {
     public void typeset(final NodeList list, final MathContext mathContext,
             final TypesetterOptions context) throws ConfigurationException {
 
-        list.add(new GlueNode(mathContext.convert(muglue)));
+        list.add(new GlueNode(mathContext.convert(muglue), true));
     }
 
 }

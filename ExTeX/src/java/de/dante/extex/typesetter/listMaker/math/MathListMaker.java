@@ -72,7 +72,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This is the list maker for the inline math formulae.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.30 $
+ * @version $Revision: 1.31 $
  */
 public class MathListMaker extends AbstractListMaker implements NoadConsumer {
 
@@ -81,7 +81,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      * It is used to store to the stack and restore the state from the stack.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.30 $
+     * @version $Revision: 1.31 $
      */
     private class MathMemento {
 
@@ -248,7 +248,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      */
     public void addGlue(final Glue g) throws TypesetterException {
 
-        insertionPoint.add(new NodeNoad(new GlueNode(g)));
+        insertionPoint.add(new NodeNoad(new GlueNode(g, true)));
     }
 
     /**

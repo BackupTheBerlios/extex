@@ -53,7 +53,7 @@ import de.dante.util.framework.configuration.Configuration;
  * JUnit tests for class <code>DviDocumentWriter</code>.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 
 public class DviDocumentWriterTest extends TestCase {
@@ -202,7 +202,7 @@ public class DviDocumentWriterTest extends TestCase {
 
         // TODO: nodeList.add(new CharNode()); (TE)
         nodeList.add(new ExplicitKernNode(new Dimen(12346)));
-        nodeList.add(new GlueNode(new Glue(1234)));
+        nodeList.add(new GlueNode(new Glue(1234), true));
         // TODO: nodeList.add(new LigatureNode()); (TE)
         // TODO: nodeList.add(new SpecialNode("Test")); (TE)
         //nodeList.add(new WhatsItNode("Test"));

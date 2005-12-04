@@ -31,7 +31,7 @@ import de.dante.util.exception.GeneralException;
  * @see "<logo>TeX</logo> &ndash; The Program [149]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class CenteredLeadersNode extends GlueNode implements Node {
 
@@ -53,7 +53,7 @@ public class CenteredLeadersNode extends GlueNode implements Node {
      */
     public CenteredLeadersNode(final Node node, final Glue glue) {
 
-        super(glue);
+        super(glue, true);
         this.node = node;
     }
 

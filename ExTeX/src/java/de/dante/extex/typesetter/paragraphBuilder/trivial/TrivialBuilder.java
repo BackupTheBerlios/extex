@@ -55,7 +55,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
 
@@ -210,11 +210,11 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
 
         // [TTB p100]
         nodes.add(new PenaltyNode(INF_PENALTY));
-        nodes.add(new GlueNode(options.getGlueOption("parfillskip")));
+        nodes.add(new GlueNode(options.getGlueOption("parfillskip"), true));
         nodes.add(new PenaltyNode(EJECT_PENALTY));
 
         VerticalListNode vlist = new VerticalListNode();
-        vlist.add(new GlueNode(options.getGlueOption("parskip")));
+        vlist.add(new GlueNode(options.getGlueOption("parskip"), false));
 
         int i = 0;
         int line = 0;
@@ -277,7 +277,7 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
         if (end >= 0) {
             g.subtract(vlist.get(end).getDepth());
         }
-        vlist.add(new GlueNode(g.lt(lineskiplimit) ? lineskip : g));
+        vlist.add(new GlueNode(g.lt(lineskiplimit) ? lineskip : g, false));
 
         vlist.add(hlist);
     }

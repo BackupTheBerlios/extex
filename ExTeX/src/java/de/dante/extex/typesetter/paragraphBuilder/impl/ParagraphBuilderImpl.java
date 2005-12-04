@@ -149,7 +149,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * Treat segments of a paragraph separated by forced breaks separately.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public class ParagraphBuilderImpl
         implements
@@ -313,7 +313,7 @@ public class ParagraphBuilderImpl
 
         // [TTB p100]
         nodes.add(new PenaltyNode(INF_PENALTY));
-        nodes.add(new GlueNode(options.getGlueOption("parfillskip")));
+        nodes.add(new GlueNode(options.getGlueOption("parfillskip"), true));
         nodes.add(new PenaltyNode(EJECT_PENALTY));
 
         NodeList nl;

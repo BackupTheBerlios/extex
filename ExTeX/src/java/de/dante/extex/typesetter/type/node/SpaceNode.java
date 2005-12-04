@@ -29,7 +29,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class SpaceNode extends GlueNode implements Node {
 
@@ -56,7 +56,7 @@ public class SpaceNode extends GlueNode implements Node {
      */
     public SpaceNode(final Glue theWidth) {
 
-        super(theWidth);
+        super(theWidth, true);
         this.size = theWidth;
     }
 
