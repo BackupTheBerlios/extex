@@ -19,17 +19,22 @@
 
 package de.dante.extex.interpreter.primitives.typesetter;
 
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.exception.TypesetterException;
+import de.dante.extex.typesetter.listMaker.HorizontalListMaker;
+import de.dante.extex.typesetter.listMaker.ListManager;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
  * This an abstract base class for primitives in horizontal mode.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public abstract class AbstractHorizontalCode extends AbstractCode {
 
@@ -67,4 +72,29 @@ public abstract class AbstractHorizontalCode extends AbstractCode {
         }
 
     }
+
+    /**
+     * Check that the current mode is a horizontal mode and open a new
+     * list maker if another mode is detected.
+     *
+     * @param typesetter the typesetter to ask for the mode
+     *
+     * @throws InterpreterException in case of an error
+     */
+    protected void switchToHorizontalMode(final Typesetter typesetter)
+            throws InterpreterException {
+
+        Mode mode = typesetter.getMode();
+        if (mode == Mode.VERTICAL || mode == Mode.INNER_VERTICAL) {
+            ListManager man = typesetter.getManager();
+            ListMaker hlist = new HorizontalListMaker(man, typesetter
+                    .getLocator());
+            try {
+                man.push(hlist);
+            } catch (TypesetterException e) {
+                throw new InterpreterException(e);
+            }
+        }
+    }
+
 }

@@ -51,7 +51,7 @@ import de.dante.extex.typesetter.exception.TypesetterException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Hskip extends AbstractHorizontalCode {
 
@@ -81,7 +81,7 @@ public class Hskip extends AbstractHorizontalCode {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        ensureHorizontalMode(typesetter);
+        switchToHorizontalMode(typesetter);
         Glue g = new Glue(source, context, typesetter);
         try {
             typesetter.addGlue(g);

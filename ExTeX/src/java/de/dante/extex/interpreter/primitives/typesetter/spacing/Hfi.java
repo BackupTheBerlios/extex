@@ -23,7 +23,7 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.interpreter.primitives.typesetter.AbstractHorizontalCode;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.glue.GlueComponent;
 import de.dante.extex.typesetter.Typesetter;
@@ -39,7 +39,7 @@ import de.dante.util.exception.GeneralException;
  *  The value of <tt>\hfi</tt> is an infinite quantity which is less than
  *  <tt>\hfil</tt>. This means that <tt>\hfil</tt> or a larger value
  *  suppress this glue. On the other side if no greater value is present then
- *  this value suppresses any finite value. 
+ *  this value suppresses any finite value.
  * </p>
  * <p>
  *  This quantity has been introduced by <logo>Omega</logo>.
@@ -59,9 +59,9 @@ import de.dante.util.exception.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
-public class Hfi extends AbstractCode {
+public class Hfi extends AbstractHorizontalCode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
@@ -95,6 +95,7 @@ public class Hfi extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
+        switchToHorizontalMode(typesetter);
         try {
             typesetter.addGlue(FI);
         } catch (GeneralException e) {
