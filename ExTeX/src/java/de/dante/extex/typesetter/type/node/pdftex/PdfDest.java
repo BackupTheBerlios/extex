@@ -19,7 +19,7 @@
 
 package de.dante.extex.typesetter.type.node.pdftex;
 
-import de.dante.extex.interpreter.primitives.pdftex.util.DestType;
+import de.dante.extex.interpreter.primitives.pdftex.util.destination.DestType;
 import de.dante.extex.typesetter.type.node.WhatsItNode;
 
 /**
@@ -29,7 +29,7 @@ import de.dante.extex.typesetter.type.node.WhatsItNode;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class PdfDest extends WhatsItNode {
 
