@@ -60,7 +60,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * and as tool for testing.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class DumpDocumentWriter
         implements
@@ -79,42 +79,6 @@ public class DumpDocumentWriter
          * processed.
          */
         private boolean vmode = false;
-
-        /**
-         * Write a string to out.
-         *
-         * @param s the string to write
-         *
-         * @throws GeneralException in case of an error
-         */
-        private void write(final String s) throws GeneralException {
-
-            try {
-                out.write(s.getBytes());
-                if (vmode) {
-                    out.write('\n');
-                }
-            } catch (IOException e) {
-                throw new GeneralException(e);
-            }
-
-        }
-
-        /**
-         * Write a char to out.
-         *
-         * @param s the char to write
-         *
-         * @throws GeneralException in case of an error
-         */
-        private void write(final int s) throws GeneralException {
-
-            try {
-                out.write(s);
-            } catch (IOException e) {
-                throw new GeneralException(e);
-            }
-        }
 
         /**
          * Print a nl in vmode.
@@ -205,18 +169,6 @@ public class DumpDocumentWriter
          */
         public Object visitChar(final CharNode node, final Object oOut)
                 throws GeneralException {
-
-            write(node.getCharacter().getCodePoint());
-            return null;
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitChar(
-         *      de.dante.extex.typesetter.type.node.VirtualCharNode,
-         *      java.lang.Object)
-         */
-        public Object visitVirtualChar(final VirtualCharNode node,
-                final Object oOut) throws GeneralException {
 
             write(node.getCharacter().getCodePoint());
             return null;
@@ -387,6 +339,18 @@ public class DumpDocumentWriter
         }
 
         /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitChar(
+         *      de.dante.extex.typesetter.type.node.VirtualCharNode,
+         *      java.lang.Object)
+         */
+        public Object visitVirtualChar(final VirtualCharNode node,
+                final Object oOut) throws GeneralException {
+
+            write(node.getCharacter().getCodePoint());
+            return null;
+        }
+
+        /**
          * @see de.dante.extex.typesetter.type.NodeVisitor#visitWhatsIt(
          *      de.dante.extex.typesetter.type.node.WhatsItNode,
          *      java.lang.Object)
@@ -395,6 +359,42 @@ public class DumpDocumentWriter
                 throws GeneralException {
 
             return null;
+        }
+
+        /**
+         * Write a char to out.
+         *
+         * @param s the char to write
+         *
+         * @throws GeneralException in case of an error
+         */
+        private void write(final int s) throws GeneralException {
+
+            try {
+                out.write(s);
+            } catch (IOException e) {
+                throw new GeneralException(e);
+            }
+        }
+
+        /**
+         * Write a string to out.
+         *
+         * @param s the string to write
+         *
+         * @throws GeneralException in case of an error
+         */
+        private void write(final String s) throws GeneralException {
+
+            try {
+                out.write(s.getBytes());
+                if (vmode) {
+                    out.write('\n');
+                }
+            } catch (IOException e) {
+                throw new GeneralException(e);
+            }
+
         }
     };
 
@@ -463,6 +463,16 @@ public class DumpDocumentWriter
      */
     public void setParameter(final String name, final String value) {
 
+    }
+
+    /**
+     * Setter for tree.
+     *
+     * @param tree the tree to set
+     */
+    public void setTree(final boolean tree) {
+
+        this.tree = tree;
     }
 
     /**
