@@ -26,7 +26,7 @@ import de.dante.util.Locator;
  * This is the derived class for a list maker in inner vertical list mode.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class InnerVerticalListMaker extends VerticalListMaker {
 
@@ -34,6 +34,7 @@ public class InnerVerticalListMaker extends VerticalListMaker {
      * Creates a new object.
      *
      * @param manager the manager to ask for global changes
+     * @param locator the locator
      */
     public InnerVerticalListMaker(final ListManager manager,
             final Locator locator) {

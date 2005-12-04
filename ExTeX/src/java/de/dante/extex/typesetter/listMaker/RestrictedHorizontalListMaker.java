@@ -26,7 +26,7 @@ import de.dante.util.Locator;
  * This is the derived class for a list maker in restricted horizontal mode.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class RestrictedHorizontalListMaker extends HorizontalListMaker {
 
@@ -34,6 +34,7 @@ public class RestrictedHorizontalListMaker extends HorizontalListMaker {
      * Creates a new object.
      *
      * @param manager the manager to ask for global changes
+     * @param locator the locator
      */
     public RestrictedHorizontalListMaker(final ListManager manager,
             final Locator locator) {

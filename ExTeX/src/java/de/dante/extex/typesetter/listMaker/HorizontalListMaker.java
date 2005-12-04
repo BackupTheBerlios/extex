@@ -59,7 +59,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public class HorizontalListMaker extends AbstractListMaker {
 
@@ -98,6 +98,7 @@ public class HorizontalListMaker extends AbstractListMaker {
      * Creates a new object.
      *
      * @param manager the manager to ask for global changes
+     * @param locator the locator
      */
     public HorizontalListMaker(final ListManager manager, final Locator locator) {
 
@@ -390,7 +391,8 @@ public class HorizontalListMaker extends AbstractListMaker {
      *      de.dante.extex.interpreter.type.count.Count)
      */
     public void setSpacefactor(final Count f)
-            throws TypesetterUnsupportedException, InvalidSpacefactorException {
+            throws TypesetterUnsupportedException,
+                InvalidSpacefactorException {
 
         long sf = f.getValue();
         if (sf <= 0) {

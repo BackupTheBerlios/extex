@@ -32,14 +32,14 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public interface ListManager {
 
     /**
      * Invoke the paragraph builder on a list of nodes.
      *
-     * @param nodes the nodes to make a paragraph fom
+     * @param nodes the nodes to make a paragraph from
      *
      * @return the vertical node list containing the lines of the paragraph
      */
@@ -48,7 +48,7 @@ public interface ListManager {
     /**
      * End the current paragraph.
      * @throws TypesetterException in case of an error
-     * @throws ConfigurationException TODO
+     * @throws ConfigurationException in case of an configuration problem
      */
     void endParagraph() throws TypesetterException, ConfigurationException;
 
@@ -67,7 +67,7 @@ public interface ListManager {
     TypesetterOptions getOptions();
 
     /**
-     * Discart to top of the stack of list makers.
+     * Discard the top of the stack of list makers.
      *
      * @return the list maker popped from the stack
      *
