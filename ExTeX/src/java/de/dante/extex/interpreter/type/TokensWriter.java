@@ -19,7 +19,6 @@
 
 package de.dante.extex.interpreter.type;
 
-
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.tokens.Tokens;
@@ -29,7 +28,7 @@ import de.dante.extex.interpreter.type.tokens.Tokens;
  * register.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface TokensWriter {
 
