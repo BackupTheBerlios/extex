@@ -19,18 +19,14 @@
   -->
 <unit>
   <primitives>
-    <Define name="efcode"
-            class=""/><!-- (integer) -->
+    <define name="efcode"
+            class="de.dante.extex.interpreter.primitives.pdftex.Efcode"/><!-- (integer) -->
     <Define name="font"
             class=""/><!-- [ <font spec> ] [ stretch <integer> ] [ shrink <integer> ] [ step <integer> ] -->
     <define name="pdfadjustspacing"
             class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
     <define name="pdfannot"
             class="de.dante.extex.interpreter.primitives.pdftex.Pdfannot"/><!-- [ <rule spec> ] <general text> -->
-    <Define name="pdfannotlink"
-            class=""/>
-    <Define name="pdfannottext"
-            class=""/>
     <define name="pdfcatalog"
             class="de.dante.extex.interpreter.primitives.pdftex.Pdfcatalog"/><!-- <general text> [ openaction <action spec> ] -->
     <define name="pdfcompresslevel"
@@ -51,8 +47,6 @@
             class="de.dante.extex.interpreter.primitives.pdftex.Pdffontobjnum"/><!-- <font> (read-only integer) -->
     <define name="pdfhorigin"
           class="de.dante.extex.interpreter.primitives.register.dimen.DimenParameter"/>
-    <Define name="pdfimage"
-            class=""/>
     <define name="pdfimageresolution"
             class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
     <define name="pdfincludechars"
@@ -103,10 +97,10 @@
             class="de.dante.extex.interpreter.primitives.pdftex.Pdfstartlink"/><!-- [ <rule spec> ] [ <attr spec> ] <action spec> -->
     <define name="pdftexrevision"
             class="de.dante.extex.interpreter.primitives.register.toks.ToksParameter"
-            >a</define><!-- (expandable) -->
+            >r</define><!-- (expandable) -->
     <define name="pdftexversion"
             class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"
-            >111</define><!-- (read-only integer) -->
+            >112</define><!-- (read-only integer) -->
     <define name="pdfthread"
             class="de.dante.extex.interpreter.primitives.pdftex.Pdfthread"/><!-- <rule spec> [ <attr spec> ] <id spec> -->
     <define name="pdfthreadhoffset"
