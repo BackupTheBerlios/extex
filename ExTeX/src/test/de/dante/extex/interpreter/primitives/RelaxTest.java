@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\relax</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class RelaxTest extends NoFlagsPrimitiveTester {
 
@@ -42,11 +42,11 @@ public class RelaxTest extends NoFlagsPrimitiveTester {
     /**
      * Constructor for RelaxTest.
      *
-     * @param arg the name
+     * @param name the name
      */
-    public RelaxTest(final String arg) {
+    public RelaxTest(final String name) {
 
-        super(arg, "relax", "");
+        super(name, "relax", "");
     }
 
     /**
