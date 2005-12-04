@@ -20,7 +20,6 @@
 package de.dante.extex.interpreter;
 
 import de.dante.util.framework.AbstractFactory;
-import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
@@ -30,7 +29,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * present and required.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class InterpreterFactory extends AbstractFactory {
 
@@ -40,26 +39,6 @@ public class InterpreterFactory extends AbstractFactory {
     public InterpreterFactory() {
 
         super();
-    }
-
-    /**
-     * Creates a new object.
-     * Usually the newly created instance should be configured (see
-     * {@link AbstractFactory#configure(Configuration) configure}) and
-     * a logger should be attached
-     * (see @link AbstractFactory#enableLogging(Logger)).
-     *
-     * @param configuration the configuration object to use
-     *
-     * @throws ConfigurationException in case that the attribute
-     *             <tt>classname</tt> is missing
-     * @deprecated use the constructor without arguments and configure()
-     */
-    public InterpreterFactory(final Configuration configuration)
-            throws ConfigurationException {
-
-        super();
-        configure(configuration);
     }
 
     /**
@@ -76,4 +55,5 @@ public class InterpreterFactory extends AbstractFactory {
 
         return interpreter;
     }
+
 }
