@@ -50,7 +50,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * running an instance of <logo>ExTeX</logo>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.40 $
+ * @version $Revision: 1.41 $
  */
 public class ExTeXLauncher extends TestCase {
 
@@ -58,7 +58,7 @@ public class ExTeXLauncher extends TestCase {
      * Inner class for the error handler.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.40 $
+     * @version $Revision: 1.41 $
      */
     private class EHandler implements ErrorHandler {
 
@@ -124,7 +124,8 @@ public class ExTeXLauncher extends TestCase {
     public static final String DEFINE_HASH = "\\catcode`\\#=6 ";
 
     /**
-     * The field <tt>levelMap</tt> contains the ...
+     * The field <tt>levelMap</tt> contains the mapping for debug levels from
+     * String representation to Level values.
      */
     private static final Map LEVEL_MAP = new HashMap();
 
@@ -392,9 +393,9 @@ public class ExTeXLauncher extends TestCase {
     }
 
     /**
-     * Getter for props.
+     * Getter for properties.
      *
-     * @return the props
+     * @return the properties
      */
     public Properties getProps() {
 
@@ -415,6 +416,18 @@ public class ExTeXLauncher extends TestCase {
             }
         }
         return (Properties) this.props.clone();
+    }
+
+    /**
+     * Getter for properties.
+     *
+     * @return the properties
+     */
+    public Properties showNodesProperties() {
+
+        Properties p = getProps();
+        p.put("extex.output", "dump");
+        return p;
     }
 
     /**
