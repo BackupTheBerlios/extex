@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for horizontal filling primitives.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public abstract class AbstractHfillTester extends NoFlagsPrimitiveTester {
 
@@ -44,6 +44,8 @@ public abstract class AbstractHfillTester extends NoFlagsPrimitiveTester {
      * Constructor for HfillTest.
      *
      * @param arg the name
+     * @param primitive the name of the primitive
+     * @param args the arguments for the invocation
      */
     public AbstractHfillTester(final String arg, final String primitive,
             final String args) {

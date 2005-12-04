@@ -47,18 +47,18 @@ import de.dante.extex.typesetter.type.node.LigatureNode;
 import de.dante.util.UnicodeChar;
 
 /**
- * ...
+ * This is a test suite for the <tt>LigatureBuilderImpl</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class LigatureBuilderImplTest extends TestCase {
 
     /**
-     * ...
+     * This class provides a mock implementation for a font.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.7 $
+     * @version $Revision: 1.8 $
      */
     private class MockFont extends NullFont {
 
@@ -114,10 +114,10 @@ public class LigatureBuilderImplTest extends TestCase {
     }
 
     /**
-     * ...
+     * This class provides a mock implementation for a glyph.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.7 $
+     * @version $Revision: 1.8 $
      */
     private class MockGlyph implements Glyph {
 
@@ -393,42 +393,42 @@ public class LigatureBuilderImplTest extends TestCase {
     }
 
     /**
-     * The field <tt>builder</tt> contains the ...
+     * The field <tt>builder</tt> contains the ligature builder.
      */
     private static LigatureBuilder builder = new LigatureBuilderImpl();
 
     /**
-     * The field <tt>CC_FF</tt> contains the ...
+     * The constant <tt>CC_FF</tt> contains the ...
      */
     private static final int CC_FF = '§';
 
     /**
-     * The field <tt>CC_FFL</tt> contains the ...
+     * The constant <tt>CC_FFL</tt> contains the ...
      */
     private static final int CC_FFL = '&';
 
     /**
-     * The field <tt>CC_FL</tt> contains the ...
+     * The constant <tt>CC_FL</tt> contains the ...
      */
     private static final int CC_FL = '$';
 
     /**
-     * The field <tt>FF</tt> contains the ...
+     * The constant <tt>FF</tt> contains the ...
      */
     private static final UnicodeChar FF = new UnicodeChar(CC_FF);
 
     /**
-     * The field <tt>FFL</tt> contains the ...
+     * The constant <tt>FFL</tt> contains the ...
      */
     private static final UnicodeChar FFL = new UnicodeChar(CC_FFL);
 
     /**
-     * The field <tt>FL</tt> contains the ...
+     * The constant <tt>FL</tt> contains the ...
      */
     private static final UnicodeChar FL = new UnicodeChar(CC_FL);
 
     /**
-     * The field <tt>tc1</tt> contains the ...
+     * The field <tt>tc1</tt> contains the typesetting context.
      */
     private static TypesettingContext tc1;
 
@@ -503,7 +503,7 @@ public class LigatureBuilderImplTest extends TestCase {
     public void testOne2() throws HyphenationException {
 
         NodeList nodes = new HorizontalListNode();
-        Node n = new GlueNode(new Glue(3));
+        Node n = new GlueNode(new Glue(3), true);
         nodes.add(n);
         builder.insertLigatures(nodes, 0);
         assertEquals(1, nodes.size());
