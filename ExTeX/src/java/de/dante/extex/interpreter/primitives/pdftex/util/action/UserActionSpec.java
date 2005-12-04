@@ -17,7 +17,7 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.pdftex.util;
+package de.dante.extex.interpreter.primitives.pdftex.util.action;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -33,7 +33,7 @@ import de.dante.extex.typesetter.Typesetter;
 public class UserActionSpec extends ActionSpec {
 
     /**
-     * TODO gene: missing JavaDoc
+     * Parse a user action spec.
      *
      * @param context the interpreter context
      * @param source the source for new tokens
@@ -75,6 +75,16 @@ public class UserActionSpec extends ActionSpec {
     protected String getUser() {
     
         return this.user;
+    }
+
+
+    /**
+     * @see de.dante.extex.interpreter.primitives.pdftex.util.action.ActionSpec#visit(
+     *      de.dante.extex.interpreter.primitives.pdftex.util.action.ActionVisitor)
+     */
+    public Object visit(final ActionVisitor visitor) {
+
+        return visitor.visitUser(this);
     }
 
 }

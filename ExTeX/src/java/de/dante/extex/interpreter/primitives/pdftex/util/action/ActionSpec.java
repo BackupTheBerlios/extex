@@ -17,7 +17,7 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.pdftex.util;
+package de.dante.extex.interpreter.primitives.pdftex.util.action;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -30,14 +30,15 @@ import de.dante.extex.typesetter.Typesetter;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @version $Revision: 1.1 $
  */
-public class ThreadActionSpec extends ActionSpec {
+public abstract class ActionSpec {
 
     /**
-     * TODO gene: missing JavaDoc
+     * Parse an action spec.
      *
      * @param context the interpreter context
      * @param source the source for new tokens
      * @param typesetter the typesetter
+     * @param name the name of the primitive
      *
      * @return the action spec found
      *
@@ -47,67 +48,28 @@ public class ThreadActionSpec extends ActionSpec {
             final TokenSource source, final Typesetter typesetter,
             final String name) throws InterpreterException {
 
-        String file = null;
-        if (source.getKeyword(context, "file")) {
-            file = source.scanTokensAsString(context, name);
+        if (source.getKeyword(context, "user")) {
+            return UserActionSpec.parseActionSpec(context, source, typesetter,
+                    name);
+        } else if (source.getKeyword(context, "goto")) {
+            return GotoActionSpec.parseActionSpec(context, source, typesetter,
+                    name);
+        } else if (source.getKeyword(context, "thread")) {
+            return ThreadActionSpec.parseActionSpec(context, source, typesetter,
+                    name);
         }
 
-        String id = null;
-
-        if (source.getKeyword(context, "num")) {
-            long num = source.scanNumber(context);
-            id = Long.toString(num);
-        } else if (source.getKeyword(context, "name")) {
-            id = source.scanTokensAsString(context, name);
-        } else {
-            //TODO gene: error unimplemented
-            throw new RuntimeException("unimplemented");
-        }
-
-        return new ThreadActionSpec(file, id);
+        //TODO gene: error unimplemented
+        throw new RuntimeException("unimplemented");
     }
 
     /**
-     * The field <tt>file</tt> contains the ...
-     */
-    private String file;
-
-    /**
-     * The field <tt>id</tt> contains the ...
-     */
-    private String id;
-
-    /**
-     * Creates a new object.
+     * This method is the entry point for the visitor pattern.
      *
-     * @param file
-     * @param id
-     */
-    public ThreadActionSpec(final String file, final String id) {
-
-        super();
-        this.file = file;
-        this.id = id;
-    }
-
-    /**
-     * Getter for id.
+     * @param visitor the visitor to call back
      *
-     * @return the id
+     * @return an arbitrary return object
      */
-    protected String getId() {
-
-        return this.id;
-    }
-
-    /**
-     * Getter for user.
-     *
-     * @return the user
-     */
-    protected String getUser() {
-
-        return this.file;
-    }
+    public abstract Object visit(final ActionVisitor visitor);
 
 }

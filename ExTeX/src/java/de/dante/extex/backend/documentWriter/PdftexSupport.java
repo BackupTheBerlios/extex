@@ -20,7 +20,7 @@
 package de.dante.extex.backend.documentWriter;
 
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.primitives.pdftex.util.ActionSpec;
+import de.dante.extex.interpreter.primitives.pdftex.util.action.ActionSpec;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.typesetter.type.node.RuleNode;
@@ -34,7 +34,7 @@ import de.dante.extex.typesetter.type.node.pdftex.PdfXForm;
  * to make use f the special features of PDF.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface PdftexSupport {
 

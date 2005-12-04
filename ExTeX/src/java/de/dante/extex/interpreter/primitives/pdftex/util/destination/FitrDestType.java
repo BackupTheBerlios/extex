@@ -17,7 +17,9 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.pdftex.util;
+package de.dante.extex.interpreter.primitives.pdftex.util.destination;
+
+import de.dante.extex.typesetter.type.node.RuleNode;
 
 /**
  * TODO gene: missing JavaDoc.
@@ -25,32 +27,40 @@ package de.dante.extex.interpreter.primitives.pdftex.util;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @version $Revision: 1.1 $
  */
-public class ZoomDestType extends DestType {
+public class FitrDestType extends DestType {
 
     /**
-     * The field <tt>zoom</tt> contains the ...
+     * The field <tt>rule</tt> contains the rule specification.
      */
-    private long zoom;
+    private RuleNode rule;
 
-    
     /**
      * Creates a new object.
      *
      */
-    public ZoomDestType(final long zoom) {
+    public FitrDestType(RuleNode rule) {
 
         super();
-        this.zoom = zoom;
+        this.rule = rule;
     }
 
     /**
-     * Getter for zoom.
+     * Getter for rule.
      *
-     * @return the zoom
+     * @return the rule
      */
-    public long getZoom() {
-    
-        return this.zoom;
+    public RuleNode getRule() {
+
+        return this.rule;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.primitives.pdftex.util.destType.DestType#visit(
+     *      de.dante.extex.interpreter.primitives.pdftex.util.destType.DestTypeVisitor)
+     */
+    public Object visit(final DestinationVisitor visitor) {
+
+        return visitor.visitFitr(this);
     }
 
 }

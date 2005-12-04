@@ -17,41 +17,32 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.pdftex.util;
-
-import de.dante.extex.typesetter.type.node.RuleNode;
+package de.dante.extex.interpreter.primitives.pdftex.util.destination;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This interface descries a visitor for dest types.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @version $Revision: 1.1 $
  */
-public class FitrDestType extends DestType {
+public interface DestinationVisitor {
 
-    /**
-     * The field <tt>rule</tt> contains the ...
-     */
-    private RuleNode rule;
+    Object visitFit(DestType fit);
 
-    /**
-     * Creates a new object.
-     *
-     */
-    public FitrDestType(RuleNode rule) {
+    Object visitFitb(DestType fit);
 
-        super();
-        this.rule = rule;
-    }
+    Object visitFitbh(DestType fit);
 
-    /**
-     * Getter for rule.
-     *
-     * @return the rule
-     */
-    public RuleNode getRule() {
+    Object visitFitbv(DestType fit);
 
-        return this.rule;
-    }
+    Object visitFith(DestType fit);
+
+    Object visitFitr(FitrDestType fit);
+
+    Object visitFitv(DestType fit);
+
+    Object visitXyz(DestType fit);
+
+    Object visitZoom(ZoomDestType zoom);
 
 }

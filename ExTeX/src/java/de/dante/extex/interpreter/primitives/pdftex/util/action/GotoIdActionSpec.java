@@ -17,7 +17,7 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.pdftex.util;
+package de.dante.extex.interpreter.primitives.pdftex.util.action;
 
 /**
  * TODO gene: missing JavaDoc.
@@ -25,7 +25,7 @@ package de.dante.extex.interpreter.primitives.pdftex.util;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @version $Revision: 1.1 $
  */
-public class GotoPageActionSpec extends GotoActionSpec {
+public class GotoIdActionSpec extends GotoActionSpec {
 
     /**
      * The field <tt>file</tt> contains the ...
@@ -38,26 +38,20 @@ public class GotoPageActionSpec extends GotoActionSpec {
     private Boolean newWin;
 
     /**
-     * The field <tt>page</tt> contains the ...
+     * The field <tt>id</tt> contains the ...
      */
-    private long page;
-
-    /**
-     * The field <tt>text</tt> contains the ...
-     */
-    private String text;
+    private String id;
 
     /**
      * Creates a new object.
      *
      */
-    public GotoPageActionSpec(final String file, final long page,
-            final String text, final Boolean newwin) {
+    public GotoIdActionSpec(final String file, final String id,
+            final Boolean newwin) {
 
         super();
         this.file = file;
-        this.page = page;
-        this.text = text;
+        this.id = id;
         this.newWin = newwin;
     }
 
@@ -82,23 +76,22 @@ public class GotoPageActionSpec extends GotoActionSpec {
     }
 
     /**
-     * Getter for page.
+     * Getter for id.
      *
-     * @return the page
+     * @return the id
      */
-    protected long getPage() {
+    protected String getId() {
 
-        return this.page;
+        return this.id;
     }
 
     /**
-     * Getter for text.
-     *
-     * @return the text
+     * @see de.dante.extex.interpreter.primitives.pdftex.util.action.ActionSpec#visit(
+     *      de.dante.extex.interpreter.primitives.pdftex.util.action.ActionVisitor)
      */
-    protected String getText() {
+    public Object visit(final ActionVisitor visitor) {
 
-        return this.text;
+        return visitor.visitGotoId(this);
     }
 
 }

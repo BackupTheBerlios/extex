@@ -17,7 +17,7 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.pdftex.util;
+package de.dante.extex.interpreter.primitives.pdftex.util.action;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -33,7 +33,7 @@ import de.dante.extex.typesetter.Typesetter;
 public abstract class GotoActionSpec extends ActionSpec {
 
     /**
-     * TODO gene: missing JavaDoc
+     * Parse a goto action spec.
      *
      * @param context the interpreter context
      * @param source the source for new tokens

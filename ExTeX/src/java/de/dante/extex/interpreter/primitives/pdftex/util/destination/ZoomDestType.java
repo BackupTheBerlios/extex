@@ -17,72 +17,49 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.pdftex.util;
+package de.dante.extex.interpreter.primitives.pdftex.util.destination;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This class carries a destination type ZOOM as used in PDF nodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @version $Revision: 1.1 $
  */
-public class GotoIdActionSpec extends GotoActionSpec {
+public class ZoomDestType extends DestType {
 
     /**
-     * The field <tt>file</tt> contains the ...
+     * The field <tt>zoom</tt> contains the zoom value.
      */
-    private String file;
-
-    /**
-     * The field <tt>newWin</tt> contains the ...
-     */
-    private Boolean newWin;
-
-    /**
-     * The field <tt>id</tt> contains the ...
-     */
-    private String id;
+    private long zoom;
 
     /**
      * Creates a new object.
      *
+     * @param zoom the zoom value
      */
-    public GotoIdActionSpec(final String file, final String id,
-            final Boolean newwin) {
+    public ZoomDestType(final long zoom) {
 
         super();
-        this.file = file;
-        this.id = id;
-        this.newWin = newwin;
+        this.zoom = zoom;
     }
 
     /**
-     * Getter for file.
+     * Getter for zoom.
      *
-     * @return the file
+     * @return the zoom
      */
-    protected String getFile() {
+    public long getZoom() {
 
-        return this.file;
+        return this.zoom;
     }
 
     /**
-     * Getter for newWin.
-     *
-     * @return the newWin
+     * @see de.dante.extex.interpreter.primitives.pdftex.util.destType.DestType#visit(
+     *      de.dante.extex.interpreter.primitives.pdftex.util.destType.DestTypeVisitor)
      */
-    protected Boolean getNewWin() {
+    public Object visit(final DestinationVisitor visitor) {
 
-        return this.newWin;
-    }
-
-    /**
-     * Getter for id.
-     *
-     * @return the id
-     */
-    protected String getId() {
-
-        return this.id;
+        return visitor.visitZoom(this);
     }
 
 }
