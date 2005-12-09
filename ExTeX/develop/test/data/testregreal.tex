@@ -1,0 +1,40 @@
+%
+% @version $Revision: 1.1 $ $Date: 2005/12/09 11:19:29 $
+%
+% Test für Register real
+%
+\catcode`\{=1 % left brace is begin-group character
+\catcode`\}=2 % right brace is end-group character
+%
+Test: register real
+
+real7 = 11.345 \real7=11.345 : real7 = \the\real7
+
+real8 = 11,345 \real8=11,345 : real8 = \the\real8
+
+count60=3 \count60=3
+
+real8=count60 \real8=\count60 : real8 = \the\real8
+
+dimen60=3sp \dimen60=3sp
+
+real8=dimen60 \real8=\dimen60 : real8 = \the\real8
+
+real8=real7 \real8=\real7 : real8 = \the\real8
+
+real7 = \the\real7 : advanced by 10\advance\real7 by 10 : real7 = \the\real7
+
+real7 = \the\real7 : advanced by 10.123\advance\real7 by 10.123 : real7 = \the\real7
+
+real7 = the printformat 0.000  : \the\printformat{0.000}\real7
+
+real7 = \the\real7 : multiply by 10\multiply\real7 by 10 : real7 = \the\real7 (\the\printformat{0.000}\real7)
+
+real7 = \the\real7 : divide by 100\divide\real7 by 100 : real7 = \the\real7 (\the\printformat{0.000}\real7)
+
+\realdef\hugo=7 hugo (7) : \the\hugo (\the\printformat{0.000}\hugo)
+
+count70 = hugo : \count70=\hugo : \the\count70
+
+hugo = dimen60 : \hugo=\dimen60 : \the\hugo (\the\printformat{0.000}\hugo)
+

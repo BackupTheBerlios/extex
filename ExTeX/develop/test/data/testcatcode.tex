@@ -1,0 +1,16 @@
+%
+% @version $Revision: 1.1 $ $Date: 2005/12/09 11:19:29 $
+%
+% Test für das Primitive catcode
+%
+\catcode`\{=1 % left brace is begin-group character
+\catcode`\}=2 % right brace is end-group character
+\catcode`\$=3 % dollar sign is math shift
+\catcode`\&=4 % ampersand is alignment tab
+\catcode`\#=6 % hash mark is macro parameter character
+\catcode`\^=7 \catcode`\^^K=7 % circumflex and uparrow are for superscripts
+\catcode`\_=8 \catcode`\^^A=8 % underline and downarrow are for subscripts
+\catcode`\^^I=10 % ascii tab is a blank space
+\catcode`\^^fe=10 % nur zum Test
+
+Test fuer catcode!

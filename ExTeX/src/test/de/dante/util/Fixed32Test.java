@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-20045 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,21 +19,21 @@
 
 package de.dante.util;
 
-import de.dante.extex.font.type.Fixed32;
 import junit.framework.TestCase;
+import de.dante.extex.font.type.Fixed32;
 
 /**
  * Test for a fixed point format.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Fixed32Test extends TestCase {
 
     /**
      * mains
-     * @param args  the commandline
+     * @param args  The command line
      */
     public static void main(final String[] args) {
 

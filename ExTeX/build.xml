@@ -46,6 +46,8 @@
               Create the GUI-based installer.
           install -Dinstalldir=...
               Install the relevant files in the given directory.
+          lsr 
+              Create a ls-R file for src/ and develop/test.
           clean
         </echo>
   </target>
@@ -188,7 +190,9 @@
     <!-- Performing tests:                                         -->
     <!-- Run all classes "*Test.java" in the folder "${src.tests}" -->
     <junit printsummary="on" haltonfailure="${tests.haltonfailure}">
-      <classpath>
+     <jvmarg value="-Xms64m"/>
+     <jvmarg value="-Xmx128m"/>
+     <classpath>
         <pathelement path="${classes}" />
       </classpath>
       <classpath refid="test.class.path" />
@@ -228,6 +232,8 @@
     <delete dir="${target.tests}" />
     <mkdir dir="${target.tests}" />
     <junit printsummary="on" haltonfailure="no">
+      <jvmarg value="-Xms64m"/>
+      <jvmarg value="-Xmx128m"/>
       <classpath>
         <pathelement path="${classes}" />
       </classpath>
@@ -378,7 +384,7 @@
     <delete dir="${target.tests}" />
     <delete dir="${javadoc}" />
     <delete>
-      <fileset dir="src/test/data">
+      <fileset dir="develop/test/data">
         <include name="*.log*" />
         <include name="*.out" />
       </fileset>
@@ -514,5 +520,30 @@
       <arg value="${target.lib}/extex.jar" />
     </java>
   </target>
-
+    
+  <target name="lsr"
+          depends="jar"
+          description="Create a ls-R file for src and test-data">
+    <java fork="true" classname="de.dante.util.resource.Lsr">
+      <classpath refid="main.class.path" />
+      <classpath refid="develop.class.path" />
+      <classpath path="${target.lib}/${extexjarfile}.jar"/>
+      <arg value="src" />
+      <arg value="-excludeDir" />
+      <arg value="java" />
+      <arg value="-excludeDir" />
+      <arg value="test" />
+      <arg value="-excludeRegExp" />
+      <arg value="CVS" />
+    </java>
+      <java fork="true" classname="de.dante.util.resource.Lsr">
+        <classpath refid="main.class.path" />
+        <classpath refid="develop.class.path" />
+        <classpath path="${target.lib}/${extexjarfile}.jar"/>
+        <arg value="develop/test" />
+        <arg value="-excludeRegExp" />
+        <arg value="CVS" />
+      </java>
+  </target>
+    
 </project>

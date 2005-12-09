@@ -45,8 +45,10 @@ import de.dante.util.resource.UriResolverRf;
  * Testcase for the xslt transformer.
  * <p>sample xhtml2latex.xsl</p>
  *
+ * <p>The test needs the VM parameter -Xms64m -Xmx128m</p>
+ *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 
 public class XsltTransformXhtmlTest extends ExTeXLauncher {
@@ -97,6 +99,7 @@ public class XsltTransformXhtmlTest extends ExTeXLauncher {
         Properties prop = System.getProperties();
         prop.setProperty("extex.launcher.verbose", "false");
         // prop.setProperty("extex.launcher.verbose", "true");
+        prop.setProperty("extex.trace.input.files", "true");
         extex = new MyExTeX(prop, ".extex-test");
         finder = extex.getResourceFinder();
 

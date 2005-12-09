@@ -3,7 +3,7 @@
    Tranformation from xhtml to latex.
    
    @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
-   @version $Revision: 1.3 $
+   @version $Revision: 1.4 $
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     
@@ -198,7 +198,7 @@
     <xsl:template match="table">
         <xsl:text>\begin{table}&#10;</xsl:text>
         <xsl:text>\begin{tabular}{</xsl:text>
-        <xsl:choose>
+<!--        <xsl:choose>
             <xsl:when test="count(col)>0 or count(colgroup/col)>0">
                 <xsl:for-each select="col | colgroup/col">
                     <xsl:text>|</xsl:text>
@@ -215,7 +215,7 @@
                     </xsl:choose>
                 </xsl:for-each>
             </xsl:when>
-            <xsl:otherwise>
+            <xsl:otherwise> -->
                 <xsl:for-each select="descendant::tr[position()=1]/td">
                     <xsl:text>|</xsl:text>
                     <xsl:choose>
@@ -230,8 +230,8 @@
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:for-each>
-            </xsl:otherwise>
-        </xsl:choose>
+ <!--           </xsl:otherwise>
+        </xsl:choose> -->
         <xsl:text>|}&#10;</xsl:text>
         <xsl:text>\hline&#10;</xsl:text>
         <xsl:apply-templates select="thead | tfoot | tbody | tr"/>

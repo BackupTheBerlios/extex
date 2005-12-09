@@ -1,0 +1,50 @@
+This is DVItype, Version 3.6 (Web2C 7.5.4)
+Options selected:
+  Starting page = * 
+  Maximum number of pages = 1000000
+  Output level = 4 (the works)
+  Resolution = 300.00000000 pixels per inch
+numerator/denominator=25400000/473628672
+magnification=1000;       0.00006334 pixels per DVI unit
+' TeX output 2005.02.17:1207'
+Postamble starts at byte 173.
+maxv=43725786, maxh=30785863, maxstackdepth=2, totalpages=1
+Font 51: cmr10 scaled 45712---loaded at size 29958043 DVI units 
+ (this font is magnified 4571%) 
+Font 50: cmr10 scaled 14568---loaded at size 9547153 DVI units 
+ (this font is magnified 1457%) 
+ 
+42: beginning of page 1 
+87: push 
+level 0:(h=0,v=0,w=0,x=0,y=0,z=0,hh=0,vv=0) 
+88: down3 -917504 v:=0-917504=-917504, vv:=-58 
+92: pop 
+level 0:(h=0,v=0,w=0,x=0,y=0,z=0,hh=0,vv=0) 
+93: down4 42152922 v:=0+42152922=42152922, vv:=2670 
+98: push 
+level 0:(h=0,v=42152922,w=0,x=0,y=0,z=0,hh=0,vv=2670) 
+99: down4 -35776770 v:=42152922-35776770=6376152, vv:=404 
+104: push 
+level 1:(h=0,v=6376152,w=0,x=0,y=0,z=0,hh=0,vv=404) 
+105: right3 1310720 h:=0+1310720=1310720, hh:=83 
+[ ]
+109: fntdef1 50: cmr10 
+130: fntnum50 current font is cmr10 
+131: setchar105 h:=1310720+2651994=3962714, hh:=251 
+[i]
+132: pop 
+level 1:(h=0,v=6376152,w=0,x=0,y=0,z=0,hh=0,vv=404) 
+133: down4 12964130 v:=6376152+12964130=19340282, vv:=1225 
+138: push 
+level 1:(h=0,v=19340282,w=0,x=0,y=0,z=0,hh=0,vv=1225) 
+139: right3 1310720 h:=0+1310720=1310720, hh:=83 
+143: fntdef1 51: cmr10 
+164: fntnum51 current font is cmr10 
+165: setchar109 h:=1310720+24965109=26275829, hh:=1664 
+[m]
+166: pop 
+level 1:(h=0,v=19340282,w=0,x=0,y=0,z=0,hh=0,vv=1225) 
+167: pop 
+level 0:(h=0,v=42152922,w=0,x=0,y=0,z=0,hh=0,vv=2670) 
+168: down3 1572864 v:=42152922+1572864=43725786, vv:=2770 
+172: eop 

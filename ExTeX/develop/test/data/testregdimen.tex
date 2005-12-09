@@ -1,0 +1,55 @@
+%
+% @version $Revision: 1.1 $ $Date: 2005/12/09 11:19:28 $
+%
+% Test für Register dimen
+%
+\catcode`\{=1 % left brace is begin-group character
+\catcode`\}=2 % right brace is end-group character
+%
+Test: register dimen
+
+dimen7 = 11pt \dimen7=11pt
+
+dimen7 = \the\dimen7  (\the\tosp\dimen7)
+
+dimen7 = 13 cm \dimen7=13cm
+
+dimen7 = \the\dimen7  (\the\tosp\dimen7)
+
+dimen8 = 1em \dimen8=1em
+
+dimen8 = \the\dimen8  (\the\tosp\dimen8)
+
+dimen9 = 1ex \dimen9=1ex
+
+dimen9 = \the\dimen9  (\the\tosp\dimen9)
+
+dimen9 = 10ex \dimen9=10ex
+
+dimen9 = \the\dimen9  (\the\tosp\dimen9)
+
+dimen7 = \the\dimen7 (\the\tosp\dimen7) : advanced by 10pt\advance\dimen7 by 10pt : dimen7 = \the\dimen7 (\the\tosp\dimen7)
+
+dimen7 = \the\dimen7 (\the\tosp\dimen7) : advanced by -100pt\advance\dimen7 by -100pt : dimen7 = \the\dimen7 (\the\tosp\dimen7)
+
+dimen7 = \the\dimen7 (\the\tosp\dimen7) : multiply by 2\multiply\dimen7 by 2 : dimen7 = \the\dimen7 (\the\tosp\dimen7)
+
+dimen7 = \the\dimen7 (\the\tosp\dimen7) : divide by 10\divide\dimen7 by 10 : dimen7 = \the\dimen7 (\the\tosp\dimen7)
+
+
+\dimendef\hugo=7 hugo (7) : \the\hugo (\the\tosp\hugo)
+
+hugo = \the\hugo (\the\tosp\hugo) : advanced by 12pt\advance\hugo by 12 pt: hugo = \the\hugo (\the\tosp\hugo)
+
+\dimendef\uschi=8 uschi (8) : \the\uschi (\the\tosp\uschi)
+
+uschi = \the\uschi (\the\tosp\uschi) : advanced by -12\advance\uschi by -12pt : uschi = \the\uschi (\the\tosp\uschi)
+
+dimen9 = \the\dimen9 (\the\tosp\dimen9) : dimen9 = uschi : \dimen9=\uschi dimen9 = \the\dimen9 (\the\tosp\dimen9)
+
+count4=30 \count4=30
+
+\the\dimen4 (\the\tosp\dimen4) : dimen4=count4 pt \dimen4=\count4 pt : \the\dimen4 (\the\tosp\dimen4)
+
+count5=dimen4 \count5=\dimen4 : \the\count5
+
