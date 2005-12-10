@@ -22,7 +22,7 @@ package de.dante.extex.interpreter.primitives.pdftex;
 import de.dante.extex.backend.documentWriter.DocumentWriter;
 import de.dante.extex.backend.documentWriter.PdftexSupport;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.exception.InterpreterPdftexException;
+import de.dante.extex.interpreter.exception.pdftex.InterpreterPdftexException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.typesetter.Typesetter;
@@ -31,14 +31,14 @@ import de.dante.extex.typesetter.Typesetter;
  * This class provides ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class AbstractPdftexCode extends AbstractCode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 1L;
 
     /**
      * Creates a new object.
@@ -56,6 +56,8 @@ public abstract class AbstractPdftexCode extends AbstractCode {
      * @param context the interpreter context
      * @param typesetter the typesetter
      *
+     * @return the casted document writer with pdf support
+     *
      * @throws InterpreterPdftexException in case that pdfTeX is not active
      */
     protected PdftexSupport ensurePdftex(final Context context,
@@ -63,14 +65,12 @@ public abstract class AbstractPdftexCode extends AbstractCode {
 
         DocumentWriter documentWriter = typesetter.getDocumentWriter();
 
-        if ( !(documentWriter instanceof PdftexSupport)) {
-            
+        if (documentWriter instanceof PdftexSupport
+                && context.getCount("pdfoutput").gt(Count.ZERO)) {
+            return (PdftexSupport) documentWriter;
         }
-        if (context.getCount("pdfoutput").gt(Count.ZERO)) {
-            throw new InterpreterPdftexException(
-                    printableControlSequence(context));
-        }
-        return (PdftexSupport) documentWriter;
+        throw new InterpreterPdftexException(
+                printableControlSequence(context));
     }
 
 }
