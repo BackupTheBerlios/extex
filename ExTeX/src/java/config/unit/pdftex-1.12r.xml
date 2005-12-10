@@ -74,7 +74,7 @@
     <define name="pdfoutline"
             class="de.dante.extex.interpreter.primitives.pdftex.Pdfoutline"/><!-- <action spec> [ count <integer> ] <general text> -->
     <define name="pdfoutput"
-            class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
+            class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter">1</define>
     <define name="pdfpageattr"
             class="de.dante.extex.interpreter.primitives.register.toks.ToksParameter"/><!-- (tokens) -->
     <define name="pdfpageheight"
