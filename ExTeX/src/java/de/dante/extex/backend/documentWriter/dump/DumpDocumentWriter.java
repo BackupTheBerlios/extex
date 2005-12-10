@@ -24,9 +24,14 @@ import java.io.OutputStream;
 
 import de.dante.extex.backend.documentWriter.DocumentWriter;
 import de.dante.extex.backend.documentWriter.DocumentWriterOptions;
+import de.dante.extex.backend.documentWriter.PdftexSupport;
 import de.dante.extex.backend.documentWriter.SingleDocumentStream;
 import de.dante.extex.backend.documentWriter.exception.DocumentWriterException;
+import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.primitives.pdftex.util.action.ActionSpec;
+import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.NodeVisitor;
 import de.dante.extex.typesetter.type.node.AdjustNode;
@@ -49,6 +54,10 @@ import de.dante.extex.typesetter.type.node.SpaceNode;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
 import de.dante.extex.typesetter.type.node.VirtualCharNode;
 import de.dante.extex.typesetter.type.node.WhatsItNode;
+import de.dante.extex.typesetter.type.node.pdftex.PdfAnnotation;
+import de.dante.extex.typesetter.type.node.pdftex.PdfObject;
+import de.dante.extex.typesetter.type.node.pdftex.PdfRefXImage;
+import de.dante.extex.typesetter.type.node.pdftex.PdfXForm;
 import de.dante.extex.typesetter.type.page.Page;
 import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.Configurable;
@@ -60,12 +69,13 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * and as tool for testing.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class DumpDocumentWriter
         implements
             DocumentWriter,
             SingleDocumentStream,
+            PdftexSupport,
             Configurable {
 
     /**
@@ -81,7 +91,7 @@ public class DumpDocumentWriter
         private boolean vmode = false;
 
         /**
-         * Print a nl in vmode.
+         * Print a new line in vertical mode.
          *
          * @throws GeneralException in case of an error
          */
@@ -441,11 +451,132 @@ public class DumpDocumentWriter
     }
 
     /**
+     * @see de.dante.extex.backend.documentWriter.PdftexSupport#getAnnotation(de.dante.extex.typesetter.type.node.RuleNode, java.lang.String)
+     */
+    public PdfAnnotation getAnnotation(final RuleNode node,
+            final String annotation) throws InterpreterException {
+
+        return null;
+    }
+
+    /**
      * @see de.dante.extex.backend.documentWriter.DocumentWriter#getExtension()
      */
     public String getExtension() {
 
         return "out";
+    }
+
+    /**
+     * @see de.dante.extex.backend.documentWriter.PdftexSupport#getObject(java.lang.String, boolean, java.lang.String)
+     */
+    public PdfObject getObject(final String attr, final boolean isStream,
+            final String text) throws InterpreterException {
+
+        return null;
+    }
+
+    /**
+     * @see de.dante.extex.backend.documentWriter.PdftexSupport#getXForm(java.lang.String, java.lang.String, de.dante.extex.interpreter.type.box.Box)
+     */
+    public PdfXForm getXForm(final String attr, final String resources,
+            final Box box) throws InterpreterException {
+
+        return null;
+    }
+
+    /**
+     * @see de.dante.extex.backend.documentWriter.PdftexSupport#getXImage(java.lang.String, de.dante.extex.typesetter.type.node.RuleNode, java.lang.String, long, boolean)
+     */
+    public PdfRefXImage getXImage(final String resource, final RuleNode rule,
+            final String attr, final long page, final boolean immediate)
+            throws InterpreterException {
+
+        return null;
+    }
+
+    /**
+     * @see de.dante.extex.backend.documentWriter.PdftexSupport#pdfcatalog(java.lang.String, de.dante.extex.interpreter.primitives.pdftex.util.action.ActionSpec)
+     */
+    public void pdfcatalog(final String text, final ActionSpec action) {
+
+    }
+
+    /**
+     * @see de.dante.extex.backend.documentWriter.PdftexSupport#pdffontname(de.dante.extex.interpreter.type.font.Font)
+     */
+    public String pdffontname(final Font font) {
+
+        return "42";
+    }
+
+    /**
+     * @see de.dante.extex.backend.documentWriter.PdftexSupport#pdffontobjnum(de.dante.extex.interpreter.type.font.Font)
+     */
+    public long pdffontobjnum(final Font font) {
+
+        return 0;
+    }
+
+    /**
+     * @see de.dante.extex.backend.documentWriter.PdftexSupport#pdfincludechars(de.dante.extex.interpreter.type.font.Font, java.lang.String)
+     */
+    public void pdfincludechars(final Font font, final String text) {
+
+    }
+
+    /**
+     * @see de.dante.extex.backend.documentWriter.PdftexSupport#pdfinfo(java.lang.String)
+     */
+    public void pdfinfo(final String text) {
+
+    }
+
+    /**
+     * @see de.dante.extex.backend.documentWriter.PdftexSupport#pdflastannot()
+     */
+    public long pdflastannot() {
+
+        return 0;
+    }
+
+    /**
+     * @see de.dante.extex.backend.documentWriter.PdftexSupport#pdflastobj()
+     */
+    public long pdflastobj() {
+
+        return 0;
+    }
+
+    /**
+     * @see de.dante.extex.backend.documentWriter.PdftexSupport#pdflastxform()
+     */
+    public long pdflastxform() {
+
+        return 0;
+    }
+
+    /**
+     * @see de.dante.extex.backend.documentWriter.PdftexSupport#pdflastximage()
+     */
+    public long pdflastximage() {
+
+        return 0;
+    }
+
+    /**
+     * @see de.dante.extex.backend.documentWriter.PdftexSupport#pdfnames(java.lang.String)
+     */
+    public void pdfnames(final String text) {
+
+    }
+
+    /**
+     * @see de.dante.extex.backend.documentWriter.PdftexSupport#pdfoutline(de.dante.extex.interpreter.primitives.pdftex.util.action.ActionSpec, long, java.lang.String)
+     */
+    public void pdfoutline(final ActionSpec action, final long count,
+            final String text) {
+
     }
 
     /**
