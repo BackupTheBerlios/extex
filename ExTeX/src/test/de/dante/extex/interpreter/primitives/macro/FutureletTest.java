@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsButGlobalPrimitiveTester;
  * This is a test suite for the primitive <tt>\futurelet</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class FutureletTest extends NoFlagsButGlobalPrimitiveTester {
 
@@ -39,5 +39,96 @@ public class FutureletTest extends NoFlagsButGlobalPrimitiveTester {
         super(arg, "futurelet", "\\relax\\relax\\relax");
     }
 
+    /**
+     * <testcase primitive="\futurelet">
+     *  Test case checking that <tt>\futurelet</tt> ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testErr1() throws Exception {
+
+        assertFailure(//--- input code ---
+                "\\futurelet ab",
+                //--- error message ---
+                "Missing control sequence inserted");
+    }
+
+    /**
+     * <testcase primitive="\futurelet">
+     *  Test case checking that <tt>\futurelet</tt> ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test1() throws Exception {
+
+        assertSuccess(//--- input code ---
+                "\\futurelet \\x ab" + "\\end",
+                //--- output message ---
+                "a" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\futurelet">
+     *  Test case checking that <tt>\futurelet</tt> ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test2() throws Exception {
+
+        assertSuccess(//--- input code ---
+                "\\futurelet \\x 1b" + "\\end",
+                //--- output message ---
+                "1" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\futurelet">
+     *  Test case checking that <tt>\futurelet</tt> defines the control sequence
+     *  locally.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testGlobalErr1() throws Exception {
+
+        assertFailure(//--- input code ---
+                DEFINE_BRACES + "{\\futurelet \\x AB}-\\x-",
+                //--- output message ---
+                "Undefined control sequence \\x");
+    }
+
+    /**
+     * <testcase primitive="\futurelet">
+     *  Test case checking that <tt>\futurelet</tt> respects <tt>\global</tt>.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testGlobal1() throws Exception {
+
+        assertSuccess(//--- input code ---
+                DEFINE_BRACES + "{\\global\\futurelet \\x AB}-\\x-" + "\\end",
+                //--- output message ---
+                "A-B-" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\futurelet">
+     *  Test case checking that <tt>\futurelet</tt> ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test3() throws Exception {
+
+        assertSuccess(
+                //--- input code ---
+                DEFINE_BRACES + "\\def\\z{-\\x-}\\futurelet \\x\\z B" + "\\end",
+                //--- output message ---
+                "-B-" + TERM);
+    }
 
 }
