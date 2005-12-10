@@ -19,15 +19,13 @@
 
 package de.dante.extex.interpreter.primitives.macro;
 
-import de.dante.test.ExTeXLauncher;
-
 /**
  * This is a test suite for the primitive <tt>\xdef</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class XdefTest extends ExTeXLauncher {
+public class XdefTest extends AbstractXdefTester {
 
     /**
      * Creates a new object.
@@ -36,23 +34,7 @@ public class XdefTest extends ExTeXLauncher {
      */
     public XdefTest(final String arg) {
 
-        super(arg);
-    }
-
-    /**
-     * <testcase primitive="\xdef">
-     *  Test case checking that ...
-     * </testcase>
-     *
-     * @throws Exception in case of an error
-     */
-    public void testImmediate1() throws Exception {
-
-        assertFailure(//--- input code ---
-                DEFINE_CATCODES
-                + "\\immediate\\xdef\\aaa{}",
-                //--- log message ---
-                "You can't use the prefix `\\immediate' with the control sequence \\xdef");
+        super(arg, "xdef");
     }
 
 }

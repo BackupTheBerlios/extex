@@ -19,15 +19,13 @@
 
 package de.dante.extex.interpreter.primitives.macro;
 
-import de.dante.test.ExTeXLauncher;
-
 /**
  * This is a test suite for the primitive <tt>\gdef</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class GdefTest extends ExTeXLauncher {
+public class GdefTest extends AbstractDefTester {
 
     /**
      * Creates a new object.
@@ -36,23 +34,7 @@ public class GdefTest extends ExTeXLauncher {
      */
     public GdefTest(final String arg) {
 
-        super(arg);
-    }
-
-    /**
-     * <testcase primitive="\gdef">
-     *  Test case checking that ...
-     * </testcase>
-     *
-     * @throws Exception in case of an error
-     */
-    public void testImmediate1() throws Exception {
-
-        assertFailure(//--- input code ---
-                DEFINE_CATCODES
-                + "\\immediate\\gdef\\aaa{}",
-                //--- log message ---
-                "You can't use the prefix `\\immediate' with the control sequence \\gdef");
+        super(arg, "gdef");
     }
 
 }
