@@ -34,6 +34,11 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="futurelet">
  * <h3>The Primitive <tt>\futurelet</tt></h3>
  * <p>
+ *  The primitive <tt>\futurelet</tt> lets a token to a control sequence while
+ *  keeping the token between the two out of sight. This mean that this token
+ *  is stored away and reinserted after the let is complete.
+ * </p>
+ * <p>
  *  TODO gene: missing documentation
  * </p>
  *
@@ -49,20 +54,20 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
- *    \futurelet ...  </pre>
+ *    \futurelet \aa\bb x  </pre>
  *
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Futurelet extends Let {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 1L;
 
     /**
      * Creates a new object.
