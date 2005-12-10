@@ -26,14 +26,14 @@ import de.dante.extex.typesetter.type.Node;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class SpecialNode extends WhatsItNode implements Node {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 1L;
 
     /**
      * The field <tt>text</tt> contains the text to pass to the back-end driver.
@@ -60,5 +60,15 @@ public class SpecialNode extends WhatsItNode implements Node {
 
         return this.text;
     }
+
+    /**
+     * @see de.dante.extex.typesetter.type.Node#toString(java.lang.StringBuffer,
+     *      java.lang.String)
+     */
+    public void toString(final StringBuffer sb, final String prefix) {
+
+        sb.append("\\special{" + text + "}");
+    }
+
 
 }
