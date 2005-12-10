@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\penalty</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class PenaltyTest extends NoFlagsPrimitiveTester {
 
@@ -46,6 +46,23 @@ public class PenaltyTest extends NoFlagsPrimitiveTester {
     public PenaltyTest(final String arg) {
 
         super(arg, "penalty", "12");
+    }
+
+    /**
+     * <testcase primitive="\penalty">
+     *  Test case checking that <tt>\penalty</tt> inserts a penalty node.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test1() throws Exception {
+
+        assertSuccess(showNodesProperties(),
+        //--- input code ---
+                "\\penalty -12\\end ",
+                //--- output channel ---
+                "\\vbox(0.0pt+0.0pt)x0.0pt\n" + //
+                ".\\penalty -12\n");
     }
 
 }

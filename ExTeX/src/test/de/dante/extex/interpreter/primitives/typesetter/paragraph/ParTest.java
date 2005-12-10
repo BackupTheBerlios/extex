@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\par</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ParTest extends NoFlagsPrimitiveTester {
 
@@ -47,6 +47,32 @@ public class ParTest extends NoFlagsPrimitiveTester {
 
         super(arg, "par", "");
     }
+
+    /**
+     * <testcase primitive="\par">
+     *  Test case checking that <tt>\par</tt> works.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test1() throws Exception {
+
+        assertSuccess(showNodesProperties(),
+        //--- input code ---
+                "\\hsize=123pt abc\\par def\\end ",
+                //--- output channel ---
+                "\\vbox(0.0pt+0.0pt)x0.0pt\n" + //
+                ".\\hbox(0.0pt+0.0pt)x0.0pt\n" + //
+                "..a\n" + //
+                "..b\n" + //
+                "..c\n" + //
+                "\\vbox(0.0pt+0.0pt)x0.0pt\n" + //
+                ".\\hbox(0.0pt+0.0pt)x0.0pt\n" + //
+                "..d\n" + //
+                "..e\n" + //
+                "..f\n");
+    }
+
 
     //TODO implement primitive specific test cases
 }

@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\special</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class SpecialTest extends NoFlagsPrimitiveTester {
 
@@ -46,6 +46,23 @@ public class SpecialTest extends NoFlagsPrimitiveTester {
     public SpecialTest(final String arg) {
 
         super(arg, "special", "{}");
+    }
+
+    /**
+     * <testcase primitive="\special">
+     *  Test case checking that <tt>\special</tt> inserts a special node.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test1() throws Exception {
+
+        assertSuccess(showNodesProperties(),
+        //--- input code ---
+                DEFINE_BRACES + "\\special{abc}\\end ",
+                //--- output channel ---
+                "\\vbox(0.0pt+0.0pt)x0.0pt\n" + //
+                ".\\special{abc}\n");
     }
 
 }
