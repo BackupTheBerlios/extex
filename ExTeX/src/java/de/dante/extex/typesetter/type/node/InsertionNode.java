@@ -30,7 +30,7 @@ import de.dante.util.exception.GeneralException;
  * @see "<logo>TeX</logo> &ndash; The Program [140]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class InsertionNode extends AbstractNode implements Node {
 
@@ -82,7 +82,7 @@ public class InsertionNode extends AbstractNode implements Node {
 
     /**
      * This method returns the printable representation.
-     * This is meant to produce a exaustive form as it is used in tracing
+     * This is meant to produce a exhaustive form as it is used in tracing
      * output to the log file.
      *
      * @param sb the output string buffer
