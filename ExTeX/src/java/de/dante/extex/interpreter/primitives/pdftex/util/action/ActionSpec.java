@@ -22,13 +22,14 @@ package de.dante.extex.interpreter.primitives.pdftex.util.action;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.exception.pdftex.InterpreterPdftexActionTypeException;
 import de.dante.extex.typesetter.Typesetter;
 
 /**
  * TODO gene: missing JavaDoc.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class ActionSpec {
 
@@ -59,8 +60,7 @@ public abstract class ActionSpec {
                     name);
         }
 
-        //TODO gene: error unimplemented
-        throw new RuntimeException("unimplemented");
+        throw new InterpreterPdftexActionTypeException(name);
     }
 
     /**

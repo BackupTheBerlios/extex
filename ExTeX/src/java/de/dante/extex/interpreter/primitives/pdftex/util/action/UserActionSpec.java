@@ -25,10 +25,10 @@ import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.typesetter.Typesetter;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This class represents a user action of PDF.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class UserActionSpec extends ActionSpec {
 
@@ -38,6 +38,7 @@ public class UserActionSpec extends ActionSpec {
      * @param context the interpreter context
      * @param source the source for new tokens
      * @param typesetter the typesetter
+     * @param name the name of the primitive
      *
      * @return the action spec found
      *
@@ -59,6 +60,7 @@ public class UserActionSpec extends ActionSpec {
     /**
      * Creates a new object.
      *
+     * @param user the user
      */
     public UserActionSpec(final String user) {
 
@@ -66,17 +68,15 @@ public class UserActionSpec extends ActionSpec {
         this.user = user;
     }
 
-    
     /**
      * Getter for user.
      *
      * @return the user
      */
     protected String getUser() {
-    
+
         return this.user;
     }
-
 
     /**
      * @see de.dante.extex.interpreter.primitives.pdftex.util.action.ActionSpec#visit(

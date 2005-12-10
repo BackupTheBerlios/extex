@@ -22,13 +22,15 @@ package de.dante.extex.interpreter.primitives.pdftex.util.action;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.exception.pdftex.InterpreterPdftexActionTypeException;
+import de.dante.extex.interpreter.exception.pdftex.InterpreterPdftexIdentifierTypeException;
 import de.dante.extex.typesetter.Typesetter;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This class provides an abstract base for goto actions in PDF.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class GotoActionSpec extends ActionSpec {
 
@@ -38,6 +40,7 @@ public abstract class GotoActionSpec extends ActionSpec {
      * @param context the interpreter context
      * @param source the source for new tokens
      * @param typesetter the typesetter
+     * @param name the name of the primitive
      *
      * @return the action spec found
      *
@@ -62,8 +65,7 @@ public abstract class GotoActionSpec extends ActionSpec {
             return new GotoPageActionSpec(null, page, text, null);
 
         } else if (!source.getKeyword(context, "file")) {
-            //TODO gene: error unimplemented
-            throw new RuntimeException("unimplemented");
+            throw new InterpreterPdftexIdentifierTypeException(name);
         }
         String file = source.scanTokensAsString(context, name);
 
@@ -89,8 +91,7 @@ public abstract class GotoActionSpec extends ActionSpec {
             return new GotoPageActionSpec(file, page, text, newWindow);
         }
 
-        //TODO gene: error unimplemented
-        throw new RuntimeException("unimplemented");
+        throw new InterpreterPdftexActionTypeException(name);
     }
 
 }

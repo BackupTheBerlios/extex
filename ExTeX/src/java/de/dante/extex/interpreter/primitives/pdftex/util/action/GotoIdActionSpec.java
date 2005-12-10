@@ -23,7 +23,7 @@ package de.dante.extex.interpreter.primitives.pdftex.util.action;
  * TODO gene: missing JavaDoc.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class GotoIdActionSpec extends GotoActionSpec {
 
@@ -33,7 +33,7 @@ public class GotoIdActionSpec extends GotoActionSpec {
     private String file;
 
     /**
-     * The field <tt>newWin</tt> contains the ...
+     * The field <tt>newWin</tt> contains the indicator for the new window.
      */
     private Boolean newWin;
 
@@ -45,6 +45,9 @@ public class GotoIdActionSpec extends GotoActionSpec {
     /**
      * Creates a new object.
      *
+     * @param file ...
+     * @param id ...
+     * @param newwin the indicator for the new window
      */
     public GotoIdActionSpec(final String file, final String id,
             final Boolean newwin) {
