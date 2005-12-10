@@ -42,7 +42,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * This class provides a factory for page instances.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class PageFactory implements LogEnabled {
 
@@ -53,7 +53,7 @@ public class PageFactory implements LogEnabled {
 
     /**
      * The field <tt>sizePattern</tt> contains the pattern for matching the
-     * papersize special.
+     * <tt>papersize</tt> special.
      */
     private Pattern sizePattern;
 
@@ -98,7 +98,6 @@ public class PageFactory implements LogEnabled {
         //page.setMediaHOffset(context.getDimen("mediawidth"));
         //page.setMediaVOffset(context.getDimen("mediaheight"));
 
-        
         int size = nodes.size();
         for (int i = 0; i < size; i++) {
             Node node = nodes.get(i);
@@ -121,16 +120,16 @@ public class PageFactory implements LogEnabled {
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * Traverse a page and process special nodes.
      *
-     * @param page
+     * @param page the page to process
      * @param nodes the nodes to traverse
      * @param context the interpreter context
      * @param typesetter the typesetter
      *
      * @throws GeneralException in case of an error
      */
-    private void process(Page page, final NodeList nodes,
+    private void process(final Page page, final NodeList nodes,
             final Context context, final Typesetter typesetter)
             throws GeneralException {
 
@@ -157,6 +156,8 @@ public class PageFactory implements LogEnabled {
      * @param page the page under consideration
      * @param context the interpreter context
      * @param typesetter the typesetter
+     *
+     * @throws InterpreterException in case of an error
      */
     protected void processSpecialNode(final SpecialNode node, final Page page,
             final Context context, final Typesetter typesetter)

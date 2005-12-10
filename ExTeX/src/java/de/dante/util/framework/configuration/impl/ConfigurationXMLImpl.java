@@ -48,14 +48,14 @@ import de.dante.util.framework.configuration.exception.ConfigurationSyntaxExcept
  * This class provides means to deal with configurations stored as XML files.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class ConfigurationXMLImpl implements Configuration, Serializable {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 1L;
 
     /**
      * The field <tt>ext</tt> contains extensions to use when searching for
@@ -291,10 +291,19 @@ public class ConfigurationXMLImpl implements Configuration, Serializable {
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * Recursively follow the src attribute if present.
      *
-     * @param name
-     * @return
+     * @param name ...
+     * @param node ...
+     *
+     * @return the configuration
+     *
+     * @throws ConfigurationInvalidResourceException in case of an invalid
+     *  resource
+     * @throws ConfigurationNotFoundException in case of a missing
+     *  configuration
+     * @throws ConfigurationSyntaxException in case of an syntax error
+     * @throws ConfigurationIOException in case of an IO error
      */
     protected Configuration src(final String name, final Node node)
             throws ConfigurationInvalidResourceException,
