@@ -183,7 +183,7 @@
     </jar>
   </target>
 
-  <target name="tests" depends="jar,jar.tests" description="Run JUnit tests">
+  <target name="tests" depends="lsr,jar,jar.tests" description="Run JUnit tests">
     <!-- create output directories for test reports -->
     <delete dir="${target.tests}" />
     <mkdir dir="${target.tests}" />
@@ -227,7 +227,7 @@
     </xslt>
   </target>
 
-  <target name="tests99" depends="jar,jar.tests"
+  <target name="tests99" depends="lsr,jar,jar.tests"
           description="Run JUnit tests and produce an HTML test report">
     <delete dir="${target.tests}" />
     <mkdir dir="${target.tests}" />
@@ -540,7 +540,13 @@
         <classpath refid="main.class.path" />
         <classpath refid="develop.class.path" />
         <classpath path="${target.lib}/${extexjarfile}.jar"/>
-        <arg value="develop/test" />
+        <arg value="develop" />
+        <arg value="-excludeDir" />
+        <arg value="eclipse" />
+        <arg value="-excludeDir" />
+        <arg value="reports" />
+        <arg value="-excludeDir" />
+        <arg value="src" />
         <arg value="-excludeRegExp" />
         <arg value="CVS" />
       </java>
