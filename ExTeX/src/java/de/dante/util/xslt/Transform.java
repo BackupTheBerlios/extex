@@ -19,13 +19,12 @@
 
 package de.dante.util.xslt;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
+import java.util.Properties;
 
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -35,15 +34,11 @@ import javax.xml.transform.URIResolver;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import org.jdom.Document;
-import org.jdom.input.SAXBuilder;
-import org.jdom.transform.JDOMSource;
-
 /**
  * Transform a xml-file with a xslt-file.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 
 public final class Transform {
@@ -56,9 +51,14 @@ public final class Transform {
     }
 
     /**
-     * parameter
+     * How much parameter.
      */
     private static final int PARAMETER = 3;
+
+    /**
+     * The buffer size.
+     */
+    private static final int BUFFERSIZE = 0xffff;
 
     /**
      * main
@@ -73,14 +73,12 @@ public final class Transform {
             System.exit(1);
         }
 
-        SAXBuilder builder = new SAXBuilder(false);
-        Document xmldoc = builder.build(new BufferedInputStream(
-                new FileInputStream(args[0])));
-
         BufferedOutputStream out = new BufferedOutputStream(
-                new FileOutputStream(args[2]));
+                new FileOutputStream(args[2]), BUFFERSIZE);
 
-        transform(new JDOMSource(xmldoc), new StreamSource(args[1]), null, out);
+        transform(new StreamSource(args[0]), new StreamSource(args[1]), null,
+                out);
+
     }
 
     /**

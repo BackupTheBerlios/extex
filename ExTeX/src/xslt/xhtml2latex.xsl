@@ -3,31 +3,32 @@
    Tranformation from xhtml to latex.
    
    @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
-   @version $Revision: 1.4 $
+   @version $Revision: 1.5 $
 -->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:html="http://www.w3.org/1999/xhtml">
     
     <!-- output -->
     <xsl:output method="text" encoding="iso-8859-1" indent="no"/>
     
     <!-- root -->
     <xsl:template match="/">
-        <xsl:apply-templates select="html"/>
+        <xsl:apply-templates select="html:html"/>
     </xsl:template>
     
     <!-- html -->
-    <xsl:template match="html">
-        <xsl:apply-templates select="head"/>
-        <xsl:apply-templates select="body"/>
+    <xsl:template match="html:html">
+        <xsl:apply-templates select="html:head"/>
+        <xsl:apply-templates select="html:body"/>
     </xsl:template>
     
     <!-- head -->
-    <xsl:template match="head">
+    <xsl:template match="html:head">
         <!-- do nothing -->
     </xsl:template>
     
     <!-- body -->
-    <xsl:template match="body">
+    <xsl:template match="html:body">
         <xsl:text>\documentclass{scrartcl}&#10;</xsl:text>
         <xsl:text>\usepackage[ngerman]{babel}&#10;</xsl:text>
         <xsl:text>\usepackage[latin1]{inputenc}&#10;</xsl:text>
@@ -42,82 +43,82 @@
     </xsl:template>
     
     <!-- h1 -->
-    <xsl:template match="h1">
+    <xsl:template match="html:h1">
         <xsl:text>\section{</xsl:text>
         <xsl:apply-templates/>
         <xsl:text>}&#10;&#10;</xsl:text>
     </xsl:template>
     
     <!-- h2 -->
-    <xsl:template match="h2">
+    <xsl:template match="html:h2">
         <xsl:text>\subsection{</xsl:text>
         <xsl:apply-templates/>
         <xsl:text>}&#10;&#10;</xsl:text>
     </xsl:template>
     
     <!-- h3 -->
-    <xsl:template match="h3">
+    <xsl:template match="html:h3">
         <xsl:text>\subsubsection{</xsl:text>
         <xsl:apply-templates/>
         <xsl:text>}&#10;&#10;</xsl:text>
     </xsl:template>
     
     <!-- h4 -->
-    <xsl:template match="h4">
+    <xsl:template match="html:h4">
         <xsl:text>\paragraph{</xsl:text>
         <xsl:apply-templates/>
         <xsl:text>}&#10;&#10;</xsl:text>
     </xsl:template>
     
     <!-- h5 -->
-    <xsl:template match="h5">
+    <xsl:template match="html:h5">
         <xsl:text>\subparagraph{</xsl:text>
         <xsl:apply-templates/>
         <xsl:text>}&#10;&#10;</xsl:text>
     </xsl:template>
     
     <!-- h6 -->
-    <xsl:template match="h6">
+    <xsl:template match="html:h6">
         <xsl:text>\textbf{</xsl:text>
         <xsl:apply-templates/>
         <xsl:text>}\newline&#10;&#10;</xsl:text>
     </xsl:template>
     
     <!-- ul -->
-    <xsl:template match="ul">
+    <xsl:template match="html:ul">
         <xsl:text>\begin{itemize}&#10;</xsl:text>
         <xsl:apply-templates/>
         <xsl:text>\end{itemize}&#10;&#10;</xsl:text>
     </xsl:template>
     
     <!-- ol -->
-    <xsl:template match="ol">
+    <xsl:template match="html:ol">
         <xsl:text>\begin{enumerate}&#10;</xsl:text>
         <xsl:apply-templates/>
         <xsl:text>\end{enumerate}&#10;&#10;</xsl:text>
     </xsl:template>
     
     <!-- dl -->
-    <xsl:template match="dl">
+    <xsl:template match="html:dl">
         <xsl:text>\begin{description}&#10;</xsl:text>
         <xsl:apply-templates/>
         <xsl:text>\end{description}&#10;&#10;</xsl:text>
     </xsl:template>
     
     <!-- pre -->
-    <xsl:template match="pre">
+    <xsl:template match="html:pre">
         <xsl:text>\begin{alltt}\ttfamily\footnotesize</xsl:text>
         <xsl:apply-templates/>
         <xsl:text>\end{alltt}&#10;&#10;</xsl:text>
     </xsl:template>
     
     <!-- dd -->
-    <xsl:template match="dd">
+    <xsl:template match="html:dd">
         <xsl:apply-templates/>
     </xsl:template>
     
     <!-- li -->
-    <xsl:template match="li | dt">
+    <xsl:template match="html:li | html:dt">
         <xsl:text>\item </xsl:text>
         <xsl:apply-templates/>
         <xsl:text>&#10;
@@ -125,77 +126,77 @@
     </xsl:template>
     
     <!-- p -->
-    <xsl:template match="p">
+    <xsl:template match="html:p">
         <xsl:apply-templates/>
         <xsl:text>&#10;&#10;
         </xsl:text>
     </xsl:template>
     
     <!-- quote -->
-    <xsl:template match="quote">
+    <xsl:template match="html:quote">
         <xsl:text>``</xsl:text>
         <xsl:apply-templates/>
         <xsl:text>''</xsl:text>
     </xsl:template>
     
     <!-- code -->
-    <xsl:template match="code">
+    <xsl:template match="html:code">
         <xsl:text>\texttt{</xsl:text>
         <xsl:apply-templates/>
         <xsl:text>}</xsl:text>
     </xsl:template>
     
     <!-- b -->
-    <xsl:template match="b">
+    <xsl:template match="html:b">
         <xsl:text>\textbf{</xsl:text>
         <xsl:apply-templates/>
         <xsl:text>}</xsl:text>
     </xsl:template>
     
     <!-- strong -->
-    <xsl:template match="strong">
+    <xsl:template match="html:strong">
         <xsl:text>\textbf{</xsl:text>
         <xsl:apply-templates/>
         <xsl:text>}</xsl:text>
     </xsl:template>
     
     <!-- it -->
-    <xsl:template match="it">
+    <xsl:template match="html:it">
         <xsl:text>\emph{</xsl:text>
         <xsl:apply-templates/>
         <xsl:text>}</xsl:text>
     </xsl:template>
     
     <!-- em -->
-    <xsl:template match="em">
+    <xsl:template match="html:em">
         <xsl:text>\emph{</xsl:text>
         <xsl:apply-templates/>
         <xsl:text>}</xsl:text>
     </xsl:template>
     
     <!-- tt -->
-    <xsl:template match="tt">
+    <xsl:template match="html:tt">
         <xsl:text>\texttt{</xsl:text>
         <xsl:apply-templates/>
         <xsl:text>}</xsl:text>
     </xsl:template>
     
     <!-- big -->
-    <xsl:template match="big">
+    <xsl:template match="html:big">
         <xsl:text>{\Large </xsl:text>
         <xsl:apply-templates/>
         <xsl:text>}</xsl:text>
     </xsl:template>
     
     <!-- small -->
-    <xsl:template match="small">
+    <xsl:template match="html:small">
         <xsl:text>{\footnotesize </xsl:text>
         <xsl:apply-templates/>
         <xsl:text>}</xsl:text>
     </xsl:template>
     
     <!-- table -->
-    <xsl:template match="table">
+    <xsl:template match="html:table">
         <xsl:text>\begin{table}&#10;</xsl:text>
         <xsl:text>\begin{tabular}{</xsl:text>
 <!--        <xsl:choose>
@@ -216,7 +217,7 @@
                 </xsl:for-each>
             </xsl:when>
             <xsl:otherwise> -->
-                <xsl:for-each select="descendant::tr[position()=1]/td">
+                <xsl:for-each select="descendant::html:tr[position()=1]/html:td">
                     <xsl:text>|</xsl:text>
                     <xsl:choose>
                         <xsl:when test="@align='right'">
@@ -234,29 +235,29 @@
         </xsl:choose> -->
         <xsl:text>|}&#10;</xsl:text>
         <xsl:text>\hline&#10;</xsl:text>
-        <xsl:apply-templates select="thead | tfoot | tbody | tr"/>
+        <xsl:apply-templates select="html:thead | html:tfoot | html:tbody | html:tr"/>
         <xsl:text>\end{tabular}&#10;</xsl:text>
-        <xsl:apply-templates select="caption"/>
+        <xsl:apply-templates select="html:caption"/>
         <xsl:text>\end{table}&#10;</xsl:text>
     </xsl:template>
     
     <!-- caption -->
-    <xsl:template match="caption">
+    <xsl:template match="html:caption">
         <xsl:text>\caption{</xsl:text>
         <xsl:apply-templates/>
         <xsl:text>}&#10;</xsl:text>
     </xsl:template>
     
     <!-- tr -->
-    <xsl:template match="tr">
+    <xsl:template match="html:tr">
         <xsl:apply-templates/>
         <xsl:text>\\ \hline&#10;</xsl:text>
     </xsl:template>
     
     <!-- th -->
-    <xsl:template match="th">
+    <xsl:template match="html:th">
         <xsl:choose>
-            <xsl:when test="following-sibling::th">
+            <xsl:when test="following-sibling::html:th">
                 <xsl:text>\multicolumn{1}{|c}{\textbf{</xsl:text>
                 <xsl:apply-templates/>
                 <xsl:text>}}&amp;</xsl:text>
@@ -271,7 +272,7 @@
     </xsl:template>
     
     <!-- td -->
-    <xsl:template match="td">
+    <xsl:template match="html:td">
         <xsl:apply-templates/>
         <xsl:if test="local-name(following-sibling::*[1])='td'">
             <xsl:text>&amp;
@@ -310,7 +311,7 @@
     </xsl:template>
     -->
     <!-- a -->
-    <xsl:template match="a">
+    <xsl:template match="html:a">
         <xsl:choose>
             <xsl:when test='@name'>
                 <xsl:choose>
@@ -350,47 +351,47 @@
     </xsl:template>
     
     <!-- br -->
-    <xsl:template match="br">
+    <xsl:template match="html:br">
         <xsl:apply-templates/>
         <xsl:text>&#10;&#10;
         </xsl:text>
     </xsl:template>
     
     <!-- hr -->
-    <xsl:template match="hr">
+    <xsl:template match="html:hr">
         <xsl:text>\par\noindent\rule{425pt}{2pt}&#10;&#10;</xsl:text>
     </xsl:template>
     
     <!-- img -->
-    <xsl:template match="img">
+    <xsl:template match="html:img">
         <xsl:text>\includegraphics{</xsl:text>
         <xsl:value-of select="@src"/>
         <xsl:text>}&#10;</xsl:text>
     </xsl:template>
     
     <!-- div[ align="center" ] -->
-    <xsl:template match='div[@align="center"]'>
+    <xsl:template match='html:div[@align="center"]'>
         <xsl:text>{\centering </xsl:text>
         <xsl:apply-templates/>
         <xsl:text>}</xsl:text>
     </xsl:template>
     
     <!-- center -->
-    <xsl:template match="center">
+    <xsl:template match="html:center">
         <xsl:text>{\centering </xsl:text>
         <xsl:apply-templates/>
         <xsl:text>}</xsl:text>
     </xsl:template>
     
     <!-- div[ align="left" ] -->
-    <xsl:template match='div[@align="left"]'>
+    <xsl:template match='html:div[@align="left"]'>
         <xsl:text>\begin{flushleft}&#10;</xsl:text>
         <xsl:apply-templates/>
         <xsl:text>\end{flushleft}&#10;&#10;</xsl:text>
     </xsl:template>
     
     <!-- div[ align0"right" ] -->
-    <xsl:template match='div[@align="right"]'>
+    <xsl:template match='html:div[@align="right"]'>
         <xsl:text>\begin{flushright}&#10;</xsl:text>
         <xsl:apply-templates/>
         <xsl:text>\end{flushright}&#10;&#10;</xsl:text>
