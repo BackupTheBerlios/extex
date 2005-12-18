@@ -20,12 +20,13 @@
 package de.dante.extex.typesetter.paragraphBuilder.impl;
 
 import de.dante.extex.interpreter.type.glue.FixedGlue;
+import de.dante.extex.interpreter.type.glue.WideGlue;
 
 /**
  * This class represents a break point for the paragraph breaking.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class BreakPoint {
 
@@ -72,15 +73,16 @@ public class BreakPoint {
      * @param pos the position in the hlist
      * @param wd the width; i.e. the delta since the previous break point
      * @param pwd the point width for this break point
-     * @param pen the penmalty for this break point
+     * @param pen the penalty for this break point
      */
-    public BreakPoint(final int pos, final FixedGlue wd, final FixedGlue pwd,
+    public BreakPoint(final int pos, final WideGlue w, final WideGlue wd,
             final int pen) {
 
         super();
         this.position = pos;
-        this.width = wd;
-        this.pointWidth = pwd;
+        //TODO gene: fix
+        //this.width = wd;
+        //this.pointWidth = pwd;
         this.penalty = pen;
     }
 

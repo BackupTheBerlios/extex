@@ -25,7 +25,7 @@ import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.FixedGlueComponent;
-import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.type.glue.WideGlue;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeIterator;
@@ -39,7 +39,7 @@ import de.dante.util.exception.GeneralException;
  * This class is used to represent composed characters from virtual fonts.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class VirtualCharNode extends CharNode implements NodeList {
 
@@ -53,7 +53,7 @@ public class VirtualCharNode extends CharNode implements NodeList {
      * It is here to compensate the missing multiple inheritance of Java.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.10 $
+     * @version $Revision: 1.11 $
      */
     private class NL extends AbstractNodeList {
 
@@ -167,7 +167,7 @@ public class VirtualCharNode extends CharNode implements NodeList {
      * @see de.dante.extex.typesetter.type.node.AbstractNode#addWidthTo(
      *      de.dante.extex.interpreter.type.glue.Glue)
      */
-    public void addWidthTo(final Glue glue) {
+    public void addWidthTo(final WideGlue glue) {
 
         this.nodes.addWidthTo(glue);
     }

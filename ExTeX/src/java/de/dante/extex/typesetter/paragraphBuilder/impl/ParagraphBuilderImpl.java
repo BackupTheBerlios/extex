@@ -30,6 +30,7 @@ import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.type.glue.WideGlue;
 import de.dante.extex.main.logging.LogFormatter;
 import de.dante.extex.typesetter.Discardable;
 import de.dante.extex.typesetter.HyphenationEnabled;
@@ -149,7 +150,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * Treat segments of a paragraph separated by forced breaks separately.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
 public class ParagraphBuilderImpl
         implements
@@ -452,7 +453,7 @@ public class ParagraphBuilderImpl
      * @return the index of the next non-discartable node
      */
     private int discartNodes(final int start, final int len,
-            final NodeList nodes, final Glue wd) {
+            final NodeList nodes, final WideGlue wd) {
 
         int i = start;
         while (++i < len && nodes.get(i) instanceof Discardable) {
@@ -551,8 +552,8 @@ public class ParagraphBuilderImpl
 
         int len = nodes.size();
         List breakList = new ArrayList(1 + len / 5); // size is a heuristic
-        Glue w = new Glue(0);
-        Glue wd = new Glue(0);
+        WideGlue w = new WideGlue();
+        WideGlue wd = new WideGlue();
         boolean math = false;
 
         int i = 0;
@@ -574,16 +575,16 @@ public class ParagraphBuilderImpl
                 node.addWidthTo(wd);
                 breakList.add(new BreakPoint(i, w, wd, 0));
                 i = discartNodes(i, len, nodes, wd);
-                w = new Glue(0);
-                wd = new Glue(0);
+                w = new WideGlue();
+                wd = new WideGlue();
             } else if (node instanceof KernNode && !math
                     && nodes.get(i + 1) instanceof GlueNode) {
 
                 node.addWidthTo(wd);
                 breakList.add(new BreakPoint(i, w, wd, 0));
                 i = discartNodes(i, len, nodes, wd);
-                w = new Glue(0);
-                wd = new Glue(0);
+                w = new WideGlue();
+                wd = new WideGlue();
             } else if (node instanceof BeforeMathNode) {
                 math = true;
             } else if (node instanceof AfterMathNode) {
@@ -592,8 +593,8 @@ public class ParagraphBuilderImpl
                     node.addWidthTo(wd);
                     breakList.add(new BreakPoint(i, w, wd, 0));
                     i = discartNodes(i, len, nodes, wd);
-                    w = new Glue(0);
-                    wd = new Glue(0);
+                    w = new WideGlue();
+                    wd = new WideGlue();
                 }
                 math = false;
             } else if (node instanceof PenaltyNode) {
@@ -603,8 +604,8 @@ public class ParagraphBuilderImpl
                     node.addWidthTo(wd);
                     breakList.add(new BreakPoint(i, w, wd, penalty));
                     i = discartNodes(i, len, nodes, wd);
-                    w = new Glue(0);
-                    wd = new Glue(0);
+                    w = new WideGlue();
+                    wd = new WideGlue();
                 }
             } else if (node instanceof DiscretionaryNode) {
 
@@ -614,8 +615,8 @@ public class ParagraphBuilderImpl
                                 ? hyphenpenalty
                                 : exhyphenpenalty)));
                 i = discartNodes(i, len, nodes, wd);
-                w = new Glue(0);
-                wd = new Glue(0);
+                w = new WideGlue();
+                wd = new WideGlue();
             } else {
                 node.addWidthTo(w);
             }

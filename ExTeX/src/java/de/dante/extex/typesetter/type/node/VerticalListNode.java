@@ -25,6 +25,7 @@ import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.type.glue.WideGlue;
 import de.dante.extex.typesetter.Badness;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
@@ -38,7 +39,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class VerticalListNode extends AbstractNodeList implements NodeList {
 
@@ -77,11 +78,11 @@ public class VerticalListNode extends AbstractNodeList implements NodeList {
      *
      * @return the penalty in the range 0 to 10000, including
      */
-    private long computePenalty(final long penalty, final Glue ht,
+    private long computePenalty(final long penalty, WideGlue ht,
             final FixedDimen height) {
 
-        long badness = Badness.badness(height.getValue(), //
-                ht.getLength().getValue());
+//        long badness = Badness.badness(height.getValue(), //
+//                ht.getLength().getValue());
         long p = penalty;
         // TODO gene: computePenalty unimplemented
         return p;
@@ -104,7 +105,7 @@ public class VerticalListNode extends AbstractNodeList implements NodeList {
         long penalty;
         long bestPenalty = 10001;
         Dimen bestHeight = Dimen.ZERO_PT;
-        Glue ht = new Glue(0);
+        WideGlue ht = new WideGlue();
         int size = size();
         int bestSplit = size;
 
@@ -145,7 +146,7 @@ public class VerticalListNode extends AbstractNodeList implements NodeList {
      */
     public long spread(final FixedDimen height) {
 
-        Glue ht = new Glue(0);
+        WideGlue ht = new WideGlue();
         int size = size();
         for (int i = 0; i < size; i++) {
             get(i).addHeightTo(ht);

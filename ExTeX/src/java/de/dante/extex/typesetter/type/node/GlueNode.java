@@ -24,6 +24,7 @@ import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.FixedGlueComponent;
 import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.type.glue.WideGlue;
 import de.dante.extex.typesetter.Discardable;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeVisitor;
@@ -44,7 +45,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class GlueNode extends AbstractNode implements Node, Discardable {
 
@@ -83,7 +84,7 @@ public class GlueNode extends AbstractNode implements Node, Discardable {
      * @see de.dante.extex.typesetter.type.Node#addWidthTo(
      *      de.dante.extex.interpreter.type.glue.Glue)
      */
-    public void addWidthTo(final Glue glue) {
+    public void addWidthTo(final WideGlue glue) {
 
         glue.add(this.size);
     }
@@ -92,7 +93,7 @@ public class GlueNode extends AbstractNode implements Node, Discardable {
      * @see de.dante.extex.typesetter.type.Node#addHeightTo(
      *      de.dante.extex.interpreter.type.glue.Glue)
      */
-    public void addHeightTo(final Glue glue) {
+    public void addHeightTo(final WideGlue glue) {
 
         glue.add(this.size);
     }

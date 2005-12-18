@@ -23,7 +23,7 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.glue.FixedGlueComponent;
-import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.type.glue.WideGlue;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.util.exception.GeneralException;
@@ -34,7 +34,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This abstract class provides some methods common to all Nodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public abstract class AbstractNode implements Node {
 
@@ -110,7 +110,7 @@ public abstract class AbstractNode implements Node {
      * @see de.dante.extex.typesetter.type.Node#addHeightTo(
      *      de.dante.extex.interpreter.type.glue.Glue)
      */
-    public void addHeightTo(final Glue glue) {
+    public void addHeightTo(final WideGlue glue) {
 
         glue.add(height);
         glue.add(depth);
@@ -120,7 +120,7 @@ public abstract class AbstractNode implements Node {
      * @see de.dante.extex.typesetter.type.Node#addWidthTo(
      *      de.dante.extex.interpreter.type.glue.Glue)
      */
-    public void addWidthTo(final Glue glue) {
+    public void addWidthTo(final WideGlue glue) {
 
         glue.add(width);
     }

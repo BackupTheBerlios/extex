@@ -29,6 +29,7 @@ import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.FixedGlueComponent;
 import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.type.glue.WideGlue;
 import de.dante.extex.main.logging.LogFormatter;
 import de.dante.extex.typesetter.Discardable;
 import de.dante.extex.typesetter.TypesetterOptions;
@@ -55,7 +56,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
 
@@ -148,25 +149,25 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
      * @param width the target width
      * @param accumulator an accumulator for the glue
      * @param height the accumulator for the height
-     * @param depth the accuulator for the depth
+     * @param depth the accumulator for the depth
      *
      * @return the index of the first node after the ones already processed
      */
     private int breakLine(final int start, final int len,
             final HorizontalListNode nodes, final HorizontalListNode hlist,
-            final Dimen width, final Glue accumulator, final Dimen height,
+            final Dimen width, final WideGlue accumulator, final Dimen height,
             final Dimen depth) {
 
         Node node = nodes.get(start);
         hlist.add(node);
         node.addWidthTo(accumulator);
         int i = start + 1;
-        Glue w = new Glue(0);
+        WideGlue w = new WideGlue();
 
         while (i < len) {
 
             int point = findNextBreakPoint(nodes, i, w);
-            if (w.gt(width)) {
+            if (w.getLength().gt(width)) {
                 if (i == start + 1) {
                     //avoid infinite loop and accept overful box
                     i = saveNodes(nodes, i, point, hlist, accumulator, height,
@@ -224,7 +225,7 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
         FixedGlue baselineskip = options.getGlueOption("baselineskip");
         FixedGlue lineskip = options.getGlueOption("lineskip");
         FixedDimen lineskiplimit = options.getDimenOption("lineskiplimit");
-        Glue accumulator = new Glue(0);
+        WideGlue accumulator = new WideGlue();
 
         while (i < len) {
             accumulator.set(Dimen.ZERO_PT);
@@ -322,7 +323,7 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
      *  past the end of the list if none is found
      */
     private int findNextBreakPoint(final NodeList nodes, final int start,
-            final Glue width) {
+            final WideGlue width) {
 
         Node node;
         boolean math = false;
@@ -413,13 +414,13 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
      * @param hlist the destination list
      * @param accumulator the accumulator for the glue of the saved nodes
      * @param height the accumulator for the height
-     * @param depth the accuulator for the depth
+     * @param depth the accumulator for the depth
      *
      * @return the index of the first node which has not been copied
      */
     private int saveNodes(final HorizontalListNode nodes, final int start,
             final int end, final HorizontalListNode hlist,
-            final Glue accumulator, final Dimen height, final Dimen depth) {
+            final WideGlue accumulator, final Dimen height, final Dimen depth) {
 
         Node node;
         for (int i = start; i < end; i++) {
@@ -456,7 +457,7 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
      * @param w the accumulated width of the hlist
      */
     private void spread(final HorizontalListNode hlist,
-            final FixedDimen targetWidth, final Glue w) {
+            final FixedDimen targetWidth, final WideGlue w) {
 
         Dimen width = w.getLength();
         FixedGlueComponent component = (width.lt(targetWidth)
