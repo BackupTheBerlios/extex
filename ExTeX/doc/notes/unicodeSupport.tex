@@ -1,0 +1,535 @@
+\documentclass{scrartcl}
+
+\usepackage{booktabs}
+
+\providecommand*{\ExTeX}{%
+  \textrm{% das Logo grundsätzlich serifenbehaftet
+    \ensuremath{\textstyle\varepsilon_{\kern-0.15em\mathcal{X}}}%
+    \kern-.15em\TeX
+  }%
+}
+
+%\usepackage[T1]{fontenc}
+
+\begin{document}%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{Considerations on Unicode~Font~Support for~\ExTeX}
+
+\author{Gerd Neugebauer}
+\date{}
+\maketitle
+
+\begin{abstract}
+  Unicode support has been introduced for the \TeX\ world with Omega.
+  Now has come the time in the implementation of \ExTeX\ to explore
+  the consequences of the decision to support Unicode.
+\end{abstract}
+
+\section{\ExTeX}
+
+The \ExTeX\ project has bee started with the aim to provide a
+typesetting system based on the ideas of \TeX. On one side the
+software design of \TeX\ can nowadays no longer be considered as state
+of the art. On the other side the virtues of \TeX\ concerning the
+qualities of typesetting are mostly unreached.
+
+%
+% Decisions which were reasonable at the time
+
+
+
+\section{Unicode and \ExTeX}
+
+There are different aspects concerning Unicode compatibility:
+
+\begin{itemize}
+\item use a 32 bit representation for internal addressing
+\item composite characters (base character combined with an arbitrary
+number of combining characters)
+\item Unicode semantics on glyphs
+\item normalization
+\item bidirectional properties of glyphs
+\item sorting (not yet relevant)
+\end{itemize}
+
+We do have two main goals:
+
+\begin{itemize}
+\item Unicode compatibility (make aspects as quoted above available to
+the user and \ExTeX{} internals)
+\item backward compatibility
+\end{itemize}
+
+
+\section{Underlying Data Structures}
+
+The basic data structures in \ExTeX\ are the following ones
+
+\begin{description}
+\item[Token] \ \\
+  The tokens are produced by the scanner. Tokens carry a category --
+  expressed as category code -- and a character. An escape token
+  carries an additional name.\footnote{In contrast to \TeX\ an escape
+  token also carries a character -- the escape character of the
+  control sequence.}
+\item[Node] \ \\
+  Te node is the basic data structure passed to the typesetter and
+  processed there. The node type relevant for Unicode support is the
+  CharNode. A CharNode carries a character and the font to typeset it
+  in.
+\end{description}
+
+In \ExTeX\ the underlying character is not only 8 bit wide as in \TeX.
+It has at least a size of 32 bit. To distinguish the two cases we will
+call this underlying character a Unicode character.
+
+\section{Unicode Characters}
+
+The name Unicode character has another implication beside the size of
+32 bit. This implication is that the characters have a defined
+semantics. This means that the characters are more than mere code
+points. For instance is the Unicode character with the code point 65
+the uppercase Latin letter A. No freedom for interpretation is left in
+this case.
+
+In addition to the code points with a fixed semantic some areas are
+left undefined in the Unicode standard. Some of them are reserved for
+use in applications. Those areas are called public areas.
+
+\section{Impacts on the Scanner}
+
+The scanner is assumed to produced tokens based on Unicode characters.
+Thus it needs to know or assume the encoding of the external data
+source.
+
+
+\section{Impacts on the Fonts}
+
+\subsection{Encoding of Fonts}
+
+The fonts have to provide information for Unicode characters. This
+means that some re-encoding is necessary to work with \TeX\ encoded
+fonts. 
+
+Whenever a font is loaded the font subsystem has to know how the
+external font is encoded. For instance the font cmr10 in OT1 encoding
+contains mainly the usual characters in the ASCII range. These
+characters are identical to those of the Unicode encoding.
+
+In the lower range with the code points 0 to 32 and the upper range
+123 to 127 the encoding differs. In figure~\ref{fig:mapping} you can
+see how these characters can be mapped to corresponding Unicode
+positions. Note that the Unicode points are given hexadecimal while
+the code is in decimal.
+\begin{table}[htbp]
+  \caption{Mapping for cmr10 to Unicode}\label{fig:mapping}\bigskip
+
+  \centering\footnotesize
+  \begin{tabular}{rclc}\toprule
+  Code& Char    & Description & Unicode point\\\midrule
+   0  & \char0  & Greek capital letter gamma   & "0393 \\
+   1  & \char1  & Greek capital letter delta   & "0394 \\
+   2  & \char2  & Greek capital letter theta   & "0398 \\
+   3  & \char3  & Greek capital letter lambda  & "039B \\
+   4  & \char4  & Greek capital letter xi      & "039E \\
+   5  & \char5  & Greek capital letter pi      & "03A0 \\
+   6  & \char6  & Greek capital letter sigma   & "03A3 \\
+   7  & \char7  & Greek capital letter upsilon & "03A5 \\
+   8  & \char8  & Greek capital letter phi     & "03A6 \\
+   9  & \char9  & Greek capital letter psi     & "03A8 \\
+  10  & \char10 & Greek capital letter omega   & "03A9 \\
+  11  & \char11 & Latin small ligature ff      & "FB00 \\
+  12  & \char12 & Latin small ligature fi      & "FB01 \\
+  13  & \char13 & Latin small ligature fl      & "FB02 \\
+  14  & \char14 & Latin small ligature ffi     & "FB03 \\
+  15  & \char15 & Latin small ligature ffl     & "FB04 \\
+  16  & \char16 & Latin small letter dotless i & "0131 \\
+  17  & \char17 & Latin small letter dotless j &  ??? \\
+  18  & \char18 & Modifier letter grave accent & "02CB \\
+  19  & \char19 & Modifier letter acute accent & "02CA \\
+  20  & \char20 & Caron                        & "02C7 \\
+  21  & \char21 & Breve                        & "02D8 \\
+  22  & \char22 & Modifier letter macron       & "02C9 \\
+  23  & \char23 & Ring above                   & "02DA \\
+  24  & \char24 & Cedille                      &  ??? \\
+  25  & \char25 & Latin small letter sharp s   & "00DF \\
+  26  & \char26 & Latin small letter ae        & "00E6 \\
+  27  & \char27 & Latin small letter oe        & "0152 \\
+  28  & \char28 & Latin small letter o slash   & "00F8 \\
+  29  & \char29 & Latin capital ligature AE    & "00C6 \\
+  30  & \char30 & Latin capital ligature OE    & "0153 \\
+  31  & \char31 & Latin capital letter O slash & "00D8 \\
+  32  & \char32 & ...                          &  ??? \\
+
+  33  & \char33 & & \\
+      &         & Latin characters and punctation & \\
+  122 & \char122& & \\
+
+  123 & \char123& En dash                      & "2013 \\
+  124 & \char124& Em dash                      & "2014 \\
+  125 & \char125& Hungarian Umlaut             &  ??? \\
+  126 & \char126& Tilde accent                 &  ??? \\
+  127 & \char127& Umlaut accent                &  ??? \\\bottomrule
+  \end{tabular}
+\end{table}
+
+Whenever the font cmr10 is loaded it has to be re-encoded on the fly.
+Thus internally the font can always be treated as Unicode encoded.
+
+If the font contains characters which are not defined in the Unicode
+standard then these characters have to be placed in the private area.
+\ExTeX\ uses the private area starting with "EE00.
+
+
+
+\subsection{Font Dimens}
+
+Usually the font dimens are numbered in \TeX. In \ExTeX\ the key can
+be an arbitrary String.
+
+
+\subsection{Scalable Characters}
+
+Finetuning the typography can be achieved with slight variations of
+the width of characters. This idea has been implemented in pdf\TeX.
+There this feature has been achieved with the help of a number of
+different fonts.
+
+To improve the efficiency the scalability of characters could be
+incorporated into the underlying font mechanism. A simple solution
+would be to allow glue values instead of dimen valued for width,
+height and depth.
+
+
+\subsection{Scalable Math Characters}
+
+One instance where scalable characters are used in \TeX\ are the
+various sizes of parentheses and math operators. It seems to be
+archaric to compose those characters from small pieces and allow for
+discontinuities in the interpolation. Here a potential for improvement
+shows up.
+
+
+\subsection{Mathematical Fonts}
+
+For \TeX\ Donald Knuth has discovered that a font with 256 characters
+is not enough for math typesetting. Thus math families have been
+introduced. In the world of Unicode fonts all the mathematical
+characters available in \TeX\ -- and some more -- are defined in the
+Unicode encoding already. Thus it should be considered to use a single
+Unicode font instaed of a math family.
+
+One issue here is that certain parameters are stored in the fontdimen
+values of distinct fonts. In figure~{tab:mathdimensions} we have
+compiles the fontdimen indices for parameters in the different \TeX\
+fonts types. Fortunately the overlapping range have the same values
+
+The combined math Unicode font can provide the math parameters as
+named font dimens.
+
+To make use of the new math fonts the file \texttt{plain.tex} has to
+be adapted.
+
+\begin{table}[htp]
+  \caption{Font Dimensions for Math Typesetting}\label{tab:mathdimensions}\bigskip
+
+  \centering
+  \small
+  \begin{tabular}{lccc}\toprule
+    Name		&\TeX&\TeX\ Math&\TeX\ Extension\\\midrule
+    slant		&  1 &  1 &  1 \\
+    space		&  2 &  2 &  2 \\
+    stretch		&  3 &  3 &  3 \\
+    shrink		&  4 &  4 &  4 \\
+    xheight		&  5 &  5 &  5 \\
+    quad		&  6 &  6 &  6 \\
+    extraspace		&  7 &  7 &  7 \\
+    num1		&  . &  8 &  . \\
+    num2		&  . &  9 &  . \\
+    num3		&  . & 10 &  . \\
+    denom1		&  . & 11 &  . \\
+    denom2		&  . & 12 &  . \\
+    sup1		&  . & 13 &  . \\
+    sup2		&  . & 14 &  . \\
+    sup3		&  . & 15 &  . \\
+    sub1		&  . & 16 &  . \\
+    sub2		&  . & 17 &  . \\
+    supdrop		&  . & 18 &  . \\
+    subdrop		&  . & 19 &  . \\
+    delim1		&  . & 20 &  . \\
+    delim2		&  . & 21 &  . \\
+    axisheight		&  . & 22 &  . \\
+    defaultrulethickness&  . & .  &  8 \\
+    bigopspacing1	&  . & .  &  9 \\
+    bigopspacing2	&  . & .  & 10 \\
+    bigopspacing3	&  . & .  & 11 \\
+    bigopspacing4	&  . & .  & 12 \\
+    bigopspacing5	&  . & .  & 13 \\\bottomrule
+  \end{tabular}
+\end{table}
+
+
+\subsection{Backward Compatibility}
+
+The font knows which characters have been re-encoded. For backward
+compatibility this information is needed by some primitives. The
+central method of a \texttt{Font} is the one to get access to a glyph:
+
+\begin{quotation}
+  \texttt{Glyph} \texttt{getGlyph}\texttt{(} \texttt{UnicodeChar c} \texttt{);}
+\end{quotation}
+
+In addition the following methods are needed:
+\begin{quotation}
+  \texttt{Glyph} \texttt{getGlyph}\texttt{(} \texttt{int code} \texttt{);}
+\end{quotation}
+This method takes as argument a \TeX\ code in the range from 0 to 255.
+It returns the corresponding glyph when the used encoding is applied.
+As usual \texttt{null} is returned when the glyph is not defined.
+
+For instance the argument \texttt{getGlyph(0)} returns the same result
+as \texttt{getGlyph(new UnicodeChar(0x0393))} when invoked on cmr10.
+
+\begin{quotation}
+  \texttt{UnicodeChar} \texttt{getChar}\texttt{(} \texttt{int code} \texttt{);}
+\end{quotation}
+This method takes as argument a \TeX\ code in the range from 0 to 255.
+It returns the corresponding Unicode character when the used encoding
+is applied.
+
+
+
+\section{Impacts on the Interpreter}
+
+\subsection{The Back-Tick}
+
+The back-tick can be used to translate an input character into a
+number. Since this construction deals with the input encoding only
+nothing has to done.
+
+Consider an input encoding which allows a direct inut of the character
+$\Gamma$. Then the following input should produce the Gamma on the
+page:
+\begin{quotation}
+  \texttt{\textbackslash char`\char0}
+\end{quotation}
+
+This might open the way to a minor incompatibility for the characters
+32 and 123 to 127.
+
+
+\subsection{The Primitive \textbackslash char}
+
+The primitive \verb|\char| sends a character node to the typesetter.
+The character code stored in the character node has to be remapped. Thus
+\verb|getChar()| has to be applied here.
+
+
+\subsection{The Primitive \textbackslash chardef}
+
+The primitive \verb|\chardef| allows to define a control sequence
+which can be used instead of a single character. Internally the code is
+stored. For a great part of the fonts this makes no difference since
+the \TeX\ encoding (based on ASCII) and Unicode coincide here.
+
+Minor incompatibilities might show up in the less interesting parts.
+
+
+\subsection{The Primitive \textbackslash catcode}
+
+The primitive \verb|\catcode| sets and queries the mapping of category
+codes for the mapping from external characters to tokens. Here
+especially the distigtion of the category ``letter'' and the category
+``other'' is interesting. In \TeX\ this mapping is initialised
+sparsely. In \verb|plain.tex| the missing category codes are provided.
+This is a feasible way for 128 or even 255 character codes. It is not
+the right way for thousands of Unicode characters.
+
+Unicode characters have an inherent meaning as letter or other
+character. Initially the meaning of \verb|\catcode| should reflect
+this semantics.
+
+
+\subsection{The Primitive \textbackslash escapechar}
+
+The count register \verb|\escapechar| contains the escape character.
+It is used to print control sequences. This count register is not
+affected by any compatibility issue.
+
+
+\subsection{The Primitive \textbackslash hyphenchar}
+
+The primitive \verb|\hyphenchar| gives reading and writing access to
+the hyphenation character of a font. In \TeX\ this defaults to 45
+which is the code of the Minus sign in ASCII -- and Unicode. Thus
+nothing as to be done.
+
+
+\subsection{The Primitive \textbackslash lccode}
+
+The primitive \verb|\lowercase| translates a sequence of characters to
+their lowercase counterpart. This translation is controlled by the
+array \verb|\lccode|. Like for catcodes it is feasible to initialise the
+values from the Unicode semantics instead of relying on
+\verb|plain.tex| to initialise a huge array.
+
+
+\subsection{The Primitive \textbackslash mathchar}
+
+The primitive \verb|\mathchar| plays a similar role in math mode like
+\verb|\char| in text mode.
+Here the compensation for math families and a Unicode math font is
+located. 
+
+
+\subsection{The Primitive \textbackslash mathchardef}
+
+The primitive \verb|\mathchardef| can be used to define mathemaical
+characters like \verb|\char| does for text characters.
+
+*** Implications? ***
+
+Maybe the distiction of \verb|\char| and \verb|\mathchar| vanishes
+with the use of Unicode fonts.
+
+
+\subsection{The Primitive \textbackslash sfcode}
+
+The values of \verb|\sfcode| influences the spacing. The value for
+uppercase letters is initialized to 999 whereas the other characters
+have a value of 1000. For a better typography it might be worthwhile to
+initialise the values for all uppercase letters. 
+
+
+\subsection{The Primitive \textbackslash skewchar}
+
+The primitive \verb|\skewchar| gives reading and writing access to the
+skew character of a font. In \TeX\ this defaults to -1 which is the
+code for undefined. Nothing as to be done.
+
+
+\subsection{The Primitive \textbackslash uccode}
+
+The primitive \verb|\uppercase| translates a sequence of characters to
+their uppercase counterpart. This translation is controlled by the
+array \verb|\uccode|. Like for catcodes it is feasible to initialise the
+values from the Unicode semantics instead of relying on
+\verb|plain.tex| to initialise a huge array.
+
+
+\subsection{The Primitive \textbackslash uchyph}
+
+The count register \verb|\uchyph| controls whether or not words
+starting with an uppercase letter are hyphenated. All actions are
+already performed for \verb|\uccode|. Thus nothing else has to be
+done. 
+
+
+\section{Impact on the Back-Ends}
+
+The features of fonts required for the back-ends heavily depends on
+the output formats produced. At least \ExTeX\ needs a font converting
+engine to produce Type1 fonts for the sake of PDF and PostScript.
+
+\subsection{The dvi Writer}
+
+Here it depends on in the further processing chain which fon formats
+are needed. Especially the feature of stretchable characters needs
+further investigation. Most probably it will be necessary to produce
+fonts in som format in parallel to the dvi file.
+
+\subsection{The PDF Writer}
+
+For the PDF Writer PostScript and Type1 fonts are digestable. Other
+formats might be acceptable. Especially Open Type seems to be the
+favoured font format at Adobe.
+
+\subsection{The PostScript Writer}
+
+Here Type1 and Type3 fonts are required. The fonts are embedded into
+the Postscript code.
+
+
+\section{Fonts and FontClusters}
+
+\subsection {Virtual Fonts}
+
+Virtual fonts are in use in \TeX\ already. They have to be extended to
+deal with Unicode fonts and even compose a Unicode font from plain old
+\TeX\ fonts of PostScript Type1 fonts.
+
+
+\subsection {Font Clusters}
+
+The font handling mechanism of \TeX\ is rather minimalistic. You can
+load a single font only. Since this is not really user friendly
+systems on the macro level have been introduced to compensate this
+deficiency. One example is the NFSS of \LaTeX. \ExTeX\ should provide
+a much enhanced functionality right from the start.
+
+A font should be considered always to be part of a font cluster. In
+this cluster the font is characterized by a set of dimensions, i.e.
+pairs of name and values. The names are strings. The value can be one
+of several types:
+
+\begin{description}
+\item[Arbitrary Strings] \ \\
+  The arbitrary string values might be restricted by a finite set of
+  predefined values. If a unknown value is used it should be
+  substituted by a default.
+  
+  For instance the dimension \texttt{family} can have the value
+  \texttt{cm}.
+
+\item[Float numbers] \ \\
+  These might be inherent restrictions on the actual usable values. 
+  
+  For instance the dimension \texttt{size} can have the value
+  \texttt{14.4}.
+
+\item[Integer numbers] \ \\
+  Again the restrictions might come in otherwhere and not in the data
+  structure.
+\item[Boolean values] \ \\
+  Just to complete the set of possibilities.
+\end{description}
+
+In principle this set can have arbitrary key and values. Nevertheless
+some of the properties should be present since some primitives might
+assume their existence.
+
+Such a font specification can be manipulated to represent an arbitrary
+font. This step is independent from the physical existence of a font.
+
+Consider you start wit a font described by the following dimensions:
+\begin{quotation}\noindent
+  \texttt{family} $\mapsto$ cm\\
+  \texttt{size}   $\mapsto$ 14.4\\
+  \texttt{weight} $\mapsto$ normal\\
+  \texttt{slant}  $\mapsto$ upright\\
+\end{quotation}
+This font might correspond to \texttt{cmr10 at 14.4pt}. Now you could
+change the dimension \texttt{weight} to \texttt{ultrathin}. This would
+be a valid font specification -- even if this font does not exist
+anywhere. 
+
+Whenever a font specification is completed. It can be used to request
+an actual font for it from a font factory. The font factory will try
+to deliver a suitable font. For this it can apply substitution rules
+defined for the family. This means that the dimension family is the
+primary dimension which must be used. It can be used by the font
+factory to find the configuration with the substitution rules. If no
+configuration can be found the family might be taken literally to find
+a single font.
+
+
+\subsection{100\% Compatibility}
+
+To achieve a 100\% compatibility to \TeX\ the \ExTeX\ team came up
+with a solution to map all input characters to a private Unicode area
+and pass them through the whole machinery. The solution proposed in
+this document is less invasive. Some of the implication have still to
+be worked out.
+
+
+\end{document}
