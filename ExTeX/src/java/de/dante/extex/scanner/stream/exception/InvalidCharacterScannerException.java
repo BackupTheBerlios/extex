@@ -16,24 +16,24 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.scanner.stream.exception;
 
 import de.dante.extex.scanner.exception.ScannerException;
 import de.dante.util.UnicodeChar;
 
-
 /**
  * This is thrown when an invalid character has been encountered.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class InvalidCharacterScannerException extends ScannerException {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 1L;
 
     /**
      * The field <tt>invalid</tt> contains the invalid character.
@@ -51,14 +51,13 @@ public class InvalidCharacterScannerException extends ScannerException {
         this.invalid = invalid;
     }
 
-    
     /**
      * Getter for the invalid character.
      *
      * @return the invalid character
      */
     public UnicodeChar getInvalid() {
-    
+
         return this.invalid;
     }
 
