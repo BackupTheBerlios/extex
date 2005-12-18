@@ -39,7 +39,7 @@ import de.dante.extex.typesetter.Typesetter;
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    &lang;span&rang;
+ *    &lang;pdfcatalog&rang;
  *       &rarr; <tt>\pdfcatalog</tt> ... </pre>
  *
  * <h4>Examples</h4>
@@ -49,7 +49,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Pdfcatalog extends AbstractPdftexCode {
 

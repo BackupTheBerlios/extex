@@ -39,8 +39,10 @@ import de.dante.extex.typesetter.Typesetter;
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    &lang;span&rang;
- *       &rarr; <tt>\pdfoutline</tt> ... </pre>
+ *    &lang;pdfoutline&rang;
+ *       &rarr; <tt>\pdfoutline</tt> ... {@linkplain
+ *          de.dante.extex.interpreter.TokenSource#scanTokens(Context, String)
+ *          &lang;general text&rang;} </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
@@ -49,7 +51,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Pdfoutline extends AbstractPdftexCode {
 

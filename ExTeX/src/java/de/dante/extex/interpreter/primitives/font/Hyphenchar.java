@@ -47,11 +47,12 @@ import de.dante.util.exception.GeneralException;
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\hyphenchar</tt> &lang;font&rang; {@linkplain
- *    de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
- *    &lang;equals&rang;} {@linkplain
- *    de.dante.extex.interpreter.TokenSource#scanNumber(Context)
- *    &lang;8-bit&nbsp;number&rang;} </pre>
+ *    &lang;hyphenchar&rang;
+ *       &rarr; <tt>\hyphenchar</tt> &lang;font&rang; {@linkplain
+ *          de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+ *          &lang;equals&rang;} {@linkplain
+ *          de.dante.extex.interpreter.TokenSource#scanNumber(Context)
+ *          &lang;8-bit&nbsp;number&rang;} </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
@@ -67,7 +68,7 @@ import de.dante.util.exception.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class Hyphenchar extends AbstractAssignment
         implements

@@ -41,8 +41,22 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    &lang;span&rang;
- *       &rarr; <tt>\pdfobj</tt> ... </pre>
+ *    &lang;pdfobj&rang;
+ *       &rarr; <tt>\pdfobj</tt> &lang;optional attr&rang; &lang;optional stream or file&rang; {@linkplain
+ *          de.dante.extex.interpreter.TokenSource#scanTokens(Context, String)
+ *          &lang;general text&rang;}
+ *
+ *    &lang;optional attr&rang;
+ *       &rarr; <tt>attr</tt> {@linkplain
+ *          de.dante.extex.interpreter.TokenSource#scanTokens(Context, String)
+ *          &lang;general text&rang;}
+ *       |
+ *
+ *    &lang;optional stream or file&rang;
+ *       &rarr; <tt>file</tt>
+ *       |  <tt>stream</tt>
+ *       |
+ *    </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
@@ -51,7 +65,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Pdfobj extends AbstractPdftexCode {
 

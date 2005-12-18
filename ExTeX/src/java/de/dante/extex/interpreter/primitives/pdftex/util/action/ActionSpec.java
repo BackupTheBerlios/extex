@@ -26,10 +26,10 @@ import de.dante.extex.interpreter.exception.pdftex.InterpreterPdftexActionTypeEx
 import de.dante.extex.typesetter.Typesetter;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This is the abstract base class for actions in PDF.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public abstract class ActionSpec {
 

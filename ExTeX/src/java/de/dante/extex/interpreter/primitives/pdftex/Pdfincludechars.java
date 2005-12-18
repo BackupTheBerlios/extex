@@ -34,25 +34,30 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="pdfincludechars">
  * <h3>The PDF Primitive <tt>\pdfincludechars</tt></h3>
  * <p>
- *  This primitive tells the PDF back-end to include certain characters.
- *  TODO missing documentation
+ *  This primitive tells the PDF back-end to include certain characters from a
+ *  font into the generated output.
+ *  This should overwrite any partial font downloading in effect.
  * </p>
  *
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    &lang;span&rang;
- *       &rarr; <tt>\pdfincludechars</tt> {...} </pre>
+ *    &lang;pdfincludechars&rang;
+ *       &rarr; <tt>\pdfincludechars</tt> {@linkplain
+ *          de.dante.extex.interpreter.TokenSource#getFont(Context, String)
+ *          &lang;font&rang;} {@linkplain
+ *          de.dante.extex.interpreter.TokenSource#scanTokens(Context, String)
+ *          &lang;general text&rang;} </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \font\f cmr12
- *    \pdfincludechars \f  </pre>
+ *    \pdfincludechars \f {abc} </pre>
  *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Pdfincludechars extends AbstractPdftexCode {
 

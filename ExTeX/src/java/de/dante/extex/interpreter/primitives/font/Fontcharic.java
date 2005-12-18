@@ -44,13 +44,20 @@ import de.dante.util.UnicodeChar;
  * <doc name="fontcharic">
  * <h3>The Primitive <tt>\fontcharic</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  The primitive <tt>\fontcharic</tt> is a read-only dimen register which
+ *  corresponds to the italic correction of a character in a given font.
+ *  If the character is not defined in the font then 0pt is returned.
  * </p>
  *
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\fontcharic</tt>    </pre>
+ *    &lang;fontcharic&rang;
+ *       &rarr; <tt>\fontcharic</tt> {@linkplain
+ *          de.dante.extex.interpreter.TokenSource#getFont(Context,String)
+ *          &lang;font&rang;} {@linkplain
+ *          de.dante.extex.interpreter.TokenSource#scanCharacterCode(Context,Typesetter,String)
+ *          &lang;character code&rang;} </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
@@ -60,7 +67,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Fontcharic extends AbstractCode
         implements

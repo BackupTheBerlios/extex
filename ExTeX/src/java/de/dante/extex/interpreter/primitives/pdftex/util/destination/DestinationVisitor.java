@@ -20,29 +20,92 @@
 package de.dante.extex.interpreter.primitives.pdftex.util.destination;
 
 /**
- * This interface descries a visitor for dest types.
+ * This interface descries a visitor for destination types.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface DestinationVisitor {
 
+    /**
+     * This visit method is invoked on a fit.
+     *
+     * @param fit the type encountered
+     *
+     * @return some value
+     */
     Object visitFit(DestType fit);
 
+    /**
+     * This visit method is invoked on a fitb.
+     *
+     * @param fit the type encountered
+     *
+     * @return some value
+     */
     Object visitFitb(DestType fit);
 
+    /**
+     * This visit method is invoked on a fitbh.
+     *
+     * @param fit the type encountered
+     *
+     * @return some value
+     */
     Object visitFitbh(DestType fit);
 
+    /**
+     * This visit method is invoked on a fitbv.
+     *
+     * @param fit the type encountered
+     *
+     * @return some value
+     */
     Object visitFitbv(DestType fit);
 
+    /**
+     * This visit method is invoked on a fith.
+     *
+     * @param fit the type encountered
+     *
+     * @return some value
+     */
     Object visitFith(DestType fit);
 
+    /**
+     * This visit method is invoked on a fitr.
+     *
+     * @param fit the type encountered
+     *
+     * @return some value
+     */
     Object visitFitr(FitrDestType fit);
 
+    /**
+     * This visit method is invoked on a fitv.
+     *
+     * @param fit the type encountered
+     *
+     * @return some value
+     */
     Object visitFitv(DestType fit);
 
+    /**
+     * This visit method is invoked on a xyz.
+     *
+     * @param fit the type encountered
+     *
+     * @return some value
+     */
     Object visitXyz(DestType fit);
 
+    /**
+     * This visit method is invoked on a zoom.
+     *
+     * @param zoom the type encountered
+     *
+     * @return some value
+     */
     Object visitZoom(ZoomDestType zoom);
 
 }

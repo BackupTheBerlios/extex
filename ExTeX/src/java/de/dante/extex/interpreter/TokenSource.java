@@ -49,7 +49,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.62 $
+ * @version $Revision: 1.63 $
  */
 public interface TokenSource {
 
@@ -338,6 +338,17 @@ public interface TokenSource {
      * sequence of digits with category code <tt>OTHER</tt>. The number can be
      * preceded by optional white space. Alternate representations for an
      * character code exist.
+     *
+     * <doc type="syntax" name="character">
+     * <pre class="syntax">
+     *   &lang;character code&rang; </pre>
+     * <p>
+     *  A character is a positive number.
+     * </p>
+     * <p>
+     *  Tokens are expanded while gathering the requested values.
+     * </p>
+     * </doc>
      *
      * @param context the interpreter context
      * @param typesetter the typesetter

@@ -48,11 +48,19 @@ import de.dante.extex.typesetter.Typesetter;
  *  letters are of category <i>other</i>.
  * </p>
  *
+ * <h4>Syntax</h4>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;fontname&rang;
+ *       &rarr; <tt>\fontname</tt> {@linkplain
+ *          de.dante.extex.interpreter.TokenSource#getFont(Context,String)
+ *          &lang;font&rang;}  </pre>
+ *
  * <h4>Example</h4>
  * <pre class="TeXSample">
- * \font\myFont=cmr12
- * \fontname\myfont
- * &rArr; cmr12
+ *  \font\myFont=cmr12
+ *  \fontname\myfont
+ *  &rArr; cmr12
  * </pre>
  *
  * <pre class="TeXSample">
@@ -64,7 +72,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class Fontname extends AbstractCode implements ExpandableCode {
 

@@ -40,14 +40,15 @@ import de.dante.extex.typesetter.Typesetter;
  *  This primitive expands to the name of the font as used in PDF. For instance
  *  if a font is addressed as <tt>/F12</tt> then this primitive expands to
  *  <tt>12</tt>.
- *  TODO missing documentation
  * </p>
  *
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    &lang;span&rang;
- *       &rarr; <tt>\pdffontname</tt> {...} </pre>
+ *    &lang;pdffontname&rang;
+ *       &rarr; <tt>\pdffontname</tt> {@linkplain
+ *          de.dante.extex.interpreter.TokenSource#getFont(Context, String)
+ *          &lang;font&rang;} </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
@@ -57,7 +58,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Pdffontname extends AbstractPdftexCode
         implements

@@ -40,7 +40,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    &lang;span&rang;
+ *    &lang;pdfendthread&rang;
  *       &rarr; <tt>\pdfendthread</tt>  </pre>
  *
  * <h4>Examples</h4>
@@ -50,7 +50,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Pdfendthread extends AbstractPdftexCode {
 

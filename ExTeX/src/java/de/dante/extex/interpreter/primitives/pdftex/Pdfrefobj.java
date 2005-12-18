@@ -40,8 +40,10 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    &lang;span&rang;
- *       &rarr; <tt>\pdfrefobj</tt> ... </pre>
+ *    &lang;pdfrefobj&rang;
+ *       &rarr; <tt>\pdfrefobj</tt> {@linkplain
+ *          de.dante.extex.interpreter.TokenSource#scanNumber(Context, Token)
+ *          &lang;number&rang;} </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
@@ -50,7 +52,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Pdfrefobj extends AbstractPdftexCode {
 

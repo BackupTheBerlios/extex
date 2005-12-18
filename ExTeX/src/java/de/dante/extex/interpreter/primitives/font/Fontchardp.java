@@ -44,14 +44,20 @@ import de.dante.util.UnicodeChar;
  * <doc name="fontchardp">
  * <h3>The Primitive <tt>\fontchardp</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  The primitive <tt>\fontchardp</tt> is a read-only dimen register which
+ *  corresponds to the depth of a character in a given font. If the character
+ *  is not defined in the font then 0pt is returned.
  * </p>
  *
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;fontchardp&rang;
- *      &rarr; <tt>\fontchardp</tt> &lang;font&rang; &lang;number&rang;  </pre>
+ *      &rarr; <tt>\fontchardp</tt> {@linkplain
+ *          de.dante.extex.interpreter.TokenSource#getFont(Context,String)
+ *          &lang;font&rang;} {@linkplain
+ *          de.dante.extex.interpreter.TokenSource#scanCharacterCode(Context,Typesetter,String)
+ *          &lang;character code&rang;}  </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
@@ -61,7 +67,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class Fontchardp extends AbstractCode
         implements
