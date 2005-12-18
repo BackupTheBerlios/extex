@@ -25,10 +25,10 @@ import de.dante.extex.interpreter.type.tokens.Tokens;
 
 /**
  * This class provides an implementation for the primitive
- * <code>\splitbotmarks</code>.
+ * <code>\splitfirstmarks</code>.
  *
- * <doc name="splitbotmarks">
- * <h3>The Primitive <tt>\splitbotmarks</tt></h3>
+ * <doc name="splitfirstmarks">
+ * <h3>The Primitive <tt>\splitfirstmarks</tt></h3>
  * <p>
  *  TODO gene: missing documentation
  * </p>
@@ -36,18 +36,18 @@ import de.dante.extex.interpreter.type.tokens.Tokens;
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\splitbotmarks</tt> ...  </pre>
+ *    <tt>\splitfirstmarks</tt> ...  </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
- *    \splitbotmarks42  </pre>
+ *    \splitfirstmarks42  </pre>
  *  <pre class="TeXSample">
- *    \splitbotmarks\count0  </pre>
+ *    \splitfirstmarks\count0  </pre>
  *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Splitfirstmarks extends AbstractMarksCode {
 
