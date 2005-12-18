@@ -32,7 +32,7 @@ import de.dante.util.UnicodeChar;
  * The font manager keeps track of the fonts and characters used.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class FontManager {
 
@@ -56,10 +56,10 @@ public class FontManager {
     private Font currentFont = null;
 
     /**
-     * The field <tt>fnt</tt> contains the definition of font changing
+     * The field <tt>texdict</tt> contains the definition of font changing
      * functions.
      */
-    private StringBuffer fnt = new StringBuffer("TeXDict begin\n");
+    private StringBuffer texdict = new StringBuffer("TeXDict begin\n");
 
     /**
      * The field <tt>fntNo</tt> contains the next number to be used for a
@@ -84,14 +84,16 @@ public class FontManager {
             map = new HashMap();
             fonts.put(font, map);
         }
+        map.put(c, c);
+
         if (font != currentFont) {
             currentFont = font;
             String n = Integer.toString(fntNo++);
-            fnt.append("/F");
-            fnt.append(n);
-            fnt.append("{/Times-Roman findfont "); //TODO use the correct font
-            PsUnit.toPoint(font.getActualSize(), fnt, false);
-            fnt.append(" scalefont setfont}def\n");
+            texdict.append("/F");
+            texdict.append(n);
+            texdict.append("{/Times-Roman findfont "); //TODO gene: use the correct font
+            PsUnit.toPoint(font.getActualSize(), texdict, false);
+            texdict.append(" scalefont setfont}def\n");
 
             return "F" + n + " ";
         }
@@ -133,7 +135,7 @@ public class FontManager {
      */
     public void write(final OutputStream stream) throws IOException {
 
-        fnt.append("end\n");
-        stream.write(fnt.toString().getBytes());
+        texdict.append("end\n");
+        stream.write(texdict.toString().getBytes());
     }
 }
