@@ -23,7 +23,7 @@ package de.dante.extex.interpreter.primitives.pdftex.util.destination;
  * This class carries a destination type ZOOM as used in PDF nodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ZoomDestType extends DestType {
 
@@ -51,6 +51,14 @@ public class ZoomDestType extends DestType {
     public long getZoom() {
 
         return this.zoom;
+    }
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+
+        return "zoom " + Long.toString(zoom);
     }
 
     /**

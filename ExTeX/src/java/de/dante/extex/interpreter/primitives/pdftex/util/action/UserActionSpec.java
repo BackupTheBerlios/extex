@@ -28,7 +28,7 @@ import de.dante.extex.typesetter.Typesetter;
  * This class represents a user action of PDF.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class UserActionSpec extends ActionSpec {
 
@@ -76,6 +76,14 @@ public class UserActionSpec extends ActionSpec {
     protected String getUser() {
 
         return this.user;
+    }
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+
+        return "user " + user;
     }
 
     /**

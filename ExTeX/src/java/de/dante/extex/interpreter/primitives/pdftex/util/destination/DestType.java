@@ -22,20 +22,21 @@ package de.dante.extex.interpreter.primitives.pdftex.util.destination;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.exception.pdftex.InterpreterPdftexDestinationTypeException;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.node.RuleNode;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This is the abstract base class for destination types in PDF.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class DestType {
 
     /**
-     * The constant <tt>FIT</tt> contains the ...
+     * The constant <tt>FIT</tt> contains the destination type fit.
      */
     public static final DestType FIT = new DestType() {
 
@@ -47,10 +48,19 @@ public abstract class DestType {
 
             return visitor.visitFit(this);
         }
+
+        /**
+         * @see java.lang.Object#toString()
+         */
+        public String toString() {
+
+            return "fit";
+        }
+
     };
 
     /**
-     * The constant <tt>FITB</tt> contains the ...
+     * The constant <tt>FITB</tt> contains the destination type fitb.
      */
     public static final DestType FITB = new DestType() {
 
@@ -62,10 +72,19 @@ public abstract class DestType {
 
             return visitor.visitFitb(this);
         }
+
+        /**
+         * @see java.lang.Object#toString()
+         */
+        public String toString() {
+
+            return "fitb";
+        }
+
     };
 
     /**
-     * The constant <tt>FITBH</tt> contains the ...
+     * The constant <tt>FITBH</tt> contains the destination type fitbh.
      */
     public static final DestType FITBH = new DestType() {
 
@@ -77,10 +96,19 @@ public abstract class DestType {
 
             return visitor.visitFitbh(this);
         }
+
+        /**
+         * @see java.lang.Object#toString()
+         */
+        public String toString() {
+
+            return "fitbh";
+        }
+
     };
 
     /**
-     * The constant <tt>FITBV</tt> contains the ...
+     * The constant <tt>FITBV</tt> contains the destination type fitbv.
      */
     public static final DestType FITBV = new DestType() {
 
@@ -92,10 +120,19 @@ public abstract class DestType {
 
             return visitor.visitFitbv(this);
         }
+
+        /**
+         * @see java.lang.Object#toString()
+         */
+        public String toString() {
+
+            return "fitbv";
+        }
+
     };
 
     /**
-     * The constant <tt>FITH</tt> contains the ...
+     * The constant <tt>FITH</tt> contains the destination type fith.
      */
     public static final DestType FITH = new DestType() {
 
@@ -107,10 +144,19 @@ public abstract class DestType {
 
             return visitor.visitFith(this);
         }
+
+        /**
+         * @see java.lang.Object#toString()
+         */
+        public String toString() {
+
+            return "fith";
+        }
+
     };
 
     /**
-     * The constant <tt>FITV</tt> contains the ...
+     * The constant <tt>FITV</tt> contains the destination type fitv.
      */
     public static final DestType FITV = new DestType() {
 
@@ -122,10 +168,19 @@ public abstract class DestType {
 
             return visitor.visitFitv(this);
         }
+
+        /**
+         * @see java.lang.Object#toString()
+         */
+        public String toString() {
+
+            return "fitv";
+        }
+
     };
 
     /**
-     * The constant <tt>XYZ</tt> contains the ...
+     * The constant <tt>XYZ</tt> contains the destination type xyz.
      */
     public static final DestType XYZ = new DestType() {
 
@@ -137,6 +192,15 @@ public abstract class DestType {
 
             return visitor.visitXyz(this);
         }
+
+        /**
+         * @see java.lang.Object#toString()
+         */
+        public String toString() {
+
+            return "xyz";
+        }
+
     };
 
     /**
@@ -194,8 +258,7 @@ public abstract class DestType {
             return new ZoomDestType(zoom);
         }
 
-        //TODO gene: error unimplemented
-        throw new RuntimeException("unimplemented");
+        throw new InterpreterPdftexDestinationTypeException(name);
     }
 
     /**
@@ -213,5 +276,5 @@ public abstract class DestType {
      *
      * @return an arbitrary return object
      */
-    public abstract Object visit(DestinationVisitor visitor);
+    public abstract Object visit(final DestinationVisitor visitor);
 }
