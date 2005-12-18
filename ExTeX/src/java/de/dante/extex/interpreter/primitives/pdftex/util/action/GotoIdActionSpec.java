@@ -19,18 +19,25 @@
 
 package de.dante.extex.interpreter.primitives.pdftex.util.action;
 
+import de.dante.extex.interpreter.primitives.pdftex.util.id.IdSpec;
+
 /**
- * TODO gene: missing JavaDoc.
+ * This is the a goto action with id for PDF.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class GotoIdActionSpec extends GotoActionSpec {
 
     /**
-     * The field <tt>file</tt> contains the ...
+     * The field <tt>file</tt> contains the optional file.
      */
     private String file;
+
+    /**
+     * The field <tt>id</tt> contains the id.
+     */
+    private IdSpec id;
 
     /**
      * The field <tt>newWin</tt> contains the indicator for the new window.
@@ -38,18 +45,13 @@ public class GotoIdActionSpec extends GotoActionSpec {
     private Boolean newWin;
 
     /**
-     * The field <tt>id</tt> contains the ...
-     */
-    private String id;
-
-    /**
      * Creates a new object.
      *
-     * @param file ...
-     * @param id ...
+     * @param file the optional file.
+     * @param id id.
      * @param newwin the indicator for the new window
      */
-    public GotoIdActionSpec(final String file, final String id,
+    public GotoIdActionSpec(final String file, final IdSpec id,
             final Boolean newwin) {
 
         super();
@@ -69,6 +71,16 @@ public class GotoIdActionSpec extends GotoActionSpec {
     }
 
     /**
+     * Getter for id.
+     *
+     * @return the id
+     */
+    protected IdSpec getId() {
+
+        return this.id;
+    }
+
+    /**
      * Getter for newWin.
      *
      * @return the newWin
@@ -76,16 +88,6 @@ public class GotoIdActionSpec extends GotoActionSpec {
     protected Boolean getNewWin() {
 
         return this.newWin;
-    }
-
-    /**
-     * Getter for id.
-     *
-     * @return the id
-     */
-    protected String getId() {
-
-        return this.id;
     }
 
     /**
