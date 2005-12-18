@@ -1,6 +1,6 @@
 #!/bin/perl -w
 ##*****************************************************************************
-## $Id: primitives.pl,v 1.5 2005/11/08 17:17:52 gene Exp $
+## $Id: primitives.pl,v 1.6 2005/12/18 09:44:02 gene Exp $
 ##*****************************************************************************
 ## Author: Gerd Neugebauer
 ##=============================================================================
@@ -92,7 +92,7 @@ foreach (sort keys %cfg) {
   processConfig($out, $_, $cfg{$_});
 }
 
-print $out "\n\\subsection{Primitive Sets}\n";
+print $out "\n\\subsection{Primitive Units}\n";
 
 foreach (sort keys %primSets) {
   processPrimitives($out, $_, $primSets{$_});
@@ -153,7 +153,7 @@ sub processPrimitive {
   }
   $_ = ($name eq ' '? '\\[': $name);
   $_ = ($_ eq '\\'? '\\char`\\\\': $_);
-  print $out "The primitive \\macro{$_} is defined in the set \\texttt{$primUse{$name}}.\n";
+  print $out "The primitive \\macro{$_} is defined in the unit \\texttt{$primUse{$name}}.\n";
 }
 
 #------------------------------------------------------------------------------
@@ -190,9 +190,9 @@ sub processPrimitives {
   my %prim = ();
   local $_;
   print $out <<__EOF__;
-\\subsubsection{The Primitive Set \\texttt{$name}}
+\\subsubsection{The Primitive Unit \\texttt{$name}}
 
-The primitive set \\texttt{$name} defines the following primitives:
+The primitive unit \\texttt{$name} defines the following primitives:
 \\begin{primitives}
 __EOF__
   my $fd = new FileHandle($file,'r') || die "$file:$!\n";
@@ -241,7 +241,7 @@ sub processConfig {
       $banner = $1;
     } elsif (m|<ExtendedRegisterNames>(.*)</ExtendedRegisterNames>|) {
       $extReg = ($1 eq "true");
-    } elsif (m|<primitives src="(.*)"|) {
+    } elsif (m|<unit src="(.*)"|) {
       my $p = $1;
       $p =~ m|.*/(.*)\.xml|;
       $primSets{$1} = "$dir/$p";
@@ -260,13 +260,13 @@ __EOF__
 
   $_ = @prim;
   if ($_ == 0) {
-    print $out "The configuration contains no primitive sets.";
+    print $out "The configuration contains no primitive units.";
   } elsif ($_ == 1) {
-    print $out "The configuration contains the primitive set \\texttt{$prim[0]}.\n";
+    print $out "The configuration contains the primitive unit \\texttt{$prim[0]}.\n";
   } elsif ($_ == 2) {
-    print $out "The configuration contains the primitive sets \\texttt{$prim[0]} and \\texttt{$prim[1]}.\n";
+    print $out "The configuration contains the primitive units \\texttt{$prim[0]} and \\texttt{$prim[1]}.\n";
   } else {
-    print $out "The configuration contains the primitive sets ";
+    print $out "The configuration contains the primitive units ";
     my $plast = pop @prim;
     foreach (@prim) {
       print $out "\\texttt{$_}, ";
