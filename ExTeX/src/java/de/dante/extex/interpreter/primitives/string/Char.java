@@ -29,7 +29,10 @@ import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.CatcodeException;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.exception.TypesetterException;
+import de.dante.extex.typesetter.type.node.CharNode;
 import de.dante.util.UnicodeChar;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * This class provides an implementation for the primitive <code>\char</code>.
@@ -68,7 +71,7 @@ import de.dante.util.UnicodeChar;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public class Char extends AbstractCode implements ExpandableCode {
 
@@ -113,11 +116,20 @@ public class Char extends AbstractCode implements ExpandableCode {
             throws InterpreterException {
 
         UnicodeChar uc = source.scanCharacterCode(context, typesetter, getName());
+        /*
         try {
             Token t = context.getTokenFactory().createToken(Catcode.OTHER, uc,
                     context.getNamespace());
             source.push(t);
         } catch (CatcodeException e) {
+            throw new InterpreterException(e);
+        }
+        */
+        try {
+            typesetter.add(new CharNode(context.getTypesettingContext(), uc));
+        } catch (TypesetterException e) {
+            throw new InterpreterException(e);
+        } catch (ConfigurationException e) {
             throw new InterpreterException(e);
         }
     }
