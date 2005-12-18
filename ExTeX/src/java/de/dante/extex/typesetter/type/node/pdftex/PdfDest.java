@@ -20,6 +20,7 @@
 package de.dante.extex.typesetter.type.node.pdftex;
 
 import de.dante.extex.interpreter.primitives.pdftex.util.destination.DestType;
+import de.dante.extex.interpreter.primitives.pdftex.util.id.IdSpec;
 import de.dante.extex.typesetter.type.node.WhatsItNode;
 
 /**
@@ -29,7 +30,7 @@ import de.dante.extex.typesetter.type.node.WhatsItNode;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class PdfDest extends WhatsItNode {
 
@@ -39,17 +40,36 @@ public class PdfDest extends WhatsItNode {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The field <tt>type</tt> contains the ...
+     * The field <tt>id</tt> contains the id.
+     */
+    private IdSpec id;
+
+    /**
+     * The field <tt>type</tt> contains the destination type.
      */
     private DestType type;
 
     /**
      * Creates a new object.
+     *
+     * @param id the id
+     * @param type the destination
      */
-    public PdfDest(final DestType type) {
+    public PdfDest(final IdSpec id, final DestType type) {
 
         super();
         this.type = type;
+        this.id = id;
+    }
+
+    /**
+     * Getter for id.
+     *
+     * @return the id
+     */
+    public IdSpec getId() {
+
+        return this.id;
     }
 
     /**
@@ -68,7 +88,13 @@ public class PdfDest extends WhatsItNode {
      */
     public void toString(final StringBuffer sb, final String prefix) {
 
-        sb.append("(pdfdest " + ")");
+        sb.append("(pdfdest ");
+        if (id != null) {
+            sb.append(id.toString());
+            sb.append(" ");
+        }
+        sb.append(type.toString());
+        sb.append(")");
     }
 
 }

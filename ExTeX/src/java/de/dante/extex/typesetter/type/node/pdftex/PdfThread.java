@@ -19,6 +19,7 @@
 
 package de.dante.extex.typesetter.type.node.pdftex;
 
+import de.dante.extex.interpreter.primitives.pdftex.util.id.IdSpec;
 import de.dante.extex.typesetter.type.node.RuleNode;
 import de.dante.extex.typesetter.type.node.WhatsItNode;
 
@@ -29,7 +30,7 @@ import de.dante.extex.typesetter.type.node.WhatsItNode;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class PdfThread extends WhatsItNode {
 
@@ -49,7 +50,7 @@ public class PdfThread extends WhatsItNode {
     /**
      * The field <tt>id</tt> contains the ...
      */
-    private String id;
+    private IdSpec id;
 
     /**
      * The field <tt>rule</tt> contains the ...
@@ -58,8 +59,12 @@ public class PdfThread extends WhatsItNode {
 
     /**
      * Creates a new object.
+     *
+     * @param rule
+     * @param attr
+     * @param id
      */
-    public PdfThread(RuleNode rule, final String attr, final String id) {
+    public PdfThread(RuleNode rule, final String attr, final IdSpec id) {
 
         super();
         this.rule = rule;
@@ -82,7 +87,7 @@ public class PdfThread extends WhatsItNode {
      *
      * @return the id
      */
-    public String getId() {
+    public IdSpec getId() {
 
         return this.id;
     }

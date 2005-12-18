@@ -23,7 +23,7 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.exception.pdftex.InterpreterPdftexIdentifierTypeException;
+import de.dante.extex.interpreter.primitives.pdftex.util.id.IdSpec;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.exception.TypesetterException;
@@ -43,7 +43,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    &lang;span&rang;
+ *    &lang;pdfthread&rang;
  *       &rarr; <tt>\pdfthread</tt> ... </pre>
  *
  * <h4>Examples</h4>
@@ -53,7 +53,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Pdfthread extends AbstractPdftexCode {
 
@@ -103,17 +103,7 @@ public class Pdfthread extends AbstractPdftexCode {
             }
         }
 
-        String id;
-
-        if (source.getKeyword(context, "num")) {
-            long num = source.scanNumber(context);
-            id = Long.toString(num);
-        } else if (source.getKeyword(context, "name")) {
-            id = source.scanTokensAsString(context, getName());
-        } else {
-            throw new InterpreterPdftexIdentifierTypeException(
-                    printableControlSequence(context));
-        }
+        IdSpec id = IdSpec.parseIdSpec(source, context, getName());
 
         PdfThread thread = new PdfThread(new RuleNode(width, height, depth,
                 null), attr, id);

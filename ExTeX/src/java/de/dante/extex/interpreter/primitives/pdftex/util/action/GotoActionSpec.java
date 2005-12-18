@@ -24,13 +24,15 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.pdftex.InterpreterPdftexActionTypeException;
 import de.dante.extex.interpreter.exception.pdftex.InterpreterPdftexIdentifierTypeException;
+import de.dante.extex.interpreter.primitives.pdftex.util.id.NameIdSpec;
+import de.dante.extex.interpreter.primitives.pdftex.util.id.NumIdSpec;
 import de.dante.extex.typesetter.Typesetter;
 
 /**
  * This class provides an abstract base for goto actions in PDF.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public abstract class GotoActionSpec extends ActionSpec {
 
@@ -52,12 +54,11 @@ public abstract class GotoActionSpec extends ActionSpec {
 
         if (source.getKeyword(context, "num")) {
             long num = source.scanNumber(context);
-            String id = Long.toString(num);
-            return new GotoIdActionSpec(null, id, null);
+            return new GotoIdActionSpec(null, new NumIdSpec(num), null);
 
         } else if (source.getKeyword(context, "name")) {
             String id = source.scanTokensAsString(context, name);
-            return new GotoIdActionSpec(null, id, null);
+            return new GotoIdActionSpec(null, new NameIdSpec(id), null);
 
         } else if (source.getKeyword(context, "page")) {
             long page = source.scanNumber(context);
@@ -77,7 +78,7 @@ public abstract class GotoActionSpec extends ActionSpec {
             } else if (source.getKeyword(context, "newwindow")) {
                 newWindow = Boolean.FALSE;
             }
-            return new GotoIdActionSpec(file, id, newWindow);
+            return new GotoIdActionSpec(file, new NameIdSpec(id), newWindow);
 
         } else if (source.getKeyword(context, "page")) {
             long page = source.scanNumber(context);

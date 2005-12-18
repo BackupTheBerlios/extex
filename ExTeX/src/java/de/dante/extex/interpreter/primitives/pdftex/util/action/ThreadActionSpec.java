@@ -22,14 +22,14 @@ package de.dante.extex.interpreter.primitives.pdftex.util.action;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.exception.pdftex.InterpreterPdftexIdentifierTypeException;
+import de.dante.extex.interpreter.primitives.pdftex.util.id.IdSpec;
 import de.dante.extex.typesetter.Typesetter;
 
 /**
  * This class represents a thread action spec.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ThreadActionSpec extends ActionSpec {
 
@@ -54,16 +54,7 @@ public class ThreadActionSpec extends ActionSpec {
             file = source.scanTokensAsString(context, name);
         }
 
-        String id = null;
-
-        if (source.getKeyword(context, "num")) {
-            long num = source.scanNumber(context);
-            id = Long.toString(num);
-        } else if (source.getKeyword(context, "name")) {
-            id = source.scanTokensAsString(context, name);
-        } else {
-            throw new InterpreterPdftexIdentifierTypeException(name);
-        }
+        IdSpec id = IdSpec.parseIdSpec(source, context, name);
 
         return new ThreadActionSpec(file, id);
     }
@@ -76,7 +67,7 @@ public class ThreadActionSpec extends ActionSpec {
     /**
      * The field <tt>id</tt> contains the id.
      */
-    private String id;
+    private IdSpec id;
 
     /**
      * Creates a new object.
@@ -84,7 +75,7 @@ public class ThreadActionSpec extends ActionSpec {
      * @param file the file
      * @param id the id
      */
-    public ThreadActionSpec(final String file, final String id) {
+    public ThreadActionSpec(final String file, final IdSpec id) {
 
         super();
         this.file = file;
@@ -93,23 +84,37 @@ public class ThreadActionSpec extends ActionSpec {
 
     /**
      * Getter for id.
-     * The id can either be a number or a name. Both are returned as String.
+     * The id can either be a number or a name.
+     * This value is not <code>null</code>.
      *
      * @return the id
      */
-    protected String getId() {
+    protected IdSpec getId() {
 
         return this.id;
     }
 
     /**
      * Getter for file.
+     * This value is not <code>null</code>.
      *
      * @return the file
      */
     protected String getFile() {
 
         return this.file;
+    }
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+
+        StringBuffer sb = new StringBuffer("thread file ");
+        sb.append(file);
+        sb.append(" ");
+        sb.append(id.toString());
+        return sb.toString();
     }
 
     /**

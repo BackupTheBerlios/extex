@@ -24,6 +24,7 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.primitives.pdftex.util.destination.DestType;
+import de.dante.extex.interpreter.primitives.pdftex.util.id.IdSpec;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.node.pdftex.PdfDest;
@@ -41,7 +42,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    &lang;span&rang;
+ *    &lang;pdfdest&rang;
  *       &rarr; <tt>\pdfdest</tt> ... </pre>
  *
  * <h4>Examples</h4>
@@ -51,7 +52,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Pdfdest extends AbstractPdftexCode {
 
@@ -83,11 +84,12 @@ public class Pdfdest extends AbstractPdftexCode {
 
         ensurePdftex(context, typesetter);
 
+        IdSpec id = IdSpec.parseIdSpec(source, context, getName());
         DestType type = DestType.parseDestType(context, source, typesetter,
                 getName());
 
         try {
-            typesetter.add(new PdfDest(type));
+            typesetter.add(new PdfDest(id, type));
         } catch (TypesetterException e) {
             throw new InterpreterException(e);
         } catch (ConfigurationException e) {
