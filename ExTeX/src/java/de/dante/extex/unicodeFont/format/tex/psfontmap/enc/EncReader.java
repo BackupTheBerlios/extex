@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -34,7 +34,7 @@ import de.dante.extex.unicodeFont.format.tex.psfontmap.enc.exception.FontEncodin
  * @see <a href="package-summary.html#font-enc">font encoding file</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class EncReader implements Serializable {
@@ -61,6 +61,11 @@ public class EncReader implements Serializable {
             while ((line = reader.readLine()) != null) {
                 line = line.trim();
                 if (!(line.startsWith("%") || line.equals(""))) {
+                    // ignore all after '%'
+                    int pos = line.indexOf('%');
+                    if (pos >= 0) {
+                        line = line.substring(0, pos - 1).trim();
+                    }
                     buf.append(line).append(" ");
                 }
             }
