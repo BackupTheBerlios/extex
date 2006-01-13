@@ -1,0 +1,2335 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="generator" content=
+  "HTML Tidy for Linux/x86 (vers 12 April 2005), see www.w3.org" />
+  <meta http-equiv="Content-Type" content=
+  "text/html; charset=us-ascii" />
+  <!--Generated from MS Word sources (sic!): Converted with UpCast (www.infinity-loop.com) to XML, transformed with XSLT/Saxon to this final code. (SMi)-->
+
+  <title>XHTML 1.0: Die Extensible HyperText Markup Language
+  (Zweite Auflage) - 1&nbsp;Was ist XHTML?</title>
+  <link rel="stylesheet" type="text/css" href=
+  "XHTML_1.0_Die_Extensible_HyperText_Markup_Language_Zweite_Auflage_dateien/W3C-REC.css" />
+  <link rel="stylesheet" type="text/css" href=
+  "XHTML_1.0_Die_Extensible_HyperText_Markup_Language_Zweite_Auflage_dateien/css-de.css" />
+  </head>
+
+<body>
+  <div class="transheader">
+    <a href="http://www.edition-w3c.de/"><img src=
+    "XHTML_1.0_Die_Extensible_HyperText_Markup_Language_Zweite_Auflage_dateien/edition-w3c-de-logo-klein.gif"
+    alt="edition W3C.de" align="right" border="1" /></a>
+
+    <h1 class="transtitle">XHTML 1.0: Die Extensible HyperText
+    Markup Language (Zweite Auflage)</h1>
+
+    <h1 class="transtitle">Deutsche &#220;bersetzung</h1>
+
+    <h2 class="transtitle"></h2>
+
+    <dl>
+      <dt>Diese Version:</dt>
+
+      <dd><a href=
+      "http://www.edition-w3c.de/TR/2002/REC-xhtml1-20020801">http://www.edition-w3c.de/TR/2002/REC-xhtml1-20020801</a></dd>
+
+      <dt>Aktuelle Version:</dt>
+
+      <dd><a href=
+      "http://www.edition-w3c.de/TR/xhtml1">http://www.edition-w3c.de/TR/xhtml1</a></dd>
+
+      <dt>&#220;bersetzer:</dt>
+
+      <dd>Judith Muhr (&#220;bersetzung)</dd>
+
+      <dd>Stefan Mintert (Fachlektorat und Kommentierung),
+      mintert.com <a href=
+      "mailto:stefan@mintert.com">&lt;stefan@mintert.com&gt;</a></dd>
+    </dl><a href="http://www.edition-w3c.de/#Buecher"><img src=
+    "XHTML_1.0_Die_Extensible_HyperText_Markup_Language_Zweite_Auflage_dateien/xhtmlco-124x177-rahmen.png"
+    alt="Buchcover" align="right" border="0" /></a>
+
+    <p class="transcopyright">Bei diesem Dokument handelt es sich
+    um eine &#220;bersetzung eines <a href=
+    "http://www.w3.org/">W3C</a>-Textes. Dieser Text ist
+    urheberrechtlich gesch&#252;tzt; bitte beachten Sie die
+    nachfolgenden Hinweise des Originaldokuments. Die Rechte an der
+    &#220;bersetzung liegen bei den &#220;bersetzern und dem Verlag
+    Addison-Wesley. Die &#220;bersetzung hat <em>keine</em> durch
+    das W3C legitimierte, normative Wirkung. Das einzige
+    ma&#223;gebliche Dokument ist das englische Original.</p>
+
+    <p>Bitte senden Sie Fehler und Korrekturen zur deutschen
+    Fassung an die &#220;bersetzer.</p>
+
+    <p>Kommentare der &#220;bersetzer, die als solche
+    gekennzeichnet sind, unterliegen dem Urheberrecht der
+    &#220;bersetzer. Sie sind nicht Bestandteil des
+    Ursprungsdokuments.</p><script type="text/javascript">
+//<![CDATA[
+<!--
+google_ad_client = "pub-8534635305043993";
+google_alternate_ad_url = "http://www.linkwerk.com/";
+google_ad_width = 728;
+google_ad_height = 90;
+google_ad_format = "728x90_as";
+google_ad_channel ="6149885397";
+google_color_border = "000000";
+google_color_bg = "F0F0F0";
+google_color_link = "0000FF";
+google_color_url = "008000";
+google_color_text = "000000";
+//-->
+//]]>
+</script> <script type="text/javascript" src=
+"XHTML_1.0_Die_Extensible_HyperText_Markup_Language_Zweite_Auflage_dateien/show_ads">
+</script><iframe name="google_ads_frame" src=
+"XHTML_1.0_Die_Extensible_HyperText_Markup_Language_Zweite_Auflage_dateien/ads.html"
+    marginwidth="0" marginheight="0" vspace="0" hspace="0"
+    allowtransparency="true" frameborder="0" height="90" scrolling=
+    "no" width="728">&lt;img&gt;</iframe>
+  </div>
+  <hr />
+
+  <div class="head">
+    <p><a href="http://www.w3.org/"><img src=
+    "XHTML_1.0_Die_Extensible_HyperText_Markup_Language_Zweite_Auflage_dateien/w3c_home.png"
+    alt="W3C" height="48" width="72" /></a></p>
+
+    <h1>XHTML 1.0: Die Extensible HyperText Markup Language (Zweite
+    Auflage)</h1>
+
+    <h2>Eine Neuformulierung von HTML in XML 1.0</h2>
+
+    <h2>W3C-Empfehlung, 26. Januar 2000, &#252;berarbeitet am 1.
+    August 2002</h2>
+
+    <dl>
+      <dt>Diese Version:</dt>
+
+      <dd><a href=
+      "http://www.w3.org/TR/2002/REC-xhtml1-20020801">http://www.w3.org/TR/2002/REC-xhtml1-20020801</a></dd>
+
+      <dt>Neueste Version:</dt>
+
+      <dd><a href=
+      "http://www.w3.org/TR/xhtml1">http://www.w3.org/TR/xhtml1</a></dd>
+
+      <dt>Vorhergehende Version:</dt>
+
+      <dd><a href=
+      "http://www.w3.org/TR/2000/REC-xhtml1-20000126">http://www.w3.org/TR/2000/REC-xhtml1-20000126</a></dd>
+
+      <dt>Version mit hervorgehobenen &#196;nderungen:</dt>
+
+      <dd><a href=
+      "http://www.w3.org/TR/2002/REC-xhtml1-20020801/xhtml1-diff.html">
+      http://www.w3.org/TR/2002/REC-xhtml1-20020801/xhtml1-diff.html</a></dd>
+
+      <dt>Autoren:</dt>
+
+      <dd>Siehe Danksagungen.</dd>
+    </dl>
+
+    <p>Bitte beachten Sie die <a href=
+    "http://www.w3.org/2002/08/REC-xhtml1-20020801-errata"><strong>Errata</strong></a>
+    f&#252;r dieses Dokument, die normative Korrekturen enthalten
+    k&#246;nnen. Siehe auch <a href=
+    "http://www.w3.org/MarkUp/translations"><strong>&#220;bersetzungen</strong></a>.</p>
+
+    <p>Dieses Dokument ist auch in folgenden nicht normativen
+    Formaten erh&#228;ltlich: <a href=
+    "http://www.w3.org/TR/2002/REC-xhtml1-%2020020801/Cover.html">Mehrteilige
+    XHTML-Dateien</a>, <a href=
+    "http://www.w3.org/TR/2002/REC-xhtml1-20020801/xhtml1.ps">PostScript</a>,
+    <a href=
+    "http://www.w3.org/TR/2002/REC-xhtml1-20020801/xhtml1.pdf">PDF</a>,
+    <a href=
+    "http://www.w3.org/TR/2002/REC-%20xhtml1-20020801/xhtml1.zip">ZIP-Archiv</a>
+    und <a href=
+    "http://www.w3.org/TR/2002/REC-xhtml1-%2020020801/xhtml1.tgz">Gzip/TAR-Archiv</a>
+    .</p>
+
+    <p class="copyright"><a href=
+    "http://www.w3.org/Consortium/Legal/ipr-notice-20000612#Copyright">
+    Copyright</a> <span class="diff-chg">&#169;2002</span> <a href=
+    "http://www.w3.org/"><abbr title=
+    "World Wide Web Consortium">W3C</abbr></a> <sup><span class=
+    "diff-chg">&#174;</span></sup> ( <a href=
+    "http://www.lcs.mit.edu/"><abbr title=
+    "Massachusetts Institute of Technology">MIT</abbr></a> ,
+    <a href="http://www.inria.fr/"><abbr xml:lang="fr" title=
+    "Institut National de Recherche en Informatique et Automatique"
+    lang="fr">INRIA</abbr></a> , <a href=
+    "http://www.keio.ac.jp/">Keio</a> ), All Rights Reserved. W3C
+    <a href=
+    "http://www.w3.org/Consortium/Legal/ipr-notice-20000612#Legal_Disclaimer">
+    liability</a> , <a href=
+    "http://www.w3.org/Consortium/Legal/ipr-notice-20000612#W3C_Trademarks">
+    trademark</a> , <a href=
+    "http://www.w3.org/Consortium/Legal/copyright-documents-19990405">
+    document use</a> and <a href=
+    "http://www.w3.org/Consortium/Legal/copyright-software-19980720">
+    software licensing</a> rules apply.</p>
+  </div>
+
+  <div class="toc">
+    <p><strong>Inhaltsverzeichnis</strong></p><a href=
+    "#heading-1%A0" class="heading_1">1&nbsp;Was ist
+    XHTML?</a><br />
+    <a href="#heading-1.1%A0" class="heading_2">1.1&nbsp;Was ist
+    HTML 4?</a><br />
+    <a href="#heading-1.2%A0" class="heading_2">1.2&nbsp;Was ist
+    XML?</a><br />
+    <a href="#heading-1.3%A0" class="heading_2">1.3&nbsp;Wozu
+    braucht man XHTML?</a><br />
+    <a href="#heading-2%A0" class=
+    "heading_1">2&nbsp;Definitionen</a><br />
+    <a href="#heading-2.1%A0" class=
+    "heading_2">2.1&nbsp;Terminologie</a><br />
+    <a href="#heading-2.2%A0" class="heading_2">2.2&nbsp;Allgemeine
+    Begriffe</a><br />
+    <a href="#heading-3%A0" class="heading_1">3&nbsp;Normative
+    Definition von XHTML 1.0</a><br />
+    <a href="#heading-3.1%A0" class="heading_2">3.1&nbsp;Konforme
+    Dokumente</a><br />
+    <a href="#heading-3.1.1%A0" class="heading_3">3.1.1&nbsp;Streng
+    konforme Dokumente</a><br />
+    <a href="#heading-3.1.2%A0" class="heading_3">3.1.2&nbsp;XHTML
+    mit anderen Namensr&#228;umen verwenden</a><br />
+    <a href="#heading-3.2%A0" class="heading_2">3.2&nbsp;Konforme
+    Benutzerprogramme</a><br />
+    <a href="#heading-4%A0" class="heading_1">4&nbsp;Unterschiede
+    zu HTML 4</a><br />
+    <a href="#heading-4.1%A0" class="heading_2">4.1&nbsp;Dokumente
+    m&#252;ssen korrekt aufgebaut sein</a><br />
+    <a href="#heading-4.2%A0" class="heading_2">4.2&nbsp;Element-
+    und Attributnamen m&#252;ssen in Kleinbuchstaben dargestellt
+    werden</a><br />
+    <a href="#heading-4.3%A0" class="heading_2">4.3&nbsp;F&#252;r
+    nicht leere Elemente m&#252;ssen End-Tags angegeben
+    werden</a><br />
+    <a href="#heading-4.4%A0" class=
+    "heading_2">4.4&nbsp;Attributwerte m&#252;ssen immer in
+    Anf&#252;hrungszeichen stehen</a><br />
+    <a href="#heading-4.5%A0" class=
+    "heading_2">4.5&nbsp;Attributminimierung</a><br />
+    <a href="#heading-4.6%A0" class="heading_2">4.6&nbsp;Leere
+    Elemente</a><br />
+    <a href="#heading-4.7%A0" class="heading_2">4.7&nbsp;Behandlung
+    von Leerraum in Attributwerten</a><br />
+    <a href="#heading-4.8%A0" class="heading_2">4.8&nbsp;Script-
+    und Style-Elemente</a><br />
+    <a href="#heading-4.9%A0" class=
+    "heading_2">4.9&nbsp;SGML-Ausschl&#252;sse</a><br />
+    <a href="#heading-4.10%A0" class="heading_2">4.10&nbsp;Die
+    Elemente mit 'id'- und 'name'-Attributen</a><br />
+    <a href="#heading-4.11%A0" class=
+    "heading_2">4.11&nbsp;Attribute mit vordefinierten
+    Wertemengen</a><br />
+    <a href="#heading-4.12%A0" class=
+    "heading_2">4.12&nbsp;Entity-Referenzen als hexadezimaler
+    Wert</a><br />
+    <a href="#heading-5%A0" class=
+    "heading_1">5&nbsp;Kompatibilit&#228;tsaspekte</a><br />
+    <a href="#heading-5.1%A0" class=
+    "heading_2">5.1&nbsp;Internet-Medientyp</a><br />
+    <a href="#heading-6%A0" class="heading_1">Anhang A:
+    DTDs</a><br />
+    <a href="#heading-6.1%A0" class="heading_2">A.1
+    Dokumenttypdefinitionen</a><br />
+    <a href="#heading-6.1.1%A0" class="heading_3">A.1.1.
+    XHTML-1.0-Strict</a><br />
+    <a href="#heading-6.1.2%A0" class="heading_3">A.1.2.
+    XHTML-1.0-Transitional</a><br />
+    <a href="#heading-6.1.3%A0" class="heading_3">A.1.3.
+    XHTML-1.0-Frameset</a><br />
+    <a href="#heading-6.2%A0" class="heading_2">A.2
+    Entity-Mengen</a><br />
+    <a href="#heading-6.2.1%A0" class="heading_3">A.2.1. Latin-1
+    characters</a><br />
+    <a href="#heading-6.2.2%A0" class="heading_3">A.2.2. Special
+    characters</a><br />
+    <a href="#heading-6.2.3%A0" class="heading_3">A.2.3.
+    Symbols</a><br />
+    <a href="#heading-7%A0" class="heading_1">Anhang B:
+    Element-Ausschl&#252;sse</a><br />
+    <a href="#heading-8%A0" class="heading_1">Anhang C: Richtlinien
+    zur HTML-Kompatibilit&#228;t</a><br />
+    <a href="#heading-8.1%A0" class="heading_2">C.1
+    Verarbeitungsanweisungen und die XML-Deklaration</a><br />
+    <a href="#heading-8.2%A0" class="heading_2">C.2 Leere
+    Elemente</a><br />
+    <a href="#heading-8.3%A0" class="heading_2">C.3
+    Elementminimierung und leerer Elementinhalt</a><br />
+    <a href="#heading-8.4%A0" class="heading_2">C.4 Eingebettete
+    Stylesheets und Skripte</a><br />
+    <a href="#heading-8.5%A0" class="heading_2">C.5
+    Zeilenumbr&#252;che innerhalb von Attributwerten</a><br />
+    <a href="#heading-8.6%A0" class="heading_2">C.6
+    Isindex</a><br />
+    <a href="#heading-8.7%A0" class="heading_2">C.7 Die Attribute
+    lang and xml:lang</a><br />
+    <a href="#heading-8.8%A0" class="heading_2">C.8
+    Fragmentbezeichner</a><br />
+    <a href="#heading-8.9%A0" class="heading_2">C.9
+    Zeichencodierung</a><br />
+    <a href="#heading-8.10%A0" class="heading_2">C.10 Boolesche
+    Attribute</a><br />
+    <a href="#heading-8.11%A0" class="heading_2">C.11 Document
+    Object Model und XHTML</a><br />
+    <a href="#heading-8.12%A0" class="heading_2">C.12 Die
+    Verwendung von et-Zeichen in Attributwerten (und
+    anderswo)</a><br />
+    <a href="#heading-8.13%A0" class="heading_2">C.13 Cascading
+    Style Sheets (CSS) und XHTML</a><br />
+    <a href="#heading-8.14%A0" class="heading_2">C.14
+    Referenzierung von Style-Elementen bei Verwendung als
+    XML</a><br />
+    <a href="#heading-8.15%A0" class="heading_2">C.15
+    Leerraumzeichen in HTML vs. XML</a><br />
+    <a href="#heading-8.16%A0" class="heading_2">C.16 Die benannte
+    Zeichenreferenz &amp;apos;</a><br />
+    <a href="#heading-9%A0" class="heading_1">Anhang D:
+    Danksagungen</a><br />
+    <a href="#heading-10%A0" class="heading_1">Anhang E:
+    Literaturverzeichnis</a><br />
+    <a href="#index" class="heading_1">Stichwortverzeichnis</a>
+  </div>
+
+  <h4>Kurzbeschreibung</h4>
+
+  <p>Diese Spezifikation definiert die zweite Auflage von XHTML
+  1.0, eine Neufassung von HTML 4 als XML 1.0-Anwendung sowie drei
+  DTDs, die den von HTML 4 definierten DTDs entsprechen. Die
+  Semantik der Elemente und ihre Attribute sind in der
+  W3C-Empfehlung f&#252;r HTML 4 definiert. Diese Semantiken
+  stellen die Grundlage f&#252;r die zuk&#252;nftige
+  Erweiterbarkeit von XHTML dar. Kompatibilit&#228;t mit
+  existierenden HTML-Benutzerprogrammen ist m&#246;glich, wenn
+  einige wenige Richtlinien befolgt werden.</p>
+
+  <div class="transnote">
+    <p class="prefix"><strong>Anmerkung der
+    &#220;bersetzer:</strong></p>
+
+    <p>Die Kurzbeschreibung sagt bereits zwei wichtige Dinge:
+    Erstens entspricht XHTML 1.0 inhaltlich HTML 4. Es gibt also
+    keine neuen Elementtypen. Zweitens ist die Bedeutung der
+    Elementtypen in der HTML 4-Spezifikation beschrieben. Aus
+    diesem Grund ist die HTML 4-Spezifikation nicht
+    &#252;berfl&#252;ssig und sollte bekannt sein, wenn Sie mit
+    HTML oder XHTML arbeiten m&#246;chten. Die deutsche
+    &#220;bersetzung von HTML 4 ist unter der Adresse <a href=
+    "http://www.edition-w3c.de/TR/1999/REC-html401-19991224">http://www.edition-w3c.de/TR/1999/REC-html401-19991224</a>
+    zu finden.</p>
+  </div>
+
+  <h4>Status dieses Dokuments</h4>
+
+  <p><i>Dieser Abschnitt beschreibt den Status dieses Dokuments zum
+  Zeitpunkt seiner Ver&#246;ffentlichung. Neue Dokumente
+  k&#246;nnen dieses Dokument ersetzen. Der neueste Status dieser
+  Dokumentreihe wird vom W3C verwaltet.</i></p>
+
+  <p>Dieses Dokument ist die zweite Auflage der XHTML
+  1.0-Empfehlung, die die Korrektur&#228;nderungen bis zum 1.
+  August 2002 enth&#228;lt. &#196;nderungen zwischen dieser Version
+  und der vorhergehenden Empfehlung sind in einer Version mit
+  hervorgehobenen &#196;nderungen dargestellt.</p>
+
+  <p>Diese zweite Auflage ist keine neue Version von XHTML 1.0 (zum
+  ersten mal am 26. Januar 2000 ver&#246;ffentlicht). Die
+  &#196;nderungen in diesem Dokument spiegeln Korrekturen wider,
+  die als Ergebnis von Kommentaren, die von der &#214;ffentlichkeit
+  gemacht wurden, und als Ergebnis der fortschreitenden Arbeit der
+  HTML-Arbeitsgruppe entstanden sind. Es gibt keine substantiellen
+  &#196;nderungen in diesem Dokument &#8211; ausschlie&#223;lich
+  die Integration der verschiedenen Errata.</p>
+
+  <p>Die Liste der bekannten Fehler in dieser Spezifikation ist
+  unter <a href=
+  "http://www.w3.org/2002/08/REC-xhtml1-20020801-errata">http://www.w3.org/2002/08/REC-xhtml1-20020801-errata</a>
+  verf&#252;gbar.</p>
+
+  <p>Bitte melden Sie Fehler in diesem Dokument an <a href=
+  "mailto:www-html-editor@w3.org">www-html-editor@w3.org</a>
+  (<a href=
+  "http://lists.w3.org/Archives/Public/www-html-editor/">Archiv</a>).
+  Die &#246;ffentliche Diskussion von HTML-Eigenschaften findet auf
+  der Mailingliste <a href=
+  "mailto:www-html@w3.org">www-html@w3.org</a> (<a href=
+  "http://lists.w3.org/Archives/Public/www-html/">Archiv</a>)
+  statt.</p>
+
+  <p>Dieses Dokument wurde als Teil der <a href=
+  "http://www.w3.org/MarkUp/Activity">W3C HTML Activity</a>
+  hergestellt. Die Ziele der <a href=
+  "http://www.w3.org/MarkUp/Group/">HTML Working Group</a>
+  (<a href="http://cgi.w3.org/MemberAccess/">nur Mitglieder</a>)
+  werden in der <a href=
+  "http://www.w3.org/MarkUp/2000/Charter">HTML Working Group
+  Charta</a> diskutiert.</p>
+
+  <p>Zur Zeit der Ver&#246;ffentlichung war die Arbeitsgruppe davon
+  &#252;berzeugt, dass es keine Patentbekanntmachungen gibt, die
+  f&#252;r diese Spezifikation relevant sind. Eine aktuelle Liste
+  von Patentbekanntmachungen, die f&#252;r diese Spezifikation
+  relevant sind, ist auf der <a href=
+  "http://www.w3.org/2002/07/HTML-IPR">Seite f&#252;r
+  Patentbekanntmachungen</a> der Arbeitsgruppe zu finden.</p>
+
+  <p>Eine Liste der aktuellen W3C-Empfehlungen sowie anderer
+  technischer Dokumente finden Sie unter <a href=
+  "http://www.w3.org/TR">http://www.w3.org/TR</a>.</p>
+
+  <div class="transnote">
+    <p class="prefix"><strong>Anmerkung der
+    &#220;bersetzer:</strong></p>
+
+    <p>Eine Liste von deutschen &#220;bersetzungen von
+    W3C-Dokumenten finden Sie unter <a href=
+    "http://www.edition-w3c.de/">http://www.edition-w3c.de/</a>.</p>
+  </div>
+
+  <h1><a name="heading-1&nbsp;"><!--empty-->1&nbsp;</a><a name=
+  "_Toc6101515"><!--empty--></a>Was ist XHTML?</h1>
+
+  <p><b>Dieser Abschnitt ist informell.</b></p>
+
+  <p>XHTML ist eine Familie aktueller und zuk&#252;nftiger
+  Dokumenttypen und Module, die HTML 4 nachbilden, eine Untermenge
+  davon bilden bzw. es erweitern [HTML4]. Dokumenttypen aus der
+  XHTML-Familie basieren auf XML und sind letztlich darauf
+  ausgelegt, in Kombination mit auf XML basierenden
+  Benutzerprogrammen eingesetzt zu werden. Detaillierte
+  Informationen zu dieser Familie und ihrer Entwicklung finden Sie
+  in [XHTMLMOD].</p>
+
+  <p>XHTML 1.0 (diese Spezifikation) ist der erste Dokumenttyp in
+  der XHTML-Familie. Es handelt sich dabei um eine Neuformulierung
+  der drei HTML 4-Dokumenttypen als Anwendungen von XML 1.0 [XML].
+  Es ist f&#252;r die Verwendung als Sprache f&#252;r Inhalte
+  vorgesehen, die sowohl zu XML konform sind, und die auch, falls
+  sie einigen einfachen Richtlinien folgen, in zu HTML 4 konformen
+  Benutzerprogrammen eingesetzt werden k&#246;nnen. Entwickler, die
+  ihre Inhalte auf XHTML 1.0 umstellen, werden die folgenden
+  Vorteile erkennen:</p>
+
+  <ul>
+    <li>XHTML-Dokumente sind konform zu XML. Als solche k&#246;nnen
+    sie ohne weiteres mit Standard-XML-Werkzeugen angezeigt,
+    bearbeitet und validiert werden.</li>
+
+    <li>XML-Dokumente k&#246;nnen so formuliert werden, dass sie in
+    bereits existierenden, zu HTML 4 konformen Benutzerprogrammen
+    ebenso gut oder besser funktionieren als zuvor, ebenso wie in
+    neuen, zu XHMTL 1.0 konformen Benutzerprogrammen.</li>
+
+    <li>XHTML-Dokumente k&#246;nnen Applikationen (z.B. Skripte und
+    Applets) einsetzen, die auf dem HTML Document Object Model oder
+    dem XML Document Object Model basieren [DOM].</li>
+
+    <li>Falls sich die XHTML-Familie weiterentwickelt, ist es
+    wahrscheinlicher, dass Dokumente, die konform zu XHTML 1.0
+    sind, innerhalb und zwischen unterschiedlichen XHTML-Umgebungen
+    kombiniert werden k&#246;nnen.</li>
+  </ul>
+
+  <p>Die XHTML-Familie ist der n&#228;chste Schritt in der
+  Evolution des Internet. Wenn die Entwickler von Inhalten heute
+  auf XHTML umsteigen, k&#246;nnen sie in die XML-Welt mit allen
+  dort gebotenen Vorteilen vordringen und dennoch darauf vertrauen,
+  dass ihr Inhalt vorw&#228;rts- und r&#252;ckw&#228;rtskompatibel
+  ist.</p>
+
+  <h2><a name="heading-1.1&nbsp;"><!--empty-->1.1&nbsp;</a><a name=
+  "_Toc6101516"><!--empty--></a>Was ist HTML 4?</h2>
+
+  <p>HTML 4 [HTML4] ist eine SGML-Anwendung (Standard Generalized
+  Markup Language), die konform zur internationalen Norm ISO 8879
+  ist und in weiten Kreisen als Standardpublikationssprache des
+  World Wide Web betrachtet wird.</p>
+
+  <p>SGML ist eine Sprache f&#252;r beschreibende Markup-Sprachen,
+  insbesondere solche, die f&#252;r den elektronischen Austausch
+  von Dokumenten, die Dokumentverwaltung und die
+  Dokumentver&#246;ffentlichung verwendet werden. HTML ist ein
+  Beispiel f&#252;r eine in SGML definierte Sprache.</p>
+
+  <p>SGML gibt es schon seit Mitte der Achtzigerjahre, und sie ist
+  relativ stabil geblieben. Ein Gro&#223;teil dieser
+  Stabilit&#228;t resultiert aus der Tatsache, dass die Sprache zum
+  einen zahlreiche Funktionsmerkmale aufweist, gleichzeitig aber
+  auch flexibel ist. Diese Flexibilit&#228;t hat jedoch ihren
+  Preis, n&#228;mlich die Komplexit&#228;t, die verhindert hat,
+  dass es sich in unterschiedlichsten Umgebungen durchgesetzt hat,
+  unter anderem auch im World Wide Web.</p>
+
+  <p>HTML war, wie urspr&#252;nglich vorgesehen, eine Sprache
+  f&#252;r den Austausch wissenschaftlicher und anderer technischer
+  Dokumente, die auch von Benutzern eingesetzt werden konnte, die
+  keine Dokumentspezialisten waren. HTML l&#246;st die Probleme,
+  die sich aus der Komplexit&#228;t von SGML ergeben, indem es eine
+  kleine Menge strukturbildender und semantischer Tags
+  bereitstellt, die f&#252;r die Auslegung relativ einfacher
+  Dokumente geeignet sind. Um die Dokumentstruktur zu vereinfachen,
+  unterst&#252;tzt HTML au&#223;erdem Hypertext.
+  Multimedia-F&#228;higkeiten wurden sp&#228;ter
+  hinzugef&#252;gt.</p>
+
+  <p>Innerhalb bemerkenswert kurzer Zeit wurde HTML allgemein
+  beliebt und wuchs schnell &#252;ber seinen urspr&#252;nglichen
+  Zweck hinaus. Seit der Einf&#252;hrung von HTML wurden sehr
+  schnell immer wieder neue Elemente entwickelt, die in HTML (als
+  Standard) eingesetzt werden und die Anpassung von HTML an
+  vertikale, hoch spezialisierte M&#228;rkte unterst&#252;tzten.
+  Diese Vielfalt an neuen Elementen hat zu Problemen bez&#252;glich
+  der Zusammenarbeit von Dokumenten gef&#252;hrt, die &#252;ber
+  verschiedene Plattformen hinweg verwendet wurden.</p>
+
+  <p>Weil sowohl Software als auch Plattformen immer schneller
+  heterogen wurden, ist deutlich, dass das &#8222;klassische&#8220;
+  HTML 4 f&#252;r die Verwendung auf diesen Plattformen gewissen
+  Einschr&#228;nkungen unterliegt.</p>
+
+  <h2><a name="heading-1.2&nbsp;"><!--empty-->1.2&nbsp;</a><a name=
+  "_Toc6101517"><!--empty--></a>Was ist XML?</h2>
+
+  <p>XML&#8482; ist die Abk&#252;rzung f&#252;r Extensible Markup
+  Language [XML].</p>
+
+  <p>XML war darauf ausgelegt, die Leistungsf&#228;higkeit und
+  Flexibilit&#228;t von SGML wiederzugewinnen, ohne jedoch deren
+  hohe Komplexit&#228;t mit sich zu bringen. Obwohl XML eine
+  eingeschr&#228;nkte Form von SGML ist, weist es trotzdem einen
+  Gro&#223;teil der Leistungsf&#228;higkeit und Reichhaltigkeit von
+  SGML auf, ebenso wie die gebr&#228;uchlichsten Funktionsmerkmale
+  von SGML.</p>
+
+  <p>W&#228;hrend XML diese vorteilhaften Leistungsmerkmale
+  beibeh&#228;lt, verzichtet es auf viele der komplexeren
+  Funktionsmerkmale von SGML, die das Schreiben und den Entwurf
+  geeigneter Software schwierig und teuer machen.</p>
+
+  <h2><a name="heading-1.3&nbsp;"><!--empty-->1.3&nbsp;</a><a name=
+  "_Toc6101518"><!--empty--></a>Wozu braucht man XHTML?</h2>
+
+  <p>Die Vorteile, die ein Umstieg auf XHTML 1.0 mit sich bringt,
+  sind oben beschrieben. Einige der Vorteile beim Wechsel zu XHTML
+  k&#246;nnen ganz allgemein wie folgt beschrieben werden:</p>
+
+  <ul>
+    <li>Dokumententwickler und Designer von Benutzerprogrammen
+    entdecken st&#228;ndig neue M&#246;glichkeiten, ihre Ideen
+    durch neues Markup auszudr&#252;cken. In XML ist es relativ
+    einfach, neue Elemente oder zus&#228;tzliche Elementattribute
+    einzuf&#252;hren. Die XHTML-Familie ist darauf ausgelegt,
+    diesen Erweiterungen durch XHTML-Module und Techniken f&#252;r
+    die Entwicklung neuer, XHTML-konformer Module (die in der
+    bevorstehenden Spezifikation zur XHTML-Modularisierung
+    beschrieben ist) zu gen&#252;gen. Diese Module werden die
+    Kombination existierender und neuer Funktionsmerkmale bei der
+    Entwicklung von Inhalt und dem Entwurf neuer Benutzerprogramme
+    erlauben.</li>
+
+    <li>Es werden st&#228;ndig neue M&#246;glichkeiten f&#252;r den
+    Zugriff auf das Internet eingef&#252;hrt. Einige
+    Sch&#228;tzungen weisen darauf hin, dass im Jahr 2002 75% der
+    Dokumentanzeigen im Internet auf diesen alternativen
+    Plattformen stattfindet. Die XHTML-Familie wurde mit Blick auf
+    die Interoperabilit&#228;t von Benutzerprogrammen entworfen.
+    Durch einen neuen Benutzerprogramm- und
+    Dokument-Profiling-Mechanismus sind Server, Proxies und
+    Benutzerprogramme in der Lage, die bestm&#246;gliche Umwandlung
+    des Inhalts zu erzielen. Letztlich wird es irgendwann
+    m&#246;glich sein, XHTML-konformen Inhalt zu entwickeln, der
+    von jedem zu XHTML konformen Benutzerprogramm verwendet werden
+    kann.</li>
+  </ul>
+
+  <h1><a name="heading-2&nbsp;"><!--empty-->2&nbsp;</a><a name=
+  "_Toc6101519"><!--empty--></a>Definitionen</h1>
+
+  <p><b>Dieser Abschnitt ist normativ.</b></p>
+
+  <h2><a name="heading-2.1&nbsp;"><!--empty-->2.1&nbsp;</a><a name=
+  "_Toc6101520"><!--empty--></a>Terminologie</h2>
+
+  <p>In dieser Spezifikation werden die nachfolgenden Begriffe
+  verwendet. Diese Begriffe erweitern die Definitionen aus
+  [RFC2119], und basieren auf &#228;hnlichen Definitionen wie in
+  ISO/IEC 9945-1:1990 [POSIX.1]:</p>
+
+  <dl>
+    <dt>Kann, Darf (May)<a name=" Kann |" class=
+    "emptyindextarget"><span class="index-inst" title=" Kann ::">
+    <!--empty--></span></a><a name="Darf|" class=
+    "emptyindextarget"><span class="index-inst" title="Darf::">
+    <!--empty--></span></a></dt>
+
+    <dd>In Hinblick auf Implementierungen sollte das Wort
+    &#8222;kann&#8220; als optionales Funktionsmerkmal betrachtet
+    werden, das in dieser Spezifikation nicht gefordert wird, das
+    jedoch unterst&#252;tzt werden kann. Was die Konformit&#228;t
+    des Dokuments betrifft, bedeutet das Wort &#8222;kann&#8220;,
+    dass das optionale Funktionsmerkmal nicht verwendet werden
+    darf. Der Begriff &#8222;optional&#8220; hat dieselbe
+    Definition wie &#8222;kann&#8220;.</dd>
+  </dl>
+
+  <dl>
+    <dt>Muss (Must) <a name=" Muss |" class=
+    "emptyindextarget"><span class="index-inst" title=" Muss ::">
+    <!--empty--></span></a></dt>
+
+    <dd>In dieser Spezifikation sollte das Wort &#8222;muss&#8220;
+    als zwingende Anforderung f&#252;r die Implementierung
+    betrachtet werden oder f&#252;r streng konforme
+    XHTML-Dokumente, abh&#228;ngig vom Kontext. Der Begriff
+    &#8222;soll&#8220; hat dieselbe Definition wie
+    &#8222;muss&#8220;.</dd>
+  </dl>
+
+  <dl>
+    <dt>Nicht spezifiziert (Unspecified) <a name=
+    " Nicht spezifiziert |" class="emptyindextarget"><span class=
+    "index-inst" title=" Nicht spezifiziert ::">
+    <!--empty--></span></a></dt>
+
+    <dd>Ist ein Wert oder ein Verhalten nicht spezifiziert,
+    definiert die Spezifikation keine
+    Portabilit&#228;tsanforderungen f&#252;r ein Funktionsmerkmal
+    f&#252;r eine Implementierung, selbst wenn ein Dokument
+    vorliegt, das dieses Funktionsmerkmal nutzt. Ein Dokument, das
+    f&#252;r einen solchen Fall ein spezielles Verhalten bedingt,
+    statt ein beliebiges Verhalten zu tolerieren, obwohl es dieses
+    Funktionsmerkmal aufweist, ist kein streng konformes
+    XHTML-Dokument.</dd>
+  </dl>
+
+  <dl>
+    <dt>Optional (Optional) <a name="Optional|" class=
+    "emptyindextarget"><span class="index-inst" title="Optional::">
+    <!--empty--></span></a></dt>
+
+    <dd>Siehe &#8222;Kann&#8220;.</dd>
+  </dl>
+
+  <dl>
+    <dt>Reserviert (Reserved) <a name=" Reserviert |" class=
+    "emptyindextarget"><span class="index-inst" title=
+    " Reserviert ::"><!--empty--></span></a></dt>
+
+    <dd>Ein Wert oder Verhalten ist nicht spezifiziert, aber es
+    darf von konformen Dokumenten nicht verwendet und von einem
+    konformen Benutzerprogramm nicht unterst&#252;tzt werden.</dd>
+  </dl>
+
+  <dl>
+    <dt>Soll (Shall) <a name="Soll|" class=
+    "emptyindextarget"><span class="index-inst" title="Soll::">
+    <!--empty--></span></a></dt>
+
+    <dd>Siehe &#8222;Muss&#8220;.</dd>
+  </dl>
+
+  <dl>
+    <dt>Sollte (Should) <a name=" Sollte |" class=
+    "emptyindextarget"><span class="index-inst" title=" Sollte ::">
+    <!--empty--></span></a></dt>
+
+    <dd>Im Hinblick auf Implementierungen sollte das Wort
+    &#8222;sollte&#8220; als Empfehlung f&#252;r die
+    Implementierung, nicht aber als Forderung interpretiert werden.
+    Im Hinblick auf Dokumente sollte das Wort &#8222;sollte&#8220;
+    als empfohlene Vorgehensweise bei der Programmierung f&#252;r
+    Dokumente verstanden werden und als Forderung f&#252;r streng
+    konforme XHTML-Dokumente.</dd>
+  </dl>
+
+  <dl>
+    <dt>Unterst&#252;tzt (Supported) <a name=" Unterst&#252;tzt |"
+    class="emptyindextarget"><span class="index-inst" title=
+    " Unterst&#252;tzt ::"><!--empty--></span></a></dt>
+
+    <dd>Bestimmte Funktionsmerkmale in dieser Spezifikation sind
+    optional. Wird ein Funktionsmerkmal unterst&#252;tzt,
+    verh&#228;lt es sich, wie in dieser Spezifikation
+    beschrieben.</dd>
+  </dl>
+
+  <h2><a name="heading-2.2&nbsp;"><!--empty-->2.2&nbsp;</a><a name=
+  "_Toc6101521"><!--empty--></a>Allgemeine Begriffe</h2>
+
+  <dl>
+    <dt>Attribut<a name=" Attribut |" class=
+    "emptyindextarget"><span class="index-inst" title=
+    " Attribut ::"><!--empty--></span></a></dt>
+
+    <dd>Ein Attribut ist ein Parameter f&#252;r ein Element, der in
+    der DTD deklariert ist. Der Typ und der Wertebereich eines
+    Attributs ebenso wie ein m&#246;glicher Standardwert, sind in
+    der DTD definiert.</dd>
+  </dl>
+
+  <div class="transnote">
+    <p class="prefix"><strong>Anmerkung der
+    &#220;bersetzer:</strong></p>
+
+    <p>Beispielsweise lautet bei &lt;a
+    href=&#8220;buch.html&#8220;&gt;...&lt;/a&gt; der Attributname
+    &#8222;href&#8220;. In der XHTML-DTD ist deklariert, dass
+    Elemente vom Typ a Attribute namens &#8222;href&#8220; haben
+    k&#246;nnen. Der Wert ist in diesem Beispiel der Text
+    &#8222;buch.html&#8220;.</p>
+  </div>
+
+  <dl>
+    <dt>Benutzerprogramm<a name=" Benutzerprogramm |" class=
+    "emptyindextarget"><span class="index-inst" title=
+    " Benutzerprogramm ::"><!--empty--></span></a></dt>
+
+    <dd>Ein Benutzerprogramm ist ein System, das XHTML-Dokumente in
+    &#220;bereinstimmung mit dieser Spezifikation verarbeitet.
+    Weitere Informationen finden Sie in Abschnitt 3.2 &#252;ber
+    konforme Benutzerprogramme.</dd>
+  </dl>
+
+  <div class="transnote">
+    <p class="prefix"><strong>Anmerkung der
+    &#220;bersetzer:</strong></p>
+
+    <p>Aus dem englischen &#8222;User Agent&#8220; ist in unserer
+    &#220;bersetzung das &#8222;Benutzerprogramm&#8220; geworden.
+    Eine Begr&#252;ndung und Erl&#228;uterung ist in der
+    kommentierten Fassung der <a href=
+    "http://www.edition-w3c.de/TR/1998/REC-CSS2-19980512">CSS2-Spezifikation</a>
+    zu finden.</p>
+  </div>
+
+  <dl>
+    <dt>DTD<a name=" DTD |" class="emptyindextarget"><span class=
+    "index-inst" title=" DTD ::"><!--empty--></span></a></dt>
+
+    <dd>Eine DTD (Dokumenttypdefinition) setzt sich aus mehreren
+    XML-Markup-Deklarationen zusammen, die in ihrer Gesamtheit die
+    erlaubte Struktur, Elemente und Attribute definiert, die
+    f&#252;r die Verwendung in einem Dokument zur Verf&#252;gung
+    stehen, das konform zu der DTD ist.</dd>
+  </dl>
+
+  <div class="transnote">
+    <p class="prefix"><strong>Anmerkung der
+    &#220;bersetzer:</strong></p>
+
+    <p>Die DTD legt fest, welche Elemente (und ihre Attribute) in
+    einem Dokument verwendet werden k&#246;nnen. Damit stellt die
+    DTD die Grammatik der Sprache (in diesem Fall: XHTML) dar, die
+    definiert wird.</p>
+  </div>
+
+  <dl>
+    <dt>Dokument<a name=" Dokument |" class=
+    "emptyindextarget"><span class="index-inst" title=
+    " Dokument ::"><!--empty--></span></a></dt>
+
+    <dd>Ein Dokument ist ein Datenstrom, der nach der Kombination
+    mit anderen Str&#246;men, auf die er verweist, so strukturiert
+    ist, dass er Informationen enth&#228;lt, die in Elementen
+    enthalten sind, die wie in der zugeh&#246;rigen DTD definiert
+    angeordnet sind. Weitere Informationen finden Sie in Abschnitt
+    3.1 &#252;ber konforme Dokumente.</dd>
+  </dl>
+
+  <dl>
+    <dt>Element<a name=" Element |" class=
+    "emptyindextarget"><span class="index-inst" title=
+    " Element ::"><!--empty--></span></a></dt>
+
+    <dd>Ein Element ist eine Einheit f&#252;r die Strukturierung
+    eines Dokuments, die in der DTD deklariert ist. Das
+    Inhaltsmodell des Elements ist in der DTD definiert;
+    zus&#228;tzliche Semantiken k&#246;nnen in der Textbeschreibung
+    des Elements definiert sein.</dd>
+  </dl>
+
+  <dl>
+    <dt>Funktionsmerkmale<a name=" Funktionsmerkmale |" class=
+    "emptyindextarget"><span class="index-inst" title=
+    " Funktionsmerkmale ::"><!--empty--></span></a></dt>
+
+    <dd>Funktionsmerkmale sind Elemente, Attribute und die diesen
+    Elementen und Attributen zugeordnete Semantik. Wenn eine
+    Implementierung diese Funktionalit&#228;t unterst&#252;tzt,
+    sagt man, sie stellt die erforderlichen Funktionsmerkmale
+    bereit.</dd>
+  </dl>
+
+  <dl>
+    <dt>Implementierung<a name=" Implementierung |" class=
+    "emptyindextarget"><span class="index-inst" title=
+    " Implementierung ::"><!--empty--></span></a></dt>
+
+    <dd>Siehe Benutzerprogramm.</dd>
+  </dl>
+
+  <dl>
+    <dt>Parsing<a name=" Parsing |" class=
+    "emptyindextarget"><span class="index-inst" title=
+    " Parsing ::"><!--empty--></span></a></dt>
+
+    <dd>Parsing ist der Vorgang, w&#228;hrenddessen ein Dokument
+    &#252;berpr&#252;ft (&#8222;gescannt&#8220;) und die in dem
+    Dokument enthaltene Information in den Kontext der Elemente
+    gefiltert wird, in dem die Information strukturiert ist.</dd>
+  </dl>
+
+  <dl>
+    <dt>Rendering<a name=" Rendering |" class=
+    "emptyindextarget"><span class="index-inst" title=
+    " Rendering ::"><!--empty--></span></a></dt>
+
+    <dd>Rendering (Darstellen) ist der Vorgang, bei dem die
+    Information aus einem Dokument dargestellt wird. Diese
+    Darstellung erfolgt in der f&#252;r die Umgebung am besten
+    geeigneten Form (z.B. akustisch, visuell, gedruckt).</dd>
+  </dl>
+
+  <dl>
+    <dt>Validierung<a name=" Validierung|" class=
+    "emptyindextarget"><span class="index-inst" title=
+    " Validierung::"><!--empty--></span></a></dt>
+
+    <dd>Bei der Validierung werden Dokumente im Hinblick auf die
+    zugeordnete DTD &#252;berpr&#252;ft, wobei sichergestellt wird,
+    dass die Verwendung der Elemente sowie der Attribute konsistent
+    mit den Definitionen in der DTD erfolgt.</dd>
+  </dl>
+
+  <dl>
+    <dt>Wohlgeformtheit<a name=" Wohlgeformtheit |" class=
+    "emptyindextarget"><span class="index-inst" title=
+    " Wohlgeformtheit ::"><!--empty--></span></a></dt>
+
+    <dd>Ein <i>Dokument</i> ist wohlgeformt, wenn es
+    gem&#228;&#223; den in <a href=
+    "http://www.edition-w3c.de/TR/2000/REC-xml-20001006#sec-well-formed">
+    Abschnitt 2.1</a> definierten Regeln der XML 1.0-Empfehlung
+    [XML] strukturiert ist. Grunds&#228;tzlich sagt diese
+    Definition aus, dass Elemente, die durch ihre Start- und
+    Ende-Tags begrenzt sind, korrekt ineinander verschachtelt sein
+    m&#252;ssen.</dd>
+  </dl>
+
+  <h1><a name="heading-3&nbsp;"><!--empty-->3&nbsp;</a><a name=
+  "_Toc6101522"><!--empty--></a>Normative Definition von XHTML
+  1.0</h1>
+
+  <p><b>Dieser Abschnitt ist normativ.</b></p>
+
+  <h2><a name="heading-3.1&nbsp;"><!--empty-->3.1&nbsp;</a><a name=
+  "_Toc6101523"><!--empty--></a>Konforme Dokumente <a name=
+  " Konforme Dokumente |" class="emptyindextarget"><span class=
+  "index-inst" title=" Konforme Dokumente ::">
+  <!--empty--></span></a></h2>
+
+  <p>Diese Version von XHTML stellt eine Definition streng
+  konformer XHTML 1.0-Dokumente bereit, die auf die Elemente und
+  Attribute aus dem XML- und XHTML 1.0-Namensraum beschr&#228;nkt
+  sind. Weitere Informationen &#252;ber die Verwendung von XHTML in
+  Kombination mit anderen Namensr&#228;umen, wie beispielsweise
+  f&#252;r das Einbinden von Metadaten, die in RDF ausgedr&#252;ckt
+  sind, in XHTML-Dokumente, finden Sie in Abschnitt <a href=
+  "#_Ref6052186">3.1.2</a>.</p>
+
+  <div class="transnote">
+    <p class="prefix"><strong>Anmerkung der
+    &#220;bersetzer:</strong></p>
+
+    <p>Im Gegensatz zur ersten Auflage wird hier zus&#228;tzlich
+    vom XML-Namensraum gesprochen. Diese Erweiterung der Aussage
+    hinsichtlich des XML-Namensraums ist schon deshalb notwendig,
+    weil in dieser XHTML-Spezifikation auch das Attribut xml:lang
+    vorkommt.</p>
+  </div>
+
+  <h3><a name="heading-3.1.1&nbsp;">
+  <!--empty-->3.1.1&nbsp;</a><a name="_Toc6101524">
+  <!--empty--></a>Streng konforme Dokumente <a name=
+  " Streng konforme Dokumente |" class=
+  "emptyindextarget"><span class="index-inst" title=
+  " Streng konforme Dokumente ::"><!--empty--></span></a></h3>
+
+  <p>Ein streng konformes XHTML-Dokument ist ein XML-Dokument, das
+  nur die Funktionsmerkmale ben&#246;tigt, die in dieser
+  Spezifikation als zwingend erforderlich beschrieben sind. Ein
+  solches Dokument muss alle folgenden Kriterien erf&#252;llen:</p>
+
+  <ol>
+    <li>Es muss konform zu den Beschr&#228;nkungen sein, die in
+    einer der drei in Anhang A beschriebenen DTDs und in Anhang B
+    ausgedr&#252;ckt sind.</li>
+
+    <li>Das Wurzelelement des Dokuments muss <kbd>html</kbd>
+    sein.</li>
+
+    <li>Das Wurzelelement des Dokuments muss eine
+    <kbd>xmlns</kbd>&#8211;Deklaration f&#252;r den
+    XHTML-Namensraum enthalten [XMLNAMES]. Der Namensraum f&#252;r
+    XTHML<a name=" Namensraum f&#252;r XTHML |" class=
+    "emptyindextarget"><span class="index-inst" title=
+    " Namensraum f&#252;r XTHML ::"><!--empty--></span></a> ist
+    definiert als <a href=
+    "http://www.w3.org/1999/xhtml">http://www.w3.org/1999/xhtml</a><kbd><a href="http://www.edition-w3c.de/TR/2002/REC-xhtml1-20020801/">.</a></kbd>
+    Ein Wurzelelement kann z.B. so aussehen:<br />
+    <kbd>&lt;html xmlns="http://www.w3.org/1999/xhtml"
+    xml:lang="en" lang="en"&gt;</kbd></li>
+
+    <li>Im Dokument muss es vor dem Wurzelelement eine
+    DOCTYPE-Deklaration geben. Der in der DOCTYPE-Deklaration
+    enthaltene &#246;ffentliche Bezeichner muss auf eine der drei
+    in Anhang A beschriebenen DTDs verweisen, und zwar unter
+    Verwendung des betreffenden Formal Public Identifier. Der
+    Systembezeichner kann ge&#228;ndert werden, um lokale
+    Systemkonventionen zu ber&#252;cksichtigen.
+
+      <div class="exampleInner">
+        <pre>
+&lt;!DOCTYPE html <br />
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"<br />
+     "<a href=
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd</a>"&gt;<br />
+<br />
+&lt;!DOCTYPE html <br />
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"<br />
+     "<a href=
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd</a>"&gt;<br />
+<br />
+&lt;!DOCTYPE html <br />
+     PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN"<br />
+     "<a href=
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd</a>"&gt;<br />
+</pre>
+      </div>
+    </li>
+  </ol>5. Die [interne] DTD-Teilmenge darf nicht verwendet werden,
+  um irgendwelche Parameter-Entities der DTD zu &#252;berschreiben.
+
+  <p>Eine XML-Deklaration ist nicht in allen XML-Dokumenten
+  erforderlich. Den Autoren von XHTML-Dokumenten wird jedoch sehr
+  empfohlen, in all ihren Dokumenten XML-Deklarationen zu
+  verwenden. Eine solche Deklaration ist erforderlich, wenn die
+  Zeichenkodierung des Dokuments nicht die Standardkodierung UTF-8
+  oder UTF-16 ist und keine Kodierung durch ein
+  Higher-Level-Protokoll bestimmt wurde. Im folgenden Beispiel ist
+  die XML-Deklaration enthalten:</p>
+
+  <div class="exampleInner">
+    <pre>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;<br />
+&lt;!DOCTYPE html <br />
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"<br />
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"&gt;<br />
+&lt;html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"&gt;<br />
+  &lt;head&gt;<br />
+    &lt;title&gt;Virtual Library&lt;/title&gt;<br />
+  &lt;/head&gt;<br />
+  &lt;body&gt;<br />
+    &lt;p&gt;Moved to &lt;a href="http://example.org/"&gt;example.org&lt;/a&gt;.&lt;/p&gt;<br />
+  &lt;/body&gt;<br />
+&lt;/html&gt;<br />
+</pre>
+  </div>
+
+  <div class="transnote">
+    <p class="prefix"><strong>Anmerkung der
+    &#220;bersetzer:</strong></p>
+
+    <p>Die Namensraumbezeichner (hier <a href=
+    "http://www.w3.org/1999/xhtml">http://www.w3.org/1999/xhtml</a>)
+    sehen aus wie URLs. Es handelt sich dabei jedoch
+    <i>ausschlie&#223;lich um Zeichenketten</i>. Unter der
+    gleichnamigen Adresse muss nicht einmal eine Webseite zu finden
+    sein. Man nutzt hier aus, dass durch den Aufbau einer
+    Namensraumbezeichners in dieser Form weltweite Eindeutigkeit
+    gew&#228;hrleistet wird.</p>
+
+    <p>Der Bezeichner legt die Vermutung nahe, dass bei Zugriff per
+    http auf den Rechner mit dem Namen www.w3.org und Anforderung
+    der Datei namens /1999/xhtml ein Dokument geliefert wird, das
+    den entsprechenden Namensraum in irgendeiner Syntax formal
+    definiert. Dies ist jedoch nicht so, was dazu beitr&#228;gt,
+    dass viele Stimmen f&#252;r eine andere Syntax der
+    Namensraumbezeichner pl&#228;dieren.</p>
+  </div>
+
+  <h3><a name="heading-3.1.2&nbsp;">
+  <!--empty-->3.1.2&nbsp;</a><a name="_Toc6101525">
+  <!--empty--></a><a name="_Ref6052186"><!--empty--></a>XHTML mit
+  anderen Namensr&#228;umen verwenden <a name="Namensraum|andere|"
+  class="emptyindextarget"><span class="index-inst" title=
+  "Namensraum|andere::"><!--empty--></span></a></h3>
+
+  <p>Der XHTML-Namensraum kann in Kombination mit anderen
+  XML-Namensr&#228;umen verwendet werden, gem&#228;&#223;
+  [XMLNAMES], obwohl solche Dokumente keine streng konformen XHTML
+  1.0-Dokumente sind, wie oben definiert. Fortlaufende Arbeiten des
+  W3C suchen nach M&#246;glichkeiten, um Konformit&#228;t f&#252;r
+  Dokumente mit mehreren Namensr&#228;umen zu definieren. Als
+  Beispiel siehe [XHTML+MathML].</p>
+
+  <div class="transnote">
+    <p class="prefix"><strong>Anmerkung der
+    &#220;bersetzer:</strong></p>
+
+    <p>Die Kombination von Elementen aus zwei verschiedenen
+    Namensr&#228;umen, wie auch im nachfolgenden Beispiel zu sehen,
+    verhindert, dass das Ergebnisdokument g&#252;ltig
+    bez&#252;glich der einen (etwa XHTML) oder der anderen DTD
+    (etwa MathML) ist.</p>
+  </div>
+
+  <p>Das folgende Beispiel zeigt, wie XHTML 1.0 in Kombination mit
+  der MathML-Empfehlung<a name="XHTML und MathML|" class=
+  "emptyindextarget"><span class="index-inst" title=
+  "XHTML und MathML::"><!--empty--></span></a> verwendet werden
+  kann:</p>
+
+  <div class="exampleInner">
+    <pre>
+&lt;html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"&gt;<br />
+  &lt;head&gt;<br />
+    &lt;title&gt;Ein Beispiel aus der Mathematik&lt;/title&gt;<br />
+  &lt;/head&gt;<br />
+  &lt;body&gt;<br />
+    &lt;p&gt;Das folgende ist MathML-Markup:&lt;/p&gt;<br />
+    &lt;math xmlns="http://www.w3.org/1998/Math/MathML"&gt;<br />
+      &lt;apply&gt; &lt;log/&gt;<br />
+        &lt;logbase&gt;<br />
+          &lt;cn&gt; 3 &lt;/cn&gt;<br />
+        &lt;/logbase&gt;<br />
+        &lt;ci&gt; x &lt;/ci&gt;<br />
+      &lt;/apply&gt;<br />
+    &lt;/math&gt;<br />
+  &lt;/body&gt;<br />
+&lt;/html&gt;<br />
+</pre>
+  </div>
+
+  <p>Das folgende Beispiel zeigt, wie XHTML 1.0-Markup in einen
+  anderen XML-Namensraum aufgenommen werden k&#246;nnte:</p>
+
+  <div class="exampleInner">
+    <pre>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;<br />
+&lt;!--anf&#228;nglich ist der Standard-Namensraum "books" --&gt;<br />
+&lt;book xmlns='urn:loc.gov:books'<br />
+    xmlns:isbn='urn:ISBN:0-395-36341-6' xml:lang="en" lang="en"&gt;<br />
+  &lt;title&gt;Im Dutzend billiger&lt;/title&gt;<br />
+  &lt;isbn:number&gt;1568491379&lt;/isbn:number&gt;<br />
+  &lt;notes&gt;<br />
+    &lt;!-- HTML zum Standard-Namensraum f&#252;r einen Hypertext-Kommentar machen --&gt;<br />
+    &lt;p xmlns='http://www.w3.org/1999/xhtml'&gt;<br />
+        Dies steht auch online &lt;a href="http://www.w3.org/"&gt;zur Verf&#252;gung&lt;/a&gt;.<br />
+    &lt;/p&gt;<br />
+  &lt;/notes&gt;<br />
+&lt;/book&gt;<br />
+</pre>
+  </div>
+
+  <h2><a name="heading-3.2&nbsp;"><!--empty-->3.2&nbsp;</a><a name=
+  "_Toc6101526"><!--empty--></a>Konforme Benutzerprogramme <a name=
+  " Konforme Benutzerprogramme |" class=
+  "emptyindextarget"><span class="index-inst" title=
+  " Konforme Benutzerprogramme ::"><!--empty--></span></a></h2>
+
+  <p>Ein konformes Benutzerprogramm muss alle folgenden Kriterien
+  erf&#252;llen:</p>
+
+  <ol>
+    <li>Um zu der XML 1.0-Empfehlung [XML] konform zu sein, muss
+    das Benutzerprogramm ein XHTML-Dokument auf seinen korrekten
+    Aufbau hin &#252;berpr&#252;fen. Gibt das Benutzerprogramm an,
+    dass es ein validierendes Benutzerprogramm ist, muss es
+    Dokumente auch gem&#228;&#223; der DTDs &#252;berpr&#252;fen,
+    auf die darin verwiesen wird, gem&#228;&#223; [XML].</li>
+
+    <li>Gibt das Benutzerprogramm an, Funktionsmerkmale zu
+    unterst&#252;tzen, die innerhalb dieser Spezifikation definiert
+    sind oder die von dieser Spezifikation durch einen normativen
+    Verweis gefordert werden, muss es das konsistent zu der
+    Definition dieser Funktionsmerkmale tun.</li>
+
+    <li>Wenn ein Benutzerprogramm ein XHTML-Dokument als
+    generisches XML verarbeitet, soll es nur Attribute des Typs
+    <kbd>ID</kbd> (z.B. f&#252;r die meisten XHTML-Elemente das
+    <kbd>id</kbd>-Attribut)<a name="id-Attribute|" class=
+    "emptyindextarget"><span class="index-inst" title=
+    "id-Attribute::"><!--empty--></span></a> als Fragmentbezeichner
+    erkennen.</li>
+
+    <li>Wenn ein Benutzerprogramm auf ein Element trifft, das es
+    nicht erkennt, muss es den Inhalt des Elements
+    verarbeiten.</li>
+
+    <li>Wenn ein Benutzerprogramm auf ein Attribut trifft, das es
+    nicht erkennt, muss es die gesamte Attributspezifikation
+    ignorieren (d.h. das Attribut und seinen Wert).</li>
+
+    <li>Wenn ein Benutzerprogramm auf einen Attributwert trifft,
+    den es nicht erkennt, muss es den Standardattributwert
+    verwenden.</li>
+
+    <li>Wenn es auf einen Entity-Verweis trifft (au&#223;er eines
+    der in dieser Empfehlung oder in der XML- Empfehlung
+    vordefinierten Entities), f&#252;r den das Benutzerprogramm
+    keine Deklaration verarbeitet hat (was passieren k&#246;nnte,
+    wenn sich die Deklaration in der externen Untermenge befindet,
+    die das Benutzerprogramm noch nicht gelesen hat), sollte der
+    Entity-Verweis durch die Zeichen verarbeitet werden (beginnend
+    mit dem Ampersand und endend mit dem Semikolon), aus denen sich
+    der eigentliche Verweis zusammensetzt.</li>
+
+    <li>Treffen Benutzerprogramme bei der Verarbeitung von Inhalt
+    auf Zeichen oder Zeichen-Entity-Verweise, die sie erkennen,
+    aber nicht darstellen k&#246;nnen, k&#246;nnen sie eine andere
+    Darstellung w&#228;hlen, die die gleiche Bedeutung hat, oder
+    sie m&#252;ssen das Dokument so darstellen, dass es f&#252;r
+    den Benutzer offensichtlich ist, dass keine normale Darstellung
+    stattfinden konnte.</li>
+
+    <li>Leeraum wird gem&#228;&#223; den folgenden Regeln
+    behandelt. Die folgenden Zeichen sind in [XML] als
+    Leerraumzeichen<a name=" Leerraumzeichen |" class=
+    "emptyindextarget"><span class="index-inst" title=
+    " Leerraumzeichen ::"><!--empty--></span></a> definiert:
+
+      <ul>
+        <li>Leerzeichen (Space, &amp;#x0020;)</li>
+
+        <li>Horizontaler Tabulator (Horizontal Tabulation,
+        &amp;#x0009;)</li>
+
+        <li>Wagenr&#252;cklauf (Carriage-return, &amp;#x000D;)</li>
+
+        <li>Zeilenvorschub (Line-feed, &amp;#x000A;)</li>
+      </ul>
+
+      <div class="Aufz_hl_Einzug">
+        Der XML-Prozessor normalisiert die Zeilenende-Codes
+        unterschiedlicher Systeme zu einem einzigen
+        Zeilenvorschubzeichen, das an die Applikation weitergegeben
+        wird.
+      </div>
+
+      <div class="Aufz_hl_Einzug">
+        Das Benutzerprogramm muss die Definition f&#252;r die
+        Verarbeitung von Leerraumzeichen aus von CSS verwenden
+        [CSS]. Beachten Sie, dass die CSS2-Empfehlung die
+        Behandlung von Leerraum in Nicht-Latin-Zeichens&#228;tzen
+        nicht explizit anspricht. Dies wird in einer
+        zuk&#252;nftigen Version von CSS geschehen, woraufhin diese
+        Spezifikation aktualisiert wird.
+      </div>
+    </li>
+  </ol>
+
+  <p>Beachten Sie, dass zur Erzeugung eines kanonischen
+  XHTML-Dokuments die obigen Regeln, genauso wie die Regeln in
+  [XMLC14N] auf das Dokument angewendet werden m&#252;ssen.</p>
+
+  <h1><a name="heading-4&nbsp;"><!--empty-->4&nbsp;</a><a name=
+  "_Toc6101527"><!--empty--></a>Unterschiede zu HTML 4</h1>
+
+  <p><b>Dieser Abschnitt ist informell.</b></p>
+
+  <p>Aufgrund der Tatsache, dass es sich bei XHTML um eine
+  XML-Anwendung handelt, m&#252;ssen einige Vorgehensweisen, die im
+  auf SGML basierenden HTML 4 [HTML4] v&#246;llig korrekt waren,
+  ge&#228;ndert werden.</p>
+
+  <h2><a name="heading-4.1&nbsp;"><!--empty-->4.1&nbsp;</a><a name=
+  "_Toc6101528"><!--empty--></a>Dokumente m&#252;ssen korrekt
+  aufgebaut sein</h2>
+
+  <p>Der korrekte Aufbau (&#8222;Wohlgeformtheit&#8220;<a name=
+  " Wohlgeformtheit |" class="emptyindextarget"><span class=
+  "index-inst" title=" Wohlgeformtheit ::"><!--empty--></span></a>)
+  ist ein neues Konzept, das von [XML] eingef&#252;hrt wurde. Im
+  Wesentlichen bedeutet es, dass alle Elemente entweder
+  schlie&#223;ende Tags haben m&#252;ssen oder dass sie in einer
+  speziellen Form geschrieben sein m&#252;ssen (wie nachfolgend
+  beschrieben), und dass alle Elemente korrekt verschachtelt sein
+  m&#252;ssen.</p>
+
+  <p>Obwohl in SGML keine &#220;berlappungen erlaubt sind, werden
+  sie in existierenden Browsern allgemein toleriert.</p>
+
+  <div class="tipp">
+    <h5>RICHTIG: verschachtelte Elemente.</h5>
+
+    <div class="exampleInner">
+      <pre>
+&lt;p&gt;Hier sehen Sie einen betonten &lt;em&gt;Absatz&lt;/em&gt;.&lt;/p&gt;<br />
+</pre>
+    </div>
+  </div>
+
+  <div class="stop">
+    <h5>FALSCH: &#252;berlappende Elemente</h5>
+
+    <div class="exampleInner">
+      <pre>
+&lt;p&gt;Hier sehen Sie einen betonten &lt;em&gt;Absatz.&lt;/p&gt;&lt;/em&gt;<br />
+</pre>
+    </div>
+  </div>
+
+  <h2><a name="heading-4.2&nbsp;"><!--empty-->4.2&nbsp;</a><a name=
+  "_Toc6101529"><!--empty--></a>Element- und Attributnamen
+  m&#252;ssen in Kleinbuchstaben dargestellt werden</h2>
+
+  <p>XHTML-Dokumente m&#252;ssen f&#252;r alle HTML-Element- und
+  Attributnamen Kleinbuchstaben verwenden. Diese Unterscheidung ist
+  erforderlich, weil XML die Gro&#223;-/Kleinschreibung<a name=
+  " Gro&#223;-/Kleinschreibung |" class=
+  "emptyindextarget"><span class="index-inst" title=
+  " Gro&#223;-/Kleinschreibung ::"><!--empty--></span></a>
+  ber&#252;cksichtigt; &lt;li&gt; und &lt;LI&gt; sind demnach
+  unterschiedliche Tags.</p>
+
+  <h2><a name="heading-4.3&nbsp;"><!--empty-->4.3&nbsp;</a><a name=
+  "_Toc6101530"><!--empty--></a>F&#252;r nicht leere Elemente
+  m&#252;ssen End-Tags angegeben werden <a name="End-Tags|" class=
+  "emptyindextarget"><span class="index-inst" title="End-Tags::">
+  <!--empty--></span></a></h2>
+
+  <p>In auf SGML basierendem HTML 4 konnten bestimmte Elemente das
+  End-Tag einfach weglassen; in diesem Fall stellten nachfolgende
+  Elemente einen impliziten Abschluss dar. XML erlaubt das
+  Weglassen von End-Tags nicht. Alle Elemente, die in der DTD nicht
+  als EMPTY deklariert sind, m&#252;ssen ein End-Tag haben.
+  Elemente, die in der DTD als EMPTY deklariert sind, k&#246;nnen
+  ein End-Tag haben <i>oder</i> die Kurzschreibweise verwenden
+  (siehe Leere Elemente).</p>
+
+  <div class="tipp">
+    <h5><em>RICHTIG: abgeschlossene Elemente</em></h5>
+
+    <div class="exampleInner">
+      <pre>
+&lt;p&gt;Hier sehen Sie einen Absatz.&lt;/p&gt;&lt;p&gt;Und hier noch einen.&lt;/p&gt;<br />
+</pre>
+    </div>
+  </div>
+
+  <div class="stop">
+    <h5><em>FALSCH: nicht abgeschlossene Elemente</em></h5>
+
+    <div class="exampleInner">
+      <pre>
+&lt;p&gt;Hier sehen Sie einen Absatz.&lt;p&gt;Und hier noch einen.<br />
+</pre>
+    </div>
+  </div>
+
+  <h2><a name="heading-4.4&nbsp;"><!--empty-->4.4&nbsp;</a><a name=
+  "_Toc6101531"><!--empty--></a>Attributwerte m&#252;ssen immer in
+  Anf&#252;hrungszeichen stehen <a name="Attributwerte|" class=
+  "emptyindextarget"><span class="index-inst" title=
+  "Attributwerte::"><!--empty--></span></a></h2>
+
+  <p>Alle Attributwerte m&#252;ssen in Anf&#252;hrungszeichen
+  stehen, selbst solche, die scheinbar numerisch sind.</p>
+
+  <div class="tipp">
+    <h5><em>RICHTIG: Attributwerte in
+    Anf&#252;hrungszeichen</em></h5>
+
+    <div class="exampleInner">
+      <pre>
+&lt;td rowspan="3"&gt;<br />
+</pre>
+    </div>
+  </div>
+
+  <div class="stop">
+    <h5><em>FALSCH: Nicht in Anf&#252;hrungszeichen eingeschlossene
+    Attributwerte</em></h5>
+
+    <div class="exampleInner">
+      <pre>
+&lt;td rowspan=3&gt;<br />
+</pre>
+    </div>
+  </div>
+
+  <h2><a name="heading-4.5&nbsp;"><!--empty-->4.5&nbsp;</a><a name=
+  "_Toc6101532"><!--empty--></a>Attributminimierung <a name=
+  "Attributminimierung|" class="emptyindextarget"><span class=
+  "index-inst" title="Attributminimierung::">
+  <!--empty--></span></a></h2>
+
+  <p>XML unterst&#252;tzt keine Attributminimierung.
+  Attribut/Wert-Paare m&#252;ssen vollst&#228;ndig ausgeschrieben
+  werden. Attributnamen wie beispielsweise <kbd>compact</kbd> und
+  <kbd>checked</kbd> d&#252;rfen in Elementen nicht auftreten, ohne
+  dass ihr Wert zuvor spezifiziert wurde.</p>
+
+  <div class="tipp">
+    <h5><em>RICHTIG: Nicht minimierte Attribute</em></h5>
+
+    <div class="exampleInner">
+      <pre>
+&lt;dl compact="compact"&gt;<br />
+</pre>
+    </div>
+  </div>
+
+  <div class="stop">
+    <h5><em>FALSCH: Minimierte Attribute</em></h5>
+
+    <div class="exampleInner">
+      <pre>
+&lt;dl compact&gt;<br />
+</pre>
+    </div>
+  </div>
+
+  <h2><a name="heading-4.6&nbsp;"><!--empty-->4.6&nbsp;</a><a name=
+  "_Toc6101533"><!--empty--></a>Leere Elemente <a name=
+  " Leere Elemente |" class="emptyindextarget"><span class=
+  "index-inst" title=" Leere Elemente ::">
+  <!--empty--></span></a></h2>
+
+  <p>Leere Elemente m&#252;ssen ein End-Tag haben, oder das
+  Start-Tag muss mit /&gt; enden, beispielsweise
+  <kbd>&lt;br/&gt;</kbd> oder <kbd>&lt;hr&gt;&lt;/hr&gt;</kbd>.
+  Weitere Informationen dar&#252;ber, wie Sie diese
+  Abw&#228;rtskompatibilit&#228;t zu HTML 4-Benutzerprogrammen
+  sicher stellen, finden Sie in den
+  HTML-Kompatibilit&#228;tsrichtlinien (Anhang C).</p>
+
+  <div class="tipp">
+    <h5><em>RICHTIG: Abgeschlossene leere Elemente</em></h5>
+
+    <div class="exampleInner">
+      <pre>
+&lt;br/&gt;&lt;hr/&gt;<br />
+</pre>
+    </div>
+  </div>
+
+  <div class="stop">
+    <h5><em>FALSCH: Nicht abgeschlossene leere Elemente</em></h5>
+
+    <div class="exampleInner">
+      <pre>
+&lt;br&gt;&lt;hr&gt;<br />
+</pre>
+    </div>
+  </div>
+
+  <h2><a name="heading-4.7&nbsp;"><!--empty-->4.7&nbsp;</a><a name=
+  "_Toc6101534"><!--empty--></a>Behandlung von Leerraum in
+  Attributwerten</h2>
+
+  <p>Wenn Benutzerprogramme Attribute verarbeiten, so tun sie dies
+  gem&#228;&#223; <a href=
+  "http://www.edition-w3c.de/TR/REC-xml#AVNormalize">Abschnitt
+  3.3.3</a> in [XML]:</p>
+
+  <ul>
+    <li>Entferne f&#252;hrenden und abschlie&#223;enden
+    Leerraum.</li>
+
+    <li>Erzeuge aus Folgen von einem oder mehreren Leerraumzeichen
+    (inklusive Zeilenumbr&#252;chen) ein einzelnes Leerzeichen
+    zwischen W&#246;rtern.</li>
+  </ul>
+
+  <h2><a name="heading-4.8&nbsp;"><!--empty-->4.8&nbsp;</a><a name=
+  "_Toc6101535"><!--empty--></a>Script- und Style-Elemente <a name=
+  "Script|" class="emptyindextarget"><span class="index-inst"
+  title="Script::"><!--empty--></span></a> <a name="Style|" class=
+  "emptyindextarget"><span class="index-inst" title="Style::">
+  <!--empty--></span></a></h2>
+
+  <p>In XHTML sind die Schrift- und Stilelemente so deklariert,
+  dass sie <kbd>#PCDATA</kbd>-Inhalt haben. Demzufolge werden
+  <kbd>&lt;</kbd> und <kbd>&amp;</kbd> als Anfang des Markups
+  behandelt, und Entities wie beispielsweise <kbd>&amp;lt;</kbd>
+  und <kbd>&amp;amp;</kbd> werden vom Prozessor als Entity-Verweise
+  f&#252;r <kbd>&lt;</kbd> bzw. <kbd>&amp;</kbd> erkannt.
+  H&#252;llt man den Inhalt des Schrift- oder Stilelements in einen
+  mit <kbd>CDATA</kbd> markierten Abschnitt ein, vermeidet man
+  dadurch die Erweiterung dieser Entities.</p>
+
+  <div class="exampleInner">
+    <pre>
+&lt;script <kbd>type=&#8220;text/javascript&#8220;</kbd>&gt;<br />
+ &lt;![CDATA[<br />
+ ... nicht maskierter script-Inhalt...<br />
+ ]]&gt;<br />
+ &lt;/script&gt;<br />
+</pre>
+  </div>
+
+  <p><b><kbd>CDATA</kbd></b>-Abschnitte werden vom XML-Prozessor
+  erkannt und erscheinen als Knoten im Document Object Model (siehe
+  Abschnitt 1.3 der DOM Level 1 Empfehlung [DOM]).</p>
+
+  <p>Als Alternative kann man externe Schrift- und Stildokumente
+  verwenden.</p>
+
+  <h2><a name="heading-4.9&nbsp;"><!--empty-->4.9&nbsp;</a><a name=
+  "_Toc6101536"><!--empty--></a><a name="_Ref6060508">
+  <!--empty--></a>SGML-Ausschl&#252;sse</h2>
+
+  <p>SGML bietet dem Entwickler einer DTD die M&#246;glichkeit,
+  f&#252;r spezielle Elemente auszuschlie&#223;en, dass sie Inhalt
+  eines anderen Elements werden. Solche Ausschl&#252;sse sind in
+  XML nicht m&#246;glich.</p>
+
+  <p>Die strenge DTD von HTML 4 beispielsweise verbietet, ein
+  <kbd>'a'</kbd>-Element in einem anderen <kbd>'a'</kbd>-Element in
+  einer beliebigen abgeleiteten Tiefe zu verschachteln. In XML ist
+  es nicht m&#246;glich, solche Ausschl&#252;sse zu formulieren.
+  Selbst wenn diese Ausschl&#252;sse in der DTD nicht definiert
+  werden k&#246;nnen, sollten bestimmte Elemente nicht
+  verschachtelt werden. Einen &#220;berblick &#252;ber diese
+  Elemente und die Elemente, die nicht darin verschachtelt werden
+  sollten, finden Sie im normativen Anhang B.</p>
+
+  <h2><a name="heading-4.10&nbsp;">
+  <!--empty-->4.10&nbsp;</a><a name="_Toc6101537">
+  <!--empty--></a>Die Elemente mit 'id'- und 'name'-Attributen
+  <a name="id-Attribut|" class="emptyindextarget"><span class=
+  "index-inst" title="id-Attribut::"><!--empty--></span></a>
+  <a name="name-Attribut|" class="emptyindextarget"><span class=
+  "index-inst" title="name-Attribut::"><!--empty--></span></a></h2>
+
+  <p>HTML 4 hat das <kbd>name</kbd>-Attribut f&#252;r die Elemente
+  <kbd>a</kbd>, <kbd>applet</kbd>, <kbd>form</kbd>, <kbd>frame,
+  iframe, img</kbd> und <kbd>map</kbd> definiert. Dar&#252;ber
+  hinaus hat HTML 4 das <kbd>id</kbd>-Attribut eingef&#252;hrt.
+  Beide Attribute sind f&#252;r die Verwendung als
+  Fragmentbezeichner vorgesehen.</p>
+
+  <p>In XML haben Fragmentbezeichner den Typ <kbd>ID</kbd>, und es
+  kann nur ein einziges Attribut des Typs <kbd>ID</kbd> pro Element
+  geben. Deshalb ist das <kbd>id</kbd>-Attribut in XHTML 1.0 als
+  vom Typ <kbd>ID</kbd> definiert. Um sicherzustellen, dass XHTML
+  1.0-Dokumente korrekt strukturierte XML-Dokumente sind,
+  <i>m&#252;ssen</i> XTHML 1.0-Dokumente das <kbd>id</kbd>-Attribut
+  verwenden, wenn sie Fragmentbezeichner f&#252;r die o.g. Elemente
+  definieren. Weitere Informationen dar&#252;ber, wie Sie
+  sicherstellen, dass solche Anker abw&#228;rtskompatibel sind,
+  wenn Sie XHTML-Dokumente als Medientyp <kbd>text/html</kbd>
+  bereitstellen, finden Sie in den Richtlinien zur
+  HTML-Kompatibilit&#228;t (Anhang C).</p>
+
+  <p>Beachten Sie, dass in XHTML 1.0 das <kbd>name</kbd>-Attribut
+  dieser Elemente formal veraltet ist und in einer zuk&#252;nftigen
+  Version von XHTML entfernt wird.</p>
+
+  <h2><a name="heading-4.11&nbsp;">
+  <!--empty-->4.11&nbsp;</a>Attribute mit vordefinierten
+  Wertemengen</h2>
+
+  <p>Sowohl HTML 4 als auch XHTML besitzen einige Attribute, die
+  vordefinierte und eingeschr&#228;nkte Werte haben (z.B. das
+  type-Attribute des input-Elements). In SGML und XML werden sie
+  Aufz&#228;hlungsattribute genannt. In HTML 4 war die
+  Interpretation dieser Werte von der Gro&#223;/Kleinschreibung
+  unabh&#228;ngig, so dass der Wert &#8222;TEXT&#8220;
+  &#228;quivalent zu &#8222;text&#8220; ist. Durch XML ist die
+  Interpretation dieser Werte von der Gro&#223;/Kleinschreibung
+  <i>abh&#228;ngig</i>, und in XHTML 1 sind alle diese Werte in
+  Kleinschreibweise definiert.</p>
+
+  <h2><a name="heading-4.12&nbsp;">
+  <!--empty-->4.12&nbsp;</a>Entity-Referenzen als hexadezimaler
+  Wert</h2>
+
+  <p>Sowohl SGML als auch XML erlauben Zeichenreferenzen in Form
+  von hexadezimalen Werten. In SGML konnten diese Referenzen
+  entweder in &amp;#Xnn; oder &amp;#xnn; geschrieben werden. In
+  XML-Dokumenten m&#252;ssen Sie die Kleinschreibung verwenden
+  (d.h. &amp;#xnn;).</p>
+
+  <h1><a name="heading-5&nbsp;"><!--empty-->5&nbsp;</a><a name=
+  "_Toc6101538"><!--empty--></a>Kompatibilit&#228;tsaspekte</h1>
+
+  <p><b>Dieser Abschnitt ist normativ.</b></p>
+
+  <p>Obwohl nicht gefordert wird, dass XHTML 1.0-Dokumente mit
+  existierenden Benutzerprogrammen kompatibel sind, ist dies in der
+  Praxis ganz einfach zu bewerkstelligen. Richtlinien f&#252;r die
+  Erstellung kompatibler Dokumente finden Sie in Anhang C.</p>
+
+  <h2><a name="heading-5.1&nbsp;"><!--empty-->5.1&nbsp;</a><a name=
+  "_Toc6101539"><!--empty--></a>Internet-Medientyp <a name=
+  " Medientyp |" class="emptyindextarget"><span class="index-inst"
+  title=" Medientyp ::"><!--empty--></span></a> <a name="MIME-Typ|"
+  class="emptyindextarget"><span class="index-inst" title=
+  "MIME-Typ::"><!--empty--></span></a></h2>
+
+  <p>XHTML-Dokumente, die den in Anhang C beschriebenen Richtlinien
+  zur Kompatibilit&#228;t mit HTML folgen, k&#246;nnen mit dem
+  Internet-Medientyp "<kbd>text/html</kbd>" ausgezeichnet werden
+  [RFC2854], weil sie mit den meisten HTML-Browsern kompatibel
+  sind. Diese Dokumente und alle anderen, die konform zu dieser
+  Spezifikation sind, k&#246;nnen au&#223;erdem mit dem
+  Internet-Medientyp "<kbd>application/xhtml+xml</kbd>"
+  ausgezeichnet werden [RFC3236]. F&#252;r weitere Informationen
+  &#252;ber die Verwendung von Medientypen mit XHTML lesen Sie
+  bitte die informelle Note [XHTMLMIME].</p>
+
+  <div class="AnfangAnhaenge">
+    <h1><a name="_Toc6101544"><!--empty--></a>Anhang A: DTDs</h1>
+
+    <p><b>Dieser Abschnitt ist normativ.</b></p>
+
+    <p>Diese DTDs und Entity-Mengen bilden einen normativen Teil
+    dieser Spezifikation. Die vollst&#228;ndige Menge der
+    DTD-Dateien zusammen mit einer XML-Deklaration und SGML Open
+    Catalog ist in der <a href=
+    "http://www.w3.org/TR/2002/REC-xhtml1-20020801/xhtml1.zip">Zip-Datei</a>
+    und der <a href=
+    "http://www.w3.org/TR/2002/REC-xhtml1-20020801/xhtml1.tgz">Gzip/Tar-Datei</a>
+    f&#252;r diese Spezifikation enthalten. Benutzer, die lokale
+    Kopien suchen, um damit zu arbeiten, sollten die Archiv-Dateien
+    herunterladen, anstatt mit den nachfolgend referenzierten DTDs
+    zu arbeiten.</p>
+
+    <h2><a name="_Toc6101545"><!--empty--></a>A.1
+    Dokumenttypdefinitionen</h2>
+
+    <p>Diese DTDs sind den HTML 4 DTDs ann&#228;hernd gleich. Das
+    W3C empfiehlt, dass Sie die ma&#223;geblichen Versionen dieser
+    DTDs unter ihren definierten Systembezeichnern verwenden, wenn
+    Sie den Inhalt validieren. Wenn Sie diese DTDs lokal
+    ben&#246;tigen, sollten Sie eines der Archive herunterladen.
+    Zur Vollst&#228;ndigkeit sind die normativen Versionen der DTDs
+    hier zu finden:</p>
+
+    <h3>A.1.1. XHTML-1.0-Strict</h3>
+
+    <p>Die Datei <a href=
+    "http://www.w3.org/TR/2002/REC-xhtml1-20020801/DTD/xhtml1-strict.dtd">
+    DTD/xhtml1-strict.dtd</a> ist ein normativer Bestandteil dieser
+    Spezifikation. Der Vollst&#228;ndigkeit halber ist der
+    kommentierte Inhalt dieser Datei in einem <a href=
+    "http://www.w3.org/TR/2002/REC-xhtml1-20020801/dtds.html#a_dtd_XHTML-1.0-Strict">
+    eigenen Abschnitt</a> erh&#228;ltlich.</p>
+
+    <h3>A.1.2. XHTML-1.0-Transitional</h3>
+
+    <p>Die Datei <a href=
+    "http://www.w3.org/TR/2002/REC-xhtml1-20020801/DTD/xhtml1-transitional.dtd">
+    DTD/xhtml1-transitional.dtd</a> ist ein normativer Bestandteil
+    dieser Spezifikation. Der Vollst&#228;ndigkeit halber ist der
+    kommentierte Inhalt dieser Datei in einem <a href=
+    "http://www.w3.org/TR/2002/REC-xhtml1-20020801/dtds.html#a_dtd_XHTML-1.0-Transitional">
+    eigenen Abschnitt</a> erh&#228;ltlich.</p>
+
+    <h3>A.1.3. XHTML-1.0-Frameset</h3>
+
+    <p>Die Datei <a href=
+    "http://www.w3.org/TR/2002/REC-xhtml1-20020801/DTD/xhtml1-frameset.dtd">
+    DTD/xhtml1-frameset.dtd</a> ist ein normativer Bestandteil
+    dieser Spezifikation. Der Vollst&#228;ndigkeit halber ist der
+    kommentierte Inhalt dieser Datei in einem <a href=
+    "http://www.w3.org/TR/2002/REC-xhtml1-20020801/dtds.html#a_dtd_XHTML-1.0-Frameset">
+    eigenen Abschnitt</a> erh&#228;ltlich.</p>
+
+    <h2><a name="_Toc6101546"><!--empty--></a>A.2
+    Entity-Mengen</h2>
+
+    <p>Die XHTML-Entity-Mengen sind dieselben wie f&#252;r HTML 4,
+    wurden aber angepasst, so dass sie g&#252;ltige XML
+    1.0-Entity-Deklarationen darstellen. Beachten Sie das Entity
+    f&#252;r das Euro-W&#228;hrungssymbol (<kbd>&amp;euro;</kbd>
+    oder <kbd>&amp;#8364;</kbd> oder <kbd>&amp;#x20AC;</kbd>), das
+    als Teil der Sonderzeichen definiert ist.</p>
+
+    <h3>A.2.1. Latin-1 characters</h3>
+
+    <p>Die Datei <a href=
+    "http://www.w3.org/TR/2002/REC-xhtml1-20020801/DTD/xhtml-lat1.ent">
+    DTD/xhtml-lat1.ent</a> ist ein normativer Bestandteil dieser
+    Spezifikation. Der Vollst&#228;ndigkeit halber ist der
+    kommentierte Inhalt dieser Datei in einem <a href=
+    "http://www.w3.org/TR/2002/REC-xhtml1-20020801/dtds.html#a_dtd_Latin-1_characters">
+    eigenen Abschnitt</a> erh&#228;ltlich.</p>
+
+    <h3>A.2.2. Special characters</h3>
+
+    <p>Die Datei <a href=
+    "http://www.w3.org/TR/2002/REC-xhtml1-20020801/DTD/xhtml-special.ent">
+    DTD/xhtml-special.ent</a> ist ein normativer Bestandteil dieser
+    Spezifikation. Der Vollst&#228;ndigkeit halber ist der
+    kommentierte Inhalt dieser Datei in einem <a href=
+    "http://www.w3.org/TR/2002/REC-xhtml1-20020801/dtds.html#a_dtd_Special_characters">
+    eigenen Abschnitt</a> erh&#228;ltlich.</p>
+
+    <h3>A.2.3. Symbols</h3>
+
+    <p>Die Datei <a href=
+    "http://www.w3.org/TR/2002/REC-xhtml1-20020801/DTD/xhtml-symbol.ent">
+    DTD/xhtml-symbol.ent</a> ist ein normativer Bestandteil dieser
+    Spezifikation. Der Vollst&#228;ndigkeit halber ist der
+    kommentierte Inhalt dieser Datei in einem <a href=
+    "http://www.w3.org/TR/2002/REC-xhtml1-20020801/dtds.html#a_dtd_Symbols">
+    eigenen Abschnitt</a> erh&#228;ltlich.</p>
+
+    <h1><a name="_Toc6101547"><!--empty--></a>Anhang B:
+    Element-Ausschl&#252;sse</h1>
+
+    <p><b>Dieser Abschnitt ist normativ.</b></p>
+
+    <p>Die folgenden Elemente weisen Ausschl&#252;sse dahingehend
+    auf, welche Elemente sie enthalten k&#246;nnen (siehe Abschnitt
+    <a href="#_Ref6060508">4.9</a>). Diese Ausschl&#252;sse gelten
+    f&#252;r alle Verschachtelungstiefen, das hei&#223;t, sie
+    erstrecken sich auf alle abgeleiteten Elemente.</p>
+
+    <dl>
+      <dt><kbd>a</kbd></dt>
+
+      <dd>Darf keine anderen <kbd>a</kbd>-Elemente enthalten.</dd>
+    </dl>
+
+    <dl>
+      <dt><kbd>pre</kbd></dt>
+
+      <dd>Darf nicht die Elemente <kbd>img, object, big, small,
+      sub</kbd> oder <kbd>sup</kbd> enthalten.</dd>
+    </dl>
+
+    <dl>
+      <dt><kbd>button</kbd></dt>
+
+      <dd>Darf nicht die Elemente <kbd>input, select, textarea,
+      label, button, form, fieldset, iframe</kbd> oder
+      <kbd>isindex</kbd> enthalten.</dd>
+    </dl>
+
+    <dl>
+      <dt><kbd>label</kbd></dt>
+
+      <dd>Darf keine anderen <kbd>label</kbd>-Elelemente
+      enthalten.</dd>
+    </dl>
+
+    <dl>
+      <dt><kbd>form</kbd></dt>
+
+      <dd>Darf keine anderen <kbd>form</kbd>-Elemente
+      enthalten.</dd>
+    </dl>
+
+    <h1><a name="_Toc6101548"><!--empty--></a>Anhang C: Richtlinien
+    zur HTML-Kompatibilit&#228;t</h1>
+
+    <p><b>Dieser Abschnitt ist informell.</b></p>
+
+    <p>Dieser Anhang fasst die Design-Richtlinien f&#252;r Autoren
+    zusammen, die ihre XHTML-Dokumente auf bereits existierenden
+    HTML-Benutzerprogrammen anzeigen wollen. Beachten Sie, dass
+    diese Empfehlung nicht definiert, wie zu HTML konforme
+    Benutzerprogramme HTML-Dokumente verarbeiten sollten. Auch
+    definiert sie nicht die Bedeutung des Internet-Medientyps
+    text/html. F&#252;r diese Definitionen lesen Sie bitte [HTML4]
+    bzw. [RFC2854].</p>
+
+    <h2><a name="_Toc6101549"><!--empty--></a>C.1
+    Verarbeitungsanweisungen und die XML-Deklaration</h2>
+
+    <p>Beachten Sie, dass Verarbeitungsanweisungen auf einigen
+    Benutzerprogrammen dargestellt werden. Au&#223;erdem
+    interpretieren einige Benutzerprogramme die XML-Deklaration so,
+    als ob sie unbekanntes XML statt HTML vor sich h&#228;tten; und
+    folglich stellen sie das Dokument nicht wie erwartet dar. Zur
+    Kompatibilit&#228;t mir diesen alten Browsern k&#246;nnen Sie
+    auf Verarbeitungsanweisungen und XML-Deklarationen verzichten.
+    Beachten Sie jedoch auch, dass, wenn die XML-Deklaration nicht
+    in ein Dokument aufgenommen ist, das Dokument nur die
+    Standard-Zeichencodierungen UTF-8 oder UTF-16 verwenden
+    kann.</p>
+
+    <h2><a name="_Toc6101550"><!--empty--></a>C.2 Leere
+    Elemente</h2>
+
+    <p>F&#252;gen Sie ein Leerzeichen vor dem f&#252;hrenden / und
+    &gt; leerer Elemente ein. z.B. <kbd>&lt;br&nbsp;/&gt;,
+    &lt;hr&nbsp;/&gt;</kbd> und <kbd>&lt;img src="karen.jpg"</kbd>
+    <kbd>alt="Karen"&nbsp;/&gt;</kbd>. Verwenden Sie dar&#252;ber
+    hinaus die minimierte Tag-Syntax f&#252;r leere Elemente, z.B.
+    <kbd>&lt;br /&gt;</kbd>, weil die alternative Syntax
+    <kbd>&lt;br&gt;&lt;/br&gt;</kbd>, die von XML erlaubt ist,
+    unsichere Ergebnisse in vielen bereits existierenden
+    Benutzerprogrammen erzeugt.</p>
+
+    <h2><a name="_Toc6101551"><!--empty--></a>C.3
+    Elementminimierung und leerer Elementinhalt</h2>
+
+    <p>F&#252;r eine leere Instanz eines Elements, dessen
+    Inhaltsmodell nicht <kbd>EMPTY</kbd> ist (z.B. ein leerer Titel
+    oder Absatz), verwenden Sie nicht die minimierte Form
+    (verwenden Sie z.B. <kbd>&lt;p&gt; &lt;/p&gt;</kbd>, und nicht
+    <kbd>&lt;p&nbsp;/&gt;</kbd>).</p>
+
+    <h2><a name="_Toc6101552"><!--empty--></a>C.4 Eingebettete
+    Stylesheets und Skripte</h2>
+
+    <p>Verwenden Sie externe Stylesheets, wenn Ihr Stylesheet
+    <b><kbd>&lt;</kbd></b> oder <b><kbd>&amp;</kbd></b> oder
+    <b><kbd>]]&gt;</kbd></b> oder <b><kbd>&#8211;</kbd></b>
+    verwendet. Verwenden Sie externe Skripts, wenn Ihr Skript
+    <b><kbd>&lt;</kbd></b> oder <b><kbd>&amp;</kbd></b> oder
+    <b><kbd>]]&gt;</kbd></b> oder <b><kbd>&#8211;</kbd></b>
+    verwendet. Beachten Sie, dass XML-Parser den Inhalt von
+    Kommentaren stillschweigend entfernen d&#252;rfen. Die
+    bisherige Vorgehensweise, Skripts und Stylesheets innerhalb von
+    &#8222;Kommentaren&#8220; zu &#8222;verstecken&#8220;, um die
+    Dokumente abw&#228;rtskompatibel zu machen, funktioniert also
+    sehr wahrscheinlich in auf XML basierenden Benutzerprogrammen
+    nicht, wie erwartet.</p>
+
+    <h2><a name="_Toc6101553"><!--empty--></a>C.5
+    Zeilenumbr&#252;che innerhalb von Attributwerten</h2>
+
+    <p>Vermeiden Sie Zeilenumbr&#252;che und mehrere
+    aufeinanderfolgende Leerraumzeichen innerhalb von
+    Attributwerten. Sie werden von den Benutzerprogrammen
+    inkonsistent behandelt.</p>
+
+    <h2><a name="_Toc6101554"><!--empty--></a>C.6 Isindex</h2>
+
+    <p>Nehmen Sie nicht mehr als ein <kbd>isindex</kbd>-Element in
+    den Dokument-<kbd>head</kbd> auf. Das
+    <kbd>isindex</kbd>-Element ist veraltet und wird durch das
+    <kbd>input</kbd>-Element ersetzt.</p>
+
+    <h2><a name="_Toc6101555"><!--empty--></a>C.7 Die Attribute
+    <kbd>lang</kbd> and <kbd>xml:lang</kbd></h2>
+
+    <p>Verwenden Sie f&#252;r die Angabe der Sprache eines
+    Dokuments die Attribute <b><kbd>lang</kbd></b> und
+    <b><kbd>xml:lang</kbd></b>. Der Wert des Attributs
+    <b><kbd>xml:lang</kbd></b> hat Priorit&#228;t.</p>
+
+    <h2><a name="_Toc6101556"><!--empty--></a>C.8
+    Fragmentbezeichner</h2>
+
+    <p>In XML verweisen URI-Referenzen [RFC2396], die mit
+    Fragmentbezeichnern der Form <kbd>"#foo"</kbd> enden, nicht auf
+    Elemente mit einem Attribut <kbd>name="foo"</kbd>; stattdessen
+    verweisen sie auf Elemente mit einem Attribut, das als vom Typ
+    <kbd>ID</kbd> definiert ist, z.B. das <kbd>id</kbd>-Attribut in
+    HTML 4. Viele bereits existierende HTML-Clients
+    unterst&#252;tzen die Verwendung von Attributen vom Typ
+    <kbd>ID</kbd> auf diese Weise nicht, deshalb k&#246;nnen
+    identische Werte f&#252;r beide Attribute angegeben werden, um
+    eine maximale Aufw&#228;rts- und
+    Abw&#228;rtskompatibilit&#228;t sicherzustellen (z.B.
+    <kbd>&lt;a id="foo"</kbd>
+    <kbd>name="foo"&gt;...&lt;/a&gt;</kbd>).</p>
+
+    <p>Und weil dar&#252;ber hinaus die Menge der erlaubten Werte
+    f&#252;r Attribute des Typs <kbd>ID</kbd> viel kleiner als die
+    f&#252;r den Typ <kbd>CDATA</kbd> ist, muss der Typ des
+    <kbd>name</kbd>-Attributs in <kbd>NMTOKEN</kbd> ge&#228;ndert
+    werden. Dieses Attribut ist beschr&#228;nkt, weil es nur
+    dieselben Werte wie der Typ <kbd>ID</kbd> haben kann oder wie
+    die <kbd>Name</kbd>-Produktion in XML 1.0 Abschnitt 2.3
+    Produktion 5. Leider kann diese Beschr&#228;nkung in den DTDs
+    von XHTML 1.0 nicht ausgedr&#252;ckt werden. Aufgrund dieser
+    &#196;nderung muss die Umwandlung existierender HTML-Dokumente
+    &#228;u&#223;erst sorgf&#228;ltig erfolgen. Die Werte dieser
+    Attribute m&#252;ssen eindeutig innerhalb des Dokuments und
+    g&#252;ltig sein, und alle Verweise auf diese
+    Fragmentbezeichner (sowohl intern als auch extern) m&#252;ssen
+    aktualisiert werden, falls sich die Werte w&#228;hrend der
+    Umwandlung &#228;ndern.</p>
+
+    <p>Beachten Sie, dass die Menge der erlaubten Werte in XML 1.0,
+    Abschnitt 2.3, Produktionsregel 5, viel gr&#246;&#223;er ist
+    als das, was duch die in HTML 4 definierten ID- und NAME-Typen
+    erlaubt ist. Wenn Sie Fragmenbezeichner definieren, die
+    abw&#228;rtskompatibel sein sollen, sollten nur solche
+    Zeichenketten verwendet werden, die zu dem Muster
+    <kbd>[A-Za-z][A-Za-z0-9:_.-]*</kbd> passen. Siehe [HTML4],
+    Abschnitt 6.2 f&#252;r weitere Informationen.</p>
+
+    <p>Beachten Sie schlie&#223;lich, dass XHTML 1.0 das
+    <kbd>name</kbd>-Attribut der Elemente <kbd>a, applet, form,
+    frame, iframe, img</kbd> und <kbd>map</kbd> als veraltet
+    betrachtet und es in sp&#228;teren Versionen aus XHTML entfernt
+    wird.</p>
+
+    <h2><a name="_Toc6101557"><!--empty--></a>C.9
+    Zeichencodierung</h2>
+
+    <p>Historisch wurde die Zeichenkodierung eines HTML-Dokuments
+    entweder durch einen Web-Server durch Angabe des
+    charset-Parameters im HTTP Content Type Header oder durch ein
+    Meta-Element im Dokument selbst angegeben. In einem
+    XML-Dokument wird die Zeichenkodierung des Dokuments durch die
+    XML-Deklaration angegeben (z.B. <b><kbd>&lt;?xml version="1.0"
+    encoding="EUC-JP"?&gt;</kbd></b>). Der beste Ansatz, um
+    Dokumente mit einer bestimmten Zeichenkodierung m&#246;glichst
+    portabel anzubieten, besteht darin, sicherzustellen, dass der
+    Web-Server die korrekten Header verwendet. Wenn das nicht
+    m&#246;glich ist, muss ein Dokument, das seine Zeichenkodierung
+    explizit setzen will, sowohl die XML-Deklaration mit
+    Kodierungsdeklaration als auch einen Meta-http-equiv-Ausdruck
+    (z.B. <b><kbd>&lt;meta http-equiv="Content-type"
+    content="text/html; charset=EUC-JP" /&gt;</kbd></b>) angeben.
+    Der Wert des Kodierungsattributs der XML-Verarbeitungsanweisung
+    hat in XHTML-konformen Benutzerprogrammen Priorit&#228;t.</p>
+
+    <p>Hinweis: Beachten Sie, dass ein Dokument, das die
+    Zeichenkodierungsdeklaration in einem Meta-http-equiv-Ausdruck
+    enthalten muss, durch einen HTTP-Server und/oder durch
+    Benutzerprogramme als vom angegebenen Medientyp angesehen
+    werden kann. Wenn ein Dokument unter mehreren Medientypen
+    verschickt werden soll, dann muss der HTTP-Server zum Setzen
+    der Kodierung verwendet werden.</p>
+
+    <h2><a name="_Toc6101558"><!--empty--></a>C.10 Boolesche
+    Attribute</h2>
+
+    <p>Einige HTML-Benutzerprogramme k&#246;nnen keine Booleschen
+    Attribute interpretieren, wenn diese in ihrer
+    vollst&#228;ndigen (nicht minimierten) Form auftreten, wie in
+    XML 1.0 gefordert. Beachten Sie, dass dieses Problem keinen
+    Einfluss auf Benutzerprogramme hat, die konform zu HTML 4 sind.
+    Die folgenden Attribute sind betroffen:
+    <kbd>compact</kbd><b>,</b> <kbd>nowrap</kbd><b>,</b>
+    <kbd>ismap</kbd><b>,</b> <kbd>declare</kbd><b>,</b>
+    <kbd>noshade</kbd><b>,</b> <kbd>checked</kbd><b>,</b>
+    <kbd>disabled</kbd><b>,</b> <kbd>readonly</kbd><b>,</b>
+    <kbd>multiple</kbd><b>,</b> <kbd>selected</kbd><b>,</b>
+    <kbd>noresize</kbd><b>,</b> <kbd>defer</kbd><b>.</b></p>
+
+    <h2><a name="_Toc6101559"><!--empty--></a>C.11 Document Object
+    Model und XHTML</h2>
+
+    <p>Die Document Object Model Level 1 Empfehlung [DOM] definiert
+    Dokumentobjektmodellschnittstellen f&#252;r XML und HTML 4. Das
+    HTML 4-Dokumentobjektmodell spezifiziert, dass HTML-Element-
+    und Attributnamen in Gro&#223;buchstaben zur&#252;ckgegeben
+    werden. Das XML-Dokumentobjektmodell spezifiziert, dass
+    Element- und Attributnamen so zur&#252;ckgegeben werden, wie
+    sie angegeben wurden. In XHTML 1.0 werden Elemente und
+    Attribute in Kleinbuchstaben angegeben. Dieser offensichtliche
+    Unterschied kann auf zwei Arten kompensiert werden:</p>
+
+    <ol>
+      <li>Benutzerprogramme, die auf XHTML-Dokumente zugreifen, die
+      als Internet-Medientyp <kbd>text/html</kbd> &#252;ber das DOM
+      bereitgestellt werden, k&#246;nnen das HTML DOM verwenden und
+      davon ausgehen, dass Element- und Attributnamen von diesen
+      Schnittstellen in Gro&#223;buchstaben zur&#252;ckgegeben
+      werden.</li>
+
+      <li>Benutzerprogramme, die auf XHTML-Dokumente zugreifen, die
+      als Internet-Medientypen <kbd>text/xml</kbd>,
+      <kbd>application/xml</kbd> oder
+      <kbd>application/xhtml+xml</kbd> bereitgestellt werden,
+      k&#246;nnen ebenfalls das XML DOM verwenden. Elemente und
+      Attribute werden in Kleinbuchstaben zur&#252;ckgegeben.
+      Dar&#252;ber hinaus kann es sein, dass bestimmte Elemente im
+      Objektbaum erscheinen oder nicht erscheinen, weil einige im
+      Inhaltsmodell optional sind (z.B. das
+      <kbd>tbody</kbd>-Element in <kbd>table</kbd>). Das passiert,
+      weil in HTML 4 einige Elemente minimiert sein durften, so
+      dass ihre Start- und End-Tags weggelassen werden konnten (ein
+      SGML-Funktionsmerkmal). In XML ist das nicht m&#246;glich.
+      Statt von den Dokumentautoren zu fordern, unwesentliche
+      Elemente einzuf&#252;gen, hat XHTML die Elemente optional
+      gemacht. Benutzerprogramme m&#252;ssen dies entsprechend
+      &#252;bernehmen. F&#252;r weitere Informationen siehe
+      [DOM2].</li>
+    </ol>
+
+    <h2><a name="_Toc6101560"><!--empty--></a>C.12 Die Verwendung
+    von et-Zeichen in Attributwerten (und anderswo)</h2>
+
+    <p>Sowohl in SGML als auch in XML bezeichnet das et-Zeichen
+    (&amp;) den Anfang einer Entity-Referenz (z.B. &amp;reg;
+    f&#252;r "&#174;"). Ungl&#252;cklicherweise haben viele
+    HTML-Benutzerprogramme die unkorrekte Benutzung des et-Zeichens
+    stillschweigend ignoriert. Sie haben et-Zeichen, die nicht wie
+    Entity-Referenzen aussehen, als &#8222;w&#246;rtliche&#8220;
+    et-Zeichen behandelt. XML-basierte Benutzerprogramme werden
+    diese unkorrekte Verwendung nicht tolerieren. Jedes Dokument,
+    das ein et-Zeichen unkorrekt benutzt, wird nicht g&#252;ltig
+    sein und folglich nicht konform zu dieser Spezifikation sein.
+    Um sicherzustellen, dass Dokumente mit alten
+    HTML-Benutzerprogrammen und XML-basierten Benutzerprogrammen
+    kompatibel sind, m&#252;ssen et-Zeichen, die als normale
+    Zeichen behandelt werden sollen, selbst als Entity-Referenzen
+    (d.h. &amp;amp;) geschrieben werden. Verweist beispielsweise
+    das <b><kbd>href</kbd></b>-Attribut des <kbd>a</kbd>-Elements
+    auf ein CGI-Skript, das Parameter entgegennimmt, muss es wie
+    folgt ausgedr&#252;ckt werden:
+    <b><kbd>http://my.site.dom/cgi-bin/myscript.pl?class=guest&amp;amp;name=user</kbd></b>,
+    und nicht als
+    <b><kbd>http://my.site.dom/cgi-bin/myscript.pl?class=guest&amp;name=user</kbd></b>.</p>
+
+    <h2><a name="_Toc6101561"><!--empty--></a>C.13 Cascading Style
+    Sheets (CSS) und XHTML</h2>
+
+    <p>Die Cascading Style Sheets Level 2-Empfehlung [CSS2]
+    definiert Stileigenschaften, die auf den Parsing-Baum des HTML-
+    oder XML-Dokuments angewendet werden. Unterschiede beim Parsing
+    erzeugen unterschiedliche visuelle oder akustische Ergebnisse,
+    abh&#228;ngig von den verwendeten Selektoren. Die folgenden
+    Hinweise reduzieren diesen Effekt f&#252;r Dokumente, die ohne
+    Ver&#228;nderung als beide Medientypen bereitgestellt
+    werden:</p>
+
+    <ol>
+      <li>CSS-Stylesheets f&#252;r XHTML sollten f&#252;r Element-
+      und Attributnamen Kleinbuchstaben verwenden.</li>
+
+      <li>In Tabellen wird das <kbd>tbody</kbd>-Element durch den
+      Parser eines HTML-Benutzerprogramms abgeleitet, nicht aber
+      vom Parser eines XML-Benutzerprogramms. Deshalb sollten Sie
+      immer explizit ein <kbd>tbody</kbd>-Element einf&#252;gen,
+      wenn in einem CSS-Selektor darauf verwiesen wird.</li>
+
+      <li>Innerhalb des XHTML-Namensraums geht man davon aus, dass
+      Benutzerprogramme das <kbd>id</kbd>-Attribut als Attribut des
+      Typs <kbd>ID</kbd> erkennen. Deshalb sollten Stylesheets in
+      der Lage sein, die abk&#252;rzende Selektorsyntax "#"
+      weiterhin zu erkennen, auch wenn das Benutzerprogramm die DTD
+      nicht liest.</li>
+
+      <li>Innerhalb des XHTML-Namensraums erwartet man von den
+      Benutzerprogrammen, dass sie das <kbd>class</kbd>-Attribut
+      erkennen. Deshalb sollten die Stylesheets weiterhin in der
+      Lage sein, die abk&#252;rzende Selektorsyntax &#8222;.&#8220;
+      zu verwenden.</li>
+
+      <li>CSS definiert unterschiedliche Konformit&#228;tsregeln
+      f&#252;r HTML- und XML-Dokumente; beachten Sie, dass die
+      HTML-Regeln f&#252;r XHTML-Dokumente gelten, die als HTML
+      ausgeliefert werden, und die XML-Regeln f&#252;r
+      XHTML-Dokumente, die als XML ausgeliefert werden.</li>
+    </ol>
+
+    <h2>C.14 Referenzierung von Style-Elementen bei Verwendung als
+    XML</h2>
+
+    <p>In HTML 4 und in XHTML kann das style-Element benutzt
+    werden, um dokumentinterne Formatierungsregeln zu definieren.
+    In XML wird eine XML-Stylesheet-Deklaration verwendet, um
+    Formatierungsregeln zu definieren. Um mit dieser Konvention
+    kompatibel zu sein, sollten <kbd>style</kbd>-Elemente ihren
+    Fragmentbezeichner mit Hilfe des <kbd>id</kbd>-Attributs
+    setzen. Eine XML-Stylesheet-Deklaration sollte dieses Fragment
+    referenzieren. Zum Beispiel:</p>
+
+    <div class="exampleInner">
+      <pre>
+&lt;?xml-stylesheet href="http://www.w3.org/StyleSheets/TR/W3C-REC.css" type="text/css"?&gt;<br />
+&lt;?xml-stylesheet href="#internalStyle" type="text/css"?&gt;<br />
+&lt;html xmlns="http://www.w3.org/1999/xhtml" <br />
+      xml:lang="en" <br />
+      lang="en"&gt;<br />
+  &lt;head&gt;<br />
+    &lt;title&gt;An internal stylesheet example&lt;/title&gt;<br />
+    &lt;style id="internalStyle"&gt;<br />
+      code {<br />
+        color: green;<br />
+        font-family: monospace;<br />
+        font-weight: bold;<br />
+      }<br />
+    &lt;/style&gt;<br />
+  &lt;/head&gt;<br />
+  &lt;body&gt;<br />
+    &lt;p&gt;<br />
+      This is text that uses our <br />
+      &lt;code&gt;internal stylesheet&lt;/code&gt;.<br />
+    &lt;/p&gt;<br />
+  &lt;/body&gt;<br />
+&lt;/html&gt;<br />
+</pre>
+    </div>
+
+    <h2>C.15 Leerraumzeichen in HTML vs. XML</h2>
+
+    <p>Einige Zeichen, die in HTML-Dokumenten erlaubt sind, sind in
+    XML-Dokumenten nicht erlaubt. Zum Beispiel wird das
+    Seitenvorschubzeichen (Form-feed, U+000C) in HTML als Leeraum
+    behandelt. In XHTML ist es wegen der Zeichendefinition von XML
+    nicht erlaubt.</p>
+
+    <h2>C.16 Die benannte Zeichenreferenz &amp;apos;</h2>
+
+    <p>Die benannte Zeichenreferenz &amp;apos; (das Apostroph,
+    U+0027) wurde in XML 1.0 eingef&#252;hrt, erscheint aber nicht
+    in HTML. Autoren sollten deshalb &amp;#39; anstelle von
+    &amp;apos; verwenden, damit es wie erwartet mit HTML
+    4-Benutzerprogrammen l&#228;uft.</p>
+
+    <h1><a name="_Toc6101562"><!--empty--></a>Anhang D:
+    Danksagungen</h1>
+
+    <p><b>Dieser Abschnitt ist informell.</b></p>
+
+    <p>Diese Spezifikation wurde unter Beteiligung der Mitglieder
+    der HTML-Arbeitsgruppe des W3C geschrieben.</p>
+
+    <p>Bei Ver&#246;ffentlichung der zweiten Auflage hatte die
+    Arbeitsgruppe folgende Mitglieder:</p>
+
+    <p>Steven Pemberton, CWI/W3C (HTML Working Group Chair); Daniel
+    Austin, Grainger; Jonny Axelsson, Opera Software; Tantek
+    &#199;elik, Microsoft; Doug Dominiak, Openwave Systems; Herman
+    Elenbaas, Philips Electronics; Beth Epperson, Netscape/ AOL;
+    Masayasu Ishikawa, W3C (HTML Activity Lead); Shin'ichi Matsui,
+    Panasonic; Shane McCarron, Applied Testing and Technology; Ann
+    Navarro, WebGeek, Inc.; Subramanian Peruvemba, Oracle; Rob
+    Relyea, Microsoft; Sebastian Schnitzenbaumer, SAP; Peter Stark,
+    Sony Ericsson</p>
+
+    <p>Bei Ver&#246;ffentlichung der ersten Auflage hatte die
+    Arbeitsgruppe folgende Mitglieder:</p>
+
+    <p>Steven Pemberton, CWI (HTML Working Group Chair); Murray
+    Altheim, Sun Microsystems; Daniel Austin, AskJeeves (CNET: The
+    Computer Network bis Juli 1999); Frank Boumphrey, HTML Writers
+    Guild; John Burger, Mitre; Andrew W. Donoho, IBM; Sam Dooley,
+    IBM; Klaus Hofrichter, GMD; Philipp Hoschka, W3C; Masayasu
+    Ishikawa, W3C; Warner ten Kate, Philips Electronics; Peter
+    King, Phone.com; Paula Klante, JetForm; Shin'ichi Matsui,
+    Panasonic (W3C Gast-Ingenieur bis September 1999); Shane
+    McCarron, Applied Testing and Technology (The Open Group bis
+    August 1999); Ann Navarro, HTML Writers Guild; Zach Nies,
+    Quark; Dave Raggett, W3C/HP (HTML Activity Lead); Patrick
+    Schmitz, Microsoft; Sebastian Schnitzenbaumer, Stack Overflow;
+    Peter Stark, Phone.com; Chris Wilson, Microsoft; Ted Wugofski,
+    Gateway 2000; Dan Zigmond, WebTV Networks</p>
+
+    <h1><a name="_Toc6101563"><!--empty--></a>Anhang E:
+    Literaturverzeichnis</h1>
+
+    <p><b>Dieser Abschnitt ist informell.</b></p>
+
+    <dl>
+      <dt>[<a name="bibCSS2"><!--empty--></a>CSS2]</dt>
+
+      <dd><a href=
+      "http://www.edition-w3c.de/TR/1998/REC-CSS2-19980512">"Cascading
+      Style Sheets, level 2 (CSS2) Specification"</a>, B. Bos, H.
+      W. Lie, C. Lilley, I. Jacobs, 12. Mai 1998. Neueste Version
+      unter: <a href=
+      "http://www.edition-w3c.de/TR/REC-CSS2">http://www.edition-w3c.de/TR/REC-CSS2</a></dd>
+    </dl>
+
+    <dl>
+      <dt>[<a name="bibDOM"><!--empty--></a>DOM]</dt>
+
+      <dd><a href=
+      "http://www.edition-w3c.de/TR/1998/REC-DOM-Level-1-19981001">"Document
+      Object Model (DOM) Level 1 Specification"</a>, Lauren Wood et
+      al., 1. Oktober 1998. Neueste Version unter: <a href=
+      "http://www.edition-w3c.de/TR/REC-DOM-Level-1">http://www.edition-w3c.de/TR/REC-DOM-Level-1</a></dd>
+    </dl>
+
+    <dl>
+      <dt>[DOM2]</dt>
+
+      <dd>"<a href=
+      "http://www.w3.org/TR/2000/REC-DOM-Level-2-Core-20001113">Document
+      Object Model (DOM) Level 2 Core Specification</a> ", A. Le
+      Hors, et al. ,13 November 2000. Neueste Version unter:
+      <a href=
+      "http://www.edition-w3c.de/TR/DOM-Level-2-Core">http://www.edition-w3c.de/TR/DOM-Level-2-Core</a>
+      .</dd>
+    </dl>
+
+    <dl>
+      <dt>[<a name="bibHTML"><!--empty--></a>HTML]</dt>
+
+      <dd><a href=
+      "http://www.edition-w3c.de/TR/1999/REC-html401-19991224">"HTML
+      4.01 Specification"</a>, D. Raggett, A. Le&nbsp;Hors, I.
+      Jacobs, 24. Dezember 1999. Neueste Version unter: <a href=
+      "http://www.edition-w3c.de/TR/html401">http://www.edition-w3c.de/TR/html401</a></dd>
+    </dl>
+
+    <dl>
+      <dt>[<a name="bibPOSIX1"><!--empty--></a>POSIX.1]</dt>
+
+      <dd>"ISO/IEC 9945-1:1990 Information Technology - Portable
+      Operating System Interface (POSIX) - Part 1: System
+      Application Program Interface (API) [C Language]", Institute
+      of Electrical and Electronics Engineers, Inc, 1990.</dd>
+    </dl>
+
+    <dl>
+      <dt>[<a name="bibRFC2045"><!--empty--></a>RFC2045]</dt>
+
+      <dd>"<a href=
+      "http://www.ietf.org/rfc/rfc2045.txt">Multipurpose Internet
+      Mail Extensions (MIME) Part One: Format of Internet Message
+      Bodies</a>", N. Freed and N. Borenstein, November 1996.
+      Dieser RFC ersetzt die veralteten RFC1521, RFC1522, und
+      RFC1590.</dd>
+    </dl>
+
+    <dl>
+      <dt>[<a name="bibRFC2046"><!--empty--></a>RFC2046]</dt>
+
+      <dd><a href="http://www.ietf.org/rfc/rfc2046.txt">"RFC2046:
+      Multipurpose Internet Mail Extensions (MIME) Part Two: Media
+      Types"</a>, N. Freed und N. Borenstein, November 1996.
+      Verf&#252;gbar unter: <a href=
+      "http://www.ietf.org/rfc/rfc2046.txt">http://www.ietf.org/rfc/rfc2046.txt</a>.
+      Beachten Sie, dass nach diesem RFC die RFCs RFC1521, RFC1522
+      und RFC1590 veraltet sind.</dd>
+    </dl>
+
+    <dl>
+      <dt>[<a name="bibRFC2119"><!--empty--></a>RFC2119]</dt>
+
+      <dd><a href="http://www.ietf.org/rfc/rfc2119.txt">"RFC2119:
+      Key words for use in RFCs to Indicate Requirement
+      Levels"</a>, S. Bradner, M&#228;rz 1997. Verf&#252;gbar
+      unter: <a href=
+      "http://www.ietf.org/rfc/rfc2119.txt">http://www.ietf.org/rfc/rfc2119.txt</a></dd>
+    </dl>
+
+    <dl>
+      <dt>[<a name="bibRFC2376"><!--empty--></a>RFC2376]</dt>
+
+      <dd><a href="http://www.ietf.org/rfc/rfc2376.txt">"RFC2376:
+      XML Media Types"</a>, E. Whitehead, M. Murata, Juli 1998.
+      Verf&#252;gbar unter: <a href=
+      "http://www.ietf.org/rfc/rfc2376.txt">http://www.ietf.org/rfc/rfc2376.txt</a></dd>
+    </dl>
+
+    <dl>
+      <dt>[<a name="bibRFC2396"><!--empty--></a>RFC2396]</dt>
+
+      <dd><a href="http://www.ietf.org/rfc/rfc2396.txt">"RFC2396:
+      Uniform Resource Identifiers (URI): Generic Syntax"</a>, T.
+      Berners-Lee, R. Fielding, L. Masinter, August 1998. Dieses
+      Dokument aktualisiert RFC1738 und RFC1808. Verf&#252;gbar
+      unter: <a href=
+      "http://www.ietf.org/rfc/rfc2396.txt">http://www.ietf.org/rfc/rfc2396.txt</a></dd>
+    </dl>
+
+    <dl>
+      <dt>[RFC2854]</dt>
+
+      <dd>"RFC2854: The text/html Media Type", D. Conolly, L.
+      Masinter, June 2000. Verf&#252;gbar unter: <a href=
+      "http://www.ietf.org/rfc/rfc2854.txt">http://www.ietf.org/rfc/rfc2854.txt</a></dd>
+    </dl>
+
+    <dl>
+      <dt>[<a name="bibRFC3023"><!--empty--></a>RFC3023]</dt>
+
+      <dd>"RFC3023: XML Media Types", M. Murata, S. St.Laurent, D.
+      Kohn, Januar 2001. Dieses Dokument ersetzt den veralteten
+      [RFC2376]. Verf&#252;gbar unter: <a href=
+      "http://www.ietf.org/rfc/rfc3023.txt">http://www.ietf.org/rfc/rfc3023.txt</a></dd>
+    </dl>
+
+    <dl>
+      <dt>[<a name="bibRFC3066"><!--empty--></a>RFC3066]</dt>
+
+      <dd>"Tags for the Identification of Languages", H.
+      Alvestrand, Januar 2001. Verf&#252;gbar unter: <a href=
+      "http://www.ietf.org/rfc/rfc3066.txt">http://www.ietf.org/rfc/rfc3066.txt</a></dd>
+    </dl>
+
+    <dl>
+      <dt>[RFC3236]</dt>
+
+      <dd>"The 'application/xhtml+xml' Media Type", M. Baker, P.
+      Stark, January 2002. Verf&#252;gbar unter: <a href=
+      "http://www.ietf.org/rfc/rfc3236.txt">http://www.ietf.org/rfc/rfc3236.txt</a></dd>
+    </dl>
+
+    <dl>
+      <dt>[XHTML+MathML]</dt>
+
+      <dd>"<a href=
+      "http://www.w3.org/TR/MathML2/dtd/xhtml-math11-f.dtd">XHTML
+      plus Math 1.1 DTD</a>", "A.2 MathML as a DTD Module",
+      Mathematical Markup Language (MathML) Version 2.0.
+      Verf&#252;gbar unter: <a href=
+      "http://www.edition-w3c.de/TR/MathML2/dtd/xhtml-math11-f.dtd">
+      http://www.edition-w3c.de/TR/MathML2/dtd/xhtml-math11-f.dtd</a></dd>
+    </dl>
+
+    <dl>
+      <dt>[XHTMLMIME]</dt>
+
+      <dd>" <a href=
+      "http://www.edition-w3c.de/TR/2002/NOTE-xhtml-media-types-20020801">
+      XHTML Media Types</a> ", Masayasu Ishikawa, 1 August 2002.
+      Neueste Version unter: <a href=
+      "http://www.edition-w3c.de/TR/xhtml-media-types">http://www.edition-w3c.de/TR/xhtml-media-types</a></dd>
+    </dl>
+
+    <dl>
+      <dt>[XHTMLMOD]</dt>
+
+      <dd>"<a href=
+      "http://www.w3.org/TR/2001/REC-xhtml-modularization-20010410">Modularization
+      of XHTML</a>", M. Altheim et al., 10 April 2001. Neueste
+      Version unter: <a href=
+      "http://www.edition-w3c.de/TR/xhtml-modularization">http://www.edition-w3c.de/TR/xhtml-modularization</a></dd>
+    </dl>
+
+    <dl>
+      <dt>[<a name="bibXML"><!--empty--></a>XML]</dt>
+
+      <dd><a href=
+      "http://www.edition-w3c.de/TR/1998/REC-xml-19980210">"Extensible
+      Markup Language (XML) 1.0 Specification"</a>, T. Bray, J.
+      Paoli, C. M. Sperberg-McQueen, 10. Februar 1998. Neueste
+      Version unter: <a href=
+      "http://www.edition-w3c.de/TR/REC-xml">http://www.edition-w3c.de/TR/REC-xml</a></dd>
+    </dl>
+
+    <dl>
+      <dt>[<a name="bibXMLNAMES"><!--empty--></a>XMLNAMES]</dt>
+
+      <dd><a href=
+      "http://www.edition-w3c.de/TR/1999/REC-xml-names-19990114">"Namespaces
+      in XML"</a>, T. Bray, D. Hollander, A. Layman, 14.Januar 199.
+      XML-Namensr&#228;ume stellen eine einfache Methode f&#252;r
+      die Qualifizierung von Namen dar, die in XML-Dokumenten
+      verwendet werden, indem ihnen Namensr&#228;ume zugeordnet
+      sind, die durch URI identifiziert werden. Neueste Version
+      unter: <a href=
+      "http://www.edition-w3c.de/TR/REC-xml-names">http://www.edition-w3c.de/TR/REC-xml-names</a></dd>
+    </dl>
+
+    <dl>
+      <dt>[XMLC14N]</dt>
+
+      <dd>"<a href=
+      "http://www.edition-w3c.de/TR/2001/REC-xml-c14n-20010315">Canonical
+      XML Version 1.0</a>", J. Boyer, 15 March 2001. Dieses
+      Dokument beschreibt ein Verfahren zur Erzeugung einer
+      physischen Repr&#228;sentation, die kanonische Form, eines
+      XML-Dokuments. Aktuelle Version erh&#228;ltlich unter
+      <a href="http://www.edition-w3c.de/TR/xml-c14n">http://www.edition-w3c.de/TR/xml-c14n</a></dd>
+    </dl>
+    <hr />
+
+    <h4><a name="index">Stichwortverzeichnis</a></h4>
+
+    <ul>
+      <li><a href="#%20Attribut%20%7C">Attribut</a></li>
+
+      <li><a href=
+      "#%20Benutzerprogramm%20%7C">Benutzerprogramm</a></li>
+
+      <li><a href="#%20Dokument%20%7C">Dokument</a></li>
+
+      <li><a href="#%20DTD%20%7C">DTD</a></li>
+
+      <li><a href="#%20Element%20%7C">Element</a></li>
+
+      <li><a href=
+      "#%20Funktionsmerkmale%20%7C">Funktionsmerkmale</a></li>
+
+      <li><a href=
+      "#+Gro%DF-/Kleinschreibung+%7C">Gro&#223;-/Kleinschreibung</a></li>
+
+      <li><a href=
+      "#%20Implementierung%20%7C">Implementierung</a></li>
+
+      <li><a href="#%20Kann%20%7C">Kann</a></li>
+
+      <li><a href="#%20Konforme%20Benutzerprogramme%20%7C">Konforme
+      Benutzerprogramme</a></li>
+
+      <li><a href="#%20Konforme%20Dokumente%20%7C">Konforme
+      Dokumente</a></li>
+
+      <li><a href="#%20Leere%20Elemente%20%7C">Leere
+      Elemente</a></li>
+
+      <li><a href=
+      "#%20Leerraumzeichen%20%7C">Leerraumzeichen</a></li>
+
+      <li><a href="#%20Medientyp%20%7C">Medientyp</a></li>
+
+      <li><a href="#%20Muss%20%7C">Muss</a></li>
+
+      <li><a href="#+Namensraum+f%FCr+XTHML+%7C">Namensraum
+      f&#252;r XTHML</a></li>
+
+      <li><a href="#%20Nicht%20spezifiziert%20%7C">Nicht
+      spezifiziert</a></li>
+
+      <li><a href="#%20Parsing%20%7C">Parsing</a></li>
+
+      <li><a href="#%20Rendering%20%7C">Rendering</a></li>
+
+      <li><a href="#%20Reserviert%20%7C">Reserviert</a></li>
+
+      <li><a href="#%20Sollte%20%7C">Sollte</a></li>
+
+      <li><a href="#%20Streng%20konforme%20Dokumente%20%7C">Streng
+      konforme Dokumente</a></li>
+
+      <li><a href="#+Unterst%FCtzt+%7C">Unterst&#252;tzt</a></li>
+
+      <li><a href="#%20Validierung%7C">Validierung</a></li>
+
+      <li><a href=
+      "#%20Wohlgeformtheit%20%7C">Wohlgeformtheit</a></li>
+
+      <li><a href=
+      "#%20Wohlgeformtheit%20%7C">Wohlgeformtheit</a></li>
+
+      <li><a href=
+      "#Attributminimierung%7C">Attributminimierung</a></li>
+
+      <li><a href="#Attributwerte%7C">Attributwerte</a></li>
+
+      <li><a href="#Darf%7C">Darf</a></li>
+
+      <li><a href="#End-Tags%7C">End-Tags</a></li>
+
+      <li><a href="#id-Attribut%7C">id-Attribut</a></li>
+
+      <li><a href="#id-Attribute%7C">id-Attribute</a></li>
+
+      <li><a href="#MIME-Typ%7C">MIME-Typ</a></li>
+
+      <li><a href="#name-Attribut%7C">name-Attribut</a></li>
+
+      <li><a href=
+      "#Namensraum%7Candere%7C">Namensraum|andere</a></li>
+
+      <li><a href="#Optional%7C">Optional</a></li>
+
+      <li><a href="#Script%7C">Script</a></li>
+
+      <li><a href="#Soll%7C">Soll</a></li>
+
+      <li><a href="#Style%7C">Style</a></li>
+
+      <li><a href="#XHTML%20und%20MathML%7C">XHTML und
+      MathML</a></li>
+    </ul>
+  </div>
+</body>
+</html>

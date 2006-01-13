@@ -26,6 +26,8 @@ import java.util.Properties;
 import de.dante.extex.unicodeFont.exception.FontException;
 import de.dante.extex.unicodeFont.exception.FontNoFileExtensionFoundException;
 import de.dante.extex.unicodeFont.exception.FontNotFoundException;
+import de.dante.extex.unicodeFont.format.tex.psfontmap.PSFontEncoding;
+import de.dante.extex.unicodeFont.format.tex.psfontmap.PSFontsMapReader;
 import de.dante.extex.unicodeFont.key.FontKey;
 import de.dante.extex.unicodeFont.key.FontKeyConfigurable;
 import de.dante.extex.unicodeFont.type.FontInit;
@@ -46,7 +48,7 @@ import de.dante.util.resource.ResourceFinder;
  * Factory for the font system.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 
 public class FontFactory extends AbstractFactory
@@ -54,6 +56,16 @@ public class FontFactory extends AbstractFactory
             ResourceConsumer,
             RegistrarObserver,
             PropertyConfigurable {
+
+    /**
+     * Type tfm font.
+     */
+    private static final String TFM = "tfm";
+
+    /**
+     * Type vf font.
+     */
+    private static final String VF = "vf";
 
     /**
      * Create a new object.
@@ -89,16 +101,27 @@ public class FontFactory extends AbstractFactory
 
         Configuration config = getConfiguration();
 
-        Iterator it = config.iterator("font");
-        while (it.hasNext()) {
-            Configuration cfg = (Configuration) it.next();
+        String fontname = key.getName();
+        String type = null;
 
-            String fileextension = cfg.getAttribute("fileextension");
-            if (fileextension == null) {
-                throw new FontNoFileExtensionFoundException();
+        // check psfontmap
+        loadPsFontMap();
+
+        // tfm or vf
+        PSFontEncoding tfmVfEnc = psfontsmap.getPSFontEncoding(fontname);
+
+        if (tfmVfEnc != null) {
+            if (isVF(fontname)) {
+                type = VF;
+            } else {
+                type = TFM;
             }
+        }
 
-            InputStream in = finder.findResource(key.getName(), fileextension);
+        Configuration cfg = config.findConfiguration(type);
+
+        if (cfg != null) {
+            InputStream in = finder.findResource(key.getName(), type);
 
             if (in != null) {
                 TexFont texFont = (TexFont) createInstanceForConfiguration(cfg,
@@ -122,9 +145,82 @@ public class FontFactory extends AbstractFactory
                 }
                 return texFont;
             }
+
         }
 
+        //        Iterator it = config.iterator("font");
+        //        while (it.hasNext()) {
+        //            Configuration cfg = (Configuration) it.next();
+        //
+        //            String fileextension = cfg.getAttribute("fileextension");
+        //            if (fileextension == null) {
+        //                throw new FontNoFileExtensionFoundException();
+        //            }
+        //
+        //            InputStream in = finder.findResource(key.getName(), fileextension);
+        //
+        //            if (in != null) {
+        //                TexFont texFont = (TexFont) createInstanceForConfiguration(cfg,
+        //                        TexFont.class);
+        //
+        //                //                if (texFont instanceof LogEnabled) {
+        //                //                    ((LogEnabled) texFont).enableLogging(getLogger());
+        //                //                }
+        //                if (texFont instanceof PropertyConfigurable) {
+        //                    ((PropertyConfigurable) texFont).setProperties(properties);
+        //                }
+        //                if (texFont instanceof InputStreamConfigurable) {
+        //                    ((InputStreamConfigurable) texFont).setInputStream(in);
+        //                }
+        //                if (texFont instanceof FontKeyConfigurable) {
+        //                    ((FontKeyConfigurable) texFont).setFontKey(key);
+        //                }
+        //                // init
+        //                if (texFont instanceof FontInit) {
+        //                    ((FontInit) texFont).init();
+        //                }
+        //                return texFont;
+        //            }
+        //        }
+
         throw new FontNotFoundException(key.getName());
+    }
+
+    /**
+     * Check, if the font is a virtual font (vf).
+     * <p>
+     * Test, if a vf file exists.
+     * </p>
+     * @param fontname  The font name.
+     * @return Returns <code>true</code>, if the font is a virtual font.
+     * @throws ConfigurationException from the configuration system.
+     */
+    private boolean isVF(final String fontname) throws ConfigurationException {
+
+        InputStream in = finder.findResource(fontname, VF);
+        if (in != null) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * The psfonts.map reader.
+     */
+    private PSFontsMapReader psfontsmap;
+
+    /**
+     * Load the psfont.map file.
+     * @throws ConfigurationException from the configuration system.
+     * @throws FontException  if a font error occurs.
+     */
+    private void loadPsFontMap() throws ConfigurationException, FontException {
+
+        if (psfontsmap == null) {
+            InputStream in = finder.findResource("psfonts.map", "");
+
+            psfontsmap = new PSFontsMapReader(in);
+        }
     }
 
     /**

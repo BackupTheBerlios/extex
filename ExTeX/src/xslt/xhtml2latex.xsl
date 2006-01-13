@@ -3,13 +3,13 @@
    Tranformation from xhtml to latex.
    
    @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
-   @version $Revision: 1.5 $
+   @version $Revision: 1.6 $
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:html="http://www.w3.org/1999/xhtml">
     
     <!-- output -->
-    <xsl:output method="text" encoding="iso-8859-1" indent="no"/>
+    <xsl:output method="text" encoding="utf-8" indent="no"/>
     
     <!-- root -->
     <xsl:template match="/">
@@ -482,7 +482,7 @@
                 <xsl:when test="$SS = '}'">
                     <xsl:text>\}</xsl:text>
                 </xsl:when>
-                <xsl:when test="$SS = '^'">
+               <xsl:when test="$SS = '^'">
                     <xsl:text>\textasciicaron{}</xsl:text>
                 </xsl:when>
                 <xsl:when test="$SS = '$'">

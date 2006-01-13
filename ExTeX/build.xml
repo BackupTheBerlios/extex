@@ -46,7 +46,9 @@
               Create the GUI-based installer.
           install -Dinstalldir=...
               Install the relevant files in the given directory.
-          lsr 
+          tar
+	      create a tar file with all source files, ...
+	  lsr 
               Create a ls-R file for src/ and develop/test.
           clean
         </echo>
@@ -435,7 +437,7 @@
     </copy>
     <property name="doc.params"
               value="-properties doc/dbdoclet-extex.properties" />
-    <javadoc maxmemory="256m"
+    <javadoc maxmemory="400m"
              destdir="${dbdoclet}"
              author="true"
              version="true"

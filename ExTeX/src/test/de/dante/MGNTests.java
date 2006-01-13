@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -23,6 +23,8 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import de.dante.extex.scanner.stream.impl.TokenStreamStringImplTest;
 import de.dante.extex.scanner.stream.impl32.TokenStreamStringImpl32Test;
+import de.dante.extex.unicodeFont.EncFactoryTest;
+import de.dante.extex.unicodeFont.PsFontsMapReaderTest;
 import de.dante.util.Fixed32Test;
 import de.dante.util.xml.XMLStreamWriterTest;
 import de.dante.util.xslt.XsltTransformXhtmlTest;
@@ -36,16 +38,18 @@ import de.dante.util.xslt.XsltTransformXhtmlTest;
  *  <li>TokenStreamStringImpl32Test</li>
  *  <li>XMLStreamWriterTest</li>
  *  <li>Fixed32Test</li>
+ *  <li>PsFontsMapReaderTest</li>
+ *  <li>EncFactoryTest</li>
  * </ul>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class MGNTests {
 
     /**
-     * test suite
+     * The test suite.
      * @return The Test
      */
     public static Test suite() {
@@ -58,6 +62,8 @@ public class MGNTests {
         suite.addTestSuite(TokenStreamStringImpl32Test.class);
         suite.addTestSuite(XMLStreamWriterTest.class);
         suite.addTestSuite(Fixed32Test.class);
+        suite.addTestSuite(PsFontsMapReaderTest.class);
+        suite.addTestSuite(EncFactoryTest.class);
         //$JUnit-END$
 
         return suite;

@@ -1,0 +1,2 @@
+Die HTFML-Dateien wurden mit tidy nach xhtml konvertiert.
+tidy -m -i -asxhtml [-utf8] [-latin1] <html-datei>

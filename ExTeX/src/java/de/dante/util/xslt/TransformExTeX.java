@@ -25,7 +25,12 @@ import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamSource;
+
+import org.w3c.dom.Document;
 
 import de.dante.extex.ExTeX;
 import de.dante.extex.unicodeFont.FontFactory;
@@ -36,6 +41,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
 import de.dante.util.framework.configuration.exception.ConfigurationInstantiationException;
 import de.dante.util.framework.configuration.exception.ConfigurationMissingAttributeException;
 import de.dante.util.framework.configuration.exception.ConfigurationNoSuchMethodException;
+import de.dante.util.resource.EntityResolverRf;
 import de.dante.util.resource.PropertyConfigurable;
 import de.dante.util.resource.ResourceFinder;
 import de.dante.util.resource.UriResolverRf;
@@ -46,13 +52,13 @@ import de.dante.util.resource.UriResolverRf;
  * <p>It use the default resource finder, to get the files.</p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public final class TransformExTeX {
 
     /**
-     * private: no instance
+     * private: no instance.
      */
     private TransformExTeX() {
 
@@ -69,7 +75,7 @@ public final class TransformExTeX {
     private static final int BUFFERSIZE = 0xffff;
 
     /**
-     * main
+     * main method.
      * @param args      the command line arguments
      * @throws Exception  in case of an error
      */
@@ -89,6 +95,8 @@ public final class TransformExTeX {
         MyExTeX extex = new MyExTeX(prop, ".extex-test");
         ResourceFinder finder = extex.getResourceFinder();
         UriResolverRf resolver = new UriResolverRf(finder);
+        EntityResolverRf entresolver = new EntityResolverRf(finder);
+
         // -----------------------------------------------
 
         BufferedOutputStream out = new BufferedOutputStream(
@@ -97,7 +105,15 @@ public final class TransformExTeX {
         InputStream xmlin = finder.findResource(args[0], "");
         InputStream xslin = finder.findResource(args[1], "");
 
-        Transform.transform(new StreamSource(xmlin), new StreamSource(xslin),
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setValidating(false);
+        factory.setNamespaceAware(true);
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        builder.setEntityResolver(entresolver);
+        
+        Document xmldoc = builder.parse(xmlin);
+
+        Transform.transform(new DOMSource(xmldoc), new StreamSource(xslin),
                 resolver, out);
     }
 
@@ -128,14 +144,15 @@ public final class TransformExTeX {
         }
 
         /**
-         * Creates a new object and supplies some properties for those keys which
-         * are not contained in the properties already.
+         * Creates a new object and supplies some properties for
+         * those keys which are not contained in the properties already.
          * A detailed list of the properties supported can be found in section
          * <a href="#settings">Settings</a>.
          *
-         * @param theProperties the properties to start with. This object is
-         *  used and modified. The caller should provide a new instance if this is
-         *  not desirable.
+         * @param theProperties     The properties to start with.
+         *                          This object is used and modified.
+         *                          The caller should provide a new instance
+         *                          if this is not desirable.
          *
          * @throws Exception in case of an error
          */
@@ -146,12 +163,12 @@ public final class TransformExTeX {
         }
 
         /**
-         * the config
+         * The configuration.
          */
         private Configuration config;
 
         /**
-         * create the config
+         * Create the configuration.
          */
         private void makeConfig() throws ConfigurationException {
 
@@ -160,7 +177,7 @@ public final class TransformExTeX {
         }
 
         /**
-         * the finder
+         * The finder.
          */
         private ResourceFinder finder;
 

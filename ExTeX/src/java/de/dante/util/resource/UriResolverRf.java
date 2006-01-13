@@ -33,7 +33,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * <p>Used for the TransformerFactory</p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class UriResolverRf implements URIResolver {
@@ -58,6 +58,9 @@ public class UriResolverRf implements URIResolver {
      */
     public Source resolve(final String href, final String base)
             throws TransformerException {
+
+        System.out.print("href = '" + href + "'");
+        System.out.println("   base = '" + base + "'");
 
         StreamSource source = null;
         try {
