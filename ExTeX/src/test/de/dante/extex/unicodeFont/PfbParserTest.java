@@ -18,6 +18,7 @@
 
 package de.dante.extex.unicodeFont;
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
@@ -39,7 +40,7 @@ import de.dante.util.resource.ResourceFinder;
  * Test the pdf parser.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class PfbParserTest extends TestCase {
 
@@ -55,8 +56,10 @@ public class PfbParserTest extends TestCase {
 
     /**
      * test 01.
+     * lmr12.pfb
+     * @throws Exception if an error occurs.
      */
-    public void test01() {
+    public void test01() throws Exception {
 
         String[] enc = parser.getEncoding();
 
@@ -67,6 +70,30 @@ public class PfbParserTest extends TestCase {
         assertEquals(enc[138], "Scaron");
         assertEquals(enc[255], "ydieresis");
         assertEquals(enc[0], null);
+    }
+
+    /**
+     * test 02.
+     * Check, if lmr12.pfa is correct.
+     *
+     * @throws Exception if an error occurs.
+     */
+    public void test02() throws Exception {
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream(parser.size());
+        parser.toPfa(out);
+        byte[] pfa = out.toByteArray();
+        out.close();
+
+        InputStream in = extex.getResourceFinder()
+                .findResource("lmr12.pfa", "");
+        assertNotNull(in);
+
+        int c;
+        int pos = 0;
+        while ((c = in.read()) != -1) {
+            assertEquals(c, pfa[pos++]);
+        }
     }
 
     /**

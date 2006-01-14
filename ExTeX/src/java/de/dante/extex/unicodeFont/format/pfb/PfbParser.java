@@ -22,6 +22,7 @@ package de.dante.extex.unicodeFont.format.pfb;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 
 import de.dante.extex.unicodeFont.exception.FontException;
@@ -42,7 +43,7 @@ import de.dante.util.xml.XMLStreamWriter;
  * <p>Type 1 Font Programm [ASCII - eexec encryption (Binary only) - ASCII]<p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class PfbParser implements XMLWriterConvertible, Serializable {
 
@@ -313,5 +314,39 @@ public class PfbParser implements XMLWriterConvertible, Serializable {
             writer.writeEndElement();
         }
         writer.writeEndElement();
+    }
+
+    /**
+     * How many hex values per line?
+     */
+    private static final int HEX_PER_LINE = 30;
+
+    /**
+     * Write the data as <b>pfa</b> to the output stream.
+     * @param out   The output.
+     * @throws IOException if an IO-error occurs.
+     */
+    public void toPfa(final OutputStream out) throws IOException {
+
+        // write part 1 - idx 0   ASCII
+        byte[] tmp = getPart(0);
+        out.write(tmp);
+
+        // write part 2 - idx 1   BINARY
+        tmp = getPart(1);
+        for (int i = 0; i < tmp.length; i++) {
+            String hex = "00" + Integer.toHexString(tmp[i]);
+            out.write(hex.charAt(hex.length()-2));
+            out.write(hex.charAt(hex.length()-1));
+            if ((i + 1) % HEX_PER_LINE == 0) {
+                out.write('\n');
+            }
+        }
+        out.write('\n');
+
+        // write part 3 - idx 2   ASCII
+        tmp = getPart(2);
+        out.write(tmp);
+
     }
 }
