@@ -1,5 +1,5 @@
 #******************************************************************************
-#* $Id: Makefile,v 1.2 2005/09/09 09:43:06 gene Exp $
+#* $Id: Makefile,v 1.3 2006/01/14 12:53:50 mgn Exp $
 #******************************************************************************
 #* Author: Gerd Neugebauer
 #*=============================================================================
@@ -37,7 +37,7 @@ howto tmp/howto.tex:
 	perl bin/howto.pl -cp ../../src/java -out tmp/howto.tex
 
 clean:
-	rm -f *.ilg *.out *.toc *.aux *.ilg *.log *.dvi *.ind *~
+	rm -f *.ilg *.out *.toc *.aux *.ilg *.log *.dvi *.ind *~ *backup
 
 veryclean distclean: clean
 	rm -f $(MANUAL).pdf
