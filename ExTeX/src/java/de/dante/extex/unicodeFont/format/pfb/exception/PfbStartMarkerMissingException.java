@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,21 +16,21 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
-package de.dante.extex.font.type.pfb.exception;
+package de.dante.extex.unicodeFont.format.pfb.exception;
 
 /**
- * Exception for the pfb parser: Incorrect Record Type.
+ * Exception for the pfb parser: Start marker is missing.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @version $Revision: 1.1 $
  */
 
-public class PfbIncorrectRecordTypeException extends PfbException {
+public class PfbStartMarkerMissingException extends PfbException {
 
     /**
      * Create a new object.
      */
-    public PfbIncorrectRecordTypeException() {
+    public PfbStartMarkerMissingException() {
 
         super();
     }
@@ -40,7 +40,7 @@ public class PfbIncorrectRecordTypeException extends PfbException {
      *
      * @param message   the message
      */
-    public PfbIncorrectRecordTypeException(final String message) {
+    public PfbStartMarkerMissingException(final String message) {
 
         super(message);
     }

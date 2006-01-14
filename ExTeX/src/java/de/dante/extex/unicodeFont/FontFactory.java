@@ -20,17 +20,16 @@
 package de.dante.extex.unicodeFont;
 
 import java.io.InputStream;
-import java.util.Iterator;
 import java.util.Properties;
 
 import de.dante.extex.unicodeFont.exception.FontException;
-import de.dante.extex.unicodeFont.exception.FontNoFileExtensionFoundException;
 import de.dante.extex.unicodeFont.exception.FontNotFoundException;
 import de.dante.extex.unicodeFont.format.tex.psfontmap.PSFontEncoding;
 import de.dante.extex.unicodeFont.format.tex.psfontmap.PSFontsMapReader;
 import de.dante.extex.unicodeFont.key.FontKey;
 import de.dante.extex.unicodeFont.key.FontKeyConfigurable;
 import de.dante.extex.unicodeFont.type.FontInit;
+import de.dante.extex.unicodeFont.type.FontPfb;
 import de.dante.extex.unicodeFont.type.InputStreamConfigurable;
 import de.dante.extex.unicodeFont.type.TexFont;
 import de.dante.util.framework.AbstractFactory;
@@ -39,7 +38,6 @@ import de.dante.util.framework.RegistrarException;
 import de.dante.util.framework.RegistrarObserver;
 import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
-import de.dante.util.framework.logger.LogEnabled;
 import de.dante.util.resource.PropertyConfigurable;
 import de.dante.util.resource.ResourceConsumer;
 import de.dante.util.resource.ResourceFinder;
@@ -48,7 +46,7 @@ import de.dante.util.resource.ResourceFinder;
  * Factory for the font system.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 
 public class FontFactory extends AbstractFactory
@@ -104,24 +102,39 @@ public class FontFactory extends AbstractFactory
         String fontname = key.getName();
         String type = null;
 
-        // check psfontmap
+        // check for psfont.map
         loadPsFontMap();
 
         // tfm or vf
         PSFontEncoding tfmVfEnc = psfontsmap.getPSFontEncoding(fontname);
 
+        // file type
+        String fileType = "";
+        String externalfile = "";
+
+        // ----------------------------------
+        // tfm or vf with pfb
+        // ----------------------------------
         if (tfmVfEnc != null) {
+            // check the font file: pfb, ttf, ...
+            String ext = tfmVfEnc.getFontfileExtension();
+            externalfile = tfmVfEnc.getFontfile();
+
             if (isVF(fontname)) {
-                type = VF;
+                type = VF + "_" + ext;
+                fileType = VF;
             } else {
-                type = TFM;
+                type = TFM + "_" + ext;
+                fileType = TFM;
             }
         }
+
+        // other fonts: TODO incomplete
 
         Configuration cfg = config.findConfiguration(type);
 
         if (cfg != null) {
-            InputStream in = finder.findResource(key.getName(), type);
+            InputStream in = finder.findResource(key.getName(), fileType);
 
             if (in != null) {
                 TexFont texFont = (TexFont) createInstanceForConfiguration(cfg,
@@ -139,7 +152,15 @@ public class FontFactory extends AbstractFactory
                 if (texFont instanceof FontKeyConfigurable) {
                     ((FontKeyConfigurable) texFont).setFontKey(key);
                 }
-                // init
+                if (texFont instanceof FontPfb) {
+                    InputStream inExtFont = finder.findResource(externalfile,
+                            "");
+                    if (inExtFont != null) {
+                        ((FontPfb) texFont).setPfb(inExtFont);
+                    }
+                }
+
+                // Initialize
                 if (texFont instanceof FontInit) {
                     ((FontInit) texFont).init();
                 }
@@ -210,7 +231,7 @@ public class FontFactory extends AbstractFactory
     private PSFontsMapReader psfontsmap;
 
     /**
-     * Load the psfont.map file.
+     * Load the psfont.map file (only once).
      * @throws ConfigurationException from the configuration system.
      * @throws FontException  if a font error occurs.
      */

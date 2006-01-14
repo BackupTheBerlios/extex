@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -31,7 +31,7 @@ import java.io.Serializable;
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @version $Revision: 1.1 $
  */
-public class TFMFontType implements Serializable {
+public class TfmFontType implements Serializable {
 
     /**
      * Normal TeX font metric
@@ -58,7 +58,7 @@ public class TFMFontType implements Serializable {
      *
      * @param codingscheme  the coding scheme
      */
-    public TFMFontType(final String codingscheme) {
+    public TfmFontType(final String codingscheme) {
 
         if (codingscheme != null && codingscheme.startsWith("TEX MATH SY")) {
             type = MATHSY;

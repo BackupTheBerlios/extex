@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,23 +16,21 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
-package de.dante.extex.font.type.pfb.exception;
-
-import de.dante.extex.font.exception.FontException;
+package de.dante.extex.unicodeFont.format.pfb.exception;
 
 /**
- * Exception for the pfb parser.
+ * Exception for the pfb parser: Incorrect Record Type.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @version $Revision: 1.1 $
  */
 
-public class PfbException extends FontException {
+public class PfbIncorrectRecordTypeException extends PfbException {
 
     /**
      * Create a new object.
      */
-    public PfbException() {
+    public PfbIncorrectRecordTypeException() {
 
         super();
     }
@@ -42,7 +40,7 @@ public class PfbException extends FontException {
      *
      * @param message   the message
      */
-    public PfbException(final String message) {
+    public PfbIncorrectRecordTypeException(final String message) {
 
         super(message);
     }

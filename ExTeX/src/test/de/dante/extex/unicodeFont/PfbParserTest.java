@@ -1,33 +1,30 @@
 /*
  * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
- * This library is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation; either version 2.1 of the License, or (at your
- * option) any later version.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
- * for more details.
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library; if not, write to the Free Software Foundation,
- * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
 package de.dante.extex.unicodeFont;
 
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
 
 import junit.framework.TestCase;
 import de.dante.extex.ExTeX;
-import de.dante.extex.unicodeFont.key.FontKey;
-import de.dante.extex.unicodeFont.key.FontKeyFactory;
-import de.dante.extex.unicodeFont.type.FontPfb;
-import de.dante.extex.unicodeFont.type.TexFont;
+import de.dante.extex.unicodeFont.format.pfb.PfbParser;
 import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.ConfigurationFactory;
 import de.dante.util.framework.configuration.exception.ConfigurationClassNotFoundException;
@@ -39,13 +36,12 @@ import de.dante.util.resource.PropertyConfigurable;
 import de.dante.util.resource.ResourceFinder;
 
 /**
- * Test for the font factory.
+ * Test the pdf parser.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.1 $
  */
-
-public class FontFactoryTest extends TestCase {
+public class PfbParserTest extends TestCase {
 
     /**
      * Which configuration file.
@@ -58,36 +54,37 @@ public class FontFactoryTest extends TestCase {
     protected MyExTeX extex;
 
     /**
-     * the font
+     * test 01.
      */
-    private TexFont font;
+    public void test01() {
+
+        String[] enc = parser.getEncoding();
+
+        assertEquals(enc[32], "space");
+        assertEquals(enc[50], "two");
+        assertEquals(enc[95], "underscore");
+        assertEquals(enc[117], "u");
+        assertEquals(enc[138], "Scaron");
+        assertEquals(enc[255], "ydieresis");
+        assertEquals(enc[0], null);
+    }
 
     /**
-     * @see junit.framework.TestCase#setUp()
+     * the parser.
+     */
+    private PfbParser parser;
+
+    /**
+     * @see TestCase#setUp()
      */
     protected void setUp() throws Exception {
 
         if (extex == null) {
             extex = new MyExTeX(System.getProperties(), ".extex-test");
 
-            FontFactory ff = extex.getFontFactory();
-            FontKeyFactory fkf = new FontKeyFactory();
-
-            FontKey key = fkf.newInstance("cmr12");
-
-            font = ff.newInstance(key);
-        }
-    }
-
-    /**
-     * test 01.
-     * @throws Exception if an error occurred.
-     */
-    public void test01() throws Exception {
-
-        assertEquals("cmr12", font.getFontName());
-        if (font instanceof FontPfb) {
-            assertTrue(true);
+            InputStream in = extex.getResourceFinder().findResource(
+                    "lmr12.pfb", "");
+            parser = new PfbParser(in);
         }
     }
 
@@ -144,12 +141,12 @@ public class FontFactoryTest extends TestCase {
         }
 
         /**
-         * the config
+         * the config.
          */
         private Configuration config;
 
         /**
-         * create the config
+         * create the config.
          */
         private void makeConfig() throws ConfigurationException {
 
@@ -158,7 +155,7 @@ public class FontFactoryTest extends TestCase {
         }
 
         /**
-         * the finder
+         * the finder.
          */
         private ResourceFinder finder;
 
@@ -176,7 +173,7 @@ public class FontFactoryTest extends TestCase {
         }
 
         /**
-         * the font factroy
+         * the font factroy.
          */
         private FontFactory fontFactory;
 
@@ -250,12 +247,12 @@ public class FontFactoryTest extends TestCase {
     // --------------------------------------------
 
     /**
-     * main
-     * @param args  the command line.
+     * The main method.
+     * @param args  The command line.
      */
     public static void main(final String[] args) {
 
-        junit.textui.TestRunner.run(FontFactoryTest.class);
+        junit.textui.TestRunner.run(PfbParserTest.class);
     }
 
 }

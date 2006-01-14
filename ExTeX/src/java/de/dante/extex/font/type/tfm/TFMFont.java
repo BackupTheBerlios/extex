@@ -26,10 +26,10 @@ import java.io.Serializable;
 import de.dante.extex.font.exception.FontException;
 import de.dante.extex.font.type.PlFormat;
 import de.dante.extex.font.type.PlWriter;
-import de.dante.extex.font.type.pfb.PfbParser;
 import de.dante.extex.font.type.tfm.enc.EncFactory;
 import de.dante.extex.font.type.tfm.psfontsmap.PSFontEncoding;
 import de.dante.extex.font.type.tfm.psfontsmap.PSFontsMapReader;
+import de.dante.extex.unicodeFont.format.pfb.PfbParser;
 import de.dante.util.EFMWriterConvertible;
 import de.dante.util.XMLWriterConvertible;
 import de.dante.util.file.random.RandomAccessR;
@@ -42,7 +42,7 @@ import de.dante.util.xml.XMLStreamWriter;
  * @see <a href="package-summary.html#TFMformat">TFM-Format</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class TFMFont
         implements

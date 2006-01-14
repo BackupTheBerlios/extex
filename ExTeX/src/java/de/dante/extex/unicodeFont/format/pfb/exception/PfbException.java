@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,21 +16,23 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
-package de.dante.extex.font.type.pfb.exception;
+package de.dante.extex.unicodeFont.format.pfb.exception;
+
+import de.dante.extex.unicodeFont.exception.FontException;
 
 /**
- * Exception for the pfb parser: Start marker is missing.
+ * Exception for the pfb parser.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @version $Revision: 1.1 $
  */
 
-public class PfbStartMarkerMissingException extends PfbException {
+public class PfbException extends FontException {
 
     /**
      * Create a new object.
      */
-    public PfbStartMarkerMissingException() {
+    public PfbException() {
 
         super();
     }
@@ -40,7 +42,7 @@ public class PfbStartMarkerMissingException extends PfbException {
      *
      * @param message   the message
      */
-    public PfbStartMarkerMissingException(final String message) {
+    public PfbException(final String message) {
 
         super(message);
     }

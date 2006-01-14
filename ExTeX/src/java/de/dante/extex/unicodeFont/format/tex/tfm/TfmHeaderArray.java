@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -63,7 +63,7 @@ import de.dante.util.xml.XMLStreamWriter;
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @version $Revision: 1.1 $
  */
-public class TFMHeaderArray
+public class TfmHeaderArray
         implements
             XMLWriterConvertible,
             PlFormat,
@@ -92,7 +92,7 @@ public class TFMHeaderArray
     /**
      * the font type (VANILLA, MATHSY, MATHEX)
      */
-    private TFMFontType fonttype;
+    private TfmFontType fonttype;
 
     /**
      * header[12..16]: font family
@@ -130,7 +130,7 @@ public class TFMHeaderArray
      * @param lh    length of the header data
      * @throws IOException if an IO-error occurs.
      */
-    public TFMHeaderArray(final RandomAccessR rar, final short lh)
+    public TfmHeaderArray(final RandomAccessR rar, final short lh)
             throws IOException {
 
         int hr = lh;
@@ -144,7 +144,7 @@ public class TFMHeaderArray
         if (hr >= CODING_SCHEME_SIZE) {
             codingscheme = readBCPL(rar, TFMConstants.CONST_4
                     * CODING_SCHEME_SIZE);
-            fonttype = new TFMFontType(codingscheme);
+            fonttype = new TfmFontType(codingscheme);
             hr -= CODING_SCHEME_SIZE;
 
             // optional: font family
@@ -245,7 +245,7 @@ public class TFMHeaderArray
      * Returns the fontype.
      * @return Returns the fontype.
      */
-    public TFMFontType getFontype() {
+    public TfmFontType getFontype() {
 
         return fonttype;
     }

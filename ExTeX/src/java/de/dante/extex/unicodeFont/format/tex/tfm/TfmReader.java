@@ -24,9 +24,9 @@ import java.io.IOException;
 import java.io.Serializable;
 
 import de.dante.extex.font.exception.FontException;
+import de.dante.extex.unicodeFont.format.pfb.PfbParser;
 import de.dante.extex.unicodeFont.format.pl.PlFormat;
 import de.dante.extex.unicodeFont.format.pl.PlWriter;
-import de.dante.extex.font.type.pfb.PfbParser;
 import de.dante.extex.font.type.tfm.enc.EncFactory;
 import de.dante.extex.font.type.tfm.psfontsmap.PSFontEncoding;
 import de.dante.extex.font.type.tfm.psfontsmap.PSFontsMapReader;
@@ -42,7 +42,7 @@ import de.dante.util.xml.XMLStreamWriter;
  * @see <a href="package-summary.html#TFMformat">TFM-Format</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class TfmReader
         implements
@@ -70,7 +70,7 @@ public class TfmReader
 
         // read the input
         lengths = new TFMHeaderLengths(rar);
-        header = new TFMHeaderArray(rar, lengths.getLh());
+        header = new TfmHeaderArray(rar, lengths.getLh());
         charinfo = new TFMCharInfoArray(rar, lengths.getCc());
         width = new TFMWidthArray(rar, lengths.getNw());
         height = new TFMHeightArray(rar, lengths.getNh());
@@ -101,7 +101,7 @@ public class TfmReader
     /**
      * the header
      */
-    private TFMHeaderArray header;
+    private TfmHeaderArray header;
 
     /**
      * the char info
@@ -215,7 +215,7 @@ public class TfmReader
      * Returns the header.
      * @return Returns the header.
      */
-    public TFMHeaderArray getHeader() {
+    public TfmHeaderArray getHeader() {
 
         return header;
     }
@@ -341,7 +341,7 @@ public class TfmReader
      * Returns the font type.
      * @return Returns the font type.
      */
-    public TFMFontType getFontType() {
+    public TfmFontType getFontType() {
 
         return header.getFontype();
     }

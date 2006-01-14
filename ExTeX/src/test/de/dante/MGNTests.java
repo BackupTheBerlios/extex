@@ -25,6 +25,7 @@ import de.dante.extex.scanner.stream.impl.TokenStreamStringImplTest;
 import de.dante.extex.scanner.stream.impl32.TokenStreamStringImpl32Test;
 import de.dante.extex.unicodeFont.EncFactoryTest;
 import de.dante.extex.unicodeFont.FontFactoryTest;
+import de.dante.extex.unicodeFont.PfbParserTest;
 import de.dante.extex.unicodeFont.PsFontsMapReaderTest;
 import de.dante.util.Fixed32Test;
 import de.dante.util.xml.XMLStreamWriterTest;
@@ -42,10 +43,11 @@ import de.dante.util.xslt.XsltTransformXhtmlTest;
  *  <li>PsFontsMapReaderTest</li>
  *  <li>EncFactoryTest</li>
  *  <li>FontFactoryTest</li>
+ *  <li>PfbParserTest</li>
  * </ul>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 
 public class MGNTests {
@@ -67,6 +69,7 @@ public class MGNTests {
         suite.addTestSuite(PsFontsMapReaderTest.class);
         suite.addTestSuite(EncFactoryTest.class);
         suite.addTestSuite(FontFactoryTest.class);
+        suite.addTestSuite(PfbParserTest.class);
         //$JUnit-END$
 
         return suite;

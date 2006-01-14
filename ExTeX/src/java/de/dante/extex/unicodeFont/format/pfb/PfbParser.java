@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -17,17 +17,17 @@
  *
  */
 
-package de.dante.extex.font.type.pfb;
+package de.dante.extex.unicodeFont.format.pfb;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 
-import de.dante.extex.font.exception.FontException;
-import de.dante.extex.font.exception.FontIOException;
-import de.dante.extex.font.type.pfb.exception.PfbIncorrectRecordTypeException;
-import de.dante.extex.font.type.pfb.exception.PfbStartMarkerMissingException;
+import de.dante.extex.unicodeFont.exception.FontException;
+import de.dante.extex.unicodeFont.exception.FontIOException;
+import de.dante.extex.unicodeFont.format.pfb.exception.PfbIncorrectRecordTypeException;
+import de.dante.extex.unicodeFont.format.pfb.exception.PfbStartMarkerMissingException;
 import de.dante.util.XMLWriterConvertible;
 import de.dante.util.file.random.RandomAccessInputFile;
 import de.dante.util.file.random.RandomAccessInputStream;
@@ -36,13 +36,13 @@ import de.dante.util.xml.XMLStreamWriter;
 
 /**
  * Parser for a pfb-file.
- * 
+ *
  * <p>Adobe Type 1 Font Format</p>
  * <p>see 2.2 Font Dictionary</p>
  * <p>Type 1 Font Programm [ASCII - eexec encryption (Binary only) - ASCII]<p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
 public class PfbParser implements XMLWriterConvertible, Serializable {
 
@@ -56,7 +56,8 @@ public class PfbParser implements XMLWriterConvertible, Serializable {
         try {
             parsePfb(new RandomAccessInputFile(filename));
         } catch (IOException e) {
-            throw new FontIOException(e.getMessage());
+            throw new de.dante.extex.unicodeFont.exception.FontIOException(e
+                    .getMessage());
         }
     }
 
@@ -75,24 +76,24 @@ public class PfbParser implements XMLWriterConvertible, Serializable {
     }
 
     /**
-     * the pdf header length:
+     * the pdf header length.
      * (start-marker (1 byte), ascii-/binary-marker (1 byte), size (4 byte))
      * 3*6 == 18
      */
     private static final int PFB_HEADER_LENGTH = 18;
 
     /**
-     * the start marker
+     * the start marker.
      */
     private static final int START_MARKER = 0x80;
 
     /**
-     * the ascii marker
+     * the ascii marker.
      */
     private static final int ASCII_MARKER = 0x01;
 
     /**
-     * the binary marker
+     * the binary marker.
      */
     private static final int BINARY_MARKER = 0x02;
 
@@ -108,21 +109,21 @@ public class PfbParser implements XMLWriterConvertible, Serializable {
     private byte[] pfbdata;
 
     /**
-     * the lengths of the records
+     * the lengths of the records.
      */
     private int[] lengths;
 
     /**
-     * the stasrts of the records
+     * the starts of the records.
      */
     private int[] starts;
 
     // sample (pfb-file)
-    // 00000000 80 01 8b 15  00 00 25 21  50 53 2d 41  64 6f 62 65  
+    // 00000000 80 01 8b 15  00 00 25 21  50 53 2d 41  64 6f 62 65
 
     /**
      * Parse the pfb-array.
-     * @param pfb   The pfb-Array
+     * @param rar   The input.
      * @throws IOException in an IO-error occurs.
      * @throws FontException if a font error occurs.
      */
@@ -155,8 +156,8 @@ public class PfbParser implements XMLWriterConvertible, Serializable {
     }
 
     /**
-     * Returns the part of the array
-     * @params  idx the part index
+     * Returns the part of the array.
+     * @param  idx the part index.
      * @return Returns the part of the array
      */
     public byte[] getPart(final int idx) {
@@ -203,17 +204,17 @@ public class PfbParser implements XMLWriterConvertible, Serializable {
     }
 
     /**
-     * the encoding string 
+     * the encoding string.
      */
     private static final String ENCODING = "/Encoding ";
 
     /**
-     * the dup string 
+     * the dup string.
      */
     private static final String DUP = "dup ";
 
     /**
-     * the put string 
+     * the put string.
      */
     private static final String PUT = "put";
 
@@ -225,7 +226,7 @@ public class PfbParser implements XMLWriterConvertible, Serializable {
 
         String s = new String(getPart(0));
 
-        // read '/Encoding 256 array' 
+        // read '/Encoding 256 array'
         int pos = s.indexOf(ENCODING);
         int size = 0;
         if (pos >= 0) {
@@ -285,24 +286,6 @@ public class PfbParser implements XMLWriterConvertible, Serializable {
         }
     }
 
-    //    /**
-    //     * only for test
-    //     * @param args  the commandline
-    //     * @throws Exception if an error occurs.
-    //     */
-    //    public static void main(String[] args) throws Exception {
-    //
-    //        PfbParser p = new PfbParser("/home/mgn/extex/src/font/lmr12.pfb");
-    //        System.out.println(new String(p.getPart(0)));
-    //        System.out.println("----------");
-    //        //        System.out.println(new String(p.getPart(2)));
-    //        //        System.out.println("fertig!");
-    //        String[] x = p.getEncoding();
-    //        for (int i = 0; i < x.length; i++) {
-    //            System.out.println(i + "  " + x[i]);
-    //        }
-    //    }
-
     /**
      * @see de.dante.util.XMLWriterConvertible#writeXML(de.dante.util.xml.XMLStreamWriter)
      */
@@ -325,7 +308,7 @@ public class PfbParser implements XMLWriterConvertible, Serializable {
             if (PFB_RECORDS[i] == ASCII_MARKER) {
                 writer.writeCDATA(getPart(i));
             } else {
-     //           writer.writeCDATA(Base64.encode(getPart(i)));
+                //           writer.writeCDATA(Base64.encode(getPart(i)));
             }
             writer.writeEndElement();
         }

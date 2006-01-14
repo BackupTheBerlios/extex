@@ -35,7 +35,6 @@ import de.dante.extex.font.type.afm.AfmFont;
 import de.dante.extex.font.type.efm.EfmReader;
 import de.dante.extex.font.type.efm.ModifiableFountEFM;
 import de.dante.extex.font.type.other.NullFont;
-import de.dante.extex.font.type.pfb.PfbParser;
 import de.dante.extex.font.type.tfm.ModifiableFountTFM;
 import de.dante.extex.font.type.tfm.TFMFont;
 import de.dante.extex.font.type.tfm.enc.EncFactory;
@@ -46,6 +45,7 @@ import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.font.FontImpl;
 import de.dante.extex.interpreter.type.font.VirtualFontImpl;
 import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.unicodeFont.format.pfb.PfbParser;
 import de.dante.util.file.random.RandomAccessInputStream;
 import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
@@ -58,7 +58,7 @@ import de.dante.util.xml.XMLStreamWriter;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
 public class FontFactory implements PropertyConfigurable {
 
@@ -520,7 +520,12 @@ public class FontFactory implements PropertyConfigurable {
                         if (pfbin == null) {
                             throw new FileNotFoundException(pfbfile);
                         }
-                        font.setPfbParser(new PfbParser(pfbin));
+                        try {
+
+                            font.setPfbParser(new PfbParser(pfbin));
+                        } catch (Exception e) {
+                            throw new FontException(e.getMessage());
+                        }
                     }
 
                     // cahe the font ?

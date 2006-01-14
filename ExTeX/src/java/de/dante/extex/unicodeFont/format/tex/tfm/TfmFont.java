@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -50,7 +50,7 @@ import de.dante.util.resource.PropertyConfigurable;
  * TODO add EE00 from Unicode
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class TfmFont
@@ -65,12 +65,12 @@ public class TfmFont
             FontInit {
 
     /**
-     * Default units per em
+     * Default units per em.
      */
     public static final int DEFAULTUNITSPEREM = 1000;
 
     /**
-     * permille factor for scale factor
+     * permille factor for scale factor.
      */
     public static final int PERMILLE_FACTOR = 1000;
 
@@ -108,7 +108,7 @@ public class TfmFont
     }
 
     /**
-     * set the font dimen values from the tfm parameter
+     * set the font dimen values from the tfm parameter.
      */
     private void setFontDimenValues() {
 

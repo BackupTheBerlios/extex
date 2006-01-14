@@ -31,7 +31,7 @@
     -  the user.
     -->
   <Fonts class="de.dante.extex.unicodeFont.FontFactory">
-     <tfm class="de.dante.extex.unicodeFont.format.tex.tfm.TfmFont"/>
+     <tfm_pfb class="de.dante.extex.unicodeFont.format.tex.tfm.TfmFontPfb"/>
   </Fonts>
 
   <!-- 
