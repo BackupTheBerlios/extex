@@ -56,6 +56,7 @@
 
   <property name="tests.haltonfailure" value="no" />
   <property name="cases" value="**/*Test.java" />
+  <property name="mgncases" value="**/MGNTests.java" />
   <property name="javac.deprecation" value="off" />
   <property name="extexjarfile" value="extex" />
   <property name="testsuitejarfile" value="testsuite" />
@@ -206,6 +207,28 @@
       </batchtest>
     </junit>
   </target>
+
+    <target name="mgntest" depends="lsr,jar,jar.tests" description="Run JUnit test (mgn)">
+      <!-- create output directories for test reports -->
+      <delete dir="${target.tests}" />
+      <mkdir dir="${target.tests}" />
+      <!-- Performing tests:                                         -->
+      <!-- Run test "MGNTest.java"                                   -->
+      <junit printsummary="on" haltonfailure="${tests.haltonfailure}">
+       <jvmarg value="-Xms64m"/>
+       <jvmarg value="-Xmx256m"/>
+       <classpath>
+          <pathelement path="${classes}" />
+        </classpath>
+        <classpath refid="test.class.path" />
+        <formatter type="brief" />
+        <batchtest fork="yes" todir="${target.tests}">
+          <fileset dir="${src.tests}">
+            <include name="${mgncases}" />
+          </fileset>
+        </batchtest>
+      </junit>
+    </target>
 
   <target name="site"
           description="">
