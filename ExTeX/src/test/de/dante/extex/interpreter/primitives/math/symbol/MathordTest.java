@@ -25,7 +25,7 @@ import de.dante.extex.interpreter.primitives.math.AbstractMathTester;
  * This is a test suite for the primitive <tt>\mathord</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class MathordTest extends AbstractMathTester {
 
@@ -37,6 +37,24 @@ public class MathordTest extends AbstractMathTester {
     public MathordTest(final String arg) {
 
         super(arg, "mathord", " x");
+    }
+
+    /**
+     * <testcase>
+     *  Test case checking that a single math character works.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testLetter1() throws Exception {
+
+        assertSuccess(showNodesProperties(),
+                //--- input code ---
+                DEFINE_MATH + DEFINE_MATH_FONTS
+                + "$\\mathord a$"
+                + "\\end ",
+                //--- output channel ---
+                "a" + TERM);
     }
 
 }

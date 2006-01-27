@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\lowercase</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class LowercaseTest extends NoFlagsPrimitiveTester {
 
@@ -50,7 +50,7 @@ public class LowercaseTest extends NoFlagsPrimitiveTester {
 
 
     /**
-     * <testcase primitive="\catcode">
+     * <testcase primitive="\lowercase">
      *  Test case checking that <tt>\lowercase</tt> throws an error on eof.
      * </testcase>
      *
@@ -65,7 +65,7 @@ public class LowercaseTest extends NoFlagsPrimitiveTester {
     }
 
     /**
-     * <testcase primitive="\catcode">
+     * <testcase primitive="\lowercase">
      *  Test case checking that <tt>\lowercase</tt> is invariant on
      *  lowercase letters.
      * </testcase>
@@ -81,8 +81,8 @@ public class LowercaseTest extends NoFlagsPrimitiveTester {
     }
 
     /**
-     * <testcase primitive="\catcode">
-     *  Test case checking that <tt>\lowercase</tt> is translates
+     * <testcase primitive="\lowercase">
+     *  Test case checking that <tt>\lowercase</tt> translates
      *  uppercase letters.
      * </testcase>
      *
@@ -97,8 +97,8 @@ public class LowercaseTest extends NoFlagsPrimitiveTester {
     }
 
     /**
-     * <testcase primitive="\catcode">
-     *  Test case checking that <tt>\lowercase</tt> is translates
+     * <testcase primitive="\lowercase">
+     *  Test case checking that <tt>\lowercase</tt> translates
      *  mixed letters.
      * </testcase>
      *
@@ -113,7 +113,7 @@ public class LowercaseTest extends NoFlagsPrimitiveTester {
     }
 
     /**
-     * <testcase primitive="\catcode">
+     * <testcase primitive="\lowercase">
      *  Test case checking that <tt>\lowercase</tt> respects lccode.
      * </testcase>
      *

@@ -25,7 +25,7 @@ import de.dante.extex.interpreter.primitives.math.AbstractMathTester;
  * This is a test suite for the primitive <tt>\delimiter</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class DelimiterTest extends AbstractMathTester {
 
@@ -37,6 +37,27 @@ public class DelimiterTest extends AbstractMathTester {
     public DelimiterTest(final String arg) {
 
         super(arg, "delimiter", "123 ");
+    }
+
+    /**
+     * <testcase>
+     *  Test case checking that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test1() throws Exception {
+
+        assertSuccess(showNodesProperties(),
+                //--- input code ---
+                DEFINE_BRACES + DEFINE_MATH + DEFINE_MATH_FONTS +
+                "$\\delimiter\"0161161 $\\end",
+                //--- output channel ---
+                "\\vbox(4.30554pt+0.0pt)x5.28589pt\n" +
+                ".\\hbox(4.30554pt+0.0pt)x5.28589pt\n" +
+                "..\\mathon\n" +
+                "..a\n" +
+                "..\\mathoff\n");
     }
 
 }
