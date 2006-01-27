@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\inputlineno</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class InputlinenoTest extends ExTeXLauncher {
 
@@ -51,17 +51,17 @@ public class InputlinenoTest extends ExTeXLauncher {
 
     /**
      * <testcase primitive="\inputlineno">
-     *  Test case checking that a <tt>\inputlineno</tt> works.
+     *  Test case checking that a <tt>\inputlineno</tt> works with <tt>\the</tt>.
      * </testcase>
      *
      * @throws Exception in case of an error
      */
     public void test0() throws Exception {
 
-        assertSuccess(//--- input code ---
-                "\\the\\inputlineno ",
+        assertFailure(//--- input code ---
+                "\\showthe\\inputlineno \\end",
                 //--- output channel ---
-                "1" + TERM);
+                "> 1.\n");
     }
 
     /**
@@ -72,6 +72,22 @@ public class InputlinenoTest extends ExTeXLauncher {
      * @throws Exception in case of an error
      */
     public void test1() throws Exception {
+
+        assertFailure(//--- input code ---
+                "\\count0=\\inputlineno "
+                + "\\showthe\\count0 \\end",
+                //--- output channel ---
+                "> 1.\n");
+    }
+
+    /**
+     * <testcase primitive="\inputlineno">
+     *  Test case checking that a <tt>\inputlineno</tt> can not be assigned.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testSet1() throws Exception {
 
         assertFailure(//--- input code ---
                 "\\inputlineno=123 ",
