@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\if</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class IfTest extends ExTeXLauncher {
 
@@ -59,7 +59,7 @@ public class IfTest extends ExTeXLauncher {
     public void test1() throws Exception {
 
         assertSuccess(//--- input code ---
-                "\\if aa true\\else false\\fi",
+                "\\if aa true\\else false\\fi\\end",
                 //--- output channel ---
                 "true" + TERM);
     }
@@ -74,11 +74,129 @@ public class IfTest extends ExTeXLauncher {
     public void test2() throws Exception {
 
         assertSuccess(//--- input code ---
-                "\\if ab true\\else false\\fi",
+                "\\if ab true\\else false\\fi\\end",
                 //--- output channel ---
                 "false" + TERM);
     }
 
-    //TODO implement the primitive specific test cases
+    /**
+     * <testcase primitive="\if">
+     *  Test case checking that <tt>\if</tt> ...
+     * </testcase>
+     * The TeXbook
+     *
+     * @throws Exception in case of an error
+     */
+    public void test10() throws Exception {
+
+        assertSuccess(//--- input code ---
+                DEFINE_BRACES +
+                "\\def\\a{*}\\let\\b=*\\def\\c{/}" +
+                "\\if *\\a true\\else false\\fi\\end",
+                //--- output channel ---
+                "true" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\if">
+     *  Test case checking that <tt>\if</tt> ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test11() throws Exception {
+
+        assertSuccess(//--- input code ---
+                DEFINE_BRACES +
+                "\\def\\a{*}\\let\\b=*\\def\\c{/}" +
+                "\\if \\a* true\\else false\\fi\\end",
+                //--- output channel ---
+                "true" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\if">
+     *  Test case checking that <tt>\if</tt> ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test12() throws Exception {
+
+        assertSuccess(//--- input code ---
+                DEFINE_BRACES +
+                "\\def\\a{*}\\let\\b=*\\def\\c{/}" +
+                "\\if \\a\\b true\\else false\\fi\\end",
+                //--- output channel ---
+                "true" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\if">
+     *  Test case checking that <tt>\if</tt> ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test13() throws Exception {
+
+        assertSuccess(//--- input code ---
+                DEFINE_BRACES +
+                "\\def\\a{*}\\let\\b=*\\def\\c{/}" +
+                "\\if \\b\\a true\\else false\\fi\\end",
+                //--- output channel ---
+                "true" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\if">
+     *  Test case checking that <tt>\if</tt> ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test14() throws Exception {
+
+        assertSuccess(//--- input code ---
+                DEFINE_BRACES +
+                "\\def\\a{*}\\let\\b=*\\def\\c{/}" +
+                "\\if \\a\\c true\\else false\\fi\\end",
+                //--- output channel ---
+                "false" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\if">
+     *  Test case checking that <tt>\if</tt> ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test15() throws Exception {
+
+        assertSuccess(//--- input code ---
+                DEFINE_BRACES +
+                "\\def\\a{*}\\let\\b=*\\def\\c{/}" +
+                "\\if \\a\\par true\\else false\\fi\\end",
+                //--- output channel ---
+                "false" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\if">
+     *  Test case checking that <tt>\if</tt> ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test16() throws Exception {
+
+        assertSuccess(//--- input code ---
+                DEFINE_BRACES +
+                "\\def\\a{*}\\let\\b=*\\def\\c{/}" +
+                "\\if \\par\\let true\\else false\\fi\\end",
+                //--- output channel ---
+                "true" + TERM);
+    }
 
 }
