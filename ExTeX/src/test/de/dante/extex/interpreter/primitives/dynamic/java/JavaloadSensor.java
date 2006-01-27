@@ -24,15 +24,16 @@ import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.exception.GeneralException;
 
 /**
- * TODO gene: missing JavaDoc.
+ * Dummy Loadable which just records that the load has ben requested.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class JavaloadSensor implements Loadable {
 
     /**
-     * The field <tt>kilroy</tt> contains the ...
+     * The field <tt>kilroy</tt> contains the boolean indicating that the
+     * load method has been invoked.
      */
     private static boolean kilroy = false;
 
