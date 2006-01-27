@@ -23,7 +23,7 @@ package de.dante.extex.interpreter.primitives.macro;
  * This is a test suite for xdef primitives.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class AbstractXdefTester extends AbstractDefTester {
 
@@ -50,7 +50,7 @@ public abstract class AbstractXdefTester extends AbstractDefTester {
         assertSuccess(//--- input code ---
                 DEFINE_BRACES 
                 + "\\def\\a{A}"
-                + "\\" + def + "\\aaa{X\\a X}"
+                + "\\" + getDef() + "\\aaa{X\\a X}"
                 + "\\def\\a{B}"
                 + "--\\aaa--\\end",
                 //--- output message ---

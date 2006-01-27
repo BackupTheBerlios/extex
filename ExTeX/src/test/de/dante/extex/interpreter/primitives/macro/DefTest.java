@@ -23,7 +23,7 @@ package de.dante.extex.interpreter.primitives.macro;
  * This is a test suite for the primitive <tt>\def</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class DefTest extends AbstractDefTester {
 
@@ -53,7 +53,6 @@ public class DefTest extends AbstractDefTester {
                 "--BBB--" + TERM);
     }
 
-
     /**
      * <testcase>
      *  Test case checking that ...
@@ -64,9 +63,8 @@ public class DefTest extends AbstractDefTester {
     public void testHashArgument3() throws Exception {
 
         assertSuccess(//--- input code ---
-                DEFINE_BRACES + DEFINE_HASH
-                + "\\"+ def + "\\a{\\def\\b##1{B}}"
-                + "\\a \\b2\\end",
+                DEFINE_BRACES + DEFINE_HASH + "\\" + getDef()
+                        + "\\a{\\def\\b##1{B}}" + "\\a \\b2\\end",
                 //--- output channel ---
                 "B" + TERM);
     }
@@ -81,12 +79,10 @@ public class DefTest extends AbstractDefTester {
     public void testHashArgument4() throws Exception {
 
         assertSuccess(//--- input code ---
-                DEFINE_BRACES + DEFINE_HASH
-                + "\\"+ def + "\\a{\\def\\b##1{B##1B}}"
-                + "\\a \\b2\\end",
+                DEFINE_BRACES + DEFINE_HASH + "\\" + getDef()
+                        + "\\a{\\def\\b##1{B##1B}}" + "\\a \\b2\\end",
                 //--- output channel ---
                 "B2B" + TERM);
     }
-
 
 }
