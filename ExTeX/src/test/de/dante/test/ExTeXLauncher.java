@@ -34,15 +34,29 @@ import java.util.logging.StreamHandler;
 
 import junit.framework.TestCase;
 import de.dante.extex.ExTeX;
+import de.dante.extex.font.FontByteArray;
+import de.dante.extex.font.FontFactory;
+import de.dante.extex.font.FountKey;
+import de.dante.extex.font.Glyph;
+import de.dante.extex.font.Kerning;
+import de.dante.extex.font.Ligature;
+import de.dante.extex.font.exception.FontException;
+import de.dante.extex.font.type.BoundingBox;
 import de.dante.extex.interpreter.ErrorHandler;
 import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.font.Font;
+import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.main.errorHandler.editHandler.EditHandler;
 import de.dante.extex.main.logging.LogFormatter;
+import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.extex.scanner.type.token.Token;
+import de.dante.util.UnicodeChar;
 import de.dante.util.exception.GeneralException;
+import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
@@ -50,7 +64,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * running an instance of <logo>ExTeX</logo>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.41 $
+ * @version $Revision: 1.42 $
  */
 public class ExTeXLauncher extends TestCase {
 
@@ -58,7 +72,7 @@ public class ExTeXLauncher extends TestCase {
      * Inner class for the error handler.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.41 $
+     * @version $Revision: 1.42 $
      */
     private class EHandler implements ErrorHandler {
 
@@ -103,14 +117,14 @@ public class ExTeXLauncher extends TestCase {
 
     /**
      * The constant <tt>DEFINE_BRACES</tt> contains the definition of the
-     * usual catcodes for braces.
+     * usual category codes for braces.
      */
     public static final String DEFINE_BRACES = "\\catcode`\\{=1 "
             + "\\catcode`\\}=2 ";
 
     /**
      * The constant <tt>DEFINE_CATCODES</tt> contains the definition of the
-     * usual catcodes.
+     * usual category codes.
      */
     public static final String DEFINE_CATCODES = "\\catcode`\\{=1 "
             + "\\catcode`\\}=2 " + "\\catcode`\\$=3 " + "\\catcode`\\&=4 "
@@ -119,9 +133,15 @@ public class ExTeXLauncher extends TestCase {
 
     /**
      * The constant <tt>DEFINE_HASH</tt> contains the definition of the
-     * usual catcodes.
+     * usual category codes.
      */
     public static final String DEFINE_HASH = "\\catcode`\\#=6 ";
+
+    /**
+     * The constant <tt>DEFINE_MATH</tt> contains the definition of the
+     * catcode for math shift.
+     */
+    public static final String DEFINE_MATH = "\\catcode`\\$=3 ";
 
     /**
      * The field <tt>levelMap</tt> contains the mapping for debug levels from
@@ -257,7 +277,218 @@ public class ExTeXLauncher extends TestCase {
         properties.setProperty("extex.nobanner", "true");
         properties.setProperty("extex.config", getConfig());
 
-        ExTeX extex = new ExTeX(properties);
+        ExTeX extex = new ExTeX(properties) {
+
+            /**
+             * @see de.dante.extex.ExTeX#makeInterpreter(de.dante.util.framework.configuration.Configuration, de.dante.extex.scanner.stream.TokenStreamFactory, de.dante.extex.font.FontFactory)
+             */
+            protected Interpreter makeInterpreter(final Configuration config,
+                    final TokenStreamFactory factory,
+                    final FontFactory fontFactory)
+                    throws ConfigurationException,
+                        GeneralException,
+                        FontException,
+                        IOException {
+
+                Interpreter interpreter = super.makeInterpreter(config,
+                        factory, fontFactory);
+                interpreter.getContext().set(new Font() {
+
+                    public UnicodeChar getHyphenChar() {
+
+                        return null;
+                    }
+
+                    public UnicodeChar getSkewChar() {
+
+                        return null;
+                    }
+
+                    public void setHyphenChar(final UnicodeChar hyphen) {
+
+                    }
+
+                    public void setSkewChar(final UnicodeChar skew) {
+
+                    }
+
+                    public void setFontDimen(final String key, final Dimen value) {
+
+                    }
+
+                    public Glyph getGlyph(final UnicodeChar c) {
+
+                        return new Glyph() {
+
+                            public Dimen getDepth() {
+
+                                return Dimen.ONE_PT;
+                            }
+
+                            public void setDepth(final Dimen d) {
+
+                            }
+
+                            public Dimen getHeight() {
+
+                                return Dimen.ONE_PT;
+                            }
+
+                            public void setHeight(final Dimen h) {
+
+                            }
+
+                            public Dimen getItalicCorrection() {
+
+                                return Dimen.ZERO_PT;
+                            }
+
+                            public void setItalicCorrection(final Dimen d) {
+
+                            }
+
+                            public Dimen getWidth() {
+
+                                return Dimen.ONE_PT;
+                            }
+
+                            public void setWidth(final Dimen w) {
+
+                            }
+
+                            public String getName() {
+
+                                return "?";
+                            }
+
+                            public void setName(final String n) {
+
+                            }
+
+                            public String getNumber() {
+
+                                return c.toString();
+                            }
+
+                            public void setNumber(final String nr) {
+
+                            }
+
+                            public void addKerning(final Kerning kern) {
+
+                            }
+
+                            public Dimen getKerning(final UnicodeChar uc) {
+
+                                return Dimen.ZERO_PT;
+                            }
+
+                            public void addLigature(final Ligature lig) {
+
+                            }
+
+                            public UnicodeChar getLigature(final UnicodeChar uc) {
+
+                                return null;
+                            }
+
+                            public FontByteArray getExternalFile() {
+
+                                return null;
+                            }
+
+                            public void setExternalFile(final FontByteArray file) {
+
+                            }
+
+                            public Dimen getLeftSpace() {
+
+                                return Dimen.ZERO_PT;
+                            }
+
+                            public void setLeftSpace(final Dimen ls) {
+
+                            }
+
+                            public Dimen getRightSpace() {
+
+                                return Dimen.ZERO_PT;
+                            }
+
+                            public void setRightSpace(Dimen rs) {
+
+                            }};
+                    }
+
+                    public Glue getSpace() {
+
+                        return new Glue(Dimen.ONE_PT.getValue() * 10);
+                    }
+
+                    public Dimen getEm() {
+
+                        return new Dimen(Dimen.ONE_PT.getValue() * 10);
+                    }
+
+                    public Dimen getEx() {
+
+                        return new Dimen(Dimen.ONE_PT.getValue() * 5);
+                    }
+
+                    public Dimen getFontDimen(final String key) {
+
+                        return new Dimen(Dimen.ZERO_PT.getValue());
+                    }
+
+                    public String getProperty(final String key) {
+
+                        return null;
+                    }
+
+                    public String getFontName() {
+
+                        return "testfont";
+                    }
+
+                    public int getCheckSum() {
+
+                        return 0;
+                    }
+
+                    public BoundingBox getBoundingBox() {
+
+                        return null;
+                    }
+
+                    public Glue getLetterSpacing() {
+
+                        return new Glue(Dimen.ZERO_PT.getValue());
+                    }
+
+                    public Dimen getDesignSize() {
+
+                        return new Dimen(Dimen.ONE_PT.getValue() * 10);
+                  }
+
+                    public Dimen getActualSize() {
+
+                        return new Dimen(Dimen.ONE_PT.getValue() * 10);
+                    }
+
+                    public FountKey getFontKey() {
+
+                        return null;
+                    }
+
+                    public FontByteArray getFontByteArray() {
+
+                        return null;
+                    }
+                }, true);
+                return interpreter;
+            }
+
+        };
 
         Level level = getLogLevel(properties);
         Logger logger = Logger.getLogger("test");
@@ -419,18 +650,6 @@ public class ExTeXLauncher extends TestCase {
     }
 
     /**
-     * Getter for properties.
-     *
-     * @return the properties
-     */
-    public Properties showNodesProperties() {
-
-        Properties p = getProps();
-        p.put("extex.output", "dump");
-        return p;
-    }
-
-    /**
      * Initialize the ExTeX object just before the code is run.
      *
      * @param extex the ExTeX object
@@ -492,6 +711,18 @@ public class ExTeXLauncher extends TestCase {
         handler.close();
         logger.removeHandler(handler);
         return bytes.toString();
+    }
+
+    /**
+     * Getter for properties.
+     *
+     * @return the properties
+     */
+    public Properties showNodesProperties() {
+
+        Properties p = getProps();
+        p.put("extex.output", "dump");
+        return p;
     }
 
 }
