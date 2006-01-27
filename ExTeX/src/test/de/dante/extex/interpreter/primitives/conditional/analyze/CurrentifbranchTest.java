@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\currentifbranch</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class CurrentifbranchTest extends ExTeXLauncher {
 
@@ -63,7 +63,7 @@ public class CurrentifbranchTest extends ExTeXLauncher {
                 //--- log message ---
                 "You can't use `\\currentifbranch' in vertical mode");
     }
-    
+
     /**
      * <testcase primitive="\currentifbranch">
      *  Test case checking that <tt>\currentifbranch</tt>...
