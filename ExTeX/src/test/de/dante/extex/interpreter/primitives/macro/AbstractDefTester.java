@@ -25,14 +25,14 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for def primitives.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class AbstractDefTester extends ExTeXLauncher {
 
     /**
      * The field <tt>primitive</tt> contains the name of the def.
      */
-    protected String def;
+    private String def;
 
     /**
      * Creates a new object.
@@ -266,5 +266,16 @@ public abstract class AbstractDefTester extends ExTeXLauncher {
                 + "\\"+ def + "\\a{--##--}\\a ",
                 //--- output channel ---
                 "You can't use `macro parameter character #' in horizontal mode");
+    }
+
+    
+    /**
+     * Getter for def.
+     *
+     * @return the def
+     */
+    public String getDef() {
+    
+        return this.def;
     }
 }
