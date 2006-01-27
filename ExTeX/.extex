@@ -49,7 +49,7 @@
 ##    This parameter contains the file to read from. It has no default.
 ##-----------------------------------------------------------------------------
 ##
-#extex.fmt =
+#extex.format =
 ##    This parameter contains the name of the format to read. An empty
 ##    string denotes that no format should be read. This is the
 ##    default.

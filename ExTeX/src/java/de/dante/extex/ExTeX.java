@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -180,7 +180,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  *    This parameter contains the file to read from. It has no default
  *   </dd>
  *
- *   <dt><a name="extex.fmt"/><tt>extex.fmt</tt></dt>
+ *   <dt><a name="extex.format"/><tt>extex.format</tt></dt>
  *   <dd>
  *    This parameter contains the name of the format to read. An empty
  *    string denotes that no format should be read. This is the default.
@@ -331,15 +331,21 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.124 $
+ * @version $Revision: 1.125 $
  */
 public class ExTeX {
+
+    /**
+     * The field <tt>DEFAULT_JOBNAME</tt> contains the default for the job name
+     * if none can be determined otherwise.
+     */
+    private static final String DEFAULT_JOBNAME = "texput";
 
     /**
      * The constant <tt>VERSION</tt> contains the manually incremented version
      * string.
      */
-    protected static final String EXTEX_VERSION = new Version().toString();
+    private static final String EXTEX_VERSION = "0.0";
 
     /**
      * The field <tt>FORMAT_FALLBACK</tt> contains the fallback to be tried if
@@ -349,195 +355,200 @@ public class ExTeX {
     private static final String FORMAT_FALLBACK = "tex";
 
     /**
-     * The field <tt>PROP_CODE</tt> contains the name of the property for the
+     * The constant <tt>formatType</tt> contains the type for the format.
+     */
+    private static final String FORMAT_TYPE = "fmt";
+
+    /**
+     * The constant <tt>PROP_CODE</tt> contains the name of the property for the
      * <logo>TeX</logo> code to be inserted at the beginning of the job.
      */
     protected static final String PROP_CODE = "extex.code";
 
     /**
-     * The field <tt>PROP_COLOR_CONVERTER</tt> contains the name of the
+     * The constant <tt>PROP_COLOR_CONVERTER</tt> contains the name of the
      * property for the color converter to use.
      */
     protected static final String PROP_COLOR_CONVERTER = "extex.color.converter";
 
     /**
-     * The field <tt>PROP_CONFIG</tt> contains the name of the
-     * property for the configuration resource to use.
+     * The constant <tt>PROP_CONFIG</tt> contains the name of the property for
+     * the configuration resource to use.
      */
     protected static final String PROP_CONFIG = "extex.config";
 
     /**
-     * The field <tt>PROP_ENCODING</tt> contains the name of the property for
+     * The constant <tt>PROP_ENCODING</tt> contains the name of the property for
      * the standard encoding to use.
      */
     protected static final String PROP_ENCODING = "extex.encoding";
 
     /**
-     * The field <tt>PROP_ERROR_HANDLER</tt> contains the name of the property
+     * The constant <tt>PROP_ERROR_HANDLER</tt> contains the name of the property
      * for the error handler type to use. Possible values are resolved via the
      * configuration.
      */
     protected static final String PROP_ERROR_HANDLER = "extex.error.handler";
 
     /**
-     * The field <tt>PROP_FILE</tt> contains the name of the property for the
+     * The constant <tt>PROP_FILE</tt> contains the name of the property for the
      * input file to read.
      */
     protected static final String PROP_FILE = "extex.file";
 
     /**
-     * The field <tt>PROP_FMT</tt> contains the name of the property for the
+     * The constant <tt>PROP_FMT</tt> contains the name of the property for the
      * name of the format file to use.
      */
-    protected static final String PROP_FMT = "extex.fmt";
+    protected static final String PROP_FMT = "extex.format";
 
     /**
-     * The field <tt>PROP_HALT_ON_ERROR</tt> contains the name of the property
+     * The constant <tt>PROP_HALT_ON_ERROR</tt> contains the name of the property
      * indicating whether the processing should stop at the first error.
      */
     protected static final String PROP_HALT_ON_ERROR = "extex.halt.on.error";
 
     /**
-     * The field <tt>PROP_INI</tt> contains the name of the property for the
+     * The constant <tt>PROP_INI</tt> contains the name of the property for the
      * Boolean value indicating that some kind of emulations for iniTeX should
      * be provided. Currently this has no effect in <logo>ExTeX</logo>.
      */
     protected static final String PROP_INI = "extex.ini";
 
     /**
-     * The field <tt>PROP_INTERACTION</tt> contains the name of the
+     * The constant <tt>PROP_INTERACTION</tt> contains the name of the
      * property for the interaction mode.
      */
     protected static final String PROP_INTERACTION = "extex.interaction";
 
     /**
-     * The field <tt>PROP_INTERNAL_STACKTRACE</tt> contains the name of the
+     * The constant <tt>PROP_INTERNAL_STACKTRACE</tt> contains the name of the
      * property indicating that a stack trace should be written for internal
      * errors.
      */
     protected static final String PROP_INTERNAL_STACKTRACE = "extex.stacktrace.on.internal.error";
 
     /**
-     * The field <tt>PROP_JOBNAME</tt> contains the name of the
+     * The constant <tt>PROP_JOBNAME</tt> contains the name of the
      * property for the job name. The value can be overruled by the property
      * named in <tt>PROP_JOBNAME_MASTER</tt>.
      */
     protected static final String PROP_JOBNAME = "extex.jobname";
 
     /**
-     * The field <tt>PROP_JOBNAME_MASTER</tt> contains the name of the
+     * The constant <tt>PROP_JOBNAME_MASTER</tt> contains the name of the
      * property for the job name to be used with high priority.
      */
     protected static final String PROP_JOBNAME_MASTER = "extex.jobname.master";
 
     /**
-     * The field <tt>PROP_LANG</tt> contains the name of the property for the
+     * The constant <tt>PROP_LANG</tt> contains the name of the property for the
      * language to use for messages.
      */
     protected static final String PROP_LANG = "extex.lang";
 
     /**
-     * The field <tt>PROP_NO_BANNER</tt> contains the name of the property for
-     * the Boolean value indicating whether or not to show a program banner.
+     * The constant <tt>PROP_NO_BANNER</tt> contains the name of the property
+     * for the Boolean value indicating whether or not to show a program banner.
      */
     protected static final String PROP_NO_BANNER = "extex.nobanner";
 
     /**
-     * The field <tt>PROP_OUTPUT_TYPE</tt> contains the name of the property for
-     * the output driver. This value is resolved by the
+     * The constant <tt>PROP_OUTPUT_TYPE</tt> contains the name of the property
+     * for the output driver. This value is resolved by the
      * {@link de.dante.extex.backend.documentWriter.DocumentWriterFactory
      * DocumentWriterFactory} to find the appropriate class.
      */
     protected static final String PROP_OUTPUT_TYPE = "extex.output";
 
     /**
-     * The field <tt>PROP_OUTPUTDIR</tt> contains the name of the
+     * The constant <tt>PROP_OUTPUTDIR</tt> contains the name of the
      * property for the output directory.
      */
     protected static final String PROP_OUTPUTDIR = "extex.outputdir";
 
     /**
-     * The field <tt>PROP_OUTPUTDIR_FALLBACK</tt> contains the name of the
+     * The constant <tt>PROP_OUTPUTDIR_FALLBACK</tt> contains the name of the
      * property for the fallback if the output directory fails to be writable.
      */
     protected static final String PROP_OUTPUTDIR_FALLBACK = "extex.outputdir.fallback";
 
     /**
-     * The field <tt>PROP_PAGE</tt> contains the name of the
-     * property for the default page dimensions.
+     * The constant <tt>PROP_PAGE</tt> contains the name of the property for the
+     * default page dimensions.
      */
     protected static final String PROP_PAGE = "extex.page";
 
     /**
-     * The field <tt>PROP_PROGNAME</tt> contains the name of the
+     * The constant <tt>PROP_PROGNAME</tt> contains the name of the
      * property for the program name used in usage messages.
      */
     protected static final String PROP_PROGNAME = "extex.progname";
 
     /**
-     * The field <tt>PROP_TEXINPUTS</tt> contains the name of the
+     * The constant <tt>PROP_TEXINPUTS</tt> contains the name of the
      * property for the additional texinputs specification of directories.
      */
     protected static final String PROP_TEXINPUTS = "extex.texinputs";
 
     /**
-     * The field <tt>PROP_TOKEN_STREAM</tt> contains the name of the property
+     * The constant <tt>PROP_TOKEN_STREAM</tt> contains the name of the property
      * for the token stream class to use.
      */
     protected static final String PROP_TOKEN_STREAM = "extex.token.stream";
 
     /**
-     * The field <tt>PROP_TRACE_FONT_FILES</tt> contains the name of the
+     * The constant <tt>PROP_TRACE_FONT_FILES</tt> contains the name of the
      * property for the Boolean determining whether or not the searching for
      * font files should produce tracing output.
      */
     protected static final String PROP_TRACE_FONT_FILES = "extex.trace.font.files";
 
     /**
-     * The field <tt>PROP_TRACE_INPUT_FILES</tt> contains the name of the
+     * The constant <tt>PROP_TRACE_INPUT_FILES</tt> contains the name of the
      * property for the Boolean determining whether or not the searching for
      * input files should produce tracing output.
      */
     protected static final String PROP_TRACE_INPUT_FILES = "extex.trace.input.files";
 
     /**
-     * The field <tt>PROP_TRACE_MACROS</tt> contains the name of the
+     * The constant <tt>PROP_TRACE_MACROS</tt> contains the name of the
      * property for the Boolean determining whether or not the execution of
      * macros should produce tracing output.
      */
     protected static final String PROP_TRACE_MACROS = "extex.trace.macros";
 
     /**
-     * The field <tt>PROP_TRACING_ONLINE</tt> contains the name of the
-     * property for the Boolean determining whether or not the tracing should
-     * produce log output in the log file only.
-     */
-    protected static final String PROP_TRACING_ONLINE = "extex.tracing.online";
-
-    /**
-     * The field <tt>PROP_TRACE_TOKENIZER</tt> contains the name of the
+     * The constant <tt>PROP_TRACE_TOKENIZER</tt> contains the name of the
      * property for the Boolean determining whether or not the tokenizer
      * should produce tracing output.
      */
     protected static final String PROP_TRACE_TOKENIZER = "extex.trace.tokenizer";
 
     /**
-     * The field <tt>PROP_TYPESETTER_TYPE</tt> contains the name of the property
-     * for the typesetter to use. This value is resolved by the
+     * The constant <tt>PROP_TRACING_ONLINE</tt> contains the name of the
+     * property for the Boolean determining whether or not the tracing should
+     * produce log output in the log file only.
+     */
+    protected static final String PROP_TRACING_ONLINE = "extex.tracing.online";
+
+    /**
+     * The constant <tt>PROP_TYPESETTER_TYPE</tt> contains the name of the
+     * property for the typesetter to use. This value is resolved by the
      * {@link de.dante.extex.typesetter.TypesetterFactory TypesetterFactory}
      * to find the appropriate class.
      */
     protected static final String PROP_TYPESETTER_TYPE = "extex.typesetter";
 
     /**
-     * The field <tt>TAG_ERRORHANDLER</tt> contains the name of the tag in the
-     * configuration file which contains the specification for the
+     * The constant <tt>TAG_ERRORHANDLER</tt> contains the name of the tag in
+     * the configuration file which contains the specification for the
      * error handler factory.
      */
     private static final String TAG_ERRORHANDLER = "ErrorHandler";
 
     /**
-     * The field <tt>TAG_FONT</tt> contains the name of the tag in the
+     * The constant <tt>TAG_FONT</tt> contains the name of the tag in the
      * configuration file which contains the specification for the font.
      */
     private static final String TAG_FONT = "Font";
@@ -563,6 +574,11 @@ public class ExTeX {
     private ErrorHandler errorHandler = null;
 
     /**
+     * The field <tt>ini</tt> contains the indicator for iniTeX.
+     */
+    private boolean ini;
+
+    /**
      * The field <tt>interactionObserver</tt> contains the observer called
      * whenever the interaction mode is changed.
      */
@@ -579,6 +595,12 @@ public class ExTeX {
      * The field <tt>logger</tt> contains the logger currently in use.
      */
     private Logger logger = Logger.getLogger(ExTeX.class.getName());
+
+    /**
+     * The field <tt>noBanner</tt> contains the indicator that a banner has
+     * already been printed and a repetition should be avoided.
+     */
+    private boolean noBanner;
 
     /**
      * The field <tt>outStream</tt> contains the output stream for the document
@@ -598,22 +620,6 @@ public class ExTeX {
      * cases where errors show up before the normal banner has been printed.
      */
     private boolean showBanner = true;
-
-    /**
-     * The field <tt>formatType</tt> contains the type for the format.
-     */
-    private String formatType = "fmt";
-
-    /**
-     * The field <tt>ini</tt> contains the indicator for iniTeX.
-     */
-    private boolean ini;
-
-    /**
-     * The field <tt>noBanner</tt> contains the indicator that a banner has
-     * already been printed and a repetition should be avoided.
-     */
-    private boolean noBanner;
 
     /**
      * Creates a new object and supplies some properties for those keys which
@@ -640,7 +646,7 @@ public class ExTeX {
         propertyDefault(PROP_FMT, "");
         propertyDefault(PROP_INI, "");
         propertyDefault(PROP_INTERACTION, "3");
-        propertyDefault(PROP_JOBNAME, "texput");
+        propertyDefault(PROP_JOBNAME, DEFAULT_JOBNAME);
         propertyDefault(PROP_JOBNAME_MASTER, "");
         propertyDefault(PROP_NO_BANNER, "");
         propertyDefault(PROP_LANG, "");
@@ -779,7 +785,7 @@ public class ExTeX {
         if (jobname == null || jobname.equals("")) {
             jobname = properties.getProperty(PROP_JOBNAME);
             if (jobname == null || jobname.equals("")) {
-                jobname = "texput";
+                jobname = DEFAULT_JOBNAME;
             }
         }
         return new File(jobname).getName();
@@ -835,6 +841,16 @@ public class ExTeX {
     public String getProperty(final String key) {
 
         return this.properties.getProperty(key);
+    }
+
+    /**
+     * Getter for the version.
+     *
+     * @return the version number for this class
+     */
+    public String getVersion() {
+
+        return EXTEX_VERSION;
     }
 
     /**
@@ -906,13 +922,13 @@ public class ExTeX {
                 DateFormat.SHORT, Locale.ENGLISH).format(new Date());
 
         if (format != null && !format.equals("")) {
-            InputStream stream = finder.findResource(fmt, formatType);
+            InputStream stream = finder.findResource(fmt, FORMAT_TYPE);
 
             if (stream == null && !format.equals(FORMAT_FALLBACK)) {
                 logger.warning(localizer.format("FormatSubstituted", format,
                         FORMAT_FALLBACK));
                 format = FORMAT_FALLBACK;
-                stream = finder.findResource(FORMAT_FALLBACK, formatType);
+                stream = finder.findResource(FORMAT_FALLBACK, FORMAT_TYPE);
             }
             if (stream == null) {
                 throw new HelpingException(localizer, "FormatNotFound", format);
@@ -973,6 +989,56 @@ public class ExTeX {
         }
 
         logException(logger, localizer.format("ExTeX.InternalError", msg), e);
+    }
+
+    /**
+     * Create a new document writer.
+     *
+     * @param config the configuration object for the document writer
+     * @param jobname the job name to use
+     * @param outFactory the output factory
+     * @param options the options to be passed to the document writer
+     * @param colorConfig the configuration for the color converter
+     * @param finder the resource finder if one is requested
+     *
+     * @return the new document writer
+     *
+     * @throws DocumentWriterException in case of an error
+     * @throws ConfigurationException in case of a configuration problem
+     */
+    protected BackendDriver makeBackend(final Configuration config,
+            final String jobname, final OutputStreamFactory outFactory,
+            final DocumentWriterOptions options,
+            final Configuration colorConfig, final ResourceFinder finder)
+            throws DocumentWriterException,
+                ConfigurationException {
+
+        BackendDriver backend = new BackendDriverImpl(options);
+        DocumentWriterFactory factory = new DocumentWriterFactory(config);
+        factory.enableLogging(logger);
+        DocumentWriter docWriter = factory.newInstance(//
+                properties.getProperty(PROP_OUTPUT_TYPE), //
+                options, //
+                outFactory);
+        if (docWriter instanceof PropertyConfigurable) {
+            ((PropertyConfigurable) docWriter).setProperties(properties);
+        }
+        if (docWriter instanceof ColorAware) {
+            ((ColorAware) docWriter)
+                    .setColorConverter(makeColorConverter(colorConfig));
+        }
+        if (docWriter instanceof ResourceConsumer) {
+            ((ResourceConsumer) docWriter).setResourceFinder(finder);
+        }
+        docWriter.setParameter("Creator", "ExTeX " + EXTEX_VERSION.toString());
+        docWriter.setParameter("Title", "");
+        docWriter.setParameter("Paper", "A4");
+        docWriter.setParameter("Orientation", "Portrait");
+        docWriter.setParameter("Pages", "*");
+        docWriter.setParameter("PageOrder", "Ascend");
+
+        backend.setDocumentWriter(docWriter);
+        return backend;
     }
 
     /**
@@ -1037,56 +1103,6 @@ public class ExTeX {
         }
 
         return font;
-    }
-
-    /**
-     * Create a new document writer.
-     *
-     * @param config the configuration object for the document writer
-     * @param jobname the job name to use
-     * @param outFactory the output factory
-     * @param options the options to be passed to the document writer
-     * @param colorConfig the configuration for the color converter
-     * @param finder the resource finder if one is requested
-     *
-     * @return the new document writer
-     *
-     * @throws DocumentWriterException in case of an error
-     * @throws ConfigurationException in case of a configuration problem
-     */
-    protected BackendDriver makeBackend(final Configuration config,
-            final String jobname, final OutputStreamFactory outFactory,
-            final DocumentWriterOptions options,
-            final Configuration colorConfig, final ResourceFinder finder)
-            throws DocumentWriterException,
-                ConfigurationException {
-
-        BackendDriver backend = new BackendDriverImpl(options);
-        DocumentWriterFactory factory = new DocumentWriterFactory(config);
-        factory.enableLogging(logger);
-        DocumentWriter docWriter = factory.newInstance(//
-                properties.getProperty(PROP_OUTPUT_TYPE), //
-                options, //
-                outFactory);
-        if (docWriter instanceof PropertyConfigurable) {
-            ((PropertyConfigurable) docWriter).setProperties(properties);
-        }
-        if (docWriter instanceof ColorAware) {
-            ((ColorAware) docWriter)
-                    .setColorConverter(makeColorConverter(colorConfig));
-        }
-        if (docWriter instanceof ResourceConsumer) {
-            ((ResourceConsumer) docWriter).setResourceFinder(finder);
-        }
-        docWriter.setParameter("Creator", "ExTeX " + EXTEX_VERSION.toString());
-        docWriter.setParameter("Title", "");
-        docWriter.setParameter("Paper", "A4");
-        docWriter.setParameter("Orientation", "Portrait");
-        docWriter.setParameter("Pages", "*");
-        docWriter.setParameter("PageOrder", "Ascend");
-
-        backend.setDocumentWriter(docWriter);
-        return backend;
     }
 
     /**
@@ -1213,6 +1229,33 @@ public class ExTeX {
     }
 
     /**
+     * Create a new Handler for the log file.
+     *
+     * @param logFile the name of the log file
+     *
+     * @return the new handler
+     */
+    protected Handler makeLogFileHandler(final String logFile) {
+
+        Handler fileHandler = null;
+        try {
+            fileHandler = new StreamHandler(new FileOutputStream(logFile),
+                    new LogFormatter());
+            fileHandler.setLevel(Level.ALL);
+            logger.addHandler(fileHandler);
+        } catch (SecurityException e) {
+            logger.severe(localizer.format("ExTeX.LogFileError", e
+                    .getLocalizedMessage()));
+            fileHandler = null;
+        } catch (IOException e) {
+            logger.severe(localizer.format("ExTeX.LogFileError", e
+                    .getLocalizedMessage()));
+            fileHandler = null;
+        }
+        return fileHandler;
+    }
+
+    /**
      * Determine the default paper size.
      *
      * @param context the context
@@ -1250,33 +1293,6 @@ public class ExTeX {
             throw new GeneralException(localizer.format(
                     "ExTeX.InvalidPageSize", page), e);
         }
-    }
-
-    /**
-     * Create a new Handler for the log file.
-     *
-     * @param logFile the name of the log file
-     *
-     * @return the new handler
-     */
-    protected Handler makeLogFileHandler(final String logFile) {
-
-        Handler fileHandler = null;
-        try {
-            fileHandler = new StreamHandler(new FileOutputStream(logFile),
-                    new LogFormatter());
-            fileHandler.setLevel(Level.ALL);
-            logger.addHandler(fileHandler);
-        } catch (SecurityException e) {
-            logger.severe(localizer.format("ExTeX.LogFileError", e
-                    .getLocalizedMessage()));
-            fileHandler = null;
-        } catch (IOException e) {
-            logger.severe(localizer.format("ExTeX.LogFileError", e
-                    .getLocalizedMessage()));
-            fileHandler = null;
-        }
-        return fileHandler;
     }
 
     /**
