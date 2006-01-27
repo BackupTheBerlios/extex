@@ -19,6 +19,7 @@
 
 package de.dante.extex.interpreter.primitives.file;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.util.Calendar;
 
@@ -35,7 +36,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\dump</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class DumpTest extends NoFlagsPrimitiveTester {
 
@@ -57,6 +58,7 @@ public class DumpTest extends NoFlagsPrimitiveTester {
     public DumpTest(final String arg) {
 
         super(arg, "dump", "", "", "Beginning to dump on file texput.fmt\n");
+        new File("texput.fmt").delete();
     }
 
     /**
@@ -72,8 +74,9 @@ public class DumpTest extends NoFlagsPrimitiveTester {
                 "\\font\\x= cmr10 \\count1=123 \\dump \\end",
                 //--- log message ---
                 "Beginning to dump on file texput.fmt\n", "");
-        Context context = new SerialLoader().load(new FileInputStream(
-                "texput.fmt"));
+
+        File fmt = new File("texput.fmt");
+        Context context = new SerialLoader().load(new FileInputStream(fmt));
         assertNotNull(context);
         Calendar calendar = Calendar.getInstance();
         assertEquals("texput " + //
@@ -88,9 +91,10 @@ public class DumpTest extends NoFlagsPrimitiveTester {
         assertNull(context.getAfterassignment());
         assertEquals(1000, context.getMagnification());
         assertEquals(123, context.getCount("1").getValue());
-        Code code = context.getCode((CodeToken) new TokenFactoryImpl().createToken(
-                Catcode.ESCAPE, "x", Namespace.DEFAULT_NAMESPACE));
+        Code code = context.getCode((CodeToken) new TokenFactoryImpl()
+                .createToken(Catcode.ESCAPE, "x", Namespace.DEFAULT_NAMESPACE));
         assertNotNull(code);
+        fmt.delete();
     }
 
 }
