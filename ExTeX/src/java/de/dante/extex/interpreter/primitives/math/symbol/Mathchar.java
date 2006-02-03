@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -25,6 +25,7 @@ import java.util.Map;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
@@ -65,7 +66,7 @@ import de.dante.util.UnicodeChar;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Mathchar extends AbstractMathCode {
 
@@ -147,10 +148,11 @@ public class Mathchar extends AbstractMathCode {
             int fam = (int) source.scanNumber(context);
             int code = (int) source.scanNumber(context);
             MathGlyph mg = new MathGlyph(fam, new UnicodeChar(code));
-            nc.add(mc, mg);
+            nc.add(mc, mg, context.getTypesettingContext());
         } else {
             source.push(t);
-            insert(nc, Count.scanCount(context, source, typesetter));
+            insert(nc, Count.scanCount(context, source, typesetter), context
+                    .getTypesettingContext());
         }
     }
 
@@ -163,11 +165,11 @@ public class Mathchar extends AbstractMathCode {
      *
      * @throws InterpreterException in case of an error
      */
-    protected void insert(final NoadConsumer nc, final long mathchar)
-            throws InterpreterException {
+    protected void insert(final NoadConsumer nc, final long mathchar,
+            final TypesettingContext tc) throws InterpreterException {
 
         nc.add(MathClass.getMathClass((int) ((mathchar >> 12) & 0xf)), //
-                new MathGlyph((int) (mathchar & GLYPH_MASK)));
+                new MathGlyph((int) (mathchar & GLYPH_MASK)), tc);
     }
 
 }

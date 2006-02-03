@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -16,6 +16,7 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.math.util;
 
 import de.dante.extex.interpreter.Flags;
@@ -32,7 +33,7 @@ import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
  * This class is used to dynamically define mathematical characters.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class MathcharCode extends Mathchar implements CountConvertible {
 
@@ -71,7 +72,7 @@ public class MathcharCode extends Mathchar implements CountConvertible {
             throws InterpreterException {
 
         NoadConsumer nc = getListMaker(context, typesetter);
-        insert(nc, mathchar.getValue());
+        insert(nc, mathchar.getValue(), context.getTypesettingContext());
     }
 
     /**

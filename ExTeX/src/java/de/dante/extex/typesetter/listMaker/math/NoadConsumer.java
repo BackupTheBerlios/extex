@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -22,6 +22,7 @@ package de.dante.extex.typesetter.listMaker.math;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.muskip.Mudimen;
 import de.dante.extex.interpreter.type.muskip.Muskip;
@@ -38,7 +39,7 @@ import de.dante.extex.typesetter.type.noad.Noad;
  * This is usually the case for math list makers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public interface NoadConsumer extends ListMaker {
 
@@ -46,20 +47,24 @@ public interface NoadConsumer extends ListMaker {
      * Add a mathematical glyph.
      *
      * @param mclass the class
+     * @param tc the typesetting context
      * @param mg the glyph
      *
      * @throws TypesetterException in case of an error
      */
-    void add(MathClass mclass, MathGlyph mg) throws TypesetterException;
+    void add(MathClass mclass, MathGlyph mg, TypesettingContext tc)
+            throws TypesetterException;
 
     /**
      * Add a mathematical delimiter.
      *
      * @param del the delimiter
+     * @param tc the typesetting context
      *
      * @throws TypesetterException in case of an error
      */
-    void add(MathDelimiter del) throws TypesetterException;
+    void add(MathDelimiter del, TypesettingContext tc)
+            throws TypesetterException;
 
     /**
      * Add some math glue Noad to the internal list.
