@@ -56,7 +56,7 @@ import de.dante.util.exception.GeneralException;
  * &ldquo;normal&rdquo; cases do not apply.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 class NV implements NodeVisitor {
 
@@ -180,8 +180,13 @@ class NV implements NodeVisitor {
 
         Count index = (Count) value;
         if (isHyph[(int) index.getValue()]) {
-            nodes.add(new DiscretionaryNode(null, new HorizontalListNode(cnf
-                    .newInstance(tc, hyphen)), null));
+            CharNode hyphenNode = cnf.newInstance(tc, hyphen);
+            if (hyphenNode == null) {
+                nodes.add(new DiscretionaryNode(null, null, null));
+            } else {
+                nodes.add(new DiscretionaryNode(null, new HorizontalListNode(
+                        hyphenNode), null));
+            }
         }
         nodes.add(node);
         index.add(1);
@@ -325,10 +330,13 @@ class NV implements NodeVisitor {
                 next++;
             }
         }
-        if (isHyph[index]) {
+        CharNode hyphenNode = cnf.newInstance(tc, hyphen);
+        if (hyphenNode == null) {
+            //TODO gene: undefined character
+        } else if (isHyph[index]) {
             next++;
             nodes.add(new DiscretionaryNode(//
-                    new HorizontalListNode(cnf.newInstance(tc, hyphen)), //
+                    new HorizontalListNode(hyphenNode), //
                     new HorizontalListNode(), //
                     new HorizontalListNode(node)));
         }
@@ -339,7 +347,7 @@ class NV implements NodeVisitor {
             case 1:
                 int leftLen = node.getLeft().countChars();
                 if (isHyph[leftLen]) { //todo gene: check off by 1
-                    Node h = cnf.newInstance(tc, hyphen);
+                    Node h = hyphenNode;
                     NodeList pre = new HorizontalListNode(node.getLeft(), h);
                     NodeList post = new HorizontalListNode(node.getRight());
                     nodes.add(new DiscretionaryNode(pre, post,
@@ -358,7 +366,7 @@ class NV implements NodeVisitor {
                     pre.add(chars[i]);
                     i++;
                 }
-                pre.add(cnf.newInstance(tc, hyphen));
+                pre.add(hyphenNode);
 
                 while (i < index + n) {
                     post.add(chars[i]);
@@ -453,8 +461,8 @@ class NV implements NodeVisitor {
      *      de.dante.extex.typesetter.type.node.VirtualCharNode,
      *      java.lang.Object)
      */
-    public Object visitVirtualChar(final VirtualCharNode node,
-            final Object oOut) throws GeneralException {
+    public Object visitVirtualChar(final VirtualCharNode node, final Object oOut)
+            throws GeneralException {
 
         return visitChar(node, oOut);
     }

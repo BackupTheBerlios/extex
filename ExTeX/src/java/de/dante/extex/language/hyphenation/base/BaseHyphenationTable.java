@@ -46,7 +46,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class BaseHyphenationTable implements ModifiableLanguage {
 
@@ -214,11 +214,15 @@ public class BaseHyphenationTable implements ModifiableLanguage {
         for (int j = 0; j < word.length(); j++) {
             Token t = word.get(j);
             if (t.equals(Catcode.OTHER, '-')) {
-                nodes.add(//
-                        new DiscretionaryNode(null, new HorizontalListNode(
-                                nodeFactory.newInstance(context
-                                        .getTypesettingContext(), hyphen)),
-                                null));
+                CharNode hyphenNode = nodeFactory.newInstance(context
+                        .getTypesettingContext(), hyphen);
+                if (hyphenNode == null) {
+                    nodes.add(new DiscretionaryNode(null, null, null));
+                } else {
+                    nodes.add(//
+                            new DiscretionaryNode(null, new HorizontalListNode(
+                                    hyphenNode), null));
+                }
             } else {
                 nodes.add(nodelist.get(i++));
             }
@@ -230,7 +234,7 @@ public class BaseHyphenationTable implements ModifiableLanguage {
      * @see de.dante.extex.language.ligature.LigatureBuilder#insertLigatures(
      *      de.dante.extex.typesetter.type.NodeList, int)
      */
-    public int insertLigatures(final NodeList list, int start)
+    public int insertLigatures(final NodeList list, final int start)
             throws HyphenationException {
 
         return this.ligatureBuilder.insertLigatures(list, start);
