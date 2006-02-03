@@ -28,7 +28,7 @@ import de.dante.extex.typesetter.type.node.WhatsItNode;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class PdfEndThread extends WhatsItNode {
 
@@ -49,7 +49,7 @@ public class PdfEndThread extends WhatsItNode {
      * @see de.dante.extex.typesetter.type.Node#toString(java.lang.StringBuffer,
      *      java.lang.String)
      */
-    public void toString(final StringBuffer sb, final String prefix) {
+    public void toString(final StringBuffer sb, final String prefix, int breadth, int depth) {
 
         sb.append("(pdfendthread)");
     }
