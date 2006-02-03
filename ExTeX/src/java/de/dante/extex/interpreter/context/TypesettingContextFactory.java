@@ -35,13 +35,13 @@ import de.dante.util.framework.configuration.exception.ConfigurationMissingAttri
  *  TypesettingContext}.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class TypesettingContextFactory extends AbstractFactory {
 
     /**
      * The constant <tt>CLASS_ATTRIBUTE</tt> contains the name of the
-     * attribute used to extract the class name fron the given configuration.
+     * attribute used to extract the class name from the given configuration.
      */
     private static final String CLASS_ATTRIBUTE = "class";
 
@@ -113,7 +113,7 @@ public class TypesettingContextFactory extends AbstractFactory {
      * @throws ConfigurationInstantiationException in case that the
      *             instantiation of the class failed.
      */
-    protected ModifiableTypesettingContext newInstance()
+    public ModifiableTypesettingContext newInstance()
             throws ConfigurationInstantiationException {
 
         ModifiableTypesettingContext context;
