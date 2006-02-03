@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -30,13 +30,13 @@ import de.dante.util.UnicodeChar;
 
 /**
  * This class encapsulates a font and provides access to the font dimens with
- * convenience methods
+ * convenience methods.
  *
  *
  * @see "TTP [700]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class MathFont implements Font {
 
@@ -48,7 +48,7 @@ public class MathFont implements Font {
     /**
      * Creates a new object.
      *
-     * @param font th font encapsulated
+     * @param font the font encapsulated
      */
     public MathFont(final Font font) {
 
