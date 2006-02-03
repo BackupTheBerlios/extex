@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -83,11 +83,11 @@ package de.dante.extex.typesetter.type.math;
  *         <i>// Do something with mc depending on its type</i>
  *     }
  * <b>
- *     public Object visitBinary(final Object arg) {
+ *     public Object visitBinary(final Object arg, Object arg2) {
  *         <i>// do something for binary class</i>
  *     }
  *
- *     public Object visitClosing(final Object arg) {
+ *     public Object visitClosing(final Object arg, Object arg2) {
  *         <i>// do something for closing delimiters</i>
  *     }
  *
@@ -114,7 +114,7 @@ package de.dante.extex.typesetter.type.math;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface MathClassVisitor {
 
@@ -122,72 +122,80 @@ public interface MathClassVisitor {
      * Invoke the visitor method for a binary operator.
      *
      * @param arg the argument
+     * @param arg2 the second argument
      *
      * @return the result
      */
-    Object visitBinary(Object arg);
+    Object visitBinary(Object arg, Object arg2);
 
     /**
      * Invoke the visitor method for a closing delimiter.
      *
      * @param arg the argument
+     * @param arg2 the second argument
      *
      * @return the result
      */
-    Object visitClosing(Object arg);
+    Object visitClosing(Object arg, Object arg2);
 
     /**
      * Invoke the visitor method for a large operator.
      *
      * @param arg the argument
+     * @param arg2 the second argument
      *
      * @return the result
      */
-    Object visitLarge(Object arg);
+    Object visitLarge(Object arg, Object arg2);
 
     /**
      * Invoke the visitor method for a opening delimiter.
      *
      * @param arg the argument
+     * @param arg2 the second argument
      *
      * @return the result
      */
-    Object visitOpening(Object arg);
+    Object visitOpening(Object arg, Object arg2);
 
     /**
      * Invoke the visitor method for an ordinary symbol .
      *
      * @param arg the argument
+     * @param arg2 the second argument
      *
      * @return the result
      */
-    Object visitOrdinary(Object arg);
+    Object visitOrdinary(Object arg, Object arg2);
 
     /**
      * Invoke the visitor method for a punctation symbol.
      *
      * @param arg the argument
+     * @param arg2 the second argument
      *
      * @return the result
      */
-    Object visitPunctation(Object arg);
+    Object visitPunctation(Object arg, Object arg2);
 
     /**
      * Invoke the visitor method for a relation operator.
      *
      * @param arg the argument
+     * @param arg2 the second argument
      *
      * @return the result
      */
-    Object visitRelation(Object arg);
+    Object visitRelation(Object arg, Object arg2);
 
     /**
      * Invoke the visitor method for a variable width symbol.
      *
      * @param arg the argument
+     * @param arg2 the second argument
      *
      * @return the result
      */
-    Object visitVariable(Object arg);
+    Object visitVariable(Object arg, Object arg2);
 
 }

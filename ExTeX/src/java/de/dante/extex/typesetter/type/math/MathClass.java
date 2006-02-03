@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -27,7 +27,7 @@ import java.io.Serializable;
  * In fact it is a finite enumeration which exposes the values as constants.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public abstract class MathClass implements Serializable {
 
@@ -35,7 +35,7 @@ public abstract class MathClass implements Serializable {
      * This is a inner class for a binary operator.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.2 $
+     * @version $Revision: 1.3 $
      */
     private static final class BinaryMathClass extends MathClass {
 
@@ -65,16 +65,17 @@ public abstract class MathClass implements Serializable {
          */
         public void toString(final StringBuffer sb) {
 
-            sb.append('2');
+            sb.append("bin");
         }
 
         /**
          * @see de.dante.extex.typesetter.type.math.MathClass#visit(
          *      MathClassVisitor, java.lang.Object)
          */
-        public Object visit(final MathClassVisitor visitor, final Object arg) {
+        public Object visit(final MathClassVisitor visitor, final Object arg,
+                final Object arg2) {
 
-            return visitor.visitBinary(arg);
+            return visitor.visitBinary(arg, arg2);
         }
     }
 
@@ -82,7 +83,7 @@ public abstract class MathClass implements Serializable {
      * This is a inner class for closing.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.2 $
+     * @version $Revision: 1.3 $
      */
     private static final class ClosingMathClass extends MathClass {
 
@@ -112,16 +113,17 @@ public abstract class MathClass implements Serializable {
          */
         public void toString(final StringBuffer sb) {
 
-            sb.append('5');
+            sb.append("close");
         }
 
         /**
          * @see de.dante.extex.typesetter.type.math.MathClass#visit(
          *      MathClassVisitor, java.lang.Object)
          */
-        public Object visit(final MathClassVisitor visitor, final Object arg) {
+        public Object visit(final MathClassVisitor visitor, final Object arg,
+                final Object arg2) {
 
-            return visitor.visitClosing(arg);
+            return visitor.visitClosing(arg, arg2);
         }
     }
 
@@ -129,7 +131,7 @@ public abstract class MathClass implements Serializable {
      * This is a inner class for large operators.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.2 $
+     * @version $Revision: 1.3 $
      */
     private static final class LargeMathClass extends MathClass {
 
@@ -159,16 +161,17 @@ public abstract class MathClass implements Serializable {
          */
         public void toString(final StringBuffer sb) {
 
-            sb.append('1');
+            sb.append("large");
         }
 
         /**
          * @see de.dante.extex.typesetter.type.math.MathClass#visit(
-         *      MathClassVisitor, java.lang.Object)
+         *      MathClassVisitor, java.lang.Object, java.lang.Object)
          */
-        public Object visit(final MathClassVisitor visitor, final Object arg) {
+        public Object visit(final MathClassVisitor visitor, final Object arg,
+                final Object arg2) {
 
-            return visitor.visitLarge(arg);
+            return visitor.visitLarge(arg, arg2);
         }
     }
 
@@ -176,7 +179,7 @@ public abstract class MathClass implements Serializable {
      * This is a inner class for opening.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.2 $
+     * @version $Revision: 1.3 $
      */
     private static final class OpeningMathClass extends MathClass {
 
@@ -206,16 +209,17 @@ public abstract class MathClass implements Serializable {
          */
         public void toString(final StringBuffer sb) {
 
-            sb.append('4');
+            sb.append("open");
         }
 
         /**
          * @see de.dante.extex.typesetter.type.math.MathClass#visit(
-         *      MathClassVisitor, java.lang.Object)
+         *      MathClassVisitor, java.lang.Object, java.lang.Object)
          */
-        public Object visit(final MathClassVisitor visitor, final Object arg) {
+        public Object visit(final MathClassVisitor visitor, final Object arg,
+                final Object arg2) {
 
-            return visitor.visitOpening(arg);
+            return visitor.visitOpening(arg, arg2);
         }
     }
 
@@ -223,7 +227,7 @@ public abstract class MathClass implements Serializable {
      * This is a inner class for ordinary characters.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.2 $
+     * @version $Revision: 1.3 $
      */
     private static final class OrdinaryMathClass extends MathClass {
 
@@ -253,16 +257,17 @@ public abstract class MathClass implements Serializable {
          */
         public void toString(final StringBuffer sb) {
 
-            sb.append('0');
+            sb.append("ord");
         }
 
         /**
          * @see de.dante.extex.typesetter.type.math.MathClass#visit(
-         *      MathClassVisitor, java.lang.Object)
+         *      MathClassVisitor, java.lang.Object, java.lang.Object)
          */
-        public Object visit(final MathClassVisitor visitor, final Object arg) {
+        public Object visit(final MathClassVisitor visitor, final Object arg,
+                final Object arg2) {
 
-            return visitor.visitOrdinary(arg);
+            return visitor.visitOrdinary(arg, arg2);
         }
     }
 
@@ -270,7 +275,7 @@ public abstract class MathClass implements Serializable {
      * This is a inner class for punctation marks.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.2 $
+     * @version $Revision: 1.3 $
      */
     private static final class PunctationMathClass extends MathClass {
 
@@ -300,16 +305,17 @@ public abstract class MathClass implements Serializable {
          */
         public void toString(final StringBuffer sb) {
 
-            sb.append('6');
+            sb.append("punct");
         }
 
         /**
          * @see de.dante.extex.typesetter.type.math.MathClass#visit(
-         *      MathClassVisitor, java.lang.Object)
+         *      MathClassVisitor, java.lang.Object, java.lang.Object)
          */
-        public Object visit(final MathClassVisitor visitor, final Object arg) {
+        public Object visit(final MathClassVisitor visitor, final Object arg,
+                final Object arg2) {
 
-            return visitor.visitPunctation(arg);
+            return visitor.visitPunctation(arg, arg2);
         }
     }
 
@@ -317,7 +323,7 @@ public abstract class MathClass implements Serializable {
      * This is a inner class for relation symbols.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.2 $
+     * @version $Revision: 1.3 $
      */
     private static final class RelationMathClass extends MathClass {
 
@@ -347,16 +353,17 @@ public abstract class MathClass implements Serializable {
          */
         public void toString(final StringBuffer sb) {
 
-            sb.append('3');
+            sb.append("rel");
         }
 
         /**
          * @see de.dante.extex.typesetter.type.math.MathClass#visit(
-         *      MathClassVisitor, java.lang.Object)
+         *      MathClassVisitor, java.lang.Object, java.lang.Object)
          */
-        public Object visit(final MathClassVisitor visitor, final Object arg) {
+        public Object visit(final MathClassVisitor visitor, final Object arg,
+                final Object arg2) {
 
-            return visitor.visitRelation(arg);
+            return visitor.visitRelation(arg, arg2);
         }
     }
 
@@ -364,7 +371,7 @@ public abstract class MathClass implements Serializable {
      * This is a inner class for variable width characters.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.2 $
+     * @version $Revision: 1.3 $
      */
     private static final class VariableMathClass extends MathClass {
 
@@ -394,16 +401,17 @@ public abstract class MathClass implements Serializable {
          */
         public void toString(final StringBuffer sb) {
 
-            sb.append('7');
+            sb.append("var");
         }
 
         /**
          * @see de.dante.extex.typesetter.type.math.MathClass#visit(
-         *      MathClassVisitor, java.lang.Object)
+         *      MathClassVisitor, java.lang.Object, java.lang.Object)
          */
-        public Object visit(final MathClassVisitor visitor, final Object arg) {
+        public Object visit(final MathClassVisitor visitor, final Object arg,
+                final Object arg2) {
 
-            return visitor.visitVariable(arg);
+            return visitor.visitVariable(arg, arg2);
         }
     }
 
@@ -531,15 +539,26 @@ public abstract class MathClass implements Serializable {
     public abstract void toString(final StringBuffer sb);
 
     /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+
+        StringBuffer sb = new StringBuffer();
+        toString(sb);
+        return sb.toString();
+    }
+
+    /**
      * Call a method in the visitor depending on the type.
      * This method is the entry point for the visitor pattern.
      *
      * @param visitor the visitor to call
-     * @param arg an aribitrary argument passed to the visitor
+     * @param arg an arbitrary argument passed to the visitor
+     * @param arg2 an arbitrary second argument passed to the visitor
      *
      * @return an arbitrary return value
      */
     public abstract Object visit(final MathClassVisitor visitor,
-            final Object arg);
+            final Object arg, final Object arg2);
 
 }

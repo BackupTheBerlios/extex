@@ -45,7 +45,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * to and from their <logo>TeX</logo> encoding as numbers to abstract math code.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class AbstractTeXDelimiter extends AbstractMathCode {
 
@@ -111,72 +111,80 @@ public abstract class AbstractTeXDelimiter extends AbstractMathCode {
 
         /**
          * @see de.dante.extex.typesetter.type.math.MathClassVisitor#visitBinary(
+         *      java.lang.Object,
          *      java.lang.Object)
          */
-        public Object visitBinary(final Object ignore) {
+        public Object visitBinary(final Object ignore, final Object ignore2) {
 
             return new Integer(2);
         }
 
         /**
          * @see de.dante.extex.typesetter.type.math.MathClassVisitor#visitClosing(
+         *      java.lang.Object,
          *      java.lang.Object)
          */
-        public Object visitClosing(final Object ignore) {
+        public Object visitClosing(final Object ignore, final Object ignore2) {
 
             return new Integer(5);
         }
 
         /**
          * @see de.dante.extex.typesetter.type.math.MathClassVisitor#visitLarge(
+         *      java.lang.Object,
          *      java.lang.Object)
          */
-        public Object visitLarge(final Object ignore) {
+        public Object visitLarge(final Object ignore, final Object ignore2) {
 
             return new Integer(1);
         }
 
         /**
          * @see de.dante.extex.typesetter.type.math.MathClassVisitor#visitOpening(
+         *      java.lang.Object,
          *      java.lang.Object)
          */
-        public Object visitOpening(final Object ignore) {
+        public Object visitOpening(final Object ignore, final Object ignore2) {
 
             return new Integer(4);
         }
 
         /**
          * @see de.dante.extex.typesetter.type.math.MathClassVisitor#visitOrdinary(
+         *      java.lang.Object,
          *      java.lang.Object)
          */
-        public Object visitOrdinary(final Object ignore) {
+        public Object visitOrdinary(final Object ignore, final Object ignore2) {
 
             return new Integer(0);
         }
 
         /**
          * @see de.dante.extex.typesetter.type.math.MathClassVisitor#visitPunctation(
+         *      java.lang.Object,
          *      java.lang.Object)
          */
-        public Object visitPunctation(final Object ignore) {
+        public Object visitPunctation(final Object ignore, final Object ignore2) {
 
             return new Integer(6);
         }
 
         /**
          * @see de.dante.extex.typesetter.type.math.MathClassVisitor#visitRelation(
+         *      java.lang.Object,
          *      java.lang.Object)
          */
-        public Object visitRelation(final Object ignore) {
+        public Object visitRelation(final Object ignore, final Object ignore2) {
 
             return new Integer(3);
         }
 
         /**
          * @see de.dante.extex.typesetter.type.math.MathClassVisitor#visitVariable(
+         *      java.lang.Object,
          *      java.lang.Object)
          */
-        public Object visitVariable(final Object ignore) {
+        public Object visitVariable(final Object ignore, final Object ignore2) {
 
             return new Integer(7);
         }
@@ -395,7 +403,7 @@ public abstract class AbstractTeXDelimiter extends AbstractMathCode {
             return -1;
         }
 
-        long value = ((Integer) del.getMathClass().visit(MCV, null))
+        long value = ((Integer) del.getMathClass().visit(MCV, null, null))
                 .longValue() << CLASS_SHIFT;
 
         int fam0 = del.getSmallChar().getFamily();
