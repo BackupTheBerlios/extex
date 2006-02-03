@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -61,7 +61,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.32 $
+ * @version $Revision: 1.33 $
  */
 public class Write extends AbstractCode
         implements
@@ -149,7 +149,7 @@ public class Write extends AbstractCode
 
         if (prefix.isImmediate()) {
 
-            Tokens toks = source.scanTokens(context, getName());
+            Tokens toks = source.scanTokens(context, false, false, getName());
             write(key, toks, context);
             prefix.clearImmediate();
 

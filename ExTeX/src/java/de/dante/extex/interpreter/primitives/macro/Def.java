@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -66,7 +66,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.39 $
+ * @version $Revision: 1.40 $
  */
 public class Def extends AbstractAssignment {
 
@@ -126,7 +126,7 @@ public class Def extends AbstractAssignment {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        Tokens body = source.scanTokens(context, getName());
+        Tokens body = source.scanTokens(context, false, false, getName());
         //TODO gene: maybe the treatment of # is incorrect
         return body;
     }
