@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -27,7 +27,6 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.primitives.register.box.AbstractBox;
 import de.dante.extex.interpreter.type.box.Box;
-import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.framework.logger.LogEnabled;
 
@@ -55,7 +54,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Showbox extends AbstractBox implements LogEnabled {
 
@@ -106,11 +105,11 @@ public class Showbox extends AbstractBox implements LogEnabled {
             logger.info(getLocalizer().format("TTP.Show.void", //
                     context.esc(key)));
         } else {
-            Count depth = context.getCount("showboxdepth");
-            Count width = context.getCount("showboxbreadth");
-
-            logger.info(b.getNodes().toString());
-            //TODO gene: correct??
+            long depth = context.getCount("showboxdepth").getValue();
+            long width = context.getCount("showboxbreadth").getValue();
+            StringBuffer sb = new StringBuffer();
+            b.getNodes().toString(sb, "", (int) depth, (int) width);
+            logger.info(sb.toString());
         }
         logger.info(getLocalizer().format("TTP.Show.OK"));
     }
