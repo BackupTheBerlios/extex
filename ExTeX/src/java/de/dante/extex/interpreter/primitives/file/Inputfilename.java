@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -49,7 +49,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Inputfilename extends AbstractCode
         implements
@@ -82,8 +82,7 @@ public class Inputfilename extends AbstractCode
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String filename = source.getLocator().getResourceName();
-        source.push(new Tokens(context, filename == null ? "" : filename));
+        source.push(the(context, source, typesetter));
     }
 
     /**
@@ -97,8 +96,7 @@ public class Inputfilename extends AbstractCode
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String filename = source.getLocator().getResourceName();
-        source.push(new Tokens(context, filename == null ? "" : filename));
+        source.push(the(context, source, typesetter));
     }
 
     /**
@@ -110,7 +108,7 @@ public class Inputfilename extends AbstractCode
             final Typesetter typesetter) throws InterpreterException {
 
         String filename = source.getLocator().getResourceName();
-        return new Tokens(context, filename == null ? "" : filename);
+        return new Tokens(context, (filename == null ? "" : filename));
     }
 
 }
