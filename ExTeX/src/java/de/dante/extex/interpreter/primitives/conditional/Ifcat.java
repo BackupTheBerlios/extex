@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -32,15 +32,33 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="ifcat">
  * <h3>The Primitive <tt>\ifcat</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  The primitive expands the tokens following it until two unexpandable tokens
+ *  are found. The conditional is true iff the category codes of the two tokens
+ *  agree.
  * </p>
+ *
+ * <h4>Syntax</h4>
+ *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;ifcat&rang;
- *     &rarr; <tt>\ifcat</tt>  ... </pre>
+ *     &rarr; <tt>\ifcat</tt> {@linkplain
+ *       de.dante.extex.interpreter.TokenSource#getToken(Context)
+ *       &lang;token<sub>1</sub>&rang;} {@linkplain
+ *       de.dante.extex.interpreter.TokenSource#getToken(Context)
+ *       &lang;token<sub>2</sub>&rang;} &lang;true text&rang; <tt>\fi</tt>
+ *     | <tt>\ifcat</tt> {@linkplain
+ *       de.dante.extex.interpreter.TokenSource#getToken(Context)
+ *       &lang;token<sub>1</sub>&rang;} {@linkplain
+ *       de.dante.extex.interpreter.TokenSource#getToken(Context)
+ *       &lang;token<sub>2</sub>&rang;} &lang;true text&rang; <tt>\else</tt> &lang;false text&rang; <tt>\fi</tt> </pre>
+ *
+ * <h4>Examples</h4>
+ *  <pre class="TeXSample">
+ *    \ifcat\a\x ok \fi  </pre>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class Ifcat extends AbstractIf {
 

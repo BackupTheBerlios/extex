@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -24,7 +24,7 @@ package de.dante.extex.interpreter.context.observer.count;
  * expansion event.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface CountObservable {
 
@@ -52,12 +52,12 @@ public interface CountObservable {
      * observer is invoked.
      * <p>
      *  A single count register can be observed by giving a name of the count
-     *  register to observe. The deregistration removes all instances of the
+     *  register to observe. The de-registration removes all instances of the
      *  observer for this register. If none is registered then nothing happens.
      * </p>
      * <p>
      *  If this name is <code>null</code> then the observer for all registers
-     *  is removed. Note that the observers for named registeres are not
+     *  is removed. Note that the observers for named registers are not
      *  effected. They have to be unregistered individually.
      * </p>
      *

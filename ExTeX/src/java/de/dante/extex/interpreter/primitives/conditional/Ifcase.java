@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -37,14 +37,29 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * <doc name="ifcase">
  * <h3>The Primitive <tt>\ifcase</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  The primitive <tt>\ifcase</tt> provides a conditional switch on a numeric
+ *  value. The next tokens are used as a number. This number determines which
+ *  branch to expand. The first branch follows the number immediately. This
+ *  branch is associated to the number 0.
+ * </p>
+ * <p>
+ *  The primitive <tt>\or</tt> advances to the next branch.
+ *  The primitive <tt>\else</tt> starts the else branch. The alse branch is used
+ *  if no other branch fits.
  * </p>
  *
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;ifcase&rang;
- *     &rarr; <tt>\ifcase</tt> ...  </pre>
+ *     &rarr; <tt>\ifcase</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#scanInteger(Context,Typesetter)
+ *        &lang;number&rang;}  &lang;cases&rang; <tt>\fi</tt>
+ *
+ *    &lang;cases&rang;
+ *     &rarr;
+ *      |  &lang;branch text&rang; <tt>\else</tt> &lang;else text&rang;
+ *      |  &lang;branch text&rang; <tt>\or</tt> &lang;cases&rang;  </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
@@ -54,7 +69,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
 public class Ifcase extends AbstractIf {
 
@@ -203,7 +218,7 @@ public class Ifcase extends AbstractIf {
      * This is an internal class for type-safe values.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.29 $
+     * @version $Revision: 1.30 $
      */
     protected static final class Tag {
 

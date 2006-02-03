@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -24,7 +24,7 @@ package de.dante.extex.interpreter.context.observer.conditional;
  * expansion event.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface ConditionalObservable {
 
@@ -32,8 +32,6 @@ public interface ConditionalObservable {
      * Register an observer for conditional events.
      * Conditional events are triggered when a conditional is started or ended.
      *
-     * @param token the token to be observed. This should be a macro or
-     * active character token.
      * @param observer the observer to receive the events
      */
     void registerConditionalObserver(ConditionalObserver observer);
@@ -42,8 +40,6 @@ public interface ConditionalObservable {
      * Remove a registered observer for conditional events.
      * Conditional events are triggered when a conditional is started or ended.
      *
-     * @param name the token to be observed. This should be a macro or
-     * active character token.
      * @param observer the observer to receive the events
      */
     void unregisterConditionalObserver(ConditionalObserver observer);

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -53,7 +53,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.35 $
+ * @version $Revision: 1.36 $
  */
 public interface Group extends Tokenizer, Serializable {
 
@@ -129,8 +129,8 @@ public interface Group extends Tokenizer, Serializable {
     Count getCount(String name);
 
     /**
-     * Getter for the delcode of a charcter.
-     * The sfcode is -1 unless changed explicitely.
+     * Getter for the delcode of a character.
+     * The sfcode is -1 unless changed explicitly.
      *
      * @param uc the character to get the delcode for
      *
@@ -204,11 +204,11 @@ public interface Group extends Tokenizer, Serializable {
     long getLevel();
 
     /**
-     * Getter for the mathcode of a character.
+     * Getter for the math code of a character.
      *
-     * @param uc the character to get the mathcode for
+     * @param uc the character to get the math code for
      *
-     * @return the mathcode for the given character
+     * @return the math code for the given character
      */
     Count getMathcode(UnicodeChar uc);
 
@@ -231,9 +231,9 @@ public interface Group extends Tokenizer, Serializable {
     Muskip getMuskip(String name);
 
     /**
-     * Getter for the current namespace.
+     * Getter for the current name space.
      *
-     * @return the current namespace
+     * @return the current name space
      */
     String getNamespace();
 
@@ -257,7 +257,7 @@ public interface Group extends Tokenizer, Serializable {
     /**
      * Getter for the space factor code of a character.
      * The sfcode is 999 for letters and 1000 for other characters unless
-     * changed explicitely.
+     * changed explicitly.
      *
      * @param uc the character for which the sfcode is requested
      *
@@ -352,7 +352,7 @@ public interface Group extends Tokenizer, Serializable {
      * @param name the name or the number of the register
      * @param value the new value of the register
      * @param global the indicator for the scope; <code>true</code> means all
-     *            groups; otherwise the current group is affected only
+     *  groups; otherwise the current group is affected only
      */
     void setBox(String name, Box value, boolean global);
 
@@ -362,7 +362,7 @@ public interface Group extends Tokenizer, Serializable {
      * @param c the character
      * @param code the catcode
      * @param global the indicator for the scope; <code>true</code> means all
-     *            groups; otherwise the current group is affected only
+     *  groups; otherwise the current group is affected only
      */
     void setCatcode(UnicodeChar c, Catcode code, boolean global);
 
@@ -393,7 +393,7 @@ public interface Group extends Tokenizer, Serializable {
      * @param uc the character to set the delcode for
      * @param code the new delcode
      * @param global the indicator for the scope; <code>true</code> means all
-     *            groups; otherwise the current group is affected only
+     *  groups; otherwise the current group is affected only
      */
     void setDelcode(UnicodeChar uc, MathDelimiter code, boolean global);
 
@@ -403,7 +403,7 @@ public interface Group extends Tokenizer, Serializable {
      * @param name the name of the count register
      * @param value the value of the count register
      * @param global the indicator for the scope; <code>true</code> means all
-     *            groups; otherwise the current group is affected only
+     *  groups; otherwise the current group is affected only
      */
     void setDimen(String name, Dimen value, boolean global);
 
@@ -413,7 +413,7 @@ public interface Group extends Tokenizer, Serializable {
      * @param name the name of the font
      * @param font the new font
      * @param global the indicator for the scope; <code>true</code> means all
-     *            groups; otherwise the current group is affected only
+     *  groups; otherwise the current group is affected only
      */
     void setFont(String name, Font font, boolean global);
 
@@ -423,17 +423,17 @@ public interface Group extends Tokenizer, Serializable {
      * @param name the name of the boolean
      * @param value the truth value
      * @param global the indicator for the scope; <code>true</code> means all
-     *            groups; otherwise the current group is affected only
+     *  groups; otherwise the current group is affected only
      */
     void setIf(String name, boolean value, boolean global);
 
     /**
-     * Setter for an inoputr file.
+     * Setter for an input file.
      *
      * @param name the name of the input file
      * @param file the input file specification
      * @param global the indicator for the scope; <code>true</code> means all
-     *            groups; otherwise the current group is affected only
+     *  groups; otherwise the current group is affected only
      */
     void setInFile(String name, InFile file, boolean global);
 
@@ -447,12 +447,12 @@ public interface Group extends Tokenizer, Serializable {
     void setLccode(UnicodeChar uc, UnicodeChar lc, boolean global);
 
     /**
-     * Setter for the mathcode of a character.
+     * Setter for the math code of a character.
      *
-     * @param uc the character to set the mathcode for
-     * @param code the new mathcode
+     * @param uc the character to set the math code for
+     * @param code the new math code
      * @param global the indicator for the scope; <code>true</code> means all
-     *            groups; otherwise the current group is affected only
+     *  groups; otherwise the current group is affected only
      */
     void setMathcode(UnicodeChar uc, Count code, boolean global);
 
@@ -462,15 +462,15 @@ public interface Group extends Tokenizer, Serializable {
      * @param name the name of the register
      * @param value the value of the register
      * @param global the indicator for the scope; <code>true</code> means all
-     *            groups; otherwise the current group is affected only
+     *  groups; otherwise the current group is affected only
      */
     void setMuskip(String name, Muskip value, boolean global);
 
     /**
-     * Setter for the namespace.
-     * @param namespace the new namespace
+     * Setter for the name space.
+     * @param namespace the new name space
      * @param global the indicator for the scope; <code>true</code> means all
-     *            groups; otherwise the current group is affected only
+     *  groups; otherwise the current group is affected only
      */
     void setNamespace(String namespace, boolean global);
 
@@ -485,12 +485,12 @@ public interface Group extends Tokenizer, Serializable {
     void setOutFile(String name, OutFile file, boolean global);
 
     /**
-     * Setter for the sfcode of a character.
+     * Setter for the space factor code of a character.
      *
-     * @param uc the character to set the sfcode for
-     * @param code the new sfcode
+     * @param uc the character to set the space factor code for
+     * @param code the new space factor code
      * @param global the indicator for the scope; <code>true</code> means all
-     *            groups; otherwise the current group is affected only
+     *  groups; otherwise the current group is affected only
      */
     void setSfcode(UnicodeChar uc, Count code, boolean global);
 
@@ -500,7 +500,7 @@ public interface Group extends Tokenizer, Serializable {
      * @param name the name of the count register
      * @param value the value of the count register
      * @param global the indicator for the scope; <code>true</code> means all
-     *            groups; otherwise the current group is affected only
+     *  groups; otherwise the current group is affected only
      */
     void setSkip(String name, Glue value, boolean global);
 
@@ -517,7 +517,7 @@ public interface Group extends Tokenizer, Serializable {
      * @param name the name of the toks register
      * @param value the value of the toks register
      * @param global the indicator for the scope; <code>true</code> means all
-     *            groups; otherwise the current group is affected only
+     *  groups; otherwise the current group is affected only
      */
     void setToks(String name, Tokens value, boolean global);
 
@@ -534,7 +534,7 @@ public interface Group extends Tokenizer, Serializable {
      * Declare the translation from a lower case character to an upper case
      * character.
      *
-     * @param lc lower  case character
+     * @param lc lower case character
      * @param uc uppercase equivalent
      */
     void setUccode(UnicodeChar lc, UnicodeChar uc, boolean global);

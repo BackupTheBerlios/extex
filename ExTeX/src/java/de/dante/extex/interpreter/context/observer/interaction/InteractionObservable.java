@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -24,7 +24,7 @@ package de.dante.extex.interpreter.context.observer.interaction;
  * interaction event.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface InteractionObservable {
 
@@ -35,7 +35,7 @@ public interface InteractionObservable {
      * observer is invoked.
      * <p>
      *  A single count register can be observed by giving a name of the count
-     *  register to observe. Only changes to this register tigger the
+     *  register to observe. Only changes to this register trigger the
      *  notification. If this name is <code>null</code> the changes to all
      *  registers are reported to the observer.
      * </p>
