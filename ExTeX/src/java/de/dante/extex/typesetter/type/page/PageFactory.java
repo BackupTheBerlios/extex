@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -33,7 +33,6 @@ import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.node.MarkNode;
 import de.dante.extex.typesetter.type.node.SpecialNode;
-import de.dante.extex.typesetter.type.node.WhatsItNode;
 import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 import de.dante.util.framework.logger.LogEnabled;
@@ -42,7 +41,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * This class provides a factory for page instances.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class PageFactory implements LogEnabled {
 
@@ -98,22 +97,24 @@ public class PageFactory implements LogEnabled {
         //page.setMediaHOffset(context.getDimen("mediawidth"));
         //page.setMediaVOffset(context.getDimen("mediaheight"));
 
+        context.startMarks();
+
         int size = nodes.size();
         for (int i = 0; i < size; i++) {
             Node node = nodes.get(i);
-            if (node instanceof MarkNode) {
-                //TODO gene: unimplemented
-                throw new RuntimeException("unimplemented");
+            node.atShipping(context, typesetter);
 
+            if (node instanceof MarkNode) {
+                MarkNode mark = (MarkNode) node;
+                context.setMark(mark.getIndex(), mark.getMark());
+                nodes.remove(i--);
+                size--;
             } else if (node instanceof NodeList) {
                 process(page, (NodeList) node, context, typesetter);
-            } else if (node instanceof WhatsItNode) {
-                node.atShipping(context, typesetter);
+            } else if (node instanceof SpecialNode) {
+                processSpecialNode((SpecialNode) node, page, context,
+                        typesetter);
 
-                if (node instanceof SpecialNode) {
-                    processSpecialNode((SpecialNode) node, page, context,
-                            typesetter);
-                }
             }
         }
         return page;
@@ -136,15 +137,18 @@ public class PageFactory implements LogEnabled {
         int size = nodes.size();
         for (int i = 0; i < size; i++) {
             Node node = nodes.get(i);
-            if (node instanceof NodeList) {
-                process(page, (NodeList) node, context, typesetter);
-            } else if (node instanceof WhatsItNode) {
-                node.atShipping(context, typesetter);
+            node.atShipping(context, typesetter);
 
-                if (node instanceof SpecialNode) {
-                    processSpecialNode((SpecialNode) node, page, context,
-                            typesetter);
-                }
+            if (node instanceof MarkNode) {
+                MarkNode mark = (MarkNode) node;
+                context.setMark(mark.getIndex(), mark.getMark());
+                nodes.remove(i--);
+                size--;
+            } else if (node instanceof NodeList) {
+                process(page, (NodeList) node, context, typesetter);
+            } else if (node instanceof SpecialNode) {
+                processSpecialNode((SpecialNode) node, page, context,
+                        typesetter);
             }
         }
     }
