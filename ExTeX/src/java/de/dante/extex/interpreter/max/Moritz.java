@@ -106,7 +106,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.86 $
+ * @version $Revision: 1.87 $
  */
 public class Moritz extends Max
         implements
@@ -1351,10 +1351,13 @@ public class Moritz extends Max
     /**
      * @see de.dante.extex.interpreter.TokenSource#scanTokens(
      *      de.dante.extex.interpreter.context.Context,
+     *      boolean,
+     *      boolean,
      *      java.lang.String)
      */
-    public Tokens scanTokens(final Context context, final String primitive)
-            throws InterpreterException {
+    public Tokens scanTokens(final Context context,
+            final boolean reportUndefined, final boolean ignoreUndefined,
+            final String primitive) throws InterpreterException {
 
         Tokens toks = new Tokens();
         skipSpaces = true;
@@ -1370,13 +1373,25 @@ public class Moritz extends Max
 
         for (token = scanToken(context); token != null; token = scanToken(context)) {
 
-            if (token.isa(Catcode.LEFTBRACE)) {
+            if (token instanceof LeftBraceToken) {
+                toks.add(token);
                 ++balance;
-            } else if (token.isa(Catcode.RIGHTBRACE) && --balance <= 0) {
+            } else if (token instanceof RightBraceToken && --balance <= 0) {
                 break;
+            } else if (token instanceof CodeToken) {
+                if (ignoreUndefined) {
+
+                } else if (reportUndefined
+                        && context.getCode((CodeToken) token) == null) {
+                    throw new UndefinedControlSequenceException(token
+                            .toString());
+                } else {
+                    toks.add(token);
+                }
+            } else {
+                toks.add(token);
             }
 
-            toks.add(token);
         }
 
         return toks;
@@ -1390,7 +1405,7 @@ public class Moritz extends Max
     public String scanTokensAsString(final Context context,
             final String primitive) throws InterpreterException {
 
-        return scanTokens(context, primitive).toText();
+        return scanTokens(context, false, false, primitive).toText();
     }
 
     /**
