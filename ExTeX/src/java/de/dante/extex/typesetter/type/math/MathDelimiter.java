@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -20,20 +20,25 @@
 package de.dante.extex.typesetter.type.math;
 
 import java.io.Serializable;
+import java.util.logging.Logger;
 
 import de.dante.extex.typesetter.TypesetterOptions;
+import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.noad.MathGlyph;
+import de.dante.extex.typesetter.type.noad.Noad;
+import de.dante.extex.typesetter.type.noad.NoadList;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * This class provides a container for a delimiter consisting of a class, a
  * large, and a small math glyph.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class MathDelimiter implements Serializable {
+public class MathDelimiter implements Noad, Serializable {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
@@ -102,6 +107,40 @@ public class MathDelimiter implements Serializable {
     }
 
     /**
+     * @see de.dante.extex.typesetter.type.noad.Noad#getSubscript()
+     */
+    public Noad getSubscript() {
+
+        return null;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.noad.Noad#getSuperscript()
+     */
+    public Noad getSuperscript() {
+
+        return null;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.noad.Noad#setSubscript(
+     *      de.dante.extex.typesetter.type.noad.Noad)
+     */
+    public void setSubscript(final Noad subscript) {
+
+        // TODO gene: setSubscript unimplemented
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.noad.Noad#setSuperscript(
+     *      de.dante.extex.typesetter.type.noad.Noad)
+     */
+    public void setSuperscript(final Noad superscript) {
+
+        // TODO gene: setSuperscript unimplemented
+    }
+
+    /**
      * @see java.lang.Object#toString()
      */
     public String toString() {
@@ -112,7 +151,7 @@ public class MathDelimiter implements Serializable {
     }
 
     /**
-     * Append the printable representation of the  current instance to the
+     * Append the printable representation of the current instance to the
      * string buffer.
      *
      * @param sb the target string buffer
@@ -121,29 +160,39 @@ public class MathDelimiter implements Serializable {
      */
     public void toString(final StringBuffer sb) {
 
-        sb.append('\"');
+        //sb.append('\"');
         mathClass.toString(sb);
         smallChar.toString(sb);
         largeChar.toString(sb);
     }
 
     /**
-     * Produce the nodes for a math delimiter.
-     *
-     * @param list the hbox to add nodes to
-     * @param mathContext the mathematical context
-     * @param context the typesetting options
-     *
+     * @see de.dante.extex.typesetter.type.noad.Noad#toString(
+     *      java.lang.StringBuffer, int)
+     */
+    public void toString(final StringBuffer sb, final int depth) {
+
+        toString(sb);
+    }
+
+    /**
      * @see de.dante.extex.typesetter.type.noad.Noad#typeset(
+     *      de.dante.extex.typesetter.type.noad.NoadList,
+     *      int,
      *      de.dante.extex.typesetter.type.NodeList,
      *      de.dante.extex.typesetter.type.noad.util.MathContext,
-     *      de.dante.extex.typesetter.TypesetterOptions)
+     *      de.dante.extex.typesetter.TypesetterOptions,
+     *      java.util.logging.Logger)
      */
-    public void typeset(final NodeList list, final MathContext mathContext,
-            final TypesetterOptions context) {
+    public int typeset(final NoadList noads, final int index,
+            final NodeList list, final MathContext mathContext,
+            final TypesetterOptions context, final Logger logger)
+            throws TypesetterException,
+                ConfigurationException {
 
         //TODO gene: typeset() unimplemented
         throw new RuntimeException("unimplemented");
+        //return index + 1;
     }
 
 }
