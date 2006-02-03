@@ -19,8 +19,11 @@
 
 package de.dante.extex.typesetter.type.noad;
 
+import java.util.logging.Logger;
+
 import de.dante.extex.interpreter.exception.ImpossibleException;
 import de.dante.extex.typesetter.TypesetterOptions;
+import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
@@ -31,7 +34,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [689]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class ChoiceNoad implements Noad {
 
@@ -136,26 +139,34 @@ public class ChoiceNoad implements Noad {
     /**
      * @see "TTP [731]"
      * @see de.dante.extex.typesetter.type.noad.Noad#typeset(
+     *      de.dante.extex.typesetter.type.noad.NoadList,
+     *      int,
      *      de.dante.extex.typesetter.type.NodeList,
      *      de.dante.extex.typesetter.type.noad.util.MathContext,
-     *      de.dante.extex.typesetter.TypesetterOptions)
+     *      de.dante.extex.typesetter.TypesetterOptions,
+     *      java.util.logging.Logger)
      */
-    public void typeset(final NodeList list, final MathContext mathContext,
-            final TypesetterOptions context) throws ConfigurationException {
+    public int typeset(final NoadList noads, final int index,
+            final NodeList list, final MathContext mathContext,
+            final TypesetterOptions context, final Logger logger)
+            throws TypesetterException,
+                ConfigurationException {
 
         StyleNoad style = mathContext.getStyle();
 
         if (style == StyleNoad.DISPLAYSTYLE) {
-            display.typeset(list, mathContext, context);
+            display.typeset(noads, index, list, mathContext, context, logger);
         } else if (style == StyleNoad.TEXTSTYLE) {
-            text.typeset(list, mathContext, context);
+            text.typeset(noads, index, list, mathContext, context, logger);
         } else if (style == StyleNoad.SCRIPTSTYLE) {
-            script.typeset(list, mathContext, context);
+            script.typeset(noads, index, list, mathContext, context, logger);
         } else if (style == StyleNoad.SCRIPTSCRIPTSTYLE) {
-            scriptScript.typeset(list, mathContext, context);
+            scriptScript.typeset(noads, index, list, mathContext, context,
+                    logger);
         } else {
             throw new ImpossibleException("illegal style");
         }
+        return index + 1;
     }
 
 }

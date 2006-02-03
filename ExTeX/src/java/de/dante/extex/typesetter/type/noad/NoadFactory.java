@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -19,100 +19,18 @@
 
 package de.dante.extex.typesetter.type.noad;
 
+import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.typesetter.type.math.MathClass;
 import de.dante.extex.typesetter.type.math.MathClassVisitor;
+import de.dante.extex.typesetter.type.math.MathDelimiter;
 
 /**
  * This class is a factory for CharNoades.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class NoadFactory {
-
-    /**
-     * Inner class for the visiting of a MathClass.
-     *
-     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.5 $
-     */
-    private static final class ClassVisitor implements MathClassVisitor {
-
-        /**
-         * @see de.dante.extex.typesetter.type.math.MathClassVisitor#visitBinary(
-         *      java.lang.Object)
-         */
-        public Object visitBinary(final Object arg) {
-
-            return new BinaryNoad((Noad) arg);
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.type.math.MathClassVisitor#visitClosing(
-         *      java.lang.Object)
-         */
-        public Object visitClosing(final Object arg) {
-
-            return new CloseNoad((Noad) arg);
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.type.math.MathClassVisitor#visitLarge(
-         *      java.lang.Object)
-         */
-        public Object visitLarge(final Object arg) {
-
-            // TODO gene: visitLarge() unimplemented
-            throw new RuntimeException("unimplemented");
-            //return null;
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.type.math.MathClassVisitor#visitOpening(
-         *      java.lang.Object)
-         */
-        public Object visitOpening(final Object arg) {
-
-            return new OpenNoad((Noad) arg);
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.type.math.MathClassVisitor#visitOrdinary(
-         *      java.lang.Object)
-         */
-        public Object visitOrdinary(final Object arg) {
-
-            return new CharNoad((MathGlyph) arg);
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.type.math.MathClassVisitor#visitPunctation(
-         *      java.lang.Object)
-         */
-        public Object visitPunctation(final Object arg) {
-
-            return new PunctationNoad((Noad) arg);
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.type.math.MathClassVisitor#visitRelation(
-         *      java.lang.Object)
-         */
-        public Object visitRelation(final Object arg) {
-
-            return new RelationNoad((Noad) arg);
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.type.math.MathClassVisitor#visitVariable(
-         *      java.lang.Object)
-         */
-        public Object visitVariable(final Object arg) {
-
-            // TODO gene: difference to ordinary ??
-            return new CharNoad((MathGlyph) arg);
-        }
-    }
 
     /**
      * The constant <tt>CLASS_MASK</tt> contains the mask for the class value.
@@ -132,7 +50,86 @@ public class NoadFactory {
     /**
      * The constant <tt>VISITOR</tt> contains the math class visitor.
      */
-    private static final MathClassVisitor VISITOR = new ClassVisitor();
+    private static final MathClassVisitor VISITOR = new MathClassVisitor() {
+
+        /**
+         * @see de.dante.extex.typesetter.type.math.MathClassVisitor#visitBinary(
+         *      java.lang.Object, java.lang.Object)
+         */
+        public Object visitBinary(final Object arg, final Object noad) {
+
+            return new BinaryNoad((Noad) noad, (TypesettingContext) arg);
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.math.MathClassVisitor#visitClosing(
+         *      java.lang.Object, java.lang.Object)
+         */
+        public Object visitClosing(final Object arg, final Object noad) {
+
+            return new CloseNoad((Noad) noad, (TypesettingContext) arg);
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.math.MathClassVisitor#visitLarge(
+         *      java.lang.Object, java.lang.Object)
+         */
+        public Object visitLarge(final Object arg, final Object noad) {
+
+            if (arg instanceof MathDelimiter) {
+                return new CharNoad(((MathDelimiter) noad).getLargeChar(),
+                        (TypesettingContext) arg);
+            }
+            // TODO gene: visitLarge() partially unimplemented
+            throw new RuntimeException("unimplemented");
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.math.MathClassVisitor#visitOpening(
+         *      java.lang.Object, java.lang.Object)
+         */
+        public Object visitOpening(final Object arg, final Object noad) {
+
+            return new OpenNoad((Noad) noad, (TypesettingContext) arg);
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.math.MathClassVisitor#visitOrdinary(
+         *      java.lang.Object, java.lang.Object)
+         */
+        public Object visitOrdinary(final Object arg, final Object noad) {
+
+            return new CharNoad((MathGlyph) noad, (TypesettingContext) arg);
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.math.MathClassVisitor#visitPunctation(
+         *      java.lang.Object, java.lang.Object)
+         */
+        public Object visitPunctation(final Object arg, final Object noad) {
+
+            return new PunctationNoad((Noad) noad, (TypesettingContext) arg);
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.math.MathClassVisitor#visitRelation(
+         *      java.lang.Object, java.lang.Object)
+         */
+        public Object visitRelation(final Object arg, final Object noad) {
+
+            return new RelationNoad((Noad) noad, (TypesettingContext) arg);
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.math.MathClassVisitor#visitVariable(
+         *      java.lang.Object, java.lang.Object)
+         */
+        public Object visitVariable(final Object arg, final Object noad) {
+
+            // TODO gene: difference to ordinary ??
+            return new CharNoad((MathGlyph) noad, (TypesettingContext) arg);
+        }
+    };
 
     /**
      * Creates a new object.
@@ -144,31 +141,38 @@ public class NoadFactory {
     }
 
     /**
-     * Provides an instance of a CharNoad.
+     * Provides an instance of a {@link CharNoad CharNoad}.
      *
      * @param mc the code of the character to use
+     * @param tc the typesetting context
      *
      * @return an instance of a CharNoad
      */
-    public Noad getNoad(final long mc) {
+    public Noad getNoad(final long mc, final TypesettingContext tc) {
 
         return getNoad(MathClass
                 .getMathClass((int) ((mc >> CLASS_SHIFT) & CLASS_MASK)), //
-                new MathGlyph((int) (mc & GLYPH_MASK)));
+                tc, new MathGlyph((int) (mc & GLYPH_MASK)));
 
     }
 
     /**
-     * Provides an instance of a CharNoad.
+     * Provides an instance of a {@link CharNoad CharNoad}.
      *
      * @param mathClass the math class
+     * @param tc the typesetting context
      * @param nucleus the character the character
      *
      * @return an instance of a CharNoad
      */
-    public Noad getNoad(final MathClass mathClass, final Noad nucleus) {
+    public Noad getNoad(final MathClass mathClass, final TypesettingContext tc,
+            final Noad nucleus) {
 
-        return (Noad) mathClass.visit(VISITOR, nucleus);
+        if (nucleus instanceof MathGlyph) {
+            return (Noad) mathClass.visit(VISITOR, tc, nucleus);
+        }
+        //TODO gene: unimplemented
+        throw new RuntimeException("unimplemented");
     }
 
 }

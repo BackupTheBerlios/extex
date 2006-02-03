@@ -19,7 +19,10 @@
 
 package de.dante.extex.typesetter.type.noad;
 
+import java.util.logging.Logger;
+
 import de.dante.extex.typesetter.TypesetterOptions;
+import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
@@ -30,9 +33,9 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [???]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
-public class MathList extends AbstractNoad implements Noad {
+public class MathList extends AbstractNoad {
 
     /**
      * The field <tt>list</tt> is the container for the elements of this node
@@ -61,8 +64,8 @@ public class MathList extends AbstractNoad implements Noad {
     /**
      * Test whether the node list is empty.
      *
-     * @return <code>true</code>, if the list ist emtpy,
-     * otherwise <code>false</code>.
+     * @return <code>true</code>, if the list is empty,
+     *  otherwise <code>false</code>.
      */
     public boolean empty() {
 
@@ -75,7 +78,7 @@ public class MathList extends AbstractNoad implements Noad {
      * @param index the position
      *
      * @return the node at position <i>index</i> of <code>null</code> if index
-     * is out of bounds
+     *  is out of bounds
      */
     public Noad get(final int index) {
 
@@ -152,18 +155,25 @@ public class MathList extends AbstractNoad implements Noad {
 
     /**
      * @see de.dante.extex.typesetter.type.noad.Noad#typeset(
+     *      de.dante.extex.typesetter.type.noad.NoadList,
+     *      int,
      *      de.dante.extex.typesetter.type.NodeList,
      *      de.dante.extex.typesetter.type.noad.util.MathContext,
-     *      de.dante.extex.typesetter.TypesetterOptions)
+     *      de.dante.extex.typesetter.TypesetterOptions,
+     *      java.util.logging.Logger)
      */
-    public void typeset(final NodeList list, final MathContext mathContext,
-            final TypesetterOptions context) throws ConfigurationException {
+    public int typeset(final NoadList noads, final int index,
+            final NodeList list, final MathContext mathContext,
+            final TypesetterOptions context, final Logger logger)
+            throws TypesetterException,
+                ConfigurationException {
 
-        for (int i = 0; i < nucleus.size(); i++) {
-            Noad noad = nucleus.get(i);
-            noad.typeset(list, mathContext, context);
+        for (int i = 0; i < nucleus.size();) {
+            i = nucleus.get(i).typeset(nucleus, i, list, mathContext, context,
+                    logger);
         }
         //TODO gene: subscript and superscript unimplemented ???
+        return index + 1;
     }
 
 }

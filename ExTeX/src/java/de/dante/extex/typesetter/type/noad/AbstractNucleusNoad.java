@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -19,13 +19,21 @@
 
 package de.dante.extex.typesetter.type.noad;
 
+import de.dante.extex.interpreter.context.Color;
+import de.dante.extex.interpreter.context.TypesettingContext;
+
 /**
  * This abstract noad represents a Noad with a nucleus.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public abstract class AbstractNucleusNoad extends AbstractNoad {
+
+    /**
+     * The field <tt>color</tt> contains the color.
+     */
+    private Color color;
 
     /**
      * The field <tt>nucleus</tt> contains the nucleus.
@@ -35,12 +43,25 @@ public abstract class AbstractNucleusNoad extends AbstractNoad {
     /**
      * Creates a new object.
      *
-     * @param nucleus the nucleaus of inner noads
+     * @param nucleus the nucleus of inner noads
+     * @param tc the typesetting context for the color
      */
-    public AbstractNucleusNoad(final Noad nucleus) {
+    public AbstractNucleusNoad(final Noad nucleus, final TypesettingContext tc) {
 
         super();
         this.nucleus = nucleus;
+        this.color = tc.getColor();
+    }
+
+    
+    /**
+     * Getter for color.
+     *
+     * @return the color
+     */
+    public Color getColor() {
+    
+        return this.color;
     }
 
     /**

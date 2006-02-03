@@ -20,9 +20,11 @@
 package de.dante.extex.typesetter.type.noad;
 
 import java.io.ObjectStreamException;
+import java.util.logging.Logger;
 
 import de.dante.extex.interpreter.exception.ImpossibleException;
 import de.dante.extex.typesetter.TypesetterOptions;
+import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
@@ -32,7 +34,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * processing.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public final class StyleNoad implements Noad {
 
@@ -40,7 +42,7 @@ public final class StyleNoad implements Noad {
      * The constant <tt>DISPLAYSTYLE</tt> contains the value for the display
      * style.
      */
-    public static final StyleNoad DISPLAYSTYLE = new StyleNoad("textstyle",
+    public static final StyleNoad DISPLAYSTYLE = new StyleNoad("text",
             "\\displaystyle");
 
     /**
@@ -48,20 +50,20 @@ public final class StyleNoad implements Noad {
      * scriptscript style.
      */
     public static final StyleNoad SCRIPTSCRIPTSTYLE = new StyleNoad(
-            "scriptscriptstyle", "\\scriptscriptstyle");
+            "scriptscript", "\\scriptscriptstyle");
 
     /**
      * The constant <tt>SCRIPTSTYLE</tt> contains the value for the script
      * style.
      */
-    public static final StyleNoad SCRIPTSTYLE = new StyleNoad("scriptstlye",
+    public static final StyleNoad SCRIPTSTYLE = new StyleNoad("script",
             "\\scriptstlye");
 
     /**
      * The constant <tt>TEXTSTYLE</tt> contains the value for the text
      * style.
      */
-    public static final StyleNoad TEXTSTYLE = new StyleNoad("textstyle",
+    public static final StyleNoad TEXTSTYLE = new StyleNoad("text",
             "\\textstyle");
 
     /**
@@ -79,7 +81,7 @@ public final class StyleNoad implements Noad {
     /**
      * Creates a new object.
      * This constructor is private since nobody is supposed to use it to create
-     * new instances. The constants defined in this class should be usesd
+     * new instances. The constants defined in this class should be used
      * instead.
      *
      * @param style the style
@@ -98,6 +100,16 @@ public final class StyleNoad implements Noad {
      * @return the style
      */
     public String getStyleName() {
+
+        return this.style + "style";
+    }
+
+    /**
+     * Getter for name.
+     *
+     * @return the name
+     */
+    public String getName() {
 
         return this.style;
     }
@@ -179,13 +191,21 @@ public final class StyleNoad implements Noad {
 
     /**
      * @see de.dante.extex.typesetter.type.noad.Noad#typeset(
+     *      de.dante.extex.typesetter.type.noad.NoadList,
+     *      int,
      *      de.dante.extex.typesetter.type.NodeList,
      *      de.dante.extex.typesetter.type.noad.util.MathContext,
-     *      de.dante.extex.typesetter.TypesetterOptions)
+     *      de.dante.extex.typesetter.TypesetterOptions,
+     *      java.util.logging.Logger)
      */
-    public void typeset(final NodeList list, final MathContext mathContext,
-            final TypesetterOptions context) throws ConfigurationException {
+    public int typeset(final NoadList noads, final int index,
+            final NodeList list, final MathContext mathContext,
+            final TypesetterOptions context, final Logger logger)
+            throws TypesetterException,
+                ConfigurationException {
 
         mathContext.setStyle(this);
+        return index + 1;
     }
+
 }

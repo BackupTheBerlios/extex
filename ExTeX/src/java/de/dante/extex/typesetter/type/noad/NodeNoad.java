@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -18,7 +18,10 @@
  */
 package de.dante.extex.typesetter.type.noad;
 
+import java.util.logging.Logger;
+
 import de.dante.extex.typesetter.TypesetterOptions;
+import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
@@ -29,7 +32,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This noad contains a node which is passed through the math apparatus.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class NodeNoad implements Noad {
 
@@ -89,7 +92,7 @@ public class NodeNoad implements Noad {
      */
     public void toString(final StringBuffer sb) {
 
-        node.toString(sb, "");
+        node.toString(sb, "", Integer.MAX_VALUE, Integer.MAX_VALUE);
     }
 
     /**
@@ -98,19 +101,26 @@ public class NodeNoad implements Noad {
      */
     public void toString(final StringBuffer sb, final int depth) {
 
-        node.toString(sb, "");
+        node.toString(sb, "", Integer.MAX_VALUE, Integer.MAX_VALUE);
     }
 
     /**
      * @see de.dante.extex.typesetter.type.noad.Noad#typeset(
+     *      de.dante.extex.typesetter.type.noad.NoadList,
+     *      int,
      *      de.dante.extex.typesetter.type.NodeList,
      *      de.dante.extex.typesetter.type.noad.util.MathContext,
-     *      de.dante.extex.typesetter.TypesetterOptions)
+     *      de.dante.extex.typesetter.TypesetterOptions,
+     *      java.util.logging.Logger)
      */
-    public void typeset(final NodeList list, final MathContext mathContext,
-            final TypesetterOptions context) throws ConfigurationException {
+    public int typeset(final NoadList noads, final int index,
+            final NodeList list, final MathContext mathContext,
+            final TypesetterOptions context, final Logger logger)
+            throws TypesetterException,
+                ConfigurationException {
 
         list.add(node);
+        return index + 1;
     }
 
 }

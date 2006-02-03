@@ -19,7 +19,10 @@
 
 package de.dante.extex.typesetter.type.noad;
 
+import java.util.logging.Logger;
+
 import de.dante.extex.typesetter.TypesetterOptions;
+import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.math.MathDelimiter;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
@@ -27,13 +30,13 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * This Noad carries a delimiter which is set on the left side of the math
- * material following it. This delmitier adjusts its height to the height of the
- * following material.
+ * material. This delimiter adjusts its height to the height of the
+ * material following.
  *
  * @see "TTP [687]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class LeftNoad extends AbstractNoad {
 
@@ -69,14 +72,21 @@ public class LeftNoad extends AbstractNoad {
      *
      * @see "TTP [762]"
      * @see de.dante.extex.typesetter.type.noad.Noad#typeset(
+     *      de.dante.extex.typesetter.type.noad.NoadList,
+     *      int,
      *      de.dante.extex.typesetter.type.NodeList,
      *      de.dante.extex.typesetter.type.noad.util.MathContext,
-     *      de.dante.extex.typesetter.TypesetterOptions)
+     *      de.dante.extex.typesetter.TypesetterOptions,
+     *      java.util.logging.Logger)
      */
-    public void typeset(final NodeList list, final MathContext mathContext,
-            final TypesetterOptions context) throws ConfigurationException {
+    public int typeset(final NoadList noads, final int index,
+            final NodeList list, final MathContext mathContext,
+            final TypesetterOptions context, final Logger logger)
+            throws TypesetterException,
+                ConfigurationException {
 
-        delimiter.typeset(list, mathContext, context);
+        delimiter.typeset(noads, index, list, mathContext, context, logger);
+        return index + 1;
     }
 
 }

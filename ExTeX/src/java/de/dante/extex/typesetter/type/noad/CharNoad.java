@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -19,11 +19,19 @@
 
 package de.dante.extex.typesetter.type.noad;
 
+import java.util.logging.Logger;
+
+import de.dante.extex.font.type.other.NullFont;
+import de.dante.extex.interpreter.context.Color;
 import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.context.TypesettingContextFactory;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.primitives.register.font.NumberedFont;
+import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.typesetter.TypesetterOptions;
+import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
@@ -36,12 +44,17 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This class provides a container for a mathematical character.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
-public class CharNoad extends AbstractNoad implements Noad {
+public class CharNoad extends AbstractNoad {
 
     /**
-     * The field <tt>uc</tt> contains the character representation.
+     * The field <tt>color</tt> contains the color.
+     */
+    private Color color;
+
+    /**
+     * The field <tt>glyph</tt> contains the character representation.
      */
     private MathGlyph glyph;
 
@@ -49,11 +62,13 @@ public class CharNoad extends AbstractNoad implements Noad {
      * Creates a new object.
      *
      * @param character the character representation
+     * @param tc the typesetting context for the color
      */
-    protected CharNoad(final MathGlyph character) {
+    protected CharNoad(final MathGlyph character, final TypesettingContext tc) {
 
         super();
         this.glyph = character;
+        this.color = tc.getColor();
     }
 
     /**
@@ -77,22 +92,94 @@ public class CharNoad extends AbstractNoad implements Noad {
 
     /**
      * @see de.dante.extex.typesetter.type.noad.Noad#typeset(
+     *      de.dante.extex.typesetter.type.noad.NoadList,
+     *      int,
+     *      de.dante.extex.typesetter.type.NodeList,
+     *      de.dante.extex.typesetter.type.noad.util.MathContext,
+     *      de.dante.extex.typesetter.TypesetterOptions,
+     *      java.util.logging.Logger)
+     */
+    public int typeset(final NoadList noads, final int index,
+            final NodeList nodes, final MathContext mathContext,
+            final TypesetterOptions context, final Logger logger)
+            throws TypesetterException,
+                ConfigurationException {
+
+        StyleNoad style = mathContext.getStyle();
+        UnicodeChar c = glyph.getCharacter();
+        Font font = context.getFont(NumberedFont.key(context, //
+                style.getName() + "font", Integer.toString(glyph.getFamily())));
+        if (font instanceof NullFont) {
+            throw new TypesetterException(new HelpingException(getLocalizer(),
+                    "TTP.UndefinedFamily", style.getStyleName(), Integer
+                            .toString(glyph.getFamily()), c.toString()));
+        }
+
+        if (font.getGlyph(c) == null) {
+            //see "TTP [581]"
+            if (context.getCountOption("tracinglostchars").gt(Count.ZERO)) {
+                logger.info(getLocalizer().format("TTP.MissingChar",
+                        c.toString(), font.getFontName()));
+            }
+
+        } else {
+
+            int size = nodes.size();
+            if (size > 0) {
+                Node n = nodes.get(size - 1);
+                if (n instanceof CharNode) {
+                    CharNode cn = ((CharNode) n);
+                    if (cn.getTypesettingContext().getFont().equals(font)) {
+                        Dimen kerning = font.getGlyph(cn.getCharacter())
+                                .getKerning(c);
+                        if (kerning.ne(Dimen.ZERO_PT)) {
+                            nodes.add(new ImplicitKernNode(kerning));
+                        }
+                    }
+                }
+            }
+
+            TypesettingContextFactory tcFactory = context
+                    .getTypesettingContextFactory();
+            TypesettingContext tc = tcFactory.newInstance();
+            tc = tcFactory.newInstance(tc, font);
+            tc = tcFactory.newInstance(tc, color);
+            nodes.addGlyph(new CharNode(tc, c));
+        }
+
+        return index + 1;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.noad.Noad#typeset(
      *      de.dante.extex.typesetter.type.NodeList,
      *      de.dante.extex.typesetter.type.noad.util.MathContext,
      *      de.dante.extex.typesetter.TypesetterOptions)
      */
     public void typeset(final NodeList nodes, final MathContext mathContext,
-            final TypesetterOptions context) throws ConfigurationException {
+            final TypesetterOptions context, final Logger logger)
+            throws ConfigurationException,
+                TypesetterException {
 
-        String type = mathContext.getStyle().getStyleName();
+        StyleNoad style = mathContext.getStyle();
+        UnicodeChar c = glyph.getCharacter();
         Font font = context.getFont(NumberedFont.key(context, //
-                type, Integer.toString(glyph.getFamily())));
-        if (font == null) {
-            //gene: impossible
-            throw new NullPointerException("font");
+                style.getName() + "font", Integer.toString(glyph.getFamily())));
+        if (font instanceof NullFont) {
+            throw new TypesetterException(new HelpingException(getLocalizer(),
+                    "TTP.UndefinedFamily", style.getStyleName(), Integer
+                            .toString(glyph.getFamily()), c.toString()));
         }
 
-        UnicodeChar c = glyph.getCharacter();
+        if (font.getGlyph(c) == null) {
+            //see "TTP [581]"
+            if (context.getCountOption("tracinglostchars").gt(Count.ZERO)) {
+                logger.info(getLocalizer().format("TTP.MissingChar",
+                        c.toString(), font.getFontName()));
+            }
+
+            return;
+        }
 
         int size = nodes.size();
         if (size > 0) {
@@ -113,4 +200,5 @@ public class CharNoad extends AbstractNoad implements Noad {
                 .newInstance(context.getTypesettingContext(), font);
         nodes.addGlyph(new CharNode(tc, c));
     }
+
 }

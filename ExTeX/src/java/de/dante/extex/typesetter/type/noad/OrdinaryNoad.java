@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -19,7 +19,11 @@
 
 package de.dante.extex.typesetter.type.noad;
 
+import java.util.logging.Logger;
+
+import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.typesetter.TypesetterOptions;
+import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
@@ -30,18 +34,19 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [682]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
-public class OrdinaryNoad extends AbstractNucleusNoad {
+public class OrdinaryNoad extends AbstractNucleusNoad implements SimpleNoad {
 
     /**
      * Creates a new object.
      *
      * @param nucleus the nucleus
+     * @param tc the typesetting context for the color
      */
-    public OrdinaryNoad(final Noad nucleus) {
+    public OrdinaryNoad(final Noad nucleus, final TypesettingContext tc) {
 
-        super(nucleus);
+        super(nucleus, tc);
     }
 
     /**
@@ -58,15 +63,73 @@ public class OrdinaryNoad extends AbstractNucleusNoad {
     /**
      * @see "TTP [752]"
      * @see de.dante.extex.typesetter.type.noad.Noad#typeset(
+     *      de.dante.extex.typesetter.type.noad.NoadList,
+     *      int,
      *      de.dante.extex.typesetter.type.NodeList,
      *      de.dante.extex.typesetter.type.noad.util.MathContext,
-     *      de.dante.extex.typesetter.TypesetterOptions)
+     *      de.dante.extex.typesetter.TypesetterOptions,
+     *      java.util.logging.Logger)
      */
-    public void typeset(final NodeList list, final MathContext mathContext,
-            final TypesetterOptions context) throws ConfigurationException {
+    public int typeset(final NoadList noads, final int index,
+            final NodeList list, final MathContext mathContext,
+            final TypesetterOptions context, final Logger logger)
+            throws TypesetterException,
+                ConfigurationException {
 
+        getNucleus().typeset(noads, index, list, mathContext, context, logger);
         //TODO gene: typeset() unimplemented
         throw new RuntimeException("unimplemented");
+        //return index + 1;
+    }
+
+    public static final int make_ord(final NoadList noads, final int index,
+            final NodeList list, final MathContext mathContext,
+            final TypesetterOptions context, final Logger logger) {
+
+        int i = index;
+        //    var a: integer;  {address of lig/kern instruction}
+        //    p,r: pointer;  {temporary registers for list manipulation}
+        // begin restart:
+        do {
+            Noad noad = noads.get(i);
+            if (noad.getSubscript() == null && noad.getSuperscript() == null
+                    && noad instanceof CharNoad) {
+
+                // if math_type(subscr(q))=empty then
+                //    if math_type(supscr(q))=empty then
+                //      if math_type(nucleus(q))=math_char then
+                if (++i >= noads.size()) {
+                    Noad n = noads.get(i);
+                    //        begin p ? link(q);
+                    //        if p ? null then
+                    if (n instanceof SimpleNoad) {
+                        //          if (type(p) ? ord_noad) ? (type(p) ? punct_noad) then
+                        Noad nuc = ((AbstractNucleusNoad) n).getNucleus();
+                        if (nuc instanceof CharNoad) {
+                            //            if math_type(nucleus(p))=math_char then
+                            
+                            //              if fam(nucleus(p))=fam(nucleus(q)) then
+                            //                begin math_type(nucleus(q)) ? math_text_char; fetch(nucleus(q));
+                            //                if char_tag(cur_i)=lig_tag then
+                            //                  begin a ? lig_kern_start(cur_f)(cur_i); cur_c ? character(nucleus(p)); cur_i ? font_info[a].qqqq;
+                            //                  if skip_byte(cur_i)>stop_flag then
+                            //                    begin a ? lig_kern_restart(cur_f)(cur_i); cur_i ? font_info[a].qqqq;
+                            //                    end ;
+                            //                   loop begin ?If instruction cur_i is a kern with cur_c, attach the kern after q; or if it is a ligature with cur_c, combine noads q and p appropriately; then return if the cursor has moved past a noad, or goto restart 753?;
+                            //                    if skip_byte(cur_i) ? stop_flag then return ;
+                            //                    a ? a+qo(skip_byte(cur_i))+1; cur_i ? font_info[a].qqqq;
+                            //                    end ;
+                            //                  end ;
+                            //                end ;
+                            //        end ;
+                            // exit: end ;
+                        }
+                    }
+                }
+            } else {
+                return i;
+            }
+        } while (true);
     }
 
 }

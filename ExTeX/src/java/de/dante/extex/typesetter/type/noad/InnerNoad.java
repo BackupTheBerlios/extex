@@ -19,7 +19,11 @@
 
 package de.dante.extex.typesetter.type.noad;
 
+import java.util.logging.Logger;
+
+import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.typesetter.TypesetterOptions;
+import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
@@ -31,18 +35,19 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [682]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class InnerNoad extends AbstractNucleusNoad {
 
     /**
      * Creates a new object.
      *
-     * @param nucleus the nucleaus of inner noads
+     * @param nucleus the nucleus of inner noads
+     * @param tc the typesetting context for the color
      */
-    public InnerNoad(final Noad nucleus) {
+    public InnerNoad(final Noad nucleus, final TypesettingContext tc) {
 
-        super(nucleus);
+        super(nucleus, tc);
     }
 
     /**
@@ -58,15 +63,22 @@ public class InnerNoad extends AbstractNucleusNoad {
 
     /**
      * @see de.dante.extex.typesetter.type.noad.Noad#typeset(
+     *      de.dante.extex.typesetter.type.noad.NoadList,
+     *      int,
      *      de.dante.extex.typesetter.type.NodeList,
      *      de.dante.extex.typesetter.type.noad.util.MathContext,
-     *      de.dante.extex.typesetter.TypesetterOptions)
+     *      de.dante.extex.typesetter.TypesetterOptions,
+     *      java.util.logging.Logger)
      */
-    public void typeset(final NodeList list, final MathContext mathContext,
-            final TypesetterOptions context) throws ConfigurationException {
+    public int typeset(final NoadList noads, final int index,
+            final NodeList list, final MathContext mathContext,
+            final TypesetterOptions context, final Logger logger)
+            throws TypesetterException,
+                ConfigurationException {
 
         //TODO gene: typeset() unimplemented
         throw new RuntimeException("unimplemented");
+        //return index + 1;
     }
 
 }

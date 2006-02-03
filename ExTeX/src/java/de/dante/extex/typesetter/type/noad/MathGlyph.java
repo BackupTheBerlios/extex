@@ -20,8 +20,10 @@
 package de.dante.extex.typesetter.type.noad;
 
 import java.io.Serializable;
+import java.util.logging.Logger;
 
 import de.dante.extex.typesetter.TypesetterOptions;
+import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
 import de.dante.util.UnicodeChar;
@@ -31,7 +33,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This class provides a container for a mathematical glyph.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class MathGlyph implements Noad, Serializable {
 
@@ -178,24 +180,31 @@ public class MathGlyph implements Noad, Serializable {
     public void toString(final StringBuffer sb, final int depth) {
 
         if (depth >= 0) {
-            sb.append('\"');
+            sb.append("(");
             sb.append(Integer.toHexString(family));
-            sb.append(' ');
+            sb.append(')');
             sb.append(Integer.toHexString(character.getCodePoint()));
         }
     }
 
     /**
      * @see de.dante.extex.typesetter.type.noad.Noad#typeset(
+     *      de.dante.extex.typesetter.type.noad.NoadList,
+     *      int,
      *      de.dante.extex.typesetter.type.NodeList,
      *      de.dante.extex.typesetter.type.noad.util.MathContext,
-     *      de.dante.extex.typesetter.TypesetterOptions)
+     *      de.dante.extex.typesetter.TypesetterOptions,
+     *      java.util.logging.Logger)
      */
-    public void typeset(final NodeList list, final MathContext mathContext,
-            final TypesetterOptions context) throws ConfigurationException {
+    public int typeset(final NoadList noads, final int index,
+            final NodeList list, final MathContext mathContext,
+            final TypesetterOptions context, final Logger logger)
+            throws TypesetterException,
+                ConfigurationException {
 
         //TODO gene: typeset() unimplemented
         throw new RuntimeException("unimplemented");
+        //return index + 1;
     }
 
 }
