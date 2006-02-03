@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -36,10 +36,13 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="hbox">
  * <h3>The Primitive <tt>\hbox</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  The primitive <tt>\hbox</tt> takes arguments enclosed in braces and
+ *  typesets this contents in horizontal mode. If a width is given then
+ *  the hbox is soread to this width. Otherwise the hbox has the natural width
+ *  of its contents.
  * </p>
  * <p>
- *  The contents of the toks register <tt>\everyhbox</tt> is inserted at the
+ *  The contents of the tokens register <tt>\everyhbox</tt> is inserted at the
  *  beginning of the horizontal material of the box.
  * </p>
  *
@@ -68,13 +71,13 @@ import de.dante.extex.typesetter.Typesetter;
  * <h3>The Tokens Parameter <tt>\everyhbox</tt></h3>
  * <p>
  *  The tokens parameter is used in <tt>/hbox</tt>. The tokens contained are
- *  inserted at the beginnig of the horizontal material of the hbox.
+ *  inserted at the beginning of the horizontal material of the horizontal box.
  * </p>
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class Hbox extends AbstractBoxPrimitive {
 
