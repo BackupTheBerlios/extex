@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -109,7 +109,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.91 $
+ * @version $Revision: 1.92 $
  */
 public abstract class Max
         implements
@@ -247,7 +247,7 @@ public abstract class Max
     private Flags prefix = new FlagsImpl();
 
     /**
-     * The field <tt>tv</tt> contains the ...
+     * The field <tt>tv</tt> contains the token visitor for expansion.
      */
     private TokenVisitor tv = new TokenVisitor() {
 
@@ -311,8 +311,7 @@ public abstract class Max
         public Object visitLeftBrace(final LeftBraceToken token,
                 final Object arg) throws Exception {
 
-            //TODO gene: unimplemented
-            throw new RuntimeException("unimplemented");
+            return token;
         }
 
         /**
@@ -334,8 +333,7 @@ public abstract class Max
         public Object visitMacroParam(final MacroParamToken token,
                 final Object arg) throws Exception {
 
-            //TODO gene: unimplemented
-            throw new RuntimeException("unimplemented");
+            return token;
         }
 
         /**
@@ -346,8 +344,7 @@ public abstract class Max
         public Object visitMathShift(final MathShiftToken token,
                 final Object arg) throws Exception {
 
-            //TODO gene: unimplemented
-            throw new RuntimeException("unimplemented");
+            return token;
         }
 
         /**
@@ -369,8 +366,7 @@ public abstract class Max
         public Object visitRightBrace(final RightBraceToken token,
                 final Object arg) throws Exception {
 
-            //TODO gene: unimplemented
-            throw new RuntimeException("unimplemented");
+            return token;
         }
 
         /**
@@ -392,8 +388,7 @@ public abstract class Max
         public Object visitSubMark(final SubMarkToken token, final Object arg)
                 throws Exception {
 
-            //TODO gene: unimplemented
-            throw new RuntimeException("unimplemented");
+            return token;
         }
 
         /**
@@ -404,8 +399,7 @@ public abstract class Max
         public Object visitSupMark(final SupMarkToken token, final Object arg)
                 throws Exception {
 
-            //TODO gene: unimplemented
-            throw new RuntimeException("unimplemented");
+            return token;
         }
 
         /**
@@ -416,8 +410,7 @@ public abstract class Max
         public Object visitTabMark(final TabMarkToken token, final Object arg)
                 throws Exception {
 
-            //TODO gene: unimplemented
-            throw new RuntimeException("unimplemented");
+            return token;
         }
 
     };
@@ -553,6 +546,16 @@ public abstract class Max
             try {
 
                 token.visit(this, null);
+
+            } catch (TypesetterException e) {
+
+                final Throwable cause = e.getCause();
+                if (cause instanceof InterpreterException) {
+                    handleException(token, context,
+                            (InterpreterException) cause, typesetter);
+                } else {
+                    handleException(token, context, e, typesetter);
+                }
 
             } catch (InterpreterException e) {
 
