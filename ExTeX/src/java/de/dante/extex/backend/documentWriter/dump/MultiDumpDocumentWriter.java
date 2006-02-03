@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -64,7 +64,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class MultiDumpDocumentWriter
         implements
@@ -117,10 +117,12 @@ public class MultiDumpDocumentWriter
          *      de.dante.extex.typesetter.type.node.AfterMathNode,
          *      java.lang.Object)
          */
-        public Object visitAfterMath(final AfterMathNode oNode,
+        public Object visitAfterMath(final AfterMathNode node,
                 final Object oOut) throws GeneralException {
 
-            write("\\)");
+            if (node.getWidth().ne(Dimen.ZERO_PT)) {
+                write(' ');
+            }
             return null;
         }
 
@@ -147,7 +149,9 @@ public class MultiDumpDocumentWriter
         public Object visitBeforeMath(final BeforeMathNode node,
                 final Object oOut) throws GeneralException {
 
-            write("\\(");
+            if (node.getWidth().ne(Dimen.ZERO_PT)) {
+                write(' ');
+            }
             return null;
         }
 
@@ -481,7 +485,7 @@ public class MultiDumpDocumentWriter
         try {
             if (tree) {
                 StringBuffer sb = new StringBuffer();
-                nodes.toString(sb, "\n");
+                nodes.toString(sb, "\n", Integer.MAX_VALUE, Integer.MAX_VALUE);
                 out.write(sb.toString().getBytes());
                 out.write('\n');
             } else {
