@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -157,7 +157,7 @@ import de.dante.util.resource.ResourceFinder;
  *    This parameter contains the name of the format to read. An empty
  *    string denotes that no format should be read. This is the default.
  *   </dd>
- *   <dd>Property: <tt><a href="#extex.fmt">extex.fmt</a></tt></dd>
+ *   <dd>Property: <tt><a href="#extex.format">extex.format</a></tt></dd>
  *
  *   <dt><a name="-debug"><tt>-debug &lang;spec&rang;</tt></a></dt>
  *   <dd>
@@ -395,7 +395,7 @@ import de.dante.util.resource.ResourceFinder;
  *   <dd>Command line:
  *    <a href="&lang"><tt>&lang;file&rang;</tt></a> </dd>
  *
- *   <dt><a name="extex.fmt"/><tt>extex.fmt</tt></dt>
+ *   <dt><a name="extex.format"/><tt>extex.format</tt></dt>
  *   <dd>
  *    This parameter contains the name of the format to read. An empty
  *    string denotes that no format should be read. This is the default.
@@ -594,7 +594,7 @@ import de.dante.util.resource.ResourceFinder;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class TeX extends ExTeX {
 
@@ -947,9 +947,14 @@ public class TeX extends ExTeX {
                 String arg = args[i];
 
                 if (arg.startsWith("-")) {
-                    if ("-".equals(arg)) {
-                        runWithFile(args, i + 1);
-                        onceMore = false;
+                    if (arg.startsWith("--")) {
+                        arg = arg.substring(2);
+                        if ("".equals(arg)) {
+                            runWithFile(args, i + 1);
+                            onceMore = false;
+                        } else {
+                            useArg(arg, args, ++i);
+                        }
                     } else if ("-configuration".startsWith(arg)) {
                         useArg(PROP_CONFIG, args, ++i);
                     } else if ("-copyright".startsWith(arg)) {
@@ -999,7 +1004,7 @@ public class TeX extends ExTeX {
                         getLogger().info(
                                 getLocalizer().format("ExTeX.Version",
                                         getProperty(PROP_PROGNAME),
-                                        EXTEX_VERSION,
+                                        getVersion(),
                                         getProperty("java.version")));
                         onceMore = false;
                     } else if ("-output".startsWith(arg)) {
