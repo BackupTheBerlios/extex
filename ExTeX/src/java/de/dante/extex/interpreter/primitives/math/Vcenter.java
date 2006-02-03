@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -51,7 +51,7 @@ import de.dante.extex.typesetter.type.noad.VCenterNoad;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Vcenter extends AbstractMathCode {
 
@@ -83,7 +83,7 @@ public class Vcenter extends AbstractMathCode {
 
         NoadConsumer nc = getListMaker(context, typesetter);
         Noad noad = nc.scanNoad(prefix, context, source, typesetter, getName());
-        nc.add(new VCenterNoad(noad));
+        nc.add(new VCenterNoad(noad, context.getTypesettingContext()));
     }
 
 }

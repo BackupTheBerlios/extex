@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -53,7 +53,7 @@ import de.dante.extex.typesetter.type.noad.RadicalNoad;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class Radical extends AbstractTeXDelimiter {
 
@@ -84,9 +84,10 @@ public class Radical extends AbstractTeXDelimiter {
             throws InterpreterException {
 
         NoadConsumer nc = getListMaker(context, typesetter);
-        MathDelimiter delcode = parseDelimiter(context, source, typesetter, getName());
+        MathDelimiter delcode = parseDelimiter(context, source, typesetter,
+                getName());
         Noad noad = nc.scanNoad(prefix, context, source, typesetter, getName());
-        nc.add(new RadicalNoad(delcode, noad));
+        nc.add(new RadicalNoad(delcode, noad, context.getTypesettingContext()));
     }
 
 }
