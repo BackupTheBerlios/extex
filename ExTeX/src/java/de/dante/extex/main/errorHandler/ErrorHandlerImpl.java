@@ -50,7 +50,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class ErrorHandlerImpl
         implements
@@ -243,7 +243,7 @@ public class ErrorHandlerImpl
             sb.append('_');
         }
         theLogger.severe(NL + NL + (file == null ? "" : file) + ":"
-                + Integer.toString(locator.getLineno()) + ": " + message + NL
+                + Integer.toString(locator.getLineNumber()) + ": " + message + NL
                 + NL + locator.getLine() + NL + sb.toString() + "^" + NL);
     }
 

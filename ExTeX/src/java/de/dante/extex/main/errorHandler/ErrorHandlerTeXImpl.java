@@ -28,7 +28,7 @@ import de.dante.util.Locator;
  * is presented in a compatible way.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class ErrorHandlerTeXImpl extends ErrorHandlerImpl {
 
@@ -60,7 +60,7 @@ public class ErrorHandlerTeXImpl extends ErrorHandlerImpl {
         logger.severe(NL + "!" + message + NL + file
                       + line.substring(0, pointer - 1) + NL + sb.toString()
                       + line.substring(pointer) + "l."
-                      + Integer.toString(locator.getLineno()) + NL);
+                      + Integer.toString(locator.getLineNumber()) + NL);
     }
 
 }

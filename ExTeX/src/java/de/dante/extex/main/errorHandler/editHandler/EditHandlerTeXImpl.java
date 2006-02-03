@@ -27,7 +27,7 @@ import de.dante.util.framework.i18n.Localizer;
  * location to the error stream.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class EditHandlerTeXImpl implements EditHandler {
 
@@ -47,7 +47,7 @@ public class EditHandlerTeXImpl implements EditHandler {
     public boolean edit(final Localizer localizer, final Locator locator) {
 
         System.err.println(localizer.format("EditHandler.edit", locator
-                .getResourceName(), Integer.toString(locator.getLineno())));
+                .getResourceName(), Integer.toString(locator.getLineNumber())));
         return false;
     }
 }
