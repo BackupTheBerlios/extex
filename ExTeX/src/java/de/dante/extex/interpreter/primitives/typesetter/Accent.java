@@ -66,7 +66,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [1123]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class Accent extends AbstractCode {
 
@@ -149,6 +149,10 @@ public class Accent extends AbstractCode {
                 } else {
                     Node node = typesetter.getCharNodeFactory().newInstance(tc,
                             accent);
+                    if (node == null) {
+                        //TODO gene: undefined character
+                        return;
+                    }
                     long w = g.getWidth().getValue();
                     long h = g.getHeight().getValue();
                     Dimen d = new Dimen();
