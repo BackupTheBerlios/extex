@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -20,6 +20,7 @@
 package de.dante.extex.typesetter.listMaker.math;
 
 import de.dante.extex.interpreter.exception.helping.CantUseInException;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
@@ -36,7 +37,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This is the list maker for the display math formulae.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class DisplaymathListMaker extends MathListMaker implements EqConsumer {
 
@@ -70,10 +71,22 @@ public class DisplaymathListMaker extends MathListMaker implements EqConsumer {
             throws TypesetterException,
                 ConfigurationException {
 
+        // see [TTP 1195]
+        if (insufficientSymbolFonts(context)) {
+            throw new TypesetterException(new HelpingException(getLocalizer(),
+                    "TTP.InsufficientSymbolFonts"));
+        }
+        // see [TTP 1195]
+        if (insufficientExtensionFonts(context)) {
+            throw new TypesetterException(new HelpingException(getLocalizer(),
+                    "TTP.InsufficientExtensionFonts"));
+        }
+
         HorizontalListNode list = new HorizontalListNode();
 
-        getNoads().typeset(list,
-                new MathContext(StyleNoad.DISPLAYSTYLE, context), context);
+        getNoads().typeset(null, 0, list,
+                new MathContext(StyleNoad.DISPLAYSTYLE, context), context,
+                getLogger());
 
         if (eqno != null) {
             //TODO gene: eqno unimplemented

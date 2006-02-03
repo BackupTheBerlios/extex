@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -20,7 +20,9 @@
 package de.dante.extex.typesetter.listMaker.math;
 
 import java.util.Stack;
+import java.util.logging.Logger;
 
+import de.dante.extex.font.type.other.NullFont;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -29,20 +31,22 @@ import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.exception.helping.MissingMathException;
+import de.dante.extex.interpreter.primitives.register.font.NumberedFont;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
+import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.muskip.Mudimen;
 import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Mode;
-import de.dante.extex.typesetter.ParagraphObserver;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.exception.TypesetterHelpingException;
-import de.dante.extex.typesetter.listMaker.AbstractListMaker;
+import de.dante.extex.typesetter.listMaker.HorizontalListMaker;
 import de.dante.extex.typesetter.listMaker.ListManager;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
@@ -61,27 +65,45 @@ import de.dante.extex.typesetter.type.noad.NodeNoad;
 import de.dante.extex.typesetter.type.noad.RightNoad;
 import de.dante.extex.typesetter.type.noad.StyleNoad;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
+import de.dante.extex.typesetter.type.node.AfterMathNode;
+import de.dante.extex.typesetter.type.node.BeforeMathNode;
 import de.dante.extex.typesetter.type.node.DiscretionaryNode;
 import de.dante.extex.typesetter.type.node.GlueNode;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
 import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
+import de.dante.util.framework.logger.LogEnabled;
 
 /**
  * This is the list maker for the inline math formulae.
  *
+ *
+ * <doc name="mathsurround" type="register">
+ * <h3>The Dimen Parameter <tt>\mathsurround</tt></h3>
+ * <p>
+ *  The dimen parameter <tt>\mathsurround</tt> is used to put some spacing
+ *  around mathematical formulae. The value at the end of the formula is used
+ *  before and after the formula. This additional space will be discarded
+ *  at the end of a line.
+ * </p>
+ *
+ * </doc>
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.31 $
+ * @version $Revision: 1.32 $
  */
-public class MathListMaker extends AbstractListMaker implements NoadConsumer {
+public class MathListMaker extends HorizontalListMaker
+        implements
+            NoadConsumer,
+            LogEnabled {
 
     /**
      * This inner class is a memento of the state of the math list maker.
      * It is used to store to the stack and restore the state from the stack.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.31 $
+     * @version $Revision: 1.32 $
      */
     private class MathMemento {
 
@@ -141,15 +163,85 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
     }
 
     /**
-     * The field <tt>noadFactory</tt> contains the noad factory.
+     * The constant <tt>noadFactory</tt> contains the noad factory.
      */
     private static final NoadFactory noadFactory = new NoadFactory();
+
+    /**
+     * This method checks that extension fonts have sufficient font dimen
+     * values set.
+     *
+     * @param options the options
+     *
+     * @return <code>true</code> iff the needed font dimens are present
+     *
+     * @see "[TTP 1195]"
+     */
+    protected static boolean insufficientExtensionFonts(
+            final TypesetterOptions options) {
+
+        Font textfont3 = options.getFont(NumberedFont.key(options, "textfont",
+                "3"));
+        if (textfont3 instanceof NullFont) {
+            return true;
+        }
+        Font scriptfont3 = options.getFont(NumberedFont.key(options,
+                "scriptfont", "3"));
+        if (scriptfont3 instanceof NullFont) {
+            return true;
+        }
+        Font scriptscriptfont3 = options.getFont(NumberedFont.key(options,
+                "scriptscriptfont", "3"));
+        if (scriptscriptfont3 instanceof NullFont) {
+            return true;
+        }
+        // TODO gene: check font parameters unimplemented
+        return false;
+    }
+
+    /**
+     * This method checks that symbol fonts have sufficient font dimen
+     * values set.
+     *
+     * @param options the options
+     *
+     * @return <code>true</code> iff the the symbol fonts have needed font
+     *  dimens
+     *
+     * @see "[TTP 1195]"
+     */
+    protected static boolean insufficientSymbolFonts(
+            final TypesetterOptions options) {
+
+        Font textfont2 = options.getFont(NumberedFont.key(options, "textfont",
+                "2"));
+        if (textfont2 instanceof NullFont) {
+            return true;
+        }
+        Font scriptfont2 = options.getFont(NumberedFont.key(options,
+                "scriptfont", "2"));
+        if (scriptfont2 instanceof NullFont) {
+            return true;
+        }
+        Font scriptscriptfont2 = options.getFont(NumberedFont.key(options,
+                "scriptscriptfont", "2"));
+        if (scriptscriptfont2 instanceof NullFont) {
+            return true;
+        }
+        // TODO gene: check font parameters unimplemented
+        return false;
+    }
 
     /**
      * The field <tt>insertionPoint</tt> contains the the MathList to which
      * the next noads should be added.
      */
     private MathList insertionPoint;
+
+    /**
+     * The field <tt>logger</tt> contains the ...
+     */
+    private Logger logger = null;
 
     /**
      * The field <tt>nodes</tt> contains the list of nodes encapsulated in this
@@ -166,6 +258,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      * Creates a new object.
      *
      * @param manager the manager to ask for global changes
+     * @param locator the locator
      */
     public MathListMaker(final ListManager manager, final Locator locator) {
 
@@ -177,22 +270,26 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
     /**
      * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#add(
      *      de.dante.extex.typesetter.type.MathClass,
-     *      de.dante.extex.typesetter.type.noad.MathGlyph)
+     *      de.dante.extex.typesetter.type.noad.MathGlyph,
+     *      de.dante.extex.interpreter.context.TypesettingContext)
      */
-    public void add(final MathClass mclass, final MathGlyph mg)
-            throws TypesetterException {
+    public void add(final MathClass mclass, final MathGlyph mg,
+            final TypesettingContext tc) throws TypesetterException {
 
-        add(noadFactory.getNoad(mclass, mg));
+        insertionPoint.add(noadFactory.getNoad(mclass, tc, mg));
     }
 
     /**
      * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#add(
-     *      de.dante.extex.typesetter.type.MathDelimiter)
+     *      de.dante.extex.typesetter.type.math.MathDelimiter,
+     *      de.dante.extex.interpreter.context.TypesettingContext)
      */
-    public void add(final MathDelimiter del) throws TypesetterException {
+    public void add(final MathDelimiter delimiter, final TypesettingContext tc)
+            throws TypesetterException {
 
-        //TODO gene: unimplemented
-        throw new RuntimeException("unimplemented");
+        MathGlyph smallChar = delimiter.getSmallChar(); // TODO: gene why???
+        insertionPoint.add(noadFactory.getNoad(delimiter.getMathClass(), tc,
+                smallChar));
     }
 
     /**
@@ -210,7 +307,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      */
     public void add(final Muskip glue) throws TypesetterException {
 
-        add(new GlueNoad(glue));
+        insertionPoint.add(new GlueNoad(glue));
     }
 
     /**
@@ -271,16 +368,6 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#afterParagraph(
-     *      de.dante.extex.typesetter.ParagraphObserver)
-     */
-    public void afterParagraph(final ParagraphObserver observer) {
-
-        //TODO gene: unimplemented
-        throw new RuntimeException("unimplemented");
-    }
-
-    /**
      * Close the node list.
      * In the course of the closing, the Noad list is translated into a Node
      * list.
@@ -296,9 +383,23 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
             throws TypesetterException,
                 ConfigurationException {
 
+        // see [TTP 1195]
+        if (insufficientSymbolFonts(context)) {
+            throw new TypesetterException(new HelpingException(getLocalizer(),
+                    "TTP.InsufficientSymbolFonts"));
+        }
+        // see [TTP 1195]
+        if (insufficientExtensionFonts(context)) {
+            throw new TypesetterException(new HelpingException(getLocalizer(),
+                    "TTP.InsufficientExtensionFonts"));
+        }
+
         HorizontalListNode list = new HorizontalListNode();
-        noads.typeset(list, new MathContext(StyleNoad.TEXTSTYLE, context),
-                context);
+        final FixedDimen mathsurround = context.getDimenOption("mathsurround");
+        list.add(new BeforeMathNode(mathsurround));
+        noads.typeset(null, 0, list, new MathContext(StyleNoad.TEXTSTYLE,
+                context), context, logger);
+        list.add(new AfterMathNode(mathsurround));
         return list;
     }
 
@@ -311,6 +412,15 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
     public void cr(final Context context, final TypesettingContext tc,
             final UnicodeChar uc) throws TypesetterException {
 
+    }
+
+    /**
+     * @see de.dante.util.framework.logger.LogEnabled#enableLogging(
+     *      java.util.logging.Logger)
+     */
+    public void enableLogging(final Logger logger) {
+
+        this.logger = logger;
     }
 
     /**
@@ -373,7 +483,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      */
     public void left(final MathDelimiter delimiter) throws TypesetterException {
 
-        add(new LeftNoad(delimiter));
+        insertionPoint.add(new LeftNoad(delimiter));
     }
 
     /**
@@ -394,20 +504,20 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      *
      * @param context the interpreter context
      * @param tc the typesetting context for the symbol. This parameter is
-     *  ignored in math mode.
+     *  partially ignored in math mode.
      * @param symbol the symbol to add
+     * @param locator the locator
      *
      * @see de.dante.extex.typesetter.ListMaker#add(
      *      de.dante.extex.interpreter.context.TypesettingContext,
      *      de.dante.util.UnicodeChar)
      */
     public void letter(final Context context, final TypesettingContext tc,
-            final UnicodeChar symbol, Locator locator)
-            throws TypesetterException {
+            final UnicodeChar symbol, final Locator locator) {
 
         Count mcode = context.getMathcode(symbol);
         insertionPoint.add(noadFactory.getNoad((mcode == null ? 0 : mcode
-                .getValue())));
+                .getValue()), tc));
     }
 
     /**
@@ -435,7 +545,9 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
     /**
      * Emitting a new paragraph is not supported in math mode.
      * Thus an exception is thrown.
+     *
      * @throws TypesetterException in case of an error
+     * @throws ConfigurationException in case of an configuration error
      *
      * @see de.dante.extex.typesetter.ListMaker#par()
      * @see "<logo>TeX</logo> &ndash; The Program [1047]"
@@ -604,6 +716,16 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
         insertionPoint = new MathList();
         noads = new FractionNoad((MathList) noads, insertionPoint,
                 leftDelimiter, rightDelimiter, ruleWidth);
+    }
+
+    /**
+     * Getter for logger.
+     *
+     * @return the logger
+     */
+    public Logger getLogger() {
+
+        return this.logger;
     }
 
 }
