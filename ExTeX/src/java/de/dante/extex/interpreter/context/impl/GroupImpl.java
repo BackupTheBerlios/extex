@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -56,7 +56,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.56 $
+ * @version $Revision: 1.57 $
  */
 public class GroupImpl implements Group, Tokenizer, Serializable {
 
@@ -73,24 +73,25 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
 
     /**
      * The constant <tt>MATHCODE_DIGIT_OFFSET</tt> contains the offset for
-     * non-letters when constructing a mathcode.
+     * non-letters when constructing a math code.
      */
     private static final int MATHCODE_DIGIT_OFFSET = 0x7000;
 
     /**
      * The constant <tt>MATHCODE_LETTER_OFFSET</tt> contains the offset for
-     * letters when constructing a mathcode.
+     * letters when constructing a math code.
      */
     private static final int MATHCODE_LETTER_OFFSET = 0x7100;
 
     /**
-     * The field <tt>SFCODE_DEFAULT</tt> contains the default sfcode for
-     * non-letters.
+     * The field <tt>SFCODE_DEFAULT</tt> contains the default space factor code
+     * for non-letters.
      */
     private static final Count SFCODE_DEFAULT = new ImmutableCount(1000);
 
     /**
-     * The field <tt>SFCODE_LETTER</tt> contains the default sfcode for letters.
+     * The field <tt>SFCODE_LETTER</tt> contains the default space factor code
+     * for letters.
      */
     private static final Count SFCODE_LETTER = new ImmutableCount(999);
 
@@ -101,7 +102,7 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     private Tokens afterGroup = null;
 
     /**
-     * The field <tt>afterGroupObservers</tt> contains the listr of observers
+     * The field <tt>afterGroupObservers</tt> contains the list of observers
      * to be invoked after the group has been closed.
      */
     private transient AfterGroupObserver afterGroupObservers = null;
@@ -128,8 +129,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     private Map countMap = new HashMap();
 
     /**
-     * The field <tt>delcodeMap</tt> contains the map for the delcode of the
-     * characters.
+     * The field <tt>delcodeMap</tt> contains the map for the delimiter code
+     * of the characters.
      */
     private Map delcodeMap = new HashMap();
 
@@ -170,7 +171,7 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     private Map muskipMap = new HashMap();
 
     /**
-     * The field <tt>namespace</tt> contains the current namespace.
+     * The field <tt>namespace</tt> contains the current name space.
      */
     private String namespace = null;
 
@@ -379,7 +380,7 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
             return next.getDelcode(c);
         }
 
-        // Fallback for predefined delcodes
+        // Fallback for predefined delimiter codes
         return null;
 
     }
@@ -412,11 +413,9 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
 
         Font font = (Font) (fontMap.get(name));
 
-        if (font == null && next != null) {
-            font = next.getFont(name);
-        }
-
-        return new NullFont();
+        return (font != null ? font : next != null
+                ? next.getFont(name)
+                : new NullFont());
     }
 
     /**
@@ -533,9 +532,9 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * Getter for the namespace.
+     * Getter for the name space.
      *
-     * @return the namespace
+     * @return the name space
      *
      * @see de.dante.extex.interpreter.context.impl.Group#getNamespace()
      */
@@ -584,7 +583,7 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
             return next.getSfcode(c);
         }
 
-        // Fallback for predefined sfcodes
+        // Fallback for predefined space factor codes
         if (c.isLetter()) {
             return SFCODE_LETTER;
         }
@@ -853,7 +852,7 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     /**
      * Setter for the name space.
      *
-     * @param theNamespace the new value for the namespace
+     * @param theNamespace the new value for the name space
      * @param global the scoping of the assignment
      *
      * @see de.dante.extex.interpreter.context.impl.Group#setNamespace(
