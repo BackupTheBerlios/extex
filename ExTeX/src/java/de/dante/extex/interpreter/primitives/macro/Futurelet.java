@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -35,11 +35,8 @@ import de.dante.extex.typesetter.Typesetter;
  * <h3>The Primitive <tt>\futurelet</tt></h3>
  * <p>
  *  The primitive <tt>\futurelet</tt> lets a token to a control sequence while
- *  keeping the token between the two out of sight. This mean that this token
+ *  keeping the token between the two out of sight. This means that this token
  *  is stored away and reinserted after the let is complete.
- * </p>
- * <p>
- *  TODO gene: missing documentation
  * </p>
  *
  * <h4>Syntax</h4>
@@ -60,7 +57,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Futurelet extends Let {
 
