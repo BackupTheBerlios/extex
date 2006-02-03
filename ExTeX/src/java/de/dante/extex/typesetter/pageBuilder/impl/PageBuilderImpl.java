@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -37,7 +37,7 @@ import de.dante.util.exception.GeneralException;
  * This is a first reference implementation of a page builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class PageBuilderImpl implements PageBuilder {
 
@@ -125,6 +125,7 @@ public class PageBuilderImpl implements PageBuilder {
      * properly filled.
      *
      * @param nodes the nodes to send
+     * @param typesetter the typesetter
      *
      * @throws TypesetterException in case of an error
      *
@@ -155,7 +156,7 @@ public class PageBuilderImpl implements PageBuilder {
      * Setter for the document writer.
      * This has to be provided before the page builder can be active.
      *
-     * @param docWriter the new document writer to use
+     * @param backend the new document writer to use
      *
      * @see de.dante.extex.typesetter.pageBuilder.PageBuilder#setDocumentWriter(
      *      de.dante.extex.backend.documentWriter.DocumentWriter)
