@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -40,8 +40,12 @@ import de.dante.util.exception.GeneralException;
  * <doc name="parshapedimen">
  * <h3>The Primitive <tt>\parshapedimen</tt></h3>
  * <p>
- *  The primitive <tt>\parshapedimen</tt>
- *  TODO gene: missing documentation
+ *  The primitive <tt>\parshapedimen</tt> gives access to the settings for the
+ *  current paragraph shape. The primitive takes a number as parameter. If
+ *  this number is odd then the indentation of the line denoted by the parameter
+ *  is returned. If the number is even then the length of the line is returned.
+ *  The line numbering starts with 1. If the argument is less than 1 then 0 is
+ *  returned.
  * </p>
  *
  * <h4>Syntax</h4>
@@ -61,7 +65,7 @@ import de.dante.util.exception.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Parshapedimen extends AbstractCode
         implements

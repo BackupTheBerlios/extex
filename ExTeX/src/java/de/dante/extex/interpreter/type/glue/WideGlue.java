@@ -24,30 +24,35 @@ import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.dimen.ImmutableDimen;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This class provides an implementation for glue.
+ * In contrast to {@link Glue Glue} a full vector of all infinities for the
+ * stretchable and shrinkable components are stored. {@link Glue Glue} stores
+ * only the highest factor. In case that during computations &ndash; addition or
+ * subtraction &ndash; this component reduces to zero the next lower infinity
+ * order should determine the value.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class WideGlue {
 
     /**
-     * The field <tt>SIZE</tt> contains the ...
+     * The field <tt>SIZE</tt> contains the size of the arrays.
      */
     private static final int SIZE = 5;
 
     /**
-     * The field <tt>length</tt> contains the ...
+     * The field <tt>length</tt> contains the natural length.
      */
     private Dimen length = new Dimen();
 
     /**
-     * The field <tt>shrink</tt> contains the ...
+     * The field <tt>shrink</tt> contains the shrink components.
      */
     private long[] shrink = new long[SIZE];
 
     /**
-     * The field <tt>stretch</tt> contains the ...
+     * The field <tt>stretch</tt> contains the stretch components.
      */
     private long[] stretch = new long[SIZE];
 
@@ -61,7 +66,7 @@ public class WideGlue {
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * Add some more dimen to the natural length.
      *
      * @param glue the glue to add
      */
@@ -71,7 +76,7 @@ public class WideGlue {
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * Add some more glue to this one.
      *
      * @param glue the glue to add
      */
@@ -86,10 +91,11 @@ public class WideGlue {
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * Get the highest non-zero glue component.
      *
-     * @param a
-     * @return
+     * @param a the vector to get the component from
+     *
+     * @return the highest glue component or ZERO
      */
     private GlueComponent getGC(final long[] a) {
 
@@ -113,9 +119,9 @@ public class WideGlue {
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * Getter for the shrink.
      *
-     * @return
+     * @return the shrink as glue component
      */
     public GlueComponent getShrink() {
 
@@ -129,9 +135,9 @@ public class WideGlue {
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * Getter for the stretch.
      *
-     * @return
+     * @return the stretch component
      */
     public GlueComponent getStretch() {
 
@@ -145,13 +151,14 @@ public class WideGlue {
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * Setter for the length.
+     * Te stretch and shrink components are set to zero.
      *
-     * @param length 
+     * @param len the length
      */
-    public void set(ImmutableDimen length) {
+    public void set(final ImmutableDimen len) {
 
-        this.length.set(length);
+        this.length.set(len);
 
         for (int i = SIZE - 1; i >= 0; i--) {
             stretch[i] = 0;
@@ -160,15 +167,14 @@ public class WideGlue {
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * Get the Glue representation for this instance.
+     * The stretch and shrink components are reduced to the highest order
+     * coefficients.
      *
      * @return the Glue representation of this instance
      */
     public Glue toGlue() {
 
-        GlueComponent st = getGC(stretch);
-        GlueComponent sh = getGC(shrink);
-
-        return new Glue(length, st, sh);
+        return new Glue(length, getGC(stretch), getGC(shrink));
     }
 }
