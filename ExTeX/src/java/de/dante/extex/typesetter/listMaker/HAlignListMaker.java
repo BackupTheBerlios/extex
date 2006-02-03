@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -47,7 +47,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [770]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class HAlignListMaker extends RestrictedHorizontalListMaker
         implements
@@ -57,7 +57,7 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
      * This inner class is a container for the cell information in an alignment.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.16 $
+     * @version $Revision: 1.17 $
      */
     protected class Cell {
 
@@ -151,9 +151,9 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
     private boolean spread;
 
     /**
-     * The field <tt>wd</tt> contains the maximal width of each column.
+     * The field <tt>maxWidth</tt> contains the maximal width of each column.
      */
-    private Dimen[] wd;
+    private Dimen[] maxWidth;
 
     /**
      * The field <tt>width</tt> contains the target width or <code>null</code>
@@ -185,10 +185,10 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
         spread = theSpread;
         clearLine(context, source);
 
-        wd = new Dimen[line.length];
+        maxWidth = new Dimen[line.length];
 
         for (int i = 0; i < line.length; i++) {
-            wd[i] = new Dimen(0);
+            maxWidth[i] = new Dimen(0);
         }
     }
 
@@ -226,14 +226,13 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
                 Cell cell = line[i];
                 if (cell != null) {
                     nl = cell.getList();
-                    nl.spread(wd[i], wd[i]); //TODO gene: check
+                    nl.spread(maxWidth[i], maxWidth[i]); //TODO gene: check
                     row.add(nl);
                 }
             }
-
         }
 
-        Dimen w = sum(wd);
+        Dimen w = sum(maxWidth);
 
         if (width != null) {
             if (spread) {
@@ -300,7 +299,7 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
      * @param context the interpreter context
      * @param source the token source
      *
-     * @throws InterpreterException in case of an error
+     * @throws TypesetterException in case of an error
      */
     private void startCell(final Context context, final TokenSource source)
             throws TypesetterException {
@@ -326,7 +325,7 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
     }
 
     /**
-     * Compute the sum os an array of dimens.
+     * Compute the sum of an array of dimens.
      *
      * @param d the dimen array
      *
@@ -365,7 +364,7 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
         }
 
         line[col] = new Cell(super.complete((TypesetterOptions) context));
-        wd[col].max(line[col].getList().getWidth());
+        maxWidth[col].max(line[col].getList().getWidth());
         setNodes(new HorizontalListNode());
         col++;
         startCell(context, source);
