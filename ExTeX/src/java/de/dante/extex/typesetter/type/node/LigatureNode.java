@@ -36,7 +36,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class LigatureNode extends CharNode implements Node {
 
@@ -138,9 +138,9 @@ public class LigatureNode extends CharNode implements Node {
      *      java.lang.StringBuffer,
      *      java.lang.String)
      */
-    public void toString(final StringBuffer sb, final String prefix) {
+    public void toString(final StringBuffer sb, final String prefix, int breadth, int depth) {
 
-        super.toString(sb, prefix);
+        super.toString(sb, prefix, breadth, depth);
         sb.append(getLocalizer().format("String.Format", left.toString(),
                 right.toString()));
     }

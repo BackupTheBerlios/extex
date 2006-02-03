@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -31,7 +31,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class DiscretionaryNode extends AbstractNode implements Node {
 
@@ -51,6 +51,7 @@ public class DiscretionaryNode extends AbstractNode implements Node {
      * beginning of the next line in case of a line breaking at this position.
      */
     private NodeList postBreak;
+
     /**
      * The field <tt>preBreak</tt> contains the Tokens to be inserted at the
      * end of the line in case of a line breaking at this position.
@@ -119,21 +120,22 @@ public class DiscretionaryNode extends AbstractNode implements Node {
      *      java.lang.StringBuffer,
      *      java.lang.String)
      */
-    public void toString(final StringBuffer sb, final String prefix) {
+    public void toString(final StringBuffer sb, final String prefix,
+            final int breadth, final int depth) {
 
         String pre = prefix + ".";
         sb.append(getLocalizer().format("String.Format"));
         sb.append("{");
         if (preBreak != null) {
-            preBreak.toString(sb, pre);
+            preBreak.toString(sb, pre, Integer.MAX_VALUE, Integer.MAX_VALUE);
         }
         sb.append("}{");
         if (postBreak != null) {
-            postBreak.toString(sb, pre);
+            postBreak.toString(sb, pre, Integer.MAX_VALUE, Integer.MAX_VALUE);
         }
         sb.append("}{");
         if (noBreak != null) {
-            noBreak.toString(sb, pre);
+            noBreak.toString(sb, pre, Integer.MAX_VALUE, Integer.MAX_VALUE);
         }
         sb.append("}");
     }

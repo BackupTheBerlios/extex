@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -25,16 +25,14 @@ import de.dante.extex.typesetter.type.NodeVisitor;
 import de.dante.util.exception.GeneralException;
 
 /**
- * Te adjust node is used to insert material which should be pushed out the the
+ * The adjust node is used to insert material which should be pushed out the
  * enclosing vertical list.
- *
- * TODO gene: missing JavaDoc.
  *
  * @see "<logo>TeX</logo> &ndash; The Program [142]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class AdjustNode extends AbstractNode implements Node {
 
@@ -81,12 +79,13 @@ public class AdjustNode extends AbstractNode implements Node {
      * @see de.dante.extex.typesetter.type.Node#toString(java.lang.StringBuffer,
      *      java.lang.String)
      */
-    public void toString(final StringBuffer sb, final String prefix) {
+    public void toString(final StringBuffer sb, final String prefix,
+            final int breadth, final int depth) {
 
         sb
                 .append(getLocalizer().format("String.Format",
                         getWidth().toString()));
-        nodes.toString(sb, prefix);
+        nodes.toString(sb, prefix, Integer.MAX_VALUE, Integer.MAX_VALUE);
     }
 
     /**

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -16,6 +16,7 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.typesetter.type;
 
 import de.dante.extex.interpreter.type.dimen.Dimen;
@@ -39,7 +40,7 @@ import de.dante.extex.typesetter.type.node.CharNode;
  * @see de.dante.extex.interpreter.type.box.Box
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface NodeList extends Node {
 
@@ -153,5 +154,15 @@ public interface NodeList extends Node {
      * @return the length of the list
      */
     int size();
+
+    /**
+     * Print the node possibly truncated in breadth and depth.
+     *
+     * @param sb the target string buffer
+     * @param prefix the string inserted at the beginning of each line
+     * @param depth ...
+     * @param width ...
+     */
+    void toString(StringBuffer sb, String prefix, int depth, int width);
 
 }

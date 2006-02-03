@@ -20,42 +20,44 @@
 package de.dante.extex.typesetter.type.node;
 
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.typesetter.Discardable;
-import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeVisitor;
 import de.dante.util.exception.GeneralException;
 
 /**
  * This node represents a <logo>TeX</logo> "math" node with the subtype "after".
  * <p>
- * For the document writer it acts like a glue or kern node. The width contains
- * the distance to add.
+ * For the document writer it acts like a glue or kerning node. The width
+ * contains the distance to add.
  * </p>
  *
  * @see "<logo>TeX</logo> &ndash; The Program [147]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
-public class AfterMathNode extends AbstractNode implements Node, Discardable {
+public class AfterMathNode extends AbstractNode implements Discardable {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 1L;
 
     /**
      * Creates a new object.
+     *
+     * @param mathsurround the width to add after the math
      */
-    public AfterMathNode() {
+    public AfterMathNode(final FixedDimen mathsurround) {
 
-        super();
+        super(mathsurround);
     }
 
     /**
      * This method returns the printable representation.
-     * This is meant to produce a exaustive form as it is used in tracing
+     * This is meant to produce a exhaustive form as it is used in tracing
      * output to the log file.
      *
      * @param sb the target buffer
@@ -65,7 +67,7 @@ public class AfterMathNode extends AbstractNode implements Node, Discardable {
      * @see de.dante.extex.typesetter.type.Node#toString(java.lang.StringBuffer,
      *      java.lang.String)
      */
-    public void toString(final StringBuffer sb, final String prefix) {
+    public void toString(final StringBuffer sb, final String prefix, int breadth, int depth) {
 
         Dimen width = getWidth();
 

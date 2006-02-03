@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -32,7 +32,7 @@ import de.dante.extex.typesetter.type.NodeList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public abstract class AbstractNodeList extends AbstractNode implements NodeList {
 
@@ -131,6 +131,25 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
     }
 
     /**
+     * Test whether the node list is empty.
+     *
+     * @return <code>true</code>, if the <code>NodeList</code> is empty,
+     * otherwise <code>false</code>.
+     */
+    public boolean empty() {
+
+        return (list.size() == 0);
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.NodeList#get(int)
+     */
+    public Node get(final int index) {
+
+        return (Node) list.get(index);
+    }
+
+    /**
      * @see de.dante.extex.typesetter.type.Node#getChars()
      */
     public CharNode[] getChars() {
@@ -149,25 +168,6 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
         }
 
         return chars;
-    }
-
-    /**
-     * Test whether the node list is empty.
-     *
-     * @return <code>true</code>, if the <code>NodeList</code> ist emtpy,
-     * otherwise <code>false</code>.
-     */
-    public boolean empty() {
-
-        return (list.size() == 0);
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.type.NodeList#get(int)
-     */
-    public Node get(final int index) {
-
-        return (Node) list.get(index);
     }
 
     /**
@@ -298,15 +298,16 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
     public String toString() {
 
         StringBuffer sb = new StringBuffer();
-        toString(sb, "");
+        toString(sb, "", Integer.MAX_VALUE, Integer.MAX_VALUE);
         return sb.toString();
     }
 
     /**
      * @see de.dante.extex.typesetter.type.Node#toString(java.lang.StringBuffer,
-     *      java.lang.String)
+     *      java.lang.String, int, int)
      */
-    public void toString(final StringBuffer sb, final String prefix) {
+    public void toString(final StringBuffer sb, final String prefix,
+            final int breadth, final int depth) {
 
         sb.append("(");
         sb.append(getHeight().toString());
@@ -322,9 +323,11 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
 
         String prefix2 = prefix + ".";
 
-        for (int i = 0; i < list.size(); i++) {
+        for (int i = 0; i < list.size() && i < breadth; i++) {
             sb.append(prefix2);
-            ((Node) list.get(i)).toString(sb, prefix2);
+            if (depth >= 0) {
+                ((Node) list.get(i)).toString(sb, prefix2, breadth, depth - 1);
+            }
         }
     }
 
@@ -363,5 +366,7 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
      * @param node the node to update
      * @param first indicator that this is the first node in the list
      */
-    protected abstract void updateDimensions(final Node node, boolean first);
+    protected abstract void updateDimensions(final Node node,
+            final boolean first);
+
 }

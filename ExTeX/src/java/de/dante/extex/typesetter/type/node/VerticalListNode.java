@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -24,7 +24,6 @@ import java.util.logging.Logger;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
-import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.glue.WideGlue;
 import de.dante.extex.typesetter.Badness;
 import de.dante.extex.typesetter.type.Node;
@@ -39,7 +38,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class VerticalListNode extends AbstractNodeList implements NodeList {
 
@@ -81,8 +80,8 @@ public class VerticalListNode extends AbstractNodeList implements NodeList {
     private long computePenalty(final long penalty, WideGlue ht,
             final FixedDimen height) {
 
-//        long badness = Badness.badness(height.getValue(), //
-//                ht.getLength().getValue());
+        //        long badness = Badness.badness(height.getValue(), //
+        //                ht.getLength().getValue());
         long p = penalty;
         // TODO gene: computePenalty unimplemented
         return p;
@@ -163,12 +162,13 @@ public class VerticalListNode extends AbstractNodeList implements NodeList {
     /**
      * @see de.dante.extex.typesetter.type.Node#toString(
      *      java.lang.StringBuffer,
-     *      java.lang.String)
+     *      java.lang.String, int, int)
      */
-    public void toString(final StringBuffer sb, final String prefix) {
+    public void toString(final StringBuffer sb, final String prefix,
+            final int breadth, final int depth) {
 
         sb.append("\\vbox");
-        super.toString(sb, prefix);
+        super.toString(sb, prefix, breadth, depth);
     }
 
     /**

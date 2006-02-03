@@ -29,7 +29,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class SpaceNode extends GlueNode implements Node {
 
@@ -65,7 +65,7 @@ public class SpaceNode extends GlueNode implements Node {
      *      java.lang.StringBuffer,
      *      java.lang.String)
      */
-    public void toString(final StringBuffer sb, final String prefix) {
+    public void toString(final StringBuffer sb, final String prefix, int breadth, int depth) {
 
         if (!DEVELOP || getWidth().eq(size.getLength())) {
             sb.append(getLocalizer().format("String.Format", //

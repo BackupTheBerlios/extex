@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -34,7 +34,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This abstract class provides some methods common to all Nodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public abstract class AbstractNode implements Node {
 
@@ -51,7 +51,7 @@ public abstract class AbstractNode implements Node {
 
     /**
      * The field <tt>height</tt> contains the height of the node.
-     *  The height is the extend of the node above the baseline.
+     * The height is the extend of the node above the baseline.
      */
     private Dimen height;
 
@@ -60,8 +60,9 @@ public abstract class AbstractNode implements Node {
      */
     private Localizer localizer = null;
 
-    /** This is the width of the node.
-     *  The width is the extend of the node along the baseline.
+    /**
+     * This is the width of the node.
+     * The width is the extend of the node along the baseline.
      */
     private Dimen width;
 
@@ -82,7 +83,7 @@ public abstract class AbstractNode implements Node {
      *
      * @param aWidth the width of the node
      */
-    public AbstractNode(final Dimen aWidth) {
+    public AbstractNode(final FixedDimen aWidth) {
 
         super();
         this.width = new Dimen(aWidth);
@@ -97,8 +98,8 @@ public abstract class AbstractNode implements Node {
      * @param aHeight the height of the node
      * @param aDepth the depth of the node
      */
-    public AbstractNode(final Dimen aWidth, final Dimen aHeight,
-            final Dimen aDepth) {
+    public AbstractNode(final FixedDimen aWidth, final FixedDimen aHeight,
+            final FixedDimen aDepth) {
 
         super();
         this.width = new Dimen(aWidth);
@@ -277,7 +278,7 @@ public abstract class AbstractNode implements Node {
     public String toString() {
 
         StringBuffer sb = new StringBuffer();
-        toString(sb, "");
+        toString(sb, "", Integer.MAX_VALUE, Integer.MAX_VALUE);
         return sb.toString();
     }
 
@@ -286,7 +287,7 @@ public abstract class AbstractNode implements Node {
      *      java.lang.StringBuffer,
      *      java.lang.String)
      */
-    public void toString(final StringBuffer sb, final String prefix) {
+    public void toString(final StringBuffer sb, final String prefix, int breadth, int depth) {
 
         sb.append(getLocalizer().format("String.Format"));
     }

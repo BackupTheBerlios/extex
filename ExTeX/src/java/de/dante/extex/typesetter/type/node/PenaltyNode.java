@@ -34,7 +34,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class PenaltyNode extends AbstractNode implements Node, Discardable {
 
@@ -94,7 +94,7 @@ public class PenaltyNode extends AbstractNode implements Node, Discardable {
      *      java.lang.StringBuffer,
      *      java.lang.String)
      */
-    public void toString(final StringBuffer sb, final String prefix) {
+    public void toString(final StringBuffer sb, final String prefix, int breadth, int depth) {
 
         sb.append(getLocalizer().format("String.Format",
                 Long.toString(penalty)));

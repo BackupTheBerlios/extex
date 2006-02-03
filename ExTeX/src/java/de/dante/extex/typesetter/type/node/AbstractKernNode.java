@@ -30,7 +30,7 @@ import de.dante.util.exception.GeneralException;
  * <logo>TeX</logo>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public abstract class AbstractKernNode extends AbstractNode implements KernNode {
 
@@ -56,7 +56,7 @@ public abstract class AbstractKernNode extends AbstractNode implements KernNode 
      * @see de.dante.extex.typesetter.type.Node#toString(java.lang.StringBuffer,
      *      java.lang.String)
      */
-    public void toString(final StringBuffer sb, final String prefix) {
+    public void toString(final StringBuffer sb, final String prefix, int breadth, int depth) {
 
         sb
                 .append(getLocalizer().format("String.Format",

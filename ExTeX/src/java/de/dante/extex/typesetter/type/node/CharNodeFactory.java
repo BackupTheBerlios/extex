@@ -34,7 +34,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class CharNodeFactory {
 
@@ -54,6 +54,8 @@ public class CharNodeFactory {
 
     /**
      * Create a new instance for the node.
+     * If the character is not defined in the font given then <code>null</code>
+     * is returned instead.
      *
      * @param typesettingContext the typographic context for the node
      * @param uc the Unicode character
@@ -73,6 +75,11 @@ public class CharNodeFactory {
 
         if (node == null) {
             Font font = typesettingContext.getFont();
+
+            if (font.getGlyph(uc) == null) {
+                return null;
+            }
+
             if (font instanceof VirtualFount) {
                 VirtualFount vf = (VirtualFount) font;
                 node = vf.getVirtualCharNode(typesettingContext, uc);
