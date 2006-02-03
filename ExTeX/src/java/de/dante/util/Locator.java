@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -27,7 +27,7 @@ import java.io.Serializable;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Locator implements Serializable {
 
@@ -42,9 +42,9 @@ public class Locator implements Serializable {
     private String resource;
 
     /**
-     * The field <tt>lineno</tt> contains the line number.
+     * The field <tt>lineNumber</tt> contains the line number.
      */
-    private int lineno;
+    private int lineNumber;
 
     /**
      * The field <tt>line</tt> contains the current line of input.
@@ -52,7 +52,7 @@ public class Locator implements Serializable {
     private String line;
 
     /**
-     * The field <tt>linePointer</tt> contains the positin in the line the
+     * The field <tt>linePointer</tt> contains the position in the line the
      * locator refers to.
      */
     private int linePointer;
@@ -70,7 +70,7 @@ public class Locator implements Serializable {
 
         super();
         this.resource = resource;
-        this.lineno = lineNo;
+        this.lineNumber = lineNo;
         this.line = currentLine;
         this.linePointer = currentLinePointer;
     }
@@ -87,8 +87,8 @@ public class Locator implements Serializable {
 
     /**
      * Getter for the line pointer.
-     * The line ponter is the position within the line at which something
-     * happend.
+     * The line pointer is the position within the line at which something
+     * happened.
      *
      * @return the line pointer.
      */
@@ -114,9 +114,9 @@ public class Locator implements Serializable {
      *
      * @return the line number
      */
-    public int getLineno() {
+    public int getLineNumber() {
 
-        return lineno;
+        return lineNumber;
     }
 
     /**
@@ -131,6 +131,7 @@ public class Locator implements Serializable {
     public String toString() {
 
         return (resource != null ? resource : "") + ":"
-                + Integer.toString(lineno);
+                + Integer.toString(lineNumber);
     }
+
 }

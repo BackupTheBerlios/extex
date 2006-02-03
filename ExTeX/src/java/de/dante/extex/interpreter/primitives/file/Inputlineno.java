@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -56,7 +56,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Inputlineno extends AbstractCode
         implements
@@ -86,7 +86,7 @@ public class Inputlineno extends AbstractCode
     public long convertCount(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        return source.getLocator().getLineno();
+        return source.getLocator().getLineNumber();
     }
 
     /**
@@ -98,7 +98,7 @@ public class Inputlineno extends AbstractCode
             final Typesetter typesetter) throws InterpreterException {
 
         long line = convertCount(context, source, typesetter);
-        return new Tokens(context, Long.toString(line));
+        return new Tokens(context, line);
     }
 
 }
