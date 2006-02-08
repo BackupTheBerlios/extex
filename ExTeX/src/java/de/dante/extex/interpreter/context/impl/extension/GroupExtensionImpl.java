@@ -37,8 +37,8 @@ import de.dante.util.exception.GeneralException;
 /**
  * This is a simple implementation for a group with ExTeX-functions.
  *
- * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.11 $
  */
 public class GroupExtensionImpl extends GroupImpl
         implements

@@ -42,7 +42,7 @@ import de.dante.util.resource.ResourceFinder;
  * Test for the font factory.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 
 public class FontFactoryTest extends TestCase {
@@ -55,10 +55,10 @@ public class FontFactoryTest extends TestCase {
     /**
      * my extex.
      */
-    protected MyExTeX extex;
+    private MyExTeX extex;
 
     /**
-     * the font
+     * the font.
      */
     private TexFont font;
 
@@ -144,12 +144,13 @@ public class FontFactoryTest extends TestCase {
         }
 
         /**
-         * the config
+         * the config.
          */
         private Configuration config;
 
         /**
-         * create the config
+         * create the config.
+         * @throws ConfigurationException from the config system.
          */
         private void makeConfig() throws ConfigurationException {
 
@@ -158,7 +159,7 @@ public class FontFactoryTest extends TestCase {
         }
 
         /**
-         * the finder
+         * the finder.
          */
         private ResourceFinder finder;
 
@@ -176,7 +177,7 @@ public class FontFactoryTest extends TestCase {
         }
 
         /**
-         * the font factroy
+         * the font factroy.
          */
         private FontFactory fontFactory;
 
@@ -196,31 +197,30 @@ public class FontFactoryTest extends TestCase {
 
         /**
          * Create a new font factory.
-         * @param config the configuration object for the font factory
-         * @param finder the resource finder to use
+         * @param cfg the configuration object for the font factory
+         * @param rfinder the resource finder to use
          *
          * @return the new font factory
          *
          * @throws ConfigurationException in case that some kind of problems have
          * been detected in the configuration
          */
-        protected FontFactory makemyFontFactory(final Configuration config,
-                final ResourceFinder finder) throws ConfigurationException {
+        protected FontFactory makemyFontFactory(final Configuration cfg,
+                final ResourceFinder rfinder) throws ConfigurationException {
 
-            FontFactory fontFactory;
-            String fontClass = config.getAttribute("class");
+            FontFactory foFactory;
+            String fontClass = cfg.getAttribute("class");
 
             if (fontClass == null || fontClass.equals("")) {
-                throw new ConfigurationMissingAttributeException("class",
-                        config);
+                throw new ConfigurationMissingAttributeException("class", cfg);
             }
 
             try {
-                fontFactory = (FontFactory) (Class.forName(fontClass)
+                foFactory = (FontFactory) (Class.forName(fontClass)
                         .getConstructor(
                                 new Class[]{Configuration.class,
                                         ResourceFinder.class})
-                        .newInstance(new Object[]{config, finder}));
+                        .newInstance(new Object[]{cfg, rfinder}));
             } catch (IllegalArgumentException e) {
                 throw new ConfigurationInstantiationException(e);
             } catch (SecurityException e) {
@@ -237,12 +237,12 @@ public class FontFactoryTest extends TestCase {
                 throw new ConfigurationClassNotFoundException(fontClass);
             }
 
-            if (fontFactory instanceof PropertyConfigurable) {
-                ((PropertyConfigurable) fontFactory)
+            if (foFactory instanceof PropertyConfigurable) {
+                ((PropertyConfigurable) foFactory)
                         .setProperties(getProperties());
             }
 
-            return fontFactory;
+            return foFactory;
         }
 
     }
@@ -250,7 +250,7 @@ public class FontFactoryTest extends TestCase {
     // --------------------------------------------
 
     /**
-     * main
+     * main.
      * @param args  the command line.
      */
     public static void main(final String[] args) {

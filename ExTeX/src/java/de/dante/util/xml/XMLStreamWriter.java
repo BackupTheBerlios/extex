@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -32,7 +32,7 @@ import java.util.LinkedList;
  * <p>only xml version 1.0</p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 
 public class XMLStreamWriter {
@@ -48,7 +48,7 @@ public class XMLStreamWriter {
     private String encoding;
 
     /**
-     * the default name space
+     * The default name space.
      */
     private String defaultns = null;
 
@@ -58,7 +58,7 @@ public class XMLStreamWriter {
     private boolean beauty = false;
 
     /**
-     * Indent string
+     * Indent string.
      */
     private String indent = "   ";
 
@@ -68,7 +68,7 @@ public class XMLStreamWriter {
     private boolean nlset = false;
 
     /**
-     * The buffer size
+     * The buffer size.
      */
     private static final int BUFFERSIZE = 0xffff;
 
@@ -226,7 +226,7 @@ public class XMLStreamWriter {
     private Stack stack = new Stack();
 
     /**
-     * Write the start element to the output
+     * Write the start element to the output.
      * @param element   the element
      * @throws IOException if an error occurs.
      */
@@ -236,7 +236,7 @@ public class XMLStreamWriter {
     }
 
     /**
-     * Write the start element to the output
+     * Write the start element to the output.
      * @param ns        the namespace
      * @param element   the element
      * @throws IOException if an error occurs.
@@ -274,7 +274,7 @@ public class XMLStreamWriter {
     }
 
     /**
-     * Write the end element to the output
+     * Write the end element to the output.
      * @throws IOException if an error occurs.
      */
     public void writeEndElement() throws IOException {
@@ -392,7 +392,7 @@ public class XMLStreamWriter {
     }
 
     /**
-     * The length of one entry
+     * The length of one entry.
      */
     private static final int ENTRY_LENGTH = 7;
 
@@ -432,12 +432,12 @@ public class XMLStreamWriter {
     }
 
     /**
-     * Entries each line
+     * Entries each line.
      */
     private static final int ENTRY_LINES = 8;
 
     /**
-     * The length of a short value
+     * The length of a short value.
      */
     private static final int SHORT_LENGTH = 4;
 
@@ -589,12 +589,12 @@ public class XMLStreamWriter {
     // -------------------------------------
 
     /**
-     * The stack for the elements
+     * The stack for the elements.
      */
     private class Stack {
 
         /**
-         * The stack;
+         * The stack.
          */
         private LinkedList istack = new LinkedList();
 
@@ -608,7 +608,7 @@ public class XMLStreamWriter {
         }
 
         /**
-         * Add a element
+         * Add a element.
          * @param element   the element
          */
         public void add(final String element) {
@@ -617,7 +617,7 @@ public class XMLStreamWriter {
         }
 
         /**
-         * Add a element
+         * Add a element.
          * @param ns        the namespace
          * @param element   the element
          */
@@ -627,7 +627,7 @@ public class XMLStreamWriter {
         }
 
         /**
-         * Remove a element
+         * Remove a element.
          * @return Returns the name of the element.
          */
         public String remove() {
@@ -654,7 +654,7 @@ public class XMLStreamWriter {
         }
 
         /**
-         * Set the appendvalue
+         * Set the appendvalue.
          */
         public void setAppend() {
 
@@ -682,17 +682,17 @@ public class XMLStreamWriter {
         public class Values {
 
             /**
-             * The element
+             * The element.
              */
             private String element;
 
             /**
-             * The namespace
+             * The namespace.
              */
             private String namespace;
 
             /**
-             * append
+             * append.
              */
             private boolean append;
 

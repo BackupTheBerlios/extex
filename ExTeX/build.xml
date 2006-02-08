@@ -2,7 +2,7 @@
   ############################################################################
   # This is the Ant build file for ExTeX
   ############################################################################
-  # Copyright (C) 2004-2005 The ExTeX Group
+  # Copyright (C) 2004-2006 The ExTeX Group
   #
   # This library is free software; you can redistribute it and/or modify it
   # under the terms of the GNU Lesser General Public License as published by
@@ -39,6 +39,8 @@
               Create the javadoc documentation in target/javadoc.
           checkstyle
               Apply the style rules.  
+	      checkstyle41
+	          Apply the style rules.  
           tests [-Dtests.haltonfailure=yes]
               Perfom all tests.
           deploy
@@ -230,14 +232,35 @@
       </junit>
     </target>
 
-  <target name="site"
+    <target name="testreport" depends="compile-develop,jar,checkstyle41-xml" 
+            description="Run Checkstyle and create a HTML report">
+        <java fork="true" classname="org.extex.checkstyle.ReportAddAuthor" 
+              classpath="${target}/tmp">
+          <classpath path="${target.lib}/${extexjarfile}.jar"/>
+          <classpath refid="main.class.path" />
+          <classpath refid="develop.class.path" />
+          <arg value="${target}/checkstyle.xml"/>
+          <arg value="${target}/checkstyle-author.xml"/>
+        </java>
+        <mkdir dir="${target}/html" />
+        <xslt style="src/xslt/checkstyleauthorreport.xsl" 
+              out="${target}/html/checkstyleauthorreport.html"
+              in="${target}/checkstyle-author.xml" />
+    </target>
+
+    <target name="compile-develop" 
+            description="Compile the source in develop.">
+        <mkdir dir="${target}/tmp" />
+        <javac srcdir="develop/reports"
+               destdir="${target}/tmp"
+               debug="on">
+           <classpath refid="main.class.path" />
+        </javac>
+    </target>
+ 
+    
+  <target name="site" depends="compile-develop"
           description="">
-    <mkdir dir="${target}/tmp" />
-    <javac srcdir="develop/reports"
-           destdir="${target}/tmp"
-           debug="on">
-      <classpath refid="main.class.path" />
-    </javac>
     <java classname="org.extex.site.report.Summary"
           classpath="${target}/tmp"
 	  output="target/tests/index.xml">
@@ -309,6 +332,35 @@
     </checkstyle>
   </target>
 
+  <target name="checkstyle41"
+	  description="Generates a report of violations of the coding conventions using version 4.1.">
+	  <checkstyle config="develop/eclipse/extex_checkstyle.xml"
+		      failureProperty="checkstyle.failure"
+		      failOnViolation="false">
+		  <classpath>
+			  <pathelement location="develop/lib/checkstyle-all-4.1.jar" />
+			  <pathelement location="develop/lib/checkstyle-optional-4.1.jar" />
+	  	  </classpath>
+		  <formatter type="plain" tofile="${target}/checkstyle.txt" />
+		  <fileset dir="src" includes="**/*.java" />
+	  </checkstyle>
+  </target>
+
+  <target name="checkstyle41-xml"
+	  description="Generates a report of violations of the coding conventions using version 4.1.">
+	  <checkstyle config="develop/eclipse/extex_checkstyle.xml"
+		      failureProperty="checkstyle.failure"
+		      failOnViolation="false">
+		  <classpath>
+			  <pathelement location="develop/lib/checkstyle-all-4.1.jar" />
+			  <pathelement location="develop/lib/checkstyle-optional-4.1.jar" />
+		  </classpath>
+		  <formatter type="plain" tofile="${target}/checkstyle.txt" />
+		  <formatter type="xml" tofile="${target}/checkstyle.xml" />
+		  <fileset dir="src" includes="**/*.java" />
+	  </checkstyle>
+  </target>
+
   <target name="checkstyle-xml"
           description="Generates a report of violations of the coding conventions.">
     <checkstyle config="develop/eclipse/checkstyle.cfg"
@@ -319,8 +371,6 @@
       <fileset dir="src" includes="**/*.java" />
       <classpath refid="develop.class.path" />
     </checkstyle>
-    <xslt>
-    </xslt>
   </target>
 
   <target name="cx"
