@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -32,10 +32,10 @@ import java.io.Serializable;
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @version $Revision: 1.1 $
  */
-public abstract class TFMLigKern implements Serializable {
+public abstract class TfmLigKern implements Serializable {
 
     /**
-     * The skip amount
+     * The skip amount.
      */
     private int skip;
 
@@ -46,26 +46,26 @@ public abstract class TFMLigKern implements Serializable {
     private short nextChar;
 
     /**
-     * Create a new object
+     * Create a new object.
      *
      * @param askip the skip amount to the next instruction. <code>0</code>
      *        means the folowing instruction is the next, a number <code>< 0</code>
      *        means that there is no next instruction (this is the last).
      * @param next the code of the next character.
      */
-    public TFMLigKern(final int askip, final short next) {
+    public TfmLigKern(final int askip, final short next) {
 
         skip = askip;
         nextChar = next;
     }
 
     /**
-     * Return the kern
-     * @return Return the kern
+     * Return the kern.
+     * @return Return the kern.
      */
-    public TFMFixWord getKern() {
+    public TfmFixWord getKern() {
 
-        return TFMFixWord.NULL;
+        return TfmFixWord.NULL;
     }
 
     /**
@@ -78,10 +78,11 @@ public abstract class TFMLigKern implements Serializable {
      */
     public int nextIndex(final int pos) {
 
-        return (skip < 0) ? TFMCharInfoWord.NOINDEX : pos + skip + 1;
+        return (skip < 0) ? TfmCharInfoWord.NOINDEX : pos + skip + 1;
     }
 
     /**
+     * Returns the nextChar.
      * @return Returns the nextChar.
      */
     public short getNextChar() {

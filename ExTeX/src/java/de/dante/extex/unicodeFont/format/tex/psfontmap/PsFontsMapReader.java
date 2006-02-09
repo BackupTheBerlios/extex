@@ -34,10 +34,10 @@ import de.dante.extex.unicodeFont.exception.FontException;
  * @see <a href="package-summary.html#psfontsmap">psfonts.map</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
 
-public class PSFontsMapReader implements Serializable {
+public class PsFontsMapReader implements Serializable {
 
     /**
      * serialVersionUID.
@@ -50,7 +50,7 @@ public class PSFontsMapReader implements Serializable {
      * @param in    The input for reading.
      * @throws FontException if an font-error occurred.
      */
-    public PSFontsMapReader(final InputStream in) throws FontException {
+    public PsFontsMapReader(final InputStream in) throws FontException {
 
         try {
             data = new HashMap();
@@ -78,7 +78,7 @@ public class PSFontsMapReader implements Serializable {
                     if (line.startsWith("%") || line.equals("")) {
                         continue;
                     }
-                    PSFontEncoding psfe = new PSFontEncoding();
+                    PsFontEncoding psfe = new PsFontEncoding();
 
                     // file name
                     int pos = line.indexOf(' ');
@@ -147,8 +147,8 @@ public class PSFontsMapReader implements Serializable {
      * @param filename      The font-filename.
      * @return Returns the encoding for a font.
      */
-    public PSFontEncoding getPSFontEncoding(final String filename) {
+    public PsFontEncoding getPSFontEncoding(final String filename) {
 
-        return (PSFontEncoding) data.get(filename);
+        return (PsFontEncoding) data.get(filename);
     }
 }

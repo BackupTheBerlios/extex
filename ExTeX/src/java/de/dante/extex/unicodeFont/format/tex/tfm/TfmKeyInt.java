@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -19,78 +19,54 @@
 
 package de.dante.extex.unicodeFont.format.tex.tfm;
 
+import java.io.Serializable;
+
 /**
- * Constants for the TFM font.
+ * TFM: key-value-container.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @version $Revision: 1.1 $
  */
 
-public class TFMConstants {
+public class TfmKeyInt implements Serializable {
 
     /**
-     * 0xff
+     * key.
      */
-    public static final int CONST_XFF = 0xff;
+    private int key;
 
     /**
-     * 0x0f
+     * int-value.
      */
-    public static final int CONST_X0F = 0x0f;
+    private int val;
 
     /**
-     * 0x3f
+     * Create a new object.
+     *
+     * @param k the key
+     * @param v the value
      */
-    public static final int CONST_X3F = 0x3f;
+    TfmKeyInt(final int k, final int v) {
+
+        key = k;
+        val = v;
+    }
 
     /**
-     * 0x03
+     * Returns the key.
+     * @return Returns the key.
      */
-    public static final int CONST_X03 = 0x03;
+    public int getKey() {
+
+        return key;
+    }
 
     /**
-     * 0x80
+     * Returns the val.
+     * @return Returns the val.
      */
-    public static final int CONST_X80 = 0x80;
+    public int getVal() {
 
-    /**
-     * 2
-     */
-    public static final int CONST_2 = 2;
-
-    /**
-     * 4
-     */
-    public static final int CONST_4 = 4;
-
-    /**
-     * 8
-     */
-    public static final int CONST_8 = 8;
-
-    /**
-     * 5
-     */
-    public static final int CONST_5 = 5;
-
-    /**
-     * 6
-     */
-    public static final int CONST_6 = 6;
-
-    /**
-     * 10
-     */
-    public static final int CONST_10 = 10;
-
-    /**
-     * 127
-     */
-    public static final int CONST_127 = 127;
-
-    /**
-     * 1000
-     */
-    public static final int CONST_1000 = 1000;
-
+        return val;
+    }
 }

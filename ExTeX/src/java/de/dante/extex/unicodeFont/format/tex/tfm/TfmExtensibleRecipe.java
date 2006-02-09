@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -27,7 +27,7 @@ import de.dante.util.file.random.RandomAccessR;
 import de.dante.util.xml.XMLStreamWriter;
 
 /**
- * Class for TFM exten array.
+ * Class for extensible recipe.
  *
  * <p>
  * Extensible characters are specified by an extensible_recipe,
@@ -46,35 +46,83 @@ import de.dante.util.xml.XMLStreamWriter;
  * @version $Revision: 1.1 $
  */
 
-public class TFMExtenArray implements XMLWriterConvertible, Serializable {
+public class TfmExtensibleRecipe implements XMLWriterConvertible, Serializable {
 
     /**
-     * the array
+     * the id.
      */
-    private TFMExtensibleRecipe[] extensiblerecipe;
+    private int etid;
 
     /**
-     * Create a new object
+     * top.
+     */
+    private short top;
+
+    /**
+     * mid.
+     */
+    private short mid;
+
+    /**
+     * bot.
+     */
+    private short bot;
+
+    /**
+     * rep.
+     */
+    private short rep;
+
+    /**
+     * Create a new object.
      * @param rar   the input
-     * @param ne    number of words in the extensible character table
+     * @param id    the id
      * @throws IOException if an IO-error occurs.
      */
-    public TFMExtenArray(final RandomAccessR rar, final short ne)
+    public TfmExtensibleRecipe(final RandomAccessR rar, final int id)
             throws IOException {
 
-        extensiblerecipe = new TFMExtensibleRecipe[ne];
-        for (int i = 0; i < ne; i++) {
-            extensiblerecipe[i] = new TFMExtensibleRecipe(rar, i);
-        }
+        etid = id;
+        top = (short) rar.readByteAsInt();
+        mid = (short) rar.readByteAsInt();
+        bot = (short) rar.readByteAsInt();
+        rep = (short) rar.readByteAsInt();
     }
 
     /**
-     * Returns the extensiblerecipe.
-     * @return Returns the extensiblerecipe.
+     * Returns the bot.
+     * @return Returns the bot.
      */
-    public TFMExtensibleRecipe[] getExtensiblerecipe() {
+    public short getBot() {
 
-        return extensiblerecipe;
+        return bot;
+    }
+
+    /**
+     * Returns the mid.
+     * @return Returns the mid.
+     */
+    public short getMid() {
+
+        return mid;
+    }
+
+    /**
+     * Returns the rep.
+     * @return Returns the rep.
+     */
+    public short getRep() {
+
+        return rep;
+    }
+
+    /**
+     * Returns the top.
+     * @return Returns the top.
+     */
+    public short getTop() {
+
+        return top;
     }
 
     /**
@@ -82,10 +130,12 @@ public class TFMExtenArray implements XMLWriterConvertible, Serializable {
      */
     public void writeXML(final XMLStreamWriter writer) throws IOException {
 
-        writer.writeStartElement("exten");
-        for (int i = 0; i < extensiblerecipe.length; i++) {
-            extensiblerecipe[i].writeXML(writer);
-        }
+        writer.writeStartElement("extensiblerecipe");
+        writer.writeAttribute("id", String.valueOf(etid));
+        writer.writeAttribute("top", String.valueOf(top));
+        writer.writeAttribute("mid", String.valueOf(mid));
+        writer.writeAttribute("bot", String.valueOf(bot));
+        writer.writeAttribute("rep", String.valueOf(rep));
         writer.writeEndElement();
     }
 }

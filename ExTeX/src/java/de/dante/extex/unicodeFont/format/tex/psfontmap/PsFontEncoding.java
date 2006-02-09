@@ -27,7 +27,7 @@ import java.io.Serializable;
  * @version $Revision: 1.1 $
  */
 
-public class PSFontEncoding implements Serializable {
+public class PsFontEncoding implements Serializable {
 
     /**
      * serialVersionUID.
@@ -37,7 +37,7 @@ public class PSFontEncoding implements Serializable {
     /**
      * Create a new object.
      */
-    public PSFontEncoding() {
+    public PsFontEncoding() {
 
         super();
     }
@@ -95,7 +95,7 @@ public class PSFontEncoding implements Serializable {
     }
 
     /**
-     * Add a string to <tt>encodingtxt</tt>
+     * Add a string to <tt>encodingtxt</tt>.
      * @param s the string to add
      */
     public void addEncodingtxt(final String s) {
@@ -122,7 +122,7 @@ public class PSFontEncoding implements Serializable {
     }
 
     /**
-     * Set the filename
+     * Set the filename.
      * @param name The filename to set.
      */
     public void setFilename(final String name) {
@@ -131,6 +131,7 @@ public class PSFontEncoding implements Serializable {
     }
 
     /**
+     * Returns the fontname.
      * @return Returns the fontname.
      */
     public String getFontname() {
@@ -139,6 +140,7 @@ public class PSFontEncoding implements Serializable {
     }
 
     /**
+     * Set the font name.
      * @param name The fontname to set.
      */
     public void setFontname(final String name) {
@@ -147,6 +149,7 @@ public class PSFontEncoding implements Serializable {
     }
 
     /**
+     * Returns the font file.
      * @return Returns the font file.
      */
     public String getFontfile() {
@@ -175,5 +178,4 @@ public class PSFontEncoding implements Serializable {
         }
         return "";
     }
-
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -43,10 +43,10 @@ import de.dante.util.xml.XMLStreamWriter;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
 
-public class TFMParamArray
+public class TfmParamArray
         implements
             XMLWriterConvertible,
             EFMWriterConvertible,
@@ -54,32 +54,33 @@ public class TFMParamArray
             Serializable {
 
     /**
-     * the param table
+     * the param table.
      */
-    private TFMFixWord[] table;
+    private TfmFixWord[] table;
 
     /**
-     * the font type
+     * the font type.
      */
     private TfmFontType fonttpye;
 
     /**
-     * Create a new object
+     * Create a new object.
+     *
      * @param rar   the input
      * @param size  number of words in the table
      * @param ft    the fonttpye
      * @throws IOException if an IO-error occurs.
      */
-    public TFMParamArray(final RandomAccessR rar, final int size,
+    public TfmParamArray(final RandomAccessR rar, final int size,
             final TfmFontType ft) throws IOException {
 
         fonttpye = ft;
 
-        table = new TFMFixWord[size];
+        table = new TfmFixWord[size];
 
         for (int i = 0; i < size; i++) {
-            table[i] = new TFMFixWord(rar.readInt(),
-                    TFMFixWord.FIXWORDDENOMINATOR);
+            table[i] = new TfmFixWord(rar.readInt(),
+                    TfmFixWord.FIXWORDDENOMINATOR);
         }
     }
 
@@ -87,19 +88,19 @@ public class TFMParamArray
      * Returns the table.
      * @return Returns the table.
      */
-    public TFMFixWord[] getTable() {
+    public TfmFixWord[] getTable() {
 
         return table;
     }
 
     /**
-     * labels for VANILLA
+     * labels for VANILLA.
      */
     public static final String[] LABEL_VANILLA = {"SLANT", "SPACE", "STRETCH",
             "SHRINK", "XHEIGHT", "QUAD", "EXTRASPACE"};
 
     /**
-     * lables for MATHSY
+     * lables for MATHSY.
      */
     public static final String[] LABEL_MATHSY = {"SLANT", "SPACE", "STRETCH",
             "SHRINK", "XHEIGHT", "QUAD", "EXTRASPACE", "NUM1", "NUM2", "NUM3",
@@ -107,7 +108,7 @@ public class TFMParamArray
             "SUPDROP", "SUBDROP", "DELIM1", "DELIM2", "AXISHEIGHT"};
 
     /**
-     * labels for MATHEX
+     * labels for MATHEX.
      */
     public static final String[] LABEL_MATHEX = {"SLANT", "SPACE", "STRETCH",
             "SHRINK", "XHEIGHT", "QUAD", "EXTRASPACE", "DEFAULTRULETHICKNESS",

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -41,27 +41,28 @@ import de.dante.util.xml.XMLStreamWriter;
  * @version $Revision: 1.1 $
  */
 
-public class TFMItalicArray implements XMLWriterConvertible, Serializable {
+public class TfmItalicArray implements XMLWriterConvertible, Serializable {
 
     /**
-     * the height table
+     * the height table.
      */
-    private TFMFixWord[] table;
+    private TfmFixWord[] table;
 
     /**
-     * Create a new object
+     * Create a new object.
+     *
      * @param rar   the input
      * @param size  number of words in the table
      * @throws IOException if an IO-error occurs.
      */
-    public TFMItalicArray(final RandomAccessR rar, final int size)
+    public TfmItalicArray(final RandomAccessR rar, final int size)
             throws IOException {
 
-        table = new TFMFixWord[size];
+        table = new TfmFixWord[size];
 
         for (int i = 0; i < size; i++) {
-            table[i] = new TFMFixWord(rar.readInt(),
-                    TFMFixWord.FIXWORDDENOMINATOR);
+            table[i] = new TfmFixWord(rar.readInt(),
+                    TfmFixWord.FIXWORDDENOMINATOR);
         }
     }
 
@@ -69,7 +70,7 @@ public class TFMItalicArray implements XMLWriterConvertible, Serializable {
      * Returns the table.
      * @return Returns the table.
      */
-    public TFMFixWord[] getTable() {
+    public TfmFixWord[] getTable() {
 
         return table;
     }

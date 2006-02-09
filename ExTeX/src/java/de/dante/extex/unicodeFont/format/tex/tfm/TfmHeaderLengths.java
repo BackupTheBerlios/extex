@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -39,7 +39,7 @@ import de.dante.util.xml.XMLStreamWriter;
  * <table border="1">
  *  <thead>
  *    <tr><td><b>name</b></td><td><b>description</b></td></tr>
- *  </thead
+ *  </thead>
  *  <tr><td>lf</td><td>length of the entire file, in words</td></tr>
  *  <tr><td>lh</td><td>length of the header data, in words</td></tr>
  *  <tr><td>bc</td><td>smallest character code in the font</td></tr>
@@ -63,89 +63,90 @@ import de.dante.util.xml.XMLStreamWriter;
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @version $Revision: 1.1 $
  */
-public class TFMHeaderLengths implements XMLWriterConvertible, Serializable {
+public class TfmHeaderLengths implements XMLWriterConvertible, Serializable {
 
     /**
-     * max chars
+     * max chars.
      */
     private static final int MAXCHARS = 255;
 
     /**
-     * Bytes in the Header of the TFM-file
+     * Bytes in the Header of the TFM-file.
      */
     private static final int HEADERBYTES = 6;
 
     /**
-     * length of the entire file
+     * length of the entire file.
      */
     private short lf;
 
     /**
-     * length of the header data
+     * length of the header data.
      */
     private short lh;
 
     /**
-     * smallest character code in the font
+     * smallest character code in the font.
      */
     private short bc;
 
     /**
-     * largest character code in the font
+     * largest character code in the font.
      */
     private short ec;
 
     /**
-     * number of words in the width table
+     * number of words in the width table.
      */
     private short nw;
 
     /**
-     * number of words in the height table
+     * number of words in the height table.
      */
     private short nh;
 
     /**
-     * number of words in the depth table
+     * number of words in the depth table.
      */
     private short nd;
 
     /**
-     * number of words in the italic correction table
+     * number of words in the italic correction table.
      */
     private short ni;
 
     /**
-     * number of words in the lig/kern table
+     * number of words in the lig/kern table.
      */
     private short nl;
 
     /**
-     * number of words in the kern table
+     * number of words in the kern table.
      */
     private short nk;
 
     /**
-     * number of words in the extensible character table
+     * number of words in the extensible character table.
      */
     private short ne;
 
     /**
-     * number of font parameter words
+     * number of font parameter words.
      */
     private short np;
 
     /**
-     * number of character
+     * number of character.
      */
     private int cc;
 
     /**
-     * Create a new object
+     * Create a new object.
+     *
      * @param rar   the input
      * @throws IOException if an IO-error occurs.
      */
-    public TFMHeaderLengths(final RandomAccessR rar) throws IOException {
+    public TfmHeaderLengths(final RandomAccessR rar) throws IOException {
 
         lf = rar.readShort();
         lh = rar.readShort();

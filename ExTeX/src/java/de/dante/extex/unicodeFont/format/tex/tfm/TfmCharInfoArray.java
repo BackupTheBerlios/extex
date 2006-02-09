@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -58,7 +58,7 @@ import de.dante.util.xml.XMLStreamWriter;
  * @version $Revision: 1.1 $
  */
 
-public class TFMCharInfoArray
+public class TfmCharInfoArray
         implements
             XMLWriterConvertible,
             EFMWriterConvertible,
@@ -66,22 +66,22 @@ public class TFMCharInfoArray
             Serializable {
 
     /**
-     * the char info
+     * the char info.
      */
-    private TFMCharInfoWord[] charinfoword;
+    private TfmCharInfoWord[] charinfoword;
 
     /**
-     * Create a new object
+     * Create a new object.
      * @param rar   the input
      * @param cc    number of character
      * @throws IOException if an IO-error occurs.
      */
-    public TFMCharInfoArray(final RandomAccessR rar, final int cc)
+    public TfmCharInfoArray(final RandomAccessR rar, final int cc)
             throws IOException {
 
-        charinfoword = new TFMCharInfoWord[cc];
+        charinfoword = new TfmCharInfoWord[cc];
         for (int i = 0; i < cc; i++) {
-            charinfoword[i] = new TFMCharInfoWord(rar, i);
+            charinfoword[i] = new TfmCharInfoWord(rar, i);
         }
     }
 
@@ -89,48 +89,48 @@ public class TFMCharInfoArray
      * Returns the charinfoword.
      * @return Returns the charinfoword.
      */
-    public TFMCharInfoWord[] getCharinfoword() {
+    public TfmCharInfoWord[] getCharinfoword() {
 
         return charinfoword;
     }
 
     /**
-     * the width
+     * the width.
      */
-    private TFMWidthArray width;
+    private TfmWidthArray width;
 
     /**
-     * the height
+     * the height.
      */
-    private TFMHeightArray height;
+    private TfmHeightArray height;
 
     /**
-     * the depth
+     * the depth.
      */
-    private TFMDepthArray depth;
+    private TfmDepthArray depth;
 
     /**
-     * the italic
+     * the italic.
      */
-    private TFMItalicArray italic;
+    private TfmItalicArray italic;
 
     /**
-     * smallest character code in the font
+     * smallest character code in the font.
      */
     private short bc;
 
     /**
-     * the exten
+     * the exten.
      */
-    private TFMExtenArray exten;
+    private TfmExtenArray exten;
 
     /**
-     * Lig/kern programs in the final format
+     * Lig/kern programs in the final format.
      */
-    private TFMLigKern[] ligKernTable;
+    private TfmLigKern[] ligKernTable;
 
     /**
-     * Create the char table
+     * Create the char table.
      * @param widtha        the width table
      * @param heighta       the height table
      * @param deptha        the depth table
@@ -139,10 +139,10 @@ public class TFMCharInfoArray
      * @param abc           the bc
      * @param lk            the ligKernTable
      */
-    public void createCharTable(final TFMWidthArray widtha,
-            final TFMHeightArray heighta, final TFMDepthArray deptha,
-            final TFMItalicArray italica, final TFMExtenArray extena,
-            final short abc, final TFMLigKern[] lk) {
+    public void createCharTable(final TfmWidthArray widtha,
+            final TfmHeightArray heighta, final TfmDepthArray deptha,
+            final TfmItalicArray italica, final TfmExtenArray extena,
+            final short abc, final TfmLigKern[] lk) {
 
         width = widtha;
         height = heighta;
@@ -156,7 +156,7 @@ public class TFMCharInfoArray
             charinfoword[pos].setLigKernTable(ligKernTable);
             charinfoword[pos].setBc(bc);
             if (charinfoword[pos].exists()) {
-                TFMCharInfoWord ciw = charinfoword[pos];
+                TfmCharInfoWord ciw = charinfoword[pos];
                 ciw.setWidth(takeDimen(width.getTable(), ciw.getWidthindex(),
                         pos));
                 ciw.setHeight(takeDimen(height.getTable(),
@@ -165,26 +165,26 @@ public class TFMCharInfoArray
                         pos));
                 ciw.setItalic(takeDimen(italic.getTable(),
                         ciw.getItalicindex(), pos));
-                if (ciw.getTag() == TFMCharInfoWord.LIST_TAG) {
+                if (ciw.getTag() == TfmCharInfoWord.LIST_TAG) {
                     if (validCharList(pos)) {
                         ciw.setNextchar(ciw.getRemainder());
                     }
-                } else if (ciw.getTag() == TFMCharInfoWord.EXT_TAG) {
+                } else if (ciw.getTag() == TfmCharInfoWord.EXT_TAG) {
                     if (ciw.getRemainder() < exten.getExtensiblerecipe().length) {
-                        TFMExtensibleRecipe er = exten.getExtensiblerecipe()[ciw
+                        TfmExtensibleRecipe er = exten.getExtensiblerecipe()[ciw
                                 .getRemainder()];
                         ciw.setTop((er.getTop() != 0)
                                 ? er.getTop()
-                                : TFMCharInfoWord.NOCHARCODE);
+                                : TfmCharInfoWord.NOCHARCODE);
                         ciw.setMid((er.getMid() != 0)
                                 ? er.getMid()
-                                : TFMCharInfoWord.NOCHARCODE);
+                                : TfmCharInfoWord.NOCHARCODE);
                         ciw.setBot((er.getBot() != 0)
                                 ? er.getBot()
-                                : TFMCharInfoWord.NOCHARCODE);
+                                : TfmCharInfoWord.NOCHARCODE);
                         ciw.setRep((er.getRep() != 0)
                                 ? er.getRep()
-                                : TFMCharInfoWord.NOCHARCODE);
+                                : TfmCharInfoWord.NOCHARCODE);
                     }
                 }
             }
@@ -202,14 +202,14 @@ public class TFMCharInfoArray
      */
     private boolean validCharList(final int pos) {
 
-        TFMCharInfoWord ciw = charinfoword[pos];
+        TfmCharInfoWord ciw = charinfoword[pos];
         short next = ciw.getRemainder();
         if (!charExists(next)) {
             ciw.resetTag();
             return false;
         }
         while ((next -= bc) < pos
-                && (ciw = charinfoword[next]).getTag() == TFMCharInfoWord.LIST_TAG) {
+                && (ciw = charinfoword[next]).getTag() == TfmCharInfoWord.LIST_TAG) {
             next = ciw.getRemainder();
         }
         return true;
@@ -236,13 +236,13 @@ public class TFMCharInfoArray
      *                  error messages.
      * @return Returns the FixWord
      */
-    private TFMFixWord takeDimen(final TFMFixWord[] table, final short i,
+    private TfmFixWord takeDimen(final TfmFixWord[] table, final short i,
             final int pos) {
 
         if (i < table.length) {
             return table[i];
         }
-        return TFMFixWord.ZERO;
+        return TfmFixWord.ZERO;
     }
 
     /**
@@ -253,7 +253,7 @@ public class TFMCharInfoArray
         for (int i = 0; i < charinfoword.length; i++) {
 
             // get char
-            TFMCharInfoWord ci = charinfoword[i];
+            TfmCharInfoWord ci = charinfoword[i];
 
             if (ci != null) {
 
@@ -281,14 +281,14 @@ public class TFMCharInfoArray
 
                 // ligature
                 int ligstart = ci.getLigkernstart();
-                if (ligstart != TFMCharInfoWord.NOINDEX) {
+                if (ligstart != TfmCharInfoWord.NOINDEX) {
 
-                    for (int k = ligstart; k != TFMCharInfoWord.NOINDEX; k = ligKernTable[k]
+                    for (int k = ligstart; k != TfmCharInfoWord.NOINDEX; k = ligKernTable[k]
                             .nextIndex(k)) {
-                        TFMLigKern lk = ligKernTable[k];
+                        TfmLigKern lk = ligKernTable[k];
 
-                        if (lk instanceof TFMLigature) {
-                            TFMLigature lig = (TFMLigature) lk;
+                        if (lk instanceof TfmLigature) {
+                            TfmLigature lig = (TfmLigature) lk;
 
                             writer.writeStartElement("ligature");
                             writer.writeAttribute("letter-id", String
@@ -307,8 +307,8 @@ public class TFMCharInfoArray
                                 writer.writeAttribute("lig", slig.trim());
                             }
                             writer.writeEndElement();
-                        } else if (lk instanceof TFMKerning) {
-                            TFMKerning kern = (TFMKerning) lk;
+                        } else if (lk instanceof TfmKerning) {
+                            TfmKerning kern = (TfmKerning) lk;
 
                             writer.writeStartElement("kerning");
 
@@ -332,7 +332,7 @@ public class TFMCharInfoArray
     }
 
     /**
-     * encdoing table
+     * encdoing table.
      */
     private String[] enctable;
 
@@ -357,7 +357,7 @@ public class TFMCharInfoArray
      * @param i the position of the character
      * @return Returns the charinfoword for the character.
      */
-    public TFMCharInfoWord getCharInfoWord(final int i) {
+    public TfmCharInfoWord getCharInfoWord(final int i) {
 
         if (i >= 0 && i < charinfoword.length) {
             return charinfoword[i];
@@ -395,7 +395,7 @@ public class TFMCharInfoArray
      * Returns the depth.
      * @return Returns the depth.
      */
-    public TFMDepthArray getDepth() {
+    public TfmDepthArray getDepth() {
 
         return depth;
     }
@@ -404,7 +404,7 @@ public class TFMCharInfoArray
      * Returns the height.
      * @return Returns the height.
      */
-    public TFMHeightArray getHeight() {
+    public TfmHeightArray getHeight() {
 
         return height;
     }
@@ -413,7 +413,7 @@ public class TFMCharInfoArray
      * Returns the italic.
      * @return Returns the italic.
      */
-    public TFMItalicArray getItalic() {
+    public TfmItalicArray getItalic() {
 
         return italic;
     }
@@ -422,7 +422,7 @@ public class TFMCharInfoArray
      * Returns the width.
      * @return Returns the width.
      */
-    public TFMWidthArray getWidth() {
+    public TfmWidthArray getWidth() {
 
         return width;
     }

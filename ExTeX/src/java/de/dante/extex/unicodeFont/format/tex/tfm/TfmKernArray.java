@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -27,9 +27,9 @@ import de.dante.util.file.random.RandomAccessR;
 import de.dante.util.xml.XMLStreamWriter;
 
 /**
- * Class for TFM depth table.
+ * Class for TFM kern table.
  *
- * <p>width : array [0 .. (nd-1)] of fix word</p>
+ * <p>width : array [0 .. (nk-1)] of fix word</p>
  *
  * <p>
  * Information from:
@@ -41,27 +41,28 @@ import de.dante.util.xml.XMLStreamWriter;
  * @version $Revision: 1.1 $
  */
 
-public class TFMDepthArray implements XMLWriterConvertible, Serializable {
+public class TfmKernArray implements XMLWriterConvertible, Serializable {
 
     /**
-     * the height table
+     * the width table.
      */
-    private TFMFixWord[] table;
+    private TfmFixWord[] table;
 
     /**
-     * Create a new object
+     * Create a new object.
+     *
      * @param rar   the input
      * @param size  number of words in the table
      * @throws IOException if an IO-error occurs.
      */
-    public TFMDepthArray(final RandomAccessR rar, final int size)
+    public TfmKernArray(final RandomAccessR rar, final int size)
             throws IOException {
 
-        table = new TFMFixWord[size];
+        table = new TfmFixWord[size];
 
         for (int i = 0; i < size; i++) {
-            table[i] = new TFMFixWord(rar.readInt(),
-                    TFMFixWord.FIXWORDDENOMINATOR);
+            table[i] = new TfmFixWord(rar.readInt(),
+                    TfmFixWord.FIXWORDDENOMINATOR);
         }
     }
 
@@ -69,7 +70,7 @@ public class TFMDepthArray implements XMLWriterConvertible, Serializable {
      * Returns the table.
      * @return Returns the table.
      */
-    public TFMFixWord[] getTable() {
+    public TfmFixWord[] getTable() {
 
         return table;
     }
@@ -79,12 +80,10 @@ public class TFMDepthArray implements XMLWriterConvertible, Serializable {
      */
     public void writeXML(final XMLStreamWriter writer) throws IOException {
 
-        writer.writeStartElement("depthtable");
+        writer.writeStartElement("kerntable");
         for (int i = 0; i < table.length; i++) {
-            writer.writeStartElement("depth");
+            writer.writeStartElement("kern");
             writer.writeAttribute("id", String.valueOf(i));
-            writer.writeAttribute("value_fw", String.valueOf(table[i]
-                    .getValue()));
             writer.writeAttribute("value", table[i].toStringComma());
             writer.writeEndElement();
         }

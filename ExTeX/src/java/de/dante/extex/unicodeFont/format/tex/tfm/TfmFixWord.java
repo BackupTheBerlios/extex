@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -24,7 +24,7 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 /**
- * TFM-FixWord
+ * TFM-FixWord.
  * <p>
  * The dimensions are represented in the same way as in tfm files. Higher
  * 12 bits is the whole part and lower 20 bits is the fractional part.
@@ -33,72 +33,72 @@ import java.util.Locale;
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @version $Revision: 1.1 $
  */
-public class TFMFixWord implements Serializable {
+public class TfmFixWord implements Serializable {
 
     /**
-     * NULL
+     * NULL.
      */
-    public static final TFMFixWord NULL = null;
+    public static final TfmFixWord NULL = null;
 
     /**
-     * ZERO
+     * ZERO.
      */
-    public static final TFMFixWord ZERO = new TFMFixWord(0);
+    public static final TfmFixWord ZERO = new TfmFixWord(0);
 
     /**
-     * UNITY
+     * UNITY.
      */
-    public static final TFMFixWord UNITY = new TFMFixWord(1);
+    public static final TfmFixWord UNITY = new TfmFixWord(1);
 
     /**
-     * TEN
+     * TEN.
      */
-    public static final TFMFixWord TEN = new TFMFixWord(TFMConstants.CONST_10);
+    public static final TfmFixWord TEN = new TfmFixWord(TfmConstants.CONST_10);
 
     /**
-     * POINT-SHIFT
+     * POINT-SHIFT.
      */
     public static final int POINTSHIFT = 20;
 
     /**
-     * fixdominator
+     * fixdominator.
      */
     public static final int FIXWORDDENOMINATOR = 0x100000;
 
     /**
-     * tfmconf
+     * tfmconf.
      */
     public static final int TFMCONV = 0x10;
 
     /**
-     * conf
+     * conf.
      */
     public static final int CONV = 0x10000;
 
     /**
-     * Create a new object
+     * Create a new object.
      *
      * @param val the values as int
      */
-    public TFMFixWord(final int val) {
+    public TfmFixWord(final int val) {
 
         value = val << POINTSHIFT;
     }
 
     /**
-     * Create a new object
+     * Create a new object.
      */
-    public TFMFixWord() {
+    public TfmFixWord() {
 
         value = 0;
     }
 
     /**
-     * Create a new object
+     * Create a new object.
      *
      * @param val the values as String
      */
-    public TFMFixWord(final String val) {
+    public TfmFixWord(final String val) {
 
         try {
             value = Integer.parseInt(val);
@@ -109,23 +109,23 @@ public class TFMFixWord implements Serializable {
     }
 
     /**
-     * Create new object
+     * Create new object.
      *
      * @param num   the num
      * @param den   the den
      */
-    public TFMFixWord(final int num, final int den) {
+    public TfmFixWord(final int num, final int den) {
 
         value = ((long) num << POINTSHIFT) / den;
     }
 
     /**
-     * the internal value
+     * the internal value.
      */
     private long value;
 
     /**
-     * Return the internal value
+     * Return the internal value.
      *
      * @return the internal value
      */
@@ -135,7 +135,7 @@ public class TFMFixWord implements Serializable {
     }
 
     /**
-     * less than
+     * less than.
      *
      * @param num the value to compare
      * @return <code>true</code>, if the internal values is lesser,
@@ -147,7 +147,7 @@ public class TFMFixWord implements Serializable {
     }
 
     /**
-     * more than
+     * more than.
      *
      * @param num the value to compare
      * @return <code>true</code>, if the internal values are more,
@@ -170,19 +170,19 @@ public class TFMFixWord implements Serializable {
 
         if (value > 0) {
             return String
-                    .valueOf((value * TFMConstants.CONST_1000) >>> POINTSHIFT);
+                    .valueOf((value * TfmConstants.CONST_1000) >>> POINTSHIFT);
         }
         return String
-                .valueOf(-((-value * TFMConstants.CONST_1000) >>> POINTSHIFT));
+                .valueOf(-((-value * TfmConstants.CONST_1000) >>> POINTSHIFT));
     }
 
     /**
-     * FRACTIONDIGITS
+     * FRACTIONDIGITS.
      */
     public static final int FRACTIONDIGITS = 6;
 
     /**
-     * Returns the value as Sting in untis with comma (0.00000...).
+     * Returns the value as Sting in untis with comma (0.00000..).
      * @return Returns the value as Sting in untis with comma.
      */
     public String toStringComma() {
@@ -190,7 +190,7 @@ public class TFMFixWord implements Serializable {
         NumberFormat nf = NumberFormat.getInstance(Locale.US);
         nf.setMaximumFractionDigits(FRACTIONDIGITS);
         nf.setGroupingUsed(false);
-        return nf.format((double) value * TFMConstants.CONST_1000
+        return nf.format((double) value * TfmConstants.CONST_1000
                 / FIXWORDDENOMINATOR);
     }
 
@@ -206,7 +206,7 @@ public class TFMFixWord implements Serializable {
     }
 
     /**
-     * Return the values as String
+     * Return the values as String.
      *
      * @return the values as String
      */
@@ -222,16 +222,16 @@ public class TFMFixWord implements Serializable {
         }
         buf.append(v >>> POINTSHIFT);
         buf.append('.');
-        v = TFMConstants.CONST_10 * (v & mask) + TFMConstants.CONST_5;
-        int delta = TFMConstants.CONST_10;
+        v = TfmConstants.CONST_10 * (v & mask) + TfmConstants.CONST_5;
+        int delta = TfmConstants.CONST_10;
         do {
             if (delta > unity) {
                 v += unity / 2 - delta / 2;
             }
             buf.append(Character.forDigit((int) (v >>> POINTSHIFT),
-                    TFMConstants.CONST_10));
-            v = TFMConstants.CONST_10 * (v & mask);
-        } while (v > (delta *= TFMConstants.CONST_10));
+                    TfmConstants.CONST_10));
+            v = TfmConstants.CONST_10 * (v & mask);
+        } while (v > (delta *= TfmConstants.CONST_10));
         return buf.toString();
     }
 

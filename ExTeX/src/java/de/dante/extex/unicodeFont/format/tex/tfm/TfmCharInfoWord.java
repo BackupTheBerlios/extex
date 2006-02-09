@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -83,114 +83,114 @@ import de.dante.util.xml.XMLStreamWriter;
  * @version $Revision: 1.1 $
  */
 
-public class TFMCharInfoWord
+public class TfmCharInfoWord
         implements
             XMLWriterConvertible,
             PlFormat,
             Serializable {
 
     /**
-     * no_tag: vanilla character
+     * no_tag: vanilla character.
      */
     public static final Tag NO_TAG = new Tag();
 
     /**
-     * no_tag: 0
+     * no_tag: 0.
      */
     private static final int TAG0 = 0;
 
     /**
-     * lig_tag: character has a ligature/kerning program
+     * lig_tag: character has a ligature/kerning program.
      */
     public static final Tag LIG_TAG = new Tag();
 
     /**
-     * no_tag: 1
+     * no_tag: 1.
      */
     private static final int TAG1 = 1;
 
     /**
-     * list_tag: character has a successor in a charlist
+     * list_tag: character has a successor in a charlist.
      */
     public static final Tag LIST_TAG = new Tag();
 
     /**
-     * no_tag: 2
+     * no_tag: 2.
      */
     private static final int TAG2 = 2;
 
     /**
-     * ext_tag: character is extensible
+     * ext_tag: character is extensible.
      */
     public static final Tag EXT_TAG = new Tag();
 
     /**
-     * no_tag: 3
+     * no_tag: 3.
      */
     private static final int TAG3 = 3;
 
     /**
-     * the width index
+     * the width index.
      */
     private short widthindex;
 
     /**
-     * the height index
+     * the height index.
      */
     private short heightindex;
 
     /**
-     * the depth index
+     * the depth index.
      */
     private short depthindex;
 
     /**
-     * the italic index
+     * the italic index.
      */
     private short italicindex;
 
     /**
-     * the tag (as number)
+     * the tag (as number).
      */
     private short tag;
 
     /**
-     * the tag
+     * the tag.
      */
     private Tag tagT;
 
     /**
-     * the remainder
+     * the remainder.
      */
     private short remainder;
 
     /**
-     * the char id
+     * the char id.
      */
     private int charid;
 
     /**
-     * smallest character code in the font
+     * smallest character code in the font.
      */
     private short bc;
 
     /**
-     * Create a new object
+     * Create a new object.
      * @param rar   the input
      * @param id    the id
      * @throws IOException if an IO-error occurs.
      */
-    public TFMCharInfoWord(final RandomAccessR rar, final int id)
+    public TfmCharInfoWord(final RandomAccessR rar, final int id)
             throws IOException {
 
         charid = id;
         widthindex = (short) rar.readByteAsInt();
         short heightdepthindex = (short) rar.readByteAsInt();
-        heightindex = (short) (heightdepthindex >> TFMConstants.CONST_4 & TFMConstants.CONST_X0F);
-        depthindex = (short) (heightdepthindex & TFMConstants.CONST_X0F);
+        heightindex = (short) (heightdepthindex >> TfmConstants.CONST_4 & TfmConstants.CONST_X0F);
+        depthindex = (short) (heightdepthindex & TfmConstants.CONST_X0F);
         short italicindextag = (short) rar.readByteAsInt();
-        italicindex = (short) (italicindextag >> 2 & TFMConstants.CONST_X3F);
-        tag = (short) (italicindextag & TFMConstants.CONST_X03);
+        italicindex = (short) (italicindextag >> 2 & TfmConstants.CONST_X3F);
+        tag = (short) (italicindextag & TfmConstants.CONST_X03);
         remainder = (short) rar.readByteAsInt();
 
         switch (tag) {
@@ -213,34 +213,34 @@ public class TFMCharInfoWord
     }
 
     /**
-     * Symbolic constant for nonexistent character code
+     * Symbolic constant for nonexistent character code.
      */
     public static final short NOCHARCODE = -1;
 
     /**
-     * Symbolic constant for index which is not valid
+     * Symbolic constant for index which is not valid.
      */
     public static final int NOINDEX = -1;
 
     /**
-     * Character width
+     * Character width.
      */
-    private TFMFixWord width = TFMFixWord.ZERO;
+    private TfmFixWord width = TfmFixWord.ZERO;
 
     /**
-     * Character height
+     * Character height.
      */
-    private TFMFixWord height = TFMFixWord.ZERO;
+    private TfmFixWord height = TfmFixWord.ZERO;
 
     /**
-     * Character depth
+     * Character depth.
      */
-    private TFMFixWord depth = TFMFixWord.ZERO;
+    private TfmFixWord depth = TfmFixWord.ZERO;
 
     /**
-     * Character italic correction
+     * Character italic correction.
      */
-    private TFMFixWord italic = TFMFixWord.ZERO;
+    private TfmFixWord italic = TfmFixWord.ZERO;
 
     /**
      * Index to newly created ligKernTable which is set
@@ -250,32 +250,32 @@ public class TFMCharInfoWord
     private int ligkernstart = NOINDEX;
 
     /**
-     * Next larger character code
+     * Next larger character code.
      */
     private short nextchar = NOINDEX;
 
     /**
-     * top part chracter code
+     * top part chracter code.
      */
     private short top = NOCHARCODE;
 
     /**
-     * middle part chracter code
+     * middle part chracter code.
      */
     private short mid = NOCHARCODE;
 
     /**
-     * bottom part chracter code
+     * bottom part chracter code.
      */
     private short bot = NOCHARCODE;
 
     /**
-     * repeatable part chracter code
+     * repeatable part chracter code.
      */
     private short rep = NOCHARCODE;
 
     /**
-     * Tag (type-safe class)
+     * Tag (type-safe class).
      */
     private static final class Tag implements Serializable {
 
@@ -400,7 +400,7 @@ public class TFMCharInfoWord
      * Returns the depth.
      * @return Returns the depth.
      */
-    public TFMFixWord getDepth() {
+    public TfmFixWord getDepth() {
 
         return depth;
     }
@@ -409,7 +409,7 @@ public class TFMCharInfoWord
      * Det the depth.
      * @param adepth The depth to set.
      */
-    public void setDepth(final TFMFixWord adepth) {
+    public void setDepth(final TfmFixWord adepth) {
 
         depth = adepth;
     }
@@ -418,7 +418,7 @@ public class TFMCharInfoWord
      * Returns the height.
      * @return Returns the height.
      */
-    public TFMFixWord getHeight() {
+    public TfmFixWord getHeight() {
 
         return height;
     }
@@ -427,7 +427,7 @@ public class TFMCharInfoWord
      * Set the height.
      * @param aheight The height to set.
      */
-    public void setHeight(final TFMFixWord aheight) {
+    public void setHeight(final TfmFixWord aheight) {
 
         height = aheight;
     }
@@ -436,16 +436,16 @@ public class TFMCharInfoWord
      * Returns the italic.
      * @return Returns the italic.
      */
-    public TFMFixWord getItalic() {
+    public TfmFixWord getItalic() {
 
         return italic;
     }
 
     /**
-     * Set the italic
+     * Set the italic.
      * @param aitalic The italic to set.
      */
-    public void setItalic(final TFMFixWord aitalic) {
+    public void setItalic(final TfmFixWord aitalic) {
 
         italic = aitalic;
     }
@@ -526,16 +526,16 @@ public class TFMCharInfoWord
      * Returns the width.
      * @return Returns the width.
      */
-    public TFMFixWord getWidth() {
+    public TfmFixWord getWidth() {
 
         return width;
     }
 
     /**
-     * Set the width
+     * Set the width.
      * @param awidth The width to set.
      */
-    public void setWidth(final TFMFixWord awidth) {
+    public void setWidth(final TfmFixWord awidth) {
 
         width = awidth;
     }
@@ -561,21 +561,21 @@ public class TFMCharInfoWord
     }
 
     /**
-     * Lig/kern programs in the final format
+     * Lig/kern programs in the final format.
      */
-    private TFMLigKern[] ligKernTable;
+    private TfmLigKern[] ligKernTable;
 
     /**
-     * Set the ligKernTable
+     * Set the ligKernTable.
      * @param lk    The ligKernTable to set.
      */
-    public void setLigKernTable(final TFMLigKern[] lk) {
+    public void setLigKernTable(final TfmLigKern[] lk) {
 
         ligKernTable = lk;
     }
 
     /**
-     * the glyphname
+     * the glyphname.
      */
     private String glyphname;
 
@@ -639,15 +639,15 @@ public class TFMCharInfoWord
 
                 for (int k = ligstart; k != NOINDEX; k = ligKernTable[k]
                         .nextIndex(k)) {
-                    TFMLigKern lk = ligKernTable[k];
+                    TfmLigKern lk = ligKernTable[k];
 
-                    if (lk instanceof TFMLigature) {
-                        TFMLigature lig = (TFMLigature) lk;
+                    if (lk instanceof TfmLigature) {
+                        TfmLigature lig = (TfmLigature) lk;
 
                         out.plopen("LIG").addChar(lig.getNextChar()).addChar(
                                 lig.getAddingChar()).plclose();
-                    } else if (lk instanceof TFMKerning) {
-                        TFMKerning kern = (TFMKerning) lk;
+                    } else if (lk instanceof TfmKerning) {
+                        TfmKerning kern = (TfmKerning) lk;
 
                         out.plopen("KRN").addChar(kern.getNextChar()).addReal(
                                 kern.getKern()).plclose();
@@ -659,7 +659,7 @@ public class TFMCharInfoWord
     }
 
     /**
-     * Add glyph to the element
+     * Add glyph to the element.
      * @param glyph   the element
      */
     public void addGlyph(final Element glyph) {
@@ -675,14 +675,14 @@ public class TFMCharInfoWord
 
         // ligature
         int ligstart = getLigkernstart();
-        if (ligstart != TFMCharInfoWord.NOINDEX) {
+        if (ligstart != TfmCharInfoWord.NOINDEX) {
 
-            for (int k = ligstart; k != TFMCharInfoWord.NOINDEX; k = ligKernTable[k]
+            for (int k = ligstart; k != TfmCharInfoWord.NOINDEX; k = ligKernTable[k]
                     .nextIndex(k)) {
-                TFMLigKern lk = ligKernTable[k];
+                TfmLigKern lk = ligKernTable[k];
 
-                if (lk instanceof TFMLigature) {
-                    TFMLigature lig = (TFMLigature) lk;
+                if (lk instanceof TfmLigature) {
+                    TfmLigature lig = (TfmLigature) lk;
 
                     Element ligature = new Element("ligature");
 
@@ -701,8 +701,8 @@ public class TFMCharInfoWord
                         ligature.setAttribute("lig", slig.trim());
                     }
                     glyph.addContent(ligature);
-                } else if (lk instanceof TFMKerning) {
-                    TFMKerning kern = (TFMKerning) lk;
+                } else if (lk instanceof TfmKerning) {
+                    TfmKerning kern = (TfmKerning) lk;
 
                     Element kerning = new Element("kerning");
 
@@ -741,13 +741,13 @@ public class TFMCharInfoWord
             found = true;
         } else {
             int ligstart = getLigkernstart();
-            if (ligstart != TFMCharInfoWord.NOINDEX && ligKernTable != null) {
+            if (ligstart != TfmCharInfoWord.NOINDEX && ligKernTable != null) {
 
-                for (int k = ligstart; k != TFMCharInfoWord.NOINDEX; k = ligKernTable[k]
+                for (int k = ligstart; k != TfmCharInfoWord.NOINDEX; k = ligKernTable[k]
                         .nextIndex(k)) {
-                    TFMLigKern lk = ligKernTable[k];
+                    TfmLigKern lk = ligKernTable[k];
 
-                    if (lk instanceof TFMLigature || lk instanceof TFMKerning) {
+                    if (lk instanceof TfmLigature || lk instanceof TfmKerning) {
                         found = true;
                         break;
                     }
@@ -842,10 +842,10 @@ public class TFMCharInfoWord
 
             for (int k = ligstart; k != NOINDEX; k = ligKernTable[k]
                     .nextIndex(k)) {
-                TFMLigKern lk = ligKernTable[k];
+                TfmLigKern lk = ligKernTable[k];
 
-                if (lk instanceof TFMLigature) {
-                    TFMLigature lig = (TFMLigature) lk;
+                if (lk instanceof TfmLigature) {
+                    TfmLigature lig = (TfmLigature) lk;
 
                     writer.writeStartElement("ligature");
                     writer.writeAttribute("letter-id", String.valueOf(lig
@@ -863,8 +863,8 @@ public class TFMCharInfoWord
                         writer.writeAttribute("lig", slig.trim());
                     }
                     writer.writeEndElement();
-                } else if (lk instanceof TFMKerning) {
-                    TFMKerning kern = (TFMKerning) lk;
+                } else if (lk instanceof TfmKerning) {
+                    TfmKerning kern = (TfmKerning) lk;
 
                     writer.writeStartElement("kerning");
                     writer.writeAttribute("id", String.valueOf(kern

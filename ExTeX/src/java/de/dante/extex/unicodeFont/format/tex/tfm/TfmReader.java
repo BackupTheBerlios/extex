@@ -42,7 +42,7 @@ import de.dante.util.xml.XMLStreamWriter;
  * @see <a href="package-summary.html#TFMformat">TFM-Format</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class TfmReader
         implements
@@ -69,17 +69,17 @@ public class TfmReader
         fontname = afontname;
 
         // read the input
-        lengths = new TFMHeaderLengths(rar);
+        lengths = new TfmHeaderLengths(rar);
         header = new TfmHeaderArray(rar, lengths.getLh());
-        charinfo = new TFMCharInfoArray(rar, lengths.getCc());
-        width = new TFMWidthArray(rar, lengths.getNw());
-        height = new TFMHeightArray(rar, lengths.getNh());
-        depth = new TFMDepthArray(rar, lengths.getNd());
-        italic = new TFMItalicArray(rar, lengths.getNi());
-        ligkern = new TFMLigKernArray(rar, lengths.getNl());
-        kern = new TFMKernArray(rar, lengths.getNk());
-        exten = new TFMExtenArray(rar, lengths.getNe());
-        param = new TFMParamArray(rar, lengths.getNp(), header.getFontype());
+        charinfo = new TfmCharInfoArray(rar, lengths.getCc());
+        width = new TfmWidthArray(rar, lengths.getNw());
+        height = new TfmHeightArray(rar, lengths.getNh());
+        depth = new TfmDepthArray(rar, lengths.getNd());
+        italic = new TfmItalicArray(rar, lengths.getNi());
+        ligkern = new TfmLigKernArray(rar, lengths.getNl());
+        kern = new TfmKernArray(rar, lengths.getNk());
+        exten = new TfmExtenArray(rar, lengths.getNe());
+        param = new TfmParamArray(rar, lengths.getNp(), header.getFontype());
 
         // close input
         rar.close();
@@ -96,7 +96,7 @@ public class TfmReader
     /**
      * the lengths in the file
      */
-    private TFMHeaderLengths lengths;
+    private TfmHeaderLengths lengths;
 
     /**
      * the header
@@ -106,53 +106,53 @@ public class TfmReader
     /**
      * the char info
      */
-    private TFMCharInfoArray charinfo;
+    private TfmCharInfoArray charinfo;
 
     /**
      * the width
      */
-    private TFMWidthArray width;
+    private TfmWidthArray width;
 
     /**
      * the height
      */
-    private TFMHeightArray height;
+    private TfmHeightArray height;
 
     /**
      * the depth
      */
-    private TFMDepthArray depth;
+    private TfmDepthArray depth;
 
     /**
      * the italic
      */
-    private TFMItalicArray italic;
+    private TfmItalicArray italic;
 
     /**
      * the lig/kern array
      */
-    private TFMLigKernArray ligkern;
+    private TfmLigKernArray ligkern;
 
     /**
      * the kern
      */
-    private TFMKernArray kern;
+    private TfmKernArray kern;
 
     /**
      * the exten
      */
-    private TFMExtenArray exten;
+    private TfmExtenArray exten;
 
     /**
      * the param
      */
-    private TFMParamArray param;
+    private TfmParamArray param;
 
     /**
      * Returns the charinfo.
      * @return Returns the charinfo.
      */
-    public TFMCharInfoArray getCharinfo() {
+    public TfmCharInfoArray getCharinfo() {
 
         return charinfo;
     }
@@ -161,7 +161,7 @@ public class TfmReader
      * Returns the depth.
      * @return Returns the depth.
      */
-    public TFMDepthArray getDepth() {
+    public TfmDepthArray getDepth() {
 
         return depth;
     }
@@ -188,7 +188,7 @@ public class TfmReader
      * Returns the exten.
      * @return Returns the exten.
      */
-    public TFMExtenArray getExten() {
+    public TfmExtenArray getExten() {
 
         return exten;
     }
@@ -224,7 +224,7 @@ public class TfmReader
      * Returns the height.
      * @return Returns the height.
      */
-    public TFMHeightArray getHeight() {
+    public TfmHeightArray getHeight() {
 
         return height;
     }
@@ -233,7 +233,7 @@ public class TfmReader
      * Returns the italic.
      * @return Returns the italic.
      */
-    public TFMItalicArray getItalic() {
+    public TfmItalicArray getItalic() {
 
         return italic;
     }
@@ -242,7 +242,7 @@ public class TfmReader
      * Returns the kern.
      * @return Returns the kern.
      */
-    public TFMKernArray getKern() {
+    public TfmKernArray getKern() {
 
         return kern;
     }
@@ -251,7 +251,7 @@ public class TfmReader
      * Returns the lengths.
      * @return Returns the lengths.
      */
-    public TFMHeaderLengths getLengths() {
+    public TfmHeaderLengths getLengths() {
 
         return lengths;
     }
@@ -260,7 +260,7 @@ public class TfmReader
      * Returns the ligkern.
      * @return Returns the ligkern.
      */
-    public TFMLigKernArray getLigkern() {
+    public TfmLigKernArray getLigkern() {
 
         return ligkern;
     }
@@ -269,7 +269,7 @@ public class TfmReader
      * Returns the param.
      * @return Returns the param.
      */
-    public TFMParamArray getParam() {
+    public TfmParamArray getParam() {
 
         return param;
     }
@@ -305,7 +305,7 @@ public class TfmReader
      * Returns the width.
      * @return Returns the width.
      */
-    public TFMWidthArray getWidth() {
+    public TfmWidthArray getWidth() {
 
         return width;
     }

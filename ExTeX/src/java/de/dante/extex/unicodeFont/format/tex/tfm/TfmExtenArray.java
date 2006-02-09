@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -27,9 +27,14 @@ import de.dante.util.file.random.RandomAccessR;
 import de.dante.util.xml.XMLStreamWriter;
 
 /**
- * Class for TFM height table.
+ * Class for TFM exten array.
  *
- * <p>width : array [0 .. (nh-1)] of fix word</p>
+ * <p>
+ * Extensible characters are specified by an extensible_recipe,
+ * which consists of four bytes called top, mid, bot, and
+ * rep (in this order). These bytes are the character codes of
+ * individual pieces used to build up a large symbol.
+ * </p>
  *
  * <p>
  * Information from:
@@ -41,37 +46,35 @@ import de.dante.util.xml.XMLStreamWriter;
  * @version $Revision: 1.1 $
  */
 
-public class TFMHeightArray implements XMLWriterConvertible, Serializable {
+public class TfmExtenArray implements XMLWriterConvertible, Serializable {
 
     /**
-     * the height table
+     * the array.
      */
-    private TFMFixWord[] table;
+    private TfmExtensibleRecipe[] extensiblerecipe;
 
     /**
-     * Create a new object
+     * Create a new object.
      * @param rar   the input
-     * @param size  number of words in the table
+     * @param ne    number of words in the extensible character table
      * @throws IOException if an IO-error occurs.
      */
-    public TFMHeightArray(final RandomAccessR rar, final int size)
+    public TfmExtenArray(final RandomAccessR rar, final short ne)
             throws IOException {
 
-        table = new TFMFixWord[size];
-
-        for (int i = 0; i < size; i++) {
-            table[i] = new TFMFixWord(rar.readInt(),
-                    TFMFixWord.FIXWORDDENOMINATOR);
+        extensiblerecipe = new TfmExtensibleRecipe[ne];
+        for (int i = 0; i < ne; i++) {
+            extensiblerecipe[i] = new TfmExtensibleRecipe(rar, i);
         }
     }
 
     /**
-     * Returns the table.
-     * @return Returns the table.
+     * Returns the extensiblerecipe.
+     * @return Returns the extensiblerecipe.
      */
-    public TFMFixWord[] getTable() {
+    public TfmExtensibleRecipe[] getExtensiblerecipe() {
 
-        return table;
+        return extensiblerecipe;
     }
 
     /**
@@ -79,14 +82,9 @@ public class TFMHeightArray implements XMLWriterConvertible, Serializable {
      */
     public void writeXML(final XMLStreamWriter writer) throws IOException {
 
-        writer.writeStartElement("heighttable");
-        for (int i = 0; i < table.length; i++) {
-            writer.writeStartElement("height");
-            writer.writeAttribute("id", String.valueOf(i));
-            writer.writeAttribute("value_fw", String.valueOf(table[i]
-                    .getValue()));
-            writer.writeAttribute("value", table[i].toStringComma());
-            writer.writeEndElement();
+        writer.writeStartElement("exten");
+        for (int i = 0; i < extensiblerecipe.length; i++) {
+            extensiblerecipe[i].writeXML(writer);
         }
         writer.writeEndElement();
     }

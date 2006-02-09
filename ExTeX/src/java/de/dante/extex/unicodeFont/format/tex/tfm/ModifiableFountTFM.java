@@ -39,7 +39,7 @@ import de.dante.util.UnicodeChar;
  * Adapter for a ModifiableFount for TFM.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ModifiableFountTFM implements ModifiableFount, Serializable {
 
@@ -106,8 +106,8 @@ public class ModifiableFountTFM implements ModifiableFount, Serializable {
      */
     private void setFontDimenValues() {
 
-        TFMParamArray param = font.getParam();
-        TFMFixWord[] fw = param.getTable();
+        TfmParamArray param = font.getParam();
+        TfmFixWord[] fw = param.getTable();
         for (int i = 0; i < fw.length; i++) {
             String labelname = param.getLabelName(i);
             Dimen d = convertFixWordToDimen(fw[i]);
@@ -163,8 +163,8 @@ public class ModifiableFountTFM implements ModifiableFount, Serializable {
 
         Glyph g = (Glyph) glyphmap.get(c);
         if (g == null) {
-            TFMCharInfoArray charinfo = font.getCharinfo();
-            TFMCharInfoWord ci = charinfo.getCharInfoWord(c.getCodePoint());
+            TfmCharInfoArray charinfo = font.getCharinfo();
+            TfmCharInfoWord ci = charinfo.getCharInfoWord(c.getCodePoint());
 
             g = new GlyphImpl();
             if (ci != null) {
@@ -177,20 +177,20 @@ public class ModifiableFountTFM implements ModifiableFount, Serializable {
                 g.setHeight(convertFixWordToDimen(ci.getHeight()));
                 g.setItalicCorrection(convertFixWordToDimen(ci.getItalic()));
 
-                TFMLigKern[] ligKernTable = font.getLigkern().getLigKernTable();
+                TfmLigKern[] ligKernTable = font.getLigkern().getLigKernTable();
 
                 // ligature and kerning
                 if (fountkey.isLigatures() || fountkey.isKerning()) {
                     int ligstart = ci.getLigkernstart();
-                    if (ligstart != TFMCharInfoWord.NOINDEX) {
+                    if (ligstart != TfmCharInfoWord.NOINDEX) {
 
-                        for (int k = ligstart; k != TFMCharInfoWord.NOINDEX; k = ligKernTable[k]
+                        for (int k = ligstart; k != TfmCharInfoWord.NOINDEX; k = ligKernTable[k]
                                 .nextIndex(k)) {
-                            TFMLigKern lk = ligKernTable[k];
+                            TfmLigKern lk = ligKernTable[k];
 
-                            if (lk instanceof TFMLigature) {
+                            if (lk instanceof TfmLigature) {
                                 if (fountkey.isLigatures()) {
-                                    TFMLigature lig = (TFMLigature) lk;
+                                    TfmLigature lig = (TfmLigature) lk;
 
                                     Ligature lv = new Ligature();
                                     lv.setLetterid(String.valueOf(lig
@@ -210,9 +210,9 @@ public class ModifiableFountTFM implements ModifiableFount, Serializable {
                                     }
                                     g.addLigature(lv);
                                 }
-                            } else if (lk instanceof TFMKerning) {
+                            } else if (lk instanceof TfmKerning) {
                                 if (fountkey.isKerning()) {
-                                    TFMKerning kern = (TFMKerning) lk;
+                                    TfmKerning kern = (TfmKerning) lk;
 
                                     Kerning kv = new Kerning();
                                     kv
@@ -255,7 +255,7 @@ public class ModifiableFountTFM implements ModifiableFount, Serializable {
      * @param fw    the fixword value
      * @return Returns the Dimen value.
      */
-    private Dimen convertFixWordToDimen(final TFMFixWord fw) {
+    private Dimen convertFixWordToDimen(final TfmFixWord fw) {
 
         int shift = 20;
         long z = actualsize.getValue();

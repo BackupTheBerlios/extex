@@ -61,7 +61,7 @@ import de.dante.util.xml.XMLStreamWriter;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TfmHeaderArray
         implements
@@ -77,7 +77,7 @@ public class TfmHeaderArray
     /**
      * header[1]: design size
      */
-    private TFMFixWord designsize;
+    private TfmFixWord designsize;
 
     /**
      * header[2..11]: coding scheme
@@ -136,25 +136,25 @@ public class TfmHeaderArray
         int hr = lh;
         checksum = rar.readInt();
         hr--;
-        designsize = new TFMFixWord(rar.readInt(),
-                TFMFixWord.FIXWORDDENOMINATOR);
+        designsize = new TfmFixWord(rar.readInt(),
+                TfmFixWord.FIXWORDDENOMINATOR);
         hr--;
 
         // optional: coding scheme
         if (hr >= CODING_SCHEME_SIZE) {
-            codingscheme = readBCPL(rar, TFMConstants.CONST_4
+            codingscheme = readBCPL(rar, TfmConstants.CONST_4
                     * CODING_SCHEME_SIZE);
             fonttype = new TfmFontType(codingscheme);
             hr -= CODING_SCHEME_SIZE;
 
             // optional: font family
             if (hr >= FONT_FAMILY_SIZE) {
-                fontfamily = readBCPL(rar, TFMConstants.CONST_4
+                fontfamily = readBCPL(rar, TfmConstants.CONST_4
                         * FONT_FAMILY_SIZE);
                 hr -= FONT_FAMILY_SIZE;
                 // optional: seven_bit_safe_flag
                 if (hr >= 1) {
-                    sevenBitSafe = (rar.readByte() > TFMConstants.CONST_127);
+                    sevenBitSafe = (rar.readByte() > TfmConstants.CONST_127);
                     // ignore 2 bytes
                     rar.skipBytes(2);
                     // face
@@ -218,7 +218,7 @@ public class TfmHeaderArray
      * Returns the designsize.
      * @return Returns the designsize.
      */
-    public TFMFixWord getDesignsize() {
+    public TfmFixWord getDesignsize() {
 
         return designsize;
     }
@@ -306,7 +306,7 @@ public class TfmHeaderArray
         writer.writeStartElement("header");
         writer.writeAttribute("checksum", String.valueOf(checksum));
         writer.writeAttribute("desingsize", designsize.toString());
-        writer.writeAttribute("units", String.valueOf(TFMConstants.CONST_1000));
+        writer.writeAttribute("units", String.valueOf(TfmConstants.CONST_1000));
         if (codingscheme != null) {
             writer.writeAttribute("codingscheme", codingscheme);
         }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -55,40 +55,41 @@ import de.dante.util.xml.XMLStreamWriter;
  * @version $Revision: 1.1 $
  */
 
-public class TFMLigKernCommand implements XMLWriterConvertible, Serializable {
+public class TfmLigKernCommand implements XMLWriterConvertible, Serializable {
 
     /**
-     * the skipbyte
+     * the skipbyte.
      */
     private byte skipbyte;
 
     /**
-     * the nextchar
+     * the nextchar.
      */
     private byte nextchar;
 
     /**
-     * the opbyte
+     * the opbyte.
      */
     private byte opbyte;
 
     /**
-     * the remainder
+     * the remainder.
      */
     private byte remainder;
 
     /**
-     * the lig/kern id
+     * the lig/kern id.
      */
     private int lkid;
 
     /**
-     * Create a new object
+     * Create a new object.
+     *
      * @param rar   the input
      * @param id    the id
      * @throws IOException if an IO-error occurs.
      */
-    public TFMLigKernCommand(final RandomAccessR rar, final int id)
+    public TfmLigKernCommand(final RandomAccessR rar, final int id)
             throws IOException {
 
         lkid = id;
@@ -110,7 +111,7 @@ public class TFMLigKernCommand implements XMLWriterConvertible, Serializable {
     private static final short STOPFLAG = 128;
 
     /**
-     * Value of opbyte which indicates the kerning instruction
+     * Value of opbyte which indicates the kerning instruction.
      */
     private static final short KERNFLAG = 128;
 
@@ -120,7 +121,7 @@ public class TFMLigKernCommand implements XMLWriterConvertible, Serializable {
      */
     public short skipbyte() {
 
-        return (short) (skipbyte & TFMConstants.CONST_XFF);
+        return (short) (skipbyte & TfmConstants.CONST_XFF);
     }
 
     /**
@@ -129,7 +130,7 @@ public class TFMLigKernCommand implements XMLWriterConvertible, Serializable {
      */
     public short opbyte() {
 
-        return (short) (opbyte & TFMConstants.CONST_XFF);
+        return (short) (opbyte & TfmConstants.CONST_XFF);
     }
 
     /**
@@ -139,7 +140,7 @@ public class TFMLigKernCommand implements XMLWriterConvertible, Serializable {
      */
     public short remainder() {
 
-        return (short) (remainder & TFMConstants.CONST_XFF);
+        return (short) (remainder & TfmConstants.CONST_XFF);
     }
 
     /**
@@ -206,7 +207,7 @@ public class TFMLigKernCommand implements XMLWriterConvertible, Serializable {
      */
     public short nextChar() {
 
-        return (short) (nextchar & TFMConstants.CONST_XFF);
+        return (short) (nextchar & TfmConstants.CONST_XFF);
     }
 
     /**
@@ -227,7 +228,7 @@ public class TFMLigKernCommand implements XMLWriterConvertible, Serializable {
      */
     public int restartIndex() {
 
-        return (opbyte() << TFMConstants.CONST_8) + remainder();
+        return (opbyte() << TfmConstants.CONST_8) + remainder();
     }
 
     /**
@@ -248,7 +249,7 @@ public class TFMLigKernCommand implements XMLWriterConvertible, Serializable {
      */
     public int kernIndex() {
 
-        return (opbyte() - KERNFLAG << TFMConstants.CONST_8) + remainder();
+        return (opbyte() - KERNFLAG << TfmConstants.CONST_8) + remainder();
     }
 
     /**
@@ -332,6 +333,7 @@ public class TFMLigKernCommand implements XMLWriterConvertible, Serializable {
     private Activity activity = UNREACHABLE;
 
     /**
+     * Returns the activity.
      * @return Returns the activity.
      */
     public Activity getActivity() {
@@ -340,7 +342,7 @@ public class TFMLigKernCommand implements XMLWriterConvertible, Serializable {
     }
 
     /**
-     * Set the new value for actifity
+     * Set the new value for actifity.
      *
      * @param act The activity to set.
      */

@@ -50,7 +50,7 @@ import de.dante.util.resource.PropertyConfigurable;
  * TODO add EE00 from Unicode
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 
 public class TfmFont
@@ -112,8 +112,8 @@ public class TfmFont
      */
     private void setFontDimenValues() {
 
-        TFMParamArray param = tfmReader.getParam();
-        TFMFixWord[] fw = param.getTable();
+        TfmParamArray param = tfmReader.getParam();
+        TfmFixWord[] fw = param.getTable();
         for (int i = 0; i < fw.length; i++) {
             String labelname = param.getLabelName(i);
             Dimen d = convertFixWordToDimen(fw[i], designsize);
@@ -144,9 +144,9 @@ public class TfmFont
      *              (design size for font dimen, actual size for all others)
      * @return Returns the Dimen value.
      */
-    private Dimen convertFixWordToDimen(final TFMFixWord fw, final Dimen size) {
+    private Dimen convertFixWordToDimen(final TfmFixWord fw, final Dimen size) {
 
-        int shift = TFMFixWord.POINTSHIFT;
+        int shift = TfmFixWord.POINTSHIFT;
         long z = size.getValue();
         while (z >= MAX_FIXWORD_VALUE) {
             z >>= 1;
@@ -156,12 +156,12 @@ public class TfmFont
     }
 
     /**
-     * the maximal value for fix word to calculate the dimen value
+     * the maximal value for fix word to calculate the dimen value.
      */
     private static final int MAX_FIXWORD_VALUE = 8388608;
 
     /**
-     * Calculate the sizes
+     * Calculate the sizes.
      */
     private void calculateSize() {
 
@@ -181,14 +181,14 @@ public class TfmFont
     }
 
     /**
-     * the Unicode char of the last query
+     * the Unicode char of the last query.
      */
     private transient UnicodeChar lastuc = null;
 
     /**
-     * the char info word of the last query
+     * the char info word of the last query.
      */
-    private transient TFMCharInfoWord ci = null;
+    private transient TfmCharInfoWord ci = null;
 
     /**
      * @see de.dante.extex.unicodeFont.type.ExtexFont#getDepth(
@@ -197,7 +197,7 @@ public class TfmFont
     public Glue getDepth(final UnicodeChar uc) {
 
         if (!(uc.equals(lastuc) && ci != null)) {
-            TFMCharInfoArray charinfo = tfmReader.getCharinfo();
+            TfmCharInfoArray charinfo = tfmReader.getCharinfo();
             ci = charinfo.getCharInfoWord(uc.getCodePoint());
             lastuc = uc;
         }
@@ -272,7 +272,7 @@ public class TfmFont
     public Glue getHeight(final UnicodeChar uc) {
 
         if (!(uc.equals(lastuc) && ci != null)) {
-            TFMCharInfoArray charinfo = tfmReader.getCharinfo();
+            TfmCharInfoArray charinfo = tfmReader.getCharinfo();
             ci = charinfo.getCharInfoWord(uc.getCodePoint());
             lastuc = uc;
         }
@@ -289,7 +289,7 @@ public class TfmFont
     public Dimen getItalicCorrection(final UnicodeChar uc) {
 
         if (!(uc.equals(lastuc) && ci != null)) {
-            TFMCharInfoArray charinfo = tfmReader.getCharinfo();
+            TfmCharInfoArray charinfo = tfmReader.getCharinfo();
             ci = charinfo.getCharInfoWord(uc.getCodePoint());
             lastuc = uc;
         }
@@ -305,22 +305,22 @@ public class TfmFont
      */
     public Dimen getKerning(final UnicodeChar uc1, final UnicodeChar uc2) {
 
-        TFMLigKern[] ligKernTable = tfmReader.getLigkern().getLigKernTable();
+        TfmLigKern[] ligKernTable = tfmReader.getLigkern().getLigKernTable();
         if (!(uc1.equals(lastuc) && ci != null)) {
-            TFMCharInfoArray charinfo = tfmReader.getCharinfo();
+            TfmCharInfoArray charinfo = tfmReader.getCharinfo();
             ci = charinfo.getCharInfoWord(uc1.getCodePoint());
             lastuc = uc1;
         }
 
         if (ci != null) {
             int ligstart = ci.getLigkernstart();
-            if (ligstart != TFMCharInfoWord.NOINDEX) {
+            if (ligstart != TfmCharInfoWord.NOINDEX) {
 
-                for (int k = ligstart; k != TFMCharInfoWord.NOINDEX; k = ligKernTable[k]
+                for (int k = ligstart; k != TfmCharInfoWord.NOINDEX; k = ligKernTable[k]
                         .nextIndex(k)) {
-                    TFMLigKern lk = ligKernTable[k];
-                    if (lk instanceof TFMKerning) {
-                        TFMKerning kern = (TFMKerning) lk;
+                    TfmLigKern lk = ligKernTable[k];
+                    if (lk instanceof TfmKerning) {
+                        TfmKerning kern = (TfmKerning) lk;
 
                         if (uc2.getCodePoint() == kern.getNextChar()) {
                             return convertFixWordToDimen(kern.getKern(),
@@ -339,22 +339,22 @@ public class TfmFont
      */
     public UnicodeChar getLigature(final UnicodeChar uc1, final UnicodeChar uc2) {
 
-        TFMLigKern[] ligKernTable = tfmReader.getLigkern().getLigKernTable();
+        TfmLigKern[] ligKernTable = tfmReader.getLigkern().getLigKernTable();
         if (!(uc1.equals(lastuc) && ci != null)) {
-            TFMCharInfoArray charinfo = tfmReader.getCharinfo();
+            TfmCharInfoArray charinfo = tfmReader.getCharinfo();
             ci = charinfo.getCharInfoWord(uc1.getCodePoint());
             lastuc = uc1;
         }
 
         if (ci != null) {
             int ligstart = ci.getLigkernstart();
-            if (ligstart != TFMCharInfoWord.NOINDEX) {
+            if (ligstart != TfmCharInfoWord.NOINDEX) {
 
-                for (int k = ligstart; k != TFMCharInfoWord.NOINDEX; k = ligKernTable[k]
+                for (int k = ligstart; k != TfmCharInfoWord.NOINDEX; k = ligKernTable[k]
                         .nextIndex(k)) {
-                    TFMLigKern lk = ligKernTable[k];
-                    if (lk instanceof TFMLigature) {
-                        TFMLigature lig = (TFMLigature) lk;
+                    TfmLigKern lk = ligKernTable[k];
+                    if (lk instanceof TfmLigature) {
+                        TfmLigature lig = (TfmLigature) lk;
 
                         if (uc2.getCodePoint() == lig.getNextChar()) {
                             return new UnicodeChar(lig.getAddingChar());
@@ -416,7 +416,7 @@ public class TfmFont
     public Glue getWidth(final UnicodeChar uc) {
 
         if (!(uc.equals(lastuc) && ci != null)) {
-            TFMCharInfoArray charinfo = tfmReader.getCharinfo();
+            TfmCharInfoArray charinfo = tfmReader.getCharinfo();
             ci = charinfo.getCharInfoWord(uc.getCodePoint());
             lastuc = uc;
         }
@@ -515,7 +515,7 @@ public class TfmFont
     }
 
     /**
-     * the logger
+     * the logger.
      */
     private transient Logger logger;
 
@@ -529,7 +529,7 @@ public class TfmFont
     }
 
     /**
-     * the properties
+     * the properties.
      */
     private transient Properties properties;
 
@@ -543,7 +543,7 @@ public class TfmFont
     }
 
     /**
-     * the input stream
+     * the input stream.
      */
     private transient InputStream in;
 

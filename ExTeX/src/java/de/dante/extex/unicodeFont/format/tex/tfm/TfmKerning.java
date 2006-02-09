@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -22,49 +22,40 @@ package de.dante.extex.unicodeFont.format.tex.tfm;
 import java.io.Serializable;
 
 /**
- * TFM: key-value-container
+ * TFM-Kerning.
+ * <p>
+ * Kerning instruction
+ * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @version $Revision: 1.1 $
  */
-
-public class TFMKeyInt implements Serializable {
-
-    /**
-     * key
-     */
-    private int key;
+public class TfmKerning extends TfmLigKern implements Serializable {
 
     /**
-     * int-value
-     */
-    private int val;
-
-    /**
-     * Create a new object
+     * Create a new object.
      *
-     * @param k the key
-     * @param v the value
+     * @param skip  the skip amount to the next instruction.
+     * @param next  the code of the next character.
+     * @param k     the amount of kerning between the current and
+     *              the next characters.
      */
-    TFMKeyInt(final int k, final int v) {
+    public TfmKerning(final int skip, final short next, final TfmFixWord k) {
 
-        key = k;
-        val = v;
+        super(skip, next);
+        kern = k;
     }
 
     /**
-     * @return Returns the key.
+     * The amount of kerning.
      */
-    public int getKey() {
-
-        return key;
-    }
+    private TfmFixWord kern;
 
     /**
-     * @return Returns the val.
+     * @see de.dante.extex.font.type.tfm.TFMLigKern#getKern()
      */
-    public int getVal() {
+    public TfmFixWord getKern() {
 
-        return val;
+        return kern;
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -31,18 +31,18 @@ import java.util.ArrayList;
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @version $Revision: 1.1 $
  */
-public class TFMIndexMultimap implements Serializable {
+public class TfmIndexMultimap implements Serializable {
 
     /**
-     * Create a new object
+     * Create a new object.
      */
-    public TFMIndexMultimap() {
+    public TfmIndexMultimap() {
 
         super();
     }
 
     /**
-     * Internal storage of (key, value) pairs
+     * Internal storage of (key, value) pairs.
      */
     private ArrayList data = new ArrayList();
 
@@ -62,9 +62,9 @@ public class TFMIndexMultimap implements Serializable {
      * @param i the position of pair to be examined.
      * @return Return the pair at given position.
      */
-    public TFMKeyInt at(final int i) {
+    public TfmKeyInt at(final int i) {
 
-        return (TFMKeyInt) data.get(i);
+        return (TfmKeyInt) data.get(i);
     }
 
     /**
@@ -73,7 +73,7 @@ public class TFMIndexMultimap implements Serializable {
      * @param p the pair to be inserted.
      * @param i the position to be inserted to.
      */
-    public void insert(final TFMKeyInt p, final int i) {
+    public void insert(final TfmKeyInt p, final int i) {
 
         data.add(i, p);
     }
@@ -91,7 +91,7 @@ public class TFMIndexMultimap implements Serializable {
         int end = size();
         while (beg < end) {
             int med = (beg + end) / 2;
-            TFMKeyInt p = at(med);
+            TfmKeyInt p = at(med);
             if (key < p.getKey()) {
                 end = med;
             } else if (key > p.getKey()) {
@@ -116,7 +116,7 @@ public class TFMIndexMultimap implements Serializable {
             while (pos < size() && at(pos).getKey() == key) {
                 pos++;
             }
-            insert(new TFMKeyInt(key, val), pos);
+            insert(new TfmKeyInt(key, val), pos);
         }
     }
 
@@ -155,12 +155,12 @@ public class TFMIndexMultimap implements Serializable {
         }
 
         /**
-         * the current position in the sequence of pairs
+         * the current position in the sequence of pairs.
          */
         private int pos;
 
         /**
-         * the key for which the values are required
+         * the key for which the values are required.
          */
         private final int key;
 

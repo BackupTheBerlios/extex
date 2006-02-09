@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -22,7 +22,7 @@ package de.dante.extex.unicodeFont.format.tex.tfm;
 import java.io.Serializable;
 
 /**
- * TFM-Ligature
+ * TFM-Ligature.
  * <p>
  * Ligature instruction
  * </p>
@@ -30,10 +30,10 @@ import java.io.Serializable;
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @version $Revision: 1.1 $
  */
-public class TFMLigature extends TFMLigKern implements Serializable {
+public class TfmLigature extends TfmLigKern implements Serializable {
 
     /**
-     * Create a new object
+     * Create a new object.
      *
      * @param skip  the skip amount to the next instruction.
      * @param next  the code of the next character.
@@ -44,7 +44,7 @@ public class TFMLigature extends TFMLigKern implements Serializable {
      * @param s     number of characters from the current one to be stepped
      *              over after performing of this instruction.
      */
-    public TFMLigature(final int skip, final short next, final short a,
+    public TfmLigature(final int skip, final short next, final short a,
             final boolean l, final boolean r, final byte s) {
 
         super(skip, next);
@@ -68,12 +68,12 @@ public class TFMLigature extends TFMLigKern implements Serializable {
      */
 
     /**
-     * Indication that the current character should not be removed
+     * Indication that the current character should not be removed.
      */
     private boolean keepLeft;
 
     /**
-     * Indication that the next character should not be removed
+     * Indication that the next character should not be removed.
      */
     private boolean keepRight;
 
@@ -84,6 +84,7 @@ public class TFMLigature extends TFMLigKern implements Serializable {
     private byte stepOver;
 
     /**
+     * Returns the addingChar.
      * @return Returns the addingChar.
      */
     public short getAddingChar() {
@@ -92,6 +93,7 @@ public class TFMLigature extends TFMLigKern implements Serializable {
     }
 
     /**
+     * Returns the keepLeft.
      * @return Returns the keepLeft.
      */
     public boolean isKeepLeft() {
@@ -100,6 +102,7 @@ public class TFMLigature extends TFMLigKern implements Serializable {
     }
 
     /**
+     * Returns the keepRight.
      * @return Returns the keepRight.
      */
     public boolean isKeepRight() {
@@ -108,6 +111,7 @@ public class TFMLigature extends TFMLigKern implements Serializable {
     }
 
     /**
+     * Returns the stepOver.
      * @return Returns the stepOver.
      */
     public byte getStepOver() {

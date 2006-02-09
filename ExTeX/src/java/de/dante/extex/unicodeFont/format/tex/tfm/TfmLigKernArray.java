@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -104,55 +104,56 @@ import de.dante.util.xml.XMLStreamWriter;
  * @version $Revision: 1.1 $
  */
 
-public class TFMLigKernArray
+public class TfmLigKernArray
         implements
             XMLWriterConvertible,
             PlFormat,
             Serializable {
 
     /**
-     * the array
+     * the array.
      */
-    private TFMLigKernCommand[] ligkerncommand;
+    private TfmLigKernCommand[] ligkerncommand;
 
     /**
-     * charinfo
+     * charinfo.
      */
-    private TFMCharInfoArray charinfo;
+    private TfmCharInfoArray charinfo;
 
     /**
-     * kern
+     * kern.
      */
-    private TFMKernArray kern;
+    private TfmKernArray kern;
 
     /**
-     * Create a new object
+     * Create a new object.
+     *
      * @param rar   the input
      * @param nl    number of words in the lig/kern table
      * @throws IOException if an IO-error occurs.
      */
-    public TFMLigKernArray(final RandomAccessR rar, final short nl)
+    public TfmLigKernArray(final RandomAccessR rar, final short nl)
             throws IOException {
 
-        ligkerncommand = new TFMLigKernCommand[nl];
+        ligkerncommand = new TfmLigKernCommand[nl];
         for (int i = 0; i < nl; i++) {
-            ligkerncommand[i] = new TFMLigKernCommand(rar, i);
+            ligkerncommand[i] = new TfmLigKernCommand(rar, i);
         }
     }
 
     /**
-     * smallest character code in the font
+     * smallest character code in the font.
      */
     private short bc;
 
     /**
-     * Calculate lig/kern
+     * Calculate lig/kern.
      * @param chari     the charinfo
      * @param akern     the kern
      * @param abc       smallest character code in the font
      */
-    public void calculate(final TFMCharInfoArray chari,
-            final TFMKernArray akern, final short abc) {
+    public void calculate(final TfmCharInfoArray chari,
+            final TfmKernArray akern, final short abc) {
 
         charinfo = chari;
         kern = akern;
@@ -170,23 +171,23 @@ public class TFMLigKernArray
     /**
      * Invisible right boundary character code.
      */
-    private short boundaryChar = TFMCharInfoWord.NOCHARCODE;
+    private short boundaryChar = TfmCharInfoWord.NOCHARCODE;
 
     /**
      * Starting index of lig/kern program for invisible left boundary character
      * or <code>NOINDEX</code> if there is no such program.
      */
-    private int boundaryStart = TFMCharInfoWord.NOINDEX;
+    private int boundaryStart = TfmCharInfoWord.NOINDEX;
 
     /**
-     * The associative table of lig/kern program starts in <code>ligAuxTab</code>
+     * The associative table of lig/kern program starts in <code>ligAuxTab</code>.
      */
-    private TFMIndexMultimap labels = new TFMIndexMultimap();
+    private TfmIndexMultimap labels = new TfmIndexMultimap();
 
     /**
-     * Code for left boundary lig/kern program in <code>labels</code> table
+     * Code for left boundary lig/kern program in <code>labels</code> table.
      */
-    private static final int BOUNDARYLABEL = TFMCharInfoWord.NOCHARCODE;
+    private static final int BOUNDARYLABEL = TfmCharInfoWord.NOCHARCODE;
 
     /**
      * Marks the lig/kern instructions which are really a part of some lig/kern
@@ -201,29 +202,29 @@ public class TFMLigKernArray
 
         int ligKernLength = 0;
         for (int i = 0; i < ligkerncommand.length; i++) {
-            TFMLigKernCommand lkc = ligkerncommand[i];
-            if (lkc.getActivity() == TFMLigKernCommand.ACCESSIBLE) {
+            TfmLigKernCommand lkc = ligkerncommand[i];
+            if (lkc.getActivity() == TfmLigKernCommand.ACCESSIBLE) {
                 if (!lkc.meansStop()) {
                     int next = lkc.nextIndex(i);
                     if (next < ligkerncommand.length) {
                         ligkerncommand[next]
-                                .setActivity(TFMLigKernCommand.ACCESSIBLE);
+                                .setActivity(TfmLigKernCommand.ACCESSIBLE);
                     } else {
                         lkc.makeStop();
                     }
                 }
             }
-            if (lkc.getActivity() != TFMLigKernCommand.PASSTHROUGH) {
+            if (lkc.getActivity() != TfmLigKernCommand.PASSTHROUGH) {
                 ligKernLength++;
             }
         }
-        ligKernTable = new TFMLigKern[ligKernLength];
+        ligKernTable = new TfmLigKern[ligKernLength];
     }
 
     /**
-     * Lig/kern programs in the final format
+     * Lig/kern programs in the final format.
      */
-    private TFMLigKern[] ligKernTable;
+    private TfmLigKern[] ligKernTable;
 
     /**
      * Fills in the blank <code>ligKernTable</code> by the final version of
@@ -234,8 +235,8 @@ public class TFMLigKernArray
         int currIns = 0;
         for (int i = 0; i < ligkerncommand.length; i++) {
             setLigStarts(i, currIns);
-            TFMLigKernCommand lkc = ligkerncommand[i];
-            if (lkc.getActivity() != TFMLigKernCommand.PASSTHROUGH) {
+            TfmLigKernCommand lkc = ligkerncommand[i];
+            if (lkc.getActivity() != TfmLigKernCommand.PASSTHROUGH) {
                 if (!lkc.meansRestart()) {
                     int skip = getSkip(i);
                     ligKernTable[currIns++] = (lkc.meansKern()) ? makeKern(lkc,
@@ -253,7 +254,7 @@ public class TFMLigKernArray
      *              of the lig/kern program.
      * @return Returns the ligkern
      */
-    private TFMLigKern makeLig(final TFMLigKernCommand lkc, final int skip) {
+    private TfmLigKern makeLig(final TfmLigKernCommand lkc, final int skip) {
 
         //       if (!charExists(lkc.ligChar())) {
         //           badchar(lkc.ligChar(), "Ligature step produces the");
@@ -262,7 +263,7 @@ public class TFMLigKernArray
         boolean left = lkc.leaveLeft();
         boolean right = lkc.leaveRight();
         byte step = lkc.stepOver();
-        return new TFMLigature(skip, lkc.nextChar(), lkc.ligChar(), left,
+        return new TfmLigature(skip, lkc.nextChar(), lkc.ligChar(), left,
                 right, step);
     }
 
@@ -274,16 +275,16 @@ public class TFMLigKernArray
      *              of the lig/kern program.
      * @return Returns the ligkern
      */
-    private TFMLigKern makeKern(final TFMLigKernCommand lkc, final int skip) {
+    private TfmLigKern makeKern(final TfmLigKernCommand lkc, final int skip) {
 
         int kernIdx = lkc.kernIndex();
-        TFMFixWord kernword = null;
+        TfmFixWord kernword = null;
         if (kernIdx < kern.getTable().length) {
             kernword = kern.getTable()[kernIdx];
         } else {
-            kernword = TFMFixWord.ZERO;
+            kernword = TfmFixWord.ZERO;
         }
-        return new TFMKerning(skip, lkc.nextChar(), kernword);
+        return new TfmKerning(skip, lkc.nextChar(), kernword);
     }
 
     /**
@@ -298,7 +299,7 @@ public class TFMLigKernArray
      */
     private int getSkip(final int pos) {
 
-        TFMLigKernCommand lkc = ligkerncommand[pos];
+        TfmLigKernCommand lkc = ligkerncommand[pos];
         if (lkc.meansStop()) {
             return -1;
         }
@@ -306,7 +307,7 @@ public class TFMLigKernArray
         int skip = 0;
         int next = lkc.nextIndex(pos);
         while (++p < next) {
-            if (ligkerncommand[pos].getActivity() != TFMLigKernCommand.PASSTHROUGH) {
+            if (ligkerncommand[pos].getActivity() != TfmLigKernCommand.PASSTHROUGH) {
                 skip++;
             }
         }
@@ -325,7 +326,7 @@ public class TFMLigKernArray
      */
     private void setLigStarts(final int pos, final int start) {
 
-        TFMIndexMultimap.Enum lab = labels.forKey(pos);
+        TfmIndexMultimap.Enum lab = labels.forKey(pos);
         while (lab.hasMore()) {
             int c = lab.next();
             if (c == BOUNDARYLABEL) {
@@ -344,20 +345,20 @@ public class TFMLigKernArray
     private void setupBoundary() {
 
         // first entry
-        TFMLigKernCommand lkc = ligkerncommand[0];
+        TfmLigKernCommand lkc = ligkerncommand[0];
 
         if (lkc.meansBoundary()) {
             boundaryChar = lkc.nextChar();
-            lkc.setActivity(TFMLigKernCommand.PASSTHROUGH);
+            lkc.setActivity(TfmLigKernCommand.PASSTHROUGH);
         }
 
         // last entry
         lkc = ligkerncommand[ligkerncommand.length - 1];
         if (lkc.meansBoundary()) {
             int start = lkc.restartIndex();
-            lkc.setActivity(TFMLigKernCommand.PASSTHROUGH);
+            lkc.setActivity(TfmLigKernCommand.PASSTHROUGH);
             if (start < ligkerncommand.length) {
-                ligkerncommand[start].setActivity(TFMLigKernCommand.ACCESSIBLE);
+                ligkerncommand[start].setActivity(TfmLigKernCommand.ACCESSIBLE);
                 labels.add(start, BOUNDARYLABEL);
             }
         }
@@ -374,15 +375,15 @@ public class TFMLigKernArray
      */
     private void buildLabels() {
 
-        TFMCharInfoWord[] ciw = charinfo.getCharinfoword();
+        TfmCharInfoWord[] ciw = charinfo.getCharinfoword();
 
         for (int i = 0; i < ciw.length; i++) {
-            if (ciw[i].getTag() == TFMCharInfoWord.LIG_TAG) {
+            if (ciw[i].getTag() == TfmCharInfoWord.LIG_TAG) {
                 int start = ligStart(ciw[i].getRemainder());
                 if (start < ligkerncommand.length) {
                     labels.add(start, i);
                     ligkerncommand[start]
-                            .setActivity(TFMLigKernCommand.ACCESSIBLE);
+                            .setActivity(TfmLigKernCommand.ACCESSIBLE);
                 } else {
                     ciw[i].resetTag();
                 }
@@ -403,12 +404,12 @@ public class TFMLigKernArray
 
         int newstart = start;
         if (newstart < ligkerncommand.length) {
-            TFMLigKernCommand lkc = ligkerncommand[start];
+            TfmLigKernCommand lkc = ligkerncommand[start];
             if (lkc.meansRestart()) {
                 newstart = lkc.restartIndex();
                 if (newstart < ligkerncommand.length
-                        && lkc.getActivity() == TFMLigKernCommand.UNREACHABLE) {
-                    lkc.setActivity(TFMLigKernCommand.PASSTHROUGH);
+                        && lkc.getActivity() == TfmLigKernCommand.UNREACHABLE) {
+                    lkc.setActivity(TfmLigKernCommand.PASSTHROUGH);
                 }
             }
         }
@@ -419,7 +420,7 @@ public class TFMLigKernArray
      * Returns the ligkerncommand.
      * @return Returns the ligkerncommand.
      */
-    public TFMLigKernCommand[] getLigkerncommand() {
+    public TfmLigKernCommand[] getLigkerncommand() {
 
         return ligkerncommand;
     }
@@ -446,7 +447,7 @@ public class TFMLigKernArray
      * Returns the ligKernTable.
      * @return Returns the ligKernTable.
      */
-    public TFMLigKern[] getLigKernTable() {
+    public TfmLigKern[] getLigKernTable() {
 
         return ligKernTable;
     }
@@ -457,13 +458,13 @@ public class TFMLigKernArray
      */
     public void toPL(final PlWriter out) throws IOException {
 
-        if (boundaryChar != TFMCharInfoWord.NOCHARCODE) {
+        if (boundaryChar != TfmCharInfoWord.NOCHARCODE) {
             out.plopen("BOUNDARYCHAR").addChar(boundaryChar).plclose();
         }
         if (ligKernTable.length > 0) {
             out.plopen("LIGTABLE");
             for (int i = 0; i < charinfo.getCharinfoword().length; i++) {
-                TFMCharInfoWord ciw = charinfo.getCharinfoword()[i];
+                TfmCharInfoWord ciw = charinfo.getCharinfoword()[i];
                 if (ciw != null) {
                     if (foundLigKern(ciw)) {
                         out.plopen("LABEL").addChar((short) (i + bc));
@@ -471,22 +472,22 @@ public class TFMLigKernArray
 
                         // ligature
                         int ligstart = ciw.getLigkernstart();
-                        if (ligstart != TFMCharInfoWord.NOINDEX
+                        if (ligstart != TfmCharInfoWord.NOINDEX
                                 && ligKernTable != null) {
 
-                            for (int k = ligstart; k != TFMCharInfoWord.NOINDEX; k = ligKernTable[k]
+                            for (int k = ligstart; k != TfmCharInfoWord.NOINDEX; k = ligKernTable[k]
                                     .nextIndex(k)) {
-                                TFMLigKern lk = ligKernTable[k];
+                                TfmLigKern lk = ligKernTable[k];
 
-                                if (lk instanceof TFMLigature) {
-                                    TFMLigature lig = (TFMLigature) lk;
+                                if (lk instanceof TfmLigature) {
+                                    TfmLigature lig = (TfmLigature) lk;
 
                                     out.plopen("LIG")
                                             .addChar(lig.getNextChar())
                                             .addChar(lig.getAddingChar())
                                             .plclose();
-                                } else if (lk instanceof TFMKerning) {
-                                    TFMKerning kerning = (TFMKerning) lk;
+                                } else if (lk instanceof TfmKerning) {
+                                    TfmKerning kerning = (TfmKerning) lk;
 
                                     out.plopen("KRN").addChar(
                                             kerning.getNextChar()).addReal(
@@ -503,21 +504,21 @@ public class TFMLigKernArray
     }
 
     /**
-     * Check, if char has ligature or kern
+     * Check, if char has ligature or kern.
      * @param ciw   the char
      * @return Returns true, if the char has a ligature or a kern
      */
-    private boolean foundLigKern(final TFMCharInfoWord ciw) {
+    private boolean foundLigKern(final TfmCharInfoWord ciw) {
 
         boolean found = false;
         int ligstart = ciw.getLigkernstart();
-        if (ligstart != TFMCharInfoWord.NOINDEX && ligKernTable != null) {
+        if (ligstart != TfmCharInfoWord.NOINDEX && ligKernTable != null) {
 
-            for (int k = ligstart; k != TFMCharInfoWord.NOINDEX; k = ligKernTable[k]
+            for (int k = ligstart; k != TfmCharInfoWord.NOINDEX; k = ligKernTable[k]
                     .nextIndex(k)) {
-                TFMLigKern lk = ligKernTable[k];
+                TfmLigKern lk = ligKernTable[k];
 
-                if (lk instanceof TFMLigature || lk instanceof TFMKerning) {
+                if (lk instanceof TfmLigature || lk instanceof TfmKerning) {
                     found = true;
                     break;
                 }
