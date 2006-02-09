@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -60,7 +60,7 @@ import de.dante.util.framework.configuration.Configuration;
  * This is a text dummy implementation of a document writer (very simple).
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class TextDocumentWriter
         implements
@@ -123,9 +123,9 @@ public class TextDocumentWriter
     }
 
     /**
-     * process Node
+     * process Node.
      * @param nodes the nodelist
-     * @throws IOException ...
+     * @throws DocumentWriterException if an error occurred.
      */
     private void processNodes(final NodeList nodes)
             throws DocumentWriterException {
@@ -178,9 +178,9 @@ public class TextDocumentWriter
     }
 
     /**
-     * show node
+     * show node.
      * @param node the node
-     * @throws IOException ...
+     * @throws DocumentWriterException if an error occurred.
      */
     private void showNode(final Node node) throws DocumentWriterException {
 

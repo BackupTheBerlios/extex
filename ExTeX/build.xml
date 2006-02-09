@@ -347,7 +347,7 @@
   </target>
 
   <target name="checkstyle41-xml"
-	  description="Generates a report of violations of the coding conventions using version 4.1.">
+	  description="Generates a report of violations of the coding conventions using version 4.1. (only in src/java)">
 	  <checkstyle config="develop/eclipse/extex_checkstyle.xml"
 		      failureProperty="checkstyle.failure"
 		      failOnViolation="false">
@@ -357,7 +357,7 @@
 		  </classpath>
 		  <formatter type="plain" tofile="${target}/checkstyle.txt" />
 		  <formatter type="xml" tofile="${target}/checkstyle.xml" />
-		  <fileset dir="src" includes="**/*.java" />
+		  <fileset dir="src/java" includes="**/*.java" />
 	  </checkstyle>
   </target>
 

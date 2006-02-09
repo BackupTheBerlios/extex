@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -75,7 +75,7 @@ import de.dante.util.framework.configuration.Configuration;
  * TODO incomplete !!!
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class SVGDocumentWriter
         implements
@@ -84,28 +84,28 @@ public class SVGDocumentWriter
             NodeVisitor {
 
     /**
-     * DIN-A4 height
+     * DIN-A4 height.
      */
     private static final double DINA4HEIGHT = 29.7d;
 
     /**
-     * DIN-A4 width
+     * DIN-A4 width.
      */
     private static final double DINA4WIDTH = 21.0d;
 
     /**
-     * Naemspace for svg
+     * Namespace for svg.
      */
     private static final Namespace SVGNAMESPACE = Namespace
             .getNamespace("http://www.w3.org/2000/svg");
 
     /**
-     * current x position
+     * current x position.
      */
     private Dimen currentX = new Dimen();
 
     /**
-     * current y postition
+     * current y postition.
      */
     private Dimen currentY = new Dimen();
 
@@ -115,42 +115,42 @@ public class SVGDocumentWriter
     private boolean debug = true;
 
     /**
-     * documentwriter options
+     * documentwriter options.
      */
     private DocumentWriterOptions docoptions;
 
     /**
-     * encdoing
+     * encdoing.
      */
     private String encoding = "ISO-8859-1";
 
     /**
-     * The field <tt>out</tt> ...
+     * The field <tt>out</tt> .
      */
     private OutputStream out = null;
 
     /**
-     * paperheight
+     * paperheight.
      */
     private Dimen paperheight;
 
     /**
-     * paperwidth
+     * paperwidth.
      */
     private Dimen paperwidth;
 
     /**
-     * the parent element
+     * the parent element.
      */
     private Element parent;
 
     /**
-     * the root Element
+     * the root Element.
      */
     private Element root;
 
     /**
-     * The field <tt>shippedPages</tt> ...
+     * The field <tt>shippedPages</tt>.
      */
     private int shippedPages = 0;
 
@@ -232,7 +232,7 @@ public class SVGDocumentWriter
     }
 
     /**
-     * Set the Attribute for an element with sp, bp, mm
+     * Set the Attribute for an element with sp, bp, mm.
      * @param element   the element
      * @param name      the attribute-name
      * @param dimen     the dimen

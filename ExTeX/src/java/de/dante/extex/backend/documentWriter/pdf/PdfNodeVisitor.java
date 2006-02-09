@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -66,38 +66,43 @@ import de.dante.util.exception.GeneralException;
  * PDF NodeVisitor.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class PdfNodeVisitor implements NodeVisitor {
 
     /**
-     * current x position
+     * linewidth.
+     */
+    private static final float LINEWIDTH = 0.1f;
+
+    /**
+     * current x position.
      */
     private Dimen currentX;
 
     /**
-     * current y position
+     * current y position.
      */
     private Dimen currentY;
 
     /**
-     * paper height in BP
+     * paper height in BP.
      */
     private float phBP = PdfDocumentWriter.HEIGHT_A4_BP;
 
     /**
-     * pdf content stream
+     * pdf content stream.
      */
     private PDPageContentStream contentStream;
 
     /**
-     * the pdf color visitor
+     * the pdf color visitor.
      */
     private ColorVisitor colorVisitor;
 
     /**
-     * the pdf document
+     * the pdf document.
      */
     private PDDocument document;
 
@@ -141,7 +146,7 @@ public class PdfNodeVisitor implements NodeVisitor {
             float h = Unit.getDimenAsBP(node.getHeight());
             float d = Unit.getDimenAsBP(node.getDepth());
             BasePath path = new BasePath();
-            path.setLineWidth(0.1f);
+            path.setLineWidth(LINEWIDTH);
             path.moveTo(cx, phBP - cy);
             path.lineTo(cx + w, phBP - cy);
             path.stroke();
@@ -233,17 +238,17 @@ public class PdfNodeVisitor implements NodeVisitor {
     }
 
     /**
-     * the color from the character before
+     * the color from the character before.
      */
     private de.dante.extex.interpreter.context.Color oldcolor = null;
 
     /**
-     * the fount key from the character before
+     * the fount key from the character before.
      */
     private FountKey oldfountkey = null;
 
     /**
-     * the pdf font
+     * the pdf font.
      */
     private PDFont pdfont = PDType1Font.HELVETICA;
 

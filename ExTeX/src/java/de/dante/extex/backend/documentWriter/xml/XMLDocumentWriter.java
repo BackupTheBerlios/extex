@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -71,7 +71,7 @@ import de.dante.util.xml.XMLStreamWriter;
  * This is a xml implementation of a document writer.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class XMLDocumentWriter
         implements
@@ -81,12 +81,12 @@ public class XMLDocumentWriter
             Configurable {
 
     /**
-     * DIN-A4 height
+     * DIN-A4 height.
      */
     private static final double DINA4HEIGHT = 29.7d;
 
     /**
-     * DIN-A4 width
+     * DIN-A4 width.
      */
     private static final double DINA4WIDTH = 21.0d;
 
@@ -97,42 +97,42 @@ public class XMLDocumentWriter
             .getInstance(Locale.US);
 
     /**
-     * max fraction
+     * max fraction.
      */
     private static final int MAXFRACTION = 4;
 
     /**
-     * current x position
+     * current x position.
      */
     private Dimen currentX = new Dimen();
 
     /**
-     * current y position
+     * current y position.
      */
     private Dimen currentY = new Dimen();
 
     /**
-     * debug
+     * debug.
      */
     private boolean debug = true;
 
     /**
-     * document writer options
+     * document writer options.
      */
     private DocumentWriterOptions docoptions;
 
     /**
-     * encoding
+     * encoding.
      */
     private String encoding = "ISO-8859-1";
 
     /**
-     * xml indent
+     * xml indent.
      */
     private String indent = "   ";
 
     /**
-     * xml newlines
+     * xml newlines.
      */
     private boolean newlines = true;
 
@@ -142,12 +142,12 @@ public class XMLDocumentWriter
     private OutputStream out = null;
 
     /**
-     * paper height
+     * paper height.
      */
     private Dimen paperheight;
 
     /**
-     * paper width
+     * paper width.
      */
     private Dimen paperwidth;
 
@@ -157,27 +157,27 @@ public class XMLDocumentWriter
     private int shippedPages = 0;
 
     /**
-     * show visible chars
+     * show visible chars.
      */
     private boolean showvisible = true;
 
     /**
-     * xml trimallwhitespace TODO incomplete
+     * xml trimallwhitespace TODO incomplete.
      */
     private boolean trimallwhitespace = true;
 
     /**
-     * use bp
+     * use bp.
      */
     private boolean usebp = true;
 
     /**
-     * use mm
+     * use mm.
      */
     private boolean usemm = true;
 
     /**
-     * use sp
+     * use sp.
      */
     private boolean usesp = true;
 
@@ -235,7 +235,7 @@ public class XMLDocumentWriter
     }
 
     /**
-     * Add some Attributes to the node-element
+     * Add some Attributes to the node-element.
      * @param node      the node
      * @throws IOException if an error occurs.
      */
@@ -302,7 +302,7 @@ public class XMLDocumentWriter
     }
 
     /**
-     * Set the Attribute for an element with sp, bp, mm
+     * Set the Attribute for an element with sp, bp, mm.
      * @param name      the attribute-name
      * @param dimen     the dimen
      * @throws IOException if an error occurs.

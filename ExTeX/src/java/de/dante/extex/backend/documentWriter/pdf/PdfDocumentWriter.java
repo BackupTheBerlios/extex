@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group
+ * Copyright (C) 2004-2006 The ExTeX Group
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -50,32 +50,32 @@ import de.dante.util.framework.configuration.Configuration;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:Rolf.Niepraschk@ptb.de">Rolf Niepraschk</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class PdfDocumentWriter implements DocumentWriter, SingleDocumentStream {
 
     /**
-     * width A4 in bp
+     * width A4 in bp.
      */
     public static final int WIDTH_A4_BP = 595;
 
     /**
-     * height A4 in bp
+     * height A4 in bp.
      */
     public static final int HEIGHT_A4_BP = 842;
 
     /**
-     * the output
+     * the output.
      */
     private OutputStream out = null;
 
     /**
-     * the number of page which are shipped out
+     * the number of page which are shipped out.
      */
     private int shippedPages = 0;
 
     /**
-     * document writer options
+     * document writer options.
      */
     private DocumentWriterOptions docoptions;
 
@@ -99,7 +99,7 @@ public class PdfDocumentWriter implements DocumentWriter, SingleDocumentStream {
     }
 
     /**
-     * the PDFDocument
+     * the PDFDocument.
      */
     private PDDocument document = null;
 
@@ -167,32 +167,32 @@ public class PdfDocumentWriter implements DocumentWriter, SingleDocumentStream {
     }
 
     /**
-     * paper width
+     * paper width.
      */
     private Dimen paperwidth = new Dimen();
 
     /**
-     * paper height
+     * paper height.
      */
     private Dimen paperheight = new Dimen();
 
     /**
-     * paper height in BP
+     * paper height in BP.
      */
     private float phBP = HEIGHT_A4_BP;
 
     /**
-     * current x position
+     * current x position.
      */
     private Dimen currentX = new Dimen();
 
     /**
-     * current y position
+     * current y position.
      */
     private Dimen currentY = new Dimen();
 
     /**
-     * the pdf node visitor
+     * the pdf node visitor.
      */
     private NodeVisitor nodeVisitor;
 
@@ -200,7 +200,7 @@ public class PdfDocumentWriter implements DocumentWriter, SingleDocumentStream {
      * @see de.dante.extex.backend.documentWriter.DocumentWriter#shipout(
      *      de.dante.extex.typesetter.type.NodeList)
      */
-    public int shipout(Page p) throws DocumentWriterException {
+    public int shipout(final Page p) throws DocumentWriterException {
 
         NodeList nodes = p.getNodes();
         try {
@@ -213,7 +213,8 @@ public class PdfDocumentWriter implements DocumentWriter, SingleDocumentStream {
                     document, page);
 
             document.addPage(page);
-            nodeVisitor = new PdfNodeVisitor(document, contentStream, currentX, currentY);
+            nodeVisitor = new PdfNodeVisitor(document, contentStream, currentX,
+                    currentY);
 
             shippedPages++;
             //            System.err.print("[" + shippedPages + "]");

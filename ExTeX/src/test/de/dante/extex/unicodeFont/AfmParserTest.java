@@ -42,9 +42,14 @@ import de.dante.util.resource.ResourceFinder;
  * Test the afm parser.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class AfmParserTest extends TestCase {
+
+    /**
+     * rounding error.
+     */
+    private static final float C0001F = 0.0001f;
 
     /**
      * Which configuration file.
@@ -54,7 +59,7 @@ public class AfmParserTest extends TestCase {
     /**
      * my extex.
      */
-    protected MyExTeX extex;
+    private MyExTeX extex;
 
     /**
      * test 01.
@@ -77,10 +82,10 @@ public class AfmParserTest extends TestCase {
         assertEquals(-280, header.getLly(), 0f);
         assertEquals(1394, header.getUrx(), 0f);
         assertEquals(968, header.getUry(), 0f);
-        assertEquals(683.33333f, header.getCapheight(), 0.0001f);
-        assertEquals(430.55556f, header.getXheight(), 0.0001f);
-        assertEquals(-194.44444, header.getDescender(), 0.0001f);
-        assertEquals(694.44444, header.getAscender(), 0.0001f);
+        assertEquals(683.33333f, header.getCapheight(), C0001F);
+        assertEquals(430.55556f, header.getXheight(), C0001F);
+        assertEquals(-194.44444, header.getDescender(), C0001F);
+        assertEquals(694.44444, header.getAscender(), C0001F);
 
     }
 
@@ -95,7 +100,7 @@ public class AfmParserTest extends TestCase {
         AfmCharMetric cm = parser.getAfmCharMetric(32);
 
         assertEquals(32, cm.getC());
-        assertEquals(326.38461f, cm.getWx(), 0.0001f);
+        assertEquals(326.38461f, cm.getWx(), C0001F);
         assertEquals("space", cm.getN());
         assertEquals(0, cm.getBllx(), 0);
         assertEquals(0, cm.getBlly(), 0);
@@ -117,7 +122,7 @@ public class AfmParserTest extends TestCase {
         AfmCharMetric cm = parser.getAfmCharMetric(33);
 
         assertEquals(33, cm.getC());
-        assertEquals(272f, cm.getWx(), 0.0001f);
+        assertEquals(272f, cm.getWx(), C0001F);
         assertEquals("exclam", cm.getN());
         assertEquals(86, cm.getBllx(), 0);
         assertEquals(0, cm.getBlly(), 0);
@@ -140,7 +145,7 @@ public class AfmParserTest extends TestCase {
         AfmCharMetric cm = parser.getAfmCharMetric("sfthyphen");
 
         assertEquals(-1, cm.getC());
-        assertEquals(0, cm.getWx(), 0.0001f);
+        assertEquals(0, cm.getWx(), C0001F);
         assertEquals("sfthyphen", cm.getN());
         assertEquals(11, cm.getBllx(), 0);
         assertEquals(189, cm.getBlly(), 0);
@@ -162,7 +167,7 @@ public class AfmParserTest extends TestCase {
         AfmCharMetric cm = parser.getAfmCharMetric("quoteleft.dup");
 
         assertEquals(-1, cm.getC());
-        assertEquals(272, cm.getWx(), 0.0001f);
+        assertEquals(272, cm.getWx(), C0001F);
         assertEquals("quoteleft.dup", cm.getN());
         assertEquals(73, cm.getBllx(), 0);
         assertEquals(403, cm.getBlly(), 0);
@@ -187,21 +192,21 @@ public class AfmParserTest extends TestCase {
         assertNotNull(kp);
         assertEquals("A", kp.getCharpre());
         assertEquals("C", kp.getCharpost());
-        assertEquals(-27.192f, kp.getKerningsize(), 0.0001f);
+        assertEquals(-27.192f, kp.getKerningsize(), C0001F);
 
         // KPX A Ccircumflex -27.192
         kp = cm.getAfmKernPair("Ccircumflex");
         assertNotNull(kp);
         assertEquals("A", kp.getCharpre());
         assertEquals("Ccircumflex", kp.getCharpost());
-        assertEquals(-27.192f, kp.getKerningsize(), 0.0001f);
+        assertEquals(-27.192f, kp.getKerningsize(), C0001F);
 
         // KPX A T -81.577
         kp = cm.getAfmKernPair("T");
         assertNotNull(kp);
         assertEquals("A", kp.getCharpre());
         assertEquals("T", kp.getCharpost());
-        assertEquals(-81.577f, kp.getKerningsize(), 0.0001f);
+        assertEquals(-81.577f, kp.getKerningsize(), C0001F);
 
     }
 
@@ -218,7 +223,7 @@ public class AfmParserTest extends TestCase {
         assertNotNull(kp);
         assertEquals("ygrave", kp.getCharpre());
         assertEquals("oacute", kp.getCharpost());
-        assertEquals(-27.192f, kp.getKerningsize(), 0.0001f);
+        assertEquals(-27.192f, kp.getKerningsize(), C0001F);
 
         kp = cm.getAfmKernPair("gibts nicht");
         assertNull(kp);

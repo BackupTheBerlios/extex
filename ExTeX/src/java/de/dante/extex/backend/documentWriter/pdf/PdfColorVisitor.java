@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -33,23 +33,22 @@ import de.dante.util.exception.GeneralException;
  * Color visitor for pdf.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class PdfColorVisitor implements ColorVisitor {
 
     /**
-     * div for 16-bit to 8 bit
+     * div for 16-bit to 8 bit.
      */
     private static final int DIV = 0xff;
 
     /**
-     * div for 16-bit to 0.0-1.0
+     * div for 16-bit to 0.0-1.0.
      */
     private static final double DIVD = 0xffff;
 
     /**
-     * @see de.dante.extex.color.ColorVisitor#visitCmyk(
-     *      de.dante.extex.color.model.CmykColor, java.lang.Object)
+     * @see de.dante.extex.color.ColorVisitor#visitCmyk(de.dante.extex.color.model.CmykColor, java.lang.Object)
      */
     public Object visitCmyk(final CmykColor color, final Object value)
             throws GeneralException {

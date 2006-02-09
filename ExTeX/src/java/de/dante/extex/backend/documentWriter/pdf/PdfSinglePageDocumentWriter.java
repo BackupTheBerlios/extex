@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group
+ * Copyright (C) 2005-2006 The ExTeX Group
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -40,7 +40,7 @@ import de.dante.util.framework.configuration.Configuration;
  * Implementation of a pdf document writer.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class PdfSinglePageDocumentWriter
         implements
@@ -48,27 +48,27 @@ public class PdfSinglePageDocumentWriter
             MultipleDocumentStream {
 
     /**
-     * width A4 in bp
+     * width A4 in bp.
      */
     private static final int WIDTH_A4_BP = 595;
 
     /**
-     * height A$ in bp
+     * height A4 in bp.
      */
     private static final int HEIGHT_A4_BP = 842;
 
     /**
-     * the output factory
+     * the output factory.
      */
     private OutputStreamFactory outFactory = null;
 
     /**
-     * the number of page which are shipped out
+     * the number of page which are shipped out.
      */
     private int shippedPages = 0;
 
     /**
-     * document writer options
+     * document writer options.
      */
     private DocumentWriterOptions docoptions;
 
@@ -144,27 +144,27 @@ public class PdfSinglePageDocumentWriter
     }
 
     /**
-     * paper width
+     * paper width.
      */
     private Dimen paperwidth = new Dimen();
 
     /**
-     * paper height
+     * paper height.
      */
     private Dimen paperheight = new Dimen();
 
     /**
-     * current x position
+     * current x position.
      */
     private Dimen currentX = new Dimen();
 
     /**
-     * current y position
+     * current y position.
      */
     private Dimen currentY = new Dimen();
 
     /**
-     * the pdf node visitor
+     * the pdf node visitor.
      */
     private NodeVisitor nodeVisitor;
 
