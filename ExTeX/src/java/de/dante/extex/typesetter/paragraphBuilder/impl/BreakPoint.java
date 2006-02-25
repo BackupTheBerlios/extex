@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -25,8 +25,10 @@ import de.dante.extex.interpreter.type.glue.WideGlue;
 /**
  * This class represents a break point for the paragraph breaking.
  *
+ * @see "TTP [819]"
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class BreakPoint {
 
@@ -57,7 +59,7 @@ public class BreakPoint {
     /**
      * The field <tt>position</tt> contains the pointer to the first material
      * in the new line. This material might be skipped. Thus in fact the pointer
-     * indicates the material not contained in the previsous line.
+     * indicates the material not contained in the previous line.
      */
     private int position;
 
@@ -75,21 +77,20 @@ public class BreakPoint {
      * @param pwd the point width for this break point
      * @param pen the penalty for this break point
      */
-    public BreakPoint(final int pos, final WideGlue w, final WideGlue wd,
+    public BreakPoint(final int pos, final WideGlue wd, final WideGlue pwd,
             final int pen) {
 
         super();
         this.position = pos;
-        //TODO gene: fix
-        //this.width = wd;
-        //this.pointWidth = pwd;
+        this.width = wd.toGlue();
+        this.pointWidth = pwd.toGlue();
         this.penalty = pen;
     }
 
     /**
      * Getter for fitness.
-     * The fitness is ine of the fitness classes defined in Fitness.
-     * The fitness is <code>null</code> for break pöoints which are not active.
+     * The fitness is one of the fitness classes defined in Fitness.
+     * The fitness is <code>null</code> for break points which are not active.
      *
      * @return the fitness.
      */
@@ -101,7 +102,7 @@ public class BreakPoint {
     /**
      * Getter for penalty.
      * The penalty has to be added to the overall penalty in case that this
-     * breakpoint is active.
+     * break point is active.
      *
      * @return the penalty.
      */
@@ -181,8 +182,9 @@ public class BreakPoint {
      */
     public String toString() {
 
-        return "<" + Integer.toString(position) + ": " + width.toString()
-                + " ++ " + pointWidth.toString() + ">";
+        return "<" + Integer.toString(position) + ": "
+                + (width == null ? "null" : width.toString()) + " ++ "
+                + (pointWidth == null ? "null" : pointWidth.toString()) + ">";
     }
 
 }
