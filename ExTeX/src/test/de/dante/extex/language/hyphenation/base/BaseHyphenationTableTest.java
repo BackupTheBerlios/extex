@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -17,7 +17,7 @@
  *
  */
 
-package de.dante.extex.language.hyphenation.impl;
+package de.dante.extex.language.hyphenation.base;
 
 import junit.framework.TestCase;
 import de.dante.extex.font.FontByteArray;
@@ -37,17 +37,19 @@ import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.language.Language;
 import de.dante.extex.language.hyphenation.base.BaseHyphenationTable;
+import de.dante.extex.language.word.impl.TeXWords;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.type.node.CharNode;
 import de.dante.extex.typesetter.type.node.DiscretionaryNode;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
+import de.dante.extex.typesetter.type.node.SpaceNode;
 import de.dante.util.UnicodeChar;
 
 /**
  * TODO gene: missing JavaDoc.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.1 $
  */
 public class BaseHyphenationTableTest extends TestCase {
 
@@ -55,7 +57,7 @@ public class BaseHyphenationTableTest extends TestCase {
      * Mock implementation of a font.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.6 $
+     * @version $Revision: 1.1 $
      */
     private class MockFont implements Font {
 
@@ -118,11 +120,27 @@ public class BaseHyphenationTableTest extends TestCase {
         }
 
         /**
+         * @see de.dante.extex.font.type.Fount#getFontByteArray()
+         */
+        public FontByteArray getFontByteArray() {
+
+            return null; // add by mgn
+        }
+
+        /**
          * @see de.dante.extex.font.type.Fount#getFontDimen(java.lang.String)
          */
         public Dimen getFontDimen(final String key) {
 
             return Dimen.ONE_INCH;
+        }
+
+        /**
+         * @see de.dante.extex.font.type.Fount#getFontKey()
+         */
+        public FountKey getFontKey() {
+
+            return new FountKey("mockfont"); // add by mgn
         }
 
         /**
@@ -181,18 +199,20 @@ public class BaseHyphenationTableTest extends TestCase {
          */
         public Glue getSpace() {
 
-            return null;
+            return new Glue(10 * Dimen.ONE);
         }
 
         /**
-         * @see de.dante.extex.interpreter.type.font.Font#setFontDimen(java.lang.String, de.dante.extex.interpreter.type.dimen.Dimen)
+         * @see de.dante.extex.interpreter.type.font.Font#setFontDimen(
+         *      java.lang.String, de.dante.extex.interpreter.type.dimen.Dimen)
          */
         public void setFontDimen(final String key, final Dimen value) {
 
         }
 
         /**
-         * @see de.dante.extex.interpreter.type.font.Font#setHyphenChar(de.dante.util.UnicodeChar)
+         * @see de.dante.extex.interpreter.type.font.Font#setHyphenChar(
+         *      de.dante.util.UnicodeChar)
          */
         public void setHyphenChar(final UnicodeChar hyphen) {
 
@@ -200,26 +220,11 @@ public class BaseHyphenationTableTest extends TestCase {
         }
 
         /**
-         * @see de.dante.extex.interpreter.type.font.Font#setSkewChar(de.dante.util.UnicodeChar)
+         * @see de.dante.extex.interpreter.type.font.Font#setSkewChar(
+         *      de.dante.util.UnicodeChar)
          */
         public void setSkewChar(final UnicodeChar skew) {
 
-        }
-        
-        /**
-         * @see de.dante.extex.font.type.Fount#getFontKey()
-         */
-        public FountKey getFontKey() {
-
-            return new FountKey("mockfont"); // add by mgn
-        }
-        
-        /**
-         * @see de.dante.extex.font.type.Fount#getFontByteArray()
-         */
-        public FontByteArray getFontByteArray() {
-        
-            return null; // add by mgn
         }
 
     }
@@ -228,14 +233,14 @@ public class BaseHyphenationTableTest extends TestCase {
      * This is a mock implementation of a glyph.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.6 $
+     * @version $Revision: 1.1 $
      */
     private class MockGlyph implements Glyph {
 
         /**
          * @see de.dante.extex.font.Glyph#addKerning(de.dante.extex.font.Kerning)
          */
-        public void addKerning(Kerning kern) {
+        public void addKerning(final Kerning kern) {
 
         }
 
@@ -374,7 +379,7 @@ public class BaseHyphenationTableTest extends TestCase {
      * This mock implementation is for test purposes only.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.6 $
+     * @version $Revision: 1.1 $
      */
     private class MyMockContext extends MockContext {
 
@@ -393,6 +398,8 @@ public class BaseHyphenationTableTest extends TestCase {
         }
 
     }
+
+    private static final UnicodeChar HYPHEN = new UnicodeChar('-');
 
     /**
      * The command line interface.
@@ -425,9 +432,26 @@ public class BaseHyphenationTableTest extends TestCase {
         TypesettingContext tc = new TypesettingContextImpl(new MockFont());
         HorizontalListNode n = new HorizontalListNode();
         for (int i = 0; i < s.length(); i++) {
-            n.add(new CharNode(tc, new UnicodeChar(s.charAt(i))));
+            char c = s.charAt(i);
+            if (c == ' ') {
+                n.add(new SpaceNode(tc.getFont().getSpace()));
+            } else {
+                n.add(new CharNode(tc, new UnicodeChar(c)));
+            }
         }
         return n;
+    }
+
+    /**
+     * Create a new object to test.
+     *
+     * @return the object to test
+     */
+    protected Language makeLanguage() {
+
+        BaseHyphenationTable language = new BaseHyphenationTable();
+        language.setWordTokenizer(new TeXWords());
+        return language;
     }
 
     /**
@@ -437,7 +461,7 @@ public class BaseHyphenationTableTest extends TestCase {
 
         context = new MyMockContext();
         Context c = new MockContext();
-        table = new BaseHyphenationTable();
+        table = makeLanguage();
         table.addHyphenation(new Tokens(c, "abc-def"), context);
         table.addHyphenation(new Tokens(c, "d-e-f"), context);
     }
@@ -449,7 +473,8 @@ public class BaseHyphenationTableTest extends TestCase {
      */
     public void test1() throws Exception {
 
-        HorizontalListNode nodes = table.hyphenate(hlist(""), context, null);
+        HorizontalListNode nodes = hlist("");
+        table.hyphenate(nodes, context, HYPHEN, 0, true);
         assertEquals(0, nodes.size());
     }
 
@@ -460,7 +485,8 @@ public class BaseHyphenationTableTest extends TestCase {
      */
     public void test2() throws Exception {
 
-        HorizontalListNode nodes = table.hyphenate(hlist("abc"), context, null);
+        HorizontalListNode nodes = hlist("abc");
+        table.hyphenate(nodes, context, HYPHEN, 0, true);
         assertEquals(3, nodes.size());
     }
 
@@ -471,8 +497,8 @@ public class BaseHyphenationTableTest extends TestCase {
      */
     public void test3() throws Exception {
 
-        HorizontalListNode nodes = table.hyphenate(hlist("abcdef"), context,
-                null);
+        HorizontalListNode nodes = hlist("abcdef");
+        table.hyphenate(nodes, context, HYPHEN, 0, true);
         assertEquals(7, nodes.size());
         assertTrue(nodes.get(3) instanceof DiscretionaryNode);
     }
@@ -484,8 +510,8 @@ public class BaseHyphenationTableTest extends TestCase {
      */
     public void test4() throws Exception {
 
-        HorizontalListNode nodes = table.hyphenate(hlist("abcdefgh"), context,
-                null);
+        HorizontalListNode nodes = hlist("abcdefgh");
+        table.hyphenate(nodes, context, HYPHEN, 0, true);
         assertEquals(8, nodes.size());
     }
 
@@ -496,7 +522,8 @@ public class BaseHyphenationTableTest extends TestCase {
      */
     public void test5() throws Exception {
 
-        HorizontalListNode nodes = table.hyphenate(hlist("def"), context, null);
+        HorizontalListNode nodes = hlist("def");
+        table.hyphenate(nodes, context, HYPHEN, 0, true);
         assertEquals(5, nodes.size());
         assertTrue(nodes.get(1) instanceof DiscretionaryNode);
         assertTrue(nodes.get(3) instanceof DiscretionaryNode);
