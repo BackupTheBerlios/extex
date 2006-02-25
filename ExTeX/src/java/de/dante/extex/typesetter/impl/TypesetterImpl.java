@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -66,7 +66,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.83 $
+ * @version $Revision: 1.84 $
  */
 public class TypesetterImpl
         implements
@@ -204,7 +204,8 @@ public class TypesetterImpl
      * @see de.dante.extex.typesetter.listMaker.ListManager#buildParagraph(
      *      de.dante.extex.typesetter.type.node.HorizontalListNode)
      */
-    public NodeList buildParagraph(final HorizontalListNode nodes) {
+    public NodeList buildParagraph(final HorizontalListNode nodes)
+            throws TypesetterException {
 
         return this.paragraphBuilder.build(nodes);
     }
@@ -605,10 +606,9 @@ public class TypesetterImpl
 
         for (int i = saveStack.size() - 1; i >= 0; i--) {
             ListMaker lm = (ListMaker) saveStack.get(i);
-            sb
-                    .append(localizer.format("Showlist.Format", lm.getMode()
-                            .toString(), Integer.toString(lm.getLocator()
-                            .getLineNumber())));
+            sb.append(localizer.format("Showlist.Format", lm.getMode()
+                    .toString(), Integer.toString(lm.getLocator()
+                    .getLineNumber())));
             lm.showlist(sb, depth, breadth);
         }
     }
@@ -621,7 +621,8 @@ public class TypesetterImpl
      *      de.dante.extex.scanner.type.token.Token)
      */
     public void subscriptMark(final Context context, final TokenSource source,
-            final Typesetter typesetter, final Token t) throws TypesetterException {
+            final Typesetter typesetter, final Token t)
+            throws TypesetterException {
 
         listMaker.subscriptMark(context, source, typesetter, t);
     }
