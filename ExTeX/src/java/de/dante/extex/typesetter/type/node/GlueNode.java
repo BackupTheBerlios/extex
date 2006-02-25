@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -45,20 +45,40 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class GlueNode extends AbstractNode implements Node, Discardable {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 1L;
 
     /**
      * The field <tt>size</tt> contains the glue specification for this node.
      * The natural size of the glue is the initial width of this node.
      */
-    private FixedGlue size;
+    private Glue size;
+
+    /**
+     * Creates a new object.
+     * The size is used to determine the width in horizontal mode and the height
+     * in vertical mode.
+     *
+     * @param size the actual size
+     * @param horizontal indicator that the glue is used in horizontal
+     *  mode
+     */
+    public GlueNode(final FixedDimen size, final boolean horizontal) {
+
+        super(Dimen.ZERO_PT);
+        this.size = new Glue(size);
+        if (horizontal) {
+            setWidth(this.size.getLength());
+        } else {
+            setHeight(this.size.getLength());
+        }
+    }
 
     /**
      * Creates a new object.
@@ -81,15 +101,6 @@ public class GlueNode extends AbstractNode implements Node, Discardable {
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.Node#addWidthTo(
-     *      de.dante.extex.interpreter.type.glue.Glue)
-     */
-    public void addWidthTo(final WideGlue glue) {
-
-        glue.add(this.size);
-    }
-
-    /**
      * @see de.dante.extex.typesetter.type.Node#addHeightTo(
      *      de.dante.extex.interpreter.type.glue.Glue)
      */
@@ -99,13 +110,32 @@ public class GlueNode extends AbstractNode implements Node, Discardable {
     }
 
     /**
+     * @see de.dante.extex.typesetter.type.Node#addWidthTo(
+     *      de.dante.extex.interpreter.type.glue.Glue)
+     */
+    public void addWidthTo(final WideGlue glue) {
+
+        glue.add(this.size);
+    }
+
+    /**
      * Getter for size.
      *
      * @return the size
      */
-    protected FixedGlue getSize() {
+    public FixedGlue getSize() {
 
         return this.size;
+    }
+
+    /**
+     * Setter for the size
+     *
+     * @param skip the new value
+     */
+    public void setSize(final FixedGlue skip) {
+
+        size.set(skip);
     }
 
     /**
@@ -147,12 +177,15 @@ public class GlueNode extends AbstractNode implements Node, Discardable {
      *
      * @param sb the output string buffer
      * @param prefix the prefix string inserted at the beginning of each line
+     * @param breadth the breadth (ignored)
+     * @param depth the depth (ignored)
      *
      * @see "<logo>TeX</logo> &ndash; The Program [189]"
      * @see de.dante.extex.typesetter.type.Node#toString(java.lang.StringBuffer,
      *      java.lang.String)
      */
-    public void toString(final StringBuffer sb, final String prefix, int breadth, int depth) {
+    public void toString(final StringBuffer sb, final String prefix,
+            final int breadth, final int depth) {
 
         sb.append(getLocalizer().format("String.Format", getSize().toString()));
     }
