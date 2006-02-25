@@ -127,8 +127,13 @@
     <TeX class="de.dante.extex.typesetter.impl.TypesetterImpl"
          direction="lr">
       <PageBuilder class="de.dante.extex.typesetter.pageBuilder.impl.PageBuilderImpl"/>
-      <ParagraphBuilder class="de.dante.extex.typesetter.paragraphBuilder.impl.ParagraphBuilderImpl"/>
+      <ParagraphBuilder class="de.dante.extex.typesetter.paragraphBuilder.texImpl.TeXParagraphBuilderImpl"/>
     </TeX>
+    <experimental class="de.dante.extex.typesetter.impl.TypesetterImpl"
+         direction="lr">
+      <PageBuilder class="de.dante.extex.typesetter.pageBuilder.impl.PageBuilderImpl"/>
+      <ParagraphBuilder class="de.dante.extex.typesetter.paragraphBuilder.impl.ParagraphBuilderImpl"/>
+    </experimental>
     <devel class="de.dante.extex.typesetter.impl.TypesetterImpl"
            direction="lr">
       <PageBuilder class="de.dante.extex.typesetter.pageBuilder.impl.PageBuilderImpl"/>
@@ -160,35 +165,6 @@
     -  Here another level of indirection is introduced which allows us to select
     -  one of several backends programatically.
     -->
-  <DocumentWriter default="out">
-    <pdf     class="de.dante.extex.backend.documentWriter.pdf.PdfDocumentWriter"/>
-    <dvi     class="de.dante.extex.backend.documentWriter.dvi.DviDocumentWriter"/>
-    <ps      class="de.dante.extex.backend.documentWriter.postscript.PsWriter"/>
-    <ps-box  class="de.dante.extex.backend.documentWriter.postscript.PsWriter"
-             boxed="true"/>
-    <eps     class="de.dante.extex.backend.documentWriter.postscript.EpsWriter"/>
-    <eps-box class="de.dante.extex.backend.documentWriter.postscript.EpsWriter"
-             boxed="true"/>
-    <out     class="de.dante.extex.backend.documentWriter.dump.DumpDocumentWriter"
-             tree="false"/>
-    <dump    class="de.dante.extex.backend.documentWriter.dump.DumpDocumentWriter"
-             tree="true"/>
-    <dumps   class="de.dante.extex.backend.documentWriter.dump.MultiDumpDocumentWriter"
-             tree="true"/>
-    <text    class="de.dante.extex.backend.documentWriter.text.TextDocumentWriter"/>
-    <xml     class="de.dante.extex.backend.documentWriter.xml.XMLDocumentWriter"
-             encoding="ISO-8859-1"
-             debug="false"
-             showvisible="true"
-             indent="  "
-             newlines="true"
-             trimallwhitespace="true"
-             usesp="false"
-             usebp="false"
-             usemm="true"/>
-    <svg     class="de.dante.extex.backend.documentWriter.svg.SVGDocumentWriter"
-             encoding="ISO-8859-1"
-             debug="false"/>
-  </DocumentWriter>
+  <DocumentWriter src="backend/documentWriter"/>
 
 </ExTeX>
