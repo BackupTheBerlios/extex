@@ -35,7 +35,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class CharNode extends AbstractNode implements Node {
 
@@ -176,7 +176,7 @@ public class CharNode extends AbstractNode implements Node {
 
         Font font = typesettingContext.getFont();
         sb.append(getLocalizer()
-                .format("String.Format",
+                .format("Text.Format",
                         (font == null ? "*" : font.getFontName()),
                         character.toString()));
     }
