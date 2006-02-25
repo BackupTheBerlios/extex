@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -65,7 +65,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * classes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public class MockContext implements Context, TypesetterOptions {
 
@@ -849,6 +849,13 @@ public class MockContext implements Context, TypesetterOptions {
     public void startMarks() {
 
         throw new RuntimeException("unimplemented");
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.TypesetterOptions#setCountOption(java.lang.String, de.dante.extex.interpreter.type.count.FixedCount)
+     */
+    public void setCountOption(String name, long value) throws GeneralException {
+
     }
 
 }
