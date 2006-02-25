@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -20,6 +20,7 @@
 package de.dante.extex.typesetter.paragraphBuilder;
 
 import de.dante.extex.typesetter.TypesetterOptions;
+import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
 
@@ -28,7 +29,7 @@ import de.dante.extex.typesetter.type.node.HorizontalListNode;
  * junks.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public interface ParagraphBuilder {
 
@@ -43,7 +44,7 @@ public interface ParagraphBuilder {
      *   {@link de.dante.extex.typesetter.type.node.VerticalListNode
      *   VerticalListNode} containing the hboxes of the lines
      */
-    NodeList build(HorizontalListNode nodes);
+    NodeList build(HorizontalListNode nodes) throws TypesetterException;
 
     /**
      * Setter for options.
