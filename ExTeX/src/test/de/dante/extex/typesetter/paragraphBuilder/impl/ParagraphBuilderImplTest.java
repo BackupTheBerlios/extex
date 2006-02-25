@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -34,12 +34,13 @@ import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
 import de.dante.util.UnicodeChar;
+import de.dante.util.exception.GeneralException;
 
 /**
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class ParagraphBuilderImplTest extends TestCase {
 
@@ -47,7 +48,7 @@ public class ParagraphBuilderImplTest extends TestCase {
      * Inner class for the typesetter options.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.8 $
+     * @version $Revision: 1.9 $
      */
     private class MockOptions implements TypesetterOptions {
 
@@ -81,7 +82,7 @@ public class ParagraphBuilderImplTest extends TestCase {
         /**
          * @see de.dante.extex.typesetter.TypesetterOptions#getFont(java.lang.String)
          */
-        public Font getFont(String name) {
+        public Font getFont(final String name) {
 
             return null;
         }
@@ -156,6 +157,15 @@ public class ParagraphBuilderImplTest extends TestCase {
             // TODO Auto-generated method stub
 
         }
+
+        /**
+         * @see de.dante.extex.typesetter.TypesetterOptions#setCountOption(
+         *      java.lang.String,
+         *      de.dante.extex.interpreter.type.count.FixedCount)
+         */
+        public void setCountOption(String name, long value) throws GeneralException {
+
+        }
     }
 
     /**
@@ -170,7 +180,7 @@ public class ParagraphBuilderImplTest extends TestCase {
     /**
      * ...
      */
-    public void test1() {
+    public void test1() throws Exception {
 
         ParagraphBuilder builder = new ParagraphBuilderImpl();
         builder.setOptions(new MockOptions());

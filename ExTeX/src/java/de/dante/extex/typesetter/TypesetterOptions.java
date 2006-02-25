@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -28,13 +28,14 @@ import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.scanner.type.token.TokenFactory;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
 import de.dante.util.UnicodeChar;
+import de.dante.util.exception.GeneralException;
 
 /**
  * This interface describes the possibilities of the typesetter to access its
  * options.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public interface TypesetterOptions {
 
@@ -127,5 +128,16 @@ public interface TypesetterOptions {
      * @param shape the new paragraph shape
      */
     void setParshape(ParagraphShape shape);
+
+    /**
+     * Setter for a count register.
+     *
+     * @param name the name of the register
+     * @param value the value
+     *
+     * @return the content of the count register
+     */
+    void setCountOption(String name, long value) throws GeneralException;
+
 
 }
