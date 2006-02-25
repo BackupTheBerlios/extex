@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -32,7 +32,7 @@ import de.dante.extex.interpreter.type.dimen.ImmutableDimen;
  * order should determine the value.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class WideGlue {
 
@@ -55,6 +55,11 @@ public class WideGlue {
      * The field <tt>stretch</tt> contains the stretch components.
      */
     private long[] stretch = new long[SIZE];
+
+    /**
+     * The field <tt>unit</tt> contains the ...
+     */
+    private String[] unit = {"sp", "fi", "fil", "fill", "filll", "fillll"};
 
     /**
      * Creates a new object.
@@ -88,6 +93,31 @@ public class WideGlue {
 
         s = glue.getShrink();
         shrink[s.getOrder()] += s.getValue();
+    }
+
+    /**
+     * Add some more glue to this one.
+     *
+     * @param glue the glue to add
+     */
+    public void add(final WideGlue glue) {
+
+        this.length.add(glue.length);
+
+        for (int i = SIZE - 1; i >= 0; i--) {
+            stretch[i] += glue.stretch[i];
+            shrink[i] += glue.shrink[i];
+        }
+    }
+
+    /**
+     * Add some more dimen to the stretch.
+     *
+     * @param s the glue to add
+     */
+    public void addStretch(final FixedDimen s) {
+
+        shrink[0] += s.getValue();
     }
 
     /**
@@ -151,8 +181,25 @@ public class WideGlue {
     }
 
     /**
+     * Setter for the glue value in all three components
+     *
+     * @param glue the glue to copy
+     */
+    public void set(final FixedGlue glue) {
+
+        this.length.set(glue.getLength());
+
+        for (int i = SIZE - 1; i >= 0; i--) {
+            stretch[i] = 0;
+            shrink[i] = 0;
+        }
+        stretch[glue.getStretch().getOrder()] = glue.getStretch().getValue();
+        shrink[glue.getShrink().getOrder()] = glue.getShrink().getValue();
+    }
+
+    /**
      * Setter for the length.
-     * Te stretch and shrink components are set to zero.
+     * The stretch and shrink components are set to zero.
      *
      * @param len the length
      */
@@ -167,6 +214,61 @@ public class WideGlue {
     }
 
     /**
+     * Setter for the glue value in all three components
+     *
+     * @param wg the glue to copy
+     */
+    public void set(final WideGlue wg) {
+
+        this.length.set(wg.length);
+
+        for (int i = SIZE - 1; i >= 0; i--) {
+            stretch[i] = wg.stretch[i];
+            shrink[i] = wg.shrink[i];
+        }
+    }
+
+    /**
+     * Subtract some more glue to this one.
+     *
+     * @param glue the glue to add
+     */
+    public void subtract(final FixedGlue glue) {
+
+        length.subtract(glue.getLength());
+        FixedGlueComponent s = glue.getStretch();
+        stretch[s.getOrder()] -= s.getValue();
+
+        s = glue.getShrink();
+        shrink[s.getOrder()] -= s.getValue();
+    }
+
+    /**
+     * Subtract some more dimen to this one.
+     *
+     * @param glue the glue to add
+     */
+    public void subtract(final FixedDimen dimen) {
+
+        length.subtract(dimen);
+    }
+
+    /**
+     * Subtract some glue from this one.
+     *
+     * @param glue the glue to subtract
+     */
+    public void subtract(final WideGlue glue) {
+
+        this.length.subtract(glue.length);
+
+        for (int i = SIZE - 1; i >= 0; i--) {
+            stretch[i] -= glue.stretch[i];
+            shrink[i] -= glue.shrink[i];
+        }
+    }
+
+    /**
      * Get the Glue representation for this instance.
      * The stretch and shrink components are reduced to the highest order
      * coefficients.
@@ -177,4 +279,32 @@ public class WideGlue {
 
         return new Glue(length, getGC(stretch), getGC(shrink));
     }
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+
+        StringBuffer sb = new StringBuffer();
+        this.length.toString(sb);
+
+        for (int i = SIZE - 1; i >= 0; i--) {
+            if (stretch[i] != 0) {
+                sb.append("plus ");
+                sb.append(stretch[i]);
+                sb.append(unit[i]);
+            }
+        }
+
+        for (int i = SIZE - 1; i >= 0; i--) {
+            if (shrink[i] != 0) {
+                sb.append("minus ");
+                sb.append(shrink[i]);
+                sb.append(unit[i]);
+            }
+        }
+
+        return sb.toString();
+    }
+
 }

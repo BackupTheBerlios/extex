@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -42,7 +42,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public class Glue implements Serializable, FixedGlue {
 
@@ -97,8 +97,9 @@ public class Glue implements Serializable, FixedGlue {
      * @param theStretch the stretch specification
      * @param theShrink the shrink specification
      */
-    public Glue(final GlueComponent theLength, final GlueComponent theStretch,
-            final GlueComponent theShrink) {
+    public Glue(final FixedGlueComponent theLength,
+            final FixedGlueComponent theStretch,
+            final FixedGlueComponent theShrink) {
 
         super();
         this.length = theLength.copy();
@@ -338,7 +339,16 @@ public class Glue implements Serializable, FixedGlue {
     }
 
     /**
-     * Set the glue value to a non-stretchable and non-shrinkable length
+     * @see de.dante.extex.interpreter.type.glue.FixedGlue#ne(de.dante.extex.interpreter.type.glue.FixedGlue)
+     */
+    public boolean ne(final FixedGlue glue) {
+
+        return length.ne(glue.getLength()) || stretch.ne(glue.getStretch())
+                || shrink.ne(glue.getShrink());
+    }
+
+    /**
+     * Set the glue value to a non-stretchable and non-shrinkable length.
      *
      * @param theLength the new length
      */
@@ -347,6 +357,18 @@ public class Glue implements Serializable, FixedGlue {
         this.length = theLength.copy();
         this.shrink = new GlueComponent();
         this.stretch = new GlueComponent();
+    }
+
+    /**
+     * Set the glue value.
+     *
+     * @param theLength the new length
+     */
+    public void set(final FixedGlue theLength) {
+
+        this.length.set(theLength.getLength());
+        this.shrink.set(theLength.getShrink());
+        this.stretch.set(theLength.getStretch());
     }
 
     /**
