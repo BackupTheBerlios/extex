@@ -32,7 +32,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class HorizontalListNode extends AbstractNodeList {
 
@@ -103,6 +103,8 @@ public class HorizontalListNode extends AbstractNodeList {
      */
     public void toText(final StringBuffer sb, final String prefix) {
 
+        sb.append("\n");
+        sb.append(prefix);
         sb.append("(hlist ");
         super.toText(sb, prefix);
     }

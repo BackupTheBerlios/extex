@@ -39,7 +39,7 @@ import de.dante.util.exception.GeneralException;
  * This class is used to represent composed characters from virtual fonts.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class VirtualCharNode extends CharNode implements NodeList {
 
@@ -53,7 +53,7 @@ public class VirtualCharNode extends CharNode implements NodeList {
      * It is here to compensate the missing multiple inheritance of Java.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.11 $
+     * @version $Revision: 1.12 $
      */
     private class NL extends AbstractNodeList {
 
@@ -301,7 +301,7 @@ public class VirtualCharNode extends CharNode implements NodeList {
      * @see de.dante.extex.typesetter.type.NodeList#setMove(
      *      de.dante.extex.interpreter.type.dimen.Dimen)
      */
-    public void setMove(final Dimen d) {
+    public void setMove(final FixedDimen d) {
 
         this.nodes.setMove(d);
     }
@@ -310,7 +310,7 @@ public class VirtualCharNode extends CharNode implements NodeList {
      * @see de.dante.extex.typesetter.type.NodeList#setShift(
      *      de.dante.extex.interpreter.type.dimen.Dimen)
      */
-    public void setShift(final Dimen d) {
+    public void setShift(final FixedDimen d) {
 
         this.nodes.setShift(d);
     }
