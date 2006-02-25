@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -24,7 +24,12 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.primitives.register.box.AbstractBox;
+import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.exception.TypesetterException;
+import de.dante.extex.typesetter.type.noad.GlueNoad;
+import de.dante.extex.typesetter.type.node.GlueNode;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * This class provides an implementation for the primitive <code>\noindent</code>.
@@ -48,7 +53,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Noindent extends AbstractBox {
 
@@ -78,8 +83,16 @@ public class Noindent extends AbstractBox {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        //TODO gene: execute() unimplemented
-        throw new RuntimeException("unimplemented");
+        Glue parskip = context.getGlue("parskip");
+
+        try {
+            typesetter.par();
+            typesetter.add(new GlueNode(parskip, false));
+        } catch (TypesetterException e) {
+            throw new InterpreterException(e);
+        } catch (ConfigurationException e) {
+            throw new InterpreterException(e);
+        }
     }
 
 }
