@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeIterator;
 import de.dante.extex.typesetter.type.NodeList;
@@ -32,7 +33,7 @@ import de.dante.extex.typesetter.type.NodeList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public abstract class AbstractNodeList extends AbstractNode implements NodeList {
 
@@ -44,13 +45,13 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
 
     /**
      * The field <tt>move</tt> contains the offset of the reference point in
-     * horizontal direction.
+     * vertical direction.
      */
     private Dimen move = new Dimen(0);
 
     /**
      * The field <tt>shift</tt> contains the offset of the reference point in
-     * vertical direction.
+     * horizontal direction.
      */
     private Dimen shift = new Dimen(0);
 
@@ -238,7 +239,7 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
      * @see de.dante.extex.typesetter.type.NodeList#setMove(
      *      de.dante.extex.interpreter.type.dimen.Dimen)
      */
-    public void setMove(final Dimen d) {
+    public void setMove(final FixedDimen d) {
 
         move.set(d);
     }
@@ -247,7 +248,7 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
      * @see de.dante.extex.typesetter.type.NodeList#setShift(
      *      de.dante.extex.interpreter.type.dimen.Dimen)
      */
-    public void setShift(final Dimen d) {
+    public void setShift(final FixedDimen d) {
 
         shift.set(d);
     }
@@ -298,7 +299,7 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
     public String toString() {
 
         StringBuffer sb = new StringBuffer();
-        toString(sb, "", Integer.MAX_VALUE, Integer.MAX_VALUE);
+        toString(sb, "\n", Integer.MAX_VALUE, Integer.MAX_VALUE);
         return sb.toString();
     }
 
@@ -350,11 +351,10 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
      */
     public void toText(final StringBuffer sb, final String prefix) {
 
-        sb.append("(");
-        sb.append(prefix);
+        String p = prefix + "  ";
 
         for (int i = 0; i < list.size(); i++) {
-            ((Node) list.get(i)).toText(sb, prefix + ".");
+            ((Node) list.get(i)).toText(sb, p);
         }
 
         sb.append(")");

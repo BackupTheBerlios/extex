@@ -20,6 +20,7 @@
 package de.dante.extex.typesetter.type;
 
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.typesetter.type.node.CharNode;
 
@@ -40,7 +41,7 @@ import de.dante.extex.typesetter.type.node.CharNode;
  * @see de.dante.extex.interpreter.type.box.Box
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface NodeList extends Node {
 
@@ -132,21 +133,21 @@ public interface NodeList extends Node {
     /**
      * Setter for the move value of the node list.
      * The move parameter describes how far from its original position the box
-     * is moved leftwards or rightwards. Positive values indicate a move
-     * rightwards.
+     * is moved up or down. Positive values indicate a move upwards.
      *
      * @param d the move value
      */
-    void setMove(Dimen d);
+    void setMove(FixedDimen d);
 
     /**
      * Setter for the shift value of the node list.
      * The shift parameter describes how far from its original position the box
-     * is shifted up or down. Positive values indicate a move upwards.
+     * is shifted leftwards or rightwards. Positive values indicate a shift
+     * rightwards.
      *
      * @param d the amount to be shifted
      */
-    void setShift(Dimen d);
+    void setShift(FixedDimen d);
 
     /**
      * Getter for the number of elements of the list.
