@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--
-  -  Copyright (C) 2005 The ExTeX Group
+  -  Copyright (C) 2005-2006 The ExTeX Group
   -
   -  This library is free software; you can redistribute it and/or modify it
   -  under the terms of the GNU Lesser General Public License as published by
@@ -25,6 +25,8 @@
       class="de.dante.extex.language.hyphenation.liang.LiangsHyphenationTable">
       <LigatureBuilder
         class="de.dante.extex.language.ligature.impl.LigatureBuilderImpl"/>
+      <WordTokenizer
+        class="de.dante.extex.language.word.impl.TeXwords"/>
     </default>
   </TeX>
 
@@ -34,6 +36,8 @@
       class="de.dante.extex.language.hyphenation.liang.LiangsHyphenationTable">
       <LigatureBuilder
         class="de.dante.extex.language.ligature.impl.LigatureBuilderImpl"/>
+      <WordTokenizer
+        class="de.dante.extex.language.word.impl.TeXwords"/>
     </default>
   </ExTeX>
 
