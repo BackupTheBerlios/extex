@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -30,9 +30,20 @@ import de.dante.util.exception.GeneralException;
  * the value.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public interface FixedGlue {
+
+    /**
+     * The constant <tt>NORMAL_ORDER</tt> contains the value for the normal
+     * &ndash; immutable &ndash; order.
+     */
+    public static final int NORMAL_ORDER = 0;
+
+    /**
+     * The constant <tt>ZERO</tt> contains the ...
+     */
+    public static final FixedGlue ZERO = new Glue(0);
 
     /**
      * Make a copy of this object.
@@ -67,6 +78,15 @@ public interface FixedGlue {
      * @return the stretch.
      */
     FixedGlueComponent getStretch();
+
+    /**
+     * Test that the given Glue is differnt from a given one.
+     *
+     * @param glue the glue to compare with
+     *
+     * @return <code>true</code> iff they are different
+     */
+    boolean ne(FixedGlue glue);
 
     /**
      * Provide a string representation of this instance.
