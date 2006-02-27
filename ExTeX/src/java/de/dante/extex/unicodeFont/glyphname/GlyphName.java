@@ -22,6 +22,8 @@ package de.dante.extex.unicodeFont.glyphname;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
+import java.io.PrintStream;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,7 +34,7 @@ import de.dante.util.UnicodeChar;
  * the Unicode value.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public final class GlyphName {
@@ -125,4 +127,32 @@ public final class GlyphName {
         return (UnicodeChar) glyphmap.get(name);
     }
 
+    /**
+     * Print all the entries.
+     *
+     * @param out   The stream for the output.
+     * @throws IOException if an IO-error occurred.
+     */
+    public void printEntries(final PrintStream out) throws IOException {
+
+        String[] keys = new String[glyphmap.size()];
+        glyphmap.keySet().toArray(keys);
+
+        // sort the key
+        Arrays.sort(keys);
+
+        for (int i = 0; i < keys.length; i++) {
+
+            UnicodeChar uc = (UnicodeChar) glyphmap.get(keys[i]);
+            out.print(keys[i]);
+            out.print(";");
+            out.print(Integer.toHexString(uc.getCodePoint()));
+            out.print(";");
+            String n = uc.getUnicodeName();
+            if (n == null) {
+                n = "";
+            }
+            out.println();
+        }
+    }
 }
