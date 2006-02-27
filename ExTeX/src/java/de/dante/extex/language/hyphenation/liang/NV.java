@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -32,7 +32,6 @@ import de.dante.extex.typesetter.type.node.AlignedLeadersNode;
 import de.dante.extex.typesetter.type.node.BeforeMathNode;
 import de.dante.extex.typesetter.type.node.CenteredLeadersNode;
 import de.dante.extex.typesetter.type.node.CharNode;
-import de.dante.extex.typesetter.type.node.CharNodeFactory;
 import de.dante.extex.typesetter.type.node.DiscretionaryNode;
 import de.dante.extex.typesetter.type.node.ExpandedLeadersNode;
 import de.dante.extex.typesetter.type.node.GlueNode;
@@ -47,6 +46,7 @@ import de.dante.extex.typesetter.type.node.SpaceNode;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
 import de.dante.extex.typesetter.type.node.VirtualCharNode;
 import de.dante.extex.typesetter.type.node.WhatsItNode;
+import de.dante.extex.typesetter.type.node.factory.NodeFactory;
 import de.dante.util.UnicodeChar;
 import de.dante.util.exception.GeneralException;
 
@@ -56,7 +56,7 @@ import de.dante.util.exception.GeneralException;
  * &ldquo;normal&rdquo; cases do not apply.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 class NV implements NodeVisitor {
 
@@ -87,7 +87,7 @@ class NV implements NodeVisitor {
     /**
      * The field <tt>cnf</tt> contains the factory to acquire new char nodes.
      */
-    private CharNodeFactory cnf;
+    private NodeFactory cnf;
 
     /**
      * Creates a new object.
@@ -96,10 +96,10 @@ class NV implements NodeVisitor {
      * @param hyphen the token to insert into the discretionary
      * @param tc the typesetting context for the hyphen
      * @param factory the factory to acquire new char nodes
-     * @param hyph the indocator for allowed hyphenation positions
+     * @param hyph the indicator for allowed hyphenation positions
      */
     public NV(final NodeList nodes, final UnicodeChar hyphen,
-            final TypesettingContext tc, final CharNodeFactory factory,
+            final TypesettingContext tc, final NodeFactory factory,
             final boolean[] hyph) {
 
         super();
@@ -180,7 +180,7 @@ class NV implements NodeVisitor {
 
         Count index = (Count) value;
         if (isHyph[(int) index.getValue()]) {
-            CharNode hyphenNode = cnf.newInstance(tc, hyphen);
+            Node hyphenNode = cnf.getNode(tc, hyphen);
             if (hyphenNode == null) {
                 nodes.add(new DiscretionaryNode(null, null, null));
             } else {
@@ -330,7 +330,7 @@ class NV implements NodeVisitor {
                 next++;
             }
         }
-        CharNode hyphenNode = cnf.newInstance(tc, hyphen);
+        Node hyphenNode = cnf.getNode(tc, hyphen);
         if (hyphenNode == null) {
             //TODO gene: undefined character
         } else if (isHyph[index]) {

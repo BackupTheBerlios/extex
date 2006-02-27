@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -26,7 +26,7 @@ import de.dante.extex.typesetter.listMaker.ListManager;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
 import de.dante.extex.typesetter.type.NodeList;
-import de.dante.extex.typesetter.type.node.CharNodeFactory;
+import de.dante.extex.typesetter.type.node.factory.NodeFactory;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
@@ -38,7 +38,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @see "<logo>TeX</logo> &ndash; The Program [211]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.33 $
+ * @version $Revision: 1.34 $
  */
 public interface Typesetter extends ListMaker {
 
@@ -61,13 +61,6 @@ public interface Typesetter extends ListMaker {
     void finish() throws TypesetterException, ConfigurationException;
 
     /**
-     * Getter for the CharNodeFactory.
-     *
-     * @return the character node factory
-     */
-    CharNodeFactory getCharNodeFactory();
-
-    /**
      * Getter for the document writer.
      *
      * @return the document writer
@@ -87,6 +80,13 @@ public interface Typesetter extends ListMaker {
      * @return the manager
      */
     ListManager getManager();
+
+    /**
+     * Getter for the NodeFactory.
+     *
+     * @return the node factory
+     */
+    NodeFactory getNodeFactory();
 
     /**
      * Query the shipout mark.
@@ -121,6 +121,13 @@ public interface Typesetter extends ListMaker {
      * @param driver the new back-end driver
      */
     void setBackend(BackendDriver driver);
+
+    /**
+     * Setter for the node factory.
+     *
+     * @param nodeFactory the node factory
+     */
+    void setNodeFactory(NodeFactory nodeFactory);
 
     /**
      * Setter for the typesetter specific options.

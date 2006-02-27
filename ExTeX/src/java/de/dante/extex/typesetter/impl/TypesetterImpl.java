@@ -30,6 +30,7 @@ import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.exception.ImpossibleException;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.ListMaker;
@@ -48,11 +49,12 @@ import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeIterator;
 import de.dante.extex.typesetter.type.NodeList;
-import de.dante.extex.typesetter.type.node.CharNodeFactory;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
 import de.dante.extex.typesetter.type.node.InsertionNode;
 import de.dante.extex.typesetter.type.node.PenaltyNode;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
+import de.dante.extex.typesetter.type.node.factory.CachingNodeFactory;
+import de.dante.extex.typesetter.type.node.factory.NodeFactory;
 import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
@@ -66,7 +68,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.84 $
+ * @version $Revision: 1.85 $
  */
 public class TypesetterImpl
         implements
@@ -80,12 +82,6 @@ public class TypesetterImpl
      * producing the output.
      */
     private BackendDriver backend = null;
-
-    /**
-     * The field <tt>charNodeFactory</tt> contains the factory to produce glyph
-     * nodes.
-     */
-    private CharNodeFactory charNodeFactory = new CharNodeFactory();
 
     /**
      * The field <tt>listMaker</tt> contains the current list maker for
@@ -103,6 +99,12 @@ public class TypesetterImpl
      * The field <tt>logger</tt> contains the logger to use.
      */
     private Logger logger = null;
+
+    /**
+     * The field <tt>charNodeFactory</tt> contains the factory to produce glyph
+     * nodes.
+     */
+    private NodeFactory nodeFactory = new CachingNodeFactory();
 
     /**
      * The field <tt>options</tt> contains the context for accessing parameters.
@@ -155,6 +157,10 @@ public class TypesetterImpl
     public void add(final Node node)
             throws TypesetterException,
                 ConfigurationException {
+
+        if (node == null) {
+            return;
+        }
 
         listMaker.add(node);
 
@@ -303,14 +309,6 @@ public class TypesetterImpl
     }
 
     /**
-     * @see de.dante.extex.typesetter.Typesetter#getCharNodeFactory()
-     */
-    public CharNodeFactory getCharNodeFactory() {
-
-        return charNodeFactory;
-    }
-
-    /**
      * @see de.dante.extex.typesetter.Typesetter#getDocumentWriter()
      */
     public DocumentWriter getDocumentWriter() {
@@ -364,6 +362,14 @@ public class TypesetterImpl
     }
 
     /**
+     * @see de.dante.extex.typesetter.Typesetter#getNodeFactory()
+     */
+    public NodeFactory getNodeFactory() {
+
+        return nodeFactory;
+    }
+
+    /**
      * @see de.dante.extex.typesetter.listMaker.ListManager#getOptions()
      */
     public TypesetterOptions getOptions() {
@@ -374,7 +380,7 @@ public class TypesetterImpl
     /**
      * @see de.dante.extex.typesetter.ListMaker#getPrevDepth()
      */
-    public Dimen getPrevDepth() throws TypesetterUnsupportedException {
+    public FixedDimen getPrevDepth() throws TypesetterUnsupportedException {
 
         return this.listMaker.getPrevDepth();
     }
@@ -411,7 +417,8 @@ public class TypesetterImpl
      *      de.dante.util.UnicodeChar)
      */
     public void letter(final Context context, final TypesettingContext tc,
-            final UnicodeChar uc, Locator locator) throws TypesetterException {
+            final UnicodeChar uc, final Locator locator)
+            throws TypesetterException {
 
         listMaker.letter(context, tc, uc, locator);
     }
@@ -490,6 +497,15 @@ public class TypesetterImpl
 
         backend = driver;
         pageBuilder.setBackend(driver);
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.Typesetter#setNodeFactory(
+     *      de.dante.extex.typesetter.type.node.factory.NodeFactory)
+     */
+    public void setNodeFactory(final NodeFactory nodeFactory) {
+
+        this.nodeFactory = nodeFactory;
     }
 
     /**
@@ -584,7 +600,8 @@ public class TypesetterImpl
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#showlist(java.lang.StringBuffer, long, long)
+     * @see de.dante.extex.typesetter.ListMaker#showlist(java.lang.StringBuffer,
+     *       long, long)
      */
     public void showlist(final StringBuffer sb, final long depth,
             final long breadth) {

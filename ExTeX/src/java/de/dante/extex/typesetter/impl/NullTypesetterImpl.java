@@ -19,7 +19,6 @@
 
 package de.dante.extex.typesetter.impl;
 
-
 import de.dante.extex.backend.BackendDriver;
 import de.dante.extex.backend.documentWriter.DocumentWriter;
 import de.dante.extex.interpreter.TokenSource;
@@ -27,6 +26,7 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.ListMaker;
@@ -43,7 +43,7 @@ import de.dante.extex.typesetter.pageBuilder.PageBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
-import de.dante.extex.typesetter.type.node.CharNodeFactory;
+import de.dante.extex.typesetter.type.node.factory.NodeFactory;
 import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
 import de.dante.util.exception.GeneralException;
@@ -55,7 +55,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class NullTypesetterImpl implements Typesetter {
 
@@ -159,14 +159,6 @@ public class NullTypesetterImpl implements Typesetter {
     }
 
     /**
-     * @see de.dante.extex.typesetter.Typesetter#getCharNodeFactory()
-     */
-    public CharNodeFactory getCharNodeFactory() {
-
-        return null;
-    }
-
-    /**
      * @see de.dante.extex.typesetter.Typesetter#getDocumentWriter()
      */
     public DocumentWriter getDocumentWriter() {
@@ -215,9 +207,17 @@ public class NullTypesetterImpl implements Typesetter {
     }
 
     /**
+     * @see de.dante.extex.typesetter.Typesetter#getCharNodeFactory()
+     */
+    public NodeFactory getNodeFactory() {
+
+        return null;
+    }
+
+    /**
      * @see de.dante.extex.typesetter.ListMaker#getPrevDepth()
      */
-    public Dimen getPrevDepth() throws TypesetterUnsupportedException {
+    public FixedDimen getPrevDepth() throws TypesetterUnsupportedException {
 
         return null;
     }
@@ -253,7 +253,8 @@ public class NullTypesetterImpl implements Typesetter {
      *      de.dante.util.UnicodeChar)
      */
     public void letter(final Context context, final TypesettingContext tc,
-            final UnicodeChar uc, Locator locator) throws TypesetterException {
+            final UnicodeChar uc, final Locator locator)
+            throws TypesetterException {
 
     }
 
@@ -305,6 +306,14 @@ public class NullTypesetterImpl implements Typesetter {
     public void setBackend(final BackendDriver driver) {
 
         backend = driver;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.Typesetter#setNodeFactory(
+     *      de.dante.extex.typesetter.type.node.factory.NodeFactory)
+     */
+    public void setNodeFactory(final NodeFactory nodeFactory) {
+
     }
 
     /**

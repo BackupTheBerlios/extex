@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -23,8 +23,8 @@ import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
-import de.dante.extex.typesetter.type.node.CharNodeFactory;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
+import de.dante.extex.typesetter.type.node.factory.NodeFactory;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
@@ -32,7 +32,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public interface ListManager {
 
@@ -42,11 +42,15 @@ public interface ListManager {
      * @param nodes the nodes to make a paragraph from
      *
      * @return the vertical node list containing the lines of the paragraph
+     *
+     * @throws TypesetterException in case of an error
      */
-    NodeList buildParagraph(HorizontalListNode nodes);
+    NodeList buildParagraph(HorizontalListNode nodes)
+            throws TypesetterException;
 
     /**
      * End the current paragraph.
+     *
      * @throws TypesetterException in case of an error
      * @throws ConfigurationException in case of an configuration problem
      */
@@ -57,7 +61,7 @@ public interface ListManager {
      *
      * @return the char node factory
      */
-    CharNodeFactory getCharNodeFactory();
+    NodeFactory getNodeFactory();
 
     /**
      * Getter for the options object.
