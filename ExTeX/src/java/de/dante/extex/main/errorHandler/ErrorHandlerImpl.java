@@ -50,7 +50,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class ErrorHandlerImpl
         implements
@@ -132,6 +132,7 @@ public class ErrorHandlerImpl
 
             if ("1".equals(line)) {
 
+                /*
             } else if ("2".equals(line)) {
             } else if ("3".equals(line)) {
             } else if ("4".equals(line)) {
@@ -147,6 +148,7 @@ public class ErrorHandlerImpl
             } else if ("14".equals(line)) {
             } else if ("15".equals(line)) {
             } else if ("16".equals(line)) {
+            */
             } else if (line.startsWith("-")) {
                 return;
             } else {
