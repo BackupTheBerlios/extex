@@ -26,11 +26,11 @@ import junit.framework.TestSuite;
  * TODO gene: missing JavaDoc.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class AllTests {
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
 
     }
 

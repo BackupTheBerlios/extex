@@ -26,7 +26,7 @@ import de.dante.extex.interpreter.context.TypesettingContext;
  * This abstract noad represents a Noad with a nucleus.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public abstract class AbstractNucleusNoad extends AbstractNoad {
 
@@ -53,14 +53,13 @@ public abstract class AbstractNucleusNoad extends AbstractNoad {
         this.color = tc.getColor();
     }
 
-    
     /**
      * Getter for color.
      *
      * @return the color
      */
     public Color getColor() {
-    
+
         return this.color;
     }
 
