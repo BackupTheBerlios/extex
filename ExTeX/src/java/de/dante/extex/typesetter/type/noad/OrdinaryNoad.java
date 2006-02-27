@@ -34,7 +34,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [682]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class OrdinaryNoad extends AbstractNucleusNoad implements SimpleNoad {
 
@@ -82,6 +82,17 @@ public class OrdinaryNoad extends AbstractNucleusNoad implements SimpleNoad {
         //return index + 1;
     }
 
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param noads ...
+     * @param index ...
+     * @param list ...
+     * @param mathContext ...
+     * @param context ...
+     * @param logger ...
+     * @return ...
+     */
     public static final int make_ord(final NoadList noads, final int index,
             final NodeList list, final MathContext mathContext,
             final TypesetterOptions context, final Logger logger) {
@@ -107,7 +118,6 @@ public class OrdinaryNoad extends AbstractNucleusNoad implements SimpleNoad {
                         Noad nuc = ((AbstractNucleusNoad) n).getNucleus();
                         if (nuc instanceof CharNoad) {
                             //            if math_type(nucleus(p))=math_char then
-                            
                             //              if fam(nucleus(p))=fam(nucleus(q)) then
                             //                begin math_type(nucleus(q)) ? math_text_char; fetch(nucleus(q));
                             //                if char_tag(cur_i)=lig_tag then

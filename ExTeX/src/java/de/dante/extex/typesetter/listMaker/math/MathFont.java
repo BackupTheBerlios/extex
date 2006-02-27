@@ -36,7 +36,7 @@ import de.dante.util.UnicodeChar;
  * @see "TTP [700]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class MathFont implements Font {
 
@@ -105,11 +105,27 @@ public class MathFont implements Font {
     }
 
     /**
+     * @see de.dante.extex.font.type.Fount#getFontByteArray()
+     */
+    public FontByteArray getFontByteArray() {
+
+        return this.font.getFontByteArray(); // add by mgn
+    }
+
+    /**
      * @see de.dante.extex.interpreter.type.font.Font#getFontDimen(String)
      */
     public Dimen getFontDimen(final String key) {
 
         return this.font.getFontDimen(key);
+    }
+
+    /**
+     * @see de.dante.extex.font.type.Fount#getFontKey()
+     */
+    public FountKey getFontKey() {
+
+        return this.font.getFontKey(); // add by mgn
     }
 
     /**
@@ -200,19 +216,4 @@ public class MathFont implements Font {
         return this.font.toString();
     }
 
-    /**
-     * @see de.dante.extex.font.type.Fount#getFontKey()
-     */
-    public FountKey getFontKey() {
-
-        return this.font.getFontKey(); // add by mgn
-    }
-    
-    /**
-     * @see de.dante.extex.font.type.Fount#getFontByteArray()
-     */
-    public FontByteArray getFontByteArray() {
-
-        return this.font.getFontByteArray(); // add by mgn
-    }
 }

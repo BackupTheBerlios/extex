@@ -37,7 +37,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This is the list maker for the display math formulae.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class DisplaymathListMaker extends MathListMaker implements EqConsumer {
 
@@ -58,6 +58,7 @@ public class DisplaymathListMaker extends MathListMaker implements EqConsumer {
      * Creates a new object.
      *
      * @param manager the manager to ask for global changes
+     * @param locator the locator
      */
     public DisplaymathListMaker(final ListManager manager, final Locator locator) {
 

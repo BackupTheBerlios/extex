@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -20,7 +20,7 @@
 package de.dante.extex.typesetter.type;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This class carries a two-dimensional transformation.
  *
  *
  * <table>
@@ -30,37 +30,37 @@ package de.dante.extex.typesetter.type;
  * </table>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Transformation {
 
     /**
-     * The field <tt>a</tt> contains the ...
+     * The field <tt>a</tt> contains the a component.
      */
     private float a;
 
     /**
-     * The field <tt>b</tt> contains the ...
+     * The field <tt>b</tt> contains the b component.
      */
     private float b;
 
     /**
-     * The field <tt>c</tt> contains the ...
+     * The field <tt>c</tt> contains the c component.
      */
     private float c;
 
     /**
-     * The field <tt>d</tt> contains the ...
+     * The field <tt>d</tt> contains the d component.
      */
     private float d;
 
     /**
-     * The field <tt>tx</tt> contains the ...
+     * The field <tt>tx</tt> contains the tx component.
      */
     private float tx;
 
     /**
-     * The field <tt>ty</tt> contains the ...
+     * The field <tt>ty</tt> contains the ty component.
      */
     private float ty;
 
@@ -113,7 +113,7 @@ public class Transformation {
     }
 
     /**
-     * Getter for tx.
+     * Getter for tx component.
      *
      * @return the tx
      */
@@ -123,7 +123,7 @@ public class Transformation {
     }
 
     /**
-     * Getter for ty.
+     * Getter for ty component.
      *
      * @return the ty
      */
@@ -131,4 +131,5 @@ public class Transformation {
 
         return Float.toString(this.ty);
     }
+
 }
