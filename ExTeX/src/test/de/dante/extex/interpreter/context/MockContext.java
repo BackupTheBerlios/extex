@@ -65,7 +65,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * classes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public class MockContext implements Context, TypesetterOptions {
 
@@ -536,10 +536,15 @@ public class MockContext implements Context, TypesetterOptions {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#pushConditional(de.dante.util.Locator, boolean, String)
+     * @see de.dante.extex.interpreter.context.Context#pushConditional(
+     *      de.dante.util.Locator,
+     *      boolean,
+     *      de.dante.extex.interpreter.type.Code,
+     *      long,
+     *      boolean)
      */
     public void pushConditional(final Locator locator, final boolean value,
-            Code primitive, long branch, boolean neg) {
+            final Code primitive, final long branch, final boolean neg) {
 
         throw new RuntimeException("unimplemented");
     }
@@ -710,7 +715,8 @@ public class MockContext implements Context, TypesetterOptions {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setLanguageManager(de.dante.extex.hyphenation.HyphenationManager)
+     * @see de.dante.extex.interpreter.context.Context#setLanguageManager(
+     *      de.dante.extex.hyphenation.HyphenationManager)
      */
     public void setLanguageManager(final LanguageManager manager) {
 
@@ -718,10 +724,11 @@ public class MockContext implements Context, TypesetterOptions {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setLccode(de.dante.util.UnicodeChar, de.dante.util.UnicodeChar)
+     * @see de.dante.extex.interpreter.context.Context#setLccode(
+     *      de.dante.util.UnicodeChar, de.dante.util.UnicodeChar)
      */
     public void setLccode(final UnicodeChar uc, final UnicodeChar lc,
-            boolean global) {
+            final boolean global) {
 
         throw new RuntimeException("unimplemented");
     }
@@ -735,15 +742,20 @@ public class MockContext implements Context, TypesetterOptions {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setMark(java.lang.String, de.dante.extex.interpreter.type.tokens.Tokens)
+     * @see de.dante.extex.interpreter.context.ContextMark#setMark(
+     *      java.lang.Object,
+     *      de.dante.extex.interpreter.type.tokens.Tokens)
      */
-    public void setMark(Object name, Tokens mark) {
+    public void setMark(final Object name, final Tokens mark) {
 
         throw new RuntimeException("unimplemented");
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setMathcode(de.dante.util.UnicodeChar, de.dante.extex.interpreter.type.count.Count, boolean)
+     * @see de.dante.extex.interpreter.context.Context#setMathcode(
+     *      de.dante.util.UnicodeChar,
+     *      de.dante.extex.interpreter.type.count.Count,
+     *      boolean)
      */
     public void setMathcode(final UnicodeChar uc, final Count code,
             final boolean global) {
@@ -810,7 +822,8 @@ public class MockContext implements Context, TypesetterOptions {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setTokenFactory(de.dante.extex.scanner.type.token.TokenFactory)
+     * @see de.dante.extex.interpreter.context.Context#setTokenFactory(
+     *      de.dante.extex.scanner.type.token.TokenFactory)
      */
     public void setTokenFactory(final TokenFactory factory) {
 
@@ -818,7 +831,9 @@ public class MockContext implements Context, TypesetterOptions {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.ContextTokens#setToks(java.lang.String, de.dante.extex.interpreter.type.tokens.Tokens, boolean)
+     * @see de.dante.extex.interpreter.context.ContextTokens#setToks(
+     *      java.lang.String,
+     *      de.dante.extex.interpreter.type.tokens.Tokens, boolean)
      */
     public void setToks(final String name, final Tokens toks,
             final boolean global) throws InterpreterException {
@@ -827,7 +842,8 @@ public class MockContext implements Context, TypesetterOptions {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setTypesettingContext(de.dante.extex.interpreter.context.TypesettingContext)
+     * @see de.dante.extex.interpreter.context.Context#setTypesettingContext(
+     *       de.dante.extex.interpreter.context.TypesettingContext)
      */
     public void setTypesettingContext(final TypesettingContext context) {
 
@@ -835,10 +851,12 @@ public class MockContext implements Context, TypesetterOptions {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setUccode(de.dante.util.UnicodeChar, de.dante.util.UnicodeChar)
+     * @see de.dante.extex.interpreter.context.Context#setUccode(
+     *      de.dante.util.UnicodeChar,
+     *      de.dante.util.UnicodeChar)
      */
     public void setUccode(final UnicodeChar lc, final UnicodeChar uc,
-            boolean global) {
+            final boolean global) {
 
         throw new RuntimeException("unimplemented");
     }
@@ -852,9 +870,12 @@ public class MockContext implements Context, TypesetterOptions {
     }
 
     /**
-     * @see de.dante.extex.typesetter.TypesetterOptions#setCountOption(java.lang.String, de.dante.extex.interpreter.type.count.FixedCount)
+     * @see de.dante.extex.typesetter.TypesetterOptions#setCountOption(
+     *       java.lang.String,
+     *       de.dante.extex.interpreter.type.count.FixedCount)
      */
-    public void setCountOption(String name, long value) throws GeneralException {
+    public void setCountOption(final String name, final long value)
+            throws GeneralException {
 
     }
 
