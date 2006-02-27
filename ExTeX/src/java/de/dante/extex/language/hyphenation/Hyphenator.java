@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -25,6 +25,7 @@ import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.language.hyphenation.exception.HyphenationException;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
+import de.dante.extex.typesetter.type.node.factory.NodeFactory;
 import de.dante.util.UnicodeChar;
 
 /**
@@ -36,7 +37,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface Hyphenator extends Serializable {
 
@@ -86,14 +87,17 @@ public interface Hyphenator extends Serializable {
      * @param nodelist the horizontal node list
      * @param context the context
      * @param hyphen the tokens to be inserted for hyphens
+     * @param start the start index
+     * @param forall the indicator that all words to the end should be
+     *  processed. if <code>false</code> then only the next word is hyphenated.
      *
-     * @return a node list with hyphenation marks inserted
+     * @return <code>true</code> iff something has been changed
      *
      * @throws HyphenationException in case of an error
      */
-    HorizontalListNode hyphenate(HorizontalListNode nodelist,
-            TypesetterOptions context, UnicodeChar hyphen)
-            throws HyphenationException;
+    boolean hyphenate(HorizontalListNode nodelist,
+            TypesetterOptions context, UnicodeChar hyphen, int start,
+            boolean forall, NodeFactory nodeFactory) throws HyphenationException;
 
     /**
      * Return <code>true</code>, if hyphenation is active,

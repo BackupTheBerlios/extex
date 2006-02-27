@@ -36,10 +36,10 @@ import de.dante.extex.scanner.type.token.OtherToken;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.type.Node;
-import de.dante.extex.typesetter.type.node.CharNode;
-import de.dante.extex.typesetter.type.node.CharNodeFactory;
 import de.dante.extex.typesetter.type.node.DiscretionaryNode;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
+import de.dante.extex.typesetter.type.node.factory.CachingNodeFactory;
+import de.dante.extex.typesetter.type.node.factory.NodeFactory;
 import de.dante.util.UnicodeChar;
 import de.dante.util.exception.GeneralException;
 
@@ -115,20 +115,20 @@ import de.dante.util.exception.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class LiangsHyphenationTable extends BaseHyphenationTable {
-
-    /**
-     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
-     */
-    private static final long serialVersionUID = 1L;
 
     /**
      * The field <tt>BORDER</tt> contains the Unicode character internally used
      * as a marker for the beginning and the end of the word.
      */
     private static final UnicodeChar BORDER = null;
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * The field <tt>compressed</tt> contains the indicator that the
@@ -218,6 +218,16 @@ public class LiangsHyphenationTable extends BaseHyphenationTable {
     }
 
     /**
+     * Write the tree to a logger.
+     *
+     * @param logger the target logger
+     */
+    public void dump(final Logger logger) {
+
+        patterns.dump(logger, "");
+    }
+
+    /**
      * Getter for patterns.
      * This method is meant for testing purposes only.
      *
@@ -229,33 +239,39 @@ public class LiangsHyphenationTable extends BaseHyphenationTable {
     }
 
     /**
-     * @see de.dante.extex.language.Language#hyphenate(
-     *      de.dante.extex.interpreter.type.node.HorizontalListNode,
-     *      de.dante.extex.interpreter.context.Context,
-     *      UnicodeChar)
+     * @see de.dante.extex.language.hyphenation.Hyphenator#hyphenate(
+     *      de.dante.extex.typesetter.type.node.HorizontalListNode,
+     *      de.dante.extex.typesetter.TypesetterOptions,
+     *      de.dante.util.UnicodeChar,
+     *      int,
+     *      boolean,
+     *      de.dante.extex.typesetter.type.node.factory.NodeFactory)
      */
-    public HorizontalListNode hyphenate(final HorizontalListNode nodelist,
-            final TypesetterOptions context, final UnicodeChar hyphen)
+    public boolean hyphenate(final HorizontalListNode nodelist,
+            final TypesetterOptions context, final UnicodeChar hyphen,
+            final int start, final boolean forall, final NodeFactory nodeFactory)
             throws HyphenationException {
 
         if (!isHyphenActive()) {
-            return nodelist;
+            return false;
         }
 
         int len = nodelist.countChars();
         if (len <= 1) {
-            return nodelist;
+            return false;
         }
 
-        HorizontalListNode nodes = super.hyphenate(nodelist, context, hyphen);
-        if (nodes != nodelist) {
-            return nodes;
+        if (!super.hyphenate(nodelist, context, hyphen, start, forall,
+                nodeFactory)) {
+            return false;
         }
+
+        //TODO gene: use start and forall
 
         int leftHyphenMin = (int) getLeftHyphenmin();
         int rightHyphenMin = (int) getRightHyphenmin();
         if (len < leftHyphenMin + rightHyphenMin) {
-            return nodelist;
+            return false;
         }
 
         char[] hyph = new char[len + 2];
@@ -292,15 +308,15 @@ public class LiangsHyphenationTable extends BaseHyphenationTable {
             }
         }
         if (hasNoHyphen) {
-            return nodelist;
+            return false;
         }
 
-        nodes = new HorizontalListNode();
-        CharNodeFactory cnf = new CharNodeFactory();
+        HorizontalListNode nodes = new HorizontalListNode();
         NV nv = null;
         Count index = new Count(0);
         TypesettingContext tc = context.getTypesettingContext(); //TODO gene: is this correct?
 
+        //TODO gene: modify the list instead of making a new one
         for (int i = 0; i < nodelist.size(); i++) {
             Node node = nodelist.get(i);
             switch (node.countChars()) {
@@ -309,7 +325,7 @@ public class LiangsHyphenationTable extends BaseHyphenationTable {
                     break;
                 case 1:
                     if (isHyph[(int) index.getValue()]) {
-                        CharNode hyphenNode = cnf.newInstance(tc, hyphen);
+                        Node hyphenNode = nodeFactory.getNode(tc, hyphen);
                         if (hyphenNode == null) {
                             nodes.add(new DiscretionaryNode(null, null, null));
                         } else {
@@ -322,7 +338,7 @@ public class LiangsHyphenationTable extends BaseHyphenationTable {
                     break;
                 default:
                     if (nv == null) {
-                        nv = new NV(nodes, hyphen, tc, cnf, isHyph);
+                        nv = new NV(nodes, hyphen, tc, nodeFactory, isHyph);
                     }
                     try {
                         node.visit(nv, index);
@@ -332,7 +348,7 @@ public class LiangsHyphenationTable extends BaseHyphenationTable {
             }
         }
 
-        return nodes;
+        return false;
     }
 
     /**
@@ -351,16 +367,6 @@ public class LiangsHyphenationTable extends BaseHyphenationTable {
     protected void setCompressed() {
 
         this.compressed = true;
-    }
-
-    /**
-     * Write the tree to a logger.
-     *
-     * @param logger the target logger
-     */
-    public void dump(final Logger logger) {
-
-        patterns.dump(logger, "");
     }
 
 }
