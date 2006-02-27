@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -25,10 +25,10 @@ import java.util.logging.LogRecord;
 import junit.framework.TestCase;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This class contains test cases for the log formatter.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class LogFormatterTest extends TestCase {
 
@@ -94,14 +94,15 @@ public class LogFormatterTest extends TestCase {
 
         StringBuffer res = new StringBuffer();
         LogFormatter formatter = new LogFormatter();
-        res
-                .append(formatter
-                        .format(new LogRecord(
-                                Level.ALL,
-                                "abc def ghi jkl mno pqr stu vwx yz abc def ghi jkl mno pqr stu vwx yz abc def ghi jkl mno pqr stu vwx yz abc def ghi jkl mno pqr stu vwx yz ")));
-        assertEquals(
-                "abc def ghi jkl mno pqr stu vwx yz abc def ghi jkl mno pqr stu vwx yz abc def\nghi jkl mno pqr stu vwx yz abc def ghi jkl mno pqr stu vwx yz ",
-                res.toString());
+        res.append(formatter.format(new LogRecord(Level.ALL,
+                "abc def ghi jkl mno pqr stu vwx yz "
+                        + "abc def ghi jkl mno pqr stu vwx yz "
+                        + "abc def ghi jkl mno pqr stu vwx yz "
+                        + "abc def ghi jkl mno pqr stu vwx yz ")));
+        assertEquals("abc def ghi jkl mno pqr stu vwx yz "
+                + "abc def ghi jkl mno pqr stu vwx yz "
+                + "abc def\nghi jkl mno pqr stu vwx yz "
+                + "abc def ghi jkl mno pqr stu vwx yz ", res.toString());
     }
 
 }

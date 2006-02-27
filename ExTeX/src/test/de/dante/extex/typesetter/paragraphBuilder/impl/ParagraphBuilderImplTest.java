@@ -40,7 +40,7 @@ import de.dante.util.exception.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class ParagraphBuilderImplTest extends TestCase {
 
@@ -48,12 +48,13 @@ public class ParagraphBuilderImplTest extends TestCase {
      * Inner class for the typesetter options.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.9 $
+     * @version $Revision: 1.10 $
      */
     private class MockOptions implements TypesetterOptions {
 
         /**
-         * @see de.dante.extex.typesetter.TypesetterOptions#getCountOption(java.lang.String)
+         * @see de.dante.extex.typesetter.TypesetterOptions#getCountOption(
+         *      java.lang.String)
          */
         public FixedCount getCountOption(final String name) {
 
@@ -80,7 +81,8 @@ public class ParagraphBuilderImplTest extends TestCase {
         }
 
         /**
-         * @see de.dante.extex.typesetter.TypesetterOptions#getFont(java.lang.String)
+         * @see de.dante.extex.typesetter.TypesetterOptions#getFont(
+         *      java.lang.String)
          */
         public Font getFont(final String name) {
 
@@ -88,7 +90,8 @@ public class ParagraphBuilderImplTest extends TestCase {
         }
 
         /**
-         * @see de.dante.extex.typesetter.TypesetterOptions#getGlueOption(java.lang.String)
+         * @see de.dante.extex.typesetter.TypesetterOptions#getGlueOption(
+         *      java.lang.String)
          */
         public FixedGlue getGlueOption(final String name) {
 
@@ -99,7 +102,8 @@ public class ParagraphBuilderImplTest extends TestCase {
         }
 
         /**
-         * @see de.dante.extex.typesetter.TypesetterOptions#getLccode(de.dante.util.UnicodeChar)
+         * @see de.dante.extex.typesetter.TypesetterOptions#getLccode(
+         *      de.dante.util.UnicodeChar)
          */
         public UnicodeChar getLccode(final UnicodeChar uc) {
 
@@ -119,7 +123,6 @@ public class ParagraphBuilderImplTest extends TestCase {
          */
         public ParagraphShape getParshape() {
 
-            // TODO Auto-generated method stub
             return null;
         }
 
@@ -136,7 +139,6 @@ public class ParagraphBuilderImplTest extends TestCase {
          */
         public TypesettingContext getTypesettingContext() {
 
-            // TODO getTypesettingContext unimplemented
             return null;
         }
 
@@ -154,8 +156,6 @@ public class ParagraphBuilderImplTest extends TestCase {
          */
         public void setParshape(final ParagraphShape shape) {
 
-            // TODO Auto-generated method stub
-
         }
 
         /**
@@ -163,7 +163,8 @@ public class ParagraphBuilderImplTest extends TestCase {
          *      java.lang.String,
          *      de.dante.extex.interpreter.type.count.FixedCount)
          */
-        public void setCountOption(String name, long value) throws GeneralException {
+        public void setCountOption(final String name, final long value)
+                throws GeneralException {
 
         }
     }

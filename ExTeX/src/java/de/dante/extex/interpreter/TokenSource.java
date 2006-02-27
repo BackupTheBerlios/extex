@@ -20,9 +20,7 @@
 package de.dante.extex.interpreter;
 
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.exception.ErrorLimitException;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.exception.helping.MissingNumberException;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.tokens.Tokens;
@@ -49,7 +47,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.64 $
+ * @version $Revision: 1.65 $
  */
 public interface TokenSource {
 
@@ -90,20 +88,21 @@ public interface TokenSource {
      * @param context the interpreter context
      * @param typesetter the typesetter
      *
-     * @throws InterpreterException in case of an error
-     * @throws ErrorLimitException in case that the error limit has been reached
+     * @throws InterpreterException in case of an error<br>
+     *  especially<br>
+     *  ErrorLimitException in case that the error limit has been reached
      */
-    void execute(final Token token, Context context, Typesetter typesetter)
-            throws InterpreterException,
-                ErrorLimitException;
+    void execute(Token token, Context context, Typesetter typesetter)
+            throws InterpreterException;
 
     /**
      * Scan and execute tokens until the group ends.
      *
-     * @throws InterpreterException in case of an error
-     * @throws ErrorLimitException in case that the error limit has been reached
+     * @throws InterpreterException in case of an error<br>
+     *  especially<br>
+     *  ErrorLimitException in case that the error limit has been reached
      */
-    void executeGroup() throws InterpreterException, ErrorLimitException;
+    void executeGroup() throws InterpreterException;
 
     /**
      * Expand some tokens.
@@ -126,6 +125,10 @@ public interface TokenSource {
      *   &lang;box&rang; </pre>
      * </doc>
      *
+     * During the parsing the flags should be reset to something uncritical
+     * and restored at the end.
+     *
+     * @param flags the flags to be restored
      * @param context the interpreter context
      * @param typesetter the typesetter to use
      *
@@ -174,6 +177,7 @@ public interface TokenSource {
      * </doc>
      *
      * @param context the interpreter context
+     * @param primitive the name of the primitive for error messages
      *
      * @return a font specification
      *
@@ -289,6 +293,8 @@ public interface TokenSource {
      * </doc>
      *
      * @param context the interpreter context
+     * @param source the source for new tokens
+     * @param typesetter the typesetter
      *
      * @return the next tokens or <code>null</code>
      *
@@ -357,9 +363,11 @@ public interface TokenSource {
      *
      * @return the value of the integer scanned
      *
-     * @throws InvalidCharacterException in case that no number is found or if
-     *  it is out of the allowed range
-     * @throws EofException in case that an end of file has been encountered
+     * @throws InterpreterException in case of an error<br>
+     *  especially<br>
+     *  InvalidCharacterException in case that no number is found or if
+     *  it is out of the allowed range<br>
+     *  EofException in case that an end of file has been encountered
      *  before the character code was complete
      */
     UnicodeChar scanCharacterCode(Context context, Typesetter typesetter,
@@ -390,12 +398,12 @@ public interface TokenSource {
      *
      * @return the value of the integer scanned
      *
-     * @throws InterpreterException in case of an error in an observer
-     * @throws MissingNumberException in case that no number could be read
+     * @throws InterpreterException in case of an error in an observer<br>
+     *  especially<br>
+     *  MissingNumberException in case that no number could be read
      */
     long scanInteger(Context context, Typesetter typesetter)
-            throws InterpreterException,
-                MissingNumberException;
+            throws InterpreterException;
 
     /**
      * Scan the input for the next token which has not the category code SPACE.
@@ -407,7 +415,7 @@ public interface TokenSource {
      * @throws InterpreterException
      *  in case of an error in {@link #scanToken(Context) scanToken()}
      */
-    public Token scanNonSpace(Context context) throws InterpreterException;
+    Token scanNonSpace(Context context) throws InterpreterException;
 
     /**
      * Scan the input stream for tokens making up a number, this is a sequence
@@ -447,12 +455,12 @@ public interface TokenSource {
      *
      * @return the value of the integer scanned
      *
-     * @throws InterpreterException in case of an error in an observer
-     * @throws MissingNumberException in case that no number could be read
+     * @throws InterpreterException in case of an error in an observer<br>
+     *  especially<br>
+     *  MissingNumberException in case that no number could be read
      */
     long scanNumber(Context context, Token token)
-            throws InterpreterException,
-                MissingNumberException;
+            throws InterpreterException;
 
     /**
      * Scan the input streams for an entity to denote a register name.

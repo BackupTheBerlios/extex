@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -49,7 +49,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.65 $
+ * @version $Revision: 1.66 $
  */
 public interface Context
         extends
@@ -279,10 +279,13 @@ public interface Context
 
     /**
      * Put a value onto the conditional stack.
+     *
      * @param locator the locator for the start of the if statement
      * @param value the value to push
      * @param primitive the name of the primitive which triggered this
      *  operation
+     * @param branch the branch number
+     * @param neg negation indicator
      */
     void pushConditional(Locator locator, boolean value, Code primitive,
             long branch, boolean neg);
@@ -292,7 +295,7 @@ public interface Context
      *
      * @param color the new color
      * @param global the indicator for the scope; <code>true</code> means all
-     *            groups; otherwise the current group is affected only
+     *  groups; otherwise the current group is affected only
      *
      * @throws ConfigurationException in case of an error in the configuration.
      */
@@ -390,7 +393,9 @@ public interface Context
      * @param name the name of the glue register
      * @param value the glue value to set
      * @param global the indicator for the scope; <code>true</code> means all
-     *            groups; otherwise the current group is affected only
+     *  groups; otherwise the current group is affected only
+     *
+     * @throws InterpreterException in case of an error
      */
     void setGlue(String name, Glue value, boolean global)
             throws InterpreterException;
@@ -416,6 +421,8 @@ public interface Context
      *
      * @param uc upper case character
      * @param lc lower case equivalent
+     * @param global the indicator for the scope; <code>true</code> means all
+     *  groups; otherwise the current group is affected only
      */
     void setLccode(UnicodeChar uc, UnicodeChar lc, boolean global);
 
@@ -501,6 +508,8 @@ public interface Context
      *
      * @param lc lower  case character
      * @param uc uppercase equivalent
+     * @param global the indicator for the scope; <code>true</code> means all
+     *  groups; otherwise the current group is affected only
      */
     void setUccode(UnicodeChar lc, UnicodeChar uc, boolean global);
 
