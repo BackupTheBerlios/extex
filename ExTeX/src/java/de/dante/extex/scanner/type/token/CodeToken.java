@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,16 +24,9 @@ package de.dante.extex.scanner.type.token;
  * with the ability to retrieve a namespace.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface CodeToken extends Token {
-
-    /**
-     * Getter for the namespace.
-     *
-     * @return the namespace
-     */
-    String getNamespace();
 
     /**
      * Create a new instance of the token where the namespace is the default
@@ -60,6 +53,13 @@ public interface CodeToken extends Token {
      *
      * @return the name of the token
      */
-    public String getName();
+    String getName();
+
+    /**
+     * Getter for the namespace.
+     *
+     * @return the namespace
+     */
+    String getNamespace();
 
 }
