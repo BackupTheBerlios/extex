@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -27,6 +27,7 @@ import de.dante.extex.language.Language;
 import de.dante.extex.language.LanguageManager;
 import de.dante.extex.language.ModifiableLanguage;
 import de.dante.extex.language.ligature.LigatureBuilder;
+import de.dante.extex.language.word.WordTokenizer;
 import de.dante.util.framework.AbstractFactory;
 import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
@@ -47,7 +48,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class BaseLanguageManager extends AbstractFactory
         implements
@@ -57,7 +58,7 @@ public class BaseLanguageManager extends AbstractFactory
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * The field <tt>tables</tt> contains the mapping from index to
@@ -86,6 +87,11 @@ public class BaseLanguageManager extends AbstractFactory
         table.setLigatureBuilder(//
                 (LigatureBuilder) createInstanceForConfiguration(config,
                         LigatureBuilder.class));
+
+        config = cfg.findConfiguration("WordTokenizer");
+        table.setWordTokenizer(//
+                (WordTokenizer) createInstanceForConfiguration(config,
+                        WordTokenizer.class));
 
         tables.put(name, table);
         return table;
