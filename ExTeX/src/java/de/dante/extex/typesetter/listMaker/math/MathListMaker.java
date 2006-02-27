@@ -91,7 +91,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.32 $
+ * @version $Revision: 1.33 $
  */
 public class MathListMaker extends HorizontalListMaker
         implements
@@ -103,7 +103,7 @@ public class MathListMaker extends HorizontalListMaker
      * It is used to store to the stack and restore the state from the stack.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.32 $
+     * @version $Revision: 1.33 $
      */
     private class MathMemento {
 
@@ -165,7 +165,7 @@ public class MathListMaker extends HorizontalListMaker
     /**
      * The constant <tt>noadFactory</tt> contains the noad factory.
      */
-    private static final NoadFactory noadFactory = new NoadFactory();
+    private static final NoadFactory NOAD_FACTORY = new NoadFactory();
 
     /**
      * This method checks that extension fonts have sufficient font dimen
@@ -276,7 +276,7 @@ public class MathListMaker extends HorizontalListMaker
     public void add(final MathClass mclass, final MathGlyph mg,
             final TypesettingContext tc) throws TypesetterException {
 
-        insertionPoint.add(noadFactory.getNoad(mclass, tc, mg));
+        insertionPoint.add(NOAD_FACTORY.getNoad(mclass, tc, mg));
     }
 
     /**
@@ -288,7 +288,7 @@ public class MathListMaker extends HorizontalListMaker
             throws TypesetterException {
 
         MathGlyph smallChar = delimiter.getSmallChar(); // TODO: gene why???
-        insertionPoint.add(noadFactory.getNoad(delimiter.getMathClass(), tc,
+        insertionPoint.add(NOAD_FACTORY.getNoad(delimiter.getMathClass(), tc,
                 smallChar));
     }
 
@@ -418,9 +418,9 @@ public class MathListMaker extends HorizontalListMaker
      * @see de.dante.util.framework.logger.LogEnabled#enableLogging(
      *      java.util.logging.Logger)
      */
-    public void enableLogging(final Logger logger) {
+    public void enableLogging(final Logger log) {
 
-        this.logger = logger;
+        this.logger = log;
     }
 
     /**
@@ -516,7 +516,7 @@ public class MathListMaker extends HorizontalListMaker
             final UnicodeChar symbol, final Locator locator) {
 
         Count mcode = context.getMathcode(symbol);
-        insertionPoint.add(noadFactory.getNoad((mcode == null ? 0 : mcode
+        insertionPoint.add(NOAD_FACTORY.getNoad((mcode == null ? 0 : mcode
                 .getValue()), tc));
     }
 
