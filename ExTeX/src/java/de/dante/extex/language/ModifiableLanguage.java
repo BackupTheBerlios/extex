@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -20,7 +20,7 @@
 package de.dante.extex.language;
 
 import de.dante.extex.language.ligature.LigatureBuilder;
-
+import de.dante.extex.language.word.WordTokenizer;
 
 /**
  * This interface extends the interface
@@ -28,7 +28,7 @@ import de.dante.extex.language.ligature.LigatureBuilder;
  * a {@link de.dante.extex.language.ligature.LigatureBuilder LigatureBuilder}.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface ModifiableLanguage extends Language {
 
@@ -38,4 +38,12 @@ public interface ModifiableLanguage extends Language {
      * @param ligatureBuilder the ligature builder
      */
     void setLigatureBuilder(LigatureBuilder ligatureBuilder);
+
+    /**
+     * Setter for the word tokenizer.
+     *
+     * @param tokenizer the word tokenizer
+     */
+    void setWordTokenizer(WordTokenizer tokenizer);
+
 }
