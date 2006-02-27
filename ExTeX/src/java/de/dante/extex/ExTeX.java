@@ -331,7 +331,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.125 $
+ * @version $Revision: 1.126 $
  */
 public class ExTeX {
 
@@ -426,7 +426,8 @@ public class ExTeX {
      * property indicating that a stack trace should be written for internal
      * errors.
      */
-    protected static final String PROP_INTERNAL_STACKTRACE = "extex.stacktrace.on.internal.error";
+    protected static final String PROP_INTERNAL_STACKTRACE //
+    = "extex.stacktrace.on.internal.error";
 
     /**
      * The constant <tt>PROP_JOBNAME</tt> contains the name of the
@@ -1385,20 +1386,18 @@ public class ExTeX {
      *
      * @return the interpreter used for running
      *
-     * @throws CharacterCodingException in case of problems with the character
-     *  encoding
-     * @throws IOException in case of a reading error
+     * @throws IOException in case of a reading error<br>
+     *  Especially <br>
+     *  CharacterCodingException in case of problems with the character encoding
      * @throws ConfigurationException in case of a configuration error
-     * @throws ErrorLimitException in case that the error limit has been
-     *  reached
-     * @throws InterpreterException in case of another error
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of another error<br>
+     *  Especially <br>
+     *  ErrorLimitException in case that the error limit has been reached
      */
     public Interpreter run()
             throws ConfigurationException,
-                CharacterCodingException,
                 IOException,
-                GeneralException {
+                InterpreterException {
 
         final String jobname = determineJobname();
         final String logFile = new File(properties.getProperty(PROP_OUTPUTDIR),
@@ -1469,7 +1468,7 @@ public class ExTeX {
         } catch (IOException e) {
             logger.throwing(this.getClass().getName(), "run", e);
             throw e;
-        } catch (GeneralException e) {
+        } catch (InterpreterException e) {
             logger.throwing(this.getClass().getName(), "run", e);
             throw e;
         } catch (Throwable e) {
