@@ -127,17 +127,20 @@
     <TeX class="de.dante.extex.typesetter.impl.TypesetterImpl"
          direction="lr">
       <PageBuilder class="de.dante.extex.typesetter.pageBuilder.impl.PageBuilderImpl"/>
-      <ParagraphBuilder class="de.dante.extex.typesetter.paragraphBuilder.texImpl.TeXParagraphBuilderImpl"/>
+      <ParagraphBuilder class="de.dante.extex.typesetter.paragraphBuilder.texImpl.TeXParagraphBuilder"/>
+      <NodeFactory class="de.dante.extex.typesetter.type.node.factory.CachingNodeFactory"/>
     </TeX>
     <experimental class="de.dante.extex.typesetter.impl.TypesetterImpl"
          direction="lr">
       <PageBuilder class="de.dante.extex.typesetter.pageBuilder.impl.PageBuilderImpl"/>
       <ParagraphBuilder class="de.dante.extex.typesetter.paragraphBuilder.impl.ParagraphBuilderImpl"/>
+      <NodeFactory class="de.dante.extex.typesetter.type.node.factory.CachingUnicodeNodeFactory"/>
     </experimental>
     <devel class="de.dante.extex.typesetter.impl.TypesetterImpl"
            direction="lr">
       <PageBuilder class="de.dante.extex.typesetter.pageBuilder.impl.PageBuilderImpl"/>
       <ParagraphBuilder class="de.dante.extex.typesetter.paragraphBuilder.trivial.TrivialBuilder"/>
+      <NodeFactory class="de.dante.extex.typesetter.type.node.factory.CachingUnicodeNodeFactory"/>
     </devel>
   </Typesetter>
 
