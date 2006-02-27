@@ -109,7 +109,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.92 $
+ * @version $Revision: 1.93 $
  */
 public abstract class Max
         implements
@@ -432,27 +432,27 @@ public abstract class Max
     /**
      * Apply the configuration options found in the given configuration object.
      *
-     * @param configuration the configuration object to consider.
+     * @param config the configuration object to consider.
      *
      * @throws ConfigurationException in case of a configuration error
      */
-    public void configure(final Configuration configuration)
+    public void configure(final Configuration config)
             throws ConfigurationException {
 
-        if (configuration == null) {
+        if (config == null) {
             throw new ConfigurationMissingException("Interpreter");
         }
 
-        this.configuration = configuration;
+        this.configuration = config;
 
-        maxErrors = configuration.getValueAsInteger("maxErrors", maxErrors);
+        maxErrors = config.getValueAsInteger("maxErrors", maxErrors);
 
-        TokenFactory tokenFactory = configureTokenFactory(configuration);
-        makeContext(configuration);
+        TokenFactory tokenFactory = configureTokenFactory(config);
+        makeContext(config);
         context.setTokenFactory(tokenFactory);
-        configureHyhenation(configuration);
+        configureHyhenation(config);
 
-        Configuration everyRunConfig = configuration
+        Configuration everyRunConfig = config
                 .findConfiguration("everyjob");
         if (everyRunConfig != null) {
             everyRun = everyRunConfig.getValue();
@@ -463,18 +463,18 @@ public abstract class Max
     /**
      * Prepare the hyphenation manager according to its configuration.
      *
-     * @param configuration the configuration
+     * @param config the configuration
      *
      * @throws ConfigurationException in case of a configuration error
      */
-    private void configureHyhenation(final Configuration configuration)
+    private void configureHyhenation(final Configuration config)
             throws ConfigurationException {
 
         LanguageManagerFactory factory = new LanguageManagerFactory();
         factory.enableLogging(logger);
-        Configuration cfg = configuration.findConfiguration(LANGUAGE_TAG);
+        Configuration cfg = config.findConfiguration(LANGUAGE_TAG);
         if (cfg == null) {
-            throw new ConfigurationMissingException(LANGUAGE_TAG, configuration
+            throw new ConfigurationMissingException(LANGUAGE_TAG, config
                     .toString());
         }
         factory.configure(cfg);
@@ -748,15 +748,15 @@ public abstract class Max
      * @param token the current token
      * @param theContext the current context
      * @param e the current exception
+     * @param typesetter the typesetter
      *
-     * @throws ErrorLimitException in case that the error limit has been
-     *  exceeded.
-     * @throws InterpreterException in case of another error
+     * @throws InterpreterException in case of an error<br>
+     *  especially<br>
+     *  ErrorLimitException in case that the error limit has been exceeded.
      */
     private void handleException(final Token token, final Context theContext,
             final InterpreterException e, final Typesetter typesetter)
-            throws ErrorLimitException,
-                InterpreterException {
+            throws InterpreterException {
 
         if (e.isProcessed()) {
             typesetter.getManager().pop();
@@ -1009,9 +1009,9 @@ public abstract class Max
         // TTP [1335]
         long groupLevel = context.getGroupLevel();
         if (groupLevel != 0) {
-            Localizer localizer = getLocalizer();
-            String endPrimitive = localizer.format("TTP.EndPrimitive");
-            String message = localizer.format("TTP.EndGroup", context
+            Localizer loc = getLocalizer();
+            String endPrimitive = loc.format("TTP.EndPrimitive");
+            String message = loc.format("TTP.EndGroup", context
                     .esc(endPrimitive), Long.toString(groupLevel));
             logger.warning(message);
             InterpreterException e = new InterpreterException(message);
@@ -1022,9 +1022,9 @@ public abstract class Max
         }
         Conditional cond = context.popConditional();
         if (cond != null) {
-            Localizer localizer = getLocalizer();
-            String endPrimitive = localizer.format("TTP.EndPrimitive");
-            String message = localizer.format("TTP.EndIf", context
+            Localizer loc = getLocalizer();
+            String endPrimitive = loc.format("TTP.EndPrimitive");
+            String message = loc.format("TTP.EndIf", context
                     .esc(endPrimitive), context.esc(cond.getPrimitiveName()),
                     cond.getLocator().toString());
             logger.warning(message);
@@ -1294,7 +1294,7 @@ public abstract class Max
      *
      * @return <code>null</code>
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      *
      * @see "<logo>TeX</logo> &ndash; The Program [1137]"
      * @see de.dante.extex.scanner.type.token.TokenVisitor#visitMathShift(
@@ -1373,7 +1373,7 @@ public abstract class Max
      *
      * @return <code>null</code>
      *
-     * @throws InterpreterException in case of an error
+     * @throws GeneralException in case of an error
      *
      * @see de.dante.extex.scanner.type.token.TokenVisitor#visitSpace(
      *      de.dante.extex.scanner.SpaceToken, java.lang.Object)
