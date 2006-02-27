@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -25,6 +25,7 @@ import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.MissingMathException;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.ListMaker;
@@ -45,7 +46,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This abstract class provides some methods common to all ListMakers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public abstract class AbstractListMaker implements ListMaker {
 
@@ -119,7 +120,7 @@ public abstract class AbstractListMaker implements ListMaker {
     /**
      * @see de.dante.extex.typesetter.ListMaker#getPrevDepth()
      */
-    public Dimen getPrevDepth() throws TypesetterUnsupportedException {
+    public FixedDimen getPrevDepth() throws TypesetterUnsupportedException {
 
         throw new TypesetterUnsupportedException();
     }
@@ -194,7 +195,8 @@ public abstract class AbstractListMaker implements ListMaker {
      *      de.dante.extex.interpreter.type.count.Count)
      */
     public void setSpacefactor(final Count f)
-            throws TypesetterUnsupportedException, InvalidSpacefactorException {
+            throws TypesetterUnsupportedException,
+                InvalidSpacefactorException {
 
         throw new TypesetterUnsupportedException();
     }
@@ -207,7 +209,7 @@ public abstract class AbstractListMaker implements ListMaker {
      *      de.dante.extex.scanner.type.token.Token)
      */
     public void subscriptMark(final Context context, final TokenSource source,
-            Typesetter typesetter, final Token token)
+            final Typesetter typesetter, final Token token)
             throws TypesetterException {
 
         throw new TypesetterException(
