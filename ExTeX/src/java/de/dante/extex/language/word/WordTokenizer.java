@@ -19,6 +19,8 @@
 
 package de.dante.extex.language.word;
 
+import java.util.List;
+
 import de.dante.extex.language.hyphenation.exception.HyphenationException;
 import de.dante.extex.typesetter.type.NodeList;
 
@@ -28,7 +30,7 @@ import de.dante.extex.typesetter.type.NodeList;
  * This kind of tokenizer might be language specific.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface WordTokenizer {
 
@@ -44,8 +46,7 @@ public interface WordTokenizer {
      *
      * @throws HyphenationException in case of an error
      */
-    int skipNonWord(NodeList list, int start) throws HyphenationException;
-
+    //int skipNonWord(NodeList list, int start) throws HyphenationException;
     /**
      * Analyze a list of nodes and find the end of the word starting at a
      * given position.
@@ -58,5 +59,19 @@ public interface WordTokenizer {
      *
      * @throws HyphenationException in case of an error
      */
-    int skipWord(NodeList list, int start) throws HyphenationException;
+    //int skipWord(NodeList list, int start) throws HyphenationException;
+
+    /**
+     * Extract a word from a node list.
+     *
+     * @param nodes the nodes to extract the word from
+     * @param start the start index
+     * @param word the target list for the letters of the word
+     *
+     * @return the index of the first node beyond the word
+     *
+     * @throws HyphenationException in case of an error
+     */
+    int findWord(NodeList nodes, int start, List word)
+            throws HyphenationException;
 }
