@@ -59,7 +59,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public class HorizontalListMaker extends AbstractListMaker {
 
@@ -204,7 +204,8 @@ public class HorizontalListMaker extends AbstractListMaker {
             UnicodeChar hyphen = node.getTypesettingContext().getFont()
                     .getHyphenChar();
             if (hyphen != null) {
-                lang.hyphenate(word, context, hyphen);
+                lang.hyphenate(word, context, hyphen, 0, true, getManager()
+                        .getNodeFactory());
             }
             for (int i = 0; i < word.size(); i++) {
                 list.add(word.get(i));
@@ -257,6 +258,7 @@ public class HorizontalListMaker extends AbstractListMaker {
      * @param context the interpreter context
      * @param tc the typesetting context for the symbol
      * @param symbol the symbol to add
+     * @param locator the locator
      *
      * @see de.dante.extex.typesetter.ListMaker#add(
      *      de.dante.extex.interpreter.context.TypesettingContext,
@@ -283,18 +285,19 @@ public class HorizontalListMaker extends AbstractListMaker {
                 }
             }
         }
-        CharNode charNode = getManager().getCharNodeFactory().newInstance(tc,
-                symbol);
-        if (charNode != null) {
+        Node node = getManager().getNodeFactory().getNode(tc, symbol);
+        if (node != null) {
 
-            nodes.add(charNode);
+            nodes.add(node);
 
-            int f = charNode.getSpaceFactor();
+            if (node instanceof CharNode) {
+                int f = ((CharNode) node).getSpaceFactor();
 
-            if (f != 0) {
-                spaceFactor = (spaceFactor < DEFAULT_SPACEFACTOR
-                        && f > DEFAULT_SPACEFACTOR //
-                ? DEFAULT_SPACEFACTOR : f);
+                if (f != 0) {
+                    spaceFactor = (spaceFactor < DEFAULT_SPACEFACTOR
+                            && f > DEFAULT_SPACEFACTOR //
+                    ? DEFAULT_SPACEFACTOR : f);
+                }
             }
         }
     }

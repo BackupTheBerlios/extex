@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -24,8 +24,10 @@ import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.hyphenator.Hyphenator;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
+import de.dante.extex.typesetter.type.node.factory.NodeFactory;
 import de.dante.extex.typesetter.type.page.PageFactory;
 import de.dante.util.framework.AbstractFactory;
+import de.dante.util.framework.configuration.Configurable;
 import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 import de.dante.util.framework.logger.LogEnabled;
@@ -49,7 +51,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class TypesetterFactory extends AbstractFactory {
 
@@ -65,6 +67,30 @@ public class TypesetterFactory extends AbstractFactory {
 
         super();
         configure(configuration);
+    }
+
+    /**
+     * Make the node factory according to the specification
+     *
+     * @param config the configuration to use
+     *
+     * @return the node factory
+     *
+     * @throws ConfigurationException in case of an configuration error
+     */
+    private NodeFactory makeNodeFactory(final Configuration config)
+            throws ConfigurationException {
+
+        Configuration cfg = config.getConfiguration("NodeFactory");
+        NodeFactory nodeFactory = (NodeFactory) createInstanceForConfiguration(
+                cfg, NodeFactory.class);
+        if (nodeFactory instanceof LogEnabled) {
+            ((LogEnabled) nodeFactory).enableLogging(getLogger());
+        }
+        if (nodeFactory instanceof Configurable) {
+            ((Configurable) nodeFactory).configure(cfg);
+        }
+        return nodeFactory;
     }
 
     /**
@@ -109,8 +135,8 @@ public class TypesetterFactory extends AbstractFactory {
      *
      * @throws ConfigurationException in case of an configuration error
      */
-    private ParagraphBuilder makeParagraphBuilder(final Configuration config)
-            throws ConfigurationException {
+    private ParagraphBuilder makeParagraphBuilder(final Configuration config,
+            final TypesetterOptions options) throws ConfigurationException {
 
         Configuration cfg = config.getConfiguration("ParagraphBuilder");
         ParagraphBuilder builder = (ParagraphBuilder) createInstanceForConfiguration(
@@ -123,6 +149,7 @@ public class TypesetterFactory extends AbstractFactory {
                 ((HyphenationEnabled) builder).enableHyphenation(hyphenator);
             }
         }
+        builder.setOptions(options);
         return builder;
     }
 
@@ -145,9 +172,9 @@ public class TypesetterFactory extends AbstractFactory {
 
         Typesetter typesetter = (Typesetter) createInstance(type,
                 Typesetter.class);
-        ParagraphBuilder parBuilder = makeParagraphBuilder(cfg);
-        parBuilder.setOptions((TypesetterOptions) context);
-        typesetter.setParagraphBuilder(parBuilder);
+        typesetter.setNodeFactory(makeNodeFactory(cfg));
+        typesetter.setParagraphBuilder(makeParagraphBuilder(cfg,
+                (TypesetterOptions) context));
         typesetter.setPageBuilder(makePageBuilder(cfg, context, typesetter));
         typesetter.setOptions((TypesetterOptions) context);
 
