@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -21,7 +21,7 @@ package de.dante.extex.typesetter.pageBuilder.trivial;
 
 import de.dante.extex.backend.BackendDriver;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.typesetter.OutputRoutine;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
@@ -36,7 +36,7 @@ import de.dante.util.exception.GeneralException;
  * This is a first reference implementation of a page builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class TrivialPageBuilder implements PageBuilder {
 
@@ -116,15 +116,16 @@ public class TrivialPageBuilder implements PageBuilder {
      * @param nodes the nodes to send
      *
      * @throws TypesetterException in case of an error
+     * @param typesetter the typesetter
      *
      * @see de.dante.extex.typesetter.pageBuilder.PageBuilder#inspectAndBuild(
      *      de.dante.extex.typesetter.type.node.VerticalListNode,
      *      de.dante.extex.typesetter.Typesetter)
      */
     public void inspectAndBuild(final VerticalListNode nodes,
-            Typesetter typesetter) throws TypesetterException {
+            final Typesetter typesetter) throws TypesetterException {
 
-        Dimen d = nodes.getVerticalSize();
+        FixedDimen d = nodes.getVerticalSize();
         if (d.ge(options.getDimenOption("vsize"))) {
 
             flush(nodes, typesetter);
@@ -144,7 +145,7 @@ public class TrivialPageBuilder implements PageBuilder {
      * Setter for the back-end driver.
      * This has to be provided before the page builder can be active.
      *
-     * @param docWriter the new document writer to use
+     * @param backend the new document writer to use
      *
      * @see de.dante.extex.typesetter.pageBuilder.PageBuilder#setDocumentWriter(
      *      de.dante.extex.backend.documentWriter.DocumentWriter)
@@ -179,7 +180,7 @@ public class TrivialPageBuilder implements PageBuilder {
      * @see de.dante.extex.typesetter.pageBuilder.PageBuilder#setPageFactory(
      *      de.dante.extex.typesetter.type.page.PageFactory)
      */
-    public void setPageFactory(PageFactory factory) {
+    public void setPageFactory(final PageFactory factory) {
 
         pageFactory = factory;
     }
