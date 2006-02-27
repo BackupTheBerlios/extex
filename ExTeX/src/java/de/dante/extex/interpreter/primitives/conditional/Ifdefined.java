@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -40,7 +40,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </p>
  * <p>
  *  The formal description of this primitive is the following:
- * TODO 
+ * TODO gene
  * </p>
  * <p>
  *  Examples:
@@ -51,14 +51,14 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Ifdefined extends AbstractIf {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * Creates a new object.
@@ -82,8 +82,8 @@ public class Ifdefined extends AbstractIf {
 
         Token token = source.getToken(context);
 
-        return (token instanceof CodeToken && context
-                .getCode((CodeToken) token) != null);
+        return (token instanceof CodeToken
+                && context.getCode((CodeToken) token) != null);
     }
 
 }

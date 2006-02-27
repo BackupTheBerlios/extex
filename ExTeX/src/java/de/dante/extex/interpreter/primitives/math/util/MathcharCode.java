@@ -33,14 +33,14 @@ import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
  * This class is used to dynamically define mathematical characters.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class MathcharCode extends Mathchar implements CountConvertible {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * The field <tt>mathchar</tt> contains the actual character in the form
@@ -76,11 +76,15 @@ public class MathcharCode extends Mathchar implements CountConvertible {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.count.CountConvertible#convertCount(de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource, de.dante.extex.typesetter.Typesetter)
+     * @see de.dante.extex.interpreter.type.count.CountConvertible#convertCount(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
      */
     public long convertCount(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
         return mathchar.getValue();
     }
+
 }

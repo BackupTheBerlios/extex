@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -37,20 +37,20 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * math unints (mu).
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Mudimen implements Serializable {
-
-    /**
-     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
-     */
-    private static final long serialVersionUID = 1L;
 
     /**
      * The constant <tt>ONE</tt> contains the internal representation for 1mu.
      * @see "<logo>TeX</logo> &ndash; The Program [101]"
      */
     private static final long ONE = 1 << 16;
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * Scan a math unit.

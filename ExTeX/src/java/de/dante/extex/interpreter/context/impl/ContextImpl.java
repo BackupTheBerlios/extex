@@ -139,7 +139,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.100 $
+ * @version $Revision: 1.101 $
  */
 public class ContextImpl
         implements
@@ -189,7 +189,7 @@ public class ContextImpl
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 1L;
 
     /**
      * The field <tt>topmarks</tt> contains the top marks.

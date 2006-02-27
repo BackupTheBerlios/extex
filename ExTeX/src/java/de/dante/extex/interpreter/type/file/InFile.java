@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -33,14 +33,14 @@ import de.dante.extex.scanner.type.token.TokenFactory;
  * This class holds an input file from which tokens can be read.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class InFile implements Serializable {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * The field <tt>stream</tt> contains the stream.
@@ -70,6 +70,8 @@ public class InFile implements Serializable {
      * Checks whether this InFile is at end of file.
      *
      * @return <code>true</code> iff no further token can be read.
+     *
+     * @throws InterpreterException in case of an error
      */
     public boolean isEof() throws InterpreterException {
 
@@ -133,4 +135,5 @@ public class InFile implements Serializable {
             throw new InterpreterException(e);
         }
     }
+
 }

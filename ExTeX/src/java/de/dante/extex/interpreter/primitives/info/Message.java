@@ -55,14 +55,14 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class Message extends AbstractCode implements LogEnabled {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * The field <tt>logger</tt> contains the target channel for the message.
@@ -106,4 +106,5 @@ public class Message extends AbstractCode implements LogEnabled {
         Tokens toks = source.scanTokens(context, true, false, getName());
         logger.severe(" " + toks.toText());
     }
+
 }

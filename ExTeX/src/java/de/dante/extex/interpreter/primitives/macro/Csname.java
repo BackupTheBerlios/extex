@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -85,14 +85,14 @@ import de.dante.util.framework.i18n.Localizer;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.31 $
+ * @version $Revision: 1.32 $
  */
 public class Csname extends AbstractCode implements ExpandableCode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * Expand tokens and collect the result until <tt>\endcsname</tt> is found.
@@ -102,6 +102,7 @@ public class Csname extends AbstractCode implements ExpandableCode {
      * @param context the interpreter context
      * @param source the source for new tokens
      * @param typesetter the typesetter
+     * @param loc the localizer
      *
      * @return the Tokens found while scanning the input tokens
      *
@@ -109,7 +110,7 @@ public class Csname extends AbstractCode implements ExpandableCode {
      */
     public static Tokens scanToEndCsname(final Context context,
             final TokenSource source, final Typesetter typesetter,
-            final Localizer localizer2) throws InterpreterException {
+            final Localizer loc) throws InterpreterException {
 
         Tokens toks = new Tokens();
         for (Token t = source.getToken(context); t != null; t = source
@@ -134,7 +135,7 @@ public class Csname extends AbstractCode implements ExpandableCode {
 
                 } else if (!(code instanceof Relax)) {
 
-                    throw new HelpingException(localizer2,
+                    throw new HelpingException(loc,
                             "TTP.MissingEndcsname", context.esc("endcsname"),
                             context.esc(t));
                 }

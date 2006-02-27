@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -29,44 +29,44 @@ package de.dante.extex.interpreter.exception;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ImpossibleException extends RuntimeException {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * Creates a new object.
      *
-     * @param arg0 the description of the error
+     * @param message the description of the error
      */
-    public ImpossibleException(final String arg0) {
+    public ImpossibleException(final String message) {
 
-        super(arg0);
+        super(message);
     }
 
     /**
      * Creates a new object.
      *
-     * @param arg0 the cause of the error
+     * @param cause the cause of the error
      */
-    public ImpossibleException(final Throwable arg0) {
+    public ImpossibleException(final Throwable cause) {
 
-        super(arg0);
+        super(cause);
     }
 
     /**
      * Creates a new object.
      *
-     * @param arg0 the description of the error
-     * @param arg1 the cause of the error
+     * @param message the description of the error
+     * @param cause the cause of the error
      */
-    public ImpossibleException(final String arg0, final Throwable arg1) {
+    public ImpossibleException(final String message, final Throwable cause) {
 
-        super(arg0, arg1);
+        super(message, cause);
     }
 
 }

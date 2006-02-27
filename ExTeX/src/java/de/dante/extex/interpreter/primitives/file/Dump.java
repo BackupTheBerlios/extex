@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -68,14 +68,14 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.38 $
+ * @version $Revision: 1.39 $
  */
 public class Dump extends AbstractCode implements LogEnabled {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * The constant <tt>FORMAT_EXTENSION</tt> contains the extension for the
@@ -117,6 +117,8 @@ public class Dump extends AbstractCode implements LogEnabled {
      * @param source the token source
      * @param typesetter the typesetter
      *
+     * @throws InterpreterException in case of an exception
+     *
      * @see "<logo>TeX</logo> &ndash; The Program [1303,1304, 1328]"
      * @see de.dante.extex.interpreter.type.Code#execute(
      *      de.dante.extex.interpreter.Flags,
@@ -142,7 +144,7 @@ public class Dump extends AbstractCode implements LogEnabled {
 
         context.setId(jobname + " " + //
                 calendar.get(Calendar.YEAR) + "."
-                + (calendar.get(Calendar.MONTH)+1) + "."
+                + (calendar.get(Calendar.MONTH) + 1) + "."
                 + calendar.get(Calendar.DAY_OF_MONTH));
 
         OutputStream stream = null;

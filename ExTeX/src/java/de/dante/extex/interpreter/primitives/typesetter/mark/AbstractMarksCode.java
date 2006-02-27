@@ -35,7 +35,7 @@ import de.dante.extex.typesetter.Typesetter;
  * Thus abstract base class for marks primitives provides the common features.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public abstract class AbstractMarksCode extends AbstractCode
         implements
@@ -87,8 +87,9 @@ public abstract class AbstractMarksCode extends AbstractCode
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void expand(Flags prefix, Context context, TokenSource source,
-            Typesetter typesetter) throws InterpreterException {
+    public void expand(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws InterpreterException {
 
         source.push(getValue(context, getKey(context, source, typesetter)));
     }
@@ -128,7 +129,7 @@ public abstract class AbstractMarksCode extends AbstractCode
      *
      * @throws InterpreterException in case of an exception
      */
-    protected abstract Tokens getValue(Context context, String key)
+    protected abstract Tokens getValue(final Context context, final String key)
             throws InterpreterException;
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -41,14 +41,30 @@ import de.dante.util.framework.i18n.Localizer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public abstract class AbstractCode implements Code, Localizable, Serializable {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2005L;
+
+    /**
+     * Return the printable version of a token for error messages.
+     *
+     * @param context the processing context
+     * @param token the token to get a printable representation for
+     *
+     * @return the control sequence including the escape character
+     */
+    public static String printable(final Context context, final Token token) {
+
+        if (token instanceof ControlSequenceToken) {
+            return context.esc("") + ((ControlSequenceToken) token).getName();
+        }
+        return token.getChar().toString();
+    }
 
     /**
      * The field <tt>localizer</tt> contains the localizer or <code>null</code>
@@ -135,22 +151,6 @@ public abstract class AbstractCode implements Code, Localizable, Serializable {
     }
 
     /**
-     * Return the printable version of a token for error messages.
-     *
-     * @param context the processing context
-     * @param token the token to get a printable representation for
-     *
-     * @return the control sequence including the escape character
-     */
-    public static String printable(final Context context, final Token token) {
-
-        if (token instanceof ControlSequenceToken) {
-            return context.esc("") + ((ControlSequenceToken) token).getName();
-        }
-        return token.getChar().toString();
-    }
-
-    /**
      * Attach the current escape character in front of the name and return the
      * result.
      * <p>
@@ -194,4 +194,5 @@ public abstract class AbstractCode implements Code, Localizable, Serializable {
 
         return "\\" + name;
     }
+
 }

@@ -66,14 +66,14 @@ import de.dante.util.UnicodeChar;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Mathchar extends AbstractMathCode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * The constant <tt>GLYPH_MASK</tt> contains the mask for a math glyph.
@@ -162,6 +162,7 @@ public class Mathchar extends AbstractMathCode {
      *
      * @param nc the interface to the list maker
      * @param mathchar the mathematical character
+     * @param tc the typesetting context
      *
      * @throws InterpreterException in case of an error
      */

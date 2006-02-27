@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -23,7 +23,7 @@ package de.dante.extex.interpreter.primitives.pdftex.util.id;
  * This class carries an id based on a name.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class NameIdSpec extends IdSpec {
 
@@ -60,5 +60,5 @@ public class NameIdSpec extends IdSpec {
 
         return "name " + name;
     }
-    
+
 }

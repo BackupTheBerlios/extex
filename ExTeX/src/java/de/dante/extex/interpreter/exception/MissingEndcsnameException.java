@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -24,11 +24,11 @@ import de.dante.extex.scanner.type.token.Token;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
- * This exception is raised when a \csname without matching \endcsname is
+ * This exception is raised when a <tt>\csname</tt> without matching \endcsname is
  * encountered.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 
 public class MissingEndcsnameException extends InterpreterException {
@@ -36,12 +36,13 @@ public class MissingEndcsnameException extends InterpreterException {
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 1L;
 
     /**
      * Creates a new object.
      *
      * @param context the interpreter context
+     * @param t the token encountered
      */
     public MissingEndcsnameException(final Context context, final Token t) {
 

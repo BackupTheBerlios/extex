@@ -69,14 +69,14 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.30 $
+ * @version $Revision: 1.31 $
  */
 public class Ifcase extends AbstractIf {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * The constant <tt>OR</tt> contains the value indicating an \or.
@@ -218,7 +218,7 @@ public class Ifcase extends AbstractIf {
      * This is an internal class for type-safe values.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.30 $
+     * @version $Revision: 1.31 $
      */
     protected static final class Tag {
 

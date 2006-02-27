@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -30,36 +30,36 @@ import de.dante.extex.typesetter.type.node.WhatsItNode;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class PdfStartLink extends WhatsItNode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2005L;
 
     /**
-     * The field <tt>action</tt> contains the ...
+     * The field <tt>action</tt> contains the action specification.
      */
     private ActionSpec action;
 
     /**
-     * The field <tt>attr</tt> contains the ...
+     * The field <tt>attr</tt> contains the attribute string.
      */
     private String attr;
 
     /**
-     * The field <tt>rule</tt> contains the ...
+     * The field <tt>rule</tt> contains the rule.
      */
     private RuleNode rule;
 
     /**
      * Creates a new object.
      *
-     * @param rule
+     * @param rule the rule
      * @param attr the attribute string. This can be <code>null</code>.
-     * @param action
+     * @param action the action specification
      */
     public PdfStartLink(final RuleNode rule, final String attr,
             final ActionSpec action) {
@@ -71,7 +71,7 @@ public class PdfStartLink extends WhatsItNode {
     }
 
     /**
-     * Getter for action.
+     * Getter for action specification.
      *
      * @return the action
      */
@@ -81,9 +81,9 @@ public class PdfStartLink extends WhatsItNode {
     }
 
     /**
-     * Getter for attr.
+     * Getter for the attribute string.
      *
-     * @return the attr
+     * @return the attribute string
      */
     public String getAttr() {
 
@@ -104,7 +104,8 @@ public class PdfStartLink extends WhatsItNode {
      * @see de.dante.extex.typesetter.type.Node#toString(java.lang.StringBuffer,
      *      java.lang.String)
      */
-    public void toString(final StringBuffer sb, final String prefix, int breadth, int depth) {
+    public void toString(final StringBuffer sb, final String prefix,
+            final int breadth, final int depth) {
 
         sb.append("(pdfstartlink)");
     }

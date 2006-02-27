@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -16,6 +16,7 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.conditional;
 
 import de.dante.extex.interpreter.TokenSource;
@@ -47,14 +48,14 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Iffalse extends AbstractIf {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * Creates a new object.
@@ -62,6 +63,7 @@ public class Iffalse extends AbstractIf {
      * @param name the name for debugging
      */
     public Iffalse(final String name) {
+
         super(name);
     }
 
@@ -72,7 +74,8 @@ public class Iffalse extends AbstractIf {
      *      de.dante.extex.typesetter.Typesetter)
      */
     protected boolean conditional(final Context context,
-        final TokenSource source, final Typesetter typesetter) {
+            final TokenSource source, final Typesetter typesetter) {
+
         return false;
     }
 

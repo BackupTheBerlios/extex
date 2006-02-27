@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -75,14 +75,14 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public class Discretionary extends AbstractCode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * Creates a new object.
@@ -114,7 +114,7 @@ public class Discretionary extends AbstractCode {
 
         try {
             typesetter.add(new DiscretionaryNode(fill(pre, tc, typesetter,
-                    context, locator ), //
+                    context, locator), //
                     fill(post, tc, typesetter, context, locator), //
                     fill(nobreak, tc, typesetter, context, locator)));
         } catch (GeneralException e) {
@@ -135,6 +135,7 @@ public class Discretionary extends AbstractCode {
      *
      * @return the node list or <code>null</code> if there are no tokens to
      *  put into the list
+     *
      * @throws TypesetterException in case of an error
      * @throws ConfigurationException in case of a configuration error
      */
@@ -157,4 +158,5 @@ public class Discretionary extends AbstractCode {
         }
         return hlist.complete((TypesetterOptions) context);
     }
+
 }

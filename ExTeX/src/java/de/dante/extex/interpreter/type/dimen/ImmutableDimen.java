@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -16,6 +16,7 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.type.dimen;
 
 import java.io.Serializable;
@@ -26,27 +27,26 @@ import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.typesetter.Typesetter;
 
-
 /**
  * This class provides objects of type Dimen where all setters are redefined
  * to produce an exception. Thus the object is in fact immutable.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class ImmutableDimen extends Dimen implements Serializable {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * Creates a new object.
      *
      * @param value the value to be stored
      */
-    public ImmutableDimen(final long value) {
+    public ImmutableDimen(final Dimen value) {
 
         super(value);
     }
@@ -56,7 +56,7 @@ public class ImmutableDimen extends Dimen implements Serializable {
      *
      * @param value the value to be stored
      */
-    public ImmutableDimen(final Dimen value) {
+    public ImmutableDimen(final long value) {
 
         super(value);
     }
@@ -100,8 +100,8 @@ public class ImmutableDimen extends Dimen implements Serializable {
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
-    public void set(final Context context, final TokenSource source, final Typesetter typesetter)
-            throws InterpreterException {
+    public void set(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
 
         throw new RuntimeException("Unable to set an immutable object");
     }
@@ -112,7 +112,8 @@ public class ImmutableDimen extends Dimen implements Serializable {
      *      de.dante.extex.interpreter.TokenSource, Typesetter, boolean)
      */
     protected void set(final Context context, final TokenSource source,
-            Typesetter typesetter, final boolean fixed) throws InterpreterException {
+            final Typesetter typesetter, final boolean fixed)
+            throws InterpreterException {
 
         throw new RuntimeException("Unable to set an immutable object");
     }
@@ -123,7 +124,8 @@ public class ImmutableDimen extends Dimen implements Serializable {
      */
     public void subtract(final Dimen d) {
 
-        throw new RuntimeException("Unable to subtract from an immutable object");
+        throw new RuntimeException(
+                "Unable to subtract from an immutable object");
     }
 
 }

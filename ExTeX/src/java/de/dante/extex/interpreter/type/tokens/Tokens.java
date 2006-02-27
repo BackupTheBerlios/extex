@@ -39,19 +39,19 @@ import de.dante.extex.scanner.type.token.TokenFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class Tokens implements Serializable, FixedTokens {
-
-    /**
-     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
-     */
-    private static final long serialVersionUID = 1L;
 
     /**
      * This constant is the empty token register.
      */
     public static final Tokens EMPTY = new ImmutableTokens();
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * The internal list of tokens
@@ -168,6 +168,15 @@ public class Tokens implements Serializable, FixedTokens {
     }
 
     /**
+     * This method removes all elements from the tokens list. Afterwards the
+     * list is empty.
+     */
+    public void clear() {
+
+        tokens.clear();
+    }
+
+    /**
      * @see java.lang.Object#equals(java.lang.Object)
      */
     public boolean equals(final Object object) {
@@ -247,15 +256,6 @@ public class Tokens implements Serializable, FixedTokens {
             return null;
         }
         return (Token) tokens.remove(tokens.size() - 1);
-    }
-
-    /**
-     * This method removes all elements from the tokens list. Afterwards the
-     * list is empty.
-     */
-    public void clear() {
-
-        tokens.clear();
     }
 
     /**

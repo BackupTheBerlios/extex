@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -40,14 +40,14 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * The actual length is a multiple of math units (mu).
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class Muskip implements Serializable {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * Scan a math unit.
@@ -112,6 +112,19 @@ public class Muskip implements Serializable {
     public Muskip() {
 
         super();
+        kill = false;
+    }
+
+    /**
+     * Creates a new object.
+     * All components are 0.
+     *
+     * @param kill the kill indicator
+     */
+    public Muskip(final boolean kill) {
+
+        super();
+        this.kill = kill;
     }
 
     /**
@@ -134,6 +147,7 @@ public class Muskip implements Serializable {
         if (source.getKeyword(context, "minus")) {
             this.shrink = new GlueComponent(scanMu(context, source));
         }
+        this.kill = false;
     }
 
     /**
@@ -146,6 +160,7 @@ public class Muskip implements Serializable {
 
         super();
         this.length = theLength.copy();
+        this.kill = false;
     }
 
     /**
@@ -162,14 +177,13 @@ public class Muskip implements Serializable {
         this.length = theLength.copy();
         this.stretch = theStretch.copy();
         this.shrink = theShrink.copy();
+        this.kill = false;
     }
 
     /**
      * Creates a new object.
      *
-     * @param theLength the natural length
-     * @param theStretch the stretchability
-     * @param theShrink the shrinkability
+     * @param x the other muskip
      */
     public Muskip(final Muskip x) {
 
@@ -177,6 +191,7 @@ public class Muskip implements Serializable {
         this.length = x.length.copy();
         this.stretch = x.stretch.copy();
         this.shrink = x.shrink.copy();
+        this.kill = false;
     }
 
     /**

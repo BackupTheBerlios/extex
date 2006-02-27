@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -34,14 +34,14 @@ import de.dante.util.UnicodeChar;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class ActiveCharacterToken extends AbstractToken implements CodeToken {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * The constant <tt>HASH_FACTOR</tt> contains the factor used to construct
@@ -85,7 +85,8 @@ public class ActiveCharacterToken extends AbstractToken implements CodeToken {
      *
      * @return the new token
      *
-     * @see de.dante.extex.scanner.type.token.CodeToken#cloneInNamespace(java.lang.String)
+     * @see de.dante.extex.scanner.type.token.CodeToken#cloneInNamespace(
+     *      java.lang.String)
      */
     public CodeToken cloneInNamespace(final String theNamespace) {
 
@@ -159,9 +160,8 @@ public class ActiveCharacterToken extends AbstractToken implements CodeToken {
      */
     public void toString(final StringBuffer sb) {
 
-        sb
-                .append(getLocalizer().format("ActiveCharacterToken.Text",
-                        getName()));
+        sb.append(getLocalizer().format("ActiveCharacterToken.Text", //
+                getName()));
     }
 
     /**
@@ -174,4 +174,5 @@ public class ActiveCharacterToken extends AbstractToken implements CodeToken {
 
         return visitor.visitActive(this, arg1);
     }
+
 }

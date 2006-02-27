@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -29,22 +29,24 @@ import de.dante.extex.typesetter.type.node.WhatsItNode;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class PdfXForm extends WhatsItNode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2005L;
 
     /**
-     * The field <tt>nodes</tt> contains the ...
+     * The field <tt>nodes</tt> contains the nodes of the xform.
      */
     private NodeList nodes;
 
     /**
      * Creates a new object.
+     *
+     * @param nodes the nodes in the xform
      */
     public PdfXForm(final NodeList nodes) {
 
@@ -66,7 +68,8 @@ public class PdfXForm extends WhatsItNode {
      * @see de.dante.extex.typesetter.type.Node#toString(java.lang.StringBuffer,
      *      java.lang.String)
      */
-    public void toString(final StringBuffer sb, final String prefix, int breadth, int depth) {
+    public void toString(final StringBuffer sb, final String prefix,
+            final int breadth, final int depth) {
 
         sb.append("(pdfxform " + nodes.toString() + ")");
     }

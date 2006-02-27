@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
-  * This library is free software; you can redistribute it and/or modify it
+ * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
  * Free Software Foundation; either version 2.1 of the License, or (at your
  * option) any later version.
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this library; if not, write to the Free Software Foundation,
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-*
+ *
  */
 
 package de.dante.extex.interpreter.primitives.prefix;
@@ -78,14 +78,14 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class Global extends AbstractCode implements PrefixCode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * Creates a new object.
@@ -105,8 +105,10 @@ public class Global extends AbstractCode implements PrefixCode {
      *      de.dante.extex.typesetter.Typesetter)
      */
     public void execute(final Flags prefix, final Context context,
-            final TokenSource source, final Typesetter typesetter) throws InterpreterException {
+            final TokenSource source, final Typesetter typesetter)
+            throws InterpreterException {
 
         prefix.setGlobal();
     }
+
 }

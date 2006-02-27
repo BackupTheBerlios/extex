@@ -64,7 +64,7 @@ import de.dante.util.exception.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Parshapeindent extends AbstractCode
         implements
@@ -75,7 +75,7 @@ public class Parshapeindent extends AbstractCode
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * Creates a new object.
@@ -135,4 +135,5 @@ public class Parshapeindent extends AbstractCode
             throw new InterpreterException(e);
         }
     }
+
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -39,20 +39,20 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class ControlSequenceToken extends AbstractToken implements CodeToken {
-
-    /**
-     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
-     */
-    private static final long serialVersionUID = 1L;
 
     /**
      * The constant <tt>HASH_FACTOR</tt> contains the factor used to construct
      * the hash code.
      */
     private static final int HASH_FACTOR = 17;
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * The field <tt>value</tt> contains the string value.
@@ -117,12 +117,29 @@ public class ControlSequenceToken extends AbstractToken implements CodeToken {
     }
 
     /**
+     * @see de.dante.extex.scanner.type.token.AbstractToken#equals(
+     *      de.dante.extex.scanner.type.Catcode, char)
+     */
+    public boolean equals(final Catcode cc, final char c) {
+
+        return getCatcode() == cc && name.length() == 1 && name.charAt(0) == c;
+    }
+
+    /**
      * @see de.dante.extex.scanner.type.token.Token#equals(
      *      de.dante.extex.scanner.Catcode, java.lang.String)
      */
     public boolean equals(final Catcode cc, final String s) {
 
         return getCatcode() == cc && name.equals(s);
+    }
+
+    /**
+     * @see de.dante.extex.scanner.type.token.AbstractToken#equals(char)
+     */
+    public boolean equals(final char c) {
+
+        return name.length() == 1 && name.charAt(0) == c;
     }
 
     /**
@@ -136,23 +153,6 @@ public class ControlSequenceToken extends AbstractToken implements CodeToken {
             && namespace.equals(othertoken.namespace));
         }
         return false;
-    }
-
-    /**
-     * @see de.dante.extex.scanner.type.token.AbstractToken#equals(
-     *      de.dante.extex.scanner.type.Catcode, char)
-     */
-    public boolean equals(final Catcode cc, final char c) {
-
-        return getCatcode() == cc && name.length() == 1 && name.charAt(0) == c;
-    }
-
-    /**
-     * @see de.dante.extex.scanner.type.token.AbstractToken#equals(char)
-     */
-    public boolean equals(char c) {
-
-        return name.length() == 1 && name.charAt(0) == c;
     }
 
     /**
@@ -212,18 +212,6 @@ public class ControlSequenceToken extends AbstractToken implements CodeToken {
     }
 
     /**
-     * @see de.dante.extex.scanner.type.token.Token#toText(char)
-     */
-    public String toText(final char esc) {
-
-        if (esc != '\0') {
-            return esc + name;
-        }
-
-        return name;
-    }
-
-    /**
      * @see de.dante.extex.scanner.type.token.AbstractToken#toText()
      */
     public String toText() {
@@ -231,6 +219,18 @@ public class ControlSequenceToken extends AbstractToken implements CodeToken {
         UnicodeChar c = getChar();
         if (c != null && c.getCodePoint() != 0) {
             return c.toString() + name;
+        }
+
+        return name;
+    }
+
+    /**
+     * @see de.dante.extex.scanner.type.token.Token#toText(char)
+     */
+    public String toText(final char esc) {
+
+        if (esc != '\0') {
+            return esc + name;
         }
 
         return name;

@@ -75,7 +75,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class ColorPrimitive extends AbstractAssignment
         implements
@@ -86,7 +86,7 @@ public class ColorPrimitive extends AbstractAssignment
      * color models.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.11 $
+     * @version $Revision: 1.12 $
      */
     private interface ColorMode {
 
@@ -115,7 +115,7 @@ public class ColorPrimitive extends AbstractAssignment
          * @see de.dante.extex.interpreter.primitives.color.ColorPrimitive.ColorMode#parse()
          */
         public Color parse(final Context context, final TokenSource source,
-                final int alpha, String name) throws InterpreterException {
+                final int alpha, final String name) throws InterpreterException {
 
             int r = scanColorComponent(context, source, name);
             int g = scanColorComponent(context, source, name);
@@ -134,7 +134,7 @@ public class ColorPrimitive extends AbstractAssignment
          * @see de.dante.extex.interpreter.primitives.color.ColorPrimitive.ColorMode#parse()
          */
         public Color parse(final Context context, final TokenSource source,
-                final int alpha, String name) throws InterpreterException {
+                final int alpha, final String name) throws InterpreterException {
 
             int h = scanColorComponent(context, source, name);
             int s = scanColorComponent(context, source, name);
@@ -153,7 +153,7 @@ public class ColorPrimitive extends AbstractAssignment
          * @see de.dante.extex.interpreter.primitives.color.ColorPrimitive.ColorMode#parse()
          */
         public Color parse(final Context context, final TokenSource source,
-                final int alpha, String name) throws InterpreterException {
+                final int alpha, final String name) throws InterpreterException {
 
             int gray = scanColorComponent(context, source, name);
             return ColorFactory.getGray(gray, alpha);
@@ -170,7 +170,7 @@ public class ColorPrimitive extends AbstractAssignment
          * @see de.dante.extex.interpreter.primitives.color.ColorPrimitive.ColorMode#parse()
          */
         public Color parse(final Context context, final TokenSource source,
-                final int alpha, String name) throws InterpreterException {
+                final int alpha, final String name) throws InterpreterException {
 
             int c = scanColorComponent(context, source, name);
             int m = scanColorComponent(context, source, name);
@@ -184,13 +184,14 @@ public class ColorPrimitive extends AbstractAssignment
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * Scan a color component and translate it into a color value.
      *
      * @param context the interpreter context
      * @param source the token source
+     * @param name the name of the primitive for error messages
      *
      * @return the color component in units of Color.MAX_VALUE
      *
@@ -251,7 +252,7 @@ public class ColorPrimitive extends AbstractAssignment
         int alpha = 0;
         ColorMode mode = RGB_MODE;
 
-        for(;;) {
+        for (;;) {
             if (source.getKeyword(context, "alpha")) {
                 alpha = scanColorComponent(context, source, getName());
             } else if (source.getKeyword(context, "rgb")) {

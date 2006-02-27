@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -45,14 +45,14 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * to and from their <logo>TeX</logo> encoding as numbers to abstract math code.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public abstract class AbstractTeXDelimiter extends AbstractMathCode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * The constant <tt>CHAR_MASK</tt> contains the character mask.
@@ -272,7 +272,7 @@ public abstract class AbstractTeXDelimiter extends AbstractMathCode {
      * @throws InterpreterException in case of an error
      */
     private static MathDelimiter parse(final Context context,
-            final TokenSource source, Typesetter typesetter,
+            final TokenSource source, final Typesetter typesetter,
             final MathClass mClass, final String primitive)
             throws InterpreterException {
 

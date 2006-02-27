@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -30,14 +30,14 @@ import de.dante.util.Locator;
  * happened.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Conditional implements Serializable {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 1L;
 
     /**
      * The field <tt>branch</tt> contains the branch indicator.
@@ -139,11 +139,10 @@ public class Conditional implements Serializable {
      * @return the neg
      */
     public boolean isNeg() {
-    
+
         return this.neg;
     }
 
-    
     /**
      * @see java.lang.Object#toString()
      */

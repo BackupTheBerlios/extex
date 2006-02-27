@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -80,14 +80,14 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * @see de.dante.extex.interpreter.type.arithmetic.Advanceable
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class Advance extends AbstractAssignment {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * Creates a new object.
@@ -117,7 +117,8 @@ public class Advance extends AbstractAssignment {
 
             if (code instanceof Advanceable) {
 
-                ((Advanceable) code).advance(prefix, context, source, typesetter);
+                ((Advanceable) code).advance(prefix, context, source,
+                        typesetter);
                 return;
 
             } else if (code == null) {

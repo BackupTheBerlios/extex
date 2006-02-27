@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -135,7 +135,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.37 $
+ * @version $Revision: 1.38 $
  */
 public class FontPrimitive extends AbstractAssignment
         implements
@@ -145,13 +145,13 @@ public class FontPrimitive extends AbstractAssignment
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * The field <tt>DEBUG</tt> contains the indicator that debug output is
      * desirable.
      */
-    private static boolean DEBUG = true;
+    private static final boolean DEBUG = true;
 
     /**
      * The field <tt>logger</tt> contains the logger for debug output.
@@ -259,10 +259,10 @@ public class FontPrimitive extends AbstractAssignment
      * @see de.dante.util.framework.logger.LogEnabled#enableLogging(
      *      java.util.logging.Logger)
      */
-    public void enableLogging(final Logger logger) {
+    public void enableLogging(final Logger log) {
 
         if (DEBUG) {
-            this.logger = logger;
+            this.logger = log;
         }
     }
 

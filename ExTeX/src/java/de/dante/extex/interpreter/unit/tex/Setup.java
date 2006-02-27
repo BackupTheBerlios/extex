@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -77,7 +77,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Setup implements Loader, LoadedObserver, LogEnabled {
 
@@ -91,7 +91,7 @@ public class Setup implements Loader, LoadedObserver, LogEnabled {
      * The field <tt>serialVersionUID</tt> contains the version number for
      * serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * The field <tt>logger</tt> contains the local reference to the logger.
@@ -116,9 +116,9 @@ public class Setup implements Loader, LoadedObserver, LogEnabled {
      * @see de.dante.util.framework.logger.LogEnabled#enableLogging(
      *      java.util.logging.Logger)
      */
-    public void enableLogging(final Logger logger) {
+    public void enableLogging(final Logger log) {
 
-        this.logger = logger;
+        this.logger = log;
     }
 
     /**
@@ -149,8 +149,8 @@ public class Setup implements Loader, LoadedObserver, LogEnabled {
                 notRegistered = false;
             }
         } else if (context instanceof CountObservable) {
-            ((CountObservable) context).registerCountObserver(
-                    TRACING_COMMANDS, new CountObserver() {
+            ((CountObservable) context).registerCountObserver(TRACING_COMMANDS,
+                    new CountObserver() {
 
                         /**
                          * @see de.dante.extex.interpreter.context.observer.count.CountObserver#receiveCountChange(

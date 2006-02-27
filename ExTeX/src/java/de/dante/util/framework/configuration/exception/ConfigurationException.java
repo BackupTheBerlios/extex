@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -27,7 +27,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * detected.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class ConfigurationException extends Exception {
 
@@ -37,12 +37,6 @@ public abstract class ConfigurationException extends Exception {
     private Localizer localizer = null;
 
     /**
-     * The field <tt>message</tt> contains the message string for this
-     * exception.
-     */
-    private String message = null;
-
-    /**
      * The field <tt>source</tt> contains the location for this exception.
      */
     private String source = null;
@@ -50,39 +44,34 @@ public abstract class ConfigurationException extends Exception {
     /**
      * Creates a new object.
      *
-     * @param theMessage the message string
+     * @param message the message string
      */
-    public ConfigurationException(final String theMessage) {
+    public ConfigurationException(final String message) {
 
-        super(theMessage);
-        this.message = theMessage;
+        super(message);
     }
 
     /**
      * Creates a new object.
      *
-     * @param theMessage the message string
+     * @param message the message string
      * @param theSource the name of the file causing this error
      */
-    public ConfigurationException(final String theMessage,
-            final String theSource) {
+    public ConfigurationException(final String message, final String theSource) {
 
-        super(theMessage);
-        this.message = theMessage;
+        super(message);
         this.source = theSource;
     }
 
     /**
      * Creates a new object.
      *
-     * @param theMessage message the message string
+     * @param message message the message string
      * @param theCause the next Throwable in the list
      */
-    public ConfigurationException(final String theMessage,
-            final Throwable theCause) {
+    public ConfigurationException(final String message, final Throwable theCause) {
 
-        super(theMessage, theCause);
-        this.message = theMessage;
+        super(message, theCause);
     }
 
     /**
@@ -148,6 +137,8 @@ public abstract class ConfigurationException extends Exception {
      */
     public String getLocalizedMessage() {
 
+        String message = getMessage();
+
         if (getCause() != null) {
             for (Throwable t = getCause(); t != null; t = t.getCause()) {
                 String msg = t.getLocalizedMessage();
@@ -208,4 +199,5 @@ public abstract class ConfigurationException extends Exception {
 
         return getLocalizer().format("ConfigurationException.Text");
     }
+
 }

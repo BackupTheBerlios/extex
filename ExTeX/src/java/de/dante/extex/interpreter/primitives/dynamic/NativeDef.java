@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -77,7 +77,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </p>
  * <p>
  * The primitive <tt>\nativedef</tt> also respects the count register
- * <tt>\globaldefs</tt> to enable general global assignment. 
+ * <tt>\globaldefs</tt> to enable general global assignment.
  * </p>
  * <p>
  * Since the primitive is classified as assignment the value of
@@ -88,7 +88,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class NativeDef extends AbstractAssignment
         implements
@@ -101,7 +101,7 @@ public class NativeDef extends AbstractAssignment
      * inheritance in Java.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.8 $
+     * @version $Revision: 1.9 $
      */
     protected class Factory extends AbstractFactory {
 
@@ -122,7 +122,7 @@ public class NativeDef extends AbstractAssignment
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * The field <tt>logger</tt> contains the logger to use.
@@ -205,4 +205,5 @@ public class NativeDef extends AbstractAssignment
 
         return this.logger;
     }
+
 }

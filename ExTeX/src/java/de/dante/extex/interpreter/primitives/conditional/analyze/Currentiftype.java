@@ -75,7 +75,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Currentiftype extends AbstractCode
         implements
@@ -86,34 +86,34 @@ public class Currentiftype extends AbstractCode
      * The field <tt>map</tt> contains the map from \if implementations to
      * long values.
      */
-    private static final Map map = new HashMap();
+    private static final Map MAP = new HashMap();
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2005L;
 
     {
-        map.put(If.class, new Long(1));
-        map.put(Ifcat.class, new Long(2));
-        map.put(Ifnum.class, new Long(3));
-        map.put(Ifdim.class, new Long(4));
-        map.put(Ifodd.class, new Long(5));
-        map.put(Ifvmode.class, new Long(6));
-        map.put(Ifhmode.class, new Long(7));
-        map.put(Ifmmode.class, new Long(8));
-        map.put(Ifinner.class, new Long(9));
-        map.put(Ifvoid.class, new Long(10));
-        map.put(Ifhbox.class, new Long(11));
-        map.put(Ifvbox.class, new Long(12));
-        map.put(Ifx.class, new Long(13));
-        map.put(Ifeof.class, new Long(14));
-        map.put(Iftrue.class, new Long(15));
-        map.put(Iffalse.class, new Long(16));
-        map.put(Ifcase.class, new Long(17));
-        map.put(Ifdefined.class, new Long(18));
-        map.put(Ifcsname.class, new Long(19));
-        map.put(Iffontchar.class, new Long(20));
+        MAP.put(If.class, new Long(1));
+        MAP.put(Ifcat.class, new Long(2));
+        MAP.put(Ifnum.class, new Long(3));
+        MAP.put(Ifdim.class, new Long(4));
+        MAP.put(Ifodd.class, new Long(5));
+        MAP.put(Ifvmode.class, new Long(6));
+        MAP.put(Ifhmode.class, new Long(7));
+        MAP.put(Ifmmode.class, new Long(8));
+        MAP.put(Ifinner.class, new Long(9));
+        MAP.put(Ifvoid.class, new Long(10));
+        MAP.put(Ifhbox.class, new Long(11));
+        MAP.put(Ifvbox.class, new Long(12));
+        MAP.put(Ifx.class, new Long(13));
+        MAP.put(Ifeof.class, new Long(14));
+        MAP.put(Iftrue.class, new Long(15));
+        MAP.put(Iffalse.class, new Long(16));
+        MAP.put(Ifcase.class, new Long(17));
+        MAP.put(Ifdefined.class, new Long(18));
+        MAP.put(Ifcsname.class, new Long(19));
+        MAP.put(Iffontchar.class, new Long(20));
     }
 
     /**
@@ -139,7 +139,7 @@ public class Currentiftype extends AbstractCode
         if (conditional == null) {
             return 0;
         }
-        Long l = (Long) map.get(conditional.getPrimitive().getClass());
+        Long l = (Long) MAP.get(conditional.getPrimitive().getClass());
         return (l == null ? 0 : //
                 conditional.isNeg() ? -l.longValue() : l.longValue());
     }

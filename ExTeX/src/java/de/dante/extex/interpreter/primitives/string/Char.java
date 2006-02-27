@@ -27,7 +27,7 @@ import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.exception.TypesetterException;
-import de.dante.extex.typesetter.type.node.CharNode;
+import de.dante.extex.typesetter.type.Node;
 import de.dante.util.UnicodeChar;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
@@ -68,14 +68,14 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public class Char extends AbstractCode implements ExpandableCode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * Creates a new object.
@@ -112,18 +112,21 @@ public class Char extends AbstractCode implements ExpandableCode {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        UnicodeChar uc = source.scanCharacterCode(context, typesetter, getName());
+        UnicodeChar uc = source.scanCharacterCode(context, typesetter,
+                getName());
         /*
+         try {
+         Token t = context.getTokenFactory().createToken(Catcode.OTHER, uc,
+         context.getNamespace());
+         source.push(t);
+         } catch (CatcodeException e) {
+         throw new InterpreterException(e);
+         }
+         */
+        Node node = typesetter.getNodeFactory().getNode(
+                context.getTypesettingContext(), uc);
         try {
-            Token t = context.getTokenFactory().createToken(Catcode.OTHER, uc,
-                    context.getNamespace());
-            source.push(t);
-        } catch (CatcodeException e) {
-            throw new InterpreterException(e);
-        }
-        */
-        try {
-            typesetter.add(new CharNode(context.getTypesettingContext(), uc));
+            typesetter.add(node);
         } catch (TypesetterException e) {
             throw new InterpreterException(e);
         } catch (ConfigurationException e) {

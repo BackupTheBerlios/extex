@@ -72,7 +72,7 @@ import de.dante.util.exception.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public class Hyphenchar extends AbstractAssignment
         implements
@@ -83,7 +83,7 @@ public class Hyphenchar extends AbstractAssignment
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * Creates a new object.
@@ -165,12 +165,11 @@ public class Hyphenchar extends AbstractAssignment
      *      de.dante.extex.typesetter.Typesetter)
      */
     public Tokens the(final Context context, final TokenSource source,
-            final Typesetter typesetter)
-            throws InterpreterException {
+            final Typesetter typesetter) throws InterpreterException {
 
+        Font font = source.getFont(context, getName());
+        UnicodeChar uc = font.getHyphenChar();
         try {
-            Font font = source.getFont(context, getName());
-            UnicodeChar uc = font.getHyphenChar();
             if (uc == null) {
                 return new Tokens(context, "-1");
             } else {

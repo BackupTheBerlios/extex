@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -28,14 +28,14 @@ import de.dante.util.exception.GeneralException;
  * channel.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class RgbColor implements Color {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 1L;
 
     /**
      * The field <tt>red</tt> contains the red value of the color.
@@ -157,10 +157,10 @@ public class RgbColor implements Color {
      *      de.dante.extex.color.ColorVisitor,
      *      java.lang.Object)
      */
-    public Object visit(final ColorVisitor visitor, final Object value)
+    public Object visit(final ColorVisitor visitor, final Object argument)
             throws GeneralException {
 
-        return visitor.visitRgb(this, value);
+        return visitor.visitRgb(this, argument);
     }
 
 }

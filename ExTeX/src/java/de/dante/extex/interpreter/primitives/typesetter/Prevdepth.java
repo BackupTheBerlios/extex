@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -30,10 +30,12 @@ import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.DimenConvertible;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.CatcodeException;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.exception.TypesetterUnsupportedException;
+import de.dante.util.exception.GeneralException;
 
 /**
  * This class provides an implementation for the primitive
@@ -60,7 +62,7 @@ import de.dante.extex.typesetter.exception.TypesetterUnsupportedException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Prevdepth extends AbstractAssignment
         implements
@@ -83,7 +85,7 @@ public class Prevdepth extends AbstractAssignment
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * Creates a new object.
@@ -128,7 +130,7 @@ public class Prevdepth extends AbstractAssignment
     public long convertCount(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        Dimen prevDepth;
+        FixedDimen prevDepth;
         try {
             prevDepth = typesetter.getListMaker().getPrevDepth();
         } catch (TypesetterUnsupportedException e) {
@@ -148,7 +150,7 @@ public class Prevdepth extends AbstractAssignment
     public long convertDimen(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        Dimen prevDepth;
+        FixedDimen prevDepth;
         try {
             prevDepth = typesetter.getListMaker().getPrevDepth();
         } catch (TypesetterUnsupportedException e) {
@@ -168,7 +170,7 @@ public class Prevdepth extends AbstractAssignment
     public Tokens the(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        Dimen prevDepth;
+        FixedDimen prevDepth;
         try {
             prevDepth = typesetter.getListMaker().getPrevDepth();
         } catch (TypesetterUnsupportedException e) {
@@ -176,7 +178,7 @@ public class Prevdepth extends AbstractAssignment
                     printableControlSequence(context));
         }
 
-        if (prevDepth ==null) {
+        if (prevDepth == null) {
             prevDepth = IGNORE_DIMEN;
         }
 
@@ -184,6 +186,11 @@ public class Prevdepth extends AbstractAssignment
             return prevDepth.toToks(context.getTokenFactory());
         } catch (CatcodeException e) {
             throw new InterpreterException(e);
+        } catch (InterpreterException e) {
+            throw e;
+        } catch (GeneralException e) {
+            throw new InterpreterException(e);
         }
     }
+
 }

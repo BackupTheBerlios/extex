@@ -26,7 +26,6 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.ArithmeticOverflowException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
-import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.FixedGlueComponent;
 import de.dante.extex.interpreter.type.glue.GlueComponent;
 import de.dante.extex.typesetter.Typesetter;
@@ -39,7 +38,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public class Dimen extends GlueComponent
         implements
@@ -68,7 +67,7 @@ public class Dimen extends GlueComponent
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * The constant <tt>ZERO_PT</tt> contains the immutable dimen register
@@ -258,8 +257,10 @@ public class Dimen extends GlueComponent
 
     /**
      * Set the value from the data gathered by parsing a token source.
+     *
      * @param context the interpreter context
      * @param source the source for next tokens
+     * @param typesetter the typesetter
      *
      * @throws InterpreterException in case of an error
      *
@@ -268,7 +269,7 @@ public class Dimen extends GlueComponent
      *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
     public void set(final Context context, final TokenSource source,
-            Typesetter typesetter) throws InterpreterException {
+            final Typesetter typesetter) throws InterpreterException {
 
         set(context, source, typesetter, true);
     }
