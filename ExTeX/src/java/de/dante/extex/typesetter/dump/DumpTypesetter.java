@@ -19,7 +19,6 @@
 
 package de.dante.extex.typesetter.dump;
 
-
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.glue.Glue;
@@ -35,7 +34,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * received.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public class DumpTypesetter extends TypesetterImpl {
 
@@ -83,7 +82,7 @@ public class DumpTypesetter extends TypesetterImpl {
     /**
      * @see de.dante.extex.typesetter.ListMaker#complete(TypesetterOptions)
      */
-    public NodeList complete(TypesetterOptions context)
+    public NodeList complete(final TypesetterOptions context)
             throws TypesetterException,
                 ConfigurationException {
 
