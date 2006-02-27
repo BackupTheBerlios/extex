@@ -64,7 +64,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * running an instance of <logo>ExTeX</logo>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.42 $
+ * @version $Revision: 1.43 $
  */
 public class ExTeXLauncher extends TestCase {
 
@@ -72,7 +72,7 @@ public class ExTeXLauncher extends TestCase {
      * Inner class for the error handler.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.42 $
+     * @version $Revision: 1.43 $
      */
     private class EHandler implements ErrorHandler {
 
@@ -415,7 +415,7 @@ public class ExTeXLauncher extends TestCase {
                                 return Dimen.ZERO_PT;
                             }
 
-                            public void setRightSpace(Dimen rs) {
+                            public void setRightSpace(final Dimen rs) {
 
                             }};
                     }

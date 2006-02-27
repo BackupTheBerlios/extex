@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -48,7 +48,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationSyntaxExcept
  * This class provides means to deal with configurations stored as XML files.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class ConfigurationXMLImpl implements Configuration, Serializable {
 
@@ -293,8 +293,8 @@ public class ConfigurationXMLImpl implements Configuration, Serializable {
     /**
      * Recursively follow the src attribute if present.
      *
-     * @param name ...
-     * @param node ...
+     * @param name the name of the current tag
+     * @param node the current DOM node
      *
      * @return the configuration
      *
@@ -313,9 +313,15 @@ public class ConfigurationXMLImpl implements Configuration, Serializable {
 
         String src = ((Element) root).getAttribute("src");
 
-        return (src == null || src.equals("")
-                ? this
-                : new ConfigurationXMLImpl(base + src).src(name, root));
+        if (src == null || src.equals("")) {
+            return this;
+        }
+        Configuration cfg = new ConfigurationXMLImpl(base + src)
+                .src(name, root);
+        if (!((ConfigurationXMLImpl) cfg).root.getNodeName().equals(name) ) {
+            throw new ConfigurationNotFoundException(name, src);
+        }
+        return cfg;
     }
 
     /**
@@ -703,7 +709,7 @@ public class ConfigurationXMLImpl implements Configuration, Serializable {
      * <code>null</code> if none could be opened.
      */
     private InputStream locateConfiguration(final String name,
-            ClassLoader classLoader) {
+            final ClassLoader classLoader) {
 
         for (int pi = 0; pi < PATHS.length; pi++) {
             for (int ei = 0; ei < EXTENSIONS.length; ei++) {
@@ -720,10 +726,11 @@ public class ConfigurationXMLImpl implements Configuration, Serializable {
 
     /**
      * Read the configuration from a stream.
+     *
      * @param stream the stream to read the configuration from.
-     * @param resource the name of the resource to be used;
+     * @param theResource the name of the resource to be used;
      *  i.e. something like the file name
-     * @param base the new value for base
+     * @param theBase the new value for base
      *
      * @throws ConfigurationNotFoundException in case that the configuration
      *  could not be found
@@ -732,16 +739,16 @@ public class ConfigurationXMLImpl implements Configuration, Serializable {
      *  configuration XML
      */
     protected void readConfiguration(final InputStream stream,
-            final String resource, final String base)
+            final String theResource, final String theBase)
             throws ConfigurationNotFoundException,
                 ConfigurationIOException,
                 ConfigurationSyntaxException {
 
         if (stream == null) {
-            throw new ConfigurationNotFoundException(resource, null);
+            throw new ConfigurationNotFoundException(theResource, null);
         }
-        this.resource = resource;
-        this.base = base;
+        this.resource = theResource;
+        this.base = theBase;
 
         try {
             DocumentBuilder builder = DocumentBuilderFactory.newInstance()
@@ -751,13 +758,13 @@ public class ConfigurationXMLImpl implements Configuration, Serializable {
             throw new ConfigurationIOException(null, e);
         } catch (ParserConfigurationException e) {
             throw new ConfigurationSyntaxException(e.getLocalizedMessage(),
-                    resource);
+                    theResource);
         } catch (SAXException e) {
             throw new ConfigurationSyntaxException(e.getLocalizedMessage(),
-                    resource);
+                    theResource);
         } catch (FactoryConfigurationError e) {
             throw new ConfigurationSyntaxException(e.getLocalizedMessage(),
-                    resource);
+                    theResource);
         }
     }
 
