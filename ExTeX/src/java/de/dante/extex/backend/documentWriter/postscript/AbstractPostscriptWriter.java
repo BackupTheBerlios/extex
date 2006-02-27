@@ -47,7 +47,7 @@ import de.dante.util.resource.ResourceFinder;
  * code. Here some utility methods of general nature are collected.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public abstract class AbstractPostscriptWriter
         implements
@@ -78,7 +78,7 @@ public abstract class AbstractPostscriptWriter
     /**
      * The field <tt>parameter</tt> contains the map for parameters.
      */
-    protected Map parameter = new HashMap();
+    private Map parameter = new HashMap();
 
     /**
      * The field <tt>writerFactory</tt> contains the output stream factory.
