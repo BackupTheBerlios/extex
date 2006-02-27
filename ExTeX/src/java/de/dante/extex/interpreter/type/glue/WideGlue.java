@@ -32,7 +32,7 @@ import de.dante.extex.interpreter.type.dimen.ImmutableDimen;
  * order should determine the value.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class WideGlue {
 
@@ -57,9 +57,11 @@ public class WideGlue {
     private long[] stretch = new long[SIZE];
 
     /**
-     * The field <tt>unit</tt> contains the ...
+     * The field <tt>unit</tt> contains the printable representation for the
+     * unit of the orders.
      */
-    private String[] unit = {"sp", "fi", "fil", "fill", "filll", "fillll"};
+    private static final String[] UNIT = {"sp", "fi", "fil", "fill", "filll",
+            "fillll"};
 
     /**
      * Creates a new object.
@@ -127,7 +129,7 @@ public class WideGlue {
      *
      * @return the highest glue component or ZERO
      */
-    private GlueComponent getGC(final long[] a) {
+    private FixedGlueComponent getGC(final long[] a) {
 
         for (int i = SIZE - 1; i >= 0; i--) {
             if (a[i] != 0) {
@@ -143,7 +145,7 @@ public class WideGlue {
      *
      * @return the natural length
      */
-    public Dimen getLength() {
+    public FixedDimen getLength() {
 
         return length;
     }
@@ -153,7 +155,7 @@ public class WideGlue {
      *
      * @return the shrink as glue component
      */
-    public GlueComponent getShrink() {
+    public FixedGlueComponent getShrink() {
 
         for (int i = SIZE - 1; i >= 0; i--) {
             if (shrink[i] != 0) {
@@ -246,7 +248,7 @@ public class WideGlue {
     /**
      * Subtract some more dimen to this one.
      *
-     * @param glue the glue to add
+     * @param dimen the dimen to add
      */
     public void subtract(final FixedDimen dimen) {
 
@@ -292,7 +294,7 @@ public class WideGlue {
             if (stretch[i] != 0) {
                 sb.append("plus ");
                 sb.append(stretch[i]);
-                sb.append(unit[i]);
+                sb.append(UNIT[i]);
             }
         }
 
@@ -300,7 +302,7 @@ public class WideGlue {
             if (shrink[i] != 0) {
                 sb.append("minus ");
                 sb.append(shrink[i]);
-                sb.append(unit[i]);
+                sb.append(UNIT[i]);
             }
         }
 
