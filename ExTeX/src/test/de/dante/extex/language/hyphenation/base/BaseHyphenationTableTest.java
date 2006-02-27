@@ -43,13 +43,15 @@ import de.dante.extex.typesetter.type.node.CharNode;
 import de.dante.extex.typesetter.type.node.DiscretionaryNode;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
 import de.dante.extex.typesetter.type.node.SpaceNode;
+import de.dante.extex.typesetter.type.node.factory.CachingNodeFactory;
+import de.dante.extex.typesetter.type.node.factory.NodeFactory;
 import de.dante.util.UnicodeChar;
 
 /**
  * TODO gene: missing JavaDoc.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class BaseHyphenationTableTest extends TestCase {
 
@@ -57,7 +59,7 @@ public class BaseHyphenationTableTest extends TestCase {
      * Mock implementation of a font.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private class MockFont implements Font {
 
@@ -233,7 +235,7 @@ public class BaseHyphenationTableTest extends TestCase {
      * This is a mock implementation of a glyph.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private class MockGlyph implements Glyph {
 
@@ -247,7 +249,7 @@ public class BaseHyphenationTableTest extends TestCase {
         /**
          * @see de.dante.extex.font.Glyph#addLigature(de.dante.extex.font.Ligature)
          */
-        public void addLigature(Ligature lig) {
+        public void addLigature(final Ligature lig) {
 
         }
 
@@ -271,7 +273,7 @@ public class BaseHyphenationTableTest extends TestCase {
             return null;
         }
 
-        public Dimen getKerning(UnicodeChar uc) {
+        public Dimen getKerning(final UnicodeChar uc) {
 
             return null;
         }
@@ -281,7 +283,7 @@ public class BaseHyphenationTableTest extends TestCase {
             return null;
         }
 
-        public UnicodeChar getLigature(UnicodeChar uc) {
+        public UnicodeChar getLigature(final UnicodeChar uc) {
 
             return null;
         }
@@ -306,71 +308,75 @@ public class BaseHyphenationTableTest extends TestCase {
             return null;
         }
 
-        public void setDepth(Dimen d) {
+        public void setDepth(final Dimen d) {
 
         }
 
-        public void setDepth(String gsize, Dimen em, int unitsperem) {
+        public void setDepth(final String gsize, final Dimen em,
+                final int unitsperem) {
 
         }
 
-        public void setDepth(TFMFixWord size, Dimen em) {
+        public void setDepth(final TFMFixWord size, final Dimen em) {
 
         }
 
-        public void setExternalFile(FontByteArray file) {
+        public void setExternalFile(final FontByteArray file) {
 
         }
 
-        public void setHeight(Dimen h) {
+        public void setHeight(final Dimen h) {
 
         }
 
-        public void setHeight(String gsize, Dimen em, int unitsperem) {
+        public void setHeight(final String gsize, final Dimen em,
+                final int unitsperem) {
 
         }
 
-        public void setHeight(TFMFixWord size, Dimen em) {
+        public void setHeight(final TFMFixWord size, final Dimen em) {
 
         }
 
-        public void setItalicCorrection(Dimen d) {
+        public void setItalicCorrection(final Dimen d) {
 
         }
 
-        public void setItalicCorrection(String gsize, Dimen em, int unitsperem) {
+        public void setItalicCorrection(final String gsize, final Dimen em,
+                final int unitsperem) {
 
         }
 
-        public void setItalicCorrection(TFMFixWord size, Dimen em) {
+        public void setItalicCorrection(final TFMFixWord size, final Dimen em) {
 
         }
 
-        public void setLeftSpace(Dimen ls) {
+        public void setLeftSpace(final Dimen ls) {
 
         }
 
-        public void setName(String n) {
+        public void setName(final String n) {
 
         }
 
-        public void setNumber(String nr) {
+        public void setNumber(final String nr) {
 
         }
 
-        public void setRightSpace(Dimen rs) {
+        public void setRightSpace(final Dimen rs) {
 
         }
 
-        public void setWidth(Dimen w) {
+        public void setWidth(final Dimen w) {
 
         }
 
-        public void setWidth(String gsize, Dimen em, int unitsperem) {
+        public void setWidth(final String gsize, final Dimen em,
+                final int unitsperem) {
 
         }
 
-        public void setWidth(TFMFixWord size, Dimen em) {
+        public void setWidth(final TFMFixWord size, final Dimen em) {
 
         }
     }
@@ -379,26 +385,34 @@ public class BaseHyphenationTableTest extends TestCase {
      * This mock implementation is for test purposes only.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private class MyMockContext extends MockContext {
 
         /**
-         * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+         * The constant <tt>serialVersionUID</tt> contains the id for
+         * serialization.
          */
         private static final long serialVersionUID = 1L;
 
         /**
-         * @see de.dante.extex.interpreter.context.Context#getLccode(de.dante.util.UnicodeChar)
+         * @see de.dante.extex.interpreter.context.Context#getLccode(
+         *      de.dante.util.UnicodeChar)
          */
         public UnicodeChar getLccode(final UnicodeChar uc) {
 
-            // TODO gene: getLccode unimplemented
             return null;
         }
-
     }
 
+    /**
+     * The field <tt>nodeFactory</tt> contains the node factory.
+     */
+    private NodeFactory nodeFactory = new CachingNodeFactory();
+
+    /**
+     * The field <tt>HYPHEN</tt> contains the yphen character.
+     */
     private static final UnicodeChar HYPHEN = new UnicodeChar('-');
 
     /**
@@ -417,15 +431,16 @@ public class BaseHyphenationTableTest extends TestCase {
     private TypesetterOptions context;
 
     /**
-     * The field <tt>table</tt> contains the ...
+     * The field <tt>language</tt> contains the language.
      */
-    private Language table;
+    private Language language;
 
     /**
      * TODO gene: missing JavaDoc
      *
      * @param s the string with the characters to encode
-     * @return
+     *
+     * @return a horizontal list
      */
     private HorizontalListNode hlist(final String s) {
 
@@ -449,9 +464,9 @@ public class BaseHyphenationTableTest extends TestCase {
      */
     protected Language makeLanguage() {
 
-        BaseHyphenationTable language = new BaseHyphenationTable();
-        language.setWordTokenizer(new TeXWords());
-        return language;
+        BaseHyphenationTable lang = new BaseHyphenationTable();
+        lang.setWordTokenizer(new TeXWords());
+        return lang;
     }
 
     /**
@@ -461,9 +476,9 @@ public class BaseHyphenationTableTest extends TestCase {
 
         context = new MyMockContext();
         Context c = new MockContext();
-        table = makeLanguage();
-        table.addHyphenation(new Tokens(c, "abc-def"), context);
-        table.addHyphenation(new Tokens(c, "d-e-f"), context);
+        language = makeLanguage();
+        language.addHyphenation(new Tokens(c, "abc-def"), context);
+        language.addHyphenation(new Tokens(c, "d-e-f"), context);
     }
 
     /**
@@ -474,7 +489,7 @@ public class BaseHyphenationTableTest extends TestCase {
     public void test1() throws Exception {
 
         HorizontalListNode nodes = hlist("");
-        table.hyphenate(nodes, context, HYPHEN, 0, true);
+        language.hyphenate(nodes, context, HYPHEN, 0, true, nodeFactory);
         assertEquals(0, nodes.size());
     }
 
@@ -486,7 +501,7 @@ public class BaseHyphenationTableTest extends TestCase {
     public void test2() throws Exception {
 
         HorizontalListNode nodes = hlist("abc");
-        table.hyphenate(nodes, context, HYPHEN, 0, true);
+        language.hyphenate(nodes, context, HYPHEN, 0, true, nodeFactory);
         assertEquals(3, nodes.size());
     }
 
@@ -498,7 +513,7 @@ public class BaseHyphenationTableTest extends TestCase {
     public void test3() throws Exception {
 
         HorizontalListNode nodes = hlist("abcdef");
-        table.hyphenate(nodes, context, HYPHEN, 0, true);
+        language.hyphenate(nodes, context, HYPHEN, 0, true, nodeFactory);
         assertEquals(7, nodes.size());
         assertTrue(nodes.get(3) instanceof DiscretionaryNode);
     }
@@ -511,7 +526,7 @@ public class BaseHyphenationTableTest extends TestCase {
     public void test4() throws Exception {
 
         HorizontalListNode nodes = hlist("abcdefgh");
-        table.hyphenate(nodes, context, HYPHEN, 0, true);
+        language.hyphenate(nodes, context, HYPHEN, 0, true, nodeFactory);
         assertEquals(8, nodes.size());
     }
 
@@ -523,7 +538,7 @@ public class BaseHyphenationTableTest extends TestCase {
     public void test5() throws Exception {
 
         HorizontalListNode nodes = hlist("def");
-        table.hyphenate(nodes, context, HYPHEN, 0, true);
+        language.hyphenate(nodes, context, HYPHEN, 0, true, nodeFactory);
         assertEquals(5, nodes.size());
         assertTrue(nodes.get(1) instanceof DiscretionaryNode);
         assertTrue(nodes.get(3) instanceof DiscretionaryNode);

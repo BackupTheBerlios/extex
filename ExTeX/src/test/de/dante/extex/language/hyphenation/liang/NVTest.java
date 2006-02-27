@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -46,17 +46,19 @@ import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.scanner.type.token.TokenFactory;
 import de.dante.extex.scanner.type.token.TokenFactoryImpl;
 import de.dante.extex.typesetter.type.NodeList;
-import de.dante.extex.typesetter.type.node.CharNodeFactory;
+import de.dante.extex.typesetter.type.node.CharNode;
 import de.dante.extex.typesetter.type.node.DiscretionaryNode;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
 import de.dante.extex.typesetter.type.node.LigatureNode;
+import de.dante.extex.typesetter.type.node.factory.CachingNodeFactory;
+import de.dante.extex.typesetter.type.node.factory.NodeFactory;
 import de.dante.util.UnicodeChar;
 
 /**
  * This is the test class for NV.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class NVTest extends TestCase {
 
@@ -64,19 +66,9 @@ public class NVTest extends TestCase {
      * This is a mock implementation of a font.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.6 $
+     * @version $Revision: 1.7 $
      */
     private class MockFont implements Font {
-
-        /**
-         * The field <tt>hyphen</tt> contains the hyphen character.
-         */
-        private UnicodeChar hyphen = new UnicodeChar('-');
-
-        /**
-         * The field <tt>map</tt> contains the ...
-         */
-        private Map map = new HashMap();
 
         /**
          * The field <tt>FF</tt> contains the ligature character ff.
@@ -92,6 +84,16 @@ public class NVTest extends TestCase {
          * The field <tt>FL</tt> contains the ligature character ffl.
          */
         public static final char FL = 'G';
+
+        /**
+         * The field <tt>hyphen</tt> contains the hyphen character.
+         */
+        private UnicodeChar hyphen = new UnicodeChar('-');
+
+        /**
+         * The field <tt>map</tt> contains the ...
+         */
+        private Map map = new HashMap();
 
         /**
          * Creates a new object.
@@ -156,11 +158,27 @@ public class NVTest extends TestCase {
         }
 
         /**
+         * @see de.dante.extex.font.type.Fount#getFontByteArray()
+         */
+        public FontByteArray getFontByteArray() {
+
+            return null; // add by mgn
+        }
+
+        /**
          * @see de.dante.extex.font.type.Fount#getFontDimen(java.lang.String)
          */
         public Dimen getFontDimen(final String key) {
 
             return Dimen.ONE_INCH;
+        }
+
+        /**
+         * @see de.dante.extex.font.type.Fount#getFontKey()
+         */
+        public FountKey getFontKey() {
+
+            return new FountKey("mockfont"); // add by mgn
         }
 
         /**
@@ -240,29 +258,13 @@ public class NVTest extends TestCase {
         public void setSkewChar(final UnicodeChar skew) {
 
         }
-
-        /**
-         * @see de.dante.extex.font.type.Fount#getFontKey()
-         */
-        public FountKey getFontKey() {
-
-            return new FountKey("mockfont"); // add by mgn
-        }
-
-        /**
-         * @see de.dante.extex.font.type.Fount#getFontByteArray()
-         */
-        public FontByteArray getFontByteArray() {
-
-            return null; // add by mgn
-        }
     }
 
     /**
      * This is a mock implementation of a glyph.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.6 $
+     * @version $Revision: 1.7 $
      */
     private class MockGlyph implements Glyph {
 
@@ -276,7 +278,7 @@ public class NVTest extends TestCase {
          *
          * 
          */
-        public MockGlyph(char c) {
+        public MockGlyph(final char c) {
 
             super();
             this.c = c;
@@ -525,9 +527,9 @@ public class NVTest extends TestCase {
     private static UnicodeChar hyphen;
 
     /**
-     * The field <tt>tf</tt> contains the token factory.
+     * The field <tt>tokenFactory</tt> contains the token factory.
      */
-    private static TokenFactory tf;
+    private static TokenFactory tokenFactory;
 
     /**
      * The command line interface.
@@ -542,7 +544,7 @@ public class NVTest extends TestCase {
     /**
      * The field <tt>cnf</tt> contains the char node factory.
      */
-    private CharNodeFactory cnf;
+    private NodeFactory cnf;
 
     /**
      * The field <tt>f</tt> contains the token for f.
@@ -565,21 +567,35 @@ public class NVTest extends TestCase {
     private TypesettingContext tc;
 
     /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param context the typesetting context
+     * @param uc the character
+     *
+     * @return a new character node
+     */
+    private CharNode getCharNode(final TypesettingContext context,
+            final UnicodeChar uc) {
+
+        return (CharNode) cnf.getNode(context, uc);
+    }
+
+    /**
      * @see junit.framework.TestCase#setUp()
      */
     public void setUp() throws Exception {
 
         super.setUp();
         font = new MockFont();
-        cnf = new CharNodeFactory();
-        tf = new TokenFactoryImpl();
-        f = tf.createToken(Catcode.LETTER, 'f', Namespace.DEFAULT_NAMESPACE);
-        l = tf.createToken(Catcode.LETTER, 'l', Namespace.DEFAULT_NAMESPACE);
+        cnf = new CachingNodeFactory();
+        tokenFactory = new TokenFactoryImpl();
+        f = tokenFactory.createToken(Catcode.LETTER, 'f', Namespace.DEFAULT_NAMESPACE);
+        l = tokenFactory.createToken(Catcode.LETTER, 'l', Namespace.DEFAULT_NAMESPACE);
         hyphen = font.getHyphenChar();
         tc = new TypesettingContextImpl(font);
         ModifiableLanguage lang = new BaseHyphenationTable();
         lang.setLigatureBuilder(new LigatureBuilderImpl());
-        ((ModifiableTypesettingContext)tc).setLanguage(lang);
+        ((ModifiableTypesettingContext) tc).setLanguage(lang);
     }
 
     /**
@@ -591,10 +607,10 @@ public class NVTest extends TestCase {
 
         NodeList list = new HorizontalListNode();
         LigatureNode ffl = new LigatureNode(tc, new UnicodeChar(MockFont.FFL), //
-                cnf.newInstance(tc, f.getChar()), //
+                getCharNode(tc, f.getChar()), //
                 new LigatureNode(tc, new UnicodeChar(MockFont.FF), //
-                        cnf.newInstance(tc, f.getChar()), //
-                        cnf.newInstance(tc, l.getChar())));
+                        getCharNode(tc, f.getChar()), //
+                        getCharNode(tc, l.getChar())));
 
         NV nv = new NV(list, hyphen, tc, cnf, //
                 new boolean[]{false, true, false, false});
@@ -619,9 +635,9 @@ public class NVTest extends TestCase {
         NodeList list = new HorizontalListNode();
         LigatureNode ffl = new LigatureNode(tc, new UnicodeChar(MockFont.FFL), //
                 new LigatureNode(tc, new UnicodeChar(MockFont.FF), //
-                        cnf.newInstance(tc, f.getChar()), //
-                        cnf.newInstance(tc, f.getChar())), //
-                cnf.newInstance(tc, l.getChar()));
+                        getCharNode(tc, f.getChar()), //
+                        getCharNode(tc, f.getChar())), //
+                getCharNode(tc, l.getChar()));
 
         NV nv = new NV(list, hyphen, tc, cnf, //
                 new boolean[]{false, true, false, false});
@@ -637,6 +653,30 @@ public class NVTest extends TestCase {
     }
 
     /**
+     * f-f-l ((f f) l)
+     *
+     * @throws Exception in case of an error
+     */
+    public void testDouble() throws Exception {
+
+        NodeList list = new HorizontalListNode();
+        LigatureNode ffl = new LigatureNode(tc, new UnicodeChar(MockFont.FFL), //
+                getCharNode(tc, f.getChar()), //
+                new LigatureNode(tc, new UnicodeChar(MockFont.FF), //
+                        getCharNode(tc, f.getChar()), //
+                        getCharNode(tc, l.getChar())));
+
+        NV nv = new NV(list, hyphen, tc, cnf, //
+                new boolean[]{false, false, false, false});
+
+        Count idx = new Count(0);
+        ffl.visit(nv, idx);
+        assertEquals(0, idx.getValue());
+        assertEquals(1, list.size());
+        assertEquals(list.get(0), ffl);
+    }
+
+    /**
      * ffl ((f f) l)
      *
      * @throws Exception in case of an error
@@ -645,10 +685,10 @@ public class NVTest extends TestCase {
 
         NodeList list = new HorizontalListNode();
         LigatureNode ffl = new LigatureNode(tc, new UnicodeChar(MockFont.FFL), //
-                cnf.newInstance(tc, f.getChar()), //
+                getCharNode(tc, f.getChar()), //
                 new LigatureNode(tc, new UnicodeChar(MockFont.FF), //
-                        cnf.newInstance(tc, f.getChar()), //
-                        cnf.newInstance(tc, l.getChar())));
+                        getCharNode(tc, f.getChar()), //
+                        getCharNode(tc, l.getChar())));
 
         NV nv = new NV(list, hyphen, tc, cnf, //
                 new boolean[]{false, false, false, false});
@@ -669,10 +709,10 @@ public class NVTest extends TestCase {
 
         NodeList list = new HorizontalListNode();
         LigatureNode ffl = new LigatureNode(tc, new UnicodeChar(MockFont.FFL), //
-                cnf.newInstance(tc, f.getChar()), //
+                getCharNode(tc, f.getChar()), //
                 new LigatureNode(tc, new UnicodeChar(MockFont.FF), //
-                        cnf.newInstance(tc, f.getChar()), //
-                        cnf.newInstance(tc, l.getChar())));
+                        getCharNode(tc, f.getChar()), //
+                        getCharNode(tc, l.getChar())));
 
         NV nv = new NV(list, hyphen, tc, cnf, //
                 new boolean[]{true, false, false, false});
@@ -683,30 +723,6 @@ public class NVTest extends TestCase {
         assertEquals(2, list.size());
         assertTrue(list.get(0) instanceof DiscretionaryNode);
         assertEquals(list.get(1), ffl);
-    }
-
-    /**
-     * f-f-l ((f f) l)
-     *
-     * @throws Exception in case of an error
-     */
-    public void testDouble() throws Exception {
-
-        NodeList list = new HorizontalListNode();
-        LigatureNode ffl = new LigatureNode(tc, new UnicodeChar(MockFont.FFL), //
-                cnf.newInstance(tc, f.getChar()), //
-                new LigatureNode(tc, new UnicodeChar(MockFont.FF), //
-                        cnf.newInstance(tc, f.getChar()), //
-                        cnf.newInstance(tc, l.getChar())));
-
-        NV nv = new NV(list, hyphen, tc, cnf, //
-                new boolean[]{false, false, false, false});
-
-        Count idx = new Count(0);
-        ffl.visit(nv, idx);
-        assertEquals(0, idx.getValue());
-        assertEquals(1, list.size());
-        assertEquals(list.get(0), ffl);
     }
 
 }

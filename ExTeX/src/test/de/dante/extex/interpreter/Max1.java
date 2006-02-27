@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -19,7 +19,6 @@
 
 package de.dante.extex.interpreter;
 
-
 import junit.framework.TestCase;
 import de.dante.extex.backend.BackendDriver;
 import de.dante.extex.backend.documentWriter.DocumentWriter;
@@ -27,6 +26,7 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.language.ligature.LigatureBuilder;
 import de.dante.extex.scanner.stream.TokenStream;
@@ -49,7 +49,7 @@ import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.noad.Noad;
-import de.dante.extex.typesetter.type.node.CharNodeFactory;
+import de.dante.extex.typesetter.type.node.factory.NodeFactory;
 import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
 import de.dante.util.exception.GeneralException;
@@ -59,7 +59,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.72 $
+ * @version $Revision: 1.73 $
  */
 public class Max1 extends TestCase {
 
@@ -167,14 +167,6 @@ public class Max1 extends TestCase {
         }
 
         /**
-         * @see de.dante.extex.typesetter.Typesetter#getCharNodeFactory()
-         */
-        public CharNodeFactory getCharNodeFactory() {
-
-            return null;
-        }
-
-        /**
          * @see de.dante.extex.typesetter.Typesetter#getDocumentWriter()
          */
         public DocumentWriter getDocumentWriter() {
@@ -223,9 +215,17 @@ public class Max1 extends TestCase {
         }
 
         /**
+         * @see de.dante.extex.typesetter.Typesetter#getCharNodeFactory()
+         */
+        public NodeFactory getNodeFactory() {
+
+            return null;
+        }
+
+        /**
          * @see de.dante.extex.typesetter.ListMaker#getPrevDepth()
          */
-        public Dimen getPrevDepth() throws TypesetterUnsupportedException {
+        public FixedDimen getPrevDepth() throws TypesetterUnsupportedException {
 
             return null;
         }
@@ -260,7 +260,7 @@ public class Max1 extends TestCase {
          *      de.dante.util.UnicodeChar)
          */
         public void letter(final Context context, final TypesettingContext tc,
-                final UnicodeChar uc, Locator locator)
+                final UnicodeChar uc, final Locator locator)
                 throws TypesetterException {
 
         }
@@ -331,6 +331,14 @@ public class Max1 extends TestCase {
         public void setLigatureBuilder(final LigatureBuilder ligatureBuilder) {
 
             // nothing to do
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.Typesetter#setNodeFactory(
+         *      de.dante.extex.typesetter.type.node.factory.NodeFactory)
+         */
+        public void setNodeFactory(final NodeFactory nodeFactory) {
+
         }
 
         /**
