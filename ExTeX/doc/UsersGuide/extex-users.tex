@@ -1,5 +1,5 @@
 %%*****************************************************************************
-%% $Id: extex-users.tex,v 1.20 2005/08/30 08:02:22 gene Exp $
+%% $Id: extex-users.tex,v 1.21 2006/02/27 09:24:13 gene Exp $
 %%*****************************************************************************
 %% Author: Gerd Neugebauer
 %%-----------------------------------------------------------------------------
@@ -32,7 +32,7 @@
 \newcommand\SyntaxOr{\>\(|\)\>}
 
 \def\setVersion$#1: #2.#3 ${\gdef\Version{0.0 (Revision #2.#3)}}
-\setVersion$Revision: 1.20 $
+\setVersion$Revision: 1.21 $
 
 \makeindex
 
@@ -539,14 +539,14 @@ The following properties are used by \ExTeX:
   extex.file = abc.tex
 \end{lstlisting}
 
-\item[\Property{extex.fmt}]\ \\
+\item[\Property{extex.format}]\ \\
   This parameter contains the name of the format to read. An empty
   string denotes that no format should be read. This is the default.
   In this case \ExTeX\ acts with no macros or fonts preloaded.
 
   Example:
 \begin{lstlisting}{}
-  extex.fmt = plain
+  extex.format = plain
 \end{lstlisting}
 
 \item[\Property{extex.ini}]\ \\
@@ -836,7 +836,7 @@ are described in the following list:
   This parameter contains the name of the format to read. An empty
   string denotes that no format should be read. This is the default.
 
-  This command line argument sets the property \Property{extex.fmt}.
+  This command line argument sets the property \Property{extex.format}.
   
 \item[\CLI{debug} \Arg{spec}]\ \\
   This command line parameter can be used to instruct the program to
