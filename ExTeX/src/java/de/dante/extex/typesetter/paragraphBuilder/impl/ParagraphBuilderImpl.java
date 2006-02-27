@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -32,6 +32,7 @@ import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.glue.WideGlue;
 import de.dante.extex.main.logging.LogFormatter;
+import de.dante.extex.typesetter.Badness;
 import de.dante.extex.typesetter.Discardable;
 import de.dante.extex.typesetter.HyphenationEnabled;
 import de.dante.extex.typesetter.TypesetterOptions;
@@ -150,7 +151,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * Treat segments of a paragraph separated by forced breaks separately.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
 public class ParagraphBuilderImpl
         implements
@@ -162,25 +163,13 @@ public class ParagraphBuilderImpl
      * The constant <tt>COMPLETE</tt> contains the indicator that the
      * implementation is complete.
      */
-    private static final boolean COMPLETE = false;
+    private static final boolean COMPLETE = true;
 
     /**
      * The constant <tt>DEVELOP</tt> contains a boolean indicating whether the
      * develop traces should be written.
      */
     private static final boolean DEVELOP = true;
-
-    /**
-     * The constant <tt>EJECT_PENALTY</tt> contains the penalty which forces
-     * a line break. This is an equivalent to -&infin;.
-     */
-    private static final int EJECT_PENALTY = -10000;
-
-    /**
-     * The constant <tt>INF_BAD</tt> contains the value for infinite penalty.
-     * This is an equivalent to &infin;.
-     */
-    private static final int INF_PENALTY = 10000;
 
     /**
      * The field <tt>fixedParshape</tt> contains the data object used to
@@ -202,7 +191,7 @@ public class ParagraphBuilderImpl
 
     /**
      * The field <tt>hyphenator</tt> contains the class to use for hyphenating
-     * lines. This means that additional discretionay nodes are inserted.
+     * lines. This means that additional discretionary nodes are inserted.
      */
     private Hyphenator hyphenator = null;
 
@@ -250,38 +239,6 @@ public class ParagraphBuilderImpl
     }
 
     /**
-     * Compute the badness.
-     *
-     * @param t total given t >= 0
-     * @param s sum
-     *
-     * @return the computed badness
-     *
-     * @see "TTP [108]"
-     */
-    private int badness(final long t, final long s) {
-
-        if (t == 0) {
-            return 0;
-        } else if (s <= 0) {
-            return INF_PENALTY;
-        }
-
-        long r; // approximation to a t/s, where a^3 approx 100 * 2^18}
-
-        if (t <= 7230584) {
-            r = (t * 297) / s; // 297^3=99.94 × 2^18
-        } else if (s >= 1663497) {
-            r = t / (s / 297);
-        } else {
-            r = t;
-        }
-        return (r > 1290 ? INF_PENALTY //1290^3<2^31<129^3
-                : (int) ((r * r * r + 0x20000) / 0x40000));
-        // that was r^3/2^18, rounded to the nearest integer
-    }
-
-    /**
      * @see de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder#build(
      *      de.dante.extex.typesetter.type.node.HorizontalListNode)
      */
@@ -307,15 +264,14 @@ public class ParagraphBuilderImpl
         prepareParshape();
 
         // remove final node if it is glue; [TTB p99--100]
-        Node node = (nodes.empty() ? null : nodes.get(nodes.size() - 1));
-        if (node instanceof GlueNode) {
+        if (!nodes.empty() && nodes.get(nodes.size() - 1) instanceof GlueNode) {
             nodes.remove(nodes.size() - 1);
         }
 
         // [TTB p100]
-        nodes.add(new PenaltyNode(INF_PENALTY));
+        nodes.add(new PenaltyNode(Badness.INF_PENALTY));
         nodes.add(new GlueNode(options.getGlueOption("parfillskip"), true));
-        nodes.add(new PenaltyNode(EJECT_PENALTY));
+        nodes.add(new PenaltyNode(Badness.EJECT_PENALTY));
 
         NodeList nl;
         nl = pass1(nodes, hyphenpenalty, exhyphenpenalty, leftskip, rightskip);
@@ -332,10 +288,21 @@ public class ParagraphBuilderImpl
 
         if (tracer != null) {
             tracer.log(Level.FINE, "@secondpass\n");
+            for (int i = 0; i < nodes.size(); i++) {
+                tracer.log(Level.FINE, Integer.toString(i) + "\t"
+                        + nodes.get(i).toString() + "\n");
+            }
         }
         int tolerance = (int) options.getCountOption("tolerance").getValue();
         BreakPoint[] breakPoints = makeBreakPoints(nodes, hyphenpenalty,
                 exhyphenpenalty);
+
+        if (tracer != null) {
+            for (int i = 0; i < breakPoints.length; i++) {
+                tracer.log(Level.FINE, breakPoints[i].toString() + "\n");
+            }
+        }
+
         Breaks breaks = findOptimalBreakPoints(breakPoints, 0, tolerance, 0, 0,
                 leftskip, rightskip, Dimen.ZERO_PT);
         if (breaks != null) {
@@ -366,10 +333,12 @@ public class ParagraphBuilderImpl
      *
      * @param breakPoint the list of possible break points
      * @param depth the number of active break points
+     * @param penalty the accumulated penalty
      *
      * @return a breaks container
      */
-    private Breaks collect(final BreakPoint[] breakPoint, final int depth) {
+    private Breaks collect(final BreakPoint[] breakPoint, final int depth,
+            final int penalty) {
 
         int[] a = new int[depth + 1];
         int xi = 0;
@@ -378,7 +347,7 @@ public class ParagraphBuilderImpl
                 a[xi++] = breakPoint[i].getPosition();
             }
         }
-        return new Breaks(999, a); //TODO gene: provide accumulated penalty
+        return new Breaks(penalty, a);
     }
 
     /**
@@ -392,6 +361,8 @@ public class ParagraphBuilderImpl
      * @param threshold the threshold
      *
      * @return the demerits
+     *
+     * @see "TTP [851]"
      */
     private int computeDemerits(final BreakPoint[] breakPoint, final int pi,
             final FixedGlue leftskip, final FixedGlue rightskip,
@@ -415,10 +386,10 @@ public class ParagraphBuilderImpl
 
             } else if (shortfall > 0) { //TTP [852]
                 if (line < 1663497) {
-                    badness = INF_PENALTY;
+                    badness = Badness.INF_PENALTY;
                     fit = Fitness.VERY_LOOSE;
                 } else {
-                    badness = badness(shortfall, line);
+                    badness = Badness.badness(shortfall, line);
                     fit = (badness < 12 ? Fitness.DECENT : badness < 99
                             ? Fitness.LOOSE
                             : Fitness.VERY_LOOSE);
@@ -426,31 +397,31 @@ public class ParagraphBuilderImpl
             } else { //TTP [853]
                 long shrink = lineWidth.getShrink().getValue();
                 if (-shortfall > shrink) {
-                    badness = INF_PENALTY + 1;
+                    badness = Badness.INF_PENALTY + 1;
                 } else {
-                    badness = badness(-shortfall, shrink);
+                    badness = Badness.badness(-shortfall, shrink);
                     fit = (badness <= 12 ? Fitness.DECENT : Fitness.TIGHT);
                 }
             }
         }
 
         if (badness > threshold) {
-            return INF_PENALTY + 1;
+            return Badness.INF_PENALTY + 1;
         }
 
         return badness;
     }
 
     /**
-     * Skip over any discartable nodes and return the index of the next
-     * non-discartable node.
+     * Skip over any discardable nodes and return the index of the next
+     * non-discardable node.
      *
      * @param start the index to start at
      * @param len the length of the node list
      * @param nodes the node list to take into account
-     * @param wd the  accumulator for the width of the discarted nodes
+     * @param wd the  accumulator for the width of the discarded nodes
      *
-     * @return the index of the next non-discartable node
+     * @return the index of the next non-discardable node
      */
     private int discartNodes(final int start, final int len,
             final NodeList nodes, final WideGlue wd) {
@@ -487,7 +458,8 @@ public class ParagraphBuilderImpl
      * @param breakPoint the list of possible break points
      * @param line the starting line number
      * @param threshold the threshold for the penalties of a single line
-     * @param depth ...
+     * @param depth the current depth of recursion. This is identical to the
+     *  length of the list of break points
      * @param pointIndex the index of the point
      * @param leftskip the skip for the left side
      * @param rightskip the skip for the right side
@@ -503,9 +475,15 @@ public class ParagraphBuilderImpl
 
         if (tracer != null) {
             tracer.log(Level.FINE,
-                    ".................................................."
+                    "........................................................."
                             .substring(0, depth)
                             + " +++ " + Integer.toString(pointIndex) + "\n");
+            for (int i = 0; i < pointIndex; i++) {
+                if (breakPoint[i].isActive()) {
+                    tracer.log(Level.FINE, " " + breakPoint[i].getPosition()
+                            + " [" + breakPoint[i].getPenalty() + "]");
+                }
+            }
         }
         Breaks b = null;
         int pen = 0;
@@ -516,7 +494,7 @@ public class ParagraphBuilderImpl
             breakPoint[i].setActive();
             pen = computeDemerits(breakPoint, i, leftskip, rightskip,
                     lineWidth, threshold);
-            if (pen <= EJECT_PENALTY || pen <= threshold) {
+            if (pen <= Badness.EJECT_PENALTY || pen < threshold) {
                 if (i + 1 < breakPoint.length) {
                     Breaks b2 = findOptimalBreakPoints(breakPoint, line + 1,
                             threshold, depth + 1, i + 1, leftskip, rightskip,
@@ -526,7 +504,7 @@ public class ParagraphBuilderImpl
                         b = b2;
                     }
                 } else {
-                    b = collect(breakPoint, depth);
+                    b = collect(breakPoint, depth, 9999); //TODO gene: provide accumulated penalty
                 }
             }
             breakPoint[i].setPassive();
@@ -599,7 +577,7 @@ public class ParagraphBuilderImpl
                 math = false;
             } else if (node instanceof PenaltyNode) {
                 int penalty = (int) ((PenaltyNode) node).getPenalty();
-                if (penalty < INF_PENALTY) {
+                if (penalty < Badness.INF_PENALTY) {
 
                     node.addWidthTo(wd);
                     breakList.add(new BreakPoint(i, w, wd, penalty));
@@ -622,10 +600,9 @@ public class ParagraphBuilderImpl
             }
         }
 
-        BreakPoint[] breakArray = new BreakPoint[breakList.size()];
-        breakList.toArray(breakArray);
-
-        return breakArray;
+        BreakPoint[] breakPoints = new BreakPoint[breakList.size()];
+        breakList.toArray(breakPoints);
+        return breakPoints;
     }
 
     /**
