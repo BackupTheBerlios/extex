@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -19,12 +19,15 @@
 
 package de.dante.extex.language.impl;
 
+import java.util.List;
+
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.language.Language;
 import de.dante.extex.language.hyphenation.exception.HyphenationException;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
+import de.dante.extex.typesetter.type.node.factory.NodeFactory;
 import de.dante.util.UnicodeChar;
 
 /**
@@ -33,14 +36,14 @@ import de.dante.util.UnicodeChar;
  * loading or the creation should be performed.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class FutureLanguage implements Language {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * The field <tt>creator</tt> contains the creator which should be contacted
@@ -79,8 +82,8 @@ public class FutureLanguage implements Language {
      *      de.dante.extex.interpreter.type.tokens.Tokens,
      *      TypesetterOptions)
      */
-    public void addHyphenation(final Tokens word, final TypesetterOptions context)
-            throws HyphenationException {
+    public void addHyphenation(final Tokens word,
+            final TypesetterOptions context) throws HyphenationException {
 
         load().addHyphenation(word, context);
     }
@@ -110,6 +113,16 @@ public class FutureLanguage implements Language {
     }
 
     /**
+     * @see de.dante.extex.language.word.WordTokenizer#findWord(
+     *      de.dante.extex.typesetter.type.NodeList, int, java.util.List)
+     */
+    public int findWord(final NodeList nodes, final int start, final List word)
+            throws HyphenationException {
+
+        return create().findWord(nodes, start, word);
+    }
+
+    /**
      * @see de.dante.extex.language.hyphenation.Hyphenator#getLeftHyphenmin()
      */
     public long getLeftHyphenmin() throws HyphenationException {
@@ -129,13 +142,18 @@ public class FutureLanguage implements Language {
      * @see de.dante.extex.language.hyphenation.Hyphenator#hyphenate(
      *      de.dante.extex.typesetter.type.node.HorizontalListNode,
      *      de.dante.extex.typesetter.TypesetterOptions,
-     *      de.dante.util.UnicodeChar)
+     *      de.dante.util.UnicodeChar,
+     *      int,
+     *      boolean,
+     *      de.dante.extex.typesetter.type.node.factory.NodeFactory)
      */
-    public HorizontalListNode hyphenate(final HorizontalListNode nodelist,
-            final TypesetterOptions context, final UnicodeChar hyphen)
+    public boolean hyphenate(final HorizontalListNode nodelist,
+            final TypesetterOptions context, final UnicodeChar hyphen,
+            final int start, final boolean forall, final NodeFactory nodeFactory)
             throws HyphenationException {
 
-        return load().hyphenate(nodelist, context, hyphen);
+        return load().hyphenate(nodelist, context, hyphen, start, forall,
+                nodeFactory);
     }
 
     /**
@@ -156,20 +174,6 @@ public class FutureLanguage implements Language {
         return load().isHyphenActive();
     }
 
-    /**
-     * @see de.dante.extex.language.word.WordTokenizer#skipNonWord(de.dante.extex.typesetter.type.NodeList, int)
-     */
-    public int skipNonWord(final NodeList list, final int start) throws HyphenationException {
-
-        return load().skipNonWord(list, start);
-    }
-    /**
-     * @see de.dante.extex.language.word.WordTokenizer#skipWord(de.dante.extex.typesetter.type.NodeList, int)
-     */
-    public int skipWord(final NodeList list, final int start) throws HyphenationException {
-
-        return load().skipWord(list, start);
-    }
     /**
      * Load or create a new instance if required.
      *
