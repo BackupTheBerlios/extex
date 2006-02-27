@@ -30,7 +30,7 @@ import java.util.logging.LogRecord;
  * is honored.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class LogFormatter extends Formatter {
 
@@ -137,6 +137,8 @@ public class LogFormatter extends Formatter {
      *
      * @param out the target buffer
      * @param msg the message to process
+     *
+     * @return the message
      */
     private CharSequence breakLine(final StringBuffer out,
             final CharSequence msg) {
