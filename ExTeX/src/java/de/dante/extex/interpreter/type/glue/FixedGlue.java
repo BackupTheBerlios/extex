@@ -19,7 +19,7 @@
 
 package de.dante.extex.interpreter.type.glue;
 
-import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.token.TokenFactory;
 import de.dante.util.exception.GeneralException;
@@ -30,7 +30,7 @@ import de.dante.util.exception.GeneralException;
  * the value.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public interface FixedGlue {
 
@@ -38,12 +38,13 @@ public interface FixedGlue {
      * The constant <tt>NORMAL_ORDER</tt> contains the value for the normal
      * &ndash; immutable &ndash; order.
      */
-    public static final int NORMAL_ORDER = 0;
+    int NORMAL_ORDER = 0;
 
     /**
-     * The constant <tt>ZERO</tt> contains the ...
+     * The constant <tt>ZERO</tt> contains the value of widt 0pt without any
+     * stretcablity or shrinkability.
      */
-    public static final FixedGlue ZERO = new Glue(0);
+    FixedGlue ZERO = new Glue(0);
 
     /**
      * Make a copy of this object.
@@ -53,13 +54,22 @@ public interface FixedGlue {
     Glue copy();
 
     /**
+     * Test that the given Glue is equal to a given one.
+     *
+     * @param glue the glue to compare with
+     *
+     * @return <code>true</code> iff they are different
+     */
+    boolean eq(FixedGlue glue);
+
+    /**
      * Getter for the length.
      * Note that the value returned is independent from the original object.
      * Changing its value does not affect the length of the glue.
      *
      * @return the natural length
      */
-    Dimen getLength();
+    FixedDimen getLength();
 
     /**
      * Getter for shrink.
@@ -108,6 +118,5 @@ public interface FixedGlue {
      *
      * @see "<logo>TeX</logo> &ndash; The Program [178,177]"
      */
-    Tokens toToks(TokenFactory factory)
-            throws GeneralException;
+    Tokens toToks(TokenFactory factory) throws GeneralException;
 }

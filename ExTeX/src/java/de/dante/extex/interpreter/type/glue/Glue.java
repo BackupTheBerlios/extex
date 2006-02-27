@@ -42,14 +42,14 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public class Glue implements Serializable, FixedGlue {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * The field <tt>length</tt> contains the natural length of the glue.
@@ -192,6 +192,22 @@ public class Glue implements Serializable, FixedGlue {
     }
 
     /**
+     * Test that the given Glue is equal to a given one.
+     *
+     * @param glue the glue to compare with
+     *
+     * @return <code>true</code> iff they are different
+     *
+     * @see de.dante.extex.interpreter.type.glue.FixedGlue#eq(
+     *      de.dante.extex.interpreter.type.glue.FixedGlue)
+     */
+    public boolean eq(final FixedGlue glue) {
+
+        return length.eq(glue.getLength()) && stretch.eq(glue.getStretch())
+                && shrink.eq(glue.getShrink());
+    }
+
+    /**
      * Compare this value with a given glue and return <code>true</code> iff
      * the current length is greater or equal than the given length.
      *
@@ -211,8 +227,10 @@ public class Glue implements Serializable, FixedGlue {
      * Changing its value does not affect the length of the glue.
      *
      * @return the natural length
+     *
+     * @see de.dante.extex.interpreter.type.glue.FixedGlue#getLength()
      */
-    public Dimen getLength() {
+    public FixedDimen getLength() {
 
         return new Dimen(length.getValue());
     }
@@ -223,6 +241,8 @@ public class Glue implements Serializable, FixedGlue {
      * Changing its value does not affect the shrink of the glue.
      *
      * @return the shrink.
+     *
+     * @see de.dante.extex.interpreter.type.glue.FixedGlue#getShrink()
      */
     public FixedGlueComponent getShrink() {
 
@@ -235,6 +255,8 @@ public class Glue implements Serializable, FixedGlue {
      * Changing its value does not affect the stretch of the glue.
      *
      * @return the stretch.
+     *
+     * @see de.dante.extex.interpreter.type.glue.FixedGlue#getStretch()
      */
     public FixedGlueComponent getStretch() {
 
@@ -339,7 +361,8 @@ public class Glue implements Serializable, FixedGlue {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.glue.FixedGlue#ne(de.dante.extex.interpreter.type.glue.FixedGlue)
+     * @see de.dante.extex.interpreter.type.glue.FixedGlue#ne(
+     *      de.dante.extex.interpreter.type.glue.FixedGlue)
      */
     public boolean ne(final FixedGlue glue) {
 
@@ -354,9 +377,9 @@ public class Glue implements Serializable, FixedGlue {
      */
     public void set(final FixedDimen theLength) {
 
-        this.length = theLength.copy();
-        this.shrink = new GlueComponent();
-        this.stretch = new GlueComponent();
+        this.length.set(theLength);
+        this.shrink.set(0);
+        this.stretch.set(0);
     }
 
     /**
