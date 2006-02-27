@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -31,17 +31,17 @@ import de.dante.extex.typesetter.type.node.pdftex.PdfXForm;
 
 /**
  * This interface describes the methods needed for <logo>pdfTeX</logo> support
- * to make use f the special features of PDF.
+ * to make use of the special features of PDF.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface PdftexSupport {
 
     /**
      * Factory method to construct a PdfAnnotation node.
      *
-     * @param rule the rule specification. Only the width height and depth are
+     * @param node the rule specification. Only the width height and depth are
      *  relevant. Either of them can be <code>null</code>.
      * @param annotation the annotation text
      *

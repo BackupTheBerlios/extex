@@ -31,7 +31,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @see "<logo>TeX</logo> &ndash; The Program [73]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class Interaction implements Serializable {
 
@@ -39,14 +39,14 @@ public abstract class Interaction implements Serializable {
      * This inner class is use to represent the batch mode.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static class BatchMode extends Interaction {
 
         /**
          * The constant <tt>serialVersionUID</tt> contains the id for serialization.
          */
-        private static final long serialVersionUID = 1L;
+        protected static final long serialVersionUID = 1L;
 
         /**
          * Return the singleton constant object after the serialized instance
@@ -62,7 +62,6 @@ public abstract class Interaction implements Serializable {
         }
 
         /**
-         * @see "<logo>TeX</logo> &ndash; The Program [73]"
          * @see de.dante.extex.interpreter.Interaction#getIndex()
          */
         public String getIndex() {
@@ -88,7 +87,7 @@ public abstract class Interaction implements Serializable {
      * This inner class is use to represent the error stop mode.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static class ErrorstopMode extends Interaction {
 
@@ -96,7 +95,7 @@ public abstract class Interaction implements Serializable {
          * The constant <tt>serialVersionUID</tt> contains the id for
          * serialization.
          */
-        private static final long serialVersionUID = 1L;
+        protected static final long serialVersionUID = 1L;
 
         /**
          * Return the singleton constant object after the serialized instance
@@ -112,7 +111,6 @@ public abstract class Interaction implements Serializable {
         }
 
         /**
-         * @see "<logo>TeX</logo> &ndash; The Program [73]"
          * @see de.dante.extex.interpreter.Interaction#getIndex()
          */
         public String getIndex() {
@@ -138,14 +136,14 @@ public abstract class Interaction implements Serializable {
      * This inner class is use to represent the nonstop mode.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static class NonstopMode extends Interaction {
 
         /**
          * The constant <tt>serialVersionUID</tt> contains the id for serialization.
          */
-        private static final long serialVersionUID = 1L;
+        protected static final long serialVersionUID = 1L;
 
         /**
          * Return the singleton constant object after the serialized instance
@@ -161,7 +159,6 @@ public abstract class Interaction implements Serializable {
         }
 
         /**
-         * @see "<logo>TeX</logo> &ndash; The Program [73]"
          * @see de.dante.extex.interpreter.Interaction#getIndex()
          */
         public String getIndex() {
@@ -187,14 +184,14 @@ public abstract class Interaction implements Serializable {
      * This inner class is use to represent the scroll mode.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static class ScrollMode extends Interaction {
 
         /**
          * The constant <tt>serialVersionUID</tt> contains the id for serialization.
          */
-        private static final long serialVersionUID = 1L;
+        protected static final long serialVersionUID = 1L;
 
         /**
          * Return the singleton constant object after the serialized instance
@@ -210,7 +207,6 @@ public abstract class Interaction implements Serializable {
         }
 
         /**
-         * @see "<logo>TeX</logo> &ndash; The Program [73]"
          * @see de.dante.extex.interpreter.Interaction#getIndex()
          */
         public String getIndex() {

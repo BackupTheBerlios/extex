@@ -53,7 +53,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.36 $
+ * @version $Revision: 1.37 $
  */
 public interface Group extends Tokenizer, Serializable {
 
@@ -443,6 +443,8 @@ public interface Group extends Tokenizer, Serializable {
      *
      * @param uc upper case character
      * @param lc lower case equivalent
+     * @param global the indicator for the scope; <code>true</code> means all
+     *  groups; otherwise the current group is affected only
      */
     void setLccode(UnicodeChar uc, UnicodeChar lc, boolean global);
 
@@ -536,6 +538,8 @@ public interface Group extends Tokenizer, Serializable {
      *
      * @param lc lower case character
      * @param uc uppercase equivalent
+     * @param global the indicator for the scope; <code>true</code> means all
+     *  groups; otherwise the current group is affected only
      */
     void setUccode(UnicodeChar lc, UnicodeChar uc, boolean global);
 

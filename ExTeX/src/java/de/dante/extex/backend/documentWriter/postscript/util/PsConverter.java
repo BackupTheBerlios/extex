@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -29,7 +29,7 @@ import de.dante.extex.typesetter.type.page.Page;
  * PostScript code.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface PsConverter {
 
@@ -38,9 +38,9 @@ public interface PsConverter {
      *
      * @param header the header manager
      *
-     * @throws IOException
+     * @throws IOException in case of an IO exception
      */
-    public void init(final HeaderManager header) throws IOException;
+    void init(HeaderManager header) throws IOException;
 
     /**
      * Translate nodes into PostScript code.
@@ -48,11 +48,11 @@ public interface PsConverter {
      * @param page the nodes to translate into PostScript code
      * @param fontManager the font manager to inform about characters
      * @param headerManager the container fro the headers
+     *
      * @return the bytes representing the current page
      *
      * @throws DocumentWriterException in case of an error
      */
-    public byte[] toPostScript(final Page page,
-            final FontManager fontManager, HeaderManager headerManager)
-            throws DocumentWriterException;
+    byte[] toPostScript(Page page, FontManager fontManager,
+            HeaderManager headerManager) throws DocumentWriterException;
 }
