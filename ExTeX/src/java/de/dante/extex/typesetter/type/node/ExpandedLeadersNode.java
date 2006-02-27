@@ -31,14 +31,14 @@ import de.dante.util.exception.GeneralException;
  * @see "<logo>TeX</logo> &ndash; The Program [149]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class ExpandedLeadersNode extends GlueNode implements Node {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * The field <tt>node</tt> contains the node to reapeat or expand.
@@ -74,6 +74,8 @@ public class ExpandedLeadersNode extends GlueNode implements Node {
      *
      * @param sb the output string buffer
      * @param prefix the prefix string inserted at the beginning of each line
+     * @param breadth the breadth
+     * @param depth the depth
      *
      * @see "<logo>TeX</logo> &ndash; The Program [190]"
      * @see de.dante.extex.typesetter.type.Node#toString(java.lang.StringBuffer,

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -34,14 +34,14 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class PenaltyNode extends AbstractNode implements Node, Discardable {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * The field <tt>penalty</tt> contains the penalty value of this node.
@@ -88,16 +88,19 @@ public class PenaltyNode extends AbstractNode implements Node, Discardable {
      *
      * @param sb the output string buffer
      * @param prefix the prefix string inserted at the beginning of each line
+     * @param breadth the breadth
+     * @param depth the depth
      *
      * @see "<logo>TeX</logo> &ndash; The Program [194]"
      * @see de.dante.extex.typesetter.type.Node#toString(
      *      java.lang.StringBuffer,
      *      java.lang.String)
      */
-    public void toString(final StringBuffer sb, final String prefix, int breadth, int depth) {
+    public void toString(final StringBuffer sb, final String prefix,
+            final int breadth, final int depth) {
 
-        sb.append(getLocalizer().format("String.Format",
-                Long.toString(penalty)));
+        sb.append(getLocalizer()
+                .format("String.Format", Long.toString(penalty)));
     }
 
     /**
@@ -107,8 +110,7 @@ public class PenaltyNode extends AbstractNode implements Node, Discardable {
      */
     public void toText(final StringBuffer sb, final String prefix) {
 
-        sb.append(getLocalizer().format("Text.Format",
-                Long.toString(penalty)));
+        sb.append(getLocalizer().format("Text.Format", Long.toString(penalty)));
     }
 
     /**

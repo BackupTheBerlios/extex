@@ -36,7 +36,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class BeforeMathNode extends AbstractNode implements Discardable {
 
@@ -62,12 +62,14 @@ public class BeforeMathNode extends AbstractNode implements Discardable {
      *
      * @param sb the output string buffer
      * @param prefix the prefix string inserted at the beginning of each line
+     * @param breadth the breadth
+     * @param depth the depth
      *
      * @see "<logo>TeX</logo> &ndash; The Program [192]"
      * @see de.dante.extex.typesetter.type.Node#toString(java.lang.StringBuffer,
      *      java.lang.String)
      */
-    public void toString(final StringBuffer sb, final String prefix, int breadth, int depth) {
+    public void toString(final StringBuffer sb, final String prefix, final int breadth, final int depth) {
 
         Dimen width = getWidth();
 

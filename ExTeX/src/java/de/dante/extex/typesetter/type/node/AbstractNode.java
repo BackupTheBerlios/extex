@@ -34,7 +34,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This abstract class provides some methods common to all Nodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public abstract class AbstractNode implements Node {
 
@@ -193,7 +193,7 @@ public abstract class AbstractNode implements Node {
     /**
      * @see de.dante.extex.typesetter.type.Node#getVerticalSize()
      */
-    public Dimen getVerticalSize() {
+    public FixedDimen getVerticalSize() {
 
         Dimen h = getHeight();
         Dimen d = new Dimen(getDepth());
@@ -230,7 +230,7 @@ public abstract class AbstractNode implements Node {
      * @see de.dante.extex.typesetter.type.Node#setDepth(
      *      de.dante.extex.interpreter.type.dimen.Dimen)
      */
-    public void setDepth(final Dimen aDepth) {
+    public void setDepth(final FixedDimen aDepth) {
 
         depth.set(aDepth);
     }
@@ -239,7 +239,7 @@ public abstract class AbstractNode implements Node {
      * @see de.dante.extex.typesetter.type.Node#setHeight(
      *      de.dante.extex.interpreter.type.dimen.Dimen)
      */
-    public void setHeight(final Dimen aHeight) {
+    public void setHeight(final FixedDimen aHeight) {
 
         height.set(aHeight);
     }
@@ -287,7 +287,8 @@ public abstract class AbstractNode implements Node {
      *      java.lang.StringBuffer,
      *      java.lang.String)
      */
-    public void toString(final StringBuffer sb, final String prefix, int breadth, int depth) {
+    public void toString(final StringBuffer sb, final String prefix,
+            final int breadth, final int depth) {
 
         sb.append(getLocalizer().format("String.Format"));
     }

@@ -35,14 +35,14 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class CharNode extends AbstractNode implements Node {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * The field <tt>character</tt> contains the single character represented
@@ -149,7 +149,8 @@ public class CharNode extends AbstractNode implements Node {
      *      java.lang.StringBuffer,
      *      java.lang.String)
      */
-    public void toString(final StringBuffer sb, final String prefix, final int breadth, int depth) {
+    public void toString(final StringBuffer sb, final String prefix,
+            final int breadth, final int depth) {
 
         Font font = typesettingContext.getFont();
         sb.append(getLocalizer()

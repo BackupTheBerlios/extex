@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -28,14 +28,14 @@ import de.dante.util.exception.GeneralException;
  * This WhatsIt node opens an out file on shipping.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class WhatsItOpenNode extends WhatsItNode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * The field <tt>file</tt> contains the output file.
@@ -63,14 +63,17 @@ public class WhatsItOpenNode extends WhatsItNode {
     /**
      * This method performs any action which are required to executed at the
      * time of shipping the node to the DocumentWriter.
+     *
      * @param context the interpreter context
+     * @param typesetter the typesetter
      *
      * @throws GeneralException in case of an error
      *
      * @see de.dante.extex.typesetter.type.Node#atShipping(
      *      de.dante.extex.interpreter.context.Context, Typesetter)
      */
-    public void atShipping(final Context context, final Typesetter typesetter) throws GeneralException {
+    public void atShipping(final Context context, final Typesetter typesetter)
+            throws GeneralException {
 
         file.open();
         context.setOutFile(key, file, false);

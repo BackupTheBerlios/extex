@@ -26,7 +26,7 @@ import de.dante.extex.typesetter.type.Node;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class SpecialNode extends WhatsItNode implements Node {
 
@@ -65,10 +65,10 @@ public class SpecialNode extends WhatsItNode implements Node {
      * @see de.dante.extex.typesetter.type.Node#toString(java.lang.StringBuffer,
      *      java.lang.String)
      */
-    public void toString(final StringBuffer sb, final String prefix, int breadth, int depth) {
+    public void toString(final StringBuffer sb, final String prefix,
+            final int breadth, final int depth) {
 
         sb.append("\\special{" + text + "}");
     }
-
 
 }

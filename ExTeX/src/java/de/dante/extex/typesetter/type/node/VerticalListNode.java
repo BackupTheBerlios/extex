@@ -38,14 +38,14 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class VerticalListNode extends AbstractNodeList implements NodeList {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * Creates a new object.
@@ -77,7 +77,7 @@ public class VerticalListNode extends AbstractNodeList implements NodeList {
      *
      * @return the penalty in the range 0 to 10000, including
      */
-    private long computePenalty(final long penalty, WideGlue ht,
+    private long computePenalty(final long penalty, final WideGlue ht,
             final FixedDimen height) {
 
         //        long badness = Badness.badness(height.getValue(), //
@@ -102,8 +102,8 @@ public class VerticalListNode extends AbstractNodeList implements NodeList {
             final Logger traceLogger) {
 
         long penalty;
-        long bestPenalty = 10001;
-        Dimen bestHeight = Dimen.ZERO_PT;
+        long bestPenalty = Badness.INF_PENALTY + 1;
+        FixedDimen bestHeight = Dimen.ZERO_PT;
         WideGlue ht = new WideGlue();
         int size = size();
         int bestSplit = size;
@@ -151,7 +151,7 @@ public class VerticalListNode extends AbstractNodeList implements NodeList {
             get(i).addHeightTo(ht);
         }
 
-        Dimen length = ht.getLength();
+        FixedDimen length = ht.getLength();
         for (int i = 0; i < size; i++) {
             get(i).spread(height, length);
         }

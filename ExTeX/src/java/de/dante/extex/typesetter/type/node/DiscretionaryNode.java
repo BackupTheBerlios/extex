@@ -31,14 +31,14 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class DiscretionaryNode extends AbstractNode implements Node {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * The field <tt>noBreak</tt> contains the Tokens to be inserted in case
@@ -114,6 +114,8 @@ public class DiscretionaryNode extends AbstractNode implements Node {
      *
      * @param sb the target buffer
      * @param prefix the prefix for each new line
+     * @param breadth the breadth
+     * @param depth the depth
      *
      * @see "<logo>TeX</logo> &ndash; The Program [195]"
      * @see de.dante.extex.typesetter.type.Node#toString(

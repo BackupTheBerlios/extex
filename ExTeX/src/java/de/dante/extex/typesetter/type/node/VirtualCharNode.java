@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -39,28 +39,28 @@ import de.dante.util.exception.GeneralException;
  * This class is used to represent composed characters from virtual fonts.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class VirtualCharNode extends CharNode implements NodeList {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * This inner class provides the means to store nodes in a list.
      * It is here to compensate the missing multiple inheritance of Java.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.12 $
+     * @version $Revision: 1.13 $
      */
     private class NL extends AbstractNodeList {
 
         /**
          * The constant <tt>serialVersionUID</tt> contains the id for serialization.
          */
-        private static final long serialVersionUID = 1L;
+        protected static final long serialVersionUID = 2005L;
 
         /**
          * The field <tt>node</tt> contains the parent node.
@@ -91,7 +91,7 @@ public class VirtualCharNode extends CharNode implements NodeList {
          * @see de.dante.extex.typesetter.type.node.AbstractNodeList#updateDimensions(
          *      de.dante.extex.typesetter.type.Node, boolean)
          */
-        protected void updateDimensions(final Node n, boolean first) {
+        protected void updateDimensions(final Node n, final boolean first) {
 
             // This should not be needed
             throw new RuntimeException("unimplemented");
@@ -250,7 +250,7 @@ public class VirtualCharNode extends CharNode implements NodeList {
     /**
      * @see de.dante.extex.typesetter.type.node.AbstractNode#getVerticalSize()
      */
-    public Dimen getVerticalSize() {
+    public FixedDimen getVerticalSize() {
 
         return this.nodes.getVerticalSize();
     }
