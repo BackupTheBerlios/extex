@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -51,7 +51,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationSyntaxExcept
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.48 $
+ * @version $Revision: 1.49 $
  */
 public class TokenStreamImpl extends TokenStreamBaseImpl implements TokenStream {
 
@@ -59,7 +59,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements TokenStream 
      * This is a type-safe class to represent state information.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.48 $
+     * @version $Revision: 1.49 $
      */
     private static final class State {
 
@@ -71,6 +71,8 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements TokenStream 
 
         /**
          * Creates a new object.
+         *
+         * @param name the print name of the state
          */
         public State(final String name) {
 
@@ -710,7 +712,6 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements TokenStream 
             return -1;
         }
     }
-
 
     /**
      * @see de.dante.extex.scanner.stream.TokenStream#isEof()

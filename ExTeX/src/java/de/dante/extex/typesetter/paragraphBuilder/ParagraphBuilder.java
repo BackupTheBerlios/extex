@@ -29,7 +29,7 @@ import de.dante.extex.typesetter.type.node.HorizontalListNode;
  * junks.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public interface ParagraphBuilder {
 
@@ -43,6 +43,8 @@ public interface ParagraphBuilder {
      * @return the
      *   {@link de.dante.extex.typesetter.type.node.VerticalListNode
      *   VerticalListNode} containing the hboxes of the lines
+     *
+     * @throws TypesetterException in case of an error
      */
     NodeList build(HorizontalListNode nodes) throws TypesetterException;
 

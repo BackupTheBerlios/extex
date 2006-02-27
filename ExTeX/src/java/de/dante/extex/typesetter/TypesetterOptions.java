@@ -35,7 +35,7 @@ import de.dante.util.exception.GeneralException;
  * options.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public interface TypesetterOptions {
 
@@ -135,7 +135,7 @@ public interface TypesetterOptions {
      * @param name the name of the register
      * @param value the value
      *
-     * @return the content of the count register
+     * @throws GeneralException in case of an error
      */
     void setCountOption(String name, long value) throws GeneralException;
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -33,7 +33,7 @@ import de.dante.extex.typesetter.type.page.PageFactory;
  * This interface describes the capabilities of a page builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public interface PageBuilder {
 
@@ -53,10 +53,12 @@ public interface PageBuilder {
      * </p>
      *
      * @param nodes the nodes to send
+     * @param typesetter the typesetter
      *
      * @throws TypesetterException in case of an error
      */
-    void flush(NodeList nodes, Typesetter typesetter) throws TypesetterException;
+    void flush(NodeList nodes, Typesetter typesetter)
+            throws TypesetterException;
 
     /**
      * This is the entry point for the page builder. Here it receives a
@@ -66,10 +68,20 @@ public interface PageBuilder {
      * sent to the document writer are removed from the NodeList.
      *
      * @param nodes the nodes to send
+     * @param typesetter the typesetter
      *
      * @throws TypesetterException in case of an error
      */
-    void inspectAndBuild(VerticalListNode nodes, Typesetter typesetter) throws TypesetterException;
+    void inspectAndBuild(VerticalListNode nodes, Typesetter typesetter)
+            throws TypesetterException;
+
+    /**
+     * Setter for the back-end.
+     * This has to be provided before the page builder can be active.
+     *
+     * @param backend the new document writer to use
+     */
+    void setBackend(BackendDriver backend);
 
     /**
      * Setter for the interpreter context
@@ -79,14 +91,6 @@ public interface PageBuilder {
      * @throws TypesetterException in case of an error
      */
     void setContext(Context context) throws TypesetterException;
-
-    /**
-     * Setter for the back-end.
-     * This has to be provided before the page builder can be active.
-     *
-     * @param backend the new document writer to use
-     */
-    void setBackend(BackendDriver backend);
 
     /**
      * Setter for options.

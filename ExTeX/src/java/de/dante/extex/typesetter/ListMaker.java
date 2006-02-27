@@ -19,12 +19,12 @@
 
 package de.dante.extex.typesetter;
 
-
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.exception.InvalidSpacefactorException;
@@ -42,7 +42,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "<logo>TeX</logo> &ndash; The Program [211]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.47 $
+ * @version $Revision: 1.48 $
  */
 public interface ListMaker {
 
@@ -147,12 +147,16 @@ public interface ListMaker {
     /**
      * Getter for the previous depth parameter.
      *
+     * @return the previous depth
+     *
      * @throws TypesetterUnsupportedException in case of an error
      */
-    Dimen getPrevDepth() throws TypesetterUnsupportedException;
+    FixedDimen getPrevDepth() throws TypesetterUnsupportedException;
 
     /**
      * Getter for the space factor.
+     *
+     * @return the space factor
      *
      * @throws TypesetterUnsupportedException in case of an error
      */
@@ -171,11 +175,12 @@ public interface ListMaker {
      * @param context the interpreter context
      * @param tc the typesetting context
      * @param uc the character
+     * @param locator the locator
      *
      * @throws TypesetterException in case of an error
      */
-    void letter(Context context, TypesettingContext tc, UnicodeChar uc, Locator locator)
-            throws TypesetterException;
+    void letter(Context context, TypesettingContext tc, UnicodeChar uc,
+            Locator locator) throws TypesetterException;
 
     /**
      * Treat a math shift character.
@@ -231,8 +236,11 @@ public interface ListMaker {
      * @param sf the space factor to set
      *
      * @throws TypesetterUnsupportedException in case of an error
+     * @throws InvalidSpacefactorException in case of an invalid space factor
      */
-    void setSpacefactor(Count sf) throws TypesetterUnsupportedException, InvalidSpacefactorException;
+    void setSpacefactor(Count sf)
+            throws TypesetterUnsupportedException,
+                InvalidSpacefactorException;
 
     /**
      * Print the status for <tt>\showlists</tt>.
