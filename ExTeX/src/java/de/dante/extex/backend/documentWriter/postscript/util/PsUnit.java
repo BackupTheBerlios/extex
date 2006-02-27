@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -21,14 +21,27 @@ package de.dante.extex.backend.documentWriter.postscript.util;
 
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 
 /**
  * This class contains some utility methods.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class PsUnit {
+
+    /**
+     * The constant <tt>BP100_PER_IN</tt> contains the number of 100 big points
+     * per inch.
+     */
+    private static final int BP100_PER_IN = 7200;
+
+    /**
+     * The constant <tt>CM100_PER_IN</tt> contains the number of 100 centimeters
+     * per inch.
+     */
+    private static final int CM100_PER_IN = 254;
 
     /**
      * The constant <tt>FLOAT_DIGITS</tt> contains the number of digits to
@@ -38,6 +51,17 @@ public abstract class PsUnit {
      * <logo>TeX</logo> the program!
      */
     private static final int FLOAT_DIGITS = 17;
+
+    /**
+     * The field <tt>POINT_PER_100_IN</tt> contains the conversion factor from
+     * inch to point. The value contained is the number of points in 100 inch.
+     */
+    private static final int POINT_PER_100_IN = 7227;
+
+    /**
+     * The constant <tt>PT_PER_PC</tt> contains the number of points per pica.
+     */
+    private static final int PT_PER_PC = 12;
 
     /**
      * Get the next character from a character sequence.
@@ -168,13 +192,13 @@ public abstract class PsUnit {
             case 'b':
                 c = getChar(seq, index);
                 if (c == 'p') {
-                    return (length * 7227 / 7200);
+                    return (length * POINT_PER_100_IN / BP100_PER_IN);
                 }
                 break;
             case 'c':
                 c = getChar(seq, index);
                 if (c == 'm') {
-                    return (length * 7227 / 254);
+                    return (length * POINT_PER_100_IN / CM100_PER_IN);
                 } else if (c == 'c') {
                     return (length * 14856 / 1157);
                 }
@@ -188,13 +212,13 @@ public abstract class PsUnit {
             case 'i':
                 c = getChar(seq, index);
                 if (c == 'n') {
-                    return (length * 7227 / 100);
+                    return (length * POINT_PER_100_IN / 100);
                 }
                 break;
             case 'm':
                 c = getChar(seq, index);
                 if (c == 'm') {
-                    return (length * 7227 / 2540);
+                    return (length * POINT_PER_100_IN / (CM100_PER_IN * 10));
                 }
                 break;
             case 'p':
@@ -226,10 +250,10 @@ public abstract class PsUnit {
      * @param strip indicator whether rounding to the next higher integral
      *  number is desirable
      */
-    public static void toPoint(final Dimen d, final StringBuffer out,
+    public static void toPoint(final FixedDimen d, final StringBuffer out,
             final boolean strip) {
 
-        long val = d.getValue() * 7200 / 7227;
+        long val = d.getValue() * BP100_PER_IN / POINT_PER_100_IN;
 
         if (val < 0) {
             out.append('-');
@@ -260,11 +284,7 @@ public abstract class PsUnit {
             }
         }
 
-        if (strip) {
-            return;
-        }
-
-        if (val == 0) {
+        if (strip || val == 0) {
             return;
         }
 
