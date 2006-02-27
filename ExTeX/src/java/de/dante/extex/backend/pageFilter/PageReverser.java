@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -31,7 +31,7 @@ import de.dante.extex.typesetter.type.page.Page;
  * This page filter reverses the order of the pages shipped out.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class PageReverser implements PagePipe {
 
@@ -73,9 +73,9 @@ public class PageReverser implements PagePipe {
      * @see de.dante.extex.backend.nodeFilter.NodePipe#setOutput(
      *      de.dante.extex.backend.nodeFilter.NodePipe)
      */
-    public void setOutput(final PagePipe out) {
+    public void setOutput(final PagePipe pipe) {
 
-        this.out = out;
+        this.out = pipe;
     }
 
     /**
