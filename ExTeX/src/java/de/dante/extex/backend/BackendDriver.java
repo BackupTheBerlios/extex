@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -28,7 +28,7 @@ import de.dante.extex.typesetter.type.page.Page;
  * This interface describes a back-end as extension to a DocumentWriter.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface BackendDriver {
 
@@ -42,7 +42,7 @@ public interface BackendDriver {
     /**
      * This method is invoked upon the end of the processing.
      *
-     * @throws DocumentWriterException in case of an error
+     * @throws BackendException in case of an error
      */
     void close() throws BackendException;
 
