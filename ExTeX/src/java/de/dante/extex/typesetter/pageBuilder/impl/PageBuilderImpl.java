@@ -21,7 +21,7 @@ package de.dante.extex.typesetter.pageBuilder.impl;
 
 import de.dante.extex.backend.BackendDriver;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.typesetter.OutputRoutine;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
@@ -37,7 +37,7 @@ import de.dante.util.exception.GeneralException;
  * This is a first reference implementation of a page builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public class PageBuilderImpl implements PageBuilder {
 
@@ -136,7 +136,7 @@ public class PageBuilderImpl implements PageBuilder {
     public void inspectAndBuild(final VerticalListNode nodes,
             final Typesetter typesetter) throws TypesetterException {
 
-        Dimen d = nodes.getVerticalSize();
+        FixedDimen d = nodes.getVerticalSize();
         if (d.ge(options.getDimenOption("vsize"))) {
 
             flush(nodes, typesetter);
@@ -189,7 +189,7 @@ public class PageBuilderImpl implements PageBuilder {
      * @see de.dante.extex.typesetter.pageBuilder.PageBuilder#setPageFactory(
      *      de.dante.extex.typesetter.type.page.PageFactory)
      */
-    public void setPageFactory(PageFactory factory) {
+    public void setPageFactory(final PageFactory factory) {
 
         pageFactory = factory;
     }
