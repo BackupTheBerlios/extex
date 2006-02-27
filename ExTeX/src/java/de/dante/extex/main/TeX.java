@@ -594,7 +594,7 @@ import de.dante.util.resource.ResourceFinder;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class TeX extends ExTeX {
 
@@ -892,7 +892,7 @@ public class TeX extends ExTeX {
          final ContextInternals context, final String name,
          final Count value) throws Exception {
 
-         System.err.println("change " + name + " to "
+         S ystem.err.println("change " + name + " to "
          + value.toString());
          }
          });
