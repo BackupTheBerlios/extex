@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--
-  -  Copyright (C) 2004 The ExTeX Group
+  -  Copyright (C) 2004-2006 The ExTeX Group
   -
   -  This library is free software; you can redistribute it and/or modify it
   -  under the terms of the GNU Lesser General Public License as published by
@@ -88,7 +88,7 @@
     <pfa><extension/><extension>.pfa</extension></pfa>
     <map><extension/><extension>.map</extension></map>
     <ttf><extension/><extension>.ttf</extension></ttf>
-    <tex><extension>.tex</extension></tex>
+    <tex><extension/><extension>.tex</extension></tex>
     <fmt><extension>.fmt</extension></fmt>
     <default><extension/></default>
   </Finder>
