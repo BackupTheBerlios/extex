@@ -38,7 +38,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class NullFont implements Font, Serializable {
 
@@ -48,9 +48,9 @@ public class NullFont implements Font, Serializable {
     private UnicodeChar hyphen = new UnicodeChar('-');
 
     /**
-     * The field <tt>skew</tt> contains the skew char for this font
+     * The field <tt>skew</tt> contains the skew char for this font.
      */
-    private UnicodeChar skew = new UnicodeChar(-1);
+    private UnicodeChar skew = null;
 
     /**
      * Creates a new object.
