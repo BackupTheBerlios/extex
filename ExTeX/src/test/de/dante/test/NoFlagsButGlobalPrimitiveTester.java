@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -24,7 +24,7 @@ package de.dante.test;
  * global flag lead to an error.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public abstract class NoFlagsButGlobalPrimitiveTester extends ExTeXLauncher {
 
@@ -34,10 +34,10 @@ public abstract class NoFlagsButGlobalPrimitiveTester extends ExTeXLauncher {
     private String primitive;
 
     /**
-     * The field <tt>args</tt> contains the additional arguments for the
+     * The field <tt>arguments</tt> contains the additional arguments for the
      * flag test.
      */
-    private String args;
+    private String arguments;
 
     /**
      * The field <tt>prepare</tt> contains the preparation code.
@@ -45,7 +45,7 @@ public abstract class NoFlagsButGlobalPrimitiveTester extends ExTeXLauncher {
     private String prepare = DEFINE_BRACES;
 
     /**
-     * The field <tt>out</tt> contains the ...
+     * The field <tt>out</tt> contains the prefix of the output message.
      */
     private String out = "";
 
@@ -61,7 +61,7 @@ public abstract class NoFlagsButGlobalPrimitiveTester extends ExTeXLauncher {
 
         super(arg);
         this.primitive = primitive;
-        this.args = args;
+        this.arguments = args;
     }
 
     /**
@@ -86,6 +86,7 @@ public abstract class NoFlagsButGlobalPrimitiveTester extends ExTeXLauncher {
      * @param primitive the name of the primitive
      * @param args the arguments for assignment
      * @param prepare the preparation code
+     * @param out prefix of the output message
      */
     public NoFlagsButGlobalPrimitiveTester(final String arg,
             final String primitive, final String args, final String prepare,
@@ -97,7 +98,7 @@ public abstract class NoFlagsButGlobalPrimitiveTester extends ExTeXLauncher {
 
     /**
      * <testcase>
-     *  ...
+     *  Test case checking that the <tt>\immediate</tt> flag leads to an error.
      * </testcase>
      *
      * @throws Exception in case of an error
@@ -105,17 +106,16 @@ public abstract class NoFlagsButGlobalPrimitiveTester extends ExTeXLauncher {
     public void testNoImmediateFlag() throws Exception {
 
         assertFailure(
-                //--- input code ---
-                prepare + "\\immediate\\" + primitive + args,
+        //--- input code ---
+                prepare + "\\immediate\\" + primitive + arguments,
                 //--- log message ---
-                out
-                        + "You can\'t use the prefix `\\immediate\' with the control sequence \\"
-                        + primitive);
+                out + "You can\'t use the prefix `\\immediate\' "
+                        + "with the control sequence \\" + primitive);
     }
 
     /**
      * <testcase>
-     *  ...
+     *  Test case checking that the <tt>\long</tt> flag leads to an error.
      * </testcase>
      *
      * @throws Exception in case of an error
@@ -123,17 +123,16 @@ public abstract class NoFlagsButGlobalPrimitiveTester extends ExTeXLauncher {
     public void testNoLongFlag() throws Exception {
 
         assertFailure(
-                //--- input code ---
-                prepare + "\\long\\" + primitive + args,
+        //--- input code ---
+                prepare + "\\long\\" + primitive + arguments,
                 //--- log message ---
-                out
-                        + "You can\'t use the prefix `\\long\' with the control sequence \\"
-                        + primitive);
+                out + "You can\'t use the prefix `\\long\' "
+                        + "with the control sequence \\" + primitive);
     }
 
     /**
      * <testcase>
-     *  ...
+     *  Test case checking that the <tt>\outer</tt> flag leads to an error.
      * </testcase>
      *
      * @throws Exception in case of an error
@@ -141,17 +140,16 @@ public abstract class NoFlagsButGlobalPrimitiveTester extends ExTeXLauncher {
     public void testNoOuterFlag() throws Exception {
 
         assertFailure(
-                //--- input code ---
-                prepare + "\\outer\\" + primitive + args,
+        //--- input code ---
+                prepare + "\\outer\\" + primitive + arguments,
                 //--- log message ---
-                out
-                        + "You can\'t use the prefix `\\outer\' with the control sequence \\"
-                        + primitive);
+                out + "You can\'t use the prefix `\\outer\' "
+                        + "with the control sequence \\" + primitive);
     }
 
     /**
      * <testcase>
-     *  ...
+     *  Test case checking that the <tt>\protected</tt> flag leads to an error.
      * </testcase>
      *
      * @throws Exception in case of an error
@@ -159,12 +157,11 @@ public abstract class NoFlagsButGlobalPrimitiveTester extends ExTeXLauncher {
     public void testNoProtectedFlag() throws Exception {
 
         assertFailure(
-                //--- input code ---
-                prepare + "\\protected\\" + primitive + args,
+        //--- input code ---
+                prepare + "\\protected\\" + primitive + arguments,
                 //--- log message ---
-                out
-                        + "You can\'t use the prefix `\\protected\' with the control sequence \\"
-                        + primitive);
+                out + "You can\'t use the prefix `\\protected\' "
+                        + "with the control sequence \\" + primitive);
     }
 
 }

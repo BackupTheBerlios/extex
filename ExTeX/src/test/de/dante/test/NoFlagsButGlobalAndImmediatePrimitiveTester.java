@@ -25,7 +25,7 @@ package de.dante.test;
  * an error.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public abstract class NoFlagsButGlobalAndImmediatePrimitiveTester
         extends
@@ -45,7 +45,7 @@ public abstract class NoFlagsButGlobalAndImmediatePrimitiveTester
     /**
      * Creates a new object.
      *
-     * @param arg the name of the test case
+     * @param name the name of the test case
      * @param primitive the name of the primitive
      * @param args additional arguments for the flag test
      */
@@ -58,6 +58,9 @@ public abstract class NoFlagsButGlobalAndImmediatePrimitiveTester
     }
 
     /**
+     * <testcase>
+     *  Test case checking that the <tt>\long</tt> flag leads to an error.
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -71,6 +74,9 @@ public abstract class NoFlagsButGlobalAndImmediatePrimitiveTester
     }
 
     /**
+     * <testcase>
+     *  Test case checking that the <tt>\outer</tt> flag leads to an error.
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -84,6 +90,9 @@ public abstract class NoFlagsButGlobalAndImmediatePrimitiveTester
     }
 
     /**
+     * <testcase>
+     *  Test case checking that the <tt>\protected</tt> flag leads to an error.
+     * </testcase>
      *
      * @throws Exception in case of an error
      */

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -25,7 +25,7 @@ package de.dante.test;
  * <tt>\outer</tt>, and <tt>\protected</tt> lead to an error.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public abstract class NoFlagsButImmediatePrimitiveTester extends ExTeXLauncher {
 
@@ -56,6 +56,9 @@ public abstract class NoFlagsButImmediatePrimitiveTester extends ExTeXLauncher {
     }
 
     /**
+     * <testcase>
+     *  Test case checking that the <tt>\global</tt> flag leads to an error.
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -69,6 +72,9 @@ public abstract class NoFlagsButImmediatePrimitiveTester extends ExTeXLauncher {
     }
 
     /**
+     * <testcase>
+     *  Test case checking that the <tt>\long</tt> flag leads to an error.
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -82,6 +88,9 @@ public abstract class NoFlagsButImmediatePrimitiveTester extends ExTeXLauncher {
     }
 
     /**
+     * <testcase>
+     *  Test case checking that the <tt>\outer</tt> flag leads to an error.
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -95,6 +104,9 @@ public abstract class NoFlagsButImmediatePrimitiveTester extends ExTeXLauncher {
     }
 
     /**
+     * <testcase>
+     *  Test case checking that the <tt>\protected</tt> flag leads to an error.
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
