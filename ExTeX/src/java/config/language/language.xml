@@ -37,7 +37,7 @@
       <LigatureBuilder
         class="de.dante.extex.language.ligature.impl.LigatureBuilderImpl"/>
       <WordTokenizer
-        class="de.dante.extex.language.word.impl.TeXWords"/>
+        class="de.dante.extex.language.word.impl.ExTeXWords"/>
     </default>
   </ExTeX>
 
