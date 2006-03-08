@@ -19,11 +19,10 @@
 
 package de.dante.extex.language.word.impl;
 
-import java.util.List;
-
 import de.dante.extex.language.Language;
 import de.dante.extex.language.hyphenation.exception.HyphenationException;
 import de.dante.extex.language.word.WordTokenizer;
+import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.node.CharNode;
@@ -32,19 +31,20 @@ import de.dante.extex.typesetter.type.node.ExplicitKernNode;
 import de.dante.extex.typesetter.type.node.KernNode;
 import de.dante.extex.typesetter.type.node.LigatureNode;
 import de.dante.extex.typesetter.type.node.WhatsItNode;
+import de.dante.util.UnicodeChar;
+import de.dante.util.UnicodeCharList;
 
 /**
  * This class tokenizes a list of nodes according to the rules of
  * <logo>TeX</logo>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class TeXWords implements WordTokenizer {
+public class TeXWords extends ExTeXWords implements WordTokenizer {
 
     /**
      * Creates a new object.
-     *
      */
     public TeXWords() {
 
@@ -52,12 +52,12 @@ public class TeXWords implements WordTokenizer {
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * Add the characters extracted from a char node to the word container.
      *
      * @param node the character node to add to the word
      * @param word the container to add the node to
      */
-    private void addWord(final CharNode node, final List word) {
+    private void addWord(final CharNode node, final UnicodeCharList word) {
 
         if (node instanceof LigatureNode) {
             LigatureNode ln = (LigatureNode) node;
@@ -72,7 +72,7 @@ public class TeXWords implements WordTokenizer {
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * Collect all characters form a node list that make up a word.
      *
      * @param nodes the nodes to process
      * @param word the word with hyphenation marks
@@ -83,7 +83,7 @@ public class TeXWords implements WordTokenizer {
      *
      * @throws HyphenationException in case of an error
      */
-    private int collectWord(final NodeList nodes, final List word,
+    private int collectWord(final NodeList nodes, final UnicodeCharList word,
             final int start, final Language lang) throws HyphenationException {
 
         int i = start;
@@ -125,17 +125,13 @@ public class TeXWords implements WordTokenizer {
      * @see de.dante.extex.language.word.WordTokenizer#findWord(
      *      de.dante.extex.typesetter.type.NodeList, int, java.util.List)
      */
-    public int findWord(final NodeList nodes, final int start, final List word)
-            throws HyphenationException {
+    public int findWord(final NodeList nodes, final int start,
+            final UnicodeCharList word) throws HyphenationException {
 
         int i = start;
         int size = nodes.size();
         word.clear();
         Node n;
-
-        if (i >= size) {
-            return i;
-        }
 
         do {
             if (i >= size) {
@@ -148,6 +144,27 @@ public class TeXWords implements WordTokenizer {
 
         return collectWord(nodes, word, i, ((CharNode) n)
                 .getTypesettingContext().getLanguage());
+    }
+
+    /**
+     * @see de.dante.extex.language.word.WordTokenizer#normalize(
+     *      de.dante.util.UnicodeCharList,
+     *      de.dante.extex.typesetter.TypesetterOptions)
+     */
+    public UnicodeCharList normalize(final UnicodeCharList word,
+            final TypesetterOptions options) throws HyphenationException {
+
+        UnicodeCharList list = new UnicodeCharList();
+        int size = word.size();
+        UnicodeChar c, uc;
+
+        for (int i = 0; i < size; i++) {
+            uc = word.get(i);
+            c = options.getLccode(uc);
+            list.add(c == UnicodeChar.NULL ? uc : c);
+        }
+
+        return list;
     }
 
 }
