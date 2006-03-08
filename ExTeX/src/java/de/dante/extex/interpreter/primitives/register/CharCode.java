@@ -43,7 +43,7 @@ import de.dante.util.UnicodeChar;
  * expansion.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class CharCode extends AbstractCode
         implements
@@ -54,7 +54,7 @@ public class CharCode extends AbstractCode
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 28022006L;
 
     /**
      * The field <tt>character</tt> contains the encapsulated Unicode character.
@@ -71,6 +71,18 @@ public class CharCode extends AbstractCode
 
         super(name);
         this.character = uc;
+    }
+
+    
+    /**
+     * @see de.dante.extex.interpreter.type.count.CountConvertible#convertCount(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource, Typesetter)
+     */
+    public long convertCount(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
+
+        return character.getCodePoint();
     }
 
     /**
@@ -108,14 +120,13 @@ public class CharCode extends AbstractCode
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.count.CountConvertible#convertCount(
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource, Typesetter)
+     * Getter for character.
+     *
+     * @return the character
      */
-    public long convertCount(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws InterpreterException {
-
-        return character.getCodePoint();
+    public UnicodeChar getCharacter() {
+    
+        return this.character;
     }
 
     /**
