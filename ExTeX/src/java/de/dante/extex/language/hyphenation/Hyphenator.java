@@ -24,9 +24,10 @@ import java.io.Serializable;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.language.hyphenation.exception.HyphenationException;
 import de.dante.extex.typesetter.TypesetterOptions;
-import de.dante.extex.typesetter.type.node.HorizontalListNode;
+import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.node.factory.NodeFactory;
 import de.dante.util.UnicodeChar;
+import de.dante.util.UnicodeCharList;
 
 /**
  * Interface for the <code>HyphenationTable</code>.
@@ -37,19 +38,26 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public interface Hyphenator extends Serializable {
 
     /**
-     * Add a user hyphenation.
+     * Add a user-defined hyphenation.
+     * <p>
+     *  The hyphenation template consists of a word of characters.
+     *  The Unicode soft hyphenation character has a special meaning. This
+     *  character is used to indicate places where a hyphenation is permitted.
+     *  The other characters &ndash; i.e. normal Unicode characters &ndash; are
+     *  used as-is.
+     * </p>
      *
-     * @param word the word
+     * @param word the word with the hyphenation marks
      * @param context the interpreter context
      *
      * @throws HyphenationException in case of an error
      */
-    void addHyphenation(Tokens word, TypesetterOptions context)
+    void addHyphenation(UnicodeCharList word, TypesetterOptions context)
             throws HyphenationException;
 
     /**
@@ -82,7 +90,8 @@ public interface Hyphenator extends Serializable {
     long getRightHyphenmin() throws HyphenationException;
 
     /**
-     * Insert the hyphenation marks for a horizontal list of nodes.
+     * Insert the hyphenation marks for a horizontal list of nodes. The
+     * hyphenation marks are made up of discretionary nodes.
      *
      * @param nodelist the horizontal node list
      * @param context the context
@@ -90,29 +99,34 @@ public interface Hyphenator extends Serializable {
      * @param start the start index
      * @param forall the indicator that all words to the end should be
      *  processed. if <code>false</code> then only the next word is hyphenated.
+     * @param nodeFactory the node factory
      *
-     * @return <code>true</code> iff something has been changed
+     * @return <code>true</code> iff the hyphenator is responsible for this
+     *  word. Usually this means that some hyphenation marks have been inserted.
      *
      * @throws HyphenationException in case of an error
      */
-    boolean hyphenate(HorizontalListNode nodelist,
-            TypesetterOptions context, UnicodeChar hyphen, int start,
-            boolean forall, NodeFactory nodeFactory) throws HyphenationException;
+    boolean hyphenate(NodeList nodelist, TypesetterOptions context,
+            UnicodeChar hyphen, int start, boolean forall,
+            NodeFactory nodeFactory) throws HyphenationException;
 
     /**
      * Return <code>true</code>, if hyphenation is active,
      * otherwise <code>false</code>;
      *
-     * @return hyphenactive
+     * @return <code>true</code> iff the hyphenation for this language is
+     *  enabled
      *
      * @throws HyphenationException in case of an error
      */
     boolean isHyphenActive() throws HyphenationException;
 
     /**
-     * Set the value for hyphenactive.
+     * Activate or deactivate the hyphenation for this language.
+     * If the hyphenation is deactivated then no hyphenation should be added
+     * automatically.
      *
-     * @param active the new value
+     * @param active the indicator that the hyphenation is activated
      *
      * @throws HyphenationException in case of an error
      */
@@ -137,4 +151,5 @@ public interface Hyphenator extends Serializable {
      * @throws HyphenationException in case of an error
      */
     void setRightHyphenmin(long right) throws HyphenationException;
+
 }
