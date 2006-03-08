@@ -21,7 +21,6 @@ package de.dante.extex.typesetter;
 
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.typesetter.exception.TypesetterException;
-import de.dante.extex.typesetter.hyphenator.Hyphenator;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
 import de.dante.extex.typesetter.type.node.factory.NodeFactory;
@@ -51,7 +50,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class TypesetterFactory extends AbstractFactory {
 
@@ -130,26 +129,30 @@ public class TypesetterFactory extends AbstractFactory {
      * to determine the requested properties.
      *
      * @param config the configuration to use
+     * @param options the typesetter options
+     * @param nodeFactory the node factory
      *
      * @return the new instance
      *
      * @throws ConfigurationException in case of an configuration error
      */
     private ParagraphBuilder makeParagraphBuilder(final Configuration config,
-            final TypesetterOptions options) throws ConfigurationException {
+            final TypesetterOptions options, final NodeFactory nodeFactory)
+            throws ConfigurationException {
 
         Configuration cfg = config.getConfiguration("ParagraphBuilder");
         ParagraphBuilder builder = (ParagraphBuilder) createInstanceForConfiguration(
                 cfg, ParagraphBuilder.class);
-        if (builder instanceof HyphenationEnabled) {
-            cfg = cfg.findConfiguration("Hyphenator");
-            if (cfg != null) {
-                Hyphenator hyphenator = (Hyphenator) createInstanceForConfiguration(
-                        cfg, Hyphenator.class);
-                ((HyphenationEnabled) builder).enableHyphenation(hyphenator);
-            }
-        }
+        /*
+         if (builder instanceof HyphenationEnabled) {
+         cfg = cfg.getConfiguration("Hyphenator");
+         Hyphenator hyphenator = (Hyphenator) createInstanceForConfiguration(
+         cfg, Hyphenator.class);
+         ((HyphenationEnabled) builder).enableHyphenation(hyphenator);
+         }
+         */
         builder.setOptions(options);
+        builder.setNodefactory(nodeFactory);
         return builder;
     }
 
@@ -172,10 +175,14 @@ public class TypesetterFactory extends AbstractFactory {
 
         Typesetter typesetter = (Typesetter) createInstance(type,
                 Typesetter.class);
-        typesetter.setNodeFactory(makeNodeFactory(cfg));
+        NodeFactory nodeFactory = makeNodeFactory(cfg);
+        typesetter.setNodeFactory(nodeFactory);
+
         typesetter.setParagraphBuilder(makeParagraphBuilder(cfg,
-                (TypesetterOptions) context));
+                (TypesetterOptions) context, nodeFactory));
+
         typesetter.setPageBuilder(makePageBuilder(cfg, context, typesetter));
+
         typesetter.setOptions((TypesetterOptions) context);
 
         return typesetter;
