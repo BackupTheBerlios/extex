@@ -26,7 +26,6 @@ import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.MissingLeftBraceException;
 import de.dante.extex.interpreter.primitives.register.CharCode;
 import de.dante.extex.interpreter.type.Code;
-import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.language.Language;
 import de.dante.extex.language.hyphenation.exception.HyphenationException;
 import de.dante.extex.scanner.type.Catcode;
@@ -37,10 +36,11 @@ import de.dante.extex.scanner.type.token.LetterToken;
 import de.dante.extex.scanner.type.token.OtherToken;
 import de.dante.extex.scanner.type.token.RightBraceToken;
 import de.dante.extex.scanner.type.token.Token;
-import de.dante.extex.scanner.type.token.TokenFactory;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
+import de.dante.extex.unicode.Unicode;
 import de.dante.util.UnicodeChar;
+import de.dante.util.UnicodeCharList;
 
 /**
  * This class provides an implementation for the primitive
@@ -49,7 +49,30 @@ import de.dante.util.UnicodeChar;
  * <doc name="hyphenation">
  * <h3>The Primitive <tt>\hyphenation</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  The primitive <tt>\hyphenation</tt> can be used to add hyphenation
+ *  exceptions to the current language. The argument is a list of whitespace
+ *  separated words enclosed in braces. The hyphenation points are indicated
+ *  by including a hyphen character (-) at the appropriate places.
+ * </p>
+ * <p>
+ *  When paragraph breaking needs to insert additional break points these
+ *  hyphenation points are translated into discretionaries. The exceptions
+ *  specified with the primitive <tt>\hyphenation</tt> have precedence before
+ *  the hyphenation points found with the help of hyphenation patterns.
+ * </p>
+ * <p>
+ *  One example which make use of this precedence is the hyphenation
+ *  exception without any hyphen characters. This can be used to suppress any
+ *  hyphenation in a single word.
+ * </p>
+ *
+ * <h4>Extension</h4>
+ * <p>
+ *  In addition to the behavior of the original <logo>TeX<\logo> definition
+ *  this implementation can be used to insert words with hyphens as well. To
+ *  specify the places where a hyphen occurs literally you just ave to include
+ *  two hyphens in the hyphenation list.
+ *  To
  * </p>
  *
  * <h4>Syntax</h4>
@@ -60,20 +83,22 @@ import de.dante.util.UnicodeChar;
  * <h4>Example:</h4>
  *  <pre class="TeXSample">
  *   \hyphenation{as-so-ciate as-so-ciates}  </pre>
+ *  <pre class="TeXSample">
+ *   \hyphenation{Groﬂ--Ger-au}  </pre>
  *
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
-public class Hyphenation extends AbstractHyphenationCode {
+public class Hyphenation extends HyphenationPrimitive {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 20060307L;
 
     /**
      * Creates a new object.
@@ -86,114 +111,57 @@ public class Hyphenation extends AbstractHyphenationCode {
     }
 
     /**
-     * Create the name for the <code>HyphenationTable</code>.
+     * Collect all characters that make up a word.
      *
-     * @param pattern the pattern
      * @param context the interpreter context
+     * @param source the source for new tokens
+     * @param token the first token already read
      *
-     * @return the name
-     *
-     * @throws CatcodeException in case of an error
-     */
-    private Tokens createHyphenation(final Tokens pattern, final Context context)
-            throws CatcodeException {
-
-        Tokens ret = new Tokens();
-        TokenFactory tokenFactory = context.getTokenFactory();
-        Token t;
-
-        for (int i = 0; i < pattern.length(); i++) {
-            t = pattern.get(i);
-            if (!t.equals(Catcode.OTHER, '-')) {
-
-                UnicodeChar uc = t.getChar();
-                UnicodeChar lc = context.getLccode(uc);
-                ret.add(tokenFactory.createToken(Catcode.OTHER, //
-                        lc == null ? uc : lc, ""));
-            }
-        }
-
-        return ret;
-    }
-
-    /**
-     * Scan for hyphenation values and store these values in the
-     * <code>HyphernationTable</code>.
-     * The index for the <code>HyphernationTable</code> is based on the
-     * value from the count register <code>\language</code>.
-     *
-     * @see de.dante.extex.interpreter.type.Code#execute(
-     *      de.dante.extex.interpreter.Flags,
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.typesetter.Typesetter)
-     */
-    public void execute(final Flags prefix, final Context context,
-            final TokenSource source, final Typesetter typesetter)
-            throws InterpreterException {
-
-        Language table = getHyphenationTable(context);
-
-        Token t = source.getNonSpace(context);
-        if (!(t instanceof LeftBraceToken)) {
-            throw new MissingLeftBraceException(
-                    printableControlSequence(context));
-        }
-
-        try {
-            for (t = source.getNonSpace(context); !(t instanceof RightBraceToken); t = source
-                    .getNonSpace(context)) {
-                if (!isWordConstituent(t, context)) {
-                    throw new InterpreterException(getLocalizer().format(
-                            "TTP.ImproperHyphen",
-                            printableControlSequence(context)));
-                }
-                Tokens word = new Tokens();
-                do {
-                    word.add(t);
-                    t = source.getToken(context);
-                } while (isWordConstituent(t, context));
-
-                table.addHyphenation(createHyphenation(word, context),
-                        (TypesetterOptions) context);
-            }
-        } catch (CatcodeException e) {
-            throw new InterpreterException(e);
-        } catch (HyphenationException e) {
-            throw new InterpreterException(e);
-        }
-
-    }
-
-    /**
-     * This method checks that the given token is a word constituent.
-     * This means that the token is either
-     * <ul>
-     * <li>a letter token, or</li>
-     * <li>a other token, or</li>
-     * <li>a code token defined with <tt>\chardef</tt>.</li>
-     * </ul>
-     *
-     * @param t the token to analyze
-     * @param context the interpreter context
-     *
-     * @return <code>true</code> iff the token is
+     * @return the first character not included into the word
      *
      * @throws InterpreterException in case of an error
+     * @throws CatcodeException in case of an exception in token creation
      */
-    private boolean isWordConstituent(final Token t, final Context context)
-            throws InterpreterException {
+    protected UnicodeCharList collectWord(final Context context,
+            final TokenSource source, final Token token)
+            throws InterpreterException,
+                CatcodeException {
 
-        if (t == null) {
-            return false;
-        } else if (t instanceof LetterToken || t instanceof OtherToken) {
-            return true;
-        } else if (t instanceof CodeToken) {
-            Code code = context.getCode((CodeToken) t);
-            return (code instanceof CharCode);
+        UnicodeCharList word = new UnicodeCharList();
+        UnicodeChar uc, lc;
+        boolean hyphen = false;
+
+        for (Token t = token; t != null; t = source.getToken(context)) {
+
+            if (t instanceof LetterToken || t instanceof OtherToken) {
+                uc = t.getChar();
+            } else if (t instanceof CodeToken) {
+                Code code = context.getCode((CodeToken) t);
+                uc = ((CharCode) code).getCharacter();
+            } else {
+                source.push(t);
+                return word;
+            }
+
+            if (t.equals(Catcode.OTHER, '-')) {
+                if (hyphen) {
+                    word.add(t.getChar());
+                } else {
+                    hyphen = true;
+                }
+                word.add(Unicode.SHY);
+            } else {
+                if (hyphen) {
+                    word.add(Unicode.SHY);
+                    hyphen = false;
+                }
+                uc = t.getChar();
+                lc = context.getLccode(uc);
+                word.add(lc == null ? uc : lc);
+            }
         }
 
-        return false;
+        return word;
     }
 
 }
