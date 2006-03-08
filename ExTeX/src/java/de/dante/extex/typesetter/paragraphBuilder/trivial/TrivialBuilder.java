@@ -49,6 +49,7 @@ import de.dante.extex.typesetter.type.node.HorizontalListNode;
 import de.dante.extex.typesetter.type.node.KernNode;
 import de.dante.extex.typesetter.type.node.PenaltyNode;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
+import de.dante.extex.typesetter.type.node.factory.NodeFactory;
 import de.dante.util.framework.logger.LogEnabled;
 
 /**
@@ -56,7 +57,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
 
@@ -137,6 +138,37 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
             tracer.addHandler(handler);
             tracer.setLevel(Level.ALL);
         }
+    }
+
+    /**
+     * Add a new line to a vlist.
+     * Ensure that a minimum distance between the lines exists. Usually the
+     * distance <tt>\baselineskip</tt> between the lines is desirable. For this
+     * purpose the depth of the previous line and the height of the current line
+     * is subtracted. If the remaining distance is less than
+     * <tt>\lineskiplimit</tt> then the value of <tt>\lineskip</tt> is used
+     * instead.
+     *
+     * @param vlist the target list
+     * @param hlist the line to add
+     * @param baselineskip the parameter \baselineskip
+     * @param lineskip the parameter \lineskip
+     * @param lineskiplimit the parameter \lineskiplimit
+     */
+    private void addLine(final VerticalListNode vlist,
+            final HorizontalListNode hlist, final FixedGlue baselineskip,
+            final FixedGlue lineskip, final FixedDimen lineskiplimit) {
+
+        int end = vlist.size() - 1;
+
+        Glue g = new Glue(baselineskip);
+        g.subtract(hlist.getHeight());
+        if (end >= 0) {
+            g.subtract(vlist.get(end).getDepth());
+        }
+        vlist.add(new GlueNode(g.lt(lineskiplimit) ? lineskip : g, false));
+
+        vlist.add(hlist);
     }
 
     /**
@@ -250,37 +282,6 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
 
         options.setParshape(null);
         return vlist;
-    }
-
-    /**
-     * Add a new line to a vlist.
-     * Ensure that a minimum distance between the lines exists. Usually the
-     * distance <tt>\baselineskip</tt> between the lines is desirable. For this
-     * purpose the depth of the previous line and the height of the current line
-     * is subtracted. If the remaining distance is less than
-     * <tt>\lineskiplimit</tt> then the value of <tt>\lineskip</tt> is used
-     * instead.
-     *
-     * @param vlist the target list
-     * @param hlist the line to add
-     * @param baselineskip the parameter \baselineskip
-     * @param lineskip the parameter \lineskip
-     * @param lineskiplimit the parameter \lineskiplimit
-     */
-    private void addLine(final VerticalListNode vlist,
-            final HorizontalListNode hlist, final FixedGlue baselineskip,
-            final FixedGlue lineskip, final FixedDimen lineskiplimit) {
-
-        int end = vlist.size() - 1;
-
-        Glue g = new Glue(baselineskip);
-        g.subtract(hlist.getHeight());
-        if (end >= 0) {
-            g.subtract(vlist.get(end).getDepth());
-        }
-        vlist.add(new GlueNode(g.lt(lineskiplimit) ? lineskip : g, false));
-
-        vlist.add(hlist);
     }
 
     /**
@@ -437,6 +438,14 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
             }
         }
         return end;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder#setNodefactory(
+     *      de.dante.extex.typesetter.type.node.factory.NodeFactory)
+     */
+    public void setNodefactory(final NodeFactory nodeFactory) {
+
     }
 
     /**
