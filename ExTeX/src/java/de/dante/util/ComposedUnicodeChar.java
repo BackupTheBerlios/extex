@@ -26,7 +26,7 @@ import com.ibm.icu.lang.UCharacter;
  * attached to it.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ComposedUnicodeChar extends UnicodeChar {
 
@@ -69,4 +69,37 @@ public class ComposedUnicodeChar extends UnicodeChar {
         return this.combiningCodePoints;
     }
 
+    /**
+     * Compares a <code>UnicodeChar</code> character with the value of this
+     * object. They are considered equal if the are both
+     * {@link ComposedUnicodeChars ComposedUnicodeChars} and have the same codes.
+     * <p>
+     * The general signature for comparison to an arbitrary object is required
+     * for the implementation of {@link java.util.HashMap HashMap} and friends.
+     * </p>
+     *
+     * @param unicodeChar the character to compare
+     *
+     * @return <code>true</code> if the characters are equal, otherwise
+     *         <code>false</code>
+     */
+    public boolean equals(final Object unicodeChar) {
+
+        if (!(unicodeChar instanceof ComposedUnicodeChar)
+                || this.getCodePoint() != ((UnicodeChar) unicodeChar)
+                        .getCodePoint()) {
+            return false;
+        }
+        ComposedUnicodeChar uc = (ComposedUnicodeChar) unicodeChar;
+        if (uc.combiningCodePoints.length != combiningCodePoints.length) {
+            return false;
+        }
+
+        for (int i = combiningCodePoints.length; i > 0; i--) {
+            if (combiningCodePoints[i] != uc.combiningCodePoints[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
