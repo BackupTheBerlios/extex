@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -19,47 +19,21 @@
 
 package de.dante.extex.language.word;
 
-import java.util.List;
-
 import de.dante.extex.language.hyphenation.exception.HyphenationException;
+import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.type.NodeList;
+import de.dante.extex.typesetter.type.node.CharNode;
+import de.dante.util.UnicodeCharList;
 
 /**
- * This interface describes the contract for a tokenizer which is abke to split
+ * This interface describes the contract for a tokenizer which is able to split
  * a list of nodes into words.
  * This kind of tokenizer might be language specific.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface WordTokenizer {
-
-    /**
-     * Analyze a node list to find the start of the next word after a given
-     * position in the list.
-     *
-     * @param list the list of nodes to analyze
-     * @param start the starting position in the list
-     *
-     * @return the index of the first node of the word or an index past
-     *  the end of the node list if no word follows
-     *
-     * @throws HyphenationException in case of an error
-     */
-    //int skipNonWord(NodeList list, int start) throws HyphenationException;
-    /**
-     * Analyze a list of nodes and find the end of the word starting at a
-     * given position.
-     *
-     * @param list the list of nodes to analyze
-     * @param start the starting position in the list
-     *
-     * @return the index of the first non-word node or the smallest index past
-     *  the end of the node list if the word is at the end of the list
-     *
-     * @throws HyphenationException in case of an error
-     */
-    //int skipWord(NodeList list, int start) throws HyphenationException;
 
     /**
      * Extract a word from a node list.
@@ -72,6 +46,36 @@ public interface WordTokenizer {
      *
      * @throws HyphenationException in case of an error
      */
-    int findWord(NodeList nodes, int start, List word)
+    int findWord(NodeList nodes, int start, UnicodeCharList word)
             throws HyphenationException;
+
+    /**
+     * Insert hyphenation points into a list of nodes.
+     *
+     * @param nodes the node list to modify
+     * @param insertionPoint the index to insert something into the nodes
+     * @param spec the specification where to insert hyphenation marks.
+     *  If <code>spec[i]</code> is <code>true</code> then a hyphen needs to be
+     *  inserted before the i<sup>th</sup> character at or after insertionPoint
+     *  in nodes
+     * @param hyphenNode the hyphen as node
+     *
+     * @throws HyphenationException in case of an error
+     */
+    void insertShy(NodeList nodes, int insertionPoint, boolean[] spec,
+            CharNode hyphenNode) throws HyphenationException;
+
+    /**
+     * Normalize a word for the lookup.
+     *
+     * @param word the word to normalize
+     * @param options the options to use
+     *
+     * @return the normalized word
+     *
+     * @throws HyphenationException in case of an error
+     */
+    UnicodeCharList normalize(UnicodeCharList word, TypesetterOptions options)
+            throws HyphenationException;
+
 }
