@@ -49,7 +49,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.66 $
+ * @version $Revision: 1.67 $
  */
 public interface Context
         extends
@@ -413,7 +413,7 @@ public interface Context
      *
      * @param manager the hyphenatin manager
      */
-    void setLanguageManager(LanguageManager manager);
+    void setLanguageManager(LanguageManager manager) throws ConfigurationException;
 
     /**
      * Declare the translation from an upper case character to a lower case

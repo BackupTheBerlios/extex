@@ -31,7 +31,6 @@ import java.util.logging.Logger;
 
 import de.dante.extex.backend.documentWriter.DocumentWriterOptions;
 import de.dante.extex.font.FontFactory;
-import de.dante.extex.font.type.other.NullFont;
 import de.dante.extex.interpreter.Conditional;
 import de.dante.extex.interpreter.ConditionalSwitch;
 import de.dante.extex.interpreter.TokenSource;
@@ -139,7 +138,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.101 $
+ * @version $Revision: 1.102 $
  */
 public class ContextImpl
         implements
@@ -516,7 +515,7 @@ public class ContextImpl
         typesettingContextFactory.configure(typesettingConfig);
         typesettingContextFactory.setLanguageManager(languageManager);
         TypesettingContext typesettingContext = typesettingContextFactory
-                .newInstance(null, new NullFont());
+                .newInstance();
 
         set(typesettingContext, true);
 
@@ -1683,8 +1682,12 @@ public class ContextImpl
      * @see de.dante.extex.language.LanguageManagerCarrier#setLanguageManager(
      *      de.dante.extex.language.LanguageManager)
      */
-    public void setLanguageManager(final LanguageManager manager) {
+    public void setLanguageManager(final LanguageManager manager)
+            throws ConfigurationException {
 
+        if (languageManager == null) {
+            set(manager.getLanguage("0"), true);
+        }
         this.languageManager = manager;
         typesettingContextFactory.setLanguageManager(languageManager);
     }
