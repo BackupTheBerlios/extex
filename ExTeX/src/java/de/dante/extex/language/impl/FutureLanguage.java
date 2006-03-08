@@ -19,16 +19,15 @@
 
 package de.dante.extex.language.impl;
 
-import java.util.List;
-
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.language.Language;
 import de.dante.extex.language.hyphenation.exception.HyphenationException;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.type.NodeList;
-import de.dante.extex.typesetter.type.node.HorizontalListNode;
+import de.dante.extex.typesetter.type.node.CharNode;
 import de.dante.extex.typesetter.type.node.factory.NodeFactory;
 import de.dante.util.UnicodeChar;
+import de.dante.util.UnicodeCharList;
 
 /**
  * This class implements the future pattern for a language object. The real
@@ -36,14 +35,14 @@ import de.dante.util.UnicodeChar;
  * loading or the creation should be performed.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class FutureLanguage implements Language {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 20060306L;
 
     /**
      * The field <tt>creator</tt> contains the creator which should be contacted
@@ -82,10 +81,13 @@ public class FutureLanguage implements Language {
      *      de.dante.extex.interpreter.type.tokens.Tokens,
      *      TypesetterOptions)
      */
-    public void addHyphenation(final Tokens word,
+    public void addHyphenation(final UnicodeCharList word,
             final TypesetterOptions context) throws HyphenationException {
 
-        load().addHyphenation(word, context);
+        if (language == null) {
+            language = creator.loadLanguageInstance(index);
+        }
+        language.addHyphenation(word, context);
     }
 
     /**
@@ -94,32 +96,23 @@ public class FutureLanguage implements Language {
      */
     public void addPattern(final Tokens pattern) throws HyphenationException {
 
-        create().addPattern(pattern);
-    }
-
-    /**
-     * Create a new instance if required.
-     *
-     * @return the language instance to be used
-     *
-     * @throws HyphenationException in case of an error
-     */
-    private Language create() throws HyphenationException {
-
         if (language == null) {
             language = creator.createLanguageInstance(index);
         }
-        return language;
+        language.addPattern(pattern);
     }
 
     /**
      * @see de.dante.extex.language.word.WordTokenizer#findWord(
      *      de.dante.extex.typesetter.type.NodeList, int, java.util.List)
      */
-    public int findWord(final NodeList nodes, final int start, final List word)
-            throws HyphenationException {
+    public int findWord(final NodeList nodes, final int start,
+            final UnicodeCharList word) throws HyphenationException {
 
-        return create().findWord(nodes, start, word);
+        if (language == null) {
+            language = creator.createLanguageInstance(index);
+        }
+        return language.findWord(nodes, start, word);
     }
 
     /**
@@ -127,7 +120,10 @@ public class FutureLanguage implements Language {
      */
     public long getLeftHyphenmin() throws HyphenationException {
 
-        return load().getLeftHyphenmin();
+        if (language == null) {
+            language = creator.loadLanguageInstance(index);
+        }
+        return language.getLeftHyphenmin();
     }
 
     /**
@@ -135,7 +131,10 @@ public class FutureLanguage implements Language {
      */
     public long getRightHyphenmin() throws HyphenationException {
 
-        return load().getRightHyphenmin();
+        if (language == null) {
+            language = creator.loadLanguageInstance(index);
+        }
+        return language.getRightHyphenmin();
     }
 
     /**
@@ -147,12 +146,15 @@ public class FutureLanguage implements Language {
      *      boolean,
      *      de.dante.extex.typesetter.type.node.factory.NodeFactory)
      */
-    public boolean hyphenate(final HorizontalListNode nodelist,
+    public boolean hyphenate(final NodeList nodelist,
             final TypesetterOptions context, final UnicodeChar hyphen,
             final int start, final boolean forall, final NodeFactory nodeFactory)
             throws HyphenationException {
 
-        return load().hyphenate(nodelist, context, hyphen, start, forall,
+        if (language == null) {
+            language = creator.loadLanguageInstance(index);
+        }
+        return language.hyphenate(nodelist, context, hyphen, start, forall,
                 nodeFactory);
     }
 
@@ -163,7 +165,28 @@ public class FutureLanguage implements Language {
     public int insertLigatures(final NodeList list, final int start)
             throws HyphenationException {
 
-        return load().insertLigatures(list, start);
+        if (language == null) {
+            language = creator.loadLanguageInstance(index);
+        }
+        return language.insertLigatures(list, start);
+    }
+
+    /**
+     * @see de.dante.extex.language.word.WordTokenizer#insertShy(
+     *      de.dante.extex.typesetter.type.NodeList,
+     *      int,
+     *      boolean[],
+     *      de.dante.util.UnicodeChar,
+     *      de.dante.extex.typesetter.type.node.CharNode)
+     */
+    public void insertShy(final NodeList nodes, final int insertionPoint,
+            final boolean[] spec, final CharNode hyphenNode)
+            throws HyphenationException {
+
+        if (language == null) {
+            language = creator.createLanguageInstance(index);
+        }
+        language.insertShy(nodes, insertionPoint, spec, hyphenNode);
     }
 
     /**
@@ -171,22 +194,24 @@ public class FutureLanguage implements Language {
      */
     public boolean isHyphenActive() throws HyphenationException {
 
-        return load().isHyphenActive();
-    }
-
-    /**
-     * Load or create a new instance if required.
-     *
-     * @return the new instance
-     *
-     * @throws HyphenationException in case of an error
-     */
-    private Language load() throws HyphenationException {
-
         if (language == null) {
             language = creator.loadLanguageInstance(index);
         }
-        return language;
+        return language.isHyphenActive();
+    }
+
+    /**
+     * @see de.dante.extex.language.word.WordTokenizer#normalize(
+     *      de.dante.util.UnicodeCharList,
+     *      de.dante.extex.typesetter.TypesetterOptions)
+     */
+    public UnicodeCharList normalize(final UnicodeCharList word,
+            final TypesetterOptions options) throws HyphenationException {
+
+        if (language == null) {
+            language = creator.createLanguageInstance(index);
+        }
+        return language.normalize(word, options);
     }
 
     /**
@@ -195,7 +220,10 @@ public class FutureLanguage implements Language {
     public void setHyphenActive(final boolean active)
             throws HyphenationException {
 
-        create().setHyphenActive(active);
+        if (language == null) {
+            language = creator.createLanguageInstance(index);
+        }
+        language.setHyphenActive(active);
     }
 
     /**
@@ -203,7 +231,10 @@ public class FutureLanguage implements Language {
      */
     public void setLeftHyphenmin(final long left) throws HyphenationException {
 
-        create().setLeftHyphenmin(left);
+        if (language == null) {
+            language = creator.createLanguageInstance(index);
+        }
+        language.setLeftHyphenmin(left);
     }
 
     /**
@@ -211,7 +242,10 @@ public class FutureLanguage implements Language {
      */
     public void setRightHyphenmin(final long right) throws HyphenationException {
 
-        create().setRightHyphenmin(right);
+        if (language == null) {
+            language = creator.createLanguageInstance(index);
+        }
+        language.setRightHyphenmin(right);
     }
 
 }
