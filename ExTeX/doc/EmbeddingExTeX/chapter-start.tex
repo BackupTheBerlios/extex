@@ -1,0 +1,278 @@
+%%*****************************************************************************
+%% $Id: chapter-start.tex,v 1.1 2006/03/08 10:29:56 gene Exp $
+%%*****************************************************************************
+%% Author: Gerd Neugebauer
+%%-----------------------------------------------------------------------------
+
+
+\chapter{Getting Started}
+
+To get started we have to decide which component of \ExTeX{} to
+integrate. For the beginning we want to integrate the whole engine
+into out application. Later we will see how to refine the requirements
+and juse just a few core components.
+
+
+\section{Hello World}
+
+To get up and running we want to start with the most simple program to
+do a job. The central class is \texttt{de.dante.extex.ExTeX}. This is
+the entry point which ties together the various parts of the system.
+
+Just to dive into some code we can use the following example:
+
+\begin{lstlisting}{}
+package org.extex.tutorial;
+
+import de.dante.extex.ExTeX;
+import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
+
+public class MyExTeX {
+
+    public static void main(final String[] args)
+            throws InterpreterException,
+                ConfigurationException,
+                IOException {
+
+        ExTeX extex = new ExTeX(System.getProperties());
+        extex.run();
+    }
+}
+\end{lstlisting}
+
+Here we declare to live in a certain package and import some of the
+\ExTeX\ specific classes. The class \class{MyExTeX} just has a static
+main method to allow us to run the program.
+
+The first thing we ave to do is to create a new instance of an
+\class{ExTeX} object. The constructor takes one single argument. This
+argument are properties which can be used to control the behaviour of
+the engine. In our example we have used the system properties since
+they can be set from the command line. Later we will see several
+properies to be used.
+
+The instance itself is just there to do some job for us. This is
+achieved with the method \method{run}. For the beginning this is
+enough. 
+
+You should compile this first program. For this purpose make sure that
+the classpath contains \jar{extex.jar} and all other jars
+distributed with \ExTeX. This depends heavily on the system you are
+using and will not be described in detail here.
+
+Now we can run the program and see what it does:
+
+\begin{lstlisting}{}
+$ java org.extex.tutorial.Main
+This is ExTeX, Version 0.0 (ExTeX mode)
+No pages of output.
+Transcript written on ./texput.log.
+\end{lstlisting}
+
+The lines shown appear on the standard error stream. The behaviour is
+similar to an invocation of \ExTeX{} without input file and nothing to
+read from.
+
+\section{Controlling \ExTeX{} with Properties}
+
+Since we have passed the system properties to the \texttt{ExTeX}
+object we can simply put the controlling properties into the system
+properties. This can be done on the command line.
+
+\begin{lstlisting}{}
+$ java -Dextex.file=sample org.extex.tutorial.Main
+\end{lstlisting}
+
+This invocation tries to run \ExTeX{} on the file \file{sample} or
+\file{sample.tex} -- whichever is found. The details of searching
+files will be covered later.
+
+There are more properies to use. Some of them will be described later.
+Now we will first exercise how to integrate the properties into the
+program itself. Thus we get less dependant of external files.
+
+In prepration of things to come we rework our example to use a class
+of our own to encapsulate the \ExTeX\ functionality. The \file{main}
+method instanciates our class and invoces its \method{run} method.
+Tis is shown in the following source code.
+
+\begin{lstlisting}{}
+package org.extex.tutorial;
+
+import java.io.IOException;
+import java.util.Properties;
+
+import de.dante.extex.ExTeX;
+import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
+
+public class MyExTeX {
+
+    public static void main(final String[] args)
+            throws InterpreterException,
+                ConfigurationException,
+                IOException {
+
+        new MyExTeX().run();
+    }
+
+    private MyExTeX() {
+
+        super();
+    }
+
+    private Properties makeProperties() {
+
+        Properties properties = System.getProperties();
+        properties.put("extex.file", "sample");
+        return properties;
+    }
+
+    public void run()
+            throws InterpreterException,
+                ConfigurationException,
+                IOException {
+
+        ExTeX extex = new ExTeX(makeProperties());
+        extex.run();
+    }
+}
+\end{lstlisting}
+
+In addition we have moved the setting of the properties into a method
+of its own. This is the method \method{makeProperties}. Here we take
+the system properties and reset some of its values. Thus it is nor
+necessary -- and possible -- any more to adjust these values from the
+command line.
+
+If we want to go even further we can just omit the system properties
+at all. Instead we just create a new \class{Properties} object. This
+leads to the follwoing variant of the method \method{makeProperties}.
+
+\begin{lstlisting}{firstline=25}
+    private Properties makeProperties() {
+
+        Properties properties = new Properties();
+        properties.put("extex.file", "sample");
+        return properties;
+    }
+\end{lstlisting}
+
+\subsection{extex.nobanner}
+
+If we want to get rid of the banner output on stderr we can use the
+property \property{extex.nobanner}. This proepry can be set to true to
+suppress the banner. This is shown in the following modified method
+\method{makeProperties}.
+
+\begin{lstlisting}{firstline=25}
+    private Properties makeProperties() {
+
+        Properties properties = new Properties();
+        properties.put("extex.file", "sample");
+        |properties.put("extex.nobanner", "true");|
+        return properties;
+    }
+\end{lstlisting}
+
+\subsection{extex.interaction}
+
+\begin{lstlisting}{firstline=25}
+    private Properties makeProperties() {
+
+        Properties properties = new Properties();
+        properties.put("extex.file", "sample");
+        properties.put("extex.nobanner", "true");
+        |properties.put("extex.interaction", "batchmode");|
+        return properties;
+    }
+\end{lstlisting}
+
+\subsection{extex.halt.on.error}
+
+\begin{lstlisting}{firstline=25}
+    private Properties makeProperties() {
+
+        Properties properties = new Properties();
+        properties.put("extex.file", "sample");
+        properties.put("extex.nobanner", "true");
+        properties.put("extex.interaction", "batchmode");
+        |properties.put("extex.halt.on.error", "false");|
+        return properties;
+    }
+\end{lstlisting}
+
+\subsection{extex.output}
+
+\begin{lstlisting}{firstline=25}
+    private Properties makeProperties() {
+
+        Properties properties = new Properties();
+        properties.put("extex.file", "sample");
+        properties.put("extex.nobanner", "true");
+        properties.put("extex.interaction", "batchmode");
+        properties.put("extex.halt.on.error", "false");
+        |properties.put("extex.output", "pdf");|
+        return properties;
+    }
+\end{lstlisting}
+
+\subsection{extex.paper}
+
+\begin{lstlisting}{firstline=25}
+    private Properties makeProperties() {
+
+        Properties properties = new Properties();
+        properties.put("extex.file", "sample");
+        properties.put("extex.nobanner", "true");
+        properties.put("extex.interaction", "batchmode");
+        properties.put("extex.halt.on.error", "false");
+        properties.put("extex.output", "pdf");
+        |properties.put("extex.paper", "a4");|
+        return properties;
+    }
+\end{lstlisting}
+
+\subsection{extex.code}
+
+\begin{lstlisting}{}
+    |private Properties makeProperties(final String code) {|
+
+        Properties properties = new Properties();
+        |properties.put("extex.code", code);|
+        properties.put("extex.nobanner", "true");
+        properties.put("extex.interaction", "batchmode");
+        properties.put("extex.halt.on.error", "false");
+        properties.put("extex.output", "pdf");
+        properties.put("extex.paper", "a4");
+        return properties;
+    }
+\end{lstlisting}
+
+\subsection{extex.config}
+
+\begin{lstlisting}{firstline=25}
+    private Properties makeProperties(final String code) {
+
+        Properties properties = new Properties();
+        properties.put("extex.code", code);
+        properties.put("extex.nobanner", "true");
+        properties.put("extex.interaction", "batchmode");
+        properties.put("extex.halt.on.error", "false");
+        properties.put("extex.output", "pdf");
+        properties.put("extex.paper", "a4");
+        |properties.put("extex.config", "extex");|
+        return properties;
+    }
+\end{lstlisting}
+
+
+\section{Configuring \ExTeX{}}
+
+
+%
+% Local Variables: 
+% mode: latex
+% TeX-master: "embedExTeX.tex"
+% End: 

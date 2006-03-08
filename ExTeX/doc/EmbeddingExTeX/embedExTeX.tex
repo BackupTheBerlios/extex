@@ -1,0 +1,90 @@
+%%*****************************************************************************
+%% $Id: embedExTeX.tex,v 1.1 2006/03/08 10:29:56 gene Exp $
+%%*****************************************************************************
+%% Author: Gerd Neugebauer
+%%-----------------------------------------------------------------------------
+\documentclass{extex-doc}
+
+\usepackage{subfigure}
+\usepackage{makeidx}
+
+\def\setVersion$#1: #2.#3 ${\gdef\Version{#2.#3}}
+\setVersion$Revision: 1.1 $
+
+\newcommand\menu{\textsf}
+\newcommand\sub{\(\rightarrow\) }
+
+\newcommand\class[1]{\texttt{#1}\index{#1}}
+\newcommand\method[1]{\texttt{#1()}\index{#1()}}
+\newcommand\property[1]{\texttt{#1}\index{#1}}
+\newcommand\jar[1]{\texttt{#1}\index{#1}}
+
+\newcommand\file{\textsf}
+
+\lstset{moredelim=**[is][\itshape]{|}{|}}
+
+\makeindex
+
+\begin{document}%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{titlepage}\parindent=0pt
+
+  \title{Embedding \ExTeX{} -- A Tutorial}
+  \author{Gerd Neugebauer}
+  \maketitle
+
+  \begin{center}
+    \begin{abstract}\parindent=0pt
+      \ExTeX\ can be used as a plug-in replacement for \TeX. Beside
+      this use of \ExTeX\ the integration as library into a Java
+      program can be envisaged. This tutorial describes how to achieve
+      this. 
+    \end{abstract}
+  \end{center}
+  \newpage
+  \footnotesize
+  \copyright\ 2006 The \ExTeX\ Group and individual authors listed below
+  \medskip
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.2 or
+any later version published by the Free Software Foundation. A copy of
+the license is included in the section entitled ``GNU Free
+Documentation License''.
+\bigskip
+
+This product includes software developed by the Apache Software
+Foundation (\url{http://www.apache.org/}).
+
+\vfill
+
+Gerd Neugebauer\\
+Im Lerchelsb\"ohl 5\\
+64521 Gro\ss-Gerau (Germany)
+\smallskip
+
+\href{mailto://gene@gerd-neugebauer.de}{gene@gerd-neugebauer.de}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+%------------------------------------------------------------------------------
+
+\input{chapter-intro}
+\input{chapter-start}
+
+%------------------------------------------------------------------------------
+\appendix
+%------------------------------------------------------------------------------
+\chapter{Licenses}
+\input{fdl}
+
+\printindex
+
+\end{document}%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Local Variables:
+% mode: latex
+% TeX-master: nil
+% End:
