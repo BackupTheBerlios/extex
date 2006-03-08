@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -24,7 +24,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * This class provides a factory for a
- * {@link de.dante.extex.LanguageManager HyphenationManager}.
+ * {@link de.dante.extex.LanguageManager LanguageManager}.
  *
  *
  * <pre>
@@ -33,7 +33,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class LanguageManagerFactory extends AbstractFactory {
 
@@ -53,8 +53,7 @@ public class LanguageManagerFactory extends AbstractFactory {
     public LanguageManager newInstance(final String type)
             throws ConfigurationException {
 
-        return (LanguageManager) createInstance(type,
-                LanguageManager.class);
+        return (LanguageManager) createInstance(type, LanguageManager.class);
     }
 
 }
