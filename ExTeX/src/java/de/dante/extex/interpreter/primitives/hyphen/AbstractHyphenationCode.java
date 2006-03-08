@@ -47,7 +47,7 @@ import de.dante.extex.language.Language;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public abstract class AbstractHyphenationCode extends AbstractCode {
 
@@ -86,12 +86,9 @@ public abstract class AbstractHyphenationCode extends AbstractCode {
             throws InterpreterException {
 
         Tokens lang = context.getToksOrNull(LANGUAGE_TOKS);
-        String name = (lang != null ? lang.toText() : "");
-
-        if (name.length() == 0) {
-            Count language = context.getCount(LANGUAGE_COUNT);
-            name = Long.toString(language.getValue());
-        }
+        String name = (lang != null //
+                ? lang.toText() //
+                : Long.toString(context.getCount(LANGUAGE_COUNT).getValue()));
 
         return context.getLanguage(name);
     }
