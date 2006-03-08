@@ -19,9 +19,7 @@
 
 package de.dante.extex.language.hyphenation.base;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import de.dante.extex.interpreter.type.tokens.Tokens;
@@ -29,24 +27,21 @@ import de.dante.extex.language.ModifiableLanguage;
 import de.dante.extex.language.hyphenation.exception.HyphenationException;
 import de.dante.extex.language.ligature.LigatureBuilder;
 import de.dante.extex.language.word.WordTokenizer;
-import de.dante.extex.scanner.type.Catcode;
-import de.dante.extex.scanner.type.CatcodeException;
-import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.node.CharNode;
-import de.dante.extex.typesetter.type.node.HorizontalListNode;
-import de.dante.extex.typesetter.type.node.LigatureNode;
 import de.dante.extex.typesetter.type.node.factory.NodeFactory;
+import de.dante.extex.unicode.Unicode;
 import de.dante.util.UnicodeChar;
+import de.dante.util.UnicodeCharList;
 
 /**
  * This class stores the values for hyphenations and hyphenates words.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class BaseHyphenationTable implements ModifiableLanguage {
 
@@ -54,6 +49,43 @@ public class BaseHyphenationTable implements ModifiableLanguage {
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
     protected static final long serialVersionUID = 2005L;
+
+    /**
+     * Create the name for the <code>HyphenationTable</code>.
+     *
+     * @param pattern the pattern
+     * @param context the interpreter context
+     * @param key the container to store the key in
+     *
+     * @return the name
+     */
+    protected static boolean[] createHyphenation(final UnicodeCharList pattern,
+            final TypesetterOptions context, final UnicodeCharList key) {
+
+        int size = pattern.size();
+        int len = 0;
+        for (int i = 0; i < size; i++) {
+            if (!pattern.get(i).equals(Unicode.SHY)) {
+                len++;
+            }
+        }
+        boolean[] vec = new boolean[len];
+
+        UnicodeChar uc;
+        int j = 0;
+
+        for (int i = 0; i < size; i++) {
+            uc = pattern.get(i);
+            if (uc.equals(Unicode.SHY)) {
+                vec[j] = true;
+            } else {
+                j++;
+                key.add(uc);
+            }
+        }
+
+        return vec;
+    }
 
     /**
      * The field <tt>exceptionMap</tt> contains the exception words for
@@ -104,14 +136,12 @@ public class BaseHyphenationTable implements ModifiableLanguage {
      *      de.dante.extex.interpreter.type.tokens.Tokens,
      *      TypesetterOptions)
      */
-    public void addHyphenation(final Tokens word,
-            final TypesetterOptions context) throws HyphenationException {
+    public void addHyphenation(final UnicodeCharList word,
+            final TypesetterOptions options) throws HyphenationException {
 
-        try {
-            exceptionMap.put(createHyphenation(word, context), word);
-        } catch (CatcodeException e) {
-            throw new HyphenationException(e);
-        }
+        UnicodeCharList key = new UnicodeCharList();
+        boolean[] vec = createHyphenation(word, options, key);
+        exceptionMap.put(wordTokenizer.normalize(word, options), vec);
     }
 
     /**
@@ -123,32 +153,13 @@ public class BaseHyphenationTable implements ModifiableLanguage {
     }
 
     /**
-     * Create the name for the <code>HyphenationTable</code>.
-     *
-     * @param pattern the pattern
-     * @param context the interpreter context
-     *
-     * @return the name
-     *
-     * @throws CatcodeException in case of an error
+     * @see de.dante.extex.language.word.WordTokenizer#findWord(
+     *      de.dante.extex.typesetter.type.NodeList, int, java.util.List)
      */
-    protected List createHyphenation(final Tokens pattern,
-            final TypesetterOptions context) throws CatcodeException {
+    public int findWord(final NodeList nodes, final int start,
+            final UnicodeCharList word) throws HyphenationException {
 
-        List ret = new ArrayList();
-        Token t;
-        int length = pattern.length();
-
-        for (int i = 0; i < length; i++) {
-            t = pattern.get(i);
-            if (t.equals(Catcode.OTHER, (char) 0xad)) {
-                ret.add(new UnicodeChar('-'));
-            } else if (!t.equals(Catcode.OTHER, '-')) {
-                ret.add(new UnicodeChar(t.getChar().toLowerCase()));
-            }
-        }
-
-        return ret;
+        return wordTokenizer.findWord(nodes, start, word);
     }
 
     /**
@@ -176,34 +187,32 @@ public class BaseHyphenationTable implements ModifiableLanguage {
      *      boolean,
      *      de.dante.extex.typesetter.type.node.factory.NodeFactory)
      */
-    public boolean hyphenate(final HorizontalListNode nodelist,
+    public boolean hyphenate(final NodeList nodes,
             final TypesetterOptions context, final UnicodeChar hyphen,
             final int start, final boolean forall, final NodeFactory nodeFactory)
             throws HyphenationException {
 
-        if (hyphen == null || !hyphenactive || nodelist.size() == 0
+        if (hyphen == null || !hyphenactive || nodes.size() == 0
                 || wordTokenizer == null) {
             return false;
         }
+        Node hn = nodeFactory.getNode(context.getTypesettingContext(), hyphen);
+        CharNode hyphenNode = (CharNode) hn;
 
         boolean modified = false;
-        List word = new ArrayList();
-        int i = start;
-        int next;
+        UnicodeCharList word = new UnicodeCharList();
+        int next = wordTokenizer.findWord(nodes, start, word);
 
-        do {
-            next = wordTokenizer.findWord(nodelist, i, word);
+        modified = hyphenateOne(nodes, context, start, word, hyphenNode);
 
-            Tokens w = (Tokens) exceptionMap.get(word);
-            if (w != null) {
+        if (forall) {
+            for (int i = next; i < nodes.size(); i = next) {
+                next = wordTokenizer.findWord(nodes, i, word);
 
-                insertShy(nodelist, i, w);
-
-                modified = true;
+                modified = hyphenateOne(nodes, context, start, word, hyphenNode)
+                        || modified;
             }
-            i = next;
-
-        } while (forall && i < nodelist.size());
+        }
 
         return modified;
     }
@@ -211,52 +220,36 @@ public class BaseHyphenationTable implements ModifiableLanguage {
     /**
      * TODO gene: missing JavaDoc
      *
-     * @param nodelist the node list to modify
-     * @param start the start index
-     * @param w the word
+     * @param nodes the node list to consider
+     * @param context the options to use
+     * @param start the start index in the nodes
+     * @param word the word to hyphenate
+     * @param hyphenNode the node to use as hyphen
+     *
+     * @return <code>true</code> iff the the word has been found
+     *
+     * @throws HyphenationException in case of an error
      */
-    private void insertShy(final HorizontalListNode nodelist, final int start,
-            final Tokens w) {
+    public boolean hyphenateOne(final NodeList nodes,
+            final TypesetterOptions context, final int start,
+            final UnicodeCharList word, final CharNode hyphenNode)
+            throws HyphenationException {
 
-        int i = start;
-        /*
-         //TODO gene: modify the list instead of making a new one
-         HorizontalListNode nodes = new HorizontalListNode();
-         CharNodeFactory nodeFactory = new CharNodeFactory();
-         for (int j = 0; j < w.length(); j++) {
-         Token t = w.get(j);
-         if (t.equals(Catcode.OTHER, '-')) {
-         CharNode hyphenNode = nodeFactory.newInstance(context
-         .getTypesettingContext(), hyphen);
-         if (hyphenNode == null) {
-         nodes.add(new DiscretionaryNode(null, null, null));
-         } else {
-         nodes.add(//
-         new DiscretionaryNode(null,
-         new HorizontalListNode(hyphenNode),
-         null));
-         }
-         } else {
-         nodes.add(nodelist.get(i++));
-         }
-         }
-         */
-
-        int j = 0;
-        Node n;
-
-        for (; j < w.length();) {
-            n = nodelist.get(i);
-            if (n instanceof LigatureNode) {
-
-            } else if (n instanceof CharNode) {
-                if (w.get(i).equals(Catcode.OTHER, '-')) {
-
-                }
-            } else {
-            }
-            i++;
+        boolean[] w = (boolean[]) exceptionMap.get(word);
+        if (w == null) {
+            return false;
         }
+
+        boolean[] wc = (boolean[]) w.clone();
+        for (int i = 0; i < lefthyphenmin; i++) {
+            wc[i] = false;
+        }
+        for (int i = 0; i < righthyphenmin; i++) {
+            wc[wc.length - i - 1] = false;
+        }
+        wordTokenizer.insertShy(nodes, start, wc, hyphenNode);
+
+        return true;
     }
 
     /**
@@ -270,11 +263,37 @@ public class BaseHyphenationTable implements ModifiableLanguage {
     }
 
     /**
+     * @see de.dante.extex.language.word.WordTokenizer#insertShy(
+     *      de.dante.extex.typesetter.type.NodeList,
+     *      int,
+     *      boolean[],
+     *      de.dante.util.UnicodeChar,
+     *      de.dante.extex.typesetter.type.node.CharNode)
+     */
+    public void insertShy(final NodeList nodes, final int insertionPoint,
+            final boolean[] spec, final CharNode hyphenNode)
+            throws HyphenationException {
+
+        this.wordTokenizer.insertShy(nodes, insertionPoint, spec, hyphenNode);
+    }
+
+    /**
      * @see de.dante.extex.language.Language#isHyphenActive()
      */
     public boolean isHyphenActive() throws HyphenationException {
 
         return hyphenactive;
+    }
+
+    /**
+     * @see de.dante.extex.language.word.WordTokenizer#normalize(
+     *      de.dante.util.UnicodeCharList,
+     *      de.dante.extex.typesetter.TypesetterOptions)
+     */
+    public UnicodeCharList normalize(final UnicodeCharList word,
+            final TypesetterOptions options) throws HyphenationException {
+
+        return this.wordTokenizer.normalize(word, options);
     }
 
     /**
@@ -319,16 +338,6 @@ public class BaseHyphenationTable implements ModifiableLanguage {
     public void setWordTokenizer(final WordTokenizer wordTokenizer) {
 
         this.wordTokenizer = wordTokenizer;
-    }
-
-    /**
-     * @see de.dante.extex.language.word.WordTokenizer#findWord(
-     *      de.dante.extex.typesetter.type.NodeList, int, java.util.List)
-     */
-    public int findWord(final NodeList nodes, final int start, final List word)
-            throws HyphenationException {
-
-        return wordTokenizer.findWord(nodes, start, word);
     }
 
 }

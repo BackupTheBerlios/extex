@@ -21,8 +21,6 @@ package de.dante.extex.language.hyphenation.liang;
 
 import java.util.logging.Logger;
 
-import de.dante.extex.interpreter.context.TypesettingContext;
-import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.language.hyphenation.base.BaseHyphenationTable;
 import de.dante.extex.language.hyphenation.exception.DuplicateHyphenationException;
@@ -30,18 +28,16 @@ import de.dante.extex.language.hyphenation.exception.HyphenationException;
 import de.dante.extex.language.hyphenation.exception.IllegalTokenHyphenationException;
 import de.dante.extex.language.hyphenation.exception.IllegalValueHyphenationException;
 import de.dante.extex.language.hyphenation.exception.ImmutableHyphenationException;
-import de.dante.extex.language.hyphenation.util.NodeTraverser;
 import de.dante.extex.scanner.type.token.LetterToken;
 import de.dante.extex.scanner.type.token.OtherToken;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.type.Node;
-import de.dante.extex.typesetter.type.node.DiscretionaryNode;
-import de.dante.extex.typesetter.type.node.HorizontalListNode;
-import de.dante.extex.typesetter.type.node.factory.CachingNodeFactory;
+import de.dante.extex.typesetter.type.NodeList;
+import de.dante.extex.typesetter.type.node.CharNode;
 import de.dante.extex.typesetter.type.node.factory.NodeFactory;
 import de.dante.util.UnicodeChar;
-import de.dante.util.exception.GeneralException;
+import de.dante.util.UnicodeCharList;
 
 /**
  * This class stores the values for hyphenations and hyphenates words.
@@ -115,7 +111,7 @@ import de.dante.util.exception.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class LiangsHyphenationTable extends BaseHyphenationTable {
 
@@ -128,7 +124,7 @@ public class LiangsHyphenationTable extends BaseHyphenationTable {
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 20060305L;
 
     /**
      * The field <tt>compressed</tt> contains the indicator that the
@@ -240,33 +236,66 @@ public class LiangsHyphenationTable extends BaseHyphenationTable {
 
     /**
      * @see de.dante.extex.language.hyphenation.Hyphenator#hyphenate(
-     *      de.dante.extex.typesetter.type.node.HorizontalListNode,
+     *      de.dante.extex.typesetter.type.node.NodeList,
      *      de.dante.extex.typesetter.TypesetterOptions,
      *      de.dante.util.UnicodeChar,
      *      int,
      *      boolean,
      *      de.dante.extex.typesetter.type.node.factory.NodeFactory)
      */
-    public boolean hyphenate(final HorizontalListNode nodelist,
+    public boolean hyphenate(final NodeList nodelist,
             final TypesetterOptions context, final UnicodeChar hyphen,
             final int start, final boolean forall, final NodeFactory nodeFactory)
             throws HyphenationException {
 
-        if (!isHyphenActive()) {
+        if (hyphen == null || !isHyphenActive() || nodelist.size() < 2) {
             return false;
         }
 
-        int len = nodelist.countChars();
+        Node hn = nodeFactory.getNode(context.getTypesettingContext(), hyphen);
+        if (!(hn instanceof CharNode)) {
+            return false;
+        }
+        CharNode hyphenNode = (CharNode) hn;
+
+        UnicodeCharList word = new UnicodeCharList();
+        int next = findWord(nodelist, start, word);
+        boolean modified = hyphenateOne(nodelist, context, start, word,
+                hyphenNode);
+
+        if (forall) {
+            for (int i = next; i < nodelist.size(); i = next) {
+                word.clear();
+                next = findWord(nodelist, i, word);
+                modified = (hyphenateOne(nodelist, context, start, word,
+                        hyphenNode) || modified);
+            }
+        }
+
+        return modified;
+    }
+
+    /**
+     * @see de.dante.extex.language.hyphenation.base.BaseHyphenationTable#hyphenateOne(
+     *      de.dante.extex.typesetter.type.NodeList,
+     *      de.dante.extex.typesetter.TypesetterOptions,
+     *      int,
+     *      de.dante.util.UnicodeCharList,
+     *      de.dante.extex.typesetter.type.node.CharNode)
+     */
+    public boolean hyphenateOne(final NodeList nodelist,
+            final TypesetterOptions context, final int start,
+            final UnicodeCharList word, final CharNode hyphenNode)
+            throws HyphenationException {
+
+        int len = word.size();
         if (len <= 1) {
             return false;
         }
 
-        if (!super.hyphenate(nodelist, context, hyphen, start, forall,
-                nodeFactory)) {
-            return false;
+        if (super.hyphenateOne(nodelist, context, start, word, hyphenNode)) {
+            return true;
         }
-
-        //TODO gene: use start and forall
 
         int leftHyphenMin = (int) getLeftHyphenmin();
         int rightHyphenMin = (int) getRightHyphenmin();
@@ -277,11 +306,9 @@ public class LiangsHyphenationTable extends BaseHyphenationTable {
         char[] hyph = new char[len + 2];
         UnicodeChar[] chars = new UnicodeChar[len + 2];
         int idx = 0; // pointer into hyph; in sync with the current char
-        NodeTraverser nt = new NodeTraverser(nodelist);
         chars[idx++] = BORDER;
-
-        for (UnicodeChar c = nt.next(); c != null; c = nt.next()) {
-            chars[idx++] = c;
+        for (int i = 0; i < len; i++) {
+            chars[idx++] = word.get(i);
         }
         chars[idx] = BORDER;
 
@@ -311,44 +338,9 @@ public class LiangsHyphenationTable extends BaseHyphenationTable {
             return false;
         }
 
-        HorizontalListNode nodes = new HorizontalListNode();
-        NV nv = null;
-        Count index = new Count(0);
-        TypesettingContext tc = context.getTypesettingContext(); //TODO gene: is this correct?
+        insertShy(nodelist, start, isHyph, hyphenNode);
 
-        //TODO gene: modify the list instead of making a new one
-        for (int i = 0; i < nodelist.size(); i++) {
-            Node node = nodelist.get(i);
-            switch (node.countChars()) {
-                case 0: // for non-character nodes
-                    nodes.add(node);
-                    break;
-                case 1:
-                    if (isHyph[(int) index.getValue()]) {
-                        Node hyphenNode = nodeFactory.getNode(tc, hyphen);
-                        if (hyphenNode == null) {
-                            nodes.add(new DiscretionaryNode(null, null, null));
-                        } else {
-                            nodes.add(new DiscretionaryNode(null,
-                                    new HorizontalListNode(hyphenNode), null));
-                        }
-                    }
-                    nodes.add(node);
-                    index.add(1);
-                    break;
-                default:
-                    if (nv == null) {
-                        nv = new NV(nodes, hyphen, tc, nodeFactory, isHyph);
-                    }
-                    try {
-                        node.visit(nv, index);
-                    } catch (GeneralException e) {
-                        throw new HyphenationException(e);
-                    }
-            }
-        }
-
-        return false;
+        return true;
     }
 
     /**
