@@ -56,7 +56,7 @@ import de.dante.util.UnicodeChar;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
 
@@ -145,12 +145,12 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
      * @see de.dante.extex.scanner.type.token.TokenFactory#createToken(
      *      de.dante.extex.scanner.Catcode, char, java.lang.String)
      */
-    public Token createToken(final Catcode code, final char c,
+    public Token createToken(final Catcode code, final int c,
             final String namespace) throws CatcodeException {
 
         try {
-            return (Token) code
-                    .visit(this, null, new UnicodeChar(c), namespace);
+            return (Token) code.visit(this, null, //
+                    new UnicodeChar(c), namespace);
         } catch (CatcodeException e) {
             throw e;
         } catch (RuntimeException e) {

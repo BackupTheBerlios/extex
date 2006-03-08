@@ -30,7 +30,7 @@ import de.dante.util.UnicodeChar;
  * cache some of them and deliver the same token several times.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface TokenFactory {
 
@@ -63,7 +63,7 @@ public interface TokenFactory {
      *
      * @throws CatcodeException in case of an error
      */
-    Token createToken(Catcode code, char c, String namespace)
+    Token createToken(Catcode code, int c, String namespace)
             throws CatcodeException;
 
     /**
