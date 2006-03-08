@@ -26,17 +26,17 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.glue.WideGlue;
+import de.dante.extex.language.hyphenation.exception.HyphenationException;
 import de.dante.extex.main.logging.LogFormatter;
 import de.dante.extex.typesetter.Badness;
 import de.dante.extex.typesetter.Discardable;
-import de.dante.extex.typesetter.HyphenationEnabled;
 import de.dante.extex.typesetter.TypesetterOptions;
-import de.dante.extex.typesetter.hyphenator.Hyphenator;
 import de.dante.extex.typesetter.paragraphBuilder.FixedParagraphShape;
 import de.dante.extex.typesetter.paragraphBuilder.HangingParagraphShape;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
@@ -52,6 +52,8 @@ import de.dante.extex.typesetter.type.node.HorizontalListNode;
 import de.dante.extex.typesetter.type.node.KernNode;
 import de.dante.extex.typesetter.type.node.PenaltyNode;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
+import de.dante.extex.typesetter.type.node.factory.NodeFactory;
+import de.dante.util.UnicodeChar;
 import de.dante.util.framework.logger.LogEnabled;
 
 /**
@@ -151,13 +153,9 @@ import de.dante.util.framework.logger.LogEnabled;
  * Treat segments of a paragraph separated by forced breaks separately.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.30 $
+ * @version $Revision: 1.31 $
  */
-public class ParagraphBuilderImpl
-        implements
-            ParagraphBuilder,
-            LogEnabled,
-            HyphenationEnabled {
+public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled {
 
     /**
      * The constant <tt>COMPLETE</tt> contains the indicator that the
@@ -190,17 +188,16 @@ public class ParagraphBuilderImpl
             0, Dimen.ZERO_PT, Dimen.ZERO_PT);
 
     /**
-     * The field <tt>hyphenator</tt> contains the class to use for hyphenating
-     * lines. This means that additional discretionary nodes are inserted.
-     */
-    private Hyphenator hyphenator = null;
-
-    /**
      * The field <tt>logger</tt> contains the logger to be used.
      * This field is initialized from the framework by invoking the appropriate
      * setter.
      */
     private Logger logger = null;
+
+    /**
+     * The field <tt>nodeFactory</tt> contains the node factory.
+     */
+    private NodeFactory nodeFactory;
 
     /**
      * The field <tt>options</tt> contains the reference to the options object.
@@ -242,7 +239,8 @@ public class ParagraphBuilderImpl
      * @see de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder#build(
      *      de.dante.extex.typesetter.type.node.HorizontalListNode)
      */
-    public NodeList build(final HorizontalListNode nodes) {
+    public NodeList build(final HorizontalListNode nodes)
+            throws HyphenationException {
 
         //TODO gene: split into smaller methods
 
@@ -279,12 +277,7 @@ public class ParagraphBuilderImpl
             return nl;
         }
 
-        if (hyphenator != null) {
-            if (tracer != null) {
-                tracer.log(Level.FINE, "@hyphenating\n");
-            }
-            hyphenator.hyphenate(nodes);
-        }
+        hyphenate(nodes);
 
         if (tracer != null) {
             tracer.log(Level.FINE, "@secondpass\n");
@@ -434,16 +427,6 @@ public class ParagraphBuilderImpl
     }
 
     /**
-     * Setter for hyphenator.
-     *
-     * @param theHyphenator the hyphenator to set
-     */
-    public void enableHyphenation(final Hyphenator theHyphenator) {
-
-        this.hyphenator = theHyphenator;
-    }
-
-    /**
      * @see de.dante.util.framework.logger.LogEnabled#enableLogging(
      *      java.util.logging.Logger)
      */
@@ -511,6 +494,31 @@ public class ParagraphBuilderImpl
         }
 
         return b;
+    }
+
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param nodes the node list to hyphenate
+     */
+    private void hyphenate(final HorizontalListNode nodes)
+            throws HyphenationException {
+
+        if (tracer != null) {
+            tracer.log(Level.FINE, "@hyphenating\n");
+        }
+        int size = nodes.size();
+        Node n;
+
+        for (int i = 0; i < size; i++) {
+            n = nodes.get(i);
+            if (n instanceof CharNode) {
+                TypesettingContext tc = ((CharNode) n).getTypesettingContext();
+                UnicodeChar hyphen = tc.getFont().getHyphenChar();
+                tc.getLanguage().hyphenate(nodes, options, hyphen, i, false,
+                        nodeFactory);
+            }
+        }
     }
 
     /**
@@ -667,6 +675,15 @@ public class ParagraphBuilderImpl
     }
 
     /**
+     * @see de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder#setNodefactory(
+     *      de.dante.extex.typesetter.type.node.factory.NodeFactory)
+     */
+    public void setNodefactory(final NodeFactory nodeFactory) {
+
+        this.nodeFactory = nodeFactory;
+    }
+
+    /**
      * @see de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder#setOptions(
      *      de.dante.extex.typesetter.TypesetterOptions)
      */
@@ -709,4 +726,5 @@ public class ParagraphBuilderImpl
 
         return vlist;
     }
+
 }

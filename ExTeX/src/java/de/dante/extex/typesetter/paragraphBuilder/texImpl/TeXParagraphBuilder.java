@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
@@ -32,12 +33,13 @@ import de.dante.extex.interpreter.type.glue.FixedGlueComponent;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.glue.GlueComponent;
 import de.dante.extex.interpreter.type.glue.WideGlue;
+import de.dante.extex.language.Language;
+import de.dante.extex.language.hyphenation.Hyphenator;
+import de.dante.extex.language.hyphenation.exception.HyphenationException;
 import de.dante.extex.typesetter.Badness;
 import de.dante.extex.typesetter.Discardable;
-import de.dante.extex.typesetter.HyphenationEnabled;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
-import de.dante.extex.typesetter.hyphenator.Hyphenator;
 import de.dante.extex.typesetter.paragraphBuilder.FixedParagraphShape;
 import de.dante.extex.typesetter.paragraphBuilder.HangingParagraphShape;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
@@ -66,7 +68,9 @@ import de.dante.extex.typesetter.type.node.SpaceNode;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
 import de.dante.extex.typesetter.type.node.VirtualCharNode;
 import de.dante.extex.typesetter.type.node.WhatsItNode;
+import de.dante.extex.typesetter.type.node.factory.NodeFactory;
 import de.dante.util.Locator;
+import de.dante.util.UnicodeChar;
 import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.i18n.Localizable;
 import de.dante.util.framework.i18n.Localizer;
@@ -113,12 +117,11 @@ import de.dante.util.framework.logger.LogEnabled;
  * </i>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TeXParagraphBuilder
         implements
             ParagraphBuilder,
-            HyphenationEnabled,
             Localizable,
             LogEnabled {
 
@@ -132,6 +135,11 @@ public class TeXParagraphBuilder
      * if none has been set yet.
      */
     private Localizer localizer = null;
+
+    /**
+     * The field <tt>nodeFactory</tt> contains the node factory.
+     */
+    private NodeFactory nodeFactory;
 
     /**
      * The field <tt>options</tt> contains the reference to the context.
@@ -345,11 +353,6 @@ public class TeXParagraphBuilder
             0, Dimen.ZERO_PT, Dimen.ZERO_PT);
 
     /**
-     * The field <tt>hyphenator</tt> contains the hyphenator.
-     */
-    private Hyphenator hyphenator = null;
-
-    /**
      * Creates a new object.
      */
     public TeXParagraphBuilder() {
@@ -438,6 +441,15 @@ public class TeXParagraphBuilder
     }
 
     /**
+     * @see de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder#setNodefactory(
+     *      de.dante.extex.typesetter.type.node.factory.NodeFactory)
+     */
+    public void setNodefactory(final NodeFactory factory) {
+
+        this.nodeFactory = factory;
+    }
+
+    /**
      * @see de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder#setOptions(
      *   de.dante.extex.typesetter.TypesetterOptions)
      */
@@ -466,15 +478,6 @@ public class TeXParagraphBuilder
     public void enableLocalization(final Localizer theLocalizer) {
 
         this.localizer = theLocalizer;
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.HyphenationEnabled#enableHyphenation(
-     *      de.dante.extex.typesetter.hyphenator.Hyphenator)
-     */
-    public void enableHyphenation(final Hyphenator h) {
-
-        this.hyphenator = h;
     }
 
     /**
@@ -2940,7 +2943,7 @@ public class TeXParagraphBuilder
             // if second_pass && auto_breaking then
             if (secondPass && autoBreaking) {
                 // «Try to hyphenate the following word 894»;
-                hyphenateFollowingWord(nodes);
+                hyphenateFollowingWord(nodes, curBreak);
             }
 
             // end ;
@@ -4009,13 +4012,31 @@ public class TeXParagraphBuilder
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * Hyphenate the following word.
      *
-     * @param value ...
+     * @param list the node list to insert the hyphenation points into
+     * @param start the starting index
+     *
+     * @throws HyphenationException in case of an error
      */
-    private void hyphenateFollowingWord(final NodeList value) {
+    private void hyphenateFollowingWord(final NodeList list, final int start)
+            throws HyphenationException {
 
-        hyphenator.hyphenate(value); //TODO gene: just hyphenate one word
+        Node n;
+
+        for (int i = start; i < list.size(); i++) {
+            n = list.get(i);
+            if (n instanceof CharNode) {
+                TypesettingContext tc = ((CharNode) n).getTypesettingContext();
+                Language language = tc.getLanguage();
+                UnicodeChar hyphen = tc.getFont().getHyphenChar();
+                if (hyphen != null) {
+                    language.hyphenate(list, options, hyphen, start, false,
+                            nodeFactory);
+                }
+                return;
+            }
+        }
     }
 
 }
