@@ -48,7 +48,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class BaseLanguageManager extends AbstractFactory
         implements
@@ -125,9 +125,10 @@ public class BaseLanguageManager extends AbstractFactory
     public Language getLanguage(final String name)
             throws ConfigurationException {
 
-        Language table = (ModifiableLanguage) tables.get(name);
+        Language table = (Language) tables.get(name);
         if (table == null) {
             table = createLanguage(name);
+            tables.put(name, table);
         }
         return table;
     }
