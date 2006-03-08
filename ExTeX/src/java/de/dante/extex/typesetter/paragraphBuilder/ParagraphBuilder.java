@@ -23,13 +23,14 @@ import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
+import de.dante.extex.typesetter.type.node.factory.NodeFactory;
 
 /**
  * This interface describes the function to split a large line into several
  * junks.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public interface ParagraphBuilder {
 
@@ -49,10 +50,16 @@ public interface ParagraphBuilder {
     NodeList build(HorizontalListNode nodes) throws TypesetterException;
 
     /**
+     * Setter for the node factory.
+     *
+     * @param nodeFactory the node factory
+     */
+    void setNodefactory(NodeFactory nodeFactory);
+
+    /**
      * Setter for options.
      *
      * @param options the options to set.
      */
     void setOptions(TypesetterOptions options);
-
 }
