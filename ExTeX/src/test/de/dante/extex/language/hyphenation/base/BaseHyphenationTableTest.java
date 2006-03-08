@@ -46,12 +46,13 @@ import de.dante.extex.typesetter.type.node.SpaceNode;
 import de.dante.extex.typesetter.type.node.factory.CachingNodeFactory;
 import de.dante.extex.typesetter.type.node.factory.NodeFactory;
 import de.dante.util.UnicodeChar;
+import de.dante.util.UnicodeCharList;
 
 /**
  * TODO gene: missing JavaDoc.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class BaseHyphenationTableTest extends TestCase {
 
@@ -59,7 +60,7 @@ public class BaseHyphenationTableTest extends TestCase {
      * Mock implementation of a font.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.2 $
+     * @version $Revision: 1.3 $
      */
     private class MockFont implements Font {
 
@@ -235,7 +236,7 @@ public class BaseHyphenationTableTest extends TestCase {
      * This is a mock implementation of a glyph.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.2 $
+     * @version $Revision: 1.3 $
      */
     private class MockGlyph implements Glyph {
 
@@ -385,7 +386,7 @@ public class BaseHyphenationTableTest extends TestCase {
      * This mock implementation is for test purposes only.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.2 $
+     * @version $Revision: 1.3 $
      */
     private class MyMockContext extends MockContext {
 
@@ -477,8 +478,27 @@ public class BaseHyphenationTableTest extends TestCase {
         context = new MyMockContext();
         Context c = new MockContext();
         language = makeLanguage();
-        language.addHyphenation(new Tokens(c, "abc-def"), context);
-        language.addHyphenation(new Tokens(c, "d-e-f"), context);
+        language.addHyphenation(makeList("abc-def"), context);
+        language.addHyphenation(makeList("d-e-f"), context);
+    }
+
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param s ...
+     * @return ...
+     */
+    private UnicodeCharList makeList(final CharSequence s) {
+
+        UnicodeCharList list = new UnicodeCharList();
+        for (int i = 0; i < s.length(); i++) {
+            int c = s.charAt(i);
+            if (c == '-') {
+                c = 0xad;
+            }
+            list.add(new UnicodeChar(c));
+        }
+        return list;
     }
 
     /**
