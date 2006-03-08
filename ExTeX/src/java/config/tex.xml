@@ -82,7 +82,7 @@
 
     <!-- The configuration for the language manager.
       -->
-    <Language src="language/language.xml" />
+    <Language src="language/languageTeX.xml" />
 
     <!-- The configuration of the token factory.
       -->
@@ -131,7 +131,9 @@
     <TeX class="de.dante.extex.typesetter.impl.TypesetterImpl"
          direction="lr">
       <PageBuilder class="de.dante.extex.typesetter.pageBuilder.impl.PageBuilderImpl"/>
-      <ParagraphBuilder class="de.dante.extex.typesetter.paragraphBuilder.texImpl.TeXParagraphBuilder"/>
+      <ParagraphBuilder class="de.dante.extex.typesetter.paragraphBuilder.texImpl.TeXParagraphBuilder">
+        <Hyphenator class="de.dante.extex.typesetter.paragraphBuilder.texImpl.TeXParagraphBuilder"/>
+      </ParagraphBuilder>
       <NodeFactory class="de.dante.extex.typesetter.type.node.factory.CachingNodeFactory"/>
     </TeX>
     <experimental class="de.dante.extex.typesetter.impl.TypesetterImpl"
