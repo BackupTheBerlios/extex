@@ -19,14 +19,8 @@
 
 package de.dante.extex.typesetter.type.node.factory;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import de.dante.extex.font.type.VirtualFount;
 import de.dante.extex.interpreter.context.TypesettingContext;
-import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.typesetter.type.Node;
-import de.dante.extex.typesetter.type.node.CharNode;
 import de.dante.extex.typesetter.type.node.DiscretionaryNode;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
 import de.dante.extex.unicode.Unicode;
@@ -38,7 +32,7 @@ import de.dante.util.UnicodeChar;
  * and virtual chars.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class SimpleUnicodeNodeFactory extends SimpleNodeFactory {
 
