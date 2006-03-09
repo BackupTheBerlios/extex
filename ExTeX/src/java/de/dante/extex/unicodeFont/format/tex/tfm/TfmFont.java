@@ -50,7 +50,7 @@ import de.dante.util.resource.PropertyConfigurable;
  * TODO add EE00 from Unicode
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 
 public class TfmFont
@@ -444,14 +444,14 @@ public class TfmFont
     }
 
     /**
-     * hyphen-char
+     * hyphen-char.
      */
     private transient UnicodeChar hyphenchar = new UnicodeChar('-');
 
     /**
-     * skew-char
+     * skew-char.
      */
-    private transient UnicodeChar skewchar = new UnicodeChar(-1);
+    private transient UnicodeChar skewchar = null;
 
     /**
      * @see de.dante.extex.unicodeFont.type.TexFont#getHyphenChar()
