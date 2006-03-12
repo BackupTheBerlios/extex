@@ -32,7 +32,7 @@ import de.dante.util.resource.ResourceFinder;
  * Factory for enc-files.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class EncFactory implements Serializable {
 
@@ -81,6 +81,28 @@ public class EncFactory implements Serializable {
             EncReader er = new EncReader(in);
             table = er.getTable();
             data.put(filename, table);
+        }
+        return table;
+    }
+
+    /**
+     * Returns the encoding table (without a slash in the name).
+     * @param filename  the file name.
+     * @return Returns the encoding table.
+     * @throws FontException if an font-erorr occurred.
+     * @throws ConfigurationException from the resource finder.
+     */
+    public String[] getEncodingTableWithoutSlash(final String filename)
+            throws FontException, ConfigurationException {
+
+        String[] table = getEncodingTable(filename);
+
+        if (table != null) {
+            for (int i = 0; i < table.length; i++) {
+                if (table[i].startsWith("/")) {
+                    table[i] = table[i].substring(1);
+                }
+            }
         }
         return table;
     }

@@ -1,0 +1,1480 @@
+<?xml version="1.0" encoding="ISO8859-1"?>
+<!-- 
+Created with ExTeX.
+ -->
+<map>
+   <entry texfont="antpb" encvec="antp.enc.xml" efm="antpb.efm"/>
+   <entry texfont="antpbi" encvec="antp.enc.xml" efm="antpbi.efm"/>
+   <entry texfont="antpr" encvec="antp.enc.xml" efm="antpr.efm"/>
+   <entry texfont="antpri" encvec="antp.enc.xml" efm="antpri.efm"/>
+   <entry texfont="aurical" efm="aurical.efm"/>
+   <entry texfont="bchb8r" encvec="8r.enc.xml" efm="bchb8r.efm"/>
+   <entry texfont="bchbi8r" encvec="8r.enc.xml" efm="bchbi8r.efm"/>
+   <entry texfont="bchbo8r" encvec="8r.enc.xml" efm="bchbo8r.efm"/>
+   <entry texfont="bchr8r" encvec="8r.enc.xml" efm="bchr8r.efm"/>
+   <entry texfont="bchri8r" encvec="8r.enc.xml" efm="bchri8r.efm"/>
+   <entry texfont="bchro8r" encvec="8r.enc.xml" efm="bchro8r.efm"/>
+   <entry texfont="cmb10" efm="cmb10.efm"/>
+   <entry texfont="cmbsy10" efm="cmbsy10.efm"/>
+   <entry texfont="cmbsy5" efm="cmbsy5.efm"/>
+   <entry texfont="cmbsy6" efm="cmbsy6.efm"/>
+   <entry texfont="cmbsy7" efm="cmbsy7.efm"/>
+   <entry texfont="cmbsy8" efm="cmbsy8.efm"/>
+   <entry texfont="cmbsy9" efm="cmbsy9.efm"/>
+   <entry texfont="cmbx10" efm="cmbx10.efm"/>
+   <entry texfont="cmbx12" efm="cmbx12.efm"/>
+   <entry texfont="cmbx5" efm="cmbx5.efm"/>
+   <entry texfont="cmbx6" efm="cmbx6.efm"/>
+   <entry texfont="cmbx7" efm="cmbx7.efm"/>
+   <entry texfont="cmbx8" efm="cmbx8.efm"/>
+   <entry texfont="cmbx9" efm="cmbx9.efm"/>
+   <entry texfont="cmbxsl10" efm="cmbxsl10.efm"/>
+   <entry texfont="cmbxti10" efm="cmbxti10.efm"/>
+   <entry texfont="cmbxti12" efm="cmbxti12.efm"/>
+   <entry texfont="cmbxti7" efm="cmbxti7.efm"/>
+   <entry texfont="cmcb10" efm="cmcb10.efm"/>
+   <entry texfont="cmcbx10" efm="cmcbx10.efm"/>
+   <entry texfont="cmcbx12" efm="cmcbx12.efm"/>
+   <entry texfont="cmcbx5" efm="cmcbx5.efm"/>
+   <entry texfont="cmcbx6" efm="cmcbx6.efm"/>
+   <entry texfont="cmcbx7" efm="cmcbx7.efm"/>
+   <entry texfont="cmcbx8" efm="cmcbx8.efm"/>
+   <entry texfont="cmcbx9" efm="cmcbx9.efm"/>
+   <entry texfont="cmcbxsl10" efm="cmcbxsl10.efm"/>
+   <entry texfont="cmcbxti10" efm="cmcbxti10.efm"/>
+   <entry texfont="cmccsc10" efm="cmccsc10.efm"/>
+   <entry texfont="cmccsc8" efm="cmccsc8.efm"/>
+   <entry texfont="cmccsc9" efm="cmccsc9.efm"/>
+   <entry texfont="cmcinch" efm="cmcinch.efm"/>
+   <entry texfont="cmcitt10" efm="cmcitt10.efm"/>
+   <entry texfont="cmcsc10" efm="cmcsc10.efm"/>
+   <entry texfont="cmcsc8" efm="cmcsc8.efm"/>
+   <entry texfont="cmcsc9" efm="cmcsc9.efm"/>
+   <entry texfont="cmcsl10" efm="cmcsl10.efm"/>
+   <entry texfont="cmcsl12" efm="cmcsl12.efm"/>
+   <entry texfont="cmcsl8" efm="cmcsl8.efm"/>
+   <entry texfont="cmcsl9" efm="cmcsl9.efm"/>
+   <entry texfont="cmcsltt10" efm="cmcsltt10.efm"/>
+   <entry texfont="cmcss10" efm="cmcss10.efm"/>
+   <entry texfont="cmcss12" efm="cmcss12.efm"/>
+   <entry texfont="cmcss17" efm="cmcss17.efm"/>
+   <entry texfont="cmcss8" efm="cmcss8.efm"/>
+   <entry texfont="cmcss9" efm="cmcss9.efm"/>
+   <entry texfont="cmcssbx10" efm="cmcssbx10.efm"/>
+   <entry texfont="cmcssdc10" efm="cmcssdc10.efm"/>
+   <entry texfont="cmcssi10" efm="cmcssi10.efm"/>
+   <entry texfont="cmcssi12" efm="cmcssi12.efm"/>
+   <entry texfont="cmcssi17" efm="cmcssi17.efm"/>
+   <entry texfont="cmcssi8" efm="cmcssi8.efm"/>
+   <entry texfont="cmcssi9" efm="cmcssi9.efm"/>
+   <entry texfont="cmcssq8" efm="cmcssq8.efm"/>
+   <entry texfont="cmcssqi8" efm="cmcssqi8.efm"/>
+   <entry texfont="cmcti10" efm="cmcti10.efm"/>
+   <entry texfont="cmcti12" efm="cmcti12.efm"/>
+   <entry texfont="cmcti7" efm="cmcti7.efm"/>
+   <entry texfont="cmcti8" efm="cmcti8.efm"/>
+   <entry texfont="cmcti9" efm="cmcti9.efm"/>
+   <entry texfont="cmctt10" efm="cmctt10.efm"/>
+   <entry texfont="cmctt12" efm="cmctt12.efm"/>
+   <entry texfont="cmctt8" efm="cmctt8.efm"/>
+   <entry texfont="cmctt9" efm="cmctt9.efm"/>
+   <entry texfont="cmcu10" efm="cmcu10.efm"/>
+   <entry texfont="cmcyr10" efm="cmcyr10.efm"/>
+   <entry texfont="cmcyr12" efm="cmcyr12.efm"/>
+   <entry texfont="cmcyr17" efm="cmcyr17.efm"/>
+   <entry texfont="cmcyr5" efm="cmcyr5.efm"/>
+   <entry texfont="cmcyr6" efm="cmcyr6.efm"/>
+   <entry texfont="cmcyr7" efm="cmcyr7.efm"/>
+   <entry texfont="cmcyr8" efm="cmcyr8.efm"/>
+   <entry texfont="cmcyr9" efm="cmcyr9.efm"/>
+   <entry texfont="cmdunh10" efm="cmdunh10.efm"/>
+   <entry texfont="cmex10" efm="cmex10.efm"/>
+   <entry texfont="cmex7" efm="cmex7.efm"/>
+   <entry texfont="cmex8" efm="cmex8.efm"/>
+   <entry texfont="cmex9" efm="cmex9.efm"/>
+   <entry texfont="cmff10" efm="cmff10.efm"/>
+   <entry texfont="cmfi10" efm="cmfi10.efm"/>
+   <entry texfont="cmfib8" efm="cmfib8.efm"/>
+   <entry texfont="cminch" efm="cminch.efm"/>
+   <entry texfont="cmitt10" efm="cmitt10.efm"/>
+   <entry texfont="cmitt12" efm="cmitt12.efm"/>
+   <entry texfont="cmitt9" efm="cmitt9.efm"/>
+   <entry texfont="cmmi10" efm="cmmi10.efm"/>
+   <entry texfont="cmmi12" efm="cmmi12.efm"/>
+   <entry texfont="cmmi5" efm="cmmi5.efm"/>
+   <entry texfont="cmmi6" efm="cmmi6.efm"/>
+   <entry texfont="cmmi7" efm="cmmi7.efm"/>
+   <entry texfont="cmmi8" efm="cmmi8.efm"/>
+   <entry texfont="cmmi9" efm="cmmi9.efm"/>
+   <entry texfont="cmmib10" efm="cmmib10.efm"/>
+   <entry texfont="cmmib5" efm="cmmib5.efm"/>
+   <entry texfont="cmmib6" efm="cmmib6.efm"/>
+   <entry texfont="cmmib7" efm="cmmib7.efm"/>
+   <entry texfont="cmmib8" efm="cmmib8.efm"/>
+   <entry texfont="cmmib9" efm="cmmib9.efm"/>
+   <entry texfont="cmr10" efm="cmr10.efm"/>
+   <entry texfont="cmr12" efm="cmr12.efm"/>
+   <entry texfont="cmr17" efm="cmr17.efm"/>
+   <entry texfont="cmr5" efm="cmr5.efm"/>
+   <entry texfont="cmr6" efm="cmr6.efm"/>
+   <entry texfont="cmr7" efm="cmr7.efm"/>
+   <entry texfont="cmr8" efm="cmr8.efm"/>
+   <entry texfont="cmr9" efm="cmr9.efm"/>
+   <entry texfont="cmsl10" efm="cmsl10.efm"/>
+   <entry texfont="cmsl12" efm="cmsl12.efm"/>
+   <entry texfont="cmsl6" efm="cmsl6.efm"/>
+   <entry texfont="cmsl8" efm="cmsl8.efm"/>
+   <entry texfont="cmsl9" efm="cmsl9.efm"/>
+   <entry texfont="cmsltt10" efm="cmsltt10.efm"/>
+   <entry texfont="cmsltt9" efm="cmsltt9.efm"/>
+   <entry texfont="cmss10" efm="cmss10.efm"/>
+   <entry texfont="cmss12" efm="cmss12.efm"/>
+   <entry texfont="cmss17" efm="cmss17.efm"/>
+   <entry texfont="cmss8" efm="cmss8.efm"/>
+   <entry texfont="cmss9" efm="cmss9.efm"/>
+   <entry texfont="cmssbx10" efm="cmssbx10.efm"/>
+   <entry texfont="cmssbxo10" efm="cmssbxo10.efm"/>
+   <entry texfont="cmssdc10" efm="cmssdc10.efm"/>
+   <entry texfont="cmssi10" efm="cmssi10.efm"/>
+   <entry texfont="cmssi12" efm="cmssi12.efm"/>
+   <entry texfont="cmssi17" efm="cmssi17.efm"/>
+   <entry texfont="cmssi8" efm="cmssi8.efm"/>
+   <entry texfont="cmssi9" efm="cmssi9.efm"/>
+   <entry texfont="cmssq8" efm="cmssq8.efm"/>
+   <entry texfont="cmssqi8" efm="cmssqi8.efm"/>
+   <entry texfont="cmsy10" efm="cmsy10.efm"/>
+   <entry texfont="cmsy5" efm="cmsy5.efm"/>
+   <entry texfont="cmsy6" efm="cmsy6.efm"/>
+   <entry texfont="cmsy7" efm="cmsy7.efm"/>
+   <entry texfont="cmsy8" efm="cmsy8.efm"/>
+   <entry texfont="cmsy9" efm="cmsy9.efm"/>
+   <entry texfont="cmtcsc10" efm="cmtcsc10.efm"/>
+   <entry texfont="cmtex10" efm="cmtex10.efm"/>
+   <entry texfont="cmtex8" efm="cmtex8.efm"/>
+   <entry texfont="cmtex9" efm="cmtex9.efm"/>
+   <entry texfont="cmti10" efm="cmti10.efm"/>
+   <entry texfont="cmti12" efm="cmti12.efm"/>
+   <entry texfont="cmti7" efm="cmti7.efm"/>
+   <entry texfont="cmti8" efm="cmti8.efm"/>
+   <entry texfont="cmti9" efm="cmti9.efm"/>
+   <entry texfont="cmtt10" efm="cmtt10.efm"/>
+   <entry texfont="cmtt12" efm="cmtt12.efm"/>
+   <entry texfont="cmtt8" efm="cmtt8.efm"/>
+   <entry texfont="cmtt9" efm="cmtt9.efm"/>
+   <entry texfont="cmu10" efm="cmu10.efm"/>
+   <entry texfont="cmvtt10" efm="cmvtt10.efm"/>
+   <entry texfont="cob" encvec="texnansi.enc.xml" efm="cob.efm"/>
+   <entry texfont="cobo" encvec="texnansi.enc.xml" efm="cobo.efm"/>
+   <entry texfont="com" encvec="texnansi.enc.xml" efm="com.efm"/>
+   <entry texfont="contnav" efm="contnav.efm"/>
+   <entry texfont="coo" encvec="texnansi.enc.xml" efm="coo.efm"/>
+   <entry texfont="cork-anttb" encvec="cork-antt.enc.xml" efm="cork-anttb.efm"/>
+   <entry texfont="cork-anttbcap" encvec="cork-anttcap.enc.xml" efm="cork-anttbcap.efm"/>
+   <entry texfont="cork-anttbi" encvec="cork-antt.enc.xml" efm="cork-anttbi.efm"/>
+   <entry texfont="cork-anttbicap" encvec="cork-anttcap.enc.xml" efm="cork-anttbicap.efm"/>
+   <entry texfont="cork-anttcb" encvec="cork-antt.enc.xml" efm="cork-anttcb.efm"/>
+   <entry texfont="cork-anttcbcap" encvec="cork-anttcap.enc.xml" efm="cork-anttcbcap.efm"/>
+   <entry texfont="cork-anttcbi" encvec="cork-antt.enc.xml" efm="cork-anttcbi.efm"/>
+   <entry texfont="cork-anttcbicap" encvec="cork-anttcap.enc.xml" efm="cork-anttcbicap.efm"/>
+   <entry texfont="cork-anttcl" encvec="cork-antt.enc.xml" efm="cork-anttcl.efm"/>
+   <entry texfont="cork-anttclcap" encvec="cork-anttcap.enc.xml" efm="cork-anttclcap.efm"/>
+   <entry texfont="cork-anttcli" encvec="cork-antt.enc.xml" efm="cork-anttcli.efm"/>
+   <entry texfont="cork-anttclicap" encvec="cork-anttcap.enc.xml" efm="cork-anttclicap.efm"/>
+   <entry texfont="cork-anttcm" encvec="cork-antt.enc.xml" efm="cork-anttcm.efm"/>
+   <entry texfont="cork-anttcmcap" encvec="cork-anttcap.enc.xml" efm="cork-anttcmcap.efm"/>
+   <entry texfont="cork-anttcmi" encvec="cork-antt.enc.xml" efm="cork-anttcmi.efm"/>
+   <entry texfont="cork-anttcmicap" encvec="cork-anttcap.enc.xml" efm="cork-anttcmicap.efm"/>
+   <entry texfont="cork-anttcr" encvec="cork-antt.enc.xml" efm="cork-anttcr.efm"/>
+   <entry texfont="cork-anttcrcap" encvec="cork-anttcap.enc.xml" efm="cork-anttcrcap.efm"/>
+   <entry texfont="cork-anttcri" encvec="cork-antt.enc.xml" efm="cork-anttcri.efm"/>
+   <entry texfont="cork-anttcricap" encvec="cork-anttcap.enc.xml" efm="cork-anttcricap.efm"/>
+   <entry texfont="cork-anttl" encvec="cork-antt.enc.xml" efm="cork-anttl.efm"/>
+   <entry texfont="cork-anttlcap" encvec="cork-anttcap.enc.xml" efm="cork-anttlcap.efm"/>
+   <entry texfont="cork-anttli" encvec="cork-antt.enc.xml" efm="cork-anttli.efm"/>
+   <entry texfont="cork-anttlicap" encvec="cork-anttcap.enc.xml" efm="cork-anttlicap.efm"/>
+   <entry texfont="cork-anttm" encvec="cork-antt.enc.xml" efm="cork-anttm.efm"/>
+   <entry texfont="cork-anttmcap" encvec="cork-anttcap.enc.xml" efm="cork-anttmcap.efm"/>
+   <entry texfont="cork-anttmi" encvec="cork-antt.enc.xml" efm="cork-anttmi.efm"/>
+   <entry texfont="cork-anttmicap" encvec="cork-anttcap.enc.xml" efm="cork-anttmicap.efm"/>
+   <entry texfont="cork-anttr" encvec="cork-antt.enc.xml" efm="cork-anttr.efm"/>
+   <entry texfont="cork-anttrcap" encvec="cork-anttcap.enc.xml" efm="cork-anttrcap.efm"/>
+   <entry texfont="cork-anttri" encvec="cork-antt.enc.xml" efm="cork-anttri.efm"/>
+   <entry texfont="cork-anttricap" encvec="cork-anttcap.enc.xml" efm="cork-anttricap.efm"/>
+   <entry texfont="cork-lmb10" encvec="cork-lm.enc.xml" efm="cork-lmb10.efm"/>
+   <entry texfont="cork-lmbo10" encvec="cork-lm.enc.xml" efm="cork-lmbo10.efm"/>
+   <entry texfont="cork-lmbx10" encvec="cork-lm.enc.xml" efm="cork-lmbx10.efm"/>
+   <entry texfont="cork-lmbx12" encvec="cork-lm.enc.xml" efm="cork-lmbx12.efm"/>
+   <entry texfont="cork-lmbx5" encvec="cork-lm.enc.xml" efm="cork-lmbx5.efm"/>
+   <entry texfont="cork-lmbx6" encvec="cork-lm.enc.xml" efm="cork-lmbx6.efm"/>
+   <entry texfont="cork-lmbx7" encvec="cork-lm.enc.xml" efm="cork-lmbx7.efm"/>
+   <entry texfont="cork-lmbx8" encvec="cork-lm.enc.xml" efm="cork-lmbx8.efm"/>
+   <entry texfont="cork-lmbx9" encvec="cork-lm.enc.xml" efm="cork-lmbx9.efm"/>
+   <entry texfont="cork-lmbxi10" encvec="cork-lm.enc.xml" efm="cork-lmbxi10.efm"/>
+   <entry texfont="cork-lmbxo10" encvec="cork-lm.enc.xml" efm="cork-lmbxo10.efm"/>
+   <entry texfont="cork-lmcsc10" encvec="cork-lm.enc.xml" efm="cork-lmcsc10.efm"/>
+   <entry texfont="cork-lmcsco10" encvec="cork-lm.enc.xml" efm="cork-lmcsco10.efm"/>
+   <entry texfont="cork-lmr10" encvec="cork-lm.enc.xml" efm="cork-lmr10.efm"/>
+   <entry texfont="cork-lmr12" encvec="cork-lm.enc.xml" efm="cork-lmr12.efm"/>
+   <entry texfont="cork-lmr17" encvec="cork-lm.enc.xml" efm="cork-lmr17.efm"/>
+   <entry texfont="cork-lmr5" encvec="cork-lm.enc.xml" efm="cork-lmr5.efm"/>
+   <entry texfont="cork-lmr6" encvec="cork-lm.enc.xml" efm="cork-lmr6.efm"/>
+   <entry texfont="cork-lmr7" encvec="cork-lm.enc.xml" efm="cork-lmr7.efm"/>
+   <entry texfont="cork-lmr8" encvec="cork-lm.enc.xml" efm="cork-lmr8.efm"/>
+   <entry texfont="cork-lmr9" encvec="cork-lm.enc.xml" efm="cork-lmr9.efm"/>
+   <entry texfont="cork-lmri10" encvec="cork-lm.enc.xml" efm="cork-lmri10.efm"/>
+   <entry texfont="cork-lmri12" encvec="cork-lm.enc.xml" efm="cork-lmri12.efm"/>
+   <entry texfont="cork-lmri7" encvec="cork-lm.enc.xml" efm="cork-lmri7.efm"/>
+   <entry texfont="cork-lmri8" encvec="cork-lm.enc.xml" efm="cork-lmri8.efm"/>
+   <entry texfont="cork-lmri9" encvec="cork-lm.enc.xml" efm="cork-lmri9.efm"/>
+   <entry texfont="cork-lmro10" encvec="cork-lm.enc.xml" efm="cork-lmro10.efm"/>
+   <entry texfont="cork-lmro12" encvec="cork-lm.enc.xml" efm="cork-lmro12.efm"/>
+   <entry texfont="cork-lmro8" encvec="cork-lm.enc.xml" efm="cork-lmro8.efm"/>
+   <entry texfont="cork-lmro9" encvec="cork-lm.enc.xml" efm="cork-lmro9.efm"/>
+   <entry texfont="cork-lmss10" encvec="cork-lm.enc.xml" efm="cork-lmss10.efm"/>
+   <entry texfont="cork-lmss12" encvec="cork-lm.enc.xml" efm="cork-lmss12.efm"/>
+   <entry texfont="cork-lmss17" encvec="cork-lm.enc.xml" efm="cork-lmss17.efm"/>
+   <entry texfont="cork-lmss8" encvec="cork-lm.enc.xml" efm="cork-lmss8.efm"/>
+   <entry texfont="cork-lmss9" encvec="cork-lm.enc.xml" efm="cork-lmss9.efm"/>
+   <entry texfont="cork-lmssbo10" encvec="cork-lm.enc.xml" efm="cork-lmssbo10.efm"/>
+   <entry texfont="cork-lmssbx10" encvec="cork-lm.enc.xml" efm="cork-lmssbx10.efm"/>
+   <entry texfont="cork-lmssdc10" encvec="cork-lm.enc.xml" efm="cork-lmssdc10.efm"/>
+   <entry texfont="cork-lmssdo10" encvec="cork-lm.enc.xml" efm="cork-lmssdo10.efm"/>
+   <entry texfont="cork-lmsso10" encvec="cork-lm.enc.xml" efm="cork-lmsso10.efm"/>
+   <entry texfont="cork-lmsso12" encvec="cork-lm.enc.xml" efm="cork-lmsso12.efm"/>
+   <entry texfont="cork-lmsso17" encvec="cork-lm.enc.xml" efm="cork-lmsso17.efm"/>
+   <entry texfont="cork-lmsso8" encvec="cork-lm.enc.xml" efm="cork-lmsso8.efm"/>
+   <entry texfont="cork-lmsso9" encvec="cork-lm.enc.xml" efm="cork-lmsso9.efm"/>
+   <entry texfont="cork-lmssq8" encvec="cork-lm.enc.xml" efm="cork-lmssq8.efm"/>
+   <entry texfont="cork-lmssqbo8" encvec="cork-lm.enc.xml" efm="cork-lmssqbo8.efm"/>
+   <entry texfont="cork-lmssqbx8" encvec="cork-lm.enc.xml" efm="cork-lmssqbx8.efm"/>
+   <entry texfont="cork-lmssqo8" encvec="cork-lm.enc.xml" efm="cork-lmssqo8.efm"/>
+   <entry texfont="cork-lmtcsc10" encvec="cork-lm.enc.xml" efm="cork-lmtcsc10.efm"/>
+   <entry texfont="cork-lmtt10" encvec="cork-lm.enc.xml" efm="cork-lmtt10.efm"/>
+   <entry texfont="cork-lmtt12" encvec="cork-lm.enc.xml" efm="cork-lmtt12.efm"/>
+   <entry texfont="cork-lmtt8" encvec="cork-lm.enc.xml" efm="cork-lmtt8.efm"/>
+   <entry texfont="cork-lmtt9" encvec="cork-lm.enc.xml" efm="cork-lmtt9.efm"/>
+   <entry texfont="cork-lmtti10" encvec="cork-lm.enc.xml" efm="cork-lmtti10.efm"/>
+   <entry texfont="cork-lmtto10" encvec="cork-lm.enc.xml" efm="cork-lmtto10.efm"/>
+   <entry texfont="cork-lmvtt10" encvec="cork-lm.enc.xml" efm="cork-lmvtt10.efm"/>
+   <entry texfont="cork-lmvtto10" encvec="cork-lm.enc.xml" efm="cork-lmvtto10.efm"/>
+   <entry texfont="cs-anttb" encvec="cs-antt.enc.xml" efm="cs-anttb.efm"/>
+   <entry texfont="cs-anttbcap" encvec="cs-anttcap.enc.xml" efm="cs-anttbcap.efm"/>
+   <entry texfont="cs-anttbi" encvec="cs-antt.enc.xml" efm="cs-anttbi.efm"/>
+   <entry texfont="cs-anttbicap" encvec="cs-anttcap.enc.xml" efm="cs-anttbicap.efm"/>
+   <entry texfont="cs-anttcb" encvec="cs-antt.enc.xml" efm="cs-anttcb.efm"/>
+   <entry texfont="cs-anttcbcap" encvec="cs-anttcap.enc.xml" efm="cs-anttcbcap.efm"/>
+   <entry texfont="cs-anttcbi" encvec="cs-antt.enc.xml" efm="cs-anttcbi.efm"/>
+   <entry texfont="cs-anttcbicap" encvec="cs-anttcap.enc.xml" efm="cs-anttcbicap.efm"/>
+   <entry texfont="cs-anttcl" encvec="cs-antt.enc.xml" efm="cs-anttcl.efm"/>
+   <entry texfont="cs-anttclcap" encvec="cs-anttcap.enc.xml" efm="cs-anttclcap.efm"/>
+   <entry texfont="cs-anttcli" encvec="cs-antt.enc.xml" efm="cs-anttcli.efm"/>
+   <entry texfont="cs-anttclicap" encvec="cs-anttcap.enc.xml" efm="cs-anttclicap.efm"/>
+   <entry texfont="cs-anttcm" encvec="cs-antt.enc.xml" efm="cs-anttcm.efm"/>
+   <entry texfont="cs-anttcmcap" encvec="cs-anttcap.enc.xml" efm="cs-anttcmcap.efm"/>
+   <entry texfont="cs-anttcmi" encvec="cs-antt.enc.xml" efm="cs-anttcmi.efm"/>
+   <entry texfont="cs-anttcmicap" encvec="cs-anttcap.enc.xml" efm="cs-anttcmicap.efm"/>
+   <entry texfont="cs-anttcr" encvec="cs-antt.enc.xml" efm="cs-anttcr.efm"/>
+   <entry texfont="cs-anttcrcap" encvec="cs-anttcap.enc.xml" efm="cs-anttcrcap.efm"/>
+   <entry texfont="cs-anttcri" encvec="cs-antt.enc.xml" efm="cs-anttcri.efm"/>
+   <entry texfont="cs-anttcricap" encvec="cs-anttcap.enc.xml" efm="cs-anttcricap.efm"/>
+   <entry texfont="cs-anttl" encvec="cs-antt.enc.xml" efm="cs-anttl.efm"/>
+   <entry texfont="cs-anttlcap" encvec="cs-anttcap.enc.xml" efm="cs-anttlcap.efm"/>
+   <entry texfont="cs-anttli" encvec="cs-antt.enc.xml" efm="cs-anttli.efm"/>
+   <entry texfont="cs-anttlicap" encvec="cs-anttcap.enc.xml" efm="cs-anttlicap.efm"/>
+   <entry texfont="cs-anttm" encvec="cs-antt.enc.xml" efm="cs-anttm.efm"/>
+   <entry texfont="cs-anttmcap" encvec="cs-anttcap.enc.xml" efm="cs-anttmcap.efm"/>
+   <entry texfont="cs-anttmi" encvec="cs-antt.enc.xml" efm="cs-anttmi.efm"/>
+   <entry texfont="cs-anttmicap" encvec="cs-anttcap.enc.xml" efm="cs-anttmicap.efm"/>
+   <entry texfont="cs-anttr" encvec="cs-antt.enc.xml" efm="cs-anttr.efm"/>
+   <entry texfont="cs-anttrcap" encvec="cs-anttcap.enc.xml" efm="cs-anttrcap.efm"/>
+   <entry texfont="cs-anttri" encvec="cs-antt.enc.xml" efm="cs-anttri.efm"/>
+   <entry texfont="cs-anttricap" encvec="cs-anttcap.enc.xml" efm="cs-anttricap.efm"/>
+   <entry texfont="csb10" efm="csb10.efm"/>
+   <entry texfont="csbx10" efm="csbx10.efm"/>
+   <entry texfont="csbx12" efm="csbx12.efm"/>
+   <entry texfont="csbx5" efm="csbx5.efm"/>
+   <entry texfont="csbx6" efm="csbx6.efm"/>
+   <entry texfont="csbx7" efm="csbx7.efm"/>
+   <entry texfont="csbx8" efm="csbx8.efm"/>
+   <entry texfont="csbx9" efm="csbx9.efm"/>
+   <entry texfont="csbxsl10" efm="csbxsl10.efm"/>
+   <entry texfont="csbxti10" efm="csbxti10.efm"/>
+   <entry texfont="cscsc10" efm="cscsc10.efm"/>
+   <entry texfont="csdunh10" efm="csdunh10.efm"/>
+   <entry texfont="csff10" efm="csff10.efm"/>
+   <entry texfont="csfi10" efm="csfi10.efm"/>
+   <entry texfont="csfib8" efm="csfib8.efm"/>
+   <entry texfont="csinch" efm="csinch.efm"/>
+   <entry texfont="csitt10" efm="csitt10.efm"/>
+   <entry texfont="csr10" efm="csr10.efm"/>
+   <entry texfont="csr12" efm="csr12.efm"/>
+   <entry texfont="csr17" efm="csr17.efm"/>
+   <entry texfont="csr5" efm="csr5.efm"/>
+   <entry texfont="csr6" efm="csr6.efm"/>
+   <entry texfont="csr7" efm="csr7.efm"/>
+   <entry texfont="csr8" efm="csr8.efm"/>
+   <entry texfont="csr9" efm="csr9.efm"/>
+   <entry texfont="cssl10" efm="cssl10.efm"/>
+   <entry texfont="cssl12" efm="cssl12.efm"/>
+   <entry texfont="cssl8" efm="cssl8.efm"/>
+   <entry texfont="cssl9" efm="cssl9.efm"/>
+   <entry texfont="cssltt10" efm="cssltt10.efm"/>
+   <entry texfont="csss10" efm="csss10.efm"/>
+   <entry texfont="csss12" efm="csss12.efm"/>
+   <entry texfont="csss17" efm="csss17.efm"/>
+   <entry texfont="csss8" efm="csss8.efm"/>
+   <entry texfont="csss9" efm="csss9.efm"/>
+   <entry texfont="csssbx10" efm="csssbx10.efm"/>
+   <entry texfont="csssdc10" efm="csssdc10.efm"/>
+   <entry texfont="csssi10" efm="csssi10.efm"/>
+   <entry texfont="csssi12" efm="csssi12.efm"/>
+   <entry texfont="csssi17" efm="csssi17.efm"/>
+   <entry texfont="csssi8" efm="csssi8.efm"/>
+   <entry texfont="csssi9" efm="csssi9.efm"/>
+   <entry texfont="csssq8" efm="csssq8.efm"/>
+   <entry texfont="csssqi8" efm="csssqi8.efm"/>
+   <entry texfont="cstcsc10" efm="cstcsc10.efm"/>
+   <entry texfont="csti10" efm="csti10.efm"/>
+   <entry texfont="csti12" efm="csti12.efm"/>
+   <entry texfont="csti7" efm="csti7.efm"/>
+   <entry texfont="csti8" efm="csti8.efm"/>
+   <entry texfont="csti9" efm="csti9.efm"/>
+   <entry texfont="cstt10" efm="cstt10.efm"/>
+   <entry texfont="cstt12" efm="cstt12.efm"/>
+   <entry texfont="cstt8" efm="cstt8.efm"/>
+   <entry texfont="cstt9" efm="cstt9.efm"/>
+   <entry texfont="csu10" efm="csu10.efm"/>
+   <entry texfont="csvtt10" efm="csvtt10.efm"/>
+   <entry texfont="dsrom10" efm="dsrom10.efm"/>
+   <entry texfont="dsrom12" efm="dsrom12.efm"/>
+   <entry texfont="dsrom8" efm="dsrom8.efm"/>
+   <entry texfont="dsss10" efm="dsss10.efm"/>
+   <entry texfont="dsss12" efm="dsss12.efm"/>
+   <entry texfont="dsss8" efm="dsss8.efm"/>
+   <entry texfont="euex10" efm="euex10.efm"/>
+   <entry texfont="euex7" efm="euex7.efm"/>
+   <entry texfont="euex8" efm="euex8.efm"/>
+   <entry texfont="euex9" efm="euex9.efm"/>
+   <entry texfont="eufb10" efm="eufb10.efm"/>
+   <entry texfont="eufb5" efm="eufb5.efm"/>
+   <entry texfont="eufb6" efm="eufb6.efm"/>
+   <entry texfont="eufb7" efm="eufb7.efm"/>
+   <entry texfont="eufb8" efm="eufb8.efm"/>
+   <entry texfont="eufb9" efm="eufb9.efm"/>
+   <entry texfont="eufm10" efm="eufm10.efm"/>
+   <entry texfont="eufm5" efm="eufm5.efm"/>
+   <entry texfont="eufm6" efm="eufm6.efm"/>
+   <entry texfont="eufm7" efm="eufm7.efm"/>
+   <entry texfont="eufm8" efm="eufm8.efm"/>
+   <entry texfont="eufm9" efm="eufm9.efm"/>
+   <entry texfont="eurb10" efm="eurb10.efm"/>
+   <entry texfont="eurb5" efm="eurb5.efm"/>
+   <entry texfont="eurb6" efm="eurb6.efm"/>
+   <entry texfont="eurb7" efm="eurb7.efm"/>
+   <entry texfont="eurb8" efm="eurb8.efm"/>
+   <entry texfont="eurb9" efm="eurb9.efm"/>
+   <entry texfont="eurbo10" efm="eurbo10.efm"/>
+   <entry texfont="eurm10" efm="eurm10.efm"/>
+   <entry texfont="eurm5" efm="eurm5.efm"/>
+   <entry texfont="eurm6" efm="eurm6.efm"/>
+   <entry texfont="eurm7" efm="eurm7.efm"/>
+   <entry texfont="eurm8" efm="eurm8.efm"/>
+   <entry texfont="eurm9" efm="eurm9.efm"/>
+   <entry texfont="eurmo10" efm="eurmo10.efm"/>
+   <entry texfont="eusb10" efm="eusb10.efm"/>
+   <entry texfont="eusb5" efm="eusb5.efm"/>
+   <entry texfont="eusb6" efm="eusb6.efm"/>
+   <entry texfont="eusb7" efm="eusb7.efm"/>
+   <entry texfont="eusb8" efm="eusb8.efm"/>
+   <entry texfont="eusb9" efm="eusb9.efm"/>
+   <entry texfont="eusm10" efm="eusm10.efm"/>
+   <entry texfont="eusm5" efm="eusm5.efm"/>
+   <entry texfont="eusm6" efm="eusm6.efm"/>
+   <entry texfont="eusm7" efm="eusm7.efm"/>
+   <entry texfont="eusm8" efm="eusm8.efm"/>
+   <entry texfont="eusm9" efm="eusm9.efm"/>
+   <entry texfont="exp-anttb" encvec="exp-antt.enc.xml" efm="exp-anttb.efm"/>
+   <entry texfont="exp-anttbi" encvec="exp-antt.enc.xml" efm="exp-anttbi.efm"/>
+   <entry texfont="exp-anttcb" encvec="exp-antt.enc.xml" efm="exp-anttcb.efm"/>
+   <entry texfont="exp-anttcbi" encvec="exp-antt.enc.xml" efm="exp-anttcbi.efm"/>
+   <entry texfont="exp-anttcl" encvec="exp-antt.enc.xml" efm="exp-anttcl.efm"/>
+   <entry texfont="exp-anttcli" encvec="exp-antt.enc.xml" efm="exp-anttcli.efm"/>
+   <entry texfont="exp-anttcm" encvec="exp-antt.enc.xml" efm="exp-anttcm.efm"/>
+   <entry texfont="exp-anttcmi" encvec="exp-antt.enc.xml" efm="exp-anttcmi.efm"/>
+   <entry texfont="exp-anttcr" encvec="exp-antt.enc.xml" efm="exp-anttcr.efm"/>
+   <entry texfont="exp-anttcri" encvec="exp-antt.enc.xml" efm="exp-anttcri.efm"/>
+   <entry texfont="exp-anttl" encvec="exp-antt.enc.xml" efm="exp-anttl.efm"/>
+   <entry texfont="exp-anttli" encvec="exp-antt.enc.xml" efm="exp-anttli.efm"/>
+   <entry texfont="exp-anttm" encvec="exp-antt.enc.xml" efm="exp-anttm.efm"/>
+   <entry texfont="exp-anttmi" encvec="exp-antt.enc.xml" efm="exp-anttmi.efm"/>
+   <entry texfont="exp-anttr" encvec="exp-antt.enc.xml" efm="exp-anttr.efm"/>
+   <entry texfont="exp-anttri" encvec="exp-antt.enc.xml" efm="exp-anttri.efm"/>
+   <entry texfont="feybl10" efm="feybl10.efm"/>
+   <entry texfont="feybo10" efm="feybo10.efm"/>
+   <entry texfont="feybr10" efm="feybr10.efm"/>
+   <entry texfont="feyml10" efm="feyml10.efm"/>
+   <entry texfont="feymo10" efm="feymo10.efm"/>
+   <entry texfont="feymr10" efm="feymr10.efm"/>
+   <entry texfont="fker8x" efm="fker8x.efm"/>
+   <entry texfont="fmvr8x" efm="fmvr8x.efm"/>
+   <entry texfont="fmvri8x" efm="fmvri8x.efm"/>
+   <entry texfont="fplmb" efm="fplmb.efm"/>
+   <entry texfont="fplmbb" efm="fplmbb.efm"/>
+   <entry texfont="fplmbi" efm="fplmbi.efm"/>
+   <entry texfont="fplmr" efm="fplmr.efm"/>
+   <entry texfont="fplmri" efm="fplmri.efm"/>
+   <entry texfont="greek-anttb" encvec="greek-antt.enc.xml" efm="greek-anttb.efm"/>
+   <entry texfont="greek-anttbi" encvec="greek-antt.enc.xml" efm="greek-anttbi.efm"/>
+   <entry texfont="greek-anttcb" encvec="greek-antt.enc.xml" efm="greek-anttcb.efm"/>
+   <entry texfont="greek-anttcbi" encvec="greek-antt.enc.xml" efm="greek-anttcbi.efm"/>
+   <entry texfont="greek-anttcl" encvec="greek-antt.enc.xml" efm="greek-anttcl.efm"/>
+   <entry texfont="greek-anttcli" encvec="greek-antt.enc.xml" efm="greek-anttcli.efm"/>
+   <entry texfont="greek-anttcm" encvec="greek-antt.enc.xml" efm="greek-anttcm.efm"/>
+   <entry texfont="greek-anttcmi" encvec="greek-antt.enc.xml" efm="greek-anttcmi.efm"/>
+   <entry texfont="greek-anttcr" encvec="greek-antt.enc.xml" efm="greek-anttcr.efm"/>
+   <entry texfont="greek-anttcri" encvec="greek-antt.enc.xml" efm="greek-anttcri.efm"/>
+   <entry texfont="greek-anttl" encvec="greek-antt.enc.xml" efm="greek-anttl.efm"/>
+   <entry texfont="greek-anttli" encvec="greek-antt.enc.xml" efm="greek-anttli.efm"/>
+   <entry texfont="greek-anttm" encvec="greek-antt.enc.xml" efm="greek-anttm.efm"/>
+   <entry texfont="greek-anttmi" encvec="greek-antt.enc.xml" efm="greek-anttmi.efm"/>
+   <entry texfont="greek-anttr" encvec="greek-antt.enc.xml" efm="greek-anttr.efm"/>
+   <entry texfont="greek-anttri" encvec="greek-antt.enc.xml" efm="greek-anttri.efm"/>
+   <entry texfont="hlcbot8r" encvec="8r.enc.xml" efm="hlcbot8r.efm"/>
+   <entry texfont="hlcbot8y" encvec="texnansi.enc.xml" efm="hlcbot8y.efm"/>
+   <entry texfont="hlcbt8r" encvec="8r.enc.xml" efm="hlcbt8r.efm"/>
+   <entry texfont="hlcbt8y" encvec="texnansi.enc.xml" efm="hlcbt8y.efm"/>
+   <entry texfont="hlcda" efm="hlcda.efm"/>
+   <entry texfont="hlcdim" efm="hlcdim.efm"/>
+   <entry texfont="hlcdima" efm="hlcdima.efm"/>
+   <entry texfont="hlcdm" efm="hlcdm.efm"/>
+   <entry texfont="hlcdy" efm="hlcdy.efm"/>
+   <entry texfont="hlcra" efm="hlcra.efm"/>
+   <entry texfont="hlcrf8r" encvec="8r.enc.xml" efm="hlcrf8r.efm"/>
+   <entry texfont="hlcrf8y" encvec="texnansi.enc.xml" efm="hlcrf8y.efm"/>
+   <entry texfont="hlcrie8r" encvec="8r.enc.xml" efm="hlcrie8r.efm"/>
+   <entry texfont="hlcrie8y" encvec="texnansi.enc.xml" efm="hlcrie8y.efm"/>
+   <entry texfont="hlcrim" efm="hlcrim.efm"/>
+   <entry texfont="hlcrima" efm="hlcrima.efm"/>
+   <entry texfont="hlcrin8r" encvec="8r.enc.xml" efm="hlcrin8r.efm"/>
+   <entry texfont="hlcrin8y" encvec="texnansi.enc.xml" efm="hlcrin8y.efm"/>
+   <entry texfont="hlcriw8r" encvec="8r.enc.xml" efm="hlcriw8r.efm"/>
+   <entry texfont="hlcriw8y" encvec="texnansi.enc.xml" efm="hlcriw8y.efm"/>
+   <entry texfont="hlcrm" efm="hlcrm.efm"/>
+   <entry texfont="hlcrn8r" encvec="8r.enc.xml" efm="hlcrn8r.efm"/>
+   <entry texfont="hlcrn8y" encvec="texnansi.enc.xml" efm="hlcrn8y.efm"/>
+   <entry texfont="hlcrot8r" encvec="8r.enc.xml" efm="hlcrot8r.efm"/>
+   <entry texfont="hlcrot8y" encvec="texnansi.enc.xml" efm="hlcrot8y.efm"/>
+   <entry texfont="hlcrt8r" encvec="8r.enc.xml" efm="hlcrt8r.efm"/>
+   <entry texfont="hlcrt8y" encvec="texnansi.enc.xml" efm="hlcrt8y.efm"/>
+   <entry texfont="hlcrv" efm="hlcrv.efm"/>
+   <entry texfont="hlcry" efm="hlcry.efm"/>
+   <entry texfont="hlhb8r" encvec="8r.enc.xml" efm="hlhb8r.efm"/>
+   <entry texfont="hlhb8y" encvec="texnansi.enc.xml" efm="hlhb8y.efm"/>
+   <entry texfont="hlhbc8r" encvec="8r.enc.xml" efm="hlhbc8r.efm"/>
+   <entry texfont="hlhbc8y" encvec="texnansi.enc.xml" efm="hlhbc8y.efm"/>
+   <entry texfont="hlhbi8r" encvec="8r.enc.xml" efm="hlhbi8r.efm"/>
+   <entry texfont="hlhbi8y" encvec="texnansi.enc.xml" efm="hlhbi8y.efm"/>
+   <entry texfont="hlhr8r" encvec="8r.enc.xml" efm="hlhr8r.efm"/>
+   <entry texfont="hlhr8y" encvec="texnansi.enc.xml" efm="hlhr8y.efm"/>
+   <entry texfont="hlhrc8r" encvec="8r.enc.xml" efm="hlhrc8r.efm"/>
+   <entry texfont="hlhrc8y" encvec="texnansi.enc.xml" efm="hlhrc8y.efm"/>
+   <entry texfont="hlhri8r" encvec="8r.enc.xml" efm="hlhri8r.efm"/>
+   <entry texfont="hlhri8y" encvec="texnansi.enc.xml" efm="hlhri8y.efm"/>
+   <entry texfont="hlhro8r" encvec="8r.enc.xml" efm="hlhro8r.efm"/>
+   <entry texfont="hlhro8y" encvec="texnansi.enc.xml" efm="hlhro8y.efm"/>
+   <entry texfont="hlsb8r" encvec="8r.enc.xml" efm="hlsb8r.efm"/>
+   <entry texfont="hlsb8y" encvec="texnansi.enc.xml" efm="hlsb8y.efm"/>
+   <entry texfont="hlsbi8r" encvec="8r.enc.xml" efm="hlsbi8r.efm"/>
+   <entry texfont="hlsbi8y" encvec="texnansi.enc.xml" efm="hlsbi8y.efm"/>
+   <entry texfont="hlsbot8r" encvec="8r.enc.xml" efm="hlsbot8r.efm"/>
+   <entry texfont="hlsbot8y" encvec="texnansi.enc.xml" efm="hlsbot8y.efm"/>
+   <entry texfont="hlsbt8r" encvec="8r.enc.xml" efm="hlsbt8r.efm"/>
+   <entry texfont="hlsbt8y" encvec="texnansi.enc.xml" efm="hlsbt8y.efm"/>
+   <entry texfont="hlsr8r" encvec="8r.enc.xml" efm="hlsr8r.efm"/>
+   <entry texfont="hlsr8y" encvec="texnansi.enc.xml" efm="hlsr8y.efm"/>
+   <entry texfont="hlsri8r" encvec="8r.enc.xml" efm="hlsri8r.efm"/>
+   <entry texfont="hlsri8y" encvec="texnansi.enc.xml" efm="hlsri8y.efm"/>
+   <entry texfont="hlsrot8r" encvec="8r.enc.xml" efm="hlsrot8r.efm"/>
+   <entry texfont="hlsrot8y" encvec="texnansi.enc.xml" efm="hlsrot8y.efm"/>
+   <entry texfont="hlsrt8r" encvec="8r.enc.xml" efm="hlsrt8r.efm"/>
+   <entry texfont="hlsrt8y" encvec="texnansi.enc.xml" efm="hlsrt8y.efm"/>
+   <entry texfont="hlsu8r" encvec="8r.enc.xml" efm="hlsu8r.efm"/>
+   <entry texfont="hlsu8y" encvec="texnansi.enc.xml" efm="hlsu8y.efm"/>
+   <entry texfont="hlsui8r" encvec="8r.enc.xml" efm="hlsui8r.efm"/>
+   <entry texfont="hlsui8y" encvec="texnansi.enc.xml" efm="hlsui8y.efm"/>
+   <entry texfont="hlxb8r" encvec="8r.enc.xml" efm="hlxb8r.efm"/>
+   <entry texfont="hlxb8y" encvec="texnansi.enc.xml" efm="hlxb8y.efm"/>
+   <entry texfont="hlxbi8r" encvec="8r.enc.xml" efm="hlxbi8r.efm"/>
+   <entry texfont="hlxbi8y" encvec="texnansi.enc.xml" efm="hlxbi8y.efm"/>
+   <entry texfont="hlxr8r" encvec="8r.enc.xml" efm="hlxr8r.efm"/>
+   <entry texfont="hlxr8y" encvec="texnansi.enc.xml" efm="hlxr8y.efm"/>
+   <entry texfont="hlxri8r" encvec="8r.enc.xml" efm="hlxri8r.efm"/>
+   <entry texfont="hlxri8y" encvec="texnansi.enc.xml" efm="hlxri8y.efm"/>
+   <entry texfont="hv" encvec="texnansi.enc.xml" efm="hv.efm"/>
+   <entry texfont="hvb" encvec="texnansi.enc.xml" efm="hvb.efm"/>
+   <entry texfont="hvbo" encvec="texnansi.enc.xml" efm="hvbo.efm"/>
+   <entry texfont="hvo" encvec="texnansi.enc.xml" efm="hvo.efm"/>
+   <entry texfont="lasy10" efm="lasy10.efm"/>
+   <entry texfont="lasy5" efm="lasy5.efm"/>
+   <entry texfont="lasy6" efm="lasy6.efm"/>
+   <entry texfont="lasy7" efm="lasy7.efm"/>
+   <entry texfont="lasy8" efm="lasy8.efm"/>
+   <entry texfont="lasy9" efm="lasy9.efm"/>
+   <entry texfont="lasyb10" efm="lasyb10.efm"/>
+   <entry texfont="lbc" encvec="texnansi.enc.xml" efm="lbc.efm"/>
+   <entry texfont="lbd" encvec="texnansi.enc.xml" efm="lbd.efm"/>
+   <entry texfont="lbdi" encvec="texnansi.enc.xml" efm="lbdi.efm"/>
+   <entry texfont="lbdsc" encvec="texnansi.enc.xml" efm="lbdsc.efm"/>
+   <entry texfont="lbh" encvec="texnansi.enc.xml" efm="lbh.efm"/>
+   <entry texfont="lbi" encvec="texnansi.enc.xml" efm="lbi.efm"/>
+   <entry texfont="lbki" encvec="texnansi.enc.xml" efm="lbki.efm"/>
+   <entry texfont="lbkr" encvec="texnansi.enc.xml" efm="lbkr.efm"/>
+   <entry texfont="lbl" encvec="texnansi.enc.xml" efm="lbl.efm"/>
+   <entry texfont="lbma" efm="lbma.efm"/>
+   <entry texfont="lbmad" efm="lbmad.efm"/>
+   <entry texfont="lbmd" efm="lbmd.efm"/>
+   <entry texfont="lbmdi" efm="lbmdi.efm"/>
+   <entry texfont="lbmdo" efm="lbmdo.efm"/>
+   <entry texfont="lbme" efm="lbme.efm"/>
+   <entry texfont="lbmi" efm="lbmi.efm"/>
+   <entry texfont="lbmo" efm="lbmo.efm"/>
+   <entry texfont="lbmr" efm="lbmr.efm"/>
+   <entry texfont="lbms" efm="lbms.efm"/>
+   <entry texfont="lbmsd" efm="lbmsd.efm"/>
+   <entry texfont="lbr" encvec="texnansi.enc.xml" efm="lbr.efm"/>
+   <entry texfont="lbrsc" encvec="texnansi.enc.xml" efm="lbrsc.efm"/>
+   <entry texfont="lbsl" encvec="texnansi.enc.xml" efm="lbsl.efm"/>
+   <entry texfont="lbtb" encvec="texnansi.enc.xml" efm="lbtb.efm"/>
+   <entry texfont="lbtbo" encvec="texnansi.enc.xml" efm="lbtbo.efm"/>
+   <entry texfont="lbto" encvec="texnansi.enc.xml" efm="lbto.efm"/>
+   <entry texfont="lbtr" encvec="texnansi.enc.xml" efm="lbtr.efm"/>
+   <entry texfont="lcircle10" efm="lcircle10.efm"/>
+   <entry texfont="lcirclew10" efm="lcirclew10.efm"/>
+   <entry texfont="lcmss8" efm="lcmss8.efm"/>
+   <entry texfont="lcmssb8" efm="lcmssb8.efm"/>
+   <entry texfont="lcmssi8" efm="lcmssi8.efm"/>
+   <entry texfont="lfd" encvec="texnansi.enc.xml" efm="lfd.efm"/>
+   <entry texfont="lfdi" encvec="texnansi.enc.xml" efm="lfdi.efm"/>
+   <entry texfont="lfi" encvec="texnansi.enc.xml" efm="lfi.efm"/>
+   <entry texfont="lfr" encvec="texnansi.enc.xml" efm="lfr.efm"/>
+   <entry texfont="line10" efm="line10.efm"/>
+   <entry texfont="linew10" efm="linew10.efm"/>
+   <entry texfont="logo10" efm="logo10.efm"/>
+   <entry texfont="logo8" efm="logo8.efm"/>
+   <entry texfont="logo9" efm="logo9.efm"/>
+   <entry texfont="logobf10" efm="logobf10.efm"/>
+   <entry texfont="logod10" efm="logod10.efm"/>
+   <entry texfont="logosl10" efm="logosl10.efm"/>
+   <entry texfont="logosl8" efm="logosl8.efm"/>
+   <entry texfont="logosl9" efm="logosl9.efm"/>
+   <entry texfont="lsb" encvec="texnansi.enc.xml" efm="lsb.efm"/>
+   <entry texfont="lsbi" encvec="texnansi.enc.xml" efm="lsbi.efm"/>
+   <entry texfont="lsd" encvec="texnansi.enc.xml" efm="lsd.efm"/>
+   <entry texfont="lsdi" encvec="texnansi.enc.xml" efm="lsdi.efm"/>
+   <entry texfont="lsi" encvec="texnansi.enc.xml" efm="lsi.efm"/>
+   <entry texfont="lsr" encvec="texnansi.enc.xml" efm="lsr.efm"/>
+   <entry texfont="lstb" encvec="texnansi.enc.xml" efm="lstb.efm"/>
+   <entry texfont="lstbo" encvec="texnansi.enc.xml" efm="lstbo.efm"/>
+   <entry texfont="lsto" encvec="texnansi.enc.xml" efm="lsto.efm"/>
+   <entry texfont="lstr" encvec="texnansi.enc.xml" efm="lstr.efm"/>
+   <entry texfont="manfnt" efm="manfnt.efm"/>
+   <entry texfont="msam10" efm="msam10.efm"/>
+   <entry texfont="msam5" efm="msam5.efm"/>
+   <entry texfont="msam6" efm="msam6.efm"/>
+   <entry texfont="msam7" efm="msam7.efm"/>
+   <entry texfont="msam8" efm="msam8.efm"/>
+   <entry texfont="msam9" efm="msam9.efm"/>
+   <entry texfont="msbm10" efm="msbm10.efm"/>
+   <entry texfont="msbm5" efm="msbm5.efm"/>
+   <entry texfont="msbm6" efm="msbm6.efm"/>
+   <entry texfont="msbm7" efm="msbm7.efm"/>
+   <entry texfont="msbm8" efm="msbm8.efm"/>
+   <entry texfont="msbm9" efm="msbm9.efm"/>
+   <entry texfont="mtex" efm="mtex.efm"/>
+   <entry texfont="mtsy" efm="mtsy.efm"/>
+   <entry texfont="omding" efm="omding.efm"/>
+   <entry texfont="omsea1" efm="omsea1.efm"/>
+   <entry texfont="omsea1b" efm="omsea1b.efm"/>
+   <entry texfont="omsea2" efm="omsea2.efm"/>
+   <entry texfont="omsea2b" efm="omsea2b.efm"/>
+   <entry texfont="omsea3" efm="omsea3.efm"/>
+   <entry texfont="omsea3b" efm="omsea3b.efm"/>
+   <entry texfont="omseco" efm="omseco.efm"/>
+   <entry texfont="omsecob" efm="omsecob.efm"/>
+   <entry texfont="omsecobi" efm="omsecobi.efm"/>
+   <entry texfont="omsecoi" efm="omsecoi.efm"/>
+   <entry texfont="omsecx" efm="omsecx.efm"/>
+   <entry texfont="omsecxb" efm="omsecxb.efm"/>
+   <entry texfont="omsecxbi" efm="omsecxbi.efm"/>
+   <entry texfont="omsecxi" efm="omsecxi.efm"/>
+   <entry texfont="omsecy" efm="omsecy.efm"/>
+   <entry texfont="omsecyb" efm="omsecyb.efm"/>
+   <entry texfont="omsecybi" efm="omsecybi.efm"/>
+   <entry texfont="omsecyi" efm="omsecyi.efm"/>
+   <entry texfont="omsegr" efm="omsegr.efm"/>
+   <entry texfont="omsegrb" efm="omsegrb.efm"/>
+   <entry texfont="omsegrbi" efm="omsegrbi.efm"/>
+   <entry texfont="omsegri" efm="omsegri.efm"/>
+   <entry texfont="omseha" efm="omseha.efm"/>
+   <entry texfont="omsehab" efm="omsehab.efm"/>
+   <entry texfont="omsehe" efm="omsehe.efm"/>
+   <entry texfont="omseheb" efm="omseheb.efm"/>
+   <entry texfont="omseip" efm="omseip.efm"/>
+   <entry texfont="omseipb" efm="omseipb.efm"/>
+   <entry texfont="omseipbi" efm="omseipbi.efm"/>
+   <entry texfont="omseipi" efm="omseipi.efm"/>
+   <entry texfont="omsela" efm="omsela.efm"/>
+   <entry texfont="omselab" efm="omselab.efm"/>
+   <entry texfont="omselabi" efm="omselabi.efm"/>
+   <entry texfont="omselai" efm="omselai.efm"/>
+   <entry texfont="omseti" efm="omseti.efm"/>
+   <entry texfont="omsetib" efm="omsetib.efm"/>
+   <entry texfont="pagd8r" encvec="8r.enc.xml" efm="pagd8r.efm"/>
+   <entry texfont="pagdo8r" encvec="8r.enc.xml" efm="pagdo8r.efm"/>
+   <entry texfont="pagk8r" encvec="8r.enc.xml" efm="pagk8r.efm"/>
+   <entry texfont="pagko8r" encvec="8r.enc.xml" efm="pagko8r.efm"/>
+   <entry texfont="pbkd8r" encvec="8r.enc.xml" efm="pbkd8r.efm"/>
+   <entry texfont="pbkdi8r" encvec="8r.enc.xml" efm="pbkdi8r.efm"/>
+   <entry texfont="pbkdo8r" encvec="8r.enc.xml" efm="pbkdo8r.efm"/>
+   <entry texfont="pbkl8r" encvec="8r.enc.xml" efm="pbkl8r.efm"/>
+   <entry texfont="pbkli8r" encvec="8r.enc.xml" efm="pbkli8r.efm"/>
+   <entry texfont="pbklo8r" encvec="8r.enc.xml" efm="pbklo8r.efm"/>
+   <entry texfont="pccsc10" efm="pccsc10.efm"/>
+   <entry texfont="pcmi10" efm="pcmi10.efm"/>
+   <entry texfont="pcr10" efm="pcr10.efm"/>
+   <entry texfont="pcr5" efm="pcr5.efm"/>
+   <entry texfont="pcr6" efm="pcr6.efm"/>
+   <entry texfont="pcr7" efm="pcr7.efm"/>
+   <entry texfont="pcr8" efm="pcr8.efm"/>
+   <entry texfont="pcr9" efm="pcr9.efm"/>
+   <entry texfont="pcrb8r" encvec="8r.enc.xml" efm="pcrb8r.efm"/>
+   <entry texfont="pcrb8y" encvec="texnansi.enc.xml" efm="pcrb8y.efm"/>
+   <entry texfont="pcrbo8r" encvec="8r.enc.xml" efm="pcrbo8r.efm"/>
+   <entry texfont="pcrbo8y" encvec="texnansi.enc.xml" efm="pcrbo8y.efm"/>
+   <entry texfont="pcrr8r" encvec="8r.enc.xml" efm="pcrr8r.efm"/>
+   <entry texfont="pcrr8rn" encvec="8r.enc.xml" efm="pcrr8rn.efm"/>
+   <entry texfont="pcrr8y" encvec="texnansi.enc.xml" efm="pcrr8y.efm"/>
+   <entry texfont="pcrro8r" encvec="8r.enc.xml" efm="pcrro8r.efm"/>
+   <entry texfont="pcrro8y" encvec="texnansi.enc.xml" efm="pcrro8y.efm"/>
+   <entry texfont="pcsl10" efm="pcsl10.efm"/>
+   <entry texfont="pcslc9" efm="pcslc9.efm"/>
+   <entry texfont="pcti10" efm="pcti10.efm"/>
+   <entry texfont="pfub8r" encvec="8r.enc.xml" efm="pfub8r.efm"/>
+   <entry texfont="pfub8rc" encvec="8r.enc.xml" efm="pfub8rc.efm"/>
+   <entry texfont="pfubo8r" encvec="8r.enc.xml" efm="pfubo8r.efm"/>
+   <entry texfont="pfubo8rc" encvec="8r.enc.xml" efm="pfubo8rc.efm"/>
+   <entry texfont="pfuk8r" encvec="8r.enc.xml" efm="pfuk8r.efm"/>
+   <entry texfont="pfuko8r" encvec="8r.enc.xml" efm="pfuko8r.efm"/>
+   <entry texfont="pful8r" encvec="8r.enc.xml" efm="pful8r.efm"/>
+   <entry texfont="pfulo8r" encvec="8r.enc.xml" efm="pfulo8r.efm"/>
+   <entry texfont="phvb8r" encvec="8r.enc.xml" efm="phvb8r.efm"/>
+   <entry texfont="phvb8rn" encvec="8r.enc.xml" efm="phvb8rn.efm"/>
+   <entry texfont="phvb8y" encvec="texnansi.enc.xml" efm="phvb8y.efm"/>
+   <entry texfont="phvb8yn" encvec="texnansi.enc.xml" efm="phvb8yn.efm"/>
+   <entry texfont="phvbo8r" encvec="8r.enc.xml" efm="phvbo8r.efm"/>
+   <entry texfont="phvbo8rn" encvec="8r.enc.xml" efm="phvbo8rn.efm"/>
+   <entry texfont="phvbo8y" encvec="texnansi.enc.xml" efm="phvbo8y.efm"/>
+   <entry texfont="phvbo8yn" encvec="texnansi.enc.xml" efm="phvbo8yn.efm"/>
+   <entry texfont="phvr8r" encvec="8r.enc.xml" efm="phvr8r.efm"/>
+   <entry texfont="phvr8rn" encvec="8r.enc.xml" efm="phvr8rn.efm"/>
+   <entry texfont="phvr8y" encvec="texnansi.enc.xml" efm="phvr8y.efm"/>
+   <entry texfont="phvr8yn" encvec="texnansi.enc.xml" efm="phvr8yn.efm"/>
+   <entry texfont="phvro8r" encvec="8r.enc.xml" efm="phvro8r.efm"/>
+   <entry texfont="phvro8rn" encvec="8r.enc.xml" efm="phvro8rn.efm"/>
+   <entry texfont="phvro8y" encvec="texnansi.enc.xml" efm="phvro8y.efm"/>
+   <entry texfont="phvro8yn" encvec="texnansi.enc.xml" efm="phvro8yn.efm"/>
+   <entry texfont="plb10" encvec="plrm.enc.xml" efm="plb10.efm"/>
+   <entry texfont="plbsy10" encvec="plms.enc.xml" efm="plbsy10.efm"/>
+   <entry texfont="plbx10" encvec="plrm.enc.xml" efm="plbx10.efm"/>
+   <entry texfont="plbx12" encvec="plrm.enc.xml" efm="plbx12.efm"/>
+   <entry texfont="plbx5" encvec="plrm.enc.xml" efm="plbx5.efm"/>
+   <entry texfont="plbx6" encvec="plrm.enc.xml" efm="plbx6.efm"/>
+   <entry texfont="plbx7" encvec="plrm.enc.xml" efm="plbx7.efm"/>
+   <entry texfont="plbx8" encvec="plrm.enc.xml" efm="plbx8.efm"/>
+   <entry texfont="plbx9" encvec="plrm.enc.xml" efm="plbx9.efm"/>
+   <entry texfont="plbxsl10" encvec="plrm.enc.xml" efm="plbxsl10.efm"/>
+   <entry texfont="plbxti10" encvec="plit.enc.xml" efm="plbxti10.efm"/>
+   <entry texfont="plcsc10" encvec="plsc.enc.xml" efm="plcsc10.efm"/>
+   <entry texfont="pldunh10" encvec="plrm.enc.xml" efm="pldunh10.efm"/>
+   <entry texfont="plex10" encvec="plme.enc.xml" efm="plex10.efm"/>
+   <entry texfont="plex9" encvec="plme.enc.xml" efm="plex9.efm"/>
+   <entry texfont="plff10" encvec="plrm.enc.xml" efm="plff10.efm"/>
+   <entry texfont="plfi10" encvec="plit.enc.xml" efm="plfi10.efm"/>
+   <entry texfont="plfib8" encvec="plrm.enc.xml" efm="plfib8.efm"/>
+   <entry texfont="plinch" encvec="plin.enc.xml" efm="plinch.efm"/>
+   <entry texfont="plitt10" encvec="plitt.enc.xml" efm="plitt10.efm"/>
+   <entry texfont="plmi10" encvec="plmi.enc.xml" efm="plmi10.efm"/>
+   <entry texfont="plmi12" encvec="plmi.enc.xml" efm="plmi12.efm"/>
+   <entry texfont="plmi5" encvec="plmi.enc.xml" efm="plmi5.efm"/>
+   <entry texfont="plmi6" encvec="plmi.enc.xml" efm="plmi6.efm"/>
+   <entry texfont="plmi7" encvec="plmi.enc.xml" efm="plmi7.efm"/>
+   <entry texfont="plmi8" encvec="plmi.enc.xml" efm="plmi8.efm"/>
+   <entry texfont="plmi9" encvec="plmi.enc.xml" efm="plmi9.efm"/>
+   <entry texfont="plmib10" encvec="plmi.enc.xml" efm="plmib10.efm"/>
+   <entry texfont="plr10" encvec="plrm.enc.xml" efm="plr10.efm"/>
+   <entry texfont="plr12" encvec="plrm.enc.xml" efm="plr12.efm"/>
+   <entry texfont="plr17" encvec="plrm.enc.xml" efm="plr17.efm"/>
+   <entry texfont="plr5" encvec="plsc.enc.xml" efm="plr5.efm"/>
+   <entry texfont="plr6" encvec="plrm.enc.xml" efm="plr6.efm"/>
+   <entry texfont="plr7" encvec="plrm.enc.xml" efm="plr7.efm"/>
+   <entry texfont="plr8" encvec="plrm.enc.xml" efm="plr8.efm"/>
+   <entry texfont="plr9" encvec="plrm.enc.xml" efm="plr9.efm"/>
+   <entry texfont="plsl10" encvec="plrm.enc.xml" efm="plsl10.efm"/>
+   <entry texfont="plsl12" encvec="plrm.enc.xml" efm="plsl12.efm"/>
+   <entry texfont="plsl8" encvec="plrm.enc.xml" efm="plsl8.efm"/>
+   <entry texfont="plsl9" encvec="plrm.enc.xml" efm="plsl9.efm"/>
+   <entry texfont="plsltt10" encvec="pltt.enc.xml" efm="plsltt10.efm"/>
+   <entry texfont="plss10" encvec="plrm.enc.xml" efm="plss10.efm"/>
+   <entry texfont="plss12" encvec="plrm.enc.xml" efm="plss12.efm"/>
+   <entry texfont="plss17" encvec="plrm.enc.xml" efm="plss17.efm"/>
+   <entry texfont="plss8" encvec="plrm.enc.xml" efm="plss8.efm"/>
+   <entry texfont="plss9" encvec="plrm.enc.xml" efm="plss9.efm"/>
+   <entry texfont="plssbi10" encvec="plrm.enc.xml" efm="plssbi10.efm"/>
+   <entry texfont="plssbx10" encvec="plrm.enc.xml" efm="plssbx10.efm"/>
+   <entry texfont="plssdc10" encvec="plrm.enc.xml" efm="plssdc10.efm"/>
+   <entry texfont="plssi10" encvec="plrm.enc.xml" efm="plssi10.efm"/>
+   <entry texfont="plssi12" encvec="plrm.enc.xml" efm="plssi12.efm"/>
+   <entry texfont="plssi17" encvec="plrm.enc.xml" efm="plssi17.efm"/>
+   <entry texfont="plssi8" encvec="plrm.enc.xml" efm="plssi8.efm"/>
+   <entry texfont="plssi9" encvec="plrm.enc.xml" efm="plssi9.efm"/>
+   <entry texfont="plssq8" encvec="plrm.enc.xml" efm="plssq8.efm"/>
+   <entry texfont="plssqi8" encvec="plrm.enc.xml" efm="plssqi8.efm"/>
+   <entry texfont="plsy10" encvec="plms.enc.xml" efm="plsy10.efm"/>
+   <entry texfont="plsy5" encvec="plms.enc.xml" efm="plsy5.efm"/>
+   <entry texfont="plsy6" encvec="plms.enc.xml" efm="plsy6.efm"/>
+   <entry texfont="plsy7" encvec="plms.enc.xml" efm="plsy7.efm"/>
+   <entry texfont="plsy8" encvec="plms.enc.xml" efm="plsy8.efm"/>
+   <entry texfont="plsy9" encvec="plms.enc.xml" efm="plsy9.efm"/>
+   <entry texfont="pltcsc10" encvec="pltt.enc.xml" efm="pltcsc10.efm"/>
+   <entry texfont="pltex10" encvec="plte.enc.xml" efm="pltex10.efm"/>
+   <entry texfont="pltex8" encvec="plte.enc.xml" efm="pltex8.efm"/>
+   <entry texfont="pltex9" encvec="plte.enc.xml" efm="pltex9.efm"/>
+   <entry texfont="plti10" encvec="plit.enc.xml" efm="plti10.efm"/>
+   <entry texfont="plti12" encvec="plit.enc.xml" efm="plti12.efm"/>
+   <entry texfont="plti7" encvec="plit.enc.xml" efm="plti7.efm"/>
+   <entry texfont="plti8" encvec="plit.enc.xml" efm="plti8.efm"/>
+   <entry texfont="plti9" encvec="plit.enc.xml" efm="plti9.efm"/>
+   <entry texfont="pltt10" encvec="pltt.enc.xml" efm="pltt10.efm"/>
+   <entry texfont="pltt12" encvec="pltt.enc.xml" efm="pltt12.efm"/>
+   <entry texfont="pltt8" encvec="pltt.enc.xml" efm="pltt8.efm"/>
+   <entry texfont="pltt9" encvec="pltt.enc.xml" efm="pltt9.efm"/>
+   <entry texfont="plu10" encvec="plit.enc.xml" efm="plu10.efm"/>
+   <entry texfont="plvtt10" encvec="plrm.enc.xml" efm="plvtt10.efm"/>
+   <entry texfont="pmnb8r" encvec="8r.enc.xml" efm="pmnb8r.efm"/>
+   <entry texfont="pmnb8x" efm="pmnb8x.efm"/>
+   <entry texfont="pmnbi8r" encvec="8r.enc.xml" efm="pmnbi8r.efm"/>
+   <entry texfont="pmnbi8x" efm="pmnbi8x.efm"/>
+   <entry texfont="pmnr8r" encvec="8r.enc.xml" efm="pmnr8r.efm"/>
+   <entry texfont="pmnr8x" efm="pmnr8x.efm"/>
+   <entry texfont="pmnrd8r" encvec="8r.enc.xml" efm="pmnrd8r.efm"/>
+   <entry texfont="pmnrd8x" efm="pmnrd8x.efm"/>
+   <entry texfont="pmnri8r" encvec="8r.enc.xml" efm="pmnri8r.efm"/>
+   <entry texfont="pmnri8x" efm="pmnri8x.efm"/>
+   <entry texfont="pmnrid8r" encvec="8r.enc.xml" efm="pmnrid8r.efm"/>
+   <entry texfont="pmnrid8x" efm="pmnrid8x.efm"/>
+   <entry texfont="pmnrp" efm="pmnrp.efm"/>
+   <entry texfont="pmns8r" encvec="8r.enc.xml" efm="pmns8r.efm"/>
+   <entry texfont="pmns8x" efm="pmns8x.efm"/>
+   <entry texfont="pmnsi8r" encvec="8r.enc.xml" efm="pmnsi8r.efm"/>
+   <entry texfont="pmnsi8x" efm="pmnsi8x.efm"/>
+   <entry texfont="pncb8r" encvec="8r.enc.xml" efm="pncb8r.efm"/>
+   <entry texfont="pncbi8r" encvec="8r.enc.xml" efm="pncbi8r.efm"/>
+   <entry texfont="pncbo8r" encvec="8r.enc.xml" efm="pncbo8r.efm"/>
+   <entry texfont="pncr8r" encvec="8r.enc.xml" efm="pncr8r.efm"/>
+   <entry texfont="pncri8r" encvec="8r.enc.xml" efm="pncri8r.efm"/>
+   <entry texfont="pncro8r" encvec="8r.enc.xml" efm="pncro8r.efm"/>
+   <entry texfont="pplb8r" encvec="8r.enc.xml" efm="pplb8r.efm"/>
+   <entry texfont="pplbi8r" encvec="8r.enc.xml" efm="pplbi8r.efm"/>
+   <entry texfont="pplbij8r" encvec="8r.enc.xml" efm="pplbij8r.efm"/>
+   <entry texfont="pplbj8r" encvec="8r.enc.xml" efm="pplbj8r.efm"/>
+   <entry texfont="pplbo8r" encvec="8r.enc.xml" efm="pplbo8r.efm"/>
+   <entry texfont="pplbu8r" encvec="8r.enc.xml" efm="pplbu8r.efm"/>
+   <entry texfont="pplr8r" encvec="8r.enc.xml" efm="pplr8r.efm"/>
+   <entry texfont="pplr8rn" encvec="8r.enc.xml" efm="pplr8rn.efm"/>
+   <entry texfont="pplrc8r" encvec="8r.enc.xml" efm="pplrc8r.efm"/>
+   <entry texfont="pplri8r" encvec="8r.enc.xml" efm="pplri8r.efm"/>
+   <entry texfont="pplrij8r" encvec="8r.enc.xml" efm="pplrij8r.efm"/>
+   <entry texfont="pplro8r" encvec="8r.enc.xml" efm="pplro8r.efm"/>
+   <entry texfont="pplrr8re" encvec="8r.enc.xml" efm="pplrr8re.efm"/>
+   <entry texfont="pplru8r" encvec="8r.enc.xml" efm="pplru8r.efm"/>
+   <entry texfont="psyr" efm="psyr.efm"/>
+   <entry texfont="psyro" efm="psyro.efm"/>
+   <entry texfont="ptmb8r" encvec="8r.enc.xml" efm="ptmb8r.efm"/>
+   <entry texfont="ptmb8y" encvec="texnansi.enc.xml" efm="ptmb8y.efm"/>
+   <entry texfont="ptmbi8r" encvec="8r.enc.xml" efm="ptmbi8r.efm"/>
+   <entry texfont="ptmbi8y" encvec="texnansi.enc.xml" efm="ptmbi8y.efm"/>
+   <entry texfont="ptmbo8r" encvec="8r.enc.xml" efm="ptmbo8r.efm"/>
+   <entry texfont="ptmbo8y" encvec="texnansi.enc.xml" efm="ptmbo8y.efm"/>
+   <entry texfont="ptmr8r" encvec="8r.enc.xml" efm="ptmr8r.efm"/>
+   <entry texfont="ptmr8rn" encvec="8r.enc.xml" efm="ptmr8rn.efm"/>
+   <entry texfont="ptmr8y" encvec="texnansi.enc.xml" efm="ptmr8y.efm"/>
+   <entry texfont="ptmri8r" encvec="8r.enc.xml" efm="ptmri8r.efm"/>
+   <entry texfont="ptmri8y" encvec="texnansi.enc.xml" efm="ptmri8y.efm"/>
+   <entry texfont="ptmro8r" encvec="8r.enc.xml" efm="ptmro8r.efm"/>
+   <entry texfont="ptmro8y" encvec="texnansi.enc.xml" efm="ptmro8y.efm"/>
+   <entry texfont="ptmrr8re" encvec="8r.enc.xml" efm="ptmrr8re.efm"/>
+   <entry texfont="pxbex" efm="pxbex.efm"/>
+   <entry texfont="pxbexa" efm="pxbexa.efm"/>
+   <entry texfont="pxbmia" efm="pxbmia.efm"/>
+   <entry texfont="pxbsy" efm="pxbsy.efm"/>
+   <entry texfont="pxbsya" efm="pxbsya.efm"/>
+   <entry texfont="pxbsyb" efm="pxbsyb.efm"/>
+   <entry texfont="pxbsyc" efm="pxbsyc.efm"/>
+   <entry texfont="pxex" efm="pxex.efm"/>
+   <entry texfont="pxexa" efm="pxexa.efm"/>
+   <entry texfont="pxmia" efm="pxmia.efm"/>
+   <entry texfont="pxsy" efm="pxsy.efm"/>
+   <entry texfont="pxsya" efm="pxsya.efm"/>
+   <entry texfont="pxsyb" efm="pxsyb.efm"/>
+   <entry texfont="pxsyc" efm="pxsyc.efm"/>
+   <entry texfont="pzcmi8r" encvec="8r.enc.xml" efm="pzcmi8r.efm"/>
+   <entry texfont="pzdr" efm="pzdr.efm"/>
+   <entry texfont="qbkb" encvec="qbk.enc.xml" efm="qbkb.efm"/>
+   <entry texfont="qbkbi" encvec="qbk.enc.xml" efm="qbkbi.efm"/>
+   <entry texfont="qbkr" encvec="qbk.enc.xml" efm="qbkr.efm"/>
+   <entry texfont="qbkri" encvec="qbk.enc.xml" efm="qbkri.efm"/>
+   <entry texfont="qcrb" encvec="qcr.enc.xml" efm="qcrb.efm"/>
+   <entry texfont="qcrbi" encvec="qcr.enc.xml" efm="qcrbi.efm"/>
+   <entry texfont="qcrr" encvec="qcr.enc.xml" efm="qcrr.efm"/>
+   <entry texfont="qcrri" encvec="qcr.enc.xml" efm="qcrri.efm"/>
+   <entry texfont="qhvb" encvec="qhv.enc.xml" efm="qhvb.efm"/>
+   <entry texfont="qhvbi" encvec="qhv.enc.xml" efm="qhvbi.efm"/>
+   <entry texfont="qhvcb" encvec="qhv.enc.xml" efm="qhvcb.efm"/>
+   <entry texfont="qhvcbi" encvec="qhv.enc.xml" efm="qhvcbi.efm"/>
+   <entry texfont="qhvcr" encvec="qhv.enc.xml" efm="qhvcr.efm"/>
+   <entry texfont="qhvcri" encvec="qhv.enc.xml" efm="qhvcri.efm"/>
+   <entry texfont="qhvr" encvec="qhv.enc.xml" efm="qhvr.efm"/>
+   <entry texfont="qhvri" encvec="qhv.enc.xml" efm="qhvri.efm"/>
+   <entry texfont="qplb" encvec="qpl.enc.xml" efm="qplb.efm"/>
+   <entry texfont="qplbi" encvec="qpl.enc.xml" efm="qplbi.efm"/>
+   <entry texfont="qplr" encvec="qpl.enc.xml" efm="qplr.efm"/>
+   <entry texfont="qplri" encvec="qpl.enc.xml" efm="qplri.efm"/>
+   <entry texfont="qtmb" encvec="qtm.enc.xml" efm="qtmb.efm"/>
+   <entry texfont="qtmbi" encvec="qtm.enc.xml" efm="qtmbi.efm"/>
+   <entry texfont="qtmr" encvec="qtm.enc.xml" efm="qtmr.efm"/>
+   <entry texfont="qtmri" encvec="qtm.enc.xml" efm="qtmri.efm"/>
+   <entry texfont="qx-anttb" encvec="qx-antt.enc.xml" efm="qx-anttb.efm"/>
+   <entry texfont="qx-anttbcap" encvec="qx-anttcap.enc.xml" efm="qx-anttbcap.efm"/>
+   <entry texfont="qx-anttbi" encvec="qx-antt.enc.xml" efm="qx-anttbi.efm"/>
+   <entry texfont="qx-anttbicap" encvec="qx-anttcap.enc.xml" efm="qx-anttbicap.efm"/>
+   <entry texfont="qx-anttcb" encvec="qx-antt.enc.xml" efm="qx-anttcb.efm"/>
+   <entry texfont="qx-anttcbcap" encvec="qx-anttcap.enc.xml" efm="qx-anttcbcap.efm"/>
+   <entry texfont="qx-anttcbi" encvec="qx-antt.enc.xml" efm="qx-anttcbi.efm"/>
+   <entry texfont="qx-anttcbicap" encvec="qx-anttcap.enc.xml" efm="qx-anttcbicap.efm"/>
+   <entry texfont="qx-anttcl" encvec="qx-antt.enc.xml" efm="qx-anttcl.efm"/>
+   <entry texfont="qx-anttclcap" encvec="qx-anttcap.enc.xml" efm="qx-anttclcap.efm"/>
+   <entry texfont="qx-anttcli" encvec="qx-antt.enc.xml" efm="qx-anttcli.efm"/>
+   <entry texfont="qx-anttclicap" encvec="qx-anttcap.enc.xml" efm="qx-anttclicap.efm"/>
+   <entry texfont="qx-anttcm" encvec="qx-antt.enc.xml" efm="qx-anttcm.efm"/>
+   <entry texfont="qx-anttcmcap" encvec="qx-anttcap.enc.xml" efm="qx-anttcmcap.efm"/>
+   <entry texfont="qx-anttcmi" encvec="qx-antt.enc.xml" efm="qx-anttcmi.efm"/>
+   <entry texfont="qx-anttcmicap" encvec="qx-anttcap.enc.xml" efm="qx-anttcmicap.efm"/>
+   <entry texfont="qx-anttcr" encvec="qx-antt.enc.xml" efm="qx-anttcr.efm"/>
+   <entry texfont="qx-anttcrcap" encvec="qx-anttcap.enc.xml" efm="qx-anttcrcap.efm"/>
+   <entry texfont="qx-anttcri" encvec="qx-antt.enc.xml" efm="qx-anttcri.efm"/>
+   <entry texfont="qx-anttcricap" encvec="qx-anttcap.enc.xml" efm="qx-anttcricap.efm"/>
+   <entry texfont="qx-anttl" encvec="qx-antt.enc.xml" efm="qx-anttl.efm"/>
+   <entry texfont="qx-anttlcap" encvec="qx-anttcap.enc.xml" efm="qx-anttlcap.efm"/>
+   <entry texfont="qx-anttli" encvec="qx-antt.enc.xml" efm="qx-anttli.efm"/>
+   <entry texfont="qx-anttlicap" encvec="qx-anttcap.enc.xml" efm="qx-anttlicap.efm"/>
+   <entry texfont="qx-anttm" encvec="qx-antt.enc.xml" efm="qx-anttm.efm"/>
+   <entry texfont="qx-anttmcap" encvec="qx-anttcap.enc.xml" efm="qx-anttmcap.efm"/>
+   <entry texfont="qx-anttmi" encvec="qx-antt.enc.xml" efm="qx-anttmi.efm"/>
+   <entry texfont="qx-anttmicap" encvec="qx-anttcap.enc.xml" efm="qx-anttmicap.efm"/>
+   <entry texfont="qx-anttr" encvec="qx-antt.enc.xml" efm="qx-anttr.efm"/>
+   <entry texfont="qx-anttrcap" encvec="qx-anttcap.enc.xml" efm="qx-anttrcap.efm"/>
+   <entry texfont="qx-anttri" encvec="qx-antt.enc.xml" efm="qx-anttri.efm"/>
+   <entry texfont="qx-anttricap" encvec="qx-anttcap.enc.xml" efm="qx-anttricap.efm"/>
+   <entry texfont="qx-lmb10" encvec="qx-lm.enc.xml" efm="qx-lmb10.efm"/>
+   <entry texfont="qx-lmbo10" encvec="qx-lm.enc.xml" efm="qx-lmbo10.efm"/>
+   <entry texfont="qx-lmbx10" encvec="qx-lm.enc.xml" efm="qx-lmbx10.efm"/>
+   <entry texfont="qx-lmbx12" encvec="qx-lm.enc.xml" efm="qx-lmbx12.efm"/>
+   <entry texfont="qx-lmbx5" encvec="qx-lm.enc.xml" efm="qx-lmbx5.efm"/>
+   <entry texfont="qx-lmbx6" encvec="qx-lm.enc.xml" efm="qx-lmbx6.efm"/>
+   <entry texfont="qx-lmbx7" encvec="qx-lm.enc.xml" efm="qx-lmbx7.efm"/>
+   <entry texfont="qx-lmbx8" encvec="qx-lm.enc.xml" efm="qx-lmbx8.efm"/>
+   <entry texfont="qx-lmbx9" encvec="qx-lm.enc.xml" efm="qx-lmbx9.efm"/>
+   <entry texfont="qx-lmbxi10" encvec="qx-lm.enc.xml" efm="qx-lmbxi10.efm"/>
+   <entry texfont="qx-lmbxo10" encvec="qx-lm.enc.xml" efm="qx-lmbxo10.efm"/>
+   <entry texfont="qx-lmcsc10" encvec="qx-lm.enc.xml" efm="qx-lmcsc10.efm"/>
+   <entry texfont="qx-lmcsco10" encvec="qx-lm.enc.xml" efm="qx-lmcsco10.efm"/>
+   <entry texfont="qx-lmr10" encvec="qx-lm.enc.xml" efm="qx-lmr10.efm"/>
+   <entry texfont="qx-lmr12" encvec="qx-lm.enc.xml" efm="qx-lmr12.efm"/>
+   <entry texfont="qx-lmr17" encvec="qx-lm.enc.xml" efm="qx-lmr17.efm"/>
+   <entry texfont="qx-lmr5" encvec="qx-lm.enc.xml" efm="qx-lmr5.efm"/>
+   <entry texfont="qx-lmr6" encvec="qx-lm.enc.xml" efm="qx-lmr6.efm"/>
+   <entry texfont="qx-lmr7" encvec="qx-lm.enc.xml" efm="qx-lmr7.efm"/>
+   <entry texfont="qx-lmr8" encvec="qx-lm.enc.xml" efm="qx-lmr8.efm"/>
+   <entry texfont="qx-lmr9" encvec="qx-lm.enc.xml" efm="qx-lmr9.efm"/>
+   <entry texfont="qx-lmri10" encvec="qx-lm.enc.xml" efm="qx-lmri10.efm"/>
+   <entry texfont="qx-lmri12" encvec="qx-lm.enc.xml" efm="qx-lmri12.efm"/>
+   <entry texfont="qx-lmri7" encvec="qx-lm.enc.xml" efm="qx-lmri7.efm"/>
+   <entry texfont="qx-lmri8" encvec="qx-lm.enc.xml" efm="qx-lmri8.efm"/>
+   <entry texfont="qx-lmri9" encvec="qx-lm.enc.xml" efm="qx-lmri9.efm"/>
+   <entry texfont="qx-lmro10" encvec="qx-lm.enc.xml" efm="qx-lmro10.efm"/>
+   <entry texfont="qx-lmro12" encvec="qx-lm.enc.xml" efm="qx-lmro12.efm"/>
+   <entry texfont="qx-lmro8" encvec="qx-lm.enc.xml" efm="qx-lmro8.efm"/>
+   <entry texfont="qx-lmro9" encvec="qx-lm.enc.xml" efm="qx-lmro9.efm"/>
+   <entry texfont="qx-lmss10" encvec="qx-lm.enc.xml" efm="qx-lmss10.efm"/>
+   <entry texfont="qx-lmss12" encvec="qx-lm.enc.xml" efm="qx-lmss12.efm"/>
+   <entry texfont="qx-lmss17" encvec="qx-lm.enc.xml" efm="qx-lmss17.efm"/>
+   <entry texfont="qx-lmss8" encvec="qx-lm.enc.xml" efm="qx-lmss8.efm"/>
+   <entry texfont="qx-lmss9" encvec="qx-lm.enc.xml" efm="qx-lmss9.efm"/>
+   <entry texfont="qx-lmssbo10" encvec="qx-lm.enc.xml" efm="qx-lmssbo10.efm"/>
+   <entry texfont="qx-lmssbx10" encvec="qx-lm.enc.xml" efm="qx-lmssbx10.efm"/>
+   <entry texfont="qx-lmssdc10" encvec="qx-lm.enc.xml" efm="qx-lmssdc10.efm"/>
+   <entry texfont="qx-lmssdo10" encvec="qx-lm.enc.xml" efm="qx-lmssdo10.efm"/>
+   <entry texfont="qx-lmsso10" encvec="qx-lm.enc.xml" efm="qx-lmsso10.efm"/>
+   <entry texfont="qx-lmsso12" encvec="qx-lm.enc.xml" efm="qx-lmsso12.efm"/>
+   <entry texfont="qx-lmsso17" encvec="qx-lm.enc.xml" efm="qx-lmsso17.efm"/>
+   <entry texfont="qx-lmsso8" encvec="qx-lm.enc.xml" efm="qx-lmsso8.efm"/>
+   <entry texfont="qx-lmsso9" encvec="qx-lm.enc.xml" efm="qx-lmsso9.efm"/>
+   <entry texfont="qx-lmssq8" encvec="qx-lm.enc.xml" efm="qx-lmssq8.efm"/>
+   <entry texfont="qx-lmssqbo8" encvec="qx-lm.enc.xml" efm="qx-lmssqbo8.efm"/>
+   <entry texfont="qx-lmssqbx8" encvec="qx-lm.enc.xml" efm="qx-lmssqbx8.efm"/>
+   <entry texfont="qx-lmssqo8" encvec="qx-lm.enc.xml" efm="qx-lmssqo8.efm"/>
+   <entry texfont="qx-lmtcsc10" encvec="qx-lmtt.enc.xml" efm="qx-lmtcsc10.efm"/>
+   <entry texfont="qx-lmtt10" encvec="qx-lmtt.enc.xml" efm="qx-lmtt10.efm"/>
+   <entry texfont="qx-lmtt12" encvec="qx-lmtt.enc.xml" efm="qx-lmtt12.efm"/>
+   <entry texfont="qx-lmtt8" encvec="qx-lmtt.enc.xml" efm="qx-lmtt8.efm"/>
+   <entry texfont="qx-lmtt9" encvec="qx-lmtt.enc.xml" efm="qx-lmtt9.efm"/>
+   <entry texfont="qx-lmtti10" encvec="qx-lmtt.enc.xml" efm="qx-lmtti10.efm"/>
+   <entry texfont="qx-lmtto10" encvec="qx-lmtt.enc.xml" efm="qx-lmtto10.efm"/>
+   <entry texfont="qx-lmvtt10" encvec="qx-lm.enc.xml" efm="qx-lmvtt10.efm"/>
+   <entry texfont="qx-lmvtto10" encvec="qx-lm.enc.xml" efm="qx-lmvtto10.efm"/>
+   <entry texfont="qzcmi" encvec="qzc.enc.xml" efm="qzcmi.efm"/>
+   <entry texfont="rmtmi" efm="rmtmi.efm"/>
+   <entry texfont="rpagd" encvec="8a.enc.xml" efm="rpagd.efm"/>
+   <entry texfont="rpagdo" encvec="8a.enc.xml" efm="rpagdo.efm"/>
+   <entry texfont="rpagk" encvec="8a.enc.xml" efm="rpagk.efm"/>
+   <entry texfont="rpagko" encvec="8a.enc.xml" efm="rpagko.efm"/>
+   <entry texfont="rpbkd" encvec="8a.enc.xml" efm="rpbkd.efm"/>
+   <entry texfont="rpbkdi" encvec="8a.enc.xml" efm="rpbkdi.efm"/>
+   <entry texfont="rpbkl" encvec="8a.enc.xml" efm="rpbkl.efm"/>
+   <entry texfont="rpbkli" encvec="8a.enc.xml" efm="rpbkli.efm"/>
+   <entry texfont="rpcrb" encvec="8a.enc.xml" efm="rpcrb.efm"/>
+   <entry texfont="rpcrbo" encvec="8a.enc.xml" efm="rpcrbo.efm"/>
+   <entry texfont="rpcrr" encvec="8a.enc.xml" efm="rpcrr.efm"/>
+   <entry texfont="rpcrro" encvec="8a.enc.xml" efm="rpcrro.efm"/>
+   <entry texfont="rpcxb" efm="rpcxb.efm"/>
+   <entry texfont="rpcxbi" efm="rpcxbi.efm"/>
+   <entry texfont="rpcxbsl" efm="rpcxbsl.efm"/>
+   <entry texfont="rpcxi" efm="rpcxi.efm"/>
+   <entry texfont="rpcxr" efm="rpcxr.efm"/>
+   <entry texfont="rpcxsl" efm="rpcxsl.efm"/>
+   <entry texfont="rphvb" encvec="8a.enc.xml" efm="rphvb.efm"/>
+   <entry texfont="rphvbo" encvec="8a.enc.xml" efm="rphvbo.efm"/>
+   <entry texfont="rphvbon" encvec="8a.enc.xml" efm="rphvbon.efm"/>
+   <entry texfont="rphvbrn" encvec="8a.enc.xml" efm="rphvbrn.efm"/>
+   <entry texfont="rphvr" encvec="8a.enc.xml" efm="rphvr.efm"/>
+   <entry texfont="rphvro" encvec="8a.enc.xml" efm="rphvro.efm"/>
+   <entry texfont="rphvron" encvec="8a.enc.xml" efm="rphvron.efm"/>
+   <entry texfont="rphvrrn" encvec="8a.enc.xml" efm="rphvrrn.efm"/>
+   <entry texfont="rpncb" encvec="8a.enc.xml" efm="rpncb.efm"/>
+   <entry texfont="rpncbi" encvec="8a.enc.xml" efm="rpncbi.efm"/>
+   <entry texfont="rpncr" encvec="8a.enc.xml" efm="rpncr.efm"/>
+   <entry texfont="rpncri" encvec="8a.enc.xml" efm="rpncri.efm"/>
+   <entry texfont="rpplb" encvec="8a.enc.xml" efm="rpplb.efm"/>
+   <entry texfont="rpplbi" encvec="8a.enc.xml" efm="rpplbi.efm"/>
+   <entry texfont="rpplbu" encvec="8a.enc.xml" efm="rpplbu.efm"/>
+   <entry texfont="rpplr" encvec="8a.enc.xml" efm="rpplr.efm"/>
+   <entry texfont="rpplri" encvec="8a.enc.xml" efm="rpplri.efm"/>
+   <entry texfont="rpplro" encvec="8a.enc.xml" efm="rpplro.efm"/>
+   <entry texfont="rpplrre" encvec="8a.enc.xml" efm="rpplrre.efm"/>
+   <entry texfont="rpplrrn" encvec="8a.enc.xml" efm="rpplrrn.efm"/>
+   <entry texfont="rpplru" encvec="8a.enc.xml" efm="rpplru.efm"/>
+   <entry texfont="rpsyr" efm="rpsyr.efm"/>
+   <entry texfont="rpsyro" efm="rpsyro.efm"/>
+   <entry texfont="rptmb" encvec="8a.enc.xml" efm="rptmb.efm"/>
+   <entry texfont="rptmbi" encvec="8a.enc.xml" efm="rptmbi.efm"/>
+   <entry texfont="rptmbo" encvec="8a.enc.xml" efm="rptmbo.efm"/>
+   <entry texfont="rptmr" encvec="8a.enc.xml" efm="rptmr.efm"/>
+   <entry texfont="rptmri" encvec="8a.enc.xml" efm="rptmri.efm"/>
+   <entry texfont="rptmro" encvec="8a.enc.xml" efm="rptmro.efm"/>
+   <entry texfont="rptmrre" encvec="8a.enc.xml" efm="rptmrre.efm"/>
+   <entry texfont="rptmrrn" encvec="8a.enc.xml" efm="rptmrrn.efm"/>
+   <entry texfont="rpxb" efm="rpxb.efm"/>
+   <entry texfont="rpxbi" efm="rpxbi.efm"/>
+   <entry texfont="rpxbmi" efm="rpxbmi.efm"/>
+   <entry texfont="rpxbsc" efm="rpxbsc.efm"/>
+   <entry texfont="rpxbsl" efm="rpxbsl.efm"/>
+   <entry texfont="rpxi" efm="rpxi.efm"/>
+   <entry texfont="rpxmi" efm="rpxmi.efm"/>
+   <entry texfont="rpxpplb" encvec="8r.enc.xml" efm="rpxpplb.efm"/>
+   <entry texfont="rpxpplbi" encvec="8r.enc.xml" efm="rpxpplbi.efm"/>
+   <entry texfont="rpxpplbo" encvec="8r.enc.xml" efm="rpxpplbo.efm"/>
+   <entry texfont="rpxpplr" encvec="8r.enc.xml" efm="rpxpplr.efm"/>
+   <entry texfont="rpxpplri" encvec="8r.enc.xml" efm="rpxpplri.efm"/>
+   <entry texfont="rpxpplro" encvec="8r.enc.xml" efm="rpxpplro.efm"/>
+   <entry texfont="rpxr" efm="rpxr.efm"/>
+   <entry texfont="rpxsc" efm="rpxsc.efm"/>
+   <entry texfont="rpxsl" efm="rpxsl.efm"/>
+   <entry texfont="rpzcmi" encvec="8a.enc.xml" efm="rpzcmi.efm"/>
+   <entry texfont="rpzdr" efm="rpzdr.efm"/>
+   <entry texfont="rsfs10" efm="rsfs10.efm"/>
+   <entry texfont="rsfs5" efm="rsfs5.efm"/>
+   <entry texfont="rsfs7" efm="rsfs7.efm"/>
+   <entry texfont="rtcxb" efm="rtcxb.efm"/>
+   <entry texfont="rtcxbi" efm="rtcxbi.efm"/>
+   <entry texfont="rtcxbsl" efm="rtcxbsl.efm"/>
+   <entry texfont="rtcxbss" efm="rtcxbss.efm"/>
+   <entry texfont="rtcxbsso" efm="rtcxbsso.efm"/>
+   <entry texfont="rtcxi" efm="rtcxi.efm"/>
+   <entry texfont="rtcxr" efm="rtcxr.efm"/>
+   <entry texfont="rtcxsl" efm="rtcxsl.efm"/>
+   <entry texfont="rtcxss" efm="rtcxss.efm"/>
+   <entry texfont="rtcxsssl" efm="rtcxsssl.efm"/>
+   <entry texfont="rtxb" efm="rtxb.efm"/>
+   <entry texfont="rtxbi" efm="rtxbi.efm"/>
+   <entry texfont="rtxbmi" efm="rtxbmi.efm"/>
+   <entry texfont="rtxbsc" efm="rtxbsc.efm"/>
+   <entry texfont="rtxbsl" efm="rtxbsl.efm"/>
+   <entry texfont="rtxbss" efm="rtxbss.efm"/>
+   <entry texfont="rtxbsssc" efm="rtxbsssc.efm"/>
+   <entry texfont="rtxbsssl" efm="rtxbsssl.efm"/>
+   <entry texfont="rtxi" efm="rtxi.efm"/>
+   <entry texfont="rtxmi" efm="rtxmi.efm"/>
+   <entry texfont="rtxphvb" encvec="8r.enc.xml" efm="rtxphvb.efm"/>
+   <entry texfont="rtxphvbo" encvec="8r.enc.xml" efm="rtxphvbo.efm"/>
+   <entry texfont="rtxphvr" encvec="8r.enc.xml" efm="rtxphvr.efm"/>
+   <entry texfont="rtxphvro" encvec="8r.enc.xml" efm="rtxphvro.efm"/>
+   <entry texfont="rtxptmb" encvec="8r.enc.xml" efm="rtxptmb.efm"/>
+   <entry texfont="rtxptmbi" encvec="8r.enc.xml" efm="rtxptmbi.efm"/>
+   <entry texfont="rtxptmbo" encvec="8r.enc.xml" efm="rtxptmbo.efm"/>
+   <entry texfont="rtxptmr" encvec="8r.enc.xml" efm="rtxptmr.efm"/>
+   <entry texfont="rtxptmri" encvec="8r.enc.xml" efm="rtxptmri.efm"/>
+   <entry texfont="rtxptmro" encvec="8r.enc.xml" efm="rtxptmro.efm"/>
+   <entry texfont="rtxr" efm="rtxr.efm"/>
+   <entry texfont="rtxsc" efm="rtxsc.efm"/>
+   <entry texfont="rtxsl" efm="rtxsl.efm"/>
+   <entry texfont="rtxss" efm="rtxss.efm"/>
+   <entry texfont="rtxsssc" efm="rtxsssc.efm"/>
+   <entry texfont="rtxsssl" efm="rtxsssl.efm"/>
+   <entry texfont="stmary10" efm="stmary10.efm"/>
+   <entry texfont="stmary5" efm="stmary5.efm"/>
+   <entry texfont="stmary6" efm="stmary6.efm"/>
+   <entry texfont="stmary7" efm="stmary7.efm"/>
+   <entry texfont="stmary8" efm="stmary8.efm"/>
+   <entry texfont="stmary9" efm="stmary9.efm"/>
+   <entry texfont="sy" efm="sy.efm"/>
+   <entry texfont="t1xbtt" efm="t1xbtt.efm"/>
+   <entry texfont="t1xbttsc" efm="t1xbttsc.efm"/>
+   <entry texfont="t1xbttsl" efm="t1xbttsl.efm"/>
+   <entry texfont="t1xtt" efm="t1xtt.efm"/>
+   <entry texfont="t1xttsc" efm="t1xttsc.efm"/>
+   <entry texfont="t1xttsl" efm="t1xttsl.efm"/>
+   <entry texfont="t2a-anttb" encvec="t2a-antt.enc.xml" efm="t2a-anttb.efm"/>
+   <entry texfont="t2a-anttbi" encvec="t2a-antt.enc.xml" efm="t2a-anttbi.efm"/>
+   <entry texfont="t2a-anttcb" encvec="t2a-antt.enc.xml" efm="t2a-anttcb.efm"/>
+   <entry texfont="t2a-anttcbi" encvec="t2a-antt.enc.xml" efm="t2a-anttcbi.efm"/>
+   <entry texfont="t2a-anttcl" encvec="t2a-antt.enc.xml" efm="t2a-anttcl.efm"/>
+   <entry texfont="t2a-anttcli" encvec="t2a-antt.enc.xml" efm="t2a-anttcli.efm"/>
+   <entry texfont="t2a-anttcm" encvec="t2a-antt.enc.xml" efm="t2a-anttcm.efm"/>
+   <entry texfont="t2a-anttcmi" encvec="t2a-antt.enc.xml" efm="t2a-anttcmi.efm"/>
+   <entry texfont="t2a-anttcr" encvec="t2a-antt.enc.xml" efm="t2a-anttcr.efm"/>
+   <entry texfont="t2a-anttcri" encvec="t2a-antt.enc.xml" efm="t2a-anttcri.efm"/>
+   <entry texfont="t2a-anttl" encvec="t2a-antt.enc.xml" efm="t2a-anttl.efm"/>
+   <entry texfont="t2a-anttli" encvec="t2a-antt.enc.xml" efm="t2a-anttli.efm"/>
+   <entry texfont="t2a-anttm" encvec="t2a-antt.enc.xml" efm="t2a-anttm.efm"/>
+   <entry texfont="t2a-anttmi" encvec="t2a-antt.enc.xml" efm="t2a-anttmi.efm"/>
+   <entry texfont="t2a-anttr" encvec="t2a-antt.enc.xml" efm="t2a-anttr.efm"/>
+   <entry texfont="t2a-anttri" encvec="t2a-antt.enc.xml" efm="t2a-anttri.efm"/>
+   <entry texfont="t2b-anttb" encvec="t2b-antt.enc.xml" efm="t2b-anttb.efm"/>
+   <entry texfont="t2b-anttbi" encvec="t2b-antt.enc.xml" efm="t2b-anttbi.efm"/>
+   <entry texfont="t2b-anttcb" encvec="t2b-antt.enc.xml" efm="t2b-anttcb.efm"/>
+   <entry texfont="t2b-anttcbi" encvec="t2b-antt.enc.xml" efm="t2b-anttcbi.efm"/>
+   <entry texfont="t2b-anttcl" encvec="t2b-antt.enc.xml" efm="t2b-anttcl.efm"/>
+   <entry texfont="t2b-anttcli" encvec="t2b-antt.enc.xml" efm="t2b-anttcli.efm"/>
+   <entry texfont="t2b-anttcm" encvec="t2b-antt.enc.xml" efm="t2b-anttcm.efm"/>
+   <entry texfont="t2b-anttcmi" encvec="t2b-antt.enc.xml" efm="t2b-anttcmi.efm"/>
+   <entry texfont="t2b-anttcr" encvec="t2b-antt.enc.xml" efm="t2b-anttcr.efm"/>
+   <entry texfont="t2b-anttcri" encvec="t2b-antt.enc.xml" efm="t2b-anttcri.efm"/>
+   <entry texfont="t2b-anttl" encvec="t2b-antt.enc.xml" efm="t2b-anttl.efm"/>
+   <entry texfont="t2b-anttli" encvec="t2b-antt.enc.xml" efm="t2b-anttli.efm"/>
+   <entry texfont="t2b-anttm" encvec="t2b-antt.enc.xml" efm="t2b-anttm.efm"/>
+   <entry texfont="t2b-anttmi" encvec="t2b-antt.enc.xml" efm="t2b-anttmi.efm"/>
+   <entry texfont="t2b-anttr" encvec="t2b-antt.enc.xml" efm="t2b-anttr.efm"/>
+   <entry texfont="t2b-anttri" encvec="t2b-antt.enc.xml" efm="t2b-anttri.efm"/>
+   <entry texfont="t2c-anttb" encvec="t2c-antt.enc.xml" efm="t2c-anttb.efm"/>
+   <entry texfont="t2c-anttbi" encvec="t2c-antt.enc.xml" efm="t2c-anttbi.efm"/>
+   <entry texfont="t2c-anttcb" encvec="t2c-antt.enc.xml" efm="t2c-anttcb.efm"/>
+   <entry texfont="t2c-anttcbi" encvec="t2c-antt.enc.xml" efm="t2c-anttcbi.efm"/>
+   <entry texfont="t2c-anttcl" encvec="t2c-antt.enc.xml" efm="t2c-anttcl.efm"/>
+   <entry texfont="t2c-anttcli" encvec="t2c-antt.enc.xml" efm="t2c-anttcli.efm"/>
+   <entry texfont="t2c-anttcm" encvec="t2c-antt.enc.xml" efm="t2c-anttcm.efm"/>
+   <entry texfont="t2c-anttcmi" encvec="t2c-antt.enc.xml" efm="t2c-anttcmi.efm"/>
+   <entry texfont="t2c-anttcr" encvec="t2c-antt.enc.xml" efm="t2c-anttcr.efm"/>
+   <entry texfont="t2c-anttcri" encvec="t2c-antt.enc.xml" efm="t2c-anttcri.efm"/>
+   <entry texfont="t2c-anttl" encvec="t2c-antt.enc.xml" efm="t2c-anttl.efm"/>
+   <entry texfont="t2c-anttli" encvec="t2c-antt.enc.xml" efm="t2c-anttli.efm"/>
+   <entry texfont="t2c-anttm" encvec="t2c-antt.enc.xml" efm="t2c-anttm.efm"/>
+   <entry texfont="t2c-anttmi" encvec="t2c-antt.enc.xml" efm="t2c-anttmi.efm"/>
+   <entry texfont="t2c-anttr" encvec="t2c-antt.enc.xml" efm="t2c-anttr.efm"/>
+   <entry texfont="t2c-anttri" encvec="t2c-antt.enc.xml" efm="t2c-anttri.efm"/>
+   <entry texfont="t5-anttb" encvec="t5-antt.enc.xml" efm="t5-anttb.efm"/>
+   <entry texfont="t5-anttbcap" encvec="t5-anttcap.enc.xml" efm="t5-anttbcap.efm"/>
+   <entry texfont="t5-anttbi" encvec="t5-antt.enc.xml" efm="t5-anttbi.efm"/>
+   <entry texfont="t5-anttbicap" encvec="t5-anttcap.enc.xml" efm="t5-anttbicap.efm"/>
+   <entry texfont="t5-anttcb" encvec="t5-antt.enc.xml" efm="t5-anttcb.efm"/>
+   <entry texfont="t5-anttcbcap" encvec="t5-anttcap.enc.xml" efm="t5-anttcbcap.efm"/>
+   <entry texfont="t5-anttcbi" encvec="t5-antt.enc.xml" efm="t5-anttcbi.efm"/>
+   <entry texfont="t5-anttcbicap" encvec="t5-anttcap.enc.xml" efm="t5-anttcbicap.efm"/>
+   <entry texfont="t5-anttcl" encvec="t5-antt.enc.xml" efm="t5-anttcl.efm"/>
+   <entry texfont="t5-anttclcap" encvec="t5-anttcap.enc.xml" efm="t5-anttclcap.efm"/>
+   <entry texfont="t5-anttcli" encvec="t5-antt.enc.xml" efm="t5-anttcli.efm"/>
+   <entry texfont="t5-anttclicap" encvec="t5-anttcap.enc.xml" efm="t5-anttclicap.efm"/>
+   <entry texfont="t5-anttcm" encvec="t5-antt.enc.xml" efm="t5-anttcm.efm"/>
+   <entry texfont="t5-anttcmcap" encvec="t5-anttcap.enc.xml" efm="t5-anttcmcap.efm"/>
+   <entry texfont="t5-anttcmi" encvec="t5-antt.enc.xml" efm="t5-anttcmi.efm"/>
+   <entry texfont="t5-anttcmicap" encvec="t5-anttcap.enc.xml" efm="t5-anttcmicap.efm"/>
+   <entry texfont="t5-anttcr" encvec="t5-antt.enc.xml" efm="t5-anttcr.efm"/>
+   <entry texfont="t5-anttcrcap" encvec="t5-anttcap.enc.xml" efm="t5-anttcrcap.efm"/>
+   <entry texfont="t5-anttcri" encvec="t5-antt.enc.xml" efm="t5-anttcri.efm"/>
+   <entry texfont="t5-anttcricap" encvec="t5-anttcap.enc.xml" efm="t5-anttcricap.efm"/>
+   <entry texfont="t5-anttl" encvec="t5-antt.enc.xml" efm="t5-anttl.efm"/>
+   <entry texfont="t5-anttlcap" encvec="t5-anttcap.enc.xml" efm="t5-anttlcap.efm"/>
+   <entry texfont="t5-anttli" encvec="t5-antt.enc.xml" efm="t5-anttli.efm"/>
+   <entry texfont="t5-anttlicap" encvec="t5-anttcap.enc.xml" efm="t5-anttlicap.efm"/>
+   <entry texfont="t5-anttm" encvec="t5-antt.enc.xml" efm="t5-anttm.efm"/>
+   <entry texfont="t5-anttmcap" encvec="t5-anttcap.enc.xml" efm="t5-anttmcap.efm"/>
+   <entry texfont="t5-anttmi" encvec="t5-antt.enc.xml" efm="t5-anttmi.efm"/>
+   <entry texfont="t5-anttmicap" encvec="t5-anttcap.enc.xml" efm="t5-anttmicap.efm"/>
+   <entry texfont="t5-anttr" encvec="t5-antt.enc.xml" efm="t5-anttr.efm"/>
+   <entry texfont="t5-anttrcap" encvec="t5-anttcap.enc.xml" efm="t5-anttrcap.efm"/>
+   <entry texfont="t5-anttri" encvec="t5-antt.enc.xml" efm="t5-anttri.efm"/>
+   <entry texfont="t5-anttricap" encvec="t5-anttcap.enc.xml" efm="t5-anttricap.efm"/>
+   <entry texfont="tcxbtt" efm="tcxbtt.efm"/>
+   <entry texfont="tcxbttsl" efm="tcxbttsl.efm"/>
+   <entry texfont="tcxtt" efm="tcxtt.efm"/>
+   <entry texfont="tcxttsl" efm="tcxttsl.efm"/>
+   <entry texfont="texnansi-anttb" encvec="texnansi-antt.enc.xml" efm="texnansi-anttb.efm"/>
+   <entry texfont="texnansi-anttbcap" encvec="texnansi-anttcap.enc.xml" efm="texnansi-anttbcap.efm"/>
+   <entry texfont="texnansi-anttbi" encvec="texnansi-antt.enc.xml" efm="texnansi-anttbi.efm"/>
+   <entry texfont="texnansi-anttbicap" encvec="texnansi-anttcap.enc.xml" efm="texnansi-anttbicap.efm"/>
+   <entry texfont="texnansi-anttcb" encvec="texnansi-antt.enc.xml" efm="texnansi-anttcb.efm"/>
+   <entry texfont="texnansi-anttcbcap" encvec="texnansi-anttcap.enc.xml" efm="texnansi-anttcbcap.efm"/>
+   <entry texfont="texnansi-anttcbi" encvec="texnansi-antt.enc.xml" efm="texnansi-anttcbi.efm"/>
+   <entry texfont="texnansi-anttcbicap" encvec="texnansi-anttcap.enc.xml" efm="texnansi-anttcbicap.efm"/>
+   <entry texfont="texnansi-anttcl" encvec="texnansi-antt.enc.xml" efm="texnansi-anttcl.efm"/>
+   <entry texfont="texnansi-anttclcap" encvec="texnansi-anttcap.enc.xml" efm="texnansi-anttclcap.efm"/>
+   <entry texfont="texnansi-anttcli" encvec="texnansi-antt.enc.xml" efm="texnansi-anttcli.efm"/>
+   <entry texfont="texnansi-anttclicap" encvec="texnansi-anttcap.enc.xml" efm="texnansi-anttclicap.efm"/>
+   <entry texfont="texnansi-anttcm" encvec="texnansi-antt.enc.xml" efm="texnansi-anttcm.efm"/>
+   <entry texfont="texnansi-anttcmcap" encvec="texnansi-anttcap.enc.xml" efm="texnansi-anttcmcap.efm"/>
+   <entry texfont="texnansi-anttcmi" encvec="texnansi-antt.enc.xml" efm="texnansi-anttcmi.efm"/>
+   <entry texfont="texnansi-anttcmicap" encvec="texnansi-anttcap.enc.xml" efm="texnansi-anttcmicap.efm"/>
+   <entry texfont="texnansi-anttcr" encvec="texnansi-antt.enc.xml" efm="texnansi-anttcr.efm"/>
+   <entry texfont="texnansi-anttcrcap" encvec="texnansi-anttcap.enc.xml" efm="texnansi-anttcrcap.efm"/>
+   <entry texfont="texnansi-anttcri" encvec="texnansi-antt.enc.xml" efm="texnansi-anttcri.efm"/>
+   <entry texfont="texnansi-anttcricap" encvec="texnansi-anttcap.enc.xml" efm="texnansi-anttcricap.efm"/>
+   <entry texfont="texnansi-anttl" encvec="texnansi-antt.enc.xml" efm="texnansi-anttl.efm"/>
+   <entry texfont="texnansi-anttlcap" encvec="texnansi-anttcap.enc.xml" efm="texnansi-anttlcap.efm"/>
+   <entry texfont="texnansi-anttli" encvec="texnansi-antt.enc.xml" efm="texnansi-anttli.efm"/>
+   <entry texfont="texnansi-anttlicap" encvec="texnansi-anttcap.enc.xml" efm="texnansi-anttlicap.efm"/>
+   <entry texfont="texnansi-anttm" encvec="texnansi-antt.enc.xml" efm="texnansi-anttm.efm"/>
+   <entry texfont="texnansi-anttmcap" encvec="texnansi-anttcap.enc.xml" efm="texnansi-anttmcap.efm"/>
+   <entry texfont="texnansi-anttmi" encvec="texnansi-antt.enc.xml" efm="texnansi-anttmi.efm"/>
+   <entry texfont="texnansi-anttmicap" encvec="texnansi-anttcap.enc.xml" efm="texnansi-anttmicap.efm"/>
+   <entry texfont="texnansi-anttr" encvec="texnansi-antt.enc.xml" efm="texnansi-anttr.efm"/>
+   <entry texfont="texnansi-anttrcap" encvec="texnansi-anttcap.enc.xml" efm="texnansi-anttrcap.efm"/>
+   <entry texfont="texnansi-anttri" encvec="texnansi-antt.enc.xml" efm="texnansi-anttri.efm"/>
+   <entry texfont="texnansi-anttricap" encvec="texnansi-anttcap.enc.xml" efm="texnansi-anttricap.efm"/>
+   <entry texfont="texnansi-lmb10" encvec="texnansi-lm.enc.xml" efm="texnansi-lmb10.efm"/>
+   <entry texfont="texnansi-lmbo10" encvec="texnansi-lm.enc.xml" efm="texnansi-lmbo10.efm"/>
+   <entry texfont="texnansi-lmbx10" encvec="texnansi-lm.enc.xml" efm="texnansi-lmbx10.efm"/>
+   <entry texfont="texnansi-lmbx12" encvec="texnansi-lm.enc.xml" efm="texnansi-lmbx12.efm"/>
+   <entry texfont="texnansi-lmbx5" encvec="texnansi-lm.enc.xml" efm="texnansi-lmbx5.efm"/>
+   <entry texfont="texnansi-lmbx6" encvec="texnansi-lm.enc.xml" efm="texnansi-lmbx6.efm"/>
+   <entry texfont="texnansi-lmbx7" encvec="texnansi-lm.enc.xml" efm="texnansi-lmbx7.efm"/>
+   <entry texfont="texnansi-lmbx8" encvec="texnansi-lm.enc.xml" efm="texnansi-lmbx8.efm"/>
+   <entry texfont="texnansi-lmbx9" encvec="texnansi-lm.enc.xml" efm="texnansi-lmbx9.efm"/>
+   <entry texfont="texnansi-lmbxi10" encvec="texnansi-lm.enc.xml" efm="texnansi-lmbxi10.efm"/>
+   <entry texfont="texnansi-lmbxo10" encvec="texnansi-lm.enc.xml" efm="texnansi-lmbxo10.efm"/>
+   <entry texfont="texnansi-lmcsc10" encvec="texnansi-lm.enc.xml" efm="texnansi-lmcsc10.efm"/>
+   <entry texfont="texnansi-lmcsco10" encvec="texnansi-lm.enc.xml" efm="texnansi-lmcsco10.efm"/>
+   <entry texfont="texnansi-lmr10" encvec="texnansi-lm.enc.xml" efm="texnansi-lmr10.efm"/>
+   <entry texfont="texnansi-lmr12" encvec="texnansi-lm.enc.xml" efm="texnansi-lmr12.efm"/>
+   <entry texfont="texnansi-lmr17" encvec="texnansi-lm.enc.xml" efm="texnansi-lmr17.efm"/>
+   <entry texfont="texnansi-lmr5" encvec="texnansi-lm.enc.xml" efm="texnansi-lmr5.efm"/>
+   <entry texfont="texnansi-lmr6" encvec="texnansi-lm.enc.xml" efm="texnansi-lmr6.efm"/>
+   <entry texfont="texnansi-lmr7" encvec="texnansi-lm.enc.xml" efm="texnansi-lmr7.efm"/>
+   <entry texfont="texnansi-lmr8" encvec="texnansi-lm.enc.xml" efm="texnansi-lmr8.efm"/>
+   <entry texfont="texnansi-lmr9" encvec="texnansi-lm.enc.xml" efm="texnansi-lmr9.efm"/>
+   <entry texfont="texnansi-lmri10" encvec="texnansi-lm.enc.xml" efm="texnansi-lmri10.efm"/>
+   <entry texfont="texnansi-lmri12" encvec="texnansi-lm.enc.xml" efm="texnansi-lmri12.efm"/>
+   <entry texfont="texnansi-lmri7" encvec="texnansi-lm.enc.xml" efm="texnansi-lmri7.efm"/>
+   <entry texfont="texnansi-lmri8" encvec="texnansi-lm.enc.xml" efm="texnansi-lmri8.efm"/>
+   <entry texfont="texnansi-lmri9" encvec="texnansi-lm.enc.xml" efm="texnansi-lmri9.efm"/>
+   <entry texfont="texnansi-lmro10" encvec="texnansi-lm.enc.xml" efm="texnansi-lmro10.efm"/>
+   <entry texfont="texnansi-lmro12" encvec="texnansi-lm.enc.xml" efm="texnansi-lmro12.efm"/>
+   <entry texfont="texnansi-lmro8" encvec="texnansi-lm.enc.xml" efm="texnansi-lmro8.efm"/>
+   <entry texfont="texnansi-lmro9" encvec="texnansi-lm.enc.xml" efm="texnansi-lmro9.efm"/>
+   <entry texfont="texnansi-lmss10" encvec="texnansi-lm.enc.xml" efm="texnansi-lmss10.efm"/>
+   <entry texfont="texnansi-lmss12" encvec="texnansi-lm.enc.xml" efm="texnansi-lmss12.efm"/>
+   <entry texfont="texnansi-lmss17" encvec="texnansi-lm.enc.xml" efm="texnansi-lmss17.efm"/>
+   <entry texfont="texnansi-lmss8" encvec="texnansi-lm.enc.xml" efm="texnansi-lmss8.efm"/>
+   <entry texfont="texnansi-lmss9" encvec="texnansi-lm.enc.xml" efm="texnansi-lmss9.efm"/>
+   <entry texfont="texnansi-lmssbo10" encvec="texnansi-lm.enc.xml" efm="texnansi-lmssbo10.efm"/>
+   <entry texfont="texnansi-lmssbx10" encvec="texnansi-lm.enc.xml" efm="texnansi-lmssbx10.efm"/>
+   <entry texfont="texnansi-lmssdc10" encvec="texnansi-lm.enc.xml" efm="texnansi-lmssdc10.efm"/>
+   <entry texfont="texnansi-lmssdo10" encvec="texnansi-lm.enc.xml" efm="texnansi-lmssdo10.efm"/>
+   <entry texfont="texnansi-lmsso10" encvec="texnansi-lm.enc.xml" efm="texnansi-lmsso10.efm"/>
+   <entry texfont="texnansi-lmsso12" encvec="texnansi-lm.enc.xml" efm="texnansi-lmsso12.efm"/>
+   <entry texfont="texnansi-lmsso17" encvec="texnansi-lm.enc.xml" efm="texnansi-lmsso17.efm"/>
+   <entry texfont="texnansi-lmsso8" encvec="texnansi-lm.enc.xml" efm="texnansi-lmsso8.efm"/>
+   <entry texfont="texnansi-lmsso9" encvec="texnansi-lm.enc.xml" efm="texnansi-lmsso9.efm"/>
+   <entry texfont="texnansi-lmssq8" encvec="texnansi-lm.enc.xml" efm="texnansi-lmssq8.efm"/>
+   <entry texfont="texnansi-lmssqbo8" encvec="texnansi-lm.enc.xml" efm="texnansi-lmssqbo8.efm"/>
+   <entry texfont="texnansi-lmssqbx8" encvec="texnansi-lm.enc.xml" efm="texnansi-lmssqbx8.efm"/>
+   <entry texfont="texnansi-lmssqo8" encvec="texnansi-lm.enc.xml" efm="texnansi-lmssqo8.efm"/>
+   <entry texfont="texnansi-lmtcsc10" encvec="texnansi-lm.enc.xml" efm="texnansi-lmtcsc10.efm"/>
+   <entry texfont="texnansi-lmtt10" encvec="texnansi-lm.enc.xml" efm="texnansi-lmtt10.efm"/>
+   <entry texfont="texnansi-lmtt12" encvec="texnansi-lm.enc.xml" efm="texnansi-lmtt12.efm"/>
+   <entry texfont="texnansi-lmtt8" encvec="texnansi-lm.enc.xml" efm="texnansi-lmtt8.efm"/>
+   <entry texfont="texnansi-lmtt9" encvec="texnansi-lm.enc.xml" efm="texnansi-lmtt9.efm"/>
+   <entry texfont="texnansi-lmtti10" encvec="texnansi-lm.enc.xml" efm="texnansi-lmtti10.efm"/>
+   <entry texfont="texnansi-lmtto10" encvec="texnansi-lm.enc.xml" efm="texnansi-lmtto10.efm"/>
+   <entry texfont="texnansi-lmvtt10" encvec="texnansi-lm.enc.xml" efm="texnansi-lmvtt10.efm"/>
+   <entry texfont="texnansi-lmvtto10" encvec="texnansi-lm.enc.xml" efm="texnansi-lmvtto10.efm"/>
+   <entry texfont="tib" encvec="texnansi.enc.xml" efm="tib.efm"/>
+   <entry texfont="tibi" encvec="texnansi.enc.xml" efm="tibi.efm"/>
+   <entry texfont="tibo" encvec="texnansi.enc.xml" efm="tibo.efm"/>
+   <entry texfont="tii" encvec="texnansi.enc.xml" efm="tii.efm"/>
+   <entry texfont="tio" encvec="texnansi.enc.xml" efm="tio.efm"/>
+   <entry texfont="tir" encvec="texnansi.enc.xml" efm="tir.efm"/>
+   <entry texfont="ts1-lmb10" encvec="ts1-lm.enc.xml" efm="ts1-lmb10.efm"/>
+   <entry texfont="ts1-lmbo10" encvec="ts1-lm.enc.xml" efm="ts1-lmbo10.efm"/>
+   <entry texfont="ts1-lmbx10" encvec="ts1-lm.enc.xml" efm="ts1-lmbx10.efm"/>
+   <entry texfont="ts1-lmbx12" encvec="ts1-lm.enc.xml" efm="ts1-lmbx12.efm"/>
+   <entry texfont="ts1-lmbx5" encvec="ts1-lm.enc.xml" efm="ts1-lmbx5.efm"/>
+   <entry texfont="ts1-lmbx6" encvec="ts1-lm.enc.xml" efm="ts1-lmbx6.efm"/>
+   <entry texfont="ts1-lmbx7" encvec="ts1-lm.enc.xml" efm="ts1-lmbx7.efm"/>
+   <entry texfont="ts1-lmbx8" encvec="ts1-lm.enc.xml" efm="ts1-lmbx8.efm"/>
+   <entry texfont="ts1-lmbx9" encvec="ts1-lm.enc.xml" efm="ts1-lmbx9.efm"/>
+   <entry texfont="ts1-lmbxi10" encvec="ts1-lm.enc.xml" efm="ts1-lmbxi10.efm"/>
+   <entry texfont="ts1-lmbxo10" encvec="ts1-lm.enc.xml" efm="ts1-lmbxo10.efm"/>
+   <entry texfont="ts1-lmcsc10" encvec="ts1-lm.enc.xml" efm="ts1-lmcsc10.efm"/>
+   <entry texfont="ts1-lmcsco10" encvec="ts1-lm.enc.xml" efm="ts1-lmcsco10.efm"/>
+   <entry texfont="ts1-lmr10" encvec="ts1-lm.enc.xml" efm="ts1-lmr10.efm"/>
+   <entry texfont="ts1-lmr12" encvec="ts1-lm.enc.xml" efm="ts1-lmr12.efm"/>
+   <entry texfont="ts1-lmr17" encvec="ts1-lm.enc.xml" efm="ts1-lmr17.efm"/>
+   <entry texfont="ts1-lmr5" encvec="ts1-lm.enc.xml" efm="ts1-lmr5.efm"/>
+   <entry texfont="ts1-lmr6" encvec="ts1-lm.enc.xml" efm="ts1-lmr6.efm"/>
+   <entry texfont="ts1-lmr7" encvec="ts1-lm.enc.xml" efm="ts1-lmr7.efm"/>
+   <entry texfont="ts1-lmr8" encvec="ts1-lm.enc.xml" efm="ts1-lmr8.efm"/>
+   <entry texfont="ts1-lmr9" encvec="ts1-lm.enc.xml" efm="ts1-lmr9.efm"/>
+   <entry texfont="ts1-lmri10" encvec="ts1-lm.enc.xml" efm="ts1-lmri10.efm"/>
+   <entry texfont="ts1-lmri12" encvec="ts1-lm.enc.xml" efm="ts1-lmri12.efm"/>
+   <entry texfont="ts1-lmri7" encvec="ts1-lm.enc.xml" efm="ts1-lmri7.efm"/>
+   <entry texfont="ts1-lmri8" encvec="ts1-lm.enc.xml" efm="ts1-lmri8.efm"/>
+   <entry texfont="ts1-lmri9" encvec="ts1-lm.enc.xml" efm="ts1-lmri9.efm"/>
+   <entry texfont="ts1-lmro10" encvec="ts1-lm.enc.xml" efm="ts1-lmro10.efm"/>
+   <entry texfont="ts1-lmro12" encvec="ts1-lm.enc.xml" efm="ts1-lmro12.efm"/>
+   <entry texfont="ts1-lmro8" encvec="ts1-lm.enc.xml" efm="ts1-lmro8.efm"/>
+   <entry texfont="ts1-lmro9" encvec="ts1-lm.enc.xml" efm="ts1-lmro9.efm"/>
+   <entry texfont="ts1-lmss10" encvec="ts1-lm.enc.xml" efm="ts1-lmss10.efm"/>
+   <entry texfont="ts1-lmss12" encvec="ts1-lm.enc.xml" efm="ts1-lmss12.efm"/>
+   <entry texfont="ts1-lmss17" encvec="ts1-lm.enc.xml" efm="ts1-lmss17.efm"/>
+   <entry texfont="ts1-lmss8" encvec="ts1-lm.enc.xml" efm="ts1-lmss8.efm"/>
+   <entry texfont="ts1-lmss9" encvec="ts1-lm.enc.xml" efm="ts1-lmss9.efm"/>
+   <entry texfont="ts1-lmssbo10" encvec="ts1-lm.enc.xml" efm="ts1-lmssbo10.efm"/>
+   <entry texfont="ts1-lmssbx10" encvec="ts1-lm.enc.xml" efm="ts1-lmssbx10.efm"/>
+   <entry texfont="ts1-lmssdc10" encvec="ts1-lm.enc.xml" efm="ts1-lmssdc10.efm"/>
+   <entry texfont="ts1-lmssdo10" encvec="ts1-lm.enc.xml" efm="ts1-lmssdo10.efm"/>
+   <entry texfont="ts1-lmsso10" encvec="ts1-lm.enc.xml" efm="ts1-lmsso10.efm"/>
+   <entry texfont="ts1-lmsso12" encvec="ts1-lm.enc.xml" efm="ts1-lmsso12.efm"/>
+   <entry texfont="ts1-lmsso17" encvec="ts1-lm.enc.xml" efm="ts1-lmsso17.efm"/>
+   <entry texfont="ts1-lmsso8" encvec="ts1-lm.enc.xml" efm="ts1-lmsso8.efm"/>
+   <entry texfont="ts1-lmsso9" encvec="ts1-lm.enc.xml" efm="ts1-lmsso9.efm"/>
+   <entry texfont="ts1-lmssq8" encvec="ts1-lm.enc.xml" efm="ts1-lmssq8.efm"/>
+   <entry texfont="ts1-lmssqbo8" encvec="ts1-lm.enc.xml" efm="ts1-lmssqbo8.efm"/>
+   <entry texfont="ts1-lmssqbx8" encvec="ts1-lm.enc.xml" efm="ts1-lmssqbx8.efm"/>
+   <entry texfont="ts1-lmssqo8" encvec="ts1-lm.enc.xml" efm="ts1-lmssqo8.efm"/>
+   <entry texfont="ts1-lmtcsc10" encvec="ts1-lm.enc.xml" efm="ts1-lmtcsc10.efm"/>
+   <entry texfont="ts1-lmtt10" encvec="ts1-lm.enc.xml" efm="ts1-lmtt10.efm"/>
+   <entry texfont="ts1-lmtt12" encvec="ts1-lm.enc.xml" efm="ts1-lmtt12.efm"/>
+   <entry texfont="ts1-lmtt8" encvec="ts1-lm.enc.xml" efm="ts1-lmtt8.efm"/>
+   <entry texfont="ts1-lmtt9" encvec="ts1-lm.enc.xml" efm="ts1-lmtt9.efm"/>
+   <entry texfont="ts1-lmtti10" encvec="ts1-lm.enc.xml" efm="ts1-lmtti10.efm"/>
+   <entry texfont="ts1-lmtto10" encvec="ts1-lm.enc.xml" efm="ts1-lmtto10.efm"/>
+   <entry texfont="ts1-lmvtt10" encvec="ts1-lm.enc.xml" efm="ts1-lmvtt10.efm"/>
+   <entry texfont="ts1-lmvtto10" encvec="ts1-lm.enc.xml" efm="ts1-lmvtto10.efm"/>
+   <entry texfont="txbex" efm="txbex.efm"/>
+   <entry texfont="txbexa" efm="txbexa.efm"/>
+   <entry texfont="txbmia" efm="txbmia.efm"/>
+   <entry texfont="txbsy" efm="txbsy.efm"/>
+   <entry texfont="txbsya" efm="txbsya.efm"/>
+   <entry texfont="txbsyb" efm="txbsyb.efm"/>
+   <entry texfont="txbsyc" efm="txbsyc.efm"/>
+   <entry texfont="txbtt" efm="txbtt.efm"/>
+   <entry texfont="txbttsc" efm="txbttsc.efm"/>
+   <entry texfont="txbttsl" efm="txbttsl.efm"/>
+   <entry texfont="txex" efm="txex.efm"/>
+   <entry texfont="txexa" efm="txexa.efm"/>
+   <entry texfont="txmia" efm="txmia.efm"/>
+   <entry texfont="txsy" efm="txsy.efm"/>
+   <entry texfont="txsya" efm="txsya.efm"/>
+   <entry texfont="txsyb" efm="txsyb.efm"/>
+   <entry texfont="txsyc" efm="txsyc.efm"/>
+   <entry texfont="txtt" efm="txtt.efm"/>
+   <entry texfont="txttsc" efm="txttsc.efm"/>
+   <entry texfont="txttsl" efm="txttsl.efm"/>
+   <entry texfont="uagd8v" encvec="t5.enc.xml" efm="uagd8v.efm"/>
+   <entry texfont="uagdo8v" encvec="t5.enc.xml" efm="uagdo8v.efm"/>
+   <entry texfont="uagk8v" encvec="t5.enc.xml" efm="uagk8v.efm"/>
+   <entry texfont="uagko8v" encvec="t5.enc.xml" efm="uagko8v.efm"/>
+   <entry texfont="ubkd8v" encvec="t5.enc.xml" efm="ubkd8v.efm"/>
+   <entry texfont="ubkdi8v" encvec="t5.enc.xml" efm="ubkdi8v.efm"/>
+   <entry texfont="ubkdo8v" encvec="t5.enc.xml" efm="ubkdo8v.efm"/>
+   <entry texfont="ubkl8v" encvec="t5.enc.xml" efm="ubkl8v.efm"/>
+   <entry texfont="ubkli8v" encvec="t5.enc.xml" efm="ubkli8v.efm"/>
+   <entry texfont="ubklo8v" encvec="t5.enc.xml" efm="ubklo8v.efm"/>
+   <entry texfont="ucrb8v" encvec="t5.enc.xml" efm="ucrb8v.efm"/>
+   <entry texfont="ucrbo8v" encvec="t5.enc.xml" efm="ucrbo8v.efm"/>
+   <entry texfont="ucrr8v" encvec="t5.enc.xml" efm="ucrr8v.efm"/>
+   <entry texfont="ucrro8v" encvec="t5.enc.xml" efm="ucrro8v.efm"/>
+   <entry texfont="uhvb8v" encvec="t5.enc.xml" efm="uhvb8v.efm"/>
+   <entry texfont="uhvbo8v" encvec="t5.enc.xml" efm="uhvbo8v.efm"/>
+   <entry texfont="uhvr8v" encvec="t5.enc.xml" efm="uhvr8v.efm"/>
+   <entry texfont="uhvro8v" encvec="t5.enc.xml" efm="uhvro8v.efm"/>
+   <entry texfont="uncb8v" encvec="t5.enc.xml" efm="uncb8v.efm"/>
+   <entry texfont="uncbi8v" encvec="t5.enc.xml" efm="uncbi8v.efm"/>
+   <entry texfont="uncbo8v" encvec="t5.enc.xml" efm="uncbo8v.efm"/>
+   <entry texfont="uncr8v" encvec="t5.enc.xml" efm="uncr8v.efm"/>
+   <entry texfont="uncri8v" encvec="t5.enc.xml" efm="uncri8v.efm"/>
+   <entry texfont="uncro8v" encvec="t5.enc.xml" efm="uncro8v.efm"/>
+   <entry texfont="uplb8v" encvec="t5.enc.xml" efm="uplb8v.efm"/>
+   <entry texfont="uplbi8v" encvec="t5.enc.xml" efm="uplbi8v.efm"/>
+   <entry texfont="uplbo8v" encvec="t5.enc.xml" efm="uplbo8v.efm"/>
+   <entry texfont="uplr8v" encvec="t5.enc.xml" efm="uplr8v.efm"/>
+   <entry texfont="uplri8v" encvec="t5.enc.xml" efm="uplri8v.efm"/>
+   <entry texfont="uplro8v" encvec="t5.enc.xml" efm="uplro8v.efm"/>
+   <entry texfont="utmb8v" encvec="t5.enc.xml" efm="utmb8v.efm"/>
+   <entry texfont="utmbi8v" encvec="t5.enc.xml" efm="utmbi8v.efm"/>
+   <entry texfont="utmbo8v" encvec="t5.enc.xml" efm="utmbo8v.efm"/>
+   <entry texfont="utmr8v" encvec="t5.enc.xml" efm="utmr8v.efm"/>
+   <entry texfont="utmri8v" encvec="t5.enc.xml" efm="utmri8v.efm"/>
+   <entry texfont="utmro8v" encvec="t5.enc.xml" efm="utmro8v.efm"/>
+   <entry texfont="vnb10" efm="vnb10.efm"/>
+   <entry texfont="vnbx10" efm="vnbx10.efm"/>
+   <entry texfont="vnbx12" efm="vnbx12.efm"/>
+   <entry texfont="vnbx5" efm="vnbx5.efm"/>
+   <entry texfont="vnbx6" efm="vnbx6.efm"/>
+   <entry texfont="vnbx7" efm="vnbx7.efm"/>
+   <entry texfont="vnbx8" efm="vnbx8.efm"/>
+   <entry texfont="vnbx9" efm="vnbx9.efm"/>
+   <entry texfont="vnbxsl10" efm="vnbxsl10.efm"/>
+   <entry texfont="vnbxti10" efm="vnbxti10.efm"/>
+   <entry texfont="vncsc10" efm="vncsc10.efm"/>
+   <entry texfont="vndunh10" efm="vndunh10.efm"/>
+   <entry texfont="vnff10" efm="vnff10.efm"/>
+   <entry texfont="vnfi10" efm="vnfi10.efm"/>
+   <entry texfont="vnfib8" efm="vnfib8.efm"/>
+   <entry texfont="vnitt10" efm="vnitt10.efm"/>
+   <entry texfont="vnr10" efm="vnr10.efm"/>
+   <entry texfont="vnr12" efm="vnr12.efm"/>
+   <entry texfont="vnr17" efm="vnr17.efm"/>
+   <entry texfont="vnr5" efm="vnr5.efm"/>
+   <entry texfont="vnr6" efm="vnr6.efm"/>
+   <entry texfont="vnr7" efm="vnr7.efm"/>
+   <entry texfont="vnr8" efm="vnr8.efm"/>
+   <entry texfont="vnr9" efm="vnr9.efm"/>
+   <entry texfont="vnsl10" efm="vnsl10.efm"/>
+   <entry texfont="vnsl12" efm="vnsl12.efm"/>
+   <entry texfont="vnsl8" efm="vnsl8.efm"/>
+   <entry texfont="vnsl9" efm="vnsl9.efm"/>
+   <entry texfont="vnsltt10" efm="vnsltt10.efm"/>
+   <entry texfont="vnss10" efm="vnss10.efm"/>
+   <entry texfont="vnss12" efm="vnss12.efm"/>
+   <entry texfont="vnss17" efm="vnss17.efm"/>
+   <entry texfont="vnss8" efm="vnss8.efm"/>
+   <entry texfont="vnss9" efm="vnss9.efm"/>
+   <entry texfont="vnssbx10" efm="vnssbx10.efm"/>
+   <entry texfont="vnssdc10" efm="vnssdc10.efm"/>
+   <entry texfont="vnssi10" efm="vnssi10.efm"/>
+   <entry texfont="vnssi12" efm="vnssi12.efm"/>
+   <entry texfont="vnssi17" efm="vnssi17.efm"/>
+   <entry texfont="vnssi8" efm="vnssi8.efm"/>
+   <entry texfont="vnssi9" efm="vnssi9.efm"/>
+   <entry texfont="vnssq8" efm="vnssq8.efm"/>
+   <entry texfont="vnssqi8" efm="vnssqi8.efm"/>
+   <entry texfont="vntcsc10" efm="vntcsc10.efm"/>
+   <entry texfont="vnti10" efm="vnti10.efm"/>
+   <entry texfont="vnti12" efm="vnti12.efm"/>
+   <entry texfont="vnti7" efm="vnti7.efm"/>
+   <entry texfont="vnti8" efm="vnti8.efm"/>
+   <entry texfont="vnti9" efm="vnti9.efm"/>
+   <entry texfont="vntt10" efm="vntt10.efm"/>
+   <entry texfont="vntt12" efm="vntt12.efm"/>
+   <entry texfont="vntt8" efm="vntt8.efm"/>
+   <entry texfont="vntt9" efm="vntt9.efm"/>
+   <entry texfont="vnu10" efm="vnu10.efm"/>
+   <entry texfont="vnvtt10" efm="vnvtt10.efm"/>
+   <entry texfont="wasy10" efm="wasy10.efm"/>
+   <entry texfont="wasy5" efm="wasy5.efm"/>
+   <entry texfont="wasy6" efm="wasy6.efm"/>
+   <entry texfont="wasy7" efm="wasy7.efm"/>
+   <entry texfont="wasy8" efm="wasy8.efm"/>
+   <entry texfont="wasy9" efm="wasy9.efm"/>
+   <entry texfont="wasyb10" efm="wasyb10.efm"/>
+   <entry texfont="wncy-anttb" encvec="wncy-antt.enc.xml" efm="wncy-anttb.efm"/>
+   <entry texfont="wncy-anttbi" encvec="wncy-antt.enc.xml" efm="wncy-anttbi.efm"/>
+   <entry texfont="wncy-anttcb" encvec="wncy-antt.enc.xml" efm="wncy-anttcb.efm"/>
+   <entry texfont="wncy-anttcbi" encvec="wncy-antt.enc.xml" efm="wncy-anttcbi.efm"/>
+   <entry texfont="wncy-anttcl" encvec="wncy-antt.enc.xml" efm="wncy-anttcl.efm"/>
+   <entry texfont="wncy-anttcli" encvec="wncy-antt.enc.xml" efm="wncy-anttcli.efm"/>
+   <entry texfont="wncy-anttcm" encvec="wncy-antt.enc.xml" efm="wncy-anttcm.efm"/>
+   <entry texfont="wncy-anttcmi" encvec="wncy-antt.enc.xml" efm="wncy-anttcmi.efm"/>
+   <entry texfont="wncy-anttcr" encvec="wncy-antt.enc.xml" efm="wncy-anttcr.efm"/>
+   <entry texfont="wncy-anttcri" encvec="wncy-antt.enc.xml" efm="wncy-anttcri.efm"/>
+   <entry texfont="wncy-anttl" encvec="wncy-antt.enc.xml" efm="wncy-anttl.efm"/>
+   <entry texfont="wncy-anttli" encvec="wncy-antt.enc.xml" efm="wncy-anttli.efm"/>
+   <entry texfont="wncy-anttm" encvec="wncy-antt.enc.xml" efm="wncy-anttm.efm"/>
+   <entry texfont="wncy-anttmi" encvec="wncy-antt.enc.xml" efm="wncy-anttmi.efm"/>
+   <entry texfont="wncy-anttr" encvec="wncy-antt.enc.xml" efm="wncy-anttr.efm"/>
+   <entry texfont="wncy-anttri" encvec="wncy-antt.enc.xml" efm="wncy-anttri.efm"/>
+   <entry texfont="wncyb10" efm="wncyb10.efm"/>
+   <entry texfont="wncyb5" efm="wncyb5.efm"/>
+   <entry texfont="wncyb6" efm="wncyb6.efm"/>
+   <entry texfont="wncyb7" efm="wncyb7.efm"/>
+   <entry texfont="wncyb8" efm="wncyb8.efm"/>
+   <entry texfont="wncyb9" efm="wncyb9.efm"/>
+   <entry texfont="wncyi10" efm="wncyi10.efm"/>
+   <entry texfont="wncyi5" efm="wncyi5.efm"/>
+   <entry texfont="wncyi6" efm="wncyi6.efm"/>
+   <entry texfont="wncyi7" efm="wncyi7.efm"/>
+   <entry texfont="wncyi8" efm="wncyi8.efm"/>
+   <entry texfont="wncyi9" efm="wncyi9.efm"/>
+   <entry texfont="wncyr10" efm="wncyr10.efm"/>
+   <entry texfont="wncyr5" efm="wncyr5.efm"/>
+   <entry texfont="wncyr6" efm="wncyr6.efm"/>
+   <entry texfont="wncyr7" efm="wncyr7.efm"/>
+   <entry texfont="wncyr8" efm="wncyr8.efm"/>
+   <entry texfont="wncyr9" efm="wncyr9.efm"/>
+   <entry texfont="wncysc10" efm="wncysc10.efm"/>
+   <entry texfont="wncyss10" efm="wncyss10.efm"/>
+   <entry texfont="wncyss8" efm="wncyss8.efm"/>
+   <entry texfont="wncyss9" efm="wncyss9.efm"/>
+   <entry texfont="xyatip10" efm="xyatip10.efm"/>
+   <entry texfont="xyatip11" efm="xyatip11.efm"/>
+   <entry texfont="xyatip12" efm="xyatip12.efm"/>
+   <entry texfont="xybsql10" efm="xybsql10.efm"/>
+   <entry texfont="xybtip10" efm="xybtip10.efm"/>
+   <entry texfont="xybtip11" efm="xybtip11.efm"/>
+   <entry texfont="xybtip12" efm="xybtip12.efm"/>
+   <entry texfont="xycirc10" efm="xycirc10.efm"/>
+   <entry texfont="xycmat10" efm="xycmat10.efm"/>
+   <entry texfont="xycmat11" efm="xycmat11.efm"/>
+   <entry texfont="xycmat12" efm="xycmat12.efm"/>
+   <entry texfont="xycmbt10" efm="xycmbt10.efm"/>
+   <entry texfont="xycmbt11" efm="xycmbt11.efm"/>
+   <entry texfont="xycmbt12" efm="xycmbt12.efm"/>
+   <entry texfont="xydash10" efm="xydash10.efm"/>
+   <entry texfont="xyeuat10" efm="xyeuat10.efm"/>
+   <entry texfont="xyeuat11" efm="xyeuat11.efm"/>
+   <entry texfont="xyeuat12" efm="xyeuat12.efm"/>
+   <entry texfont="xyeubt10" efm="xyeubt10.efm"/>
+   <entry texfont="xyeubt11" efm="xyeubt11.efm"/>
+   <entry texfont="xyeubt12" efm="xyeubt12.efm"/>
+   <entry texfont="zd" efm="zd.efm"/>
+</map>

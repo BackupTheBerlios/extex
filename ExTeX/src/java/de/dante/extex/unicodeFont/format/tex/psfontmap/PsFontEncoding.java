@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -24,7 +24,7 @@ import java.io.Serializable;
  * Container for a psfonts.map-line.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class PsFontEncoding implements Serializable {
@@ -43,22 +43,22 @@ public class PsFontEncoding implements Serializable {
     }
 
     /**
-     * The filename.
+     * The file name.
      */
     private String filename = "";
 
     /**
-     * The fontname.
+     * The font name.
      */
     private String fontname = "";
 
     /**
-     * The encodingtxt.
+     * The encoding text.
      */
     private String encodingtxt = "";
 
     /**
-     * The encfile.
+     * The encoding file.
      */
     private String encfile = "";
 
@@ -68,8 +68,8 @@ public class PsFontEncoding implements Serializable {
     private String fontfile = "";
 
     /**
-     * Returns the encfile.
-     * @return Returns the encfile.
+     * Returns the encoding file.
+     * @return Returns the encoding file.
      */
     public String getEncfile() {
 
@@ -77,8 +77,8 @@ public class PsFontEncoding implements Serializable {
     }
 
     /**
-     * Set the encfile.
-     * @param encf The encfile to set.
+     * Set the encoding file.
+     * @param encf The encoding file to set.
      */
     public void setEncfile(final String encf) {
 
@@ -86,8 +86,8 @@ public class PsFontEncoding implements Serializable {
     }
 
     /**
-     * Returns the encodingtxt.
-     * @return Returns the encodingtxt.
+     * Returns the encoding text.
+     * @return Returns the encoding text.
      */
     public String getEncodingtxt() {
 
@@ -104,8 +104,8 @@ public class PsFontEncoding implements Serializable {
     }
 
     /**
-     * Set the encodingtxt.
-     * @param enctxt The encodingtxt to set.
+     * Set the encoding text.
+     * @param enctxt The encoding text to set.
      */
     public void setEncodingtxt(final String enctxt) {
 
@@ -113,8 +113,8 @@ public class PsFontEncoding implements Serializable {
     }
 
     /**
-     * Returns the filename.
-     * @return Returns the filename.
+     * Returns the file name.
+     * @return Returns the file name.
      */
     public String getFilename() {
 
@@ -122,8 +122,8 @@ public class PsFontEncoding implements Serializable {
     }
 
     /**
-     * Set the filename.
-     * @param name The filename to set.
+     * Set the file name.
+     * @param name The file name to set.
      */
     public void setFilename(final String name) {
 
@@ -131,8 +131,8 @@ public class PsFontEncoding implements Serializable {
     }
 
     /**
-     * Returns the fontname.
-     * @return Returns the fontname.
+     * Returns the font name.
+     * @return Returns the font name.
      */
     public String getFontname() {
 
@@ -141,7 +141,7 @@ public class PsFontEncoding implements Serializable {
 
     /**
      * Set the font name.
-     * @param name The fontname to set.
+     * @param name The font name to set.
      */
     public void setFontname(final String name) {
 

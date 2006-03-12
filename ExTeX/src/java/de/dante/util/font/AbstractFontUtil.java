@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -22,10 +22,17 @@ package de.dante.util.font;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import de.dante.extex.main.logging.LogFormatter;
 import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.ConfigurationFactory;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
+import de.dante.util.framework.i18n.Localizer;
+import de.dante.util.framework.i18n.LocalizerFactory;
 import de.dante.util.resource.ResourceFinder;
 import de.dante.util.resource.ResourceFinderFactory;
 
@@ -33,34 +40,67 @@ import de.dante.util.resource.ResourceFinderFactory;
  * Abstract class for all font utilities.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 
 public abstract class AbstractFontUtil {
 
     /**
-     * teh configuration
+     * the configuration.
      */
     private Configuration config;
 
     /**
-     * the properties
+     * the properties.
      */
     private Properties prop;
 
     /**
-     * the resource finder
+     * the resource finder.
      */
     private ResourceFinder finder;
 
     /**
+     * The field <tt>logger</tt> contains the logger currently in use.
+     */
+    private Logger logger;
+
+    /**
+     * The field <tt>localizer</tt> contains the localizer. It is initiated
+     * with a localizer for the name of this class.
+     */
+    private Localizer localizer = LocalizerFactory
+            .getLocalizer(AbstractFontUtil.class.getName());
+
+    /**
+     * The console handler.
+     */
+    private Handler consoleHandler;
+
+    /**
      * Create a new object.
+     *
+     * @param loggerclass The class for the logger
      * @throws ConfigurationException if a config-error occurs.
      */
-    public AbstractFontUtil() throws ConfigurationException {
+    public AbstractFontUtil(final Class loggerclass)
+            throws ConfigurationException {
 
         super();
 
+        // logger
+        logger = Logger.getLogger(loggerclass.getName());
+        logger.setUseParentHandlers(false);
+        logger.setLevel(Level.ALL);
+
+        consoleHandler = new ConsoleHandler();
+        consoleHandler.setFormatter(new LogFormatter());
+        consoleHandler.setLevel(Level.WARNING);
+        logger.addHandler(consoleHandler);
+
+        localizer = LocalizerFactory.getLocalizer(loggerclass.getName());
+
+        // configuration
         config = new ConfigurationFactory().newInstance("config/extex.xml");
 
         prop = new Properties();
@@ -72,12 +112,14 @@ public abstract class AbstractFontUtil {
         }
 
         try {
-            InputStream in = new FileInputStream(System.getProperty("user.home") + "/.extex");
+            InputStream in = new FileInputStream(System
+                    .getProperty("user.home")
+                    + "/.extex");
             Properties prop2 = new Properties();
             prop2.load(in);
             prop.putAll(prop2);
         } catch (Exception e) {
-            // do ntohing
+            // do nothing
             e.printStackTrace();
         }
 
@@ -87,8 +129,38 @@ public abstract class AbstractFontUtil {
     }
 
     /**
-     * Returns the config.
-     * @return Returns the config.
+     * Create a new object.
+     *
+     * @throws ConfigurationException if a config-error occurs.
+     */
+    public AbstractFontUtil() throws ConfigurationException {
+
+        this(AbstractFontUtil.class);
+    }
+
+    /**
+     * Returns the logger.
+     *
+     * @return Returns the logger.
+     */
+    public Logger getLogger() {
+
+        return logger;
+    }
+
+    /**
+     * Returns the localizer.
+     *
+     * @return Returns the localizer.
+     */
+    public Localizer getLocalizer() {
+
+        return localizer;
+    }
+
+    /**
+     * Returns the configuration.
+     * @return Returns the configuration.
      */
     public Configuration getConfig() {
 
@@ -111,6 +183,15 @@ public abstract class AbstractFontUtil {
     public Properties getProp() {
 
         return prop;
+    }
+
+    /**
+     * Returns the consoleHandler.
+     * @return Returns the consoleHandler.
+     */
+    public Handler getConsoleHandler() {
+
+        return consoleHandler;
     }
 
 }

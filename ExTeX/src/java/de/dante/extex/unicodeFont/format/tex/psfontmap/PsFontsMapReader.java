@@ -34,7 +34,7 @@ import de.dante.extex.unicodeFont.exception.FontException;
  * @see <a href="package-summary.html#psfontsmap">psfonts.map</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class PsFontsMapReader implements Serializable {
@@ -150,5 +150,15 @@ public class PsFontsMapReader implements Serializable {
     public PsFontEncoding getPSFontEncoding(final String filename) {
 
         return (PsFontEncoding) data.get(filename);
+    }
+
+    /**
+     * Returns the map with all PSFontEncodings.
+     *
+     * @return Returns the map with all PSFontEncodings.
+     */
+    public Map getPsFontEncodingMap() {
+
+        return data;
     }
 }

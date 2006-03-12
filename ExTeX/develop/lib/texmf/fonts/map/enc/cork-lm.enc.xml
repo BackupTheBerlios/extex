@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="ISO8859-1"?>
+<!-- 
+Created with ExTeX from cork-lm.enc.
+ -->
+<encoding>
+   <entry id="0" unicode="96" unicodename="GRAVE ACCENT" glyphname="grave"/>
+   <entry id="1" unicode="180" unicodename="ACUTE ACCENT" glyphname="acute"/>
+   <entry id="2" unicode="710" unicodename="MODIFIER LETTER CIRCUMFLEX ACCENT" glyphname="circumflex"/>
+   <entry id="3" unicode="732" unicodename="SMALL TILDE" glyphname="tilde"/>
+   <entry id="4" unicode="168" unicodename="DIAERESIS" glyphname="dieresis"/>
+   <entry id="5" unicode="733" unicodename="DOUBLE ACUTE ACCENT" glyphname="hungarumlaut"/>
+   <entry id="6" unicode="730" unicodename="RING ABOVE" glyphname="ring"/>
+   <entry id="7" unicode="711" unicodename="CARON" glyphname="caron"/>
+   <entry id="8" unicode="728" unicodename="BREVE" glyphname="breve"/>
+   <entry id="9" unicode="175" unicodename="MACRON" glyphname="macron"/>
+   <entry id="10" unicode="729" unicodename="DOT ABOVE" glyphname="dotaccent"/>
+   <entry id="11" unicode="184" unicodename="CEDILLA" glyphname="cedilla"/>
+   <entry id="12" unicode="731" unicodename="OGONEK" glyphname="ogonek"/>
+   <entry id="13" unicode="8218" unicodename="SINGLE LOW-9 QUOTATION MARK" glyphname="quotesinglbase"/>
+   <entry id="14" unicode="8249" unicodename="SINGLE LEFT-POINTING ANGLE QUOTATION MARK" glyphname="guilsinglleft"/>
+   <entry id="15" unicode="8250" unicodename="SINGLE RIGHT-POINTING ANGLE QUOTATION MARK" glyphname="guilsinglright"/>
+   <entry id="16" unicode="8220" unicodename="LEFT DOUBLE QUOTATION MARK" glyphname="quotedblleft"/>
+   <entry id="17" unicode="8221" unicodename="RIGHT DOUBLE QUOTATION MARK" glyphname="quotedblright"/>
+   <entry id="18" unicode="8222" unicodename="DOUBLE LOW-9 QUOTATION MARK" glyphname="quotedblbase"/>
+   <entry id="19" unicode="171" unicodename="LEFT-POINTING DOUBLE ANGLE QUOTATION MARK" glyphname="guillemotleft"/>
+   <entry id="20" unicode="187" unicodename="RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK" glyphname="guillemotright"/>
+   <entry id="21" unicode="8211" unicodename="EN DASH" glyphname="endash"/>
+   <entry id="22" unicode="8212" unicodename="EM DASH" glyphname="emdash"/>
+   <entry id="23" unicode="" unicodename="" glyphname="cwm"/>
+   <entry id="24" unicode="" unicodename="" glyphname="perthousandzero"/>
+   <entry id="25" unicode="305" unicodename="LATIN SMALL LETTER DOTLESS I" glyphname="dotlessi"/>
+   <entry id="26" unicode="63166" unicodename="" glyphname="dotlessj"/>
+   <entry id="27" unicode="64256" unicodename="LATIN SMALL LIGATURE FF" glyphname="ff"/>
+   <entry id="28" unicode="64257" unicodename="LATIN SMALL LIGATURE FI" glyphname="fi"/>
+   <entry id="29" unicode="64258" unicodename="LATIN SMALL LIGATURE FL" glyphname="fl"/>
+   <entry id="30" unicode="64259" unicodename="LATIN SMALL LIGATURE FFI" glyphname="ffi"/>
+   <entry id="31" unicode="64260" unicodename="LATIN SMALL LIGATURE FFL" glyphname="ffl"/>
+   <entry id="32" unicode="" unicodename="" glyphname="visiblespace"/>
+   <entry id="33" unicode="33" unicodename="EXCLAMATION MARK" glyphname="exclam"/>
+   <entry id="34" unicode="34" unicodename="QUOTATION MARK" glyphname="quotedbl"/>
+   <entry id="35" unicode="35" unicodename="NUMBER SIGN" glyphname="numbersign"/>
+   <entry id="36" unicode="36" unicodename="DOLLAR SIGN" glyphname="dollar"/>
+   <entry id="37" unicode="37" unicodename="PERCENT SIGN" glyphname="percent"/>
+   <entry id="38" unicode="38" unicodename="AMPERSAND" glyphname="ampersand"/>
+   <entry id="39" unicode="8217" unicodename="RIGHT SINGLE QUOTATION MARK" glyphname="quoteright"/>
+   <entry id="40" unicode="40" unicodename="LEFT PARENTHESIS" glyphname="parenleft"/>
+   <entry id="41" unicode="41" unicodename="RIGHT PARENTHESIS" glyphname="parenright"/>
+   <entry id="42" unicode="42" unicodename="ASTERISK" glyphname="asterisk"/>
+   <entry id="43" unicode="43" unicodename="PLUS SIGN" glyphname="plus"/>
+   <entry id="44" unicode="44" unicodename="COMMA" glyphname="comma"/>
+   <entry id="45" unicode="45" unicodename="HYPHEN-MINUS" glyphname="hyphen"/>
+   <entry id="46" unicode="46" unicodename="FULL STOP" glyphname="period"/>
+   <entry id="47" unicode="47" unicodename="SOLIDUS" glyphname="slash"/>
+   <entry id="48" unicode="48" unicodename="DIGIT ZERO" glyphname="zero"/>
+   <entry id="49" unicode="49" unicodename="DIGIT ONE" glyphname="one"/>
+   <entry id="50" unicode="50" unicodename="DIGIT TWO" glyphname="two"/>
+   <entry id="51" unicode="51" unicodename="DIGIT THREE" glyphname="three"/>
+   <entry id="52" unicode="52" unicodename="DIGIT FOUR" glyphname="four"/>
+   <entry id="53" unicode="53" unicodename="DIGIT FIVE" glyphname="five"/>
+   <entry id="54" unicode="54" unicodename="DIGIT SIX" glyphname="six"/>
+   <entry id="55" unicode="55" unicodename="DIGIT SEVEN" glyphname="seven"/>
+   <entry id="56" unicode="56" unicodename="DIGIT EIGHT" glyphname="eight"/>
+   <entry id="57" unicode="57" unicodename="DIGIT NINE" glyphname="nine"/>
+   <entry id="58" unicode="58" unicodename="COLON" glyphname="colon"/>
+   <entry id="59" unicode="59" unicodename="SEMICOLON" glyphname="semicolon"/>
+   <entry id="60" unicode="60" unicodename="LESS-THAN SIGN" glyphname="less"/>
+   <entry id="61" unicode="61" unicodename="EQUALS SIGN" glyphname="equal"/>
+   <entry id="62" unicode="62" unicodename="GREATER-THAN SIGN" glyphname="greater"/>
+   <entry id="63" unicode="63" unicodename="QUESTION MARK" glyphname="question"/>
+   <entry id="64" unicode="64" unicodename="COMMERCIAL AT" glyphname="at"/>
+   <entry id="65" unicode="65" unicodename="LATIN CAPITAL LETTER A" glyphname="A"/>
+   <entry id="66" unicode="66" unicodename="LATIN CAPITAL LETTER B" glyphname="B"/>
+   <entry id="67" unicode="67" unicodename="LATIN CAPITAL LETTER C" glyphname="C"/>
+   <entry id="68" unicode="68" unicodename="LATIN CAPITAL LETTER D" glyphname="D"/>
+   <entry id="69" unicode="69" unicodename="LATIN CAPITAL LETTER E" glyphname="E"/>
+   <entry id="70" unicode="70" unicodename="LATIN CAPITAL LETTER F" glyphname="F"/>
+   <entry id="71" unicode="71" unicodename="LATIN CAPITAL LETTER G" glyphname="G"/>
+   <entry id="72" unicode="72" unicodename="LATIN CAPITAL LETTER H" glyphname="H"/>
+   <entry id="73" unicode="73" unicodename="LATIN CAPITAL LETTER I" glyphname="I"/>
+   <entry id="74" unicode="74" unicodename="LATIN CAPITAL LETTER J" glyphname="J"/>
+   <entry id="75" unicode="75" unicodename="LATIN CAPITAL LETTER K" glyphname="K"/>
+   <entry id="76" unicode="76" unicodename="LATIN CAPITAL LETTER L" glyphname="L"/>
+   <entry id="77" unicode="77" unicodename="LATIN CAPITAL LETTER M" glyphname="M"/>
+   <entry id="78" unicode="78" unicodename="LATIN CAPITAL LETTER N" glyphname="N"/>
+   <entry id="79" unicode="79" unicodename="LATIN CAPITAL LETTER O" glyphname="O"/>
+   <entry id="80" unicode="80" unicodename="LATIN CAPITAL LETTER P" glyphname="P"/>
+   <entry id="81" unicode="81" unicodename="LATIN CAPITAL LETTER Q" glyphname="Q"/>
+   <entry id="82" unicode="82" unicodename="LATIN CAPITAL LETTER R" glyphname="R"/>
+   <entry id="83" unicode="83" unicodename="LATIN CAPITAL LETTER S" glyphname="S"/>
+   <entry id="84" unicode="84" unicodename="LATIN CAPITAL LETTER T" glyphname="T"/>
+   <entry id="85" unicode="85" unicodename="LATIN CAPITAL LETTER U" glyphname="U"/>
+   <entry id="86" unicode="86" unicodename="LATIN CAPITAL LETTER V" glyphname="V"/>
+   <entry id="87" unicode="87" unicodename="LATIN CAPITAL LETTER W" glyphname="W"/>
+   <entry id="88" unicode="88" unicodename="LATIN CAPITAL LETTER X" glyphname="X"/>
+   <entry id="89" unicode="89" unicodename="LATIN CAPITAL LETTER Y" glyphname="Y"/>
+   <entry id="90" unicode="90" unicodename="LATIN CAPITAL LETTER Z" glyphname="Z"/>
+   <entry id="91" unicode="91" unicodename="LEFT SQUARE BRACKET" glyphname="bracketleft"/>
+   <entry id="92" unicode="92" unicodename="REVERSE SOLIDUS" glyphname="backslash"/>
+   <entry id="93" unicode="93" unicodename="RIGHT SQUARE BRACKET" glyphname="bracketright"/>
+   <entry id="94" unicode="94" unicodename="CIRCUMFLEX ACCENT" glyphname="asciicircum"/>
+   <entry id="95" unicode="95" unicodename="LOW LINE" glyphname="underscore"/>
+   <entry id="96" unicode="8216" unicodename="LEFT SINGLE QUOTATION MARK" glyphname="quoteleft"/>
+   <entry id="97" unicode="97" unicodename="LATIN SMALL LETTER A" glyphname="a"/>
+   <entry id="98" unicode="98" unicodename="LATIN SMALL LETTER B" glyphname="b"/>
+   <entry id="99" unicode="99" unicodename="LATIN SMALL LETTER C" glyphname="c"/>
+   <entry id="100" unicode="100" unicodename="LATIN SMALL LETTER D" glyphname="d"/>
+   <entry id="101" unicode="101" unicodename="LATIN SMALL LETTER E" glyphname="e"/>
+   <entry id="102" unicode="102" unicodename="LATIN SMALL LETTER F" glyphname="f"/>
+   <entry id="103" unicode="103" unicodename="LATIN SMALL LETTER G" glyphname="g"/>
+   <entry id="104" unicode="104" unicodename="LATIN SMALL LETTER H" glyphname="h"/>
+   <entry id="105" unicode="105" unicodename="LATIN SMALL LETTER I" glyphname="i"/>
+   <entry id="106" unicode="106" unicodename="LATIN SMALL LETTER J" glyphname="j"/>
+   <entry id="107" unicode="107" unicodename="LATIN SMALL LETTER K" glyphname="k"/>
+   <entry id="108" unicode="108" unicodename="LATIN SMALL LETTER L" glyphname="l"/>
+   <entry id="109" unicode="109" unicodename="LATIN SMALL LETTER M" glyphname="m"/>
+   <entry id="110" unicode="110" unicodename="LATIN SMALL LETTER N" glyphname="n"/>
+   <entry id="111" unicode="111" unicodename="LATIN SMALL LETTER O" glyphname="o"/>
+   <entry id="112" unicode="112" unicodename="LATIN SMALL LETTER P" glyphname="p"/>
+   <entry id="113" unicode="113" unicodename="LATIN SMALL LETTER Q" glyphname="q"/>
+   <entry id="114" unicode="114" unicodename="LATIN SMALL LETTER R" glyphname="r"/>
+   <entry id="115" unicode="115" unicodename="LATIN SMALL LETTER S" glyphname="s"/>
+   <entry id="116" unicode="116" unicodename="LATIN SMALL LETTER T" glyphname="t"/>
+   <entry id="117" unicode="117" unicodename="LATIN SMALL LETTER U" glyphname="u"/>
+   <entry id="118" unicode="118" unicodename="LATIN SMALL LETTER V" glyphname="v"/>
+   <entry id="119" unicode="119" unicodename="LATIN SMALL LETTER W" glyphname="w"/>
+   <entry id="120" unicode="120" unicodename="LATIN SMALL LETTER X" glyphname="x"/>
+   <entry id="121" unicode="121" unicodename="LATIN SMALL LETTER Y" glyphname="y"/>
+   <entry id="122" unicode="122" unicodename="LATIN SMALL LETTER Z" glyphname="z"/>
+   <entry id="123" unicode="123" unicodename="LEFT CURLY BRACKET" glyphname="braceleft"/>
+   <entry id="124" unicode="124" unicodename="VERTICAL LINE" glyphname="bar"/>
+   <entry id="125" unicode="125" unicodename="RIGHT CURLY BRACKET" glyphname="braceright"/>
+   <entry id="126" unicode="126" unicodename="TILDE" glyphname="asciitilde"/>
+   <entry id="127" unicode="" unicodename="" glyphname="hyphenchar"/>
+   <entry id="128" unicode="258" unicodename="LATIN CAPITAL LETTER A WITH BREVE" glyphname="Abreve"/>
+   <entry id="129" unicode="260" unicodename="LATIN CAPITAL LETTER A WITH OGONEK" glyphname="Aogonek"/>
+   <entry id="130" unicode="262" unicodename="LATIN CAPITAL LETTER C WITH ACUTE" glyphname="Cacute"/>
+   <entry id="131" unicode="268" unicodename="LATIN CAPITAL LETTER C WITH CARON" glyphname="Ccaron"/>
+   <entry id="132" unicode="270" unicodename="LATIN CAPITAL LETTER D WITH CARON" glyphname="Dcaron"/>
+   <entry id="133" unicode="282" unicodename="LATIN CAPITAL LETTER E WITH CARON" glyphname="Ecaron"/>
+   <entry id="134" unicode="280" unicodename="LATIN CAPITAL LETTER E WITH OGONEK" glyphname="Eogonek"/>
+   <entry id="135" unicode="286" unicodename="LATIN CAPITAL LETTER G WITH BREVE" glyphname="Gbreve"/>
+   <entry id="136" unicode="313" unicodename="LATIN CAPITAL LETTER L WITH ACUTE" glyphname="Lacute"/>
+   <entry id="137" unicode="317" unicodename="LATIN CAPITAL LETTER L WITH CARON" glyphname="Lcaron"/>
+   <entry id="138" unicode="321" unicodename="LATIN CAPITAL LETTER L WITH STROKE" glyphname="Lslash"/>
+   <entry id="139" unicode="323" unicodename="LATIN CAPITAL LETTER N WITH ACUTE" glyphname="Nacute"/>
+   <entry id="140" unicode="327" unicodename="LATIN CAPITAL LETTER N WITH CARON" glyphname="Ncaron"/>
+   <entry id="141" unicode="330" unicodename="LATIN CAPITAL LETTER ENG" glyphname="Eng"/>
+   <entry id="142" unicode="336" unicodename="LATIN CAPITAL LETTER O WITH DOUBLE ACUTE" glyphname="Ohungarumlaut"/>
+   <entry id="143" unicode="340" unicodename="LATIN CAPITAL LETTER R WITH ACUTE" glyphname="Racute"/>
+   <entry id="144" unicode="344" unicodename="LATIN CAPITAL LETTER R WITH CARON" glyphname="Rcaron"/>
+   <entry id="145" unicode="346" unicodename="LATIN CAPITAL LETTER S WITH ACUTE" glyphname="Sacute"/>
+   <entry id="146" unicode="352" unicodename="LATIN CAPITAL LETTER S WITH CARON" glyphname="Scaron"/>
+   <entry id="147" unicode="536" unicodename="LATIN CAPITAL LETTER S WITH COMMA BELOW" glyphname="Scommaaccent"/>
+   <entry id="148" unicode="356" unicodename="LATIN CAPITAL LETTER T WITH CARON" glyphname="Tcaron"/>
+   <entry id="149" unicode="354" unicodename="LATIN CAPITAL LETTER T WITH CEDILLA" glyphname="Tcommaaccent"/>
+   <entry id="150" unicode="368" unicodename="LATIN CAPITAL LETTER U WITH DOUBLE ACUTE" glyphname="Uhungarumlaut"/>
+   <entry id="151" unicode="366" unicodename="LATIN CAPITAL LETTER U WITH RING ABOVE" glyphname="Uring"/>
+   <entry id="152" unicode="376" unicodename="LATIN CAPITAL LETTER Y WITH DIAERESIS" glyphname="Ydieresis"/>
+   <entry id="153" unicode="377" unicodename="LATIN CAPITAL LETTER Z WITH ACUTE" glyphname="Zacute"/>
+   <entry id="154" unicode="381" unicodename="LATIN CAPITAL LETTER Z WITH CARON" glyphname="Zcaron"/>
+   <entry id="155" unicode="379" unicodename="LATIN CAPITAL LETTER Z WITH DOT ABOVE" glyphname="Zdotaccent"/>
+   <entry id="156" unicode="306" unicodename="LATIN CAPITAL LIGATURE IJ" glyphname="IJ"/>
+   <entry id="157" unicode="304" unicodename="LATIN CAPITAL LETTER I WITH DOT ABOVE" glyphname="Idotaccent"/>
+   <entry id="158" unicode="273" unicodename="LATIN SMALL LETTER D WITH STROKE" glyphname="dcroat"/>
+   <entry id="159" unicode="167" unicodename="SECTION SIGN" glyphname="section"/>
+   <entry id="160" unicode="259" unicodename="LATIN SMALL LETTER A WITH BREVE" glyphname="abreve"/>
+   <entry id="161" unicode="261" unicodename="LATIN SMALL LETTER A WITH OGONEK" glyphname="aogonek"/>
+   <entry id="162" unicode="263" unicodename="LATIN SMALL LETTER C WITH ACUTE" glyphname="cacute"/>
+   <entry id="163" unicode="269" unicodename="LATIN SMALL LETTER C WITH CARON" glyphname="ccaron"/>
+   <entry id="164" unicode="271" unicodename="LATIN SMALL LETTER D WITH CARON" glyphname="dcaron"/>
+   <entry id="165" unicode="283" unicodename="LATIN SMALL LETTER E WITH CARON" glyphname="ecaron"/>
+   <entry id="166" unicode="281" unicodename="LATIN SMALL LETTER E WITH OGONEK" glyphname="eogonek"/>
+   <entry id="167" unicode="287" unicodename="LATIN SMALL LETTER G WITH BREVE" glyphname="gbreve"/>
+   <entry id="168" unicode="314" unicodename="LATIN SMALL LETTER L WITH ACUTE" glyphname="lacute"/>
+   <entry id="169" unicode="318" unicodename="LATIN SMALL LETTER L WITH CARON" glyphname="lcaron"/>
+   <entry id="170" unicode="322" unicodename="LATIN SMALL LETTER L WITH STROKE" glyphname="lslash"/>
+   <entry id="171" unicode="324" unicodename="LATIN SMALL LETTER N WITH ACUTE" glyphname="nacute"/>
+   <entry id="172" unicode="328" unicodename="LATIN SMALL LETTER N WITH CARON" glyphname="ncaron"/>
+   <entry id="173" unicode="331" unicodename="LATIN SMALL LETTER ENG" glyphname="eng"/>
+   <entry id="174" unicode="337" unicodename="LATIN SMALL LETTER O WITH DOUBLE ACUTE" glyphname="ohungarumlaut"/>
+   <entry id="175" unicode="341" unicodename="LATIN SMALL LETTER R WITH ACUTE" glyphname="racute"/>
+   <entry id="176" unicode="345" unicodename="LATIN SMALL LETTER R WITH CARON" glyphname="rcaron"/>
+   <entry id="177" unicode="347" unicodename="LATIN SMALL LETTER S WITH ACUTE" glyphname="sacute"/>
+   <entry id="178" unicode="353" unicodename="LATIN SMALL LETTER S WITH CARON" glyphname="scaron"/>
+   <entry id="179" unicode="537" unicodename="LATIN SMALL LETTER S WITH COMMA BELOW" glyphname="scommaaccent"/>
+   <entry id="180" unicode="357" unicodename="LATIN SMALL LETTER T WITH CARON" glyphname="tcaron"/>
+   <entry id="181" unicode="355" unicodename="LATIN SMALL LETTER T WITH CEDILLA" glyphname="tcommaaccent"/>
+   <entry id="182" unicode="369" unicodename="LATIN SMALL LETTER U WITH DOUBLE ACUTE" glyphname="uhungarumlaut"/>
+   <entry id="183" unicode="367" unicodename="LATIN SMALL LETTER U WITH RING ABOVE" glyphname="uring"/>
+   <entry id="184" unicode="255" unicodename="LATIN SMALL LETTER Y WITH DIAERESIS" glyphname="ydieresis"/>
+   <entry id="185" unicode="378" unicodename="LATIN SMALL LETTER Z WITH ACUTE" glyphname="zacute"/>
+   <entry id="186" unicode="382" unicodename="LATIN SMALL LETTER Z WITH CARON" glyphname="zcaron"/>
+   <entry id="187" unicode="380" unicodename="LATIN SMALL LETTER Z WITH DOT ABOVE" glyphname="zdotaccent"/>
+   <entry id="188" unicode="307" unicodename="LATIN SMALL LIGATURE IJ" glyphname="ij"/>
+   <entry id="189" unicode="161" unicodename="INVERTED EXCLAMATION MARK" glyphname="exclamdown"/>
+   <entry id="190" unicode="191" unicodename="INVERTED QUESTION MARK" glyphname="questiondown"/>
+   <entry id="191" unicode="163" unicodename="POUND SIGN" glyphname="sterling"/>
+   <entry id="192" unicode="192" unicodename="LATIN CAPITAL LETTER A WITH GRAVE" glyphname="Agrave"/>
+   <entry id="193" unicode="193" unicodename="LATIN CAPITAL LETTER A WITH ACUTE" glyphname="Aacute"/>
+   <entry id="194" unicode="194" unicodename="LATIN CAPITAL LETTER A WITH CIRCUMFLEX" glyphname="Acircumflex"/>
+   <entry id="195" unicode="195" unicodename="LATIN CAPITAL LETTER A WITH TILDE" glyphname="Atilde"/>
+   <entry id="196" unicode="196" unicodename="LATIN CAPITAL LETTER A WITH DIAERESIS" glyphname="Adieresis"/>
+   <entry id="197" unicode="197" unicodename="LATIN CAPITAL LETTER A WITH RING ABOVE" glyphname="Aring"/>
+   <entry id="198" unicode="198" unicodename="LATIN CAPITAL LETTER AE" glyphname="AE"/>
+   <entry id="199" unicode="199" unicodename="LATIN CAPITAL LETTER C WITH CEDILLA" glyphname="Ccedilla"/>
+   <entry id="200" unicode="200" unicodename="LATIN CAPITAL LETTER E WITH GRAVE" glyphname="Egrave"/>
+   <entry id="201" unicode="201" unicodename="LATIN CAPITAL LETTER E WITH ACUTE" glyphname="Eacute"/>
+   <entry id="202" unicode="202" unicodename="LATIN CAPITAL LETTER E WITH CIRCUMFLEX" glyphname="Ecircumflex"/>
+   <entry id="203" unicode="203" unicodename="LATIN CAPITAL LETTER E WITH DIAERESIS" glyphname="Edieresis"/>
+   <entry id="204" unicode="204" unicodename="LATIN CAPITAL LETTER I WITH GRAVE" glyphname="Igrave"/>
+   <entry id="205" unicode="205" unicodename="LATIN CAPITAL LETTER I WITH ACUTE" glyphname="Iacute"/>
+   <entry id="206" unicode="206" unicodename="LATIN CAPITAL LETTER I WITH CIRCUMFLEX" glyphname="Icircumflex"/>
+   <entry id="207" unicode="207" unicodename="LATIN CAPITAL LETTER I WITH DIAERESIS" glyphname="Idieresis"/>
+   <entry id="208" unicode="208" unicodename="LATIN CAPITAL LETTER ETH" glyphname="Eth"/>
+   <entry id="209" unicode="209" unicodename="LATIN CAPITAL LETTER N WITH TILDE" glyphname="Ntilde"/>
+   <entry id="210" unicode="210" unicodename="LATIN CAPITAL LETTER O WITH GRAVE" glyphname="Ograve"/>
+   <entry id="211" unicode="211" unicodename="LATIN CAPITAL LETTER O WITH ACUTE" glyphname="Oacute"/>
+   <entry id="212" unicode="212" unicodename="LATIN CAPITAL LETTER O WITH CIRCUMFLEX" glyphname="Ocircumflex"/>
+   <entry id="213" unicode="213" unicodename="LATIN CAPITAL LETTER O WITH TILDE" glyphname="Otilde"/>
+   <entry id="214" unicode="214" unicodename="LATIN CAPITAL LETTER O WITH DIAERESIS" glyphname="Odieresis"/>
+   <entry id="215" unicode="338" unicodename="LATIN CAPITAL LIGATURE OE" glyphname="OE"/>
+   <entry id="216" unicode="216" unicodename="LATIN CAPITAL LETTER O WITH STROKE" glyphname="Oslash"/>
+   <entry id="217" unicode="217" unicodename="LATIN CAPITAL LETTER U WITH GRAVE" glyphname="Ugrave"/>
+   <entry id="218" unicode="218" unicodename="LATIN CAPITAL LETTER U WITH ACUTE" glyphname="Uacute"/>
+   <entry id="219" unicode="219" unicodename="LATIN CAPITAL LETTER U WITH CIRCUMFLEX" glyphname="Ucircumflex"/>
+   <entry id="220" unicode="220" unicodename="LATIN CAPITAL LETTER U WITH DIAERESIS" glyphname="Udieresis"/>
+   <entry id="221" unicode="221" unicodename="LATIN CAPITAL LETTER Y WITH ACUTE" glyphname="Yacute"/>
+   <entry id="222" unicode="222" unicodename="LATIN CAPITAL LETTER THORN" glyphname="Thorn"/>
+   <entry id="223" unicode="" unicodename="" glyphname="Germandbls"/>
+   <entry id="224" unicode="224" unicodename="LATIN SMALL LETTER A WITH GRAVE" glyphname="agrave"/>
+   <entry id="225" unicode="225" unicodename="LATIN SMALL LETTER A WITH ACUTE" glyphname="aacute"/>
+   <entry id="226" unicode="226" unicodename="LATIN SMALL LETTER A WITH CIRCUMFLEX" glyphname="acircumflex"/>
+   <entry id="227" unicode="227" unicodename="LATIN SMALL LETTER A WITH TILDE" glyphname="atilde"/>
+   <entry id="228" unicode="228" unicodename="LATIN SMALL LETTER A WITH DIAERESIS" glyphname="adieresis"/>
+   <entry id="229" unicode="229" unicodename="LATIN SMALL LETTER A WITH RING ABOVE" glyphname="aring"/>
+   <entry id="230" unicode="230" unicodename="LATIN SMALL LETTER AE" glyphname="ae"/>
+   <entry id="231" unicode="231" unicodename="LATIN SMALL LETTER C WITH CEDILLA" glyphname="ccedilla"/>
+   <entry id="232" unicode="232" unicodename="LATIN SMALL LETTER E WITH GRAVE" glyphname="egrave"/>
+   <entry id="233" unicode="233" unicodename="LATIN SMALL LETTER E WITH ACUTE" glyphname="eacute"/>
+   <entry id="234" unicode="234" unicodename="LATIN SMALL LETTER E WITH CIRCUMFLEX" glyphname="ecircumflex"/>
+   <entry id="235" unicode="235" unicodename="LATIN SMALL LETTER E WITH DIAERESIS" glyphname="edieresis"/>
+   <entry id="236" unicode="236" unicodename="LATIN SMALL LETTER I WITH GRAVE" glyphname="igrave"/>
+   <entry id="237" unicode="237" unicodename="LATIN SMALL LETTER I WITH ACUTE" glyphname="iacute"/>
+   <entry id="238" unicode="238" unicodename="LATIN SMALL LETTER I WITH CIRCUMFLEX" glyphname="icircumflex"/>
+   <entry id="239" unicode="239" unicodename="LATIN SMALL LETTER I WITH DIAERESIS" glyphname="idieresis"/>
+   <entry id="240" unicode="240" unicodename="LATIN SMALL LETTER ETH" glyphname="eth"/>
+   <entry id="241" unicode="241" unicodename="LATIN SMALL LETTER N WITH TILDE" glyphname="ntilde"/>
+   <entry id="242" unicode="242" unicodename="LATIN SMALL LETTER O WITH GRAVE" glyphname="ograve"/>
+   <entry id="243" unicode="243" unicodename="LATIN SMALL LETTER O WITH ACUTE" glyphname="oacute"/>
+   <entry id="244" unicode="244" unicodename="LATIN SMALL LETTER O WITH CIRCUMFLEX" glyphname="ocircumflex"/>
+   <entry id="245" unicode="245" unicodename="LATIN SMALL LETTER O WITH TILDE" glyphname="otilde"/>
+   <entry id="246" unicode="246" unicodename="LATIN SMALL LETTER O WITH DIAERESIS" glyphname="odieresis"/>
+   <entry id="247" unicode="339" unicodename="LATIN SMALL LIGATURE OE" glyphname="oe"/>
+   <entry id="248" unicode="248" unicodename="LATIN SMALL LETTER O WITH STROKE" glyphname="oslash"/>
+   <entry id="249" unicode="249" unicodename="LATIN SMALL LETTER U WITH GRAVE" glyphname="ugrave"/>
+   <entry id="250" unicode="250" unicodename="LATIN SMALL LETTER U WITH ACUTE" glyphname="uacute"/>
+   <entry id="251" unicode="251" unicodename="LATIN SMALL LETTER U WITH CIRCUMFLEX" glyphname="ucircumflex"/>
+   <entry id="252" unicode="252" unicodename="LATIN SMALL LETTER U WITH DIAERESIS" glyphname="udieresis"/>
+   <entry id="253" unicode="253" unicodename="LATIN SMALL LETTER Y WITH ACUTE" glyphname="yacute"/>
+   <entry id="254" unicode="254" unicodename="LATIN SMALL LETTER THORN" glyphname="thorn"/>
+   <entry id="255" unicode="223" unicodename="LATIN SMALL LETTER SHARP S" glyphname="germandbls"/>
+</encoding>

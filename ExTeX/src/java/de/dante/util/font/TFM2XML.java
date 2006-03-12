@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -34,10 +34,10 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
 import de.dante.util.xml.XMLStreamWriter;
 
 /**
- * Convert a TFM-file to a XML-file
+ * Convert a TFM-file to a XML-file.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public final class TFM2XML extends AbstractFontUtil {
 
@@ -54,7 +54,7 @@ public final class TFM2XML extends AbstractFontUtil {
     /**
      * do it.
      *
-     * @param args the comandline
+     * @param args the command line.
      * @throws Exception if an error occurs.
      */
     private void doIt(final String[] args) throws Exception {
@@ -104,14 +104,14 @@ public final class TFM2XML extends AbstractFontUtil {
     }
 
     /**
-     * parameter
+     * how much parameter.
      */
     private static final int PARAMETER = 2;
 
     /**
-     * main
-     * @param args      the comandlinearguments
-     * @throws Exception if an error occured.
+     * main.
+     * @param args      the command line arguments
+     * @throws Exception if an error occurred.
      */
     public static void main(final String[] args) throws Exception {
 
