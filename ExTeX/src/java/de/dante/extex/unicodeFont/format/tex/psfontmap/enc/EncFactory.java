@@ -24,15 +24,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.dante.extex.unicodeFont.exception.FontException;
-import de.dante.extex.unicodeFont.format.tex.psfontmap.enc.exception.FontEncodingFileNotFoundException;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
+import de.dante.util.framework.i18n.Localizer;
+import de.dante.util.framework.i18n.LocalizerFactory;
 import de.dante.util.resource.ResourceFinder;
 
 /**
  * Factory for enc-files.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class EncFactory implements Serializable {
 
@@ -62,6 +63,13 @@ public class EncFactory implements Serializable {
     private Map data;
 
     /**
+     * The field <tt>localizer</tt> contains the localizer. It is initiated
+     * with a localizer for the name of this class.
+     */
+    private transient Localizer localizer = LocalizerFactory
+            .getLocalizer(EncFactory.class.getName());
+
+    /**
      * Returns the encoding table.
      * @param filename  the file name.
      * @return Returns the encoding table.
@@ -76,7 +84,8 @@ public class EncFactory implements Serializable {
         if (table == null) {
             InputStream in = finder.findResource(filename, "enc");
             if (in == null) {
-                throw new FontEncodingFileNotFoundException(filename);
+                throw new FontException(localizer.format(
+                        "EncFactory.FileNotFound", filename));
             }
             EncReader er = new EncReader(in);
             table = er.getTable();

@@ -39,7 +39,7 @@ import de.dante.util.resource.ResourceFinder;
  * Test for the EncFactory.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 
 public class EncFactoryTest extends TestCase {
@@ -52,7 +52,7 @@ public class EncFactoryTest extends TestCase {
     /**
      * my extex.
      */
-    protected MyExTeX extex;
+    private MyExTeX extex;
 
     /**
      * The encoder factory.
@@ -107,7 +107,7 @@ public class EncFactoryTest extends TestCase {
     }
 
     /**
-     * texnansi encoding
+     * texnansi encoding.
      */
     private static final String[] TEXNANSI_ENC = {"/.notdef", //0
             "/Euro", ///Uni20AC 1
@@ -435,12 +435,12 @@ public class EncFactoryTest extends TestCase {
         }
 
         /**
-         * the config
+         * the config.
          */
         private Configuration config;
 
         /**
-         * create the config
+         * create the config.
          */
         private void makeConfig() throws ConfigurationException {
 
@@ -449,7 +449,7 @@ public class EncFactoryTest extends TestCase {
         }
 
         /**
-         * the finder
+         * the finder.
          */
         private ResourceFinder finder;
 
@@ -467,7 +467,7 @@ public class EncFactoryTest extends TestCase {
         }
 
         /**
-         * the font factroy
+         * the font factroy.
          */
         private FontFactory fontFactory;
 
@@ -541,7 +541,7 @@ public class EncFactoryTest extends TestCase {
     // --------------------------------------------
 
     /**
-     * main
+     * main.
      * @param args  the command line.
      */
     public static void main(final String[] args) {

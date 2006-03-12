@@ -39,12 +39,12 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import de.dante.extex.font.type.tfm.enc.exception.FontEncodingFileNotFoundException;
 import de.dante.extex.unicodeFont.exception.FontException;
 import de.dante.extex.unicodeFont.exception.FontIOException;
 import de.dante.extex.unicodeFont.format.tex.psfontmap.PsFontEncoding;
 import de.dante.extex.unicodeFont.format.tex.psfontmap.PsFontsMapReader;
 import de.dante.extex.unicodeFont.format.tex.psfontmap.enc.EncFactory;
-import de.dante.extex.unicodeFont.format.tex.psfontmap.enc.exception.FontEncodingFileNotFoundException;
 import de.dante.extex.unicodeFont.glyphname.GlyphName;
 import de.dante.util.UnicodeChar;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
@@ -62,7 +62,7 @@ import de.dante.util.xml.XMLStreamWriter;
  * </ul>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class FontMap extends AbstractFontUtil {
@@ -340,11 +340,6 @@ public class FontMap extends AbstractFontUtil {
             out.writeEndDocument();
             out.close();
 
-        } catch (FontEncodingFileNotFoundException e) {
-            getLogger().severe(
-                    getLocalizer().format("FontMap.TeXEncodingFileNotFound",
-                            texencfile));
-            throw new FontIOException(e.getMessage());
         } catch (IOException e) {
             getLogger().severe(e.getMessage());
             throw new FontIOException(e.getMessage());
