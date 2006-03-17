@@ -24,21 +24,47 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * This class provides a factory for a
- * {@link de.dante.extex.LanguageManager LanguageManager}.
+ * {@link de.dante.extex.language.LanguageManager LanguageManager}.
  *
  *
  * <pre>
- *  &lt;Context class="the.package.TheClass"&gt;
- *  &lt;/Context&gt;
+ * &lt;Language default="ExTeX"&gt;
+ *
+ *   &lt;TeX class="de.dante.extex.language.impl.BaseLanguageManager"
+ *        default="default"&gt;
+ *     &lt;default
+ *       class="de.dante.extex.language.hyphenation.liang.LiangsHyphenationTable"&gt;
+ *       &lt;LigatureBuilder
+ *         class="de.dante.extex.language.ligature.impl.LigatureBuilderImpl"/&gt;
+ *       &lt;WordTokenizer
+ *         class="de.dante.extex.language.word.impl.TeXWords"/&gt;
+ *     &lt;/default&gt;
+ *   &lt;/TeX&gt;
+ *
+ *   &lt;ExTeX class="de.dante.extex.language.impl.LoadingLanguageManager"
+ *          default="default"&gt;
+ *     &lt;default
+ *       class="de.dante.extex.language.hyphenation.liang.LiangsHyphenationTable"&gt;
+ *       &lt;LigatureBuilder
+ *         class="de.dante.extex.language.ligature.impl.LigatureBuilderImpl"/&gt;
+ *       &lt;WordTokenizer
+ *         class="de.dante.extex.language.word.impl.ExTeXWords"/&gt;
+ *     &lt;/default&gt;
+ *   &lt;/ExTeX&gt;
+ *
+ * &lt;/Language&gt;
  * </pre>
  *
+ * @see de.dante.util.framework.AbstractFactory
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class LanguageManagerFactory extends AbstractFactory {
 
     /**
-     * Get an instance of a HyphenationManager.
+     * Get an instance of a
+     * {@link de.dante.extex.language.LanguageManager LanguageManager}.
      * This method selects one of the entries in the configuration. The
      * selection is done with the help of a type String. If the type is
      * <code>null</code> or the empty string then the default from the
