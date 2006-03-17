@@ -25,6 +25,7 @@
 <DocumentWriter default="dvi">
   <pdf     class="de.dante.extex.backend.documentWriter.pdf.PdfDocumentWriter"/>
   <dvi     class="de.dante.extex.backend.documentWriter.dvi.DviDocumentWriter"/>
+  <dvix    class="de.dante.extex.backend.documentWriter.dvix.DviDocumentWriter"/>
   <ps      class="de.dante.extex.backend.documentWriter.postscript.PsWriter"/>
   <ps-box  class="de.dante.extex.backend.documentWriter.postscript.PsWriter"
            boxed="true"/>
