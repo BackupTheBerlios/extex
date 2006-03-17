@@ -36,7 +36,7 @@ for %%i in (%LIBDIR%\*.jar) do (
     set LOCALCLASSPATH=%LOCALCLASSPATH%;%%i
   )
 
-java -classpath "%LOCALCLASSPATH%" de.dante.extex.main.TeX %*
+java -classpath %LOCALCLASSPATH% de.dante.extex.main.TeX %*
 
 :end
 
