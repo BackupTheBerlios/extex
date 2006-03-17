@@ -25,7 +25,7 @@ import de.dante.util.UnicodeChar;
  * Central utility class for Unicode compatibility in <logo>ExTeX</logo>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public final class Unicode {
 
@@ -35,36 +35,37 @@ public final class Unicode {
     public static final UnicodeChar BREAK_PERMITTED_HERE = new UnicodeChar(0x82);
 
     /**
-     * The field <tt>NEXT_LINE</tt> contains the next line control caracter.
+     * The field <tt>NEXT_LINE</tt> contains the next line control character.
      */
-    public static final UnicodeChar NEXT_LINE = new UnicodeChar(0x85);
+    public static final UnicodeChar NEXT_LINE = UnicodeChar.get(0x85);
 
     /**
      * The field <tt>NO_BREAK_HERE</tt> contains the ...
      */
-    public static final UnicodeChar NO_BREAK_HERE = new UnicodeChar(0x83);
+    public static final UnicodeChar NO_BREAK_HERE = UnicodeChar.get(0x83);
 
     /**
      * The field <tt>NO_BREAK_SPACE</tt> contains the non-breakable space.
      */
-    public static final UnicodeChar NO_BREAK_SPACE = new UnicodeChar(0xa0);
+    public static final UnicodeChar NO_BREAK_SPACE = UnicodeChar.get(0xa0);
 
     /**
      * The constant <tt>OFFSET</tt> contains the offset for shifting code points
      * to a private Unicode area.
      */
     public static final int OFFSET = 0xEE00;
+
     //public static final int OFFSET = 0;
 
     /**
      * The constant <tt>SHY</tt> contains the soft hyphenation character.
      */
-    public static final UnicodeChar SHY = new UnicodeChar(0xad);
+    public static final UnicodeChar SHY = UnicodeChar.get(0xad);
 
     /**
      * The field <tt>SPACE</tt> contains the space control character.
      */
-    public static final UnicodeChar SPACE = new UnicodeChar(0x20);
+    public static final UnicodeChar SPACE = UnicodeChar.get(0x20);
 
     /**
      * Creates a new object.
