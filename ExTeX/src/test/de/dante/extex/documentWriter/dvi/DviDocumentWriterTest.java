@@ -1,23 +1,21 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 2.1 of the License, or (at your
+ * option) any later version.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation,
+ * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
-
-// created: 2004-09-31
 
 package de.dante.extex.documentWriter.dvi;
 
@@ -53,9 +51,8 @@ import de.dante.util.framework.configuration.Configuration;
  * JUnit tests for class <code>DviDocumentWriter</code>.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
-
 public class DviDocumentWriterTest extends TestCase {
 
     private DocumentWriter documentWriter = null;
@@ -70,11 +67,11 @@ public class DviDocumentWriterTest extends TestCase {
 
     /**
      * The if DviDocumentWriter throws the exception, if the node is
-     * added to the Nodelist.
+     * added to the NodeList.
      *
      * @param node a <code>Node</code> value
      * @param exception a <code>Class</code> value
-     * @exception Exception if an error occurs
+     * @throws Exception if an error occurs
      */
     private void checkException(final Node node, final Class exception)
             throws Exception {
@@ -84,7 +81,8 @@ public class DviDocumentWriterTest extends TestCase {
         nodeList.add(node);
 
         try {
-            documentWriter.shipout(new PageImpl(nodeList));
+            FixedCount[] pageNo = null;
+            documentWriter.shipout(new PageImpl(nodeList, pageNo));
         } catch (Exception e) {
             if (exception.isInstance(e)) {
                 gotException = true;
@@ -106,7 +104,6 @@ public class DviDocumentWriterTest extends TestCase {
 
     /**
      * Creates a new <code>DviDocumentWriterTest</code> instance.
-     *
      */
     public DviDocumentWriterTest() {
 
@@ -118,7 +115,7 @@ public class DviDocumentWriterTest extends TestCase {
      * This is not done in the constructor so the variables get new
      * values for each test.
      *
-     * @exception Exception if an error occurs
+     * @throws Exception if an error occurs
      */
     public void setUp() throws Exception {
 
@@ -143,7 +140,7 @@ public class DviDocumentWriterTest extends TestCase {
      *   de.dante.extex.backend.documentWriter.DocumentWriter#shipout(
      *   de.dante.extex.typesetter.type.NodeList) shipout()}.
      *
-     * @exception Exception if an error occurs
+     * @throws Exception if an error occurs
      */
     public void testNoOutputStream() throws Exception {
 
@@ -152,7 +149,8 @@ public class DviDocumentWriterTest extends TestCase {
         documentWriter = new DviDocumentWriter(configuration,
                 documentWriterOptions);
         try {
-            documentWriter.shipout(new PageImpl(nodeList));
+            FixedCount[] pageNo = null;
+            documentWriter.shipout(new PageImpl(nodeList, pageNo));
         } catch (GeneralException e) {
             if (e instanceof NoOutputStreamException) {
                 noOutputStream = true;
@@ -164,19 +162,20 @@ public class DviDocumentWriterTest extends TestCase {
 
     /**
      * Test if the DviDocumentWriter throws new Exception if the
-     * nodelist is empty.
+     * node list is empty.
      *
-     * @exception Exception if an error occurs
+     * @throws Exception if an error occurs
      */
     public void testEmptyList() throws Exception {
 
-        documentWriter.shipout(new PageImpl(nodeList));
+        FixedCount[] pageNo = null;
+        documentWriter.shipout(new PageImpl(nodeList, pageNo));
     }
 
     /**
-     * Test if a marknode throws a panic Exception.
+     * Test if a mark node throws a panic Exception.
      *
-     * @exception Exception if an error occurs
+     * @throws Exception if an error occurs
      */
     public void testMarkNode() throws Exception {
 
@@ -184,9 +183,9 @@ public class DviDocumentWriterTest extends TestCase {
     }
 
     /**
-     * Test if a insertionnode throws a panic Exception.
+     * Test if a insertion node throws a panic Exception.
      *
-     * @exception Exception if an error occurs
+     * @throws Exception if an error occurs
      */
     public void testInsertionNode() throws Exception {
 
@@ -196,7 +195,7 @@ public class DviDocumentWriterTest extends TestCase {
     /**
      * Test valid nodes.
      *
-     * @exception Exception if an error occurs
+     * @throws Exception if an error occurs
      */
     public void testValidNodes() throws Exception {
 
@@ -207,14 +206,16 @@ public class DviDocumentWriterTest extends TestCase {
         // TODO: nodeList.add(new SpecialNode("Test")); (TE)
         //nodeList.add(new WhatsItNode("Test"));
 
-        documentWriter.shipout(new PageImpl(nodeList));
+        FixedCount[] pageNo = null;
+        documentWriter.shipout(new PageImpl(nodeList, pageNo));
     }
 
     /**
      * Check the specified magnification.
      *
      * @param magnification for check
-     * @exception Exception if an error occurs
+     *
+     * @throws Exception if an error occurs
      */
     private void checkMagnification(long magnification) throws Exception {
 
@@ -222,13 +223,14 @@ public class DviDocumentWriterTest extends TestCase {
         documentWriter = new DviDocumentWriter(configuration,
                 documentWriterOptions);
         ((SingleDocumentStream) documentWriter).setOutputStream(outputStream);
-        documentWriter.shipout(new PageImpl(nodeList));
+        FixedCount[] pageNo = null;
+        documentWriter.shipout(new PageImpl(nodeList, pageNo));
     }
 
     /**
-     * Test magnifications in the documentwriter options.
+     * Test magnifications in the document writer options.
      *
-     * @exception Exception if an error occurs
+     * @throws Exception if an error occurs
      */
     public void testMagnification() throws Exception {
 
