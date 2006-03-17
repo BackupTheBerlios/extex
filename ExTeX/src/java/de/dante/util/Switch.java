@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -16,16 +16,20 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.util;
 
-
 /**
- * This class provides a modifyable boolean object.
+ * This class provides a modifiable boolean object.
  * In contrast to the class {@link java.lang.Boolean Boolean} this class has
  * also a setter for the encapsulated boolean value.
+ * <p>
+ *  This class cures the deficiency of Java to provide booleans as first-class
+ *  objects.
+ * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Switch {
 
@@ -64,4 +68,5 @@ public class Switch {
 
         this.value = on;
     }
+
 }
