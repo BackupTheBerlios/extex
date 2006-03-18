@@ -26,7 +26,7 @@ import com.ibm.icu.lang.UCharacter;
  * attached to it.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ComposedUnicodeChar extends UnicodeChar {
 
@@ -72,7 +72,7 @@ public class ComposedUnicodeChar extends UnicodeChar {
     /**
      * Compares a <code>UnicodeChar</code> character with the value of this
      * object. They are considered equal if the are both
-     * {@link ComposedUnicodeChars ComposedUnicodeChars} and have the same codes.
+     * {@link ComposedUnicodeChar ComposedUnicodeChar}s and have the same codes.
      * <p>
      * The general signature for comparison to an arbitrary object is required
      * for the implementation of {@link java.util.HashMap HashMap} and friends.
