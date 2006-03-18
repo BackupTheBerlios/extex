@@ -33,7 +33,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface Token {
 
@@ -119,7 +119,7 @@ public interface Token {
      *
      * @return the printable representation
      */
-    String toText(char esc);
+    String toText(UnicodeChar esc);
 
     /**
      * This method returns the textual representation for the Token.

@@ -31,7 +31,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class AbstractToken implements Token, Serializable {
 
@@ -159,7 +159,7 @@ public abstract class AbstractToken implements Token, Serializable {
     /**
      * @see de.dante.extex.scanner.type.token.Token#toText(char)
      */
-    public String toText(final char esc) {
+    public String toText(final UnicodeChar esc) {
 
         return uniCode.toString();
     }
