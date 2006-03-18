@@ -65,14 +65,14 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * classes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
 public class MockContext implements Context, TypesetterOptions {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2006L;
 
     /**
      * The field <tt>tokenFactory</tt> contains the token factory.
@@ -88,7 +88,8 @@ public class MockContext implements Context, TypesetterOptions {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.ContextGroup#afterGroup(AfterGroupObserver)
+     * @see de.dante.extex.interpreter.context.ContextGroup#afterGroup(
+     *      de.dante.extex.interpreter.context.observer.group.AfterGroupObserver)
      */
     public void afterGroup(final AfterGroupObserver observer) {
 
@@ -96,7 +97,8 @@ public class MockContext implements Context, TypesetterOptions {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.ContextGroup#afterGroup(de.dante.extex.scanner.type.token.Token)
+     * @see de.dante.extex.interpreter.context.ContextGroup#afterGroup(
+     *      de.dante.extex.scanner.type.token.Token)
      */
     public void afterGroup(final Token t) throws InterpreterException {
 
@@ -111,7 +113,9 @@ public class MockContext implements Context, TypesetterOptions {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.ContextGroup#closeGroup(de.dante.extex.typesetter.Typesetter, de.dante.extex.interpreter.TokenSource)
+     * @see de.dante.extex.interpreter.context.ContextGroup#closeGroup(
+     *      de.dante.extex.typesetter.Typesetter,
+     *      de.dante.extex.interpreter.TokenSource)
      */
     public void closeGroup(final Typesetter typesetter, final TokenSource source)
             throws InterpreterException {
@@ -128,7 +132,8 @@ public class MockContext implements Context, TypesetterOptions {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#esc(de.dante.extex.scanner.type.token.Token)
+     * @see de.dante.extex.interpreter.context.Context#esc(
+     *      de.dante.extex.scanner.type.token.Token)
      */
     public String esc(final Token token) {
 
@@ -138,13 +143,15 @@ public class MockContext implements Context, TypesetterOptions {
     /**
      * @see de.dante.extex.interpreter.context.Context#escapechar()
      */
-    public char escapechar() {
+    public UnicodeChar escapechar() {
 
-        return '\\';
+        return UnicodeChar.get('\\');
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.ContextCode#expand(de.dante.extex.interpreter.type.tokens.Tokens, de.dante.extex.typesetter.Typesetter)
+     * @see de.dante.extex.interpreter.context.ContextCode#expand(
+     *      de.dante.extex.interpreter.type.tokens.Tokens,
+     *      de.dante.extex.typesetter.Typesetter)
      */
     public Tokens expand(final Tokens tokens, final Typesetter typesetter)
             throws GeneralException {
@@ -161,7 +168,8 @@ public class MockContext implements Context, TypesetterOptions {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.ContextMark#getBottomMark(java.lang.String)
+     * @see de.dante.extex.interpreter.context.ContextMark#getBottomMark(
+     *      java.lang.String)
      */
     public Tokens getBottomMark(final Object name) {
 
@@ -177,7 +185,8 @@ public class MockContext implements Context, TypesetterOptions {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Tokenizer#getCatcode(de.dante.util.UnicodeChar)
+     * @see de.dante.extex.interpreter.Tokenizer#getCatcode(
+     *      de.dante.util.UnicodeChar)
      */
     public Catcode getCatcode(final UnicodeChar c) {
 
@@ -199,7 +208,8 @@ public class MockContext implements Context, TypesetterOptions {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.ContextCode#getCode(de.dante.extex.scanner.type.CodeToken)
+     * @see de.dante.extex.interpreter.context.ContextCode#getCode(
+     *      de.dante.extex.scanner.type.CodeToken)
      */
     public Code getCode(final CodeToken t) throws InterpreterException {
 
@@ -223,7 +233,8 @@ public class MockContext implements Context, TypesetterOptions {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.ContextCount#getCount(java.lang.String)
+     * @see de.dante.extex.interpreter.context.ContextCount#getCount(
+     *      java.lang.String)
      */
     public Count getCount(final String name) {
 
@@ -231,7 +242,8 @@ public class MockContext implements Context, TypesetterOptions {
     }
 
     /**
-     * @see de.dante.extex.typesetter.TypesetterOptions#getCountOption(java.lang.String)
+     * @see de.dante.extex.typesetter.TypesetterOptions#getCountOption(
+     *      java.lang.String)
      */
     public FixedCount getCountOption(final String name) {
 
@@ -239,7 +251,8 @@ public class MockContext implements Context, TypesetterOptions {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#getDelcode(de.dante.util.UnicodeChar)
+     * @see de.dante.extex.interpreter.context.Context#getDelcode(
+     *      de.dante.util.UnicodeChar)
      */
     public MathDelimiter getDelcode(final UnicodeChar c) {
 
@@ -247,7 +260,8 @@ public class MockContext implements Context, TypesetterOptions {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.ContextDimen#getDimen(java.lang.String)
+     * @see de.dante.extex.interpreter.context.ContextDimen#getDimen(
+     *      java.lang.String)
      */
     public Dimen getDimen(final String name) {
 
@@ -255,7 +269,8 @@ public class MockContext implements Context, TypesetterOptions {
     }
 
     /**
-     * @see de.dante.extex.typesetter.TypesetterOptions#getDimenOption(java.lang.String)
+     * @see de.dante.extex.typesetter.TypesetterOptions#getDimenOption(
+     *      java.lang.String)
      */
     public FixedDimen getDimenOption(final String name) {
 
@@ -271,7 +286,8 @@ public class MockContext implements Context, TypesetterOptions {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.ContextMark#getFirstMark(java.lang.String)
+     * @see de.dante.extex.interpreter.context.ContextMark#getFirstMark(
+     *      java.lang.String)
      */
     public Tokens getFirstMark(final Object name) {
 
@@ -279,7 +295,8 @@ public class MockContext implements Context, TypesetterOptions {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.ContextFont#getFont(java.lang.String)
+     * @see de.dante.extex.interpreter.context.ContextFont#getFont(
+     *      java.lang.String)
      */
     public Font getFont(final String name) {
 
@@ -303,7 +320,8 @@ public class MockContext implements Context, TypesetterOptions {
     }
 
     /**
-     * @see de.dante.extex.typesetter.TypesetterOptions#getGlueOption(java.lang.String)
+     * @see de.dante.extex.typesetter.TypesetterOptions#getGlueOption(
+     *      java.lang.String)
      */
     public FixedGlue getGlueOption(final String name) {
 

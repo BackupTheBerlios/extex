@@ -138,7 +138,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.102 $
+ * @version $Revision: 1.103 $
  */
 public class ContextImpl
         implements
@@ -550,8 +550,8 @@ public class ContextImpl
      */
     public String esc(final String name) {
 
-        char escapechar = escapechar();
-        return (escapechar != '\0' ? escapechar + name : name);
+        UnicodeChar escapechar = escapechar();
+        return (escapechar != null ? escapechar.toString() + name : name);
     }
 
     /**
@@ -566,11 +566,11 @@ public class ContextImpl
     /**
      * @see de.dante.extex.interpreter.context.Context#escapechar()
      */
-    public char escapechar() {
+    public UnicodeChar escapechar() {
 
         long esc = getCount("escapechar").getValue();
 
-        return (esc >= 0 ? (char) esc : '\0');
+        return (esc >= 0 ? UnicodeChar.get((int) esc) : null);
     }
 
     /**

@@ -49,7 +49,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.67 $
+ * @version $Revision: 1.68 $
  */
 public interface Context
         extends
@@ -97,7 +97,7 @@ public interface Context
      *
      * @return the escape character
      */
-    char escapechar();
+    UnicodeChar escapechar();
 
     /**
      * Getter for the afterassignment token.
