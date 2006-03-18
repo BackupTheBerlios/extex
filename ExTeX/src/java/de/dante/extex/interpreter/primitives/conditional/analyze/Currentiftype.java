@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -48,6 +48,7 @@ import de.dante.extex.interpreter.primitives.conditional.Ifvoid;
 import de.dante.extex.interpreter.primitives.conditional.Ifx;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Theable;
+import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
@@ -59,7 +60,37 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="currentiftype">
  * <h3>The Primitive <tt>\currentiftype</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  The primitive <tt>\currentiftype</tt> is an internal count register.
+ *  It returns an indication of the conditional currently in use.
+ *  If no conditional is active then 0 is returned.
+ *  The following table lists the return values for the different types of
+ *  conditionals:
+ * </p>
+ * <table>
+ *  <tr><td><tt>/if</tt></td><td>1</td></tr>
+ *  <tr><td><tt>/ifcat</tt></td><td>2</td></tr>
+ *  <tr><td><tt>/ifnum</tt></td><td>3</td></tr>
+ *  <tr><td><tt>/ifdim</tt></td><td>4</td></tr>
+ *  <tr><td><tt>/ifodd</tt></td><td>5</td></tr>
+ *  <tr><td><tt>/ifvmode</tt></td><td>6</td></tr>
+ *  <tr><td><tt>/ifhmode</tt></td><td>7</td></tr>
+ *  <tr><td><tt>/ifmmode</tt></td><td>8</td></tr>
+ *  <tr><td><tt>/ifinner</tt></td><td>9</td></tr>
+ *  <tr><td><tt>/ifvoid</tt></td><td>10</td></tr>
+ *  <tr><td><tt>/ifhbox</tt></td><td>11</td></tr>
+ *  <tr><td><tt>/ifvbox</tt></td><td>12</td></tr>
+ *  <tr><td><tt>/ifx</tt></td><td>13</td></tr>
+ *  <tr><td><tt>/ifeof</tt></td><td>14</td></tr>
+ *  <tr><td><tt>/iftrue</tt></td><td>15</td></tr>
+ *  <tr><td><tt>/iffalse</tt></td><td>16</td></tr>
+ *  <tr><td><tt>/ifcase</tt></td><td>17</td></tr>
+ *  <tr><td><tt>/ifdefined</tt></td><td>18</td></tr>
+ *  <tr><td><tt>/ifcsname</tt></td><td>19</td></tr>
+ *  <tr><td><tt>/iffontchar</tt></td><td>20</td></tr>
+ * </table>
+ * <p>
+ *  The value returned by the primitive is negated if the expansion appears
+ *  in the else branch.
  * </p>
  *
  * <h4>Syntax</h4>
@@ -71,11 +102,11 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
- *    \currentiftype  </pre>
+ *    \count0=\currentiftype  </pre>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Currentiftype extends AbstractCode
         implements
@@ -94,26 +125,26 @@ public class Currentiftype extends AbstractCode
     protected static final long serialVersionUID = 2005L;
 
     {
-        MAP.put(If.class, new Long(1));
-        MAP.put(Ifcat.class, new Long(2));
-        MAP.put(Ifnum.class, new Long(3));
-        MAP.put(Ifdim.class, new Long(4));
-        MAP.put(Ifodd.class, new Long(5));
-        MAP.put(Ifvmode.class, new Long(6));
-        MAP.put(Ifhmode.class, new Long(7));
-        MAP.put(Ifmmode.class, new Long(8));
-        MAP.put(Ifinner.class, new Long(9));
-        MAP.put(Ifvoid.class, new Long(10));
-        MAP.put(Ifhbox.class, new Long(11));
-        MAP.put(Ifvbox.class, new Long(12));
-        MAP.put(Ifx.class, new Long(13));
-        MAP.put(Ifeof.class, new Long(14));
-        MAP.put(Iftrue.class, new Long(15));
-        MAP.put(Iffalse.class, new Long(16));
-        MAP.put(Ifcase.class, new Long(17));
-        MAP.put(Ifdefined.class, new Long(18));
-        MAP.put(Ifcsname.class, new Long(19));
-        MAP.put(Iffontchar.class, new Long(20));
+        MAP.put(If.class, new Count(1));
+        MAP.put(Ifcat.class, new Count(2));
+        MAP.put(Ifnum.class, new Count(3));
+        MAP.put(Ifdim.class, new Count(4));
+        MAP.put(Ifodd.class, new Count(5));
+        MAP.put(Ifvmode.class, new Count(6));
+        MAP.put(Ifhmode.class, new Count(7));
+        MAP.put(Ifmmode.class, new Count(8));
+        MAP.put(Ifinner.class, new Count(9));
+        MAP.put(Ifvoid.class, new Count(10));
+        MAP.put(Ifhbox.class, new Count(11));
+        MAP.put(Ifvbox.class, new Count(12));
+        MAP.put(Ifx.class, new Count(13));
+        MAP.put(Ifeof.class, new Count(14));
+        MAP.put(Iftrue.class, new Count(15));
+        MAP.put(Iffalse.class, new Count(16));
+        MAP.put(Ifcase.class, new Count(17));
+        MAP.put(Ifdefined.class, new Count(18));
+        MAP.put(Ifcsname.class, new Count(19));
+        MAP.put(Iffontchar.class, new Count(20));
     }
 
     /**
@@ -139,9 +170,9 @@ public class Currentiftype extends AbstractCode
         if (conditional == null) {
             return 0;
         }
-        Long l = (Long) MAP.get(conditional.getPrimitive().getClass());
+        Count l = (Count) MAP.get(conditional.getPrimitive().getClass());
         return (l == null ? 0 : //
-                conditional.isNeg() ? -l.longValue() : l.longValue());
+                conditional.isNeg() ? -l.getValue() : l.getValue());
     }
 
     /**
