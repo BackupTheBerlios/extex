@@ -27,7 +27,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the kerning.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class KerningTest extends ExTeXLauncher {
 
@@ -68,7 +68,15 @@ public class KerningTest extends ExTeXLauncher {
                 "\\font\\f=cmr10 \\f "
                 + "AVAV",
                 //--- output channel ---
-                "?");
+                "\\vbox(6.83331pt+0.0pt)x30.00006pt\n" //
+                + ".\\hbox(6.83331pt+0.0pt)x30.00006pt\n" //
+                + "..A\n" //
+                + "..V\n" //
+                + "..A\n" //
+                + "..V\n" //
+                + "..\\penalty 10000\n" //
+                + "..\\glue0.0pt\n" //
+                + "");
     }
 
 }
