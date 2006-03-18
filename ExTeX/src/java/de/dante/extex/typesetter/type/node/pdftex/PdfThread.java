@@ -30,7 +30,7 @@ import de.dante.extex.typesetter.type.node.WhatsItNode;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class PdfThread extends WhatsItNode {
 
@@ -100,8 +100,11 @@ public class PdfThread extends WhatsItNode {
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.Node#toString(java.lang.StringBuffer,
-     *      java.lang.String)
+     * @see de.dante.extex.typesetter.type.Node#toString(
+     *      java.lang.StringBuffer,
+     *      java.lang.String,
+     *      int,
+     *      int)
      */
     public void toString(final StringBuffer sb, final String prefix,
             final int breadth, final int depth) {
