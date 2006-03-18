@@ -27,57 +27,57 @@ import java.io.InputStream;
  * TODO gene: missing JavaDoc.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Dvi {
 
     /**
-     * The field <tt>Y1</tt> contains the ...
+     * The field <tt>Y1</tt> contains the op-code for the Y1 instruction.
      */
     public static final int Y1 = 162;
 
     /**
-     * The field <tt>Z1</tt> contains the ...
+     * The field <tt>Z1</tt> contains the op-code for the Z1 instruction.
      */
     public static final int Z1 = 167;
 
     /**
-     * The field <tt>Z0</tt> contains the ...
+     * The field <tt>Z0</tt> contains the op-code for the Z0 instruction.
      */
     public static final int Z0 = 166;
 
     /**
-     * The field <tt>Y0</tt> contains the ...
+     * The field <tt>Y0</tt> contains the op-code for the Y0 instruction.
      */
     public static final int Y0 = 161;
 
     /**
-     * The field <tt>DOWN1</tt> contains the ...
+     * The field <tt>DOWN1</tt> contains the op-code for the DOWN1 instruction.
      */
     public static final int DOWN1 = 157;
 
     /**
-     * The field <tt>X1</tt> contains the ...
+     * The field <tt>X1</tt> contains the op-code for the X1 instruction.
      */
     public static final int X1 = 153;
 
     /**
-     * The field <tt>X0</tt> contains the ...
+     * The field <tt>X0</tt> contains the op-code for the X0 instruction.
      */
     public static final int X0 = 152;
 
     /**
-     * The field <tt>W4</tt> contains the ...
+     * The field <tt>W4</tt> contains the op-code for the W4 instruction.
      */
     public static final int W4 = 151;
 
     /**
-     * The field <tt>W3</tt> contains the ...
+     * The field <tt>W3</tt> contains the op-code for the W3 instruction.
      */
     public static final int W3 = 150;
 
     /**
-     * The field <tt>BOP</tt> contains the ...
+     * The field <tt>BOP</tt> contains the op-code for the BOP instruction.
      */
     public static final int BOP = 139;
 
@@ -97,12 +97,13 @@ public class Dvi {
     public static final int DVI_UNIT_NUMERATOR = 25400000;
 
     /**
-     * The field <tt>EOP</tt> contains the ...
+     * The field <tt>EOP</tt> contains the op-code for the EOP instruction.
      */
     public static final int EOP = 140;
 
     /**
-     * The field <tt>FNT_DEF1</tt> contains the ...
+     * The field <tt>FNT_DEF1</tt> contains the op-code for the FNT_DEF1
+     * instruction.
      */
     public static final int FNT_DEF1 = 243;
 
@@ -127,62 +128,65 @@ public class Dvi {
     public static final int FNT_NUM_0 = 171;
 
     /**
-     * The field <tt>FNT1</tt> contains the ...
+     * The field <tt>FNT1</tt> contains the op-code for the FNT1 instruction.
      */
     public static final int FNT1 = 235;
 
     /**
-     * The field <tt>FNT2</tt> contains the ...
+     * The field <tt>FNT2</tt> contains the op-code for the FNT2 instruction.
      */
     public static final int FNT2 = 236;
 
     /**
-     * The field <tt>FNT3</tt> contains the ...
+     * The field <tt>FNT3</tt> contains the op-code for the FNT3 instruction.
      */
     public static final int FNT3 = 237;
 
     /**
-     * The field <tt>FNT4</tt> contains the ...
+     * The field <tt>FNT4</tt> contains the op-code for the FNT4 instruction.
      */
     public static final int FNT4 = 238;
 
     /**
-     * The field <tt>NOP</tt> contains the ...
+     * The field <tt>NOP</tt> contains the op-code for the NOP instruction.
      */
     public static final int NOP = 138;
 
     /**
-     * The field <tt>SET_RULE</tt> contains the ...
+     * The field <tt>PADDING_BYTE</tt> contains the byte added at the end of the
+     * stream to align the length to a multiple of four.
      */
     public static final int PADDING_BYTE = 223;
 
     /**
-     * The field <tt>POP</tt> contains the ...
+     * The field <tt>POP</tt> contains the op-code for the POP instruction.
      */
     public static final int POP = 142;
 
     /**
-     * The field <tt>POST</tt> contains the ...
+     * The field <tt>POST</tt> contains the op-code for the POST instruction.
      */
     public static final int POST = 248;
 
     /**
-     * The field <tt>POST_POST</tt> contains the ...
+     * The field <tt>POST_POST</tt> contains the op-code for the POST_POST
+     * instruction.
      */
     public static final int POST_POST = 249;
 
     /**
-     * The field <tt>PRE</tt> contains the ...
+     * The field <tt>PRE</tt> contains the op-code for the PRE instruction.
      */
     public static final int PRE = 247;
 
     /**
-     * The field <tt>PUSH</tt> contains the ...
+     * The field <tt>PUSH</tt> contains the op-code for the PUSH instruction.
      */
     public static final int PUSH = 141;
 
     /**
-     * The field <tt>PUT_CHAR1</tt> contains the ...
+     * The field <tt>PUT_CHAR1</tt> contains the op-code for the OUT_CHAR1
+     * instruction.
      */
     public static final int PUT_CHAR1 = 133;
 
@@ -876,7 +880,7 @@ public class Dvi {
 
         pointer++;
         int a = dvi.read();
-        return ((a & 0x80) == 0 ? a: (0xffffff00 | a));
+        return ((a & 0x80) == 0 ? a : (0xffffff00 | a));
     }
 
     /**
@@ -895,7 +899,7 @@ public class Dvi {
         if (b < 0) {
             throw new EOFException();
         }
-        return ((a & 0x8000) == 0 ? a: (0xffff0000 | a));
+        return ((a & 0x8000) == 0 ? a : (0xffff0000 | a));
     }
 
     /**
@@ -911,7 +915,7 @@ public class Dvi {
         a = (a << 8) | dvi.read();
         a = (a << 8) | dvi.read();
         pointer += 3;
-        return ((a & 0x800000) == 0 ? a: (0xff000000 | a));
+        return ((a & 0x800000) == 0 ? a : (0xff000000 | a));
     }
 
     /**

@@ -25,32 +25,79 @@ import java.io.InputStream;
  * TODO gene: missing JavaDoc.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface DviProcessor {
+
+    /**
+     * A DVI <tt>set_char</tt> instruction has been encountered.
+     *
+     * @param off the current byte position
+     * @param c the number of the character to set
+     */
+    void setChar(int off, int c);
+
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param off the current byte position
+     * @param a
+     * @param b
+     */
+    void setRule(int off, int a, int b);
+
+    /**
+     * A DVI <tt>put_char</tt> instruction has been encountered.
+     *
+     * @param off the current byte position
+     * @param c the number of the character to set
+     */
+    void putChar(int off, int c);
+
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param off
+     * @param a
+     * @param b
+     */
+    void putRule(int off, int a, int b);
+
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param off
+     */
+    void nop(int off);
 
     /**
      * TODO gene: missing JavaDoc
      *
      * @param off
      * @param c
+     * @param p
      */
-    void setChar(int off, int c);
-
-    void setRule(int off, int a, int b);
-
-    void putChar(int off, int c);
-
-    void putRule(int off, int a, int b);
-
-    void nop(int off);
-
     void bop(int off, int[] c, int p);
 
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param off
+     */
     void eop(int off);
 
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param off
+     */
     void push(int off);
 
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param off
+     */
     void pop(int off);
 
     //right1 143 b[1]. Set h ? h+b, i.e., move right b units. The parameter is a signed number in two's complement notation, -128 ? b<128; if b<0, the reference point moves left.
@@ -61,6 +108,12 @@ public interface DviProcessor {
     //
     //right4 146 b[4]. Same as right1, except that b is a four-byte quantity in the range -231 ? b<231.
 
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param off
+     * @param b
+     */
     void right(int off, int b);
 
     //w0 147. Set h ? h+w; i.e., move right w units. With luck, this parameterless command will usually suffice, because the same kind of motion will occur several times in succession; the following commands explain how w gets particular values.
@@ -79,9 +132,20 @@ public interface DviProcessor {
     //
     //w4 151 b[4]. Same as w1, but b is four bytes long, -231 ? b<231.
 
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param off
+     * @param b
+     */
     void w(int off, int b);
 
     //x0 152. Set h ? h+x; i.e., move right x units. The ` x' commands are like the `w' commands except that they involve x instead of w.
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param ptr
+     */
     void x0(int ptr);
 
     //x1 153 b[1]. Set x ? b and h ? h+b. The value of b is a signed quantity in two's complement notation, -128 ? b<128. This command changes the current x spacing and moves right by b.
@@ -92,6 +156,12 @@ public interface DviProcessor {
     //
     //x4 156 b[4]. Same as x1, but b is four bytes long, -231 ? b<231.
 
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param off
+     * @param b
+     */
     void x(int off, int b);
 
     //down1 157 a[1]. Set v ? v+a, i.e., move down a units. The parameter is a signed number in two's complement notation, -128 ? a<128; if a<0, the reference point moves up.
@@ -102,9 +172,20 @@ public interface DviProcessor {
     //
     //down4 160 a[4]. Same as down1, except that a is a four-byte quantity in the range -231 ? a<231.
 
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param off
+     * @param b
+     */
     void down(int off, int b);
 
     //y0 161. Set v ? v+y; i.e., move down y units. With luck, this parameterless command will usually suffice, because the same kind of motion will occur several times in succession; the following commands explain how y gets particular values.
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param ptr
+     */
     void y0(int ptr);
 
     //y1 162 a[1]. Set y ? a and v ? v+a. The value of a is a signed quantity in two's complement notation, -128 ? a<128. This command changes the current y spacing and moves down by a.
@@ -115,9 +196,20 @@ public interface DviProcessor {
     //
     //y4 165 a[4]. Same as y1, but a is four bytes long, -231 ? a<231.
 
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param off
+     * @param b
+     */
     void y(int off, int b);
 
     //z0 166. Set v ? v+z; i.e., move down z units. The `z' commands are like the `y' commands except that they involve z instead of y.
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param ptr
+     */
     void z0(int ptr);
 
     //z1 167 a[1]. Set z ? a and v ? v+a. The value of a is a signed quantity in two's complement notation, -128 ? a<128. This command changes the current z spacing and moves down by a.
@@ -128,12 +220,24 @@ public interface DviProcessor {
     //
     //z4 170 a[4]. Same as z1, but a is four bytes long, -231 ? a<231.
 
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param off
+     * @param b
+     */
     void z(int off, int b);
 
     //fnt_num_0 171. Set f ? 0. Font 0 must previously have been defined by a fnt_def instruction, as explained below.
     //
     //fnt_num_1 through fnt_num_63 (opcodes 172 to 234). Set f ? 1, ..., f ? 63, respectively.
 
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param off
+     * @param f
+     */
     void fntNum(int off, int f);
 
     //fnt1 235 k[1]. Set f ? k. TEX82 uses this command for font numbers in the range 64 ? k<256.
@@ -144,6 +248,12 @@ public interface DviProcessor {
     //
     //fnt4 238 k[4]. Same as fnt1, except that k is four bytes long; this is for the really big font numbers (and for the negative ones).
 
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param off
+     * @param k
+     */
     void fnt(int off, int k);
 
     //xxx1 239 k[1] x[k]. This command is undefined in general; it functions as a (k+2)-byte nop unless special DVI-reading programs are being used. TEX82 generates xxx1 when a short enough \special appears, setting k to the number of bytes being sent. It is recommended that x be a string having the form of a keyword followed by possible parameters relevant to that keyword.
@@ -154,6 +264,12 @@ public interface DviProcessor {
     //
     //xxx4 242 k[4] x[k]. Like xxx1, but k can be ridiculously large. TEX82 uses xxx4 when sending a string of length 256 or more.
 
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param off
+     * @param x
+     */
     void xxx(int off, byte[] x);
 
     //fnt_def1 243 k[1] c[4] s[4] d[4] a[1] l[1] n[a+l]. Define font k, where 0 ? k<256; font definitions will be explained shortly.
@@ -164,11 +280,45 @@ public interface DviProcessor {
     //
     //fnt_def4 246 k[4] c[4] s[4] d[4] a[1] l[1] n[a+l]. Define font k, where -231 ? k<231.
 
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param off
+     * @param k
+     * @param c
+     * @param s
+     * @param d
+     * @param n
+     */
     void fntDef(int off, int k, int c, int s, int d, String n);
 
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param off
+     * @param i
+     * @param num
+     * @param den
+     * @param mag
+     * @param comment
+     */
     void pre(int off, int i, int num, int den, int mag, String comment);
 
-    void post(int off, int p, int num, int den, int mag, int l, int u, int sp, int tp);
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param off
+     * @param p
+     * @param num
+     * @param den
+     * @param mag
+     * @param l
+     * @param u
+     * @param sp
+     * @param tp
+     */
+    void post(int off, int p, int num, int den, int mag, int l, int u, int sp,
+            int tp);
 
     /**
      * Invoke the callback on a POST_POST instruction.
@@ -182,7 +332,13 @@ public interface DviProcessor {
 
     //Commands 250—255 are undefined at the present time. 
 
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param off the current byte position
+     * @param c
+     * @param stream
+     */
     void undef(int off, int c, InputStream stream);
-
 
 }
