@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\relax</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class RelaxTest extends NoFlagsPrimitiveTester {
 
@@ -124,7 +124,7 @@ public class RelaxTest extends NoFlagsPrimitiveTester {
         assertSuccess(//--- input code ---
                 "\\relax %1234 \n\r\\end",
                 //--- output channel ---
-                "");
+                "\n");
     }
 
 }
