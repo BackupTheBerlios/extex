@@ -19,6 +19,8 @@
 
 package de.dante.extex.interpreter.primitives.font;
 
+import com.ibm.icu.lang.UCharacter;
+
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -72,7 +74,7 @@ import de.dante.util.exception.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public class Hyphenchar extends AbstractAssignment
         implements
@@ -112,8 +114,10 @@ public class Hyphenchar extends AbstractAssignment
             long c = source.scanInteger(context, typesetter);
             if (c < 0) {
                 font.setHyphenChar(null);
+            } else if (c < UCharacter.MIN_VALUE || c > UCharacter.MAX_VALUE) {
+                font.setHyphenChar(null);
             } else {
-                font.setHyphenChar(new UnicodeChar((int) c));
+                font.setHyphenChar(UnicodeChar.get((int) c));
             }
         } catch (EofException e) {
             throw new EofException(printableControlSequence(context));
