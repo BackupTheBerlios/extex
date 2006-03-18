@@ -36,7 +36,6 @@ import de.dante.extex.scanner.type.token.CodeToken;
 import de.dante.extex.scanner.type.token.SpaceToken;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.UnicodeChar;
 import de.dante.util.framework.i18n.Localizer;
 
 /**
@@ -85,7 +84,7 @@ import de.dante.util.framework.i18n.Localizer;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.32 $
+ * @version $Revision: 1.33 $
  */
 public class Csname extends AbstractCode implements ExpandableCode {
 
@@ -135,9 +134,8 @@ public class Csname extends AbstractCode implements ExpandableCode {
 
                 } else if (!(code instanceof Relax)) {
 
-                    throw new HelpingException(loc,
-                            "TTP.MissingEndcsname", context.esc("endcsname"),
-                            context.esc(t));
+                    throw new HelpingException(loc, "TTP.MissingEndcsname",
+                            context.esc("endcsname"), context.esc(t));
                 }
 
             } else if (!(t instanceof SpaceToken)) {
@@ -170,9 +168,9 @@ public class Csname extends AbstractCode implements ExpandableCode {
                 getLocalizer());
 
         try {
-            return context.getTokenFactory().createToken(Catcode.ESCAPE,
-                    new UnicodeChar(context.escapechar()), toks.toText(),
-                    context.getNamespace());
+            return context.getTokenFactory()
+                    .createToken(Catcode.ESCAPE, context.escapechar(),
+                            toks.toText(), context.getNamespace());
         } catch (CatcodeException e) {
             throw new InterpreterException(e);
         }
@@ -195,7 +193,7 @@ public class Csname extends AbstractCode implements ExpandableCode {
 
         try {
             CodeToken t = (CodeToken) context.getTokenFactory().createToken(
-                    Catcode.ESCAPE, new UnicodeChar(context.escapechar()), s,
+                    Catcode.ESCAPE, context.escapechar(), s,
                     context.getNamespace());
             Code code = context.getCode(t);
             if (code == null) {
@@ -224,8 +222,7 @@ public class Csname extends AbstractCode implements ExpandableCode {
 
         try {
             source.push(context.getTokenFactory().createToken(Catcode.ESCAPE,
-                    new UnicodeChar(context.escapechar()), s,
-                    context.getNamespace()));
+                    context.escapechar(), s, context.getNamespace()));
         } catch (CatcodeException e) {
             throw new InterpreterException(e);
         }
