@@ -26,7 +26,7 @@ import de.dante.util.exception.GeneralException;
  * the contents are redefined to produce an exception.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class ImmutableCount extends Count {
 
@@ -41,6 +41,16 @@ public class ImmutableCount extends Count {
      * @param value the value to be stored
      */
     public ImmutableCount(final long value) {
+
+        super(value);
+    }
+
+    /**
+     * Creates a new object.
+     *
+     * @param value the value to be stored
+     */
+    public ImmutableCount(final FixedCount value) {
 
         super(value);
     }
