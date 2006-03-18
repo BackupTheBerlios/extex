@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -37,7 +37,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This class provides a token source which is fed from a string.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public class StringSource extends Moritz {
 
@@ -45,7 +45,7 @@ public class StringSource extends Moritz {
      * This Token stream is fed from a CharSequence.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.25 $
+     * @version $Revision: 1.26 $
      */
     private class TStream implements TokenStream {
 
@@ -97,7 +97,7 @@ public class StringSource extends Moritz {
                 return (Token) stack.remove(size - 1);
             }
             if (next < cs.length()) {
-                UnicodeChar c = new UnicodeChar(cs.charAt(next++));
+                UnicodeChar c = UnicodeChar.get(cs.charAt(next++));
                 try {
                     return factory.createToken(tokenizer.getCatcode(c), c,
                             Namespace.DEFAULT_NAMESPACE);

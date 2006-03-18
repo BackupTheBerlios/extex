@@ -31,7 +31,7 @@ import de.dante.util.UnicodeChar;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class SpaceToken extends AbstractToken implements Token {
 
@@ -43,7 +43,7 @@ public class SpaceToken extends AbstractToken implements Token {
     /**
      * The Constant <tt>SPACE</tt> contains the space character.
      */
-    private static final UnicodeChar SPACE = new UnicodeChar(' ');
+    private static final UnicodeChar SPACE = UnicodeChar.get(' ');
 
     /**
      * Creates a new object.

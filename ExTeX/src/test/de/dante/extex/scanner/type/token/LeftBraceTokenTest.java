@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -30,7 +30,7 @@ import junit.framework.TestCase;
  * This class contains the test cases for left brace tokens.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class LeftBraceTokenTest extends TestCase {
 
@@ -46,7 +46,7 @@ public class LeftBraceTokenTest extends TestCase {
     /**
      * The field <tt>t</tt> contains the reference token.
      */
-    private static Token t = new LeftBraceToken(new UnicodeChar('<'));
+    private static Token t = new LeftBraceToken(UnicodeChar.get('<'));
 
     /**
      */
@@ -87,7 +87,7 @@ public class LeftBraceTokenTest extends TestCase {
      */
     public void testEqualsToken1() {
 
-        Token t1 = new LeftBraceToken(new UnicodeChar(' '));
+        Token t1 = new LeftBraceToken(UnicodeChar.get(' '));
         Token t2 = new SpaceToken(" ");
         assertFalse(t1.equals(t2));
     }

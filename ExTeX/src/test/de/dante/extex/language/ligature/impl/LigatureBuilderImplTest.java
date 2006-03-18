@@ -50,7 +50,7 @@ import de.dante.util.UnicodeChar;
  * This is a test suite for the <tt>LigatureBuilderImpl</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class LigatureBuilderImplTest extends TestCase {
 
@@ -58,7 +58,7 @@ public class LigatureBuilderImplTest extends TestCase {
      * This class provides a mock implementation for a font.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.9 $
+     * @version $Revision: 1.10 $
      */
     private class MockFont extends NullFont {
 
@@ -117,7 +117,7 @@ public class LigatureBuilderImplTest extends TestCase {
      * This class provides a mock implementation for a glyph.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.9 $
+     * @version $Revision: 1.10 $
      */
     private class MockGlyph implements Glyph {
 
@@ -415,17 +415,17 @@ public class LigatureBuilderImplTest extends TestCase {
     /**
      * The constant <tt>FF</tt> contains the ...
      */
-    private static final UnicodeChar FF = new UnicodeChar(CC_FF);
+    private static final UnicodeChar FF = UnicodeChar.get(CC_FF);
 
     /**
      * The constant <tt>FFL</tt> contains the ...
      */
-    private static final UnicodeChar FFL = new UnicodeChar(CC_FFL);
+    private static final UnicodeChar FFL = UnicodeChar.get(CC_FFL);
 
     /**
      * The constant <tt>FL</tt> contains the ...
      */
-    private static final UnicodeChar FL = new UnicodeChar(CC_FL);
+    private static final UnicodeChar FL = UnicodeChar.get(CC_FL);
 
     /**
      * The field <tt>tc1</tt> contains the typesetting context.
@@ -468,10 +468,10 @@ public class LigatureBuilderImplTest extends TestCase {
     public void testFour1() throws HyphenationException {
 
         NodeList nodes = new HorizontalListNode();
-        nodes.add(new CharNode(tc1, new UnicodeChar('a')));
-        nodes.add(new CharNode(tc1, new UnicodeChar('f')));
-        nodes.add(new CharNode(tc1, new UnicodeChar('l')));
-        nodes.add(new CharNode(tc1, new UnicodeChar('f')));
+        nodes.add(new CharNode(tc1, UnicodeChar.get('a')));
+        nodes.add(new CharNode(tc1, UnicodeChar.get('f')));
+        nodes.add(new CharNode(tc1, UnicodeChar.get('l')));
+        nodes.add(new CharNode(tc1, UnicodeChar.get('f')));
         builder.insertLigatures(nodes, 0);
         assertEquals(3, nodes.size());
         assertTrue(nodes.get(0) instanceof CharNode);
@@ -489,7 +489,7 @@ public class LigatureBuilderImplTest extends TestCase {
     public void testOne1() throws HyphenationException {
 
         NodeList nodes = new HorizontalListNode();
-        Node n = new CharNode(tc1, new UnicodeChar('a'));
+        Node n = new CharNode(tc1, UnicodeChar.get('a'));
         nodes.add(n);
         builder.insertLigatures(nodes, 0);
         assertEquals(1, nodes.size());
@@ -517,9 +517,9 @@ public class LigatureBuilderImplTest extends TestCase {
     public void testThree0() throws HyphenationException {
 
         NodeList nodes = new HorizontalListNode();
-        nodes.add(new CharNode(tc1, new UnicodeChar('a')));
-        nodes.add(new CharNode(tc1, new UnicodeChar('f')));
-        nodes.add(new CharNode(tc1, new UnicodeChar('a')));
+        nodes.add(new CharNode(tc1, UnicodeChar.get('a')));
+        nodes.add(new CharNode(tc1, UnicodeChar.get('f')));
+        nodes.add(new CharNode(tc1, UnicodeChar.get('a')));
         builder.insertLigatures(nodes, 0);
         assertEquals(3, nodes.size());
     }
@@ -531,9 +531,9 @@ public class LigatureBuilderImplTest extends TestCase {
     public void testThree1() throws HyphenationException {
 
         NodeList nodes = new HorizontalListNode();
-        nodes.add(new CharNode(tc1, new UnicodeChar('f')));
-        nodes.add(new CharNode(tc1, new UnicodeChar('f')));
-        nodes.add(new CharNode(tc1, new UnicodeChar('l')));
+        nodes.add(new CharNode(tc1, UnicodeChar.get('f')));
+        nodes.add(new CharNode(tc1, UnicodeChar.get('f')));
+        nodes.add(new CharNode(tc1, UnicodeChar.get('l')));
         builder.insertLigatures(nodes, 0);
         assertEquals(1, nodes.size());
         assertTrue(nodes.get(0) instanceof LigatureNode);
@@ -548,9 +548,9 @@ public class LigatureBuilderImplTest extends TestCase {
     public void testThree2() throws HyphenationException {
 
         NodeList nodes = new HorizontalListNode();
-        nodes.add(new CharNode(tc1, new UnicodeChar('a')));
-        nodes.add(new CharNode(tc1, new UnicodeChar('f')));
-        nodes.add(new CharNode(tc1, new UnicodeChar('l')));
+        nodes.add(new CharNode(tc1, UnicodeChar.get('a')));
+        nodes.add(new CharNode(tc1, UnicodeChar.get('f')));
+        nodes.add(new CharNode(tc1, UnicodeChar.get('l')));
         builder.insertLigatures(nodes, 0);
         assertEquals(2, nodes.size());
         assertTrue(nodes.get(0) instanceof CharNode);
@@ -566,8 +566,8 @@ public class LigatureBuilderImplTest extends TestCase {
     public void testTwo1() throws HyphenationException {
 
         NodeList nodes = new HorizontalListNode();
-        nodes.add(new CharNode(tc1, new UnicodeChar('f')));
-        nodes.add(new CharNode(tc1, new UnicodeChar('f')));
+        nodes.add(new CharNode(tc1, UnicodeChar.get('f')));
+        nodes.add(new CharNode(tc1, UnicodeChar.get('f')));
         builder.insertLigatures(nodes, 0);
         assertEquals(1, nodes.size());
         assertTrue(nodes.get(0) instanceof LigatureNode);
@@ -582,8 +582,8 @@ public class LigatureBuilderImplTest extends TestCase {
     public void testTwo2() throws HyphenationException {
 
         NodeList nodes = new HorizontalListNode();
-        nodes.add(new CharNode(tc1, new UnicodeChar('f')));
-        nodes.add(new CharNode(tc1, new UnicodeChar('a')));
+        nodes.add(new CharNode(tc1, UnicodeChar.get('f')));
+        nodes.add(new CharNode(tc1, UnicodeChar.get('a')));
         builder.insertLigatures(nodes, 0);
         assertEquals(2, nodes.size());
     }

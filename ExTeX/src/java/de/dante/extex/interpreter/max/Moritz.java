@@ -106,7 +106,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.88 $
+ * @version $Revision: 1.89 $
  */
 public class Moritz extends Max
         implements
@@ -398,7 +398,7 @@ public class Moritz extends Max
         }
         try {
             push(context.getTokenFactory().createToken(Catcode.ESCAPE,
-                    new UnicodeChar(context.esc("")), "inaccessible ",
+                    context.escapechar(), "inaccessible ",
                     context.getNamespace()));
         } catch (InterpreterException e) {
             throw e;
@@ -1031,7 +1031,7 @@ public class Moritz extends Max
             }
         }
 
-        return new UnicodeChar((int) cc);
+        return UnicodeChar.get((int) cc);
     }
 
     /**

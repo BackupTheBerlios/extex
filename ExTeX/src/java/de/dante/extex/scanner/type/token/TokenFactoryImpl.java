@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -56,7 +56,7 @@ import de.dante.util.UnicodeChar;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
 
@@ -150,7 +150,7 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
 
         try {
             return (Token) code.visit(this, null, //
-                    new UnicodeChar(c), namespace);
+                    UnicodeChar.get(c), namespace);
         } catch (CatcodeException e) {
             throw e;
         } catch (RuntimeException e) {
@@ -235,7 +235,7 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
             if (value.length() != 1) {
                 throw new CatcodeWrongLengthException(value);
             }
-            uc = new UnicodeChar(value.charAt(0));
+            uc = UnicodeChar.get(value.charAt(0));
         } else {
             throw new CatcodeVisitorException();
         }
@@ -381,7 +381,7 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
             if (value.length() != 1) {
                 throw new CatcodeWrongLengthException(value);
             }
-            uc = new UnicodeChar(value.charAt(0));
+            uc = UnicodeChar.get(value.charAt(0));
         } else {
             throw new CatcodeVisitorException();
         }
@@ -417,7 +417,7 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
             if (value.length() != 1) {
                 throw new CatcodeWrongLengthException(value);
             }
-            uc = new UnicodeChar(value.charAt(0));
+            uc = UnicodeChar.get(value.charAt(0));
         } else {
             throw new CatcodeVisitorException();
         }
@@ -451,7 +451,7 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
             if (value.length() != 1) {
                 throw new CatcodeWrongLengthException(value);
             }
-            uc = new UnicodeChar(value.charAt(0));
+            uc = UnicodeChar.get(value.charAt(0));
         } else {
             throw new CatcodeVisitorException();
         }
@@ -485,7 +485,7 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
             if (value.length() != 1) {
                 throw new CatcodeWrongLengthException(value);
             }
-            uc = new UnicodeChar(value.charAt(0));
+            uc = UnicodeChar.get(value.charAt(0));
         } else {
             throw new CatcodeVisitorException();
         }
@@ -519,7 +519,7 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
             if (value.length() != 1) {
                 throw new CatcodeWrongLengthException(value);
             }
-            uc = new UnicodeChar(value.charAt(0));
+            uc = UnicodeChar.get(value.charAt(0));
         } else {
             throw new CatcodeVisitorException();
         }
@@ -553,7 +553,7 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
             if (value.length() != 1) {
                 throw new CatcodeWrongLengthException(value);
             }
-            uc = new UnicodeChar(value.charAt(0));
+            uc = UnicodeChar.get(value.charAt(0));
         } else {
             throw new CatcodeVisitorException();
         }
@@ -607,7 +607,7 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
             if (value.length() != 1) {
                 throw new CatcodeWrongLengthException(value);
             }
-            uc = new UnicodeChar(value.charAt(0));
+            uc = UnicodeChar.get(value.charAt(0));
         } else {
             throw new CatcodeVisitorException();
         }
@@ -641,7 +641,7 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
             if (value.length() != 1) {
                 throw new CatcodeWrongLengthException(value);
             }
-            uc = new UnicodeChar(value.charAt(0));
+            uc = UnicodeChar.get(value.charAt(0));
         } else {
             throw new CatcodeVisitorException();
         }
@@ -675,7 +675,7 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
             if (value.length() != 1) {
                 throw new CatcodeWrongLengthException(value);
             }
-            uc = new UnicodeChar(value.charAt(0));
+            uc = UnicodeChar.get(value.charAt(0));
         } else {
             throw new CatcodeVisitorException();
         }

@@ -33,7 +33,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This class provides a container for a mathematical glyph.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class MathGlyph implements Noad, Serializable {
 
@@ -78,7 +78,7 @@ public class MathGlyph implements Noad, Serializable {
     public MathGlyph(final int code) {
 
         this((code >> FAMILY_OFFSET) & FAMILY_MASK, //
-                new UnicodeChar((int) (code & CHARACTER_MASK)));
+                UnicodeChar.get((int) (code & CHARACTER_MASK)));
     }
 
     /**

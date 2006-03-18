@@ -30,20 +30,32 @@ import com.ibm.icu.text.UTF16;
  * This class represents a 32-bit Unicode character.
  *
  * Java 1.4 defines 16-bit characters only. Thus we are forced to roll our own
- * version. As soon as Java supports 32-bit characters this class is obsolete
- * and should be eliminated.
+ * version. As soon as Java supports 32-bit Unicode characters this class is
+ * obsolete and might be eliminated.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public class UnicodeChar implements Serializable {
 
     /**
-     * The constant <tt>NULL</tt> contains the Unicode character with the
-     * code point 0.
+     * The field <tt>CACHE_SIZE</tt> contains the size of lower cache segment.
      */
-    public static final UnicodeChar NULL = new UnicodeChar(0);
+    private static final int CACHE_SIZE = 256;
+
+    /**
+     * The field <tt>cache</tt> contains the cache for Unicode characters.
+     */
+    private static UnicodeChar[] cache = new UnicodeChar[CACHE_SIZE];
+
+    /**
+     * The constant <tt>NULL</tt> contains the Unicode character with an invalid
+     * code point 0.
+     *
+     * @deprecated use null instead
+     */
+    public static final UnicodeChar NULL = null;
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
@@ -51,22 +63,46 @@ public class UnicodeChar implements Serializable {
     protected static final long serialVersionUID = 1L;
 
     /**
+     * Factory method for Unicode characters.
+     * Creates a new object from a integer code point.
+     *
+     * @param code the code point
+     *
+     * @return the Unicode character
+     */
+    public static UnicodeChar get(final int code) {
+
+        UnicodeChar uc;
+        if (0 <= code && code < CACHE_SIZE) {
+            uc = cache[code];
+            if (uc == null) {
+                uc = new UnicodeChar(code);
+                cache[code] = uc;
+            }
+            return uc;
+        } else {
+            return new UnicodeChar(code);
+        }
+    }
+
+    /**
+     * Factory method for Unicode characters.
+     * Creates a new object from a Unicode name.
+     *
+     * @param unicodeName the long name of the character
+     *
+     * @return the Unicode character
+     */
+    public static UnicodeChar get(final String unicodeName) {
+
+        return get(UCharacter.getCharFromName(unicodeName));
+    }
+
+    /**
      * The field <tt>code</tt> contains the code point of the Unicode character
      * (32 bit).
      */
     private int code;
-
-    /**
-     * Creates a new object from two 16-bit characters.
-     *
-     * @param char1 first 16-bit character
-     * @param char2 second 16-bit character
-     */
-    public UnicodeChar(final char char1, final char char2) {
-
-        super();
-        this.code = UCharacter.getCodePoint(char1, char2);
-    }
 
     /**
      * Create a new instance with a char32 from a <code>CharBuffer</code>
@@ -78,8 +114,10 @@ public class UnicodeChar implements Serializable {
      *
      * @param buffer the <code>CharBuffer</code>
      * @param index the position in the char buffer
+     *
+     * @deprecated use Unicode.get(int) instead
      */
-    public UnicodeChar(final CharBuffer buffer, final int index) {
+    private UnicodeChar(final CharBuffer buffer, final int index) {
 
         super();
 
@@ -130,6 +168,8 @@ public class UnicodeChar implements Serializable {
      * Creates a new object from an integer code point.
      *
      * @param codePoint the 32-bit code point
+     *
+     * @deprecated use Unicode.get(int) instead
      */
     public UnicodeChar(final int codePoint) {
 
@@ -145,6 +185,8 @@ public class UnicodeChar implements Serializable {
      * Creates a new object from a Unicode name.
      *
      * @param unicodeName Unicode name as String
+     *
+     * @deprecated use Unicode.get(String) instead
      */
     public UnicodeChar(final String unicodeName) {
 
@@ -170,16 +212,6 @@ public class UnicodeChar implements Serializable {
 
         return ((unicodeChar instanceof UnicodeChar) && //
         this.code == ((UnicodeChar) unicodeChar).getCodePoint());
-    }
-
-    /**
-     * Return the count of char16 of the code.
-     *
-     * @return the count of char16 for this code
-     */
-    public int getChar16Count() {
-
-        return UTF16.getCharCount(this.code);
     }
 
     /**
@@ -228,7 +260,7 @@ public class UnicodeChar implements Serializable {
      * Test, if the code is a digit.
      *
      * @return <code>true</code>, if the code is a digit,
-     * otherwise <code>false</code>
+     *  otherwise <code>false</code>
      */
     public boolean isDigit() {
 
@@ -239,7 +271,7 @@ public class UnicodeChar implements Serializable {
      * Test, if the character is a letter.
      *
      * @return <code>true</code>, if the code is a letter,
-     * otherwise <code>false</code>
+     *  otherwise <code>false</code>
      */
     public boolean isLetter() {
 
@@ -250,7 +282,7 @@ public class UnicodeChar implements Serializable {
      * Test, if the code is printable.
      *
      * @return <code>true</code>, if the code is printable,
-     * otherwise <code>false</code>
+     *  otherwise <code>false</code>
      */
     public boolean isPrintable() {
 
@@ -268,20 +300,7 @@ public class UnicodeChar implements Serializable {
     public UnicodeChar lower() {
 
         int lc = UCharacter.toLowerCase(this.code);
-        return (lc == code ? this : new UnicodeChar(lc));
-    }
-
-    /**
-     * Returns the lowercase character of this object.
-     * <p>
-     * (this method does not use the <logo>TeX</logo> lccode!)
-     * </p>
-     *
-     * @return character in lowercase
-     */
-    public int toLowerCase() {
-
-        return UCharacter.toLowerCase(this.code);
+        return (lc == code ? this : UnicodeChar.get(lc));
     }
 
     /**
@@ -302,9 +321,10 @@ public class UnicodeChar implements Serializable {
      *
      * @return character in uppercase
      */
-    public int toUpperCase() {
+    public UnicodeChar upper() {
 
-        return UCharacter.toUpperCase(this.code);
+        int lc = UCharacter.toUpperCase(this.code);
+        return (lc == code ? this : UnicodeChar.get(lc));
     }
 
 }

@@ -58,7 +58,7 @@ import de.dante.util.UnicodeChar;
  * This is the test class for NV.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class NVTest extends TestCase {
 
@@ -66,7 +66,7 @@ public class NVTest extends TestCase {
      * This is a mock implementation of a font.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.8 $
+     * @version $Revision: 1.9 $
      */
     private class MockFont implements Font {
 
@@ -88,10 +88,10 @@ public class NVTest extends TestCase {
         /**
          * The field <tt>hyphen</tt> contains the hyphen character.
          */
-        private UnicodeChar hyphen = new UnicodeChar('-');
+        private UnicodeChar hyphen = UnicodeChar.get('-');
 
         /**
-         * The field <tt>map</tt> contains the ...
+         * The field <tt>map</tt> contains the glyph cache.
          */
         private Map map = new HashMap();
 
@@ -102,11 +102,11 @@ public class NVTest extends TestCase {
 
             super();
             map.put(hyphen, new MockGlyph('-'));
-            map.put(new UnicodeChar('f'), new MockGlyph('f'));
-            map.put(new UnicodeChar('l'), new MockGlyph('l'));
-            map.put(new UnicodeChar(FL), new MockGlyph(FL));
-            map.put(new UnicodeChar(FFL), new MockGlyph(FFL));
-            map.put(new UnicodeChar(FF), new MockGlyph(FF));
+            map.put(UnicodeChar.get('f'), new MockGlyph('f'));
+            map.put(UnicodeChar.get('l'), new MockGlyph('l'));
+            map.put(UnicodeChar.get(FL), new MockGlyph(FL));
+            map.put(UnicodeChar.get(FFL), new MockGlyph(FFL));
+            map.put(UnicodeChar.get(FF), new MockGlyph(FF));
         }
 
         /**
@@ -264,7 +264,7 @@ public class NVTest extends TestCase {
      * This is a mock implementation of a glyph.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.8 $
+     * @version $Revision: 1.9 $
      */
     private class MockGlyph implements Glyph {
 
@@ -353,13 +353,13 @@ public class NVTest extends TestCase {
 
             if (c == 'f') {
                 if (uc.getCodePoint() == 'f') {
-                    return new UnicodeChar(MockFont.FF);
+                    return UnicodeChar.get(MockFont.FF);
                 } else if (uc.getCodePoint() == 'l') {
-                    return new UnicodeChar(MockFont.FL);
+                    return UnicodeChar.get(MockFont.FL);
                 }
             } else if (c == MockFont.FF) {
                 if (uc.getCodePoint() == 'l') {
-                    return new UnicodeChar(MockFont.FFL);
+                    return UnicodeChar.get(MockFont.FFL);
                 }
             }
             return null;
@@ -606,9 +606,9 @@ public class NVTest extends TestCase {
 //    public void test1() throws Exception {
 //
 //        NodeList list = new HorizontalListNode();
-//        LigatureNode ffl = new LigatureNode(tc, new UnicodeChar(MockFont.FFL), //
+//        LigatureNode ffl = new LigatureNode(tc, UnicodeChar.get(MockFont.FFL), //
 //                getCharNode(tc, f.getChar()), //
-//                new LigatureNode(tc, new UnicodeChar(MockFont.FF), //
+//                new LigatureNode(tc, UnicodeChar.get(MockFont.FF), //
 //                        getCharNode(tc, f.getChar()), //
 //                        getCharNode(tc, l.getChar())));
 //
@@ -633,8 +633,8 @@ public class NVTest extends TestCase {
 //    public void test2() throws Exception {
 //
 //        NodeList list = new HorizontalListNode();
-//        LigatureNode ffl = new LigatureNode(tc, new UnicodeChar(MockFont.FFL), //
-//                new LigatureNode(tc, new UnicodeChar(MockFont.FF), //
+//        LigatureNode ffl = new LigatureNode(tc, UnicodeChar.get(MockFont.FFL), //
+//                new LigatureNode(tc, UnicodeChar.get(MockFont.FF), //
 //                        getCharNode(tc, f.getChar()), //
 //                        getCharNode(tc, f.getChar())), //
 //                getCharNode(tc, l.getChar()));
@@ -660,9 +660,9 @@ public class NVTest extends TestCase {
 //    public void testDouble() throws Exception {
 //
 //        NodeList list = new HorizontalListNode();
-//        LigatureNode ffl = new LigatureNode(tc, new UnicodeChar(MockFont.FFL), //
+//        LigatureNode ffl = new LigatureNode(tc, UnicodeChar.get(MockFont.FFL), //
 //                getCharNode(tc, f.getChar()), //
-//                new LigatureNode(tc, new UnicodeChar(MockFont.FF), //
+//                new LigatureNode(tc, UnicodeChar.get(MockFont.FF), //
 //                        getCharNode(tc, f.getChar()), //
 //                        getCharNode(tc, l.getChar())));
 //
@@ -684,9 +684,9 @@ public class NVTest extends TestCase {
 //    public void testNone() throws Exception {
 //
 //        NodeList list = new HorizontalListNode();
-//        LigatureNode ffl = new LigatureNode(tc, new UnicodeChar(MockFont.FFL), //
+//        LigatureNode ffl = new LigatureNode(tc, UnicodeChar.get(MockFont.FFL), //
 //                getCharNode(tc, f.getChar()), //
-//                new LigatureNode(tc, new UnicodeChar(MockFont.FF), //
+//                new LigatureNode(tc, UnicodeChar.get(MockFont.FF), //
 //                        getCharNode(tc, f.getChar()), //
 //                        getCharNode(tc, l.getChar())));
 //
@@ -708,9 +708,9 @@ public class NVTest extends TestCase {
 //    public void testPre() throws Exception {
 //
 //        NodeList list = new HorizontalListNode();
-//        LigatureNode ffl = new LigatureNode(tc, new UnicodeChar(MockFont.FFL), //
+//        LigatureNode ffl = new LigatureNode(tc, UnicodeChar.get(MockFont.FFL), //
 //                getCharNode(tc, f.getChar()), //
-//                new LigatureNode(tc, new UnicodeChar(MockFont.FF), //
+//                new LigatureNode(tc, UnicodeChar.get(MockFont.FF), //
 //                        getCharNode(tc, f.getChar()), //
 //                        getCharNode(tc, l.getChar())));
 //

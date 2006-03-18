@@ -51,7 +51,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationSyntaxExcept
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.49 $
+ * @version $Revision: 1.50 $
  */
 public class TokenStreamImpl extends TokenStreamBaseImpl implements TokenStream {
 
@@ -59,7 +59,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements TokenStream 
      * This is a type-safe class to represent state information.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.49 $
+     * @version $Revision: 1.50 $
      */
     private static final class State {
 
@@ -105,7 +105,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements TokenStream 
     /**
      * The constant <tt>CR</tt> contains the one and only CR character.
      */
-    private static final UnicodeChar CR = new UnicodeChar(13);
+    private static final UnicodeChar CR = UnicodeChar.get(13);
 
     /**
      * The constant <tt>MID_LINE</tt> contains the state for the processing in
@@ -143,7 +143,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements TokenStream 
     protected int pointer = 1;
 
     /**
-     * The field <tt>saveChar</tt> contains the saved lookahead character.
+     * The field <tt>saveChar</tt> contains the saved look-ahead character.
      */
     protected UnicodeChar saveChar = null;
 
@@ -613,26 +613,26 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements TokenStream 
             if (uc.equals(c)) {
                 c = getRawChar();
                 if (c == null) {
-                    return UnicodeChar.NULL;
+                    return null; // ^^ at end is silently ignored
                 }
                 int hexHigh = hex2int(c.getCodePoint());
                 if (hexHigh >= 0) {
                     savePointer = pointer;
                     uc = getRawChar();
                     if (uc == null) {
-                        uc = new UnicodeChar(hexHigh);
+                        uc = UnicodeChar.get(hexHigh);
                     } else {
                         int hexLow = hex2int(uc.getCodePoint());
                         if (hexLow < 0) {
                             pointer = savePointer;
-                            uc = new UnicodeChar(hexHigh);
+                            uc = UnicodeChar.get(hexHigh);
                         } else {
-                            uc = new UnicodeChar((hexHigh << 4) + hexLow);
+                            uc = UnicodeChar.get((hexHigh << 4) + hexLow);
                         }
                     }
                 } else if (c != null) {
                     hexHigh = c.getCodePoint();
-                    uc = new UnicodeChar(((hexHigh < CARET_LIMIT) ? hexHigh
+                    uc = UnicodeChar.get(((hexHigh < CARET_LIMIT) ? hexHigh
                             + CARET_LIMIT : hexHigh - CARET_LIMIT));
                 }
             } else {
@@ -687,7 +687,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements TokenStream 
     protected UnicodeChar getRawChar() {
 
         if (line != null && pointer < line.length()) {
-            UnicodeChar uc = new UnicodeChar(line.charAt(pointer++));
+            UnicodeChar uc = UnicodeChar.get(line.charAt(pointer++));
             return uc;
         }
 
@@ -773,7 +773,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements TokenStream 
     }
 
     /**
-     * Save the lookahead character.
+     * Save the look-ahead character.
      *
      * @param uc the character to save
      */

@@ -64,7 +64,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * This is the abstract base clas to test a paragraph builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class AbstractParagraphBuiderTester extends TestCase {
 
@@ -72,7 +72,7 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
      * Inner class for the typesetter options.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private class MockOptions implements TypesetterOptions {
 
@@ -205,11 +205,11 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
     private ParagraphBuilder pb;
 
     /**
-     * The field <tt>tc</tt> contains the ock typesetting context.
+     * The field <tt>tc</tt> contains the mock typesetting context.
      */
     private TypesettingContextImpl tc = new TypesettingContextImpl(new Font() {
 
-        private UnicodeChar hyphenChar = new UnicodeChar('-');
+        private UnicodeChar hyphenChar = UnicodeChar.get('-');
 
         private UnicodeChar skewChar = null;
 
@@ -605,7 +605,7 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
                     continue;
                 }
             } else {
-                nodes.add(new CharNode(tc, new UnicodeChar('a')));
+                nodes.add(new CharNode(tc, UnicodeChar.get('a')));
             }
         }
         return nodes;
@@ -700,13 +700,13 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
 
         HorizontalListNode nodes = new HorizontalListNode();
         nodes.add(new GlueNode(VPT, true));
-        nodes.add(new CharNode(tc, new UnicodeChar('a')));
-        nodes.add(new CharNode(tc, new UnicodeChar('b')));
+        nodes.add(new CharNode(tc, UnicodeChar.get('a')));
+        nodes.add(new CharNode(tc, UnicodeChar.get('b')));
         nodes.add(new SpaceNode(new Glue(Dimen.ONE_PT)));
-        nodes.add(new CharNode(tc, new UnicodeChar('c')));
-        nodes.add(new CharNode(tc, new UnicodeChar('d')));
+        nodes.add(new CharNode(tc, UnicodeChar.get('c')));
+        nodes.add(new CharNode(tc, UnicodeChar.get('d')));
         nodes.add(new SpaceNode(new Glue(Dimen.ONE_PT)));
-        nodes.add(new CharNode(tc, new UnicodeChar('e')));
+        nodes.add(new CharNode(tc, UnicodeChar.get('e')));
 
         NodeList list = pb.build(nodes);
 
@@ -726,14 +726,14 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
 
         HorizontalListNode nodes = new HorizontalListNode();
         nodes.add(new GlueNode(VPT, true));
-        nodes.add(new CharNode(tc, new UnicodeChar('a')));
-        nodes.add(new CharNode(tc, new UnicodeChar('b')));
+        nodes.add(new CharNode(tc, UnicodeChar.get('a')));
+        nodes.add(new CharNode(tc, UnicodeChar.get('b')));
         nodes.add(new SpaceNode(new Glue(Dimen.ONE_PT)));
-        nodes.add(new CharNode(tc, new UnicodeChar('c')));
+        nodes.add(new CharNode(tc, UnicodeChar.get('c')));
         nodes.add(new DiscretionaryNode(null, null, null));
-        nodes.add(new CharNode(tc, new UnicodeChar('d')));
+        nodes.add(new CharNode(tc, UnicodeChar.get('d')));
         nodes.add(new SpaceNode(new Glue(Dimen.ONE_PT)));
-        nodes.add(new CharNode(tc, new UnicodeChar('e')));
+        nodes.add(new CharNode(tc, UnicodeChar.get('e')));
 
         NodeList list = pb.build(nodes);
 
@@ -753,15 +753,15 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
 
         HorizontalListNode nodes = new HorizontalListNode();
         nodes.add(new GlueNode(VPT, true));
-        nodes.add(new CharNode(tc, new UnicodeChar('a')));
-        nodes.add(new CharNode(tc, new UnicodeChar('b')));
+        nodes.add(new CharNode(tc, UnicodeChar.get('a')));
+        nodes.add(new CharNode(tc, UnicodeChar.get('b')));
         nodes.add(new SpaceNode(new Glue(Dimen.ONE_PT)));
-        nodes.add(new CharNode(tc, new UnicodeChar('c')));
+        nodes.add(new CharNode(tc, UnicodeChar.get('c')));
         nodes.add(new DiscretionaryNode(new HorizontalListNode(),
                 new HorizontalListNode(), new HorizontalListNode()));
-        nodes.add(new CharNode(tc, new UnicodeChar('d')));
+        nodes.add(new CharNode(tc, UnicodeChar.get('d')));
         nodes.add(new SpaceNode(new Glue(Dimen.ONE_PT)));
-        nodes.add(new CharNode(tc, new UnicodeChar('e')));
+        nodes.add(new CharNode(tc, UnicodeChar.get('e')));
 
         NodeList list = pb.build(nodes);
 
@@ -780,15 +780,15 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
 
         HorizontalListNode nodes = new HorizontalListNode();
         nodes.add(new GlueNode(VPT, true));
-        nodes.add(new CharNode(tc, new UnicodeChar('a')));
-        nodes.add(new CharNode(tc, new UnicodeChar('b')));
+        nodes.add(new CharNode(tc, UnicodeChar.get('a')));
+        nodes.add(new CharNode(tc, UnicodeChar.get('b')));
         nodes.add(new SpaceNode(new Glue(Dimen.ONE_PT)));
-        nodes.add(new CharNode(tc, new UnicodeChar('c')));
-        nodes.add(new CharNode(tc, new UnicodeChar('d')));
+        nodes.add(new CharNode(tc, UnicodeChar.get('c')));
+        nodes.add(new CharNode(tc, UnicodeChar.get('d')));
         nodes.add(new DiscretionaryNode(null, null, null));
-        nodes.add(new CharNode(tc, new UnicodeChar('e')));
+        nodes.add(new CharNode(tc, UnicodeChar.get('e')));
         nodes.add(new SpaceNode(new Glue(Dimen.ONE_PT)));
-        nodes.add(new CharNode(tc, new UnicodeChar('f')));
+        nodes.add(new CharNode(tc, UnicodeChar.get('f')));
 
         NodeList list = pb.build(nodes);
 
@@ -807,16 +807,16 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
 
         HorizontalListNode nodes = new HorizontalListNode();
         nodes.add(new GlueNode(VPT, true));
-        nodes.add(new CharNode(tc, new UnicodeChar('a')));
-        nodes.add(new CharNode(tc, new UnicodeChar('b')));
+        nodes.add(new CharNode(tc, UnicodeChar.get('a')));
+        nodes.add(new CharNode(tc, UnicodeChar.get('b')));
         nodes.add(new SpaceNode(new Glue(Dimen.ONE_PT)));
-        nodes.add(new CharNode(tc, new UnicodeChar('c')));
-        nodes.add(new CharNode(tc, new UnicodeChar('d')));
+        nodes.add(new CharNode(tc, UnicodeChar.get('c')));
+        nodes.add(new CharNode(tc, UnicodeChar.get('d')));
         nodes.add(new DiscretionaryNode(new HorizontalListNode(),
                 new HorizontalListNode(), new HorizontalListNode()));
-        nodes.add(new CharNode(tc, new UnicodeChar('e')));
+        nodes.add(new CharNode(tc, UnicodeChar.get('e')));
         nodes.add(new SpaceNode(new Glue(Dimen.ONE_PT)));
-        nodes.add(new CharNode(tc, new UnicodeChar('f')));
+        nodes.add(new CharNode(tc, UnicodeChar.get('f')));
 
         NodeList list = pb.build(nodes);
 
@@ -835,20 +835,20 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
 
         HorizontalListNode nodes = new HorizontalListNode();
         nodes.add(new GlueNode(VPT, true));
-        nodes.add(new CharNode(tc, new UnicodeChar('a')));
-        nodes.add(new CharNode(tc, new UnicodeChar('b')));
+        nodes.add(new CharNode(tc, UnicodeChar.get('a')));
+        nodes.add(new CharNode(tc, UnicodeChar.get('b')));
         nodes.add(new SpaceNode(new Glue(Dimen.ONE_PT)));
-        nodes.add(new CharNode(tc, new UnicodeChar('c')));
-        nodes.add(new CharNode(tc, new UnicodeChar('d')));
+        nodes.add(new CharNode(tc, UnicodeChar.get('c')));
+        nodes.add(new CharNode(tc, UnicodeChar.get('d')));
         nodes.add(new DiscretionaryNode(new HorizontalListNode(new RuleNode(
                 new Dimen(0x20), Dimen.ZERO_PT, Dimen.ZERO_PT, tc)),
                 new HorizontalListNode(new RuleNode(new Dimen(0x30),
                         Dimen.ZERO_PT, Dimen.ZERO_PT, tc)),
                 new HorizontalListNode(new RuleNode(new Dimen(0x40),
                         Dimen.ZERO_PT, Dimen.ZERO_PT, tc))));
-        nodes.add(new CharNode(tc, new UnicodeChar('e')));
+        nodes.add(new CharNode(tc, UnicodeChar.get('e')));
         nodes.add(new SpaceNode(new Glue(Dimen.ONE_PT)));
-        nodes.add(new CharNode(tc, new UnicodeChar('f')));
+        nodes.add(new CharNode(tc, UnicodeChar.get('f')));
 
         NodeList list = pb.build(nodes);
 

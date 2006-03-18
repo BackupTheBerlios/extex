@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -16,6 +16,7 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.scanner.type.token;
 
 import de.dante.extex.scanner.type.Catcode;
@@ -29,7 +30,7 @@ import junit.framework.TestCase;
  * Test cases for tab mark tokens.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class TabMarkTokenTest extends TestCase {
 
@@ -38,29 +39,33 @@ public class TabMarkTokenTest extends TestCase {
      * @param args the arguments
      */
     public static void main(final String[] args) {
+
         junit.textui.TestRunner.run(LeftBraceTokenTest.class);
     }
 
     /**
      * The field <tt>t</tt> contains the reference token.
      */
-    private static Token t = new TabMarkToken(new UnicodeChar('*'));
+    private static Token t = new TabMarkToken(UnicodeChar.get('*'));
 
     /**
      */
     public void testGetCatcode() {
+
         assertEquals(Catcode.TABMARK, t.getCatcode());
     }
 
     /**
      */
     public void testToString() {
+
         assertEquals("alignment tab character *", t.toString());
     }
 
     /**
      */
     public void testToText() {
+
         assertEquals("*", t.toText());
     }
 
@@ -74,13 +79,15 @@ public class TabMarkTokenTest extends TestCase {
     /**
      */
     public void testEqualsToken0() {
+
         assertTrue(t.equals(t));
-     }
+    }
 
     /**
      */
     public void testEqualsToken1() {
-        Token t1 = new TabMarkToken(new UnicodeChar(' '));
+
+        Token t1 = new TabMarkToken(UnicodeChar.get(' '));
         Token t2 = new SpaceToken(" ");
         assertFalse(t1.equals(t2));
     }
@@ -88,132 +95,154 @@ public class TabMarkTokenTest extends TestCase {
     /**
      */
     public void testEqualsCatcodeString0() {
+
         assertTrue(t.equals(Catcode.TABMARK, "*"));
     }
 
     /**
      */
     public void testEqualsCatcodeString1() {
+
         assertFalse(t.equals(Catcode.LETTER, "*"));
     }
 
     /**
      */
     public void testEqualsCatcodechar0() {
+
         assertTrue(t.equals(Catcode.TABMARK, '*'));
     }
 
     /**
      */
     public void testEqualsCatcodechar1() {
+
         assertFalse(t.equals(Catcode.LETTER, '*'));
     }
 
     /**
      */
     public void testEqualschar0() {
+
         assertTrue(t.equals('*'));
     }
 
     /**
      */
     public void testEqualschar1() {
+
         assertFalse(t.equals('.'));
     }
 
     /**
      */
     public void testIsa0() {
+
         assertFalse(t.isa(Catcode.SPACE));
     }
 
     /**
      */
     public void testIsa1() {
+
         assertFalse(t.isa(Catcode.ACTIVE));
     }
 
     /**
      */
     public void testIsa2() {
+
         assertFalse(t.isa(Catcode.COMMENT));
     }
 
     /**
      */
     public void testIsa3() {
+
         assertFalse(t.isa(Catcode.CR));
     }
 
     /**
      */
     public void testIsa4() {
+
         assertFalse(t.isa(Catcode.ESCAPE));
     }
 
     /**
      */
     public void testIsa5() {
+
         assertFalse(t.isa(Catcode.IGNORE));
     }
 
     /**
      */
     public void testIsa6() {
+
         assertFalse(t.isa(Catcode.INVALID));
     }
 
     /**
      */
     public void testIsa7() {
+
         assertFalse(t.isa(Catcode.LEFTBRACE));
     }
 
     /**
      */
     public void testIsa8() {
+
         assertFalse(t.isa(Catcode.LETTER));
     }
 
     /**
      */
     public void testIsa9() {
+
         assertFalse(t.isa(Catcode.MACROPARAM));
     }
 
     /**
      */
     public void testIsa10() {
+
         assertFalse(t.isa(Catcode.MATHSHIFT));
     }
 
     /**
      */
     public void testIsa11() {
+
         assertFalse(t.isa(Catcode.OTHER));
     }
 
     /**
      */
     public void testIsa12() {
+
         assertFalse(t.isa(Catcode.RIGHTBRACE));
     }
 
     /**
      */
     public void testIsa13() {
+
         assertFalse(t.isa(Catcode.SUBMARK));
     }
 
     /**
      */
     public void testIsa14() {
+
         assertFalse(t.isa(Catcode.SUPMARK));
     }
 
     /**
      */
     public void testIsa15() {
+
         assertTrue(t.isa(Catcode.TABMARK));
     }
 

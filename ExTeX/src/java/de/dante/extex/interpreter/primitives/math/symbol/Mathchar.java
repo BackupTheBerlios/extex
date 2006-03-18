@@ -66,7 +66,7 @@ import de.dante.util.UnicodeChar;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Mathchar extends AbstractMathCode {
 
@@ -147,7 +147,7 @@ public class Mathchar extends AbstractMathCode {
             }
             int fam = (int) source.scanNumber(context);
             int code = (int) source.scanNumber(context);
-            MathGlyph mg = new MathGlyph(fam, new UnicodeChar(code));
+            MathGlyph mg = new MathGlyph(fam, UnicodeChar.get(code));
             nc.add(mc, mg, context.getTypesettingContext());
         } else {
             source.push(t);

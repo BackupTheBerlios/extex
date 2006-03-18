@@ -26,7 +26,7 @@ import de.dante.util.UnicodeChar;
  * family and a character code.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class MathCode {
 
@@ -88,7 +88,7 @@ public class MathCode {
         super();
         mathClass = (int) (code >> CLASS_SHIFT);
         mathFamily = (int) (code >> 8) & FAMILY_MASK;
-        mathChar = new UnicodeChar((int) (code & CHAR_MASK));
+        mathChar = UnicodeChar.get((int) (code & CHAR_MASK));
     }
 
     /**

@@ -59,7 +59,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public final class LoadUnit extends AbstractFactory {
 
@@ -161,7 +161,7 @@ public final class LoadUnit extends AbstractFactory {
                 ConfigurationException {
 
         enableLogging(outputLogger);
-        UnicodeChar esc = new UnicodeChar('\\');
+        UnicodeChar esc = UnicodeChar.get('\\');
         Iterator iterator = configuration.iterator(DEFINE_TAG);
 
         while (iterator.hasNext()) {

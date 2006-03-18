@@ -23,7 +23,6 @@ import junit.framework.TestCase;
 import de.dante.extex.interpreter.context.ModifiableTypesettingContext;
 import de.dante.extex.interpreter.context.TypesettingContextImpl;
 import de.dante.extex.interpreter.type.font.Font;
-import de.dante.extex.language.Language;
 import de.dante.extex.language.hyphenation.base.BaseHyphenationTable;
 import de.dante.extex.language.hyphenation.exception.HyphenationException;
 import de.dante.extex.language.ligature.impl.LigatureBuilderImpl;
@@ -42,7 +41,7 @@ import de.dante.util.UnicodeChar;
  * TODO gene: missing JavaDoc.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ExTeXWordsTest extends TestCase {
 
@@ -85,48 +84,48 @@ public class ExTeXWordsTest extends TestCase {
     /**
      * The field <tt>hyphen</tt> contains the hyphen node.
      */
-    private static CharNode hyphen = (CharNode) nf.getNode(tc, new UnicodeChar(
+    private static CharNode hyphen = (CharNode) nf.getNode(tc, UnicodeChar.get(
             '-'));
 
     /**
      * The field <tt>UC_F</tt> contains the character f.
      */
-    private static final UnicodeChar UC_F = new UnicodeChar('f');
+    private static final UnicodeChar UC_F = UnicodeChar.get('f');
 
     /**
      * The field <tt>UC_I</tt> contains the character i.
      */
-    private static final UnicodeChar UC_I = new UnicodeChar('i');
+    private static final UnicodeChar UC_I = UnicodeChar.get('i');
 
     /**
      * The field <tt>UC_L</tt> contains the character l.
      */
-    private static final UnicodeChar UC_L = new UnicodeChar('l');
+    private static final UnicodeChar UC_L = UnicodeChar.get('l');
 
     /**
      * The field <tt>UC_FF</tt> contains the ff ligature.
      */
-    private static final UnicodeChar UC_FF = new UnicodeChar('\013');
+    private static final UnicodeChar UC_FF = UnicodeChar.get('\013');
 
     /**
      * The field <tt>UC_FI</tt> contains the fi ligature.
      */
-    private static final UnicodeChar UC_FI = new UnicodeChar('\014');
+    private static final UnicodeChar UC_FI = UnicodeChar.get('\014');
 
     /**
      * The field <tt>UC_FL</tt> contains the fl ligature.
      */
-    private static final UnicodeChar UC_FL = new UnicodeChar('\015');
+    private static final UnicodeChar UC_FL = UnicodeChar.get('\015');
 
     /**
      * The field <tt>UC_FFI</tt> contains the ffi ligature.
      */
-    private static final UnicodeChar UC_FFI = new UnicodeChar('\016');
+    private static final UnicodeChar UC_FFI = UnicodeChar.get('\016');
 
     /**
      * The field <tt>UC_FFL</tt> contains the ffl ligature.
      */
-    private static final UnicodeChar UC_FFL = new UnicodeChar('\017');
+    private static final UnicodeChar UC_FFL = UnicodeChar.get('\017');
 
     /**
      * The main method.
@@ -182,7 +181,7 @@ public class ExTeXWordsTest extends TestCase {
                             (CharNode) nf.getNode(tc, UC_L)));
                     break;
                 default:
-                    nodes.add(nf.getNode(tc, new UnicodeChar(c)));
+                    nodes.add(nf.getNode(tc, UnicodeChar.get(c)));
             }
         }
         return nodes;

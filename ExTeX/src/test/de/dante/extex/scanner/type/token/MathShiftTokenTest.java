@@ -29,7 +29,7 @@ import junit.framework.TestCase;
  * Test cases for math shift tokens.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class MathShiftTokenTest extends TestCase {
 
@@ -43,7 +43,7 @@ public class MathShiftTokenTest extends TestCase {
 
     /**
      */
-    private static Token t = new MathShiftToken(new UnicodeChar('*'));
+    private static Token t = new MathShiftToken(UnicodeChar.get('*'));
 
     /**
      */
@@ -79,7 +79,7 @@ public class MathShiftTokenTest extends TestCase {
     /**
      */
     public void testEqualsToken1() {
-        Token t1 = new MathShiftToken(new UnicodeChar(' '));
+        Token t1 = new MathShiftToken(UnicodeChar.get(' '));
         Token t2 = new SpaceToken(" ");
         assertFalse(t1.equals(t2));
     }

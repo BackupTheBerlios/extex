@@ -39,7 +39,7 @@ import de.dante.util.UnicodeChar;
  * This class encapsulates cmr10.tfm for testing purposes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class CMR10 implements Font {
 
@@ -47,7 +47,7 @@ public class CMR10 implements Font {
      * Private implementation of the glyph interface.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private class MyGlyph extends GlyphImpl {
 
@@ -188,9 +188,9 @@ public class CMR10 implements Font {
     private Map glyphs = new HashMap();
 
     /**
-     * The field <tt>hypenChar</tt> contains the hyphe character.
+     * The field <tt>hypenChar</tt> contains the hyphen character.
      */
-    private UnicodeChar hypenChar = new UnicodeChar('-');
+    private UnicodeChar hypenChar = UnicodeChar.get('-');
 
     /**
      * The field <tt>skewChar</tt> contains the skew character.
@@ -1205,7 +1205,7 @@ public class CMR10 implements Font {
      */
     private MyGlyph makeGlyph(final char c, final Dimen w, final Dimen h) {
 
-        UnicodeChar uc = new UnicodeChar(c);
+        UnicodeChar uc = UnicodeChar.get(c);
         MyGlyph g = new MyGlyph(uc, w, h);
         glyphs.put(uc, g);
         return g;
@@ -1225,14 +1225,16 @@ public class CMR10 implements Font {
     private MyGlyph makeGlyph(final char c, final Dimen w, final Dimen h,
             final Dimen d, final Dimen ic) {
 
-        UnicodeChar uc = new UnicodeChar(c);
+        UnicodeChar uc = UnicodeChar.get(c);
         MyGlyph g = new MyGlyph(uc, w, h, d, ic);
         glyphs.put(uc, g);
         return g;
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.font.Font#setFontDimen(java.lang.String, de.dante.extex.interpreter.type.dimen.Dimen)
+     * @see de.dante.extex.interpreter.type.font.Font#setFontDimen(
+     *      java.lang.String,
+     *      de.dante.extex.interpreter.type.dimen.Dimen)
      */
     public void setFontDimen(final String key, final Dimen value) {
 
@@ -1240,7 +1242,8 @@ public class CMR10 implements Font {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.font.Font#setHyphenChar(de.dante.util.UnicodeChar)
+     * @see de.dante.extex.interpreter.type.font.Font#setHyphenChar(
+     *      de.dante.util.UnicodeChar)
      */
     public void setHyphenChar(final UnicodeChar hyphen) {
 
@@ -1248,7 +1251,8 @@ public class CMR10 implements Font {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.font.Font#setSkewChar(de.dante.util.UnicodeChar)
+     * @see de.dante.extex.interpreter.type.font.Font#setSkewChar(
+     *      de.dante.util.UnicodeChar)
      */
     public void setSkewChar(final UnicodeChar skew) {
 
