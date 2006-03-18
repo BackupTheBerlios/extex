@@ -25,14 +25,33 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.max.StringSource;
+import de.dante.extex.interpreter.type.count.FixedCount;
+import de.dante.extex.interpreter.type.count.ImmutableCount;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
+import de.dante.extex.typesetter.type.node.AdjustNode;
+import de.dante.extex.typesetter.type.node.AfterMathNode;
+import de.dante.extex.typesetter.type.node.AlignedLeadersNode;
+import de.dante.extex.typesetter.type.node.BeforeMathNode;
+import de.dante.extex.typesetter.type.node.CenteredLeadersNode;
+import de.dante.extex.typesetter.type.node.CharNode;
+import de.dante.extex.typesetter.type.node.DiscretionaryNode;
+import de.dante.extex.typesetter.type.node.ExpandedLeadersNode;
+import de.dante.extex.typesetter.type.node.GlueNode;
+import de.dante.extex.typesetter.type.node.HorizontalListNode;
+import de.dante.extex.typesetter.type.node.InsertionNode;
+import de.dante.extex.typesetter.type.node.KernNode;
+import de.dante.extex.typesetter.type.node.LigatureNode;
 import de.dante.extex.typesetter.type.node.MarkNode;
+import de.dante.extex.typesetter.type.node.PenaltyNode;
+import de.dante.extex.typesetter.type.node.RuleNode;
+import de.dante.extex.typesetter.type.node.SpaceNode;
 import de.dante.extex.typesetter.type.node.SpecialNode;
+import de.dante.extex.typesetter.type.node.VerticalListNode;
+import de.dante.extex.typesetter.type.node.VirtualCharNode;
+import de.dante.extex.typesetter.type.node.WhatsItNode;
 import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 import de.dante.util.framework.logger.LogEnabled;
@@ -41,7 +60,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * This class provides a factory for page instances.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class PageFactory implements LogEnabled {
 
@@ -57,14 +76,339 @@ public class PageFactory implements LogEnabled {
     private Pattern sizePattern;
 
     /**
+     * The field <tt>visitor</tt> contains the node visitor to determine which
+     * nodes to keep and to post-process the nodes.
+     */
+    private PageFactoryNodeVisitor visitor = new PageFactoryNodeVisitor() {
+
+        /**
+         * The field <tt>context</tt> contains the interpreter context.
+         */
+        private Context context;
+
+        /**
+         * The field <tt>page</tt> contains the page.
+         */
+        private Page page;
+
+        /**
+         * The field <tt>typesetter</tt> contains the typesetter.
+         */
+        private Typesetter typesetter;
+
+        /**
+         * @see de.dante.extex.typesetter.type.page.PageFactoryNodeVisitor#setContext(
+         *      de.dante.extex.interpreter.context.Context)
+         */
+        public void setContext(final Context context) {
+
+            this.context = context;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.page.PageFactoryNodeVisitor#setPage(
+         *      de.dante.extex.typesetter.type.page.Page)
+         */
+        public void setPage(final Page page) {
+
+            this.page = page;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.page.PageFactoryNodeVisitor#setTypesetter(
+         *      de.dante.extex.typesetter.Typesetter)
+         */
+        public void setTypesetter(final Typesetter typesetter) {
+
+            this.typesetter = typesetter;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitAdjust(
+         *      de.dante.extex.typesetter.type.node.AdjustNode,
+         *      java.lang.Object)
+         */
+        public Object visitAdjust(final AdjustNode node, final Object value)
+                throws GeneralException {
+
+            return node;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitAfterMath(
+         *      de.dante.extex.typesetter.type.node.AfterMathNode,
+         *      java.lang.Object)
+         */
+        public Object visitAfterMath(final AfterMathNode node,
+                final Object value) throws GeneralException {
+
+            if (((Boolean) value).booleanValue()) {
+                if (node.getWidth().eq(Dimen.ZERO_PT)) {
+                    return null;
+                }
+            } else if (node.getVerticalSize().eq(Dimen.ZERO_PT)) {
+                return null;
+            }
+            return node;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitAlignedLeaders(
+         *      de.dante.extex.typesetter.type.node.AlignedLeadersNode,
+         *      java.lang.Object)
+         */
+        public Object visitAlignedLeaders(final AlignedLeadersNode node,
+                final Object value) throws GeneralException {
+
+            return node;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitBeforeMath(
+         *      de.dante.extex.typesetter.type.node.BeforeMathNode,
+         *      java.lang.Object)
+         */
+        public Object visitBeforeMath(final BeforeMathNode node,
+                final Object value) throws GeneralException {
+
+            if (((Boolean) value).booleanValue()) {
+                if (node.getWidth().eq(Dimen.ZERO_PT)) {
+                    return null;
+                }
+            } else if (node.getVerticalSize().eq(Dimen.ZERO_PT)) {
+                return null;
+            }
+            return node;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitCenteredLeaders(
+         *      de.dante.extex.typesetter.type.node.CenteredLeadersNode,
+         *      java.lang.Object)
+         */
+        public Object visitCenteredLeaders(final CenteredLeadersNode node,
+                final Object value) throws GeneralException {
+
+            return node;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitChar(
+         *      de.dante.extex.typesetter.type.node.CharNode,
+         *      java.lang.Object)
+         */
+        public Object visitChar(final CharNode node, final Object value)
+                throws GeneralException {
+
+            return node;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitDiscretionary(
+         *      de.dante.extex.typesetter.type.node.DiscretionaryNode,
+         *      java.lang.Object)
+         */
+        public Object visitDiscretionary(final DiscretionaryNode node,
+                final Object value) throws GeneralException {
+
+            return node;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitExpandedLeaders(
+         *      de.dante.extex.typesetter.type.node.ExpandedLeadersNode,
+         *      java.lang.Object)
+         */
+        public Object visitExpandedLeaders(final ExpandedLeadersNode node,
+                final Object value) throws GeneralException {
+
+            return node;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitGlue(
+         *      de.dante.extex.typesetter.type.node.GlueNode,
+         *      java.lang.Object)
+         */
+        public Object visitGlue(final GlueNode node, final Object value)
+                throws GeneralException {
+
+            if (((Boolean) value).booleanValue()) {
+                if (node.getWidth().eq(Dimen.ZERO_PT)) {
+                    return null;
+                }
+            } else if (node.getVerticalSize().eq(Dimen.ZERO_PT)) {
+                return null;
+            }
+            return node;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitHorizontalList(
+         *      de.dante.extex.typesetter.type.node.HorizontalListNode,
+         *      java.lang.Object)
+         */
+        public Object visitHorizontalList(final HorizontalListNode node,
+                final Object value) throws GeneralException {
+
+            return (node.size() == 0 ? null : node);
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitInsertion(
+         *      de.dante.extex.typesetter.type.node.InsertionNode,
+         *      java.lang.Object)
+         */
+        public Object visitInsertion(final InsertionNode node,
+                final Object value) throws GeneralException {
+
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitKern(
+         *      de.dante.extex.typesetter.type.node.KernNode,
+         *      java.lang.Object)
+         */
+        public Object visitKern(final KernNode node, final Object value)
+                throws GeneralException {
+
+            if (((Boolean) value).booleanValue()) {
+                if (node.getWidth().eq(Dimen.ZERO_PT)) {
+                    return null;
+                }
+            } else if (node.getVerticalSize().eq(Dimen.ZERO_PT)) {
+                return null;
+            }
+            return node;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitLigature(
+         *      de.dante.extex.typesetter.type.node.LigatureNode,
+         *      java.lang.Object)
+         */
+        public Object visitLigature(final LigatureNode node, final Object value)
+                throws GeneralException {
+
+            return node;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitMark(
+         *      de.dante.extex.typesetter.type.node.MarkNode,
+         *      java.lang.Object)
+         */
+        public Object visitMark(final MarkNode node, final Object value)
+                throws GeneralException {
+
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitPenalty(
+         *      de.dante.extex.typesetter.type.node.PenaltyNode,
+         *      java.lang.Object)
+         */
+        public Object visitPenalty(final PenaltyNode node, final Object value)
+                throws GeneralException {
+
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitRule(
+         *      de.dante.extex.typesetter.type.node.RuleNode,
+         *      java.lang.Object)
+         */
+        public Object visitRule(final RuleNode node, final Object value)
+                throws GeneralException {
+
+            return node;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitSpace(
+         *      de.dante.extex.typesetter.type.node.SpaceNode,
+         *      java.lang.Object)
+         */
+        public Object visitSpace(final SpaceNode node, final Object value)
+                throws GeneralException {
+
+            return node;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitVerticalList(
+         *      de.dante.extex.typesetter.type.node.VerticalListNode,
+         *      java.lang.Object)
+         */
+        public Object visitVerticalList(final VerticalListNode node,
+                final Object value) throws GeneralException {
+
+            return (node.size() == 0 ? null : node);
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitVirtualChar(
+         *      de.dante.extex.typesetter.type.node.VirtualCharNode,
+         *      java.lang.Object)
+         */
+        public Object visitVirtualChar(final VirtualCharNode node,
+                final Object value) throws GeneralException {
+
+            return node.getNodes();
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitWhatsIt(
+         *      de.dante.extex.typesetter.type.node.WhatsItNode,
+         *      java.lang.Object)
+         */
+        public Object visitWhatsIt(final WhatsItNode node, final Object value)
+                throws GeneralException {
+
+            if (node instanceof SpecialNode) {
+
+                String text = ((SpecialNode) node).getText();
+
+                if (text.startsWith("papersize=")) {
+                    Matcher m = sizePattern.matcher(text);
+                    if (m.matches()) {
+                        try {
+                            Dimen width = new Dimen(context, //
+                                    new StringSource(m.group(1)), typesetter);
+                            Dimen height = new Dimen(context, //
+                                    new StringSource(m.group(2)), typesetter);
+                            page.setMediaWidth(width);
+                            page.setMediaHeight(height);
+                        } catch (ConfigurationException e) {
+                            logger.log(Level.SEVERE, "", e);
+                        }
+                    } else {
+                        logger.warning("...");
+                    }
+
+                } else if (text.equals("landscape")) {
+
+                    Dimen h = page.getMediaHeight();
+                    page.setMediaHeight(page.getMediaWidth());
+                    page.setMediaWidth(h);
+                }
+            }
+            return node;
+        }
+
+    };
+
+    /**
      * Creates a new object.
-     *
      */
     public PageFactory() {
 
         super();
-        sizePattern = Pattern
-                .compile("papersize=([0-9.]+[a-z][a-z]),([0-9.]+[a-z][a-z])");
+        sizePattern = Pattern.compile("papersize="
+                + "([0-9.]+[a-z][a-z]),([0-9.]+[a-z][a-z])");
     }
 
     /**
@@ -83,14 +427,19 @@ public class PageFactory implements LogEnabled {
      * @param context the interpreter context
      * @param typesetter the typesetter
      *
-     * @return the new instance
+     * @return the new instance or <code>null</code> if the page would be empty
      *
      * @throws GeneralException in case of an error
      */
     public Page newInstance(final NodeList nodes, final Context context,
             final Typesetter typesetter) throws GeneralException {
 
-        PageImpl page = new PageImpl(nodes);
+        FixedCount[] pageNo = new FixedCount[10];
+        for (int i = 0; i < 10; i++) {
+            pageNo[i] = new ImmutableCount(context
+                    .getCount(Integer.toString(i)));
+        }
+        PageImpl page = new PageImpl(nodes, pageNo);
 
         page.setMediaWidth(context.getDimen("mediawidth"));
         page.setMediaHeight(context.getDimen("mediaheight"));
@@ -98,100 +447,14 @@ public class PageFactory implements LogEnabled {
         //page.setMediaVOffset(context.getDimen("mediaheight"));
 
         context.startMarks();
+        visitor.setPage(page);
+        visitor.setContext(context);
+        visitor.setTypesetter(typesetter);
 
-        int size = nodes.size();
-        for (int i = 0; i < size; i++) {
-            Node node = nodes.get(i);
-            node.atShipping(context, typesetter);
-
-            if (node instanceof MarkNode) {
-                MarkNode mark = (MarkNode) node;
-                context.setMark(mark.getIndex(), mark.getMark());
-                nodes.remove(i--);
-                size--;
-            } else if (node instanceof NodeList) {
-                process(page, (NodeList) node, context, typesetter);
-            } else if (node instanceof SpecialNode) {
-                processSpecialNode((SpecialNode) node, page, context,
-                        typesetter);
-
-            }
+        if (nodes.atShipping(context, typesetter, visitor, false) == null) {
+            return null;
         }
         return page;
-    }
-
-    /**
-     * Traverse a page and process special nodes.
-     *
-     * @param page the page to process
-     * @param nodes the nodes to traverse
-     * @param context the interpreter context
-     * @param typesetter the typesetter
-     *
-     * @throws GeneralException in case of an error
-     */
-    private void process(final Page page, final NodeList nodes,
-            final Context context, final Typesetter typesetter)
-            throws GeneralException {
-
-        int size = nodes.size();
-        for (int i = 0; i < size; i++) {
-            Node node = nodes.get(i);
-            node.atShipping(context, typesetter);
-
-            if (node instanceof MarkNode) {
-                MarkNode mark = (MarkNode) node;
-                context.setMark(mark.getIndex(), mark.getMark());
-                nodes.remove(i--);
-                size--;
-            } else if (node instanceof NodeList) {
-                process(page, (NodeList) node, context, typesetter);
-            } else if (node instanceof SpecialNode) {
-                processSpecialNode((SpecialNode) node, page, context,
-                        typesetter);
-            }
-        }
-    }
-
-    /**
-     * Have a closer look at a special node.
-     *
-     * @param node the node encountered
-     * @param page the page under consideration
-     * @param context the interpreter context
-     * @param typesetter the typesetter
-     *
-     * @throws InterpreterException in case of an error
-     */
-    protected void processSpecialNode(final SpecialNode node, final Page page,
-            final Context context, final Typesetter typesetter)
-            throws InterpreterException {
-
-        String text = node.getText();
-
-        if (text.startsWith("papersize=")) {
-            Matcher m = sizePattern.matcher(text);
-            if (m.matches()) {
-                try {
-                    Dimen width = new Dimen(context, //
-                            new StringSource(m.group(1)), typesetter);
-                    Dimen height = new Dimen(context, //
-                            new StringSource(m.group(2)), typesetter);
-                    page.setMediaWidth(width);
-                    page.setMediaHeight(height);
-                } catch (ConfigurationException e) {
-                    logger.log(Level.SEVERE, "", e);
-                }
-            } else {
-                logger.warning("...");
-            }
-
-        } else if (text.equals("landscape")) {
-
-            Dimen h = page.getMediaHeight();
-            page.setMediaHeight(page.getMediaWidth());
-            page.setMediaWidth(h);
-        }
     }
 
 }
