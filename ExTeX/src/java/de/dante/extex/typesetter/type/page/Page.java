@@ -19,6 +19,7 @@
 
 package de.dante.extex.typesetter.type.page;
 
+import de.dante.extex.interpreter.type.count.FixedCount;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.type.NodeList;
 
@@ -27,7 +28,7 @@ import de.dante.extex.typesetter.type.NodeList;
  * access to additional parameters.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface Page {
 
@@ -96,4 +97,10 @@ public interface Page {
      */
     void setMediaWidth(Dimen width);
 
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @return
+     */
+    FixedCount[] getPageNo();
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -19,6 +19,7 @@
 
 package de.dante.extex.typesetter.type.page;
 
+import de.dante.extex.interpreter.type.count.FixedCount;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.type.NodeList;
 
@@ -27,7 +28,7 @@ import de.dante.extex.typesetter.type.NodeList;
  * contains additional administrative information.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class PageImpl implements Page {
 
@@ -63,13 +64,20 @@ public class PageImpl implements Page {
     private NodeList nodes;
 
     /**
+     * The field <tt>pageNo</tt> contains the array of page number indicators.
+     */
+    private FixedCount[] pageNo;
+
+    /**
      * Creates a new object.
      *
+     * @param nodes the nodes to transport
      */
-    public PageImpl(final NodeList nodes) {
+    public PageImpl(final NodeList nodes, final FixedCount[] pageNo) {
 
         super();
         this.nodes = nodes;
+        this.pageNo = pageNo;
     }
 
     /**
@@ -112,6 +120,14 @@ public class PageImpl implements Page {
     public NodeList getNodes() {
 
         return this.nodes;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.page.Page#getPageNo()
+     */
+    public FixedCount[] getPageNo() {
+
+        return pageNo;
     }
 
     /**
