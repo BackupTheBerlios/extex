@@ -117,7 +117,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </i>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class TeXParagraphBuilder
         implements
@@ -4003,8 +4003,6 @@ public class TeXParagraphBuilder
     }
 
     /**
-     * TODO gene: missing JavaDoc
-     *
      * «Initialize for hyphenating a paragraph 891»;
      */
     private void initializeForHyphenatingAParagraph() {
