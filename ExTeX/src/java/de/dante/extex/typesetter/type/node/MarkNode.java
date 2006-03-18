@@ -19,7 +19,9 @@
 
 package de.dante.extex.typesetter.type.node;
 
+import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeVisitor;
 import de.dante.util.exception.GeneralException;
@@ -34,7 +36,7 @@ import de.dante.util.exception.GeneralException;
  * @see "<logo>TeX</logo> &ndash; The Program [141]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class MarkNode extends AbstractNode implements Node {
 
@@ -66,6 +68,20 @@ public class MarkNode extends AbstractNode implements Node {
         super();
         this.mark = mark;
         this.index = index;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.Node#atShipping(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.typesetter.Typesetter,
+     *      de.dante.extex.typesetter.type.NodeVisitor, boolean)
+     */
+    public Node atShipping(final Context context, final Typesetter typesetter,
+            final NodeVisitor visitor, final boolean inHMode)
+            throws GeneralException {
+
+        context.setMark(index, mark);
+        return (Node) this.visit(visitor, null);
     }
 
     /**
@@ -101,7 +117,9 @@ public class MarkNode extends AbstractNode implements Node {
      * @see "<logo>TeX</logo> &ndash; The Program [196]"
      * @see de.dante.extex.typesetter.type.Node#toString(
      *      java.lang.StringBuffer,
-     *      java.lang.String)
+     *      java.lang.String,
+     *      int,
+     *      int)
      */
     public void toString(final StringBuffer sb, final String prefix,
             final int breadth, final int depth) {

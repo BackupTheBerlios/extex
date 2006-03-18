@@ -19,7 +19,9 @@
 
 package de.dante.extex.typesetter.type.node;
 
+import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
+import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeVisitor;
 import de.dante.util.exception.GeneralException;
@@ -32,7 +34,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class HorizontalListNode extends AbstractNodeList {
 
@@ -84,6 +86,19 @@ public class HorizontalListNode extends AbstractNodeList {
         Node gNode = new GlueNode(glue, true);
         gNode.setWidth(glue.getLength());
         add(gNode);
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.node.AbstractNodeList#atShipping(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.typesetter.Typesetter,
+     *      de.dante.extex.typesetter.type.NodeVisitor,
+     *      boolean)
+     */
+    public Node atShipping(final Context context, final Typesetter typesetter,
+            final NodeVisitor visitor, final boolean inHMode) throws GeneralException {
+
+        return super.atShipping(context, typesetter, visitor, true);
     }
 
     /**

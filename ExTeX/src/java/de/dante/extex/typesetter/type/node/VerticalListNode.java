@@ -21,11 +21,13 @@ package de.dante.extex.typesetter.type.node;
 
 import java.util.logging.Logger;
 
+import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.WideGlue;
 import de.dante.extex.typesetter.Badness;
+import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.NodeVisitor;
@@ -38,7 +40,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class VerticalListNode extends AbstractNodeList implements NodeList {
 
@@ -66,6 +68,20 @@ public class VerticalListNode extends AbstractNodeList implements NodeList {
         Node gNode = new GlueNode(glue, false);
         gNode.setHeight(glue.getLength());
         add(gNode);
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.node.AbstractNodeList#atShipping(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.typesetter.Typesetter,
+     *      de.dante.extex.typesetter.type.NodeVisitor,
+     *      boolean)
+     */
+    public Node atShipping(final Context context, final Typesetter typesetter,
+            final NodeVisitor visitor, final boolean inHMode)
+            throws GeneralException {
+
+        return super.atShipping(context, typesetter, visitor, false);
     }
 
     /**

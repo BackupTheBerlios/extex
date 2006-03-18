@@ -43,7 +43,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public interface Node extends Knot, Serializable {
 
@@ -63,15 +63,26 @@ public interface Node extends Knot, Serializable {
 
     /**
      * This method performs any action which are required to executed at the
-     * time of shipping the node to the DocumentWriter.
+     * time of shipping the node to the DocumentWriter. It is a NOOP in the
+     * abstract base class and should be overwritten by sub-classes if
+     * required.
      *
      * @param context the interpreter context
      * @param typesetter the typesetter
+     * @param visitor the node visitor to be invoked when the node is hit. Note
+     *  that each node in the output page is visited this way. Thus there is no
+     *  need to implement a node traversal for the NodeList types
+     * @param inHMode <code>true</code> iff the container is a horizontal list.
+     *  Otherwise the container is a vertical list
+     *
+     * @return the node to be used instead of the current one in the output
+     *  list. If the value is <code>null</code> then the node is deleted. If
+     *  the value is the node itself then it is preserved.
      *
      * @throws GeneralException in case of an error
      */
-    void atShipping(Context context, Typesetter typesetter)
-            throws GeneralException;
+    Node atShipping(Context context, Typesetter typesetter,
+            NodeVisitor visitor, boolean inHMode) throws GeneralException;
 
     /**
      * This method determines the number of characters contained in a node.

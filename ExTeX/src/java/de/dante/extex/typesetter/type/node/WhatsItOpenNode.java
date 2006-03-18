@@ -22,13 +22,15 @@ package de.dante.extex.typesetter.type.node;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.file.OutFile;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.type.Node;
+import de.dante.extex.typesetter.type.NodeVisitor;
 import de.dante.util.exception.GeneralException;
 
 /**
  * This WhatsIt node opens an out file on shipping.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class WhatsItOpenNode extends WhatsItNode {
 
@@ -72,10 +74,13 @@ public class WhatsItOpenNode extends WhatsItNode {
      * @see de.dante.extex.typesetter.type.Node#atShipping(
      *      de.dante.extex.interpreter.context.Context, Typesetter)
      */
-    public void atShipping(final Context context, final Typesetter typesetter)
+    public Node atShipping(final Context context, final Typesetter typesetter, NodeVisitor visitor, boolean inHMode)
             throws GeneralException {
 
         file.open();
         context.setOutFile(key, file, false);
+
+        return null;
     }
+
 }

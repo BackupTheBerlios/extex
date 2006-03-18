@@ -26,6 +26,7 @@ import de.dante.extex.interpreter.type.glue.FixedGlueComponent;
 import de.dante.extex.interpreter.type.glue.WideGlue;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.Node;
+import de.dante.extex.typesetter.type.NodeVisitor;
 import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.i18n.LocalizerFactory;
@@ -34,7 +35,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This abstract class provides some methods common to all Nodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public abstract class AbstractNode implements Node {
 
@@ -134,14 +135,30 @@ public abstract class AbstractNode implements Node {
      *
      * @param context the interpreter context
      * @param typesetter the typesetter
+     * @param visitor the node visitor to be invoked when the node is hit. Note
+     *  that each node in the output page is visited this way. Thus there is no
+     *  need to implement a node traversal for the NodeList types
+     * @param inHMode <code>true</code> iff the container is a horizontal list.
+     *  Otherwise the container is a vertical list
+     *
+     * @return the node to be used instead of the current one in the output
+     *  list. If the value is <code>null</code> then the node is deleted. If
+     *  the value is the node itself then it is preserved.
      *
      * @throws GeneralException in case of an error
      *
-     * @see de.dante.extex.typesetter.type.Node#atShipping(Context, Typesetter)
+     * @see de.dante.extex.typesetter.type.Node#atShipping(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.typesetter.Typesetter,
+     *      de.dante.extex.typesetter.type.NodeVisitor)
      */
-    public void atShipping(final Context context, final Typesetter typesetter)
+    public Node atShipping(final Context context, final Typesetter typesetter,
+            final NodeVisitor visitor, final boolean inHMode)
             throws GeneralException {
 
+        return (Node) this.visit(visitor, inHMode
+                ? Boolean.TRUE
+                : Boolean.FALSE);
     }
 
     /**
@@ -285,7 +302,9 @@ public abstract class AbstractNode implements Node {
     /**
      * @see de.dante.extex.typesetter.type.Node#toString(
      *      java.lang.StringBuffer,
-     *      java.lang.String)
+     *      java.lang.String,
+     *      int,
+     *      int)
      */
     public void toString(final StringBuffer sb, final String prefix,
             final int breadth, final int depth) {

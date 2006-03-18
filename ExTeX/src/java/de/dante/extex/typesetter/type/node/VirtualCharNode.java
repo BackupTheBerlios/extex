@@ -39,21 +39,16 @@ import de.dante.util.exception.GeneralException;
  * This class is used to represent composed characters from virtual fonts.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class VirtualCharNode extends CharNode implements NodeList {
-
-    /**
-     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
-     */
-    protected static final long serialVersionUID = 2005L;
 
     /**
      * This inner class provides the means to store nodes in a list.
      * It is here to compensate the missing multiple inheritance of Java.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.13 $
+     * @version $Revision: 1.14 $
      */
     private class NL extends AbstractNodeList {
 
@@ -108,6 +103,11 @@ public class VirtualCharNode extends CharNode implements NodeList {
             return visitor.visitChar(node, value);
         }
     }
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * The field <tt>nodes</tt> contains the encapsulated node list.
@@ -173,14 +173,16 @@ public class VirtualCharNode extends CharNode implements NodeList {
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.node.AbstractNode#atShipping(
+     * @see de.dante.extex.typesetter.type.Node#atShipping(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.typesetter.Typesetter)
+     *      de.dante.extex.typesetter.Typesetter,
+     *      de.dante.extex.typesetter.type.NodeVisitor, boolean)
      */
-    public void atShipping(final Context context, final Typesetter typesetter)
+    public Node atShipping(final Context context, final Typesetter typesetter,
+            final NodeVisitor visitor, final boolean inHMode)
             throws GeneralException {
 
-        this.nodes.atShipping(context, typesetter);
+        return this.nodes.atShipping(context, typesetter, visitor, inHMode);
     }
 
     /**
@@ -304,6 +306,16 @@ public class VirtualCharNode extends CharNode implements NodeList {
     public void setMove(final FixedDimen d) {
 
         this.nodes.setMove(d);
+    }
+
+    /**
+     * Getter for nodes.
+     *
+     * @return the nodes
+     */
+    public NodeList getNodes() {
+
+        return this.nodes;
     }
 
     /**

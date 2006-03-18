@@ -31,7 +31,7 @@ import de.dante.util.exception.GeneralException;
  * @see "<logo>TeX</logo> &ndash; The Program [149]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class ExpandedLeadersNode extends GlueNode implements Node {
 
@@ -41,7 +41,7 @@ public class ExpandedLeadersNode extends GlueNode implements Node {
     protected static final long serialVersionUID = 2005L;
 
     /**
-     * The field <tt>node</tt> contains the node to reapeat or expand.
+     * The field <tt>node</tt> contains the node to repeat or expand.
      */
     private Node node;
 
@@ -78,8 +78,11 @@ public class ExpandedLeadersNode extends GlueNode implements Node {
      * @param depth the depth
      *
      * @see "<logo>TeX</logo> &ndash; The Program [190]"
-     * @see de.dante.extex.typesetter.type.Node#toString(java.lang.StringBuffer,
-     *      java.lang.String)
+     * @see de.dante.extex.typesetter.type.Node#toString(
+     *      java.lang.StringBuffer,
+     *      java.lang.String,
+     *      int,
+     *      int)
      */
     public void toString(final StringBuffer sb, final String prefix,
             final int breadth, final int depth) {

@@ -22,18 +22,22 @@ package de.dante.extex.typesetter.type.node;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
+import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeIterator;
 import de.dante.extex.typesetter.type.NodeList;
+import de.dante.extex.typesetter.type.NodeVisitor;
+import de.dante.util.exception.GeneralException;
 
 /**
  * Abstract base class for all <code>NodeList</code>s.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public abstract class AbstractNodeList extends AbstractNode implements NodeList {
 
@@ -109,6 +113,37 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
 
         list.add(node);
         updateDimensions(node, list.size() == 1);
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.Node#atShipping(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.typesetter.Typesetter,
+     *      de.dante.extex.typesetter.type.NodeVisitor)
+     */
+    public Node atShipping(final Context context, final Typesetter typesetter,
+            final NodeVisitor visitor, final boolean inHMode)
+            throws GeneralException {
+
+        Node node, n;
+        int size = list.size();
+
+        for (int i = 0; i < size; i++) {
+            node = (Node) list.get(i);
+            n = node.atShipping(context, typesetter, visitor, inHMode);
+
+            if (n == null) {
+                list.remove(i--);
+                size--;
+            } else if (n != this) {
+                list.remove(i);
+                list.add(i, n);
+            }
+        }
+
+        return (Node) this.visit(visitor, inHMode
+                ? Boolean.TRUE
+                : Boolean.FALSE);
     }
 
     /**
