@@ -32,6 +32,7 @@ import de.dante.extex.interpreter.type.arithmetic.Multiplyable;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
 
 /**
@@ -62,7 +63,7 @@ import de.dante.extex.typesetter.Typesetter;
  * @see de.dante.extex.interpreter.type.Theable
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Mag extends AbstractCount
         implements
@@ -125,21 +126,6 @@ public class Mag extends AbstractCount
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.ExpandableCode#expand(
-     *      de.dante.extex.interpreter.Flags,
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.typesetter.Typesetter)
-     */
-    public void expand(final Flags prefix, final Context context,
-            final TokenSource source, final Typesetter typesetter)
-            throws InterpreterException {
-
-        source.push(new Tokens(context, Long.toString(context
-                .getMagnification())));
-    }
-
-    /**
      * @see de.dante.extex.interpreter.type.count.CountConvertible#convertCount(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource, Typesetter)
@@ -171,6 +157,39 @@ public class Mag extends AbstractCount
         }
 
         value = context.getMagnification() / value;
+        context.setMagnification(value);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.ExpandableCode#expand(
+     *      de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public void expand(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws InterpreterException {
+
+        source.push(new Tokens(context, Long.toString(context
+                .getMagnification())));
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.InitializableCode#init(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public void init(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
+
+        Token t = source.getNonSpace(context);
+        if (t == null) {
+            return;
+        }
+        source.push(t);
+        long value = Count.scanCount(context, source, typesetter);
         context.setMagnification(value);
     }
 

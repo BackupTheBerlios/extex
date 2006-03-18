@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -24,6 +24,10 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractAssignment;
+import de.dante.extex.interpreter.type.InitializableCode;
+import de.dante.extex.interpreter.type.count.Count;
+import de.dante.extex.scanner.type.token.Token;
+import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.exception.GeneralException;
 
 /**
@@ -31,9 +35,11 @@ import de.dante.util.exception.GeneralException;
  * numbered count registers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
-public abstract class AbstractCount extends AbstractAssignment {
+public abstract class AbstractCount extends AbstractAssignment
+        implements
+            InitializableCode {
 
     /**
      * Creates a new object.
@@ -71,6 +77,24 @@ public abstract class AbstractCount extends AbstractAssignment {
         } else {
             return name;
         }
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.InitializableCode#init(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public void init(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
+
+        Token t = source.getNonSpace(context);
+        if (t == null) {
+            return;
+        }
+        source.push(t);
+        long value = Count.scanCount(context, source, typesetter);
+        context.setCount(getKey(context, source), value, true);
     }
 
 }
