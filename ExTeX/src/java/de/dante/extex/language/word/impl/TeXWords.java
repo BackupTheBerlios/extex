@@ -39,7 +39,7 @@ import de.dante.util.UnicodeCharList;
  * <logo>TeX</logo>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class TeXWords extends ExTeXWords implements WordTokenizer {
 
@@ -161,7 +161,7 @@ public class TeXWords extends ExTeXWords implements WordTokenizer {
         for (int i = 0; i < size; i++) {
             uc = word.get(i);
             c = options.getLccode(uc);
-            list.add(c == UnicodeChar.NULL ? uc : c);
+            list.add(c == null ? uc : c);
         }
 
         return list;
