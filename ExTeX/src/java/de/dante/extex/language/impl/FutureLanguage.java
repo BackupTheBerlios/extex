@@ -19,6 +19,7 @@
 
 package de.dante.extex.language.impl;
 
+import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.language.Language;
 import de.dante.extex.language.hyphenation.exception.HyphenationException;
@@ -35,7 +36,7 @@ import de.dante.util.UnicodeCharList;
  * loading or the creation should be performed.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class FutureLanguage implements Language {
 
@@ -124,6 +125,21 @@ public class FutureLanguage implements Language {
             language = creator.loadLanguageInstance(index);
         }
         return language.getLeftHyphenmin();
+    }
+
+    /**
+     * @see de.dante.extex.language.ligature.LigatureBuilder#getLigature(
+     *      de.dante.util.UnicodeChar,
+     *      de.dante.util.UnicodeChar,
+     *      de.dante.extex.interpreter.type.font.Font)
+     */
+    public UnicodeChar getLigature(final UnicodeChar c1, final UnicodeChar c2,
+            final Font f) throws HyphenationException {
+
+        if (language == null) {
+            language = creator.loadLanguageInstance(index);
+        }
+        return language.getLigature(c1, c2, f);
     }
 
     /**

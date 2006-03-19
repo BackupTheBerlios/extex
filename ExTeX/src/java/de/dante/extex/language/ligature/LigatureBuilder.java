@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -21,8 +21,10 @@ package de.dante.extex.language.ligature;
 
 import java.io.Serializable;
 
+import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.language.hyphenation.exception.HyphenationException;
 import de.dante.extex.typesetter.type.NodeList;
+import de.dante.util.UnicodeChar;
 
 /**
  * This interface describes the capability of a ligature builder.
@@ -30,7 +32,7 @@ import de.dante.extex.typesetter.type.NodeList;
  * It might use the information from the font.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface LigatureBuilder extends Serializable {
 
@@ -48,5 +50,19 @@ public interface LigatureBuilder extends Serializable {
      * @throws HyphenationException in case of an error
      */
     int insertLigatures(NodeList list, int start) throws HyphenationException;
+
+    /**
+     * Get a single ligature of to characters.
+     *
+     * @param c1 the first character
+     * @param c2 the second character
+     * @param f the current font
+     *
+     * @return the ligature of c1 and c2 or <code>null</code> if none exists
+     *
+     * @throws HyphenationException in case of an error
+     */
+    UnicodeChar getLigature(UnicodeChar c1, UnicodeChar c2, Font f)
+            throws HyphenationException;
 
 }

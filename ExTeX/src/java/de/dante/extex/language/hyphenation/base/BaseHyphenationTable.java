@@ -22,6 +22,7 @@ package de.dante.extex.language.hyphenation.base;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.language.ModifiableLanguage;
 import de.dante.extex.language.hyphenation.exception.HyphenationException;
@@ -41,7 +42,7 @@ import de.dante.util.UnicodeCharList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class BaseHyphenationTable implements ModifiableLanguage {
 
@@ -171,6 +172,18 @@ public class BaseHyphenationTable implements ModifiableLanguage {
     }
 
     /**
+     * @see de.dante.extex.language.ligature.LigatureBuilder#getLigature(
+     *      de.dante.util.UnicodeChar,
+     *      de.dante.util.UnicodeChar,
+     *      de.dante.extex.interpreter.type.font.Font)
+     */
+    public UnicodeChar getLigature(final UnicodeChar c1, final UnicodeChar c2,
+            final Font f) throws HyphenationException {
+
+        return this.ligatureBuilder.getLigature(c1, c2, f);
+    }
+
+    /**
      * @see de.dante.extex.language.Language#getRightHyphenmin()
      */
     public long getRightHyphenmin() throws HyphenationException {
@@ -218,7 +231,7 @@ public class BaseHyphenationTable implements ModifiableLanguage {
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * Hyphenate a single word.
      *
      * @param nodes the node list to consider
      * @param context the options to use
