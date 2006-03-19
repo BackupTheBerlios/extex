@@ -53,7 +53,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Pdfstartlink extends AbstractPdftexCode {
 
@@ -108,7 +108,7 @@ public class Pdfstartlink extends AbstractPdftexCode {
 
         try {
             typesetter.add(new PdfStartLink(new RuleNode(width, height, depth,
-                    null), attr, action));
+                    null, true), attr, action));
         } catch (TypesetterException e) {
             throw new InterpreterException(e);
         } catch (ConfigurationException e) {

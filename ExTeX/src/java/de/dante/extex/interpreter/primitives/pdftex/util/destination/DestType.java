@@ -31,7 +31,7 @@ import de.dante.extex.typesetter.type.node.RuleNode;
  * This is the abstract base class for destination types in PDF.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public abstract class DestType {
 
@@ -251,7 +251,8 @@ public abstract class DestType {
                 }
             }
 
-            return new FitrDestType(new RuleNode(width, height, depth, null));
+            return new FitrDestType(new RuleNode(width, height, depth, null,
+                    true));
 
         } else if (source.getKeyword(context, "zoom")) {
             long zoom = source.scanInteger(context, typesetter);

@@ -53,7 +53,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Pdfximage extends AbstractPdftexCode {
 
@@ -110,7 +110,7 @@ public class Pdfximage extends AbstractPdftexCode {
         String resource = source.scanTokensAsString(context, getName());
 
         PdfRefXImage image = writer.getXImage(resource, new RuleNode(width,
-                height, depth, null), attr, page, prefix.isImmediate());
+                height, depth, null, true), attr, page, prefix.isImmediate());
 
         try {
             typesetter.add(image);

@@ -64,7 +64,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * This is the abstract base clas to test a paragraph builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public abstract class AbstractParagraphBuiderTester extends TestCase {
 
@@ -72,7 +72,7 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
      * Inner class for the typesetter options.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.2 $
+     * @version $Revision: 1.3 $
      */
     private class MockOptions implements TypesetterOptions {
 
@@ -590,9 +590,8 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
                 }
                 m = p2.matcher(s.substring(i));
                 if (m.matches()) {
-                    nodes
-                            .add(new RuleNode(VPT, Dimen.ONE_PT, Dimen.ONE_PT,
-                                    tc));
+                    nodes.add(new RuleNode(VPT, Dimen.ONE_PT, Dimen.ONE_PT, tc,
+                            true));
                     s = m.group(2);
                     i = -1;
                     continue;
@@ -841,11 +840,11 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
         nodes.add(new CharNode(tc, UnicodeChar.get('c')));
         nodes.add(new CharNode(tc, UnicodeChar.get('d')));
         nodes.add(new DiscretionaryNode(new HorizontalListNode(new RuleNode(
-                new Dimen(0x20), Dimen.ZERO_PT, Dimen.ZERO_PT, tc)),
+                new Dimen(0x20), Dimen.ZERO_PT, Dimen.ZERO_PT, tc, true)),
                 new HorizontalListNode(new RuleNode(new Dimen(0x30),
-                        Dimen.ZERO_PT, Dimen.ZERO_PT, tc)),
+                        Dimen.ZERO_PT, Dimen.ZERO_PT, tc, true)),
                 new HorizontalListNode(new RuleNode(new Dimen(0x40),
-                        Dimen.ZERO_PT, Dimen.ZERO_PT, tc))));
+                        Dimen.ZERO_PT, Dimen.ZERO_PT, tc, true))));
         nodes.add(new CharNode(tc, UnicodeChar.get('e')));
         nodes.add(new SpaceNode(new Glue(Dimen.ONE_PT)));
         nodes.add(new CharNode(tc, UnicodeChar.get('f')));
