@@ -31,7 +31,6 @@ import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.Glue;
-import de.dante.extex.language.Language;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.ParagraphObserver;
 import de.dante.extex.typesetter.TypesetterOptions;
@@ -59,7 +58,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
 public class HorizontalListMaker extends AbstractListMaker {
 
@@ -106,14 +105,6 @@ public class HorizontalListMaker extends AbstractListMaker {
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#getSpacefactor()
-     */
-    public long getSpacefactor() {
-
-        return spaceFactor;
-    }
-
-    /**
      * @see de.dante.extex.typesetter.ListMaker#add(
      *      de.dante.extex.typesetter.type.Node)
      */
@@ -126,10 +117,21 @@ public class HorizontalListMaker extends AbstractListMaker {
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#addGlue(
-     *      de.dante.extex.interpreter.type.glue.Glue)
+     * @see de.dante.extex.typesetter.ListMaker#addAndAdjust(
+     *      de.dante.extex.typesetter.type.NodeList,
+     *      de.dante.extex.typesetter.TypesetterOptions)
      */
-    public void addGlue(final Glue g) throws TypesetterException {
+    public void addAndAdjust(final NodeList list,
+            final TypesetterOptions options) throws TypesetterException {
+
+        nodes.add(list); // TODO gene: correct?
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#add(
+     *      de.dante.extex.interpreter.type.glue.FixedGlue)
+     */
+    public void add(final FixedGlue g) throws TypesetterException {
 
         nodes.addSkip(g);
         spaceFactor = DEFAULT_SPACEFACTOR;
@@ -193,30 +195,7 @@ public class HorizontalListMaker extends AbstractListMaker {
             throws TypesetterException,
                 ConfigurationException {
 
-        HorizontalListNode list = new HorizontalListNode();
-        int size = nodes.size();
-        for (int ptr = parseNonChars(0, list, size); ptr < size; ptr = parseNonChars(
-                ptr, list, size)) {
-            CharNode node = (CharNode) nodes.get(ptr);
-            HorizontalListNode word = new HorizontalListNode();
-            ptr = parseWord(ptr, word, size);
-
-            /*
-            Language lang = node.getTypesettingContext().getLanguage();
-            UnicodeChar hyphen = node.getTypesettingContext().getFont()
-                    .getHyphenChar();
-            if (hyphen != null) {
-                lang.hyphenate(word, context, hyphen, 0, true, getManager()
-                        .getNodeFactory());
-            }
-            */
-            int len = word.size();
-            for (int i = 0; i < len; i++) {
-                list.add(word.get(i));
-            }
-        }
-
-        return getManager().buildParagraph(list);
+        return getManager().buildParagraph(nodes);
     }
 
     /**
@@ -257,6 +236,14 @@ public class HorizontalListMaker extends AbstractListMaker {
     }
 
     /**
+     * @see de.dante.extex.typesetter.ListMaker#getSpacefactor()
+     */
+    public long getSpacefactor() {
+
+        return spaceFactor;
+    }
+
+    /**
      * Add a character node to the list.
      *
      * @param context the interpreter context
@@ -264,44 +251,57 @@ public class HorizontalListMaker extends AbstractListMaker {
      * @param symbol the symbol to add
      * @param locator the locator
      *
-     * @see de.dante.extex.typesetter.ListMaker#add(
+     * @see de.dante.extex.typesetter.ListMaker#letter(
+     *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.context.TypesettingContext,
-     *      de.dante.util.UnicodeChar)
+     *      de.dante.util.UnicodeChar,
+     *      de.dante.util.Locator)
      * @see "The TeXbook [p.76]"
      */
     public void letter(final Context context, final TypesettingContext tc,
-            final UnicodeChar symbol, final Locator locator) {
+            final UnicodeChar symbol, final Locator locator)
+            throws TypesetterException {
 
+        UnicodeChar c = symbol;
+        Node node;
         int size = nodes.size();
         if (size > 0) {
             Node n = nodes.get(size - 1);
             if (n instanceof CharNode) {
-                Font f = tc.getFont();
                 CharNode cn = ((CharNode) n);
+                Font f = tc.getFont();
                 if (cn.getTypesettingContext().getFont().equals(f)) {
-                    Glyph glyph = f.getGlyph(cn.getCharacter());
-                    if (glyph != null) {
-                        Dimen kerning = glyph.getKerning(symbol);
-                        if (kerning.ne(Dimen.ZERO_PT)) {
-                            nodes.add(new ImplicitKernNode(kerning));
+                    UnicodeChar lig = tc.getLanguage().getLigature(
+                            cn.getCharacter(), symbol, f);
+                    if (lig != null) {
+                        nodes.remove(size - 1);
+                        c = lig;
+                    } else {
+                        Glyph glyph = f.getGlyph(c);
+                        if (glyph != null) {
+                            Dimen kerning = glyph.getKerning(symbol);
+                            if (kerning.ne(Dimen.ZERO_PT)) {
+                                nodes.add(new ImplicitKernNode(kerning));
+                            }
                         }
                     }
                 }
             }
         }
-        Node node = getManager().getNodeFactory().getNode(tc, symbol);
-        if (node != null) {
+        node = getManager().getNodeFactory().getNode(tc, c);
+        if (node == null) {
+            return;
+        }
 
-            nodes.add(node);
+        nodes.add(node);
 
-            if (node instanceof CharNode) {
-                int f = ((CharNode) node).getSpaceFactor();
+        if (node instanceof CharNode) {
+            int f = ((CharNode) node).getSpaceFactor();
 
-                if (f != 0) {
-                    spaceFactor = (spaceFactor < DEFAULT_SPACEFACTOR
-                            && f > DEFAULT_SPACEFACTOR //
-                    ? DEFAULT_SPACEFACTOR : f);
-                }
+            if (f != 0) {
+                spaceFactor = (spaceFactor < DEFAULT_SPACEFACTOR
+                        && f > DEFAULT_SPACEFACTOR //
+                ? DEFAULT_SPACEFACTOR : f);
             }
         }
     }

@@ -29,9 +29,8 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.exception.ImpossibleException;
 import de.dante.extex.interpreter.type.count.Count;
-import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
-import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Mode;
@@ -47,7 +46,6 @@ import de.dante.extex.typesetter.listMaker.VerticalListMaker;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
 import de.dante.extex.typesetter.type.Node;
-import de.dante.extex.typesetter.type.NodeIterator;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
 import de.dante.extex.typesetter.type.node.InsertionNode;
@@ -68,7 +66,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.85 $
+ * @version $Revision: 1.86 $
  */
 public class TypesetterImpl
         implements
@@ -176,12 +174,25 @@ public class TypesetterImpl
     }
 
     /**
+     * @see de.dante.extex.typesetter.ListMaker#addAndAdjust(
+     *      de.dante.extex.typesetter.type.NodeList,
+     *      de.dante.extex.typesetter.TypesetterOptions)
+     */
+    public void addAndAdjust(final NodeList list,
+            final TypesetterOptions options)
+            throws TypesetterException,
+                ConfigurationException {
+
+        listMaker.addAndAdjust(list, options);
+    }
+
+    /**
      * @see de.dante.extex.typesetter.ListMaker#addGlue(
      *     de.dante.extex.interpreter.type.glue.Glue)
      */
-    public void addGlue(final Glue glue) throws TypesetterException {
+    public void add(final FixedGlue glue) throws TypesetterException {
 
-        listMaker.addGlue(glue);
+        listMaker.add(glue);
     }
 
     /**
@@ -286,10 +297,11 @@ public class TypesetterImpl
         NodeList list = listMaker.complete(options);
         pop();
         if (list instanceof VerticalListNode) {
-            NodeIterator it = list.iterator();
-            while (it.hasNext()) {
-                listMaker.add(it.next());
-            }
+            listMaker.addAndAdjust(list, options);
+            //            int size = list.size();
+            //            for (int i = 0; i < size; i++) {
+            //                listMaker.add(list.get(i));
+            //            }
         } else {
             listMaker.add(list);
         }
@@ -565,7 +577,7 @@ public class TypesetterImpl
      * @see de.dante.extex.typesetter.ListMaker#setPrevDepth(
      *      de.dante.extex.interpreter.type.dimen.Dimen)
      */
-    public void setPrevDepth(final Dimen pd)
+    public void setPrevDepth(final FixedDimen pd)
             throws TypesetterUnsupportedException {
 
         listMaker.setPrevDepth(pd);
