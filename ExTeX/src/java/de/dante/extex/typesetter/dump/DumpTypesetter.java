@@ -21,7 +21,7 @@ package de.dante.extex.typesetter.dump;
 
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
-import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.impl.TypesetterImpl;
@@ -34,7 +34,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * received.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
 public class DumpTypesetter extends TypesetterImpl {
 
@@ -61,9 +61,9 @@ public class DumpTypesetter extends TypesetterImpl {
      * @see de.dante.extex.typesetter.ListMaker#addGlue(
      *      de.dante.extex.interpreter.type.glue.Glue)
      */
-    public void addGlue(final Glue g) throws TypesetterException {
+    public void add(final FixedGlue g) throws TypesetterException {
 
-        super.addGlue(g);
+        super.add(g);
     }
 
     /**
