@@ -22,10 +22,12 @@ package de.dante.dviware;
 import java.io.InputStream;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This interface describes a callback handler for DVI instructions. This refers
+ * to an abstract machine which translates the DVI file into some kind of
+ * printed representation.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface DviProcessor {
 
@@ -38,11 +40,11 @@ public interface DviProcessor {
     void setChar(int off, int c);
 
     /**
-     * TODO gene: missing JavaDoc
+     * A DVI <tt>set_rule</tt> instruction has been encountered.
      *
      * @param off the current byte position
-     * @param a
-     * @param b
+     * @param a the width
+     * @param b the height
      */
     void setRule(int off, int a, int b);
 
@@ -55,48 +57,55 @@ public interface DviProcessor {
     void putChar(int off, int c);
 
     /**
-     * TODO gene: missing JavaDoc
+     * A DVI <tt>put_rule</tt> instruction has been encountered.
      *
-     * @param off
-     * @param a
-     * @param b
+     * @param off the current byte position in the input stream
+     * @param a the width
+     * @param b the height
      */
     void putRule(int off, int a, int b);
 
     /**
-     * TODO gene: missing JavaDoc
+     * A DVI <tt>nop</tt> instruction has been encountered.
+     * This instruction simply does nothing. It just occupies one byte in
+     * the input stream.
      *
-     * @param off
+     * @param off the current byte position in the input stream
      */
     void nop(int off);
 
     /**
-     * TODO gene: missing JavaDoc
+     * A DVI <tt>bop</tt> instruction has been encountered.
+     * This instruction signals the beginning of a new page.
      *
-     * @param off
-     * @param c
-     * @param p
+     * @param off the current byte position in the input stream
+     * @param c the array of page number indicators. The array has length 10.
+     *  It is initialized from the count registers 0 to 9 at the time the page
+     *  is shipped out.
+     * @param p the pointer to the previous <tt>bop</tt> instruction or -1
+     *  for the first page
      */
     void bop(int off, int[] c, int p);
 
     /**
-     * TODO gene: missing JavaDoc
+     * A DVI <tt>eop</tt> instruction has been encountered.
+     * This instruction signals the end of a page.
      *
-     * @param off
+     * @param off the current byte position in the input stream
      */
     void eop(int off);
 
     /**
-     * TODO gene: missing JavaDoc
+     * A DVI <tt>push</tt> instruction has been encountered.
      *
-     * @param off
+     * @param off the current byte position in the input stream
      */
     void push(int off);
 
     /**
-     * TODO gene: missing JavaDoc
+     * A DVI <tt>pop</tt> instruction has been encountered.
      *
-     * @param off
+     * @param off the current byte position in the input stream
      */
     void pop(int off);
 
@@ -109,18 +118,18 @@ public interface DviProcessor {
     //right4 146 b[4]. Same as right1, except that b is a four-byte quantity in the range -231 ? b<231.
 
     /**
-     * TODO gene: missing JavaDoc
+     * A DVI <tt>right</tt> instruction has been encountered.
      *
-     * @param off
+     * @param off the current byte position in the input stream
      * @param b
      */
     void right(int off, int b);
 
     //w0 147. Set h ? h+w; i.e., move right w units. With luck, this parameterless command will usually suffice, because the same kind of motion will occur several times in succession; the following commands explain how w gets particular values.
     /**
-     * TODO gene: missing JavaDoc
+     * A DVI <tt>w0</tt> instruction has been encountered.
      *
-     * @param off
+     * @param off the current byte position in the input stream
      */
     void w0(int ptr);
 
@@ -133,18 +142,18 @@ public interface DviProcessor {
     //w4 151 b[4]. Same as w1, but b is four bytes long, -231 ? b<231.
 
     /**
-     * TODO gene: missing JavaDoc
+     * A DVI <tt>w</tt> instruction has been encountered.
      *
-     * @param off
+     * @param off the current byte position in the input stream
      * @param b
      */
     void w(int off, int b);
 
     //x0 152. Set h ? h+x; i.e., move right x units. The ` x' commands are like the `w' commands except that they involve x instead of w.
     /**
-     * TODO gene: missing JavaDoc
+     * A DVI <tt>x0</tt> instruction has been encountered.
      *
-     * @param ptr
+     * @param ptr the current byte position in the input stream
      */
     void x0(int ptr);
 
@@ -157,9 +166,9 @@ public interface DviProcessor {
     //x4 156 b[4]. Same as x1, but b is four bytes long, -231 ? b<231.
 
     /**
-     * TODO gene: missing JavaDoc
+     * A DVI <tt>x</tt> instruction has been encountered.
      *
-     * @param off
+     * @param off the current byte position in the input stream
      * @param b
      */
     void x(int off, int b);
@@ -173,18 +182,22 @@ public interface DviProcessor {
     //down4 160 a[4]. Same as down1, except that a is a four-byte quantity in the range -231 ? a<231.
 
     /**
-     * TODO gene: missing JavaDoc
+     * A DVI <tt>down</tt> instruction has been encountered.
      *
-     * @param off
-     * @param b
+     * @param off the current byte position in the input stream
+     * @param a the number of DVI units to move down. If negative then the
+     *  current position moves upwards.
      */
-    void down(int off, int b);
+    void down(int off, int a);
 
-    //y0 161. Set v ? v+y; i.e., move down y units. With luck, this parameterless command will usually suffice, because the same kind of motion will occur several times in succession; the following commands explain how y gets particular values.
     /**
-     * TODO gene: missing JavaDoc
+     * A DVI <tt>y0</tt> instruction has been encountered.
+     * <p>
+     *  Set <i>v &larr; v + y</i>; thus the current position is moved down
+     *  <i>y</i> DVI units.
+     * </p>
      *
-     * @param ptr
+     * @param ptr the current byte position in the input stream
      */
     void y0(int ptr);
 
@@ -197,18 +210,18 @@ public interface DviProcessor {
     //y4 165 a[4]. Same as y1, but a is four bytes long, -231 ? a<231.
 
     /**
-     * TODO gene: missing JavaDoc
+     * A DVI <tt>y</tt> instruction has been encountered.
      *
-     * @param off
-     * @param b
+     * @param off the current byte position in the input stream
+     * @param a
      */
-    void y(int off, int b);
+    void y(int off, int a);
 
     //z0 166. Set v ? v+z; i.e., move down z units. The `z' commands are like the `y' commands except that they involve z instead of y.
     /**
-     * TODO gene: missing JavaDoc
+     * A DVI <tt>z0</tt> instruction has been encountered.
      *
-     * @param ptr
+     * @param ptr the current byte position in the input stream
      */
     void z0(int ptr);
 
@@ -221,9 +234,9 @@ public interface DviProcessor {
     //z4 170 a[4]. Same as z1, but a is four bytes long, -231 ? a<231.
 
     /**
-     * TODO gene: missing JavaDoc
+     * A DVI <tt>z</tt> instruction has been encountered.
      *
-     * @param off
+     * @param off the current byte position in the input stream
      * @param b
      */
     void z(int off, int b);
@@ -233,9 +246,9 @@ public interface DviProcessor {
     //fnt_num_1 through fnt_num_63 (opcodes 172 to 234). Set f ? 1, ..., f ? 63, respectively.
 
     /**
-     * TODO gene: missing JavaDoc
+     * A DVI <tt>fntNum</tt> instruction has been encountered.
      *
-     * @param off
+     * @param off the current byte position in the input stream
      * @param f
      */
     void fntNum(int off, int f);
@@ -249,9 +262,9 @@ public interface DviProcessor {
     //fnt4 238 k[4]. Same as fnt1, except that k is four bytes long; this is for the really big font numbers (and for the negative ones).
 
     /**
-     * TODO gene: missing JavaDoc
+     * A DVI <tt>fnt</tt> instruction has been encountered.
      *
-     * @param off
+     * @param off the current byte position in the input stream
      * @param k
      */
     void fnt(int off, int k);
@@ -265,9 +278,12 @@ public interface DviProcessor {
     //xxx4 242 k[4] x[k]. Like xxx1, but k can be ridiculously large. TEX82 uses xxx4 when sending a string of length 256 or more.
 
     /**
-     * TODO gene: missing JavaDoc
+     * A DVI <tt>xxx</tt> instruction has been encountered.
+     * This instruction is used to pass some bytes uninterpreted to the DVI
+     * processor. In <logo>TeX</logo> this is accomplished with the
+     * primitive <tt>\special</tt>.
      *
-     * @param off
+     * @param off the current byte position in the input stream
      * @param x
      */
     void xxx(int off, byte[] x);
@@ -281,9 +297,9 @@ public interface DviProcessor {
     //fnt_def4 246 k[4] c[4] s[4] d[4] a[1] l[1] n[a+l]. Define font k, where -231 ? k<231.
 
     /**
-     * TODO gene: missing JavaDoc
+     * A DVI <tt>fntDef</tt> instruction has been encountered.
      *
-     * @param off
+     * @param off the current byte position in the input stream
      * @param k
      * @param c
      * @param s
@@ -293,9 +309,9 @@ public interface DviProcessor {
     void fntDef(int off, int k, int c, int s, int d, String n);
 
     /**
-     * TODO gene: missing JavaDoc
+     * A DVI <tt>pre</tt> instruction has been encountered.
      *
-     * @param off
+     * @param off the current byte position in the input stream
      * @param i
      * @param num
      * @param den
@@ -305,9 +321,9 @@ public interface DviProcessor {
     void pre(int off, int i, int num, int den, int mag, String comment);
 
     /**
-     * TODO gene: missing JavaDoc
+     * A DVI <tt>post</tt> instruction has been encountered.
      *
-     * @param off
+     * @param off the current byte position in the input stream
      * @param p
      * @param num
      * @param den
@@ -330,15 +346,15 @@ public interface DviProcessor {
      */
     void postPost(int off, int bop, int id);
 
-    //Commands 250—255 are undefined at the present time. 
-
     /**
-     * TODO gene: missing JavaDoc
+     * A DVI undefined instruction has been encountered.
+     * This callback is invoked for the op-codes 250-255 wich are undefined
+     * in <logo>TeX</logo>.
      *
      * @param off the current byte position
-     * @param c
-     * @param stream
+     * @param opcode the opcode encountered
+     * @param stream the input stream to read further bytes from
      */
-    void undef(int off, int c, InputStream stream);
+    void undef(int off, int opcode, InputStream stream);
 
 }
