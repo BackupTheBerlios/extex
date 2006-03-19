@@ -25,9 +25,8 @@ import de.dante.extex.backend.documentWriter.DocumentWriter;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
-import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
-import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.language.ligature.LigatureBuilder;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
@@ -59,7 +58,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.73 $
+ * @version $Revision: 1.74 $
  */
 public class Max1 extends TestCase {
 
@@ -93,10 +92,20 @@ public class Max1 extends TestCase {
         }
 
         /**
+         * @see de.dante.extex.typesetter.ListMaker#addAndAdjust(
+         *      de.dante.extex.typesetter.type.NodeList,
+         *      de.dante.extex.typesetter.TypesetterOptions)
+         */
+        public void addAndAdjust(final NodeList list,
+                final TypesetterOptions options) throws TypesetterException {
+
+        }
+
+        /**
          * @see de.dante.extex.typesetter.ListMaker#addGlue(
          *      de.dante.extex.interpreter.type.glue.Glue)
          */
-        public void addGlue(final Glue g) throws TypesetterException {
+        public void add(final FixedGlue g) throws TypesetterException {
 
             sb.append(g.toString());
         }
@@ -388,7 +397,7 @@ public class Max1 extends TestCase {
          * @see de.dante.extex.typesetter.ListMaker#setPrevDepth(
          *      de.dante.extex.interpreter.type.dimen.Dimen)
          */
-        public void setPrevDepth(final Dimen pd) {
+        public void setPrevDepth(final FixedDimen pd) {
 
             // nothing to do
         }
