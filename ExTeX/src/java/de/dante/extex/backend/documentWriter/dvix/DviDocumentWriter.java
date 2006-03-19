@@ -24,7 +24,6 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
-import java.util.logging.Logger;
 
 import de.dante.dviware.Dvi;
 import de.dante.dviware.type.DviBop;
@@ -42,6 +41,10 @@ import de.dante.dviware.type.DviXxx;
 import de.dante.extex.backend.documentWriter.DocumentWriter;
 import de.dante.extex.backend.documentWriter.DocumentWriterOptions;
 import de.dante.extex.backend.documentWriter.SingleDocumentStream;
+import de.dante.extex.color.model.CmykColor;
+import de.dante.extex.color.model.GrayscaleColor;
+import de.dante.extex.color.model.RgbColor;
+import de.dante.extex.interpreter.context.Color;
 import de.dante.extex.interpreter.type.count.FixedCount;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.typesetter.type.Node;
@@ -70,22 +73,21 @@ import de.dante.extex.typesetter.type.node.VirtualCharNode;
 import de.dante.extex.typesetter.type.node.WhatsItNode;
 import de.dante.extex.typesetter.type.page.Page;
 import de.dante.util.exception.GeneralException;
-import de.dante.util.framework.i18n.Localizable;
-import de.dante.util.framework.i18n.Localizer;
-import de.dante.util.framework.logger.LogEnabled;
+import de.dante.util.framework.configuration.Configurable;
+import de.dante.util.framework.configuration.Configuration;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * This class provides a base implementation of a DVI document writer.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class DviDocumentWriter
         implements
             DocumentWriter,
             SingleDocumentStream,
-            Localizable,
-            LogEnabled {
+            Configurable {
 
     /**
      * The constant <tt>MAX_4_BYTE</tt> contains the maximal value of a signed
@@ -94,29 +96,87 @@ public class DviDocumentWriter
     private static final int MAX_4_BYTE = 0x7fffffff;
 
     /**
+     * Get the color representation for the specials.
+     *
+     * @param color the color
+     *
+     * @return the string representation
+     */
+    private static String color(final Color color) {
+
+        if (color instanceof RgbColor) {
+            RgbColor rgb = (RgbColor) color;
+            return "rgb " + ((double) rgb.getRed()) / Color.MAX_VALUE + " "
+                    + ((double) rgb.getGreen()) / Color.MAX_VALUE + " "
+                    + ((double) rgb.getBlue()) / Color.MAX_VALUE;
+        } else if (color instanceof CmykColor) {
+            CmykColor cmyk = (CmykColor) color;
+            return "cmyk " + ((double) cmyk.getCyan()) / Color.MAX_VALUE + " "
+                    + ((double) cmyk.getMagenta()) / Color.MAX_VALUE + " "
+                    + ((double) cmyk.getYellow()) / Color.MAX_VALUE + " "
+                    + ((double) cmyk.getBlack()) / Color.MAX_VALUE;
+        } else if (color instanceof GrayscaleColor) {
+            GrayscaleColor gray = (GrayscaleColor) color;
+            return "gray " + ((double) gray.getGray()) / Color.MAX_VALUE;
+        }
+        return null;
+    }
+
+    /**
      * The field <tt>bopPointer</tt> contains the pointer to the last BOP.
      */
     private int bopPointer = -1;
 
     /**
+     * The field <tt>color</tt> contains the current text color.
+     */
+    private Color color;
+
+    /**
+     * The field <tt>colorSpecials</tt> contains the indicator whether or not to
+     * include color specials.
+     */
+    private boolean colorSpecials = false;
+
+    /**
+     * The field <tt>dviH</tt> contains the h value of the DVI interpreter.
+     */
+    private int dviH;
+
+    /**
+     * The field <tt>dviStack</tt> contains the stack of the DVI interpreter.
+     */
+    private Stack dviStack = new Stack();
+
+    /**
+     * The field <tt>dviV</tt> contains the v value of the DVI interpreter.
+     */
+    private int dviV;
+
+    /**
+     * The field <tt>dviW</tt> contains the w value of the DVI interpreter.
+     */
+    private int dviW;
+
+    /**
+     * The field <tt>dviX</tt> contains the x value of the DVI interpreter.
+     */
+    private int dviX;
+
+    /**
+     * The field <tt>dviY</tt> contains the y value of the DVI interpreter.
+     */
+    private int dviY;
+
+    /**
+     * The field <tt>dviZ</tt> contains the z value of the DVI interpreter.
+     */
+    private int dviZ;
+
+    /**
      * The field <tt>fnt</tt> contains the font number currently active.
      */
-    private int fnt = -1;
-
-    /**
-     * The field <tt>h</tt> contains the h value of the DVI interpreter.
-     */
-    private int h;
-
-    /**
-     * The field <tt>localizer</tt> contains the localizer.
-     */
-    private Localizer localizer;
-
-    /**
-     * The field <tt>logger</tt> contains the logger.
-     */
-    private Logger logger;
+    private int fnt;
 
     /**
      * The field <tt>notInitialized</tt> contains the indicator that the
@@ -142,11 +202,6 @@ public class DviDocumentWriter
     private DviPostamble postamble;
 
     /**
-     * The field <tt>stack</tt> contains the stack of the DVI interpreter.
-     */
-    private Stack stack = new Stack();
-
-    /**
      * The field <tt>stacksize</tt> contains the maximum depth of the stack
      * needed to process all push and pop instructions.
      */
@@ -156,11 +211,6 @@ public class DviDocumentWriter
      * The field <tt>stream</tt> contains the target.
      */
     private OutputStream stream;
-
-    /**
-     * The field <tt>v</tt> contains the v value of the DVI interpreter.
-     */
-    private int v;
 
     /**
      * The field <tt>visitor</tt> contains the visitor carrying the methods for
@@ -185,8 +235,20 @@ public class DviDocumentWriter
         private void down(final List list, final long dist) {
 
             if (dist != 0) {
+
+                dviV += dist;
+
+                for (int i = list.size() - 1; i >= 0; i--) {
+                    Object n = list.get(i);
+                    if (n instanceof DviDown) {
+                        ((DviDown) n).add((int) dist);
+                        return;
+                    } else if (!(n instanceof DviRight)) {
+                        break;
+                    }
+                }
+
                 list.add(new DviDown((int) dist));
-                v += dist;
             }
         }
 
@@ -208,11 +270,11 @@ public class DviDocumentWriter
             }
 
             list.add(DviCode.POP);
-            int[] frame = (int[]) stack.pop();
-            w = frame[0];
-            x = frame[1];
-            y = frame[2];
-            z = frame[3];
+            int[] frame = (int[]) dviStack.pop();
+            dviW = frame[0];
+            dviX = frame[1];
+            dviY = frame[2];
+            dviZ = frame[3];
         }
 
         /**
@@ -223,7 +285,7 @@ public class DviDocumentWriter
         private void push(final List list) {
 
             list.add(DviCode.PUSH);
-            stack.push(new int[]{w, x, y, z});
+            dviStack.push(new int[]{dviW, dviX, dviY, dviZ});
         }
 
         /**
@@ -237,8 +299,37 @@ public class DviDocumentWriter
         private void right(final List list, final long dist) {
 
             if (dist != 0) {
+                dviH += dist;
+
+                for (int i = list.size() - 1; i >= 0; i--) {
+                    Object n = list.get(i);
+                    if (n instanceof DviRight) {
+                        ((DviRight) n).add((int) dist);
+                        return;
+                    } else if (!(n instanceof DviDown)) {
+                        break;
+                    }
+                }
+
                 list.add(new DviRight((int) dist));
-                h += dist;
+            }
+        }
+
+        /**
+         * Insert a color switching special if the current color is not set to
+         * the expected value and remember the current color.
+         *
+         * @param dviCode list of DVI instructions to add the special to
+         * @param col the new color
+         */
+        private void switchColors(final List dviCode, final Color col) {
+
+            if (!col.equals(color)) {
+                color = col;
+                String cc = color(color);
+                if (cc != null) {
+                    dviCode.add(new DviXxx("color " + cc));
+                }
             }
         }
 
@@ -250,8 +341,8 @@ public class DviDocumentWriter
         public Object visitAdjust(final AdjustNode node, final Object value)
                 throws GeneralException {
 
-            // TODO gene: visitAdjust unimplemented
-            return null;
+            // silently ignored
+            return Boolean.TRUE;
         }
 
         /**
@@ -303,23 +394,26 @@ public class DviDocumentWriter
          *      de.dante.extex.typesetter.type.node.CharNode,
          *      java.lang.Object)
          */
-        public Object visitChar(final CharNode node, final Object value)
+        public Object visitChar(final CharNode node, final Object code)
                 throws GeneralException {
 
-            List list = (List) value;
+            List dviCode = (List) code;
             Font font = node.getTypesettingContext().getFont();
-            int f = postamble.mapFont(font, list);
+            int f = postamble.mapFont(font, dviCode);
             if (f != fnt) {
-                list.add(new DviFnt(f));
+                dviCode.add(new DviFnt(f));
                 fnt = f;
+            }
+            if (colorSpecials) {
+                switchColors(dviCode, node.getTypesettingContext().getColor());
             }
 
             if (horizontal) {
-                h += node.getGlyph().getWidth().getValue();
-                list.add(new DviSetChar(node.getCharacter().getCodePoint()));
+                dviH += node.getGlyph().getWidth().getValue();
+                dviCode.add(new DviSetChar(node.getCharacter().getCodePoint()));
                 return Boolean.TRUE; // do not move any more
             } else {
-                list.add(new DviPutChar(node.getCharacter().getCodePoint()));
+                dviCode.add(new DviPutChar(node.getCharacter().getCodePoint()));
                 return null;
             }
         }
@@ -377,14 +471,14 @@ public class DviDocumentWriter
             right(list, node.getShift().getValue());
             down(list, node.getMove().getValue());
             int size = node.size();
-            int v0 = v;
+            int v0 = dviV;
 
             for (int i = 0; i < size; i++) {
                 n = node.get(i);
                 if (n.visit(this, value) == null) {
                     right(list, n.getWidth().getValue());
                 }
-                down(list, v - v0);
+                down(list, dviV - v0);
             }
             horizontal = save;
             return null;
@@ -453,14 +547,19 @@ public class DviDocumentWriter
          *      de.dante.extex.typesetter.type.node.RuleNode,
          *      java.lang.Object)
          */
-        public Object visitRule(final RuleNode node, final Object value)
+        public Object visitRule(final RuleNode node, final Object code)
                 throws GeneralException {
 
-            List list = (List) value;
+            List dviCode = (List) code;
             int a = (int) node.getWidth().getValue();
             int b = (int) node.getHeight().getValue();
-            list.add(new DviSetRule(b, a));
-            h += a;
+
+            if (colorSpecials) {
+                switchColors(dviCode, node.getTypesettingContext().getColor());
+            }
+            
+            dviCode.add(new DviSetRule(b, a));
+            dviH += a;
             return null;
         }
 
@@ -485,13 +584,13 @@ public class DviDocumentWriter
                 final Object value) throws GeneralException {
 
             Node n;
+            List list = (List) value;
             boolean save = horizontal;
             horizontal = false;
-            List list = (List) value;
             right(list, node.getShift().getValue());
             down(list, node.getMove().getValue());
             int size = node.size();
-            int h0 = h;
+            int h0 = dviH;
 
             for (int i = 0; i < size; i++) {
                 n = node.get(i);
@@ -499,7 +598,7 @@ public class DviDocumentWriter
                 if (n.visit(this, value) == null) {
                     down(list, n.getDepth().getValue());
                 }
-                right(list, h0 - h);
+                right(list, h0 - dviH);
             }
             horizontal = save;
             return null;
@@ -541,26 +640,6 @@ public class DviDocumentWriter
     };
 
     /**
-     * The field <tt>w</tt> contains the w value of the DVI interpreter.
-     */
-    private int w;
-
-    /**
-     * The field <tt>x</tt> contains the x value of the DVI interpreter.
-     */
-    private int x;
-
-    /**
-     * The field <tt>y</tt> contains the y value of the DVI interpreter.
-     */
-    private int y;
-
-    /**
-     * The field <tt>z</tt> contains the z value of the DVI interpreter.
-     */
-    private int z;
-
-    /**
      * Creates a new object.
      *
      * @param options the document writer options
@@ -592,21 +671,16 @@ public class DviDocumentWriter
     }
 
     /**
-     * @see de.dante.util.framework.i18n.Localizable#enableLocalization(
-     *      de.dante.util.framework.i18n.Localizer)
+     * @see de.dante.util.framework.configuration.Configurable#configure(
+     *      de.dante.util.framework.configuration.Configuration)
      */
-    public void enableLocalization(final Localizer l) {
+    public void configure(final Configuration config)
+            throws ConfigurationException {
 
-        this.localizer = l;
-    }
-
-    /**
-     * @see de.dante.util.framework.logger.LogEnabled#enableLogging(
-     *      java.util.logging.Logger)
-     */
-    public void enableLogging(final Logger l) {
-
-        this.logger = l;
+        String col = config.getAttribute("color");
+        if ( col != null) {
+            colorSpecials = Boolean.valueOf(col).booleanValue();
+        }
     }
 
     /**
@@ -642,6 +716,9 @@ public class DviDocumentWriter
      */
     public void setParameter(final String name, final String value) {
 
+        if ("color".equals(name)) {
+            colorSpecials = Boolean.valueOf(value).booleanValue();
+        }
     }
 
     /**
@@ -663,22 +740,31 @@ public class DviDocumentWriter
         int p = pointer;
         pointer += new DviBop(pageno, bopPointer).write(stream);
         bopPointer = p;
-        h = 0;
-        v = 0;
-        w = 0;
-        x = 0;
-        y = 0;
-        z = 0;
-        List list = new ArrayList();
+        dviH = 0;
+        dviV = 0;
+        dviW = 0;
+        dviX = 0;
+        dviY = 0;
+        dviZ = 0;
+        fnt = -1;
+        List dviCode = new ArrayList();
         NodeList nodes = page.getNodes();
-        nodes.visit(visitor, list);
 
-        optimize(list);
+        if (colorSpecials) {
+            String col = color(page.getColor());
+            if (col != null) {
+                dviCode.add(new DviXxx("background " + col));
+            }
+        }
+
+        nodes.visit(visitor, dviCode);
+
+        optimize(dviCode);
 
         int stackDepth = 0;
 
-        for (int i = 0; i < list.size(); i++) {
-            DviCode code = (DviCode) list.get(i);
+        for (int i = 0; i < dviCode.size(); i++) {
+            DviCode code = (DviCode) dviCode.get(i);
             pointer += code.write(stream);
             if (code == DviCode.PUSH) {
                 stackDepth++;
