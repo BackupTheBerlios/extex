@@ -59,20 +59,20 @@ import de.dante.util.exception.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
-public class Hfi extends AbstractHorizontalCode {
-
-    /**
-     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
-     */
-    protected static final long serialVersionUID = 2005L;
+public class Hfi extends AbstractHorizontalCode implements HorizontalSkip {
 
     /**
      * The field <tt>FIL</tt> contains the glue to insert for this primitive.
      */
     private static final Glue FI = new Glue(GlueComponent.ZERO,
             GlueComponent.ONE_FI, GlueComponent.ZERO);
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * Creates a new object.
@@ -97,10 +97,22 @@ public class Hfi extends AbstractHorizontalCode {
 
         switchToHorizontalMode(typesetter);
         try {
-            typesetter.addGlue(FI);
+            typesetter.add(FI);
         } catch (GeneralException e) {
             throw new InterpreterException(e);
         }
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.primitives.typesetter.spacing.HorizontalSkip#getGlue(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public Glue getGlue(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
+
+        return FI;
     }
 
 }
