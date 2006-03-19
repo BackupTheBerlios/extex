@@ -52,9 +52,9 @@ import de.dante.util.exception.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
-public class Vss extends AbstractVerticalCode {
+public class Vss extends AbstractVerticalCode implements VerticalSkip {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
@@ -90,10 +90,22 @@ public class Vss extends AbstractVerticalCode {
 
         ensureVerticalMode(typesetter);
         try {
-            typesetter.addGlue(VSS);
+            typesetter.add(VSS);
         } catch (GeneralException e) {
             throw new InterpreterException(e);
         }
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.primitives.typesetter.spacing.VerticalSkip#getGlue(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public Glue getGlue(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
+
+        return VSS;
     }
 
 }

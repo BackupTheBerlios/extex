@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -26,10 +26,10 @@ import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.typesetter.Typesetter;
 
 /**
- * This interface describes macros which produce a vertical glue.
+ * This interface describes macros which produces a vertical glue.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public interface VerticalSkip {
 
@@ -43,7 +43,7 @@ public interface VerticalSkip {
      *
      * @throws InterpreterException in case of an error
      */
-    Glue verticalSkip(Context context, TokenSource source, Typesetter typesetter)
+    Glue getGlue(Context context, TokenSource source, Typesetter typesetter)
             throws InterpreterException;
 
 }

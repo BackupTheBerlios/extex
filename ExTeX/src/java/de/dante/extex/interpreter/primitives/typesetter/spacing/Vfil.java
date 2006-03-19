@@ -52,7 +52,7 @@ import de.dante.util.exception.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Vfil extends AbstractVerticalCode implements VerticalSkip {
 
@@ -90,7 +90,7 @@ public class Vfil extends AbstractVerticalCode implements VerticalSkip {
 
         ensureVerticalMode(typesetter);
         try {
-            typesetter.addGlue(FIL);
+            typesetter.add(FIL);
         } catch (GeneralException e) {
             throw new InterpreterException(e);
         }
@@ -101,7 +101,7 @@ public class Vfil extends AbstractVerticalCode implements VerticalSkip {
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
-    public Glue verticalSkip(final Context context, final TokenSource source,
+    public Glue getGlue(final Context context, final TokenSource source,
             final Typesetter typesetter) {
 
         return FIL;
