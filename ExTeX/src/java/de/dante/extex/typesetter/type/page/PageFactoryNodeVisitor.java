@@ -6,10 +6,14 @@ import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.NodeVisitor;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This interface describes a
+ * {@link de.dante.extex.typesetter.type.NodeVisitor NodeVisitor} which is able
+ * to take a {@link de.dante.extex.typesetter.type.page.Page Page},
+ * a {@link de.dante.extex.interpreter.context.Context Context},
+ * and a  {@link de.dante.extex.typesetter.Typesetter Typesetter}.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface PageFactoryNodeVisitor extends NodeVisitor {
 
