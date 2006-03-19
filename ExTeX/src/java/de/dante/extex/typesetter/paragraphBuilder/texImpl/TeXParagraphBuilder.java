@@ -34,7 +34,6 @@ import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.glue.GlueComponent;
 import de.dante.extex.interpreter.type.glue.WideGlue;
 import de.dante.extex.language.Language;
-import de.dante.extex.language.hyphenation.Hyphenator;
 import de.dante.extex.language.hyphenation.exception.HyphenationException;
 import de.dante.extex.typesetter.Badness;
 import de.dante.extex.typesetter.Discardable;
@@ -80,44 +79,46 @@ import de.dante.util.framework.logger.LogEnabled;
  * This class implements the paragraph breaking algorithm as used in
  * <logo>TeX</logo>.
  *
- * The implementation stared as a direct translation of the original sources to
- * Java. This includes the original comments. Thus most of the original comments
- * can still be found in this file. They are typeset in italics.
+ * The implementation stared as a direct translation of the original sources
+ * to Java. This includes the original comments. Thus most of the original
+ * comments can still be found in this file. They are typeset in italics.
  *
  * <i>
- * 813. Breaking paragraphs into lines.
- *
- * We come now to what is probably the most interesting algorithm
- * of <logo>TeX</logo>: the mechanism for choosing the "best possible"
- * breakpoints that yield the individual lines of a paragraph.
- * <logo>TeX</logo>'s line-breaking algorithm takes a given horizontal list and
- * converts it to a sequence of boxes that are appended to the
- * current vertical list. In the course of doing this, it creates
- * a special data structure containing three kinds of records that
- * are not used elsewhere in <logo>TeX</logo>. Such nodes are created while a
- * paragraph is being processed, and they are destroyed
- * afterwards; thus, the other parts of <logo>TeX</logo> do not need to know
- * anything about how line-breaking is done.
- *
- * The method used here is based on an approach devised by Michael
- * F. Plass and the author in 1977, subsequently generalized and
- * improved by the same two people in 1980. A detailed discussion
- * appears in SOFTWARE---Practice & Experience 11 (1981),
- * 1119--1184, where it is shown that the line-breaking problem
- * can be regarded as a special case of the problem of computing
- * the shortest path in an acyclic network. The cited paper
- * includes numerous examples and describes the history of line
- * breaking as it has been practiced by printers through the ages.
- * The present implementation adds two new ideas to the algorithm
- * of 1980: memory space requirements are considerably reduced by
- * using smaller records for inactive nodes than for active ones,
- * and arithmetic overflow is avoided by using "delta distances"
- * instead of keeping track of the total distance from the
- * beginning of the paragraph to the current point.
+ *  <p>
+ *   813. Breaking paragraphs into lines.
+ *  </p>
+ *  <p>
+ *   We come now to what is probably the most interesting algorithm of
+ *   <logo>TeX</logo>: the mechanism for choosing the "best possible"
+ *   breakpoints that yield the individual lines of a paragraph.
+ *   <logo>TeX</logo>'s line-breaking algorithm takes a given horizontal list
+ *   and converts it to a sequence of boxes that are appended to the current
+ *   vertical list. In the course of doing this, it creates a special data
+ *   structure containing three kinds of records that are not used elsewhere
+ *   in <logo>TeX</logo>. Such nodes are created while a paragraph is being
+ *   processed, and they are destroyed afterwards; thus, the other parts of
+ *   <logo>TeX</logo> do not need to know anything about how line-breaking is
+ *   done.
+ *  </p>
+ *  <p>
+ *   The method used here is based on an approach devised by Michael F. Plass
+ *   and the author in 1977, subsequently generalized and improved by the same
+ *   two people in 1980. A detailed discussion appears in
+ *   SOFTWARE&mdash;Practice &amp; Experience 11 (1981), 1119&ndash;1184,
+ *   where it is shown that the line-breaking problem can be regarded as a
+ *   special case of the problem of computing the shortest path in an acyclic
+ *   network. The cited paper includes numerous examples and describes the
+ *   history of line breaking as it has been practiced by printers through the
+ *   ages. The present implementation adds two new ideas to the algorithm of
+ *   1980: memory space requirements are considerably reduced by using smaller
+ *   records for inactive nodes than for active ones, and arithmetic overflow
+ *   is avoided by using "delta distances" instead of keeping track of the
+ *   total distance from the beginning of the paragraph to the current point.
+ *  </p>
  * </i>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class TeXParagraphBuilder
         implements
@@ -157,6 +158,11 @@ public class TeXParagraphBuilder
     /**
      * <doc name="brokenpenalty" type="register">
      * <h3>The Parameter <tt>\brokenpenalty</tt></h3>
+     *
+     * <p>
+     *  The parameter <tt>\brokenpenalty</tt> contains the penalty which is
+     *  added is a line ends within a hyphenation point.
+     * </p>
      *
      * </doc>
      */
@@ -1505,7 +1511,7 @@ public class TeXParagraphBuilder
      * disc_width: scaled; {the length of discretionary material
      * preceding a break}
      */
-    private Dimen discretiaonaryWidth = new Dimen();
+    private Dimen discretionaryWidth = new Dimen();
 
     /** 840.
      *
@@ -1535,7 +1541,7 @@ public class TeXParagraphBuilder
         // s <-- link(s);
         // end ;
         // break_width[1] <-- break_width[1]+disc_width;
-        breakWidth.add(discretiaonaryWidth);
+        breakWidth.add(discretionaryWidth);
         // if post_break(cur_p)=null then
         if (postBreak != null) {
             breakWidth.add(postBreak.getWidth());
@@ -1845,7 +1851,7 @@ public class TeXParagraphBuilder
      *
      * «Compute the new line width 850» ::=
      *
-     * @param line the line numer
+     * @param line the line number
      */
     private void computeLineWidth(final long line) {
 
@@ -2100,7 +2106,7 @@ public class TeXParagraphBuilder
      * «Record a new feasible break 855» ::=
      *
      * @param nodes the node list for the paragraph to break
-     * @param penalty the panalty
+     * @param penalty the penalty
      * @param badness the badness
      */
     private void recordNewFeasibleBreak(final NodeList nodes,
@@ -2152,7 +2158,7 @@ public class TeXParagraphBuilder
      *
      * @param nodes the node list for the paragraph to break
      * @param d the demerits
-     * @param penalty the panalty
+     * @param penalty the penalty
      * @param badness the badness
      */
     private void printFeasibleBreak(final NodeList nodes, final long d,
@@ -2835,7 +2841,7 @@ public class TeXParagraphBuilder
             // begin s <-- pre_break(cur_p);
             NodeList nl = node.getPreBreak();
             // disc_width <-- 0;
-            discretiaonaryWidth.set(0);
+            discretionaryWidth.set(0);
             // if s=null then
             if (nl == null || nl.size() == 0) {
                 // try_break(ex_hyphen_penalty,hyphenated)
@@ -2846,13 +2852,13 @@ public class TeXParagraphBuilder
                 // «Add the width of node s to disc_width 870»;
                 // s <-- link(s);
                 // until s=null;
-                discretiaonaryWidth.add(node.getWidth());
+                discretionaryWidth.add(node.getWidth());
                 // act_width <-- act_width+disc_width;
-                activeWidth.add(discretiaonaryWidth);
+                activeWidth.add(discretionaryWidth);
                 // try_break(hyphen_penalty,hyphenated);
                 tryBreak(nodes, hyphenPenalty, true);
                 // act_width <-- act_width-disc_width;
-                activeWidth.subtract(discretiaonaryWidth);
+                activeWidth.subtract(discretionaryWidth);
                 // end ;
             }
             // r <-- replace_count(cur_p);
@@ -3543,7 +3549,6 @@ public class TeXParagraphBuilder
             final NodeList line, final WideGlue lineGlue, final NodeList vlist) {
 
         Node n;
-
         int i = idx;
 
         if (postDiscBreak != null) {
@@ -3561,6 +3566,18 @@ public class TeXParagraphBuilder
             }
             postDiscBreak = null;
             i++;
+        } else {
+            while (i < to) {
+                n = nodes.get(i);
+                if (n instanceof GlueNode) {
+                    i++;
+                } else if (n instanceof MarkNode || n instanceof InsertionNode
+                        || n instanceof AdjustNode) {
+                    vlist.add(n);
+                } else {
+                    break;
+                }
+            }
         }
 
         lineGlue.set(Dimen.ZERO_PT);
