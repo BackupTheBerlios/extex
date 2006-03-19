@@ -33,7 +33,7 @@ import de.dante.util.exception.GeneralException;
  * @see "<logo>TeX</logo> &ndash; The Program [149]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class AlignedLeadersNode extends GlueNode implements Node {
 
@@ -53,7 +53,7 @@ public class AlignedLeadersNode extends GlueNode implements Node {
      * @param node the node or node list to stretch or repeat
      * @param glue the desired size
      */
-    public AlignedLeadersNode(final Node node, final Glue glue) {
+    public AlignedLeadersNode(final Node node, final Glue glue, boolean horizontal) {
 
         super(glue, true);
         this.node = node;

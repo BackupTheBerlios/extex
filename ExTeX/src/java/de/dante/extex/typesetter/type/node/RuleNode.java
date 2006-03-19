@@ -32,7 +32,7 @@ import de.dante.util.exception.GeneralException;
  * @see "<logo>TeX</logo> &ndash; The Program [138]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class RuleNode extends AbstractNode implements Node {
 
@@ -47,30 +47,49 @@ public class RuleNode extends AbstractNode implements Node {
     private TypesettingContext context;
 
     /**
+     * The field <tt>horizontal</tt> contains the indicator that this is a
+     * horizontal rule; otherwise it is a vertical rule.
+     */
+    private boolean horizontal;
+
+    /**
      * Creates a new object.
      *
      * @param width the width of the rule
      * @param height the height of the rule
      * @param depth the depth of the rule
-     * @param theContext the typographic context
+     * @param horizontal the indicator that this is a
+     *  horizontal rule; otherwise it is a vertical rule
+     * @param theContext the typesetting context
      *
      * @see "<logo>TeX</logo> &ndash; The Program [139]"
      */
     public RuleNode(final Dimen width, final Dimen height, final Dimen depth,
-            final TypesettingContext theContext) {
+            final TypesettingContext theContext, boolean horizontal) {
 
         super(width, height, depth);
         this.context = theContext;
+        this.horizontal = horizontal;
     }
 
     /**
-     * Getter for the typographic context.
+     * Getter for the typesetting context.
      *
-     * @return the typographic context.
+     * @return the typesetting context.
      */
-    public TypesettingContext getContext() {
+    public TypesettingContext getTypesettingContext() {
 
         return context;
+    }
+
+    /**
+     * Getter for horizontal.
+     *
+     * @return the horizontal
+     */
+    public boolean isHorizontal() {
+
+        return this.horizontal;
     }
 
     /**
