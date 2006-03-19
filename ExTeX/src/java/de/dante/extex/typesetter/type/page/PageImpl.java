@@ -19,6 +19,7 @@
 
 package de.dante.extex.typesetter.type.page;
 
+import de.dante.extex.interpreter.context.Color;
 import de.dante.extex.interpreter.type.count.FixedCount;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.type.NodeList;
@@ -28,9 +29,14 @@ import de.dante.extex.typesetter.type.NodeList;
  * contains additional administrative information.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class PageImpl implements Page {
+
+    /**
+     * The field <tt>background</tt> contains the background color.
+     */
+    private Color background = null;
 
     /**
      * The field <tt>mediaHeight</tt> contains the height of the paper.
@@ -78,6 +84,14 @@ public class PageImpl implements Page {
         super();
         this.nodes = nodes;
         this.pageNo = pageNo;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.page.Page#getColor()
+     */
+    public Color getColor() {
+
+        return background;
     }
 
     /**
@@ -131,6 +145,15 @@ public class PageImpl implements Page {
     }
 
     /**
+     * @see de.dante.extex.typesetter.type.page.Page#setColor(
+     *      de.dante.extex.interpreter.context.Color)
+     */
+    public void setColor(final Color background) {
+
+        this.background = background;
+    }
+
+    /**
      * Setter for mediaHeight.
      *
      * @param mediaHeight the mediaHeight to set
@@ -162,6 +185,9 @@ public class PageImpl implements Page {
      * Setter for media width.
      *
      * @param width the mediaWidth to set
+     *
+     * @see de.dante.extex.typesetter.type.page.Page#setMediaWidth(
+     *      de.dante.extex.interpreter.type.dimen.Dimen)
      */
     public void setMediaWidth(final Dimen width) {
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -19,6 +19,7 @@
 
 package de.dante.extex.typesetter.type.page;
 
+import de.dante.extex.interpreter.context.Color;
 import de.dante.extex.interpreter.type.count.FixedCount;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.type.NodeList;
@@ -28,9 +29,16 @@ import de.dante.extex.typesetter.type.NodeList;
  * access to additional parameters.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface Page {
+
+    /**
+     * Getter for the background color.
+     *
+     * @return the background color
+     */
+    Color getColor();
 
     /**
      * Getter for the height of the media.
@@ -70,6 +78,20 @@ public interface Page {
     NodeList getNodes();
 
     /**
+     * Getter for the array of page numbers.
+     *
+     * @return the array of page numbers
+     */
+    FixedCount[] getPageNo();
+
+    /**
+     * Setter for the background color.
+     *
+     * @param background te background color
+     */
+    void setColor(Color background);
+
+    /**
      * Setter for the height of the media.
      *
      * @param height the media height
@@ -97,10 +119,4 @@ public interface Page {
      */
     void setMediaWidth(Dimen width);
 
-    /**
-     * TODO gene: missing JavaDoc
-     *
-     * @return
-     */
-    FixedCount[] getPageNo();
 }
