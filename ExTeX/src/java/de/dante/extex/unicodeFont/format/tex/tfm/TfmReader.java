@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -21,17 +21,19 @@ package de.dante.extex.unicodeFont.format.tex.tfm;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 
-import de.dante.extex.font.exception.FontException;
+import de.dante.extex.unicodeFont.exception.FontException;
 import de.dante.extex.unicodeFont.format.pfb.PfbParser;
 import de.dante.extex.unicodeFont.format.pl.PlFormat;
 import de.dante.extex.unicodeFont.format.pl.PlWriter;
-import de.dante.extex.font.type.tfm.enc.EncFactory;
-import de.dante.extex.font.type.tfm.psfontsmap.PSFontEncoding;
-import de.dante.extex.font.type.tfm.psfontsmap.PSFontsMapReader;
+import de.dante.extex.unicodeFont.format.tex.psfontmap.PsFontEncoding;
+import de.dante.extex.unicodeFont.format.tex.psfontmap.PsFontsMapReader;
+import de.dante.extex.unicodeFont.format.tex.psfontmap.enc.EncFactory;
 import de.dante.util.EFMWriterConvertible;
 import de.dante.util.XMLWriterConvertible;
+import de.dante.util.file.random.RandomAccessInputStream;
 import de.dante.util.file.random.RandomAccessR;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 import de.dante.util.xml.XMLStreamWriter;
@@ -42,7 +44,7 @@ import de.dante.util.xml.XMLStreamWriter;
  * @see <a href="package-summary.html#TFMformat">TFM-Format</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class TfmReader
         implements
@@ -52,16 +54,29 @@ public class TfmReader
             Serializable {
 
     /**
-     * fontname
+     * The font name.
      */
     private String fontname;
 
     /**
      * Create e new object.
      *
-     * @param rar       the input
-     * @param afontname the fontname
-     * @throws IOException if a IO-error occured
+     * @param in       The input.
+     * @param afontname The font name.
+     * @throws IOException if a IO-error occurred.
+     */
+    public TfmReader(final InputStream in, final String afontname)
+            throws IOException {
+
+        this(new RandomAccessInputStream(in), afontname);
+    }
+
+    /**
+     * Create e new object.
+     *
+     * @param rar       The input.
+     * @param afontname The font name.
+     * @throws IOException if a IO-error occurred.
      */
     public TfmReader(final RandomAccessR rar, final String afontname)
             throws IOException {
@@ -94,47 +109,47 @@ public class TfmReader
     }
 
     /**
-     * the lengths in the file
+     * The lengths in the file.
      */
     private TfmHeaderLengths lengths;
 
     /**
-     * the header
+     * The header.
      */
     private TfmHeaderArray header;
 
     /**
-     * the char info
+     * The char info.
      */
     private TfmCharInfoArray charinfo;
 
     /**
-     * the width
+     * The width.
      */
     private TfmWidthArray width;
 
     /**
-     * the height
+     * The height.
      */
     private TfmHeightArray height;
 
     /**
-     * the depth
+     * The depth.
      */
     private TfmDepthArray depth;
 
     /**
-     * the italic
+     * The italic.
      */
     private TfmItalicArray italic;
 
     /**
-     * the lig/kern array
+     * The lig/kern array.
      */
     private TfmLigKernArray ligkern;
 
     /**
-     * the kern
+     * The kern.
      */
     private TfmKernArray kern;
 
@@ -144,7 +159,7 @@ public class TfmReader
     private TfmExtenArray exten;
 
     /**
-     * the param
+     * The param.
      */
     private TfmParamArray param;
 
@@ -287,7 +302,7 @@ public class TfmReader
      * Returns the psfenc.
      * @return Returns the psfenc.
      */
-    public PSFontEncoding getPsfenc() {
+    public PsFontEncoding getPsfenc() {
 
         return psfenc;
     }
@@ -296,7 +311,7 @@ public class TfmReader
      * Returns the psfontmap.
      * @return Returns the psfontmap.
      */
-    public PSFontsMapReader getPsfontmap() {
+    public PsFontsMapReader getPsfontmap() {
 
         return psfontmap;
     }
@@ -382,32 +397,32 @@ public class TfmReader
     //    }
     //
     /**
-     * psfontmap
+     * psfontmap.
      */
-    private PSFontsMapReader psfontmap;
+    private PsFontsMapReader psfontmap;
 
     /**
-     * Encoderfactory
+     * Encoderfactory.
      */
     private EncFactory encfactory;
 
     /**
-     * psfontencoding
+     * psfontencoding.
      */
-    private PSFontEncoding psfenc;
+    private PsFontEncoding psfenc;
 
     /**
-     * encodingtable
+     * encodingtable.
      */
     private String[] enctable;
 
     /**
-     * pfb filename
+     * pfb filename.
      */
     private String pfbfilename;
 
     /**
-     * the pfb parser
+     * the pfb parser.
      */
     private PfbParser pfbparser;
 
@@ -437,13 +452,13 @@ public class TfmReader
     }
 
     /**
-     * Set the fontmap reader an d the encoding factory
+     * Set the fontmap reader and the encoding factory.
      * @param apsfontmap    the psfonts.map reader
      * @param encf          the encoding factory
      * @throws FontException if a font-erorr occured
      * @throws ConfigurationException from the resourcefinder
      */
-    public void setFontMapEncoding(final PSFontsMapReader apsfontmap,
+    public void setFontMapEncoding(final PsFontsMapReader apsfontmap,
             final EncFactory encf) throws FontException, ConfigurationException {
 
         psfontmap = apsfontmap;
@@ -459,17 +474,19 @@ public class TfmReader
                     enctable = encfactory.getEncodingTable(psfenc.getEncfile());
                 }
                 // filename
-                if (psfenc.getPfbfile() != null) {
-                    pfbfilename = filenameWithoutPath(psfenc.getPfbfile());
+                if (psfenc.getFontfile() != null) {
+                    pfbfilename = filenameWithoutPath(psfenc.getFontfile());
                 }
                 // glyphname
-                charinfo.setEncodingTable(enctable);
+                if (enctable != null) {
+                    charinfo.setEncodingTable(enctable);
+                } 
             }
         }
     }
 
     /**
-     * remove the path, if exists
+     * remove the path, if exists.
      * @param  file the filename
      * @return  the filename without the path
      */

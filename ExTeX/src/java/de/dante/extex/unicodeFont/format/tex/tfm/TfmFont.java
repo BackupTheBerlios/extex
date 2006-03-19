@@ -50,7 +50,7 @@ import de.dante.util.resource.PropertyConfigurable;
  * TODO add EE00 from Unicode
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 
 public class TfmFont
@@ -579,5 +579,15 @@ public class TfmFont
         }
         calculateSize();
         setFontDimenValues();
+    }
+
+    
+    /**
+     * Returns the tfmReader.
+     * @return Returns the tfmReader.
+     */
+    public TfmReader getTfmReader() {
+    
+        return tfmReader;
     }
 }
