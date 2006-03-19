@@ -67,7 +67,7 @@ import de.dante.util.resource.ResourceFinder;
  * This class provides a converter to PostScript code.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class PsBasicConverter
         implements
@@ -81,7 +81,7 @@ public class PsBasicConverter
      * for output.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.4 $
+     * @version $Revision: 1.5 $
      */
     private class Buffer {
 
@@ -630,7 +630,7 @@ public class PsBasicConverter
         StringBuffer out = (StringBuffer) oOut;
         buffer.clear(out);
 
-        TypesettingContext tc = node.getContext();
+        TypesettingContext tc = node.getTypesettingContext();
         Color color = tc.getColor();
         if (color != currentColor) {
             switchColors(color, out);
