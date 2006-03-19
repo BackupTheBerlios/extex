@@ -45,7 +45,7 @@ import de.dante.util.exception.GeneralException;
  * This is a implementation of a dvi document writer.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class DviWriter {
 
@@ -267,7 +267,7 @@ public class DviWriter {
     private static final int DVI_TRAILING_BYTE = 223;
 
     /**
-     * The size of the dvi-file is a mupltiply of this value.
+     * The size of the dvi-file is a multiply of this value.
      *
      */
     private static final int DVI_ALIGN_SIZE = 4;
@@ -285,7 +285,7 @@ public class DviWriter {
     private static final int MINIMUM_TRAILING_BYTES = 4;
 
     /**
-     * Dvi file base units per metre.
+     * Dvi file base units per meter.
      *
      * @see #SP_NUMERATOR
      * @see "TeX -- The Program [587]"
@@ -312,7 +312,7 @@ public class DviWriter {
     private static final int NUMERATOR_PT_TO_CM = 254;
 
     /**
-     * Denominator for converting points to centimetre.
+     * Denominator for converting points to centimeter.
      *
      * @see #SP_DENOMINATOR
      * @see "TeX -- The Program [587]"
@@ -321,7 +321,7 @@ public class DviWriter {
     private static final int DENOMINATOR_PT_TO_CM = 7227;
 
     /**
-     * Describes the unit of messurement (sp).
+     * Describes the unit of measurement (sp).
      * 1sp=<code>SP_NUMERATOR</code>/{@link #SP_DENOMINATOR
      * SP_DENOMINATOR}*10^-7&nbsp;m.
      *
@@ -330,7 +330,7 @@ public class DviWriter {
             * DVI_BASE_SIZE_PER_METRE;
 
     /**
-     * Describes the unit of messurement (sp).  1sp={@link
+     * Describes the unit of measurement (sp).  1sp={@link
      * #SP_NUMERATOR SP_NUMERATOR}/<code>SP_DENOMINATOR</code>*10^-7&nbsp;m.
      *
      * @see "TeX -- The Program [586]"
@@ -532,6 +532,7 @@ public class DviWriter {
      * be called.
      *
      * @exception GeneralException if an error occurs
+     * @throws IOException ...
      */
     public void endDviFile() throws GeneralException, IOException {
 
@@ -597,7 +598,7 @@ public class DviWriter {
 
     /**
      * <code>endPage</code> terminates the current page.  The page
-     * have to be startet with <code>{@link #beginPage()
+     * have to be started with <code>{@link #beginPage()
      * beginPage()}</code>.
      *
      * @exception GeneralException if an error occurs
@@ -615,7 +616,7 @@ public class DviWriter {
      */
 
     /**
-     * Define a font used in the dvi-file.
+     * Define a font used in the dvi file.
      *
      * @param font the <code>Font</code>
      * @exception GeneralException if an error occurs
@@ -666,7 +667,7 @@ public class DviWriter {
     }
 
     /**
-     * Write the definition of all definied fonts.
+     * Write the definition of all defined fonts.
      *
      * @exception GeneralException if an error occurs
      */
@@ -678,7 +679,7 @@ public class DviWriter {
     }
 
     /**
-     * Write a charnode to the dvi-file.
+     * Write a char node to the dvi file.
      *
      * @param node the <code>CharNode</code>
      * @exception GeneralException if an error occurs
@@ -704,7 +705,7 @@ public class DviWriter {
     }
 
     /**
-     * Write node to the dvi-file.
+     * Write node to the dvi file.
      *
      * @param node a <code>RuleNode</code>
      * @exception GeneralException if an error occurs
@@ -746,7 +747,7 @@ public class DviWriter {
     }
 
     /**
-     * Write space to the the dvi-file.
+     * Write space to the the dvi file.
      *
      * @param space the space
      * @param mode current Mode
