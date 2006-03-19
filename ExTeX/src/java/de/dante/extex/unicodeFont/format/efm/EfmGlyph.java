@@ -28,7 +28,7 @@ import de.dante.util.UnicodeChar;
  * Class for the efm glyph.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class EfmGlyph {
@@ -156,6 +156,15 @@ public class EfmGlyph {
     }
 
     /**
+     * Returns the ligature map.
+     * @return Returns the ligature map.
+     */
+    public Map getLigature() {
+
+        return ligature;
+    }
+
+    /**
      * Add a kerning.
      * @param kern  The kerning.
      */
@@ -164,4 +173,12 @@ public class EfmGlyph {
         kerning.put(kern.getUnicodeChar(), kern);
     }
 
+    /**
+     * Returns the kerning map.
+     * @return Returns the kerning map.
+     */
+    public Map getKerning() {
+
+        return kerning;
+    }
 }

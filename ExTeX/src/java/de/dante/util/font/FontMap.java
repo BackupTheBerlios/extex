@@ -35,12 +35,10 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.omg.IOP.ENCODING_CDR_ENCAPS;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import de.dante.extex.font.type.tfm.enc.exception.FontEncodingFileNotFoundException;
 import de.dante.extex.unicodeFont.exception.FontException;
 import de.dante.extex.unicodeFont.exception.FontIOException;
 import de.dante.extex.unicodeFont.format.efm.EfmFont;
@@ -48,12 +46,9 @@ import de.dante.extex.unicodeFont.format.pfb.PfbParser;
 import de.dante.extex.unicodeFont.format.tex.psfontmap.PsFontEncoding;
 import de.dante.extex.unicodeFont.format.tex.psfontmap.PsFontsMapReader;
 import de.dante.extex.unicodeFont.format.tex.psfontmap.enc.EncFactory;
-import de.dante.extex.unicodeFont.format.tex.tfm.TfmFont;
 import de.dante.extex.unicodeFont.format.tex.tfm.TfmReader;
 import de.dante.extex.unicodeFont.glyphname.GlyphName;
-import de.dante.extex.unicodeFont.key.FontKey;
 import de.dante.extex.unicodeFont.key.FontKeyFactory;
-import de.dante.extex.unicodeFont.type.FontPfb;
 import de.dante.util.UnicodeChar;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 import de.dante.util.xml.XMLStreamWriter;
@@ -70,7 +65,7 @@ import de.dante.util.xml.XMLStreamWriter;
  * </ul>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 
 public class FontMap extends AbstractFontUtil {
@@ -294,7 +289,7 @@ public class FontMap extends AbstractFontUtil {
         InputStream efm = getFinder().findResource(efmfile, "");
         if (efm == null) {
             // create efm file from the tfm file
-            createEfmFile(texfontname, efmfile, exfontfile, texencfile);
+            createEfmFile(texfontname, efmfile, exfontfile, texencfile, encfile);
         }
 
         MapEntry entry = new MapEntry(texfontname, encfile, efmfile, exfontfile);
@@ -322,12 +317,13 @@ public class FontMap extends AbstractFontUtil {
      * @param efmfile       The efm file.
      * @param exfontfile    The font file e.g. cmr12.pfb.
      * @param texencfile    The tex encoding file.
+     * @param encfile       The new encoding file.
      * @throws ConfigurationException from the configuration system.
      * @throws FontException if an font error occurred.
      */
     private void createEfmFile(final String texfontname, final String efmfile,
-            final String exfontfile, final String texencfile)
-            throws ConfigurationException, FontException {
+            final String exfontfile, final String texencfile,
+            final String encfile) throws ConfigurationException, FontException {
 
         try {
             // vf ?
@@ -374,6 +370,8 @@ public class FontMap extends AbstractFontUtil {
                     tfmReader.setFontMapEncoding(psFontMapReader, encfactory);
 
                     EfmFont efmFont = new EfmFont(tfmReader);
+                    efmFont.setEncoding(encfile);
+
                     efmFont.write(new FileOutputStream(efmoutput
                             + File.separator + efmfile), DEFAULTENCODING);
 

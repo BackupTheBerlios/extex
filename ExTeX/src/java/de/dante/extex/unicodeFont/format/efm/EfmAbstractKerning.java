@@ -25,10 +25,10 @@ import de.dante.util.UnicodeChar;
  * Abstract class for e efm kerning.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
-public class EfmAbstractKerning implements EfmKerning {
+public abstract class EfmAbstractKerning implements EfmKerning {
 
     /**
      * The unicode char.

@@ -19,16 +19,39 @@
 
 package de.dante.extex.unicodeFont.format.efm;
 
+import java.io.IOException;
+
 import de.dante.util.UnicodeChar;
+import de.dante.util.xml.XMLStreamWriter;
 
 /**
  * Class for a efm ligature.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class EfmLigature {
+
+    /**
+     * The attribute <code>lithex</code>.
+     */
+    private static final String ATT_LITHEX = "lithex";
+
+    /**
+     * The attribute <code>let</code>.
+     */
+    private static final String ATT_LET = "let";
+
+    /**
+     * The attribute <code>lighex</code>.
+     */
+    private static final String ATT_LIGHEX = "lighex";
+
+    /**
+     * The attribute <code>lig</code>.
+     */
+    private static final String ATT_LIG = "lig";
 
     /**
      * The letter uc.
@@ -82,6 +105,25 @@ public class EfmLigature {
     public void setLigUc(final UnicodeChar aligUc) {
 
         ligUc = aligUc;
+    }
+
+    /**
+     * Write the data to the xml file.
+     *
+     * @param writer    The writer.
+     * @throws IOException if an IO-error occurred.
+     */
+    public void write(final XMLStreamWriter writer) throws IOException {
+
+        writer.writeStartElement("ligature");
+
+        writer.writeAttribute(ATT_LIG, ligUc.getCodePoint());
+        writer.writeAttribute(ATT_LIGHEX, "0x"
+                + Integer.toHexString(ligUc.getCodePoint()));
+        writer.writeAttribute(ATT_LET, letterUc.getCodePoint());
+        writer.writeAttribute(ATT_LITHEX, "0x"
+                + Integer.toHexString(letterUc.getCodePoint()));
+        writer.writeEndElement();
     }
 
 }

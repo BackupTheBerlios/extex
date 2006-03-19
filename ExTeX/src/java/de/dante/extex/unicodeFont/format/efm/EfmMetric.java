@@ -41,10 +41,20 @@ import de.dante.util.xml.XMLStreamWriter;
  * Class for the efm metric.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class EfmMetric {
+
+    /**
+     * The tag <code>kerning</code>.
+     */
+    private static final String TAG_KERNING = "kerning";
+
+    /**
+     * The attribute <code>size</code>.
+     */
+    private static final String ATT_SIZE = "size";
 
     /**
      * The attribute <code>italic</code>.
@@ -92,12 +102,12 @@ public class EfmMetric {
     private static final String ATT_UCHEX = "uchex";
 
     /**
-     * The attribute <code>unicode</code>
+     * The attribute <code>unicode</code>.
      */
     private static final String ATT_UNICODE = "unicode";
 
     /**
-     * The element <code>glpyh</code>
+     * The element <code>glpyh</code>.
      */
     private static final String TAG_GLYPH = "glyph";
 
@@ -132,7 +142,7 @@ public class EfmMetric {
 
                 EfmGlyph glyph = new EfmGlyph();
 
-                UnicodeChar uc = new UnicodeChar(Unicode.OFFSET + i);
+                UnicodeChar uc = UnicodeChar.get(Unicode.OFFSET + i);
                 glyph.setUc(uc);
                 metricMap.put(glyph.getUc(), glyph);
 
@@ -161,9 +171,9 @@ public class EfmMetric {
                             TfmLigature lig = (TfmLigature) lk;
 
                             EfmLigature ligature = new EfmLigature();
-                            ligature.setLetterUc(new UnicodeChar(Unicode.OFFSET
+                            ligature.setLetterUc(UnicodeChar.get(Unicode.OFFSET
                                     + lig.getNextChar()));
-                            ligature.setLigUc(new UnicodeChar(Unicode.OFFSET
+                            ligature.setLigUc(UnicodeChar.get(Unicode.OFFSET
                                     + lig.getAddingChar()));
 
                             glyph.addLigature(ligature);
@@ -173,8 +183,8 @@ public class EfmMetric {
 
                             TfmEfmKerning kerning = new TfmEfmKerning();
 
-                            kerning.setUnicodeChar(new UnicodeChar(
-                                    Unicode.OFFSET + kern.getNextChar()));
+                            kerning.setUnicodeChar(UnicodeChar
+                                    .get(Unicode.OFFSET + kern.getNextChar()));
                             kerning.setSize(kern.getKern());
                             glyph.addKerning(kerning);
                         }
@@ -210,6 +220,21 @@ public class EfmMetric {
         public void setSize(final TfmFixWord asize) {
 
             size = asize;
+        }
+
+        /**
+         * @see de.dante.extex.unicodeFont.format.efm.EfmKerning#write(
+         *      de.dante.util.xml.XMLStreamWriter)
+         */
+        public void write(final XMLStreamWriter writer) throws IOException {
+
+            writer.writeStartElement(TAG_KERNING);
+            writer.writeAttribute(ATT_TYPE, "tfm");
+            writer.writeAttribute(ATT_UNICODE, getUnicodeChar().getCodePoint());
+            writer.writeAttribute(ATT_UCHEX, Integer
+                    .toHexString(getUnicodeChar().getCodePoint()));
+            writer.writeAttribute(ATT_SIZE, size.getValue());
+            writer.writeEndElement();
         }
 
     }
@@ -312,7 +337,7 @@ public class EfmMetric {
 
         UnicodeChar[] ucs = new UnicodeChar[metricMap.size()];
         ucs = (UnicodeChar[]) metricMap.keySet().toArray(ucs);
-        Arrays.sort(ucs, new Comparator() {
+        Comparator ucComparator = new Comparator() {
 
             /**
              * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
@@ -326,7 +351,9 @@ public class EfmMetric {
                 }
                 return -1;
             }
-        });
+        };
+        Arrays.sort(ucs, ucComparator);
+
         for (int i = 0; i < ucs.length; i++) {
             EfmGlyph glyph = (EfmGlyph) metricMap.get(ucs[i]);
 
@@ -340,6 +367,34 @@ public class EfmMetric {
 
             // metric
             glyph.getWhdi().write(writer);
+
+            // ligature
+            Map ligmap = glyph.getLigature();
+
+            if (ligmap.size() > 0) {
+
+                UnicodeChar[] ucl = new UnicodeChar[ligmap.size()];
+                ucl = (UnicodeChar[]) ligmap.keySet().toArray(ucl);
+                Arrays.sort(ucl, ucComparator);
+
+                for (int j = 0; j < ucl.length; j++) {
+                    ((EfmLigature) ligmap.get(ucl[j])).write(writer);
+                }
+            }
+
+            // kerning
+            Map kernmap = glyph.getKerning();
+
+            if (kernmap.size() > 0) {
+
+                UnicodeChar[] uck = new UnicodeChar[kernmap.size()];
+                uck = (UnicodeChar[]) kernmap.keySet().toArray(uck);
+                Arrays.sort(uck, ucComparator);
+
+                for (int j = 0; j < uck.length; j++) {
+                    ((EfmKerning) kernmap.get(uck[j])).write(writer);
+                }
+            }
 
             writer.writeEndElement();
 

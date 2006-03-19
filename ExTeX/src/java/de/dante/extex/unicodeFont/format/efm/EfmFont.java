@@ -29,10 +29,30 @@ import de.dante.util.xml.XMLStreamWriter;
  * Class to handle efm font metrics.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class EfmFont {
+
+    /**
+     * The attribute <code>designsize</code>.
+     */
+    private static final String ATT_DESIGNSIZE = "designsize";
+
+    /**
+     * The attribute <code>externalfontfile</code>.
+     */
+    private static final String ATT_EXTERNALFONTFILE = "externalfontfile";
+
+    /**
+     * The attribute <code>fontname</code>.
+     */
+    private static final String ATT_FONTNAME = "fontname";
+
+    /**
+     * The element <code>efm</code>.
+     */
+    private static final String TAG_EFM = "efm";
 
     /**
      * The metric.
@@ -80,16 +100,41 @@ public class EfmFont {
         writer.setBeauty(true);
 
         writer.writeStartDocument();
-        writer.writeStartElement("efm");
-        writer.writeAttribute("fontname", fontName);
-        writer.writeAttribute("externalfontfile", exFontFile);
-        writer.writeAttribute("designsize", designSize);
+        writer.writeStartElement(TAG_EFM);
+        if (encFile != null && encFile.length() > 0) {
+            writer.writeAttribute("xmlns", "xi",
+                    "http://www.w3.org/2001/XInclude");
+        }
+        writer.writeAttribute(ATT_FONTNAME, fontName);
+        writer.writeAttribute(ATT_EXTERNALFONTFILE, exFontFile);
+        writer.writeAttribute(ATT_DESIGNSIZE, designSize);
 
         metric.write(writer);
+
+        // encoding
+        if (encFile != null && encFile.length() > 0) {
+            writer.writeStartElement("xi", "include");
+            writer.writeAttribute("href", encFile);
+            writer.writeEndElement();
+        }
 
         writer.writeEndElement();
         writer.writeEndDocument();
         writer.close();
 
+    }
+
+    /**
+     * The encoding file with the encoding vector.
+     */
+    private String encFile;
+
+    /**
+     * Set the encoding file with the encoding vector.
+     * @param encfile   The encoding file.
+     */
+    public void setEncoding(final String encfile) {
+
+        encFile = encfile;
     }
 }
