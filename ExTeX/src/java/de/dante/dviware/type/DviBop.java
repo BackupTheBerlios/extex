@@ -25,10 +25,10 @@ import java.io.OutputStream;
 import de.dante.dviware.Dvi;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This class represents the DVI instruction <tt>bop</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class DviBop extends AbstractDviCode {
 
@@ -58,6 +58,14 @@ public class DviBop extends AbstractDviCode {
         }
         this.pageNo = pageNo;
         this.lastBop = lastBop;
+    }
+
+    /**
+     * @see de.dante.dviware.type.DviCode#getName()
+     */
+    public String getName() {
+
+        return "bop";
     }
 
     /**

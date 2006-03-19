@@ -25,25 +25,47 @@ import java.io.OutputStream;
 import de.dante.dviware.Dvi;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This class represents the DVI instruction <tt>xxx</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class DviXxx extends AbstractDviCode {
 
     /**
-     * The field <tt>content</tt> contains the ...
+     * The field <tt>content</tt> contains the array of bytes to pass to the
+     * DVI processor.
      */
     private byte[] content;
 
     /**
      * Creates a new object.
+     *
+     * @param content the array of bytes to pass to the DVI processor
      */
-    public DviXxx(byte[] content) {
+    public DviXxx(final byte[] content) {
 
         super();
         this.content = content;
+    }
+
+    /**
+     * Creates a new object.
+     *
+     * @param content the array of bytes to pass to the DVI processor
+     */
+    public DviXxx(final String content) {
+
+        super();
+        this.content = content.getBytes();
+    }
+
+    /**
+     * @see de.dante.dviware.type.DviCode#getName()
+     */
+    public String getName() {
+
+        return "xxx" + variant(content.length);
     }
 
     /**
@@ -61,15 +83,15 @@ public class DviXxx extends AbstractDviCode {
         } else if (content.length < 0xffff) {
             len = 3;
             stream.write(Dvi.XXX2);
-            write2(stream,content.length);
+            write2(stream, content.length);
         } else if (content.length < 0xffffff) {
             len = 4;
             stream.write(Dvi.XXX2);
-            write3(stream,content.length);
+            write3(stream, content.length);
         } else {
             len = 5;
             stream.write(Dvi.XXX4);
-            write4(stream,content.length);
+            write4(stream, content.length);
         }
         return len + content.length;
     }

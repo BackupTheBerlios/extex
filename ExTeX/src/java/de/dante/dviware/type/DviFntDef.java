@@ -26,10 +26,10 @@ import de.dante.dviware.Dvi;
 import de.dante.extex.interpreter.type.font.Font;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This class represents the DVI instruction <tt>fnt_def</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class DviFntDef extends AbstractDviCode {
 
@@ -58,6 +58,14 @@ public class DviFntDef extends AbstractDviCode {
     }
 
     /**
+     * @see de.dante.dviware.type.DviCode#getName()
+     */
+    public String getName() {
+
+        return "fnt_def" + variant(index);
+    }
+
+    /**
      * @see de.dante.dviware.type.DviCode#write(java.io.OutputStream)
      */
     public int write(final OutputStream stream) throws IOException {
@@ -66,15 +74,12 @@ public class DviFntDef extends AbstractDviCode {
         write4(stream, font.getCheckSum());
         write4(stream, (int) font.getDesignSize().getValue()); // TODO gene: scale factor??? 
         write4(stream, (int) font.getDesignSize().getValue());
-        stream.write(0);
-        String name = font.getFontName();
-        int length = name.length();
-        stream.write(length);
-        for (int j = 0; j < length; j++) {
-            stream.write((byte) name.charAt(j));
-        }
+        stream.write(0); // no directory part; just the name
+        byte[] bytes = font.getFontName().getBytes();
+        stream.write(bytes.length);
+        stream.write(bytes);
 
-        return n + length + 14;
+        return n + bytes.length + 14;
     }
 
 }

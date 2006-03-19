@@ -25,27 +25,45 @@ import java.io.OutputStream;
 import de.dante.dviware.Dvi;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This class represents the DVI instruction <tt>right</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class DviRight extends AbstractDviCode {
 
     /**
-     * The field <tt>dist</tt> contains the ...
+     * The field <tt>dist</tt> contains the the distance to move rightwards.
      */
     private int dist;
 
     /**
      * Creates a new object.
      *
-     * @param dist ...
+     * @param dist the distance to move rightwards
      */
     public DviRight(final int dist) {
 
         super();
         this.dist = dist;
+    }
+
+    /**
+     * Add some value to the move distance.
+     *
+     * @param x the value to add
+     */
+    public void add(final int x) {
+
+        dist += x;
+    }
+
+    /**
+     * @see de.dante.dviware.type.DviCode#getName()
+     */
+    public String getName() {
+
+        return "right" + variant(dist);
     }
 
     /**

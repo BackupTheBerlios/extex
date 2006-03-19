@@ -25,22 +25,23 @@ import java.io.OutputStream;
 import de.dante.dviware.Dvi;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This class represents the DVI instruction <tt>set_char</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class DviSetChar extends AbstractDviCode {
 
     /**
-     * The field <tt>codePoint</tt> contains the ...
+     * The field <tt>codePoint</tt> contains the code point of the character to
+     * set.
      */
     private int codePoint;
 
     /**
      * Creates a new object.
      *
-     * @param codePoint ...
+     * @param codePoint the code point of the character to set
      */
     public DviSetChar(final int codePoint) {
 
@@ -49,11 +50,22 @@ public class DviSetChar extends AbstractDviCode {
     }
 
     /**
+     * @see de.dante.dviware.type.DviCode#getName()
+     */
+    public String getName() {
+
+        if (codePoint <= Dvi.SET_CHAR127) {
+            return "set_char" + codePoint;
+        }
+        return "set_char" + variant(codePoint);
+    }
+
+    /**
      * @see de.dante.dviware.type.DviCode#write(java.io.OutputStream)
      */
     public int write(final OutputStream stream) throws IOException {
 
-        if (codePoint <= 127) {
+        if (codePoint <= Dvi.SET_CHAR127) {
             stream.write(codePoint);
             return 1;
         }

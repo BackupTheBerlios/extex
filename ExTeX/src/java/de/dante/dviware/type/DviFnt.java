@@ -25,27 +25,35 @@ import java.io.OutputStream;
 import de.dante.dviware.Dvi;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This class represents the DVI instruction <tt>fnt</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class DviFnt extends AbstractDviCode {
 
     /**
-     * The field <tt>index</tt> contains the ...
+     * The field <tt>index</tt> contains the index of the font to use.
      */
     private int index;
 
     /**
      * Creates a new object.
      *
-     * @param index ...
+     * @param index the index of the font to use
      */
     public DviFnt(final int index) {
 
         super();
         this.index = index;
+    }
+
+    /**
+     * @see de.dante.dviware.type.DviCode#getName()
+     */
+    public String getName() {
+
+        return "fnt" + variant(index);
     }
 
     /**

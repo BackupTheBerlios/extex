@@ -25,17 +25,28 @@ import java.io.OutputStream;
 import de.dante.dviware.Dvi;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This interface describes DVI code. It must be written to the output stream
+ * at the end.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface DviCode {
 
     /**
-     * The field <tt>POP</tt> contains the ...
+     * The constant <tt>POP</tt> contains the DviCode for the <tt>pop</tt>
+     * instruction. This instruction doe not carry any parameters. Thus a
+     * singleton can be used.
      */
-    public static final DviCode POP = new DviCode() {
+    DviCode POP = new DviCode() {
+
+        /**
+         * @see de.dante.dviware.type.DviCode#getName()
+         */
+        public String getName() {
+
+            return "pop";
+        }
 
         /**
          * @see de.dante.dviware.type.DviCode#write(java.io.OutputStream)
@@ -49,9 +60,19 @@ public interface DviCode {
     };
 
     /**
-     * The field <tt>PUSH</tt> contains the ...
+     * The constant <tt>PUSH</tt> contains the DviCode for the <tt>push</tt>
+     * instruction. This instruction doe not carry any parameters. Thus a
+     * singleton can be used.
      */
-    public static final DviCode PUSH = new DviCode() {
+    DviCode PUSH = new DviCode() {
+
+        /**
+         * @see de.dante.dviware.type.DviCode#getName()
+         */
+        public String getName() {
+
+            return "push";
+        }
 
         /**
          * @see de.dante.dviware.type.DviCode#write(java.io.OutputStream)
@@ -65,9 +86,19 @@ public interface DviCode {
     };
 
     /**
-     * The field <tt>W0</tt> contains the ...
+     * The constant <tt>W0</tt> contains the DviCode for the <tt>w0</tt>
+     * instruction. This instruction doe not carry any parameters. Thus a
+     * singleton can be used.
      */
-    public static final DviCode W0 = new DviCode() {
+    DviCode W0 = new DviCode() {
+
+        /**
+         * @see de.dante.dviware.type.DviCode#getName()
+         */
+        public String getName() {
+
+            return "w0";
+        }
 
         /**
          * @see de.dante.dviware.type.DviCode#write(java.io.OutputStream)
@@ -81,9 +112,19 @@ public interface DviCode {
     };
 
     /**
-     * The field <tt>X0</tt> contains the ...
+     * The constant <tt>X0</tt> contains the DviCode for the <tt>x0</tt>
+     * instruction. This instruction doe not carry any parameters. Thus a
+     * singleton can be used.
      */
-    public static final DviCode X0 = new DviCode() {
+    DviCode X0 = new DviCode() {
+
+        /**
+         * @see de.dante.dviware.type.DviCode#getName()
+         */
+        public String getName() {
+
+            return "x0";
+        }
 
         /**
          * @see de.dante.dviware.type.DviCode#write(java.io.OutputStream)
@@ -97,9 +138,19 @@ public interface DviCode {
     };
 
     /**
-     * The field <tt>X0</tt> contains the ...
+     * The constant <tt>X0</tt> contains the DviCode for the <tt>y0</tt>
+     * instruction. This instruction doe not carry any parameters. Thus a
+     * singleton can be used.
      */
-    public static final DviCode Y0 = new DviCode() {
+    DviCode Y0 = new DviCode() {
+
+        /**
+         * @see de.dante.dviware.type.DviCode#getName()
+         */
+        public String getName() {
+
+            return "y0";
+        }
 
         /**
          * @see de.dante.dviware.type.DviCode#write(java.io.OutputStream)
@@ -113,9 +164,19 @@ public interface DviCode {
     };
 
     /**
-     * The field <tt>Z0</tt> contains the ...
+     * The constant <tt>Z0</tt> contains the DviCode for the <tt>z0</tt>
+     * instruction. This instruction doe not carry any parameters. Thus a
+     * singleton can be used.
      */
-    public static final DviCode Z0 = new DviCode() {
+    DviCode Z0 = new DviCode() {
+
+        /**
+         * @see de.dante.dviware.type.DviCode#getName()
+         */
+        public String getName() {
+
+            return "z0";
+        }
 
         /**
          * @see de.dante.dviware.type.DviCode#write(java.io.OutputStream)
@@ -129,9 +190,18 @@ public interface DviCode {
     };
 
     /**
+     * Getter for the name f the DVI instruction.
+     *
+     * @return the name of the DVI instruction
+     */
+    String getName();
+
+    /**
      * Write the code to the output stream.
      *
      * @param stream the target stream
+     *
+     * @return the number of bytes actually written
      *
      * @throws IOException in case of an error
      */

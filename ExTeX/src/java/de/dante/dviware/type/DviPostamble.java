@@ -32,10 +32,11 @@ import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.font.Font;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This class represents the DVI instruction <tt>post</tt> and the contents
+ * up to the terminating <tt>post_post</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class DviPostamble extends AbstractDviCode {
 
@@ -97,6 +98,14 @@ public class DviPostamble extends AbstractDviCode {
 
         super();
         this.mag = mag;
+    }
+
+    /**
+     * @see de.dante.dviware.type.DviCode#getName()
+     */
+    public String getName() {
+
+        return "post";
     }
 
     /**

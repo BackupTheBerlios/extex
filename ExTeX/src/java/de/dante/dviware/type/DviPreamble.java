@@ -25,10 +25,10 @@ import java.io.OutputStream;
 import de.dante.dviware.Dvi;
 
 /**
- * This class represents a DVI pre instruction.
+ * This class represents the DVI instruction <tt>pre</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class DviPreamble extends AbstractDviCode {
 
@@ -63,6 +63,14 @@ public class DviPreamble extends AbstractDviCode {
         }
         this.mag = mag;
         this.comment = comment;
+    }
+
+    /**
+     * @see de.dante.dviware.type.DviCode#getName()
+     */
+    public String getName() {
+
+        return "pre";
     }
 
     /**

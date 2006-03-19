@@ -25,10 +25,10 @@ import java.io.OutputStream;
 import de.dante.dviware.Dvi;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This class represents the DVI instruction <tt>down</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class DviDown extends AbstractDviCode {
 
@@ -46,6 +46,24 @@ public class DviDown extends AbstractDviCode {
 
         super();
         this.dist = dist;
+    }
+
+    /**
+     * Add some value to the move distance.
+     *
+     * @param x the value to add
+     */
+    public void add(final int x) {
+
+        dist += x;
+    }
+
+    /**
+     * @see de.dante.dviware.type.DviCode#getName()
+     */
+    public String getName() {
+
+        return "down";
     }
 
     /**
