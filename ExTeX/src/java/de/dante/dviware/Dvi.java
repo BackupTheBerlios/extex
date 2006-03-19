@@ -27,59 +27,19 @@ import java.io.InputStream;
  * TODO gene: missing JavaDoc.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Dvi {
-
-    /**
-     * The field <tt>Y1</tt> contains the op-code for the Y1 instruction.
-     */
-    public static final int Y1 = 162;
-
-    /**
-     * The field <tt>Z1</tt> contains the op-code for the Z1 instruction.
-     */
-    public static final int Z1 = 167;
-
-    /**
-     * The field <tt>Z0</tt> contains the op-code for the Z0 instruction.
-     */
-    public static final int Z0 = 166;
-
-    /**
-     * The field <tt>Y0</tt> contains the op-code for the Y0 instruction.
-     */
-    public static final int Y0 = 161;
-
-    /**
-     * The field <tt>DOWN1</tt> contains the op-code for the DOWN1 instruction.
-     */
-    public static final int DOWN1 = 157;
-
-    /**
-     * The field <tt>X1</tt> contains the op-code for the X1 instruction.
-     */
-    public static final int X1 = 153;
-
-    /**
-     * The field <tt>X0</tt> contains the op-code for the X0 instruction.
-     */
-    public static final int X0 = 152;
-
-    /**
-     * The field <tt>W4</tt> contains the op-code for the W4 instruction.
-     */
-    public static final int W4 = 151;
-
-    /**
-     * The field <tt>W3</tt> contains the op-code for the W3 instruction.
-     */
-    public static final int W3 = 150;
 
     /**
      * The field <tt>BOP</tt> contains the op-code for the BOP instruction.
      */
     public static final int BOP = 139;
+
+    /**
+     * The field <tt>DOWN1</tt> contains the op-code for the DOWN1 instruction.
+     */
+    public static final int DOWN1 = 157;
 
     /**
      * The field <tt>DVI_ID</tt> contains the ...
@@ -236,6 +196,11 @@ public class Dvi {
     public static final int SET_CHAR_0 = 0x00;
 
     /**
+     * The field <tt>SET_CHAR127</tt> contains the ...
+     */
+    public static final int SET_CHAR127 = 0x7f;
+
+    /**
      * The field <tt>SET_RULE</tt> contains the ...
      */
     public static final int SET_RULE = 132;
@@ -276,6 +241,26 @@ public class Dvi {
     public static final int W2 = 149;
 
     /**
+     * The field <tt>W3</tt> contains the op-code for the W3 instruction.
+     */
+    public static final int W3 = 150;
+
+    /**
+     * The field <tt>W4</tt> contains the op-code for the W4 instruction.
+     */
+    public static final int W4 = 151;
+
+    /**
+     * The field <tt>X0</tt> contains the op-code for the X0 instruction.
+     */
+    public static final int X0 = 152;
+
+    /**
+     * The field <tt>X1</tt> contains the op-code for the X1 instruction.
+     */
+    public static final int X1 = 153;
+
+    /**
      * The field <tt>XXX1</tt> contains the ...
      */
     public static final int XXX1 = 239;
@@ -294,6 +279,26 @@ public class Dvi {
      * The field <tt>XXX4</tt> contains the ...
      */
     public static final int XXX4 = 242;
+
+    /**
+     * The field <tt>Y0</tt> contains the op-code for the Y0 instruction.
+     */
+    public static final int Y0 = 161;
+
+    /**
+     * The field <tt>Y1</tt> contains the op-code for the Y1 instruction.
+     */
+    public static final int Y1 = 162;
+
+    /**
+     * The field <tt>Z0</tt> contains the op-code for the Z0 instruction.
+     */
+    public static final int Z0 = 166;
+
+    /**
+     * The field <tt>Z1</tt> contains the op-code for the Z1 instruction.
+     */
+    public static final int Z1 = 167;
 
     /**
      * The field <tt>dvi</tt> contains the stream to read from.
@@ -457,7 +462,7 @@ public class Dvi {
                 case 0x7c:
                 case 0x7d:
                 case 0x7e:
-                case 0x7f:
+                case SET_CHAR127:
                     proc.setChar(off, c);
                     break;
                 case SET1:
@@ -818,6 +823,20 @@ public class Dvi {
     }
 
     /**
+     * Read one byte into an int.
+     *
+     * @return the number read
+     *
+     * @throws IOException in case of an error
+     */
+    private int read1signed() throws IOException {
+
+        pointer++;
+        int a = dvi.read();
+        return ((a & 0x80) == 0 ? a : (0xffffff00 | a));
+    }
+
+    /**
      * Read two bytes into an int.
      *
      * @return the number read
@@ -834,53 +853,6 @@ public class Dvi {
             throw new EOFException();
         }
         return a;
-    }
-
-    /**
-     * Read three bytes into an int.
-     *
-     * @return the number read
-     *
-     * @throws IOException in case of an error
-     */
-    private int read3() throws IOException {
-
-        int a = dvi.read();
-        a = (a << 8) | dvi.read();
-        a = (a << 8) | dvi.read();
-        pointer += 3;
-        return a;
-    }
-
-    /**
-     * Read four bytes into an int.
-     *
-     * @return the number read
-     *
-     * @throws IOException in case of an error
-     */
-    private int read4() throws IOException {
-
-        int a = dvi.read();
-        a = (a << 8) | dvi.read();
-        a = (a << 8) | dvi.read();
-        a = (a << 8) | dvi.read();
-        pointer += 4;
-        return a;
-    }
-
-    /**
-     * Read one byte into an int.
-     *
-     * @return the number read
-     *
-     * @throws IOException in case of an error
-     */
-    private int read1signed() throws IOException {
-
-        pointer++;
-        int a = dvi.read();
-        return ((a & 0x80) == 0 ? a : (0xffffff00 | a));
     }
 
     /**
@@ -909,6 +881,22 @@ public class Dvi {
      *
      * @throws IOException in case of an error
      */
+    private int read3() throws IOException {
+
+        int a = dvi.read();
+        a = (a << 8) | dvi.read();
+        a = (a << 8) | dvi.read();
+        pointer += 3;
+        return a;
+    }
+
+    /**
+     * Read three bytes into an int.
+     *
+     * @return the number read
+     *
+     * @throws IOException in case of an error
+     */
     private int read3signed() throws IOException {
 
         int a = dvi.read();
@@ -916,6 +904,23 @@ public class Dvi {
         a = (a << 8) | dvi.read();
         pointer += 3;
         return ((a & 0x800000) == 0 ? a : (0xff000000 | a));
+    }
+
+    /**
+     * Read four bytes into an int.
+     *
+     * @return the number read
+     *
+     * @throws IOException in case of an error
+     */
+    private int read4() throws IOException {
+
+        int a = dvi.read();
+        a = (a << 8) | dvi.read();
+        a = (a << 8) | dvi.read();
+        a = (a << 8) | dvi.read();
+        pointer += 4;
+        return a;
     }
 
     /**
