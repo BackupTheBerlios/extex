@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -27,7 +27,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the kerning.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class KerningTest extends ExTeXLauncher {
 
@@ -64,19 +64,42 @@ public class KerningTest extends ExTeXLauncher {
         properties.setProperty("extex.output", "dump");
 
         assertSuccess(properties,
-                //--- input code ---
-                "\\font\\f=cmr10 \\f "
-                + "AVAV",
+        //--- input code ---
+                "\\font\\f=cmr10 \\f " + "AVAV",
                 //--- output channel ---
-                "\\vbox(6.83331pt+0.0pt)x30.00006pt\n" //
-                + ".\\hbox(6.83331pt+0.0pt)x30.00006pt\n" //
-                + "..A\n" //
-                + "..V\n" //
-                + "..A\n" //
-                + "..V\n" //
-                + "..\\penalty 10000\n" //
-                + "..\\glue0.0pt\n" //
-                + "");
+                "\\vbox(6.83331pt+0.0pt)x26.66667pt\n" //
+                        + ".\\hbox(6.83331pt+0.0pt)x26.66667pt\n" //
+                        + "..A\n" //
+                        + "..\\kern -1.11113pt\n" //
+                        + "..V\n" //
+                        + "..\\kern -1.11113pt\n" //
+                        + "..A\n" //
+                        + "..\\kern -1.11113pt\n" //
+                        + "..V\n");
+    }
+
+    /**
+     * <testcase>
+     *  Test case checking that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testXyz() throws Exception {
+
+        Properties properties = getProps();
+        properties.setProperty("extex.jobname", "job");
+        properties.setProperty("extex.output", "dump");
+
+        assertSuccess(properties,
+        //--- input code ---
+                "\\font\\f=cmr10 \\f " + "xyz",
+                //--- output channel ---
+                "\\vbox(4.30554pt+1.94444pt)x15.00005pt\n" //
+                        + ".\\hbox(4.30554pt+1.94444pt)x15.00005pt\n" //
+                        + "..x\n" //
+                        + "..y\n" //
+                        + "..z\n");
     }
 
 }
