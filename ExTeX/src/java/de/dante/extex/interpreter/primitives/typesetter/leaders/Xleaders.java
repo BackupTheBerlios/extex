@@ -62,7 +62,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class Xleaders extends AbstractCode {
 
@@ -120,7 +120,7 @@ public class Xleaders extends AbstractCode {
             throw new HelpingException(getLocalizer(),
                     "TTP.BadGlueAfterLeaders");
         }
-        Glue skip = ((VerticalSkip) code).verticalSkip(context, source,
+        Glue skip = ((VerticalSkip) code).getGlue(context, source,
                 typesetter);
 
         try {
