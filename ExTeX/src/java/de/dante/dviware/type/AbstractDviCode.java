@@ -28,7 +28,7 @@ import de.dante.extex.interpreter.type.dimen.FixedDimen;
  * TODO gene: missing JavaDoc.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class AbstractDviCode implements DviCode {
 
@@ -139,6 +139,25 @@ public abstract class AbstractDviCode implements DviCode {
         stream.write(value >> 8);
         stream.write(value);
         return 5;
+    }
+
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param value
+     * @return
+     */
+    protected String variant(final int value) {
+
+        if (value <= 0xff) {
+            return "1";
+        } else if (value <= 0xffff) {
+            return "2";
+        } else if (value <= 0xffffff) {
+            return "3";
+        }
+
+        return "4";
     }
 
     /**
