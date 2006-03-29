@@ -161,12 +161,13 @@
     -->
   <Output default="default">
     <default format="{0}{1}{2,number,0000}{3}"/>
-    <pdf format="{0}{1}{2,number,0000}.pdf"/>
-    <dvi format="{0}{1}{2,number,0000}.dvi"/>
-    <xml format="{0}{1}{2,number,0000}.xml"/>
-    <out format="{0}{1}{2,number,0000}.out"/>
     <dump format="{0}{1}{2,number,0000}.out"/>
+    <dvi format="{0}{1}{2,number,0000}.dvi"/>
+    <out format="{0}{1}{2,number,0000}.out"/>
+    <pdf format="{0}{1}{2,number,0000}.pdf"/>
+    <rtf format="{0}{1}{2,number,0000}.rtf"/>
     <text format="{0}{1}{2,number,0000}.txt"/>
+    <xml format="{0}{1}{2,number,0000}.xml"/>
   </Output>
  
   <!-- 
