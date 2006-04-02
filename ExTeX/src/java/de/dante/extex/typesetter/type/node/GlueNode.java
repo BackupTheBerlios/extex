@@ -19,14 +19,9 @@
 
 package de.dante.extex.typesetter.type.node;
 
-import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
-import de.dante.extex.interpreter.type.glue.FixedGlueComponent;
-import de.dante.extex.interpreter.type.glue.Glue;
-import de.dante.extex.interpreter.type.glue.WideGlue;
 import de.dante.extex.typesetter.Discardable;
-import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeVisitor;
 import de.dante.util.exception.GeneralException;
 
@@ -45,20 +40,17 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
-public class GlueNode extends AbstractNode implements Node, Discardable {
+public class GlueNode extends AbstractExpandableNode
+        implements
+            SkipNode,
+            Discardable {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 1L;
-
-    /**
-     * The field <tt>size</tt> contains the glue specification for this node.
-     * The natural size of the glue is the initial width of this node.
-     */
-    private Glue size;
+    protected static final long serialVersionUID = 20060320L;
 
     /**
      * Creates a new object.
@@ -71,13 +63,7 @@ public class GlueNode extends AbstractNode implements Node, Discardable {
      */
     public GlueNode(final FixedDimen size, final boolean horizontal) {
 
-        super(Dimen.ZERO_PT);
-        this.size = new Glue(size);
-        if (horizontal) {
-            setWidth(this.size.getLength());
-        } else {
-            setHeight(this.size.getLength());
-        }
+        super(size, horizontal);
     }
 
     /**
@@ -91,83 +77,7 @@ public class GlueNode extends AbstractNode implements Node, Discardable {
      */
     public GlueNode(final FixedGlue size, final boolean horizontal) {
 
-        super(Dimen.ZERO_PT);
-        this.size = new Glue(size);
-        if (horizontal) {
-            setWidth(size.getLength());
-        } else {
-            setHeight(size.getLength());
-        }
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.type.Node#addHeightTo(
-     *      de.dante.extex.interpreter.type.glue.Glue)
-     */
-    public void addHeightTo(final WideGlue glue) {
-
-        glue.add(this.size);
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.type.Node#addWidthTo(
-     *      de.dante.extex.interpreter.type.glue.Glue)
-     */
-    public void addWidthTo(final WideGlue glue) {
-
-        glue.add(this.size);
-    }
-
-    /**
-     * Getter for size.
-     *
-     * @return the size
-     */
-    public FixedGlue getSize() {
-
-        return this.size;
-    }
-
-    /**
-     * Setter for the size
-     *
-     * @param skip the new value
-     */
-    public void setSize(final FixedGlue skip) {
-
-        size.set(skip);
-    }
-
-    /**
-     * Adjust the width of the flexible node.
-     *
-     * @param width the desired with
-     * @param sum the total sum of the glues
-     *
-     * @see de.dante.extex.typesetter.type.Node#spread(FixedDimen, FixedGlueComponent)
-     */
-    public void spread(final FixedDimen width, final FixedGlueComponent sum) {
-
-        long w = width.getValue();
-        FixedGlueComponent s = (w > 0 ? this.size.getStretch() : this.size
-                .getShrink());
-
-        int order = s.getOrder();
-        long value = sum.getValue();
-        if (order < sum.getOrder() || value == 0) {
-            return;
-        }
-
-        long sValue = s.getValue();
-        long adjust = sValue * w / value;
-        if (order == 0) {
-            if (adjust > sValue) {
-                adjust = sValue;
-            } else if (adjust < -sValue) {
-                adjust = -sValue;
-            }
-        }
-        getWidth().add(adjust);
+        super(size, horizontal);
     }
 
     /**

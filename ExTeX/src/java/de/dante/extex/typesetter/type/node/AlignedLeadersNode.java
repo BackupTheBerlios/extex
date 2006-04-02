@@ -33,17 +33,19 @@ import de.dante.util.exception.GeneralException;
  * @see "<logo>TeX</logo> &ndash; The Program [149]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
-public class AlignedLeadersNode extends GlueNode implements Node {
+public class AlignedLeadersNode extends AbstractExpandableNode
+        implements
+            SkipNode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 20060402L;
 
     /**
-     * The field <tt>node</tt> contains the node to reapeat or expand.
+     * The field <tt>node</tt> contains the node to repeat or expand.
      */
     private Node node;
 
@@ -52,10 +54,12 @@ public class AlignedLeadersNode extends GlueNode implements Node {
      *
      * @param node the node or node list to stretch or repeat
      * @param glue the desired size
+     * @param horizontal the indicator for the stretchability mode
      */
-    public AlignedLeadersNode(final Node node, final Glue glue, boolean horizontal) {
+    public AlignedLeadersNode(final Node node, final Glue glue,
+            final boolean horizontal) {
 
-        super(glue, true);
+        super(glue, horizontal);
         this.node = node;
     }
 
@@ -67,6 +71,30 @@ public class AlignedLeadersNode extends GlueNode implements Node {
     public Node getRepeat() {
 
         return node;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.node.AbstractNode#atShipping(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.typesetter.Typesetter,
+     *      de.dante.extex.typesetter.type.NodeVisitor,
+     *      boolean)
+     */
+    public Node atShipping(final Context context, final Typesetter typesetter,
+            final NodeVisitor visitor, final boolean inHMode)
+            throws GeneralException {
+
+        if (node instanceof RuleNode) {
+            node.setWidth(getWidth());
+            node.setHeight(getHeight());
+            node.setDepth(getDepth());
+            return (Node) node.visit(visitor, inHMode
+                    ? Boolean.TRUE
+                    : Boolean.FALSE);
+        }
+
+        //TODO gene: unimplemented
+        throw new RuntimeException("unimplemented");
     }
 
     /**
