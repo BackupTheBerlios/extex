@@ -38,12 +38,9 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
-public class Dimen extends GlueComponent
-        implements
-            Serializable,
-            FixedDimen {
+public class Dimen extends GlueComponent implements Serializable, FixedDimen {
 
     /**
      * The constant <tt>ONE_INCH</tt> contains the immutable dimen register
@@ -156,11 +153,13 @@ public class Dimen extends GlueComponent
      * |<i>this</i>| &rarr; |<i>this</i>| + |<i>d</i>|
      * </p>
      *
-     * @param d the Dimen to add
+     * @param d the value to add in sp
      */
     public void add(final long d) {
 
-        setValue(getValue() + d);
+        if (d != 0) {
+            setValue(getValue() + d);
+        }
     }
 
     /**
