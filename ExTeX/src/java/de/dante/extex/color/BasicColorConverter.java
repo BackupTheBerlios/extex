@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -34,7 +34,7 @@ import de.dante.util.exception.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class BasicColorConverter implements ColorConverter {
 
@@ -47,10 +47,10 @@ public class BasicColorConverter implements ColorConverter {
     }
 
     /**
-     * The field <tt>cmyk</tt> contains the converter for colors to the CMYK
-     * model.
+     * The field <tt>CMYK_CONVERTER</tt> contains the converter for colors to
+     * the CMYK model.
      */
-    private static ColorVisitor cmyk = new ColorVisitor() {
+    private static final ColorVisitor CMYK_CONVERTER = new ColorVisitor() {
 
         /**
          * @see de.dante.extex.color.ColorVisitor#visitCmyk(
@@ -109,10 +109,10 @@ public class BasicColorConverter implements ColorConverter {
     };
 
     /**
-     * The field <tt>gray</tt> contains the converter for colors to the
-     * grayscale model.
+     * The field <tt>GRAY_CONVERTER</tt> contains the converter for colors to
+     * the grayscale model.
      */
-    private static ColorVisitor gray = new ColorVisitor() {
+    private static final ColorVisitor GRAY_CONVERTER = new ColorVisitor() {
 
         /**
          * @see de.dante.extex.color.ColorVisitor#visitCmyk(
@@ -165,10 +165,10 @@ public class BasicColorConverter implements ColorConverter {
     };
 
     /**
-     * The field <tt>rgb</tt> contains the converter for colors to the RGB
-     * model.
+     * The field <tt>RGB_CONVERTER</tt> contains the converter for colors to
+     * the RGB model.
      */
-    private static ColorVisitor rgb = new ColorVisitor() {
+    private static final ColorVisitor RGB_CONVERTER = new ColorVisitor() {
 
         /**
          * @see de.dante.extex.color.ColorVisitor#visitCmyk(
@@ -178,19 +178,19 @@ public class BasicColorConverter implements ColorConverter {
         public Object visitCmyk(final CmykColor color, final Object value)
                 throws GeneralException {
 
-            int r = Color.MAX_VALUE - ((CmykColor) color).getCyan()
-                    * (Color.MAX_VALUE - ((CmykColor) color).getBlack())
-                    / Color.MAX_VALUE + ((CmykColor) color).getBlack();
-            int g = Color.MAX_VALUE - ((CmykColor) color).getMagenta()
-                    * (Color.MAX_VALUE - ((CmykColor) color).getBlack())
-                    / Color.MAX_VALUE + ((CmykColor) color).getBlack();
-            int b = Color.MAX_VALUE - ((CmykColor) color).getYellow()
-                    * (Color.MAX_VALUE - ((CmykColor) color).getBlack())
-                    / Color.MAX_VALUE + ((CmykColor) color).getBlack();
+            int r = Color.MAX_VALUE - color.getCyan()
+                    * (Color.MAX_VALUE - color.getBlack()) / Color.MAX_VALUE
+                    + color.getBlack();
+            int g = Color.MAX_VALUE - color.getMagenta()
+                    * (Color.MAX_VALUE - color.getBlack()) / Color.MAX_VALUE
+                    + color.getBlack();
+            int b = Color.MAX_VALUE - color.getYellow()
+                    * (Color.MAX_VALUE - color.getBlack()) / Color.MAX_VALUE
+                    + color.getBlack();
             return ColorFactory.getRgb((r < 0 ? 0 : r), //
                     (g < 0 ? 0 : g), //
                     (b < 0 ? 0 : b), //
-                    ((CmykColor) color).getAlpha());
+                    color.getAlpha());
         }
 
         /**
@@ -201,7 +201,8 @@ public class BasicColorConverter implements ColorConverter {
         public Object visitGray(final GrayscaleColor color, final Object value)
                 throws GeneralException {
 
-            return null;
+            int g = color.getGray();
+            return ColorFactory.getRgb(g, g, g, color.getAlpha());
         }
 
         /**
@@ -228,10 +229,10 @@ public class BasicColorConverter implements ColorConverter {
     };
 
     /**
-     * The field <tt>hsv</tt> contains the converter for colors to the HSV
-     * model.
+     * The field <tt>HSV_CONVERTER</tt> contains the converter for colors to
+     * the HSV model.
      */
-    private static ColorVisitor hsv = new ColorVisitor() {
+    private static final ColorVisitor HSV_CONVERTER = new ColorVisitor() {
 
         /**
          * @see de.dante.extex.color.ColorVisitor#visitCmyk(
@@ -293,7 +294,7 @@ public class BasicColorConverter implements ColorConverter {
     public CmykColor toCmyk(final Color color) {
 
         try {
-            return (CmykColor) color.visit(cmyk, null);
+            return (CmykColor) color.visit(CMYK_CONVERTER, null);
         } catch (GeneralException e) {
             throw new ImpossibleException(this.getClass().getName());
         }
@@ -314,7 +315,7 @@ public class BasicColorConverter implements ColorConverter {
     public GrayscaleColor toGrayscale(final Color color) {
 
         try {
-            return (GrayscaleColor) color.visit(gray, null);
+            return (GrayscaleColor) color.visit(GRAY_CONVERTER, null);
         } catch (GeneralException e) {
             throw new ImpossibleException(this.getClass().getName());
         }
@@ -335,7 +336,7 @@ public class BasicColorConverter implements ColorConverter {
     public HsvColor toHsv(final Color color) {
 
         try {
-            return (HsvColor) color.visit(hsv, null);
+            return (HsvColor) color.visit(HSV_CONVERTER, null);
         } catch (GeneralException e) {
             throw new ImpossibleException(this.getClass().getName());
         }
@@ -356,9 +357,10 @@ public class BasicColorConverter implements ColorConverter {
     public RgbColor toRgb(final Color color) {
 
         try {
-            return (RgbColor) color.visit(rgb, null);
+            return (RgbColor) color.visit(RGB_CONVERTER, null);
         } catch (GeneralException e) {
             throw new ImpossibleException(this.getClass().getName());
         }
     }
+
 }
