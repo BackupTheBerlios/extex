@@ -35,9 +35,9 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
-public class CharNode extends AbstractNode implements Node {
+public class CharNode extends AbstractNode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.

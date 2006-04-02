@@ -22,6 +22,7 @@ package de.dante.extex.typesetter.type.node;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
+import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.FixedGlueComponent;
 import de.dante.extex.interpreter.type.glue.WideGlue;
 import de.dante.extex.typesetter.Typesetter;
@@ -35,7 +36,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This abstract class provides some methods common to all Nodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public abstract class AbstractNode implements Node {
 
@@ -162,6 +163,38 @@ public abstract class AbstractNode implements Node {
     }
 
     /**
+     * Compute the amount of adjustment needed to achieve a certain size.
+     *
+     * @param size the current size in scaled points
+     * @param glue the glue
+     * @param sum the total stretchability or shrinkability
+     *
+     * @return the adjustment
+     */
+    protected long computeAdjustment(final long size, final FixedGlue glue,
+            final FixedGlueComponent sum) {
+
+        FixedGlueComponent s = (size > 0 ? glue.getStretch() : glue.getShrink());
+
+        int order = s.getOrder();
+        long value = sum.getValue();
+        if (order < sum.getOrder() || value == 0) {
+            return 0;
+        }
+
+        long sValue = s.getValue();
+        long adjust = sValue * size / value;
+        if (order == 0) {
+            if (adjust > sValue) {
+                adjust = sValue;
+            } else if (adjust < -sValue) {
+                adjust = -sValue;
+            }
+        }
+        return adjust;
+    }
+
+    /**
      * @see de.dante.extex.typesetter.type.Node#countChars()
      */
     public int countChars() {
@@ -247,41 +280,56 @@ public abstract class AbstractNode implements Node {
      * @see de.dante.extex.typesetter.type.Node#setDepth(
      *      de.dante.extex.interpreter.type.dimen.Dimen)
      */
-    public void setDepth(final FixedDimen aDepth) {
+    public void setDepth(final FixedDimen d) {
 
-        depth.set(aDepth);
+        depth.set(d);
     }
 
     /**
      * @see de.dante.extex.typesetter.type.Node#setHeight(
      *      de.dante.extex.interpreter.type.dimen.Dimen)
      */
-    public void setHeight(final FixedDimen aHeight) {
+    public void setHeight(final FixedDimen h) {
 
-        height.set(aHeight);
+        height.set(h);
     }
 
     /**
      * @see de.dante.extex.typesetter.type.Node#setWidth(
      *      de.dante.extex.interpreter.type.dimen.FixedDimen)
      */
-    public void setWidth(final FixedDimen theWidth) {
+    public void setWidth(final FixedDimen w) {
 
-        width.set(theWidth);
+        width.set(w);
+    }
+
+    /**
+     * Adjust the height of a flexible node. This method is a noop for any but
+     * the flexible nodes.
+     *
+     * @param h the desired height
+     * @param sum the total sum of the glues
+     *
+     * @see de.dante.extex.typesetter.type.Node#spreadHeight(
+     *      de.dante.extex.interpreter.type.dimen.FixedDimen,
+     *      de.dante.extex.interpreter.type.glue.FixedGlueComponent)
+     */
+    public void spreadHeight(final FixedDimen h, final FixedGlueComponent sum) {
+
     }
 
     /**
      * Adjust the width of a flexible node. This method is a noop for any but
      * the flexible nodes.
      *
-     * @param theWidth the desired with
+     * @param w the desired with
      * @param sum the total sum of the glues
      *
      * @see de.dante.extex.typesetter.type.Node#spread(
      *      de.dante.extex.interpreter.type.dimen.FixedDimen,
      *      de.dante.extex.interpreter.type.glue.FixedGlueComponent)
      */
-    public void spread(final FixedDimen theWidth, final FixedGlueComponent sum) {
+    public void spreadWidth(final FixedDimen w, final FixedGlueComponent sum) {
 
     }
 
@@ -307,7 +355,7 @@ public abstract class AbstractNode implements Node {
      *      int)
      */
     public void toString(final StringBuffer sb, final String prefix,
-            final int breadth, final int depth) {
+            final int b, final int d) {
 
         sb.append(getLocalizer().format("String.Format"));
     }

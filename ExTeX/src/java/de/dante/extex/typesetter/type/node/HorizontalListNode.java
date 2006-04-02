@@ -20,7 +20,11 @@
 package de.dante.extex.typesetter.type.node;
 
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
+import de.dante.extex.interpreter.type.glue.FixedGlueComponent;
+import de.dante.extex.interpreter.type.glue.GlueComponent;
+import de.dante.extex.interpreter.type.glue.WideGlue;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeVisitor;
@@ -34,7 +38,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class HorizontalListNode extends AbstractNodeList {
 
@@ -96,9 +100,38 @@ public class HorizontalListNode extends AbstractNodeList {
      *      boolean)
      */
     public Node atShipping(final Context context, final Typesetter typesetter,
-            final NodeVisitor visitor, final boolean inHMode) throws GeneralException {
+            final NodeVisitor visitor, final boolean inHMode)
+            throws GeneralException {
 
         return super.atShipping(context, typesetter, visitor, true);
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.node.AbstractNode#spreadWidth(
+     *      de.dante.extex.interpreter.type.dimen.FixedDimen,
+     *      de.dante.extex.interpreter.type.glue.FixedGlueComponent)
+     */
+    public void spreadWidth(final FixedDimen w, final FixedGlueComponent sum) {
+
+        int size = size();
+        FixedGlueComponent s;
+
+        if (sum == null) {
+            WideGlue sx = new WideGlue();
+
+            for (int i = 0; i < size; i++) {
+                get(i).addWidthTo(sx);
+            }
+            s = (sx.getLength().ge(w) ? sx.getShrink() : sx.getStretch());
+        } else {
+            s = sum;
+        }
+
+        for (int i = 0; i < size; i++) {
+            get(i).spreadWidth(w, s);
+        }
+
+        getWidth().add(w);
     }
 
     /**

@@ -43,7 +43,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public interface Node extends Knot, Serializable {
 
@@ -178,13 +178,22 @@ public interface Node extends Knot, Serializable {
     void setWidth(FixedDimen width);
 
     /**
+     * Adjust the height of a flexible node. This method is a noop for any but
+     * the flexible nodes.
+     *
+     * @param height the desired height
+     * @param sum the total sum of the glues
+     */
+    void spreadHeight(FixedDimen height, FixedGlueComponent sum);
+
+    /**
      * Adjust the width of a flexible node. This method is a noop for any but
      * the flexible nodes.
      *
      * @param width the desired width
      * @param sum the total sum of the glues
      */
-    void spread(FixedDimen width, FixedGlueComponent sum);
+    void spreadWidth(FixedDimen width, FixedGlueComponent sum);
 
     /**
      * This method puts the printable representation into the string buffer.

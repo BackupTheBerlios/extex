@@ -23,7 +23,7 @@ import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.Discardable;
 
 /**
- * This class reresents an explicit kern node for the typesetter.
+ * This class represents an explicit kerning node for the typesetter.
  *
  * From The TeXbook
  * <p>
@@ -40,7 +40,7 @@ import de.dante.extex.typesetter.Discardable;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class ExplicitKernNode extends AbstractKernNode implements Discardable {
 
