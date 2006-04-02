@@ -34,7 +34,7 @@ import de.dante.extex.typesetter.type.node.pdftex.PdfXForm;
  * to make use of the special features of PDF.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface PdftexSupport {
 
@@ -138,7 +138,7 @@ public interface PdftexSupport {
     void pdfincludechars(Font font, String text);
 
     /**
-     * This method inserts the text to te info section.
+     * This method inserts the text to the info section.
      *
      * @param text the text to add
      */
