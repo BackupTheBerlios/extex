@@ -36,7 +36,7 @@ import de.dante.util.UnicodeChar;
  * TODO gene: missing JavaDoc.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Efcode extends AbstractCode
         implements
@@ -52,7 +52,7 @@ public class Efcode extends AbstractCode
     /**
      * Creates a new object.
      *
-     * @param codeName te name of the primitive
+     * @param codeName the name of the primitive
      */
     public Efcode(final String codeName) {
 

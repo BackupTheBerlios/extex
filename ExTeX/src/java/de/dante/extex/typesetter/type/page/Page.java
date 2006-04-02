@@ -29,7 +29,7 @@ import de.dante.extex.typesetter.type.NodeList;
  * access to additional parameters.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public interface Page {
 
@@ -87,7 +87,7 @@ public interface Page {
     /**
      * Setter for the background color.
      *
-     * @param background te background color
+     * @param background the background color
      */
     void setColor(Color background);
 

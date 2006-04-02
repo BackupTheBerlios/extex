@@ -106,7 +106,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.89 $
+ * @version $Revision: 1.90 $
  */
 public class Moritz extends Max
         implements
@@ -248,7 +248,7 @@ public class Moritz extends Max
     /**
      * Close the topmost stream and pop another one to the top if one is left.
      * If the closed stream has been a file stream then the tokens from the
-     * tokens register <tt>everyeof</tt> is inserted into the token stream.
+     * tokens register <tt>everyeof</tt> are inserted into the token stream.
      *
      * @param context the interpreter context
      *
