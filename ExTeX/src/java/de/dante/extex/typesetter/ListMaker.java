@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -23,6 +23,7 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
+import de.dante.extex.interpreter.type.count.FixedCount;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.scanner.type.token.Token;
@@ -41,7 +42,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "<logo>TeX</logo> &ndash; The Program [211]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.49 $
+ * @version $Revision: 1.50 $
  */
 public interface ListMaker {
 
@@ -58,13 +59,14 @@ public interface ListMaker {
     void add(Node node) throws TypesetterException, ConfigurationException;
 
     /**
-     * TODO gene: missing JavaDoc
+     * Add a node list to the current list maker and adjust the spacing between
+     * the elements of the list.
      *
-     * @param list
-     * @param options
+     * @param list the list
+     * @param options the options to use
      *
-     * @throws TypesetterException
-     * @throws ConfigurationException
+     * @throws TypesetterException in case of an error
+     * @throws ConfigurationException in case of a configuration error
      */
     void addAndAdjust(NodeList list, TypesetterOptions options)
             throws TypesetterException,
@@ -250,7 +252,7 @@ public interface ListMaker {
      * @throws TypesetterUnsupportedException in case of an error
      * @throws InvalidSpacefactorException in case of an invalid space factor
      */
-    void setSpacefactor(Count sf)
+    void setSpacefactor(FixedCount sf)
             throws TypesetterUnsupportedException,
                 InvalidSpacefactorException;
 

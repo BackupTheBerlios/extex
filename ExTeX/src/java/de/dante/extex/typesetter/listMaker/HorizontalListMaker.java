@@ -27,6 +27,7 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.count.Count;
+import de.dante.extex.interpreter.type.count.FixedCount;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
@@ -58,7 +59,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.30 $
+ * @version $Revision: 1.31 $
  */
 public class HorizontalListMaker extends AbstractListMaker {
 
@@ -399,9 +400,9 @@ public class HorizontalListMaker extends AbstractListMaker {
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(
-     *      de.dante.extex.interpreter.type.count.Count)
+     *      de.dante.extex.interpreter.type.count.FixedCount)
      */
-    public void setSpacefactor(final Count f)
+    public void setSpacefactor(final FixedCount f)
             throws TypesetterUnsupportedException,
                 InvalidSpacefactorException {
 

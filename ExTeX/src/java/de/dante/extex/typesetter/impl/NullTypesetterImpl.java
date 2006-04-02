@@ -25,6 +25,7 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
+import de.dante.extex.interpreter.type.count.FixedCount;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.scanner.type.token.Token;
@@ -54,7 +55,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class NullTypesetterImpl implements Typesetter {
 
@@ -380,7 +381,7 @@ public class NullTypesetterImpl implements Typesetter {
      * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(
      *     de.dante.extex.interpreter.type.count.Count)
      */
-    public void setSpacefactor(final Count f)
+    public void setSpacefactor(final FixedCount f)
             throws InvalidSpacefactorException {
 
         // nothing to do

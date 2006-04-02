@@ -29,6 +29,7 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.exception.ImpossibleException;
 import de.dante.extex.interpreter.type.count.Count;
+import de.dante.extex.interpreter.type.count.FixedCount;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.scanner.type.token.Token;
@@ -66,7 +67,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.86 $
+ * @version $Revision: 1.87 $
  */
 public class TypesetterImpl
         implements
@@ -587,7 +588,7 @@ public class TypesetterImpl
      * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(
      *     de.dante.extex.interpreter.type.count.Count)
      */
-    public void setSpacefactor(final Count sf)
+    public void setSpacefactor(final FixedCount sf)
             throws TypesetterUnsupportedException,
                 InvalidSpacefactorException {
 

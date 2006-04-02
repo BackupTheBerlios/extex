@@ -25,6 +25,7 @@ import de.dante.extex.backend.documentWriter.DocumentWriter;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
+import de.dante.extex.interpreter.type.count.FixedCount;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.language.ligature.LigatureBuilder;
@@ -58,7 +59,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.74 $
+ * @version $Revision: 1.75 $
  */
 public class Max1 extends TestCase {
 
@@ -405,7 +406,7 @@ public class Max1 extends TestCase {
         /**
          * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(int)
          */
-        public void setSpacefactor(final Count f)
+        public void setSpacefactor(final FixedCount f)
                 throws InvalidSpacefactorException {
 
             // nothing to do
