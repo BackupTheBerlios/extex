@@ -39,7 +39,7 @@ import de.dante.util.UnicodeChar;
  * Adapter for a ModifiableFount for TFM.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class ModifiableFountTFM implements ModifiableFount, Serializable {
 
@@ -273,8 +273,10 @@ public class ModifiableFountTFM implements ModifiableFount, Serializable {
 
         // glyph 'space' exists?
         Dimen spacedimen = (Dimen) fontdimen.get("SPACE");
+        Dimen stretch = (Dimen) fontdimen.get("STRETCH"); //  gene
+        Dimen shrink = (Dimen) fontdimen.get("SHRINK"); //  gene
         if (spacedimen != null) {
-            return new Glue(spacedimen);
+            return new Glue(spacedimen, stretch, shrink); // gene
         }
 
         // mgn Walter fragen, welche spacebreite?
