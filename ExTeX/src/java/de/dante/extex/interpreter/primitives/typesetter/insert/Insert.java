@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -23,8 +23,10 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.primitives.register.box.AbstractBox;
 import de.dante.extex.interpreter.type.box.Box;
+import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.node.InsertionNode;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
@@ -52,14 +54,14 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Insert extends AbstractBox {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 20060402L;
 
     /**
      * Creates a new object.
@@ -87,6 +89,10 @@ public class Insert extends AbstractBox {
         long index = source.scanNumber(context);
         Box b = new Box(context, source, typesetter, false, null);
 
+        Mode mode = typesetter.getMode();
+        if (mode != Mode.VERTICAL && mode != Mode.INNER_VERTICAL) {
+            throw new HelpingException(getLocalizer(), "TTP.MisplacedInsert");
+        }
         try {
             typesetter.add(new InsertionNode(index, b.getNodes()));
         } catch (ConfigurationException e) {
