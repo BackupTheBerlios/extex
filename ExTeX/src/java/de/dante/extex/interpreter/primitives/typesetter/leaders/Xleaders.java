@@ -25,6 +25,7 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.exception.helping.UndefinedControlSequenceException;
+import de.dante.extex.interpreter.primitives.typesetter.spacing.HorizontalSkip;
 import de.dante.extex.interpreter.primitives.typesetter.spacing.VerticalSkip;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Code;
@@ -36,7 +37,9 @@ import de.dante.extex.scanner.type.token.CodeToken;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.Node;
+import de.dante.extex.typesetter.type.node.CenteredLeadersNode;
 import de.dante.extex.typesetter.type.node.ExpandedLeadersNode;
+import de.dante.extex.typesetter.type.node.RuleNode;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
@@ -62,7 +65,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class Xleaders extends AbstractCode {
 
@@ -91,7 +94,6 @@ public class Xleaders extends AbstractCode {
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
-
         CodeToken cs = source.getControlSequence(context);
         Code code = context.getCode(cs);
 
@@ -99,13 +101,17 @@ public class Xleaders extends AbstractCode {
             throw new UndefinedControlSequenceException(printable(context, cs));
         }
 
+        boolean horizontal;
+
         Node node = null;
         if (code instanceof Boxable) {
             Box b = ((Boxable) code).getBox(context, source, typesetter);
             node = b.getNodes();
+            horizontal = b.isHbox();
         } else if (code instanceof RuleConvertible) {
             node = ((RuleConvertible) code)
                     .getRule(context, source, typesetter);
+            horizontal = ((RuleNode) node).isHorizontal();
         } else {
             throw new HelpingException(getLocalizer(), "TTP.BoxExpected");
         }
@@ -116,15 +122,26 @@ public class Xleaders extends AbstractCode {
         if (code == null) {
             throw new UndefinedControlSequenceException(//
                     context.esc(vskip.getName()));
-        } else if (!(code instanceof VerticalSkip)) {
-            throw new HelpingException(getLocalizer(),
-                    "TTP.BadGlueAfterLeaders");
         }
-        Glue skip = ((VerticalSkip) code).getGlue(context, source,
-                typesetter);
+
+        Glue skip;
+
+        if (horizontal) {
+            if (!(code instanceof HorizontalSkip)) {
+                throw new HelpingException(getLocalizer(),
+                        "TTP.BadGlueAfterLeaders");
+            }
+            skip = ((HorizontalSkip) code).getGlue(context, source, typesetter);
+        } else {
+            if (!(code instanceof VerticalSkip)) {
+                throw new HelpingException(getLocalizer(),
+                        "TTP.BadGlueAfterLeaders");
+            }
+            skip = ((VerticalSkip) code).getGlue(context, source, typesetter);
+        }
 
         try {
-            typesetter.add(new ExpandedLeadersNode(node, skip));
+            typesetter.add(new ExpandedLeadersNode(node, skip, horizontal));
         } catch (TypesetterException e) {
             throw new InterpreterException(e);
         } catch (ConfigurationException e) {
