@@ -23,10 +23,11 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.Node;
-import de.dante.extex.typesetter.type.node.GlueNode;
+import de.dante.extex.typesetter.type.node.SkipNode;
 
 /**
  * This class provides an implementation for the primitive
@@ -35,6 +36,9 @@ import de.dante.extex.typesetter.type.node.GlueNode;
  * <doc name="unskip">
  * <h3>The Primitive <tt>&#x5c;unskip</tt></h3>
  * <p>
+ *  The primitive <tt>&#x5c;unskip</tt> inspects the current list and
+ *  removes the last node if it is a glue node. This includes leader nodes.
+ *  If the current list is empty an error is raised.
  * </p>
  *
  * <h4>Syntax</h4>
@@ -51,14 +55,14 @@ import de.dante.extex.typesetter.type.node.GlueNode;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Unskip extends AbstractCode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 20060402L;
 
     /**
      * Creates a new object.
@@ -82,8 +86,13 @@ public class Unskip extends AbstractCode {
             throws InterpreterException {
 
         Node node = typesetter.getLastNode();
-        if (node instanceof GlueNode) {
+        if (node instanceof SkipNode) {
             typesetter.removeLastNode();
+        } else if (node == null) {
+            throw new HelpingException(getLocalizer(),
+                    "TTP.CantDeleteLastSkip",
+                    printableControlSequence(context), typesetter.getMode()
+                            .toString());
         }
     }
 

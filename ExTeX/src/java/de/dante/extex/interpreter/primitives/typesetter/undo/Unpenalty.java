@@ -23,10 +23,11 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.Node;
-import de.dante.extex.typesetter.type.node.KernNode;
+import de.dante.extex.typesetter.type.node.PenaltyNode;
 
 /**
  * This class provides an implementation for the primitive
@@ -35,6 +36,8 @@ import de.dante.extex.typesetter.type.node.KernNode;
  * <doc name="unpenalty">
  * <h3>The Primitive <tt>&#x5c;unpenalty</tt></h3>
  * <p>
+ *  The primitive <tt>&#x5c;unpenalty</tt> inspects the current list and
+ *  removes the last node if it is a penalty node. Otherwise an error is raised.
  * </p>
  *
  * <h4>Syntax</h4>
@@ -51,14 +54,14 @@ import de.dante.extex.typesetter.type.node.KernNode;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Unpenalty extends AbstractCode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 20060402L;
 
     /**
      * Creates a new object.
@@ -82,8 +85,13 @@ public class Unpenalty extends AbstractCode {
             throws InterpreterException {
 
         Node node = typesetter.getLastNode();
-        if (node instanceof KernNode) {
+        if (node instanceof PenaltyNode) {
             typesetter.removeLastNode();
+        } else if (node == null) {
+            throw new HelpingException(getLocalizer(),
+                    "TTP.CantDeleteLastPenalty",
+                    printableControlSequence(context), typesetter.getMode()
+                            .toString());
         }
     }
 

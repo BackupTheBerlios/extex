@@ -23,6 +23,7 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.Node;
@@ -35,6 +36,8 @@ import de.dante.extex.typesetter.type.node.KernNode;
  * <doc name="unkern">
  * <h3>The Primitive <tt>&#x5c;unkern</tt></h3>
  * <p>
+ *  The primitive <tt>&#x5c;unkern</tt> inspects the current list and
+ *  removes the last node if it is a kern node. Otherwise an error is raised.
  * </p>
  *
  * <h4>Syntax</h4>
@@ -51,7 +54,7 @@ import de.dante.extex.typesetter.type.node.KernNode;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Unkern extends AbstractCode {
 
@@ -84,6 +87,11 @@ public class Unkern extends AbstractCode {
         Node node = typesetter.getLastNode();
         if (node instanceof KernNode) {
             typesetter.removeLastNode();
+        } else if (node == null) {
+            throw new HelpingException(getLocalizer(),
+                    "TTP.CantDeleteLastKern",
+                    printableControlSequence(context), typesetter.getMode()
+                            .toString());
         }
     }
 
