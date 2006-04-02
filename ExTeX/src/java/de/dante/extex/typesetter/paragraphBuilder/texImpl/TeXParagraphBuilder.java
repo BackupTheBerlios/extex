@@ -46,6 +46,7 @@ import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.NodeVisitor;
+import de.dante.extex.typesetter.type.node.AbstractExpandableNode;
 import de.dante.extex.typesetter.type.node.AdjustNode;
 import de.dante.extex.typesetter.type.node.AfterMathNode;
 import de.dante.extex.typesetter.type.node.AlignedLeadersNode;
@@ -118,7 +119,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </i>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class TeXParagraphBuilder
         implements
@@ -1443,7 +1444,7 @@ public class TeXParagraphBuilder
                 // goto done;
                 return;
                 // case type(s) of
-            } else if (n instanceof GlueNode) {
+            } else if (n instanceof AbstractExpandableNode) {
                 // glue_node: «Subtract glue from break_width 838»;
 
                 /* 838.
@@ -2179,7 +2180,7 @@ public class TeXParagraphBuilder
             sb.append("\\par");
         } else {
             Node n = nodes.get(curBreak);
-            if (n instanceof GlueNode) {
+            if (n instanceof AbstractExpandableNode) {
                 // else if type(cur_p) != glue_node then
                 // begin if type(cur_p)=penalty_node then
             } else if (n instanceof PenaltyNode) {
@@ -2661,7 +2662,7 @@ public class TeXParagraphBuilder
         Node n = nodes.get(curBreak + 1);
         if (!(n instanceof CharNode) && autoBreaking) {
             // if type(link(cur_p))=glue_node then
-            if (n instanceof GlueNode) {
+            if (n instanceof AbstractExpandableNode) {
                 // try_break(0,unhyphenated);
                 tryBreak(nodes, 0, false);
             }
@@ -3480,7 +3481,7 @@ public class TeXParagraphBuilder
             putLeftskipAndDetach(line);
             // «Call the packaging subroutine, setting box to the justified
             // box 889»;
-            justifyLine(line, curLine, lineGlue.toGlue());
+            justifyLine(line, curLine, lineGlue);
             // «Append the new box to the current vertical list, followed by the
             // list of special nodes taken out of the box by the packager 888»;
             /* 888.
@@ -3938,7 +3939,7 @@ public class TeXParagraphBuilder
      * @param glue the sum of the glues in the line
      */
     private void justifyLine(final NodeList line, final long curLine,
-            final Glue glue) {
+            final WideGlue glue) {
 
         // if cur_line > last_special_line then
         // begin cur_width <-- second_width;
@@ -3960,7 +3961,7 @@ public class TeXParagraphBuilder
         FixedGlueComponent component = (x.lt(Dimen.ZERO_PT)
                 ? glue.getStretch()
                 : glue.getShrink());
-        line.spread(x, component);
+        line.spreadWidth(x, null); //TODO gene: ???
         justBox = line;
 
         // shift_amount(just_box) <-- cur_indent
