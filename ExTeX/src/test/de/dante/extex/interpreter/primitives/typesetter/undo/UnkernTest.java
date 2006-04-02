@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>&#x5c;unkern</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class UnkernTest extends NoFlagsPrimitiveTester {
 
@@ -45,9 +45,83 @@ public class UnkernTest extends NoFlagsPrimitiveTester {
      */
     public UnkernTest(final String arg) {
 
-        super(arg, "unkern", "42");
+        super(arg, "unkern", "", "\\kern1pt");
     }
 
-    //TODO implement primitive specific test cases
+    /**
+     * <testcase primitive="&#x5c;unkern">
+     *  Test case checking that <tt>&#x5c;unkern</tt> need some node in the
+     *  current list.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testErr1() throws Exception {
+
+        assertFailure(
+        //--- input code ---
+                "\\unkern\\end ",
+                //--- error channel ---
+                "You can't use `\\unkern' in vertical mode");
+    }
+
+    /**
+     * <testcase primitive="&#x5c;unkern">
+     *  Test case checking that <tt>&#x5c;unkern</tt> need some node in the
+     *  current list.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testErr2() throws Exception {
+
+        assertFailure(
+        //--- input code ---
+                "\\kern1pt\\unkern\\unkern\\end ",
+                //--- error channel ---
+                "You can't use `\\unkern' in vertical mode");
+    }
+
+    /**
+     * <testcase primitive="&#x5c;unkern">
+     *  Test case checking that <tt>&#x5c;unkern</tt> does not touch a char node
+     *  at the end of the current list.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test1() throws Exception {
+
+        assertSuccess(showNodesProperties(),
+        //--- input code ---
+                "a\\unkern\\end ",
+                //--- output channel ---
+                "" + //
+                        "\\vbox(1.0pt+1.0pt)x0.0pt\n" + //
+                        ".\\hbox(1.0pt+1.0pt)x0.0pt\n" + //
+                        "..a\n");
+    }
+
+    /**
+     * <testcase primitive="&#x5c;unkern">
+     *  Test case checking that <tt>&#x5c;unkern</tt> takes the last kern from
+     *  the current list.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test2() throws Exception {
+
+        assertSuccess(showNodesProperties(),
+        //--- input code ---
+                "a\\kern1pt\\unkern\\end ",
+                //--- output channel ---
+                "" + //
+                        "\\vbox(1.0pt+1.0pt)x0.0pt\n" + //
+                        ".\\hbox(1.0pt+1.0pt)x0.0pt\n" + //
+                        "..a\n");
+    }
+
+    //TODO implement more primitive specific test cases
 
 }

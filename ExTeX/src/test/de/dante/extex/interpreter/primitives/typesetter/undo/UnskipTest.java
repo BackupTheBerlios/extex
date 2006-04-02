@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>&#x5c;unskip</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class UnskipTest extends NoFlagsPrimitiveTester {
 
@@ -45,9 +45,100 @@ public class UnskipTest extends NoFlagsPrimitiveTester {
      */
     public UnskipTest(final String arg) {
 
-        super(arg, "unskip", "42");
+        super(arg, "unskip", "", "a");
     }
 
-    //TODO implement primitive specific test cases
+    /**
+     * <testcase primitive="&#x5c;unskip">
+     *  Test case checking that <tt>&#x5c;unskip</tt> need some node in the
+     *  current list.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testErr1() throws Exception {
+
+        assertFailure(
+        //--- input code ---
+                "\\unskip\\end ",
+                //--- error channel ---
+                "You can't use `\\unskip' in vertical mode");
+    }
+
+    /**
+     * <testcase primitive="&#x5c;unskip">
+     *  Test case checking that <tt>&#x5c;unskip</tt> need some node in the
+     *  current list.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testErr2() throws Exception {
+
+        assertFailure(
+        //--- input code ---
+                "\\vfill\\unskip\\unskip\\end ",
+                //--- error channel ---
+                "You can't use `\\unskip' in vertical mode");
+    }
+
+    /**
+     * <testcase primitive="&#x5c;unskip">
+     *  Test case checking that <tt>&#x5c;unskip</tt> need some node in the
+     *  current list.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testErr3() throws Exception {
+
+        assertFailure(
+        //--- input code ---
+                "\\hfill\\unskip\\unskip\\end ",
+                //--- error channel ---
+                "You can't use `\\unskip' in horizontal mode");
+    }
+
+    /**
+     * <testcase primitive="&#x5c;unskip">
+     *  Test case checking that <tt>&#x5c;unskip</tt> does not touch a char node
+     *  at the end of the current list.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test1() throws Exception {
+
+        assertSuccess(showNodesProperties(),
+        //--- input code ---
+                "a\\unskip\\end ",
+                //--- output channel ---
+                "" + //
+                        "\\vbox(1.0pt+1.0pt)x0.0pt\n" + //
+                        ".\\hbox(1.0pt+1.0pt)x0.0pt\n" + //
+                        "..a\n");
+    }
+
+    /**
+     * <testcase primitive="&#x5c;unskip">
+     *  Test case checking that <tt>&#x5c;unskip</tt> takes the last skip from
+     *  the current list.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test2() throws Exception {
+
+        assertSuccess(showNodesProperties(),
+        //--- input code ---
+                "a\\hfill\\unskip\\end ",
+                //--- output channel ---
+                "" + //
+                        "\\vbox(1.0pt+1.0pt)x0.0pt\n" + //
+                        ".\\hbox(1.0pt+1.0pt)x0.0pt\n" + //
+                        "..a\n");
+    }
+
+    //TODO implement more primitive specific test cases
 
 }
