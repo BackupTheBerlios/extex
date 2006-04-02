@@ -32,7 +32,7 @@ import de.dante.extex.interpreter.type.dimen.ImmutableDimen;
  * order should determine the value.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class WideGlue {
 
@@ -75,11 +75,11 @@ public class WideGlue {
     /**
      * Add some more dimen to the natural length.
      *
-     * @param glue the glue to add
+     * @param dimen the dimen to add
      */
-    public void add(final FixedDimen glue) {
+    public void add(final FixedDimen dimen) {
 
-        length.add(glue.getValue());
+        length.add(dimen.getValue());
     }
 
     /**
@@ -115,7 +115,7 @@ public class WideGlue {
     /**
      * Add some more dimen to the stretch.
      *
-     * @param s the glue to add
+     * @param s the dimen to add
      */
     public void addStretch(final FixedDimen s) {
 
@@ -287,26 +287,7 @@ public class WideGlue {
      */
     public String toString() {
 
-        StringBuffer sb = new StringBuffer();
-        this.length.toString(sb);
-
-        for (int i = SIZE - 1; i >= 0; i--) {
-            if (stretch[i] != 0) {
-                sb.append("plus ");
-                sb.append(stretch[i]);
-                sb.append(UNIT[i]);
-            }
-        }
-
-        for (int i = SIZE - 1; i >= 0; i--) {
-            if (shrink[i] != 0) {
-                sb.append("minus ");
-                sb.append(shrink[i]);
-                sb.append(UNIT[i]);
-            }
-        }
-
-        return sb.toString();
+        return toGlue().toString();
     }
 
 }
