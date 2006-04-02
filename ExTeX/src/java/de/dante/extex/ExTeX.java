@@ -331,7 +331,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.126 $
+ * @version $Revision: 1.127 $
  */
 public class ExTeX {
 
@@ -1033,6 +1033,7 @@ public class ExTeX {
         }
         docWriter.setParameter("Creator", "ExTeX " + EXTEX_VERSION.toString());
         docWriter.setParameter("Title", "");
+        docWriter.setParameter("Author", System.getProperty("user.name"));
         docWriter.setParameter("Paper", "A4");
         docWriter.setParameter("Orientation", "Portrait");
         docWriter.setParameter("Pages", "*");
