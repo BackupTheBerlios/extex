@@ -22,6 +22,7 @@ package de.dante.extex.typesetter.listMaker;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.Node;
@@ -37,15 +38,21 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * <h3>The Parameter <tt>\baselineskip</tt></h3>
  *
  * </doc>
- * 
+ *
  * <doc name="lineskiplimit" type="register">
  * <h3>The Parameter <tt>\lineskiplimit</tt></h3>
  *
  * </doc>
- * 
+ *
+ * <doc name="lineskip" type="register">
+ * <h3>The Parameter <tt>\lineskip</tt></h3>
+ *
+ * </doc>
+ *
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class VerticalListMaker extends InnerVerticalListMaker {
 
@@ -119,6 +126,14 @@ public class VerticalListMaker extends InnerVerticalListMaker {
             add(node);
         }
         setPrevDepth(prevDepth);
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.listMaker.InnerVerticalListMaker#getMode()
+     */
+    public Mode getMode() {
+
+        return Mode.VERTICAL;
     }
 
 }
