@@ -23,7 +23,7 @@ package de.dante.extex.interpreter.primitives.typesetter.spacing;
  * This is a test suite for the primitive <tt>\hfill</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class HfillTest extends AbstractHfillTester {
 
@@ -63,6 +63,27 @@ public class HfillTest extends AbstractHfillTester {
                 "\\vbox(0.0pt+0.0pt)x0.0pt\n" + //
                 ".\\hbox(0.0pt+0.0pt)x0.0pt\n" + //
                 "..\\glue0.0pt plus 1.0fill\n");
+    }
+
+    /**
+     * <testcase primitive="\hfill">
+     *  Test case checking that <tt>\hfill</tt> switches to vertical mode and
+     *  inserts a glue node with 1fill.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test10() throws Exception {
+
+        assertSuccess(showNodesProperties(),
+        //--- input code ---
+                "\\font\\f cmr10 \\f\\hsize=100pt x\\hfill x\\end ",
+                //--- output channel ---
+                "\\vbox(0.0pt+0.0pt)x0.0pt\n" + //
+                ".\\hbox(0.0pt+0.0pt)x0.0pt\n" + //
+                "..x\n" + //
+                "..\\rule0.0pt plus 1.0fill\n" + //
+                "..x\n");
     }
 
 }
