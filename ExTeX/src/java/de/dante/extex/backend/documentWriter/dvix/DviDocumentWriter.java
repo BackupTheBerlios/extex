@@ -41,6 +41,8 @@ import de.dante.dviware.type.DviXxx;
 import de.dante.extex.backend.documentWriter.DocumentWriter;
 import de.dante.extex.backend.documentWriter.DocumentWriterOptions;
 import de.dante.extex.backend.documentWriter.SingleDocumentStream;
+import de.dante.extex.color.ColorAware;
+import de.dante.extex.color.ColorConverter;
 import de.dante.extex.color.model.CmykColor;
 import de.dante.extex.color.model.GrayscaleColor;
 import de.dante.extex.color.model.RgbColor;
@@ -81,12 +83,13 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This class provides a base implementation of a DVI document writer.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class DviDocumentWriter
         implements
             DocumentWriter,
             SingleDocumentStream,
+            ColorAware,
             Configurable {
 
     /**
@@ -96,31 +99,10 @@ public class DviDocumentWriter
     private static final int MAX_4_BYTE = 0x7fffffff;
 
     /**
-     * Get the color representation for the specials.
-     *
-     * @param color the color
-     *
-     * @return the string representation
+     * The field <tt>MINUTES_PER_OUR</tt> contains the number of minutes per
+     * hour.
      */
-    private static String color(final Color color) {
-
-        if (color instanceof RgbColor) {
-            RgbColor rgb = (RgbColor) color;
-            return "rgb " + ((double) rgb.getRed()) / Color.MAX_VALUE + " "
-                    + ((double) rgb.getGreen()) / Color.MAX_VALUE + " "
-                    + ((double) rgb.getBlue()) / Color.MAX_VALUE;
-        } else if (color instanceof CmykColor) {
-            CmykColor cmyk = (CmykColor) color;
-            return "cmyk " + ((double) cmyk.getCyan()) / Color.MAX_VALUE + " "
-                    + ((double) cmyk.getMagenta()) / Color.MAX_VALUE + " "
-                    + ((double) cmyk.getYellow()) / Color.MAX_VALUE + " "
-                    + ((double) cmyk.getBlack()) / Color.MAX_VALUE;
-        } else if (color instanceof GrayscaleColor) {
-            GrayscaleColor gray = (GrayscaleColor) color;
-            return "gray " + ((double) gray.getGray()) / Color.MAX_VALUE;
-        }
-        return null;
-    }
+    private static final int MINUTES_PER_OUR = 60;
 
     /**
      * The field <tt>bopPointer</tt> contains the pointer to the last BOP.
@@ -128,15 +110,15 @@ public class DviDocumentWriter
     private int bopPointer = -1;
 
     /**
-     * The field <tt>color</tt> contains the current text color.
-     */
-    private Color color;
-
-    /**
      * The field <tt>colorSpecials</tt> contains the indicator whether or not to
      * include color specials.
      */
     private boolean colorSpecials = false;
+
+    /**
+     * The field <tt>converter</tt> contains the color converter to use.
+     */
+    private ColorConverter colorConverter = null;
 
     /**
      * The field <tt>dviH</tt> contains the h value of the DVI interpreter.
@@ -174,9 +156,9 @@ public class DviDocumentWriter
     private int dviZ;
 
     /**
-     * The field <tt>fnt</tt> contains the font number currently active.
+     * The field <tt>fontIndex</tt> contains the font number currently active.
      */
-    private int fnt;
+    private int fontIndex;
 
     /**
      * The field <tt>notInitialized</tt> contains the indicator that the
@@ -211,6 +193,11 @@ public class DviDocumentWriter
      * The field <tt>stream</tt> contains the target.
      */
     private OutputStream stream;
+
+    /**
+     * The field <tt>textColor</tt> contains the current text color.
+     */
+    private Color textColor;
 
     /**
      * The field <tt>visitor</tt> contains the visitor carrying the methods for
@@ -320,13 +307,13 @@ public class DviDocumentWriter
          * the expected value and remember the current color.
          *
          * @param dviCode list of DVI instructions to add the special to
-         * @param col the new color
+         * @param color the new color
          */
-        private void switchColors(final List dviCode, final Color col) {
+        private void switchColors(final List dviCode, final Color color) {
 
-            if (!col.equals(color)) {
-                color = col;
-                String cc = color(color);
+            if (!color.equals(textColor)) {
+                textColor = color;
+                String cc = color(textColor);
                 if (cc != null) {
                     dviCode.add(new DviXxx("color " + cc));
                 }
@@ -400,9 +387,9 @@ public class DviDocumentWriter
             List dviCode = (List) code;
             Font font = node.getTypesettingContext().getFont();
             int f = postamble.mapFont(font, dviCode);
-            if (f != fnt) {
+            if (f != fontIndex) {
                 dviCode.add(new DviFnt(f));
-                fnt = f;
+                fontIndex = f;
             }
             if (colorSpecials) {
                 switchColors(dviCode, node.getTypesettingContext().getColor());
@@ -551,15 +538,15 @@ public class DviDocumentWriter
                 throws GeneralException {
 
             List dviCode = (List) code;
-            int a = (int) node.getWidth().getValue();
-            int b = (int) node.getHeight().getValue();
+            int width = (int) node.getWidth().getValue();
+            int height = (int) node.getHeight().getValue();
 
             if (colorSpecials) {
                 switchColors(dviCode, node.getTypesettingContext().getColor());
             }
-            
-            dviCode.add(new DviSetRule(b, a));
-            dviH += a;
+
+            dviCode.add(new DviSetRule(height, width));
+            dviH += width;
             return null;
         }
 
@@ -671,6 +658,43 @@ public class DviDocumentWriter
     }
 
     /**
+     * Get the color representation for the specials.
+     *
+     * @param color the color
+     *
+     * @return the string representation
+     */
+    private String color(final Color color) {
+
+        if (color instanceof RgbColor) {
+            RgbColor rgb = (RgbColor) color;
+            return "rgb " + ((double) rgb.getRed()) / Color.MAX_VALUE + " "
+                    + ((double) rgb.getGreen()) / Color.MAX_VALUE + " "
+                    + ((double) rgb.getBlue()) / Color.MAX_VALUE;
+        } else if (color instanceof CmykColor) {
+            CmykColor cmyk = (CmykColor) color;
+            return "cmyk " + ((double) cmyk.getCyan()) / Color.MAX_VALUE + " "
+                    + ((double) cmyk.getMagenta()) / Color.MAX_VALUE + " "
+                    + ((double) cmyk.getYellow()) / Color.MAX_VALUE + " "
+                    + ((double) cmyk.getBlack()) / Color.MAX_VALUE;
+        } else if (color instanceof GrayscaleColor) {
+            GrayscaleColor gray = (GrayscaleColor) color;
+            return "gray " + ((double) gray.getGray()) / Color.MAX_VALUE;
+        }
+        if (colorConverter != null) {
+            Color c = colorConverter.toRgb(color);
+            if (c != null) {
+                return color(c);
+            }
+            c = colorConverter.toCmyk(color);
+            if (c != null) {
+                return color(c);
+            }
+        }
+        return null;
+    }
+
+    /**
      * @see de.dante.util.framework.configuration.Configurable#configure(
      *      de.dante.util.framework.configuration.Configuration)
      */
@@ -678,7 +702,7 @@ public class DviDocumentWriter
             throws ConfigurationException {
 
         String col = config.getAttribute("color");
-        if ( col != null) {
+        if (col != null) {
             colorSpecials = Boolean.valueOf(col).booleanValue();
         }
     }
@@ -698,6 +722,15 @@ public class DviDocumentWriter
      */
     protected void optimize(final List list) {
 
+    }
+
+    /**
+     * @see de.dante.extex.color.ColorAware#setColorConverter(
+     *      de.dante.extex.color.ColorConverter)
+     */
+    public void setColorConverter(final ColorConverter converter) {
+
+        this.colorConverter = converter;
     }
 
     /**
@@ -746,7 +779,7 @@ public class DviDocumentWriter
         dviX = 0;
         dviY = 0;
         dviZ = 0;
-        fnt = -1;
+        fontIndex = -1;
         List dviCode = new ArrayList();
         NodeList nodes = page.getNodes();
 
@@ -788,7 +821,6 @@ public class DviDocumentWriter
      *
      * @param name the name of the count register
      *
-     *  if necessary
      * @return the string representation of the value padded with a leading 0
      */
     private String two(final String name) {
@@ -807,9 +839,15 @@ public class DviDocumentWriter
     private void writePreamble() throws IOException {
 
         long time = options.getCountOption("time").getValue();
-        String comment = " TeX output " + two("year") + "." + two("month")
-                + "." + two("day") + ":"
-                + Long.toString((time / 60) * 100 + time % 60);
+        String comment = " TeX output "
+                + two("year")
+                + "."
+                + two("month")
+                + "."
+                + two("day")
+                + ":"
+                + Long.toString((time / MINUTES_PER_OUR) * 100 + time
+                        % MINUTES_PER_OUR);
         long mag = options.getMagnification();
         if (mag > MAX_4_BYTE) {
             mag = MAX_4_BYTE;
