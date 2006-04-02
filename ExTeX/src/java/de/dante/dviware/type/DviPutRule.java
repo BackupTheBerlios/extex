@@ -25,12 +25,12 @@ import java.io.OutputStream;
 import de.dante.dviware.Dvi;
 
 /**
- * This class represents the DVI instruction <tt>set_rule</tt>.
+ * This class represents the DVI instruction <tt>put_rule</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.1 $
  */
-public class DviSetRule extends AbstractDviCode {
+public class DviPutRule extends AbstractDviCode {
 
     /**
      * The field <tt>a</tt> contains the first parameter.
@@ -48,7 +48,7 @@ public class DviSetRule extends AbstractDviCode {
      * @param a the first parameter
      * @param b the second parameter
      */
-    public DviSetRule(final int a, final int b) {
+    public DviPutRule(final int a, final int b) {
 
         super();
         this.a = a;
@@ -60,7 +60,7 @@ public class DviSetRule extends AbstractDviCode {
      */
     public String getName() {
 
-        return "set_rule";
+        return "put_rule";
     }
 
     /**
@@ -71,7 +71,7 @@ public class DviSetRule extends AbstractDviCode {
         if (a == 0 && b == 0) {
             return 0;
         }
-        stream.write(Dvi.SET_RULE);
+        stream.write(Dvi.PUT_RULE);
         write4(stream, a);
         write4(stream, b);
         return 9;

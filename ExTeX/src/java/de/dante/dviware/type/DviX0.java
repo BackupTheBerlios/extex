@@ -25,34 +25,19 @@ import java.io.OutputStream;
 import de.dante.dviware.Dvi;
 
 /**
- * This class represents the DVI instruction <tt>set_rule</tt>.
+ * This class represents the DVI instruction <tt>x0</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.1 $
  */
-public class DviSetRule extends AbstractDviCode {
-
-    /**
-     * The field <tt>a</tt> contains the first parameter.
-     */
-    private int a;
-
-    /**
-     * The field <tt>b</tt> contains the second parameter.
-     */
-    private int b;
+public class DviX0 extends AbstractDviCode {
 
     /**
      * Creates a new object.
-     *
-     * @param a the first parameter
-     * @param b the second parameter
      */
-    public DviSetRule(final int a, final int b) {
+    public DviX0() {
 
         super();
-        this.a = a;
-        this.b = b;
     }
 
     /**
@@ -60,7 +45,7 @@ public class DviSetRule extends AbstractDviCode {
      */
     public String getName() {
 
-        return "set_rule";
+        return "x0";
     }
 
     /**
@@ -68,13 +53,8 @@ public class DviSetRule extends AbstractDviCode {
      */
     public int write(final OutputStream stream) throws IOException {
 
-        if (a == 0 && b == 0) {
-            return 0;
-        }
-        stream.write(Dvi.SET_RULE);
-        write4(stream, a);
-        write4(stream, b);
-        return 9;
+        stream.write(Dvi.X0);
+        return 1;
     }
 
 }
