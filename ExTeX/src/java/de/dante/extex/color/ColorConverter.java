@@ -27,9 +27,21 @@ import de.dante.extex.interpreter.context.Color;
 
 /**
  * This interface describes the possibilities of a color conversion.
+ * <p>
+ *  Consider the situation that a color is resent which is not in the needed
+ *  color model; For instance a CMYK color is given and a RGB color is needed.
+ *  In this situation a color converter can be used to translate between the
+ *  given color and the needed color.
+ * </p>
+ * <p>
+ *  A color converter can refuse to translate a given color. In this case the
+ *  conversion method simply returns <code>null</code>. This enables us to
+ *  define color converters which signal that a translation is not desirable
+ *  &ndash; e.g. because the result might be poor.
+ * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface ColorConverter {
 

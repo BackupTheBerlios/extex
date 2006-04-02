@@ -37,20 +37,22 @@ import de.dante.util.resource.ResourceFinder;
 import de.dante.util.resource.ResourceFinderFactory;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This class provides a command line tool to disassemble a DVI file.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class DviDisassemble implements DviProcessor {
 
     /**
-     * The field <tt>condensed</tt> contains the ...
+     * The field <tt>condensed</tt> contains the indicator that sequences of
+     * put_car instructions should be condensed.
      */
     private static boolean condensed = true;
 
     /**
-     * The field <tt>hexLabel</tt> contains the ...
+     * The field <tt>hexLabel</tt> contains the indicator that the label should
+     * be presented as hex number.
      */
     private static boolean hexLabel = true;
 
@@ -61,7 +63,8 @@ public class DviDisassemble implements DviProcessor {
     protected static final String PROP_CONFIG = "extex.config";
 
     /**
-     * The field <tt>showLabel</tt> contains the ...
+     * The field <tt>showLabel</tt> contains the indicator that the label
+     * should be shown as labels.
      */
     private static boolean showLabel = true;
 
@@ -87,6 +90,8 @@ public class DviDisassemble implements DviProcessor {
                 hexLabel = false;
             } else if (a.startsWith("-nolabel")) {
                 showLabel = false;
+            } else if (a.startsWith("-uncondensed")) {
+                condensed = false;
             } else {
                 process(a, logger);
             }
@@ -94,11 +99,12 @@ public class DviDisassemble implements DviProcessor {
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * Process an input file.
      *
      * @param arg the resource name to process
+     * @param logger the logger
      */
-    private static void process(final String arg, final Logger logger) {
+    protected static void process(final String arg, final Logger logger) {
 
         Properties properties = System.getProperties();
         properties.setProperty(PROP_CONFIG, "config/extex");
@@ -227,16 +233,6 @@ public class DviDisassemble implements DviProcessor {
     }
 
     /**
-     * @see de.dante.dviware.DviProcessor#fntNum(int, int)
-     */
-    public void fntNum(final int off, final int f) {
-
-        printLabel(off);
-        out.print("fnt_num ");
-        out.println(f);
-    }
-
-    /**
      * @see de.dante.dviware.DviProcessor#nop(int)
      */
     public void nop(final int off) {
@@ -319,7 +315,7 @@ public class DviDisassemble implements DviProcessor {
      */
     private void printLabel(final int off) {
 
-        if (inString)  {
+        if (inString) {
             inString = false;
             out.print("\"\n");
         }
@@ -465,7 +461,7 @@ public class DviDisassemble implements DviProcessor {
     /**
      * @see de.dante.dviware.DviProcessor#x0(int)
      */
-    public void x0(int off) {
+    public void x0(final int off) {
 
         printLabel(off);
         out.println("x0");
@@ -496,7 +492,7 @@ public class DviDisassemble implements DviProcessor {
     /**
      * @see de.dante.dviware.DviProcessor#y0(int)
      */
-    public void y0(int off) {
+    public void y0(final int off) {
 
         printLabel(off);
         out.println("y0");
@@ -515,7 +511,7 @@ public class DviDisassemble implements DviProcessor {
     /**
      * @see de.dante.dviware.DviProcessor#z0(int)
      */
-    public void z0(int off) {
+    public void z0(final int off) {
 
         printLabel(off);
         out.println("z0");

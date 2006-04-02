@@ -25,12 +25,27 @@ import java.io.OutputStream;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This is an abstract base class for DVI instructions.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public abstract class AbstractDviCode implements DviCode {
+
+    /**
+     * Write two bytes to the output stream.
+     *
+     * @param stream the output stream to write to
+     * @param value the value
+     *
+     * @throws IOException in case of an error
+     */
+    protected static void write2(final OutputStream stream, final int value)
+            throws IOException {
+
+        stream.write(value >> 8);
+        stream.write(value);
+    }
 
     /**
      * Creates a new object.
@@ -41,75 +56,17 @@ public abstract class AbstractDviCode implements DviCode {
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * Write an opcode and some unsigned value to the output stream.
+     * The value determines the exact opcode. If the value fits in one byte then
+     * the base opcode is used. If two bytes are needed then 1 is added.
+     * If two bytes are needed then 2 is added. Finally if all four bytes are
+     * needed then 3 is added to the base opcode.
      *
-     * @param stream the output stream to write to
-     * @param value
-     *
-     * @throws IOException in case of an error
-     */
-    protected void write2(final OutputStream stream, final int value)
-            throws IOException {
-
-        stream.write(value >> 8);
-        stream.write(value);
-    }
-
-    /**
-     * TODO gene: missing JavaDoc
-     *
-     * @param stream the output stream to write to
-     * @param value
-     *
-     * @throws IOException in case of an error
-     */
-    protected void write3(final OutputStream stream, final int value)
-            throws IOException {
-
-        stream.write(value >> 16);
-        stream.write(value >> 8);
-        stream.write(value);
-    }
-
-    /**
-     * TODO gene: missing JavaDoc
-     *
-     * @param stream the output stream to write to
-     * @param value
-     *
-     * @throws IOException in case of an error
-     */
-    protected void write4(final OutputStream stream, final int value)
-            throws IOException {
-
-        stream.write(value >> 24);
-        stream.write(value >> 16);
-        stream.write(value >> 8);
-        stream.write(value);
-    }
-
-    /**
-     * TODO gene: missing JavaDoc
-     *
-     * @param stream
-     * @param value
-     * @throws IOException
-     */
-    protected void write4(final OutputStream stream, final FixedDimen value)
-            throws IOException {
-
-        long val = value.getValue();
-        write4(stream, (int) val);
-    }
-
-    /**
-     * TODO gene: missing JavaDoc
-     *
-     * @param baseOpcode
-     * @param value
+     * @param baseOpcode the opcode
+     * @param value the value
      * @param stream the output stream to write to
      *
-     * @return
+     * @return the number of bytes written
      *
      * @throws IOException in case of an error
      */
@@ -142,32 +99,17 @@ public abstract class AbstractDviCode implements DviCode {
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * Write an opcode and some signed value to the output stream.
+     * The value determines the exact opcode. If the value fits in one byte then
+     * the base opcode is used. If two bytes are needed then 1 is added.
+     * If two bytes are needed then 2 is added. Finally if all four bytes are
+     * needed then 3 is added to the base opcode.
      *
-     * @param value
-     * @return
-     */
-    protected String variant(final int value) {
-
-        if (value <= 0xff) {
-            return "1";
-        } else if (value <= 0xffff) {
-            return "2";
-        } else if (value <= 0xffffff) {
-            return "3";
-        }
-
-        return "4";
-    }
-
-    /**
-     * TODO gene: missing JavaDoc
-     *
-     * @param baseOpcode
-     * @param value
+     * @param baseOpcode the opcode
+     * @param value the value
      * @param stream the output stream to write to
      *
-     * @return
+     * @return the number of bytes written
      *
      * @throws IOException in case of an error
      */
@@ -197,6 +139,74 @@ public abstract class AbstractDviCode implements DviCode {
         stream.write((value >> 8) & 0xff);
         stream.write(value);
         return 5;
+    }
+
+    /**
+     * Determine which variant of a DVI instruction is needed for the operand.
+     *
+     * @param value the unsigned value
+     *
+     * @return the variant
+     */
+    protected String variant(final int value) {
+
+        if (value <= 0xff) {
+            return "1";
+        } else if (value <= 0xffff) {
+            return "2";
+        } else if (value <= 0xffffff) {
+            return "3";
+        }
+
+        return "4";
+    }
+
+    /**
+     * Write three bytes to the output stream.
+     *
+     * @param stream the output stream to write to
+     * @param value the value
+     *
+     * @throws IOException in case of an error
+     */
+    protected void write3(final OutputStream stream, final int value)
+            throws IOException {
+
+        stream.write(value >> 16);
+        stream.write(value >> 8);
+        stream.write(value);
+    }
+
+    /**
+     * Write four bytes to the output stream.
+     *
+     * @param stream the output stream to write to
+     * @param value the value
+     *
+     * @throws IOException in case of an error
+     */
+    protected void write4(final OutputStream stream, final FixedDimen value)
+            throws IOException {
+
+        long val = value.getValue();
+        write4(stream, (int) val);
+    }
+
+    /**
+     * Write four bytes to the output stream.
+     *
+     * @param stream the output stream to write to
+     * @param value the value
+     *
+     * @throws IOException in case of an error
+     */
+    protected void write4(final OutputStream stream, final int value)
+            throws IOException {
+
+        stream.write(value >> 24);
+        stream.write(value >> 16);
+        stream.write(value >> 8);
+        stream.write(value);
     }
 
 }

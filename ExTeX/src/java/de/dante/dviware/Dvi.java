@@ -24,10 +24,10 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This class provides a DVI parser.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Dvi {
 
@@ -42,7 +42,7 @@ public class Dvi {
     public static final int DOWN1 = 157;
 
     /**
-     * The field <tt>DVI_ID</tt> contains the ...
+     * The field <tt>DVI_ID</tt> contains the id of a dvi file.
      */
     public static final int DVI_ID = 2;
 
@@ -145,98 +145,113 @@ public class Dvi {
     public static final int PUSH = 141;
 
     /**
-     * The field <tt>PUT_CHAR1</tt> contains the op-code for the OUT_CHAR1
+     * The field <tt>PUT_CHAR1</tt> contains the op-code for the PUT_CHAR1
      * instruction.
      */
     public static final int PUT_CHAR1 = 133;
 
     /**
-     * The field <tt>PUT_CHAR2</tt> contains the ...
+     * The field <tt>PUT_CHAR2</tt> contains the op-code for the PUT_CHAR2
+     * instruction.
      */
     public static final int PUT_CHAR2 = 134;
 
     /**
-     * The field <tt>PUT_CHAR3</tt> contains the ...
+     * The field <tt>PUT_CHAR3</tt> contains the op-code for the PUT_CHAR3
+     * instruction.
      */
     public static final int PUT_CHAR3 = 135;
 
     /**
-     * The field <tt>PUT_CHAR4</tt> contains the ...
+     * The field <tt>PUT_CHAR4</tt> contains the op-code for the PUT_CHAR4
+     * instruction.
      */
     public static final int PUT_CHAR4 = 136;
 
     /**
-     * The field <tt>PUT_RULE</tt> contains the ...
+     * The field <tt>PUT_RULE</tt> contains the op-code for the PUT_RULE
+     * instruction.
      */
     public static final int PUT_RULE = 137;
 
     /**
-     * The field <tt>RIGHT1</tt> contains the ...
+     * The field <tt>RIGHT1</tt> contains the op-code for the RIGHT1
+     * instruction.
      */
     public static final int RIGHT1 = 143;
 
     /**
-     * The field <tt>RIGHT2</tt> contains the ...
+     * The field <tt>RIGHT2</tt> contains the op-code for the RIGHT2
+     * instruction.
      */
     public static final int RIGHT2 = 144;
 
     /**
-     * The field <tt>RIGHT3</tt> contains the ...
+     * The field <tt>RIGHT3</tt> contains the op-code for the RIGHT3
+     * instruction.
      */
     public static final int RIGHT3 = 145;
 
     /**
-     * The field <tt>RIGHT4</tt> contains the ...
+     * The field <tt>RIGHT4</tt> contains the op-code for the RIGHT4
+     * instruction.
      */
     public static final int RIGHT4 = 146;
 
     /**
-     * The field <tt>SET_CHAR_0</tt> contains the ...
+     * The field <tt>SET_CHAR_0</tt> contains the op-code for the SET_CHAR0
+     * instruction.
      */
     public static final int SET_CHAR_0 = 0x00;
 
     /**
-     * The field <tt>SET_CHAR127</tt> contains the ...
+     * The field <tt>SET_CHAR127</tt> contains the op-code for the SET_CHAR127
+     * instruction.
      */
     public static final int SET_CHAR127 = 0x7f;
 
     /**
-     * The field <tt>SET_RULE</tt> contains the ...
+     * The field <tt>SET_RULE</tt> contains the op-code for the SET_RULE
+     * instruction.
      */
     public static final int SET_RULE = 132;
 
     /**
-     * The field <tt>SET1</tt> contains the ...
+     * The field <tt>SET1</tt> contains the op-code for the SET1
+     * instruction.
      */
     public static final int SET1 = 128;
 
     /**
-     * The field <tt>SET2</tt> contains the ...
+     * The field <tt>SET2</tt> contains the op-code for the SET2
+     * instruction.
      */
     public static final int SET2 = 129;
 
     /**
-     * The field <tt>SET3</tt> contains the ...
+     * The field <tt>SET3</tt> contains the op-code for the SET3
+     * instruction.
      */
     public static final int SET3 = 130;
 
     /**
-     * The field <tt>SET4</tt> contains the ...
+     * The field <tt>SET4</tt> contains the op-code for the SET4
+     * instruction.
      */
     public static final int SET4 = 131;
 
     /**
-     * The field <tt>W0</tt> contains the ...
+     * The field <tt>W0</tt> contains the op-code for the W0 instruction.
      */
     public static final int W0 = 147;
 
     /**
-     * The field <tt>W1</tt> contains the ...
+     * The field <tt>W1</tt> contains the op-code for the W1 instruction.
      */
     public static final int W1 = 148;
 
     /**
-     * The field <tt>W2</tt> contains the ...
+     * The field <tt>W2</tt> contains the op-code for the W2 instruction.
      */
     public static final int W2 = 149;
 
@@ -261,22 +276,22 @@ public class Dvi {
     public static final int X1 = 153;
 
     /**
-     * The field <tt>XXX1</tt> contains the ...
+     * The field <tt>XXX1</tt> contains the op-code for the XXX1 instruction.
      */
     public static final int XXX1 = 239;
 
     /**
-     * The field <tt>XXX2</tt> contains the ...
+     * The field <tt>XXX2</tt> contains the op-code for the XXX2 instruction.
      */
     public static final int XXX2 = 240;
 
     /**
-     * The field <tt>XXX3</tt> contains the ...
+     * The field <tt>XXX3</tt> contains the op-code for the XXX3 instruction.
      */
     public static final int XXX3 = 241;
 
     /**
-     * The field <tt>XXX4</tt> contains the ...
+     * The field <tt>XXX4</tt> contains the op-code for the XXX4 instruction.
      */
     public static final int XXX4 = 242;
 
@@ -324,7 +339,8 @@ public class Dvi {
     /**
      * Parse the input stream and invoke the callbacks on each code found.
      *
-     * @param proc the processor
+     * @param proc the processor which defines the callback methods invoked
+     *  when a matching DVI instruction has been read
      *
      * @throws IOException in case of an error
      */
@@ -682,7 +698,7 @@ public class Dvi {
                 case 232:
                 case 233:
                 case 234:
-                    proc.fntNum(off, c - FNT_NUM_0);
+                    proc.fnt(off, c - FNT_NUM_0);
                     break;
                 case FNT1:
                     proc.fnt(off, read1());

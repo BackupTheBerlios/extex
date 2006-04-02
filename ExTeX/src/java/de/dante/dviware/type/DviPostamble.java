@@ -36,7 +36,7 @@ import de.dante.extex.interpreter.type.font.Font;
  * up to the terminating <tt>post_post</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class DviPostamble extends AbstractDviCode {
 
@@ -63,17 +63,17 @@ public class DviPostamble extends AbstractDviCode {
     private int mag;
 
     /**
-     * The field <tt>maxHeight</tt> contains the ...
+     * The field <tt>maxHeight</tt> contains the maximal height.
      */
     private Dimen maxHeight = new Dimen(0);
 
     /**
-     * The field <tt>maxWidth</tt> contains the ...
+     * The field <tt>maxWidth</tt> contains the maximal width.
      */
     private Dimen maxWidth = new Dimen(0);
 
     /**
-     * The field <tt>numberOfPages</tt> contains the ...
+     * The field <tt>numberOfPages</tt> contains the number of pages.
      */
     private int numberOfPages = 0;
 
@@ -83,15 +83,14 @@ public class DviPostamble extends AbstractDviCode {
     private int offset;
 
     /**
-     * The field <tt>stackDepth</tt> contains the ...
+     * The field <tt>stackDepth</tt> contains the stack depth needed to process
+     * all push and pop operations.
      */
     private int stackDepth = 0;
 
     /**
      * Creates a new object.
      *
-     * @param num the numerator of the fraction making up the DVI unit length
-     * @param den the denominator of the fraction making up the DVI unit length
      * @param mag the magnification factor in permille
      */
     public DviPostamble(final int mag) {
