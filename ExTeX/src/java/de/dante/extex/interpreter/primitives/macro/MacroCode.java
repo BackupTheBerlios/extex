@@ -56,7 +56,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
 public class MacroCode extends AbstractCode
         implements
@@ -67,7 +67,7 @@ public class MacroCode extends AbstractCode
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 20060405L;
 
     /**
      * The field <tt>body</tt> contains the tokens of the macro expansion text.
@@ -93,11 +93,6 @@ public class MacroCode extends AbstractCode
     private MacroPattern pattern;
 
     /**
-     * The field <tt>protectedP</tt> contains the protected flag.
-     */
-    private boolean protectedP;
-
-    /**
      * Creates a new object.
      *
      * @param name the initial name of the macro
@@ -113,7 +108,6 @@ public class MacroCode extends AbstractCode
         this.pattern = thePattern;
         this.notLong = !flags.isLong();
         this.outerP = flags.isOuter();
-        this.protectedP = flags.isProtected();
     }
 
     /**
@@ -225,16 +219,6 @@ public class MacroCode extends AbstractCode
     }
 
     /**
-     * Getter for protected property.
-     *
-     * @return the protected property.
-     */
-    public boolean isProtected() {
-
-        return this.protectedP;
-    }
-
-    /**
      * Match a single parameter.
      *
      * @param context the processor context
@@ -252,13 +236,21 @@ public class MacroCode extends AbstractCode
             final Typesetter typesetter, final Tokens[] args, final int len,
             final int i) throws InterpreterException {
 
+        Token t;
+
         if (i >= len) {
+            t = source.getToken(context);
+            source.push(t);
+
+            if (t instanceof LeftBraceToken) {
+                return i;
+            }
             throw new HelpingException(getLocalizer(), "TTP.UseDoesntMatch",
                     printableControlSequence(context));
         }
         Token ti = pattern.get(i);
         if (ti instanceof MacroParamToken) {
-            Token t = source.getToken(context);
+            t = source.getToken(context);
             if (!ti.equals(t)) {
                 throw new HelpingException(getLocalizer(),
                         "TTP.UseDoesntMatch", printableControlSequence(context));
@@ -316,7 +308,6 @@ public class MacroCode extends AbstractCode
                             "TTP.UseDoesntMatch",
                             printableControlSequence(context));
                 } else if (notLong && t.equals(Catcode.ESCAPE, "par")) {
-                    //TODO gene: reconstruct to use the code and not the name
                     throw new HelpingException(getLocalizer(),
                             "TTP.RunawayArg", printableControlSequence(context));
                 }
