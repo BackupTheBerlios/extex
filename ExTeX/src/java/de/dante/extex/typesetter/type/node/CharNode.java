@@ -35,7 +35,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class CharNode extends AbstractNode {
 
@@ -130,7 +130,7 @@ public class CharNode extends AbstractNode {
      */
     public int getSpaceFactor() {
 
-        return 0; //TODO gene: getSpaceFactor() incomplete
+        return 1000; //TODO gene: getSpaceFactor() incomplete
     }
 
     /**
