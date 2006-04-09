@@ -21,6 +21,8 @@
   <primitives>
     <define name="hyphenation"
             class="de.dante.extex.interpreter.primitives.hyphen.Hyphenation"/>
+    <define name="ignorevoid"
+            class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
  </primitives>
  </unit>
  
