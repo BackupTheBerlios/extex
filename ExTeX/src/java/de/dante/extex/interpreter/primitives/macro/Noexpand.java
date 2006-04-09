@@ -24,7 +24,10 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.interpreter.type.CodeExpander;
 import de.dante.extex.interpreter.type.ExpandableCode;
+import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
 
 /**
@@ -34,7 +37,14 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="noexpand">
  * <h3>The Primitive <tt>\noexpand</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The primitive <tt>\noexpand</tt> prevents a token from being expanded when
+ *  collecting the expanded tokens for arguments of macros like <tt>\edef</tt>,
+ *  <tt>\xdef</tt>, <tt>\message</tt>, and others.
+ * </p>
+ * <p>
+ *  If the token following the <tt>\noexpand</tt> is not a control sequence or
+ *  active character then the primitive does nothing at all. The primitive is
+ *  also void if it occurs outside the said expansion context.
  * </p>
  *
  * <h4>Syntax</h4>
@@ -50,14 +60,17 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
-public class Noexpand extends AbstractCode implements ExpandableCode {
+public class Noexpand extends AbstractCode
+        implements
+            ExpandableCode,
+            CodeExpander {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 20060205L;
 
     /**
      * Creates a new object.
@@ -93,9 +106,24 @@ public class Noexpand extends AbstractCode implements ExpandableCode {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        //Token t = source.getToken();
-        //TODO gene: execute() unimplemented
-        throw new RuntimeException("unimplemented");
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.CodeExpander#expandCode(
+     *      de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter,
+     *      de.dante.extex.interpreter.type.tokens.Tokens)
+     */
+    public void expandCode(final Context context, final TokenSource source,
+            final Typesetter typesetter, final Tokens tokens)
+            throws InterpreterException {
+
+        Token token = source.getToken(context);
+        if (token != null) {
+            tokens.add(token);
+        }
     }
 
 }
