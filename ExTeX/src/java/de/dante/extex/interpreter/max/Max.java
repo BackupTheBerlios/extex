@@ -68,16 +68,16 @@ import de.dante.extex.interpreter.observer.stop.StopObserver;
 import de.dante.extex.interpreter.observer.stop.StopObserverList;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Code;
+import de.dante.extex.interpreter.type.CodeExpander;
 import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.PrefixCode;
+import de.dante.extex.interpreter.type.ProtectedCode;
+import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.language.LanguageManagerFactory;
 import de.dante.extex.scanner.stream.TokenStream;
-import de.dante.extex.scanner.type.token.CodeToken;
-import de.dante.extex.scanner.type.token.Token;
-import de.dante.extex.scanner.type.token.TokenFactory;
-import de.dante.extex.scanner.type.token.TokenVisitor;
 import de.dante.extex.scanner.type.token.ActiveCharacterToken;
+import de.dante.extex.scanner.type.token.CodeToken;
 import de.dante.extex.scanner.type.token.ControlSequenceToken;
 import de.dante.extex.scanner.type.token.CrToken;
 import de.dante.extex.scanner.type.token.LeftBraceToken;
@@ -90,6 +90,9 @@ import de.dante.extex.scanner.type.token.SpaceToken;
 import de.dante.extex.scanner.type.token.SubMarkToken;
 import de.dante.extex.scanner.type.token.SupMarkToken;
 import de.dante.extex.scanner.type.token.TabMarkToken;
+import de.dante.extex.scanner.type.token.Token;
+import de.dante.extex.scanner.type.token.TokenFactory;
+import de.dante.extex.scanner.type.token.TokenVisitor;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.util.Switch;
@@ -107,9 +110,25 @@ import de.dante.util.framework.logger.LogEnabled;
  * This is a reference implementation for a <b>MA</b>cro e<b>X</b>pander. The
  * macro expander is the core engine driving <logo>ExTeX</logo>.
  *
+ *
+ * <doc name="ignorevoid" type="register">
+ * <h3>The Parameter <tt>\ignorevoid</tt></h3>
+ * <p>
+ *  The count register <tt>\ignorevoid</tt> determines how an undefined
+ *  active character or control sequence is encountered. If the value is
+ *  greater than 0 then undefined code is ignored. Otherwise it leads to an
+ *  error message.
+ * </p>
+ * <p>
+ *  This count parameter has been introduced by <logo>ExTeX</logo>.
+ * </p>
+ *
+ * </doc>
+ *
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.93 $
+ * @version $Revision: 1.94 $
  */
 public abstract class Max
         implements
@@ -452,8 +471,7 @@ public abstract class Max
         context.setTokenFactory(tokenFactory);
         configureHyhenation(config);
 
-        Configuration everyRunConfig = config
-                .findConfiguration("everyjob");
+        Configuration everyRunConfig = config.findConfiguration("everyjob");
         if (everyRunConfig != null) {
             everyRun = everyRunConfig.getValue();
         }
@@ -623,8 +641,15 @@ public abstract class Max
     }
 
     /**
-     * @see de.dante.extex.interpreter.max.Moritz#expand(
-     *      de.dante.extex.scanner.type.token.Token)
+     * Take the token given and expand it as possible. If the token is
+     * expandable then the expansion is performed until an un-expandable token
+     * has been found. This token is returned.
+     *
+     * @param token the token to expand
+     *
+     * @return the next token
+     *
+     * @throws InterpreterException in case of an error
      */
     protected Token expand(final Token token) throws InterpreterException {
 
@@ -648,11 +673,50 @@ public abstract class Max
     }
 
     /**
+     * Take the token given and expand it as possible while honoring the
+     * protected code. If the token is not protected and expandable then the
+     * expansion is performed until an un-expandable token has been found.
+     * This token is returned.
+     *
+     * @param token the token to expand
+     * @param tokens the token list to pass to an Expander
+     *
+     * @return the next token
+     *
+     * @throws InterpreterException in case of an error
+     */
+    protected Token expandUnproteced(final Token token, final Tokens tokens)
+            throws InterpreterException {
+
+        Token t = token;
+        Code code;
+
+        while (t instanceof CodeToken) {
+            if (observersExpand != null) {
+                observersExpand.update(t);
+            }
+            code = context.getCode((CodeToken) t);
+            if (code instanceof ProtectedCode) {
+                return t;
+            } else if (code instanceof CodeExpander) {
+                ((CodeExpander)code).expandCode(context, this, typesetter, tokens);
+            } else if (code instanceof ExpandableCode) {
+                ((ExpandableCode) code).expand(prefix, context, this,
+                        typesetter);
+            } else {
+                return t;
+            }
+            t = getToken(context);
+        }
+        return t;
+    }
+
+    /**
      * @see de.dante.extex.interpreter.Interpreter#expand(
      *      de.dante.extex.interpreter.type.tokens.Tokens,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public Tokens expand(final Tokens tokens, final Typesetter typesetter)
+    public Tokens expand(final Tokens tokens, final Typesetter ts)
             throws GeneralException {
 
         Tokens result = new Tokens();
@@ -1024,9 +1088,9 @@ public abstract class Max
         if (cond != null) {
             Localizer loc = getLocalizer();
             String endPrimitive = loc.format("TTP.EndPrimitive");
-            String message = loc.format("TTP.EndIf", context
-                    .esc(endPrimitive), context.esc(cond.getPrimitiveName()),
-                    cond.getLocator().toString());
+            String message = loc.format("TTP.EndIf", context.esc(endPrimitive),
+                    context.esc(cond.getPrimitiveName()), cond.getLocator()
+                            .toString());
             logger.warning(message);
             InterpreterException e = new InterpreterException(message);
             if (observersError != null) {
@@ -1123,21 +1187,26 @@ public abstract class Max
      * @throws InterpreterException in case of an error
      *
      * @see de.dante.extex.scanner.type.token.TokenVisitor#visitActive(
-     *      de.dante.extex.scanner.ActiveCharacterToken, java.lang.Object)
+     *      de.dante.extex.scanner.type.token.ActiveCharacterToken,
+     *      java.lang.Object)
      */
     public Object visitActive(final ActiveCharacterToken token,
             final Object ignore) throws InterpreterException {
 
         Code code = context.getCode(token);
         if (code == null) {
-            throw new UndefinedControlSequenceException(AbstractCode.printable(
-                    context, token));
-        }
+            Count ignoreVoid = context.getCount("ignorevoid");
+            if (ignoreVoid.le(Count.ZERO)) {
+                throw new UndefinedControlSequenceException(AbstractCode
+                        .printable(context, token));
+            }
+        } else {
 
-        code.execute(prefix, context, this, typesetter);
+            code.execute(prefix, context, this, typesetter);
 
-        if (!(code instanceof PrefixCode) && prefix.isDirty()) {
-            reportDirtyFlag(token);
+            if (!(code instanceof PrefixCode) && prefix.isDirty()) {
+                reportDirtyFlag(token);
+            }
         }
         return null;
     }
@@ -1153,7 +1222,7 @@ public abstract class Max
      * @throws InterpreterException in case of an error
      *
      * @see de.dante.extex.scanner.type.token.TokenVisitor#visitCr(
-     *      de.dante.extex.scanner.CrToken, java.lang.Object)
+     *      de.dante.extex.scanner.type.token.CrToken, java.lang.Object)
      */
     public Object visitCr(final CrToken token, final Object ignore)
             throws InterpreterException {
@@ -1178,7 +1247,8 @@ public abstract class Max
      * @throws InterpreterException in case of an error
      *
      * @see de.dante.extex.scanner.type.token.TokenVisitor#visitEscape(
-     *      de.dante.extex.scanner.ControlSequenceToken, java.lang.Object)
+     *      de.dante.extex.scanner.type.token.ControlSequenceToken,
+     *      java.lang.Object)
      */
     public Object visitEscape(final ControlSequenceToken token,
             final Object ignore) throws InterpreterException {
@@ -1188,14 +1258,18 @@ public abstract class Max
             observersMacro.update(token, code);
         }
         if (code == null) {
-            throw new UndefinedControlSequenceException(AbstractCode.printable(
-                    context, token));
-        }
+            Count ignoreVoid = context.getCount("ignorevoid");
+            if (ignoreVoid.le(Count.ZERO)) {
+                throw new UndefinedControlSequenceException(AbstractCode
+                        .printable(context, token));
+            }
+        } else {
 
-        code.execute(prefix, context, this, typesetter);
+            code.execute(prefix, context, this, typesetter);
 
-        if (!(code instanceof PrefixCode) && prefix.isDirty()) {
-            reportDirtyFlag(token);
+            if (!(code instanceof PrefixCode) && prefix.isDirty()) {
+                reportDirtyFlag(token);
+            }
         }
         return null;
     }
@@ -1212,7 +1286,8 @@ public abstract class Max
      *
      * @see "<logo>TeX</logo> &ndash; The Program [1063]"
      * @see de.dante.extex.scanner.type.token.TokenVisitor#visitLeftBrace(
-     *      de.dante.extex.scanner.LeftBraceToken, java.lang.Object)
+     *      de.dante.extex.scanner.type.token.LeftBraceToken,
+     *      java.lang.Object)
      */
     public Object visitLeftBrace(final LeftBraceToken token, final Object ignore)
             throws InterpreterException {
@@ -1232,6 +1307,7 @@ public abstract class Max
 
     /**
      * This visit method is invoked on a letter token.
+     *
      * @param token the first argument to pass is the token to expand.
      * @param ignore the second argument is ignored
      *
@@ -1240,7 +1316,8 @@ public abstract class Max
      * @throws InterpreterException in case of an error
      *
      * @see de.dante.extex.scanner.type.token.TokenVisitor#visitLetter(
-     *      de.dante.extex.scanner.LetterToken, java.lang.Object)
+     *      de.dante.extex.scanner.type.token.LetterToken,
+     *      java.lang.Object)
      */
     public Object visitLetter(final LetterToken token, final Object ignore)
             throws InterpreterException {
@@ -1266,7 +1343,8 @@ public abstract class Max
      * @throws GeneralException in case of an error
      *
      * @see de.dante.extex.scanner.type.token.TokenVisitor#visitMacroParam(
-     *      de.dante.extex.scanner.MacroParamToken, java.lang.Object)
+     *      de.dante.extex.scanner.type.token.MacroParamToken,
+     *      java.lang.Object)
      */
     public Object visitMacroParam(final MacroParamToken token,
             final Object ignore) throws GeneralException {
@@ -1298,7 +1376,8 @@ public abstract class Max
      *
      * @see "<logo>TeX</logo> &ndash; The Program [1137]"
      * @see de.dante.extex.scanner.type.token.TokenVisitor#visitMathShift(
-     *      de.dante.extex.scanner.MathShiftToken, java.lang.Object)
+     *      de.dante.extex.scanner.type.token.MathShiftToken,
+     *      java.lang.Object)
      */
     public Object visitMathShift(final MathShiftToken token, final Object ignore)
             throws InterpreterException {
@@ -1325,7 +1404,8 @@ public abstract class Max
      * @throws InterpreterException in case of an error
      *
      * @see de.dante.extex.scanner.type.token.TokenVisitor#visitOther(
-     *      de.dante.extex.scanner.OtherToken, java.lang.Object)
+     *      de.dante.extex.scanner.type.token.OtherToken,
+     *      java.lang.Object)
      */
     public Object visitOther(final OtherToken token, final Object ignore)
             throws InterpreterException {
@@ -1351,7 +1431,8 @@ public abstract class Max
      *
      * @see "<logo>TeX</logo> &ndash; The Program [1067]"
      * @see de.dante.extex.scanner.type.token.TokenVisitor#visitRightBrace(
-     *      de.dante.extex.scanner.RightBraceToken, java.lang.Object)
+     *      de.dante.extex.scanner.type.token.RightBraceToken,
+     *      java.lang.Object)
      */
     public Object visitRightBrace(final RightBraceToken token,
             final Object ignore) throws InterpreterException {
@@ -1376,7 +1457,8 @@ public abstract class Max
      * @throws GeneralException in case of an error
      *
      * @see de.dante.extex.scanner.type.token.TokenVisitor#visitSpace(
-     *      de.dante.extex.scanner.SpaceToken, java.lang.Object)
+     *      de.dante.extex.scanner.type.token.SpaceToken,
+     *      java.lang.Object)
      */
     public Object visitSpace(final SpaceToken token, final Object ignore)
             throws GeneralException {
@@ -1404,7 +1486,8 @@ public abstract class Max
      * @throws InterpreterException in case of an error
      *
      * @see de.dante.extex.scanner.type.token.TokenVisitor#visitSubMark(
-     *      de.dante.extex.scanner.SubMarkToken, java.lang.Object)
+     *      de.dante.extex.scanner.type.token.SubMarkToken,
+     *      java.lang.Object)
      */
     public Object visitSubMark(final SubMarkToken token, final Object ignore)
             throws InterpreterException {
@@ -1438,7 +1521,8 @@ public abstract class Max
      * @throws InterpreterException in case of an error
      *
      * @see de.dante.extex.scanner.type.token.TokenVisitor#visitSupMark(
-     *      de.dante.extex.scanner.SupMarkToken, java.lang.Object)
+     *      de.dante.extex.scanner.type.token.SupMarkToken,
+     *      java.lang.Object)
      */
     public Object visitSupMark(final SupMarkToken token, final Object ignore)
             throws InterpreterException {
@@ -1472,7 +1556,8 @@ public abstract class Max
      * @throws InterpreterException in case of an error
      *
      * @see de.dante.extex.scanner.type.token.TokenVisitor#visitTabMark(
-     *      de.dante.extex.scanner.TabMarkToken, java.lang.Object)
+     *      de.dante.extex.scanner.type.token.TabMarkToken,
+     *      java.lang.Object)
      */
     public Object visitTabMark(final TabMarkToken token, final Object ignore)
             throws InterpreterException {
