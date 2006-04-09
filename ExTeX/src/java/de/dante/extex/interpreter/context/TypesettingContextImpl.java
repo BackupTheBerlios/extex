@@ -30,7 +30,7 @@ import de.dante.extex.language.Language;
  * appearance of glyphs or other nodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public class TypesettingContextImpl implements ModifiableTypesettingContext {
 
@@ -154,7 +154,7 @@ public class TypesettingContextImpl implements ModifiableTypesettingContext {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.TypesettingContext#set(
+     * @see de.dante.extex.interpreter.context.ModifiableTypesettingContext#set(
      *      de.dante.extex.interpreter.context.TypesettingContext)
      */
     public void set(final TypesettingContext context) {
@@ -168,7 +168,7 @@ public class TypesettingContextImpl implements ModifiableTypesettingContext {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.TypesettingContext#setColor(
+     * @see de.dante.extex.interpreter.context.ModifiableTypesettingContext#setColor(
      *      de.dante.extex.interpreter.context.Color)
      */
     public void setColor(final Color theColor) {
@@ -177,8 +177,8 @@ public class TypesettingContextImpl implements ModifiableTypesettingContext {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.TypesettingContext#setDirection(
-     *       de.dante.extex.interpreter.context.Direction)
+     * @see de.dante.extex.interpreter.context.ModifiableTypesettingContext#setDirection(
+     *      de.dante.extex.interpreter.context.Direction)
      */
     public void setDirection(final Direction theDirection) {
 
@@ -186,7 +186,7 @@ public class TypesettingContextImpl implements ModifiableTypesettingContext {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.TypesettingContext#setFont(
+     * @see de.dante.extex.interpreter.context.ModifiableTypesettingContext#setFont(
      *      de.dante.extex.interpreter.type.font.Font)
      */
     public void setFont(final Font theFont) {
@@ -195,7 +195,7 @@ public class TypesettingContextImpl implements ModifiableTypesettingContext {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.TypesettingContext#setLanguage(
+     * @see de.dante.extex.interpreter.context.ModifiableTypesettingContext#setLanguage(
      *      de.dante.extex.language.Language)
      */
     public void setLanguage(final Language language) {

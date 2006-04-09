@@ -92,7 +92,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class JavaLoad extends AbstractCode implements Loader {
 
@@ -136,7 +136,7 @@ public class JavaLoad extends AbstractCode implements Loader {
     }
 
     /**
-     * @see de.dante.extex.interpreter.primitives.dynamic.Loader#load(
+     * @see de.dante.extex.interpreter.unit.Loader#load(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)

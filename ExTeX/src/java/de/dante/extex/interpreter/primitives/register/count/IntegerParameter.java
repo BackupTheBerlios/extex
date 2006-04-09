@@ -44,7 +44,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class IntegerParameter extends CountPrimitive
         implements
@@ -86,7 +86,7 @@ public class IntegerParameter extends CountPrimitive
     }
 
     /**
-     * @see de.dante.extex.interpreter.primitives.register.box.AbstractBox#getKey(
+     * @see de.dante.extex.interpreter.primitives.register.count.AbstractCount#getKey(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */

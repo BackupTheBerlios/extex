@@ -50,7 +50,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Prevgraf extends CountPrimitive {
 
@@ -70,7 +70,7 @@ public class Prevgraf extends CountPrimitive {
     }
 
     /**
-     * @see de.dante.extex.interpreter.primitives.register.box.AbstractBox#getKey(
+     * @see de.dante.extex.interpreter.primitives.register.count.AbstractCount#getKey(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */
@@ -83,7 +83,8 @@ public class Prevgraf extends CountPrimitive {
      * @see de.dante.extex.interpreter.type.arithmetic.Advanceable#advance(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
      */
     public void advance(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
@@ -130,7 +131,8 @@ public class Prevgraf extends CountPrimitive {
      * @see de.dante.extex.interpreter.type.arithmetic.Divideable#divide(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
      */
     public void divide(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
@@ -159,7 +161,8 @@ public class Prevgraf extends CountPrimitive {
      * @see de.dante.extex.interpreter.type.arithmetic.Multiplyable#multiply(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
      */
     public void multiply(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)

@@ -37,7 +37,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * <p>
  *  This primitive produces a horizontal or vertical kerning. This is a (minor)
  *  adjustment of the position. The meaning depends on the current mode of the
- *  typesetter. In vertical modes it means a vertival adjustment. Otherwise it
+ *  typesetter. In vertical modes it means a vertical adjustment. Otherwise it
  *  means a horizontal adjustment.
  * </p>
  *
@@ -45,8 +45,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;kern&rang;
- *      &rarr; <tt>\kern</tt> {@linkplain
- *      de.dante.extex.interpreter.type.dimen#Dimen(Context,TokenSource)
+ *      &rarr; <tt>\kern</tt> {@linkplain de.dante.extex.interpreter.type.dimen#Dimen(Context,TokenSource)
  *      &lang;dimen&rang;}   </pre>
  *
  * <h4>Examples</h4>
@@ -66,7 +65,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Kern extends AbstractCode {
 

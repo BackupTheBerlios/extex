@@ -138,7 +138,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.103 $
+ * @version $Revision: 1.104 $
  */
 public class ContextImpl
         implements
@@ -620,8 +620,8 @@ public class ContextImpl
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#getCode(
-     *      de.dante.extex.scanner.type.CodeToken)
+     * @see de.dante.extex.interpreter.context.ContextCode#getCode(
+     *      de.dante.extex.scanner.type.token.CodeToken)
      */
     public Code getCode(final CodeToken t) throws InterpreterException {
 
@@ -1164,9 +1164,9 @@ public class ContextImpl
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.ContextCode#registerCodeChangeObserver(
+     * @see de.dante.extex.interpreter.context.observer.code.CodeObservable#registerCodeChangeObserver(
      *      de.dante.extex.scanner.type.token.Token,
-     *      de.dante.extex.interpreter.context.observer.CodeObserver)
+     *      de.dante.extex.interpreter.context.observer.code.CodeObserver)
      */
     public synchronized void registerCodeChangeObserver(final Token name,
             final CodeObserver observer) {
@@ -1193,7 +1193,7 @@ public class ContextImpl
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.ContextCount#registerCountObserver(
+     * @see de.dante.extex.interpreter.context.observer.count.CountObservable#registerCountObserver(
      *      java.lang.String,
      *      de.dante.extex.interpreter.context.observer.CountObserver)
      */
@@ -1209,7 +1209,7 @@ public class ContextImpl
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.ContextDimen#registerDimenObserver(
+     * @see de.dante.extex.interpreter.context.observer.dimen.DimenObservable#registerDimenObserver(
      *      java.lang.String,
      *      de.dante.extex.interpreter.context.observer.DimenObserver)
      */
@@ -1241,8 +1241,8 @@ public class ContextImpl
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.ContextGroup#registerGroupObserver(
-     *      de.dante.extex.interpreter.context.observer.GroupObserver)
+     * @see de.dante.extex.interpreter.context.observer.group.GroupObservable#registerGroupObserver(
+     *      de.dante.extex.interpreter.context.observer.group.GroupObserver)
      */
     public synchronized void registerGroupObserver(final GroupObserver observer) {
 
@@ -1275,9 +1275,9 @@ public class ContextImpl
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.ContextTokens#registerTokensObserver(
+     * @see de.dante.extex.interpreter.context.observer.tokens.TokensObservable#registerTokensObserver(
      *      java.lang.String,
-     *      de.dante.extex.interpreter.context.observer.TokensObserver)
+     *      de.dante.extex.interpreter.context.observer.tokens.TokensObserver)
      */
     public synchronized void registerTokensObserver(final String name,
             final TokensObserver observer) {
@@ -1418,7 +1418,8 @@ public class ContextImpl
 
     /**
      * @see de.dante.extex.interpreter.context.Context#set(
-     *      de.dante.extex.interpreter.context.Color)
+     *      de.dante.extex.interpreter.context.Color,
+     *      boolean)
      */
     public void set(final Color color, final boolean global)
             throws ConfigurationException {
@@ -1429,7 +1430,8 @@ public class ContextImpl
 
     /**
      * @see de.dante.extex.interpreter.context.Context#set(
-     *      de.dante.extex.interpreter.context.Direction)
+     *      de.dante.extex.interpreter.context.Direction,
+     *      boolean)
      */
     public void set(final Direction direction, final boolean global)
             throws ConfigurationException {
@@ -1440,7 +1442,8 @@ public class ContextImpl
 
     /**
      * @see de.dante.extex.interpreter.context.Context#set(
-     *      de.dante.extex.interpreter.type.font.Font)
+     *      de.dante.extex.interpreter.type.font.Font,
+     *      boolean)
      */
     public void set(final Font font, final boolean global)
             throws ConfigurationException {
@@ -1451,7 +1454,8 @@ public class ContextImpl
 
     /**
      * @see de.dante.extex.interpreter.context.Context#set(
-     *      de.dante.extex.language.Language)
+     *      de.dante.extex.language.Language,
+     *      boolean)
      */
     public void set(final Language language, final boolean global)
             throws ConfigurationException {
@@ -1502,8 +1506,8 @@ public class ContextImpl
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setCode(
-     *      de.dante.extex.scanner.type.CodeToken,
+     * @see de.dante.extex.interpreter.context.ContextCode#setCode(
+     *      de.dante.extex.scanner.type.token.CodeToken,
      *      de.dante.extex.interpreter.type.Code, boolean)
      */
     public void setCode(final CodeToken t, final Code code, final boolean global)
@@ -1545,7 +1549,7 @@ public class ContextImpl
     /**
      * @see de.dante.extex.typesetter.TypesetterOptions#setCountOption(
      *      java.lang.String,
-     *      de.dante.extex.interpreter.type.count.FixedCount)
+     *      long)
      */
     public void setCountOption(final String name, final long value)
             throws GeneralException {
@@ -1556,7 +1560,8 @@ public class ContextImpl
     /**
      * @see de.dante.extex.interpreter.context.Context#setDelcode(
      *      de.dante.util.UnicodeChar,
-     *      MathDelimiter, boolean)
+     *      de.dante.extex.typesetter.type.math.MathDelimiter,
+     *      boolean)
      */
     public void setDelcode(final UnicodeChar c, final MathDelimiter delimiter,
             final boolean global) {
@@ -1567,7 +1572,8 @@ public class ContextImpl
     /**
      * @see de.dante.extex.interpreter.context.Context#setDimen(
      *      java.lang.String,
-     *      de.dante.extex.interpreter.type.dimen.Dimen, boolean)
+     *      de.dante.extex.interpreter.type.dimen.Dimen,
+     *      boolean)
      */
     public void setDimen(final String name, final Dimen value,
             final boolean global) throws InterpreterException {
@@ -1659,8 +1665,8 @@ public class ContextImpl
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setInteraction(
-     *      de.dante.extex.interpreter.Interaction)
+     * @see de.dante.extex.interpreter.context.ContextInteraction#setInteraction(
+     *      de.dante.extex.interpreter.interaction.Interaction)
      */
     public void setInteraction(final Interaction interaction)
             throws InterpreterException {
@@ -1886,9 +1892,9 @@ public class ContextImpl
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.ContextCode#unregisterCodeObserver(
+     * @see de.dante.extex.interpreter.context.observer.code.CodeObservable#unregisterCodeChangeObserver(
      *      de.dante.extex.scanner.type.token.Token,
-     *      de.dante.extex.interpreter.context.observer.CodeObserver)
+     *      de.dante.extex.interpreter.context.observer.code.CodeObserver)
      */
     public synchronized void unregisterCodeChangeObserver(final Token name,
             final CodeObserver observer) {
@@ -1914,7 +1920,7 @@ public class ContextImpl
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.ContextCount#unregisterCountObserver(
+     * @see de.dante.extex.interpreter.context.observer.count.CountObservable#unregisterCountObserver(
      *      java.lang.String,
      *      de.dante.extex.interpreter.context.observer.CountObserver)
      */
@@ -1930,7 +1936,7 @@ public class ContextImpl
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.ContextDimen#unregisterDimenObserver(
+     * @see de.dante.extex.interpreter.context.observer.dimen.DimenObservable#unregisterDimenObserver(
      *      java.lang.String,
      *      de.dante.extex.interpreter.context.observer.DimenObserver)
      */
@@ -1962,8 +1968,8 @@ public class ContextImpl
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.ContextGroup#unregisterGroupObserver(
-     *      de.dante.extex.interpreter.context.observer.GroupObserver)
+     * @see de.dante.extex.interpreter.context.observer.group.GroupObservable#unregisterGroupObserver(
+     *      de.dante.extex.interpreter.context.observer.group.GroupObserver)
      */
     public synchronized void unregisterGroupObserver(
             final GroupObserver observer) {
@@ -2001,9 +2007,9 @@ public class ContextImpl
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.ContextTokens#unregisterTokensChangeObserver(
+     * @see de.dante.extex.interpreter.context.observer.tokens.TokensObservable#unregisterTokensChangeObserver(
      *      java.lang.String,
-     *      de.dante.extex.interpreter.context.observer.TokensObserver)
+     *      de.dante.extex.interpreter.context.observer.tokens.TokensObserver)
      */
     public synchronized void unregisterTokensChangeObserver(final String name,
             final TokensObserver observer) {

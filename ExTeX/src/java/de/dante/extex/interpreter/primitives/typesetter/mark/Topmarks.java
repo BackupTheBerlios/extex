@@ -47,7 +47,7 @@ import de.dante.extex.interpreter.type.tokens.Tokens;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Topmarks extends AbstractMarksCode {
 
@@ -67,7 +67,7 @@ public class Topmarks extends AbstractMarksCode {
     }
 
     /**
-     * @see de.dante.extex.interpreter.primitives.typesetter.mark.AbstractMarkCode#getValue(
+     * @see de.dante.extex.interpreter.primitives.typesetter.mark.AbstractMarksCode#getValue(
      *      de.dante.extex.interpreter.context.Context,
      *      java.lang.String)
      */
