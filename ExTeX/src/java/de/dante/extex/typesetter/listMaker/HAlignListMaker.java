@@ -47,7 +47,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [770]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class HAlignListMaker extends RestrictedHorizontalListMaker
         implements
@@ -57,7 +57,7 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
      * This inner class is a container for the cell information in an alignment.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.18 $
+     * @version $Revision: 1.19 $
      */
     protected class Cell {
 
@@ -250,10 +250,11 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
     /**
      * @see de.dante.extex.typesetter.listMaker.AlignmentList#cr(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
+     *      de.dante.extex.interpreter.TokenSource,
+     *      boolean)
      */
-    public void cr(final Context context, final TokenSource source)
-            throws TypesetterException {
+    public void cr(final Context context, final TokenSource source,
+            final boolean noalign) throws TypesetterException {
 
         rows.add(line);
         clearLine(context, source);
@@ -268,7 +269,8 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
             throws TypesetterException {
 
         if (col > 0) {
-            cr(context, source);
+            boolean noalign = false; //TODO gene: provide noalign?
+            cr(context, source, noalign );
         }
     }
 
@@ -277,6 +279,7 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
      */
     public void omit() throws TypesetterException {
 
+        //TODO gene: respect protected macros
     }
 
     /**
