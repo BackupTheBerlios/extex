@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -26,14 +26,9 @@ import de.dante.extex.interpreter.type.dimen.FixedDimen;
  * This paragraph shape represents a block with hanging indentation.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class HangingParagraphShape extends ParagraphShape {
-
-    /**
-     * The field <tt>hsize</tt> contains the width of the line.
-     */
-    private FixedDimen hsize;
 
     /**
      * The field <tt>hangafter</tt> contains the number of lines to start or
@@ -45,6 +40,11 @@ public class HangingParagraphShape extends ParagraphShape {
      * The field <tt>hangindent</tt> contains the amount of indentation.
      */
     private FixedDimen hangindent;
+
+    /**
+     * The field <tt>hsize</tt> contains the width of the line.
+     */
+    private FixedDimen hsize;
 
     /**
      * Creates a new object.
@@ -87,15 +87,6 @@ public class HangingParagraphShape extends ParagraphShape {
     }
 
     /**
-     * Setter for hsize.
-     *
-     * @param hsize the hsize to set.
-     */
-    public void setHsize(final FixedDimen hsize) {
-
-        this.hsize = hsize;
-    }
-    /**
      * Setter for hangafter.
      *
      * @param hangafter the hangafter to set.
@@ -104,6 +95,7 @@ public class HangingParagraphShape extends ParagraphShape {
 
         this.hangafter = hangafter;
     }
+
     /**
      * Setter for hangindent.
      *
@@ -113,4 +105,15 @@ public class HangingParagraphShape extends ParagraphShape {
 
         this.hangindent = hangindent;
     }
+
+    /**
+     * Setter for hsize.
+     *
+     * @param hsize the hsize to set.
+     */
+    public void setHsize(final FixedDimen hsize) {
+
+        this.hsize = hsize;
+    }
+
 }
