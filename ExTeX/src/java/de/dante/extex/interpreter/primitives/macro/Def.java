@@ -61,12 +61,18 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
- *    \def#1{--#1--}  </pre>
+ *    \def\a#1{--#1--}  </pre>
+ *  <pre class="TeXSample">
+ *    \def\a#1#{--#1--}  </pre>
+ *  <pre class="TeXSample">
+ *    \def\a#1#2{--#2--#1--}  </pre>
+ *  <pre class="TeXSample">
+ *    \def\a#1:#2.{--#2--#1--}  </pre>
  *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.41 $
+ * @version $Revision: 1.42 $
  */
 public class Def extends AbstractAssignment {
 
@@ -98,37 +104,22 @@ public class Def extends AbstractAssignment {
 
         CodeToken cs = source.getControlSequence(context);
         MacroPattern pattern = getPattern(context, source);
-        Tokens body = (prefix.isExpanded() //
-                ? expandedBody(context, source, typesetter)//
-                : source.getTokens(context, source, typesetter));
+        Tokens body = (!prefix.isExpanded()
+                ? source.getTokens(context, source, typesetter) //
+                : source
+                        .scanUnprotectedTokens(context, false, false, getName()));
+        //TODO gene: maybe the treatment of # is incorrect
 
-        context.setCode(cs, new MacroCode(cs.getName(), prefix, pattern, body),
-                prefix.isGlobal());
+        MacroCode macroCode = (prefix.isProtected() //
+                ? new ProtectedMacroCode(cs.getName(), prefix, pattern, body) //
+                : new MacroCode(cs.getName(), prefix, pattern, body));
+
+        context.setCode(cs, macroCode, prefix.isGlobal());
         prefix.clearGlobal();
         prefix.clearExpanded();
         prefix.clearLong();
         prefix.clearOuter();
         prefix.clearProtected();
-    }
-
-    /**
-     * Parse the expanded body tokens according to the rules for <tt>\xdef</tt>.
-     *
-     * @param context the interpreter context
-     * @param source the source to acquire tokens from
-     * @param typesetter the typesetter to use as back-end
-     *
-     * @return the tokens making up the body
-     *
-     * @throws InterpreterException in case of an error
-     */
-    private Tokens expandedBody(final Context context,
-            final TokenSource source, final Typesetter typesetter)
-            throws InterpreterException {
-
-        Tokens body = source.scanTokens(context, false, false, getName());
-        //TODO gene: maybe the treatment of # is incorrect
-        return body;
     }
 
     /**

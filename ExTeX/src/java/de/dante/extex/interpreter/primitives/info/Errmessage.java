@@ -54,7 +54,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class Errmessage extends AbstractCode {
 
@@ -84,8 +84,8 @@ public class Errmessage extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String message = source.scanTokens(context, false, false, getName())
-                .toText();
+        String message = source.scanUnprotectedTokens(context, false, false,
+                getName()).toText();
         String help = context.getToks("errhelp").toText();
         throw new FixedHelpingException(message, help);
     }

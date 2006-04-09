@@ -66,14 +66,14 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Special extends AbstractCode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 20060406L;
 
     /**
      * Creates a new object.
@@ -99,7 +99,8 @@ public class Special extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String text = source.scanTokens(context, true, false, getName()).toText();
+        String text = source.scanUnprotectedTokens(context, true, false,
+                getName()).toText();
         try {
             typesetter.add(new SpecialNode(text));
         } catch (TypesetterException e) {
