@@ -38,7 +38,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This document writer can be used to combine several components.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class BackendDriverImpl
         implements
@@ -50,7 +50,7 @@ public class BackendDriverImpl
      * This internal class acts as page counter as last element in the node pipe.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.4 $
+     * @version $Revision: 1.5 $
      */
     private class Counter implements PagePipe {
 
@@ -148,7 +148,7 @@ public class BackendDriverImpl
 
     /**
      * @see de.dante.extex.backend.BackendDriver#add(
-     *      de.dante.extex.backend.nodeFilter.NodePipe)
+     *      de.dante.extex.backend.pageFilter.PagePipe)
      */
     public void add(final PagePipe processor) {
 

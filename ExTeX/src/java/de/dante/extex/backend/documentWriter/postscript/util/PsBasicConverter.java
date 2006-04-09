@@ -67,7 +67,7 @@ import de.dante.util.resource.ResourceFinder;
  * This class provides a converter to PostScript code.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class PsBasicConverter
         implements
@@ -81,7 +81,7 @@ public class PsBasicConverter
      * for output.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.5 $
+     * @version $Revision: 1.6 $
      */
     private class Buffer {
 
@@ -274,7 +274,7 @@ public class PsBasicConverter
      *
      * @throws DocumentWriterException in case of an error
      *
-     * @see de.dante.extex.backend.documentWriter.postscript.util.PsConverter#nodesToPostScript(
+     * @see de.dante.extex.backend.documentWriter.postscript.util.PsConverter#toPostScript(
      *      de.dante.extex.typesetter.type.page.Page,
      *      de.dante.extex.backend.documentWriter.postscript.util.FontManager,
      *      de.dante.extex.backend.documentWriter.postscript.util.HeaderManager)
