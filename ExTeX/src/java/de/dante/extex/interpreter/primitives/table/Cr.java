@@ -25,6 +25,9 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.interpreter.type.Code;
+import de.dante.extex.scanner.type.token.CodeToken;
+import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.listMaker.AlignmentList;
@@ -51,14 +54,14 @@ import de.dante.extex.typesetter.listMaker.AlignmentList;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Cr extends AbstractCode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 20060306L;
 
     /**
      * Creates a new object.
@@ -81,9 +84,22 @@ public class Cr extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
+        boolean noalign = false;
         ListMaker maker = typesetter.getListMaker();
         if (maker instanceof AlignmentList) {
-            ((AlignmentList) maker).cr(context, source);
+            Token token = source.getToken(context); //TODO gene: respect protected
+            if (token instanceof CodeToken) {
+                Code code = context.getCode((CodeToken) token);
+                if (code instanceof Noalign) {
+                    noalign = true;
+                } else {
+                    source.push(token);
+                }
+            } else {
+                source.push(token);
+            }
+
+            ((AlignmentList) maker).cr(context, source, noalign);
         } else {
             throw new HelpingException(getLocalizer(), "TTP.MisplacedCrSpan",
                     printableControlSequence(context));
