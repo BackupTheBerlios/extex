@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -29,7 +29,7 @@ import de.dante.extex.interpreter.type.tokens.Tokens;
  * the value.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public interface FixedCount {
 
@@ -102,7 +102,7 @@ public interface FixedCount {
 
     /**
      * Determine the printable representation of the object.
-     * The value returned is exactely the string which would be produced by
+     * The value returned is exactly the string which would be produced by
      * <logo>TeX</logo> to print the Count.
      *
      * @return the printable representation
@@ -113,7 +113,7 @@ public interface FixedCount {
 
     /**
      * Determine the printable representation of the object.
-     * The value returned is exactely the string which would be produced by
+     * The value returned is exactly the string which would be produced by
      * <logo>TeX</logo> to print the Count.
      *
      * @param sb the target string buffer
@@ -124,14 +124,15 @@ public interface FixedCount {
 
     /**
      * Determine the printable representation of the object.
-     * The value returned is exactely the string which would be produced by
+     * The value returned is exactly the string which would be produced by
      * <logo>TeX</logo> to print the Count.
      *
      * @param context the interpreter context
      *
-     * @return the printable respresentation as tokens
+     * @return the printable representation as tokens
      *
      * @throws InterpreterException in case of an error
      */
     Tokens toToks(final Context context) throws InterpreterException;
+
 }
