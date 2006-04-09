@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -79,14 +79,15 @@ import de.dante.util.framework.i18n.Localizer;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class HelpingException extends InterpreterException {
 
     /**
-     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     * The constant <tt>DEFAULT_ARGUMENT</tt> contains the argument if none
+     * is given.
      */
-    protected static final long serialVersionUID = 1L;
+    private static final String DEFAULT_ARGUMENT = "?";
 
     /**
      * The constant <tt>DEFAULT_TAG</tt> contains the tag to be used if none
@@ -95,10 +96,9 @@ public class HelpingException extends InterpreterException {
     private static final String DEFAULT_TAG = "GeneralDetailedException.help";
 
     /**
-     * The constant <tt>DEFAULT_ARGUMENT</tt> contains the argument if none
-     * is given.
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final String DEFAULT_ARGUMENT = "?";
+    protected static final long serialVersionUID = 1L;
 
     /**
      * The field <tt>arg1</tt> contains the first argument.
