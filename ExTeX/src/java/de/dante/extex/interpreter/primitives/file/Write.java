@@ -61,7 +61,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.34 $
+ * @version $Revision: 1.35 $
  */
 public class Write extends AbstractCode
         implements
@@ -71,14 +71,14 @@ public class Write extends AbstractCode
             InitializableCode {
 
     /**
-     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
-     */
-    protected static final long serialVersionUID = 2005L;
-
-    /**
      * The constant <tt>LOG_FILE</tt> contains the key for the log file.
      */
     private static final String LOG_FILE = "-1";
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    protected static final long serialVersionUID = 20060406L;
 
     /**
      * The field <tt>SYSTEM</tt> contains the key for the system execute
@@ -149,7 +149,8 @@ public class Write extends AbstractCode
 
         if (prefix.isImmediate()) {
 
-            Tokens toks = source.scanTokens(context, false, false, getName());
+            Tokens toks = source.scanUnprotectedTokens(context, false, false,
+                    getName());
             write(key, toks, context);
             prefix.clearImmediate();
 
