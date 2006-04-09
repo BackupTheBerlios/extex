@@ -51,14 +51,14 @@ import de.dante.extex.typesetter.listMaker.AlignmentList;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Span extends AbstractCode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 20060406L;
 
     /**
      * Creates a new object.
@@ -83,7 +83,7 @@ public class Span extends AbstractCode {
 
         ListMaker maker = typesetter.getListMaker();
         if (maker instanceof AlignmentList) {
-            ((AlignmentList) maker).cr(context, source);
+            ((AlignmentList) maker).span(context, source);
         } else {
             throw new HelpingException(getLocalizer(), "TTP.MisplacedSpan",
                     printableControlSequence(context));
