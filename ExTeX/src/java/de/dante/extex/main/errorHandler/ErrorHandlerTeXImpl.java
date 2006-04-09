@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -16,19 +16,20 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.main.errorHandler;
 
 import java.util.logging.Logger;
 
 import de.dante.util.Locator;
 
-
 /**
  * This is the error handler in <logo>TeX</logo> compatibility mode: the message
- * is presented in a compatible way.
+ * is presented in a <logo>TeX</logo>-compatible way. The output is written out
+ * via the Logger.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class ErrorHandlerTeXImpl extends ErrorHandlerImpl {
 
@@ -58,9 +59,9 @@ public class ErrorHandlerTeXImpl extends ErrorHandlerImpl {
         }
 
         logger.severe(NL + "!" + message + NL + file
-                      + line.substring(0, pointer - 1) + NL + sb.toString()
-                      + line.substring(pointer) + "l."
-                      + Integer.toString(locator.getLineNumber()) + NL);
+                + line.substring(0, pointer - 1) + NL + sb.toString()
+                + line.substring(pointer) + "l."
+                + Integer.toString(locator.getLineNumber()) + NL);
     }
 
 }

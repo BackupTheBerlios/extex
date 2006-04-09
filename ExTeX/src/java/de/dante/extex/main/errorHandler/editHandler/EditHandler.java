@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -16,23 +16,24 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.main.errorHandler.editHandler;
 
 import de.dante.util.Locator;
 import de.dante.util.framework.i18n.Localizer;
 
-
 /**
  * This interface describes the possibility to edit a file at a certain
- * location.
+ * location. It the implementing class is able, it should open an editor and
+ * place the cursor on the line indicated.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface EditHandler {
 
     /**
-     * Edit a file at a location.
+     * Edit a file at a given location.
      *
      * @param localizer the localizer to acquire texts from
      * @param locator the locator for the place to edit
@@ -40,4 +41,5 @@ public interface EditHandler {
      * @return <code>true</code> iff the job can be continued
      */
     boolean edit(Localizer localizer, Locator locator);
+
 }
