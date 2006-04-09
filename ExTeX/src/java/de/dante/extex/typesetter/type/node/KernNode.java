@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -30,8 +30,8 @@ import de.dante.extex.typesetter.type.Node;
  *  A kern_node has a width field to specify a (normally negative) amount of
  *  spacing. This spacing correction appears in horizontal lists between
  *  letters like A and V when the font designer said that it looks better to
- *  move them closer together or further apart. A kern node can also appear in
- *  a vertical list, when its `width' denotes additional spacing in the
+ *  move them closer together or further apart. A kerning node can also appear
+ *  in a vertical list, when its `width' denotes additional spacing in the
  *  vertical direction.
  * </p>
  *
@@ -39,7 +39,7 @@ import de.dante.extex.typesetter.type.Node;
  * @see de.dante.extex.typesetter.type.node.ImplicitKernNode
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface KernNode extends Node {
 
