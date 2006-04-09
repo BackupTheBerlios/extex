@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -123,7 +123,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.34 $
+ * @version $Revision: 1.35 $
  */
 public class TokenStreamFactory extends AbstractFactory
         implements
@@ -249,41 +249,13 @@ public class TokenStreamFactory extends AbstractFactory
     }
 
     /**
-     * Provide a new instance of a token stream reading from a Reader.
+     * Returns the file finder.
      *
-     * @param reader the reader to get new characters from
-     *
-     * @return the new instance
-     *
-     * @throws ConfigurationException in case of an error in the configuration
+     * @return Returns the file finder.
      */
-    public TokenStream newInstance(final Reader reader)
-            throws ConfigurationException {
+    public ResourceFinder getResourceFinder() {
 
-        TokenStream stream;
-        try {
-
-            stream = (TokenStream) readerConstructor.newInstance(//
-                    new Object[]{configuration, options, reader, Boolean.FALSE,
-                            "*"});
-
-        } catch (IllegalArgumentException e) {
-            throw new ConfigurationInstantiationException(e);
-        } catch (InstantiationException e) {
-            throw new ConfigurationInstantiationException(e);
-        } catch (IllegalAccessException e) {
-            throw new ConfigurationInstantiationException(e);
-        } catch (InvocationTargetException e) {
-            throw new ConfigurationInstantiationException(e);
-        }
-
-        enableLogging(stream, getLogger());
-
-        if (openReaderObservers != null) {
-            openReaderObservers.update(reader);
-        }
-
-        return stream;
+        return this.resourceFinder;
     }
 
     /**
@@ -318,6 +290,44 @@ public class TokenStreamFactory extends AbstractFactory
 
         if (openStringObservers != null) {
             openStringObservers.update(line);
+        }
+
+        return stream;
+    }
+
+    /**
+     * Provide a new instance of a token stream reading from a Reader.
+     *
+     * @param reader the reader to get new characters from
+     *
+     * @return the new instance
+     *
+     * @throws ConfigurationException in case of an error in the configuration
+     */
+    public TokenStream newInstance(final Reader reader)
+            throws ConfigurationException {
+
+        TokenStream stream;
+        try {
+
+            stream = (TokenStream) readerConstructor.newInstance(//
+                    new Object[]{configuration, options, reader, Boolean.FALSE,
+                            "*"});
+
+        } catch (IllegalArgumentException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (InstantiationException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (IllegalAccessException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (InvocationTargetException e) {
+            throw new ConfigurationInstantiationException(e);
+        }
+
+        enableLogging(stream, getLogger());
+
+        if (openReaderObservers != null) {
+            openReaderObservers.update(reader);
         }
 
         return stream;
@@ -422,15 +432,6 @@ public class TokenStreamFactory extends AbstractFactory
     public void setResourceFinder(final ResourceFinder finder) {
 
         this.resourceFinder = finder;
-    }
-
-    /**
-     * Returns the file finder.
-     *
-     * @return Returns the file finder.
-     */
-    public ResourceFinder getResourceFinder() {
-        return this.resourceFinder;
     }
 
 }

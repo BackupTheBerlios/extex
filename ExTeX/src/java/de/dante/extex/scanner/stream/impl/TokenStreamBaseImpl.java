@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -34,7 +34,7 @@ import de.dante.util.Locator;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public class TokenStreamBaseImpl implements TokenStream {
 
@@ -118,7 +118,7 @@ public class TokenStreamBaseImpl implements TokenStream {
 
         do {
             t = getNext(factory, tokenizer);
-        } while(t instanceof SpaceToken);
+        } while (t instanceof SpaceToken);
 
         return t;
     }
@@ -160,6 +160,14 @@ public class TokenStreamBaseImpl implements TokenStream {
     }
 
     /**
+     * @see de.dante.extex.scanner.stream.TokenStream#isEol()
+     */
+    public boolean isEol() throws ScannerException {
+
+        return (stack.length() == 0);
+    }
+
+    /**
      * @see de.dante.extex.scanner.stream.TokenStream#isFileStream()
      */
     public boolean isFileStream() {
@@ -184,14 +192,6 @@ public class TokenStreamBaseImpl implements TokenStream {
     public void skipSpaces() {
 
         this.skipSpaces = true;
-    }
-
-    /**
-     * @see de.dante.extex.scanner.stream.TokenStream#isEol()
-     */
-    public boolean isEol() throws ScannerException {
-
-        return (stack.length() == 0);
     }
 
 }
