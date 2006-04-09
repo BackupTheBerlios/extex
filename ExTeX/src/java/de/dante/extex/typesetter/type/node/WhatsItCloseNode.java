@@ -34,7 +34,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * This WhatsIt node closes an out file on shipping.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class WhatsItCloseNode extends WhatsItNode implements LogEnabled {
 
@@ -74,9 +74,13 @@ public class WhatsItCloseNode extends WhatsItNode implements LogEnabled {
      * @throws GeneralException in case of an error
      *
      * @see de.dante.extex.typesetter.type.Node#atShipping(
-     *      de.dante.extex.interpreter.context.Context, Typesetter)
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.typesetter.Typesetter,
+     *      de.dante.extex.typesetter.type.NodeVisitor,
+     *      boolean)
      */
-    public Node atShipping(final Context context, final Typesetter typesetter, NodeVisitor visitor, boolean inHMode)
+    public Node atShipping(final Context context, final Typesetter typesetter,
+            final NodeVisitor visitor, final boolean inHMode)
             throws GeneralException {
 
         OutFile file = context.getOutFile(key);

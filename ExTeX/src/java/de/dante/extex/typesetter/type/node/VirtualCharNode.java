@@ -39,7 +39,7 @@ import de.dante.util.exception.GeneralException;
  * This class is used to represent composed characters from virtual fonts.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class VirtualCharNode extends CharNode implements NodeList {
 
@@ -48,7 +48,7 @@ public class VirtualCharNode extends CharNode implements NodeList {
      * It is here to compensate the missing multiple inheritance of Java.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.15 $
+     * @version $Revision: 1.16 $
      */
     private class NL extends AbstractNodeList {
 
@@ -165,7 +165,7 @@ public class VirtualCharNode extends CharNode implements NodeList {
 
     /**
      * @see de.dante.extex.typesetter.type.node.AbstractNode#addWidthTo(
-     *      de.dante.extex.interpreter.type.glue.Glue)
+     *      de.dante.extex.interpreter.type.glue.WideGlue)
      */
     public void addWidthTo(final WideGlue glue) {
 
@@ -301,7 +301,7 @@ public class VirtualCharNode extends CharNode implements NodeList {
 
     /**
      * @see de.dante.extex.typesetter.type.NodeList#setMove(
-     *      de.dante.extex.interpreter.type.dimen.Dimen)
+     *      de.dante.extex.interpreter.type.dimen.FixedDimen)
      */
     public void setMove(final FixedDimen d) {
 
@@ -320,7 +320,7 @@ public class VirtualCharNode extends CharNode implements NodeList {
 
     /**
      * @see de.dante.extex.typesetter.type.NodeList#setShift(
-     *      de.dante.extex.interpreter.type.dimen.Dimen)
+     *      de.dante.extex.interpreter.type.dimen.FixedDimen)
      */
     public void setShift(final FixedDimen d) {
 
@@ -345,7 +345,7 @@ public class VirtualCharNode extends CharNode implements NodeList {
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.node.AbstractNode#spread(
+     * @see de.dante.extex.typesetter.type.node.AbstractNode#spreadWidth(
      *      de.dante.extex.interpreter.type.dimen.FixedDimen,
      *      de.dante.extex.interpreter.type.glue.FixedGlueComponent)
      */

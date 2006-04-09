@@ -37,7 +37,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public abstract class AbstractNodeList extends AbstractNode implements NodeList {
 
@@ -119,7 +119,8 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
      * @see de.dante.extex.typesetter.type.Node#atShipping(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.typesetter.Typesetter,
-     *      de.dante.extex.typesetter.type.NodeVisitor)
+     *      de.dante.extex.typesetter.type.NodeVisitor,
+     *      boolean)
      */
     public Node atShipping(final Context context, final Typesetter typesetter,
             final NodeVisitor visitor, final boolean inHMode)
@@ -272,7 +273,7 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
 
     /**
      * @see de.dante.extex.typesetter.type.NodeList#setMove(
-     *      de.dante.extex.interpreter.type.dimen.Dimen)
+     *      de.dante.extex.interpreter.type.dimen.FixedDimen)
      */
     public void setMove(final FixedDimen d) {
 
@@ -281,7 +282,7 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
 
     /**
      * @see de.dante.extex.typesetter.type.NodeList#setShift(
-     *      de.dante.extex.interpreter.type.dimen.Dimen)
+     *      de.dante.extex.interpreter.type.dimen.FixedDimen)
      */
     public void setShift(final FixedDimen d) {
 

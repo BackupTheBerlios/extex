@@ -36,7 +36,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This abstract class provides some methods common to all Nodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public abstract class AbstractNode implements Node {
 
@@ -111,7 +111,7 @@ public abstract class AbstractNode implements Node {
 
     /**
      * @see de.dante.extex.typesetter.type.Node#addHeightTo(
-     *      de.dante.extex.interpreter.type.glue.Glue)
+     *      de.dante.extex.interpreter.type.glue.WideGlue)
      */
     public void addHeightTo(final WideGlue glue) {
 
@@ -121,7 +121,7 @@ public abstract class AbstractNode implements Node {
 
     /**
      * @see de.dante.extex.typesetter.type.Node#addWidthTo(
-     *      de.dante.extex.interpreter.type.glue.Glue)
+     *      de.dante.extex.interpreter.type.glue.WideGlue)
      */
     public void addWidthTo(final WideGlue glue) {
 
@@ -151,7 +151,8 @@ public abstract class AbstractNode implements Node {
      * @see de.dante.extex.typesetter.type.Node#atShipping(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.typesetter.Typesetter,
-     *      de.dante.extex.typesetter.type.NodeVisitor)
+     *      de.dante.extex.typesetter.type.NodeVisitor,
+     *      boolean)
      */
     public Node atShipping(final Context context, final Typesetter typesetter,
             final NodeVisitor visitor, final boolean inHMode)
@@ -278,7 +279,7 @@ public abstract class AbstractNode implements Node {
 
     /**
      * @see de.dante.extex.typesetter.type.Node#setDepth(
-     *      de.dante.extex.interpreter.type.dimen.Dimen)
+     *      de.dante.extex.interpreter.type.dimen.FixedDimen)
      */
     public void setDepth(final FixedDimen d) {
 
@@ -287,7 +288,7 @@ public abstract class AbstractNode implements Node {
 
     /**
      * @see de.dante.extex.typesetter.type.Node#setHeight(
-     *      de.dante.extex.interpreter.type.dimen.Dimen)
+     *      de.dante.extex.interpreter.type.dimen.FixedDimen)
      */
     public void setHeight(final FixedDimen h) {
 
@@ -325,7 +326,7 @@ public abstract class AbstractNode implements Node {
      * @param w the desired with
      * @param sum the total sum of the glues
      *
-     * @see de.dante.extex.typesetter.type.Node#spread(
+     * @see de.dante.extex.typesetter.type.Node#spreadWidth(
      *      de.dante.extex.interpreter.type.dimen.FixedDimen,
      *      de.dante.extex.interpreter.type.glue.FixedGlueComponent)
      */
