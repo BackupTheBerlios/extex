@@ -27,6 +27,7 @@ import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Code;
+import de.dante.extex.interpreter.type.CodeExpander;
 import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.tokens.Tokens;
@@ -40,7 +41,14 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="the">
  * <h3>The Primitive <tt>\the</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The primitive <tt>\the</tt> inserts the definition of certain primitives
+ *  into the input stream. If the token following <tt>\the</tt> is not theable
+ *  then an error is raised.
+ * </p>
+ * <p>
+ *  During the expansion of arguments of macros like <tt>\edef</tt>,
+ *  <tt>\xdef</tt>, <tt>\message</tt>, and others the further expansion of the
+ *  tokens is inhibited.
  * </p>
  *
  * <h4>Syntax</h4>
@@ -57,14 +65,14 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
-public class The extends AbstractCode implements ExpandableCode {
+public class The extends AbstractCode implements ExpandableCode, CodeExpander {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 20060408L;
 
     /**
      * Creates a new object.
@@ -108,7 +116,6 @@ public class The extends AbstractCode implements ExpandableCode {
 
         throw new HelpingException(getLocalizer(), "TTP.CantUseAfterThe", //
                 cs.toString(), printableControlSequence(context));
-
     }
 
     /**
@@ -125,4 +132,33 @@ public class The extends AbstractCode implements ExpandableCode {
         execute(prefix, context, source, typesetter);
     }
 
+    /**
+     * @see de.dante.extex.interpreter.type.CodeExpander#expandCode(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter,
+     *      de.dante.extex.interpreter.type.tokens.Tokens)
+     */
+    public void expandCode(final Context context, final TokenSource source,
+            final Typesetter typesetter, final Tokens tokens)
+            throws InterpreterException {
+
+        Token cs = source.getToken(context);
+
+        if (cs == null) {
+            throw new EofException(printableControlSequence(context));
+        }
+        if (cs instanceof CodeToken) {
+
+            Code code = context.getCode((CodeToken) cs);
+
+            if (code instanceof Theable) {
+                tokens.add(((Theable) code).the(context, source, typesetter));
+                return;
+            }
+        }
+
+        throw new HelpingException(getLocalizer(), "TTP.CantUseAfterThe", //
+                cs.toString(), printableControlSequence(context));
+    }
 }
