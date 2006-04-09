@@ -59,7 +59,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.75 $
+ * @version $Revision: 1.76 $
  */
 public class Max1 extends TestCase {
 
@@ -71,6 +71,15 @@ public class Max1 extends TestCase {
         /**
          */
         private StringBuffer sb = new StringBuffer();
+
+        /**
+         * @see de.dante.extex.typesetter.ListMaker#addGlue(
+         *      de.dante.extex.interpreter.type.glue.Glue)
+         */
+        public void add(final FixedGlue g) throws TypesetterException {
+
+            sb.append(g.toString());
+        }
 
         /**
          * @see de.dante.extex.typesetter.ListMaker#add(
@@ -100,15 +109,6 @@ public class Max1 extends TestCase {
         public void addAndAdjust(final NodeList list,
                 final TypesetterOptions options) throws TypesetterException {
 
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.ListMaker#addGlue(
-         *      de.dante.extex.interpreter.type.glue.Glue)
-         */
-        public void add(final FixedGlue g) throws TypesetterException {
-
-            sb.append(g.toString());
         }
 
         /**
@@ -166,6 +166,15 @@ public class Max1 extends TestCase {
         public void cr(final Context context, final TypesettingContext tc,
                 final UnicodeChar uc) throws TypesetterException {
 
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.Typesetter#ensureHorizontalMode(
+         *      de.dante.util.Locator)
+         */
+        public ListMaker ensureHorizontalMode(Locator locator) {
+
+            return null;
         }
 
         /**
