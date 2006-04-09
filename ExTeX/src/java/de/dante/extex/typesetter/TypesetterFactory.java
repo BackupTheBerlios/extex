@@ -35,7 +35,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * This is the factory for instances of
  * {@link de.dante.extex.typesetter.Typesetter Typesetter}.
  *
- * @TODO documentation incomplete
+ * TODO gene: documentation incomplete
  *
  * <pre>
  *  &lt;Typesetter default="someType"&gt;
@@ -50,7 +50,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class TypesetterFactory extends AbstractFactory {
 
