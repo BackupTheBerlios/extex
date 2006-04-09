@@ -42,6 +42,7 @@ import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.InvalidSpacefactorException;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.exception.TypesetterUnsupportedException;
+import de.dante.extex.typesetter.listMaker.HorizontalListMaker;
 import de.dante.extex.typesetter.listMaker.ListManager;
 import de.dante.extex.typesetter.listMaker.VerticalListMaker;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
@@ -67,7 +68,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.87 $
+ * @version $Revision: 1.88 $
  */
 public class TypesetterImpl
         implements
@@ -150,6 +151,15 @@ public class TypesetterImpl
     }
 
     /**
+     * @see de.dante.extex.typesetter.ListMaker#addGlue(
+     *     de.dante.extex.interpreter.type.glue.FixedGlue)
+     */
+    public void add(final FixedGlue glue) throws TypesetterException {
+
+        listMaker.add(glue);
+    }
+
+    /**
      * @see de.dante.extex.typesetter.ListMaker#add(
      *     de.dante.extex.typesetter.type.Node)
      */
@@ -185,15 +195,6 @@ public class TypesetterImpl
                 ConfigurationException {
 
         listMaker.addAndAdjust(list, options);
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#addGlue(
-     *     de.dante.extex.interpreter.type.glue.Glue)
-     */
-    public void add(final FixedGlue glue) throws TypesetterException {
-
-        listMaker.add(glue);
     }
 
     /**
@@ -306,6 +307,19 @@ public class TypesetterImpl
         } else {
             listMaker.add(list);
         }
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.listMaker.ListManager#ensureHorizontalMode(
+     *      de.dante.util.Locator)
+     */
+    public ListMaker ensureHorizontalMode(final Locator locator)
+            throws TypesetterException {
+
+        if (!(listMaker instanceof HorizontalListMaker)) {
+            push(new HorizontalListMaker(this, locator));
+        }
+        return listMaker;
     }
 
     /**
@@ -503,8 +517,8 @@ public class TypesetterImpl
     }
 
     /**
-     * @see de.dante.extex.typesetter.Typesetter#setDocumentWriter(
-     *     de.dante.extex.backend.documentWriter.DocumentWriter)
+     * @see de.dante.extex.typesetter.Typesetter#setBackend(
+     *      de.dante.extex.backend.BackendDriver)
      */
     public void setBackend(final BackendDriver driver) {
 
@@ -576,7 +590,7 @@ public class TypesetterImpl
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#setPrevDepth(
-     *      de.dante.extex.interpreter.type.dimen.Dimen)
+     *      de.dante.extex.interpreter.type.dimen.FixedDimen)
      */
     public void setPrevDepth(final FixedDimen pd)
             throws TypesetterUnsupportedException {
@@ -586,7 +600,7 @@ public class TypesetterImpl
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(
-     *     de.dante.extex.interpreter.type.count.Count)
+     *      de.dante.extex.interpreter.type.count.FixedCount)
      */
     public void setSpacefactor(final FixedCount sf)
             throws TypesetterUnsupportedException,

@@ -39,7 +39,7 @@ import de.dante.util.UnicodeCharList;
  * <logo>TeX</logo>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class TeXWords extends ExTeXWords implements WordTokenizer {
 
@@ -123,7 +123,9 @@ public class TeXWords extends ExTeXWords implements WordTokenizer {
 
     /**
      * @see de.dante.extex.language.word.WordTokenizer#findWord(
-     *      de.dante.extex.typesetter.type.NodeList, int, java.util.List)
+     *      de.dante.extex.typesetter.type.NodeList,
+     *      int,
+     *      de.dante.util.UnicodeCharList)
      */
     public int findWord(final NodeList nodes, final int start,
             final UnicodeCharList word) throws HyphenationException {

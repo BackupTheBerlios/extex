@@ -111,7 +111,7 @@ import de.dante.util.UnicodeCharList;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class LiangsHyphenationTable extends BaseHyphenationTable {
 
@@ -236,7 +236,7 @@ public class LiangsHyphenationTable extends BaseHyphenationTable {
 
     /**
      * @see de.dante.extex.language.hyphenation.Hyphenator#hyphenate(
-     *      de.dante.extex.typesetter.type.node.NodeList,
+     *      de.dante.extex.typesetter.type.NodeList,
      *      de.dante.extex.typesetter.TypesetterOptions,
      *      de.dante.util.UnicodeChar,
      *      int,

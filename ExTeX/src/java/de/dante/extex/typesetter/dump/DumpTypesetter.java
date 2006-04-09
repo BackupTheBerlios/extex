@@ -34,7 +34,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * received.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
 public class DumpTypesetter extends TypesetterImpl {
 
@@ -59,7 +59,7 @@ public class DumpTypesetter extends TypesetterImpl {
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#addGlue(
-     *      de.dante.extex.interpreter.type.glue.Glue)
+     *      de.dante.extex.interpreter.type.glue.FixedGlue)
      */
     public void add(final FixedGlue g) throws TypesetterException {
 

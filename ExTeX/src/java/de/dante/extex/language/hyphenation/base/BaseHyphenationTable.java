@@ -42,7 +42,7 @@ import de.dante.util.UnicodeCharList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class BaseHyphenationTable implements ModifiableLanguage {
 
@@ -155,7 +155,9 @@ public class BaseHyphenationTable implements ModifiableLanguage {
 
     /**
      * @see de.dante.extex.language.word.WordTokenizer#findWord(
-     *      de.dante.extex.typesetter.type.NodeList, int, java.util.List)
+     *      de.dante.extex.typesetter.type.NodeList,
+     *      int,
+     *      de.dante.util.UnicodeCharList)
      */
     public int findWord(final NodeList nodes, final int start,
             final UnicodeCharList word) throws HyphenationException {
@@ -193,7 +195,7 @@ public class BaseHyphenationTable implements ModifiableLanguage {
 
     /**
      * @see de.dante.extex.language.hyphenation.Hyphenator#hyphenate(
-     *      de.dante.extex.typesetter.type.node.HorizontalListNode,
+     *      de.dante.extex.typesetter.type.NodeList,
      *      de.dante.extex.typesetter.TypesetterOptions,
      *      de.dante.util.UnicodeChar,
      *      int,
@@ -280,7 +282,6 @@ public class BaseHyphenationTable implements ModifiableLanguage {
      *      de.dante.extex.typesetter.type.NodeList,
      *      int,
      *      boolean[],
-     *      de.dante.util.UnicodeChar,
      *      de.dante.extex.typesetter.type.node.CharNode)
      */
     public void insertShy(final NodeList nodes, final int insertionPoint,

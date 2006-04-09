@@ -36,7 +36,7 @@ import de.dante.util.UnicodeCharList;
  * loading or the creation should be performed.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class FutureLanguage implements Language {
 
@@ -105,7 +105,9 @@ public class FutureLanguage implements Language {
 
     /**
      * @see de.dante.extex.language.word.WordTokenizer#findWord(
-     *      de.dante.extex.typesetter.type.NodeList, int, java.util.List)
+     *      de.dante.extex.typesetter.type.NodeList,
+     *      int,
+     *      de.dante.util.UnicodeCharList)
      */
     public int findWord(final NodeList nodes, final int start,
             final UnicodeCharList word) throws HyphenationException {
@@ -155,7 +157,7 @@ public class FutureLanguage implements Language {
 
     /**
      * @see de.dante.extex.language.hyphenation.Hyphenator#hyphenate(
-     *      de.dante.extex.typesetter.type.node.HorizontalListNode,
+     *      de.dante.extex.typesetter.type.NodeList,
      *      de.dante.extex.typesetter.TypesetterOptions,
      *      de.dante.util.UnicodeChar,
      *      int,
@@ -192,7 +194,6 @@ public class FutureLanguage implements Language {
      *      de.dante.extex.typesetter.type.NodeList,
      *      int,
      *      boolean[],
-     *      de.dante.util.UnicodeChar,
      *      de.dante.extex.typesetter.type.node.CharNode)
      */
     public void insertShy(final NodeList nodes, final int insertionPoint,

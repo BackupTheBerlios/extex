@@ -77,7 +77,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Setup implements Loader, LoadedObserver, LogEnabled {
 
@@ -135,8 +135,8 @@ public class Setup implements Loader, LoadedObserver, LogEnabled {
 
     /**
      * @see de.dante.extex.interpreter.context.observer.load.LoadedObserver#receiveLoaded(
-     *      de.dante.extex.interpreter.context.Context)
-     *      de.dante.extex.interpreter.TokenSource)
+     *      de.dante.extex.interpreter.context.Context,
+     *       de.dante.extex.interpreter.TokenSource)
      */
     public void receiveLoaded(final Context context, final TokenSource source)
             throws InterpreterException {

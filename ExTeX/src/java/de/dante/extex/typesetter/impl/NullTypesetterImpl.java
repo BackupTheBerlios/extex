@@ -46,7 +46,6 @@ import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.node.factory.NodeFactory;
 import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
-import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
@@ -55,7 +54,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class NullTypesetterImpl implements Typesetter {
 
@@ -71,6 +70,15 @@ public class NullTypesetterImpl implements Typesetter {
     public NullTypesetterImpl() {
 
         super();
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#addGlue(
+     *      de.dante.extex.interpreter.type.glue.FixedGlue)
+     */
+    public void add(final FixedGlue g) throws TypesetterException {
+
+        // nothing to do
     }
 
     /**
@@ -92,15 +100,6 @@ public class NullTypesetterImpl implements Typesetter {
     public void addAndAdjust(final NodeList list,
             final TypesetterOptions options) throws TypesetterException {
 
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#addGlue(
-     *      de.dante.extex.interpreter.type.glue.Glue)
-     */
-    public void add(final FixedGlue g) throws TypesetterException {
-
-        // nothing to do
     }
 
     /**
@@ -161,6 +160,15 @@ public class NullTypesetterImpl implements Typesetter {
     }
 
     /**
+     * @see de.dante.extex.typesetter.Typesetter#ensureHorizontalMode(
+     *      de.dante.util.Locator)
+     */
+    public ListMaker ensureHorizontalMode(Locator locator) {
+
+        return null;
+    }
+
+    /**
      * @see de.dante.extex.typesetter.Typesetter#finish()
      */
     public void finish() throws ConfigurationException {
@@ -217,7 +225,7 @@ public class NullTypesetterImpl implements Typesetter {
     }
 
     /**
-     * @see de.dante.extex.typesetter.Typesetter#getCharNodeFactory()
+     * @see de.dante.extex.typesetter.Typesetter#getNodeFactory()
      */
     public NodeFactory getNodeFactory() {
 
@@ -370,7 +378,7 @@ public class NullTypesetterImpl implements Typesetter {
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#setPrevDepth(
-     *     de.dante.extex.interpreter.type.dimen.Dimen)
+     *     de.dante.extex.interpreter.type.dimen.FixedDimen)
      */
     public void setPrevDepth(final FixedDimen pd) {
 
@@ -379,7 +387,7 @@ public class NullTypesetterImpl implements Typesetter {
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(
-     *     de.dante.extex.interpreter.type.count.Count)
+     *     de.dante.extex.interpreter.type.count.FixedCount)
      */
     public void setSpacefactor(final FixedCount f)
             throws InvalidSpacefactorException {
@@ -441,9 +449,9 @@ public class NullTypesetterImpl implements Typesetter {
     }
 
     /**
-     * @see de.dante.extex.typesetter.Typesetter#tab(
+     * @see de.dante.extex.typesetter.ListMaker#tab(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.context.TypesettingContext,
+     *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.scanner.type.token.Token)
      */
     public void tab(final Context context, final TokenSource source,
@@ -451,14 +459,4 @@ public class NullTypesetterImpl implements Typesetter {
 
     }
 
-    /**
-     * @see de.dante.extex.typesetter.Typesetter#letter(
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.context.TypesettingContext,
-     *      de.dante.extex.scanner.type.token.Token)
-     */
-    public void treatLetter(final TypesettingContext context, final Token t)
-            throws GeneralException {
-
-    }
 }
