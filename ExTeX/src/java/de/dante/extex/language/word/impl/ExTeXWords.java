@@ -44,7 +44,7 @@ import de.dante.util.UnicodeCharList;
  * <logo>ExTeX</logo>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ExTeXWords implements WordTokenizer {
 
@@ -52,7 +52,7 @@ public class ExTeXWords implements WordTokenizer {
      * Hyphenate subsequent char nodes from a ligature.
      *
      * <p>
-     *  Note that <logo>TeX</logo> only consideres the first hyphenation point
+     *  Note that <logo>TeX</logo> only considers the first hyphenation point
      *  in a ligature. The others are ignored. Nevertheless the ligature builder
      *  is applied to the remaining characters. This might lead to other
      *  ligatures than the ones encoded in the ligature node.
@@ -225,7 +225,9 @@ public class ExTeXWords implements WordTokenizer {
 
     /**
      * @see de.dante.extex.language.word.WordTokenizer#findWord(
-     *      de.dante.extex.typesetter.type.NodeList, int, java.util.List)
+     *      de.dante.extex.typesetter.type.NodeList,
+     *      int,
+     *      de.dante.util.UnicodeCharList)
      */
     public int findWord(final NodeList nodes, final int start,
             final UnicodeCharList word) throws HyphenationException {
@@ -253,7 +255,6 @@ public class ExTeXWords implements WordTokenizer {
      *      de.dante.extex.typesetter.type.NodeList,
      *      int,
      *      boolean[],
-     *      de.dante.util.UnicodeChar,
      *      de.dante.extex.typesetter.type.node.CharNode)
      */
     public void insertShy(final NodeList nodes, final int insertionPoint,
