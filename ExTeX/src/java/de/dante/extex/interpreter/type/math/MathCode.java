@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -26,9 +26,15 @@ import de.dante.util.UnicodeChar;
  * family and a character code.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class MathCode {
+
+    /**
+     * The constant <tt>CHAR_MASK</tt> contains the mask for filtering a
+     * character code from an integer.
+     */
+    private static final int CHAR_MASK = 0xff;
 
     /**
      * The field <tt>CLASS_SHIFT</tt> contains the shift value for the class.
@@ -42,10 +48,9 @@ public class MathCode {
     private static final int FAMILY_MASK = 0xf;
 
     /**
-     * The constant <tt>CHAR_MASK</tt> contains the mask for filtering a
-     * character code from an integer.
+     * The field <tt>mathChar</tt> contains the character.
      */
-    private static final int CHAR_MASK = 0xff;
+    private UnicodeChar mathChar;
 
     /**
      * The field <tt>mathClass</tt> contains the class.
@@ -56,11 +61,6 @@ public class MathCode {
      * The field <tt>mathFamily</tt> contains the family.
      */
     private int mathFamily;
-
-    /**
-     * The field <tt>mathChar</tt> contains the character.
-     */
-    private UnicodeChar mathChar;
 
     /**
      * Creates a new object.
@@ -120,4 +120,5 @@ public class MathCode {
 
         return mathFamily;
     }
+
 }
