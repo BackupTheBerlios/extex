@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -36,7 +36,7 @@ import de.dante.util.resource.ResourceFinder;
  * tries to find it via its parent.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class ResourceFinderImpl
         implements

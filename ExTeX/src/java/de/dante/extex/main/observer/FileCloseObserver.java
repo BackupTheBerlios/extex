@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -16,6 +16,7 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.main.observer;
 
 import java.util.logging.Logger;
@@ -29,9 +30,10 @@ import de.dante.extex.scanner.stream.TokenStream;
  * file.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class FileCloseObserver implements StreamCloseObserver {
+
     /**
      * The field <tt>logger</tt> contains the logger for output
      */
@@ -43,6 +45,7 @@ public class FileCloseObserver implements StreamCloseObserver {
      * @param theLogger the logger for potential output
      */
     public FileCloseObserver(final Logger theLogger) {
+
         super();
         this.logger = theLogger;
     }
@@ -58,4 +61,5 @@ public class FileCloseObserver implements StreamCloseObserver {
             logger.info(")");
         }
     }
+
 }

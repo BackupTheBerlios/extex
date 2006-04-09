@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -50,7 +50,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class ErrorHandlerImpl
         implements
@@ -133,22 +133,22 @@ public class ErrorHandlerImpl
             if ("1".equals(line)) {
 
                 /*
-            } else if ("2".equals(line)) {
-            } else if ("3".equals(line)) {
-            } else if ("4".equals(line)) {
-            } else if ("5".equals(line)) {
-            } else if ("6".equals(line)) {
-            } else if ("7".equals(line)) {
-            } else if ("8".equals(line)) {
-            } else if ("9".equals(line)) {
-            } else if ("10".equals(line)) {
-            } else if ("11".equals(line)) {
-            } else if ("12".equals(line)) {
-            } else if ("13".equals(line)) {
-            } else if ("14".equals(line)) {
-            } else if ("15".equals(line)) {
-            } else if ("16".equals(line)) {
-            */
+                 } else if ("2".equals(line)) {
+                 } else if ("3".equals(line)) {
+                 } else if ("4".equals(line)) {
+                 } else if ("5".equals(line)) {
+                 } else if ("6".equals(line)) {
+                 } else if ("7".equals(line)) {
+                 } else if ("8".equals(line)) {
+                 } else if ("9".equals(line)) {
+                 } else if ("10".equals(line)) {
+                 } else if ("11".equals(line)) {
+                 } else if ("12".equals(line)) {
+                 } else if ("13".equals(line)) {
+                 } else if ("14".equals(line)) {
+                 } else if ("15".equals(line)) {
+                 } else if ("16".equals(line)) {
+                 */
             } else if (line.startsWith("-")) {
                 return;
             } else {
@@ -245,8 +245,8 @@ public class ErrorHandlerImpl
             sb.append('_');
         }
         theLogger.severe(NL + NL + (file == null ? "" : file) + ":"
-                + Integer.toString(locator.getLineNumber()) + ": " + message + NL
-                + NL + locator.getLine() + NL + sb.toString() + "^" + NL);
+                + Integer.toString(locator.getLineNumber()) + ": " + message
+                + NL + NL + locator.getLine() + NL + sb.toString() + "^" + NL);
     }
 
     /**

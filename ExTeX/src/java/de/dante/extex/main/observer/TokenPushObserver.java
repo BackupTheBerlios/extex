@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -28,7 +28,7 @@ import de.dante.extex.scanner.type.token.Token;
  * Observer for the operation of pushing a token to the token stream.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class TokenPushObserver implements PushObserver {
 
@@ -56,4 +56,5 @@ public class TokenPushObserver implements PushObserver {
 
         logger.fine(": push " + token.toString() + "\n");
     }
+
 }

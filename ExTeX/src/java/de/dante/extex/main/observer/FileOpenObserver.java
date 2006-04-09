@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -25,11 +25,11 @@ import de.dante.extex.scanner.stream.observer.file.OpenFileObserver;
 
 /**
  * This observer reports that a certain file has been opened.
- * According to the behaviour of <logo>TeX</logo> it loggs an open brace and the
+ * According to the behavior of <logo>TeX</logo> it logs an open brace and the
  * name of the file.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class FileOpenObserver implements OpenFileObserver {
 

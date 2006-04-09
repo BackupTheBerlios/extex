@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -43,14 +43,14 @@ import de.dante.extex.typesetter.Typesetter;
  * <p>
  *  With this interface the multiplication is in fact tied to the implementing
  *  code and not to the primitive <tt>\multiply</tt>. Each primitive can be
- *  made aware for multiplication without touchíng the code for
+ *  made aware for multiplication without touching the code for
  *  <tt>\multiply</tt>.
  * </p>
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public interface Multiplyable {
 
