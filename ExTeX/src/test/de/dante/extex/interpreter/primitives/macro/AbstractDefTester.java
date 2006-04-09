@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -23,9 +23,14 @@ import de.dante.test.ExTeXLauncher;
 
 /**
  * This is a test suite for def primitives.
+ * <p>
+ *  In a derived class the actual name of the def primitive to be tested is
+ *  passed in via the constructor. It can be used with the getter
+ *  {@link #getDef() getDef()}.
+ * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public abstract class AbstractDefTester extends ExTeXLauncher {
 
@@ -56,11 +61,10 @@ public abstract class AbstractDefTester extends ExTeXLauncher {
     public void testImmediate1() throws Exception {
 
         assertFailure(//--- input code ---
-                DEFINE_BRACES
-                + "\\immediate\\"+ def + "\\aaa{}",
+                DEFINE_BRACES + "\\immediate\\" + def + "\\aaa{}",
                 //--- log message ---
                 "You can't use the prefix `\\immediate' with the control sequence \\"
-                + def);
+                        + def);
     }
 
     /**
@@ -73,9 +77,7 @@ public abstract class AbstractDefTester extends ExTeXLauncher {
     public void testBasic1() throws Exception {
 
         assertSuccess(//--- input code ---
-                DEFINE_BRACES
-                + "\\" + def + "\\aaa{AAA}"
-                + "--\\aaa--\\end",
+                DEFINE_BRACES + "\\" + def + "\\aaa{AAA}" + "--\\aaa--\\end",
                 //--- output message ---
                 "--AAA--" + TERM);
     }
@@ -90,9 +92,8 @@ public abstract class AbstractDefTester extends ExTeXLauncher {
     public void testLong1() throws Exception {
 
         assertSuccess(//--- input code ---
-                DEFINE_BRACES
-                + "\\long\\" + def + "\\aaa{AAA}"
-                + "--\\aaa--\\end",
+                DEFINE_BRACES + "\\long\\" + def + "\\aaa{AAA}"
+                        + "--\\aaa--\\end",
                 //--- output message ---
                 "--AAA--" + TERM);
     }
@@ -107,9 +108,8 @@ public abstract class AbstractDefTester extends ExTeXLauncher {
     public void testLong2() throws Exception {
 
         assertSuccess(//--- input code ---
-                DEFINE_BRACES
-                + "\\long\\" + def + "\\aaa{AAA\\par BBB}"
-                + "--\\aaa--\\end",
+                DEFINE_BRACES + "\\long\\" + def + "\\aaa{AAA\\par BBB}"
+                        + "--\\aaa--\\end",
                 //--- output message ---
                 "--AAA\n\nBBB--" + TERM);
     }
@@ -124,9 +124,8 @@ public abstract class AbstractDefTester extends ExTeXLauncher {
     public void testArguments1() throws Exception {
 
         assertSuccess(//--- input code ---
-                DEFINE_BRACES + DEFINE_HASH
-                + "\\" + def + "\\aaa#1{A#1A}"
-                + "--\\aaa 1--\\end",
+                DEFINE_BRACES + DEFINE_HASH + "\\" + def + "\\aaa#1{A#1A}"
+                        + "--\\aaa 1--\\end",
                 //--- output message ---
                 "--A1A--" + TERM);
     }
@@ -141,9 +140,8 @@ public abstract class AbstractDefTester extends ExTeXLauncher {
     public void testArguments2() throws Exception {
 
         assertSuccess(//--- input code ---
-                DEFINE_BRACES + DEFINE_HASH
-                + "\\" + def + "\\aaa#1{A#1A}"
-                + "--\\aaa {1}--\\end",
+                DEFINE_BRACES + DEFINE_HASH + "\\" + def + "\\aaa#1{A#1A}"
+                        + "--\\aaa {1}--\\end",
                 //--- output message ---
                 "--A1A--" + TERM);
     }
@@ -158,9 +156,8 @@ public abstract class AbstractDefTester extends ExTeXLauncher {
     public void testArguments3() throws Exception {
 
         assertSuccess(//--- input code ---
-                DEFINE_BRACES + DEFINE_HASH
-                + "\\" + def + "\\aaa#1{A#1A}"
-                + "--\\aaa {12}--\\end",
+                DEFINE_BRACES + DEFINE_HASH + "\\" + def + "\\aaa#1{A#1A}"
+                        + "--\\aaa {12}--\\end",
                 //--- output message ---
                 "--A12A--" + TERM);
     }
@@ -175,10 +172,8 @@ public abstract class AbstractDefTester extends ExTeXLauncher {
     public void testTwoArguments1() throws Exception {
 
         assertSuccess(//--- input code ---
-                DEFINE_BRACES + DEFINE_HASH
-                + "\\" + def + "\\a#1#2{--#1--#2--}"
-                + "\\a 2."
-                + "\\end ",
+                DEFINE_BRACES + DEFINE_HASH + "\\" + def
+                        + "\\a#1#2{--#1--#2--}" + "\\a 2." + "\\end ",
                 //--- output channel ---
                 "--2--.--" + TERM);
     }
@@ -193,10 +188,8 @@ public abstract class AbstractDefTester extends ExTeXLauncher {
     public void testPattern1() throws Exception {
 
         assertSuccess(//--- input code ---
-                DEFINE_BRACES + DEFINE_HASH
-                + "\\"+ def + "\\aaa#1.{--#1--}"
-                + "\\aaa 2."
-                + "\\end ",
+                DEFINE_BRACES + DEFINE_HASH + "\\" + def + "\\aaa#1.{--#1--}"
+                        + "\\aaa 2." + "\\end ",
                 //--- output channel ---
                 "--2--" + TERM);
     }
@@ -211,10 +204,8 @@ public abstract class AbstractDefTester extends ExTeXLauncher {
     public void testPattern2() throws Exception {
 
         assertSuccess(//--- input code ---
-                DEFINE_BRACES + DEFINE_HASH
-                + "\\"+ def + "\\aaa#1.{--#1--}"
-                + "\\aaa {2.1}."
-                + "\\end ",
+                DEFINE_BRACES + DEFINE_HASH + "\\" + def + "\\aaa#1.{--#1--}"
+                        + "\\aaa {2.1}." + "\\end ",
                 //--- output channel ---
                 "--2.1--" + TERM);
     }
@@ -229,9 +220,8 @@ public abstract class AbstractDefTester extends ExTeXLauncher {
     public void testBrace1() throws Exception {
 
         assertFailure(//--- input code ---
-                DEFINE_BRACES + DEFINE_HASH
-                + "\\"+ def + "\\aaa#1.{--#1--}"
-                + "\\aaa }.",
+                DEFINE_BRACES + DEFINE_HASH + "\\" + def + "\\aaa#1.{--#1--}"
+                        + "\\aaa }.",
                 //--- output channel ---
                 "Argument of \\aaa has an extra }");
     }
@@ -246,8 +236,7 @@ public abstract class AbstractDefTester extends ExTeXLauncher {
     public void testHashArgument1() throws Exception {
 
         assertSuccess(//--- input code ---
-                DEFINE_BRACES + DEFINE_HASH
-                + "\\"+ def + "\\a{--##--}\\end",
+                DEFINE_BRACES + DEFINE_HASH + "\\" + def + "\\a{--##--}\\end",
                 //--- output channel ---
                 "");
     }
@@ -262,20 +251,52 @@ public abstract class AbstractDefTester extends ExTeXLauncher {
     public void testHashArgument2() throws Exception {
 
         assertFailure(//--- input code ---
-                DEFINE_BRACES + DEFINE_HASH
-                + "\\"+ def + "\\a{--##--}\\a ",
+                DEFINE_BRACES + DEFINE_HASH + "\\" + def + "\\a{--##--}\\a ",
                 //--- output channel ---
                 "You can't use `macro parameter character #' in horizontal mode");
     }
 
-    
+    /**
+     * <testcase>
+     *  Test case checking that a final hash requires a left brace upon
+     *  invocation: failure case.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testHash10() throws Exception {
+
+        assertFailure(//--- input code ---
+                DEFINE_BRACES + DEFINE_HASH + "\\" + getDef() + "\\a#{xxx}"
+                        + "\\a \\end",
+                //--- output channel ---
+                "Use of \\a doesn't match its definition");
+    }
+
+    /**
+     * <testcase>
+     *  Test case checking that a final hash requires a left brace upon
+     *  invocation: success case.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testHash11() throws Exception {
+
+        assertSuccess(//--- input code ---
+                DEFINE_BRACES + DEFINE_HASH + "\\" + getDef() + "\\a#{xxx}"
+                        + "\\a{} \\end",
+                //--- output channel ---
+                "xxx" + TERM);
+    }
+
     /**
      * Getter for def.
      *
      * @return the def
      */
     public String getDef() {
-    
+
         return this.def;
     }
 }
