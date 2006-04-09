@@ -45,7 +45,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This abstract class provides some methods common to all ListMakers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public abstract class AbstractListMaker implements ListMaker {
 
@@ -181,7 +181,7 @@ public abstract class AbstractListMaker implements ListMaker {
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#setPrevDepth(
-     *      de.dante.extex.interpreter.type.dimen.Dimen)
+     *      de.dante.extex.interpreter.type.dimen.FixedDimen)
      */
     public void setPrevDepth(final FixedDimen pd)
             throws TypesetterUnsupportedException {
@@ -191,7 +191,7 @@ public abstract class AbstractListMaker implements ListMaker {
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(
-     *      de.dante.extex.interpreter.type.count.Count)
+     *      de.dante.extex.interpreter.type.count.FixedCount)
      */
     public void setSpacefactor(final FixedCount f)
             throws TypesetterUnsupportedException,

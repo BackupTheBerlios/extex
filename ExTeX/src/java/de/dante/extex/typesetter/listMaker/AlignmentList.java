@@ -27,7 +27,7 @@ import de.dante.extex.typesetter.exception.TypesetterException;
  * This interface describes a list for alignments with the associated methods.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface AlignmentList {
 
@@ -50,13 +50,14 @@ public interface AlignmentList {
      *
      * @throws TypesetterException in case of an error
      */
-    void cr(Context context, TokenSource source) throws TypesetterException;
+    void cr(Context context, TokenSource source, boolean noalign)
+            throws TypesetterException;
 
     /**
      * This method is invoked when a row in the alignment is complete and the
      * cells can be integrated. If some cells are not filled jet then they
      * are treated as empty.
-     * In contrast to the method {@link #cr(Context, TokenSource) cr()}
+     * In contrast to the method {@link #cr(Context, TokenSource, boolean) cr()}
      * this method is a noop when the alignment is at the beginning of a row.
      *
      * @param context the interpreter context

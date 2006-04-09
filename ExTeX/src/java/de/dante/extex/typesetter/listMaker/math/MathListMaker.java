@@ -91,7 +91,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.34 $
+ * @version $Revision: 1.35 $
  */
 public class MathListMaker extends HorizontalListMaker
         implements
@@ -103,7 +103,7 @@ public class MathListMaker extends HorizontalListMaker
      * It is used to store to the stack and restore the state from the stack.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.34 $
+     * @version $Revision: 1.35 $
      */
     private class MathMemento {
 
@@ -269,7 +269,7 @@ public class MathListMaker extends HorizontalListMaker
 
     /**
      * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#add(
-     *      de.dante.extex.typesetter.type.MathClass,
+     *      de.dante.extex.typesetter.type.math.MathClass,
      *      de.dante.extex.typesetter.type.noad.MathGlyph,
      *      de.dante.extex.interpreter.context.TypesettingContext)
      */
@@ -340,8 +340,8 @@ public class MathListMaker extends HorizontalListMaker
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#addGlue(
-     *      de.dante.extex.interpreter.type.glue.Glue)
+     * @see de.dante.extex.typesetter.ListMaker#add(
+     *      de.dante.extex.interpreter.type.glue.FixedGlue)
      */
     public void add(final FixedGlue g) throws TypesetterException {
 
@@ -479,7 +479,7 @@ public class MathListMaker extends HorizontalListMaker
 
     /**
      * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#left(
-     *      de.dante.extex.typesetter.type.MathDelimiter)
+     *      de.dante.extex.typesetter.type.math.MathDelimiter)
      */
     public void left(final MathDelimiter delimiter) throws TypesetterException {
 
@@ -534,7 +534,7 @@ public class MathListMaker extends HorizontalListMaker
 
     /**
      * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#middle(
-     *      de.dante.extex.typesetter.type.MathDelimiter)
+     *      de.dante.extex.typesetter.type.math.MathDelimiter)
      */
     public void middle(final MathDelimiter delimiter)
             throws TypesetterException {
@@ -568,7 +568,7 @@ public class MathListMaker extends HorizontalListMaker
 
     /**
      * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#right(
-     *      de.dante.extex.typesetter.type.MathDelimiter)
+     *      de.dante.extex.typesetter.type.math.MathDelimiter)
      */
     public void right(final MathDelimiter delimiter) throws TypesetterException {
 
@@ -593,6 +593,7 @@ public class MathListMaker extends HorizontalListMaker
 
     /**
      * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#scanNoad(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter,
@@ -701,8 +702,8 @@ public class MathListMaker extends HorizontalListMaker
 
     /**
      * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#switchToFraction(
-     *      de.dante.extex.typesetter.type.MathDelimiter,
-     *      de.dante.extex.typesetter.type.MathDelimiter,
+     *      de.dante.extex.typesetter.type.math.MathDelimiter,
+     *      de.dante.extex.typesetter.type.math.MathDelimiter,
      *      de.dante.extex.interpreter.type.dimen.Dimen)
      */
     public void switchToFraction(final MathDelimiter leftDelimiter,
