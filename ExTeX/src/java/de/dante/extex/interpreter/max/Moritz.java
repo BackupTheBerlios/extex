@@ -106,7 +106,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.90 $
+ * @version $Revision: 1.91 $
  */
 public class Moritz extends Max
         implements
@@ -1145,6 +1145,7 @@ public class Moritz extends Max
      *  end of file has been reached before an integer could be acquired
      *
      * @see de.dante.extex.interpreter.TokenSource#scanNumber(
+     *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.scanner.type.token.Token)
      */
     public long scanNumber(final Context context, final Token token)
@@ -1371,13 +1372,21 @@ public class Moritz extends Max
 
         int balance = 1;
 
-        for (token = scanToken(context); token != null; token = scanToken(context)) {
+        for (;;) {
+
+            token = expand(getToken(context));
+
+            if (token == null) {
+                return toks;
+            }
 
             if (token instanceof LeftBraceToken) {
                 toks.add(token);
                 ++balance;
+
             } else if (token instanceof RightBraceToken && --balance <= 0) {
-                break;
+                return toks;
+
             } else if (token instanceof CodeToken) {
                 if (ignoreUndefined) {
                     // ignored as requested
@@ -1388,13 +1397,66 @@ public class Moritz extends Max
                 } else {
                     toks.add(token);
                 }
+
             } else {
                 toks.add(token);
             }
+        }
+    }
 
+    /**
+     * @see de.dante.extex.interpreter.TokenSource#scanUnprotectedTokens(
+     *      de.dante.extex.interpreter.context.Context,
+     *      boolean,
+     *      boolean,
+     *      java.lang.String)
+     */
+    public Tokens scanUnprotectedTokens(final Context context,
+            final boolean reportUndefined, final boolean ignoreUndefined,
+            final String primitive) throws InterpreterException {
+
+        Tokens toks = new Tokens();
+        skipSpaces = true;
+        Token token = getToken(context);
+
+        if (token == null) {
+            throw new EofException(primitive);
+        } else if (!token.isa(Catcode.LEFTBRACE)) {
+            throw new MissingLeftBraceException(primitive);
         }
 
-        return toks;
+        int balance = 1;
+
+        for (;;) {
+
+            token = expandUnproteced(getToken(context), toks);
+
+            if (token == null) {
+                return toks;
+            }
+
+            if (token instanceof LeftBraceToken) {
+                toks.add(token);
+                ++balance;
+
+            } else if (token instanceof RightBraceToken && --balance <= 0) {
+                return toks;
+
+            } else if (token instanceof CodeToken) {
+                if (ignoreUndefined) {
+                    // ignored as requested
+                } else if (reportUndefined
+                        && context.getCode((CodeToken) token) == null) {
+                    throw new UndefinedControlSequenceException(token
+                            .toString());
+                } else {
+                    toks.add(token);
+                }
+
+            } else {
+                toks.add(token);
+            }
+        }
     }
 
     /**
