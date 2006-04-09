@@ -24,7 +24,12 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.primitives.register.box.AbstractBox;
+import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.exception.TypesetterException;
+import de.dante.extex.typesetter.type.node.ExplicitKernNode;
+import de.dante.extex.typesetter.type.node.HorizontalListNode;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * This class provides an implementation for the primitive <code>\indent</code>.
@@ -48,14 +53,14 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Indent extends AbstractBox {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 20060402L;
 
     /**
      * Creates a new object.
@@ -78,8 +83,13 @@ public class Indent extends AbstractBox {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        //TODO gene: execute() unimplemented
-        throw new RuntimeException("unimplemented");
+        Dimen parindent = context.getDimen("parindent");
+        typesetter.ensureHorizontalMode(source.getLocator());
+        try {
+            typesetter.add(new HorizontalListNode(parindent));
+        } catch (ConfigurationException e) {
+            throw new InterpreterException(e);
+        }
     }
 
 }
