@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -16,16 +16,16 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.util.resource;
 
-
 /**
- * This interface describes the capabilty to act as a recursive finder.
+ * This interface describes the capability to act as a recursive finder.
  * In this case it is necessary to restart the search process for a modified
  * input name. This is done by delegating the request to the parent finder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface RecursiveFinder {
 
@@ -35,4 +35,5 @@ public interface RecursiveFinder {
      * @param parent the parent finder
      */
     void setParent(ResourceFinder parent);
+
 }

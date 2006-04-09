@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -36,7 +36,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [683]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class FractionNoad extends AbstractNoad {
 
@@ -46,9 +46,21 @@ public class FractionNoad extends AbstractNoad {
     private MathList denominator;
 
     /**
+     * The field <tt>leftDelimiter</tt> contains the left delimiter or
+     * <code>null</code> if none is set.
+     */
+    private MathDelimiter leftDelimiter;
+
+    /**
      * The field <tt>nominator</tt> contains the numerator part.
      */
     private MathList numerator;
+
+    /**
+     * The field <tt>rightDelimiter</tt> contains the right delimiter or
+     * <code>null</code> if none is set
+     */
+    private MathDelimiter rightDelimiter;
 
     /**
      * The field <tt>thickness</tt> contains the thickness of the fraction rule.
@@ -56,18 +68,6 @@ public class FractionNoad extends AbstractNoad {
      * the current size should be used.
      */
     private Dimen thickness = null;
-
-    /**
-     * The field <tt>leftDelimiter</tt> contains the left delimiter or
-     * <code>null</code> if none is set.
-     */
-    private MathDelimiter leftDelimiter;
-
-    /**
-     * The field <tt>rightDelimiter</tt> contains the right delimiter or
-     * <code>null</code> if none is set
-     */
-    private MathDelimiter rightDelimiter;
 
     /**
      * Creates a new object.
@@ -82,8 +82,8 @@ public class FractionNoad extends AbstractNoad {
      *  default thickness
      */
     public FractionNoad(final MathList denom, final MathList num,
-            final MathDelimiter leftDelimiter, final MathDelimiter rightDelimiter,
-            final Dimen thickness) {
+            final MathDelimiter leftDelimiter,
+            final MathDelimiter rightDelimiter, final Dimen thickness) {
 
         super();
         this.denominator = denom;

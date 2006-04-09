@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -42,7 +42,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationMissingExcep
  * configuration.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class OutputFactory extends AbstractFactory
         implements
@@ -52,7 +52,7 @@ public class OutputFactory extends AbstractFactory
      * This class provides a mutable Integer.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.16 $
+     * @version $Revision: 1.17 $
      */
     private class Int {
 

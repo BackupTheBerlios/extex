@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -118,7 +118,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </p>
  * <p>
  *  The attribute <tt>capacity</tt> can be used to configure the initial
- *  capacity of the internal cache for the fle database. If this number is less
+ *  capacity of the internal cache for the file database. If this number is less
  *  than one than an internal default is used. This value should be larger than
  *  the number of files expected for best performance.
  *  The attribute <tt>capacity</tt> is optional.
@@ -127,7 +127,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class LsrFinder
         implements
@@ -187,6 +187,13 @@ public class LsrFinder
     private Configuration config;
 
     /**
+     * The field <tt>initialCapacity</tt> contains the initial capacity of the
+     * cache. If the value is less than 1 then the default of the underling
+     * implementation is used.
+     */
+    private int initialCapacity = -1;
+
+    /**
      * The field <tt>logger</tt> contains the logger to be used for tracing.
      */
     private Logger logger = null;
@@ -202,13 +209,6 @@ public class LsrFinder
      * This field is set to <code>true</code> according to the configuration.
      */
     private boolean trace = false;
-
-    /**
-     * The field <tt>initialCapacity</tt> contains the initial capacity of the
-     * cache. If the value is less than 1 then the default of the underling
-     * implementation is used.
-     */
-    private int initialCapacity = -1;
 
     /**
      * Creates a new object.
@@ -456,4 +456,5 @@ public class LsrFinder
         logger.fine(MessageFormat.format(bundle.getString(key), //
                 new Object[]{arg, arg2, arg3}));
     }
+
 }

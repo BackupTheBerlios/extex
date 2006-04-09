@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -27,7 +27,7 @@ import java.io.Serializable;
  * bundle with the features of a message formatter.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public interface Localizer extends Serializable {
 
@@ -43,10 +43,10 @@ public interface Localizer extends Serializable {
     /**
      * Apply the given argument to the format string stored in the resource
      * bundle under the given key. The argument object's value of toString()
-     * replaces the substring <tt>'{0}'</tt> in the format.
+     * replaces the sub-string <tt>'{0}'</tt> in the format.
      *
      * @param fmt the key in the resource bundle to search for
-     * @param a the Object used for the substring <tt>{0}</tt>
+     * @param a the Object used for the sub-string <tt>{0}</tt>
      *
      * @return the expanded format string
      */
@@ -55,12 +55,12 @@ public interface Localizer extends Serializable {
     /**
      * Apply the given argument to the format string stored in the resource
      * bundle under the given key. The argument object's value of toString()
-     * replaces the substring <tt>'{0}'</tt> and <tt>'{1}'</tt> in the
+     * replaces the sub-string <tt>'{0}'</tt> and <tt>'{1}'</tt> in the
      * format.
      *
      * @param fmt the key in the resource bundle to search for
-     * @param a the Object used for the substring <tt>{0}</tt>
-     * @param b the Object used for the substring <tt>{1}</tt>
+     * @param a the Object used for the sub-string <tt>{0}</tt>
+     * @param b the Object used for the sub-string <tt>{1}</tt>
      *
      * @return the expanded format string
      */
@@ -69,13 +69,13 @@ public interface Localizer extends Serializable {
     /**
      * Apply the given argument to the format string stored in the resource
      * bundle under the given key. The argument object's value of toString()
-     * replaces the substring <tt>'{0}'</tt>,<tt>'{1}'</tt>, and <tt>'{2}'</tt>
+     * replaces the sub-string <tt>'{0}'</tt>,<tt>'{1}'</tt>, and <tt>'{2}'</tt>
      * in the format.
      *
      * @param fmt the key in the resource bundle to search for
-     * @param a the Object used for the substring <tt>{0}</tt>
-     * @param b the Object used for the substring <tt>{1}</tt>
-     * @param c the Object used for the substring <tt>{2}</tt>
+     * @param a the Object used for the sub-string <tt>{0}</tt>
+     * @param b the Object used for the sub-string <tt>{1}</tt>
+     * @param c the Object used for the sub-string <tt>{2}</tt>
      *
      * @return the expanded format string
      */
@@ -84,14 +84,14 @@ public interface Localizer extends Serializable {
     /**
      * Apply the given argument to the format string stored in the resource
      * bundle under the given key. The argument object's value of toString()
-     * replaces the substring <tt>'{0}'</tt>,<tt>'{1}'</tt>,<tt>'{2}'</tt>,
+     * replaces the sub-string <tt>'{0}'</tt>,<tt>'{1}'</tt>,<tt>'{2}'</tt>,
      * and <tt>'{3}'</tt> in the format.
      *
      * @param fmt the key in the resource bundle to search for
-     * @param a the Object used for the substring <tt>{0}</tt>
-     * @param b the Object used for the substring <tt>{1}</tt>
-     * @param c the Object used for the substring <tt>{2}</tt>
-     * @param d the Object used for the substring <tt>{3}</tt>
+     * @param a the Object used for the sub-string <tt>{0}</tt>
+     * @param b the Object used for the sub-string <tt>{1}</tt>
+     * @param c the Object used for the sub-string <tt>{2}</tt>
+     * @param d the Object used for the sub-string <tt>{3}</tt>
      *
      * @return the expanded format string
      */
@@ -100,15 +100,15 @@ public interface Localizer extends Serializable {
     /**
      * Apply the given argument to the format string stored in the resource
      * bundle under the given key. The argument object's value of toString()
-     * replaces the substring <tt>'{0}'</tt>,<tt>'{1}'</tt>,<tt>'{2}'</tt>,
+     * replaces the sub-string <tt>'{0}'</tt>,<tt>'{1}'</tt>,<tt>'{2}'</tt>,
      * and <tt>'{3}'</tt> in the format.
      *
      * @param fmt the key in the resource bundle to search for
-     * @param a the Object used for the substring <tt>{0}</tt>
-     * @param b the Object used for the substring <tt>{1}</tt>
-     * @param c the Object used for the substring <tt>{2}</tt>
-     * @param d the Object used for the substring <tt>{3}</tt>
-     * @param e the Object used for the substring <tt>{4}</tt>
+     * @param a the Object used for the sub-string <tt>{0}</tt>
+     * @param b the Object used for the sub-string <tt>{1}</tt>
+     * @param c the Object used for the sub-string <tt>{2}</tt>
+     * @param d the Object used for the sub-string <tt>{3}</tt>
+     * @param e the Object used for the sub-string <tt>{4}</tt>
      *
      * @return the expanded format string
      */
@@ -135,7 +135,7 @@ public interface Localizer extends Serializable {
     /**
      * Apply the given argument to the format string stored in the resource
      * bundle under the given key and print the result to a writer. The
-     * argument object's value of toString() replaces the substring
+     * argument object's value of toString() replaces the sub-string
      * <tt>'{0}'</tt> in the format.
      *
      * @param writer the target output writer
@@ -147,7 +147,7 @@ public interface Localizer extends Serializable {
     /**
      * Apply the given argument to the format string stored in the resource
      * bundle under the given key and print the result to a writer. The
-     * argument object's value of toString() replaces the substring
+     * argument object's value of toString() replaces the sub-string
      * <tt>'{0}'</tt> and <tt>'{1}'</tt> in the format.
      *
      * @param writer the target output writer
@@ -160,14 +160,14 @@ public interface Localizer extends Serializable {
     /**
      * Apply the given argument to the format string stored in the resource
      * bundle under the given key and print the result to a writer. The
-     * argument object's value of toString() replaces the substring
+     * argument object's value of toString() replaces the sub-string
      * <tt>'{0}'</tt>, <tt>'{1}'</tt>, and <tt>'{2}'</tt> in the format.
      *
      * @param writer the target output writer
      * @param fmt the key in the resource bundle to search for
-     * @param a the Object used for the substring <tt>{0}</tt>
-     * @param b the Object used for the substring <tt>{1}</tt>
-     * @param c the Object used for the substring <tt>{2}</tt>
+     * @param a the Object used for the sub-string <tt>{0}</tt>
+     * @param b the Object used for the sub-string <tt>{1}</tt>
+     * @param c the Object used for the sub-string <tt>{2}</tt>
      */
     void message(PrintStream writer, String fmt, Object a, Object b, Object c);
 

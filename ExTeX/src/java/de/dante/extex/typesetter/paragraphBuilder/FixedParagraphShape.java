@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -16,18 +16,18 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.typesetter.paragraphBuilder;
 
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 
-
 /**
- * This paragraph shape represents a fixed block. It is aliged at 0pt on the
+ * This paragraph shape represents a fixed block. It is aligned at 0pt on the
  * left and by the given width on the right.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class FixedParagraphShape extends ParagraphShape {
 
@@ -54,6 +54,7 @@ public class FixedParagraphShape extends ParagraphShape {
 
         return Dimen.ZERO_PT;
     }
+
     /**
      * @see de.dante.extex.typesetter.paragraphBuilder.ParagraphShape#getLength(int)
      */
@@ -71,4 +72,5 @@ public class FixedParagraphShape extends ParagraphShape {
 
         this.hsize = theHsize;
     }
+
 }
