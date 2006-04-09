@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -16,18 +16,18 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.typesetter.type.node;
 
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 
-
 /**
- * This iterface describes the capabilites for an extention object to be
+ * This interface describes the capabilities for an extension object to be
  * inserted into an extension node.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface Extension {
 
@@ -60,7 +60,7 @@ public interface Extension {
     void setWidth(FixedDimen width);
 
     /**
-     * Setter for the heigth of the node.
+     * Setter for the height of the node.
      *
      * @param height the new height
      */
@@ -85,7 +85,7 @@ public interface Extension {
 
     /**
      * This method puts the printable representation into the string buffer.
-     * This is meant to produce a exaustive form as it is used in tracing
+     * This is meant to produce a exhaustive form as it is used in tracing
      * output to the log file.
      *
      * @param sb the output string buffer
