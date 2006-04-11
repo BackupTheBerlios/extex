@@ -128,7 +128,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.94 $
+ * @version $Revision: 1.95 $
  */
 public abstract class Max
         implements
@@ -906,6 +906,7 @@ public abstract class Max
         }
         newContext.setFontFactory(context.getFontFactory());
         newContext.setTokenFactory(context.getTokenFactory());
+        newContext.setStandardTokenStream(context.getStandardTokenStream());
         context = newContext;
 
         if (context instanceof LoadedObservable) {
