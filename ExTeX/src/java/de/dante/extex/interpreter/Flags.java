@@ -69,14 +69,14 @@ package de.dante.extex.interpreter;
  *  <tr>
  *   <td><b>protected</b></td>
  *   <td><tt>\protected</tt></td>
- *   <td>The protected flag controls
- *       TODO gene: describe \protected
+ *   <td>The protected flag controls the expansion of the macro when the
+ *    arguments for <tt>\edef</tt> and friends i expanded.
  *   </td>
  *  </tr>
  * </table>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public interface Flags {
 
