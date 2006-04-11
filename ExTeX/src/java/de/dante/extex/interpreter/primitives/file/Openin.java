@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -74,14 +74,14 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public class Openin extends AbstractFileCode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 20060411L;
 
     /**
      * Creates a new object.
@@ -104,14 +104,15 @@ public class Openin extends AbstractFileCode {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String key = AbstractFileCode.scanInFileKey(context, source, typesetter);
+        String key = AbstractFileCode
+                .scanInFileKey(context, source, typesetter);
         source.getOptionalEquals(context);
         String name = scanFileName(context, source);
 
         InFile file;
         try {
             file = new InFile(source.getTokenStreamFactory().newInstance(name,
-                    "tex", "iso-8859-1")); //TODO gene: encoding?
+                    "tex", getEncoding(context)), false);
         } catch (FileNotFoundException e) {
             file = null;
             //ignored on purpose
