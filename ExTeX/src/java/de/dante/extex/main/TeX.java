@@ -24,6 +24,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.CharacterCodingException;
 import java.util.ArrayList;
@@ -594,7 +595,7 @@ import de.dante.util.resource.ResourceFinder;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class TeX extends ExTeX {
 
@@ -819,7 +820,7 @@ public class TeX extends ExTeX {
      *
      * @param arg the name of the resource to load
      *
-     * @return <code>true</code> iff the resource has been loaded sucessfully
+     * @return <code>true</code> iff the resource has been loaded successfully
      *
      * @throws IOException just in case
      */
@@ -854,6 +855,9 @@ public class TeX extends ExTeX {
         Interpreter interpreter = super.makeInterpreter(config, factory,
                 fontFactory);
         Logger logger = getLogger();
+
+        interpreter.getContext().setStandardTokenStream(
+                factory.newInstance(new InputStreamReader(System.in)));
 
         if (interpreter instanceof StreamCloseObservable) {
             StreamCloseObserver observer = new FileCloseObserver(logger);
