@@ -65,7 +65,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * classes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
 public class MockContext implements Context, TypesetterOptions {
 
@@ -458,6 +458,14 @@ public class MockContext implements Context, TypesetterOptions {
     }
 
     /**
+     * @see de.dante.extex.interpreter.context.Context#getStandardTokenStream()
+     */
+    public TokenStream getStandardTokenStream() {
+
+        return null;
+    }
+
+    /**
      * @see de.dante.extex.interpreter.context.Context#getTokenFactory()
      */
     public TokenFactory getTokenFactory() {
@@ -652,6 +660,16 @@ public class MockContext implements Context, TypesetterOptions {
             final boolean global) throws InterpreterException {
 
         throw new RuntimeException("unimplemented");
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.TypesetterOptions#setCountOption(
+     *       java.lang.String,
+     *       de.dante.extex.interpreter.type.count.FixedCount)
+     */
+    public void setCountOption(final String name, final long value)
+            throws GeneralException {
+
     }
 
     /**
@@ -885,16 +903,6 @@ public class MockContext implements Context, TypesetterOptions {
     public void startMarks() {
 
         throw new RuntimeException("unimplemented");
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.TypesetterOptions#setCountOption(
-     *       java.lang.String,
-     *       de.dante.extex.interpreter.type.count.FixedCount)
-     */
-    public void setCountOption(final String name, final long value)
-            throws GeneralException {
-
     }
 
 }
