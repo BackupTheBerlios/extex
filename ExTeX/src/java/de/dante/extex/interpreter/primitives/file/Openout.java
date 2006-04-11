@@ -40,12 +40,17 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * <p>
  *  TODO missing documentation
  * </p>
+ * <p>
+ *  The primitive <tt>\openout</tt> is not considered as assignment. Nor can
+ *  it be prefixed with <tt>\global</tt>. The definition of an output stream is
+ *  always global.
+ * </p>
  *
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    &lang;openin&rang;
- *      &rarr; &lang;modifier&rang; <tt>\openin</tt> {@linkplain
+ *    &lang;openout&rang;
+ *      &rarr; &lang;modifier&rang; <tt>\openout</tt> {@linkplain
  *        de.dante.extex.interpreter.TokenSource#scanNumber(Context)
  *        &lang;8-bit&nbsp;number&rang;} {@linkplain
  *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
@@ -55,7 +60,6 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  *    &lang;modifier&rang;
  *      &rarr;
- *       |  <tt>\global</tt> &lang;modifier&rang;
  *       |  <tt>\immediate</tt> &lang;modifier&rang;  </pre>
  *
  * <h4>Examples</h4>
@@ -67,7 +71,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public class Openout extends AbstractFileCode {
 

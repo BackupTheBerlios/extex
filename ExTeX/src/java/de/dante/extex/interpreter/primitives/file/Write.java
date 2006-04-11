@@ -51,6 +51,16 @@ import de.dante.util.framework.logger.LogEnabled;
  *  TODO missing documentation
  * </p>
  * <h4>Syntax</h4>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;write&rang;
+ *      &rarr; &lang;modifier&rang; <tt>\write</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#scanNumber(Context)
+ *        &lang;8-bit&nbsp;number&rang;} ...
+ *
+ *    &lang;modifier&rang;
+ *      &rarr;
+ *       |  <tt>\global</tt>  </pre>
  *
  * <h4>Examples</h4>
  * <pre class="TeXSample">
@@ -61,7 +71,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.35 $
+ * @version $Revision: 1.36 $
  */
 public class Write extends AbstractCode
         implements

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -31,11 +31,11 @@ import de.dante.util.exception.GeneralException;
  *
  * <p>
  *  Note that no provisions are made to avoid that a class is loaded more than
- *  once.
+ *  once. It is up to the implementation to provide this behavior or not.
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public interface Loadable {
 
@@ -49,4 +49,5 @@ public interface Loadable {
      * @throws GeneralException in case of an error
      */
     void init(Context context, Typesetter typesetter) throws GeneralException;
+
 }
