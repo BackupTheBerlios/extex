@@ -50,14 +50,9 @@ import de.dante.util.framework.logger.LogEnabled;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
-public class ErrorHandlerImpl
-        implements
-            ErrorHandler,
-            LogEnabled,
-            Localizable,
-            InteractionVisitor {
+public class ErrorHandlerImpl implements ErrorHandler, LogEnabled, Localizable {
 
     /**
      * The constant <tt>NL</tt> contains the String with the newline character,
@@ -70,6 +65,170 @@ public class ErrorHandlerImpl
      * request to edit a file.
      */
     private EditHandler editHandler = null;
+
+    /**
+     * The field <tt>iv</tt> contains the interaction visitor with the
+     * different behavior for the different interaction modes.
+     */
+    private InteractionVisitor iv = new InteractionVisitor() {
+
+        /**
+         * @see de.dante.extex.interpreter.InteractionVisitor#visitBatchmode(
+         *      java.lang.Object, java.lang.Object, java.lang.Object)
+         */
+        public boolean visitBatchmode(final Object arg1, final Object arg2,
+                final Object arg3) throws GeneralException {
+
+            return true;
+        }
+
+        /**
+         * Interact with the user in case of an error.
+         *
+         * @see de.dante.extex.interpreter.InteractionVisitor#visitErrorstopmode(
+         *      java.lang.Object, java.lang.Object, java.lang.Object)
+         */
+        public boolean visitErrorstopmode(final Object oSource,
+                final Object oContext, final Object oException)
+                throws GeneralException {
+
+            final TokenSource source = (TokenSource) oSource;
+            final Context context = (Context) oContext;
+            final GeneralException ex = (GeneralException) oException;
+            showErrorLine(logger, ex.getLocalizedMessage(), source.getLocator());
+
+            try {
+                boolean firstHelp = true;
+
+                for (;;) {
+                    String line = promptAndReadLine(localizer
+                            .format("ErrorHandler.Prompt"));
+                    logger.config(line);
+
+                    if (line.equals("") || line.equals(NL)) {
+                        return true;
+                    } else {
+                        switch (line.charAt(0)) {
+                            case '0':
+                            case '9':
+                            case '8':
+                            case '7':
+                            case '6':
+                            case '5':
+                            case '4':
+                            case '3':
+                            case '2':
+                            case '1':
+                                int count = line.charAt(0) - '0';
+                                if (line.length() > 1
+                                        && Character.isDigit(line.charAt(1))) {
+                                    count = count * 10 + line.charAt(1) - '0';
+                                }
+                                while (count-- > 0) {
+                                    source.getToken(context);
+                                }
+                                firstHelp = false;
+                                break;
+                            case 'd':
+                            case 'D':
+                                // TTP[84] TTP[1338]
+                                handleDebug();
+                                break;
+                            case 'e':
+                            case 'E':
+                                // TTP[84]
+                                if (editHandler != null
+                                        && editHandler.edit(localizer, //
+                                                source.getLocator())) {
+
+                                    context
+                                            .setInteraction(Interaction.SCROLLMODE);
+                                    logger.info(localizer
+                                            .format("ErrorHandler.scrollmode")
+                                            + NL);
+                                }
+                                return true;
+                            case 'i':
+                            case 'I':
+                                source.addStream(source.getTokenStreamFactory()
+                                        .newInstance(line.substring(1)));
+                                break;
+                            case 'h':
+                            case 'H':
+
+                                String help;
+
+                                if (!firstHelp) {
+                                    help = localizer
+                                            .format("ErrorHandler.noMoreHelp");
+                                } else if ((help = ex.getHelp()) == null) {
+                                    help = localizer
+                                            .format("ErrorHandler.noHelp");
+                                }
+
+                                firstHelp = false;
+                                logger.severe(help + NL);
+                                break;
+                            case 'q':
+                            case 'Q':
+                                context.setInteraction(Interaction.BATCHMODE);
+                                logger.info(localizer
+                                        .format("ErrorHandler.batchmode")
+                                        + NL);
+                                return true;
+                            case 'r':
+                            case 'R':
+                                context.setInteraction(Interaction.NONSTOPMODE);
+                                logger.info(localizer
+                                        .format("ErrorHandler.nonstopmode")
+                                        + NL);
+                                return true;
+                            case 's':
+                            case 'S':
+                                context.setInteraction(Interaction.SCROLLMODE);
+                                logger.info(localizer
+                                        .format("ErrorHandler.scrollmode")
+                                        + NL);
+                                return true;
+                            case 'x':
+                            case 'X':
+                                return false;
+                            default:
+                                logger.severe(localizer
+                                        .format("ErrorHandler.help")
+                                        + NL);
+                        }
+                    }
+                }
+            } catch (ConfigurationException e) {
+                throw new GeneralException(e);
+            } catch (GeneralException e) {
+                throw e;
+            }
+        }
+
+        /**
+         * @see de.dante.extex.interpreter.InteractionVisitor#visitNonstopmode(
+         *      java.lang.Object, java.lang.Object, java.lang.Object)
+         */
+        public boolean visitNonstopmode(final Object arg1, final Object arg2,
+                final Object arg3) throws GeneralException {
+
+            return true;
+        }
+
+        /**
+         * @see de.dante.extex.interpreter.InteractionVisitor#visitScrollmode(
+         *      java.lang.Object, java.lang.Object, java.lang.Object)
+         */
+        public boolean visitScrollmode(final Object oSource,
+                final Object oContext, final Object oException)
+                throws GeneralException {
+
+            return false;
+        }
+
+    };
 
     /**
      * The field <tt>localizer</tt> contains the localizer.
@@ -117,13 +276,11 @@ public class ErrorHandlerImpl
     /**
      * Special treatment of the debug case.
      *
-     * @throws IOException in case of an error during IO. This is rather
-     *  unlikely.
      * @throws HelpingException in case of EOF on terminal
      *
      * @see "TTP[1338]"
      */
-    private void handleDebug() throws HelpingException, IOException {
+    private void handleDebug() throws HelpingException {
 
         for (;;) {
             String line = promptAndReadLine(localizer
@@ -170,7 +327,7 @@ public class ErrorHandlerImpl
             throws InterpreterException {
 
         try {
-            return context.getInteraction().visit(this, source, context,
+            return context.getInteraction().visit(iv, source, context,
                     exception);
         } catch (InterpreterException e) {
             throw e;
@@ -188,25 +345,28 @@ public class ErrorHandlerImpl
      *
      * @return the line read or <code>null</code> to signal EOF
      *
-     * @throws IOException in case of an error during IO. This is rather
-     *  unlikely.
      * @throws HelpingException in case of EOF on terminal
      */
     protected String promptAndReadLine(final String prompt)
-            throws IOException,
-                HelpingException {
+            throws HelpingException {
 
         logger.severe(prompt);
 
         StringBuffer sb = new StringBuffer();
 
-        for (int c = System.in.read(); c > 0; c = System.in.read()) {
-            if (c == '\n') {
-                sb.append((char) c);
-                return sb.toString();
-            } else if (c != ' ' || sb.length() > 0) {
-                sb.append((char) c);
+        try {
+            for (int c = System.in.read(); c > 0; c = System.in.read()) {
+                if (c == '\n') {
+                    sb.append((char) c);
+                    return sb.toString();
+                } else if (c == '\r') {
+                    // ignored
+                } else if (c != ' ' || sb.length() > 0) {
+                    sb.append((char) c);
+                }
             }
+        } catch (IOException e) {
+            throw new HelpingException(localizer, "TTP.EOFonTerm");
         }
 
         if (sb.length() > 0) {
@@ -247,160 +407,6 @@ public class ErrorHandlerImpl
         theLogger.severe(NL + NL + (file == null ? "" : file) + ":"
                 + Integer.toString(locator.getLineNumber()) + ": " + message
                 + NL + NL + locator.getLine() + NL + sb.toString() + "^" + NL);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.InteractionVisitor#visitBatchmode(
-     *      java.lang.Object, java.lang.Object, java.lang.Object)
-     */
-    public boolean visitBatchmode(final Object arg1, final Object arg2,
-            final Object arg3) throws GeneralException {
-
-        return true;
-    }
-
-    /**
-     * Interact with the user in case of an error.
-     *
-     * @see de.dante.extex.interpreter.InteractionVisitor#visitErrorstopmode(
-     *      java.lang.Object, java.lang.Object, java.lang.Object)
-     */
-    public boolean visitErrorstopmode(final Object oSource,
-            final Object oContext, final Object oException)
-            throws GeneralException {
-
-        final TokenSource source = (TokenSource) oSource;
-        final Context context = (Context) oContext;
-        GeneralException ex = (GeneralException) oException;
-        showErrorLine(logger, ex.getLocalizedMessage(), source.getLocator());
-
-        try {
-            boolean firstHelp = true;
-
-            for (;;) {
-                String line = promptAndReadLine(localizer
-                        .format("ErrorHandler.Prompt"));
-                logger.config(line);
-
-                if (line.equals("") || line.equals("\n")) {
-                    return true;
-                } else {
-                    switch (line.charAt(0)) {
-                        case '0':
-                        case '9':
-                        case '8':
-                        case '7':
-                        case '6':
-                        case '5':
-                        case '4':
-                        case '3':
-                        case '2':
-                        case '1':
-                            int count = line.charAt(0) - '0';
-                            if (line.length() > 1
-                                    && Character.isDigit(line.charAt(1))) {
-                                count = count * 10 + line.charAt(1) - '0';
-                            }
-                            while (count-- > 0) {
-                                source.getToken(context);
-                            }
-                            firstHelp = false;
-                            break;
-                        case 'd':
-                        case 'D':
-                            // TTP[84] TTP[1338]
-                            handleDebug();
-                            break;
-                        case 'e':
-                        case 'E':
-                            // TTP[84]
-                            if (editHandler != null
-                                    && editHandler.edit(localizer, //
-                                            source.getLocator())) {
-
-                                context.setInteraction(Interaction.SCROLLMODE);
-                                logger.info(localizer
-                                        .format("ErrorHandler.scrollmode")
-                                        + NL);
-                            }
-                            return true;
-                        case 'i':
-                        case 'I':
-                            source.addStream(source.getTokenStreamFactory()
-                                    .newInstance(line.substring(1)));
-                            break;
-                        case 'h':
-                        case 'H':
-
-                            String help;
-
-                            if (!firstHelp) {
-                                help = localizer
-                                        .format("ErrorHandler.noMoreHelp");
-                            } else if ((help = ex.getHelp()) == null) {
-                                help = localizer.format("ErrorHandler.noHelp");
-                            }
-
-                            firstHelp = false;
-                            logger.severe(help + NL);
-                            break;
-                        case 'q':
-                        case 'Q':
-                            context.setInteraction(Interaction.BATCHMODE);
-                            logger.info(localizer
-                                    .format("ErrorHandler.batchmode")
-                                    + NL);
-                            return true;
-                        case 'r':
-                        case 'R':
-                            context.setInteraction(Interaction.NONSTOPMODE);
-                            logger.info(localizer
-                                    .format("ErrorHandler.nonstopmode")
-                                    + NL);
-                            return true;
-                        case 's':
-                        case 'S':
-                            context.setInteraction(Interaction.SCROLLMODE);
-                            logger.info(localizer
-                                    .format("ErrorHandler.scrollmode")
-                                    + NL);
-                            return true;
-                        case 'x':
-                        case 'X':
-                            return false;
-                        default:
-                            logger.severe(localizer.format("ErrorHandler.help")
-                                    + NL);
-                    }
-                }
-            }
-        } catch (IOException e) {
-            throw new GeneralException(e);
-        } catch (ConfigurationException e) {
-            throw new GeneralException(e);
-        } catch (GeneralException e) {
-            throw e;
-        }
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.InteractionVisitor#visitNonstopmode(
-     *      java.lang.Object, java.lang.Object, java.lang.Object)
-     */
-    public boolean visitNonstopmode(final Object arg1, final Object arg2,
-            final Object arg3) throws GeneralException {
-
-        return true;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.InteractionVisitor#visitScrollmode(
-     *      java.lang.Object, java.lang.Object, java.lang.Object)
-     */
-    public boolean visitScrollmode(final Object oSource, final Object oContext,
-            final Object oException) throws GeneralException {
-
-        return false;
     }
 
 }
