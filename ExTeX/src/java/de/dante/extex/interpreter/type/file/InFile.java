@@ -33,14 +33,20 @@ import de.dante.extex.scanner.type.token.TokenFactory;
  * This class holds an input file from which tokens can be read.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class InFile implements Serializable {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 20060411L;
+
+    /**
+     * The field <tt>standardStream</tt> contains the indicator that the current
+     * stream is the standard stream.
+     */
+    private boolean standardStream;
 
     /**
      * The field <tt>stream</tt> contains the stream.
@@ -52,10 +58,11 @@ public class InFile implements Serializable {
      *
      * @param inStream the token stream to read from
      */
-    public InFile(final TokenStream inStream) {
+    public InFile(final TokenStream inStream, boolean isStandard) {
 
         super();
         this.stream = inStream;
+        this.standardStream = isStandard;
     }
 
     /**
@@ -99,6 +106,16 @@ public class InFile implements Serializable {
     public boolean isOpen() {
 
         return (stream != null);
+    }
+
+    /**
+     * Getter for standardStream.
+     *
+     * @return the standardStream
+     */
+    public boolean isStandardStream() {
+
+        return this.standardStream;
     }
 
     /**
