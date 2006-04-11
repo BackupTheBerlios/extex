@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -23,18 +23,19 @@ import java.io.Reader;
 
 /**
  * This interface describes the ability to receive a notification just after
- * a new string based stream has been opened.
+ * a new reader-based stream has been opened.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface OpenReaderObserver {
 
     /**
-     * This method is meant to be invoked just after a new string based stream
+     * This method is meant to be invoked just after a new reader-based stream
      * has been opened.
      *
      * @param reader the reader to be processed
      */
     void update(Reader reader);
+
 }
