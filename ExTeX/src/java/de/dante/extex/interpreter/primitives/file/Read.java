@@ -19,6 +19,8 @@
 
 package de.dante.extex.interpreter.primitives.file;
 
+import java.util.logging.Logger;
+
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -27,11 +29,12 @@ import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.interaction.Interaction;
 import de.dante.extex.interpreter.primitives.macro.MacroCode;
 import de.dante.extex.interpreter.primitives.macro.MacroPattern;
-import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.interpreter.type.file.InFile;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.token.CodeToken;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.util.framework.logger.LogEnabled;
 
 /**
  * This class provides an implementation for the primitive <code>\read</code>.
@@ -39,14 +42,28 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="read">
  * <h3>The Primitive <tt>\read</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The primitive <tt>\read</tt> read a line of text from the given input stream
+ *  into a control sequence. The input stream should be opened with
+ *  <tt>\openin</tt>. If a stream name is used which has not been opened or
+ *  has already been closed then the default input stream is used instead.
+ * </p>
+ * <p>
+ *  The primitive can be prefixed with <tt>\global</tt>. In this case the
+ *  assignment to the control sequence is global instead of the default of
+ *  assigning it locally to the current group.
+ * </p>
+ * <p>
+ *  The primitive implements an assignment. Thus the definition of
+ *  <tt>\afterassignment</tt> and <tt>>\globaldefs</tt> are honored.
  * </p>
  *
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;read&rang;
- *       &rarr; <tt>\read</tt> &lang;read&rang; <tt>to</tt> &lang;control sequence&rang;</pre>
+ *       &rarr; <tt>\read</tt> &lang;read&rang; <tt>to</tt> {@linkplain
+ *       de.dante.extex.interpreter.TokenSource#getControlSequence(Context)
+ *       &lang;control sequence&rang;}  </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
@@ -57,14 +74,19 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.30 $
+ * @version $Revision: 1.31 $
  */
-public class Read extends AbstractCode {
+public class Read extends AbstractAssignment implements LogEnabled {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 20060410L;
+
+    /**
+     * The field <tt>logger</tt> contains the target channel for the message.
+     */
+    private transient Logger logger = null;
 
     /**
      * Creates a new object.
@@ -77,13 +99,13 @@ public class Read extends AbstractCode {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Code#execute(
+     * @see de.dante.extex.interpreter.type.AbstractAssignment#assign(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(final Flags prefix, final Context context,
+    public void assign(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
@@ -91,32 +113,50 @@ public class Read extends AbstractCode {
                 .scanInFileKey(context, source, typesetter);
 
         if (!source.getKeyword(context, "to")) {
-            throw new HelpingException(getLocalizer(), "TTP.MissingToForRead");
+            throw new HelpingException(getLocalizer(), "TTP.MissingToForRead",
+                    printableControlSequence(context));
         }
         CodeToken cs = source.getControlSequence(context);
 
         InFile file = context.getInFile(key);
 
         if (!file.isOpen()) {
-            //TODO gene: unimplemented
-            throw new RuntimeException("unimplemented");
+            file = context.getInFile(null);
+            if (!file.isOpen()) {
+                throw new HelpingException(getLocalizer(), "TTP.EOFinRead",
+                        printableControlSequence(context));
+            }
         }
         if (!file.isFileStream()) {
-
             Interaction interaction = context.getInteraction();
             if (interaction != Interaction.ERRORSTOPMODE) {
-                throw new HelpingException(getLocalizer(), "TTP.NoTermRead");
+                throw new HelpingException(getLocalizer(), "TTP.NoTermRead",
+                        printableControlSequence(context));
             }
+        }
+
+        if (file.isStandardStream()) {
+            logger.severe(printable(context, cs) + "=");
         }
 
         Tokens toks = file.read(context.getTokenFactory(), context
                 .getTokenizer());
         if (toks == null) {
-            throw new HelpingException(getLocalizer(), "TTP.EOFinRead");
+            throw new HelpingException(getLocalizer(), "TTP.EOFinRead",
+                    printableControlSequence(context));
         }
         context.setCode(cs, new MacroCode(cs.getName(), prefix,
                 MacroPattern.EMPTY, toks), prefix.isGlobal());
         prefix.clearGlobal();
+    }
+
+    /**
+     * @see de.dante.util.framework.logger.LogEnabled#enableLogging(
+     *      java.util.logging.Logger)
+     */
+    public void enableLogging(final Logger theLogger) {
+
+        this.logger = theLogger;
     }
 
 }
