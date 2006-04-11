@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -28,12 +28,12 @@ import de.dante.extex.interpreter.type.tokens.Tokens;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface ContextTokens {
 
     /**
-     * Getter for the {@link de.dante.extex.interpreter.type.tokens.Tokens toks}
+     * Getter for the {@link de.dante.extex.interpreter.type.tokens.Tokens Tokens}
      * register. Tokens registers are named, either with a number or an
      * arbitrary string. The numbered registers where limited to 256 in
      * <logo>TeX</logo>.
@@ -59,7 +59,7 @@ public interface ContextTokens {
     Tokens getToksOrNull(String name);
 
     /**
-     * Setter for the {@link de.dante.extex.interpreter.type.tokens.Tokens toks}
+     * Setter for the {@link de.dante.extex.interpreter.type.tokens.Tokens Tokens}
      * register in the specified groups. Tokens registers are named, either with
      * a number or an arbitrary string. The numbered registers where limited to
      * 256 in <logo>TeX</logo>. This restriction does no longer hold for

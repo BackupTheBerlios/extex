@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -64,9 +64,8 @@ import java.util.List;
  * <p>
  *
  *
- *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public final class Registrar {
 
@@ -74,19 +73,19 @@ public final class Registrar {
      * This class provides a container for a pair of a class and an observer.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.4 $
+     * @version $Revision: 1.5 $
      */
     private static final class Obs {
-
-        /**
-         * The field <tt>type</tt> contains the class.
-         */
-        private Class type;
 
         /**
          * The field <tt>observer</tt> contains the observer.
          */
         private RegistrarObserver observer;
+
+        /**
+         * The field <tt>type</tt> contains the class.
+         */
+        private Class type;
 
         /**
          * Creates a new object.
@@ -129,20 +128,6 @@ public final class Registrar {
     private static List observers = new ArrayList();
 
     /**
-     * This method registers an observer at the registrar. This observer is
-     * invoked for each class which is deserialized and matches the class given.
-     * The type argument can be an interface as well.
-     *
-     * @param observer the observer
-     * @param type the interface or class to be observed
-     */
-    public static void register(final RegistrarObserver observer,
-            final Class type) {
-
-        observers.add(new Obs(observer, type));
-    }
-
-    /**
      * Find anyone interested in an object and let the object be integrated into
      * their views of the world.
      *
@@ -167,6 +152,20 @@ public final class Registrar {
     }
 
     /**
+     * This method registers an observer at the registrar. This observer is
+     * invoked for each class which is deserialized and matches the class given.
+     * The type argument can be an interface as well.
+     *
+     * @param observer the observer
+     * @param type the interface or class to be observed
+     */
+    public static void register(final RegistrarObserver observer,
+            final Class type) {
+
+        observers.add(new Obs(observer, type));
+    }
+
+    /**
      * Reset the list all observers which are registered.
      */
     public static void reset() {
@@ -180,4 +179,5 @@ public final class Registrar {
     private Registrar() {
 
     }
+
 }

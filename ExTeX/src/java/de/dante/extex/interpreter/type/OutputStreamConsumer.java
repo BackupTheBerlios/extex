@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -25,7 +25,7 @@ import de.dante.extex.backend.documentWriter.OutputStreamFactory;
  * This interface describes a consumer of an output stream factory.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface OutputStreamConsumer {
 
@@ -35,4 +35,5 @@ public interface OutputStreamConsumer {
      * @param factory the output stream factory to use
      */
     void setOutputStreamFactory(OutputStreamFactory factory);
+
 }

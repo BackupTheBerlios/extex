@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -30,13 +30,13 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This observer is meant for keeping the current typesetting context in sync
  * with the registers <tt>\language</tt> and <tt>\lang</tt>.
  * <p>
- *  The toks register <tt>\lang</tt> is considered first. Only if this register
- *  is not set or it is empty then the count register <tt>\language</tt> is
- *  taken into account.
+ *  The tokens register <tt>\lang</tt> is considered first. Only if this
+ *  register is not set or it is empty then the count register <tt>\language</tt>
+ *  is taken into account.
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class LanguageObserver implements CountObserver, TokensObserver {
 

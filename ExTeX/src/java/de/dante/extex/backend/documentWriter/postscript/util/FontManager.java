@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -32,7 +32,7 @@ import de.dante.util.UnicodeChar;
  * The font manager keeps track of the fonts and characters used.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class FontManager {
 
@@ -138,4 +138,5 @@ public class FontManager {
         texdict.append("end\n");
         stream.write(texdict.toString().getBytes());
     }
+
 }

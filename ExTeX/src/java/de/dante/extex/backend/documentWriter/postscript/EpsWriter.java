@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -36,7 +36,7 @@ import de.dante.util.exception.GeneralException;
  * This document writer produces Encapsulated Postscript documents.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class EpsWriter extends AbstractPostscriptWriter {
 
@@ -101,8 +101,7 @@ public class EpsWriter extends AbstractPostscriptWriter {
 
         OutputStream stream = newOutputStream("eps");
 
-        byte[] bytes = converter.toPostScript(p, fontManager,
-                headerManager);
+        byte[] bytes = converter.toPostScript(p, fontManager, headerManager);
 
         stream.write("%!PS-Adobe-2.0 EPSF-2.0\n".getBytes());
         writeDsc(stream, "Creator", getParameter("Creator"));

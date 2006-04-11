@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -32,7 +32,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * The value <tt>\relax</tt> is interpreted as no file name.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class QueryFileHandlerTeXImpl implements QueryFileHandler {
 
@@ -42,30 +42,6 @@ public class QueryFileHandlerTeXImpl implements QueryFileHandler {
     public QueryFileHandlerTeXImpl() {
 
         super();
-    }
-
-    /**
-     * @see de.dante.extex.main.queryFile.QueryFileHandler#query(
-     *      java.util.logging.Logger)
-     */
-    public String query(final Logger logger) {
-
-        Localizer localizer = LocalizerFactory
-                .getLocalizer(QueryFileHandlerTeXImpl.class.getName());
-        String file;
-        try {
-            file = promptAndReadLine(localizer, logger, "TTP.PromptFile");
-
-            while (file == null || "".equals(file)) {
-                file = promptAndReadLine(localizer, logger, "TTP.PromptFile2");
-            }
-
-        } catch (HelpingException e) {
-            return null;
-        } catch (IOException e) {
-            return null;
-        }
-        return (file.equals("\\relax") ? null : file);
     }
 
     /**
@@ -105,6 +81,30 @@ public class QueryFileHandlerTeXImpl implements QueryFileHandler {
         }
 
         throw new HelpingException(localizer, "TTP.EOFonTerm");
+    }
+
+    /**
+     * @see de.dante.extex.main.queryFile.QueryFileHandler#query(
+     *      java.util.logging.Logger)
+     */
+    public String query(final Logger logger) {
+
+        Localizer localizer = LocalizerFactory
+                .getLocalizer(QueryFileHandlerTeXImpl.class.getName());
+        String file;
+        try {
+            file = promptAndReadLine(localizer, logger, "TTP.PromptFile");
+
+            while (file == null || "".equals(file)) {
+                file = promptAndReadLine(localizer, logger, "TTP.PromptFile2");
+            }
+
+        } catch (HelpingException e) {
+            return null;
+        } catch (IOException e) {
+            return null;
+        }
+        return (file.equals("\\relax") ? null : file);
     }
 
 }

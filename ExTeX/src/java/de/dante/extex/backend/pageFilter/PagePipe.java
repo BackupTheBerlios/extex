@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -27,16 +27,14 @@ import de.dante.extex.typesetter.type.page.Page;
  * in a new node list.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface PagePipe {
 
     /**
      * This method is invoked upon the end of the processing.
      *
-     * @throws DocumentWriterException in case of an error
      * @throws BackendException in case of a back-end error
-     * @throws IOException in case of an IO error
      */
     void close() throws BackendException;
 

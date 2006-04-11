@@ -27,7 +27,7 @@ import java.util.List;
  * This class provides a type-safe list of observers for the open file event.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public final class OpenFileObserverList implements OpenFileObserver {
 
@@ -87,4 +87,5 @@ public final class OpenFileObserverList implements OpenFileObserver {
             ((OpenFileObserver) list.get(i)).update(filename, filetype);
         }
     }
+
 }

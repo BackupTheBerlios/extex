@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -25,12 +25,13 @@ import java.io.Serializable;
  * This interface describes the callbacks used for an extension point.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface ExtensionPoint extends Serializable {
 
     /**
-     * This method is invoked upon initialization.
+     * This method is invoked upon initialization to prepare everything for
+     * proper operation.
      */
     void init();
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -24,18 +24,18 @@ import de.dante.extex.interpreter.type.tokens.Tokens;
 
 /**
  * This interface describes the ability to receive a notification about the
- * change of a toks register.
+ * change of a tokens register.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface TokensObserver {
 
     /**
-     * Receive a notification on a toks change.
+     * Receive a notification on a tokens change.
      *
      * @param context the interpreter context
-     * @param name the token containing the name of the changed toks.
+     * @param name the token containing the name of the changed tokens.
      * @param value the new value assigned to the name. In case of
      *  <code>null</code> the name is unbound.
      *

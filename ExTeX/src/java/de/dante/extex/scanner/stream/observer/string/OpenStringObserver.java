@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -16,24 +16,24 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.scanner.stream.observer.string;
-
-
 
 /**
  * This interface describes the ability to receive a notification just after
- * a new string based stream has been opened.
+ * a new string-based stream has been opened.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface OpenStringObserver {
 
     /**
-     * This method is meant to be invoked just after a new string based stream
+     * This method is meant to be invoked just after a new string based-stream
      * has been opened.
      *
      * @param string the contents to be processed
      */
     void update(CharSequence string);
+
 }

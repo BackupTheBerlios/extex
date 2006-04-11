@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -23,7 +23,7 @@ package de.dante.extex.backend.exception;
  * The back-end exception signaling that the output target is missing.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class BackendMissingTargetException extends BackendException {
 
@@ -31,7 +31,7 @@ public class BackendMissingTargetException extends BackendException {
      * The field <tt>serialVersionUID</tt> contains the version number for
      * serialization.
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2005L;
 
     /**
      * Creates a new object.

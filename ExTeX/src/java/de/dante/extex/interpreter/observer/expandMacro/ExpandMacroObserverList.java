@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -19,7 +19,6 @@
 
 package de.dante.extex.interpreter.observer.expandMacro;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +29,7 @@ import de.dante.extex.scanner.type.token.Token;
  * This class provides a type-safe list of observers for the expand event.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public final class ExpandMacroObserverList implements ExpandMacroObserver {
 
@@ -88,4 +87,5 @@ public final class ExpandMacroObserverList implements ExpandMacroObserver {
             ((ExpandMacroObserver) list.get(i)).update(token, code);
         }
     }
+
 }

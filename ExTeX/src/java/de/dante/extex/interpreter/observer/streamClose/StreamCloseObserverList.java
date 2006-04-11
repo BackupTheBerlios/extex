@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -25,10 +25,10 @@ import java.util.List;
 import de.dante.extex.scanner.stream.TokenStream;
 
 /**
- * This class provides a type-safe list of observers for the expand event.
+ * This class provides a type-safe list of observers for the stream close event.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public final class StreamCloseObserverList implements StreamCloseObserver {
 
@@ -79,4 +79,5 @@ public final class StreamCloseObserverList implements StreamCloseObserver {
             ((StreamCloseObserver) list.get(i)).update(stream);
         }
     }
+
 }

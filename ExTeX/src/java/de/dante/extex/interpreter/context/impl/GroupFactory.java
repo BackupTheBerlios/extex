@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -16,6 +16,7 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.context.impl;
 
 import java.lang.reflect.Constructor;
@@ -38,7 +39,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationMissingAttri
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class GroupFactory {
 
@@ -75,8 +76,8 @@ public class GroupFactory {
         }
 
         try {
-            constructor = Class.forName(classname)
-                    .getConstructor(new Class[]{Group.class});
+            constructor = Class.forName(classname).getConstructor(
+                    new Class[]{Group.class});
         } catch (SecurityException e) {
             throw new ConfigurationInstantiationException(e);
         } catch (NoSuchMethodException e) {
@@ -97,6 +98,7 @@ public class GroupFactory {
      * @throws ConfigurationException in case of an error in the configuration.
      */
     public Group newInstance(final Group next) throws ConfigurationException {
+
         Group group;
 
         try {
@@ -117,4 +119,5 @@ public class GroupFactory {
 
         return group;
     }
+
 }

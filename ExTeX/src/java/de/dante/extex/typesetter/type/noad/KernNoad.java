@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -30,12 +30,12 @@ import de.dante.extex.typesetter.type.node.ExplicitKernNode;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
- * This Noad carries a kern value in math units.
+ * This Noad carries a kerning value in math units.
  * This value is translated into a KernNode
- * with the translated kern value.
+ * with the translated kerning value.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class KernNoad extends AbstractNoad {
 

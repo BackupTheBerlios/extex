@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -43,7 +43,7 @@ import de.dante.util.framework.configuration.Configurable;
  * This document writer produces multi-page PostScript documents.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class PsWriter extends AbstractPostscriptWriter
         implements
@@ -178,8 +178,7 @@ public class PsWriter extends AbstractPostscriptWriter
             init = false;
         }
 
-        page.add(converter.toPostScript(p, fontManager,
-                headerManager));
+        page.add(converter.toPostScript(p, fontManager, headerManager));
         return 1;
     }
 

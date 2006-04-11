@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -35,9 +35,16 @@ import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
  * This is the abstract base class for all ifs.
+ * <p>
+ *  If you want to implement an if-like primitive you should derive it from
+ *  this class. All you have to do is to implement the method
+ *  {@link #conditional(Context, TokenSource, Typesetter) conditional()}. Here
+ *  you define the expression evaluated to determine whether the if or the else
+ *  branch should be taken.
+ * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public abstract class AbstractIf extends AbstractCode implements ExpandableCode {
 
@@ -174,4 +181,5 @@ public abstract class AbstractIf extends AbstractCode implements ExpandableCode 
 
         return true;
     }
+
 }

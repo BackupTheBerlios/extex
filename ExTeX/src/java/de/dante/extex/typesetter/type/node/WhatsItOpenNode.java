@@ -27,17 +27,17 @@ import de.dante.extex.typesetter.type.NodeVisitor;
 import de.dante.util.exception.GeneralException;
 
 /**
- * This WhatsIt node opens an out file on shipping.
+ * This WhatsIt node which opens an out file at shipping.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class WhatsItOpenNode extends WhatsItNode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 20060411L;
 
     /**
      * The field <tt>file</tt> contains the output file.
@@ -45,7 +45,7 @@ public class WhatsItOpenNode extends WhatsItNode {
     private OutFile file;
 
     /**
-     * The field <tt>key</tt> contains the reference key
+     * The field <tt>key</tt> contains the reference key.
      */
     private String key;
 
@@ -68,6 +68,11 @@ public class WhatsItOpenNode extends WhatsItNode {
      *
      * @param context the interpreter context
      * @param typesetter the typesetter
+     * @param visitor the node visitor to be invoked when the node is hit. Note
+     *  that each node in the output page is visited this way. Thus there is no
+     *  need to implement a node traversal for the NodeList types
+     * @param inHMode <code>true</code> iff the container is a horizontal list.
+     *  Otherwise the container is a vertical list
      *
      * @throws GeneralException in case of an error
      *
@@ -82,7 +87,7 @@ public class WhatsItOpenNode extends WhatsItNode {
             throws GeneralException {
 
         file.open();
-        context.setOutFile(key, file, false);
+        context.setOutFile(key, file, true);
 
         return null;
     }
