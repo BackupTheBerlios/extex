@@ -38,11 +38,17 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * files.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.31 $
+ * @version $Revision: 1.32 $
  */
 public abstract class AbstractFileCode extends AbstractCode
         implements
             Configurable {
+
+    /**
+     * The field <tt>DEFAULT_ENCODING</tt> contains the default encoding if
+     * nothing else is found.
+     */
+    private static final String DEFAULT_ENCODING = "ISO8859-1";
 
     /**
      * The constant <tt>MAX_OUT_FILE_NO</tt> contains the maximum number of
@@ -140,7 +146,7 @@ public abstract class AbstractFileCode extends AbstractCode
     /**
      * Return the encoding for the AbstractFileCode file.
      * <p>
-     * First of all, <code>\AbstractFileCodeencoding</code> is used,
+     * First of all, <code>\fileencoding</code> is used,
      * if there is no
      * value, then the property <code>extex.encoding</code> is used,
      * or <code>ISO8859-1</code>,
@@ -155,11 +161,7 @@ public abstract class AbstractFileCode extends AbstractCode
         String encoding = context.getToks("fileencoding").toText().trim();
         if (encoding.length() == 0) {
             String enc = System.getProperty("extex.encoding");
-            if (enc != null) {
-                encoding = enc;
-            } else {
-                encoding = "ISO8859-1";
-            }
+            encoding = (enc != null ? enc : DEFAULT_ENCODING);
         }
         return encoding;
     }
