@@ -56,14 +56,9 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.58 $
+ * @version $Revision: 1.59 $
  */
 public class GroupImpl implements Group, Tokenizer, Serializable {
-
-    /**
-     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
-     */
-    private static final long serialVersionUID = 1L;
 
     /**
      * The constant <tt>INVALID_CHAR_CODE</tt> contains the code for an
@@ -82,6 +77,11 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
      * letters when constructing a math code.
      */
     private static final int MATHCODE_LETTER_OFFSET = 0x7100;
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * The field <tt>SFCODE_DEFAULT</tt> contains the default space factor code
@@ -202,7 +202,7 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     private transient TokenStream standardTokenStream = null;
 
     /**
-     * The field <tt>toksMap</tt> contains the map for the toks registers.
+     * The field <tt>toksMap</tt> contains the map for the tokens registers.
      */
     private Map toksMap = new HashMap();
 
@@ -445,7 +445,7 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     public InFile getInFile(final String name) {
 
         if (name == null) {
-            return new InFile(standardTokenStream);
+            return new InFile(standardTokenStream, true);
         }
 
         InFile inFile = (InFile) (inFileMap.get(name));
@@ -455,7 +455,7 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
         }
 
         return (next != null ? next.getInFile(name) : new InFile(
-                standardTokenStream));
+                standardTokenStream, true));
     }
 
     /**
@@ -601,6 +601,18 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
         return skip != null ? skip : next != null
                 ? next.getSkip(name)
                 : new Glue(0);
+    }
+
+    /**
+     * Getter for standardTokenStream.
+     *
+     * @return the standardTokenStream
+     *
+     * @see de.dante.extex.interpreter.context.impl.Group#getStandardTokenStream()
+     */
+    public TokenStream getStandardTokenStream() {
+
+        return this.standardTokenStream;
     }
 
     /**

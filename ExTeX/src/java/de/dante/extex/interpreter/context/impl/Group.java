@@ -53,7 +53,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.37 $
+ * @version $Revision: 1.38 $
  */
 public interface Group extends Tokenizer, Serializable {
 
@@ -282,6 +282,13 @@ public interface Group extends Tokenizer, Serializable {
      * @return the value of the count register or its default
      */
     Glue getSkip(String name);
+
+    /**
+     * Getter for standardTokenStream.
+     *
+     * @return the standardTokenStream
+     */
+    TokenStream getStandardTokenStream();
 
     /**
      * Getter for the named toks register in the current group. The name can

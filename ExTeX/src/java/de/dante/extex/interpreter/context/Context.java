@@ -49,7 +49,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.68 $
+ * @version $Revision: 1.69 $
  */
 public interface Context
         extends
@@ -236,6 +236,13 @@ public interface Context
     Count getSfcode(UnicodeChar uc);
 
     /**
+     * Getter for standardTokenStream.
+     *
+     * @return the standardTokenStream
+     */
+    TokenStream getStandardTokenStream();
+
+    /**
      * Getter for the token factory. The token factory can be used to get new
      * tokens of some kind.
      *
@@ -413,7 +420,8 @@ public interface Context
      *
      * @param manager the hyphenatin manager
      */
-    void setLanguageManager(LanguageManager manager) throws ConfigurationException;
+    void setLanguageManager(LanguageManager manager)
+            throws ConfigurationException;
 
     /**
      * Declare the translation from an upper case character to a lower case
