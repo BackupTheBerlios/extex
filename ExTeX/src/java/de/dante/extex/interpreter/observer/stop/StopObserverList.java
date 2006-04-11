@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -28,7 +28,7 @@ import de.dante.extex.interpreter.Interpreter;
  * This class provides a type-safe list of observers for the start event.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public final class StopObserverList implements StopObserver {
 
@@ -75,7 +75,7 @@ public final class StopObserverList implements StopObserver {
     }
 
     /**
-     * Invoke all observers on the list to inform them of the start operation.
+     * Invoke all observers on the list to inform them of the stop operation.
      *
      * @see de.dante.extex.interpreter.observer.load.LoadObserver#update(
      *      de.dante.extex.interpreter.context.Context)
@@ -87,4 +87,5 @@ public final class StopObserverList implements StopObserver {
             ((StopObserver) list.get(i)).update(interpreter);
         }
     }
+
 }

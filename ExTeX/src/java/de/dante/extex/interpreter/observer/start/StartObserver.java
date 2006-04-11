@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -22,11 +22,11 @@ package de.dante.extex.interpreter.observer.start;
 import de.dante.extex.interpreter.Interpreter;
 
 /**
- * This interface describes the ability to receive a notification just before
- * a token is expanded.
+ * This interface describes the ability to receive a notification just after
+ * the engine has been started.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface StartObserver {
 
@@ -36,4 +36,5 @@ public interface StartObserver {
      * @param interpreter the interpreter to be started
      */
     void update(Interpreter interpreter);
+
 }

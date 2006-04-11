@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -25,10 +25,10 @@ import java.util.List;
 import de.dante.extex.interpreter.context.Context;
 
 /**
- * This class provides a type-safe list of observers for the undump event.
+ * This class provides a type-safe list of observers for the format load event.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public final class LoadObserverList implements LoadObserver {
 
@@ -75,7 +75,8 @@ public final class LoadObserverList implements LoadObserver {
     }
 
     /**
-     * Invoke all observers on the list to inform them of the undump operation.
+     * Invoke all observers on the list to inform them of the format load
+     * operation.
      *
      * @see de.dante.extex.interpreter.observer.load.LoadObserver#update(
      *      de.dante.extex.interpreter.context.Context)
@@ -87,4 +88,5 @@ public final class LoadObserverList implements LoadObserver {
             ((LoadObserver) list.get(i)).update(context);
         }
     }
+
 }
