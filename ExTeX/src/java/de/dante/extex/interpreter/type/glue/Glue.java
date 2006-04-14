@@ -42,7 +42,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public class Glue implements Serializable, FixedGlue {
 
@@ -120,6 +120,15 @@ public class Glue implements Serializable, FixedGlue {
 
     /**
      * Creates a new object by parsing a token source.
+     *
+     * <doc type="syntax" name="glue">
+     * <pre class="syntax">
+     *   &lang;glue&rang; </pre>
+     * <p>
+     *  TODO gene: documentation incomplete
+     * </p>
+     * </doc>
+     *
      *
      * @param source the source to read new tokens from
      * @param context the processing context
