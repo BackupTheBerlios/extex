@@ -43,7 +43,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class ToksParameter extends ToksPrimitive
         implements
@@ -85,6 +85,7 @@ public class ToksParameter extends ToksPrimitive
     public ToksParameter(final String name) {
 
         super(name);
+        key = name;
     }
 
     /**
