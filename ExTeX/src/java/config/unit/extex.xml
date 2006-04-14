@@ -19,6 +19,13 @@
   -->
 <unit>
   <primitives>
+    <define name="register.max"
+            class="de.dante.extex.interpreter.primitives.register.count.MaxRegister">-1</define>
+
+    <define name="everydisplayend"
+            class="de.dante.extex.interpreter.primitives.register.toks.ToksParameter"/>
+    <define name="everymathend"
+            class="de.dante.extex.interpreter.primitives.register.toks.ToksParameter"/>
     <define name="hyphenation"
             class="de.dante.extex.interpreter.primitives.hyphen.Hyphenation"/>
     <define name="ignorevoid"

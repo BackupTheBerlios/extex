@@ -119,8 +119,6 @@
     <unit src="unit/etex.xml"/>
     <unit src="unit/omega.xml"/>
 
-    <ExtendedRegisterNames>false</ExtendedRegisterNames>
-
   </Interpreter>
 
   <!-- 

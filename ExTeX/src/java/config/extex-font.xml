@@ -113,8 +113,7 @@
     <unit src="unit/etex.xml"/>
     <unit src="unit/omega.xml"/>
     <unit src="unit/ensureloaded.xml"/>
-
-    <ExtendedRegisterNames>true</ExtendedRegisterNames>
+    <unit src="unit/extex.xml"/>
 
   </Interpreter>
 

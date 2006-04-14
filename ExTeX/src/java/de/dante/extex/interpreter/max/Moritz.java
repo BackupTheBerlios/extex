@@ -27,6 +27,8 @@ import com.ibm.icu.lang.UCharacter;
 
 import de.dante.extex.backend.documentWriter.OutputStreamFactory;
 import de.dante.extex.interpreter.Flags;
+import de.dante.extex.interpreter.Interpreter;
+import de.dante.extex.interpreter.RegisterMaxObserver;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.Context;
@@ -50,6 +52,7 @@ import de.dante.extex.interpreter.observer.pop.PopObserverList;
 import de.dante.extex.interpreter.observer.push.PushObservable;
 import de.dante.extex.interpreter.observer.push.PushObserver;
 import de.dante.extex.interpreter.observer.push.PushObserverList;
+import de.dante.extex.interpreter.observer.start.StartObserver;
 import de.dante.extex.interpreter.observer.streamClose.StreamCloseObservable;
 import de.dante.extex.interpreter.observer.streamClose.StreamCloseObserver;
 import de.dante.extex.interpreter.observer.streamClose.StreamCloseObserverList;
@@ -106,7 +109,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.91 $
+ * @version $Revision: 1.92 $
  */
 public class Moritz extends Max
         implements
@@ -118,20 +121,14 @@ public class Moritz extends Max
             EofObservable,
             OpenFileObservable,
             OpenStringObservable,
-            OpenReaderObservable {
+            OpenReaderObservable,
+            RegisterMaxObserver {
 
     /**
      * The constant <tt>MAX_CHAR_CODE</tt> contains the maximum value for a
      * character code. In original <logo>TeX</logo> this value would be 255.
      */
     private static final long MAX_CHAR_CODE = Long.MAX_VALUE;
-
-    /**
-     * The field <tt>extendedRegisterNames</tt> contains the indicator that the
-     * extended definition for register names should be used. If it is
-     * <code>false</code> then only numbers are permitted.
-     */
-    private boolean extendedRegisterNames = false;
 
     /**
      * The field <tt>observersCloseStream</tt> contains the observer list is
@@ -164,11 +161,10 @@ public class Moritz extends Max
     private PushObserver observersPush = null;
 
     /**
-     * The field <tt>registerMaxIndex</tt> contains the maximal number for a
-     * register if they are  numeric. A negative value indicates that no
-     * restriction is imposed.
+     * The field <tt>registerMax</tt> contains the contains the indicator for
+     * the max register value.
      */
-    private long registerMaxIndex = -1;
+    private long registerMax;
 
     /**
      * The field <tt>skipSpaces</tt> contains the indicator that space tokens
@@ -202,6 +198,13 @@ public class Moritz extends Max
     public Moritz() {
 
         super();
+        registerObserver(new StartObserver() {
+
+            public void update(final Interpreter interpreter) {
+
+                registerMax = getContext().getCount("register.max").getValue();
+            }
+        });
     }
 
     /**
@@ -275,28 +278,6 @@ public class Moritz extends Max
     /**
      * This method adapts the configurable settings according to the values from
      * the given configuration.
-     * The following items are considered:
-     * <dl>
-     *  <dt><tt>ExtendedRegisterNames</tt></dt>
-     *  <dd>The value of this configuration contains a boolean value. If it is
-     *   <code>true</code> then extended register names are allowed. This means
-     *   that arbitrary strings can be used instead of the simple numbers as
-     *   defined by <logo>TeX</logo>. This configuration is optional.
-     *  </dd>
-     *  <dt><tt>RegisterMax</tt></dt>
-     *  <dd>The value of this configuration contains a number. This number is
-     *   the highest register number. Attempts to use a higher number results
-     *   in an exception.
-     *  </dd>
-     * </dl>
-     *
-     * <p>Example</p>
-     * <pre>
-     *  &lt;interpreter&gt;
-     *    &lt;ExtendedRegisterNames&gt;true&lt;/ExtendedRegisterNames&gt;
-     *    &lt;RegisterMax&gt;255&lt;/RegisterMax&gt;
-     *  &lt;/interpreter&gt;
-     * </pre>
      *
      * @see de.dante.util.framework.configuration.Configurable#configure(
      *      de.dante.util.framework.configuration.Configuration)
@@ -327,18 +308,6 @@ public class Moritz extends Max
                 throw (ConfigurationException) cause;
             }
             throw new ConfigurationWrapperException(e);
-        }
-
-        Configuration cfg = configuration
-                .findConfiguration("ExtendedRegisterNames");
-        if (cfg != null) {
-            extendedRegisterNames = Boolean.valueOf(cfg.getValue())
-                    .booleanValue();
-        }
-
-        cfg = configuration.findConfiguration("RegisterMax");
-        if (cfg != null) {
-            registerMaxIndex = Long.valueOf(cfg.getValue()).longValue();
         }
     }
 
@@ -1319,13 +1288,13 @@ public class Moritz extends Max
             throw new MissingNumberException();
         }
 
-        if (extendedRegisterNames && token.isa(Catcode.LEFTBRACE)) {
+        if (registerMax < 0 && token.isa(Catcode.LEFTBRACE)) {
             push(token);
             return scanTokensAsString(context, primitive);
         }
 
         long registerNumber = scanNumber(context, token);
-        if (registerMaxIndex >= 0 && registerNumber > registerMaxIndex) {
+        if (registerMax > 0 && registerNumber > registerMax) {
             throw new IllegalRegisterException(Long.toString(registerNumber));
         }
         return Long.toString(registerNumber);
@@ -1405,6 +1374,17 @@ public class Moritz extends Max
     }
 
     /**
+     * @see de.dante.extex.interpreter.TokenSource#scanTokensAsString(
+     *      de.dante.extex.interpreter.context.Context,
+     *      java.lang.String)
+     */
+    public String scanTokensAsString(final Context context,
+            final String primitive) throws InterpreterException {
+
+        return scanTokens(context, false, false, primitive).toText();
+    }
+
+    /**
      * @see de.dante.extex.interpreter.TokenSource#scanUnprotectedTokens(
      *      de.dante.extex.interpreter.context.Context,
      *      boolean,
@@ -1460,14 +1440,11 @@ public class Moritz extends Max
     }
 
     /**
-     * @see de.dante.extex.interpreter.TokenSource#scanTokensAsString(
-     *      de.dante.extex.interpreter.context.Context,
-     *      java.lang.String)
+     * @see de.dante.extex.interpreter.RegisterMaxObserver#setRegisterMax(long)
      */
-    public String scanTokensAsString(final Context context,
-            final String primitive) throws InterpreterException {
+    public void setRegisterMax(final long value) {
 
-        return scanTokens(context, false, false, primitive).toText();
+        registerMax = value;
     }
 
     /**

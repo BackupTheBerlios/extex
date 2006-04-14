@@ -118,8 +118,7 @@
     <unit src="unit/tex.xml"/>
     <unit src="unit/etex.xml"/>
     <unit src="unit/native.xml"/>
-
-    <ExtendedRegisterNames>true</ExtendedRegisterNames>
+    <unit src="unit/extex.xml"/>
 
   </Interpreter>
 

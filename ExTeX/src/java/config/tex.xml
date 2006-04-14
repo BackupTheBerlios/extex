@@ -117,9 +117,6 @@
 
     <unit src="unit/tex.xml"/>
 
-    <ExtendedRegisterNames>false</ExtendedRegisterNames>
-    <RegisterMax>255</RegisterMax>
-
   </Interpreter>
 
   <!-- 

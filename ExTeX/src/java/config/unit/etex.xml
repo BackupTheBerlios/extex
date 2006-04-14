@@ -19,6 +19,9 @@
   -->
 <unit>
   <primitives>
+    <define name="register.max"
+            class="de.dante.extex.interpreter.primitives.register.count.MaxRegister">32768</define>
+
     <define name="TeXXeTstate" 
             class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
     <define name="beginL"
