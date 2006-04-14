@@ -24,6 +24,7 @@ import java.util.List;
 
 import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.Tokenizer;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.scanner.exception.ScannerException;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.type.CatcodeException;
@@ -37,7 +38,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This class provides a token source which is fed from a string.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public class StringSource extends Moritz {
 
@@ -45,7 +46,7 @@ public class StringSource extends Moritz {
      * This Token stream is fed from a CharSequence.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.26 $
+     * @version $Revision: 1.27 $
      */
     private class TStream implements TokenStream {
 
@@ -152,6 +153,14 @@ public class StringSource extends Moritz {
 
     /**
      * Creates a new object.
+     */
+    public StringSource() throws ConfigurationException {
+
+        super();
+    }
+
+    /**
+     * Creates a new object.
      *
      * @param cs the character sequence to read from
      *
@@ -160,6 +169,19 @@ public class StringSource extends Moritz {
     public StringSource(final CharSequence cs) throws ConfigurationException {
 
         super();
+        addStream(new TStream(cs));
+    }
+
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param cs the character sequence to read from
+     *
+     * @throws InterpreterException
+     */
+    public void reset(final CharSequence cs) throws InterpreterException {
+
+        closeAllStreams(getContext());
         addStream(new TStream(cs));
     }
 
