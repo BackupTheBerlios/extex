@@ -128,7 +128,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.95 $
+ * @version $Revision: 1.96 $
  */
 public abstract class Max
         implements
@@ -1357,15 +1357,6 @@ public abstract class Max
     /**
      * This visit method is invoked on a math shift token.
      * In <logo>TeX</logo> this normally is a <tt>$</tt>.
-     *
-     *
-     * <doc name="everymath" type="register">
-     * <h3>The Parameter <tt>\everymath</tt></h3>
-     *
-     * <p>
-     *
-     * </p>
-     * </doc>
      *
      *
      * @param token the first argument to pass is the token to expand.
