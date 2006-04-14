@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -19,11 +19,13 @@
 
 package de.dante.extex.interpreter.primitives.register.toks;
 
+import de.dante.extex.interpreter.primitives.math.AbstractMathTester;
+
 /**
  * This is a test suite for the primitive <tt>\everydisplay</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class EverydisplayTest extends AbstractToksRegisterTester {
 
@@ -46,6 +48,53 @@ public class EverydisplayTest extends AbstractToksRegisterTester {
         super(arg, "everydisplay", "", "");
     }
 
-    //TODO implement the primitive specific test cases
+    /**
+     * <testcase primitive="\everydisplay">
+     *  Test case showing that the token is absorbed if no math happens.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test1() throws Exception {
+
+        assertSuccess(//--- input code ---
+                DEFINE_BRACES + DEFINE_MATH + "\\everydisplay{x}BC" + "\\end",
+                //--- output channel ---
+                "BC" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\everydisplay">
+     *  Test case showing that the token is absorbed if inline math happens.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test2() throws Exception {
+
+        assertSuccess(//--- input code ---
+                AbstractMathTester.DEFINE_MATH_FONTS + DEFINE_BRACES
+                        + DEFINE_MATH + "\\everydisplay{x}B$ z $C" + "\\end",
+                //--- output channel ---
+                "BzC" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\everydisplay">
+     *  Test case showing that the token is inserted if display math happens.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test10() throws Exception {
+
+        assertSuccess(//--- input code ---
+                AbstractMathTester.DEFINE_MATH_FONTS + DEFINE_BRACES
+                        + DEFINE_MATH + "\\everydisplay{x}BC$$ z $$" + "\\end",
+                //--- output channel ---
+                "BCxz" + TERM);
+    }
+
+    //TODO implement more primitive specific test cases
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -19,12 +19,11 @@
 
 package de.dante.extex.interpreter.primitives.register.skip;
 
-
 /**
  * This is a test suite for the primitive <tt>\skipdef</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class SkipdefTest extends AbstractSkipRegisterTester {
 
@@ -58,8 +57,7 @@ public class SkipdefTest extends AbstractSkipRegisterTester {
     public void test1() throws Exception {
 
         assertSuccess(//--- input code ---
-                "\\skipdef\\x=42 " + "\\skip42=123pt "
-                        + "\\the\\skip42 \\end",
+                "\\skipdef\\x=42 " + "\\skip42=123pt " + "\\the\\skip42 \\end",
                 //--- output channel ---
                 "123.0pt" + TERM);
     }
@@ -93,6 +91,54 @@ public class SkipdefTest extends AbstractSkipRegisterTester {
                         + "\\the\\x \\end",
                 //--- output channel ---
                 "0.0pt" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\skipdef">
+     *  Test case checking that <tt>\skipdef</tt> respects <tt>\globaldefs</tt>.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testGlobal10() throws Exception {
+
+        assertSuccess(//--- input code ---
+                "\\globaldefs=1\\begingroup\\skipdef\\x=42 \\x=123pt\\endgroup"
+                        + "\\the\\x \\end",
+                //--- output channel ---
+                "123.0pt" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\skipdef">
+     *  Test case checking that <tt>\skipdef</tt> can take a tokens name.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testExt1() throws Exception {
+
+        assertSuccess(//--- input code ---
+                DEFINE_BRACES + "\\skipdef\\x={abc}" + "\\the\\x \\end",
+                //--- output channel ---
+                "0.0pt" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\skipdef">
+     *  Test case checking that <tt>\skipdef</tt> respects
+     *  <tt>\afterassignment</tt>.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testAfterassign1() throws Exception {
+
+        assertSuccess(//--- input code ---
+                DEFINE_BRACES + "\\afterassignment XA\\skipdef\\x={abc}"
+                        + "B \\end",
+                //--- output channel ---
+                "AXB" + TERM);
     }
 
 }
