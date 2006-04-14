@@ -59,7 +59,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public final class LoadUnit extends AbstractFactory {
 
@@ -124,11 +124,16 @@ public final class LoadUnit extends AbstractFactory {
 
     /**
      * Creates a new object.
+     *
+     * @throws ConfigurationException in case of a configuration error
      */
-    private LoadUnit() {
+    private LoadUnit() throws ConfigurationException {
 
         super();
+        stringSource = new StringSource();
     }
+
+    private StringSource stringSource;
 
     /**
      * Scan a configuration and define the primitives found.
@@ -180,8 +185,7 @@ public final class LoadUnit extends AbstractFactory {
                     Catcode.ESCAPE, esc, name, namespace), code, true);
             if (code instanceof InitializableCode) {
 
-                String value = cfg.getValue();
-                StringSource stringSource = new StringSource(value);
+                stringSource.reset(cfg.getValue());
                 ((InitializableCode) code).init(context, stringSource,
                         typesetter);
             }
