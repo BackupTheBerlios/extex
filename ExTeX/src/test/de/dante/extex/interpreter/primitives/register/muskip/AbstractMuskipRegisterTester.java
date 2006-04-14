@@ -26,7 +26,7 @@ import de.dante.test.ExTeXLauncher;
  * It provides some test cases common to all muskip registers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public abstract class AbstractMuskipRegisterTester extends ExTeXLauncher {
 
@@ -50,7 +50,7 @@ public abstract class AbstractMuskipRegisterTester extends ExTeXLauncher {
      * The field <tt>prepare</tt> contains the the preparation code inserted
      * before each test.
      */
-    private String prepare = "";
+    private String prepare = "\\hsize=200pt";
 
     /**
      * Creates a new object.
@@ -83,7 +83,7 @@ public abstract class AbstractMuskipRegisterTester extends ExTeXLauncher {
             final String prepare) {
 
         this(arg, primitive, args, init);
-        this.prepare = prepare;
+        this.prepare = this.prepare + prepare;
     }
 
     /**

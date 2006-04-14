@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -26,7 +26,7 @@ import de.dante.test.ExTeXLauncher;
  * It provides some test cases common to all skip registers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
 
@@ -50,7 +50,7 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
      * The field <tt>prepare</tt> contains the the preparation code inserted
      * before each test.
      */
-    private String prepare = "";
+    private String prepare = "\\hsize=200pt";
 
     /**
      * Creates a new object.
@@ -82,7 +82,7 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
             final String args, final String init, final String prepare) {
 
         this(arg, primitive, args, init);
-        this.prepare = prepare;
+        this.prepare = this.prepare + prepare;
     }
 
     /**
@@ -154,8 +154,8 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
 
     /**
      * <testcase>
-     *  Test case showing that an assignment of a constant 12.3pt works when using
-     *  an equal sign after the primitive name.
+     *  Test case showing that an assignment of a constant 12.3pt works when
+     *  using an equal sign after the primitive name.
      * </testcase>
      *
      * @throws Exception in case of an error
@@ -172,8 +172,8 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
 
     /**
      * <testcase>
-     *  Test case showing that an assignment of a constant 12.3pt works when using
-     *  no equal sign after the primitive name.
+     *  Test case showing that an assignment of a constant 12.3pt works when
+     *  using no equal sign after the primitive name.
      * </testcase>
      *
      * @throws Exception in case of an error
@@ -190,8 +190,8 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
 
     /**
      * <testcase>
-     *  Test case showing that an assignment of a constant -12.3pt works when using
-     *  an equal sign after the primitive name.
+     *  Test case showing that an assignment of a constant -12.3pt works when
+     *  using an equal sign after the primitive name.
      * </testcase>
      *
      * @throws Exception in case of an error
@@ -208,8 +208,8 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
 
     /**
      * <testcase>
-     *  Test case showing that an assignment of a constant -12.3pt works when using
-     *  no equal sign after the primitive name.
+     *  Test case showing that an assignment of a constant -12.3pt works when
+     *  using no equal sign after the primitive name.
      * </testcase>
      *
      * @throws Exception in case of an error
@@ -226,8 +226,8 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
 
     /**
      * <testcase>
-     *  Test case showing that an assignment of a constant -12.3pt works when using
-     *  <tt>\globaldefs</tt>.
+     *  Test case showing that an assignment of a constant -12.3pt works when
+     *  using <tt>\globaldefs</tt>.
      * </testcase>
      *
      * @throws Exception in case of an error
