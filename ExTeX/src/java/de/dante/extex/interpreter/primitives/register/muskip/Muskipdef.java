@@ -32,43 +32,70 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="muskipdef">
  * <h3>The Primitive <tt>\muskipdef</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The primitive <tt>\muskipdef</tt> can be used to define a control sequence as
+ *  alias for a muskip register. The control sequence can be used wherever a
+ *  muskip register is expected afterwards.
+ * </p>
+ * <p>
+ *  The primitive <tt>\muskipdef</tt>  is an assignment. Thus the settings of
+ *  <tt>\afterassignment</tt> and <tt>\globaldefs</tt> are applied.
+ * </p>
+ * <p>
+ *  The prefix <tt>\global</tt> can be used to make the assignment to the new
+ *  control sequence global instead of the group-local assignment which is the
+ *  default.
  * </p>
  *
  * <h4>Syntax</h4>
- *  The formal description of this primitive is the following:
+ * The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\muskipdef</tt> {@linkplain
- *    de.dante.extex.interpreter.TokenSource#getControlSequence(Context)
- *    &lang;control sequence&rang;} {@linkplain
- *    de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
- *    &lang;equals&rang;} {@linkplain
- *      de.dante.extex.interpreter.TokenSource#scanNumber(Context)
- *      &lang;8-bit&nbsp;number&rang;} </pre>
+ *    &lang;muskipdef&rang;
+ *      &rarr; &lang;modifier&rang; <tt>\muskipdef</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getControlSequence(Context)
+ *        &lang;control sequence&rang;} {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+ *        &lang;equals&rang;} {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#scanRegisterName(Context,String)
+ *        &lang;register name&rang;}
+ *
+ *    &lang;modifier&rang;
+ *      &rarr;
+ *       |  <tt>\global</tt>  </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \muskipdef\abc=45  </pre>
  *  <pre class="TeXSample">
  *    \muskipdef\abc 33  </pre>
+ *  <pre class="TeXSample">
+ *    \muskipdef\abc={xyz}  </pre>
+ *  <pre class="TeXSample">
+ *    \muskipdef\abc={xyz\the\count0}  </pre>
  *
+ * <h4>Differences to <logo>TeX</logo> and Friends</h4>
+ * <p>
+ *  In <logo>TeX</logo> the register name could consist of an integer in the
+ *  range from 0 to 255. In <logo>Omega</logo> this restriction has been relaxed
+ *  to allow integers from 0 to 32767. In <logo>ExTeX</logo> the restriction to
+ *  integers has been relaxed. The register name can either be a number &ndash;
+ *  positive or not and of any value &ndash; or alternatively any token
+ *  sequence enclosed in braces.
+ * </p>
+ * <p>
+ *  Note that the extended register names and the maximal number acceptable as
+ *  register names are a feature of <logo>ExTeX</logo>
+ *  which is configurable via the count register <tt>\max.register</tt>.
+ *  This means that the feature can be disabled in the compatibility modes.
+ * </p>
+ * <p>
  * </doc>
  *
  *
- * <h3>Possible Extensions</h3>
- * Allow an expandable expression instead of the number to define real named
- * counters.
- *
- * <p>Example</p>
- * <pre>
- * \muskipdef\abc={xyz\the\count0}
- * \muskipdef\abc {def}
- * </pre>
  * To protect the buildin registers one might consider to use the key
  * "#<i>name</i>" or "muskip#<i>name</i>".
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class Muskipdef extends AbstractMuskip {
 

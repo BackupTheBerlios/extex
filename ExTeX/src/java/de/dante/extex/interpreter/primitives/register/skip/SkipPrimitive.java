@@ -37,16 +37,39 @@ import de.dante.util.exception.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\skip</code>.
- * It sets the named dimen register to the value given,
+ * It sets the named skip register to the value given,
  * and as a side effect all prefixes are zeroed.
  *
- * <p>Example</p>
- * <pre>
- * \xxx=345pt plus 123em
- * </pre>
+ * <doc name="skip">
+ * <h3>The Primitive <tt>\skip</tt></h3>
+ * <p>
+ *  The primitive <tt>\skip</tt> provides access to a skip register. In a skip
+ *  register some glue value can be stored. A glue value consists of a
+ *  natural length and optionally some stretchability and shrinkability
+ *  components.
+ * </p>
+ *
+ * <h4>Syntax</h4>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;skip&rang;
+ *        &rarr; <tt>\skip</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#scanRegisterName(Context,String)
+ *        &lang;register name&rang;} {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+ *        &lang;equals&rang;} {@link
+ *        de.dante.extex.interpreter.type.glue.Glue#Glue(TokenSource,Context,Typesetter)
+ *        &lang;glue&rang;}  </pre>
+ *
+ * <h4>Examples</h4>
+ *  <pre class="TeXSample">
+ *    \skip 1em plus 1pt minus 1pt  </pre>
+ *
+ * </doc>
+ *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class SkipPrimitive extends AbstractSkip
         implements

@@ -47,7 +47,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.66 $
+ * @version $Revision: 1.67 $
  */
 public interface TokenSource {
 
@@ -466,6 +466,18 @@ public interface TokenSource {
      * Scan the input streams for an entity to denote a register name.
      * Upon EOF <code>null</code> is returned.
      *
+     * <doc type="syntax" name="register name">
+     * <pre class="syntax">
+     *   &lang;register name&rang; </pre>
+     * <p>
+     *  A register name accepts at least any number in the range from 0 to 255.
+     *  A number consists of a non-empty sequence of digits with category code
+     *  {@link de.dante.extex.scanner.type.Catcode#OTHER OTHER}.
+     *  The check for a maximal value of 255 is not performed in
+     *  <logo>ExTeX</logo>.
+     * </p>
+     * </doc>
+     *
      * @param context the interpreter context
      * @param primitive the name of the invoking primitive for error handling
      *
@@ -479,7 +491,7 @@ public interface TokenSource {
     /**
      * Get the next expanded token form the input streams. If the current input
      * stream is at its end then the next one on the streamStack is used until
-     * a token could be read. If all stream are at the end then
+     * a token could be read. If all streams are at the end then
      * <code>null</code> is returned.
      *
      * @param context the interpreter context

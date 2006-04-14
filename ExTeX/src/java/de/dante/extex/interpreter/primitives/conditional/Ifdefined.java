@@ -31,27 +31,31 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * <doc name="ifdefined">
  * <h3>The Primitive <tt>&#x005c;unless</tt></h3>
- * <p><strong>Copied of the eTeX reference</strong>.</p>
- * <p>
- * similar in effect to <tt>&#x005c;unless</tt> <tt>\ifx</tt> <tt>&#x005c;undefined</tt>, but
- * does not require <tt>&#x005c;undefined</tt> to actually be undefined, since
- * no explicit comparison is made with any particular control
- * sequence.
+ *
+ * <p><strong>Copied from the eTeX reference</strong>:
  * </p>
- * <p>
+ * <p><i>
+ *  similar in effect to <tt>&#x005c;unless</tt> <tt>\ifx</tt>
+ *  <tt>&#x005c;undefined</tt>, but does not require <tt>&#x005c;undefined</tt>
+ *  to actually be undefined, since no explicit comparison is made with any
+ *  particular control sequence.
+ * </i></p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
- * TODO gene
- * </p>
- * <p>
- *  Examples:
- *  <pre class="TeXSample">
- *    &#x005c;ifdefined\TESTNAME\else not\fi defined</pre>
- * </p>
+ *  <pre class="syntax">
+ *    &lang;ifdefined&rang;
+ *      &rarr; <tt>\ifdefined</tt> ...<tt>\else</tt>...<tt>\fi</tt>
+ *       |  <tt>\ifdefined</tt> ...<tt>\else</tt>...<tt>\fi</tt>  </pre>
+ *
+ * <h4>Examples</h4>
+ * <pre class="TeXSample">
+ * &#x005c;ifdefined\TESTNAME\else not\fi defined</pre>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Ifdefined extends AbstractIf {
 
