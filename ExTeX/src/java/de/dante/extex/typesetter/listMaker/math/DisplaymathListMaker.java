@@ -19,8 +19,14 @@
 
 package de.dante.extex.typesetter.listMaker.math;
 
+import de.dante.extex.interpreter.TokenSource;
+import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.CantUseInException;
+import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
+import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
@@ -36,8 +42,18 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
 /**
  * This is the list maker for the display math formulae.
  *
+ * <doc name="everydisplayend" type="register">
+ * <h3>The Tokens Parameter <tt>\everydisplayend</tt></h3>
+ * <p>
+ *  The tokens parameter <tt>\everydisplayend</tt> contains a list of tokens
+ *  which is inserted at the end of display math. Those tokens take effect just
+ *  before the math mode is ended but after any tokens given explicitly.
+ * </p>
+ * </doc>
+ *
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class DisplaymathListMaker extends MathListMaker implements EqConsumer {
 
@@ -102,6 +118,44 @@ public class DisplaymathListMaker extends MathListMaker implements EqConsumer {
     public Mode getMode() {
 
         return Mode.DISPLAYMATH;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#mathShift(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.scanner.type.token.Token)
+     */
+    public void mathShift(final Context context, final TokenSource source,
+            final Token t) throws TypesetterException, ConfigurationException {
+
+        if (!isClosing()) {
+            Tokens toks = context.getToks("everydisplayend");
+            if (toks != null && toks.length() != 0) {
+                try {
+                    source.push(t);
+                    source.push(toks);
+                } catch (InterpreterException e) {
+                    throw new TypesetterException(e);
+                }
+                setClosing(true);
+                return;
+            }
+        }
+
+        Token token;
+        try {
+            token = source.getToken(context);
+            if (token == null) {
+                throw new EofException("$$");
+            } else if (!t.equals(token)) {
+                throw new HelpingException(getLocalizer(), "TTP.DisplayMathEnd");
+            }
+        } catch (InterpreterException e) {
+            throw new TypesetterException(e);
+        }
+
+        getManager().endParagraph();
     }
 
     /**
