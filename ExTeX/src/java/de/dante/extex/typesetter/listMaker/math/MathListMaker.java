@@ -39,6 +39,7 @@ import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.muskip.Mudimen;
 import de.dante.extex.interpreter.type.muskip.Muskip;
+import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Mode;
@@ -90,8 +91,27 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * </doc>
  *
+ * <doc name="everymath" type="register">
+ * <h3>The Tokens Parameter <tt>\everymath</tt></h3>
+ * <p>
+ *  The tokens parameter <tt>\everymath</tt> contains a list of tokens which is
+ *  inserted at the beginning of inline math. Those tokens take effect after the
+ *  math mode has been entered but before any tokens given explicitly.
+ * </p>
+ * </doc>
+ *
+ * <doc name="everymathend" type="register">
+ * <h3>The Tokens Parameter <tt>\everymathend</tt></h3>
+ * <p>
+ *  The tokens parameter <tt>\everymathend</tt> contains a list of tokens which
+ *  is inserted at the end of inline math. Those tokens take effect just before
+ *  the math mode is ended but after any tokens given explicitly.
+ * </p>
+ * </doc>
+ *
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.35 $
+ * @version $Revision: 1.36 $
  */
 public class MathListMaker extends HorizontalListMaker
         implements
@@ -103,7 +123,7 @@ public class MathListMaker extends HorizontalListMaker
      * It is used to store to the stack and restore the state from the stack.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.35 $
+     * @version $Revision: 1.36 $
      */
     private class MathMemento {
 
@@ -233,6 +253,12 @@ public class MathListMaker extends HorizontalListMaker
     }
 
     /**
+     * The field <tt>closing</tt> contains the indicator that this list maker is
+     * in the mode of processing the terminal tokens.
+     */
+    private boolean closing = false;
+
+    /**
      * The field <tt>insertionPoint</tt> contains the the MathList to which
      * the next noads should be added.
      */
@@ -265,6 +291,15 @@ public class MathListMaker extends HorizontalListMaker
         super(manager, locator);
         insertionPoint = new MathList();
         noads = insertionPoint;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#add(
+     *      de.dante.extex.interpreter.type.glue.FixedGlue)
+     */
+    public void add(final FixedGlue g) throws TypesetterException {
+
+        insertionPoint.add(new NodeNoad(new GlueNode(g, true)));
     }
 
     /**
@@ -337,15 +372,6 @@ public class MathListMaker extends HorizontalListMaker
         }
 
         insertionPoint.add(new NodeNoad(node));
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#add(
-     *      de.dante.extex.interpreter.type.glue.FixedGlue)
-     */
-    public void add(final FixedGlue g) throws TypesetterException {
-
-        insertionPoint.add(new NodeNoad(new GlueNode(g, true)));
     }
 
     /**
@@ -460,6 +486,16 @@ public class MathListMaker extends HorizontalListMaker
     }
 
     /**
+     * Getter for logger.
+     *
+     * @return the logger
+     */
+    public Logger getLogger() {
+
+        return this.logger;
+    }
+
+    /**
      * @see de.dante.extex.typesetter.ListMaker#getMode()
      */
     public Mode getMode() {
@@ -475,6 +511,16 @@ public class MathListMaker extends HorizontalListMaker
     protected Noad getNoads() {
 
         return this.noads;
+    }
+
+    /**
+     * Getter for closing.
+     *
+     * @return the closing
+     */
+    protected boolean isClosing() {
+
+        return this.closing;
     }
 
     /**
@@ -529,6 +575,19 @@ public class MathListMaker extends HorizontalListMaker
     public void mathShift(final Context context, final TokenSource source,
             final Token t) throws TypesetterException, ConfigurationException {
 
+        if (!closing) {
+            Tokens toks = context.getToks("everymathend");
+            if (toks != null && toks.length() != 0) {
+                try {
+                    source.push(t);
+                    source.push(toks);
+                } catch (InterpreterException e) {
+                    throw new TypesetterException(e);
+                }
+                closing = true;
+                return;
+            }
+        }
         getManager().endParagraph();
     }
 
@@ -637,6 +696,16 @@ public class MathListMaker extends HorizontalListMaker
     }
 
     /**
+     * Setter for closing.
+     *
+     * @param closing the closing to set
+     */
+    protected void setClosing(boolean closing) {
+
+        this.closing = closing;
+    }
+
+    /**
      * Setter for insertionPoint.
      *
      * @param insertionPoint the insertionPoint to set
@@ -717,16 +786,6 @@ public class MathListMaker extends HorizontalListMaker
         insertionPoint = new MathList();
         noads = new FractionNoad((MathList) noads, insertionPoint,
                 leftDelimiter, rightDelimiter, ruleWidth);
-    }
-
-    /**
-     * Getter for logger.
-     *
-     * @return the logger
-     */
-    public Logger getLogger() {
-
-        return this.logger;
     }
 
 }
