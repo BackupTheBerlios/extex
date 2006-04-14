@@ -30,9 +30,9 @@ import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
- * This class provides an implementation for the primitive
- * <code>\input</code>. It uses the standard encoding (see
- * <code>\inputencoding</code> and <code>extex.encoding</code>.
+ * This class provides an implementation for the primitive <tt>\input</tt>.
+ * It uses the standard encoding (see token register <tt>\fileencoding</tt> and
+ * <code>extex.encoding</code>.
  *
  * <doc name="input">
  * <h3>The Primitive <tt>\input</tt></h3>
@@ -72,21 +72,20 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
 public class Input extends AbstractFileCode {
-
-    /**
-     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
-     */
-    protected static final long serialVersionUID = 2005L;
 
     /**
      * The field <tt>FILE_TYPE</tt> contains the file type to create an input
      * stream for.
      */
     private static final String FILE_TYPE = "tex";
-    //TODO gene: is "tex" as constant good?
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * Creates a new object.

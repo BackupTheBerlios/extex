@@ -40,8 +40,8 @@ import de.dante.extex.typesetter.Typesetter;
  *  <pre class="syntax">
  *    &lang;setbox&rang;
  *      &rarr; <tt>\setbox</tt> {@linkplain
- *          de.dante.extex.interpreter.TokenSource#scanNumber(Context)
- *          &lang;8-bit&nbsp;number&rang;}...</pre>
+ *        de.dante.extex.interpreter.TokenSource#scanRegisterName(Context,String)
+ *        &lang;register name&rang;}...</pre>
  * </p>
  * <p>
  *  Examples:
@@ -52,7 +52,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class Setbox extends AbstractBox implements Code {
 
