@@ -44,7 +44,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class IntegerParameter extends CountPrimitive
         implements
@@ -113,7 +113,8 @@ public class IntegerParameter extends CountPrimitive
         if (source != null) {
             Token t = source.getToken(context);
             if (t != null) {
-                long value = source.scanNumber(context, t);
+                source.push(t);
+                long value = source.scanInteger(context, typesetter);
                 context.setCount(getKey(context, null), value, true);
             }
         }
