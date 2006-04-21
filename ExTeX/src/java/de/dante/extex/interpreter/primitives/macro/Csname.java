@@ -44,15 +44,18 @@ import de.dante.util.framework.i18n.Localizer;
  * <doc name="csname">
  * <h3>The Primitive <tt>\csname</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  The primitive <tt>\csname</tt> absorbs further tokens until a matching
+ *  <tt>\endcsname</tt> is found. The tokens found are expanded. Spaces are
+ *  ignored. The expansion
+ *  should lead to character tokens only. A new token is constructed from the
+ *  characters. The escape character is the current escape character.
  * </p>
- * <p class="TeXbook">
- *  When <logo>TeX</logo> expands <tt>\csname</tt> it reads to the matching
- *  <tt>\endcsname</tt>, expanding tokens as it goes;
- *  only character tokens should remain after this expansion has taken place.
- *  Then the ``expansion'' of the entire <tt>\csname</tt>...<tt>\endcsname</tt> text
- *  will be a single control sequence token, defined to be like <tt>\relax</tt>
- *  if its meaning is currently undefined.
+ * <p>
+ *  If the meaning of the new token is currently not defined then it is defined
+ *  to be equivalent to the original meaning of <tt>\relax</tt>.
+ * </p>
+ * <p>
+ *  If a non-expandable token is encountered then an error is raised.
  * </p>
  *
  * <h4>Syntax</h4>
@@ -65,6 +68,7 @@ import de.dante.util.framework.i18n.Localizer;
  *  <pre class="TeXSample">
  *    \csname abc\endcsname  </pre>
  *  <p>
+ *   This results in the control sequence <tt>\abc</tt>.
  *  </p>
  *
  *  <pre class="TeXSample">
@@ -84,7 +88,7 @@ import de.dante.util.framework.i18n.Localizer;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.33 $
+ * @version $Revision: 1.34 $
  */
 public class Csname extends AbstractCode implements ExpandableCode {
 
@@ -132,7 +136,7 @@ public class Csname extends AbstractCode implements ExpandableCode {
                     throw new UndefinedControlSequenceException(printable(
                             context, t));
 
-                } else if (!(code instanceof Relax)) {
+                } else {
 
                     throw new HelpingException(loc, "TTP.MissingEndcsname",
                             context.esc("endcsname"), context.esc(t));
@@ -221,12 +225,17 @@ public class Csname extends AbstractCode implements ExpandableCode {
         String s = toks.toText();
 
         try {
-            source.push(context.getTokenFactory().createToken(Catcode.ESCAPE,
-                    context.escapechar(), s, context.getNamespace()));
+            CodeToken t = (CodeToken) context.getTokenFactory().createToken(
+                    Catcode.ESCAPE, context.escapechar(), s,
+                    context.getNamespace());
+            Code code = context.getCode(t);
+            if (code == null) {
+                context.setCode(t, new Relax(s), true);
+            }
+            source.push(t);
         } catch (CatcodeException e) {
             throw new InterpreterException(e);
         }
-        //gene: this might not be correct
     }
 
 }
