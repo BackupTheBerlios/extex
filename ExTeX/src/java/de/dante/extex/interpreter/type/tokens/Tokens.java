@@ -39,7 +39,7 @@ import de.dante.extex.scanner.type.token.TokenFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class Tokens implements Serializable, FixedTokens {
 
@@ -51,7 +51,7 @@ public class Tokens implements Serializable, FixedTokens {
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 20060415L;
 
     /**
      * The internal list of tokens
@@ -142,16 +142,20 @@ public class Tokens implements Serializable, FixedTokens {
     public void add(final TokenFactory factory, final String s)
             throws CatcodeException {
 
-        if (s != null && s.length() > 0) {
-            char c;
-
-            for (int i = 0; i < s.length(); i++) {
-                c = s.charAt(i);
-                tokens.add(factory.createToken((c == ' '
-                        ? Catcode.SPACE
-                        : Catcode.OTHER), c, Namespace.DEFAULT_NAMESPACE));
-            }
+        if (s == null) {
+            return;
         }
+
+        char c;
+        int len = s.length();
+
+        for (int i = 0; i < len; i++) {
+            c = s.charAt(i);
+            tokens.add(factory.createToken((c == ' '
+                    ? Catcode.SPACE
+                    : Catcode.OTHER), c, Namespace.DEFAULT_NAMESPACE));
+        }
+
     }
 
     /**
@@ -230,7 +234,7 @@ public class Tokens implements Serializable, FixedTokens {
      */
     public void insert(final int index, final Token t) {
 
-        tokens.add(0, t);
+        tokens.add(index, t);
     }
 
     /**
@@ -326,7 +330,7 @@ public class Tokens implements Serializable, FixedTokens {
         for (int i = 0; i < size; i++) {
             Token t = (Token) tokens.get(i);
             sb.append(t.toText());
-            if (t instanceof ControlSequenceToken && i == size - 1) {
+            if (t instanceof ControlSequenceToken && i != size - 1) {
                 sb.append(' ');
             }
         }
