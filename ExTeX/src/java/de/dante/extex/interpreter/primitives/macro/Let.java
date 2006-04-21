@@ -45,6 +45,7 @@ import de.dante.extex.scanner.type.token.TabMarkToken;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.scanner.type.token.TokenVisitor;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.util.UnicodeChar;
 import de.dante.util.exception.GeneralException;
 
 /**
@@ -76,7 +77,7 @@ import de.dante.util.exception.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.35 $
+ * @version $Revision: 1.36 $
  */
 public class Let extends AbstractAssignment {
 
@@ -122,7 +123,8 @@ public class Let extends AbstractAssignment {
         public final Object visitCr(final CrToken token, final Object oContext)
                 throws GeneralException {
 
-            return new CharCode("", token.getChar());
+            UnicodeChar uc = token.getChar();
+            return new CharCode(uc.toString(), uc);
         }
 
         /**
@@ -157,7 +159,8 @@ public class Let extends AbstractAssignment {
         public final Object visitLeftBrace(final LeftBraceToken token,
                 final Object oContext) throws GeneralException {
 
-            return new CharCode("", token.getChar());
+            UnicodeChar uc = token.getChar();
+            return new CharCode(uc.toString(), uc);
         }
 
         /**
@@ -175,7 +178,8 @@ public class Let extends AbstractAssignment {
         public final Object visitLetter(final LetterToken token,
                 final Object oContext) throws GeneralException {
 
-            return new CharCode("", token.getChar());
+            UnicodeChar uc = token.getChar();
+            return new CharCode(uc.toString(), uc);
         }
 
         /**
@@ -193,7 +197,8 @@ public class Let extends AbstractAssignment {
         public final Object visitMacroParam(final MacroParamToken token,
                 final Object oContext) throws GeneralException {
 
-            return new CharCode("", token.getChar());
+            UnicodeChar uc = token.getChar();
+            return new CharCode(uc.toString(), uc);
         }
 
         /**
@@ -211,7 +216,8 @@ public class Let extends AbstractAssignment {
         public final Object visitMathShift(final MathShiftToken token,
                 final Object oContext) throws GeneralException {
 
-            return new CharCode("", token.getChar());
+            UnicodeChar uc = token.getChar();
+            return new CharCode(uc.toString(), uc);
         }
 
         /**
@@ -228,7 +234,8 @@ public class Let extends AbstractAssignment {
         public final Object visitOther(final OtherToken token,
                 final Object oContext) throws GeneralException {
 
-            return new CharCode("", token.getChar());
+            UnicodeChar uc = token.getChar();
+            return new CharCode(uc.toString(), uc);
         }
 
         /**
@@ -246,7 +253,8 @@ public class Let extends AbstractAssignment {
         public final Object visitRightBrace(final RightBraceToken token,
                 final Object oContext) throws GeneralException {
 
-            return new CharCode("", token.getChar());
+            UnicodeChar uc = token.getChar();
+            return new CharCode(uc.toString(), uc);
         }
 
         /**
@@ -282,7 +290,8 @@ public class Let extends AbstractAssignment {
         public final Object visitSubMark(final SubMarkToken token,
                 final Object oContext) throws GeneralException {
 
-            return new CharCode("", token.getChar());
+            UnicodeChar uc = token.getChar();
+            return new CharCode(uc.toString(), uc);
         }
 
         /**
@@ -300,7 +309,8 @@ public class Let extends AbstractAssignment {
         public final Object visitSupMark(final SupMarkToken token,
                 final Object oContext) throws GeneralException {
 
-            return new CharCode("", token.getChar());
+            UnicodeChar uc = token.getChar();
+            return new CharCode(uc.toString(), uc);
         }
 
         /**
@@ -318,8 +328,10 @@ public class Let extends AbstractAssignment {
         public final Object visitTabMark(final TabMarkToken token,
                 final Object oContext) throws GeneralException {
 
-            return new CharCode("", token.getChar());
+            UnicodeChar uc = token.getChar();
+            return new CharCode(uc.toString(), uc);
         }
+
     };
 
     /**
