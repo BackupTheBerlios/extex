@@ -24,8 +24,7 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.primitives.typesetter.AbstractHorizontalCode;
-import de.dante.extex.interpreter.type.glue.Glue;
-import de.dante.extex.interpreter.type.glue.GlueComponent;
+import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.exception.GeneralException;
 
@@ -53,7 +52,7 @@ import de.dante.util.exception.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Hss extends AbstractHorizontalCode implements HorizontalSkip {
 
@@ -61,12 +60,6 @@ public class Hss extends AbstractHorizontalCode implements HorizontalSkip {
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
     protected static final long serialVersionUID = 2005L;
-
-    /**
-     * The field <tt>HSS</tt> contains the glue to insert for this primitive.
-     */
-    private static final Glue HSS = new Glue(GlueComponent.ZERO,
-            GlueComponent.ONE_FIL, GlueComponent.ONE_FIL);
 
     /**
      * Creates a new object.
@@ -91,7 +84,7 @@ public class Hss extends AbstractHorizontalCode implements HorizontalSkip {
 
         switchToHorizontalMode(typesetter);
         try {
-            typesetter.add(HSS);
+            typesetter.add(FixedGlue.S_S);
         } catch (GeneralException e) {
             throw new InterpreterException(e);
         }
@@ -103,10 +96,10 @@ public class Hss extends AbstractHorizontalCode implements HorizontalSkip {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public Glue getGlue(final Context context, final TokenSource source,
+    public FixedGlue getGlue(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        return HSS;
+        return FixedGlue.S_S;
     }
 
 }
