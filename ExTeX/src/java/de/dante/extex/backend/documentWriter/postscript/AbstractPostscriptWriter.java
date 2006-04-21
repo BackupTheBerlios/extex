@@ -47,7 +47,7 @@ import de.dante.util.resource.ResourceFinder;
  * code. Here some utility methods of general nature are collected.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public abstract class AbstractPostscriptWriter
         implements
@@ -120,6 +120,11 @@ public abstract class AbstractPostscriptWriter
     }
 
     /**
+     * The field <tt>converter</tt> contains the cached PostScript converter.
+     */
+    private PsConverter converter = null;
+
+    /**
      * Create a PostScript converter.
      *
      * @param headerManager the header manager
@@ -128,10 +133,13 @@ public abstract class AbstractPostscriptWriter
      *
      * @throws IOException in case of an IO error
      */
-    protected PsConverter makeConverter(final HeaderManager headerManager)
+    protected PsConverter getConverter(final HeaderManager headerManager)
             throws IOException {
 
-        PsConverter converter;
+        if (converter != null) {
+            return converter;
+        }
+
         if (boxed) {
             converter = new PsBoxConverter();
         } else {
@@ -143,6 +151,8 @@ public abstract class AbstractPostscriptWriter
         if (converter instanceof ResourceConsumer) {
             ((ResourceConsumer) converter).setResourceFinder(finder);
         }
+
+        headerManager.reset();
         converter.init(headerManager);
         return converter;
     }
