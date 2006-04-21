@@ -142,8 +142,8 @@
             class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
     <define name="tracingscantokens"
             class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
-    <Define name="unexpanded"
-            class=""/>
+    <define name="unexpanded"
+            class="de.dante.extex.interpreter.primitives.macro.Unexpanded"/>
     <define name="unless"
             class="de.dante.extex.interpreter.primitives.conditional.Unless"/>
     <Define name="widowpenalties"
