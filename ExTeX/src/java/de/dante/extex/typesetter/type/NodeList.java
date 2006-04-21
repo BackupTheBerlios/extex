@@ -41,7 +41,7 @@ import de.dante.extex.typesetter.type.node.CharNode;
  * @see de.dante.extex.interpreter.type.box.Box
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public interface NodeList extends Node {
 
@@ -62,14 +62,6 @@ public interface NodeList extends Node {
     void add(Node node);
 
     /**
-     * Add a character to the node list.
-     * The other attributes (width, height, depth) are not modified.
-     *
-     * @param node the character to add
-     */
-    void addGlyph(CharNode node);
-
-    /**
      * Add some glue to the node list.
      * The other attributes (width, height, depth) are not modified.
      *
@@ -79,6 +71,8 @@ public interface NodeList extends Node {
 
     /**
      * Remove all nodes from the list. The list is empty afterwards.
+     * The dimensions are reset to zero unless target sizes are specified.
+     * In this case the target sizes are used.
      */
     void clear();
 
