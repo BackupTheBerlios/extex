@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\expandafter</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class ExpandafterTest extends ExTeXLauncher {
 
@@ -52,6 +52,39 @@ public class ExpandafterTest extends ExTeXLauncher {
                 DEFINE_CATCODES + "\\expandafter ab" + "\\end",
                 //--- output message ---
                 "ba" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\expandafter">
+     *  Test case checking that <tt>\expandafter</tt> passes on <tt>\global</tt>.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testGlobal1() throws Exception {
+
+        assertSuccess(//--- input code ---
+                DEFINE_CATCODES + "\\global\\expandafter A\\count0=123 B"
+                        + "\\end",
+                //--- output message ---
+                "AB" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\expandafter">
+     *  Test case checking that <tt>\expandafter</tt> can expand the second
+     *  token.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test1() throws Exception {
+
+        assertSuccess(//--- input code ---
+                DEFINE_CATCODES + "\\let\\x=X \\let\\y=Y"
+                        + "\\expandafter\\x\\y A" + "\\end",
+                //--- output message ---
+                "XYA" + TERM);
     }
 
 }

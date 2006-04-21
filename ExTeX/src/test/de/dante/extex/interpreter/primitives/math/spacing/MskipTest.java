@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -25,7 +25,7 @@ import de.dante.extex.interpreter.primitives.math.AbstractMathTester;
  * This is a test suite for the primitive <tt>\mskip</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class MskipTest extends AbstractMathTester {
 
@@ -39,4 +39,26 @@ public class MskipTest extends AbstractMathTester {
         super(arg, "mskip", " 1mu");
     }
 
+    /**
+     * <testcase primitive="\mskip">
+     *  Test case checking that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test1() throws Exception {
+
+        assertSuccess(showNodesProperties(),
+        //--- input code ---
+                AbstractMathTester.DEFINE_MATH_FONTS + DEFINE_MATH
+                        + "$a\\mskip12mu b$\\end",
+                //--- output message ---
+                "\\vbox(6.94444pt+0.0pt)x21.57755pt\n"
+                        + ".\\hbox(6.94444pt+0.0pt)x21.57755pt\n" //
+                        + "..a\n" //
+                        + "..\\glue???pt\n" // TODO convert mu to sp
+                        + "..b\n");
+    }
+
+    //TODO implement more primitive specific test cases
 }

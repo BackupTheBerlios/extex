@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -21,12 +21,11 @@ package de.dante.extex.interpreter.primitives.math;
 
 import de.dante.test.NoFlagsButGlobalPrimitiveTester;
 
-
 /**
  * This is a test suite for the primitive <tt>\mathchardef</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class MathchardefTest extends NoFlagsButGlobalPrimitiveTester {
 
@@ -40,6 +39,24 @@ public class MathchardefTest extends NoFlagsButGlobalPrimitiveTester {
         super(arg, "mathchardef", "\\a=\"32 ");
     }
 
-    //TODO implement the primitive specific test cases
+    /**
+     * <testcase primitive="\mathchardef">
+     *  Test case checking that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test1() throws Exception {
+
+        assertSuccess(
+        //--- input code ---
+                AbstractMathTester.DEFINE_MATH_FONTS + DEFINE_MATH
+                        + "\\mathchardef\\alpha=\"010B" //
+                        + "$a\\alpha b$\\end",
+                //--- output message ---
+                "a\013b" + TERM);
+    }
+
+    //TODO implement more primitive specific test cases
 
 }
