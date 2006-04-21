@@ -33,7 +33,6 @@ import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.exception.helping.MissingMathException;
 import de.dante.extex.interpreter.primitives.register.font.NumberedFont;
 import de.dante.extex.interpreter.type.count.Count;
-import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
@@ -111,7 +110,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.36 $
+ * @version $Revision: 1.37 $
  */
 public class MathListMaker extends HorizontalListMaker
         implements
@@ -123,7 +122,7 @@ public class MathListMaker extends HorizontalListMaker
      * It is used to store to the stack and restore the state from the stack.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.36 $
+     * @version $Revision: 1.37 $
      */
     private class MathMemento {
 
@@ -133,6 +132,12 @@ public class MathListMaker extends HorizontalListMaker
          * pair.
          */
         private boolean block;
+
+        /**
+         * The field <tt>delimiter</tt> contains the left delimiter or
+         * <code>null</code> for a block.
+         */
+        private MathDelimiter delimiter;
 
         /**
          * The field <tt>ip</tt> contains the insertion point.
@@ -180,6 +185,16 @@ public class MathListMaker extends HorizontalListMaker
 
             return this.noads;
         }
+
+        /**
+         * Getter for block indicator.
+         *
+         * @return the block
+         */
+        protected boolean isBlock() {
+
+            return this.block;
+        }
     }
 
     /**
@@ -202,20 +217,57 @@ public class MathListMaker extends HorizontalListMaker
 
         Font textfont3 = options.getFont(NumberedFont.key(options, "textfont",
                 "3"));
-        if (textfont3 instanceof NullFont) {
+        if (textfont3.getFontDimen("13") == null
+                || textfont3.getFontDimen("11") == null
+                || textfont3.getFontDimen("12") == null
+                || textfont3.getFontDimen("10") == null
+                || textfont3.getFontDimen("9") == null
+                || textfont3.getFontDimen("7") == null
+                || textfont3.getFontDimen("6") == null
+                || textfont3.getFontDimen("5") == null
+                || textfont3.getFontDimen("4") == null
+                || textfont3.getFontDimen("3") == null
+                || textfont3.getFontDimen("2") == null
+                || textfont3.getFontDimen("1") == null
+                || textfont3.getFontDimen("0") == null) {
             return true;
         }
+
         Font scriptfont3 = options.getFont(NumberedFont.key(options,
                 "scriptfont", "3"));
-        if (scriptfont3 instanceof NullFont) {
+        if (scriptfont3.getFontDimen("13") == null
+                || scriptfont3.getFontDimen("11") == null
+                || scriptfont3.getFontDimen("12") == null
+                || scriptfont3.getFontDimen("10") == null
+                || scriptfont3.getFontDimen("9") == null
+                || scriptfont3.getFontDimen("7") == null
+                || scriptfont3.getFontDimen("6") == null
+                || scriptfont3.getFontDimen("5") == null
+                || scriptfont3.getFontDimen("4") == null
+                || scriptfont3.getFontDimen("3") == null
+                || scriptfont3.getFontDimen("2") == null
+                || scriptfont3.getFontDimen("1") == null
+                || scriptfont3.getFontDimen("0") == null) {
             return true;
         }
+
         Font scriptscriptfont3 = options.getFont(NumberedFont.key(options,
                 "scriptscriptfont", "3"));
-        if (scriptscriptfont3 instanceof NullFont) {
+        if (scriptscriptfont3.getFontDimen("13") == null
+                || scriptscriptfont3.getFontDimen("11") == null
+                || scriptscriptfont3.getFontDimen("12") == null
+                || scriptscriptfont3.getFontDimen("10") == null
+                || scriptscriptfont3.getFontDimen("9") == null
+                || scriptscriptfont3.getFontDimen("7") == null
+                || scriptscriptfont3.getFontDimen("6") == null
+                || scriptscriptfont3.getFontDimen("5") == null
+                || scriptscriptfont3.getFontDimen("4") == null
+                || scriptscriptfont3.getFontDimen("3") == null
+                || scriptscriptfont3.getFontDimen("2") == null
+                || scriptscriptfont3.getFontDimen("1") == null
+                || scriptscriptfont3.getFontDimen("0") == null) {
             return true;
         }
-        // TODO gene: check font parameters unimplemented
         return false;
     }
 
@@ -265,7 +317,7 @@ public class MathListMaker extends HorizontalListMaker
     private MathList insertionPoint;
 
     /**
-     * The field <tt>logger</tt> contains the ...
+     * The field <tt>logger</tt> contains the logger.
      */
     private Logger logger = null;
 
@@ -382,6 +434,9 @@ public class MathListMaker extends HorizontalListMaker
      *  <code>null</code> to indicate that the default space factor should
      *  be used.
      *
+     * @throws TypesetterException in case of an error
+     * @throws ConfigurationException in case of a configuration error
+     *
      * @see de.dante.extex.typesetter.ListMaker#addSpace(
      *      de.dante.extex.interpreter.context.TypesettingContext,
      *      de.dante.extex.interpreter.type.count.Count)
@@ -402,12 +457,22 @@ public class MathListMaker extends HorizontalListMaker
      *
      * @return the node list enclosed in this instance
      *
+     * @throws TypesetterException in case of an error
+     * @throws ConfigurationException in case of a configuration error
+     *
      * @see de.dante.extex.typesetter.ListMaker#complete(TypesetterOptions)
      * @see "<logo>TeX</logo> &ndash; The Program [719]"
      */
     public NodeList complete(final TypesetterOptions context)
             throws TypesetterException,
                 ConfigurationException {
+
+        if (!stack.empty()) {
+            MathMemento mm = (MathMemento) stack.pop();
+            throw new TypesetterException(new HelpingException(getLocalizer(),
+                    "TTP.MissingInserted", //
+                    (mm.isBlock() ? "}" : "\\right.")));
+        }
 
         // see [TTP 1195]
         if (insufficientSymbolFonts(context)) {
@@ -422,10 +487,15 @@ public class MathListMaker extends HorizontalListMaker
 
         HorizontalListNode list = new HorizontalListNode();
         final FixedDimen mathsurround = context.getDimenOption("mathsurround");
+        // see [TTP 1196]
         list.add(new BeforeMathNode(mathsurround));
         noads.typeset(null, 0, list, new MathContext(StyleNoad.TEXTSTYLE,
                 context), context, logger);
+        // see [TTP 1196]
         list.add(new AfterMathNode(mathsurround));
+        // see [TTP 1196]
+        getManager().setSpacefactor(Count.THOUSAND);
+
         return list;
     }
 
@@ -529,7 +599,9 @@ public class MathListMaker extends HorizontalListMaker
      */
     public void left(final MathDelimiter delimiter) throws TypesetterException {
 
-        insertionPoint.add(new LeftNoad(delimiter));
+        stack.push(new MathMemento(insertionPoint, noads, false));
+        insertionPoint = new MathList();
+        noads = new LeftNoad(insertionPoint, delimiter);
     }
 
     /**
@@ -598,7 +670,20 @@ public class MathListMaker extends HorizontalListMaker
     public void middle(final MathDelimiter delimiter)
             throws TypesetterException {
 
-        add(new MiddleNoad(delimiter));
+        if (stack.empty()) {
+            throw new TypesetterHelpingException(getLocalizer(),
+                    "TTP.ExtraOrForgotten", "$");
+        }
+        MathMemento memento = (MathMemento) stack.pop();
+        if (memento.isBlock()) {
+            throw new TypesetterHelpingException(getLocalizer(),
+                    "TTP.ExtraOrForgotten", "\\right.");
+        }
+
+        Noad n = noads;
+        insertionPoint = memento.getInsertionPoint();
+        noads = memento.getNoads();
+        insertionPoint.add(new MiddleNoad(n, delimiter));
     }
 
     /**
@@ -631,7 +716,20 @@ public class MathListMaker extends HorizontalListMaker
      */
     public void right(final MathDelimiter delimiter) throws TypesetterException {
 
-        add(new RightNoad(delimiter));
+        if (stack.empty()) {
+            throw new TypesetterHelpingException(getLocalizer(),
+                    "TTP.ExtraOrForgotten", "$");
+        }
+        MathMemento memento = (MathMemento) stack.pop();
+        if (memento.isBlock()) {
+            throw new TypesetterHelpingException(getLocalizer(),
+                    "TTP.ExtraOrForgotten", "\\right.");
+        }
+
+        Noad n = noads;
+        insertionPoint = memento.getInsertionPoint();
+        noads = memento.getNoads();
+        insertionPoint.add(new RightNoad(n, delimiter));
     }
 
     /**
@@ -641,10 +739,14 @@ public class MathListMaker extends HorizontalListMaker
 
         if (stack.empty()) {
             throw new TypesetterHelpingException(getLocalizer(),
-                    "TTP.ExtraOrForgotten");
+                    "TTP.ExtraOrForgotten", "$");
+        }
+        MathMemento memento = (MathMemento) stack.pop();
+        if (!memento.isBlock()) {
+            throw new TypesetterHelpingException(getLocalizer(),
+                    "TTP.ExtraOrForgotten", "\\right.");
         }
         Noad n = noads;
-        MathMemento memento = (MathMemento) stack.pop();
         insertionPoint = memento.getInsertionPoint();
         noads = memento.getNoads();
         insertionPoint.add(n);
@@ -773,19 +875,21 @@ public class MathListMaker extends HorizontalListMaker
      * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#switchToFraction(
      *      de.dante.extex.typesetter.type.math.MathDelimiter,
      *      de.dante.extex.typesetter.type.math.MathDelimiter,
-     *      de.dante.extex.interpreter.type.dimen.Dimen)
+     *      de.dante.extex.interpreter.type.dimen.FixedDimen,
+     *      de.dante.extex.interpreter.context.TypesettingContext)
      */
     public void switchToFraction(final MathDelimiter leftDelimiter,
-            final MathDelimiter rightDelimiter, final Dimen ruleWidth)
-            throws TypesetterException {
+            final MathDelimiter rightDelimiter, final FixedDimen ruleWidth,
+            final TypesettingContext tc) throws TypesetterException {
 
+        // see [TTP 1183]
         if (!(noads instanceof MathList)) {
-            throw new TypesetterHelpingException(getLocalizer(),
-                    "TTP.AmbiguousFraction");
+            throw new TypesetterException(new HelpingException(getLocalizer(),
+                    "TTP.AmbiguousFraction"));
         }
         insertionPoint = new MathList();
         noads = new FractionNoad((MathList) noads, insertionPoint,
-                leftDelimiter, rightDelimiter, ruleWidth);
+                leftDelimiter, rightDelimiter, ruleWidth, tc);
     }
 
 }
