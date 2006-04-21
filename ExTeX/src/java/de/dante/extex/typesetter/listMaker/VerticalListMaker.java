@@ -52,7 +52,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class VerticalListMaker extends InnerVerticalListMaker {
 
@@ -80,7 +80,7 @@ public class VerticalListMaker extends InnerVerticalListMaker {
      *    p: pointer;  {a new glue specification}
      * begin if prev_depth>ignore_depth then
      *    begin d ? width(baseline_skip)-prev_depth-height( b);
-     *    if d<line_skip_limit then p ? new_param_glue(line_skip_code)
+     *    if d&lt;line_skip_limit then p ? new_param_glue(line_skip_code)
      *      else begin p ? new_skip_param(baseline_skip_code); width(temp_ptr) ? d;  {temp_ptr=glue_ptr(p)}
      *      end ;
      *    link(tail) ? p; tail ? p;
