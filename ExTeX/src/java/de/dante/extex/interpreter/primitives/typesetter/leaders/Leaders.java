@@ -32,7 +32,7 @@ import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.box.Boxable;
 import de.dante.extex.interpreter.type.box.RuleConvertible;
-import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.scanner.type.token.CodeToken;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.exception.TypesetterException;
@@ -66,7 +66,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class Leaders extends AbstractCode {
 
@@ -126,7 +126,7 @@ public class Leaders extends AbstractCode {
                     context.esc(vskip.getName()));
         }
 
-        Glue skip;
+        FixedGlue skip;
 
         if (horizontal) {
             if (!(code instanceof HorizontalSkip)) {

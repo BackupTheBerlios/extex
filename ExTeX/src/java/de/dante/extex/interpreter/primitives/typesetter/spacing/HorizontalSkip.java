@@ -22,14 +22,14 @@ package de.dante.extex.interpreter.primitives.typesetter.spacing;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.typesetter.Typesetter;
 
 /**
  * This interface describes macros which produces a horizontal glue.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface HorizontalSkip {
 
@@ -44,7 +44,7 @@ public interface HorizontalSkip {
      *
      * @throws InterpreterException in case of an error
      */
-    Glue getGlue(Context context, TokenSource source, Typesetter typesetter)
+    FixedGlue getGlue(Context context, TokenSource source, Typesetter typesetter)
             throws InterpreterException;
 
 }

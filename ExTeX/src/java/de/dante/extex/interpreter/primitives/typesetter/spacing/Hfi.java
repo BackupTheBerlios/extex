@@ -24,6 +24,7 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.primitives.typesetter.AbstractHorizontalCode;
+import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.glue.GlueComponent;
 import de.dante.extex.typesetter.Typesetter;
@@ -59,7 +60,7 @@ import de.dante.util.exception.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Hfi extends AbstractHorizontalCode implements HorizontalSkip {
 
@@ -109,7 +110,7 @@ public class Hfi extends AbstractHorizontalCode implements HorizontalSkip {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public Glue getGlue(final Context context, final TokenSource source,
+    public FixedGlue getGlue(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
         return FI;

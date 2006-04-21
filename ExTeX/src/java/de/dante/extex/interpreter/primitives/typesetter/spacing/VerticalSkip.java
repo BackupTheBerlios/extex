@@ -22,19 +22,20 @@ package de.dante.extex.interpreter.primitives.typesetter.spacing;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.typesetter.Typesetter;
 
 /**
  * This interface describes macros which produces a vertical glue.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public interface VerticalSkip {
 
     /**
      * This method acquires a vertical glue.
+     *
      * @param context the interpreter context
      * @param source the source for new tokens
      * @param typesetter the typesetter
@@ -43,7 +44,7 @@ public interface VerticalSkip {
      *
      * @throws InterpreterException in case of an error
      */
-    Glue getGlue(Context context, TokenSource source, Typesetter typesetter)
+    FixedGlue getGlue(Context context, TokenSource source, Typesetter typesetter)
             throws InterpreterException;
 
 }

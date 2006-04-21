@@ -32,12 +32,11 @@ import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.box.Boxable;
 import de.dante.extex.interpreter.type.box.RuleConvertible;
-import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.scanner.type.token.CodeToken;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.Node;
-import de.dante.extex.typesetter.type.node.CenteredLeadersNode;
 import de.dante.extex.typesetter.type.node.ExpandedLeadersNode;
 import de.dante.extex.typesetter.type.node.RuleNode;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
@@ -65,7 +64,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class Xleaders extends AbstractCode {
 
@@ -94,6 +93,7 @@ public class Xleaders extends AbstractCode {
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
+
         CodeToken cs = source.getControlSequence(context);
         Code code = context.getCode(cs);
 
@@ -124,7 +124,7 @@ public class Xleaders extends AbstractCode {
                     context.esc(vskip.getName()));
         }
 
-        Glue skip;
+        FixedGlue skip;
 
         if (horizontal) {
             if (!(code instanceof HorizontalSkip)) {

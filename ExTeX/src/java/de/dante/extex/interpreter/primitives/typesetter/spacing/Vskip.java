@@ -24,6 +24,7 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.primitives.typesetter.AbstractVerticalCode;
+import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.exception.GeneralException;
@@ -55,7 +56,7 @@ import de.dante.util.exception.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Vskip extends AbstractVerticalCode implements VerticalSkip {
 
@@ -99,7 +100,7 @@ public class Vskip extends AbstractVerticalCode implements VerticalSkip {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public Glue getGlue(final Context context, final TokenSource source,
+    public FixedGlue getGlue(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
         return new Glue(source, context, typesetter);
