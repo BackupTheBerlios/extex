@@ -24,7 +24,7 @@ package de.dante.test;
  * primitives. They verify that prefix macros always lead to an error.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public abstract class NoFlagsPrimitiveTester extends ExTeXLauncher {
 
@@ -183,6 +183,17 @@ public abstract class NoFlagsPrimitiveTester extends ExTeXLauncher {
                         + " the control sequence"
                         + (primitive.length() >= 15 ? "\n" : " ") + "\\"
                         + primitive);
+    }
+
+    
+    /**
+     * Getter for primitive.
+     *
+     * @return the primitive
+     */
+    protected String getPrimitive() {
+    
+        return this.primitive;
     }
 
 }
