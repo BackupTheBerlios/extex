@@ -23,6 +23,7 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.scanner.type.token.Token;
@@ -35,15 +36,15 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="expandafter">
  * <h3>The Primitive <tt>\expandafter</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  The primitive <tt>\expandafter</tt> reverses the expansion of the following
+ *  two tokens. For this purpose the next token following the invocation is read
+ *  unexpanded and put aside. Then the next token is expanded in whatever way
+ *  the token requires expansion. This may involve the reading and expansion of
+ *  further tokens. When this expansion is finished then the saved token is put
+ *  back into the input stream.
  * </p>
- * <p class="TeXbook">
- *  <logo>TeX</logo> first reads the token that comes immediately after
- *  <tt>\expandafter</tt>, without expanding it; let's call this token <i>t</i>.
- *  Then <logo>TeX</logo> reads the token that comes after <i>t</i> (and
- *  possibly more tokens, if that token has an argument), replacing it by its
- *  expansion. Finally <logo>TeX</logo> puts <i>t</i> back in front of that
- *  expansion.
+ * <p>
+ *  Any prefix argument is saved for the expansion of the following token.
  * </p>
  *
  * <h4>Syntax</h4>
@@ -56,20 +57,20 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
- *    \expandafter ...  </pre>
+ *    \expandafter ab  </pre>
  *
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class Expandafter extends AbstractCode implements ExpandableCode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 20060415L;
 
     /**
      * Creates a new object.
@@ -93,7 +94,13 @@ public class Expandafter extends AbstractCode implements ExpandableCode {
             throws InterpreterException {
 
         Token t = source.getToken(context);
+        if (t == null) {
+            throw new EofException(printableControlSequence(context));
+        }
         Token token = source.getToken(context);
+        if (token == null) {
+            throw new EofException(printableControlSequence(context));
+        }
         source.execute(token, context, typesetter);
         source.push(t);
     }
@@ -110,7 +117,13 @@ public class Expandafter extends AbstractCode implements ExpandableCode {
             throws InterpreterException {
 
         Token t = source.getToken(context);
+        if (t == null) {
+            throw new EofException(printableControlSequence(context));
+        }
         Token token = source.getToken(context);
+        if (token == null) {
+            throw new EofException(printableControlSequence(context));
+        }
         source.execute(token, context, typesetter);
         source.push(t);
     }
