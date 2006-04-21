@@ -56,7 +56,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Hyphen extends AbstractCode {
 
@@ -97,8 +97,6 @@ public class Hyphen extends AbstractCode {
 
         try {
             typesetter.add(new DiscretionaryNode(hyphen, null, null));
-        } catch (GeneralException e) {
-            throw new InterpreterException(e);
         } catch (ConfigurationException e) {
             throw new InterpreterException(e);
         }
