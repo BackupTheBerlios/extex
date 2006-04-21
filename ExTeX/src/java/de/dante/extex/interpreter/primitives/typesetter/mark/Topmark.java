@@ -31,7 +31,13 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="topmark">
  * <h3>The Primitive <tt>\topmark</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  The primitive <tt>\topmark</tt> provides access to the topmost mark
+ *  encountered on the current page &ndash; when processing the page in the
+ *  output routine.
+ * </p>
+ * <p>
+ *  The primitive is a tokens register. It can be used wherever a tokens value
+ *  is expected. The value is empty when no topmark is available yet.
  * </p>
  *
  * <h4>Syntax</h4>
@@ -42,11 +48,13 @@ import de.dante.extex.typesetter.Typesetter;
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \topmark  </pre>
- *
+ *  <pre class="TeXSample">
+ *    \toks0=\topmark  </pre>
  * </doc>
  *
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Topmark extends Topmarks {
 

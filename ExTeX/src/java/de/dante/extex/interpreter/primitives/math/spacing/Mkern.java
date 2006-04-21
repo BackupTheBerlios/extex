@@ -34,23 +34,26 @@ import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
  * <doc name="mkern">
  * <h3>The Math Primitive <tt>\mkern</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The math primitive <tt>\mkern</tt> inserts some kerning in math mode. The
+ *  amount of space to be inserted is measured in math units.
  * </p>
  *
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;mkern&rang;
- *       &rarr; <tt>\mkern</tt>  </pre>
+ *       &rarr; <tt>\mkern</tt> {@linkplain
+ *          de.dante.extex.interpreter.type.muskip.Mudimen#Mudimen(Context,TokenSource)
+ *          &lang;mudimen&rang;} </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
- *    \mkern  </pre>
+ *    \mkern 12mu </pre>
  *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Mkern extends AbstractMathCode {
 

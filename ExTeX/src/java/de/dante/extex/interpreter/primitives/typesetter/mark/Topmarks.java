@@ -30,31 +30,52 @@ import de.dante.extex.interpreter.type.tokens.Tokens;
  * <doc name="topmarks">
  * <h3>The Primitive <tt>\topmarks</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  The primitive <tt>\topmarks</tt> provides access to the topmost mark of the
+ *  given class encountered on the current page &ndash; when processing the page
+ *  in the output routine.
+ * </p>
+ * <p>
+ *  The primitive is a tokens register. It can be used wherever a tokens value
+ *  is expected. The value is empty when no top mark of the class is available
+ *  yet.
+ * </p>
+ * <p>
+ *  The primitive <tt>\topmark</tt> is an abbreviation for <tt>\topmarks0</tt>.
+ * </p>
+ * <p>
+ *  The class of the top mark is determined when the <tt>\marks</tt> primitive
+ *  is used to insert a mark into the current list. In <logo>TeX</logo> the
+ *  class used to be a number in the range 0&ndash;255; the limit has been
+ *  raised in <logo>eTeX</logo> to 32767 and in <logo>ExTeX</logo> to allow
+ *  any number or tokens value.
  * </p>
  *
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\topmarks</tt> ...  </pre>
+ *    <tt>\topmark</tt>  </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \topmarks42  </pre>
  *  <pre class="TeXSample">
+ *    \topmarks{abc}  </pre>
+ *  <pre class="TeXSample">
  *    \topmarks\count0  </pre>
+ *  <pre class="TeXSample">
+ *    \toks0=\topmark3  </pre>
  *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Topmarks extends AbstractMarksCode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 20060416L;
 
     /**
      * Creates a new object.

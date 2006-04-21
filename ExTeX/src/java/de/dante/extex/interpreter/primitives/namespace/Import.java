@@ -36,16 +36,26 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="import">
  * <h3>The Primitive <tt>\import</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  The primitive <tt>\import</tt> defines all control sequences exported from
+ *  the given name space into the current name space. Any definitions with the
+ *  same name are overwritten.
+ * </p>
+ * <p>
+ *  The definitions are usually performed local to the cureent group. If the
+ *  prefix <tt>\global</tt> is given then the definition is made globally.
  * </p>
  *
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;import&rang;
- *      &rarr; <tt>\import</tt> {@linkplain
+ *      &rarr; &lang;prefix&rang; <tt>\import</tt> {@linkplain
  *      de.dante.extex.interpreter.TokenSource#getTokens()
- *      &lang;replacement text&rang;}  </pre>
+ *      &lang;name space&rang;}
+ *
+ *    &lang;prefix&rang;
+ *      &rarr;
+ *      | <tt>\global</tt>  </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
@@ -53,11 +63,12 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * </doc>
  *
+ *
  * @see de.dante.extex.interpreter.primitives.namespace.Export
  * @see de.dante.extex.interpreter.primitives.namespace.Namespace
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Import extends Let {
 
