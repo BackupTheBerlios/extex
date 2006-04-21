@@ -23,7 +23,7 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
-import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.muskip.Mudimen;
 import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.typesetter.ListMaker;
@@ -39,7 +39,7 @@ import de.dante.extex.typesetter.type.noad.Noad;
  * This is usually the case for math list makers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public interface NoadConsumer extends ListMaker {
 
@@ -162,7 +162,7 @@ public interface NoadConsumer extends ListMaker {
      * @throws TypesetterException in case of an error
      */
     void switchToFraction(MathDelimiter leftDelimiter,
-            MathDelimiter rightDelimiter, Dimen ruleWidth)
+            MathDelimiter rightDelimiter, FixedDimen ruleWidth, TypesettingContext tc)
             throws TypesetterException;
 
 }

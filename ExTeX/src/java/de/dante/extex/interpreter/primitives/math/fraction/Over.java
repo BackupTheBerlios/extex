@@ -49,14 +49,14 @@ import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Over extends AbstractMathCode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 20060417L;
 
     /**
      * Creates a new object.
@@ -81,7 +81,7 @@ public class Over extends AbstractMathCode {
 
         NoadConsumer nc = getListMaker(context, typesetter);
 
-        nc.switchToFraction(null, null, null);
+        nc.switchToFraction(null, null, null, context.getTypesettingContext());
     }
 
 }

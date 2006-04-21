@@ -52,14 +52,14 @@ import de.dante.extex.typesetter.type.math.MathDelimiter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class Abovewithdelims extends AbstractTeXDelimiter {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 20060417L;
 
     /**
      * Creates a new object.
@@ -88,7 +88,7 @@ public class Abovewithdelims extends AbstractTeXDelimiter {
         MathDelimiter del2 = parseDelimiter(context, source, typesetter,
                 getName());
         Dimen d = new Dimen(context, source, typesetter);
-        nc.switchToFraction(del1, del2, d);
+        nc.switchToFraction(del1, del2, d, context.getTypesettingContext());
     }
 
 }
