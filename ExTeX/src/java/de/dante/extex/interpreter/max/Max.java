@@ -128,7 +128,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.96 $
+ * @version $Revision: 1.97 $
  */
 public abstract class Max
         implements
@@ -699,7 +699,8 @@ public abstract class Max
             if (code instanceof ProtectedCode) {
                 return t;
             } else if (code instanceof CodeExpander) {
-                ((CodeExpander)code).expandCode(context, this, typesetter, tokens);
+                ((CodeExpander) code).expandCode(context, this, typesetter,
+                        tokens);
             } else if (code instanceof ExpandableCode) {
                 ((ExpandableCode) code).expand(prefix, context, this,
                         typesetter);
@@ -1205,7 +1206,8 @@ public abstract class Max
 
             code.execute(prefix, context, this, typesetter);
 
-            if (!(code instanceof PrefixCode) && prefix.isDirty()) {
+            if (!(code instanceof ExpandableCode)
+                    && !(code instanceof PrefixCode) && prefix.isDirty()) {
                 reportDirtyFlag(token);
             }
         }
