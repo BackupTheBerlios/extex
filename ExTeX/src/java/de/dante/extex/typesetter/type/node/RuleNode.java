@@ -21,6 +21,7 @@ package de.dante.extex.typesetter.type.node;
 
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeVisitor;
 import de.dante.util.exception.GeneralException;
@@ -32,7 +33,7 @@ import de.dante.util.exception.GeneralException;
  * @see "<logo>TeX</logo> &ndash; The Program [138]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class RuleNode extends AbstractNode implements Node {
 
@@ -64,8 +65,9 @@ public class RuleNode extends AbstractNode implements Node {
      *
      * @see "<logo>TeX</logo> &ndash; The Program [139]"
      */
-    public RuleNode(final Dimen width, final Dimen height, final Dimen depth,
-            final TypesettingContext theContext, boolean horizontal) {
+    public RuleNode(final FixedDimen width, final FixedDimen height,
+            final FixedDimen depth, final TypesettingContext theContext,
+            boolean horizontal) {
 
         super(width, height, depth);
         this.context = theContext;

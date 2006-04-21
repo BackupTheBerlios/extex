@@ -19,7 +19,7 @@
 
 package de.dante.extex.typesetter.type.node;
 
-import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeVisitor;
 import de.dante.util.exception.GeneralException;
@@ -31,7 +31,7 @@ import de.dante.util.exception.GeneralException;
  * @see "<logo>TeX</logo> &ndash; The Program [149]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class ExpandedLeadersNode extends AbstractExpandableNode
         implements
@@ -54,7 +54,7 @@ public class ExpandedLeadersNode extends AbstractExpandableNode
      * @param glue the desired size
      * @param horizontal the indicator for the stretchability mode
      */
-    public ExpandedLeadersNode(final Node node, final Glue glue,
+    public ExpandedLeadersNode(final Node node, final FixedGlue glue,
             final boolean horizontal) {
 
         super(glue, horizontal);
