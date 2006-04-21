@@ -36,7 +36,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [687]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class LeftNoad extends AbstractNoad {
 
@@ -46,14 +46,20 @@ public class LeftNoad extends AbstractNoad {
     private MathDelimiter delimiter;
 
     /**
+     * The field <tt>noad</tt> contains the ...
+     */
+    private Noad noad;
+
+    /**
      * Creates a new object.
      *
      * @param delimiter the glue
      */
-    public LeftNoad(final MathDelimiter delimiter) {
+    public LeftNoad(final Noad noad, final MathDelimiter delimiter) {
 
         super();
         this.delimiter = delimiter;
+        this.noad = noad;
     }
 
     /**
