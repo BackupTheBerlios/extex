@@ -30,7 +30,7 @@ import de.dante.extex.interpreter.type.dimen.Dimen;
  * @see "<logo>TeX</logo> &ndash; The Program [155]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class AccentKernNode extends AbstractKernNode {
 
@@ -46,7 +46,7 @@ public class AccentKernNode extends AbstractKernNode {
      */
     public AccentKernNode(final Dimen kern) {
 
-        super(kern);
+        super(kern, true);
     }
 
 }

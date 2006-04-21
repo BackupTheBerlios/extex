@@ -20,6 +20,7 @@
 package de.dante.extex.typesetter.type.node;
 
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.typesetter.type.NodeVisitor;
 import de.dante.util.exception.GeneralException;
 
@@ -30,7 +31,7 @@ import de.dante.util.exception.GeneralException;
  * <logo>TeX</logo>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public abstract class AbstractKernNode extends AbstractNode implements KernNode {
 
@@ -38,10 +39,13 @@ public abstract class AbstractKernNode extends AbstractNode implements KernNode 
      * Creates a new object.
      *
      * @param kern the natural size
+     * @param horizontal the indicator that the kern works horizontally
      */
-    public AbstractKernNode(final Dimen kern) {
+    public AbstractKernNode(final FixedDimen kern, final boolean horizontal) {
 
-        super(kern);
+        super((horizontal ? kern : Dimen.ZERO_PT), //
+                (horizontal ? Dimen.ZERO_PT : kern), //
+                Dimen.ZERO_PT);
     }
 
     /**
