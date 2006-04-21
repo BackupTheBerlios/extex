@@ -27,15 +27,13 @@ import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.interpreter.type.tokens.TokensConvertible;
-import de.dante.extex.scanner.type.token.LeftBraceToken;
-import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
 
 /**
  * Thus abstract base class for marks primitives provides the common features.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public abstract class AbstractMarksCode extends AbstractCode
         implements
@@ -108,15 +106,8 @@ public abstract class AbstractMarksCode extends AbstractCode
     protected String getKey(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        Token t = source.getNonSpace(context);
-        source.push(t);
-        if (t instanceof LeftBraceToken) {
-            Tokens tokens = source.scanTokens(context, false, false, getName());
-            return (tokens == null ? "" : tokens.toText());
-        } else {
-            long idx = source.scanInteger(context, typesetter);
-            return Long.toString(idx);
-        }
+        return source.scanRegisterName(context,
+                printableControlSequence(context));
     }
 
     /**
