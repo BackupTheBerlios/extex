@@ -59,7 +59,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public final class LoadUnit extends AbstractFactory {
 
@@ -70,16 +70,16 @@ public final class LoadUnit extends AbstractFactory {
     private static final String DEFINE_TAG = "define";
 
     /**
-     * The field <tt>NAMESPACE_ATTRIBUTE</tt> contains the attribute name
-     * to find the name space for the new primitive.
-     */
-    private static final String NAMESPACE_ATTRIBUTE = "namespace";
-
-    /**
      * The constant <tt>NAME_ATTRIBUTE</tt> contains the name of the attribute
      * holding the name of the primitive to define.
      */
     private static final String NAME_ATTRIBUTE = "name";
+
+    /**
+     * The field <tt>NAMESPACE_ATTRIBUTE</tt> contains the attribute name
+     * to find the name space for the new primitive.
+     */
+    private static final String NAMESPACE_ATTRIBUTE = "namespace";
 
     /**
      * Prepare the primitives according to their configuration. The given
@@ -123,17 +123,18 @@ public final class LoadUnit extends AbstractFactory {
     }
 
     /**
-     * Creates a new object.
-     *
-     * @throws ConfigurationException in case of a configuration error
+     * The field <tt>stringSource</tt> contains the reused object for string
+     * parsing.
      */
-    private LoadUnit() throws ConfigurationException {
+    private StringSource stringSource = new StringSource();
+
+    /**
+     * Creates a new object.
+     */
+    private LoadUnit() {
 
         super();
-        stringSource = new StringSource();
-    }
-
-    private StringSource stringSource;
+    };
 
     /**
      * Scan a configuration and define the primitives found.
