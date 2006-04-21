@@ -34,7 +34,9 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="ifnum">
  * <h3>The Primitive <tt>\ifnum</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  The primitive <tt>\ifnum</tt> provides a conditional which compares two
+ *  numerical values. The comparison for equality, greater, and less are
+ *  possible.
  * </p>
  *
  * <h4>Syntax</h4>
@@ -46,7 +48,7 @@ import de.dante.extex.typesetter.Typesetter;
  *        &lang;number&rang;} &lang;op&rang; {@linkplain
  *        de.dante.extex.interpreter.TokenSource#scanInteger(Context,Typesetter)
  *        &lang;number&rang;} &lang;true text&rang; <tt>\fi</tt>
- *      | <tt>\ifodd</tt> {@linkplain
+ *      | <tt>\ifnum</tt> {@linkplain
  *        de.dante.extex.interpreter.TokenSource#scanInteger(Context,Typesetter)
  *        &lang;number&rang;} &lang;op&rang; {@linkplain
  *        de.dante.extex.interpreter.TokenSource#scanInteger(Context,Typesetter)
@@ -59,12 +61,13 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
- *    \ifodd\count0 abc \fi  </pre>
+ *    \ifnum\count0&gt;42 abc \fi  </pre>
  *
  * </doc>
  *
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class Ifnum extends AbstractIf {
 

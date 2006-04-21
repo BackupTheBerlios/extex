@@ -20,10 +20,11 @@
 package de.dante.extex.interpreter;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This interface describes an implementation which is able to receive a
+ * notification when the value of register max changes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface RegisterMaxObserver {
 

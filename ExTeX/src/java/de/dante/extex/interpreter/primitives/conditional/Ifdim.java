@@ -35,7 +35,9 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="ifdim">
  * <h3>The Primitive <tt>\ifdim</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  The primitive <tt>\ifdim</tt> provides a conditional which compares two
+ *  dimen values. The comparison for equality, greater, and less are
+ *  possible.
  * </p>
  *
  * <h4>Syntax</h4>
@@ -61,7 +63,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class Ifdim extends AbstractIf {
 

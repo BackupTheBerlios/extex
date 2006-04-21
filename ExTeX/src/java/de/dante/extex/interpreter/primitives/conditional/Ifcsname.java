@@ -35,15 +35,28 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="ifcsname">
  * <h3>The Primitive <tt>\ifcsname</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  The primitive <tt>\ifcsname</tt> checks if a certain control sequence is
+ *  defined. For this purpose it collects tokens in the same way as
+ *  <tt>\csname</tt> does until <tt>\endcsname</tt> is encountered.
+ *  It does not define the control sequence if it is not defined.
  * </p>
+ *
+ * <h4>Syntax</h4>
+ *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;ifcsname&rang;
- *     &rarr; <tt>\ifcsname</tt>  ... </pre>
+ *      &rarr; <tt>\ifcsname</tt> ... <tt>\endcsname</tt> &lang;true text&rang; <tt>\fi</tt>
+ *       |  <tt>\ifcsname</tt> ... <tt>\endcsname</tt> &lang;true text&rang; <tt>\else</tt> &lang;false text&rang; <tt>\fi</tt>  </pre>
+ *
+ * <h4>Examples</h4>
+ *  <pre class="syntax">
+ *    &lang;ifcsname&rang;
+ *     &rarr; <tt>\ifcsname</tt>def\endcsname ok\fi</pre>
  * </doc>
  *
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Ifcsname extends AbstractIf {
 

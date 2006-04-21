@@ -24,10 +24,43 @@ import de.dante.util.framework.AbstractFactory;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This is the factory for instances of
+ * {@link de.dante.extex.interpreter.unit.Loader Loader}.
+ * This factory inherits its properties from the
+ * {@link de.dante.util.framework.AbstractFactory AbstractFactory}. Among them
+ * the support for configuration and logging.
+ *
+ * <h3>Configuration</h3>
+ *
+ * <p>
+ *  Mainly the configuration needs to specify which class to use for the
+ *  ErrorHandler. The configuration provides a mapping from a type name to the
+ *  sub-configuration to be used. The name of the class is given as the argument
+ *  <tt>class</tt> of the sub-configuration as shown below.
+ *  <pre>
+ *   &lt;setup class="de.dante.extex.interpreter.unit.tex.Setup"/&gt;
+ *  </pre>
+ * </p>
+ * <p>
+ *  The named class need to implement the interface
+ *  {@link de.dante.extex.interpreter.unit.Loader Loader}. If
+ *  this interface is not implemented an error is raised.
+ * </p>
+ * <p>
+ *  The configuration is passed down to the new instance if it implements the
+ *  interface {@link de.dante.util.framework.configuration.Configurable Configurable}.
+ * </p>
+ * <p>
+ *  If the class implements the interface
+ *  {@link de.dante.util.framework.logger.LogEnabled LogEnabled} then a logger
+ *  is passed to the new instance. For this purpose the factory itself is
+ *  log enabled to receive the logger.
+ * </p>
+ *
+ *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class LoaderFactory extends AbstractFactory {
 
