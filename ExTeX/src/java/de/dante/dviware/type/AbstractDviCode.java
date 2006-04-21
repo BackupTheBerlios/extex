@@ -28,9 +28,27 @@ import de.dante.extex.interpreter.type.dimen.FixedDimen;
  * This is an abstract base class for DVI instructions.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public abstract class AbstractDviCode implements DviCode {
+
+    /**
+     * The constant <tt>ONE_BYTE_MASK</tt> contains the bit mask for a single
+     * byte.
+     */
+    private static final int ONE_BYTE_MASK = 0xff;
+
+    /**
+     * The constant <tt>ONE_BYTE_MASK</tt> contains the bit mask for a double
+     * byle.
+     */
+    private static final int TWO_BYTE_MASK = 0xffff;
+
+    /**
+     * The constant <tt>ONE_BYTE_MASK</tt> contains the bit mask for a triple
+     * byle.
+     */
+    private static final int THREE_BYTE_MASK = 0xffffff;
 
     /**
      * Write two bytes to the output stream.
@@ -73,16 +91,16 @@ public abstract class AbstractDviCode implements DviCode {
     protected int opcode(final int baseOpcode, final int value,
             final OutputStream stream) throws IOException {
 
-        if (value <= 0xff) {
+        if (value <= ONE_BYTE_MASK) {
             stream.write(baseOpcode);
             stream.write(value);
             return 2;
-        } else if (value <= 0xffff) {
+        } else if (value <= TWO_BYTE_MASK) {
             stream.write(baseOpcode + 1);
             stream.write(value >> 8);
             stream.write(value);
             return 3;
-        } else if (value <= 0xffffff) {
+        } else if (value <= THREE_BYTE_MASK) {
             stream.write(baseOpcode + 2);
             stream.write(value >> 16);
             stream.write(value >> 8);
@@ -122,21 +140,21 @@ public abstract class AbstractDviCode implements DviCode {
             return 2;
         } else if (-0x8000 <= value && value <= 0x7fff) {
             stream.write(baseOpcode + 1);
-            stream.write((value >> 8) & 0xff);
+            stream.write((value >> 8) & ONE_BYTE_MASK);
             stream.write(value);
             return 3;
         } else if (-0x800000 <= value && value <= 0x7fffff) {
             stream.write(baseOpcode + 2);
-            stream.write((value >> 16) & 0xff);
-            stream.write((value >> 8) & 0xff);
+            stream.write((value >> 16) & ONE_BYTE_MASK);
+            stream.write((value >> 8) & ONE_BYTE_MASK);
             stream.write(value);
             return 4;
         }
 
         stream.write(baseOpcode + 3);
-        stream.write((value >> 24) & 0xff);
-        stream.write((value >> 16) & 0xff);
-        stream.write((value >> 8) & 0xff);
+        stream.write((value >> 24) & ONE_BYTE_MASK);
+        stream.write((value >> 16) & ONE_BYTE_MASK);
+        stream.write((value >> 8) & ONE_BYTE_MASK);
         stream.write(value);
         return 5;
     }
@@ -150,11 +168,11 @@ public abstract class AbstractDviCode implements DviCode {
      */
     protected String variant(final int value) {
 
-        if (value <= 0xff) {
+        if (value <= ONE_BYTE_MASK) {
             return "1";
-        } else if (value <= 0xffff) {
+        } else if (value <= TWO_BYTE_MASK) {
             return "2";
-        } else if (value <= 0xffffff) {
+        } else if (value <= THREE_BYTE_MASK) {
             return "3";
         }
 
