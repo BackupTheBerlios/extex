@@ -22,10 +22,16 @@ package de.dante.extex.typesetter.type.noad;
 import java.util.logging.Logger;
 
 import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
+import de.dante.extex.typesetter.type.node.ExplicitKernNode;
+import de.dante.extex.typesetter.type.node.HorizontalListNode;
+import de.dante.extex.typesetter.type.node.RuleNode;
+import de.dante.extex.typesetter.type.node.VerticalListNode;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
@@ -34,7 +40,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [687]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class UnderlinedNoad extends AbstractNucleusNoad {
 
@@ -76,9 +82,27 @@ public class UnderlinedNoad extends AbstractNucleusNoad {
             throws TypesetterException,
                 ConfigurationException {
 
-        //TODO gene: typeset() unimplemented
-        throw new RuntimeException("unimplemented");
-        //return index + 1;
+        HorizontalListNode hlist = new HorizontalListNode();
+        StyleNoad style = mathContext.getStyle();
+        getNucleus().typeset(noads, index, hlist, mathContext, context, logger);
+
+        FixedDimen thickness = defaultRuleThickness(style, context);
+        VerticalListNode vlist = new VerticalListNode();
+        vlist.add(hlist);
+        vlist.add(new ExplicitKernNode(new Dimen(3 * thickness.getValue()),
+                false));
+        vlist.add(new RuleNode(hlist.getWidth(), thickness, Dimen.ZERO_PT,
+                getTypesettingContext(), true));
+        vlist.add(new ExplicitKernNode(thickness, false));
+        list.add(vlist);
+
+        Dimen h = new Dimen(vlist.getHeight());
+        h.add(vlist.getDepth());
+        vlist.setHeight(hlist.getHeight());
+        h.subtract(hlist.getHeight());
+        vlist.setDepth(h);
+
+        return index + 1;
     }
 
 }

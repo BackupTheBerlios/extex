@@ -22,10 +22,14 @@ package de.dante.extex.typesetter.type.noad;
 import java.util.logging.Logger;
 
 import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.exception.ImpossibleException;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
+import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
+import de.dante.extex.typesetter.type.node.HorizontalListNode;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
@@ -34,7 +38,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [687]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class VCenterNoad extends AbstractNucleusNoad {
 
@@ -76,9 +80,21 @@ public class VCenterNoad extends AbstractNucleusNoad {
             throws TypesetterException,
                 ConfigurationException {
 
-        //TODO gene: typeset() unimplemented
-        throw new RuntimeException("unimplemented");
-        //return index + 1;
-    }
+        HorizontalListNode hlist = new HorizontalListNode();
+        getNucleus().typeset(noads, index, hlist, mathContext, context, logger);
 
+        Dimen d = new Dimen(hlist.getHeight());
+        d.add(hlist.getDepth());
+        Dimen h = new Dimen(d);
+        try {
+            h.divide(2);
+        } catch (HelpingException e) {
+            throw new ImpossibleException(e);
+        }
+        h.add(axisHeight(mathContext.getStyle(), context));
+        hlist.setHeight(h);
+        d.subtract(h);
+        hlist.setDepth(d);
+        return index + 1;
+    }
 }
