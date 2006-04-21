@@ -59,7 +59,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.31 $
+ * @version $Revision: 1.32 $
  */
 public class HorizontalListMaker extends AbstractListMaker {
 
@@ -282,7 +282,7 @@ public class HorizontalListMaker extends AbstractListMaker {
                         if (glyph != null) {
                             Dimen kerning = glyph.getKerning(symbol);
                             if (kerning.ne(Dimen.ZERO_PT)) {
-                                nodes.add(new ImplicitKernNode(kerning));
+                                nodes.add(new ImplicitKernNode(kerning, true));
                             }
                         }
                     }

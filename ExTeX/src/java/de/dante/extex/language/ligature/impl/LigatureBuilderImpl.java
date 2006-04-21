@@ -38,7 +38,7 @@ import de.dante.util.UnicodeChar;
  * font.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class LigatureBuilderImpl implements LigatureBuilder {
 
@@ -111,7 +111,7 @@ public class LigatureBuilderImpl implements LigatureBuilder {
                 } else {
                     Dimen kern = gc.getKerning(cni.getCharacter());
                     if (kern != null && kern.ne(Dimen.ZERO)) {
-                        list.add(i, new ImplicitKernNode(kern));
+                        list.add(i, new ImplicitKernNode(kern, true));
                         i++;
                     }
                     charNode = cni;
