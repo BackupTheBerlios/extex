@@ -22,7 +22,7 @@ package de.dante.extex.typesetter.type.node;
 import de.dante.extex.typesetter.type.Node;
 
 /**
- * This interface describes a horizpntal or vertical adjustment of the
+ * This interface describes a horizontal or vertical adjustment of the
  * current position on the page.
  *
  * From The TeXbook
@@ -39,7 +39,7 @@ import de.dante.extex.typesetter.type.Node;
  * @see de.dante.extex.typesetter.type.node.ImplicitKernNode
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface KernNode extends Node {
 
