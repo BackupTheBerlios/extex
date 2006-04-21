@@ -43,7 +43,7 @@ import de.dante.util.UnicodeChar;
  * expansion.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class CharCode extends AbstractCode
         implements
@@ -73,7 +73,6 @@ public class CharCode extends AbstractCode
         this.character = uc;
     }
 
-    
     /**
      * @see de.dante.extex.interpreter.type.count.CountConvertible#convertCount(
      *      de.dante.extex.interpreter.context.Context,
@@ -125,7 +124,7 @@ public class CharCode extends AbstractCode
      * @return the character
      */
     public UnicodeChar getCharacter() {
-    
+
         return this.character;
     }
 
@@ -139,6 +138,14 @@ public class CharCode extends AbstractCode
             final Typesetter typesetter) throws InterpreterException {
 
         return new Tokens(context, Integer.toString(character.getCodePoint()));
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.AbstractCode#toString()
+     */
+    public String toString() {
+
+        return character.toString();
     }
 
 }
