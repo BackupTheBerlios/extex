@@ -35,7 +35,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * with the translated kerning value.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class KernNoad extends AbstractNoad {
 
@@ -71,7 +71,7 @@ public class KernNoad extends AbstractNoad {
             throws TypesetterException,
                 ConfigurationException {
 
-        list.add(new ExplicitKernNode(mathContext.convert(kern)));
+        list.add(new ExplicitKernNode(mathContext.convert(kern), true));
         return index + 1;
     }
 
