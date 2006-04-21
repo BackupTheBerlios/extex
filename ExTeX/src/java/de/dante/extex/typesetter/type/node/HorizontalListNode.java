@@ -20,6 +20,7 @@
 package de.dante.extex.typesetter.type.node;
 
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.FixedGlueComponent;
@@ -37,14 +38,14 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
-public class HorizontalListNode extends AbstractNodeList {
+public class HorizontalListNode extends GenericNodeList {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 20060417L;
 
     /**
      * Creates a new object. The list is empty initially.
@@ -65,6 +66,7 @@ public class HorizontalListNode extends AbstractNodeList {
 
         super();
         setWidth(width);
+        setTargetWidth(width);
     }
 
     /**
@@ -74,8 +76,7 @@ public class HorizontalListNode extends AbstractNodeList {
      */
     public HorizontalListNode(final Node node) {
 
-        super();
-        add(node);
+        super(node);
     }
 
     /**
@@ -89,6 +90,31 @@ public class HorizontalListNode extends AbstractNodeList {
         super();
         add(node1);
         add(node2);
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.node.AbstractNodeList#add(
+     *      int,
+     *      de.dante.extex.typesetter.type.Node)
+     */
+    public void add(final int index, final Node node) {
+
+        super.add(index, node);
+        getWidth().add(node.getWidth());
+        getHeight().max(node.getHeight());
+        getDepth().max(node.getDepth());
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.node.AbstractNodeList#add(
+     *      de.dante.extex.typesetter.type.Node)
+     */
+    public void add(final Node node) {
+
+        super.add(node);
+        getWidth().add(node.getWidth());
+        getHeight().max(node.getHeight());
+        getDepth().max(node.getDepth());
     }
 
     /**
@@ -114,6 +140,41 @@ public class HorizontalListNode extends AbstractNodeList {
             throws GeneralException {
 
         return super.atShipping(context, typesetter, visitor, true);
+    }
+
+    /**
+     * Adjust the variable nodes to achieve a given target width.
+     *
+     */
+    public void hpack() {
+
+        Dimen w = new Dimen(getTargetWidth());
+        if (w == null) {
+            return;
+        }
+        w.subtract(getWidth());
+        if (w.gt(Dimen.ZERO_PT)) {
+            //          TODO gene
+        } else if (w.lt(Dimen.ZERO_PT)) {
+            //          TODO gene
+        }
+    }
+
+    /**
+     * Adjust the variable nodes to achieve a given target width.
+     *
+     * @param width the new target width
+     */
+    public void hpack(final FixedDimen width) {
+
+        setTargetWidth(width);
+        Dimen w = new Dimen(width);
+        w.subtract(getWidth());
+        if (w.gt(Dimen.ZERO_PT)) {
+            //          TODO gene
+        } else if (w.lt(Dimen.ZERO_PT)) {
+            //          TODO gene
+        }
     }
 
     /**
@@ -165,17 +226,6 @@ public class HorizontalListNode extends AbstractNodeList {
         sb.append(prefix);
         sb.append("(hlist ");
         super.toText(sb, prefix);
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.type.node.AbstractNodeList#updateDimensions(
-     *      de.dante.extex.typesetter.type.Node, boolean)
-     */
-    protected void updateDimensions(final Node node, final boolean first) {
-
-        getWidth().add(node.getWidth());
-        getHeight().max(node.getHeight());
-        getDepth().max(node.getDepth());
     }
 
     /**

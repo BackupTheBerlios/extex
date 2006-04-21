@@ -41,14 +41,14 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
-public class VerticalListNode extends AbstractNodeList implements NodeList {
+public class VerticalListNode extends GenericNodeList implements NodeList {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 20060417L;
 
     /**
      * Creates a new object.
@@ -58,6 +58,41 @@ public class VerticalListNode extends AbstractNodeList implements NodeList {
     public VerticalListNode() {
 
         super();
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.node.AbstractNodeList#add(
+     *      int,
+     *      de.dante.extex.typesetter.type.Node)
+     */
+    public void add(final int index, final Node node) {
+
+        super.add(index, node);
+        getWidth().max(node.getWidth());
+        Dimen d = getDepth();
+        if (index == 0) {
+            getHeight().set(node.getHeight());
+        } else {
+            d.add(node.getHeight());
+        }
+        d.add(node.getDepth());
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.node.AbstractNodeList#add(
+     *      de.dante.extex.typesetter.type.Node)
+     */
+    public void add(final Node node) {
+
+        super.add(node);
+        getWidth().max(node.getWidth());
+        Dimen d = getDepth();
+        if (size() == 1) {
+            getHeight().set(node.getHeight());
+        } else {
+            d.add(node.getHeight());
+        }
+        d.add(node.getDepth());
     }
 
     /**
@@ -100,34 +135,6 @@ public class VerticalListNode extends AbstractNodeList implements NodeList {
         long p = penalty;
         // TODO gene: computePenalty unimplemented
         return p;
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.type.Node#spreadHeight(
-     *      de.dante.extex.interpreter.type.dimen.FixedDimen,
-     *      de.dante.extex.interpreter.type.glue.FixedGlueComponent)
-     */
-    public void spreadHeight(final FixedDimen w, final FixedGlueComponent sum) {
-
-        int size = size();
-        FixedGlueComponent s;
-
-        if (sum == null) {
-            WideGlue sx = new WideGlue();
-
-            for (int i = 0; i < size; i++) {
-                get(i).addWidthTo(sx);
-            }
-            s = (sx.getLength().ge(w) ? sx.getShrink() : sx.getStretch());
-        } else {
-            s = sum;
-        }
-
-        for (int i = 0; i < size; i++) {
-            get(i).spreadHeight(w, s);
-        }
-
-        getHeight().add(w);
     }
 
     /**
@@ -203,6 +210,34 @@ public class VerticalListNode extends AbstractNodeList implements NodeList {
     }
 
     /**
+     * @see de.dante.extex.typesetter.type.Node#spreadHeight(
+     *      de.dante.extex.interpreter.type.dimen.FixedDimen,
+     *      de.dante.extex.interpreter.type.glue.FixedGlueComponent)
+     */
+    public void spreadHeight(final FixedDimen w, final FixedGlueComponent sum) {
+
+        int size = size();
+        FixedGlueComponent s;
+
+        if (sum == null) {
+            WideGlue sx = new WideGlue();
+
+            for (int i = 0; i < size; i++) {
+                get(i).addWidthTo(sx);
+            }
+            s = (sx.getLength().ge(w) ? sx.getShrink() : sx.getStretch());
+        } else {
+            s = sum;
+        }
+
+        for (int i = 0; i < size; i++) {
+            get(i).spreadHeight(w, s);
+        }
+
+        getHeight().add(w);
+    }
+
+    /**
      * @see de.dante.extex.typesetter.type.Node#toString(
      *      java.lang.StringBuffer,
      *      java.lang.String, int, int)
@@ -222,22 +257,6 @@ public class VerticalListNode extends AbstractNodeList implements NodeList {
 
         sb.append("(vlist ");
         super.toText(sb, prefix);
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.type.node.AbstractNodeList#updateDimensions(
-     *      de.dante.extex.typesetter.type.Node, boolean)
-     */
-    protected void updateDimensions(final Node node, final boolean first) {
-
-        getWidth().max(node.getWidth());
-        Dimen d = getDepth();
-        if (first) {
-            getHeight().set(node.getHeight());
-        } else {
-            d.add(node.getHeight());
-        }
-        d.add(node.getDepth());
     }
 
     /**
