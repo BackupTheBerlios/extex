@@ -36,14 +36,9 @@ import de.dante.util.exception.GeneralException;
  * This document writer produces Encapsulated Postscript documents.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class EpsWriter extends AbstractPostscriptWriter {
-
-    /**
-     * The field <tt>converter</tt> contains the converter to use.
-     */
-    private PsConverter converter;
 
     /**
      * The field <tt>fontManager</tt> contains the font manager.
@@ -54,12 +49,6 @@ public class EpsWriter extends AbstractPostscriptWriter {
      * The field <tt>headerManager</tt> contains the header manager.
      */
     private HeaderManager headerManager = new HeaderManager();
-
-    /**
-     * The field <tt>init</tt> contains the indicator whether the initialization
-     * is still required.
-     */
-    private boolean init = true;
 
     /**
      * Creates a new object.
@@ -93,11 +82,7 @@ public class EpsWriter extends AbstractPostscriptWriter {
      */
     public int shipout(final Page p) throws GeneralException, IOException {
 
-        if (init) {
-            headerManager.reset();
-            converter = makeConverter(headerManager);
-            init = false;
-        }
+        PsConverter converter = getConverter(headerManager);
 
         OutputStream stream = newOutputStream("eps");
 

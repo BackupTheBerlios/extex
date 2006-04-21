@@ -43,7 +43,7 @@ import de.dante.util.framework.configuration.Configurable;
  * This document writer produces multi-page PostScript documents.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class PsWriter extends AbstractPostscriptWriter
         implements
@@ -57,11 +57,6 @@ public class PsWriter extends AbstractPostscriptWriter
             "MM/dd/yyyy HH:mm:ss");
 
     /**
-     * The field <tt>converter</tt> contains the converter to use.
-     */
-    private PsConverter converter;
-
-    /**
      * The field <tt>fontManager</tt> contains the font manager.
      */
     private FontManager fontManager = new FontManager();
@@ -70,12 +65,6 @@ public class PsWriter extends AbstractPostscriptWriter
      * The field <tt>headerManager</tt> contains the header manager.
      */
     private HeaderManager headerManager = new HeaderManager();
-
-    /**
-     * The field <tt>init</tt> contains the indicator whether the initialization
-     * is still required.
-     */
-    private boolean init = true;
 
     /**
      * The field <tt>page</tt> contains the byte arrays of the single pages.
@@ -172,12 +161,7 @@ public class PsWriter extends AbstractPostscriptWriter
      */
     public int shipout(final Page p) throws GeneralException, IOException {
 
-        if (init) {
-            headerManager.reset();
-            converter = makeConverter(headerManager);
-            init = false;
-        }
-
+        PsConverter converter = getConverter(headerManager);
         page.add(converter.toPostScript(p, fontManager, headerManager));
         return 1;
     }
