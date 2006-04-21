@@ -44,7 +44,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This class provides a container for a mathematical character.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class CharNoad extends AbstractNoad {
 
@@ -133,7 +133,7 @@ public class CharNoad extends AbstractNoad {
                         Dimen kerning = font.getGlyph(cn.getCharacter())
                                 .getKerning(c);
                         if (kerning.ne(Dimen.ZERO_PT)) {
-                            nodes.add(new ImplicitKernNode(kerning));
+                            nodes.add(new ImplicitKernNode(kerning, true));
                         }
                     }
                 }
@@ -144,7 +144,7 @@ public class CharNoad extends AbstractNoad {
             TypesettingContext tc = tcFactory.newInstance();
             tc = tcFactory.newInstance(tc, font);
             tc = tcFactory.newInstance(tc, color);
-            nodes.addGlyph(new CharNode(tc, c));
+            nodes.add(new CharNode(tc, c));
         }
 
         return index + 1;
@@ -190,7 +190,7 @@ public class CharNoad extends AbstractNoad {
                     Dimen kerning = font.getGlyph(cn.getCharacter())
                             .getKerning(c);
                     if (kerning.ne(Dimen.ZERO_PT)) {
-                        nodes.add(new ImplicitKernNode(kerning));
+                        nodes.add(new ImplicitKernNode(kerning, true));
                     }
                 }
             }
@@ -198,7 +198,7 @@ public class CharNoad extends AbstractNoad {
 
         TypesettingContext tc = context.getTypesettingContextFactory()
                 .newInstance(context.getTypesettingContext(), font);
-        nodes.addGlyph(new CharNode(tc, c));
+        nodes.add(new CharNode(tc, c));
     }
 
 }
