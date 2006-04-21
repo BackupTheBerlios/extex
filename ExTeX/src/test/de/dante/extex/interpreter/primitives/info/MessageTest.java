@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\message</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class MessageTest extends NoFlagsPrimitiveTester {
 
@@ -197,6 +197,24 @@ public class MessageTest extends NoFlagsPrimitiveTester {
                 + "\\end ",
                 //--- log message ---
                 "a\\hfill b");
+    }
+
+    /**
+     * <testcase primitive="\message">
+     *  Test case checking that \message ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testMessageErr4() throws Exception {
+
+        assertFailure(//--- input code ---
+                "\\scrollmode"
+                + DEFINE_BRACES
+                + "\\message{a\\par b}"
+                + "\\end ",
+                //--- log message ---
+                "a\\par b");
     }
 
     /**
