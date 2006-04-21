@@ -22,6 +22,7 @@ package de.dante.extex.typesetter.type.math;
 import java.io.Serializable;
 import java.util.logging.Logger;
 
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
@@ -36,14 +37,14 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * large, and a small math glyph.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class MathDelimiter implements Noad, Serializable {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 20060420L;
 
     /**
      * The field <tt>largeChar</tt> contains the code of the large character.
@@ -129,6 +130,7 @@ public class MathDelimiter implements Noad, Serializable {
     public void setSubscript(final Noad subscript) {
 
         // TODO gene: setSubscript unimplemented
+        throw new UnsupportedOperationException("setSubscript");
     }
 
     /**
@@ -138,6 +140,7 @@ public class MathDelimiter implements Noad, Serializable {
     public void setSuperscript(final Noad superscript) {
 
         // TODO gene: setSuperscript unimplemented
+        throw new UnsupportedOperationException("setSuperscript");
     }
 
     /**
@@ -187,6 +190,28 @@ public class MathDelimiter implements Noad, Serializable {
     public int typeset(final NoadList noads, final int index,
             final NodeList list, final MathContext mathContext,
             final TypesetterOptions context, final Logger logger)
+            throws TypesetterException,
+                ConfigurationException {
+
+        typeset(list, mathContext, context, null);
+        return index + 1;
+    }
+
+    /**
+     * Translate a MathDelimter into a NodeList.
+     *
+     * @param list the list to add the nodes to. This list contains the Nodes
+     *  previously typeset. Thus it can be used to look back
+     * @param mathContext the context to consider
+     * @param context the interpreter context
+     * @param height the target height. If <code>null</code> then the natural
+     *  height is used
+     *
+     * @throws TypesetterException in case of a problem
+     * @throws ConfigurationException in case of a configuration problem
+     */
+    public void typeset(final NodeList list, final MathContext mathContext,
+            final TypesetterOptions context, final FixedDimen height)
             throws TypesetterException,
                 ConfigurationException {
 
