@@ -28,7 +28,7 @@ import de.dante.dviware.Dvi;
  * This class represents the DVI instruction <tt>put_rule</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class DviPutRule extends AbstractDviCode {
 
@@ -74,7 +74,7 @@ public class DviPutRule extends AbstractDviCode {
         stream.write(Dvi.PUT_RULE);
         write4(stream, a);
         write4(stream, b);
-        return 9;
+        return 1 + 4 + 4;
     }
 
 }
