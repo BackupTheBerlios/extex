@@ -23,8 +23,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.ImpossibleException;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
+import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeIterator;
@@ -37,9 +39,15 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.1 $
  */
-public abstract class AbstractNodeList extends AbstractNode implements NodeList {
+public class GenericNodeList extends AbstractNode implements NodeList {
+
+    /**
+     * The field <tt>serialVersionUID</tt> contains the version number for
+     * serialization.
+     */
+    private static final long serialVersionUID = 20060417L;
 
     /**
      * The field <tt>list</tt> is the container for the elements of this node
@@ -80,9 +88,20 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
     /**
      * Creates a new object.
      */
-    public AbstractNodeList() {
+    public GenericNodeList() {
 
         super();
+    }
+
+    /**
+     * Creates a new object.
+     *
+     * @param node the node to add initially
+     */
+    public GenericNodeList(final Node node) {
+
+        super();
+        add(node);
     }
 
     /**
@@ -92,7 +111,6 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
     public void add(final int index, final Node node) {
 
         list.add(index, node);
-        updateDimensions(node, list.size() == 1);
     }
 
     /**
@@ -102,17 +120,16 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
     public void add(final Node node) {
 
         list.add(node);
-        updateDimensions(node, list.size() == 1);
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeList#addGlyph(
-     *      de.dante.extex.typesetter.type.node.CharNode)
+     * @see de.dante.extex.typesetter.type.NodeList#addSkip(
+     *      de.dante.extex.interpreter.type.glue.FixedGlue)
      */
-    public void addGlyph(final CharNode node) {
+    public void addSkip(final FixedGlue glue) {
 
-        list.add(node);
-        updateDimensions(node, list.size() == 1);
+        throw new UnsupportedOperationException(getClass().getName()
+                + "#addSkip()");
     }
 
     /**
@@ -153,6 +170,9 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
     public void clear() {
 
         list.clear();
+        setWidth(Dimen.ZERO_PT);
+        setHeight(Dimen.ZERO_PT);
+        setDepth(Dimen.ZERO_PT);
     }
 
     /**
@@ -290,33 +310,45 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
     }
 
     /**
-     * Setter for targetDepth.
+     * Setter for the target depth.
      *
-     * @param theTargetDepth the target depth to set.
+     * @param depth the target depth to set.
      */
-    public void setTargetDepth(final Dimen theTargetDepth) {
+    public void setTargetDepth(final Dimen depth) {
 
-        this.targetDepth = theTargetDepth;
+        if (this.targetDepth == null) {
+            this.targetDepth = new Dimen(depth);
+        } else {
+            this.targetDepth.set(depth);
+        }
     }
 
     /**
-     * Setter for targetHeight.
+     * Setter for the target height.
      *
-     * @param theTargetHeight the targetHeight to set.
+     * @param height the target height to set.
      */
-    public void setTargetHeight(final Dimen theTargetHeight) {
+    public void setTargetHeight(final FixedDimen height) {
 
-        this.targetHeight = theTargetHeight;
+        if (this.targetHeight == null) {
+            this.targetHeight = new Dimen(height);
+        } else {
+            this.targetHeight.set(height);
+        }
     }
 
     /**
-     * Setter for targetWidth.
+     * Setter for the target width.
      *
-     * @param theTargetWidth the targetWidth to set.
+     * @param width the target width to set.
      */
-    public void setTargetWidth(final Dimen theTargetWidth) {
+    public void setTargetWidth(final FixedDimen width) {
 
-        this.targetWidth = theTargetWidth;
+        if (this.targetWidth == null) {
+            this.targetWidth = new Dimen(width);
+        } else {
+            this.targetWidth.set(width);
+        }
     }
 
     /**
@@ -397,12 +429,14 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
     }
 
     /**
-     * Recompute the dimensions of the given node.
-     *
-     * @param node the node to update
-     * @param first indicator that this is the first node in the list
+     * @see de.dante.extex.typesetter.type.Node#visit(
+     *      de.dante.extex.typesetter.type.NodeVisitor,
+     *      java.lang.Object)
      */
-    protected abstract void updateDimensions(final Node node,
-            final boolean first);
+    public Object visit(final NodeVisitor visitor, final Object value)
+            throws GeneralException {
+
+        throw new ImpossibleException(getClass().getName() + "#visit()");
+    }
 
 }
