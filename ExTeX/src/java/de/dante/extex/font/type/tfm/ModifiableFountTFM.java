@@ -39,7 +39,7 @@ import de.dante.util.UnicodeChar;
  * Adapter for a ModifiableFount for TFM.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class ModifiableFountTFM implements ModifiableFount, Serializable {
 
@@ -112,6 +112,7 @@ public class ModifiableFountTFM implements ModifiableFount, Serializable {
             String labelname = param.getLabelName(i);
             Dimen d = convertFixWordToDimen(fw[i]);
             fontdimen.put(labelname, d);
+            fontdimen.put(Integer.toString(i), d); // gene
         }
     }
 
