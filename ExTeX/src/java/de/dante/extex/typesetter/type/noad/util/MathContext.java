@@ -35,7 +35,7 @@ import de.dante.extex.typesetter.type.noad.StyleNoad;
  * mathematical appearance.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class MathContext {
 
@@ -45,14 +45,14 @@ public class MathContext {
     private static final long MU_UNIT = 18 * 0xffff;
 
     /**
-     * The field <tt>style</tt> contains the current style.
-     */
-    private StyleNoad style;
-
-    /**
      * The field <tt>context</tt> contains the data object for options.
      */
     private TypesetterOptions context;
+
+    /**
+     * The field <tt>style</tt> contains the current style.
+     */
+    private StyleNoad style;
 
     /**
      * Creates a new object.
@@ -68,23 +68,44 @@ public class MathContext {
     }
 
     /**
-     * Getter for style.
+     * Convert a mudimen into a dimen.
      *
-     * @return the style.
-     */
-    public StyleNoad getStyle() {
-
-        return this.style;
-    }
-
-    /**
-     * Setter for style.
+     * <p>
+     *  From The TeXbook:
+     * </p>
+     * <p><i>
+     *  There are 18 mu to an em, where the em is taken from family 2
+     *  (the math symbols family). In other words, <tt>\textfont 2</tt>
+     *  defines the em value for <tt>mu</tt> in display and text styles;
+     *  <tt>\scriptfont 2</tt> defines the em for script size material;
+     *  and <tt>\scriptscriptfont 2</tt> defines it for scriptscript size.
+     * </i></p>
      *
-     * @param style the style to set.
+     * @param mudimen the math dimen to convert
+     *
+     * @return a new instance of a Dimen corresponding to the parameter
+     *
+     * @see "TTP [717]"
      */
-    public void setStyle(final StyleNoad style) {
+    public Dimen convert(final Mudimen mudimen) {
 
-        this.style = style;
+        Font fnt = null;
+
+        if (style == StyleNoad.TEXTSTYLE || style == StyleNoad.DISPLAYSTYLE) {
+            fnt = context.getFont(NumberedFont.key(context, "textfont", "2"));
+        } else if (style == StyleNoad.SCRIPTSTYLE) {
+            fnt = context.getFont(NumberedFont.key(context, "scriptfont", "2"));
+        } else if (style == StyleNoad.SCRIPTSCRIPTSTYLE) {
+            fnt = context.getFont(NumberedFont.key(context, "scriptscriptfont",
+                    "2"));
+        } else {
+            throw new ImpossibleException("undefined style");
+        }
+
+        Dimen length = new Dimen(mudimen.getLength());
+        length.multiply(fnt.getEm().getValue(), MU_UNIT);
+
+        return length;
     }
 
     /**
@@ -140,43 +161,23 @@ public class MathContext {
     }
 
     /**
-     * Convert a mudimen into a dimen.
+     * Getter for style.
      *
-     * From The TeXbook:
-     *
-     * <p><i>
-     * There are 18 mu to an em, where the em is taken from family~2
-     * (the math symbols family). In other words, ^|\textfont|~|2| defines the em
-     * value for |mu| in display and text styles; ^|\scriptfont|~|2| defines the
-     * em for script size material; and ^|\scriptscriptfont|~|2| defines it for
-     * scriptscript size.
-     * </i></p>
-     *
-     * @param mudimen the math dimen to convert
-     *
-     * @return a new instance of a Dimen corresponding to the parameter
-     *
-     * @see "TTP [717]"
+     * @return the style.
      */
-    public Dimen convert(final Mudimen mudimen) {
+    public StyleNoad getStyle() {
 
-        Font fnt = null;
+        return this.style;
+    }
 
-        if (style == StyleNoad.TEXTSTYLE || style == StyleNoad.DISPLAYSTYLE) {
-            fnt = context.getFont(NumberedFont.key(context, "textfont", "2"));
-        } else if (style == StyleNoad.SCRIPTSTYLE) {
-            fnt = context.getFont(NumberedFont.key(context, "scriptfont", "2"));
-        } else if (style == StyleNoad.SCRIPTSCRIPTSTYLE) {
-            fnt = context.getFont(NumberedFont.key(context, "scriptscriptfont",
-                    "2"));
-        } else {
-            throw new ImpossibleException("undefined style");
-        }
+    /**
+     * Setter for style.
+     *
+     * @param style the style to set.
+     */
+    public void setStyle(final StyleNoad style) {
 
-        Dimen length = new Dimen(mudimen.getLength());
-        length.multiply(fnt.getEm().getValue(), MU_UNIT);
-
-        return length;
+        this.style = style;
     }
 
 }
