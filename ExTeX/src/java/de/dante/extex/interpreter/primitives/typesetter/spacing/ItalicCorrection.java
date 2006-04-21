@@ -32,7 +32,6 @@ import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.node.CharNode;
 import de.dante.extex.typesetter.type.node.ExplicitKernNode;
 import de.dante.util.UnicodeChar;
-import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
@@ -58,7 +57,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class ItalicCorrection extends AbstractCode {
 
@@ -95,9 +94,7 @@ public class ItalicCorrection extends AbstractCode {
                     ((CharNode) node).getCharacter(), //
                     ((CharNode) node).getTypesettingContext().getFont());
             try {
-                typesetter.add(new ExplicitKernNode(ic));
-            } catch (GeneralException e) {
-                throw new InterpreterException(e);
+                typesetter.add(new ExplicitKernNode(ic, true));
             } catch (ConfigurationException e) {
                 throw new InterpreterException(e);
             }
@@ -108,7 +105,7 @@ public class ItalicCorrection extends AbstractCode {
      * Determine the italic correction for a character in a font. If no
      * information can be found in the font then opt is returned.
      *
-     * @param uc the unicode charcter to compute the italic correction for
+     * @param uc the Unicode character to compute the italic correction for
      * @param font the font to use
      *
      * @return the italic correction
