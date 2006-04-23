@@ -21,12 +21,20 @@ package de.dante.extex.typesetter.type.noad;
 
 import java.util.logging.Logger;
 
+import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
+import de.dante.extex.interpreter.type.glue.FixedGlue;
+import de.dante.extex.interpreter.type.glue.WideGlue;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.math.MathDelimiter;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
+import de.dante.extex.typesetter.type.node.GlueNode;
+import de.dante.extex.typesetter.type.node.HorizontalListNode;
+import de.dante.extex.typesetter.type.node.RuleNode;
+import de.dante.extex.typesetter.type.node.VerticalListNode;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
@@ -36,7 +44,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [683]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class FractionNoad extends AbstractNoad {
 
@@ -52,9 +60,14 @@ public class FractionNoad extends AbstractNoad {
     private MathDelimiter leftDelimiter;
 
     /**
-     * The field <tt>nominator</tt> contains the numerator part.
+     * The field <tt>numerator</tt> contains the numerator part.
      */
     private MathList numerator;
+
+    /**
+     * The field <tt>tc</tt> contains the ...
+     */
+    private TypesettingContext tc;
 
     /**
      * The field <tt>rightDelimiter</tt> contains the right delimiter or
@@ -67,7 +80,7 @@ public class FractionNoad extends AbstractNoad {
      * The value <code>null</code> indicates that the default rule thickness of
      * the current size should be used.
      */
-    private Dimen thickness = null;
+    private FixedDimen thickness = null;
 
     /**
      * Creates a new object.
@@ -80,10 +93,12 @@ public class FractionNoad extends AbstractNoad {
      *  <code>null</code>  for none
      * @param thickness the thickness of the rule or <code>null</code> for the
      *  default thickness
+     * @param tc the typesetting context for the rule
      */
     public FractionNoad(final MathList denom, final MathList num,
             final MathDelimiter leftDelimiter,
-            final MathDelimiter rightDelimiter, final Dimen thickness) {
+            final MathDelimiter rightDelimiter, final FixedDimen thickness,
+            final TypesettingContext tc) {
 
         super();
         this.denominator = denom;
@@ -91,6 +106,7 @@ public class FractionNoad extends AbstractNoad {
         this.leftDelimiter = leftDelimiter;
         this.rightDelimiter = rightDelimiter;
         this.thickness = thickness;
+        this.tc = tc;
     }
 
     /**
@@ -135,9 +151,62 @@ public class FractionNoad extends AbstractNoad {
             throws TypesetterException,
                 ConfigurationException {
 
-        //TODO gene: typeset() unimplemented
-        throw new RuntimeException("unimplemented");
-        //return index + 1;
+        NodeList vlist = new VerticalListNode();
+
+        HorizontalListNode num = new HorizontalListNode();
+        StyleNoad style = mathContext.getStyle();
+        mathContext.setStyle(style.num());
+        numerator.typeset(noads, index, num, mathContext, context, logger);
+
+        mathContext.setStyle(style.denom());
+        HorizontalListNode den = new HorizontalListNode();
+        denominator.typeset(noads, index, den, mathContext, context, logger);
+        mathContext.setStyle(style);
+
+        Dimen wNum = num.getWidth();
+        Dimen wDen = den.getWidth();
+        if (wNum.lt(wDen)) {
+            WideGlue wg = new WideGlue();
+            num.add(0, new GlueNode(FixedGlue.S_S, true));
+            num.add(new GlueNode(FixedGlue.S_S, true));
+            num.addWidthTo(wg);
+            wDen.subtract(wNum);
+            num.spreadWidth(wDen, wg.getStretch());
+            wNum = wDen;
+        } else if (wNum.gt(wDen)) {
+            WideGlue wg = new WideGlue();
+            den.add(0, new GlueNode(FixedGlue.S_S, true));
+            den.add(new GlueNode(FixedGlue.S_S, true));
+            den.addWidthTo(wg);
+            wNum.subtract(wDen);
+            den.spreadWidth(wNum, wg.getStretch());
+        }
+
+        vlist.add(num);
+        if (thickness == null) {
+            thickness = defaultRuleThickness(style, context);
+        }
+
+        if (thickness.ne(Dimen.ZERO)) {
+            vlist.add(new RuleNode(wNum, thickness, Dimen.ZERO_PT, tc, true));
+        }
+
+        vlist.add(den);
+        //TODO gene: adjust the move of num and den
+
+        if (leftDelimiter != null) {
+            leftDelimiter.typeset(list, mathContext, context,
+                    vlist.getHeight(), vlist.getDepth());
+        }
+
+        list.add(vlist);
+
+        if (rightDelimiter != null) {
+            rightDelimiter.typeset(list, mathContext, context, vlist
+                    .getHeight(), vlist.getDepth());
+        }
+
+        return index + 1;
     }
 
 }

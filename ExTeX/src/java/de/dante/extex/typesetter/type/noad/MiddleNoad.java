@@ -21,22 +21,24 @@ package de.dante.extex.typesetter.type.noad;
 
 import java.util.logging.Logger;
 
+import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.math.MathDelimiter;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
+import de.dante.extex.typesetter.type.node.HorizontalListNode;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * This Noad carries a delimiter which is set in the middle between math
- * material surrounding it. This delmitier adjusts its height to the height of
+ * material surrounding it. This delimiter adjusts its height to the height of
  * the surrounding material.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
-public class MiddleNoad extends AbstractNoad {
+public class MiddleNoad extends LeftNoad {
 
     /**
      * The field <tt>delimiter</tt> contains the middle delimiter.
@@ -46,18 +48,27 @@ public class MiddleNoad extends AbstractNoad {
     /**
      * The field <tt>noad</tt> contains the ...
      */
-    private Noad noad;
+    private LeftNoad noadPre;
+
+    /**
+     * The field <tt>noadPost</tt> contains the ...
+     */
+    private Noad noadPost;
 
     /**
      * Creates a new object.
      *
+     * @param noadPre ...
      * @param delimiter the delimiter
+     * @param noadPost ...
      */
-    public MiddleNoad(final Noad noad, final MathDelimiter delimiter) {
+    public MiddleNoad(final LeftNoad noadPre, final MathDelimiter delimiter,
+            final Noad noadPost) {
 
-        super();
+        super(noadPre, delimiter);
         this.delimiter = delimiter;
-        this.noad = noad;
+        this.noadPre = noadPre;
+        this.noadPost = noadPost;
     }
 
     /**
@@ -72,22 +83,35 @@ public class MiddleNoad extends AbstractNoad {
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.noad.Noad#typeset(
+     * @see de.dante.extex.typesetter.type.noad.LeftNoad#typeset(
      *      de.dante.extex.typesetter.type.noad.NoadList,
      *      int,
      *      de.dante.extex.typesetter.type.NodeList,
      *      de.dante.extex.typesetter.type.noad.util.MathContext,
      *      de.dante.extex.typesetter.TypesetterOptions,
-     *      java.util.logging.Logger)
+     *      java.util.logging.Logger,
+     *      de.dante.extex.interpreter.type.dimen.Dimen,
+     *      de.dante.extex.interpreter.type.dimen.Dimen)
      */
-    public int typeset(final NoadList noads, final int index,
+    public void typeset(final NoadList noads, final int index,
             final NodeList list, final MathContext mathContext,
-            final TypesetterOptions context, final Logger logger)
+            final TypesetterOptions context, final Logger logger,
+            final Dimen height, final Dimen depth)
             throws TypesetterException,
                 ConfigurationException {
 
+        HorizontalListNode hlist = new HorizontalListNode();
+
+        noadPost.typeset(noads, index, hlist, mathContext, context, logger);
+        height.max(hlist.getHeight());
+        depth.max(hlist.getDepth());
+
+        noadPre.typeset(noads, index, list, mathContext, context, logger,
+                height, depth);
+
         delimiter.typeset(noads, index, list, mathContext, context, logger);
-        return index + 1;
+        list.add(hlist);
+        //TODO gene: add clearance
     }
 
 }

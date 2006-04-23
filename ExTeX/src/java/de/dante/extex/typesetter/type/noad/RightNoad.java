@@ -21,6 +21,7 @@ package de.dante.extex.typesetter.type.noad;
 
 import java.util.logging.Logger;
 
+import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
@@ -36,7 +37,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [687]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class RightNoad extends AbstractNoad {
 
@@ -48,7 +49,7 @@ public class RightNoad extends AbstractNoad {
     /**
      * The field <tt>noad</tt> contains the noad(s) on the left side.
      */
-    private Noad noad;
+    private LeftNoad noad;
 
     /**
      * Creates a new object.
@@ -56,7 +57,7 @@ public class RightNoad extends AbstractNoad {
      * @param noad the preceding noad
      * @param delimiter the glue
      */
-    public RightNoad(final Noad noad, final MathDelimiter delimiter) {
+    public RightNoad(final LeftNoad noad, final MathDelimiter delimiter) {
 
         super();
         this.noad = noad;
@@ -92,9 +93,14 @@ public class RightNoad extends AbstractNoad {
             throws TypesetterException,
                 ConfigurationException {
 
-        //TODO gene: typeset() unimplemented
-        throw new RuntimeException("unimplemented");
-        //return index + 1;
+        Dimen height = new Dimen();
+        Dimen depth = new Dimen();
+        noad.typeset(noads, index, list, mathContext, context, logger, height,
+                depth);
+        delimiter.typeset(list, mathContext, context, height, depth);
+        //TODO gene: add some separation
+
+        return index + 1;
     }
 
 }
