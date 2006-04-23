@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is an abstract base class for testing math primitives.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class AbstractMathTester extends NoFlagsPrimitiveTester {
 
@@ -39,7 +39,9 @@ public class AbstractMathTester extends NoFlagsPrimitiveTester {
         + "\\font\\f cmex10 \\textfont3=\\f"
         + "\\scriptfont3=\\f"
         + "\\scriptscriptfont3=\\f"
-        + "\\font\\f cmmi10 \\textfont1=\\f ";
+        + "\\font\\f cmmi10 \\textfont1=\\f "
+        + "\\font\\f cmmi7 \\scriptfont1=\\f "
+        + "\\font\\f cmmi5 \\scriptscriptfont1=\\f ";
 
 
     /**
