@@ -38,7 +38,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [687]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class VCenterNoad extends AbstractNucleusNoad {
 
@@ -91,7 +91,7 @@ public class VCenterNoad extends AbstractNucleusNoad {
         } catch (HelpingException e) {
             throw new ImpossibleException(e);
         }
-        h.add(axisHeight(mathContext.getStyle(), context));
+        h.add(symbolValue(AXIS_HEIGHT, mathContext.getStyle(), context));
         hlist.setHeight(h);
         d.subtract(h);
         hlist.setDepth(d);
