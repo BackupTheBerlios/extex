@@ -35,7 +35,7 @@ import de.dante.extex.typesetter.type.noad.StyleNoad;
  * mathematical appearance.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class MathContext {
 
@@ -158,6 +158,16 @@ public class MathContext {
         }
 
         return new Glue(length, stretch, shrink);
+    }
+
+    /**
+     * Getter for the options.
+     *
+     * @return the options
+     */
+    public TypesetterOptions getOptions() {
+
+        return this.context;
     }
 
     /**
