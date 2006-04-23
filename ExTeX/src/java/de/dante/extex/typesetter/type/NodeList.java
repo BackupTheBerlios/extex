@@ -22,7 +22,6 @@ package de.dante.extex.typesetter.type;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
-import de.dante.extex.typesetter.type.node.CharNode;
 
 /**
  * This interface describes the features of a linear collection of nodes.
@@ -41,7 +40,7 @@ import de.dante.extex.typesetter.type.node.CharNode;
  * @see de.dante.extex.interpreter.type.box.Box
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public interface NodeList extends Node {
 
@@ -99,7 +98,7 @@ public interface NodeList extends Node {
     /**
      * Getter for the shift value of the node list.
      * The shift parameter describes how far from its original position the box
-     * is shifted up or down. Positive values indicate a move upwards.
+     * is shifted up or down. Positive values indicate a shift downwards.
      *
      * @return the shift value
      */
@@ -127,7 +126,8 @@ public interface NodeList extends Node {
     /**
      * Setter for the move value of the node list.
      * The move parameter describes how far from its original position the box
-     * is moved up or down. Positive values indicate a move upwards.
+     * is moved leftwards or rightwards. Positive values indicate a move
+     * rightwards.
      *
      * @param d the move value
      */
@@ -136,8 +136,7 @@ public interface NodeList extends Node {
     /**
      * Setter for the shift value of the node list.
      * The shift parameter describes how far from its original position the box
-     * is shifted leftwards or rightwards. Positive values indicate a shift
-     * rightwards.
+     * is shifted up or down. Positive values indicate a shift downwards.
      *
      * @param d the amount to be shifted
      */
