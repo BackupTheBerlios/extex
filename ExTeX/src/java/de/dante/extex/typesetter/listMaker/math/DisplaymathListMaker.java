@@ -25,6 +25,7 @@ import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.CantUseInException;
 import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
+import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Mode;
@@ -53,7 +54,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class DisplaymathListMaker extends MathListMaker implements EqConsumer {
 
@@ -109,6 +110,11 @@ public class DisplaymathListMaker extends MathListMaker implements EqConsumer {
             //TODO gene: eqno unimplemented
             throw new RuntimeException("unimplemented");
         }
+
+        // see [TTP 1200]
+        getManager().setSpacefactor(Count.THOUSAND);
+        //TODO gene: set space factor 1000 etc
+
         return list;
     }
 
@@ -149,6 +155,7 @@ public class DisplaymathListMaker extends MathListMaker implements EqConsumer {
             if (token == null) {
                 throw new EofException("$$");
             } else if (!t.equals(token)) {
+                // see [TTP 1197]
                 throw new HelpingException(getLocalizer(), "TTP.DisplayMathEnd");
             }
         } catch (InterpreterException e) {
