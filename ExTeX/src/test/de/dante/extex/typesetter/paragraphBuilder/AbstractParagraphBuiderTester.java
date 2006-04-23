@@ -43,6 +43,7 @@ import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.main.logging.LogFormatter;
 import de.dante.extex.scanner.type.token.TokenFactory;
 import de.dante.extex.typesetter.TypesetterOptions;
@@ -64,7 +65,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * This is the abstract base clas to test a paragraph builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public abstract class AbstractParagraphBuiderTester extends TestCase {
 
@@ -72,7 +73,7 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
      * Inner class for the typesetter options.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.3 $
+     * @version $Revision: 1.4 $
      */
     private class MockOptions implements TypesetterOptions {
 
@@ -191,6 +192,15 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
          */
         public void setParshape(final ParagraphShape shape) {
 
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.TypesetterOptions#getMuskip(java.lang.String)
+         */
+        public Muskip getMuskip(String name) {
+
+            // TODO gene: getMuskip unimplemented
+            return null;
         }
     }
 

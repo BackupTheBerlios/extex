@@ -28,6 +28,7 @@ import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.scanner.type.token.TokenFactory;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
@@ -40,7 +41,7 @@ import de.dante.util.exception.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class ParagraphBuilderImplTest extends TestCase {
 
@@ -48,7 +49,7 @@ public class ParagraphBuilderImplTest extends TestCase {
      * Inner class for the typesetter options.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.10 $
+     * @version $Revision: 1.11 $
      */
     private class MockOptions implements TypesetterOptions {
 
@@ -166,6 +167,15 @@ public class ParagraphBuilderImplTest extends TestCase {
         public void setCountOption(final String name, final long value)
                 throws GeneralException {
 
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.TypesetterOptions#getMuskip(java.lang.String)
+         */
+        public Muskip getMuskip(String name) {
+
+            // TODO gene: getMuskip unimplemented
+            return null;
         }
     }
 
