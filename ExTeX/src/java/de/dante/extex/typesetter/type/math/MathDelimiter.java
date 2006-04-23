@@ -37,7 +37,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * large, and a small math glyph.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class MathDelimiter implements Noad, Serializable {
 
@@ -129,7 +129,6 @@ public class MathDelimiter implements Noad, Serializable {
      */
     public void setSubscript(final Noad subscript) {
 
-        // TODO gene: setSubscript unimplemented
         throw new UnsupportedOperationException("setSubscript");
     }
 
@@ -139,7 +138,6 @@ public class MathDelimiter implements Noad, Serializable {
      */
     public void setSuperscript(final Noad superscript) {
 
-        // TODO gene: setSuperscript unimplemented
         throw new UnsupportedOperationException("setSuperscript");
     }
 
@@ -193,7 +191,7 @@ public class MathDelimiter implements Noad, Serializable {
             throws TypesetterException,
                 ConfigurationException {
 
-        typeset(list, mathContext, context, null);
+        typeset(list, mathContext, context, null, null);
         return index + 1;
     }
 
@@ -206,17 +204,24 @@ public class MathDelimiter implements Noad, Serializable {
      * @param context the interpreter context
      * @param height the target height. If <code>null</code> then the natural
      *  height is used
+     * @param depth the target depth. If <code>null</code> then the natural
+     *  depth is used
      *
      * @throws TypesetterException in case of a problem
      * @throws ConfigurationException in case of a configuration problem
      */
     public void typeset(final NodeList list, final MathContext mathContext,
-            final TypesetterOptions context, final FixedDimen height)
+            final TypesetterOptions context, final FixedDimen height,
+            final FixedDimen depth)
             throws TypesetterException,
                 ConfigurationException {
 
+        if (mathClass == null && smallChar == null && largeChar == null) {
+            return;
+        }
+
         //TODO gene: typeset() unimplemented
-        throw new RuntimeException("unimplemented");
+        throw new RuntimeException("unimplemented MathDelimiter");
         //return index + 1;
     }
 
