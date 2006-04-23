@@ -24,8 +24,10 @@ import java.util.logging.Logger;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
+import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
+import de.dante.extex.typesetter.type.noad.util.MathSpacing;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
@@ -34,7 +36,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [682]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class BinaryNoad extends AbstractNucleusNoad implements SimpleNoad {
 
@@ -47,6 +49,7 @@ public class BinaryNoad extends AbstractNucleusNoad implements SimpleNoad {
     public BinaryNoad(final Noad nucleus, final TypesettingContext tc) {
 
         super(nucleus, tc);
+        setSpacingClass(MathSpacing.BIN);
     }
 
     /**
@@ -74,6 +77,20 @@ public class BinaryNoad extends AbstractNucleusNoad implements SimpleNoad {
             final TypesetterOptions context, final Logger logger)
             throws TypesetterException,
                 ConfigurationException {
+
+        // see [TTP 728]
+        if (index > 0) {
+            Node prev = list.get(index - 1);
+            if (prev instanceof BinaryNoad || prev instanceof OperatorNoad
+                    || prev instanceof RelationNoad || prev instanceof OpenNoad
+                    || prev instanceof PunctationNoad
+                    || prev instanceof LeftNoad) {
+                return new OrdinaryNoad(getNucleus(), getTypesettingContext())
+                        .typeset(noads, index, list, mathContext, context,
+                                logger);
+            }
+
+        }
 
         //TODO gene: typeset() unimplemented
         throw new RuntimeException("unimplemented");
