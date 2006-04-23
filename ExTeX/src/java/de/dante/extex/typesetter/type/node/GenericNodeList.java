@@ -39,7 +39,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class GenericNodeList extends AbstractNode implements NodeList {
 
@@ -314,7 +314,7 @@ public class GenericNodeList extends AbstractNode implements NodeList {
      *
      * @param depth the target depth to set.
      */
-    public void setTargetDepth(final Dimen depth) {
+    public void setTargetDepth(final FixedDimen depth) {
 
         if (this.targetDepth == null) {
             this.targetDepth = new Dimen(depth);
@@ -388,6 +388,11 @@ public class GenericNodeList extends AbstractNode implements NodeList {
         if (shift.getValue() != 0) {
             sb.append(", shifted ");
             sb.append(shift.toString());
+        }
+
+        if (move.getValue() != 0) {
+            sb.append(", moved ");
+            sb.append(move.toString());
         }
 
         String prefix2 = prefix + ".";
