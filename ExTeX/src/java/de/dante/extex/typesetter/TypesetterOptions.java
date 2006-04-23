@@ -25,6 +25,7 @@ import de.dante.extex.interpreter.type.count.FixedCount;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
+import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.scanner.type.token.TokenFactory;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
 import de.dante.util.UnicodeChar;
@@ -35,7 +36,7 @@ import de.dante.util.exception.GeneralException;
  * options.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public interface TypesetterOptions {
 
@@ -74,6 +75,15 @@ public interface TypesetterOptions {
      * @return the content of the glue register
      */
     FixedGlue getGlueOption(String name);
+
+    /**
+     * Getter for a muskip register.
+     *
+     * @param name the name of the register
+     *
+     * @return te muskip register value
+     */
+    Muskip getMuskip(String name);
 
     /**
      * Getter for the lccode mapping of upper case characters to their
