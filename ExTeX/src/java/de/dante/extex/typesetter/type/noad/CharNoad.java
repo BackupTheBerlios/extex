@@ -36,6 +36,7 @@ import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
 import de.dante.extex.typesetter.type.node.CharNode;
+import de.dante.extex.typesetter.type.node.HorizontalListNode;
 import de.dante.extex.typesetter.type.node.ImplicitKernNode;
 import de.dante.util.UnicodeChar;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
@@ -44,7 +45,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This class provides a container for a mathematical character.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class CharNoad extends AbstractNoad {
 
@@ -121,31 +122,32 @@ public class CharNoad extends AbstractNoad {
                 logger.info(getLocalizer().format("TTP.MissingChar",
                         c.toString(), font.getFontName()));
             }
+            return index + 1;
 
-        } else {
+        }
 
-            int size = nodes.size();
-            if (size > 0) {
-                Node n = nodes.get(size - 1);
-                if (n instanceof CharNode) {
-                    CharNode cn = ((CharNode) n);
-                    if (cn.getTypesettingContext().getFont().equals(font)) {
-                        Dimen kerning = font.getGlyph(cn.getCharacter())
-                                .getKerning(c);
-                        if (kerning.ne(Dimen.ZERO_PT)) {
-                            nodes.add(new ImplicitKernNode(kerning, true));
-                        }
+        int size = nodes.size();
+        if (size > 0) {
+            Node n = nodes.get(size - 1);
+            if (n instanceof CharNode) {
+                CharNode cn = ((CharNode) n);
+                if (cn.getTypesettingContext().getFont().equals(font)) {
+                    Dimen kerning = font.getGlyph(cn.getCharacter())
+                            .getKerning(c);
+                    if (kerning.ne(Dimen.ZERO_PT)) {
+                        nodes.add(new ImplicitKernNode(kerning, true));
                     }
                 }
             }
-
-            TypesettingContextFactory tcFactory = context
-                    .getTypesettingContextFactory();
-            TypesettingContext tc = tcFactory.newInstance();
-            tc = tcFactory.newInstance(tc, font);
-            tc = tcFactory.newInstance(tc, color);
-            nodes.add(new CharNode(tc, c));
         }
+
+        TypesettingContextFactory tcFactory = context
+                .getTypesettingContextFactory();
+        TypesettingContext tc = tcFactory.newInstance();
+        tc = tcFactory.newInstance(tc, font);
+        tc = tcFactory.newInstance(tc, color);
+        CharNode charNode = new CharNode(tc, c);
+        nodes.add(makeScripts(charNode, mathContext, logger));
 
         return index + 1;
     }
