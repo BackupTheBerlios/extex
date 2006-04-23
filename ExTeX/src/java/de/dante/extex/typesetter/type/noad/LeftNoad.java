@@ -21,11 +21,13 @@ package de.dante.extex.typesetter.type.noad;
 
 import java.util.logging.Logger;
 
+import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.math.MathDelimiter;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
+import de.dante.extex.typesetter.type.node.HorizontalListNode;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
@@ -36,7 +38,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [687]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class LeftNoad extends AbstractNoad {
 
@@ -46,13 +48,14 @@ public class LeftNoad extends AbstractNoad {
     private MathDelimiter delimiter;
 
     /**
-     * The field <tt>noad</tt> contains the ...
+     * The field <tt>noad</tt> contains the noad following the left delimiter.
      */
     private Noad noad;
 
     /**
      * Creates a new object.
      *
+     * @param noad the noad following the left delimiter
      * @param delimiter the glue
      */
     public LeftNoad(final Noad noad, final MathDelimiter delimiter) {
@@ -75,8 +78,6 @@ public class LeftNoad extends AbstractNoad {
     }
 
     /**
-     *
-     * @see "TTP [762]"
      * @see de.dante.extex.typesetter.type.noad.Noad#typeset(
      *      de.dante.extex.typesetter.type.noad.NoadList,
      *      int,
@@ -91,8 +92,44 @@ public class LeftNoad extends AbstractNoad {
             throws TypesetterException,
                 ConfigurationException {
 
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param noads ...
+     * @param index ...
+     * @param list the list to add the nodes to. This list contains the Nodes
+     *  previously typeset. Thus it can be used to look back
+     * @param mathContext the context to consider
+     * @param context the interpreter context
+     * @param logger th logger for debugging
+     * @param height the target height. If <code>null</code> then the natural
+     *  height is used
+     * @param depth the target depth. If <code>null</code> then the natural
+     *  depth is used
+     *
+     * @throws TypesetterException in case of a problem
+     * @throws ConfigurationException in case of a configuration problem
+     *
+     * @see "TTP [762]"
+     */
+    public void typeset(final NoadList noads, final int index,
+            final NodeList list, final MathContext mathContext,
+            final TypesetterOptions context, final Logger logger,
+            final Dimen height, final Dimen depth)
+            throws TypesetterException,
+                ConfigurationException {
+
+        HorizontalListNode hlist = new HorizontalListNode();
+
+        noad.typeset(noads, index, hlist, mathContext, context, logger);
+        height.max(hlist.getHeight());
+        depth.max(hlist.getDepth());
         delimiter.typeset(noads, index, list, mathContext, context, logger);
-        return index + 1;
+        list.add(hlist);
+        //TODO gene: add clearance
     }
 
 }
