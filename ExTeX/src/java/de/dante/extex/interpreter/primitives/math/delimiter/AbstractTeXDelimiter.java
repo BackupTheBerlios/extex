@@ -45,7 +45,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * to and from their <logo>TeX</logo> encoding as numbers to abstract math code.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public abstract class AbstractTeXDelimiter extends AbstractMathCode {
 
@@ -250,8 +250,8 @@ public abstract class AbstractTeXDelimiter extends AbstractMathCode {
         MathClass mathClass = MathClass.getMathClass(classCode);
         MathGlyph smallChar = new MathGlyph(
                 (int) ((delcode >> SMALL_CLASS_OFFSET) & CLASS_MASK),
-                UnicodeChar.get(
-                        (int) ((delcode >> SMALL_CHAR_OFFSET) & CHAR_MASK)));
+                UnicodeChar
+                        .get((int) ((delcode >> SMALL_CHAR_OFFSET) & CHAR_MASK)));
         MathGlyph largeChar = new MathGlyph(
                 (int) ((delcode >> LARGE_CLASS_OFFSET) & CLASS_MASK),
                 UnicodeChar.get((int) (delcode & CHAR_MASK)));
