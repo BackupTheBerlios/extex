@@ -40,7 +40,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * The actual length is a multiple of math units (mu).
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class Muskip implements Serializable {
 
@@ -260,6 +260,31 @@ public class Muskip implements Serializable {
     }
 
     /**
+     * Check that the muskip has natural length zero and no stretch and
+     * shrink component.
+     *
+     * @return <code>true</code> iff the register is zero
+     */
+    public boolean isZero() {
+
+        return length.eq(GlueComponent.ZERO) && stretch.eq(GlueComponent.ZERO)
+                && shrink.eq(GlueComponent.ZERO);
+    }
+
+    /**
+     * Multiply all components by an integer fraction.
+     *
+     * @param nom nominator
+     * @param denom denominator
+     */
+    public void multiply(final long nom, final long denom) {
+
+        this.length.multiply(nom, denom);
+        this.shrink.multiply(nom, denom);
+        this.stretch.multiply(nom, denom);
+    }
+
+    /**
      * Setter for kill.
      *
      * @param kill the kill to set
@@ -328,19 +353,5 @@ public class Muskip implements Serializable {
         }
         return toks;
     }
-
-    /**
-     * Multiply all components by an integer fraction.
-     *
-     * @param nom nominator
-     * @param denom denominator
-     */
-    public void multiply(final long nom, final long denom) {
-
-        this.length.multiply(nom, denom);
-        this.shrink.multiply(nom, denom);
-        this.stretch.multiply(nom, denom);
-    }
-
 
 }
