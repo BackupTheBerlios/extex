@@ -33,7 +33,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [???]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class MathList extends AbstractNoad {
 
@@ -172,7 +172,6 @@ public class MathList extends AbstractNoad {
             i = nucleus.get(i).typeset(nucleus, i, list, mathContext, context,
                     logger);
         }
-        //TODO gene: subscript and superscript unimplemented ???
         return index + 1;
     }
 
