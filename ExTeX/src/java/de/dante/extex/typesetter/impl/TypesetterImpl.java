@@ -68,7 +68,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.88 $
+ * @version $Revision: 1.89 $
  */
 public class TypesetterImpl
         implements
@@ -300,12 +300,13 @@ public class TypesetterImpl
         pop();
         if (list instanceof VerticalListNode) {
             listMaker.addAndAdjust(list, options);
-            //            int size = list.size();
-            //            for (int i = 0; i < size; i++) {
-            //                listMaker.add(list.get(i));
-            //            }
-        } else {
+        } else if (list instanceof HorizontalListNode) {
             listMaker.add(list);
+        } else {
+            int size = list.size();
+            for (int i = 0; i < size; i++) {
+                listMaker.add(list.get(i));
+            }
         }
     }
 
@@ -459,6 +460,7 @@ public class TypesetterImpl
     public void mathShift(final Context context, final TokenSource source,
             final Token t) throws TypesetterException, ConfigurationException {
 
+        ensureHorizontalMode(source.getLocator());
         listMaker.mathShift(context, source, t);
     }
 
