@@ -25,7 +25,7 @@ import de.dante.extex.interpreter.primitives.math.AbstractMathTester;
  * This is a test suite for the primitive <tt>\over</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class OverTest extends AbstractMathTester {
 
@@ -66,7 +66,19 @@ public class OverTest extends AbstractMathTester {
         assertSuccess(//--- input code ---
                 DEFINE_MATH_FONTS + DEFINE_MATH + "$a\\over b$ \\end",
                 //--- output stream ---
-                "???");
+                "???"); //TODO gene: check
+    }
+
+    /**
+     * Test case checking that \mathaccent needs the math mode.
+     * @throws Exception in case of an error
+     */
+    public void testMath2() throws Exception {
+
+        assertSuccess(//--- input code ---
+                DEFINE_MATH + DEFINE_BRACES + "${a \\over b}$ \\end",
+                //--- output channel ---
+                "???"); //TODO gene: check
     }
 
 }
