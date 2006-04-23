@@ -19,6 +19,9 @@
 
 package de.dante.extex.typesetter.type.noad;
 
+import java.util.logging.Logger;
+
+import de.dante.extex.interpreter.exception.ImpossibleException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.primitives.register.font.NumberedFont;
 import de.dante.extex.interpreter.type.dimen.Dimen;
@@ -27,8 +30,12 @@ import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.Node;
+import de.dante.extex.typesetter.type.noad.util.MathContext;
 import de.dante.extex.typesetter.type.noad.util.MathSpacing;
+import de.dante.extex.typesetter.type.node.CharNode;
+import de.dante.extex.typesetter.type.node.HorizontalListNode;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
@@ -39,36 +46,80 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * Noads are translated into {@link de.dante.extex.typesetter.type.Node Node}s.
  * Thus Noad will never arrive at the DocumentWriter.
  *
+ *
+ * <doc name="scriptspace" type="register">
+ * <h3>The Dimen Parameter <tt>\scriptspace</tt></h3>
+ * <p>
+ *  The dimen parameter <tt>\scriptspace</tt>
+ *  TODO gene: documentation missing
+ * </p>
+ * </doc>
+ *
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public abstract class AbstractNoad implements Noad {
 
+    public static final String MATH_X_HEIGHT = "5";
+
+    public static final String MATH_QUAD = "6";
+
+    public static final String NUM1 = "8";
+
+    public static final String NUM2 = "9";
+
+    public static final String NUM3 = "10";
+
+    public static final String DENOM1 = "11";
+
+    public static final String DENOM2 = "12";
+
+    public static final String SUP1 = "13";
+
+    public static final String SUP2 = "14";
+
+    public static final String SUP3 = "15";
+
+    public static final String SUB1 = "16";
+
+    public static final String SUB2 = "17";
+
+    public static final String SUP_DROP = "18";
+
+    public static final String SUB_DROP = "19";
+
+    public static final String DELIM1 = "20";
+
+    public static final String DELIM2 = "21";
+
+    public static final String AXIS_HEIGHT = "22";
+
     /**
-     * Get the height of the fraction lines above the base line.
-     * This value is taken from the font dimen 22 of the symbol font.
+     * Get a font dimen value from the symbol font.
      *
      * @param style the current style of processing
      * @param options the typesetter options in effect
      *
-     * @return the axis height
+     * @return the font dimen
      *
      * @throws TypesetterException in case of an error. The exception will have
      *  a cause exception in it containing a HelpingException
      *
      * @see "TTP [700]"
      */
-    protected static FixedDimen axisHeight(final StyleNoad style,
-            final TypesetterOptions options) throws TypesetterException {
-    
+    protected static FixedDimen symbolValue(final String no,
+            final StyleNoad style, final TypesetterOptions options)
+            throws TypesetterException {
+
         Font font = options.getFont(NumberedFont.key(options, //
                 style.getFontName(), "2"));
-        Dimen axis;
-        if (font == null || (axis = font.getFontDimen("22")) == null) {
+        Dimen value;
+        if (font == null || (value = font.getFontDimen(no)) == null) {
             throw new TypesetterException(new HelpingException(
                     staticLocalizer(), "TTP.InsufficientSymbolFonts"));
         }
-        return axis;
+        return value;
     }
 
     /**
@@ -105,8 +156,8 @@ public abstract class AbstractNoad implements Noad {
      * inserting the appropriate glue. Otherwise a new box has to be
      * constructed.
      *
-     * @param node
-     * @param width
+     * @param node ...
+     * @param width ...
      *
      * @see "TTP [715]"
      */
@@ -155,7 +206,7 @@ public abstract class AbstractNoad implements Noad {
     /**
      * The field <tt>spacingClass</tt> contains the class for spacing.
      */
-    private MathSpacing spacingClass = null;
+    private MathSpacing spacingClass = MathSpacing.UNDEF;
 
     /**
      * The field <tt>subscript</tt> contains the subscript noad.
@@ -187,6 +238,16 @@ public abstract class AbstractNoad implements Noad {
     }
 
     /**
+     * Getter for spacingClass.
+     *
+     * @return the spacingClass
+     */
+    protected MathSpacing getSpacingClass() {
+
+        return this.spacingClass;
+    }
+
+    /**
      * Getter for the subscript.
      *
      * @return the subscript.
@@ -204,6 +265,16 @@ public abstract class AbstractNoad implements Noad {
     public Noad getSuperscript() {
 
         return this.superscript;
+    }
+
+    /**
+     * Setter for spacingClass.
+     *
+     * @param spacingClass the spacingClass to set
+     */
+    protected void setSpacingClass(final MathSpacing spacingClass) {
+
+        this.spacingClass = spacingClass;
     }
 
     /**
@@ -270,6 +341,79 @@ public abstract class AbstractNoad implements Noad {
      */
     protected void toStringAdd(final StringBuffer sb, final int depth) {
 
+    }
+
+    /**
+     * Attach the subscripts and superscripts to the current hlist.
+     *
+     * @param node the current node
+     * @param mc the math context
+     * @param logger the logger
+     *
+     * @return ...
+     *
+     * @throws TypesetterException in case of an error
+     * @throws ConfigurationException in case of an configuration error
+     *
+     * @see "TTP [756,757]"
+     */
+    protected Node makeScripts(final Node node, final MathContext mc,
+            final Logger logger)
+            throws TypesetterException,
+                ConfigurationException {
+
+        if (superscript == null && subscript == null) {
+            return node;
+        }
+
+        Dimen shiftDown = new Dimen();
+        HorizontalListNode hlist;
+        StyleNoad style = mc.getStyle();
+        TypesetterOptions options = mc.getOptions();
+
+        if (node instanceof CharNode) {
+            hlist = new HorizontalListNode(node);
+        } else if (node instanceof HorizontalListNode) {
+            hlist = (HorizontalListNode) node;
+            StyleNoad t = (mc.getStyle().less(StyleNoad.SCRIPTSTYLE)
+                    ? StyleNoad.SCRIPTSTYLE
+                    : StyleNoad.SCRIPTSCRIPTSTYLE);
+            shiftDown.set(symbolValue(SUB_DROP, t, options));
+            shiftDown.add(node.getDepth());
+
+            shiftDown.max(symbolValue(SUB1, style, options));
+
+        } else {
+            throw new ImpossibleException("makeScripts");
+        }
+
+        HorizontalListNode sub = new HorizontalListNode();
+
+        if (superscript == null) {
+            // only subscript
+            // @see "TTP [757]"
+            mc.setStyle(style.sub());
+            subscript.typeset(null, 0, sub, mc, options, logger);
+            sub.getWidth().add(options.getDimenOption("scriptspace"));
+            mc.setStyle(style);
+
+            Dimen clr = new Dimen();
+            clr.abs(symbolValue(MATH_X_HEIGHT, style, options));
+            clr.multiply(-4, 5);
+            clr.add(node.getHeight());
+            shiftDown.max(clr);
+            sub.setShift(shiftDown);
+
+            hlist.add(sub);
+            return hlist;
+        } else if (subscript == null) {
+            // only superscript
+        } else {
+            // both subscript and superscript
+        }
+
+        //TODO gene: unimplemented
+        throw new RuntimeException("unimplemented");
     }
 
 }
