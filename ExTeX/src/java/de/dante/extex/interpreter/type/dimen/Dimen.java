@@ -38,7 +38,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public class Dimen extends GlueComponent implements Serializable, FixedDimen {
 
@@ -128,6 +128,17 @@ public class Dimen extends GlueComponent implements Serializable, FixedDimen {
     public Dimen(final long value) {
 
         super(value);
+    }
+
+    /**
+     * Set the value of this dimen to the absolute value of a given value.
+     *
+     * @param d the given value
+     */
+    public void abs(final FixedDimen d) {
+
+        long v = d.getValue();
+        setValue(v < 0 ? -v : v);
     }
 
     /**
