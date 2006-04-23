@@ -56,7 +56,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.59 $
+ * @version $Revision: 1.60 $
  */
 public class GroupImpl implements Group, Tokenizer, Serializable {
 
@@ -381,6 +381,11 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
         }
 
         // Fallback for predefined delimiter codes
+        if (c.getCodePoint() == '.') {
+            MathDelimiter del = new MathDelimiter(null, null, null);
+            delcodeMap.put(UnicodeChar.get('.'), del);
+            return del;
+        }
         return null;
 
     }
