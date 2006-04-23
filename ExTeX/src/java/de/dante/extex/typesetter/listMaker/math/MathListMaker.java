@@ -68,8 +68,8 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
 import de.dante.extex.typesetter.type.node.AfterMathNode;
 import de.dante.extex.typesetter.type.node.BeforeMathNode;
 import de.dante.extex.typesetter.type.node.DiscretionaryNode;
+import de.dante.extex.typesetter.type.node.GenericNodeList;
 import de.dante.extex.typesetter.type.node.GlueNode;
-import de.dante.extex.typesetter.type.node.HorizontalListNode;
 import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
@@ -110,7 +110,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.37 $
+ * @version $Revision: 1.38 $
  */
 public class MathListMaker extends HorizontalListMaker
         implements
@@ -122,7 +122,7 @@ public class MathListMaker extends HorizontalListMaker
      * It is used to store to the stack and restore the state from the stack.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.37 $
+     * @version $Revision: 1.38 $
      */
     private class MathMemento {
 
@@ -217,55 +217,19 @@ public class MathListMaker extends HorizontalListMaker
 
         Font textfont3 = options.getFont(NumberedFont.key(options, "textfont",
                 "3"));
-        if (textfont3.getFontDimen("13") == null
-                || textfont3.getFontDimen("11") == null
-                || textfont3.getFontDimen("12") == null
-                || textfont3.getFontDimen("10") == null
-                || textfont3.getFontDimen("9") == null
-                || textfont3.getFontDimen("7") == null
-                || textfont3.getFontDimen("6") == null
-                || textfont3.getFontDimen("5") == null
-                || textfont3.getFontDimen("4") == null
-                || textfont3.getFontDimen("3") == null
-                || textfont3.getFontDimen("2") == null
-                || textfont3.getFontDimen("1") == null
-                || textfont3.getFontDimen("0") == null) {
+        if (textfont3 instanceof NullFont) {
             return true;
         }
 
         Font scriptfont3 = options.getFont(NumberedFont.key(options,
                 "scriptfont", "3"));
-        if (scriptfont3.getFontDimen("13") == null
-                || scriptfont3.getFontDimen("11") == null
-                || scriptfont3.getFontDimen("12") == null
-                || scriptfont3.getFontDimen("10") == null
-                || scriptfont3.getFontDimen("9") == null
-                || scriptfont3.getFontDimen("7") == null
-                || scriptfont3.getFontDimen("6") == null
-                || scriptfont3.getFontDimen("5") == null
-                || scriptfont3.getFontDimen("4") == null
-                || scriptfont3.getFontDimen("3") == null
-                || scriptfont3.getFontDimen("2") == null
-                || scriptfont3.getFontDimen("1") == null
-                || scriptfont3.getFontDimen("0") == null) {
+        if (scriptfont3 instanceof NullFont) {
             return true;
         }
 
         Font scriptscriptfont3 = options.getFont(NumberedFont.key(options,
                 "scriptscriptfont", "3"));
-        if (scriptscriptfont3.getFontDimen("13") == null
-                || scriptscriptfont3.getFontDimen("11") == null
-                || scriptscriptfont3.getFontDimen("12") == null
-                || scriptscriptfont3.getFontDimen("10") == null
-                || scriptscriptfont3.getFontDimen("9") == null
-                || scriptscriptfont3.getFontDimen("7") == null
-                || scriptscriptfont3.getFontDimen("6") == null
-                || scriptscriptfont3.getFontDimen("5") == null
-                || scriptscriptfont3.getFontDimen("4") == null
-                || scriptscriptfont3.getFontDimen("3") == null
-                || scriptscriptfont3.getFontDimen("2") == null
-                || scriptscriptfont3.getFontDimen("1") == null
-                || scriptscriptfont3.getFontDimen("0") == null) {
+        if (scriptscriptfont3 instanceof NullFont) {
             return true;
         }
         return false;
@@ -485,7 +449,7 @@ public class MathListMaker extends HorizontalListMaker
                     "TTP.InsufficientExtensionFonts"));
         }
 
-        HorizontalListNode list = new HorizontalListNode();
+        GenericNodeList list = new GenericNodeList();
         final FixedDimen mathsurround = context.getDimenOption("mathsurround");
         // see [TTP 1196]
         list.add(new BeforeMathNode(mathsurround));
@@ -674,16 +638,14 @@ public class MathListMaker extends HorizontalListMaker
             throw new TypesetterHelpingException(getLocalizer(),
                     "TTP.ExtraOrForgotten", "$");
         }
-        MathMemento memento = (MathMemento) stack.pop();
+        MathMemento memento = (MathMemento) stack.peek();
         if (memento.isBlock()) {
             throw new TypesetterHelpingException(getLocalizer(),
                     "TTP.ExtraOrForgotten", "\\right.");
         }
 
-        Noad n = noads;
-        insertionPoint = memento.getInsertionPoint();
-        noads = memento.getNoads();
-        insertionPoint.add(new MiddleNoad(n, delimiter));
+        insertionPoint = new MathList();
+        noads = new MiddleNoad((LeftNoad) noads, delimiter, insertionPoint);
     }
 
     /**
@@ -726,7 +688,7 @@ public class MathListMaker extends HorizontalListMaker
                     "TTP.ExtraOrForgotten", "\\right.");
         }
 
-        Noad n = noads;
+        LeftNoad n = (LeftNoad) noads;
         insertionPoint = memento.getInsertionPoint();
         noads = memento.getNoads();
         insertionPoint.add(new RightNoad(n, delimiter));
@@ -802,7 +764,7 @@ public class MathListMaker extends HorizontalListMaker
      *
      * @param closing the closing to set
      */
-    protected void setClosing(boolean closing) {
+    protected void setClosing(final boolean closing) {
 
         this.closing = closing;
     }
