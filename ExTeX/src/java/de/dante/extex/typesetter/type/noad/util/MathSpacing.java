@@ -21,12 +21,14 @@ package de.dante.extex.typesetter.type.noad.util;
 
 import de.dante.extex.interpreter.exception.ImpossibleException;
 import de.dante.extex.interpreter.type.muskip.Muskip;
+import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.noad.StyleNoad;
 import de.dante.extex.typesetter.type.node.GlueNode;
 
 /**
- * TODO gene: missing JavaDoc.
+ * Thus utility class contains some constants which describe the spacing between
+ * elements in math typesetting.
  *
  * <doc name="thinmuskip" type="register">
  * <h3>The Muskip Parameter <tt>\thinmuskip</tt></h3>
@@ -56,7 +58,7 @@ import de.dante.extex.typesetter.type.node.GlueNode;
  * @see "TTP [764]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public final class MathSpacing {
 
@@ -137,10 +139,12 @@ public final class MathSpacing {
      * @param list the list to add the spacing to
      * @param mathContext the math context
      *
+     * @throws TypesetterException in case of an error
+     *
      * @see "TTP [766]"
      */
     public void addClearance(final MathSpacing previous, final NodeList list,
-            final MathContext mathContext) {
+            final MathContext mathContext) throws TypesetterException {
 
         if (spec == null || previous == null) {
             return;
