@@ -38,7 +38,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
 public class Dimen extends GlueComponent implements Serializable, FixedDimen {
 
@@ -203,6 +203,16 @@ public class Dimen extends GlueComponent implements Serializable, FixedDimen {
     protected Localizer getLocalizer() {
 
         return LocalizerFactory.getLocalizer(Dimen.class.getName());
+    }
+
+    /**
+     * Test for a value of zero.
+     *
+     * @return <code>true</code> iff the value is 0
+     */
+    public boolean isZero() {
+    
+        return getValue() == 0;
     }
 
     /**
