@@ -22,7 +22,6 @@ package de.dante.extex.typesetter.type.noad;
 import java.util.logging.Logger;
 
 import de.dante.extex.interpreter.type.dimen.Dimen;
-import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.math.MathDelimiter;
@@ -37,7 +36,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [687]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class RightNoad extends AbstractNoad {
 
@@ -84,20 +83,18 @@ public class RightNoad extends AbstractNoad {
      *      int,
      *      de.dante.extex.typesetter.type.NodeList,
      *      de.dante.extex.typesetter.type.noad.util.MathContext,
-     *      de.dante.extex.typesetter.TypesetterOptions,
      *      java.util.logging.Logger)
      */
     public int typeset(final NoadList noads, final int index,
             final NodeList list, final MathContext mathContext,
-            final TypesetterOptions context, final Logger logger)
+            final Logger logger)
             throws TypesetterException,
                 ConfigurationException {
 
         Dimen height = new Dimen();
         Dimen depth = new Dimen();
-        noad.typeset(noads, index, list, mathContext, context, logger, height,
-                depth);
-        delimiter.typeset(list, mathContext, context, height, depth);
+        noad.typeset(noads, index, list, mathContext, logger, height, depth);
+        delimiter.typeset(list, mathContext, height, depth);
         //TODO gene: add some separation
 
         return index + 1;

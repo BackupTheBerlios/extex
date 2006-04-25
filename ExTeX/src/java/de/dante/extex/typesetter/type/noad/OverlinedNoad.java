@@ -24,13 +24,12 @@ import java.util.logging.Logger;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
-import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
+import de.dante.extex.typesetter.type.noad.util.MathFontParameter;
 import de.dante.extex.typesetter.type.node.ExplicitKernNode;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
-import de.dante.extex.typesetter.type.node.ImplicitKernNode;
 import de.dante.extex.typesetter.type.node.RuleNode;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
@@ -41,7 +40,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [687]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class OverlinedNoad extends AbstractNucleusNoad {
 
@@ -80,7 +79,6 @@ public class OverlinedNoad extends AbstractNucleusNoad {
      * @param list the list to add the nodes to. This list contains the Nodes
      *  previously typeset. Thus it can be used to look back
      * @param mathContext the context to consider
-     * @param context the interpreter context
      * @param logger the logger for debugging and tracing information
      *
      * @return the index of the next noad to consider
@@ -99,17 +97,18 @@ public class OverlinedNoad extends AbstractNucleusNoad {
      */
     public int typeset(final NoadList noads, final int index,
             final NodeList list, final MathContext mathContext,
-            final TypesetterOptions context, final Logger logger)
+            final Logger logger)
             throws TypesetterException,
                 ConfigurationException {
 
         HorizontalListNode hlist = new HorizontalListNode();
+        FixedDimen thickness = mathContext
+                .mathParameter(MathFontParameter.DEFAULT_RULE_THICKNESS);
         StyleNoad style = mathContext.getStyle();
         mathContext.setStyle(style.cramped());
-        getNucleus().typeset(noads, index, hlist, mathContext, context, logger);
+        getNucleus().typeset(noads, index, hlist, mathContext, logger);
         mathContext.setStyle(style);
 
-        FixedDimen thickness = defaultRuleThickness(style, context);
         VerticalListNode vlist = new VerticalListNode();
         vlist.add(new ExplicitKernNode(thickness, false));
         vlist.add(new RuleNode(hlist.getWidth(), thickness, Dimen.ZERO_PT,

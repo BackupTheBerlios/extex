@@ -24,10 +24,10 @@ import java.util.logging.Logger;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
-import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
+import de.dante.extex.typesetter.type.noad.util.MathFontParameter;
 import de.dante.extex.typesetter.type.node.ExplicitKernNode;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
 import de.dante.extex.typesetter.type.node.RuleNode;
@@ -40,7 +40,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [687]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class UnderlinedNoad extends AbstractNucleusNoad {
 
@@ -73,20 +73,19 @@ public class UnderlinedNoad extends AbstractNucleusNoad {
      *      int,
      *      de.dante.extex.typesetter.type.NodeList,
      *      de.dante.extex.typesetter.type.noad.util.MathContext,
-     *      de.dante.extex.typesetter.TypesetterOptions,
      *      java.util.logging.Logger)
      */
     public int typeset(final NoadList noads, final int index,
             final NodeList list, final MathContext mathContext,
-            final TypesetterOptions context, final Logger logger)
+            final Logger logger)
             throws TypesetterException,
                 ConfigurationException {
 
         HorizontalListNode hlist = new HorizontalListNode();
-        StyleNoad style = mathContext.getStyle();
-        getNucleus().typeset(noads, index, hlist, mathContext, context, logger);
+        getNucleus().typeset(noads, index, hlist, mathContext, logger);
 
-        FixedDimen thickness = defaultRuleThickness(style, context);
+        FixedDimen thickness = mathContext
+                .mathParameter(MathFontParameter.DEFAULT_RULE_THICKNESS);
         VerticalListNode vlist = new VerticalListNode();
         vlist.add(hlist);
         vlist.add(new ExplicitKernNode(new Dimen(3 * thickness.getValue()),

@@ -36,7 +36,6 @@ import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
 import de.dante.extex.typesetter.type.node.CharNode;
-import de.dante.extex.typesetter.type.node.HorizontalListNode;
 import de.dante.extex.typesetter.type.node.ImplicitKernNode;
 import de.dante.util.UnicodeChar;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
@@ -45,7 +44,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This class provides a container for a mathematical character.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class CharNoad extends AbstractNoad {
 
@@ -97,15 +96,15 @@ public class CharNoad extends AbstractNoad {
      *      int,
      *      de.dante.extex.typesetter.type.NodeList,
      *      de.dante.extex.typesetter.type.noad.util.MathContext,
-     *      de.dante.extex.typesetter.TypesetterOptions,
      *      java.util.logging.Logger)
      */
     public int typeset(final NoadList noads, final int index,
             final NodeList nodes, final MathContext mathContext,
-            final TypesetterOptions context, final Logger logger)
+            final Logger logger)
             throws TypesetterException,
                 ConfigurationException {
 
+        TypesetterOptions context = mathContext.getOptions();
         StyleNoad style = mathContext.getStyle();
         UnicodeChar c = glyph.getCharacter();
         Font font = context.getFont(NumberedFont.key(context, //
@@ -123,7 +122,6 @@ public class CharNoad extends AbstractNoad {
                         c.toString(), font.getFontName()));
             }
             return index + 1;
-
         }
 
         int size = nodes.size();
@@ -134,7 +132,7 @@ public class CharNoad extends AbstractNoad {
                 if (cn.getTypesettingContext().getFont().equals(font)) {
                     Dimen kerning = font.getGlyph(cn.getCharacter())
                             .getKerning(c);
-                    if (kerning.ne(Dimen.ZERO_PT)) {
+                    if (!kerning.isZero()) {
                         nodes.add(new ImplicitKernNode(kerning, true));
                     }
                 }
@@ -147,7 +145,12 @@ public class CharNoad extends AbstractNoad {
         tc = tcFactory.newInstance(tc, font);
         tc = tcFactory.newInstance(tc, color);
         CharNode charNode = new CharNode(tc, c);
-        nodes.add(makeScripts(charNode, mathContext, logger));
+        font.getGlyph(c).getItalicCorrection();
+        Dimen delta = font.getGlyph(c).getItalicCorrection();
+        nodes.add(makeScripts(charNode, mathContext, delta, logger));
+
+        //see "TTP [755]"
+        //TODO gene: insert kern for italic correction if required
 
         return index + 1;
     }

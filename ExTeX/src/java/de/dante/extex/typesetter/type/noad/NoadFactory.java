@@ -28,7 +28,7 @@ import de.dante.extex.typesetter.type.math.MathDelimiter;
  * This class is a factory for CharNoades.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class NoadFactory {
 

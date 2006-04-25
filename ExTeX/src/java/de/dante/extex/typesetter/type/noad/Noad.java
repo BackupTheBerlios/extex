@@ -21,7 +21,6 @@ package de.dante.extex.typesetter.type.noad;
 
 import java.util.logging.Logger;
 
-import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
@@ -32,7 +31,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * constructions.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public interface Noad {
 
@@ -87,7 +86,6 @@ public interface Noad {
      * @param list the list to add the nodes to. This list contains the Nodes
      *  previously typeset. Thus it can be used to look back
      * @param mathContext the context to consider
-     * @param context the interpreter context
      * @param logger the logger for debugging and tracing information
      *
      * @return the index of the next noad to consider
@@ -96,7 +94,7 @@ public interface Noad {
      * @throws ConfigurationException in case of a configuration problem
      */
     int typeset(NoadList noads, int index, NodeList list,
-            MathContext mathContext, TypesetterOptions context, Logger logger)
+            MathContext mathContext, Logger logger)
             throws TypesetterException,
                 ConfigurationException;
 

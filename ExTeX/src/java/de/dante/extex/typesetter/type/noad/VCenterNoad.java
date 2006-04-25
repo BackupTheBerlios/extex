@@ -25,10 +25,10 @@ import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.exception.ImpossibleException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.dimen.Dimen;
-import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
+import de.dante.extex.typesetter.type.noad.util.MathFontParameter;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
@@ -38,7 +38,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [687]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class VCenterNoad extends AbstractNucleusNoad {
 
@@ -71,17 +71,16 @@ public class VCenterNoad extends AbstractNucleusNoad {
      *      int,
      *      de.dante.extex.typesetter.type.NodeList,
      *      de.dante.extex.typesetter.type.noad.util.MathContext,
-     *      de.dante.extex.typesetter.TypesetterOptions,
      *      java.util.logging.Logger)
      */
     public int typeset(final NoadList noads, final int index,
             final NodeList list, final MathContext mathContext,
-            final TypesetterOptions context, final Logger logger)
+            final Logger logger)
             throws TypesetterException,
                 ConfigurationException {
 
         HorizontalListNode hlist = new HorizontalListNode();
-        getNucleus().typeset(noads, index, hlist, mathContext, context, logger);
+        getNucleus().typeset(noads, index, hlist, mathContext, logger);
 
         Dimen d = new Dimen(hlist.getHeight());
         d.add(hlist.getDepth());
@@ -91,7 +90,7 @@ public class VCenterNoad extends AbstractNucleusNoad {
         } catch (HelpingException e) {
             throw new ImpossibleException(e);
         }
-        h.add(symbolValue(AXIS_HEIGHT, mathContext.getStyle(), context));
+        h.add(mathContext.mathParameter(MathFontParameter.AXIS_HEIGHT));
         hlist.setHeight(h);
         d.subtract(h);
         hlist.setDepth(d);

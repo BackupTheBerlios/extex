@@ -37,7 +37,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * large, and a small math glyph.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class MathDelimiter implements Noad, Serializable {
 
@@ -182,16 +182,15 @@ public class MathDelimiter implements Noad, Serializable {
      *      int,
      *      de.dante.extex.typesetter.type.NodeList,
      *      de.dante.extex.typesetter.type.noad.util.MathContext,
-     *      de.dante.extex.typesetter.TypesetterOptions,
      *      java.util.logging.Logger)
      */
     public int typeset(final NoadList noads, final int index,
             final NodeList list, final MathContext mathContext,
-            final TypesetterOptions context, final Logger logger)
+            final Logger logger)
             throws TypesetterException,
                 ConfigurationException {
 
-        typeset(list, mathContext, context, null, null);
+        typeset(list, mathContext, null, null);
         return index + 1;
     }
 
@@ -201,7 +200,6 @@ public class MathDelimiter implements Noad, Serializable {
      * @param list the list to add the nodes to. This list contains the Nodes
      *  previously typeset. Thus it can be used to look back
      * @param mathContext the context to consider
-     * @param context the interpreter context
      * @param height the target height. If <code>null</code> then the natural
      *  height is used
      * @param depth the target depth. If <code>null</code> then the natural
@@ -211,8 +209,7 @@ public class MathDelimiter implements Noad, Serializable {
      * @throws ConfigurationException in case of a configuration problem
      */
     public void typeset(final NodeList list, final MathContext mathContext,
-            final TypesetterOptions context, final FixedDimen height,
-            final FixedDimen depth)
+            final FixedDimen height, final FixedDimen depth)
             throws TypesetterException,
                 ConfigurationException {
 

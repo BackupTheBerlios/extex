@@ -26,11 +26,11 @@ import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.WideGlue;
-import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.math.MathDelimiter;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
+import de.dante.extex.typesetter.type.noad.util.MathFontParameter;
 import de.dante.extex.typesetter.type.node.GlueNode;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
 import de.dante.extex.typesetter.type.node.RuleNode;
@@ -44,7 +44,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [683]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class FractionNoad extends AbstractNoad {
 
@@ -65,7 +65,7 @@ public class FractionNoad extends AbstractNoad {
     private MathList numerator;
 
     /**
-     * The field <tt>tc</tt> contains the ...
+     * The field <tt>tc</tt> contains the typesetting context.
      */
     private TypesettingContext tc;
 
@@ -142,12 +142,11 @@ public class FractionNoad extends AbstractNoad {
      *      int,
      *      de.dante.extex.typesetter.type.NodeList,
      *      de.dante.extex.typesetter.type.noad.util.MathContext,
-     *      de.dante.extex.typesetter.TypesetterOptions,
      *      java.util.logging.Logger)
      */
     public int typeset(final NoadList noads, final int index,
             final NodeList list, final MathContext mathContext,
-            final TypesetterOptions context, final Logger logger)
+            final Logger logger)
             throws TypesetterException,
                 ConfigurationException {
 
@@ -156,11 +155,11 @@ public class FractionNoad extends AbstractNoad {
         HorizontalListNode num = new HorizontalListNode();
         StyleNoad style = mathContext.getStyle();
         mathContext.setStyle(style.num());
-        numerator.typeset(noads, index, num, mathContext, context, logger);
+        numerator.typeset(noads, index, num, mathContext, logger);
 
         mathContext.setStyle(style.denom());
         HorizontalListNode den = new HorizontalListNode();
-        denominator.typeset(noads, index, den, mathContext, context, logger);
+        denominator.typeset(noads, index, den, mathContext, logger);
         mathContext.setStyle(style);
 
         Dimen wNum = num.getWidth();
@@ -184,10 +183,11 @@ public class FractionNoad extends AbstractNoad {
 
         vlist.add(num);
         if (thickness == null) {
-            thickness = defaultRuleThickness(style, context);
+            thickness = mathContext
+                    .mathParameter(MathFontParameter.DEFAULT_RULE_THICKNESS);
         }
 
-        if (thickness.ne(Dimen.ZERO)) {
+        if (!thickness.ne(Dimen.ZERO)) {
             vlist.add(new RuleNode(wNum, thickness, Dimen.ZERO_PT, tc, true));
         }
 
@@ -195,15 +195,15 @@ public class FractionNoad extends AbstractNoad {
         //TODO gene: adjust the move of num and den
 
         if (leftDelimiter != null) {
-            leftDelimiter.typeset(list, mathContext, context,
-                    vlist.getHeight(), vlist.getDepth());
+            leftDelimiter.typeset(list, mathContext, vlist.getHeight(), vlist
+                    .getDepth());
         }
 
         list.add(vlist);
 
         if (rightDelimiter != null) {
-            rightDelimiter.typeset(list, mathContext, context, vlist
-                    .getHeight(), vlist.getDepth());
+            rightDelimiter.typeset(list, mathContext, vlist.getHeight(), vlist
+                    .getDepth());
         }
 
         return index + 1;

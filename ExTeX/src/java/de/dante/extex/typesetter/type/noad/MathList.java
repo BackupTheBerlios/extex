@@ -21,7 +21,6 @@ package de.dante.extex.typesetter.type.noad;
 
 import java.util.logging.Logger;
 
-import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
@@ -33,7 +32,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [???]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class MathList extends AbstractNoad {
 
@@ -159,18 +158,16 @@ public class MathList extends AbstractNoad {
      *      int,
      *      de.dante.extex.typesetter.type.NodeList,
      *      de.dante.extex.typesetter.type.noad.util.MathContext,
-     *      de.dante.extex.typesetter.TypesetterOptions,
      *      java.util.logging.Logger)
      */
     public int typeset(final NoadList noads, final int index,
             final NodeList list, final MathContext mathContext,
-            final TypesetterOptions context, final Logger logger)
+            final Logger logger)
             throws TypesetterException,
                 ConfigurationException {
 
         for (int i = 0; i < nucleus.size();) {
-            i = nucleus.get(i).typeset(nucleus, i, list, mathContext, context,
-                    logger);
+            i = nucleus.get(i).typeset(nucleus, i, list, mathContext, logger);
         }
         return index + 1;
     }
