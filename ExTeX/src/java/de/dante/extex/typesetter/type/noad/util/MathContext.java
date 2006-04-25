@@ -20,22 +20,26 @@
 package de.dante.extex.typesetter.type.noad.util;
 
 import de.dante.extex.interpreter.exception.ImpossibleException;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.primitives.register.font.NumberedFont;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.glue.GlueComponent;
 import de.dante.extex.interpreter.type.muskip.Mudimen;
 import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.typesetter.TypesetterOptions;
+import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.noad.StyleNoad;
+import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
  * This class provides a container for the information on the current
  * mathematical appearance.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class MathContext {
 
@@ -47,7 +51,7 @@ public class MathContext {
     /**
      * The field <tt>context</tt> contains the data object for options.
      */
-    private TypesetterOptions context;
+    private TypesetterOptions options;
 
     /**
      * The field <tt>style</tt> contains the current style.
@@ -64,7 +68,56 @@ public class MathContext {
 
         super();
         this.style = style;
-        this.context = context;
+        this.options = context;
+    }
+
+    /**
+     * Extract a font dimen from an appropriate font.
+     *
+     * @param p the parameter to extract
+     *
+     * @return the value of the font dimen
+     *
+     * @throws TypesetterException in case of an error. The exception will have
+     *  a cause exception in it containing a HelpingException
+     *
+     * @see "TTP [708]"
+     */
+    public FixedDimen mathParameter(final MathFontParameter p)
+            throws TypesetterException {
+
+        return mathParameter(p, style);
+    }
+
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param p the parameter to extract
+     * @param actualStyle the actual style to be used instead of the current
+     *  style
+     *
+     * @return the value of the font dimen
+     *
+     * @throws TypesetterException in case of an error. The exception will have
+     *  a cause exception in it containing a HelpingException
+     */
+    public FixedDimen mathParameter(final MathFontParameter p,
+            final StyleNoad actualStyle) throws TypesetterException {
+
+        Font font = options.getFont(NumberedFont.key(options, //
+                actualStyle.getFontName(), p.inSymbol() ? "2" : "3"));
+        Dimen value;
+        if (font == null || (value = font.getFontDimen(p.getNo())) == null) {
+            throw new TypesetterException(
+                    //
+                    new HelpingException(
+                            //
+                            LocalizerFactory.getLocalizer(getClass().getName()),
+                            p.inSymbol()
+                                    ? "TTP.InsufficientSymbolFonts"
+                                    : "TTP.InsufficientExtensionFonts"));
+        }
+        return value;
     }
 
     /**
@@ -85,25 +138,15 @@ public class MathContext {
      *
      * @return a new instance of a Dimen corresponding to the parameter
      *
+     * @throws TypesetterException in case of an error
+     *
      * @see "TTP [717]"
      */
-    public Dimen convert(final Mudimen mudimen) {
-
-        Font fnt = null;
-
-        if (style == StyleNoad.TEXTSTYLE || style == StyleNoad.DISPLAYSTYLE) {
-            fnt = context.getFont(NumberedFont.key(context, "textfont", "2"));
-        } else if (style == StyleNoad.SCRIPTSTYLE) {
-            fnt = context.getFont(NumberedFont.key(context, "scriptfont", "2"));
-        } else if (style == StyleNoad.SCRIPTSCRIPTSTYLE) {
-            fnt = context.getFont(NumberedFont.key(context, "scriptscriptfont",
-                    "2"));
-        } else {
-            throw new ImpossibleException("undefined style");
-        }
+    public Dimen convert(final Mudimen mudimen) throws TypesetterException {
 
         Dimen length = new Dimen(mudimen.getLength());
-        length.multiply(fnt.getEm().getValue(), MU_UNIT);
+        length.multiply(mathParameter(MathFontParameter.MATH_QUAD, style)
+                .getValue(), MU_UNIT);
 
         return length;
     }
@@ -125,24 +168,14 @@ public class MathContext {
      *
      * @return a new instance of a glue corresponding to the parameter
      *
+     * @throws TypesetterException in case of an error
+     *
      * @see "TTP [716]"
      */
-    public Glue convert(final Muskip muglue) {
+    public Glue convert(final Muskip muglue) throws TypesetterException {
 
-        Font fnt = null;
-
-        if (style == StyleNoad.TEXTSTYLE || style == StyleNoad.DISPLAYSTYLE) {
-            fnt = context.getFont(NumberedFont.key(context, "textfont", "2"));
-        } else if (style == StyleNoad.SCRIPTSTYLE) {
-            fnt = context.getFont(NumberedFont.key(context, "scriptfont", "2"));
-        } else if (style == StyleNoad.SCRIPTSCRIPTSTYLE) {
-            fnt = context.getFont(NumberedFont.key(context, "scriptscriptfont",
-                    "2"));
-        } else {
-            throw new ImpossibleException("undefined style");
-        }
-
-        long factor = fnt.getEm().getValue();
+        long factor = mathParameter(MathFontParameter.MATH_QUAD, style)
+                .getValue();
         GlueComponent length = new GlueComponent(muglue.getLength());
         GlueComponent stretch = new GlueComponent(muglue.getStretch());
         GlueComponent shrink = new GlueComponent(muglue.getShrink());
@@ -167,7 +200,7 @@ public class MathContext {
      */
     public TypesetterOptions getOptions() {
 
-        return this.context;
+        return this.options;
     }
 
     /**
