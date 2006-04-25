@@ -34,7 +34,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [682]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class OperatorNoad extends AbstractNucleusNoad implements SimpleNoad {
 
@@ -102,7 +102,7 @@ public class OperatorNoad extends AbstractNucleusNoad implements SimpleNoad {
      *      de.dante.extex.typesetter.type.noad.util.MathContext,
      *      java.util.logging.Logger)
      */
-    public int typeset(final NoadList noads, final int index,
+    public void typeset(final NoadList noads, final int index,
             final NodeList list, final MathContext mathContext,
             final Logger logger)
             throws TypesetterException,

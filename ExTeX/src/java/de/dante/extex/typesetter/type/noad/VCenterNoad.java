@@ -38,7 +38,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [687]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class VCenterNoad extends AbstractNucleusNoad {
 
@@ -73,7 +73,7 @@ public class VCenterNoad extends AbstractNucleusNoad {
      *      de.dante.extex.typesetter.type.noad.util.MathContext,
      *      java.util.logging.Logger)
      */
-    public int typeset(final NoadList noads, final int index,
+    public void typeset(final NoadList noads, final int index,
             final NodeList list, final MathContext mathContext,
             final Logger logger)
             throws TypesetterException,
@@ -94,6 +94,5 @@ public class VCenterNoad extends AbstractNucleusNoad {
         hlist.setHeight(h);
         d.subtract(h);
         hlist.setDepth(d);
-        return index + 1;
     }
 }

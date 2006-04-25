@@ -31,7 +31,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This noad contains a node which is passed through the math apparatus.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class NodeNoad implements Noad {
 
@@ -111,14 +111,13 @@ public class NodeNoad implements Noad {
      *      de.dante.extex.typesetter.type.noad.util.MathContext,
      *      java.util.logging.Logger)
      */
-    public int typeset(final NoadList noads, final int index,
+    public void typeset(final NoadList noads, final int index,
             final NodeList list, final MathContext mathContext,
             final Logger logger)
             throws TypesetterException,
                 ConfigurationException {
 
         list.add(node);
-        return index + 1;
     }
 
 }

@@ -31,7 +31,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * constructions.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public interface Noad {
 
@@ -93,7 +93,7 @@ public interface Noad {
      * @throws TypesetterException in case of a problem
      * @throws ConfigurationException in case of a configuration problem
      */
-    int typeset(NoadList noads, int index, NodeList list,
+    void typeset(NoadList noads, int index, NodeList list,
             MathContext mathContext, Logger logger)
             throws TypesetterException,
                 ConfigurationException;

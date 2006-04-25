@@ -40,7 +40,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [687]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class OverlinedNoad extends AbstractNucleusNoad {
 
@@ -95,7 +95,7 @@ public class OverlinedNoad extends AbstractNucleusNoad {
      *      de.dante.extex.typesetter.TypesetterOptions,
      *      java.util.logging.Logger)
      */
-    public int typeset(final NoadList noads, final int index,
+    public void typeset(final NoadList noads, final int index,
             final NodeList list, final MathContext mathContext,
             final Logger logger)
             throws TypesetterException,
@@ -124,7 +124,5 @@ public class OverlinedNoad extends AbstractNucleusNoad {
         vlist.setDepth(d);
         h.subtract(d);
         vlist.setHeight(h);
-
-        return index + 1;
     }
 }

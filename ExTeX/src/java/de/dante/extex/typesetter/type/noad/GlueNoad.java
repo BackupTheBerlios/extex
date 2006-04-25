@@ -33,7 +33,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * with the translated glue value.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class GlueNoad extends AbstractNoad {
 
@@ -61,14 +61,13 @@ public class GlueNoad extends AbstractNoad {
      *      de.dante.extex.typesetter.type.noad.util.MathContext,
      *      java.util.logging.Logger)
      */
-    public int typeset(final NoadList noads, final int index,
+    public void typeset(final NoadList noads, final int index,
             final NodeList list, final MathContext mathContext,
             final Logger logger)
             throws TypesetterException,
                 ConfigurationException {
 
         list.add(new GlueNode(mathContext.convert(muglue), true));
-        return index + 1;
     }
 
 }

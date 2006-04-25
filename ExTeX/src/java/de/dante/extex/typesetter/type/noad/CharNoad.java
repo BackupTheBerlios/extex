@@ -44,7 +44,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This class provides a container for a mathematical character.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class CharNoad extends AbstractNoad {
 
@@ -98,7 +98,7 @@ public class CharNoad extends AbstractNoad {
      *      de.dante.extex.typesetter.type.noad.util.MathContext,
      *      java.util.logging.Logger)
      */
-    public int typeset(final NoadList noads, final int index,
+    public void typeset(final NoadList noads, final int index,
             final NodeList nodes, final MathContext mathContext,
             final Logger logger)
             throws TypesetterException,
@@ -121,7 +121,7 @@ public class CharNoad extends AbstractNoad {
                 logger.info(getLocalizer().format("TTP.MissingChar",
                         c.toString(), font.getFontName()));
             }
-            return index + 1;
+            return;
         }
 
         int size = nodes.size();
@@ -151,8 +151,6 @@ public class CharNoad extends AbstractNoad {
 
         //see "TTP [755]"
         //TODO gene: insert kern for italic correction if required
-
-        return index + 1;
     }
 
     /**

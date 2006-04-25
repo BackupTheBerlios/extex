@@ -35,7 +35,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [682]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class BinaryNoad extends AbstractNucleusNoad implements SimpleNoad {
 
@@ -70,7 +70,7 @@ public class BinaryNoad extends AbstractNucleusNoad implements SimpleNoad {
      *      de.dante.extex.typesetter.type.noad.util.MathContext,
      *      java.util.logging.Logger)
      */
-    public int typeset(final NoadList noads, final int index,
+    public void typeset(final NoadList noads, final int index,
             final NodeList list, final MathContext mathContext,
             final Logger logger)
             throws TypesetterException,
@@ -83,15 +83,16 @@ public class BinaryNoad extends AbstractNucleusNoad implements SimpleNoad {
                     || prev instanceof RelationNoad || prev instanceof OpenNoad
                     || prev instanceof PunctationNoad
                     || prev instanceof LeftNoad) {
-                return new OrdinaryNoad(getNucleus(), getTypesettingContext())
+                setSpacingClass(MathSpacing.ORD);
+                new OrdinaryNoad(getNucleus(), getTypesettingContext())
                         .typeset(noads, index, list, mathContext, logger);
+                return;
             }
 
         }
 
         //TODO gene: typeset() unimplemented
         throw new RuntimeException("unimplemented");
-        //return index + 1;
     }
 
 }
