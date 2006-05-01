@@ -119,7 +119,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </i>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class TeXParagraphBuilder
         implements
@@ -3409,13 +3409,12 @@ public class TeXParagraphBuilder
             throws HelpingException {
 
         VerticalListNode vlist = new VerticalListNode();
-        NodeList line;
+        HorizontalListNode line;
         PassiveNode curP;
 
         // label done,done1;
 
-        // var q,r,s: pointer; {temporary registers for
-        // list manipulation}
+        // var q,r,s: pointer; {temporary registers for list manipulation}
 
         // disc_break: boolean; {was the current break at a discretionary
         // node?}
@@ -3938,7 +3937,7 @@ public class TeXParagraphBuilder
      * @param curLine the current line number
      * @param glue the sum of the glues in the line
      */
-    private void justifyLine(final NodeList line, final long curLine,
+    private void justifyLine(final HorizontalListNode line, final long curLine,
             final WideGlue glue) {
 
         // if cur_line > last_special_line then
@@ -3956,12 +3955,7 @@ public class TeXParagraphBuilder
         // adjust_tail <-- adjust_head;
         // just_box <-- hpack(q,cur_width,exactly);
 
-        Dimen x = new Dimen(parshape.getLength((int) curLine));
-        x.subtract(line.getWidth());
-        FixedGlueComponent component = (x.lt(Dimen.ZERO_PT)
-                ? glue.getStretch()
-                : glue.getShrink());
-        line.spreadWidth(x, null); //TODO gene: ???
+        line.hpack(parshape.getLength((int) curLine));
         justBox = line;
 
         // shift_amount(just_box) <-- cur_indent
