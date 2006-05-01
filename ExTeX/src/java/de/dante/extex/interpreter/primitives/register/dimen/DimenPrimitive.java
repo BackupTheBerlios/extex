@@ -58,7 +58,22 @@ import de.dante.extex.typesetter.Typesetter;
  *        de.dante.extex.interpreter.TokenSource#scanRegisterName(Context,String)
  *        &lang;register name&rang;} {@linkplain
  *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
- *        &lang;equals&rang;}  ...  </pre>
+ *        &lang;equals&rang;}  &lang;dimen value&rang;
+ *
+ *    &lang;dimen value&rang;
+ *      &rarr; &lang;dimen register&rang;
+ *       |  &lang;float&rang; &lang;dimen unit&rang;
+ *       |  &lang;float&rang; <tt>true</tt> &lang;dimen unit&rang;
+ *
+ *    &lang;float&rang;
+ *      &rarr; [+-]?[0-9]*[.]?[0-9]*
+ *
+ *    &lang;dimen unit&rang;
+ *      &rarr; <tt>sp</tt> | <tt>pt</tt> | <tt>in</tt>
+ *       |  <tt>bp</tt> | <tt>mm</tt> | <tt>cm</tt> | <tt>dm</tt> | <tt>km</tt>
+ *       |  <tt>dd</tt> | <tt>cc</tt> | <tt>pc</tt>
+ *       |  <tt>nd</tt> | <tt>nc</tt>
+ *       |  <tt>ex</tt> | <tt>em</tt>   </pre>
  *
  * <h4>Examples</h4>
  * <pre class="TeXSample">
@@ -66,7 +81,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class DimenPrimitive extends AbstractDimen
         implements
