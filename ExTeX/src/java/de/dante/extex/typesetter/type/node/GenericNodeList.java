@@ -39,7 +39,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class GenericNodeList extends AbstractNode implements NodeList {
 
@@ -95,6 +95,7 @@ public class GenericNodeList extends AbstractNode implements NodeList {
 
     /**
      * Creates a new object.
+     * The list is filled with the node given.
      *
      * @param node the node to add initially
      */
@@ -119,7 +120,9 @@ public class GenericNodeList extends AbstractNode implements NodeList {
      */
     public void add(final Node node) {
 
-        list.add(node);
+        if (node != null) {
+            list.add(node);
+        }
     }
 
     /**
