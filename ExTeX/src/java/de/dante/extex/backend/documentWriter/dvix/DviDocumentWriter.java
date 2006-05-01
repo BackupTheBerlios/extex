@@ -83,7 +83,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This class provides a base implementation of a DVI document writer.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class DviDocumentWriter
         implements
@@ -455,8 +455,8 @@ public class DviDocumentWriter
             boolean save = horizontal;
             horizontal = true;
             List list = (List) value;
-            right(list, node.getShift().getValue());
-            down(list, node.getMove().getValue());
+            down(list, node.getShift().getValue());
+            right(list, node.getMove().getValue());
             int size = node.size();
             int v0 = dviV;
 
@@ -574,8 +574,8 @@ public class DviDocumentWriter
             List list = (List) value;
             boolean save = horizontal;
             horizontal = false;
-            right(list, node.getShift().getValue());
-            down(list, node.getMove().getValue());
+            down(list, node.getShift().getValue());
+            right(list, node.getMove().getValue());
             int size = node.size();
             int h0 = dviH;
 
