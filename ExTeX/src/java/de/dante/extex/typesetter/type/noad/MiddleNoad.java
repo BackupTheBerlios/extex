@@ -35,7 +35,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * the surrounding material.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class MiddleNoad extends LeftNoad {
 
@@ -83,6 +83,7 @@ public class MiddleNoad extends LeftNoad {
 
     /**
      * @see de.dante.extex.typesetter.type.noad.LeftNoad#typeset(
+     *      de.dante.extex.typesetter.type.noad.Noad,
      *      de.dante.extex.typesetter.type.noad.NoadList,
      *      int,
      *      de.dante.extex.typesetter.type.NodeList,
@@ -91,23 +92,30 @@ public class MiddleNoad extends LeftNoad {
      *      de.dante.extex.interpreter.type.dimen.Dimen,
      *      de.dante.extex.interpreter.type.dimen.Dimen)
      */
-    public void typeset(final NoadList noads, final int index,
-            final NodeList list, final MathContext mathContext,
-            final Logger logger, final Dimen height, final Dimen depth)
+    public void typeset(final Noad previousNoad, final NoadList noads,
+            final int index, final NodeList list,
+            final MathContext mathContext, final Logger logger,
+            final Dimen height, final Dimen depth)
             throws TypesetterException,
                 ConfigurationException {
 
+        getSpacingClass().addClearance(
+                (previousNoad != null ? previousNoad.getSpacingClass() : null),
+                list, mathContext);
+
         HorizontalListNode hlist = new HorizontalListNode();
 
-        noadPost.typeset(noads, index, hlist, mathContext, logger);
+        noadPost
+                .typeset(previousNoad, noads, index, hlist, mathContext, logger);
         height.max(hlist.getHeight());
         depth.max(hlist.getDepth());
 
-        noadPre.typeset(noads, index, list, mathContext, logger, height, depth);
+        noadPre.typeset(previousNoad, noads, index, list, mathContext, logger,
+                height, depth);
 
-        delimiter.typeset(noads, index, list, mathContext, logger);
+        delimiter
+                .typeset(previousNoad, noads, index, list, mathContext, logger);
         list.add(hlist);
-        //TODO gene: add clearance
     }
 
 }

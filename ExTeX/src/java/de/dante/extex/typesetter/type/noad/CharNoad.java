@@ -35,6 +35,7 @@ import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
+import de.dante.extex.typesetter.type.noad.util.MathSpacing;
 import de.dante.extex.typesetter.type.node.CharNode;
 import de.dante.extex.typesetter.type.node.ImplicitKernNode;
 import de.dante.util.UnicodeChar;
@@ -44,7 +45,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This class provides a container for a mathematical character.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class CharNoad extends AbstractNoad {
 
@@ -92,15 +93,16 @@ public class CharNoad extends AbstractNoad {
 
     /**
      * @see de.dante.extex.typesetter.type.noad.Noad#typeset(
+     *      de.dante.extex.typesetter.type.noad.Noad,
      *      de.dante.extex.typesetter.type.noad.NoadList,
      *      int,
      *      de.dante.extex.typesetter.type.NodeList,
      *      de.dante.extex.typesetter.type.noad.util.MathContext,
      *      java.util.logging.Logger)
      */
-    public void typeset(final NoadList noads, final int index,
-            final NodeList nodes, final MathContext mathContext,
-            final Logger logger)
+    public void typeset(final Noad previousNoad, final NoadList noads,
+            final int index, final NodeList nodes,
+            final MathContext mathContext, final Logger logger)
             throws TypesetterException,
                 ConfigurationException {
 
@@ -147,7 +149,10 @@ public class CharNoad extends AbstractNoad {
         CharNode charNode = new CharNode(tc, c);
         font.getGlyph(c).getItalicCorrection();
         Dimen delta = font.getGlyph(c).getItalicCorrection();
-        nodes.add(makeScripts(charNode, mathContext, delta, logger));
+        Node scripts = makeScripts(charNode, mathContext, delta, logger);
+        if (scripts != null) {
+            nodes.add(scripts);
+        }
 
         //see "TTP [755]"
         //TODO gene: insert kern for italic correction if required
@@ -180,7 +185,7 @@ public class CharNoad extends AbstractNoad {
                 logger.info(getLocalizer().format("TTP.MissingChar",
                         c.toString(), font.getFontName()));
             }
-
+            setSpacingClass(MathSpacing.UNDEF);
             return;
         }
 

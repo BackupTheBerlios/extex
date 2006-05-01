@@ -23,7 +23,6 @@ import java.util.logging.Logger;
 
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.typesetter.exception.TypesetterException;
-import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
 import de.dante.extex.typesetter.type.noad.util.MathSpacing;
@@ -35,7 +34,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [682]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class BinaryNoad extends AbstractNucleusNoad implements SimpleNoad {
 
@@ -64,32 +63,35 @@ public class BinaryNoad extends AbstractNucleusNoad implements SimpleNoad {
 
     /**
      * @see de.dante.extex.typesetter.type.noad.Noad#typeset(
+     *      de.dante.extex.typesetter.type.noad.Noad,
      *      de.dante.extex.typesetter.type.noad.NoadList,
      *      int,
      *      de.dante.extex.typesetter.type.NodeList,
      *      de.dante.extex.typesetter.type.noad.util.MathContext,
      *      java.util.logging.Logger)
      */
-    public void typeset(final NoadList noads, final int index,
-            final NodeList list, final MathContext mathContext,
-            final Logger logger)
+    public void typeset(final Noad previousNoad, final NoadList noads,
+            final int index, final NodeList list,
+            final MathContext mathContext, final Logger logger)
             throws TypesetterException,
                 ConfigurationException {
 
         // see [TTP 728]
-        if (index > 0) {
-            Node prev = list.get(index - 1);
-            if (prev instanceof BinaryNoad || prev instanceof OperatorNoad
-                    || prev instanceof RelationNoad || prev instanceof OpenNoad
-                    || prev instanceof PunctationNoad
-                    || prev instanceof LeftNoad) {
-                setSpacingClass(MathSpacing.ORD);
-                new OrdinaryNoad(getNucleus(), getTypesettingContext())
-                        .typeset(noads, index, list, mathContext, logger);
-                return;
-            }
-
+        if (previousNoad instanceof BinaryNoad
+                || previousNoad instanceof OperatorNoad
+                || previousNoad instanceof RelationNoad
+                || previousNoad instanceof OpenNoad
+                || previousNoad instanceof PunctationNoad
+                || previousNoad instanceof LeftNoad) {
+            setSpacingClass(MathSpacing.ORD);
+            new OrdinaryNoad(getNucleus(), getTypesettingContext()).typeset(
+                    previousNoad, noads, index, list, mathContext, logger);
+            return;
         }
+
+        getSpacingClass().addClearance(
+                (previousNoad != null ? previousNoad.getSpacingClass() : null),
+                list, mathContext);
 
         //TODO gene: typeset() unimplemented
         throw new RuntimeException("unimplemented");

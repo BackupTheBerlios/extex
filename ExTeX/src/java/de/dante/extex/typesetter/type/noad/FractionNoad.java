@@ -25,7 +25,6 @@ import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
-import de.dante.extex.interpreter.type.glue.WideGlue;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.math.MathDelimiter;
@@ -44,7 +43,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [683]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class FractionNoad extends AbstractNoad {
 
@@ -138,47 +137,47 @@ public class FractionNoad extends AbstractNoad {
     /**
      * @see "TTP [704,743]"
      * @see de.dante.extex.typesetter.type.noad.Noad#typeset(
+     *      de.dante.extex.typesetter.type.noad.Noad,
      *      de.dante.extex.typesetter.type.noad.NoadList,
      *      int,
      *      de.dante.extex.typesetter.type.NodeList,
      *      de.dante.extex.typesetter.type.noad.util.MathContext,
      *      java.util.logging.Logger)
      */
-    public void typeset(final NoadList noads, final int index,
-            final NodeList list, final MathContext mathContext,
-            final Logger logger)
+    public void typeset(final Noad previousNoad, final NoadList noads,
+            final int index, final NodeList list,
+            final MathContext mathContext, final Logger logger)
             throws TypesetterException,
                 ConfigurationException {
+
+        getSpacingClass().addClearance(
+                (previousNoad != null ? previousNoad.getSpacingClass() : null),
+                list, mathContext);
 
         NodeList vlist = new VerticalListNode();
 
         HorizontalListNode num = new HorizontalListNode();
         StyleNoad style = mathContext.getStyle();
         mathContext.setStyle(style.num());
-        numerator.typeset(noads, index, num, mathContext, logger);
+        numerator.typeset(null, noads, index, num, mathContext, logger);
 
         mathContext.setStyle(style.denom());
         HorizontalListNode den = new HorizontalListNode();
-        denominator.typeset(noads, index, den, mathContext, logger);
+        denominator.typeset(null, noads, index, den, mathContext, logger);
         mathContext.setStyle(style);
 
         Dimen wNum = num.getWidth();
         Dimen wDen = den.getWidth();
         if (wNum.lt(wDen)) {
-            WideGlue wg = new WideGlue();
             num.add(0, new GlueNode(FixedGlue.S_S, true));
             num.add(new GlueNode(FixedGlue.S_S, true));
-            num.addWidthTo(wg);
-            wDen.subtract(wNum);
-            num.spreadWidth(wDen, wg.getStretch());
+            num.hpack(wDen);
             wNum = wDen;
         } else if (wNum.gt(wDen)) {
-            WideGlue wg = new WideGlue();
             den.add(0, new GlueNode(FixedGlue.S_S, true));
             den.add(new GlueNode(FixedGlue.S_S, true));
-            den.addWidthTo(wg);
+            den.hpack(wNum);
             wNum.subtract(wDen);
-            den.spreadWidth(wNum, wg.getStretch());
         }
 
         vlist.add(num);

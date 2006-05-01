@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
+import de.dante.extex.typesetter.type.noad.util.MathSpacing;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
@@ -128,7 +129,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public final class StyleNoad implements Noad {
 
@@ -213,6 +214,11 @@ public final class StyleNoad implements Noad {
     private String printName;
 
     /**
+     * The field <tt>spacingClass</tt> contains the spacing class.
+     */
+    private MathSpacing spacingClass = MathSpacing.UNDEF;
+
+    /**
      * The field <tt>style</tt> contains the <logo>TeX</logo> name for the
      * style. It has the values <tt>textstyle</tt>, <tt>scriptstyle</tt>, or
      * <tt>scriptscriptstyle</tt>.
@@ -241,6 +247,8 @@ public final class StyleNoad implements Noad {
      * Get the cramped style for this one.
      *
      * @return the cramped style
+     *
+     * @see "TTP [702]"
      */
     public StyleNoad cramped() {
 
@@ -248,9 +256,11 @@ public final class StyleNoad implements Noad {
     }
 
     /**
-     * Get the denom style for this one.
+     * Get the denominator style for this one.
      *
-     * @return the denom style
+     * @return the denominator style
+     *
+     * @see "TTP [702]"
      */
     public StyleNoad denom() {
 
@@ -275,6 +285,14 @@ public final class StyleNoad implements Noad {
     public String getName() {
 
         return this.style;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.noad.Noad#getSpacingClass()
+     */
+    public MathSpacing getSpacingClass() {
+
+        return spacingClass;
     }
 
     /**
@@ -304,6 +322,16 @@ public final class StyleNoad implements Noad {
     }
 
     /**
+     * Test whether the current style is a cramped style.
+     *
+     * @return <code>true</code> iff the current style is a cramped style
+     */
+    public boolean isCramped() {
+
+        return (no % 2) == 1;
+    }
+
+    /**
      * Ordering on the styles.
      *
      * @param other the style to compare to
@@ -317,9 +345,11 @@ public final class StyleNoad implements Noad {
     }
 
     /**
-     * Get the num style for this one.
+     * Get the numerator style for this one.
      *
-     * @return the num style
+     * @return the numerator style
+     *
+     * @see "TTP [702]"
      */
     public StyleNoad num() {
 
@@ -363,6 +393,8 @@ public final class StyleNoad implements Noad {
      * Get the sub style for this one.
      *
      * @return the sub style
+     *
+     * @see "TTP [702]"
      */
     public StyleNoad sub() {
 
@@ -373,6 +405,8 @@ public final class StyleNoad implements Noad {
      * Get the sup style for this one.
      *
      * @return the sup style
+     *
+     * @see "TTP [702]"
      */
     public StyleNoad sup() {
 
@@ -388,6 +422,10 @@ public final class StyleNoad implements Noad {
     }
 
     /**
+     * Produce a printable representation of the noad in a StringBuffer.
+     *
+     * @param sb the string buffer
+     *
      * @see "TTP [694]"
      * @see de.dante.extex.typesetter.type.noad.Noad#toString(
      *      java.lang.StringBuffer)
@@ -408,19 +446,24 @@ public final class StyleNoad implements Noad {
 
     /**
      * @see de.dante.extex.typesetter.type.noad.Noad#typeset(
+     *      de.dante.extex.typesetter.type.noad.Noad,
      *      de.dante.extex.typesetter.type.noad.NoadList,
      *      int,
      *      de.dante.extex.typesetter.type.NodeList,
      *      de.dante.extex.typesetter.type.noad.util.MathContext,
      *      java.util.logging.Logger)
      */
-    public void typeset(final NoadList noads, final int index,
-            final NodeList list, final MathContext mathContext,
-            final Logger logger)
+    public void typeset(final Noad previousNoad, final NoadList noads,
+            final int index, final NodeList list,
+            final MathContext mathContext, final Logger logger)
             throws TypesetterException,
                 ConfigurationException {
 
         mathContext.setStyle(this);
+
+        if (index > 0) {
+            spacingClass = noads.get(index - 1).getSpacingClass();
+        }
     }
 
 }

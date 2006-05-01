@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
+import de.dante.extex.typesetter.type.noad.util.MathSpacing;
 import de.dante.util.UnicodeChar;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
@@ -32,7 +33,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This class provides a container for a mathematical glyph.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class MathGlyph implements Noad, Serializable {
 
@@ -188,21 +189,30 @@ public class MathGlyph implements Noad, Serializable {
 
     /**
      * @see de.dante.extex.typesetter.type.noad.Noad#typeset(
+     *      de.dante.extex.typesetter.type.noad.Noad,
      *      de.dante.extex.typesetter.type.noad.NoadList,
      *      int,
      *      de.dante.extex.typesetter.type.NodeList,
      *      de.dante.extex.typesetter.type.noad.util.MathContext,
      *      java.util.logging.Logger)
      */
-    public void typeset(final NoadList noads, final int index,
-            final NodeList list, final MathContext mathContext,
-            final Logger logger)
+    public void typeset(final Noad previousNoad, final NoadList noads,
+            final int index, final NodeList list,
+            final MathContext mathContext, final Logger logger)
             throws TypesetterException,
                 ConfigurationException {
 
         //TODO gene: typeset() unimplemented
         throw new RuntimeException("unimplemented");
-        //return index + 1;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.noad.Noad#getSpacingClass()
+     */
+    public MathSpacing getSpacingClass() {
+
+        // TODO gene: getSpacingClass unimplemented
+        return null;
     }
 
 }

@@ -25,6 +25,7 @@ import de.dante.extex.interpreter.exception.ImpossibleException;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
+import de.dante.extex.typesetter.type.noad.util.MathSpacing;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
@@ -33,7 +34,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [689]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class ChoiceNoad implements Noad {
 
@@ -52,6 +53,11 @@ public class ChoiceNoad implements Noad {
      * style.
      */
     private Noad scriptScript;
+
+    /**
+     * The field <tt>spacingClass</tt> contains the spacing class.
+     */
+    private MathSpacing spacingClass = MathSpacing.UNDEF;
 
     /**
      * The field <tt>text</tt> contains the noads used in text style.
@@ -74,6 +80,14 @@ public class ChoiceNoad implements Noad {
         text = textMath;
         script = scriptMath;
         scriptScript = scriptscriptMath;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.noad.Noad#getSpacingClass()
+     */
+    public MathSpacing getSpacingClass() {
+
+        return spacingClass;
     }
 
     /**
@@ -138,28 +152,36 @@ public class ChoiceNoad implements Noad {
     /**
      * @see "TTP [731]"
      * @see de.dante.extex.typesetter.type.noad.Noad#typeset(
+     *      de.dante.extex.typesetter.type.noad.Noad,
      *      de.dante.extex.typesetter.type.noad.NoadList,
      *      int,
      *      de.dante.extex.typesetter.type.NodeList,
      *      de.dante.extex.typesetter.type.noad.util.MathContext,
      *      java.util.logging.Logger)
      */
-    public void typeset(final NoadList noads, final int index,
-            final NodeList list, final MathContext mathContext,
-            final Logger logger)
+    public void typeset(final Noad previousNoad, final NoadList noads,
+            final int index, final NodeList list,
+            final MathContext mathContext, final Logger logger)
             throws TypesetterException,
                 ConfigurationException {
 
         StyleNoad style = mathContext.getStyle();
 
         if (style == StyleNoad.DISPLAYSTYLE) {
-            display.typeset(noads, index, list, mathContext, logger);
+            display.typeset(previousNoad, noads, index, list, mathContext,
+                    logger);
+            spacingClass = display.getSpacingClass();
         } else if (style == StyleNoad.TEXTSTYLE) {
-            text.typeset(noads, index, list, mathContext, logger);
+            text.typeset(previousNoad, noads, index, list, mathContext, logger);
+            spacingClass = text.getSpacingClass();
         } else if (style == StyleNoad.SCRIPTSTYLE) {
-            script.typeset(noads, index, list, mathContext, logger);
+            script.typeset(previousNoad, noads, index, list, mathContext,
+                    logger);
+            spacingClass = script.getSpacingClass();
         } else if (style == StyleNoad.SCRIPTSCRIPTSTYLE) {
-            scriptScript.typeset(noads, index, list, mathContext, logger);
+            scriptScript.typeset(previousNoad, noads, index, list, mathContext,
+                    logger);
+            spacingClass = scriptScript.getSpacingClass();
         } else {
             throw new ImpossibleException("illegal style");
         }

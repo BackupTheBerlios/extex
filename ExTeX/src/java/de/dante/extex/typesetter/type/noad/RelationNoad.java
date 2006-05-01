@@ -34,7 +34,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [682]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class RelationNoad extends AbstractNucleusNoad implements SimpleNoad {
 
@@ -63,17 +63,22 @@ public class RelationNoad extends AbstractNucleusNoad implements SimpleNoad {
 
     /**
      * @see de.dante.extex.typesetter.type.noad.Noad#typeset(
+     *      de.dante.extex.typesetter.type.noad.Noad,
      *      de.dante.extex.typesetter.type.noad.NoadList,
      *      int,
      *      de.dante.extex.typesetter.type.NodeList,
      *      de.dante.extex.typesetter.type.noad.util.MathContext,
      *      java.util.logging.Logger)
      */
-    public void typeset(final NoadList noads, final int index,
-            final NodeList list, final MathContext mathContext,
-            final Logger logger)
+    public void typeset(final Noad previousNoad, final NoadList noads,
+            final int index, final NodeList list,
+            final MathContext mathContext, final Logger logger)
             throws TypesetterException,
                 ConfigurationException {
+
+        getSpacingClass().addClearance(
+                (previousNoad != null ? previousNoad.getSpacingClass() : null),
+                list, mathContext);
 
         //TODO gene: typeset() unimplemented
         throw new RuntimeException("unimplemented");

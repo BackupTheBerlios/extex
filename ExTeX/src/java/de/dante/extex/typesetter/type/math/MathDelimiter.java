@@ -23,13 +23,13 @@ import java.io.Serializable;
 import java.util.logging.Logger;
 
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
-import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.noad.MathGlyph;
 import de.dante.extex.typesetter.type.noad.Noad;
 import de.dante.extex.typesetter.type.noad.NoadList;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
+import de.dante.extex.typesetter.type.noad.util.MathSpacing;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
@@ -37,7 +37,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * large, and a small math glyph.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class MathDelimiter implements Noad, Serializable {
 
@@ -105,6 +105,15 @@ public class MathDelimiter implements Noad, Serializable {
     public MathGlyph getSmallChar() {
 
         return this.smallChar;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.noad.Noad#getSpacingClass()
+     */
+    public MathSpacing getSpacingClass() {
+
+        //TODO gene: unimplemented
+        throw new RuntimeException("unimplemented");
     }
 
     /**
@@ -178,15 +187,16 @@ public class MathDelimiter implements Noad, Serializable {
 
     /**
      * @see de.dante.extex.typesetter.type.noad.Noad#typeset(
+     *      de.dante.extex.typesetter.type.noad.Noad,
      *      de.dante.extex.typesetter.type.noad.NoadList,
      *      int,
      *      de.dante.extex.typesetter.type.NodeList,
      *      de.dante.extex.typesetter.type.noad.util.MathContext,
      *      java.util.logging.Logger)
      */
-    public void typeset(final NoadList noads, final int index,
-            final NodeList list, final MathContext mathContext,
-            final Logger logger)
+    public void typeset(final Noad previousNoad, final NoadList noads,
+            final int index, final NodeList list,
+            final MathContext mathContext, final Logger logger)
             throws TypesetterException,
                 ConfigurationException {
 
@@ -218,7 +228,6 @@ public class MathDelimiter implements Noad, Serializable {
 
         //TODO gene: typeset() unimplemented
         throw new RuntimeException("unimplemented MathDelimiter");
-        //return index + 1;
     }
 
 }

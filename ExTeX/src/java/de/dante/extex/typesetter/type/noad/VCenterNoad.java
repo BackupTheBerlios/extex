@@ -38,7 +38,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [687]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class VCenterNoad extends AbstractNucleusNoad {
 
@@ -67,20 +67,27 @@ public class VCenterNoad extends AbstractNucleusNoad {
     /**
      * @see "TTP [736]"
      * @see de.dante.extex.typesetter.type.noad.Noad#typeset(
+     *      de.dante.extex.typesetter.type.noad.Noad,
      *      de.dante.extex.typesetter.type.noad.NoadList,
      *      int,
      *      de.dante.extex.typesetter.type.NodeList,
      *      de.dante.extex.typesetter.type.noad.util.MathContext,
      *      java.util.logging.Logger)
      */
-    public void typeset(final NoadList noads, final int index,
-            final NodeList list, final MathContext mathContext,
-            final Logger logger)
+    public void typeset(final Noad previousNoad, final NoadList noads,
+            final int index, final NodeList list,
+            final MathContext mathContext, final Logger logger)
             throws TypesetterException,
                 ConfigurationException {
 
         HorizontalListNode hlist = new HorizontalListNode();
-        getNucleus().typeset(noads, index, hlist, mathContext, logger);
+        Noad n = getNucleus();
+        n.typeset(previousNoad, noads, index, hlist, mathContext, logger);
+
+        setSpacingClass(n.getSpacingClass());
+        getSpacingClass().addClearance(
+                (previousNoad != null ? previousNoad.getSpacingClass() : null),
+                list, mathContext);
 
         Dimen d = new Dimen(hlist.getHeight());
         d.add(hlist.getDepth());
@@ -94,5 +101,8 @@ public class VCenterNoad extends AbstractNucleusNoad {
         hlist.setHeight(h);
         d.subtract(h);
         hlist.setDepth(d);
+
+        list.add(hlist);
     }
+
 }

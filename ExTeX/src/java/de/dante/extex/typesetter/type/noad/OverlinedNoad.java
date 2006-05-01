@@ -40,7 +40,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [687]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class OverlinedNoad extends AbstractNucleusNoad {
 
@@ -88,6 +88,7 @@ public class OverlinedNoad extends AbstractNucleusNoad {
      *
      * @see "TTP [705,734]"
      * @see de.dante.extex.typesetter.type.noad.Noad#typeset(
+     *      de.dante.extex.typesetter.type.noad.Noad,
      *      de.dante.extex.typesetter.type.noad.NoadList,
      *      int,
      *      de.dante.extex.typesetter.type.NodeList,
@@ -95,19 +96,30 @@ public class OverlinedNoad extends AbstractNucleusNoad {
      *      de.dante.extex.typesetter.TypesetterOptions,
      *      java.util.logging.Logger)
      */
-    public void typeset(final NoadList noads, final int index,
-            final NodeList list, final MathContext mathContext,
-            final Logger logger)
+    public void typeset(final Noad previousNoad, final NoadList noads,
+            final int index, final NodeList list,
+            final MathContext mathContext, final Logger logger)
             throws TypesetterException,
                 ConfigurationException {
+
+        getSpacingClass().addClearance(
+                (previousNoad != null ? previousNoad.getSpacingClass() : null),
+                list, mathContext);
 
         HorizontalListNode hlist = new HorizontalListNode();
         FixedDimen thickness = mathContext
                 .mathParameter(MathFontParameter.DEFAULT_RULE_THICKNESS);
         StyleNoad style = mathContext.getStyle();
         mathContext.setStyle(style.cramped());
-        getNucleus().typeset(noads, index, hlist, mathContext, logger);
+        Noad n = getNucleus();
+        n.typeset(previousNoad, noads, index, hlist, mathContext,
+                logger);
         mathContext.setStyle(style);
+
+        setSpacingClass(n.getSpacingClass());
+        getSpacingClass().addClearance(
+                (previousNoad != null ? previousNoad.getSpacingClass() : null),
+                list, mathContext);
 
         VerticalListNode vlist = new VerticalListNode();
         vlist.add(new ExplicitKernNode(thickness, false));
@@ -125,4 +137,5 @@ public class OverlinedNoad extends AbstractNucleusNoad {
         h.subtract(d);
         vlist.setHeight(h);
     }
+
 }

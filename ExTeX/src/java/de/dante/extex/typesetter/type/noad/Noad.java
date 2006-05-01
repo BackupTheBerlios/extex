@@ -24,6 +24,7 @@ import java.util.logging.Logger;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
+import de.dante.extex.typesetter.type.noad.util.MathSpacing;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
@@ -31,9 +32,16 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * constructions.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public interface Noad {
+
+    /**
+     * Getter for spacing class.
+     *
+     * @return the spacing class
+     */
+    MathSpacing getSpacingClass();
 
     /**
      * Getter for the subscript.
@@ -81,6 +89,7 @@ public interface Noad {
     /**
      * Translate a Noad into a NodeList.
      *
+     * @param previousNoad the previous noad
      * @param noads the list of noads currently processed
      * @param index the index of the current node in the list
      * @param list the list to add the nodes to. This list contains the Nodes
@@ -88,12 +97,10 @@ public interface Noad {
      * @param mathContext the context to consider
      * @param logger the logger for debugging and tracing information
      *
-     * @return the index of the next noad to consider
-     *
      * @throws TypesetterException in case of a problem
      * @throws ConfigurationException in case of a configuration problem
      */
-    void typeset(NoadList noads, int index, NodeList list,
+    void typeset(Noad previousNoad, NoadList noads, int index, NodeList list,
             MathContext mathContext, Logger logger)
             throws TypesetterException,
                 ConfigurationException;

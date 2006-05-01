@@ -37,7 +37,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [687]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class LeftNoad extends AbstractNoad {
 
@@ -78,6 +78,7 @@ public class LeftNoad extends AbstractNoad {
 
     /**
      * @see de.dante.extex.typesetter.type.noad.Noad#typeset(
+     *      de.dante.extex.typesetter.type.noad.Noad,
      *      de.dante.extex.typesetter.type.noad.NoadList,
      *      int,
      *      de.dante.extex.typesetter.type.NodeList,
@@ -85,9 +86,9 @@ public class LeftNoad extends AbstractNoad {
      *      de.dante.extex.typesetter.TypesetterOptions,
      *      java.util.logging.Logger)
      */
-    public void typeset(final NoadList noads, final int index,
-            final NodeList list, final MathContext mathContext,
-            final Logger logger)
+    public void typeset(final Noad previousNoad, final NoadList noads,
+            final int index, final NodeList list,
+            final MathContext mathContext, final Logger logger)
             throws TypesetterException,
                 ConfigurationException {
 
@@ -97,6 +98,7 @@ public class LeftNoad extends AbstractNoad {
     /**
      * TODO gene: missing JavaDoc
      *
+     * @param previousNoad ...
      * @param noads ...
      * @param index ...
      * @param list the list to add the nodes to. This list contains the Nodes
@@ -113,20 +115,25 @@ public class LeftNoad extends AbstractNoad {
      *
      * @see "TTP [762]"
      */
-    public void typeset(final NoadList noads, final int index,
-            final NodeList list, final MathContext mathContext,
-            final Logger logger, final Dimen height, final Dimen depth)
+    public void typeset(final Noad previousNoad, final NoadList noads,
+            final int index, final NodeList list,
+            final MathContext mathContext, final Logger logger,
+            final Dimen height, final Dimen depth)
             throws TypesetterException,
                 ConfigurationException {
 
+        getSpacingClass().addClearance(
+                (previousNoad != null ? previousNoad.getSpacingClass() : null),
+                list, mathContext);
+
         HorizontalListNode hlist = new HorizontalListNode();
 
-        noad.typeset(noads, index, hlist, mathContext, logger);
+        noad.typeset(previousNoad, noads, index, hlist, mathContext, logger);
         height.max(hlist.getHeight());
         depth.max(hlist.getDepth());
-        delimiter.typeset(noads, index, list, mathContext, logger);
+        delimiter.typeset(previousNoad, noads, index, list, mathContext,
+                logger);
         list.add(hlist);
-        //TODO gene: add clearance
     }
 
 }
