@@ -38,14 +38,14 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class HorizontalListNode extends GenericNodeList {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 20060417L;
+    protected static final long serialVersionUID = 20060426L;
 
     /**
      * Creates a new object. The list is empty initially.
@@ -70,7 +70,8 @@ public class HorizontalListNode extends GenericNodeList {
     }
 
     /**
-     * Creates a new object. The list is filled with the node given.
+     * Creates a new object.
+     * The hlist is filled with the node given.
      *
      * @param node the initial node to add
      */
@@ -81,14 +82,14 @@ public class HorizontalListNode extends GenericNodeList {
 
     /**
      * Creates a new object.
+     * The hlist is initially filled with two nodes.
      *
      * @param node1 the initial node
      * @param node2 the node to add after node1
      */
     public HorizontalListNode(final Node node1, final Node node2) {
 
-        super();
-        add(node1);
+        super(node1);
         add(node2);
     }
 
@@ -148,15 +149,26 @@ public class HorizontalListNode extends GenericNodeList {
      */
     public void hpack() {
 
-        Dimen w = new Dimen(getTargetWidth());
-        if (w == null) {
-            return;
+        Dimen wd = new Dimen();
+        WideGlue wg = new WideGlue();
+        int size = size();
+        for (int i = 0; i < size; i++) {
+            Node node = get(i);
+            wd.add(node.getWidth());
+            node.addWidthTo(wg);
         }
-        w.subtract(getWidth());
-        if (w.gt(Dimen.ZERO_PT)) {
-            //          TODO gene
-        } else if (w.lt(Dimen.ZERO_PT)) {
-            //          TODO gene
+        setWidth(wd);
+
+        Dimen w = getTargetWidth();
+        if (w != null && w.ne(wd)) {
+            wd.subtract(w);
+            wd.negate();
+            FixedGlueComponent s = (w.ge(Dimen.ZERO) //
+                    ? wg.getShrink() //
+                    : wg.getStretch());
+            for (int i = 0; i < size; i++) {
+                get(i).spreadWidth(wd, s);
+            }
         }
     }
 
@@ -168,41 +180,19 @@ public class HorizontalListNode extends GenericNodeList {
     public void hpack(final FixedDimen width) {
 
         setTargetWidth(width);
-        Dimen w = new Dimen(width);
-        w.subtract(getWidth());
-        if (w.gt(Dimen.ZERO_PT)) {
-            //          TODO gene
-        } else if (w.lt(Dimen.ZERO_PT)) {
-            //          TODO gene
-        }
+        hpack();
     }
 
     /**
+     * The <logo>TeX</logo> definition of a hlist states that a box is not
+     * variable neither in width nor in height.
+     *
      * @see de.dante.extex.typesetter.type.node.AbstractNode#spreadWidth(
      *      de.dante.extex.interpreter.type.dimen.FixedDimen,
      *      de.dante.extex.interpreter.type.glue.FixedGlueComponent)
      */
     public void spreadWidth(final FixedDimen w, final FixedGlueComponent sum) {
 
-        int size = size();
-        FixedGlueComponent s;
-
-        if (sum == null) {
-            WideGlue sx = new WideGlue();
-
-            for (int i = 0; i < size; i++) {
-                get(i).addWidthTo(sx);
-            }
-            s = (sx.getLength().ge(w) ? sx.getShrink() : sx.getStretch());
-        } else {
-            s = sum;
-        }
-
-        for (int i = 0; i < size; i++) {
-            get(i).spreadWidth(w, s);
-        }
-
-        getWidth().add(w);
     }
 
     /**
