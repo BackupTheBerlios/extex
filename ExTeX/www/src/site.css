@@ -1,13 +1,34 @@
-
+/*
+ *
+ */
 body {
-  background-color:white;
+  background-color:black;
   font-family:sans-serif;
   line-height:120%;
   margin:0pt;
   padding:0pt;
 }
-.head {
+.left {
+  padding-top:2pt;
+  vertical-align:top;
+  background:url("image/cutoff-left.png");
+  background-repeat:repeat-y;
+  background-position:left; 
+  background-color:white;
+}
+.right {
+  padding-top:2pt;
+  vertical-align:top;
+  background:url("image/cutoff-right.png");
+  background-repeat:repeat-y;
+  background-position:right; 
+  background-color:white;
+}
+table.head {
   background-color:#54532c;
+  background:url("image/head1.png");
+}
+.head {
   border-bottom:0pt;
   border-left:0pt;
   border-right:0pt;
@@ -19,27 +40,28 @@ body {
   padding-top:6pt;
   text-align:right;
 }
-.tabOFF	{
+.tabOff	{
   font-size:75%;
   font-weight:bold;
-  color:#999999;
-  background-color:#eeeedd;
+  color:#333333;
+  background:url("image/tab-off.png");
+  background-color:gray;
   border-bottom-color:#333333;
   border-bottom-style:solid;
   border-bottom-width:1px;
-  border-left:0pt;
-  border-right-color:#333333;
-  border-right-style:solid;
-  border-right-width:2px;
+  border-left-width:0pt;
+  border-right-width:0px;
   border-top:6pt;
   margin:0pt;
   padding-bottom:4pt;
   padding-left:0pt;
-  padding-right:16pt;
+  padding-right:0pt;
   padding-top:4pt;
 }
-.tabOff	{
+.tabOffL {
+  font-size:8px;
   background-color:#eeeedd;
+  background:url("image/tab-off-l.png");
   border-bottom-color:#333333;
   border-bottom-style:solid;
   border-bottom-width:1px;
@@ -47,50 +69,81 @@ body {
   border-right:0pt;
   border-top:6pt;
   margin:0pt;
-  padding-bottom:4pt;
-  padding-left:0pt;
-  padding-right:6pt;
+  padding-bottom:0pt;
+  padding-left:13px;
+  padding-right:0pt;
   padding-top:0pt;
-  vertical-align:top;
 }
-.tabON {
+.tabOffR {
+  font-size:8px;
+  background-color:#eeeedd;
+  background:url("image/tab-off-r.png");
+  border-bottom-color:#333333;
+  border-bottom-style:solid;
+  border-bottom-width:1px;
+  border-left:0pt;
+  border-right:0pt;
+  border-top:6pt;
+  margin:0pt;
+  padding-bottom:0pt;
+  padding-left:13px;
+  padding-right:0pt;
+  padding-top:0pt;
+}
+.tabOn {
   background-color:#dddd99;
+  background:url("image/tab-on.png");
   color:black;
   font-size:75%;
   font-weight:bold;
   border-bottom:0pt;
   border-left:0pt;
-  border-right-color:#333333;
-  border-right-style:solid;
-  border-right-width:2px;
+  border-right-width:0px;
   border-top:6pt;
   margin:0pt;
   padding-bottom:4pt;
   padding-left:0pt;
-  padding-right:16pt;
+  padding-right:0pt;
   padding-top:4pt;
 }
-.tabOn {
+.tabOnL {
+  font-size:8px;
   background-color:#dddd99;
+  background:url("image/tab-on-l.png");
   border-bottom:0pt;
   border-left:0pt;
   border-right:0pt;
   border-top:6pt;
   margin:0pt;
-  padding-bottom:4pt;
-  padding-left:0pt;
-  padding-right:6pt;
+  padding-bottom:0pt;
+  padding-left:13px;
+  padding-right:0pt;
   padding-top:0pt;
-  vertical-align:top;
+}
+.tabOnR {
+  font-size:8px;
+  background-color:#dddd99;
+  background:url("image/tab-on-r.png");
+  border-bottom:0pt;
+  border-left:0pt;
+  border-right:0pt;
+  border-top:6pt;
+  margin:0pt;
+  padding-bottom:0pt;
+  padding-left:13px;
+  padding-right:0pt;
+  padding-top:0pt;
 }
 .tabSep {
-  background-color:#dddd99;
+  background-color:#e9d965;
+  background:url("image/sep.png");
   line-height:6pt;
   margin:0pt;
   padding:0pt;
 }
 address {
   background-color:#dddd99;
+  background:url("image/blend-address	.png");
   border-bottom-color:#54532c;
   border-bottom-style:solid;
   border-bottom-width:1px;
@@ -107,6 +160,7 @@ h1 {
   margin-top:8pt;
   margin-bottom:8pt;
   background-color:#eeeedd;
+  background:url("image/blend-h1.png");
   border-width:1px;
   border-color:#dddd99;
   border-style:solid;
@@ -119,13 +173,14 @@ h1 {
 }
 h2 {
   font-size:140%;
-  padding-left:16pt;
+  padding-left:32pt;
   padding-right:16pt;
   padding-top:4pt;
   padding-bottom:4pt;
   margin-top:8pt;
   margin-bottom:8pt;
   background-color:#eeeedd;
+  background:url("image/blend-h1.png");
   border-width:1px;
   border-color:#dddd99;
   border-style:solid;
@@ -138,13 +193,14 @@ h2 {
 }
 h3 {
   font-size:120%;
-  padding-left:26pt;
+  padding-left:64pt;
   padding-right:26pt;
   padding-top:2pt;
   padding-bottom:2pt;
   margin-top:8pt;
   margin-bottom:8pt;
   background-color:#eeeedd;
+  background:url("image/blend-h1.png");
   border-width:1px;
   border-color:#dddd99;
   border-style:solid;
@@ -181,6 +237,7 @@ a.nav:hover { color:black;
 }
 .navi {
   font-size:80%;
+  font-weight:bold;
   border-color:#54532c;
   border-style:solid;
   border-left-width:1px;
@@ -192,8 +249,9 @@ a.nav:hover { color:black;
   margin-right:2pt;
   margin-top:2pt;
   margin-bottom:4pt;
-  background-color:#dddd99;
-  font-weight:bold;
+  background-color:#e9d965;
+  background:url("image/blend.png");
+  background-attachment:fixed;
 }
 .navitems {
   background-color:#eeeedd;
@@ -210,6 +268,7 @@ a.nav:hover { color:black;
 }
 .info {
   font-size:80%;
+  font-weight:bold;
   border-left-width:1px;
   border-top-width:1px;
   border-right-width:3pt;
@@ -221,8 +280,9 @@ a.nav:hover { color:black;
   margin-right:2pt;
   margin-top:2pt;
   margin-bottom:4pt;
-  background-color:#dddd99;
-  font-weight:bold;
+  background-color:#e9d965;
+  background:url("image/blend.png");
+  background-attachment:fixed;
 }
 .infoitems {
   background-color:#eeeedd;

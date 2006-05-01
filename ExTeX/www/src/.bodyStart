@@ -1,7 +1,12 @@
 <table width="100%" class="head" cellspacing="0" cellpadding="0">
  <tr>
-  <td colspan="10" class="head">
-   <a href="&top;index.html"><img src="&top;image/ExTeX-small.gif" alt="ExTeX" border="0"/></a>
+  <td colspan="5" class="head"></td>
+  <td colspan="7" align="center">
+    <img src="&top;image/extex5.2.gif"
+         alt="Typesetting for the 21st century" /></td>
+  <td class="head">
+   <a href="&top;index.html"><img src="&top;image/ExTeX-small.gif"
+                                  alt="ExTeX" border="0"/></a>
   </td>
  </tr>
  <tr>
@@ -12,7 +17,7 @@
 <div class="tabSep"><br/></div>
 <table cellspacing="0" width="100%" class="internal">
  <tr>
-  <td width="20%" valign="top" background="&top;image/cutoff.gif" style="background-repeat:repeat-y">
+  <td width="20%" class="left">
    <navigation/>
   </td>
   <td width="60%" class="text">

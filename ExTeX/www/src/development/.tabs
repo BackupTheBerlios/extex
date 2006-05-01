@@ -1,8 +1,11 @@
-  <td class="tabOn"><img src="&top;image/tab.gif" align="top" /></td>
-  <td class="tabON">Development</td>
+  <td class="tabOnL">&nbsp;</td>
+  <td class="tabOn">Development</td>
+  <td class="tabOnR">&nbsp;</td>
   <td> </td>
-  <td class="tabOff"><img src="&top;image/tabOff.gif" align="top" /></td>
-  <td class="tabOFF"><a class="nav" href="&top;documentation/index.html">Documentation</a></td>
+  <td class="tabOffL">&nbsp;</td>
+  <td class="tabOff"><a class="nav" href="&top;documentation/index.html">Documentation</a></td>
+  <td class="tabOffR">&nbsp;</td>
   <td> </td>
-  <td class="tabOff"><img src="&top;image/tabOff.gif" align="top" /></td>
-  <td class="tabOFF"><a class="nav" href="&top;sources/index.html">Download</a></td>
+  <td class="tabOffL">&nbsp;</td>
+  <td class="tabOff"><a class="nav" href="&top;sources/index.html">Download</a></td>
+  <td class="tabOffR">&nbsp;</td>

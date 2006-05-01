@@ -7,22 +7,22 @@
     <div class="navitems">
      <a href="&top;development/state.html">State of Development</a><br />
      <a href="&top;development/systems.html">&TeX; and Successors</a><br />
-     <a href="https://developer.berlios.de/bugs/?group_id=1915">Bug Tracking</a><br />
-     <a href="https://developer.berlios.de/feature/?group_id=1915">Feature Requests</a><br />
+     <a href="&top;development/bug-tracking.html">Bug Tracking</a><br />
+     <a href="&top;development/feature-requests.html">Feature Requests</a><br />
     </div>
 
     <a href="&top;documentation/index.html">Documentation</a><br />
     <div class="navitems">
      <a href="&top;documentation/objectives.html">Objectives</a><br />
-     <a href="&top;documentation/man/extex-users.pdf">User&apos;s Guide</a><br />
-     <a href="&top;documentation/man/extex-developers.pdf">Developer&apos;s Guide</a><br />
+     <a href="&top;documentation/man/extex-users.pdf">User's Guide (PDF)</a><br />
+     <a href="&top;documentation/man/extex-developers.pdf">Developer's Guide (PDF)</a><br />
      <a href="&top;documentation/faq.html">FAQ</a><br />
      <a href="&top;snapshot/javadoc/index.html">Javadoc (Snapshot)</a><br />
     </div>
  
     <a href="&top;sources/index.html">Download</a><br />
     <div class="navitems">
-     <i>Current Release</i><br />
+     <i>Current Stable Release</i><br />
      <a href="&top;snapshot/ExTeX-setup.jar">Installer (Snapshot)</a><br />
      <a href="&top;sources/repository.html">Repository</a><br />
     </div>
