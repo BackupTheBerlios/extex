@@ -34,6 +34,8 @@ import de.dante.extex.typesetter.type.noad.util.MathSpacing;
 import de.dante.extex.typesetter.type.node.CharNode;
 import de.dante.extex.typesetter.type.node.GlueNode;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
+import de.dante.extex.typesetter.type.node.ImplicitKernNode;
+import de.dante.extex.typesetter.type.node.VerticalListNode;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.i18n.LocalizerFactory;
@@ -49,14 +51,14 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * <doc name="scriptspace" type="register">
  * <h3>The Dimen Parameter <tt>\scriptspace</tt></h3>
  * <p>
- *  The dimen parameter <tt>\scriptspace</tt>
- *  TODO gene: documentation missing
+ *  The dimen parameter <tt>\scriptspace</tt> contains the amount of spacing
+ *  added to the width of subscripts.
  * </p>
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public abstract class AbstractNoad implements Noad {
 
@@ -68,6 +70,8 @@ public abstract class AbstractNoad implements Noad {
      *
      * @param node the node to rebox
      * @param width the target width
+     *
+     * @return ...
      *
      * @see "TTP [715]"
      */
@@ -143,7 +147,7 @@ public abstract class AbstractNoad implements Noad {
      *
      * @return the spacingClass
      */
-    protected MathSpacing getSpacingClass() {
+    public MathSpacing getSpacingClass() {
 
         return this.spacingClass;
     }
@@ -249,9 +253,11 @@ public abstract class AbstractNoad implements Noad {
      *
      * @param node the current node
      * @param mc the math context
+     * @param delta superscript is delta to the right of the subscript if both
+     *  are present
      * @param logger the logger
      *
-     * @return ...
+     * @return a node containing the subscripts and superscripts
      *
      * @throws TypesetterException in case of an error
      * @throws ConfigurationException in case of an configuration error
@@ -264,10 +270,12 @@ public abstract class AbstractNoad implements Noad {
                 ConfigurationException {
 
         if (superscript == null && subscript == null) {
-            return node;
+            return null;
         }
 
         Dimen shiftDown = new Dimen();
+        Dimen shiftUp = new Dimen();
+        Dimen clr = new Dimen();
         HorizontalListNode hlist;
         StyleNoad style = mc.getStyle();
         TypesetterOptions options = mc.getOptions();
@@ -286,19 +294,21 @@ public abstract class AbstractNoad implements Noad {
             throw new ImpossibleException("makeScripts");
         }
 
-        HorizontalListNode sub = new HorizontalListNode();
+        HorizontalListNode sub = null;
+        if (subscript != null) {
+            sub = new HorizontalListNode();
+            mc.setStyle(style.sub());
+            subscript.typeset(null, null, 0, sub, mc, logger);
+            sub.getWidth().add(options.getDimenOption("scriptspace"));
+            mc.setStyle(style);
+        }
 
         if (superscript == null) {
             // only subscript
             // @see "TTP [757]"
-            mc.setStyle(style.sub());
-            subscript.typeset(null, 0, sub, mc, logger);
-            sub.getWidth().add(options.getDimenOption("scriptspace"));
-            mc.setStyle(style);
 
             shiftDown.max(mc.mathParameter(MathFontParameter.SUB1));
 
-            Dimen clr = new Dimen();
             clr.abs(mc.mathParameter(MathFontParameter.MATH_X_HEIGHT));
             clr.multiply(-4, 5);
             clr.add(sub.getHeight());
@@ -307,14 +317,75 @@ public abstract class AbstractNoad implements Noad {
 
             hlist.add(sub);
             return hlist;
-        } else if (subscript == null) {
+        }
+        HorizontalListNode sup = new HorizontalListNode();
+        mc.setStyle(style.sup());
+        superscript.typeset(null, null, 0, sup, mc, logger);
+        mc.setStyle(style);
+        sup.getWidth().add(options.getDimenOption("scriptspace"));
+
+        if (style.isCramped()) {
+            clr.set(mc.mathParameter(MathFontParameter.SUP3));
+        } else if (style.less(StyleNoad.TEXTSTYLE)) {
+            clr.set(mc.mathParameter(MathFontParameter.SUP1));
+        } else {
+            clr.set(mc.mathParameter(MathFontParameter.SUP2));
+        }
+        shiftUp.max(clr);
+        clr.abs(mc.mathParameter(MathFontParameter.MATH_X_HEIGHT));
+        clr.multiply(1, 4);
+        clr.add(sup.getHeight());
+        shiftUp.max(clr);
+
+        if (subscript == null) {
             // only superscript
+            shiftUp.negate();
+            sup.setShift(shiftUp);
+            hlist.add(sup);
+            return hlist;
         } else {
             // both subscript and superscript
-        }
 
-        //TODO gene: unimplemented
-        throw new RuntimeException("unimplemented");
+            shiftDown.max(mc.mathParameter(MathFontParameter.SUP2));
+
+            clr.set(mc.mathParameter(MathFontParameter.DEFAULT_RULE_THICKNESS));
+            clr.multiply(4);
+            clr.subtract(shiftUp);
+            clr.add(sup.getDepth());
+            clr.subtract(sub.getHeight());
+            clr.add(shiftDown);
+
+            if (clr.gt(Dimen.ZERO_PT)) {
+                shiftDown.add(clr);
+
+                clr.abs(mc.mathParameter(MathFontParameter.MATH_X_HEIGHT));
+                clr.multiply(4, 5);
+                clr.subtract(shiftUp);
+                clr.add(sup.getDepth());
+                if (clr.gt(Dimen.ZERO_PT)) {
+                    shiftUp.add(clr);
+                    shiftDown.subtract(clr);
+                }
+            }
+
+            //          shift_amount(x) ? delta;  {superscript is delta to the right of the subscript}
+            sup.setMove(delta);
+            VerticalListNode vlist = new VerticalListNode();
+            vlist.add(sup);
+            //            p ? new_kern((shift_up-depth(x))-(height(y)-shift _down));
+            clr.set(shiftUp);
+            clr.subtract(sup.getDepth());
+            clr.subtract(sub.getHeight());
+            clr.add(shiftDown);
+            vlist.add(new ImplicitKernNode(clr, false));
+            //            link(x) ? p;
+            //            link(p) ? y;
+            //            x ? vpack(x,natural);
+            //            shift_amount(x) ? shift_down;
+            vlist.setShift(shiftDown);
+
+            return vlist;
+        }
     }
 
 }
