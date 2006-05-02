@@ -58,7 +58,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public abstract class AbstractNoad implements Noad {
 
@@ -257,7 +257,9 @@ public abstract class AbstractNoad implements Noad {
      *  are present
      * @param logger the logger
      *
-     * @return a node containing the subscripts and superscripts
+     * @return a node containing the node and the subscripts and superscripts.
+     *  If no subscripts and superscripts are present then <code>null</code> is
+     *  returned instead.
      *
      * @throws TypesetterException in case of an error
      * @throws ConfigurationException in case of an configuration error
@@ -273,8 +275,8 @@ public abstract class AbstractNoad implements Noad {
             return null;
         }
 
-        Dimen shiftDown = new Dimen();
-        Dimen shiftUp = new Dimen();
+        Dimen shiftDown;
+        Dimen shiftUp;
         Dimen clr = new Dimen();
         HorizontalListNode hlist;
         StyleNoad style = mc.getStyle();
@@ -282,14 +284,21 @@ public abstract class AbstractNoad implements Noad {
 
         if (node instanceof CharNode) {
             hlist = new HorizontalListNode(node);
+            shiftDown = new Dimen();
+            shiftUp = new Dimen();
         } else if (node instanceof HorizontalListNode) {
             hlist = (HorizontalListNode) node;
             StyleNoad t = (mc.getStyle().less(StyleNoad.SCRIPTSTYLE)
                     ? StyleNoad.SCRIPTSTYLE
                     : StyleNoad.SCRIPTSCRIPTSTYLE);
-            shiftDown.set(mc.mathParameter(MathFontParameter.SUB_DROP, t));
-            shiftDown.add(node.getDepth());
+            FixedDimen subDrop = mc
+                    .mathParameter(MathFontParameter.SUB_DROP, t);
 
+            shiftUp = new Dimen(node.getHeight());
+            shiftUp.subtract(subDrop);
+
+            shiftDown = new Dimen(node.getDepth());
+            shiftDown.add(subDrop);
         } else {
             throw new ImpossibleException("makeScripts");
         }
@@ -378,13 +387,14 @@ public abstract class AbstractNoad implements Noad {
             clr.subtract(sub.getHeight());
             clr.add(shiftDown);
             vlist.add(new ImplicitKernNode(clr, false));
+            vlist.add(sub);
             //            link(x) ? p;
             //            link(p) ? y;
             //            x ? vpack(x,natural);
             //            shift_amount(x) ? shift_down;
             vlist.setShift(shiftDown);
-
-            return vlist;
+            hlist.add(vlist);
+            return hlist;
         }
     }
 

@@ -45,7 +45,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This class provides a container for a mathematical character.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class CharNoad extends AbstractNoad {
 
@@ -150,8 +150,11 @@ public class CharNoad extends AbstractNoad {
         font.getGlyph(c).getItalicCorrection();
         Dimen delta = font.getGlyph(c).getItalicCorrection();
         Node scripts = makeScripts(charNode, mathContext, delta, logger);
+
         if (scripts != null) {
             nodes.add(scripts);
+        } else {
+            nodes.add(charNode);
         }
 
         //see "TTP [755]"
