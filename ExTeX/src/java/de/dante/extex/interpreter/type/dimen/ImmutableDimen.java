@@ -24,22 +24,23 @@ import java.io.Serializable;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.typesetter.Typesetter;
 
 /**
- * This class provides objects of type Dimen where all setters are redefined
- * to produce an exception. Thus the object is in fact immutable.
+ * This class provides objects of type
+ * {@link de.dante.extex.interpreter.type.dimen.Dimen Dimen} where all
+ * assignment methods are redefined to produce a run-time exception.
+ * Thus the object is in fact immutable.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class ImmutableDimen extends Dimen implements Serializable {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 20060502L;
 
     /**
      * Creates a new object.
@@ -73,7 +74,7 @@ public class ImmutableDimen extends Dimen implements Serializable {
     /**
      * @see de.dante.extex.interpreter.type.dimen.Dimen#divide(long)
      */
-    public void divide(final long denom) throws HelpingException {
+    public void divide(final long denom) {
 
         throw new RuntimeException("Unable to divide an immutable object");
     }
