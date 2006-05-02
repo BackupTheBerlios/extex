@@ -1,19 +1,19 @@
 #!C:\usr\local\share\cygwin\bin\perl.exe -w
 ##*****************************************************************************
-## $Id: .make.pl,v 1.7 2006/05/01 09:09:21 gene Exp $
+## $Id: .make.pl,v 1.8 2006/05/02 18:57:26 gene Exp $
 ##*****************************************************************************
 ## Author: Gerd Neugebauer
 ##=============================================================================
 
 =head1 NAME
 
-make.pl - ...
+.make.pl - Create a web site
 
 =head1 SYNOPSIS
 
-make.pl [-v|--verbose] 
+.make.pl [-v|--verbose] 
 
-make.pl [-h|-help]
+.make.pl [-h|-help]
 
 =head1 DESCRIPTION
 
@@ -49,38 +49,43 @@ sub usage
 }
 
 #------------------------------------------------------------------------------
-# Variable:	$verbose
-# Description:	
 #
 my $verbose = 0;
 
 #------------------------------------------------------------------------------
-# Variable:	$trace
-# Description:	
 #
 my $trace = 0;
 
 #------------------------------------------------------------------------------
-# Variable:	$srcdir
-# Description:	
 #
 my $srcdir = "src";
 
 #------------------------------------------------------------------------------
-# Variable:	$destdir
-# Description:	
 #
 my $destdir = "www";
 
 #------------------------------------------------------------------------------
-# Variable:	...
-# Description:	
 #
 my ($sec,$min,$hour,$day,$month,$year,$wday,$yday,$isdst) = localtime(time);
 $year  += 1900;
 $month += 1;
 
-my $force = undef;
+#------------------------------------------------------------------------------
+#
+my $modday  = $day;
+#------------------------------------------------------------------------------
+#
+my $modmonth  = $month;
+#------------------------------------------------------------------------------
+#
+my $modyear = $year;
+#------------------------------------------------------------------------------
+#
+my @mon = ('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec');
+
+#------------------------------------------------------------------------------
+#
+my $force   = undef;
 
 use Getopt::Long;
 GetOptions("h|help"	=> \&usage,
@@ -97,16 +102,13 @@ use FileHandle;
 
 $srcdir =~ s|/*$||;
 
-die "Missing source dir `$srcdir'" if ! -d $srcdir;
+die "Missing source dir `$srcdir'" if not -d $srcdir;
 
 mkdir $destdir if ! -d $destdir;
 
-my $srclen = length($srcdir)+1;
-
+my $srclen = length($srcdir) + 1;
 my @dependencies = ();
-
 my $DEPEND = undef;
-
 my $dep;
 if ( $DEPEND ) {
   $dep= new FileHandle(".dependencies","w");
@@ -145,10 +147,15 @@ sub process
     }
   } elsif ( $name =~ m/\.html/ ) {
     print STDERR "Processing $name\n" if $verbose;
-    my $top = $name;
-    $top    =~ s|[^/]+|..|g;
-    $top    =~ s|\.\.$||;
-    my $out = new FileHandle("$destdir/$name","w");
+    my $top   = $name;
+    $top      =~ s|[^/]+|..|g;
+    $top      =~ s|\.\.$||;
+    my $out   = new FileHandle("$destdir/$name","w");
+    my @t     = localtime((stat $_)[9]);
+    $modday   = $t[3];
+    $modmonth = $mon[$t[4]];
+    $modyear  = $t[5] + 1900;
+
     includeFile(dirname($_), basename($_), $out, $top );
     $out->close();
     writeDependency($destdir,$name);
@@ -237,6 +244,9 @@ sub includeFile
     s|\&year;|$year|g;
     s|\&month;|$month|g;
     s|\&day;|$day|g;
+    s|\&modyear;|$modyear|g;
+    s|\&modmonth;|$modmonth|g;
+    s|\&modday;|$modday|g;
 #    s|\&eTeX;|&epsilon;-T<span style="vertical-align:-20%;">E</span>X|g;
 #    s|\&pdfTeX;|pdfT<span style="vertical-align:-20%;">E</span>X|g;
 #    s|\&TeX;|T<span style="vertical-align:-20%;">E</span>X|g;
