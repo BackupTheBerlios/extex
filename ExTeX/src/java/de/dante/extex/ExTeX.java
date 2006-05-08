@@ -331,7 +331,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.127 $
+ * @version $Revision: 1.128 $
  */
 public class ExTeX {
 
@@ -1469,6 +1469,17 @@ public class ExTeX {
         } catch (IOException e) {
             logger.throwing(this.getClass().getName(), "run", e);
             throw e;
+        } catch (TypesetterException e) {
+            Throwable cause = e.getCause();
+            if (cause instanceof InterpreterException) {
+                logger.severe(cause.getLocalizedMessage());
+                //logger.throwing(this.getClass().getName(), "run", cause);
+                throw (InterpreterException) cause;
+            } else {
+                logger.severe(e.getLocalizedMessage());
+                //logger.throwing(this.getClass().getName(), "run", e);
+                throw e;
+            }
         } catch (InterpreterException e) {
             logger.throwing(this.getClass().getName(), "run", e);
             throw e;
