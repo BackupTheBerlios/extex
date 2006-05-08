@@ -8,6 +8,12 @@ body {
   margin:0pt;
   padding:0pt;
 }
+body.header {
+  background:url("image/head1.png");
+  background-color:#126094;
+  margin:0pt;
+  padding:0pt;
+}
 .left {
   padding-top:2pt;
   vertical-align:top;
@@ -25,8 +31,13 @@ body {
   background-color:white;
 }
 table.head {
-  background-color:#54532c;
   background:url("image/head1.png");
+  background-color:#126094;
+}
+td.head {
+  color:white;
+  font-size:200%;
+  font-style:bold;
 }
 .head {
   border-bottom:0pt;
@@ -45,7 +56,7 @@ table.head {
   font-weight:bold;
   color:#333333;
   background:url("image/tab-off.png");
-  background-color:gray;
+  background-color:#dddddd;
   border-bottom-color:#333333;
   border-bottom-style:solid;
   border-bottom-width:1px;
@@ -62,7 +73,7 @@ table.head {
   font-size:8px;
   background-color:#eeeedd;
   background:url("image/tab-off-l.png");
-  border-bottom-color:#333333;
+  background-color:#dddddd;
   border-bottom-style:solid;
   border-bottom-width:1px;
   border-left:0pt;
@@ -78,6 +89,7 @@ table.head {
   font-size:8px;
   background-color:#eeeedd;
   background:url("image/tab-off-r.png");
+  background-color:#dddddd;
   border-bottom-color:#333333;
   border-bottom-style:solid;
   border-bottom-width:1px;
@@ -91,8 +103,8 @@ table.head {
   padding-top:0pt;
 }
 .tabOn {
-  background-color:#dddd99;
   background:url("image/tab-on.png");
+  background-color:#e9d965;
   color:black;
   font-size:75%;
   font-weight:bold;
@@ -108,8 +120,8 @@ table.head {
 }
 .tabOnL {
   font-size:8px;
-  background-color:#dddd99;
   background:url("image/tab-on-l.png");
+  background-color:#e9d965;
   border-bottom:0pt;
   border-left:0pt;
   border-right:0pt;
@@ -122,8 +134,8 @@ table.head {
 }
 .tabOnR {
   font-size:8px;
-  background-color:#dddd99;
   background:url("image/tab-on-r.png");
+  background-color:#e9d965;
   border-bottom:0pt;
   border-left:0pt;
   border-right:0pt;
@@ -135,15 +147,15 @@ table.head {
   padding-top:0pt;
 }
 .tabSep {
-  background-color:#e9d965;
   background:url("image/sep.png");
+  background-color:#e9d965;
   line-height:6pt;
   margin:0pt;
   padding:0pt;
 }
 address {
-  background-color:#dddd99;
   background:url("image/blend-address	.png");
+  background-color:#dddd99;
   border-bottom-color:#54532c;
   border-bottom-style:solid;
   border-bottom-width:1px;
@@ -159,8 +171,8 @@ h1 {
   padding:6pt;
   margin-top:8pt;
   margin-bottom:8pt;
-  background-color:#eeeedd;
   background:url("image/blend-h1.png");
+  background-color:#cad8e4;
   border-width:1px;
   border-color:#dddd99;
   border-style:solid;
@@ -173,14 +185,15 @@ h1 {
 }
 h2 {
   font-size:140%;
-  padding-left:32pt;
+  padding-left:8pt;
   padding-right:16pt;
   padding-top:4pt;
   padding-bottom:4pt;
+  margin-left:8pt;
   margin-top:8pt;
   margin-bottom:8pt;
-  background-color:#eeeedd;
   background:url("image/blend-h1.png");
+  background-color:#cad8e4;
   border-width:1px;
   border-color:#dddd99;
   border-style:solid;
@@ -193,14 +206,15 @@ h2 {
 }
 h3 {
   font-size:120%;
-  padding-left:64pt;
+  padding-left:16pt;
   padding-right:26pt;
   padding-top:2pt;
   padding-bottom:2pt;
+  margin-left:16pt;
   margin-top:8pt;
   margin-bottom:8pt;
-  background-color:#eeeedd;
   background:url("image/blend-h1.png");
+  background-color:#cad8e4;
   border-width:1px;
   border-color:#dddd99;
   border-style:solid;
@@ -249,11 +263,13 @@ a.nav:hover { color:black;
   margin-right:2pt;
   margin-top:2pt;
   margin-bottom:4pt;
-  background-color:#e9d965;
   background:url("image/blend.png");
   background-attachment:fixed;
+  background-color:#e9d965;
 }
 .navitems {
+  background:url("image/corner-tl.png");
+  background-repeat:no-repeat;
   background-color:#eeeedd;
   border-color:#54532c;
   border-style:solid;
@@ -280,11 +296,13 @@ a.nav:hover { color:black;
   margin-right:2pt;
   margin-top:2pt;
   margin-bottom:4pt;
-  background-color:#e9d965;
   background:url("image/blend.png");
   background-attachment:fixed;
+  background-color:#e9d965;
 }
 .infoitems {
+  background:url("image/corner-tl.png");
+  background-repeat:no-repeat;
   background-color:#eeeedd;
   border-color:#54532c;
   border-style:solid;
