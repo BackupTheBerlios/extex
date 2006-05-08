@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# Copyright (C) 2004-2005 The ExTeX Group and individaul authors listed below
+# Copyright (C) 2004-2006 The ExTeX Group and individaul authors listed below
 #
 # This library is free software; you can redistribute it and/or modify it under
 # the terms of the GNU Lesser General Public License as published by the Free
@@ -24,6 +24,9 @@ FLAGS = -verbose -src=src -dest=$(DEST)
 
 all:
 	@perl .make.pl $(FLAGS)
+
+units:
+	@perl unit-summary.pl
 
 clean:
 	$(RM) -rf www
