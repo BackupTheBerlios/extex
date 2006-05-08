@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--
-  -  Copyright (C) 2003-2005 The ExTeX Group
+  -  Copyright (C) 2003-2006 The ExTeX Group
   -
   -  This library is free software; you can redistribute it and/or modify it
   -  under the terms of the GNU Lesser General Public License as published by
@@ -20,7 +20,7 @@
 <unit>
   <primitives>
     <define name="inputencoding" 
-            class="de.dante.extex.interpreter.primitives.register.toks.NamedToks"
+            class="de.dante.extex.interpreter.primitives.register.toks.ToksParameter"
             >ISO8859-1</define>
     <define name="inputfile" 
             class="de.dante.extex.interpreter.primitives.file.InputFile"/>
