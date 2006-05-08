@@ -1,0 +1,51 @@
+/*
+ *
+ */
+body {
+  background:url("../image/cutoff-right.png");
+  background-repeat:repeat-y;
+  background-position:right; 
+  background-color:white;
+  margin-right:150px;
+  font-family:sans-serif;
+}
+pre.syntax {
+  background-color:#eeeeee;
+  padding:3pt;
+}
+pre b {
+  color:navy;
+}
+pre i {
+  color:green;
+}
+pre.TeXSample {
+  background-color:#ffffcc;
+  padding:3pt;
+}
+pre.JavaSample {
+  background-color:#eeeeff;
+  border-width:1px;
+  border-style:solid:
+  border-color:#6666cc;
+  padding:3pt;
+}
+table {
+  border-style:solid;
+  border-color:black;
+  border-top-width:1pt;
+  border-bottom-width:1pt;
+  border-left-width:0pt;
+  border-right-width:0pt;
+  margin:12pt;
+}
+.unit {
+  font-size:80%;
+  background-color:#eeeeee;
+  padding:1pt;
+}
+.footer {
+  font-size:80%;
+  background-color:#eeeeee;
+  padding:1pt;
+}

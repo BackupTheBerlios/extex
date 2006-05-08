@@ -1,0 +1,10 @@
+/*
+ *
+ */
+body {
+  background:url("../image/corner-tl.png");
+  background-repeat:no-repeat;
+  background-color:#eeeedd;
+  font-family:sans-serif;
+  font-size:90%;
+}
