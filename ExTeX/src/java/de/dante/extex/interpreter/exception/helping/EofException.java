@@ -19,6 +19,7 @@
 
 package de.dante.extex.interpreter.exception.helping;
 
+import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
@@ -29,7 +30,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class EofException extends HelpingException {
 
@@ -41,7 +42,20 @@ public class EofException extends HelpingException {
     /**
      * Creates a new object.
      *
-     * @param macro the name of the macro in which the eof has been encoutered
+     * @param localizer the localizer to use
+     * @param messageTag the name of the message
+     * @param a1 the argument
+     */
+    public EofException(final Localizer localizer, final String messageTag,
+            final String a1) {
+
+        super(localizer, messageTag, a1);
+    }
+
+    /**
+     * Creates a new object.
+     *
+     * @param macro the name of the macro in which the eof has been encountered
      */
     public EofException(final String macro) {
 
