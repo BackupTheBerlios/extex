@@ -118,12 +118,7 @@
     <unit src="unit/tex.xml"/>
     <unit src="unit/etex.xml"/>
     <unit src="unit/extex.xml"/>
-    <unit>
-      <primitives>
-        <define name="color"
-                class="de.dante.extex.interpreter.primitives.color.ColorPrimitive"/>
-      </primitives>
-    </unit>
+    <unit src="unit/color.xml"/>
 
   </Interpreter>
 
