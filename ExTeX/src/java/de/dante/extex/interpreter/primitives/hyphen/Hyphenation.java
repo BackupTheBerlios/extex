@@ -50,7 +50,7 @@ import de.dante.util.UnicodeCharList;
  * <h3>The Primitive <tt>\hyphenation</tt></h3>
  * <p>
  *  The primitive <tt>\hyphenation</tt> can be used to add hyphenation
- *  exceptions to the current language. The argument is a list of whitespace
+ *  exceptions to the current language. The argument is a list of white-space
  *  separated words enclosed in braces. The hyphenation points are indicated
  *  by including a hyphen character (-) at the appropriate places.
  * </p>
@@ -68,7 +68,7 @@ import de.dante.util.UnicodeCharList;
  *
  * <h4>Extension</h4>
  * <p>
- *  In addition to the behavior of the original <logo>TeX<\logo> definition
+ *  In addition to the behavior of the original <logo>TeX</logo> definition
  *  this implementation can be used to insert words with hyphens as well. To
  *  specify the places where a hyphen occurs literally you just ave to include
  *  two hyphens in the hyphenation list.
@@ -91,7 +91,7 @@ import de.dante.util.UnicodeCharList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class Hyphenation extends HyphenationPrimitive {
 

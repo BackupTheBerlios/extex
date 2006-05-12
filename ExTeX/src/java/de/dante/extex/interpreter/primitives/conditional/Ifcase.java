@@ -44,7 +44,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * </p>
  * <p>
  *  The primitive <tt>\or</tt> advances to the next branch.
- *  The primitive <tt>\else</tt> starts the else branch. The alse branch is used
+ *  The primitive <tt>\else</tt> starts the else branch. The else branch is used
  *  if no other branch fits.
  * </p>
  *
@@ -69,7 +69,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.31 $
+ * @version $Revision: 1.32 $
  */
 public class Ifcase extends AbstractIf {
 
@@ -117,27 +117,24 @@ public class Ifcase extends AbstractIf {
         long branch = source.scanInteger(context, typesetter);
         if (branch < 0) {
             if (skipToElseOrFi(context, source)) {
-                context.pushConditional(source.getLocator(), true, this,
-                        branch, false);
+                context.pushConditional(source.getLocator(), true, this, -1,
+                        false);
             }
             return;
         }
 
-        while (branch > 0) {
+        for (long i = branch; i > 0;) {
             Tag tag = skipToOrOrElseOrFi(context, source);
             if (tag == OR) {
-                branch--;
+                i--;
             } else if (tag == ELSE) {
-                context.pushConditional(source.getLocator(), true, this,
-                        branch, false);
+                context.pushConditional(source.getLocator(), true, this, -1,
+                        false);
                 return;
-
             } else if (tag == FI) {
                 return;
-
             } else {
                 throw new ImpossibleException("impossible tag encountered");
-
             }
         }
         context.pushConditional(source.getLocator(), true, this, branch, false);
@@ -218,7 +215,7 @@ public class Ifcase extends AbstractIf {
      * This is an internal class for type-safe values.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.31 $
+     * @version $Revision: 1.32 $
      */
     protected static final class Tag {
 
