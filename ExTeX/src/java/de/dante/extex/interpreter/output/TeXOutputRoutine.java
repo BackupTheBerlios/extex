@@ -46,7 +46,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * interpreter.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class TeXOutputRoutine implements OutputRoutine {
 
@@ -118,7 +118,7 @@ public class TeXOutputRoutine implements OutputRoutine {
         interpreter.push(rightBrace);
         interpreter.push(output);
         try {
-            context.openGroup();
+            context.openGroup(8);
         } catch (ConfigurationException e) {
             throw new GeneralException(e);
         }

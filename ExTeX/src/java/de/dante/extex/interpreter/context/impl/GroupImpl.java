@@ -56,7 +56,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.60 $
+ * @version $Revision: 1.61 $
  */
 public class GroupImpl implements Group, Tokenizer, Serializable {
 
@@ -81,7 +81,7 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 20060512L;
 
     /**
      * The field <tt>SFCODE_DEFAULT</tt> contains the default space factor code
@@ -205,6 +205,12 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
      * The field <tt>toksMap</tt> contains the map for the tokens registers.
      */
     private Map toksMap = new HashMap();
+
+    /**
+     * The field <tt>type</tt> contains the type number of the group as returned
+     * by <tt>\currentgrouptype</tt>.
+     */
+    private int type = 0;
 
     /**
      * The field <tt>typesettingContext</tt> contains the typesetting context
@@ -642,6 +648,14 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
+     * @see de.dante.extex.interpreter.context.impl.Group#getType()
+     */
+    public int getType() {
+
+        return type;
+    }
+
+    /**
      * @see de.dante.extex.interpreter.context.impl.Group#getTypesettingContext()
      */
     public TypesettingContext getTypesettingContext() {
@@ -950,6 +964,14 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
         if (global && next != null) {
             next.setToks(name, value, global);
         }
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.impl.Group#setType(int)
+     */
+    public void setType(final int type) {
+
+        this.type = type;
     }
 
     /**

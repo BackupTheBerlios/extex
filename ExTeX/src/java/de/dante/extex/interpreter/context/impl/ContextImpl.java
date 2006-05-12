@@ -138,7 +138,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.105 $
+ * @version $Revision: 1.106 $
  */
 public class ContextImpl
         implements
@@ -188,7 +188,7 @@ public class ContextImpl
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 20060512L;
 
     /**
      * The field <tt>topmarks</tt> contains the top marks.
@@ -485,7 +485,7 @@ public class ContextImpl
         groupFactory = new GroupFactory(configuration
                 .getConfiguration(GROUP_TAG));
         try {
-            openGroup();
+            openGroup(0);
         } catch (InterpreterException e) {
             throw new ConfigurationWrapperException(e);
         }
@@ -789,6 +789,14 @@ public class ContextImpl
     }
 
     /**
+     * @see de.dante.extex.interpreter.context.ContextGroup#getGroupType()
+     */
+    public int getGroupType() {
+
+        return group.getType();
+    }
+
+    /**
      * Getter for the id string. The id string is the classification of the
      * original source as given in the format file. The id string can be
      * <code>null</code> if not known yet.
@@ -1065,11 +1073,13 @@ public class ContextImpl
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#openGroup()
+     * @see de.dante.extex.interpreter.context.Context#openGroup(int)
      */
-    public void openGroup() throws ConfigurationException, InterpreterException {
+    public void openGroup(final int type)
+            throws ConfigurationException,
+                InterpreterException {
 
-        group = groupFactory.newInstance(group);
+        group = groupFactory.newInstance(group, type);
         group.setStandardTokenStream(standardTokenStream);
         if (groupObservers != null) {
             int size = groupObservers.size();

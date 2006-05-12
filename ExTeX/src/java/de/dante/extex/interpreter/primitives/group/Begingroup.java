@@ -56,7 +56,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class Begingroup extends AbstractCode {
 
@@ -87,7 +87,7 @@ public class Begingroup extends AbstractCode {
             throws InterpreterException {
 
         try {
-            context.openGroup();
+            context.openGroup(14);
         } catch (ConfigurationException e) {
             throw new InterpreterException(e);
         }

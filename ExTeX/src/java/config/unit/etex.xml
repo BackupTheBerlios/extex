@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--
-  -  Copyright (C) 2003-2005 The ExTeX Group
+  -  Copyright (C) 2003-2006 The ExTeX Group
   -
   -  This library is free software; you can redistribute it and/or modify it
   -  under the terms of the GNU Lesser General Public License as published by
@@ -34,8 +34,8 @@
             class=""/>
     <define name="currentgrouplevel"
             class="de.dante.extex.interpreter.primitives.group.Currentgrouplevel"/>
-    <Define name="currentgrouptype"
-            class=""/>
+    <define name="currentgrouptype"
+            class="de.dante.extex.interpreter.primitives.group.Currentgrouptype"/>
     <define name="currentifbranch"
             class="de.dante.extex.interpreter.primitives.conditional.analyze.Currentifbranch"/>
     <define name="currentiflevel"
