@@ -54,7 +54,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class DisplaymathListMaker extends MathListMaker implements EqConsumer {
 
@@ -102,10 +102,15 @@ public class DisplaymathListMaker extends MathListMaker implements EqConsumer {
 
         HorizontalListNode list = new HorizontalListNode();
 
+        if (eqno != null && leq) {
+            //TODO gene: leqno unimplemented
+            throw new RuntimeException("unimplemented");
+        }
+
         getNoads().typeset(null, null, 0, list,
                 new MathContext(StyleNoad.DISPLAYSTYLE, context), getLogger());
 
-        if (eqno != null) {
+        if (eqno != null && !leq) {
             //TODO gene: eqno unimplemented
             throw new RuntimeException("unimplemented");
         }
