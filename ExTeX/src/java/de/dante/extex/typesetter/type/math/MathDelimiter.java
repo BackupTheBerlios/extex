@@ -37,7 +37,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * large, and a small math glyph.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class MathDelimiter implements Noad, Serializable {
 
@@ -112,8 +112,7 @@ public class MathDelimiter implements Noad, Serializable {
      */
     public MathSpacing getSpacingClass() {
 
-        //TODO gene: unimplemented
-        throw new RuntimeException("unimplemented");
+        return MathSpacing.UNDEF; // gene: correct?
     }
 
     /**
