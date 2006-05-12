@@ -34,7 +34,8 @@ import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
  * <doc name="mskip">
  * <h3>The Math Primitive <tt>\mskip</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The math primitive <tt>\mskip</tt> inserts some glue in math mode. The
+ *  amount of space to be inserted is measured in math units.
  * </p>
  *
  * <h4>Syntax</h4>
@@ -50,7 +51,7 @@ import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Mskip extends AbstractMathCode {
 

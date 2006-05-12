@@ -51,7 +51,9 @@ import de.dante.util.exception.GeneralException;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;prevdepth&rang;
- *      &rarr; <tt>\prevdepth ...</tt>  </pre>
+ *      &rarr; <tt>\prevdepth</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+ *        &lang;equals&rang;} &lang;dimen value&rang;  </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
@@ -62,7 +64,7 @@ import de.dante.util.exception.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Prevdepth extends AbstractAssignment
         implements

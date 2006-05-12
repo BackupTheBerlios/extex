@@ -34,23 +34,34 @@ import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
  * <doc name="atop">
  * <h3>The Math Primitive <tt>\atop</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  The math primitive <tt>\atop</tt> arranges that the material in the math
+ *  group before it is typeset above the material after the primitive.
+ *  The two parts are not separated by a line.
+ * </p>
+ * <p>
+ *  If several primitives of type <tt>\above</tt>, <tt>\abovewithdelims</tt>,
+ *  <tt>\atop</tt>, <tt>\atopwithdelims</tt>, <tt>\over</tt>, or
+ *  <tt>\overwithdelims</tt> are encountered in the same math group then the
+ *  result is ambiguous and an error is raised.
+ * </p>
+ * <p>
+ *  If the primitive is used outside of math mode then an error is raised.
  * </p>
  *
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;atop&rang;
- *       &rarr; ... <tt>\atop</tt> ...  </pre>
+ *       &rarr; &lang;math material&rang; <tt>\atop</tt> &lang;math material&rang;  </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
- *    \atop  </pre>
+ *    { a \atop b}  </pre>
  *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Atop extends AbstractMathCode {
 

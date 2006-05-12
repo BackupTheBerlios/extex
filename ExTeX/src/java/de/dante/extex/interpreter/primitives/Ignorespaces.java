@@ -33,7 +33,8 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="ignorespaces">
  * <h3>The Primitive <tt>\ignorespaces</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  The primitive <tt>\ignorespaces</tt> arranges that the scanner discards
+ *  following whitespace.
  * </p>
  *
  * <h4>Syntax</h4>
@@ -49,7 +50,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Ignorespaces extends AbstractCode {
 

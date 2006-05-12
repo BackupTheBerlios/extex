@@ -44,7 +44,7 @@ import de.dante.extex.typesetter.Typesetter;
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    &lang;if&rang;
+ *    &lang;currentiflevel&rang;
  *     &rarr; <tt>\currentiflevel</tt> </pre>
  * </p>
  *
@@ -54,7 +54,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Currentiflevel extends AbstractCode
         implements

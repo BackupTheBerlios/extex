@@ -36,7 +36,9 @@ import de.dante.util.exception.GeneralException;
  * <doc name="hfilneg">
  * <h3>The Primitive <tt>\hfilneg</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  The primitive <tt>\hfilneg</tt> inserts glue at the current position which
+ *  is stretchable horizontally wit the value of -1fil.
+ *  The order of the glue is 1.
  * </p>
  *
  * <h4>Syntax</h4>
@@ -53,7 +55,7 @@ import de.dante.util.exception.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Hfilneg extends AbstractHorizontalCode implements HorizontalSkip {
 

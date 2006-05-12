@@ -37,7 +37,12 @@ import de.dante.extex.typesetter.type.noad.OperatorNoad;
  * <doc name="displaylimits">
  * <h3>The Math Primitive <tt>\displaylimits</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  The math primitive <tt>\displaylimits</tt> influences the treatment of
+ *  limits when occurring after a math operator. The consequence is that the
+ *  limits are typeset in the way as in display style.
+ * </p>
+ * <p>
+ *  In any other circumstances the primitive raises an error.
  * </p>
  *
  * <h4>Syntax</h4>
@@ -53,7 +58,7 @@ import de.dante.extex.typesetter.type.noad.OperatorNoad;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Displaylimits extends AbstractMathCode {
 

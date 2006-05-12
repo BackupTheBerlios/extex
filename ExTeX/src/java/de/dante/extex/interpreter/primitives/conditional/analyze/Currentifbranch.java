@@ -36,23 +36,45 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="currentifbranch">
  * <h3>The Primitive <tt>\currentifbranch</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  The primitive <tt>\currentifbranch</tt> is an integer quantity which
+ *  provides the information in which branch of the enclosing conditional. The
+ *  value is determined by the following rules:
+ * </p>
+ * <ul>
+ *  <li>
+ *   If the then branch of the enclosing is active then the value is <tt>1</tt>.
+ *  </li>
+ *  <li>
+ *   If the else branch of the enclosing is active then the value is <tt>-1</tt>.
+ *  </li>
+ *  <li>
+ *   If the enclosing conditional is <tt>\ifcase</tt> then the value is the
+ *   number selecting the current case for normal cases and <tt>-1</tt> for the
+ *   else case.
+ *  </li>
+ *  <li>
+ *   If there is no enclosing conditional then the value is <tt>0</tt>.
+ *  </li>
+ * </ul>
+ * <p>
+ *  The primitive <tt>\currentifbranch</tt> is a read-only quantity. an attempt
+ *  to use this primitive in a horizontal or vertical mode results in an error.
  * </p>
  *
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    &lang;if&rang;
+ *    &lang;currentifbranch&rang;
  *     &rarr; <tt>\currentifbranch</tt> </pre>
  * </p>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
- *    \currentifbranch  </pre>
+ *    \count0=\currentifbranch  </pre>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Currentifbranch extends AbstractCode
         implements

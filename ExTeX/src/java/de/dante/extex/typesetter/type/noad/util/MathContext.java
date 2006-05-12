@@ -19,7 +19,6 @@
 
 package de.dante.extex.typesetter.type.noad.util;
 
-import de.dante.extex.interpreter.exception.ImpossibleException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.primitives.register.font.NumberedFont;
 import de.dante.extex.interpreter.type.dimen.Dimen;
@@ -39,7 +38,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * mathematical appearance.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class MathContext {
 
@@ -90,7 +89,8 @@ public class MathContext {
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * Retrieve a font parameter from either a symbol font or an extension font.
+     * If the parameter does not exist then an error is raised.
      *
      * @param p the parameter to extract
      * @param actualStyle the actual style to be used instead of the current

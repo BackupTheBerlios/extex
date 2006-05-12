@@ -35,7 +35,23 @@ import de.dante.util.UnicodeChar;
  * <doc name="chardef">
  * <h3>The Primitive <tt>\chardef</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  The primitive <tt>\chardef</tt> allows you to define a control sequence or
+ *  active character to be equivalent to a character. This mean that the new
+ *  entity can be used wherever a character is allowed.
+ * </p>
+ * <p>
+ *  A character is represented by a code point; i.e. a positive number denoting
+ *  the character position. In <logo>TeX</logo> only 8-bit number where allowed.
+ *  In <logo>ExTeX</logo> arbitrary positive numbers are valid as values.
+ * </p>
+ * <p>
+ *  The definition is performed with respect to to group to keep it locally.
+ *  The prefix <tt>/global</tt> or the value of <tt>\globaldefs</tt> can
+ *  influence the scope.
+ * </p>
+ * <p>
+ *  This primitive is an assignment. All actions around assignments are
+ *  performed.
  * </p>
  *
  * <h4>Syntax</h4>
@@ -48,7 +64,7 @@ import de.dante.util.UnicodeChar;
  *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
  *        &lang;equals&rang;} {@linkplain
  *        de.dante.extex.interpreter.TokenSource#scanNumber(Context)
- *        &lang;8-bit&nbsp;number&rang;}  </pre>
+ *        &lang;number&rang;}  </pre>
  * </p>
  *
  * <h4>Examples</h4>
@@ -61,7 +77,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class Chardef extends AbstractAssignment {
 
@@ -95,7 +111,7 @@ public class Chardef extends AbstractAssignment {
         source.getOptionalEquals(context);
         UnicodeChar uc = source.scanCharacterCode(context, typesetter,
                 getName());
-        context.setCode(cs, new CharCode("", uc), prefix.isGlobal());
+        context.setCode(cs, new CharCode(uc.toString(), uc), prefix.isGlobal());
         prefix.clearGlobal();
     }
 

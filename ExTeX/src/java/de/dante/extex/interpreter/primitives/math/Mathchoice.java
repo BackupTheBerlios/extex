@@ -35,14 +35,32 @@ import de.dante.extex.typesetter.type.noad.Noad;
  * <doc name="mathchoice">
  * <h3>The Math Primitive <tt>\mathchoice</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The math primitive <tt>\mathchoice</tt> provides a switch on the current
+ *  style of math processing. The math processing is in one of the styles
+ *  <i>display</i>, <i>text</i>, <i>script</i>, and <i>scriptscript</i>. The
+ *  math styles influence the size of the typeset material and the spacing. The
+ *  primitive can be used to insert some material depending on the current
+ *  math style.
+ * </p>
+ * <p>
+ *  For each of the styles the material to be used must be given. The current
+ *  style determines which material should be expanded. The material for the
+ *  other styles is discarded.
+ * </p>
+ * <p>
+ *  The material is enclosed in braces &ndash; or to be precise in tokens with
+ *  the catcodes 1 (leftbrace) and 2 (rightbrace). The four cases lead to four
+ *  groups.
+ * </p>
+ * <p>
+ *  Outside the math mode the primitive raises an error.
  * </p>
  *
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;mathchoice&rang;
- *       &rarr; <tt>\mathchoice</tt>  ... </pre>
+ *       &rarr; <tt>\mathchoice</tt> {&lang;display material&rang;}{&lang;text material&rang;}{&lang;script material&rang;}{&lang;scriptscript material&rang;} </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
@@ -51,7 +69,7 @@ import de.dante.extex.typesetter.type.noad.Noad;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Mathchoice extends AbstractMathCode {
 

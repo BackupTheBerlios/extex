@@ -34,23 +34,38 @@ import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
  * <doc name="above">
  * <h3>The Math Primitive <tt>\above</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  The math primitive <tt>\above</tt> arranges that the material in the math
+ *  group before it is typeset above the material after the primitive.
+ *  The two parts are separated by a line of the width given.
+ *  If the width is less than 0pt then no rule is drawn but the given height is
+ *  left blank.
+ * </p>
+ * <p>
+ *  If several primitives of type <tt>\above</tt>, <tt>\abovewithdelims</tt>,
+ *  <tt>\atop</tt>, <tt>\atopwithdelims</tt>, <tt>\over</tt>, or
+ *  <tt>\overwithdelims</tt> are encountered in the same math group then the
+ *  result is ambiguous and an error is raised.
+ * </p>
+ * <p>
+ *  If the primitive is used outside of math mode then an error is raised.
  * </p>
  *
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;above&rang;
- *       &rarr; ... <tt>\above</tt> ... </pre>
+ *       &rarr; &lang;math material&rang; <tt>\above</tt> {@linkplain
+ *        de.dante.extex.interpreter.type.dimen#Dimen(de.dante.extex.interpreter.context.Context,de.dante.extex.interpreter.TokenSource)
+ *        &lang;dimen&rang;} &lang;math material&rang; </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
- *    {a \above b}  </pre>
+ *    {a \above.1pt b}  </pre>
  *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Above extends AbstractMathCode {
 

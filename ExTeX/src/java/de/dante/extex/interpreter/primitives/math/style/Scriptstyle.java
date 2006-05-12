@@ -34,7 +34,17 @@ import de.dante.extex.typesetter.type.noad.StyleNoad;
  * <doc name="scriptstyle">
  * <h3>The Math Primitive <tt>\scriptstyle</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The math primitive <tt>\scriptstyle</tt> arranges that the following
+ *  material in the current math group is typeset in script style regardless
+ *  of the style determined so far. This mean that for instance a sub-subscript
+ *  can be forced to be typeset in script style.
+ * </p>
+ * <p>
+ *  The math style influences the size and placement of glyphs as well an the
+ *  spacing between them.
+ * </p>
+ * <p>
+ *  If used outside of math mode an error is raised.
  * </p>
  *
  * <h4>Syntax</h4>
@@ -50,7 +60,7 @@ import de.dante.extex.typesetter.type.noad.StyleNoad;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Scriptstyle extends AbstractMathCode {
 

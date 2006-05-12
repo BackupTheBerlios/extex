@@ -35,23 +35,37 @@ import de.dante.extex.typesetter.type.math.MathDelimiter;
  * <doc name="overwithdelims">
  * <h3>The Primitive <tt>\overwithdelims</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The math primitive <tt>\over</tt> arranges that the material in the math
+ *  group before it is typeset above the material after the primitive.
+ *  The two parts are separated by a line of the default width which is taken
+ *  from the font parameters.
+ *  If the width is less than 0pt then no rule is drawn but the given height is
+ *  left blank.
+ *  The construction is enclosed in the delimiters given
  * </p>
  * <p>
+ *  If several primitives of type <tt>\above</tt>, <tt>\abovewithdelims</tt>,
+ *  <tt>\atop</tt>, <tt>\atopwithdelims</tt>, <tt>\over</tt>, or
+ *  <tt>\overwithdelims</tt> are encountered in the same math group then the
+ *  result is ambiguous and an error is raised.
+ * </p>
+ * <p>
+ *  If the primitive is used outside of math mode then an error is raised.
+ * </p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;overwithdelims&rang;
- *       &rarr; ... <tt>\overwithdelims</tt> ...  </pre>
- * </p>
- * <p>
- *  Examples:
+ *       &rarr; &lang;math material&rang; <tt>\overwithdelims</tt> ... &lang;math material&rang; </pre>
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
- *    \overwithdelims  </pre>
- * </p>
+ *    {a\overwithdelims\delimiter"123456\delimiter"123456 b}  </pre>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Overwithdelims extends AbstractTeXDelimiter {
 

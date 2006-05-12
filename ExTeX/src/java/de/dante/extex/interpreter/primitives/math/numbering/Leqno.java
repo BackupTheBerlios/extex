@@ -34,7 +34,14 @@ import de.dante.extex.typesetter.listMaker.math.EqConsumer;
  * <doc name="leqno">
  * <h3>The Math Primitive <tt>\leqno</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The math primitive <tt>\leqno</tt> arranges that the following material is
+ *  typeset in math mode and placed on the left side of the preceding material.
+ * </p>
+ * <p>
+ *  The primitive can be used in display math mode only. If used in another mode
+ *  an error is raised. An error is also raised when more than one invocations
+ *  appear in one display math list or <tt>\leqno</tt> appears together with
+ *  <tt>\eqno</tt> in a display math list.
  * </p>
  *
  * <h4>Syntax</h4>
@@ -45,12 +52,12 @@ import de.dante.extex.typesetter.listMaker.math.EqConsumer;
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
- *    \leqno  </pre>
+ *    $$ 12 \leqno 34 $$ </pre>
  *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Leqno extends AbstractMathCode {
 
@@ -90,7 +97,8 @@ public class Leqno extends AbstractMathCode {
             }
 
         } catch (CantUseInException e) {
-            // fall trough to exception
+            throw new CantUseInException(printableControlSequence(context),
+                    "math mode");
         }
         throw new CantUseInException(printableControlSequence(context), //
                 typesetter.getMode().toString());

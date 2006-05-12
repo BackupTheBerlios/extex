@@ -36,23 +36,39 @@ import de.dante.extex.typesetter.type.math.MathDelimiter;
  * <doc name="abovewithdelims">
  * <h3>The Math Primitive <tt>\abovewithdelims</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  The math primitive <tt>\abovewithdelims</tt> arranges that the material in
+ *  the math group before it is typeset above the material after the primitive.
+ *  The two parts are separated by a line of the width given.
+ *  If the width is less than 0pt then no rule is drawn but the given height is
+ *  left blank.
+ *  The construction is enclosed in the delimiters given
+ * </p>
+ * <p>
+ *  If several primitives of type <tt>\above</tt>, <tt>\abovewithdelims</tt>,
+ *  <tt>\atop</tt>, <tt>\atopwithdelims</tt>, <tt>\over</tt>, or
+ *  <tt>\overwithdelims</tt> are encountered in the same math group then the
+ *  result is ambiguous and an error is raised.
+ * </p>
+ * <p>
+ *  If the primitive is used outside of math mode then an error is raised.
  * </p>
  *
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;abovewithdelims&rang;
- *       &rarr; ... <tt>\abovewithdelims</tt> ...  </pre>
+ *       &rarr; &lang;math material&rang; <tt>\abovewithdelims</tt> ... {@linkplain
+ *        de.dante.extex.interpreter.type.dimen#Dimen(de.dante.extex.interpreter.context.Context,de.dante.extex.interpreter.TokenSource)
+ *        &lang;dimen&rang;} &lang;math material&rang;  </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
- *    \abovewithdelims  </pre>
+ *    {a\abovewithdelims\delimiter"123456\delimiter"123456 b} </pre>
  *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class Abovewithdelims extends AbstractTeXDelimiter {
 

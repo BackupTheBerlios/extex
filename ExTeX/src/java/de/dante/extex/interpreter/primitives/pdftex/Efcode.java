@@ -33,10 +33,29 @@ import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.UnicodeChar;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This class provides an implementation for the primitive <code>\efcode</code>.
+ *
+ * <doc name="efcode">
+ * <h3>The PDF Primitive <tt>\efcode</tt></h3>
+ * <p>
+ *  This primitive ...
+ * </p>
+ *
+ * <h4>Syntax</h4>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;efcode&rang;
+ *       &rarr; <tt>\efcode</tt> ... </pre>
+ *
+ * <h4>Examples</h4>
+ *  <pre class="TeXSample">
+ *    \pdfnames {...}  </pre>
+ *
+ * </doc>
+ *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Efcode extends AbstractCode
         implements

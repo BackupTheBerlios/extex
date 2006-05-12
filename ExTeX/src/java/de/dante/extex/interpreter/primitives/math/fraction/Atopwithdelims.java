@@ -36,23 +36,35 @@ import de.dante.extex.typesetter.type.math.MathDelimiter;
  * <doc name="atopwithdelims">
  * <h3>The Math Primitive <tt>\atopwithdelims</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  The math primitive <tt>\atopwithdelims</tt> arranges that the material in
+ *  the math group before it is typeset above the material after the primitive.
+ *  The two parts are not separated by a line.
+ *  The construction is enclosed in the delimiters given
+ * </p>
+ * <p>
+ *  If several primitives of type <tt>\above</tt>, <tt>\abovewithdelims</tt>,
+ *  <tt>\atop</tt>, <tt>\atopwithdelims</tt>, <tt>\over</tt>, or
+ *  <tt>\overwithdelims</tt> are encountered in the same math group then the
+ *  result is ambiguous and an error is raised.
+ * </p>
+ * <p>
+ *  If the primitive is used outside of math mode then an error is raised.
  * </p>
  *
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;atopwithdelims&rang;
- *       &rarr; ... <tt>\atopwithdelims</tt> ...  </pre>
+ *       &rarr; &lang;math material&rang; <tt>\atopwithdelims</tt> ... &lang;math material&rang; </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
- *    \atopwithdelims  </pre>
+ *    {a\atopwithdelims\delimiter"123456\delimiter"123456 b} </pre>
  *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Atopwithdelims extends AbstractTeXDelimiter {
 

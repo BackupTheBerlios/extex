@@ -35,7 +35,17 @@ import de.dante.extex.typesetter.type.noad.StyleNoad;
  * <doc name="displaystyle">
  * <h3>The Math Primitive <tt>\displaystyle</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  The math primitive <tt>\displaystyle</tt> arranges that the following
+ *  material in the current math group is typeset in display style regardless
+ *  of the style determined so far. This mean that for instance a subscript
+ *  can be forced to be typeset in display style.
+ * </p>
+ * <p>
+ *  The math style influences the size and placement of glyphs as well an the
+ *  spacing between them.
+ * </p>
+ * <p>
+ *  If used outside of math mode an error is raised.
  * </p>
  *
  * <h4>Syntax</h4>
@@ -51,7 +61,7 @@ import de.dante.extex.typesetter.type.noad.StyleNoad;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Displaystyle extends AbstractMathCode {
 
