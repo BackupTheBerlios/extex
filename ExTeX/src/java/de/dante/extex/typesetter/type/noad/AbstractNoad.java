@@ -58,7 +58,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public abstract class AbstractNoad implements Noad {
 
@@ -170,82 +170,6 @@ public abstract class AbstractNoad implements Noad {
     public Noad getSuperscript() {
 
         return this.superscript;
-    }
-
-    /**
-     * Setter for spacingClass.
-     *
-     * @param spacingClass the spacingClass to set
-     */
-    protected void setSpacingClass(final MathSpacing spacingClass) {
-
-        this.spacingClass = spacingClass;
-    }
-
-    /**
-     * Setter for the subscript.
-     *
-     * @param subscript the subscript to set.
-     */
-    public void setSubscript(final Noad subscript) {
-
-        this.subscript = subscript;
-    }
-
-    /**
-     * Setter for the superscript.
-     *
-     * @param superscript the superscript to set.
-     */
-    public void setSuperscript(final Noad superscript) {
-
-        this.superscript = superscript;
-    }
-
-    /**
-     * @see java.lang.Object#toString()
-     */
-    public String toString() {
-
-        final StringBuffer sb = new StringBuffer();
-        toString(sb, Integer.MAX_VALUE);
-        return sb.toString();
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.type.noad.Noad#toString(
-     *      java.lang.StringBuffer)
-     */
-    public void toString(final StringBuffer sb) {
-
-        toString(sb, Integer.MAX_VALUE);
-    }
-
-    /**
-     * @see "TTP [696]"
-     * @see de.dante.extex.typesetter.type.noad.Noad#toString(
-     *      java.lang.StringBuffer, int)
-     */
-    public void toString(final StringBuffer sb, final int depth) {
-
-        if (depth < 0) {
-            sb.append(" {}");
-        } else {
-            sb.append('\\');
-            toStringAdd(sb, depth);
-            toStringSubsidiaray(sb, superscript, depth, "^");
-            toStringSubsidiaray(sb, subscript, depth, "_");
-        }
-    }
-
-    /**
-     * Add some information in the middle of the default toString method.
-     *
-     * @param sb the target string buffer
-     * @param depth the recursion depth
-     */
-    protected void toStringAdd(final StringBuffer sb, final int depth) {
-
     }
 
     /**
@@ -396,6 +320,82 @@ public abstract class AbstractNoad implements Noad {
             hlist.add(vlist);
             return hlist;
         }
+    }
+
+    /**
+     * Setter for spacingClass.
+     *
+     * @param spacingClass the spacingClass to set
+     */
+    protected void setSpacingClass(final MathSpacing spacingClass) {
+
+        this.spacingClass = spacingClass;
+    }
+
+    /**
+     * Setter for the subscript.
+     *
+     * @param subscript the subscript to set.
+     */
+    public void setSubscript(final Noad subscript) {
+
+        this.subscript = subscript;
+    }
+
+    /**
+     * Setter for the superscript.
+     *
+     * @param superscript the superscript to set.
+     */
+    public void setSuperscript(final Noad superscript) {
+
+        this.superscript = superscript;
+    }
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+
+        final StringBuffer sb = new StringBuffer();
+        toString(sb, Integer.MAX_VALUE);
+        return sb.toString();
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.noad.Noad#toString(
+     *      java.lang.StringBuffer)
+     */
+    public void toString(final StringBuffer sb) {
+
+        toString(sb, Integer.MAX_VALUE);
+    }
+
+    /**
+     * @see "TTP [696]"
+     * @see de.dante.extex.typesetter.type.noad.Noad#toString(
+     *      java.lang.StringBuffer, int)
+     */
+    public void toString(final StringBuffer sb, final int depth) {
+
+        if (depth < 0) {
+            sb.append(" {}");
+        } else {
+            sb.append('\\');
+            toStringAdd(sb, depth);
+            toStringSubsidiaray(sb, superscript, depth, "^");
+            toStringSubsidiaray(sb, subscript, depth, "_");
+        }
+    }
+
+    /**
+     * Add some information in the middle of the default toString method.
+     *
+     * @param sb the target string buffer
+     * @param depth the recursion depth
+     */
+    protected void toStringAdd(final StringBuffer sb, final int depth) {
+
     }
 
 }
