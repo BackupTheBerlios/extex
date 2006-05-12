@@ -65,7 +65,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * classes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.30 $
+ * @version $Revision: 1.31 $
  */
 public class MockContext implements Context, TypesetterOptions {
 
@@ -337,6 +337,14 @@ public class MockContext implements Context, TypesetterOptions {
     }
 
     /**
+     * @see de.dante.extex.interpreter.context.ContextGroup#getGroupType()
+     */
+    public int getGroupType() {
+
+        return 0;
+    }
+
+    /**
      * @see de.dante.extex.interpreter.context.Context#getId()
      */
     public String getId() {
@@ -548,7 +556,9 @@ public class MockContext implements Context, TypesetterOptions {
     /**
      * @see de.dante.extex.interpreter.context.ContextGroup#openGroup()
      */
-    public void openGroup() throws ConfigurationException, InterpreterException {
+    public void openGroup(int id)
+            throws ConfigurationException,
+                InterpreterException {
 
         throw new RuntimeException("unimplemented");
     }

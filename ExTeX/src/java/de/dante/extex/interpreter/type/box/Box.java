@@ -52,7 +52,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.32 $
+ * @version $Revision: 1.33 $
  */
 public class Box implements BoxOrRule, Serializable {
 
@@ -111,7 +111,7 @@ public class Box implements BoxOrRule, Serializable {
         typesetter.push(lm);
 
         try {
-            context.openGroup();
+            context.openGroup(999); //TODO gene: provide correct value
         } catch (ConfigurationException e) {
             throw new InterpreterException(e);
         }

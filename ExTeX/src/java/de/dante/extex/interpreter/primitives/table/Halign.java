@@ -74,7 +74,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public class Halign extends AbstractAlign implements Boxable {
 
@@ -164,7 +164,7 @@ public class Halign extends AbstractAlign implements Boxable {
         }
 
         try {
-            context.openGroup();
+            context.openGroup(999); //TODO gene: provide correct value
         } catch (ConfigurationException e) {
             throw new InterpreterException(e);
         }

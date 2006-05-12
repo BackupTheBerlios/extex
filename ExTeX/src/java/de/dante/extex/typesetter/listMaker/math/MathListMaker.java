@@ -110,7 +110,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.40 $
+ * @version $Revision: 1.41 $
  */
 public class MathListMaker extends HorizontalListMaker
         implements
@@ -122,7 +122,7 @@ public class MathListMaker extends HorizontalListMaker
      * It is used to store to the stack and restore the state from the stack.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.40 $
+     * @version $Revision: 1.41 $
      */
     private class MathMemento {
 
@@ -237,7 +237,8 @@ public class MathListMaker extends HorizontalListMaker
 
     /**
      * This method checks that symbol fonts have sufficient font dimen
-     * values set.
+     * values set. In fact only the fonts itself are checked. the font dimens
+     * are checked when needed.
      *
      * @param options the options
      *
@@ -264,7 +265,6 @@ public class MathListMaker extends HorizontalListMaker
         if (scriptscriptfont2 instanceof NullFont) {
             return true;
         }
-        // TODO gene: check font parameters unimplemented
         return false;
     }
 
@@ -741,7 +741,7 @@ public class MathListMaker extends HorizontalListMaker
             man.push(lm);
             if (t.isa(Catcode.LEFTBRACE)) {
                 lm.leftBrace();
-                context.openGroup();
+                context.openGroup(999); //TODO gene: provide correct value
                 source.executeGroup();
             } else {
                 source.execute(t, context, typesetter);
