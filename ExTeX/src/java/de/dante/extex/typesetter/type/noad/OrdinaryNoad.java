@@ -22,10 +22,14 @@ package de.dante.extex.typesetter.type.noad;
 import java.util.logging.Logger;
 
 import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.ImmutableDimen;
 import de.dante.extex.typesetter.exception.TypesetterException;
+import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
 import de.dante.extex.typesetter.type.noad.util.MathSpacing;
+import de.dante.extex.typesetter.type.node.HorizontalListNode;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
@@ -34,7 +38,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [682]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class OrdinaryNoad extends AbstractNucleusNoad implements SimpleNoad {
 
@@ -84,8 +88,10 @@ public class OrdinaryNoad extends AbstractNucleusNoad implements SimpleNoad {
         getNucleus().typeset(previousNoad, noads, index, list, mathContext,
                 logger);
 
-        //TODO gene: typeset() unimplemented
-        throw new RuntimeException("unimplemented");
+        ImmutableDimen delta = Dimen.ZERO_PT; // TODO gene: determine delta
+        Node node = makeScripts(new HorizontalListNode(), mathContext, delta,
+                logger);
+        list.add(node);
     }
 
     /**

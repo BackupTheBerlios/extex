@@ -26,6 +26,7 @@ import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
 import de.dante.extex.typesetter.type.noad.util.MathSpacing;
+import de.dante.extex.typesetter.type.node.CharNode;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
@@ -34,7 +35,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [682]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class PunctationNoad extends AbstractNucleusNoad implements SimpleNoad {
 
@@ -62,6 +63,7 @@ public class PunctationNoad extends AbstractNucleusNoad implements SimpleNoad {
     }
 
     /**
+     * @see "TTP [728]"
      * @see de.dante.extex.typesetter.type.noad.Noad#typeset(
      *      de.dante.extex.typesetter.type.noad.Noad,
      *      de.dante.extex.typesetter.type.noad.NoadList,
@@ -76,8 +78,11 @@ public class PunctationNoad extends AbstractNucleusNoad implements SimpleNoad {
             throws TypesetterException,
                 ConfigurationException {
 
-        //TODO gene: typeset() unimplemented
-        throw new RuntimeException("unimplemented");
+        getSpacingClass().addClearance(
+                (previousNoad != null ? previousNoad.getSpacingClass() : null),
+                list, mathContext);
+        getNucleus().typeset(previousNoad, noads, index, list, mathContext,
+                logger);
     }
 
 }
