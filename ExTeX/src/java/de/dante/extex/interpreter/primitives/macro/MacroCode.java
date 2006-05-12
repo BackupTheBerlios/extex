@@ -24,6 +24,7 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.ImpossibleException;
 import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.primitives.typesetter.paragraph.Par;
 import de.dante.extex.interpreter.type.AbstractCode;
@@ -56,7 +57,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.30 $
+ * @version $Revision: 1.31 $
  */
 public class MacroCode extends AbstractCode
         implements
@@ -199,8 +200,10 @@ public class MacroCode extends AbstractCode
                     printableControlSequence(context));
         } else if (t instanceof LeftBraceToken) {
             source.push(t);
-            Tokens toks = source.getTokens(context, source, typesetter);
-            if (toks == null) {
+            Tokens toks;
+            try {
+                toks = source.getTokens(context, source, typesetter);
+            } catch (EofException e) {
                 throw new HelpingException(getLocalizer(), "TTP.EOFinMatch",
                         printableControlSequence(context));
             }

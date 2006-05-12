@@ -35,6 +35,7 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.IllegalRegisterException;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.EofException;
+import de.dante.extex.interpreter.exception.helping.EofInToksException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.exception.helping.InvalidCharacterException;
 import de.dante.extex.interpreter.exception.helping.InvalidCharacterNameException;
@@ -109,7 +110,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.92 $
+ * @version $Revision: 1.93 $
  */
 public class Moritz extends Max
         implements
@@ -731,7 +732,7 @@ public class Moritz extends Max
                 toks.add(token);
             }
 
-            return toks;
+            throw new EofInToksException(""); // TODO provide location
 
         } else if (token instanceof CodeToken) {
             Code code = context.getCode((CodeToken) token);

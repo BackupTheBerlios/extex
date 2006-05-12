@@ -24,6 +24,7 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.EofException;
+import de.dante.extex.interpreter.exception.helping.EofInToksException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
@@ -59,7 +60,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class Lowercase extends AbstractCode implements ExpandableCode {
 
@@ -103,11 +104,15 @@ public class Lowercase extends AbstractCode implements ExpandableCode {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        Tokens toks = source.getTokens(context, source, typesetter);
-
-        if (toks == null) {
+        Tokens toks;
+        try {
+            toks = source.getTokens(context, source, typesetter);
+        } catch (EofInToksException e) {
+            throw new EofInToksException(printableControlSequence(context));
+        } catch (EofException e) {
             throw new EofException(printableControlSequence(context));
         }
+
         String namespace = context.getNamespace();
         Token[] result = new Token[toks.length()];
         TokenFactory factory = context.getTokenFactory();
