@@ -19,6 +19,7 @@
 
 package de.dante.extex.interpreter.primitives.math.delimiter;
 
+import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
@@ -27,6 +28,7 @@ import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.exception.helping.MissingNumberException;
 import de.dante.extex.interpreter.primitives.math.AbstractMathCode;
 import de.dante.extex.interpreter.type.Code;
+import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.scanner.type.token.CodeToken;
 import de.dante.extex.scanner.type.token.OtherToken;
 import de.dante.extex.scanner.type.token.Token;
@@ -45,7 +47,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * to and from their <logo>TeX</logo> encoding as numbers to abstract math code.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public abstract class AbstractTeXDelimiter extends AbstractMathCode {
 
@@ -308,83 +310,89 @@ public abstract class AbstractTeXDelimiter extends AbstractMathCode {
             final TokenSource source, final Typesetter typesetter,
             final String primitive) throws InterpreterException {
 
-        Token t = source.getToken(context);
-        if (t == null) {
-            throw new EofException("???");
-        }
-        if (t instanceof CodeToken) {
-            Code code = context.getCode((CodeToken) t);
-            if (code instanceof Delimiter) {
-                return newMathDelimiter(source.scanNumber(context));
-            } else {
-                //TODO gene: expand and try again?
-            }
-        } else {
-            MathDelimiter del = context.getDelcode(t.getChar());
-            if (del != null) {
-                return del;
-            } else if (t instanceof OtherToken) {
-                source.push(t);
-                try {
-                    return newMathDelimiter(source.scanNumber(context));
-                } catch (MissingNumberException e) {
-                    // fall through to error. the exception is remapped!
-                }
-            } else {
-                source.push(t);
-                switch (t.getChar().getCodePoint()) {
-                    case 'b':
-                        if (source.getKeyword(context, "bin")) {
-                            return parse(context, source, typesetter,
-                                    MathClass.BINARY, primitive);
-                        }
-                        break;
-                    case 'c':
-                        if (source.getKeyword(context, "close")) {
-                            return parse(context, source, typesetter,
-                                    MathClass.CLOSING, primitive);
-                        }
-                        break;
-                    case 'l':
-                        if (source.getKeyword(context, "large")) {
-                            return parse(context, source, typesetter,
-                                    MathClass.LARGE, primitive);
-                        }
-                        break;
-                    case 'o':
-                        if (source.getKeyword(context, "open")) {
-                            return parse(context, source, typesetter,
-                                    MathClass.OPENING, primitive);
-                        } else if (source.getKeyword(context, "ord")) {
-                            return parse(context, source, typesetter,
-                                    MathClass.ORDINARY, primitive);
-                        }
-                        break;
-                    case 'p':
-                        if (source.getKeyword(context, "punct")) {
-                            return parse(context, source, typesetter,
-                                    MathClass.PUNCTUATION, primitive);
-                        }
-                        break;
-                    case 'r':
-                        if (source.getKeyword(context, "rel")) {
-                            return parse(context, source, typesetter,
-                                    MathClass.RELATION, primitive);
-                        }
-                        break;
-                    case 'v':
-                        if (source.getKeyword(context, "var")) {
-                            return parse(context, source, typesetter,
-                                    MathClass.VARIABLE, primitive);
-                        }
-                        break;
-                    default:
-                // fall-through to exception
-                }
-            }
-        }
+        for (Token t = source.getToken(context); t != null; t = source
+                .getToken(context)) {
 
-        throw new HelpingException(getMyLocalizer(), "TTP.MissingDelim");
+            if (t instanceof CodeToken) {
+                Code code = context.getCode((CodeToken) t);
+                if (code instanceof Delimiter) {
+                    return newMathDelimiter(source.scanNumber(context));
+                } else if (code instanceof ExpandableCode) {
+                    ((ExpandableCode) code).expand(Flags.NONE, context, source,
+                            typesetter);
+                    // retry within the outer loop
+                } else {
+                    throw new HelpingException(getMyLocalizer(),
+                            "TTP.MissingDelim");
+                }
+            } else {
+                MathDelimiter del = context.getDelcode(t.getChar());
+                if (del != null) {
+                    return del;
+                } else if (t instanceof OtherToken) {
+                    source.push(t);
+                    try {
+                        return newMathDelimiter(source.scanNumber(context));
+                    } catch (MissingNumberException e) {
+                        throw new HelpingException(getMyLocalizer(),
+                                "TTP.MissingDelim");
+                    }
+                } else {
+                    source.push(t);
+                    switch (t.getChar().getCodePoint()) {
+                        case 'b':
+                            if (source.getKeyword(context, "bin")) {
+                                return parse(context, source, typesetter,
+                                        MathClass.BINARY, primitive);
+                            }
+                            break;
+                        case 'c':
+                            if (source.getKeyword(context, "close")) {
+                                return parse(context, source, typesetter,
+                                        MathClass.CLOSING, primitive);
+                            }
+                            break;
+                        case 'l':
+                            if (source.getKeyword(context, "large")) {
+                                return parse(context, source, typesetter,
+                                        MathClass.LARGE, primitive);
+                            }
+                            break;
+                        case 'o':
+                            if (source.getKeyword(context, "open")) {
+                                return parse(context, source, typesetter,
+                                        MathClass.OPENING, primitive);
+                            } else if (source.getKeyword(context, "ord")) {
+                                return parse(context, source, typesetter,
+                                        MathClass.ORDINARY, primitive);
+                            }
+                            break;
+                        case 'p':
+                            if (source.getKeyword(context, "punct")) {
+                                return parse(context, source, typesetter,
+                                        MathClass.PUNCTUATION, primitive);
+                            }
+                            break;
+                        case 'r':
+                            if (source.getKeyword(context, "rel")) {
+                                return parse(context, source, typesetter,
+                                        MathClass.RELATION, primitive);
+                            }
+                            break;
+                        case 'v':
+                            if (source.getKeyword(context, "var")) {
+                                return parse(context, source, typesetter,
+                                        MathClass.VARIABLE, primitive);
+                            }
+                            break;
+                        default:
+                            throw new HelpingException(getMyLocalizer(),
+                                    "TTP.MissingDelim");
+                    }
+                }
+            }
+        }
+        throw new EofException("???");
     }
 
     /**
