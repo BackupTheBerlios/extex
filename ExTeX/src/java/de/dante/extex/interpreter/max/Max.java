@@ -128,7 +128,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.97 $
+ * @version $Revision: 1.98 $
  */
 public abstract class Max
         implements
@@ -270,6 +270,11 @@ public abstract class Max
      */
     private TokenVisitor tv = new TokenVisitor() {
 
+        /**
+         * @see de.dante.extex.scanner.type.token.TokenVisitor#visitActive(
+         *      de.dante.extex.scanner.type.token.ActiveCharacterToken,
+         *      java.lang.Object)
+         */
         public Object visitActive(final ActiveCharacterToken token,
                 final Object arg) throws Exception {
 
@@ -277,15 +282,13 @@ public abstract class Max
             if (code instanceof ExpandableCode) {
                 ((ExpandableCode) code).expand(Flags.NONE, context,
                         (TokenSource) arg, typesetter);
+                return null;
             } else if (code == null) {
                 throw new UndefinedControlSequenceException(AbstractCode
                         .printable(context, token));
             } else {
-                //TODO gene: unimplemented
-                throw new RuntimeException("unimplemented");
+                return token;
             }
-
-            return null;
         }
 
         /**
@@ -311,15 +314,14 @@ public abstract class Max
             if (code instanceof ExpandableCode) {
                 ((ExpandableCode) code).expand(Flags.NONE, context,
                         (TokenSource) arg, typesetter);
+                return null;
             } else if (code == null) {
                 throw new UndefinedControlSequenceException(AbstractCode
                         .printable(context, token));
             } else {
-                //TODO gene: unimplemented
-                throw new RuntimeException("unimplemented");
+                return token;
             }
 
-            return null;
         }
 
         /**
@@ -718,7 +720,7 @@ public abstract class Max
      *      de.dante.extex.typesetter.Typesetter)
      */
     public Tokens expand(final Tokens tokens, final Typesetter ts)
-            throws GeneralException {
+            throws InterpreterException {
 
         Tokens result = new Tokens();
         TokenStream stream;
@@ -1299,7 +1301,7 @@ public abstract class Max
             reportDirtyFlag(token);
         }
         try {
-            context.openGroup();
+            context.openGroup(1);
         } catch (ConfigurationException e) {
             throw new InterpreterException(e);
         }
