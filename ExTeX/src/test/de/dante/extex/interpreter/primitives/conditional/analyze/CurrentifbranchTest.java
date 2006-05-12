@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\currentifbranch</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class CurrentifbranchTest extends ExTeXLauncher {
 
@@ -51,7 +51,8 @@ public class CurrentifbranchTest extends ExTeXLauncher {
 
     /**
      * <testcase primitive="\currentifbranch">
-     *  Test case checking that <tt>\currentifbranch</tt>...
+     *  Test case checking that <tt>\currentifbranch</tt> can not be used
+     *  in vertical mode.
      * </testcase>
      *
      * @throws Exception in case of an error
@@ -66,7 +67,8 @@ public class CurrentifbranchTest extends ExTeXLauncher {
 
     /**
      * <testcase primitive="\currentifbranch">
-     *  Test case checking that <tt>\currentifbranch</tt>...
+     *  Test case checking that <tt>\currentifbranch</tt> outside of a
+     *  conditional returns 0.
      * </testcase>
      *
      * @throws Exception in case of an error
@@ -81,7 +83,8 @@ public class CurrentifbranchTest extends ExTeXLauncher {
 
     /**
      * <testcase primitive="\currentifbranch">
-     *  Test case checking that <tt>\currentifbranch</tt>...
+     *  Test case checking that <tt>\currentifbranch</tt> in the then branch
+     *  returns 1.
      * </testcase>
      *
      * @throws Exception in case of an error
@@ -96,7 +99,8 @@ public class CurrentifbranchTest extends ExTeXLauncher {
 
     /**
      * <testcase primitive="\currentifbranch">
-     *  Test case checking that <tt>\currentifbranch</tt>...
+     *  Test case checking that <tt>\currentifbranch</tt> in the else branch
+     *  returns -1.
      * </testcase>
      *
      * @throws Exception in case of an error
@@ -105,6 +109,70 @@ public class CurrentifbranchTest extends ExTeXLauncher {
 
         assertSuccess(//--- input code ---
                 "\\iffalse\\else\\the\\currentifbranch \\fi\\end",
+                //--- log message ---
+                "-1" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\currentifbranch">
+     *  Test case checking that <tt>\currentifbranch</tt> in the branch 0
+     *  returns 0 for <tt>\ifcase</tt>.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test3() throws Exception {
+
+        assertSuccess(//--- input code ---
+                "\\ifcase0\\the\\currentifbranch \\fi\\end",
+                //--- log message ---
+                "0" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\currentifbranch">
+     *  Test case checking that <tt>\currentifbranch</tt> in the branch 0
+     *  returns 0 for <tt>\ifcase</tt>.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test4() throws Exception {
+
+        assertSuccess(//--- input code ---
+                "\\ifcase1 \\or\\the\\currentifbranch \\fi\\end",
+                //--- log message ---
+                "1" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\currentifbranch">
+     *  Test case checking that <tt>\currentifbranch</tt> in the else branch
+     *  returns -1 for <tt>\ifcase</tt>.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test5() throws Exception {
+
+        assertSuccess(//--- input code ---
+                "\\ifcase12\\or\\or\\else\\the\\currentifbranch \\fi\\end",
+                //--- log message ---
+                "-1" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\currentifbranch">
+     *  Test case checking that <tt>\currentifbranch</tt> in the else branch
+     *  returns -1 for <tt>\ifcase</tt>.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test6() throws Exception {
+
+        assertSuccess(//--- input code ---
+                "\\ifcase-12\\or\\or\\else\\the\\currentifbranch \\fi\\end",
                 //--- log message ---
                 "-1" + TERM);
     }

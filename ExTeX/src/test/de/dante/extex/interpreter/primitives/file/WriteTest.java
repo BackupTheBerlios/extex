@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsButImmediatePrimitiveTester;
  * This is a test suite for the primitive <tt>\write</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class WriteTest extends NoFlagsButImmediatePrimitiveTester {
 
@@ -78,7 +78,7 @@ public class WriteTest extends NoFlagsButImmediatePrimitiveTester {
                 "\\write 2",
                 //--- log message ---
                 "Unexpected end of file while processing tokens" //TODO tokens should be \write
-                );
+        );
     }
 
     /**
@@ -110,7 +110,7 @@ public class WriteTest extends NoFlagsButImmediatePrimitiveTester {
                 "\\immediate\\write 2",
                 //--- log message ---
                 "Unexpected end of file while processing write" //TODO tokens should be \write
-                );
+        );
     }
 
     /**
@@ -126,6 +126,37 @@ public class WriteTest extends NoFlagsButImmediatePrimitiveTester {
                 DEFINE_BRACES + "\\immediate\\write 2{abc} \\end",
                 //--- log message ---
                 "abc", "");
+    }
+
+    /**
+     * <testcase primitive="\write">
+     *  Test case checking that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test1() throws Exception {
+
+        assertFailure(//--- input code ---
+                DEFINE_BRACES + "\\catcode`\\~=13" + "x\\write 2{a~c} \\end",
+                //--- log message ---
+                "Undefined control sequence ~");
+    }
+
+    /**
+     * <testcase primitive="\write">
+     *  Test case checking that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test2() throws Exception {
+
+        assertOutput(//--- input code ---
+                DEFINE_BRACES + "\\catcode`\\~=13 \\let~\\penalty "
+                        + "x\\write 2{a~c} \\end",
+                //--- log message ---
+                "a~c", "x" + TERM);
     }
 
 }

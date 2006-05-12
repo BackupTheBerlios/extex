@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is an abstract base class for numbering primitives.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class AbstractNumberingTester extends NoFlagsPrimitiveTester {
 
@@ -42,8 +42,8 @@ public class AbstractNumberingTester extends NoFlagsPrimitiveTester {
 
     /**
      * <testcase>
-     * Test case checking that the primitive needs the display math mode.
-     * Vertical mode is not sufficient.
+     *  Test case checking that the primitive needs the display math mode.
+     *  Vertical mode is not sufficient.
      * </testcase>
      *
      * @throws Exception in case of an error
@@ -58,8 +58,8 @@ public class AbstractNumberingTester extends NoFlagsPrimitiveTester {
 
     /**
      * <testcase>
-     * Test case checking that the primitive needs the display math mode.
-     * Horizontal mode is not sufficient.
+     *  Test case checking that the primitive needs the display math mode.
+     *  Horizontal mode is not sufficient.
      * </testcase>
      *
      * @throws Exception in case of an error
@@ -74,8 +74,8 @@ public class AbstractNumberingTester extends NoFlagsPrimitiveTester {
 
     /**
      * <testcase>
-     * Test case checking that the primitive needs the display math mode.
-     * Inline math mode is not sufficient.
+     *  Test case checking that the primitive needs the display math mode.
+     *  Inline math mode is not sufficient.
      * </testcase>
      *
      * @throws Exception in case of an error
@@ -86,6 +86,38 @@ public class AbstractNumberingTester extends NoFlagsPrimitiveTester {
                 DEFINE_MATH + "$\\" + getPrimitive(),
                 //--- log message ---
                 "You can't use `\\" + getPrimitive() + "' in math mode");
+    }
+
+    /**
+     * <testcase>
+     *  Test case checking that the primitive can't be use together with
+     *  <tt>\eqno</tt>.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testMathMode2() throws Exception {
+
+        assertFailure(//--- input code ---
+                DEFINE_MATH + "$$1\\" + getPrimitive() + "2\\eqno",
+                //--- log message ---
+                "You can't use `\\eqno' in math mode");
+    }
+
+    /**
+     * <testcase>
+     *  Test case checking that the primitive can't be use together with
+     *  <tt>\leqno</tt>.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testMathMode3() throws Exception {
+
+        assertFailure(//--- input code ---
+                DEFINE_MATH + "$$1\\" + getPrimitive() + "2\\leqno",
+                //--- log message ---
+                "You can't use `\\leqno' in math mode");
     }
 
 }
