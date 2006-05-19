@@ -53,7 +53,7 @@ import de.dante.extex.typesetter.Typesetter;
  *  <pre class="syntax">
  *    &lang;glueshrink&rang;
  *      &rarr; <tt>\glueshrink</tt> {@link
- *        de.dante.extex.interpreter.type.glue.Glue#Glue(TokenSource,Context,Typesetter)
+ *        de.dante.extex.interpreter.type.glue.Glue#parse(TokenSource,Context,Typesetter)
  *        &lang;glue&rang;} </pre>
  *
  * <h4>Examples</h4>
@@ -64,7 +64,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Glueshrink extends AbstractCode
         implements
@@ -96,7 +96,7 @@ public class Glueshrink extends AbstractCode
     public long convertCount(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        Glue glue = new Glue(source, context, typesetter);
+        Glue glue = Glue.parse(source, context, typesetter);
         return glue.getShrink().getValue();
     }
 
@@ -109,7 +109,7 @@ public class Glueshrink extends AbstractCode
     public long convertDimen(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        Glue glue = new Glue(source, context, typesetter);
+        Glue glue = Glue.parse(source, context, typesetter);
         return glue.getShrink().getValue();
     }
 

@@ -42,7 +42,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
 public class Glue implements Serializable, FixedGlue {
 
@@ -52,19 +52,75 @@ public class Glue implements Serializable, FixedGlue {
     protected static final long serialVersionUID = 2005L;
 
     /**
+     * Creates a new object by parsing a token source.
+     *
+     * <doc type="syntax" name="glue">
+     * <pre class="syntax">
+     *   &lang;glue&rang; </pre>
+     * <p>
+     *  TODO gene: documentation incomplete
+     * </p>
+     * </doc>
+     *
+     *
+     * @param source the source to read new tokens from
+     * @param context the processing context
+     * @param typesetter the typesetter
+     *
+     * @return a new instance of a Glue
+     *
+     * @throws InterpreterException in case of an error
+     */
+    public static Glue parse(final TokenSource source, final Context context,
+            final Typesetter typesetter) throws InterpreterException {
+
+        GlueComponent length;
+        GlueComponent shrink;
+        GlueComponent stretch;
+        Token t = source.getToken(context);
+        if (t instanceof CodeToken) {
+            Code code = context.getCode((CodeToken) t);
+            if (code instanceof GlueConvertible) {
+                Glue g = ((GlueConvertible) code).convertGlue(context, source,
+                        null);
+                length = g.getLength().copy();
+                shrink = g.getShrink().copy();
+                stretch = g.getStretch().copy();
+                return new Glue(length, stretch, shrink);
+            } else if (code == null) {
+                throw new UndefinedControlSequenceException(AbstractCode
+                        .printable(context, t));
+            }
+        }
+        source.push(t);
+        length = GlueComponent.parse(context, source, typesetter, false);
+        if (source.getKeyword(context, "plus")) {
+            stretch = GlueComponent.parse(context, source, typesetter, true);
+        } else {
+            stretch = new GlueComponent(0);
+        }
+        if (source.getKeyword(context, "minus")) {
+            shrink = GlueComponent.parse(context, source, typesetter, true);
+        } else {
+            shrink = new GlueComponent(0);
+        }
+        return new Glue(length, stretch, shrink);
+    }
+
+    /**
      * The field <tt>length</tt> contains the natural length of the glue.
      */
-    private GlueComponent length = new GlueComponent(0);
+    private GlueComponent length;
 
     /**
      * The field <tt>shrink</tt> contains the shrink specification.
      */
-    private GlueComponent shrink = new GlueComponent(0);
+    private GlueComponent shrink;
 
     /**
      * The field <tt>stretch</tt> contains the stretch specification.
      */
-    private GlueComponent stretch = new GlueComponent(0);
+    private GlueComponent stretch;
 
     /**
      * Creates a new object with a fixed length.
@@ -75,6 +131,8 @@ public class Glue implements Serializable, FixedGlue {
 
         super();
         this.length = theLength.copy();
+        this.stretch = new GlueComponent(0);
+        this.shrink = new GlueComponent(0);
     }
 
     /**
@@ -116,54 +174,8 @@ public class Glue implements Serializable, FixedGlue {
 
         super();
         this.length = new GlueComponent(theLength);
-    }
-
-    /**
-     * Creates a new object by parsing a token source.
-     *
-     * <doc type="syntax" name="glue">
-     * <pre class="syntax">
-     *   &lang;glue&rang; </pre>
-     * <p>
-     *  TODO gene: documentation incomplete
-     * </p>
-     * </doc>
-     *
-     *
-     * @param source the source to read new tokens from
-     * @param context the processing context
-     * @param typesetter the typesetter
-     *
-     * @throws InterpreterException in case of an error
-     */
-    public Glue(final TokenSource source, final Context context,
-            final Typesetter typesetter) throws InterpreterException {
-
-        super();
-        Token t = source.getToken(context);
-        if (t instanceof CodeToken) {
-            Code code = context.getCode((CodeToken) t);
-            if (code instanceof GlueConvertible) {
-                Glue g = ((GlueConvertible) code).convertGlue(context, source,
-                        null);
-                this.length = g.getLength().copy();
-                this.shrink = g.getShrink().copy();
-                this.stretch = g.getStretch().copy();
-                return;
-            } else if (code == null) {
-                throw new UndefinedControlSequenceException(AbstractCode
-                        .printable(context, t));
-            }
-        }
-        source.push(t);
-        this.length = new GlueComponent(context, source, typesetter, false);
-        if (source.getKeyword(context, "plus")) {
-            this.stretch = new GlueComponent(context, source, typesetter, true);
-        }
-        if (source.getKeyword(context, "minus")) {
-            this.shrink = new GlueComponent(context, source, typesetter, true);
-        }
-        return;
+        this.stretch = new GlueComponent(0);
+        this.shrink = new GlueComponent(0);
     }
 
     /**

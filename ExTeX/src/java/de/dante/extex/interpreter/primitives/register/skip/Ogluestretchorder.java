@@ -33,12 +33,36 @@ import de.dante.extex.typesetter.Typesetter;
  * This class provides an implementation for the primitive
  * <code>\gluestretchorder</code>.
  *
- * return the direct order.
- * take into account the order fi as introduced by Omega.
+ * <doc name="gluestretchorder">
+ * <h3>The Primitive <tt>\gluestretchorder</tt></h3>
+ * <p>
+ *  The primitive <tt>\gluestretchorder</tt> determines the order of the glue
+ *  stretch component of the following glue specification.
+ *  A fixed, non-stretchable glue returns the value 0.
+ *  Glue with the order fi gives 1, fil gives 2, fill gives 3, and filll gives 4.
+ * </p>
+ * <p>
+ *  Note that the glue specification of 1&nbsp;fi has been introduced by
+ *  <logo>Omega</logo>.
+ * </p>
+ *
+ * <h4>Syntax</h4>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;gluestretchorder&rang;
+ *      &rarr; <tt>\gluestretchorder</tt> {@link
+ *        de.dante.extex.interpreter.type.glue.Glue#parse(TokenSource,Context,Typesetter)
+ *        &lang;glue&rang;} </pre>
+ *
+ * <h4>Examples</h4>
+ * <pre class="TeXSample">
+ *   \gluestretchorder\skip1  </pre>
+ *
+ * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Ogluestretchorder extends AbstractCode
         implements
@@ -69,7 +93,7 @@ public class Ogluestretchorder extends AbstractCode
     public long convertCount(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        Glue glue = new Glue(source, context, typesetter);
+        Glue glue = Glue.parse(source, context, typesetter);
         return glue.getStretch().getOrder();
     }
 
