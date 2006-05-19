@@ -110,7 +110,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.41 $
+ * @version $Revision: 1.42 $
  */
 public class MathListMaker extends HorizontalListMaker
         implements
@@ -122,7 +122,7 @@ public class MathListMaker extends HorizontalListMaker
      * It is used to store to the stack and restore the state from the stack.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.41 $
+     * @version $Revision: 1.42 $
      */
     private class MathMemento {
 
@@ -242,7 +242,7 @@ public class MathListMaker extends HorizontalListMaker
      *
      * @param options the options
      *
-     * @return <code>true</code> iff the the symbol fonts have needed font
+     * @return <code>true</code> iff the symbol fonts have the needed font
      *  dimens
      *
      * @see "[TTP 1195]"
