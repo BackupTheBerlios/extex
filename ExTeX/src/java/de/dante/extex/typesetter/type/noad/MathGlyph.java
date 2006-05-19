@@ -33,7 +33,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This class provides a container for a mathematical glyph.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class MathGlyph implements Noad, Serializable {
 
@@ -211,8 +211,7 @@ public class MathGlyph implements Noad, Serializable {
      */
     public MathSpacing getSpacingClass() {
 
-        // TODO gene: getSpacingClass unimplemented
-        return null;
+        return MathSpacing.ORD; // gene: correct?
     }
 
 }
