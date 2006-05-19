@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\nativeload</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class NativeloadTest extends NoFlagsPrimitiveTester {
 
@@ -37,9 +37,8 @@ public class NativeloadTest extends NoFlagsPrimitiveTester {
     public NativeloadTest(final String arg) {
 
         super(arg, "nativeload",
-        "{java}{de.dante.extex.interpreter.primitives.dynamic.NativeloadSensor}");
+                "{java}{de.dante.extex.interpreter.primitives.dynamic.NativeloadSensor}");
     }
-
 
     /**
      * @see de.dante.test.ExTeXLauncher#getConfig()
@@ -49,10 +48,68 @@ public class NativeloadTest extends NoFlagsPrimitiveTester {
         return "extex-native.xml";
     }
 
+    /**
+     * <testcase primitive="\nativeload">
+     *  Test case checking that <tt>\nativeload</tt> produces a proper error
+     *  message if an invalid type is specified.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testError1() throws Exception {
+
+        assertFailure(
+                //--- input code ---
+                DEFINE_BRACES
+                        + "\\nativeload{undefined type}"
+                        + "{de.dante.extex.interpreter.primitives.dynamic.NativeloadSensor}"
+                        + " \\end",
+                //--- error message ---
+                "I don't know how to load native type `undefined type'");
+        assertFalse(NativeloadSensor.isKilroy());
+    }
 
     /**
      * <testcase primitive="\nativeload">
-     *  Test case checking that <tt>\nativeload</tt> ...
+     *  Test case checking that <tt>\nativeload</tt> produces a proper error
+     *  message if an undefined class is specified.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testError2() throws Exception {
+
+        assertFailure(
+        //--- input code ---
+                DEFINE_BRACES + "\\nativeload{java}" + "{un.de.fined.Class}"
+                        + " \\end",
+                //--- error message ---
+                "Class not found: un.de.fined.Class");
+    }
+
+    /**
+     * <testcase primitive="\nativeload">
+     *  Test case checking that <tt>\nativeload</tt> produces a proper error
+     *  message if an invalid class is specified.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testError3() throws Exception {
+
+        assertFailure(
+                //--- input code ---
+                DEFINE_BRACES + "\\nativeload{java}" + "{java.lang.String}"
+                        + " \\end",
+                //--- error message ---
+                "The class java.lang.String does not implement\n"
+                        + "the required interface de.dante.extex.interpreter.unit.Loader.");
+    }
+
+    /**
+     * <testcase primitive="\nativeload">
+     *  Test case checking that <tt>\nativeload</tt> properly invokes a correct
+     *  loader.
      * </testcase>
      *
      * @throws Exception in case of an error
