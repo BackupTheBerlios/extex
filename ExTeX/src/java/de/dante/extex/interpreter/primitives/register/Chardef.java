@@ -65,7 +65,6 @@ import de.dante.util.UnicodeChar;
  *        &lang;equals&rang;} {@linkplain
  *        de.dante.extex.interpreter.TokenSource#scanNumber(Context)
  *        &lang;number&rang;}  </pre>
- * </p>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
@@ -77,7 +76,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class Chardef extends AbstractAssignment {
 
