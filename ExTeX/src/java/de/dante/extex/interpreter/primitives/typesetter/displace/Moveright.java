@@ -62,7 +62,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Moveright extends AbstractBoxPrimitive {
 
@@ -90,7 +90,7 @@ public class Moveright extends AbstractBoxPrimitive {
     public Box getBox(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        Dimen move = new Dimen(context, source, typesetter);
+        Dimen move = Dimen.parse(context, source, typesetter);
         Box box = source.getBox(null, context, typesetter);
         if (box != null) {
             move.add(box.getMove());

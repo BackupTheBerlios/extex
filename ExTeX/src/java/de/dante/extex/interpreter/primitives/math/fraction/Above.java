@@ -65,7 +65,7 @@ import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class Above extends AbstractMathCode {
 
@@ -96,7 +96,7 @@ public class Above extends AbstractMathCode {
             throws InterpreterException {
 
         NoadConsumer nc = getListMaker(context, typesetter);
-        Dimen d = new Dimen(context, source, typesetter);
+        Dimen d = Dimen.parse(context, source, typesetter);
 
         nc.switchToFraction(null, null, d, context.getTypesettingContext());
     }

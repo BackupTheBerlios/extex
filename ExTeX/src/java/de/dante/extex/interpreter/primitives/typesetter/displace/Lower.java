@@ -58,7 +58,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Lower extends AbstractBoxPrimitive {
 
@@ -86,7 +86,7 @@ public class Lower extends AbstractBoxPrimitive {
     public Box getBox(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        Dimen amount = new Dimen(context, source, typesetter);
+        Dimen amount = Dimen.parse(context, source, typesetter);
         Box box = source.getBox(null, context, typesetter);
         if (box != null) {
             amount.add(box.getShift());

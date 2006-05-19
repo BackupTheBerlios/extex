@@ -63,7 +63,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class Ifdim extends AbstractIf {
 
@@ -92,7 +92,7 @@ public class Ifdim extends AbstractIf {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        long x = new Dimen(context, source, typesetter).getValue();
+        long x = Dimen.parse(context, source, typesetter).getValue();
         Token rel = source.getToken(context);
         if (rel == null) {
             throw new EofException(printableControlSequence(context));
@@ -100,13 +100,13 @@ public class Ifdim extends AbstractIf {
         if (rel.getCatcode() == Catcode.OTHER) {
             switch (rel.getChar().getCodePoint()) {
                 case '<':
-                    return (x < new Dimen(context, source, typesetter)
+                    return (x < Dimen.parse(context, source, typesetter)
                             .getValue());
                 case '=':
-                    return (x == new Dimen(context, source, typesetter)
+                    return (x == Dimen.parse(context, source, typesetter)
                             .getValue());
                 case '>':
-                    return (x > new Dimen(context, source, typesetter)
+                    return (x > Dimen.parse(context, source, typesetter)
                             .getValue());
                 default:
             // Fall through to error handling

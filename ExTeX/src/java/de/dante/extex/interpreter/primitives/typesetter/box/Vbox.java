@@ -76,7 +76,7 @@ import de.dante.extex.typesetter.type.NodeList;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class Vbox extends AbstractBoxPrimitive {
 
@@ -107,11 +107,11 @@ public class Vbox extends AbstractBoxPrimitive {
         Box box;
         try {
             if (source.getKeyword(context, "to")) {
-                Dimen d = new Dimen(context, source, typesetter);
+                Dimen d = Dimen.parse(context, source, typesetter);
                 box = constructBox(context, source, typesetter);
                 box.setHeight(d);
             } else if (source.getKeyword(context, "spread")) {
-                Dimen d = new Dimen(context, source, typesetter);
+                Dimen d = Dimen.parse(context, source, typesetter);
                 box = constructBox(context, source, typesetter);
                 box.spreadHeight(d);
             } else {

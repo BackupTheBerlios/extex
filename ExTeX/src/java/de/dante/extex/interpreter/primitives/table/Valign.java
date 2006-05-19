@@ -54,7 +54,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class Valign extends AbstractAlign {
 
@@ -107,7 +107,7 @@ public class Valign extends AbstractAlign {
         Dimen height = null;
 
         if (source.getKeyword(context, "to")) {
-            height = new Dimen(context, source, typesetter);
+            height = Dimen.parse(context, source, typesetter);
         }
         Token t = source.getToken(context);
         if (t == null) {

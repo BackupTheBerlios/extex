@@ -331,7 +331,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.128 $
+ * @version $Revision: 1.129 $
  */
 public class ExTeX {
 
@@ -1286,8 +1286,8 @@ public class ExTeX {
                     "ExTeX.InvalidPageSize", page));
         }
         try {
-            Dimen width = new Dimen(context, new StringSource(w), null);
-            Dimen height = new Dimen(context, new StringSource(h), null);
+            Dimen width = Dimen.parse(context, new StringSource(w), null);
+            Dimen height = Dimen.parse(context, new StringSource(h), null);
 
             context.setDimen("mediawidth", width, true);
             context.setDimen("mediaheight", height, true);

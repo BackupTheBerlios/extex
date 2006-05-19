@@ -64,7 +64,7 @@ import de.dante.util.exception.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Prevdepth extends AbstractAssignment
         implements
@@ -111,7 +111,7 @@ public class Prevdepth extends AbstractAssignment
             throws InterpreterException {
 
         source.getOptionalEquals(context);
-        Dimen pd = new Dimen(context, source, typesetter);
+        Dimen pd = Dimen.parse(context, source, typesetter);
         if (pd.getValue() < IGNORE) {
             pd = null;
         }

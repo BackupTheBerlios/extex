@@ -53,7 +53,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Pdfannot extends AbstractPdftexCode {
 
@@ -91,11 +91,11 @@ public class Pdfannot extends AbstractPdftexCode {
 
         for (;;) {
             if (source.getKeyword(context, "width")) {
-                width = new Dimen(context, source, typesetter);
+                width = Dimen.parse(context, source, typesetter);
             } else if (source.getKeyword(context, "height")) {
-                height = new Dimen(context, source, typesetter);
+                height = Dimen.parse(context, source, typesetter);
             } else if (source.getKeyword(context, "depth")) {
-                depth = new Dimen(context, source, typesetter);
+                depth = Dimen.parse(context, source, typesetter);
             } else {
                 break;
             }

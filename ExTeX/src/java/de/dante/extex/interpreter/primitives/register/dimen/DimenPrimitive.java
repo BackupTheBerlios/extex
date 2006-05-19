@@ -81,7 +81,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class DimenPrimitive extends AbstractDimen
         implements
@@ -122,7 +122,7 @@ public class DimenPrimitive extends AbstractDimen
         String key = getKey(context, source);
         source.getKeyword(context, "by");
 
-        Dimen d = new Dimen(context, source, typesetter);
+        Dimen d = Dimen.parse(context, source, typesetter);
         d.add(context.getDimen(key));
         context.setDimen(key, d, prefix.isGlobal());
         prefix.clearGlobal();
@@ -142,7 +142,7 @@ public class DimenPrimitive extends AbstractDimen
         String key = getKey(context, source);
         source.getOptionalEquals(context);
 
-        Dimen dimen = new Dimen(context, source, typesetter);
+        Dimen dimen = Dimen.parse(context, source, typesetter);
         context.setDimen(key, dimen, prefix.isGlobal());
         prefix.clearGlobal();
     }

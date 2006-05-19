@@ -77,7 +77,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class Hbox extends AbstractBoxPrimitive {
 
@@ -108,11 +108,11 @@ public class Hbox extends AbstractBoxPrimitive {
         Box box;
         try {
             if (source.getKeyword(context, "to")) {
-                Dimen d = new Dimen(context, source, typesetter);
+                Dimen d = Dimen.parse(context, source, typesetter);
                 box = acquireBox(context, source, typesetter);
                 box.setWidth(d);
             } else if (source.getKeyword(context, "spread")) {
-                Dimen d = new Dimen(context, source, typesetter);
+                Dimen d = Dimen.parse(context, source, typesetter);
                 box = acquireBox(context, source, typesetter);
                 box.spreadWidth(d);
             } else {

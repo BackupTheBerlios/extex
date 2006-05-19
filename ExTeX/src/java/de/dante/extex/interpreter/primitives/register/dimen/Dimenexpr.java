@@ -113,7 +113,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Dimenexpr extends AbstractCode
         implements
@@ -275,7 +275,7 @@ public class Dimenexpr extends AbstractCode
                 } else if (t.equals(Catcode.OTHER, '.')
                         || t.equals(Catcode.OTHER, ',')) {
                     source.push(t);
-                    return new Dimen(context, source, typesetter).getValue();
+                    return Dimen.parse(context, source, typesetter).getValue();
                 }
                 long pre = source.scanNumber(context, t);
                 t = source.getToken(context);
@@ -285,7 +285,7 @@ public class Dimenexpr extends AbstractCode
                         || t.equals(Catcode.OTHER, ',')) {
                     source.push(t);
                     source.push(new Tokens(context, pre));
-                    return new Dimen(context, source, typesetter).getValue();
+                    return Dimen.parse(context, source, typesetter).getValue();
                 }
                 source.push(t);
                 t = source.getNonSpace(context);
@@ -295,7 +295,7 @@ public class Dimenexpr extends AbstractCode
                 } else if (t instanceof LetterToken) {
                     source.push(t);
                     source.push(new Tokens(context, pre));
-                    return new Dimen(context, source, typesetter).getValue();
+                    return Dimen.parse(context, source, typesetter).getValue();
                 } else {
                     source.push(t);
                     source.push(new Tokens(context, pre));
@@ -333,7 +333,6 @@ public class Dimenexpr extends AbstractCode
             final Typesetter typesetter) throws InterpreterException {
 
         try {
-            //todo gene: find a solution without intermediary object
             Dimen d = new Dimen(convertDimen(context, source, typesetter));
             return d.toToks(context.getTokenFactory());
         } catch (CatcodeException e) {

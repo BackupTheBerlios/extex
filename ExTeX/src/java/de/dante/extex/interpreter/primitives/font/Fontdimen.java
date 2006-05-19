@@ -80,7 +80,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.35 $
+ * @version $Revision: 1.36 $
  */
 public class Fontdimen extends AbstractAssignment
         implements
@@ -117,7 +117,7 @@ public class Fontdimen extends AbstractAssignment
         source.skipSpace();
         Font font = source.getFont(context, getName());
         source.getOptionalEquals(context);
-        Dimen size = new Dimen(context, source, typesetter);
+        Dimen size = Dimen.parse(context, source, typesetter);
         font.setFontDimen(key, size);
     }
 

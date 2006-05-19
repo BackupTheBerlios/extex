@@ -37,7 +37,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.30 $
+ * @version $Revision: 1.31 $
  */
 public class Dimen extends GlueComponent implements Serializable, FixedDimen {
 
@@ -63,22 +63,13 @@ public class Dimen extends GlueComponent implements Serializable, FixedDimen {
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 20060513L;
 
     /**
      * The constant <tt>ZERO_PT</tt> contains the immutable dimen register
      * representing the length of 0&nbsp;pt.
      */
     public static final ImmutableDimen ZERO_PT = new ImmutableDimen(0);
-
-    /**
-     * Creates a new object.
-     * The length stored in it is initialized to 0&nbsp;pt.
-     */
-    public Dimen() {
-
-        super();
-    }
 
     /**
      * Creates a new object from a token stream.
@@ -88,22 +79,42 @@ public class Dimen extends GlueComponent implements Serializable, FixedDimen {
      *
      *  <pre class="syntax">
      *    &lang;dimen&rang;
-     *      &rarr; ...
-     * </pre>
-     *  TODO gene: missing documentation
+     *      &rarr; &lang;float&rang; &lang;dimen unit&rang;
+     *
+     *    &lang;float&rang;
+     *      &rarr; [+-]? [0-9]+
+     *      |  [+-]? [0-9]+[.][0-9]*
+     *      |  [+-]? [.][0-9]+
+     *
+     *    &lang;dimen unit&rang;
+     *      &rarr; pt | in | sp
+     *      |  mm | cm | dm | km
+     *      |  dd | cc | bp  </pre>
      * </doc>
      *
      * @param context the interpreter context
      * @param source the source for next tokens
      * @param typesetter the typesetter
      *
+     * @return a new instance with the value acquired
      *
      * @throws InterpreterException in case of an error
      */
-    public Dimen(final Context context, final TokenSource source,
+    public static Dimen parse(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        super(context, source, typesetter, false);
+        GlueComponent gc = GlueComponent.parse(context, source, typesetter,
+                false);
+        return new Dimen(gc.getValue());
+    }
+
+    /**
+     * Creates a new object.
+     * The length stored in it is initialized to 0&nbsp;pt.
+     */
+    public Dimen() {
+
+        super();
     }
 
     /**
@@ -210,7 +221,7 @@ public class Dimen extends GlueComponent implements Serializable, FixedDimen {
      * @return <code>true</code> iff the value is 0
      */
     public boolean isZero() {
-    
+
         return getValue() == 0;
     }
 

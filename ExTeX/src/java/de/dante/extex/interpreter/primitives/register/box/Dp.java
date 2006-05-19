@@ -79,7 +79,7 @@ import de.dante.util.exception.GeneralException;
  *
  * <h4>Expansion of the Primitive</h4>
  * <p>
- *  In an expansion context the primitive results in the the currentr depth of
+ *  In an expansion context the primitive results in the the current depth of
  *  the given box register. In case that the box register is empty the result
  *  is 0&nbsp;pt.
  * </p>
@@ -117,7 +117,7 @@ import de.dante.util.exception.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.33 $
+ * @version $Revision: 1.34 $
  */
 public class Dp extends Setbox
         implements
@@ -155,7 +155,7 @@ public class Dp extends Setbox
 
         Box box = context.getBox(getKey(context, source, getName()));
         source.getOptionalEquals(context);
-        Dimen d = new Dimen(context, source, typesetter);
+        Dimen d = Dimen.parse(context, source, typesetter);
 
         if (box != null) {
             box.setDepth(d);

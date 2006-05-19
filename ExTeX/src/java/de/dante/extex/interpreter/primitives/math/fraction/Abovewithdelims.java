@@ -68,7 +68,7 @@ import de.dante.extex.typesetter.type.math.MathDelimiter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class Abovewithdelims extends AbstractTeXDelimiter {
 
@@ -103,7 +103,7 @@ public class Abovewithdelims extends AbstractTeXDelimiter {
                 getName());
         MathDelimiter del2 = parseDelimiter(context, source, typesetter,
                 getName());
-        Dimen d = new Dimen(context, source, typesetter);
+        Dimen d = Dimen.parse(context, source, typesetter);
         nc.switchToFraction(del1, del2, d, context.getTypesettingContext());
     }
 

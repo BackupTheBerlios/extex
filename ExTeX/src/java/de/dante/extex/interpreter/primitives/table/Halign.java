@@ -74,7 +74,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
 public class Halign extends AbstractAlign implements Boxable {
 
@@ -146,9 +146,9 @@ public class Halign extends AbstractAlign implements Boxable {
         boolean spread = false;
 
         if (source.getKeyword(context, "to")) {
-            width = new Dimen(context, source, typesetter);
+            width = Dimen.parse(context, source, typesetter);
         } else if (source.getKeyword(context, "spread")) {
-            width = new Dimen(context, source, typesetter);
+            width = Dimen.parse(context, source, typesetter);
             spread = true;
         }
         Token t = source.getToken(context);

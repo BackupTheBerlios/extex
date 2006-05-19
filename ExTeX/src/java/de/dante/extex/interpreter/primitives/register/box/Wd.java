@@ -70,7 +70,7 @@ import de.dante.util.exception.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
 public class Wd extends Setbox
         implements
@@ -131,7 +131,7 @@ public class Wd extends Setbox
 
         Box box = context.getBox(getKey(context, source, getName()));
         source.getOptionalEquals(context);
-        Dimen d = new Dimen(context, source, typesetter);
+        Dimen d = Dimen.parse(context, source, typesetter);
 
         if (box != null) {
             box.setWidth(d);
