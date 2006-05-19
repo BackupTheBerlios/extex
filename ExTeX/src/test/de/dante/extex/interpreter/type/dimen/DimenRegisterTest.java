@@ -33,7 +33,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * Test cases for dimen registers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class DimenRegisterTest extends TestCase {
 
@@ -80,7 +80,7 @@ public class DimenRegisterTest extends TestCase {
         Interpreter source = interpreterFactory.newInstance();
         source.addStream(fac.newInstance(spec));
         source.setTokenStreamFactory(fac);
-        return new Dimen(new MockContext(), source, null).getValue();
+        return Dimen.parse(new MockContext(), source, null).getValue();
     }
 
     /**
