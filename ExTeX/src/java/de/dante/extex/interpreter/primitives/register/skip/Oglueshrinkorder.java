@@ -38,9 +38,9 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.1 $
  */
-public class Oglueshrinkchorder extends AbstractCode
+public class Oglueshrinkorder extends AbstractCode
         implements
             CountConvertible,
             Theable {
@@ -55,7 +55,7 @@ public class Oglueshrinkchorder extends AbstractCode
      *
      * @param name the name for debugging
      */
-    public Oglueshrinkchorder(final String name) {
+    public Oglueshrinkorder(final String name) {
 
         super(name);
     }
@@ -69,7 +69,7 @@ public class Oglueshrinkchorder extends AbstractCode
     public long convertCount(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        Glue glue = new Glue(source, context, typesetter);
+        Glue glue = Glue.parse(source, context, typesetter);
         return glue.getShrink().getOrder();
     }
 
