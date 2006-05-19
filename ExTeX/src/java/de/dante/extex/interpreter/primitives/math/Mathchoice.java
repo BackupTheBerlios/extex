@@ -49,7 +49,7 @@ import de.dante.extex.typesetter.type.noad.Noad;
  * </p>
  * <p>
  *  The material is enclosed in braces &ndash; or to be precise in tokens with
- *  the catcodes 1 (leftbrace) and 2 (rightbrace). The four cases lead to four
+ *  the catcodes 1 (left brace) and 2 (right brace). The four cases lead to four
  *  groups.
  * </p>
  * <p>
@@ -69,7 +69,7 @@ import de.dante.extex.typesetter.type.noad.Noad;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class Mathchoice extends AbstractMathCode {
 
