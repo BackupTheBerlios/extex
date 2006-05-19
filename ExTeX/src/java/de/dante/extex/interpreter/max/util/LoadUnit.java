@@ -59,7 +59,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public final class LoadUnit extends AbstractFactory {
 
@@ -119,6 +119,11 @@ public final class LoadUnit extends AbstractFactory {
         while (iterator.hasNext()) {
             primitiveFactory.define((Configuration) iterator.next(),
                     tokenFactory, context, typesetter, logger, outputFactory);
+        }
+
+        String imp = configuration.getAttribute("import");
+        if (imp != null) {
+            //TODO gene: do import
         }
     }
 
