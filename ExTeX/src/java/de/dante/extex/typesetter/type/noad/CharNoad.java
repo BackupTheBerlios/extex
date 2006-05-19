@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 
 import de.dante.extex.font.type.other.NullFont;
 import de.dante.extex.interpreter.context.Color;
+import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.context.TypesettingContextFactory;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
@@ -30,6 +31,7 @@ import de.dante.extex.interpreter.primitives.register.font.NumberedFont;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
+import de.dante.extex.interpreter.type.font.FontUtil;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.Node;
@@ -45,7 +47,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This class provides a container for a mathematical character.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class CharNoad extends AbstractNoad {
 
@@ -118,11 +120,7 @@ public class CharNoad extends AbstractNoad {
         }
 
         if (font.getGlyph(c) == null) {
-            //see "TTP [581]"
-            if (context.getCountOption("tracinglostchars").gt(Count.ZERO)) {
-                logger.info(getLocalizer().format("TTP.MissingChar",
-                        c.toString(), font.getFontName()));
-            }
+            FontUtil.charWarning(logger, context, font, c);
             return;
         }
 
