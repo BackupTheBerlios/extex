@@ -11,6 +11,7 @@ body {
 }
 pre.syntax {
   background-color:#eeeeee;
+  border-color:#666666;
   padding:3pt;
 }
 pre b {
@@ -21,13 +22,19 @@ pre i {
 }
 pre.TeXSample {
   background-color:#ffffcc;
+  border-color:#cccc66;
   padding:3pt;
 }
 pre.JavaSample {
   background-color:#eeeeff;
-  border-width:1px;
-  border-style:solid:
   border-color:#6666cc;
+  padding:3pt;
+}
+pre {
+  background-color:#eeffee;
+  border-width:1px;
+  border-style:solid;
+  border-color:#66cc66;
   padding:3pt;
 }
 table {
@@ -47,5 +54,9 @@ table {
 .footer {
   font-size:80%;
   background-color:#eeeeee;
-  padding:1pt;
+  padding:3pt;
+}
+.copyright {
+  font-size:80%;
+  padding:3pt;
 }
