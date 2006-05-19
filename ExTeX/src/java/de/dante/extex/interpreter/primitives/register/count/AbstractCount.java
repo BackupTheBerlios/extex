@@ -35,7 +35,7 @@ import de.dante.util.exception.GeneralException;
  * numbered count registers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public abstract class AbstractCount extends AbstractAssignment
         implements
@@ -57,14 +57,15 @@ public abstract class AbstractCount extends AbstractAssignment
      *
      * @param context the interpreter context to use
      * @param source the source for new tokens
+     * @param typesetter the typesetter
      *
      * @return the key for the current register
      *
      * @throws InterpreterException in case that a derived class need to throw
      *  an Exception this one is declared.
      */
-    protected String getKey(final Context context, final TokenSource source)
-            throws InterpreterException {
+    protected String getKey(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
 
         String name;
         try {
@@ -95,7 +96,7 @@ public abstract class AbstractCount extends AbstractAssignment
         }
         source.push(t);
         long value = Count.scanCount(context, source, typesetter);
-        context.setCount(getKey(context, source), value, true);
+        context.setCount(getKey(context, source, typesetter), value, true);
     }
 
 }

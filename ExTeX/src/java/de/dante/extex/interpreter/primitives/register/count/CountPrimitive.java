@@ -71,7 +71,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
 public class CountPrimitive extends AbstractCount
         implements
@@ -108,7 +108,7 @@ public class CountPrimitive extends AbstractCount
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String key = getKey(context, source);
+        String key = getKey(context, source, typesetter);
         source.getKeyword(context, "by");
 
         long value = Count.scanCount(context, source, typesetter);
@@ -129,7 +129,7 @@ public class CountPrimitive extends AbstractCount
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String key = getKey(context, source);
+        String key = getKey(context, source, typesetter);
         source.getOptionalEquals(context);
 
         long value = Count.scanCount(context, source, typesetter);
@@ -148,7 +148,7 @@ public class CountPrimitive extends AbstractCount
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String key = getKey(context, source);
+        String key = getKey(context, source, typesetter);
         source.push(context.getCount(key).toToks(context));
     }
 
@@ -160,7 +160,7 @@ public class CountPrimitive extends AbstractCount
     public long convertCount(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        String key = getKey(context, source);
+        String key = getKey(context, source, typesetter);
         Count c = context.getCount(key);
         return (c != null ? c.getValue() : 0);
     }
@@ -176,7 +176,7 @@ public class CountPrimitive extends AbstractCount
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String key = getKey(context, source);
+        String key = getKey(context, source, typesetter);
         source.getKeyword(context, "by");
 
         long value = Count.scanCount(context, source, typesetter);
@@ -202,7 +202,7 @@ public class CountPrimitive extends AbstractCount
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String key = getKey(context, source);
+        String key = getKey(context, source, typesetter);
         source.getKeyword(context, "by");
 
         long value = Count.scanCount(context, source, typesetter);
@@ -219,7 +219,7 @@ public class CountPrimitive extends AbstractCount
     public Tokens the(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        String key = getKey(context, source);
+        String key = getKey(context, source, typesetter);
         return new Tokens(context, context.getCount(key).getValue());
     }
 

@@ -50,7 +50,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Prevgraf extends CountPrimitive {
 
@@ -74,7 +74,7 @@ public class Prevgraf extends CountPrimitive {
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */
-    protected String getKey(final Context context, final TokenSource source) {
+    protected String getKey(final Context context, final TokenSource source, Typesetter typesetter) {
 
         return getName();
     }
@@ -90,7 +90,7 @@ public class Prevgraf extends CountPrimitive {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String key = getKey(context, source);
+        String key = getKey(context, source, typesetter);
         source.getKeyword(context, "by");
 
         long value = Count.scanCount(context, source, null)
@@ -115,7 +115,7 @@ public class Prevgraf extends CountPrimitive {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String key = getKey(context, source);
+        String key = getKey(context, source, typesetter);
         source.getOptionalEquals(context);
 
         long value = Count.scanCount(context, source, typesetter);
@@ -138,7 +138,7 @@ public class Prevgraf extends CountPrimitive {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String key = getKey(context, source);
+        String key = getKey(context, source, typesetter);
         source.getKeyword(context, "by");
 
         long value = Count.scanCount(context, source, null);
@@ -168,7 +168,7 @@ public class Prevgraf extends CountPrimitive {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String key = getKey(context, source);
+        String key = getKey(context, source, typesetter);
         source.getKeyword(context, "by");
 
         long value = Count.scanCount(context, source, null);

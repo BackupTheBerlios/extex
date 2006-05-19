@@ -44,7 +44,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class IntegerParameter extends CountPrimitive
         implements
@@ -88,9 +88,11 @@ public class IntegerParameter extends CountPrimitive
     /**
      * @see de.dante.extex.interpreter.primitives.register.count.AbstractCount#getKey(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
      */
-    protected String getKey(final Context context, final TokenSource source) {
+    protected String getKey(final Context context, final TokenSource source,
+            final Typesetter typesetter) {
 
         return key;
     }
@@ -115,7 +117,9 @@ public class IntegerParameter extends CountPrimitive
             if (t != null) {
                 source.push(t);
                 long value = source.scanInteger(context, typesetter);
-                context.setCount(getKey(context, null), value, true);
+                context
+                        .setCount(getKey(context, null, typesetter), value,
+                                true);
             }
         }
     }
