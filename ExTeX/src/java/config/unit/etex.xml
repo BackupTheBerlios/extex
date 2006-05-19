@@ -19,6 +19,8 @@
   -->
 <unit>
   <primitives>
+    <define name="error.max"
+            class="de.dante.extex.interpreter.primitives.register.count.MaxRegister">100</define>
     <define name="register.max"
             class="de.dante.extex.interpreter.primitives.register.count.MaxRegister">32768</define>
 
@@ -30,8 +32,8 @@
             class="de.dante.extex.interpreter.primitives.hyphen.BeginR"/>
     <define name="botmarks"
             class="de.dante.extex.interpreter.primitives.typesetter.mark.Botmarks"/>
-    <Define name="clubpenalties"
-            class=""/>
+    <define name="clubpenalties"
+            class="de.dante.extex.interpreter.primitives.register.count.CountArray"/>
     <define name="currentgrouplevel"
             class="de.dante.extex.interpreter.primitives.group.Currentgrouplevel"/>
     <define name="currentgrouptype"
@@ -46,8 +48,8 @@
             class=""/>
     <define name="dimenexpr"
             class="de.dante.extex.interpreter.primitives.register.dimen.Dimenexpr"/>
-    <Define name="displaywidowpenalties"
-            class=""/>
+    <define name="displaywidowpenalties"
+            class="de.dante.extex.interpreter.primitives.register.count.CountArray"/>
     <define name="eTeXrevision"
             class="de.dante.extex.interpreter.primitives.register.toks.ToksParameter">.141592</define>
     <define name="eTeXversion"
@@ -78,6 +80,8 @@
             class="de.dante.extex.interpreter.primitives.register.skip.Glueshrink"/>
     <define name="glueshrinkorder"
             class="de.dante.extex.interpreter.primitives.register.skip.Glueshrinkorder"/>
+    <Define name="gluetomu"
+            class=""/>
     <define name="ifcsname"
             class="de.dante.extex.interpreter.primitives.conditional.Ifcsname"/>
     <define name="ifdefined"
@@ -86,8 +90,8 @@
             class="de.dante.extex.interpreter.primitives.conditional.Iffontchar"/>
     <define name="interactionmode"
             class="de.dante.extex.interpreter.primitives.interaction.Interactionmode"/>
-    <Define name="interlinepenalties"
-            class=""/>
+    <define name="interlinepenalties"
+            class="de.dante.extex.interpreter.primitives.register.count.CountArray"/>
     <define name="lastlinefit"
             class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
     <define name="lastnodetype"
@@ -98,18 +102,20 @@
             class="de.dante.extex.interpreter.primitives.math.delimiter.Middle"/>
     <Define name="muexpr"
             class=""/>
+    <define name="mutoglue"
+            class="de.dante.extex.interpreter.primitives.register.skip.Mutoglue"/>
     <define name="numexpr"
             class="de.dante.extex.interpreter.primitives.register.count.Numexpr"/>
-    <Define name="pagediscards"
-            class=""/>
+    <define name="pagediscards"
+            class="de.dante.extex.interpreter.primitives.register.count.CountArray"/>
     <define name="parshapedimen"
             class="de.dante.extex.interpreter.primitives.typesetter.paragraph.Parshapedimen"/>
     <define name="parshapeindent"
             class="de.dante.extex.interpreter.primitives.typesetter.paragraph.Parshapeindent"/>
     <define name="parshapelength"
             class="de.dante.extex.interpreter.primitives.typesetter.paragraph.Parshapelength"/>
-    <Define name="predisplaydirection"
-            class=""/>
+    <define name="predisplaydirection"
+            class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
     <define name="protected"
             class="de.dante.extex.interpreter.primitives.prefix.Protected"/>
     <define name="readline"
@@ -120,14 +126,14 @@
             class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
     <Define name="scantokens"
             class=""/>
-    <Define name="showgroups"
-            class=""/>
-    <Define name="showtokens"
-            class=""/>
+    <define name="showgroups"
+            class="de.dante.extex.interpreter.primitives.info.Showgroups"/>
+    <define name="showtokens"
+            class="de.dante.extex.interpreter.primitives.info.Showtokens"/>
     <define name="splitbotmarks"
             class="de.dante.extex.interpreter.primitives.typesetter.mark.Splitbotmarks"/>
-    <Define name="splitdiscards"
-            class=""/>
+    <define name="splitdiscards"
+            class="de.dante.extex.interpreter.primitives.register.count.CountArray"/>
     <define name="splitfirstmarks"
             class="de.dante.extex.interpreter.primitives.typesetter.mark.Splitfirstmarks"/>
     <define name="topmarks"
@@ -146,8 +152,8 @@
             class="de.dante.extex.interpreter.primitives.macro.Unexpanded"/>
     <define name="unless"
             class="de.dante.extex.interpreter.primitives.conditional.Unless"/>
-    <Define name="widowpenalties"
-            class=""/>
+    <define name="widowpenalties"
+            class="de.dante.extex.interpreter.primitives.register.count.CountArray"/>
   </primitives>
  </unit>
  
