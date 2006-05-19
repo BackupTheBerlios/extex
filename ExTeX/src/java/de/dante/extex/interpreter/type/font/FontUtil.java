@@ -21,8 +21,8 @@ package de.dante.extex.interpreter.type.font;
 
 import java.util.logging.Logger;
 
-import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.count.Count;
+import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.util.UnicodeChar;
 import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.i18n.LocalizerFactory;
@@ -31,7 +31,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * Font utility methods.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public final class FontUtil {
 
@@ -53,6 +53,25 @@ public final class FontUtil {
      * This method produces a log entry for lost characters if the count
      * register <tt>tracinglostchars</tt> is greater than zero.
      *
+     * <doc name="tracinglostchars" type="register">
+     * <h3>The Count Parameter <tt>\tracinglostchars</tt></h3>
+     * <p>
+     *  The count parameter <tt>\tracinglostchars</tt> determines whether
+     *  characters which are discarded are logged. Characters are discarded
+     *  when the font at hand does not contain a glyph for the character.
+     * </p>
+     * <p>
+     *  If the value of is greater <tt>\tracinglostchars</tt> than zero
+     *  then a message is written to the log file. Otherwise the message
+     *  is suppressed.
+     * </p>
+     *
+     * <h4>Examples</h4>
+     *  <pre class="TeXSample">
+     *    \tracinglostchars=1  </pre>
+     * </doc>
+     *
+     *
      * @param logger the logger to write to
      * @param context the interpreter context
      * @param font the font queried
@@ -60,12 +79,14 @@ public final class FontUtil {
      *
      * @see "TTP [581]"
      */
-    public static void charWarning(final Logger logger, final Context context,
-            final Font font, final UnicodeChar c) {
+    public static void charWarning(final Logger logger,
+            final TypesetterOptions context, final Font font,
+            final UnicodeChar c) {
 
-        if (context.getCount("tracinglostchars").gt(Count.ZERO)) {
+        if (context.getCountOption("tracinglostchars").gt(Count.ZERO)) {
             logger.info(LOCALIZER.format("TTP.MissingChar", c.toString(), font
                     .getFontName()));
         }
     }
+
 }
