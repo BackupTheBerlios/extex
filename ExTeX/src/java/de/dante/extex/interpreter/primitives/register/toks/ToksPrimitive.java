@@ -31,13 +31,24 @@ import de.dante.util.exception.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\toks</code>.
- * It sets the named toks register to the value given, and as a side effect all
- * prefixes are zeroed.
+ * It sets the named tokens register to the value given, and as a side effect
+ * all prefixes are zeroed.
  *
  * <doc name="toks">
  * <h3>The Primitive <tt>\toks</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  The primitive <tt>\toks</tt> provides access to the named tokens register.
+ *  token sequences can be stored in them for later use. This means that the
+ *  tokens do not have to be parsed again. Even a change in the catcode
+ *  settings does not alter the tokens build once.
+ * </p>
+ * <p>
+ *  The primitive <tt>\toks</tt> also respects the count register
+ *  <tt>\globaldefs</tt> to enable general global assignment.
+ * </p>
+ * <p>
+ *  Since the primitive is classified as assignment the value of
+ *  <tt>\afterassignment</tt> is applied.
  * </p>
  *
  * <h4>Syntax</h4>
@@ -47,21 +58,31 @@ import de.dante.util.exception.GeneralException;
  *        de.dante.extex.interpreter.TokenSource#scanRegisterName(Context,String)
  *        &lang;register name&rang;} {@linkplain
  *    de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
- *    &lang;equals&rang;} ... </pre>
+ *    &lang;equals&rang;} &lang;tokens&rang; </pre>
+ * <p>
+ *  In <logo>TeX</logo> the register name is a number in the range 0 to 255.
+ *  Extensions to this are defined in <logo>eTeX</logo> and <logo>Omega</logo>
+ *  where the limitation of the range is raised. In <logo>ExTeX</logo> this
+ *  limit can be configured. In addition tokens can be used to address named
+ *  token registers.
+ * </p>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \toks2={UTF-8}  </pre>
  *  <pre class="TeXSample">
  *    \toks42={UTF-8}  </pre>
+ *  <pre class="TeXSample">
+ *    \toks42=\toks0  </pre>
+ *  <pre class="TeXSample">
+ *    \toks{abc}={Hello world}  </pre>
  *
  * </doc>
  *
  *
- *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class ToksPrimitive extends AbstractToks
         implements

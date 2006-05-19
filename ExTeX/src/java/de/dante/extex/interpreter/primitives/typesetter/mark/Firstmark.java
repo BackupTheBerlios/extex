@@ -37,7 +37,8 @@ import de.dante.extex.typesetter.Typesetter;
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\firstmark</tt>  </pre>
+ *    &lang;firstmark&rang;
+ *      &rarr; <tt>\firstmark</tt>  </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
@@ -46,7 +47,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Firstmark extends Firstmarks {
 

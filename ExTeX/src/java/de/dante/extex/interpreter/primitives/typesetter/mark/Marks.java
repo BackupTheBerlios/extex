@@ -26,7 +26,6 @@ import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.node.MarkNode;
-import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
@@ -36,13 +35,27 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * <doc name="marks">
  * <h3>The Primitive <tt>\marks</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The primitive <tt>\marks</tt> places a mark in the current list. The
+ *  marks on the last page can be retrieved when the page is mounted in the
+ *  output routine.
+ *  The text stored within the mark is a list of tokens.
+ * </p>
+ * <p>
+ *  The marks can be classified with an identifier. In <logo>eTeX</logo> the
+ *  identifier is a number. In <logo>ExTeX</logo> in addition arbitrary
+ *  token lists can be used as identifier.
+ * </p>
+ * <p>
+ *  The <tt>\marks0</tt> is equivalent to <tt>\mark</tt>.
  * </p>
  *
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\marks ...</tt>  </pre>
+ *    &lang;marks&rang;
+ *      &rarr; <tt>\marks</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#scanRegisterName(Context,String)
+ *        &lang;mark name&rang;} &lang;tokens&rang;  </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
@@ -51,7 +64,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Marks extends AbstractMarkCode {
 

@@ -127,9 +127,48 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * <p>
  *
  *
+ * <doc name="displayfont" type="register">
+ * <h3>The Font Parameter <tt>\displayfont</tt></h3>
+ * <p>
+ *  The font parameter <tt>\displayfont</tt> contains ...
+ *  TODO gene: documentation missing
+ * </p>
+ *
+ * </doc>
+ *
+ *
+ * <doc name="textfont" type="register">
+ * <h3>The Font Parameter <tt>\textfont</tt></h3>
+ * <p>
+ *  The font parameter <tt>\textfont</tt> contains ...
+ *  TODO gene: documentation missing
+ * </p>
+ *
+ * </doc>
+ *
+ *
+ * <doc name="scriptfont" type="register">
+ * <h3>The Font Parameter <tt>\scriptfont</tt></h3>
+ * <p>
+ *  The font parameter <tt>\scriptfont</tt> contains ...
+ *  TODO gene: documentation missing
+ * </p>
+ *
+ * </doc>
+ *
+ *
+ * <doc name="scriptscriptfont" type="register">
+ * <h3>The Font Parameter <tt>\scriptscriptfont</tt></h3>
+ * <p>
+ *  The font parameter <tt>\scriptscriptfont</tt> contains ...
+ *  TODO gene: documentation missing
+ * </p>
+ *
+ * </doc>
+ *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public final class StyleNoad implements Noad {
 

@@ -36,8 +36,32 @@ import de.dante.extex.typesetter.Typesetter;
  *  token and the <tt>\globaldefs</tt> declaration.
  * </p>
  *
+ *
+ * <doc name="globaldefs" type="register">
+ * <h3>The Count Parameter <tt>\globaldefs</tt></h3>
+ * <p>
+ *  The count register <tt>\globaldefs</tt> contains the indicator that an
+ *  assignment should be performed globally. If its value is greater than zero
+ *  then all assignments are global. Otherwise the grouping is honored. In this
+ *  sense setting <tt>\globaldefs</tt> to a positive value implicitly
+ *  prefixes all assignments with <tt>\global</tt>.
+ * </p>
+ *
+ * <h4>Syntax</h4>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;globaldefs&rang;
+ *       &rarr; <tt>\globaldefs</tt> ...  </pre>
+ *
+ * <h4>Examples</h4>
+ *  <pre class="TeXSample">
+ *    \globaldefs=1  </pre>
+ *
+ * </doc>
+ *
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public abstract class AbstractAssignment extends AbstractCode {
 

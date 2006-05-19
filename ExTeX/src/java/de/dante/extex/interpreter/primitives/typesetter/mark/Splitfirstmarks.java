@@ -36,7 +36,10 @@ import de.dante.extex.interpreter.type.tokens.Tokens;
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\splitfirstmarks</tt> ...  </pre>
+ *    &lang;splitfirstmarks&rang;
+ *      &rarr; <tt>\splitfirstmarks</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#scanRegisterName(Context,String)
+ *        &lang;mark name&rang;}  </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
@@ -47,7 +50,7 @@ import de.dante.extex.interpreter.type.tokens.Tokens;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Splitfirstmarks extends AbstractMarksCode {
 
