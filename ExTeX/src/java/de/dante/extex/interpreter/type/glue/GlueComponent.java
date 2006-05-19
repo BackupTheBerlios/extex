@@ -60,14 +60,9 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.46 $
+ * @version $Revision: 1.47 $
  */
 public class GlueComponent implements Serializable, FixedGlueComponent {
-
-    /**
-     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
-     */
-    protected static final long serialVersionUID = 1L;
 
     /**
      * The constant <tt>BP100_PER_IN</tt> contains the number of 100 big points
@@ -133,10 +128,49 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
     private static final int PT_PER_PC = 12;
 
     /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    protected static final long serialVersionUID = 1L;
+
+    /**
      * The constant <tt>ZERO</tt> contains the non-stretchable and
      * non-shrinkable value of 0&nbsp;pt.
      */
     public static final GlueComponent ZERO = new GlueComponent(0);
+
+    /**
+     * Creates a new object.
+     *
+     * @param context the interpreter context
+     * @param source the source for the tokens to be read
+     * @param typesetter the typesetter
+     * @param fixed if <code>true</code> then no glue order is allowed
+     *
+     * @throws InterpreterException in case of an error
+     */
+    public static GlueComponent parse(final Context context,
+            final TokenSource source, final Typesetter typesetter,
+            final boolean fixed) throws InterpreterException {
+
+        GlueComponent gc = new GlueComponent(0);
+        gc.set(context, source, typesetter, fixed);
+        return gc;
+    }
+
+    /**
+     * Creates a new object from a TokenStream.
+     * @param source the source for new tokens
+     * @param context the interpreter context
+     * @param typesetter the typesetter
+     *
+     * @throws InterpreterException in case of an error
+     */
+    public static GlueComponent parse(final TokenSource source,
+            final Context context, final Typesetter typesetter)
+            throws InterpreterException {
+
+        return parse(context, source, typesetter, false);
+    }
 
     /**
      * Parses a token stream for a float and returns it as fixed point number.
@@ -221,24 +255,6 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
     }
 
     /**
-     * Creates a new object.
-     *
-     * @param context the interpreter context
-     * @param source the source for the tokens to be read
-     * @param typesetter the typesetter
-     * @param fixed if <code>true</code> then no glue order is allowed
-     *
-     * @throws InterpreterException in case of an error
-     */
-    public GlueComponent(final Context context, final TokenSource source,
-            final Typesetter typesetter, final boolean fixed)
-            throws InterpreterException {
-
-        super();
-        set(context, source, typesetter, fixed);
-    }
-
-    /**
      * Creates a new object with a fixed width.
      *
      * @param component the fixed value
@@ -272,20 +288,6 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
         super();
         this.value = theValue;
         this.order = theOrder;
-    }
-
-    /**
-     * Creates a new object from a TokenStream.
-     * @param source the source for new tokens
-     * @param context the interpreter context
-     * @param typesetter the typesetter
-     *
-     * @throws InterpreterException in case of an error
-     */
-    public GlueComponent(final TokenSource source, final Context context,
-            final Typesetter typesetter) throws InterpreterException {
-
-        this(context, source, typesetter, false);
     }
 
     /**
