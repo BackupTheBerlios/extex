@@ -112,7 +112,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * <doc name="ignorevoid" type="register">
- * <h3>The Parameter <tt>\ignorevoid</tt></h3>
+ * <h3>The Count Parameter <tt>\ignorevoid</tt></h3>
  * <p>
  *  The count register <tt>\ignorevoid</tt> determines how an undefined
  *  active character or control sequence is encountered. If the value is
@@ -125,10 +125,29 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * </doc>
  *
+ * <doc name="everyjob" type="register">
+ * <h3>The Tokens Parameter <tt>\everyjob</tt></h3>
+ * <p>
+ *  The tokens register <tt>\everyjob</tt> contains the tokens to be inserted
+ *  at the beginning of every job.
+ * </p>
+ *
+ * <h4>Syntax</h4>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;everyjob&rang;
+ *       &rarr; <tt>\everyjob</tt> ...  </pre>
+ *
+ * <h4>Examples</h4>
+ *  <pre class="TeXSample">
+ *    \everyjob={\message{Hello world.}}  </pre>
+ *
+ * </doc>
+ *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.98 $
+ * @version $Revision: 1.99 $
  */
 public abstract class Max
         implements
@@ -448,6 +467,13 @@ public abstract class Max
     public Max() {
 
         super();
+        registerObserver(new StartObserver() {
+
+            public void update(final Interpreter interpreter) {
+
+                maxErrors = (int) getContext().getCount("error.max").getValue();
+            }
+        });
     }
 
     /**
@@ -465,8 +491,6 @@ public abstract class Max
         }
 
         this.configuration = config;
-
-        maxErrors = config.getValueAsInteger("maxErrors", maxErrors);
 
         TokenFactory tokenFactory = configureTokenFactory(config);
         makeContext(config);
@@ -846,6 +870,101 @@ public abstract class Max
 
     /**
      * Initialize the date and time related primitives.
+     *
+     * <doc name="day" type="register">
+     * <h3>The Count Parameter <tt>\day</tt></h3>
+     * <p>
+     *  The count parameter <tt>\day</tt> is set automatically at the start
+     *  of a job to the day of the current date. Thus it always is initialized
+     *  to a value in the range of 1 to 31.
+     * </p>
+     * <p>
+     *  In the course of processing it can be used as any count register. This
+     *  means that assignments, comparisons, and arithmetical operations work
+     *  as for those.
+     * </p>
+     * <p>
+     *  The value is stored when a format file is written. Note however that
+     *  this value is overwritten when the format file is read back in.
+     * </p>
+     *
+     * <h4>Examples</h4>
+     *  <pre class="TeXSample">
+     *    \the\day  </pre>
+     * </doc>
+     *
+     * <doc name="month" type="register">
+     * <h3>The Count Parameter <tt>\month</tt></h3>
+     * <p>
+     *  The count parameter <tt>\month</tt> is set automatically at the start
+     *  of a job to the month of the current date. Thus it always is initialized
+     *  to a value in the range of 1 to 12.
+     * </p>
+     * <p>
+     *  In the course of processing it can be used as any count register. This
+     *  means that assignments, comparisons, and arithmetical operations work
+     *  as for those.
+     * </p>
+     * <p>
+     *  The value is stored when a format file is written. Note however that
+     *  this value is overwritten when the format file is read back in.
+     * </p>
+     *
+     * <h4>Examples</h4>
+     *  <pre class="TeXSample">
+     *    \the\month  </pre>
+     * </doc>
+     *
+     * <doc name="year" type="register">
+     * <h3>The Count Parameter <tt>\year</tt></h3>
+     * <p>
+     *  The count parameter <tt>\year</tt> is set automatically at the start
+     *  of a job to the year of the current date.
+     * </p>
+     * <p>
+     *  In the course of processing it can be used as any count register. This
+     *  means that assignments, comparisons, and arithmetical operations work
+     *  as for those.
+     * </p>
+     * <p>
+     *  The value is stored when a format file is written. Note however that
+     *  this value is overwritten when the format file is read back in.
+     * </p>
+     *
+     * <h4>Examples</h4>
+     *  <pre class="TeXSample">
+     *    \the\year  </pre>
+     * </doc>
+     *
+     * <doc name="time" type="register">
+     * <h3>The Count Parameter <tt>\time</tt></h3>
+     * <p>
+     *  The count parameter <tt>\time</tt> is set automatically at the start
+     *  of a job to the time of the current date. The time is the number of
+     *  minutes since 0:00. Thus you can extract the current hour by dividing
+     *  it by 60 and the current minute by computing the remainder modulo 60.
+     * </p>
+     * <p>
+     *  In the course of processing it can be used as any count register. This
+     *  means that assignments, comparisons, and arithmetical operations work
+     *  as for those.
+     * </p>
+     * <p>
+     *  The value is stored when a format file is written. Note however that
+     *  this value is overwritten when the format file is read back in.
+     * </p>
+     *
+     * <h4>Examples</h4>
+     *  <pre class="TeXSample">
+     *    {\count0=\time
+     *     \divide\count0 60
+     *     \the\count0:<i>% here \count0 contains the hour</i>
+     *     \multiply\count1 -60
+     *     \advance\count0\time
+     *     \the\count0<i>% here \count0 contains the minute</i>
+     *    }<i>%</i>  </pre>
+     * </doc>
+     *
      *
      * @param calendar the time and date when <logo>ExTeX</logo> has been
      *  started
