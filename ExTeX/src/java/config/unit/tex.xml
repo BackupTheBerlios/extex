@@ -21,6 +21,8 @@
   <setup class="de.dante.extex.interpreter.unit.tex.Setup"/>
 
   <primitives>
+    <define name="error.max"
+            class="de.dante.extex.interpreter.primitives.register.count.MaxRegister">100</define>
     <define name="register.max"
             class="de.dante.extex.interpreter.primitives.register.count.MaxRegister">255</define>
 
