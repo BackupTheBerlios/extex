@@ -60,10 +60,6 @@
     -->
   <Interpreter class="de.dante.extex.interpreter.max.Moritz">
 
-    <!-- The maximum number of errors before an abort is forced.
-      -->
-    <maxErrors>100</maxErrors>
-
     <!-- Tokens to be inserted at every job.
       -->
     <everyjob></everyjob>
