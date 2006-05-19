@@ -49,7 +49,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.69 $
+ * @version $Revision: 1.70 $
  */
 public interface Context
         extends
@@ -93,7 +93,41 @@ public interface Context
 
     /**
      * Return the current escape character or <code>\0<code> if it is undefined.
+     * The escape character is retrieved from the count register
+     * <tt>\escapechar</tt>.
      * This is a convenience method.
+     *
+     *
+     * <doc name="escapechar" type="register">
+     * <h3>The Count Parameter <tt>\escapechar</tt></h3>
+     * <p>
+     *  The count register <tt>\escapechar</tt> contains code point of the
+     *  escape character. This character is used whenever an control sequence
+     *  is about to be printed and it has to be prefixed by the escape character.
+     * </p>
+     * <p>
+     *  If the value is less than zero then the escape character is assumed to
+     *  be undefined. In this case the control sequence is not prefixed by any
+     *  character. 
+     * </p>
+     * <p>
+     *  Note that the escape character does not need to be in sync with the
+     *  definition of the category codes. In fact they are independent. Usually
+     *  they should coincide, but some interesting effects can be achieved with
+     *  controlled disagreement.
+     * </p>
+     *
+     * <h4>Syntax</h4>
+     *  The formal description of this primitive is the following:
+     *  <pre class="syntax">
+     *    &lang;escapechar&rang;
+     *       &rarr; <tt>\escapechar</tt> ...  </pre>
+     *
+     * <h4>Examples</h4>
+     *  <pre class="TeXSample">
+     *    \escapechar=-1  </pre>
+     *
+     * </doc>
      *
      * @return the escape character
      */

@@ -37,14 +37,36 @@ import de.dante.extex.typesetter.Typesetter;
  *  for an associated <tt>\import</tt>. The tokens in the list are either
  *  control sequence tokens or active characters. All other tokens are ignored.
  * </p>
+ * <p>
+ *  The expansion text is empty. The primitive is an assignment. Thus
+ *  <tt>\afterassignment</tt> interacts with the primitive in the expected way.
+ * </p>
+ * <p>
+ *  The definitions are usually performed local to the current group. If the
+ *  prefix <tt>\global</tt> is given or the count register <tt>\globaldefs</tt>
+ *  has a positive value then the definition is made globally.
+ *  Usually you want to define the export as global. This is the case if the
+ *  <tt>\export</tt> primitive is invoked at group level 0. Interesting special
+ *  effects can be achieved when using the export statement in groups and
+ *  together with a local scope definition.
+ * </p>
+ * <p>
+ *  This primitive is one building block for the use of name spaces in
+ *  <logo>ExTeX</logo>. The central primitive for this purpose is
+ *  <tt>\namespace</tt>.
+ * </p>
  *
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;export&rang;
- *      &rarr; <tt>\export</tt> {@linkplain
+ *      &rarr; &lang;prefix&rang; <tt>\export</tt> {@linkplain
  *      de.dante.extex.interpreter.TokenSource#getTokens()
- *      &lang;replacement text&rang;}  </pre>
+ *      &lang;replacement text&rang;}
+ *
+ *    &lang;prefix&rang;
+ *      &rarr;
+ *       |  <tt>\global</tt>  </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
@@ -57,7 +79,7 @@ import de.dante.extex.typesetter.Typesetter;
  * @see de.dante.extex.interpreter.primitives.namespace.Import
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Export extends AbstractAssignment {
 

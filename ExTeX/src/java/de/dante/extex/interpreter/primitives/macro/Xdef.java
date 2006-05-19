@@ -31,6 +31,8 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="xdef">
  * <h3>The Primitive <tt>\xdef</tt></h3>
  * <p>
+ *  This primitive is an abbreviation for <tt>\global</tt><tt>\edef</tt>. Thus
+ *  the description of <tt>\edef</tt> can be consulted for details.
  *  TODO missing documentation
  * </p>
  *
@@ -55,9 +57,9 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
-public class Xdef extends Edef {
+public class Xdef extends Def {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
@@ -85,6 +87,7 @@ public class Xdef extends Edef {
             throws InterpreterException {
 
         prefix.setExpanded();
+        prefix.setGlobal();
         super.assign(prefix, context, source, typesetter);
     }
 

@@ -53,8 +53,29 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * </doc>
  *
+ *
+ * <doc name="showboxbreadth" type="register">
+ * <h3>The Count Parameter <tt>\showboxbreadth</tt></h3>
+ * <p>
+ *  The count register <tt>\showboxbreadth</tt> contains the breadth to which
+ *  the box produced by <tt>\showbox</tt> should be presented.
+ * </p>
+ *
+ * </doc>
+ *
+ *
+ * <doc name="showboxdepth" type="register">
+ * <h3>The Count Parameter <tt>\showboxdepth</tt></h3>
+ * <p>
+ *  The count register <tt>\showboxdepth</tt> contains the depth to which
+ *  the box produced by <tt>\showbox</tt> should be presented.
+ * </p>
+ *
+ * </doc>
+ *
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class Showbox extends AbstractBox implements LogEnabled {
 

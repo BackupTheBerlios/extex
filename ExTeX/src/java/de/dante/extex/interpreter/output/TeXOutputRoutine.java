@@ -45,8 +45,82 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * interface required and forwards the request for processing to the appropriate
  * interpreter.
  *
+ * <doc name="deadcycles" type="register">
+ * <h3>The Count Parameter <tt>\deadcycles</tt></h3>
+ * <p>
+ *  The count register <tt>\deadcycles</tt> contains the number of attempts to
+ *  call the output routine without any material being shipped out. Usually the
+ *  output routine is expected to ship something out. Under some circumstances
+ *  the output is delayed. Thus a large number of dead cycles can indicate a
+ *  problem in the output routine.
+ *  The register <tt>\deadcycles</tt> is compared with the register
+ *  <tt>\deadcycles</tt> to decide when an intervention seem appropriate.
+ * </p>
+ *
+ * <h4>Syntax</h4>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;deadcycles&rang;
+ *       &rarr; <tt>\deadcycles</tt> ...  </pre>
+ *
+ * <h4>Examples</h4>
+ *  <pre class="TeXSample">
+ *    \deadcycles=0  </pre>
+ *
+ * </doc>
+ *
+ *
+ * <doc name="maxdeadcycles" type="register">
+ * <h3>The Count Parameter <tt>\maxdeadcycles</tt></h3>
+ * <p>
+ *  The count register <tt>\maxdeadcycles</tt> contains the maximum number
+ *  of attempts to call the output routine without any material being shipped
+ *  out. The output routine is expected to ship something out.
+ *  Under some circumstances the output is delayed.
+ *  Thus a large number of dead cycles can indicate a problem in the output
+ *  routine.
+ *  The register <tt>\deadcycles</tt> is compared with the register
+ *  <tt>\deadcycles</tt> to decide when an intervention seem appropriate.
+ * </p>
+ *
+ * <h4>Syntax</h4>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;maxdeadcycles&rang;
+ *       &rarr; <tt>\maxdeadcycles</tt> ...  </pre>
+ *
+ * <h4>Examples</h4>
+ *  <pre class="TeXSample">
+ *    \maxdeadcycles=1  </pre>
+ *
+ * </doc>
+ *
+ *
+ * <doc name="output" type="register">
+ * <h3>The Tokens Register <tt>\output</tt></h3>
+ * <p>
+ *  The tokens register <tt>\output</tt> contains the program executed whenever
+ *  a page is completed.
+ *  TODO gene: missing documentation
+ * </p>
+ *
+ * <h4>Syntax</h4>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;output&rang;
+ *       &rarr; <tt>\output</tt> {@linkplain
+ *    de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+ *    &lang;equals&rang;} &lang;tokens&rang;  </pre>
+ *
+ * <h4>Examples</h4>
+ *  <pre class="TeXSample">
+ *    \output={}  </pre>
+ *
+ * </doc>
+ *
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class TeXOutputRoutine implements OutputRoutine {
 

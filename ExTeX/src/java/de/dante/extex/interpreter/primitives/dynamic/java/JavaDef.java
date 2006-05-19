@@ -60,7 +60,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </p>
  * <p>
  * The <i>&lang;tokens&rang;</i> is any specification of a list of
- * tokens like a constant list enclosed in braces or a toks register.
+ * tokens like a constant list enclosed in braces or a tokens register.
  * The value of these tokens are taken and interpreted as the name of
  * a Java class. This class is loaded if needed and instantiated. The
  * instance is bound as code to the <i>&lang;control sequence&rang;</i>.
@@ -131,7 +131,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
 public class JavaDef extends AbstractAssignment implements Definer {
 

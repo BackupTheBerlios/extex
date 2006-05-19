@@ -44,51 +44,103 @@ import de.dante.util.framework.logger.LogEnabled;
  * <doc name="nativedef">
  * <h3>The Primitive <tt>\nativedef</tt></h3>
  * <p>
- * The primitive <tt>\nativedef</tt> assigns a definition to a macro or
- * active character. This is done in a similar way as <tt>\def</tt>
- * works. The difference is that the definition has to be provided in
- * form of a Java class which glues in native code.
+ *  The primitive <tt>\nativedef</tt> assigns a definition to a macro or
+ *  active character. This is done in a similar way as <tt>\def</tt>
+ *  works. The difference is that the definition has to be provided in
+ *  form of a Java class which glues in native code.
  * </p>
  *
  * <h4>Syntax</h4>
  * The general form of this primitive is
  * <pre class="syntax">
  *   &lang;nativedef&rang;
- *       &rarr; <tt>\nativedef</tt> {@linkplain
+ *       &rarr; <tt>\nativedef</tt> &lang;type&rang; {@linkplain
  *       de.dante.extex.interpreter.TokenSource#getControlSequence(Context)
- *       &lang;control sequence&rang;} <i>&lang;name&rang;</i> </pre>
+ *       &lang;control sequence&rang;} &lang;name&rang;  </pre>
  * <p>
- * The <i>&lang;control sequence&rang;</i> is any macro or active
- * character. If this token is missing or of the wrong type then an
- * error is raised.
+ *  The <tt>&lang;type&rang;</tt> is any specification of a list of
+ *  tokens like a constant list enclosed in braces or a token register.
+ *  The value of these tokens are taken and resolved via the configuration.
+ *  This appropriate class is loaded if needed and instantiated. The
+ *  instance is bound as code to the <i>&lang;control sequence&rang;</i>.
  * </p>
  * <p>
- * The <i>&lang;name&rang;</i> is any specification of a list of
- * tokens like a constant list enclosed in braces or a token register.
- * The value of these tokens are taken and resolved via the configuration.
- * This appropriate class is loaded if needed and instantiated. The
- * instance is bound as code to the <i>&lang;control sequence&rang;</i>.
+ *  The <tt>&lang;control sequence&rang;</tt> is any macro or active
+ *  character. If this token is missing or of the wrong type then an
+ *  error is raised.
  * </p>
  * <p>
- * The primitive <tt>\nativedef</tt> is local to the enclosing group as
- * is <tt>\def</tt>. And similar to <tt>\def</tt> the modifier
- * <tt>\global</tt> can be used to make the definition in all groups
- * instead of the current group only.
+ *  The <tt>&lang;name&rang;</tt> is any specification of a list of
+ *  tokens like a constant list enclosed in braces or a token register.
+ *  The value of these tokens are passed to the binding class to specify the
+ *  target. For instance the Java binding requires this to be name of the
+ *  Java class implementing the functionality.
  * </p>
  * <p>
- * The primitive <tt>\nativedef</tt> also respects the count register
- * <tt>\globaldefs</tt> to enable general global assignment.
+ *  The primitive <tt>\nativedef</tt> is local to the enclosing group as
+ *  is <tt>\def</tt>. And similar to <tt>\def</tt> the modifier
+ *  <tt>\global</tt> can be used to make the definition in all groups
+ *  instead of the current group only.
  * </p>
  * <p>
- * Since the primitive is classified as assignment the value of
- * <tt>\afterassignment</tt> is applied.
+ *  The primitive <tt>\nativedef</tt> also respects the count register
+ *  <tt>\globaldefs</tt> to enable general global assignment.
+ * </p>
+ * <p>
+ *  Since the primitive is classified as assignment the value of
+ *  <tt>\afterassignment</tt> is applied.
+ * </p>
+ *
+ * <h4>Examples</h4>
+ *  <pre class="TeXSample">
+ *    \nativedef{java}\x{my.primitive.MyPrimitive}  </pre>
+ * <p>
+ *  This example shows how the control sequence <tt>\x</tt> is bound to the
+ *  Java class <tt>my.primitive.MyPrimitive</tt>. This definition is local to
+ *  the current group.
+ * </p>
+ *  <pre class="TeXSample">
+ *    \global\nativedef{java}\x{my.primitive.MyPrimitive}  </pre>
+ * <p>
+ *  This example shows how the control sequence <tt>\x</tt> is bound to the
+ *  Java class <tt>my.primitive.MyPrimitive</tt>. This definition is performed
+ *  globally.
+ * </p>
+ *
+ * <h4>Configuration</h4>
+ * <p>
+ *  The supported types are determined in the configuration of the unit which
+ *  defines the primitive. Here a
+ *  mapping is specified assigning a binding class for each supported type.
+ *  Thus it is possible to configure in the support for several extension types.
+ *  Currently a binding for Java is provided. In the future other languages can
+ *  be added easily.
+ * </p>
+ *
+ * <pre>
+ *  &lt;define name="nativedef"
+ *          class="de.dante.extex.interpreter.primitives.dynamic.NativeDef"&gt;
+ *    &lt;load name="java"
+ *          class="de.dante.extex.interpreter.primitives.dynamic.java.JavaDef"/&gt;
+ *  &lt;/define&gt;
+ * </pre>
+ *
+ * <p>
+ *  The body of the define tag for the primitive may contain an arbitrary number
+ *  of load sections. Each load has the attribute name and class. The attribute
+ *  name determines the type. This corresponds to the type given in the first
+ *  argument of the primitive invocation.
+ * </p>
+ * <p>
+ *  The class attribute names the class which provides the binding to the
+ *  target programming language.
  * </p>
  *
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class NativeDef extends AbstractAssignment
         implements
@@ -101,7 +153,7 @@ public class NativeDef extends AbstractAssignment
      * inheritance in Java.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.9 $
+     * @version $Revision: 1.10 $
      */
     protected class Factory extends AbstractFactory {
 

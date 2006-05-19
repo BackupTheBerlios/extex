@@ -41,12 +41,12 @@ import de.dante.extex.typesetter.Typesetter;
  *  larger extensions of <logo>ExTeX</logo> in one junk. There is no need to
  *  declare each single macro with <tt>\javadef</tt>.
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The general form of this primitive is
  * <pre class="syntax">
  *   &lang;javaload&rang;
- *       &rarr; <tt>\javaload</tt> &lang;tokens&rang; </pre>
- * </p>
+ *       &rarr; <tt>\javaload</tt> &lang;tokens&rang;  </pre>
  * <p>
  *  The <i>&lang;tokens&rang;</i> is any specification of a list of
  *  tokens like a constant list enclosed in braces or a toks register.
@@ -56,8 +56,10 @@ import de.dante.extex.typesetter.Typesetter;
  *  {@link de.dante.extex.interpreter.primitives.dynamic.java.Loadable#init(
  *    de.dante.extex.interpreter.context.Context,
  *    de.dante.extex.typesetter.Typesetter) init()}
- *  is invoked. The instantiation requires the empty contructor to be visible.
+ *  is invoked. The instantiation requires the empty constructor to be visible.
  * </p>
+ *
+ * <h4>Examples</h4>
  * <p>
  *  The following example illustrates the use of this primitive:
  * <pre class="TeXSample">
@@ -92,7 +94,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class JavaLoad extends AbstractCode implements Loader {
 
@@ -161,6 +163,9 @@ public class JavaLoad extends AbstractCode implements Loader {
                     classname);
         } catch (InterpreterException e) {
             throw e;
+        } catch (ClassCastException e) {
+            throw new HelpingException(getLocalizer(), "ClassCast", classname,
+                    getName());
         } catch (Exception e) {
             throw new InterpreterException(e);
         }

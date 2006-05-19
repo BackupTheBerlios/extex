@@ -2,7 +2,7 @@
  <head>
   <title>ExTeX Primitives: pdfTeX</title>
   <meta name="copyright" content="
-   Copyright (C) 2005 The ExTeX Group and individual authors listed below
+   Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
 
    This library is free software; you can redistribute it and/or modify it
    under the terms of the GNU Lesser General Public License as published by
@@ -19,12 +19,60 @@
    Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
    " />
   <meta name="author" content="Gerd Neugebauer" />
-  <meta name="version" content="$Revision: 1.1 $" />
+  <meta name="version" content="$Revision: 1.2 $" />
  </head>
  <body>
   This package contains primitives for <logo>ExTeX</logo>'s
   <logo>pdfTeX</logo> mode.
 
+ <doc name="pdftexversion" type="register">
+ <h3>The Count Parameter <tt>\pdftexversion</tt></h3>
+ <p>
+  The count register <tt>\pdftexversion</tt> contains the version
+  number of <logo>pdfTeX</logo> as an integer. The number is multiplied
+  by 100 to show the fractional part. For instance the value 123 signals
+  the version number 1.23 of <logo>pdfTeX</logo>.
+ </p>
+ <p>
+  The version number is a preassigned count register and can be used
+  as such. Thus assignments and arithmetic can be performed on it.
+ </p>
+
+ <h4>Syntax</h4>
+  The formal description of this primitive is the following:
+  <pre class="syntax">
+    &lang;pdftexversion&rang;
+       &rarr; <tt>\pdftexversion</tt> ...  </pre>
+
+ <h4>Examples</h4>
+  <pre class="TeXSample">
+    \the\pdftexversion  </pre>
+
+ </doc>
+
+ <doc name="pdftexrevision" type="register">
+ <h3>The Tokens Parameter <tt>\pdftexrevision</tt></h3>
+ <p>
+  The tokens register <tt>\pdftexrevision</tt> contains the revision
+  of <logo>pdfTeX</logo> in use. Usually this is something like a
+  letter.
+ </p>
+ <p>
+  The revision number is a preassigned tokens register and can be used
+  as such. Thus assignments can be performed on it.
+ </p>
+
+ <h4>Syntax</h4>
+  The formal description of this primitive is the following:
+  <pre class="syntax">
+    &lang;pdftexrevision&rang;
+       &rarr; <tt>\pdftexrevision</tt> ...  </pre>
+
+ <h4>Examples</h4>
+  <pre class="TeXSample">
+    \the\pdftexrevision  </pre>
+
+ </doc>
 
  </body>
 </html>

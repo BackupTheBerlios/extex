@@ -41,8 +41,8 @@ import de.dante.extex.typesetter.type.noad.UnderlinedNoad;
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    &lang;span&rang;
- *       &rarr; <tt>&#x5c;underline</tt> ...  </pre>
+ *    &lang;underline&rang;
+ *       &rarr; <tt>&#x5c;underline</tt> &lang;math group&rang;  </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
@@ -50,8 +50,9 @@ import de.dante.extex.typesetter.type.noad.UnderlinedNoad;
  *
  * </doc>
  *
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class Underline extends AbstractMathCode {
 
