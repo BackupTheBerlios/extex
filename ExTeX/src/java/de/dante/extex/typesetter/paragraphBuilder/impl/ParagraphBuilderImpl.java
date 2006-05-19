@@ -59,26 +59,28 @@ import de.dante.util.framework.logger.LogEnabled;
 /**
  * This class provides a paragraph builder.
  *
- * TODO gene: documentation incomplete.
- *
  * <doc name="emergencystretch" type="register">
  * <h3>The Parameter <tt>\emergencystretch</tt></h3>
  *
+ * TODO gene: missing documentation
  * </doc>
  *
  * <doc name="exhyphenpenalty" type="register">
  * <h3>The Parameter <tt>\exhyphenpenalty</tt></h3>
  *
+ * TODO gene: missing documentation
  * </doc>
  *
  * <doc name="hangafter" type="register">
  * <h3>The Parameter <tt>\hangafter</tt></h3>
  *
+ * TODO gene: missing documentation
  * </doc>
  *
  * <doc name="hangindent" type="register">
  * <h3>The Parameter <tt>\hangindent</tt></h3>
  *
+ * TODO gene: missing documentation
  * </doc>
  *
  * <doc name="hsize" type="register">
@@ -91,6 +93,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * <doc name="hyphenpenalty" type="register">
  * <h3>The Parameter <tt>\hyphenpenalty</tt></h3>
  *
+ * TODO gene: missing documentation
  * </doc>
  *
  * <doc name="leftskip" type="register">
@@ -122,6 +125,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * <doc name="pretolerance" type="register">
  * <h3>The Parameter <tt>\pretolerance</tt></h3>
  *
+ * TODO gene: missing documentation
  * </doc>
  *
  * <doc name="rightskip" type="register">
@@ -140,11 +144,13 @@ import de.dante.util.framework.logger.LogEnabled;
  * <doc name="tolerance" type="register">
  * <h3>The Parameter <tt>\tolerance</tt></h3>
  *
+ * TODO gene: missing documentation
  * </doc>
  *
  * <doc name="tracingparagraphs" type="register">
  * <h3>The Parameter <tt>\tracingparagraphs</tt></h3>
  *
+ * TODO gene: missing documentation
  * </doc>
  *
  *
@@ -153,7 +159,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * Treat segments of a paragraph separated by forced breaks separately.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.32 $
+ * @version $Revision: 1.33 $
  */
 public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled {
 

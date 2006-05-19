@@ -37,22 +37,25 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * <doc name="baselineskip" type="register">
  * <h3>The Parameter <tt>\baselineskip</tt></h3>
  *
+ * TODO gene: missing documentation
  * </doc>
  *
  * <doc name="lineskiplimit" type="register">
  * <h3>The Parameter <tt>\lineskiplimit</tt></h3>
  *
+ * TODO gene: missing documentation
  * </doc>
  *
  * <doc name="lineskip" type="register">
  * <h3>The Parameter <tt>\lineskip</tt></h3>
  *
+ * TODO gene: missing documentation
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class VerticalListMaker extends InnerVerticalListMaker {
 

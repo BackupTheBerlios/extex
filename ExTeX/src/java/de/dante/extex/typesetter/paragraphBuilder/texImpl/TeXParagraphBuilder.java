@@ -119,7 +119,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </i>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class TeXParagraphBuilder
         implements
@@ -150,15 +150,16 @@ public class TeXParagraphBuilder
 
     /**
      * <doc name="adjdemerits" type="register">
-     * <h3>The Parameter <tt>\adjdemerits</tt></h3>
+     * <h3>The Count Parameter <tt>\adjdemerits</tt></h3>
      *
+     * TODO gene: missing documentation
      * </doc>
      */
     private long adjDemerits;
 
     /**
      * <doc name="brokenpenalty" type="register">
-     * <h3>The Parameter <tt>\brokenpenalty</tt></h3>
+     * <h3>The Count Parameter <tt>\brokenpenalty</tt></h3>
      *
      * <p>
      *  The parameter <tt>\brokenpenalty</tt> contains the penalty which is
@@ -171,32 +172,36 @@ public class TeXParagraphBuilder
 
     /**
      * <doc name="clubpenalty" type="register">
-     * <h3>The Parameter <tt>\clubpenalty</tt></h3>
+     * <h3>The Count Parameter <tt>\clubpenalty</tt></h3>
      *
+     * TODO gene: missing documentation
      * </doc>
      */
     private long clubPenalty;
 
     /**
      * <doc name="doublehyphendemerits" type="register">
-     * <h3>The Parameter <tt>\doublehyphendemerits</tt></h3>
+     * <h3>The Count Parameter <tt>\doublehyphendemerits</tt></h3>
      *
+     * TODO gene: missing documentation
      * </doc>
      */
     private long doubleHyphenDemerits;
 
     /**
      * <doc name="emergencystretch" type="register">
-     * <h3>The Parameter <tt>\emergencystretch</tt></h3>
+     * <h3>The Count Parameter <tt>\emergencystretch</tt></h3>
      *
+     * TODO gene: missing documentation
      * </doc>
      */
     private FixedDimen emergencyStretch;
 
     /**
      * <doc name="exhyphenpenalty" type="register">
-     * <h3>The Parameter <tt>\exhyphenpenalty</tt></h3>
+     * <h3>The CountParameter <tt>\exhyphenpenalty</tt></h3>
      *
+     * TODO gene: missing documentation
      * </doc>
      */
     private long exHyphenPenalty;
@@ -211,31 +216,34 @@ public class TeXParagraphBuilder
 
     /**
      * <doc name="finalwidowpenalty" type="register">
-     * <h3>The Parameter <tt>\finalwidowpenalty</tt></h3>
+     * <h3>The Count Parameter <tt>\finalwidowpenalty</tt></h3>
      *
+     * TODO gene: missing documentation
      * </doc>
      */
     private long finalWidowPenalty;
 
     /**
      * <doc name="hyphenpenalty" type="register">
-     * <h3>The Parameter <tt>\hyphenpenalty</tt></h3>
+     * <h3>The Count Parameter <tt>\hyphenpenalty</tt></h3>
      *
+     * TODO gene: missing documentation
      * </doc>
      */
     private long hyphenPenalty;
 
     /**
      * <doc name="interlinepenalty" type="register">
-     * <h3>The Parameter <tt>\interlinepenalty</tt></h3>
+     * <h3>The Count Parameter <tt>\interlinepenalty</tt></h3>
      *
+     * TODO gene: missing documentation
      * </doc>
      */
     private long interLinePenalty;
 
     /**
      * <doc name="leftskip" type="register">
-     * <h3>The Parameter <tt>\leftskip</tt></h3>
+     * <h3>The Skip Parameter <tt>\leftskip</tt></h3>
      *
      * <p>
      *  The parameter <tt>\leftskip</tt> contains the glue which is inserted at
@@ -246,54 +254,67 @@ public class TeXParagraphBuilder
      *  the line. Those effects can be achieved in combination with the
      *  parameter <tt>\rightskip</tt>.
      * </p>
+     *
+     * <h4>Examples</h4>
+     *  <pre class="TeXSample">
+     *    \leftskip=0pt plus 2pt minus 2pt  </pre>
+     *
+     *  <pre class="TeXSample">
+     *    \leftskip=1fill  </pre>
      * </doc>
      */
     private FixedGlue leftSkip;
 
     /**
      * <doc name="linepenalty" type="register">
-     * <h3>The Parameter <tt>\linepenalty</tt></h3>
+     * <h3>The Count Parameter <tt>\linepenalty</tt></h3>
      *
+     * TODO gene: missing documentation
      * </doc>
      */
     private long linePenalty;
 
     /**
      * <doc name="looseness" type="register">
-     * <h3>The Parameter <tt>\looseness</tt></h3>
+     * <h3>The Count Parameter <tt>\looseness</tt></h3>
      *
+     * TODO gene: missing documentation
      * </doc>
      */
     private long looseness;
 
     /**
      * <doc name="parfillskip" type="register">
-     * <h3>The Parameter <tt>\parfillskip</tt></h3>
+     * <h3>The Skip Parameter <tt>\parfillskip</tt></h3>
+     * <p>
      *  The parameter <tt>\parfillskip</tt> contains the glue which is added at
      *  the end of each paragraph.
+     * </p>
+     *
+     * <h4>Examples</h4>
+     *  <pre class="TeXSample">
+     *    \parfillskip=.5ex plus 2pt minus 2pt  </pre>
      * </doc>
      */
     private FixedGlue parfillSkip;
 
     /**
      * <doc name="pretolerance" type="register">
-     * <h3>The Parameter <tt>\pretolerance</tt></h3>
+     * <h3>The Count Parameter <tt>\pretolerance</tt></h3>
      *
+     * TODO gene: missing documentation
      * </doc>
      */
     private long preTolerance;
 
     /**
-     * <doc name="prevgraf" type="register">
-     * <h3>The Parameter <tt>\prevgraf</tt></h3>
      *
-     * </doc>
      */
     private int prevGraf;
 
     /**
      * <doc name="rightskip" type="register">
-     * <h3>The Parameter <tt>\rightskip</tt></h3>
+     * <h3>The Skip Parameter <tt>\rightskip</tt></h3>
      * <p>
      *  The parameter <tt>\rightskip</tt> contains the glue which is inserted at
      *  the right side of each line in the paragraph. The default is 0&nbsp;pt.
@@ -303,22 +324,35 @@ public class TeXParagraphBuilder
      *  the line. Those effects can be achieved in combination with the
      *  parameter <tt>\leftskip</tt>.
      * </p>
+     *
+     * <h4>Examples</h4>
+     *  <pre class="TeXSample">
+     *    \rightskip=0pt plus 2pt minus 2pt  </pre>
+     *
+     *  <pre class="TeXSample">
+     *    \rightskip=1fill  </pre>
      * </doc>
      */
     private FixedGlue rightSkip;
 
     /**
      * <doc name="tolerance" type="register">
-     * <h3>The Parameter <tt>\tolerance</tt></h3>
+     * <h3>The CountParameter <tt>\tolerance</tt></h3>
      *
+     * TODO gene: missing documentation
      * </doc>
      */
     private long tolerance;
 
     /**
      * <doc name="tracingparagraphs" type="register">
-     * <h3>The Parameter <tt>\tracingparagraphs</tt></h3>
+     * <h3>The Count Parameter <tt>\tracingparagraphs</tt></h3>
      *
+     * TODO gene: missing documentation
+     *
+     * <h4>Examples</h4>
+     *  <pre class="TeXSample">
+     *    \tracingparagraphs=1  </pre>
      * </doc>
      */
     private boolean tracingParagraphs;
