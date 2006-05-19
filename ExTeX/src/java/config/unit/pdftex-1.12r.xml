@@ -84,8 +84,6 @@
     <define name="pdfpagewidth"
             class="de.dante.extex.interpreter.primitives.register.dimen.DimenParameter"/>
     <define name="pdfpkresolution"
-            class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/><!-- (integer) -->
-    <define name="pdfpkresolution"
             class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
     <define name="pdfrefobj"
             class="de.dante.extex.interpreter.primitives.pdftex.Pdfrefobj"/><!-- <integer> -->
