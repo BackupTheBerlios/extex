@@ -19,6 +19,7 @@
 
 package de.dante.extex.color.model;
 
+import de.dante.extex.color.ColorUtil;
 import de.dante.extex.color.ColorVisitor;
 import de.dante.extex.interpreter.context.Color;
 import de.dante.util.exception.GeneralException;
@@ -28,7 +29,7 @@ import de.dante.util.exception.GeneralException;
  * channel.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class RgbColor implements Color {
 
@@ -146,10 +147,16 @@ public class RgbColor implements Color {
      */
     public String toString() {
 
-        return "RGB<" + Integer.toHexString(red) + " "
-                + Integer.toHexString(green) + " "
-                + Integer.toHexString(blue) + " alpha=" + (float) alpha
-                / Color.MAX_VALUE + " >";
+        StringBuffer sb = new StringBuffer();
+        ColorUtil.formatAlpha(sb, alpha);
+        sb.append("rgb {");
+        ColorUtil.formatComponent(sb, red);
+        sb.append(" ");
+        ColorUtil.formatComponent(sb, green);
+        sb.append(" ");
+        ColorUtil.formatComponent(sb, blue);
+        sb.append("}");
+        return sb.toString();
     }
 
     /**

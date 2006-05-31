@@ -19,6 +19,7 @@
 
 package de.dante.extex.color.model;
 
+import de.dante.extex.color.ColorUtil;
 import de.dante.extex.color.ColorVisitor;
 import de.dante.extex.interpreter.context.Color;
 import de.dante.util.exception.GeneralException;
@@ -28,7 +29,7 @@ import de.dante.util.exception.GeneralException;
  * channel.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class GrayscaleColor implements Color {
 
@@ -110,8 +111,12 @@ public class GrayscaleColor implements Color {
      */
     public String toString() {
 
-        return "GRAY<" + Integer.toHexString(gray) + " alpha=" + (float) alpha
-                / Color.MAX_VALUE + " >";
+        StringBuffer sb = new StringBuffer();
+        ColorUtil.formatAlpha(sb, alpha);
+        sb.append("gray {");
+        ColorUtil.formatComponent(sb, gray);
+        sb.append("}");
+        return sb.toString();
     }
 
     /**

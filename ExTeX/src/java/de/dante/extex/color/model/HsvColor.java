@@ -19,6 +19,7 @@
 
 package de.dante.extex.color.model;
 
+import de.dante.extex.color.ColorUtil;
 import de.dante.extex.color.ColorVisitor;
 import de.dante.extex.interpreter.context.Color;
 import de.dante.util.exception.GeneralException;
@@ -28,7 +29,7 @@ import de.dante.util.exception.GeneralException;
  * channel.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class HsvColor implements Color {
 
@@ -152,10 +153,16 @@ public class HsvColor implements Color {
      */
     public String toString() {
 
-        return "HSV<" + Integer.toHexString(hue) + " "
-                + Integer.toHexString(saturation) + " "
-                + Integer.toHexString(value) + " alpha=" + (float) alpha
-                / Color.MAX_VALUE + " >";
+        StringBuffer sb = new StringBuffer();
+        ColorUtil.formatAlpha(sb, alpha);
+        sb.append("hsv {");
+        ColorUtil.formatComponent(sb, hue);
+        sb.append(" ");
+        ColorUtil.formatComponent(sb, saturation);
+        sb.append(" ");
+        ColorUtil.formatComponent(sb, value);
+        sb.append("}");
+        return sb.toString();
     }
 
     /**

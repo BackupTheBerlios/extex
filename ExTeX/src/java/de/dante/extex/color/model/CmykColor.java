@@ -19,6 +19,7 @@
 
 package de.dante.extex.color.model;
 
+import de.dante.extex.color.ColorUtil;
 import de.dante.extex.color.ColorVisitor;
 import de.dante.extex.interpreter.context.Color;
 import de.dante.util.exception.GeneralException;
@@ -28,7 +29,7 @@ import de.dante.util.exception.GeneralException;
  * channel.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class CmykColor implements Color {
 
@@ -169,11 +170,18 @@ public class CmykColor implements Color {
      */
     public String toString() {
 
-        return "CMYK<" + Integer.toHexString(cyan) + " "
-                + Integer.toHexString(magenta) + " "
-                + Integer.toHexString(yellow) + " "
-                + Integer.toHexString(black) + " alpha=" + (float) alpha
-                / Color.MAX_VALUE + " >";
+        StringBuffer sb = new StringBuffer();
+        ColorUtil.formatAlpha(sb, alpha);
+        sb.append("cmyk {");
+        ColorUtil.formatComponent(sb, cyan);
+        sb.append(" ");
+        ColorUtil.formatComponent(sb, magenta);
+        sb.append(" ");
+        ColorUtil.formatComponent(sb, yellow);
+        sb.append(" ");
+        ColorUtil.formatComponent(sb, black);
+        sb.append("}");
+        return sb.toString();
     }
 
     /**
