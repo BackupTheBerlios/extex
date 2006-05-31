@@ -69,14 +69,14 @@ import de.dante.extex.typesetter.type.NodeList;
  * <doc type="parameter" name="everyvbox">
  * <h3>The Tokens Parameter <tt>\everyvbox</tt></h3>
  * <p>
- *  The tokens parameter is used in <tt>/vbox</tt>. The tokens contained are
+ *  The tokens parameter is used in <tt>\vbox</tt>. The tokens contained are
  *  inserted at the beginning of the vertical material of the vbox.
  * </p>
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class Vbox extends AbstractBoxPrimitive {
 

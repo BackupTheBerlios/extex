@@ -81,7 +81,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Hrule extends AbstractCode implements RuleConvertible {
 
@@ -114,6 +114,8 @@ public class Hrule extends AbstractCode implements RuleConvertible {
      * @param context the interpreter context
      * @param source the token source
      * @param typesetter the typesetter
+     *
+     * @throws InterpreterException in case of an error
      *
      * @see de.dante.extex.interpreter.type.Code#execute(
      *      de.dante.extex.interpreter.Flags,
@@ -160,11 +162,11 @@ public class Hrule extends AbstractCode implements RuleConvertible {
 
         for (;;) {
             if (source.getKeyword(context, "width")) {
-                width.set(context, source, typesetter);
+                width = Dimen.parse(context, source, typesetter);
             } else if (source.getKeyword(context, "height")) {
-                height.set(context, source, typesetter);
+                height = Dimen.parse(context, source, typesetter);
             } else if (source.getKeyword(context, "depth")) {
-                depth.set(context, source, typesetter);
+                depth = Dimen.parse(context, source, typesetter);
             } else {
                 break;
             }
