@@ -66,7 +66,8 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *   &lang;optional <tt>by</tt>&rang;
  *     &rarr; [by]
- *      |  &lang;optional spaces&rang;
+ *      |  {@linkplain de.dante.extex.interpreter.TokenSource#skipSpace()
+*            &lang;optional spaces&rang;}
  *   </pre>
  *
  * <h4>Examples</h4>
@@ -80,7 +81,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * @see de.dante.extex.interpreter.type.arithmetic.Multiplyable
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class Multiply extends AbstractAssignment {
 

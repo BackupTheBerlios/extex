@@ -47,7 +47,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.68 $
+ * @version $Revision: 1.69 $
  */
 public interface TokenSource {
 
@@ -119,10 +119,16 @@ public interface TokenSource {
     /**
      * Parse the specification of a box.
      *
-     * <doc type="syntax" name="box">
+     * <p>
      * This method parses the following syntactic entity:
+     * </p>
+     *
+     * <doc type="syntax" name="box">
+     * <h3>A Box</h3>
+     *
      * <pre class="syntax">
      *   &lang;box&rang; </pre>
+     *
      * </doc>
      *
      * During the parsing the flags should be reset to something uncritical
@@ -151,30 +157,40 @@ public interface TokenSource {
      * </p>
      *
      * <doc type="syntax" name="control sequence">
+     * <h3>A Control Sequence</h3>
+     *
      * <pre class="syntax">
      *   &lang;control sequence&rang; </pre>
      * <p>
      *  A control sequence is either a active character or an escape sequence.
      * </p>
+     *
      * </doc>
      *
      * @param context the interpreter context
      *
      * @return the token read
      *
-     * @throws InterpreterException in case that the token stream is at its end or
-     *   that the token read is not a control sequence token
+     * @throws InterpreterException in case that the token stream is at its end
+     *  or that the token read is not a control sequence token
      */
     CodeToken getControlSequence(Context context) throws InterpreterException;
 
     /**
      * Parse the specification of a font.
      *
-     * <doc type="syntax" name="font">
+     * <p>
      * This method parses the following syntactic entity:
+     * </p>
+     *
+     * <doc type="syntax" name="font">
+     * <h3>A Font</h3>
+     *
      * <pre class="syntax">
      *   &lang;font&rang; </pre>
+     *
      * </doc>
+     *
      *
      * @param context the interpreter context
      * @param primitive the name of the primitive for error messages
@@ -234,14 +250,31 @@ public interface TokenSource {
      * Skip spaces and if the next non-space character is an equal sign skip it
      * as well and all spaces afterwards.
      *
+     * <p>
+     *  This method parses the following syntactic entity:
+     * </p>
+     *
      * <doc type="syntax" name="equals">
-     * This method parses the following syntactic entity:
+     *
+     * <h2>The Optional Equals</h2>
+     *
+     * <p>
+     *  The syntactic entity &lang;equals&rang; skips initial spaces and
+     *  an equals sign of category 12 if one is found. In the latter case the
+     *  following spaces are skipped as well.
+     * </p>
+     *
      * <pre class="syntax">
      *   &lang;equals&rang;
-     *     &rarr; {@linkplain #skipSpace() &lang;optional spaces&rang;}
-     *      |  {@linkplain #skipSpace()
-     *          &lang;optional spaces&rang;} <tt>=</tt><sub>12</sub> </pre>
+     *     &rarr; {@linkplain de.dante.extex.interpreter.TokenSource#skipSpace()
+     *            &lang;optional spaces&rang;}
+     *      |  {@linkplain de.dante.extex.interpreter.TokenSource#skipSpace()
+     *            &lang;optional spaces&rang;} <tt>=</tt><sub>12</sub> {@linkplain
+     *            de.dante.extex.interpreter.TokenSource#skipSpace()
+     *            &lang;optional spaces&rang;} </pre>
+     *
      * </doc>
+     *
      *
      * @param context the interpreter context
      *
@@ -258,15 +291,19 @@ public interface TokenSource {
      * <p>
      *  This method corresponds to the following syntax specification:
      * </p>
+     *
      * <doc type="syntax" name="token">
-     * <p>
-     *  <pre class="syntax">
-     *    &lang;token&rang;  </pre>
-     * </p>
+     * <h3>A Token</h3>
+     *
+     * <pre class="syntax">
+     *   &lang;token&rang;  </pre>
+     *
      * <p>
      *  A single token depends on the category code of the characters.
      * </p>
+     *
      * </doc>
+     *
      *
      * @param context the interpreter context
      *
@@ -284,13 +321,20 @@ public interface TokenSource {
      * next one on the streamStack is used until a token could be read. If all
      * streams are at the end then an exception is thrown.
      *
-     * <doc type="syntax" name="replacement text">
      * <p>
-     *  This method corresponds to the following syntax specification:
+     * This method parses the following syntactic entity:
+     * </p>
+     *
+     * <doc type="syntax" name="replacement text">
+     * <h3>A Replacement Text</h3>
+     *
+     * <p>
+     * </p>
      *  <pre class="syntax">
      *    &lang;replacement text&rang;  </pre>
-     * </p>
+     *
      * </doc>
+     *
      *
      * @param context the interpreter context
      * @param source the source for new tokens
@@ -346,7 +390,13 @@ public interface TokenSource {
      * preceded by optional white space. Alternate representations for an
      * character code exist.
      *
+     * <p>
+     * This method parses the following syntactic entity:
+     * </p>
+     *
      * <doc type="syntax" name="character">
+     * <h3>A Character</h3>
+     *
      * <pre class="syntax">
      *   &lang;character code&rang; </pre>
      * <p>
@@ -355,7 +405,9 @@ public interface TokenSource {
      * <p>
      *  Tokens are expanded while gathering the requested values.
      * </p>
+     *
      * </doc>
+     *
      *
      * @param context the interpreter context
      * @param typesetter the typesetter
@@ -380,7 +432,13 @@ public interface TokenSource {
      * the number. All non-whitespace characters must have the category code
      * OTHER.
      *
-     * <doc type="syntax" name="number">
+     * <p>
+     * This method parses the following syntactic entity:
+     * </p>
+     *
+     * <doc type="syntax" name="integer">
+     * <h3>A Number</h3>
+     *
      * <pre class="syntax">
      *   &lang;number&rang; </pre>
      * <p>
@@ -391,7 +449,9 @@ public interface TokenSource {
      * <p>
      *  Tokens are expanded while gathering the requested values.
      * </p>
+     *
      * </doc>
+     *
      *
      * @param context the interpreter context
      * @param typesetter the typesetter
@@ -439,16 +499,18 @@ public interface TokenSource {
      *  definitions from <logo>TeX</logo>:
      * </p>
      *
-     * <doc type="syntax" name="8-bit number">
+     * <doc type="syntax" name="number">
+     * <h3>A Number</h3>
+     *
      * <pre class="syntax">
-     *   &lang;8-bit number&rang; </pre>
+     *   &lang;number&rang; </pre>
      * <p>
      *  A number consists of a non-empty sequence of digits with category code
      *  {@link de.dante.extex.scanner.type.Catcode#OTHER OTHER}.
-     *  The check for a maximal value of 255 is not performed in
-     *  <logo>ExTeX</logo>.
      * </p>
+     *
      * </doc>
+     *
      *
      * @param context the interpreter context
      * @param token the first token to consider
@@ -467,6 +529,8 @@ public interface TokenSource {
      * Upon EOF <code>null</code> is returned.
      *
      * <doc type="syntax" name="register name">
+     * <h3>A Register Name</h3>
+     *
      * <pre class="syntax">
      *   &lang;register name&rang; </pre>
      * <p>
@@ -477,6 +541,7 @@ public interface TokenSource {
      *  <logo>ExTeX</logo>.
      * </p>
      * </doc>
+     *
      *
      * @param context the interpreter context
      * @param primitive the name of the invoking primitive for error handling
@@ -508,13 +573,20 @@ public interface TokenSource {
      * next one on the streamStack is used until a token could be read. If all
      * stream are at the end then <code>null</code> is returned.
      *
-     * <doc type="syntax" name="general text">
      * <p>
-     *  This method corresponds to the following syntax specification:
+     * This method parses the following syntactic entity:
+     * </p>
+     *
+     * <doc type="syntax" name="general text">
+     * <h3>A General text</h3>
+     *
+     * <p>
      *  <pre class="syntax">
      *    &lang;general text&rang;  </pre>
      * </p>
+     *
      * </doc>
+     *
      *
      * @param context the interpreter context
      * @param primitive the name of the invoking primitive for error handling
@@ -581,9 +653,23 @@ public interface TokenSource {
      *
      * <p>
      *  This method corresponds to the following specification:
-     *  <pre class="syntax">
-     *    &lang;optional spaces&rang;  </pre>
      * </p>
+     *
+     * <doc type="syntax" name="optional spaces">
+     * <h3>Optional Spaces</h3>
+     *
+     * <p>
+     *  This syntactic entity corresponds to an arbitrary number of white-space
+     *  characters. White-space characters include space, ta and newline
+     *  characters.
+     * </p>
+     *
+     * <pre class="syntax">
+     *   &lang;optional spaces&rang;
+     *     &rarr; [ \t\n]*  </pre>
+     *
+     * </doc>
+     *
      */
     void skipSpace();
 
