@@ -28,6 +28,7 @@ import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.GlueComponent;
+import de.dante.extex.interpreter.type.scaled.ScaledNumber;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.scanner.type.token.TokenFactory;
@@ -40,7 +41,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * The actual length is a multiple of math units (mu).
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class Muskip implements Serializable {
 
@@ -75,7 +76,7 @@ public class Muskip implements Serializable {
              }
              */
         }
-        long value = GlueComponent.scanFloat(context, source, t);
+        long value = ScaledNumber.scanFloat(context, source, t);
         if (!source.getKeyword(context, "mu")) {
             throw new HelpingException(//
                     LocalizerFactory.getLocalizer(Muskip.class.getName()),
