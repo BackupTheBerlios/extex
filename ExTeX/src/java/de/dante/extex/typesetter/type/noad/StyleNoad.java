@@ -38,86 +38,40 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </p>
  * <table>
  *  <tr>
- *   <th>Style</th>
- *   <th>No.</th>
- *   <th>Cramped</th>
- *   <th>Sub</th>
- *   <th>Sup</th>
- *   <th>Num</th>
- *   <th>Denom</th>
+ *   <th>Style</th><th>No.</th><th>Cramped</th><th>Sub</th>
+ *   <th>Sup</th><th>Num</th><th>Denom</th>
  *  </tr>
  *  <tr>
  *   <td>display style</td>
- *   <td>0</td>
- *   <td>1</td>
- *   <td>5</td>
- *   <td>4</td>
- *   <td>2</td>
- *   <td>3</td>
+ *   <td>0</td><td>1</td><td>5</td><td>4</td><td>2</td><td>3</td>
  *  </tr>
  *  <tr>
  *   <td>cramped display style</td>
- *   <td>1</td>
- *   <td>1</td>
- *   <td>5</td>
- *   <td>5</td>
- *   <td>3</td>
- *   <td>3</td>
+ *   <td>1</td><td>1</td><td>5</td><td>5</td><td>3</td><td>3</td>
  *  </tr>
  *  <tr>
  *   <td>text style</td>
- *   <td>2</td>
- *   <td>3</td>
- *   <td>5</td>
- *   <td>4</td>
- *   <td>4</td>
- *   <td>5</td>
+ *   <td>2</td><td>3</td><td>5</td><td>4</td><td>4</td><td>5</td>
  *  </tr>
  *  <tr>
  *   <td>cramped text style</td>
- *   <td>3</td>
- *   <td>3</td>
- *   <td>5</td>
- *   <td>5</td>
- *   <td>5</td>
- *   <td>5</td>
+ *   <td>3</td><td>3</td><td>5</td><td>5</td><td>5</td><td>5</td>
  *  </tr>
  *  <tr>
  *   <td>script style</td>
- *   <td>4</td>
- *   <td>5</td>
- *   <td>7</td>
- *   <td>6</td>
- *   <td>6</td>
- *   <td>7</td>
+ *   <td>4</td><td>5</td><td>7</td><td>6</td><td>6</td><td>7</td>
  *  </tr>
  *  <tr>
  *   <td>cramped script style</td>
- *   <td>5</td>
- *   <td>5</td>
- *   <td>7</td>
- *   <td>7</td>
- *   <td>7</td>
- *   <td>7</td>
- *   <td>7</td>
+ *   <td>5</td><td>5</td><td>7</td><td>7</td><td>7</td><td>7</td>
  *  </tr>
  *  <tr>
  *   <td>script script style</td>
- *   <td>6</td>
- *   <td>7</td>
- *   <td>7</td>
- *   <td>6</td>
- *   <td>6</td>
- *   <td>7</td>
+ *   <td>6</td><td>7</td><td>7</td><td>6</td><td>6</td><td>7</td>
  *  </tr>
  *  <tr>
  *   <td>cramped script script style</td>
- *   <td>7</td>
- *   <td>7</td>
- *   <td>7</td>
- *   <td>7</td>
- *   <td>7</td>
- *   <td>7</td>
+ *   <td>7</td><td>7</td><td>7</td><td>7</td><td>7</td><td>7</td>
  *  </tr>
  * </table>
  *
@@ -127,22 +81,34 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * <p>
  *
  *
- * <doc name="displayfont" type="register">
- * <h3>The Font Parameter <tt>\displayfont</tt></h3>
- * <p>
- *  The font parameter <tt>\displayfont</tt> contains ...
- *  TODO gene: documentation missing
- * </p>
- *
- * </doc>
- *
  *
  * <doc name="textfont" type="register">
  * <h3>The Font Parameter <tt>\textfont</tt></h3>
  * <p>
- *  The font parameter <tt>\textfont</tt> contains ...
- *  TODO gene: documentation missing
+ *  The font parameter <tt>\textfont</tt> contains font to be used in math
+ *  mode for text style typesetting.
  * </p>
+ * <p>
+ *  Three families are used for math typesetting. The family 0 contains the
+ *  characters for text. The family 1 contains the characters for the symbols.
+ *  The family 2 contains the extended characters.
+ * </p>
+ *
+ * <h4>Syntax</h4>
+ * The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;textfont&rang;
+ *       &rarr; <tt>\textfont</tt> &lang;register name&rang; {@linkplain
+ *          de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+ *          &lang;equals&rang;} {@linkplain
+ *          de.dante.extex.interpreter.TokenSource#getFont(Context,String)
+ *          &lang;font&rang;}  </pre>
+ * </p>
+ *
+ * <h4>Examples</h4>
+ *  <pre class="TeXSample">
+ *    \font\fnt=cmsy12
+ *    \textfont0 =\fnt </pre>
  *
  * </doc>
  *
@@ -150,9 +116,30 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * <doc name="scriptfont" type="register">
  * <h3>The Font Parameter <tt>\scriptfont</tt></h3>
  * <p>
- *  The font parameter <tt>\scriptfont</tt> contains ...
- *  TODO gene: documentation missing
+ *  The font parameter <tt>\scriptfont</tt> contains font to be used in math
+ *  mode for script style typesetting.
  * </p>
+ * <p>
+ *  Three families are used for math typesetting. The family 0 contains the
+ *  characters for text. The family 1 contains the characters for the symbols.
+ *  The family 2 contains the extended characters.
+ * </p>
+ *
+ * <h4>Syntax</h4>
+ * The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;scriptfont&rang;
+ *       &rarr; <tt>\scriptfont</tt> &lang;register name&rang; {@linkplain
+ *          de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+ *          &lang;equals&rang;} {@linkplain
+ *          de.dante.extex.interpreter.TokenSource#getFont(Context,String)
+ *          &lang;font&rang;}  </pre>
+ * </p>
+ *
+ * <h4>Examples</h4>
+ *  <pre class="TeXSample">
+ *    \font\fnt=cmsy12
+ *    \scriptfont0 =\fnt </pre>
  *
  * </doc>
  *
@@ -160,15 +147,36 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * <doc name="scriptscriptfont" type="register">
  * <h3>The Font Parameter <tt>\scriptscriptfont</tt></h3>
  * <p>
- *  The font parameter <tt>\scriptscriptfont</tt> contains ...
- *  TODO gene: documentation missing
+ *  The font parameter <tt>\scriptscriptfont</tt> contains font to be used in
+ *  math mode for script-script style typesetting.
  * </p>
+ * <p>
+ *  Three families are used for math typesetting. The family 0 contains the
+ *  characters for text. The family 1 contains the characters for the symbols.
+ *  The family 2 contains the extended characters.
+ * </p>
+ *
+ * <h4>Syntax</h4>
+ * The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;scriptscriptfont&rang;
+ *       &rarr; <tt>\scriptscriptfont</tt> &lang;register name&rang; {@linkplain
+ *          de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+ *          &lang;equals&rang;} {@linkplain
+ *          de.dante.extex.interpreter.TokenSource#getFont(Context,String)
+ *          &lang;font&rang;}  </pre>
+ * </p>
+ *
+ * <h4>Examples</h4>
+ *  <pre class="TeXSample">
+ *    \font\fnt=cmsy12
+ *    \scriptscriptfont0 =\fnt </pre>
  *
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public final class StyleNoad implements Noad {
 
@@ -242,6 +250,11 @@ public final class StyleNoad implements Noad {
     public static final StyleNoad TEXTSTYLE = STYLE[2];
 
     /**
+     * The field <tt>fontName</tt> contains the name of the font.
+     */
+    private String fontName;
+
+    /**
      * The field <tt>no</tt> contains the <logo>TeX</logo> encoding of the
      * style.
      */
@@ -280,6 +293,7 @@ public final class StyleNoad implements Noad {
         this.no = no;
         this.style = style;
         this.printName = printName;
+        this.fontName = (style.equals("display") ? "textfont" : style + "font");
     }
 
     /**
@@ -313,7 +327,7 @@ public final class StyleNoad implements Noad {
      */
     public String getFontName() {
 
-        return this.style + "font";
+        return this.fontName;
     }
 
     /**
