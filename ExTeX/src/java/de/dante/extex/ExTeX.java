@@ -82,7 +82,6 @@ import de.dante.util.framework.configuration.exception.ConfigurationClassNotFoun
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 import de.dante.util.framework.configuration.exception.ConfigurationInstantiationException;
 import de.dante.util.framework.configuration.exception.ConfigurationMissingAttributeException;
-import de.dante.util.framework.configuration.exception.ConfigurationMissingException;
 import de.dante.util.framework.configuration.exception.ConfigurationNoSuchMethodException;
 import de.dante.util.framework.configuration.exception.ConfigurationSyntaxException;
 import de.dante.util.framework.i18n.Localizer;
@@ -331,7 +330,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.129 $
+ * @version $Revision: 1.130 $
  */
 public class ExTeX {
 
@@ -1081,6 +1080,9 @@ public class ExTeX {
                 ConfigurationException,
                 FontException {
 
+        if (config == null) {
+            return fontFactory.getInstance();
+        }
         final String attributeName = "name";
         final String attributeSize = "size";
         String defaultFont = config.getAttribute(attributeName);
@@ -1213,11 +1215,7 @@ public class ExTeX {
 
         makePageSize(context);
 
-        Configuration fontConfiguration = config.getConfiguration(TAG_FONT);
-
-        if (fontConfiguration == null) {
-            throw new ConfigurationMissingException(TAG_FONT, config.toString());
-        }
+        Configuration fontConfiguration = config.findConfiguration(TAG_FONT);
         context.set(makeDefaultFont(fontConfiguration, fontFactory), true);
         context.set(context.getLanguage("0"), true);
         if (Boolean.valueOf((String) properties.get(PROP_TRACING_ONLINE))
