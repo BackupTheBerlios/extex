@@ -24,6 +24,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -138,7 +139,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.106 $
+ * @version $Revision: 1.107 $
  */
 public class ContextImpl
         implements
@@ -265,7 +266,7 @@ public class ContextImpl
      * The field <tt>extensionMap</tt> contains the registered extension points
      * for this context.
      */
-    private Map extensionMap = new HashMap();
+    private Map extensionMap = null;
 
     /**
      * The field <tt>fontFactory</tt> contains the font factory to use.
@@ -471,6 +472,13 @@ public class ContextImpl
                 } catch (Exception e) {
                     throw new InterpreterException(e);
                 }
+            }
+        }
+        if (extensionMap != null) {
+            Iterator iterator = extensionMap.keySet().iterator();
+            while (iterator.hasNext()) {
+                ExtensionPoint ep = (ExtensionPoint) iterator.next();
+                ep.endGroup(this);
             }
         }
     }
@@ -698,9 +706,14 @@ public class ContextImpl
     public ExtensionPoint getExtension(final Class c)
             throws InterpreterException {
 
-        ExtensionPoint ep = (ExtensionPoint) extensionMap.get(c);
-        if (ep != null) {
-            return ep;
+        ExtensionPoint ep;
+        if (extensionMap != null) {
+            ep = (ExtensionPoint) extensionMap.get(c);
+            if (ep != null) {
+                return ep;
+            }
+        } else {
+            extensionMap = new HashMap();
         }
 
         if (!c.isAssignableFrom(ExtensionPoint.class)) {
@@ -709,14 +722,14 @@ public class ContextImpl
 
         try {
             ep = (ExtensionPoint) c.newInstance();
-            ep.init();
-            extensionMap.put(c, ep);
         } catch (InstantiationException e) {
             throw new InterpreterExtensionInvalidException(c.getName(), e);
         } catch (IllegalAccessException e) {
             throw new InterpreterExtensionInvalidException(c.getName(), e);
         }
 
+        ep.init(this);
+        extensionMap.put(c, ep);
         return ep;
     }
 
@@ -1092,6 +1105,13 @@ public class ContextImpl
                 } catch (Exception e) {
                     throw new InterpreterException(e);
                 }
+            }
+        }
+        if (extensionMap != null) {
+            Iterator iterator = extensionMap.keySet().iterator();
+            while (iterator.hasNext()) {
+                ExtensionPoint ep = (ExtensionPoint) iterator.next();
+                ep.beginGroup(this);
             }
         }
     }
