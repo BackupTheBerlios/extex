@@ -26,6 +26,7 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
+import de.dante.extex.interpreter.primitives.table.Noalign;
 import de.dante.extex.interpreter.primitives.table.Omit;
 import de.dante.extex.interpreter.primitives.table.util.PreambleItem;
 import de.dante.extex.interpreter.type.Code;
@@ -47,7 +48,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [770]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class HAlignListMaker extends RestrictedHorizontalListMaker
         implements
@@ -57,7 +58,7 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
      * This inner class is a container for the cell information in an alignment.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.19 $
+     * @version $Revision: 1.20 $
      */
     protected class Cell {
 
@@ -269,8 +270,19 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
             throws TypesetterException {
 
         if (col > 0) {
-            boolean noalign = false; //TODO gene: provide noalign?
-            cr(context, source, noalign );
+            boolean noalign = false;
+            try {
+                Token t = source.getToken(context);
+                if (t instanceof CodeToken
+                        && context.getCode((CodeToken) t) instanceof Noalign) {
+                    noalign = true;
+                } else {
+                    source.push(t);
+                }
+            } catch (InterpreterException e) {
+                throw new TypesetterException(e);
+            }
+            cr(context, source, noalign);
         }
     }
 
