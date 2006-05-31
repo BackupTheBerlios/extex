@@ -31,14 +31,69 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="mark">
  * <h3>The Primitive <tt>\mark</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The primitive <tt>\mark</tt> places its argument as a mark node on the
+ *  current node list. The argument is expanded during this operation as in
+ *  <tt>\edef</tt>.
  * </p>
+ * <p>
+ *  The tokens are stored in the current node list. They are not affected by
+ *  grouping in any way.
+ * </p>
+ * <p>
+ *  Suppose we have several pages. Page 1 contains no mark. Page 2 contains the
+ *  marks <tt>a</tt> and <tt>b</tt>. Page 3 does not contain any marks. Page 4
+ *  contains the mark <tt>c</tt> and page 5 does not contain any marks.
+ *  The marks and the expansion text of the primitives <tt>\topmark</tt>,
+ *  <tt>\firstmark</tt>, and <tt>\botmark</tt> are shown in the table below.
+ * </p>
+ * <table>
+ *  <tr>
+ *   <td align="center"></td>
+ *   <td align="center">on page 1</td>
+ *   <td align="center">on page 2</td>
+ *   <td align="center">on page 3</td>
+ *   <td align="center">on page 4</td>
+ *   <td align="center">on page 5</td>
+ *  </tr>
+ *  <tr>
+ *   <td>marks</td>
+ *   <td align="center"></td>
+ *   <td align="center"><tt>\mark{a}</tt><br><tt>\mark{b}</tt></td>
+ *   <td align="center"></td>
+ *   <td align="center"><tt>\mark{c}</tt></td>
+ *   <td align="center"></td>
+ *  </tr>
+ *  <tr>
+ *   <td><tt>\topmark</tt></td>
+ *   <td align="center"></td>
+ *   <td align="center">a</td>
+ *   <td align="center">b</td>
+ *   <td align="center">b</td>
+ *   <td align="center">c</td>
+ *  </tr>
+ *  <tr>
+ *   <td><tt>\firstmark</tt></td>
+ *   <td align="center"></td>
+ *   <td align="center">a</td>
+ *   <td align="center">b</td>
+ *   <td align="center">c</td>
+ *   <td align="center">c</td>
+ *  </tr>
+ *  <tr>
+ *   <td><tt>\botmark</tt></td>
+ *   <td align="center"></td>
+ *   <td align="center">b</td>
+ *   <td align="center">b</td>
+ *   <td align="center">c</td>
+ *   <td align="center">c</td>
+ *  </tr>
+ * </table>
  *
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;mark&rang;
- *      &rarr; <tt>\mark</tt> &lang;tokens&rang;  </pre>
+ *      &rarr; <tt>\mark</tt> &lang;expanded tokens&rang;  </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
@@ -47,7 +102,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class Mark extends Marks {
 

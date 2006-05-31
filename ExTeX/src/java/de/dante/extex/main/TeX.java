@@ -549,19 +549,6 @@ import de.dante.util.resource.ResourceFinder;
  * </p>
  *
  *
- * <a name="configuration"/><h3>Configuration Resources</h3>
- *
- * <p>
- *  The configuration of <logo>ExTeX</logo> is controlled by several
- *  configuration resources. The fallback for those configuration resources are
- *  contained in the <logo>ExTeX</logo> jar file. In this section we will
- *  describe how to overwrite the settings in the default configuration
- *  resource.
- * </p>
- *
- * TODO gene: doc incomplete
- *
- *
  *
  * <a name="invocation"/><h3>Direct Java Invocation</h3>
  *
@@ -595,7 +582,7 @@ import de.dante.util.resource.ResourceFinder;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class TeX extends ExTeX {
 
@@ -1143,9 +1130,9 @@ public class TeX extends ExTeX {
             // ignored on purpose. It will be checked again later
         }
 
-        QueryFileHandler queryFileHandler = getQueryFileHandler();
-        setInputFileName((queryFileHandler != null ? queryFileHandler
-                .query(getLogger()) : null));
+        QueryFileHandler queryHandler = getQueryFileHandler();
+        setInputFileName((queryHandler != null //
+                ? queryHandler.query(getLogger()) : null));
         run2();
     }
 
