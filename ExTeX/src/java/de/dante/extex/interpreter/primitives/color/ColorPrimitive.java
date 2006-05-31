@@ -19,21 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.color;
 
-import de.dante.extex.color.model.ColorFactory;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Color;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.exception.helping.EofException;
-import de.dante.extex.interpreter.exception.helping.HelpingException;
-import de.dante.extex.interpreter.type.AbstractAssignment;
-import de.dante.extex.interpreter.type.color.ColorConvertible;
-import de.dante.extex.interpreter.type.glue.GlueComponent;
-import de.dante.extex.scanner.type.token.LeftBraceToken;
-import de.dante.extex.scanner.type.token.RightBraceToken;
-import de.dante.extex.scanner.type.token.Token;
+import de.dante.extex.interpreter.primitives.color.util.ColorParser;
+import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
@@ -42,14 +36,82 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * <doc name="color">
  * <h3>The Primitive <tt>\color</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  The primitive <tt>\color</tt> sets the current color value to the value
+ *  given. The value can be any color specification for one of the supported
+ *  color models.
+ * </p>
+ * <p>
+ *  The color models of <logo>ExTeX</logo> use components of two bytes. This
+ *  means that values from 0 to 65535 can be stored in each component. The
+ *  external representation is a floating point number in the range from 0.0 to
+ *  1.0.
+ * </p>
+ * <p>
+ *  The color models of <logo>ExTeX</logo> support aa alpha channel.
+ * </p>
+ *
+ * <h4>The RGB Color Model</h4>
+ * <p>
+ *  The RGB color model provides three values for the red, green, and blue
+ *  channel. Each is given as floating point number from 0.0 to 1.0.
+ * </p>
+ *
+ * <h4>The CMYK Color Model</h4>
+ * <p>
+ *  The CMYK color model provides four values for cyan, magenta, yellow, and
+ *  black channel. Each is given as floating point number from 0.0 to 1.0.
+ * </p>
+ *
+ * <h4>The Grayscale Model</h4>
+ * <p>
+ *  The gray-scale color model provides one value for the gray channel.
+ *  It is given as floating point number from 0.0 to 1.0.
+ * </p>
+ *
+ * <h4>The HSV Color Model</h4>
+ * <p>
+ *  The HSV color model provides three values for the hue, saturation, and value
+ *  channel. Each is given as floating point number from 0.0 to 1.0.
+ * </p>
+ *
+ * <h4>The Alpha Channel</h4>
+ * <p>
+ *  The alpha channel determines the opactness of the color. A value of 0 means
+ *  that the given color completely overwrites the underlying texture. A value
+ *  of 1.0 is the maximal admissible alpha value. In this case the color is
+ *  in fact invisible. In between the background shines through to the degree
+ *  of the alpha value.
+ * </p>
+ * <p>
+ *  Note that the alpha channel may not be supported by any output device. In
+ *  such a case it is up to the back-end driver to make best use of the alpha
+ *  value or ignore it at all.
  * </p>
  *
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;color&rang;
- *      &rarr; &lang;prefix&rang; <tt>\color</tt> &lang;...&rang;   </pre>
+ *      &rarr; &lang;prefix&rang; <tt>\color</tt> &lang;alpha&rang; &lang;color&rang;
+ *
+ *    &lang;prefix&rang;
+ *      &rarr;
+ *       |  <tt>\global</tt>
+ *
+ *    &lang;alpha&rang;
+ *      &rarr;
+ *       |  <tt>alpha</tt> &lang;number&rang;
+ *
+ *    &lang;color&rang;
+ *      &rarr; <tt>{</tt> &lang;color value&rang; &lang;color value&rang; &lang;color value&rang; <tt>}</tt> 
+ *       |  <tt>rgb</tt> <tt>{</tt> &lang;color value&rang; &lang;color value&rang; &lang;color value&rang; <tt>}</tt> 
+ *       |  <tt>gray</tt> <tt>{</tt> &lang;color value&rang; <tt>}</tt> 
+ *       |  <tt>cmyk</tt> <tt>{</tt> &lang;color value&rang; &lang;color value&rang; &lang;color value&rang; &lang;color value&rang; <tt>}</tt> 
+ *       |  <tt>hsv</tt> <tt>{</tt> &lang;color value&rang; &lang;color value&rang; &lang;color value&rang; <tt>}</tt> 
+ *       |  &lang;color convertible&rang;
+ *
+ *    &lang;color value&rang;
+ *      &rarr; &lang;number&rang;  </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
@@ -64,6 +126,11 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *    \color rgb {\r \b \g}  </pre>
  *  <p>
  *  </p>
+ *  </p>
+ *  <pre class="TeXSample">
+ *    \color rgb {1 .2 .3333}  </pre>
+ *  <p>
+ *  </p>
  *  <pre class="TeXSample">
  *    \color hsv {\h \s \v}  </pre>
  *  <p>
@@ -75,140 +142,14 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
-public class ColorPrimitive extends AbstractAssignment
-        implements
-            ColorConvertible {
-
-    /**
-     * This internal interface is used to describe the parsers for the differnt
-     * color models.
-     *
-     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.13 $
-     */
-    private interface ColorMode {
-
-        /**
-         * Parse a color value.
-         *
-         * @param context the interpreter context
-         * @param source the token source
-         * @param alpha the alpha channel
-         * @param name the name of the primitive
-         *
-         * @return the color found
-         *
-         * @throws InterpreterException in case of an error
-         */
-        Color parse(Context context, TokenSource source, int alpha, String name)
-                throws InterpreterException;
-    }
-
-    /**
-     * The field <tt>RGB_MODE</tt> contains the parser for a rgb color.
-     */
-    private static final ColorMode RGB_MODE = new ColorMode() {
-
-        /**
-         * @see de.dante.extex.interpreter.primitives.color.ColorPrimitive.ColorMode#parse()
-         */
-        public Color parse(final Context context, final TokenSource source,
-                final int alpha, final String name) throws InterpreterException {
-
-            int r = scanColorComponent(context, source, name);
-            int g = scanColorComponent(context, source, name);
-            int b = scanColorComponent(context, source, name);
-            return ColorFactory.getRgb(r, g, b, alpha);
-        }
-
-    };
-
-    /**
-     * The field <tt>HSV_MODE</tt> contains the parser for a hsv color.
-     */
-    private static final ColorMode HSV_MODE = new ColorMode() {
-
-        /**
-         * @see de.dante.extex.interpreter.primitives.color.ColorPrimitive.ColorMode#parse()
-         */
-        public Color parse(final Context context, final TokenSource source,
-                final int alpha, final String name) throws InterpreterException {
-
-            int h = scanColorComponent(context, source, name);
-            int s = scanColorComponent(context, source, name);
-            int v = scanColorComponent(context, source, name);
-            return ColorFactory.getHsv(h, s, v, alpha);
-        }
-
-    };
-
-    /**
-     * The field <tt>GRAY_MODE</tt> contains the parser for a grayscale color.
-     */
-    private static final ColorMode GRAY_MODE = new ColorMode() {
-
-        /**
-         * @see de.dante.extex.interpreter.primitives.color.ColorPrimitive.ColorMode#parse()
-         */
-        public Color parse(final Context context, final TokenSource source,
-                final int alpha, final String name) throws InterpreterException {
-
-            int gray = scanColorComponent(context, source, name);
-            return ColorFactory.getGray(gray, alpha);
-        }
-
-    };
-
-    /**
-     * The field <tt>CMYK_MODE</tt> contains the parser for a cmyk color.
-     */
-    private static final ColorMode CMYK_MODE = new ColorMode() {
-
-        /**
-         * @see de.dante.extex.interpreter.primitives.color.ColorPrimitive.ColorMode#parse()
-         */
-        public Color parse(final Context context, final TokenSource source,
-                final int alpha, final String name) throws InterpreterException {
-
-            int c = scanColorComponent(context, source, name);
-            int m = scanColorComponent(context, source, name);
-            int y = scanColorComponent(context, source, name);
-            int k = scanColorComponent(context, source, name);
-            return ColorFactory.getCmyk(c, m, y, k, alpha);
-        }
-
-    };
+public class ColorPrimitive extends AbstractColor {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
-
-    /**
-     * Scan a color component and translate it into a color value.
-     *
-     * @param context the interpreter context
-     * @param source the token source
-     * @param name the name of the primitive for error messages
-     *
-     * @return the color component in units of Color.MAX_VALUE
-     *
-     * @throws InterpreterException in case of an error
-     */
-    private static int scanColorComponent(final Context context,
-            final TokenSource source, final String name)
-            throws InterpreterException {
-
-        Token t = source.getNonSpace(context);
-        if (t == null) {
-            throw new EofException(name);
-        }
-
-        return (int) (GlueComponent.scanFloat(context, source, t)
-                * Color.MAX_VALUE / GlueComponent.ONE);
-    }
+    protected static final long serialVersionUID = 20060528L;
 
     /**
      * Creates a new object.
@@ -231,13 +172,13 @@ public class ColorPrimitive extends AbstractAssignment
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        Color color = convertColor(context, source, typesetter);
+        Color color = ColorParser.parseColor(context, source, typesetter,
+                getName());
         try {
-            context.set(color, prefix.isGlobal());
+            context.set(color, prefix.clearGlobal());
         } catch (ConfigurationException e) {
             throw new InterpreterException(e);
         }
-        prefix.setGlobal(false);
     }
 
     /**
@@ -249,37 +190,7 @@ public class ColorPrimitive extends AbstractAssignment
     public Color convertColor(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        int alpha = 0;
-        ColorMode mode = RGB_MODE;
-
-        for (;;) {
-            if (source.getKeyword(context, "alpha")) {
-                alpha = scanColorComponent(context, source, getName());
-            } else if (source.getKeyword(context, "rgb")) {
-                mode = RGB_MODE;
-            } else if (source.getKeyword(context, "gray")) {
-                mode = GRAY_MODE;
-            } else if (source.getKeyword(context, "hsv")) {
-                mode = HSV_MODE;
-            } else if (source.getKeyword(context, "cmyk")) {
-                mode = CMYK_MODE;
-            } else {
-                break;
-            }
-        }
-        Token t = source.getNonSpace(context);
-        if (t == null) {
-            throw new EofException(getName());
-        } else if (!(t instanceof LeftBraceToken)) {
-            throw new HelpingException(getLocalizer(), "MissingLeftBrace");
-        }
-
-        Color color = mode.parse(context, source, alpha, getName());
-        t = source.getNonSpace(context);
-        if (!(t instanceof RightBraceToken)) {
-            throw new HelpingException(getLocalizer(), "MissingRightBrace");
-        }
-        return color;
+        return context.getTypesettingContext().getColor();
     }
 
 }
