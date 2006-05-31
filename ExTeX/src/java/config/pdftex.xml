@@ -66,16 +66,6 @@
     -->
   <Interpreter class="de.dante.extex.interpreter.max.Moritz">
 
-    <!-- Tokens to be inserted at every job.
-      -->
-    <everyjob></everyjob>
-
-    <!-- The default font if nothing else is done.
-      -  The attribute "name" can be used to specify the font name. Default: nullfont
-      -  The attribute "size" can be used to specify the size. Default: design size.
-      -->
-    <Font name=""/>
-
     <!-- The configuration for the language manager.
       -->
     <Language src="language/languageTeX.xml" />
