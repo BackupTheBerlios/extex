@@ -32,12 +32,12 @@ import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.DimenConvertible;
+import de.dante.extex.interpreter.type.scaled.ScaledNumber;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.CatcodeException;
 import de.dante.extex.scanner.type.token.CodeToken;
 import de.dante.extex.scanner.type.token.LetterToken;
-import de.dante.extex.scanner.type.token.OtherToken;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.scanner.type.token.TokenFactory;
 import de.dante.extex.typesetter.Typesetter;
@@ -60,7 +60,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.47 $
+ * @version $Revision: 1.48 $
  */
 public class GlueComponent implements Serializable, FixedGlueComponent {
 
@@ -77,15 +77,6 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
     private static final int CM100_PER_IN = 254;
 
     /**
-     * The constant <tt>FLOAT_DIGITS</tt> contains the number of digits to
-     * consider when producing a string representation of this type.
-     *
-     * Attention: Do not change this value unless you have read and understood
-     * <logo>TeX</logo> the program!
-     */
-    private static final int FLOAT_DIGITS = 17;
-
-    /**
      * The constant <tt>MAX_ORDER</tt> contains the maximal allowed order.
      */
     private static final int MAX_ORDER = 4;
@@ -99,22 +90,22 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
     /**
      * The constant <tt>MINUS_ONE_FIL</tt> contains the value of -1 fil.
      */
-    public static final GlueComponent MINUS_ONE_FIL = new GlueComponent(-ONE, 2);
+    public static final FixedGlueComponent MINUS_ONE_FIL = new GlueComponent(-ONE, 2);
 
     /**
      * The constant <tt>ONE_FI</tt> contains the value of 1 fi.
      */
-    public static final GlueComponent ONE_FI = new GlueComponent(ONE, 1);
+    public static final FixedGlueComponent ONE_FI = new GlueComponent(ONE, 1);
 
     /**
      * The constant <tt>ONE_FIL</tt> contains the value of 1 fil.
      */
-    public static final GlueComponent ONE_FIL = new GlueComponent(ONE, 2);
+    public static final FixedGlueComponent ONE_FIL = new GlueComponent(ONE, 2);
 
     /**
      * The constant <tt>ONE_FIL</tt> contains the value of 1 fill.
      */
-    public static final GlueComponent ONE_FILL = new GlueComponent(ONE, 3);
+    public static final FixedGlueComponent ONE_FILL = new GlueComponent(ONE, 3);
 
     /**
      * The field <tt>POINT_PER_100_IN</tt> contains the conversion factor from
@@ -136,7 +127,18 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
      * The constant <tt>ZERO</tt> contains the non-stretchable and
      * non-shrinkable value of 0&nbsp;pt.
      */
-    public static final GlueComponent ZERO = new GlueComponent(0);
+    public static final FixedGlueComponent ZERO = new GlueComponent(0);
+
+    /**
+     * Getter for the localizer.
+     * The localizer is associated with the name of the class GlueComponent.
+     *
+     * @return the localizer
+     */
+    protected static Localizer getMyLocalizer() {
+
+        return LocalizerFactory.getLocalizer(GlueComponent.class.getName());
+    }
 
     /**
      * Creates a new object.
@@ -146,22 +148,223 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
      * @param typesetter the typesetter
      * @param fixed if <code>true</code> then no glue order is allowed
      *
+     * @return a new instance with the value from the input stream
+     *
      * @throws InterpreterException in case of an error
      */
     public static GlueComponent parse(final Context context,
             final TokenSource source, final Typesetter typesetter,
             final boolean fixed) throws InterpreterException {
 
-        GlueComponent gc = new GlueComponent(0);
-        gc.set(context, source, typesetter, fixed);
-        return gc;
+        long value = 0;
+
+        Token t;
+        for (;;) {
+            t = source.getNonSpace(context);
+            if (t == null) {
+                throw new HelpingException(getMyLocalizer(), "TTP.IllegalUnit");
+            } else if (t instanceof CodeToken) {
+                Code code = context.getCode((CodeToken) t);
+                if (code instanceof DimenConvertible) {
+                    value = ((DimenConvertible) code).convertDimen(context,
+                            source, typesetter);
+                    return new GlueComponent(value);
+                } else if (code instanceof ExpandableCode) {
+                    ((ExpandableCode) code).expand(Flags.NONE, context, source,
+                            typesetter);
+                } else {
+                    break;
+                }
+            } else {
+                break;
+            }
+        }
+
+        value = ScaledNumber.scanFloat(context, source, t);
+
+        long mag = 1000;
+        if (source.getKeyword(context, "true")) { // cf. TTP[453], TTP[457]
+            source.push(t);
+            mag = context.getMagnification();
+        }
+
+        t = source.scanNonSpace(context);
+
+        // cf. TTP[458]
+        if (t instanceof CodeToken) {
+            Code code = context.getCode((CodeToken) t);
+            if (code instanceof DimenConvertible) {
+                value = value
+                        * ((DimenConvertible) code).convertDimen(context,
+                                source, typesetter) / ONE;
+                return new GlueComponent(value);
+            }
+        } else if (t instanceof LetterToken) {
+            int c = t.getChar().getCodePoint();
+            t = source.getToken(context);
+            if (t == null) {
+                throw new HelpingException(getMyLocalizer(), "TTP.IllegalUnit");
+            }
+            switch (c) {
+                case 'b':
+                    if (t.equals(Catcode.LETTER, 'p')) {
+                        value = value * POINT_PER_100_IN / BP100_PER_IN;
+                    } else {
+                        break;
+                    }
+                    if (mag != 1000) {
+                        value = value * mag / 1000;
+                    }
+                    source.skipSpace();
+                    return new GlueComponent(value);
+                case 'c':
+                    if (t.equals(Catcode.LETTER, 'm')) {
+                        value = value * POINT_PER_100_IN / CM100_PER_IN;
+                    } else if (t.equals(Catcode.LETTER, 'c')) {
+                        value = value * 14856 / 1157;
+                    } else {
+                        break;
+                    }
+                    if (mag != 1000) {
+                        value = value * mag / 1000;
+                    }
+                    source.skipSpace();
+                    return new GlueComponent(value);
+                case 'd':
+                    if (t.equals(Catcode.LETTER, 'd')) {
+                        value = value * 1238 / 1157;
+                    } else if (t.equals(Catcode.LETTER, 'm')) {
+                        value = value * POINT_PER_100_IN / CM100_PER_IN / 10;
+                    } else {
+                        break;
+                    }
+                    if (mag != 1000) {
+                        value = value * mag / 1000;
+                    }
+                    source.skipSpace();
+                    return new GlueComponent(value);
+                case 'e':
+                    if (t.equals(Catcode.LETTER, 'x')) {
+                        Dimen ex = context.getTypesettingContext().getFont()
+                                .getEm();
+                        value = value * ex.getValue() / ONE;
+                    } else if (t.equals(Catcode.LETTER, 'm')) {
+                        Dimen em = context.getTypesettingContext().getFont()
+                                .getEm();
+                        value = value * em.getValue() / ONE;
+                    } else {
+                        break;
+                    }
+                    if (mag != 1000) {
+                        value = value * mag / 1000;
+                    }
+                    source.skipSpace();
+                    return new GlueComponent(value);
+                case 'f':
+                    if (fixed && t.equals(Catcode.LETTER, 'i')) {
+                        int order = 1;
+                        for (t = source.getToken(context); //
+                        (t != null && (t.equals('l') || t.equals('L'))); //
+                        t = source.getToken(context)) {
+                            order++;
+                        }
+                        source.push(t);
+                        if (order > MAX_ORDER) {
+                            break;
+                        }
+                        source.skipSpace();
+                        return new GlueComponent(value, order);
+                    }
+                    break;
+                case 'i':
+                    if (t.equals(Catcode.LETTER, 'n')) {
+                        value = value * POINT_PER_100_IN / 100;
+                    } else {
+                        break;
+                    }
+                    if (mag != 1000) {
+                        value = value * mag / 1000;
+                    }
+                    source.skipSpace();
+                    return new GlueComponent(value);
+                case 'k':
+                    if (t.equals(Catcode.LETTER, 'm')) {
+                        value = value * POINT_PER_100_IN / CM100_PER_IN
+                                / 100000;
+                    } else {
+                        break;
+                    }
+                    if (mag != 1000) {
+                        value = value * mag / 1000;
+                    }
+                    source.skipSpace();
+                    return new GlueComponent(value);
+                case 'm':
+                    if (t.equals(Catcode.LETTER, 'm')) {
+                        value = value * POINT_PER_100_IN / (CM100_PER_IN * 10);
+                    } else {
+                        break;
+                    }
+                    if (mag != 1000) {
+                        value = value * mag / 1000;
+                    }
+                    source.skipSpace();
+                    return new GlueComponent(value);
+                case 'n':
+                    if (t.equals(Catcode.LETTER, 'd')) {
+                        value = value * 4818 / 635;
+                    } else if (t.equals(Catcode.LETTER, 'c')) {
+                        value = value * 803 / 1270;
+                    } else {
+                        break;
+                    }
+                    if (mag != 1000) {
+                        value = value * mag / 1000;
+                    }
+                    source.skipSpace();
+                    return new GlueComponent(value);
+                case 'p':
+                    if (t.equals(Catcode.LETTER, 't')) {
+                        // nothing to do
+                    } else if (t.equals(Catcode.LETTER, 'c')) {
+                        value = value * PT_PER_PC;
+                    } else {
+                        break;
+                    }
+                    if (mag != 1000) {
+                        value = value * mag / 1000;
+                    }
+                    source.skipSpace();
+                    return new GlueComponent(value);
+                case 's':
+                    if (t.equals(Catcode.LETTER, 'p')) {
+                        value = value / ONE;
+                    } else {
+                        break;
+                    }
+                    if (mag != 1000) {
+                        value = value * mag / 1000;
+                    }
+                    source.skipSpace();
+                    return new GlueComponent(value);
+                default:
+                    break;
+            }
+        }
+
+        source.push(t);
+        // cf. TTP [459]
+        throw new HelpingException(getMyLocalizer(), "TTP.IllegalUnit");
     }
 
     /**
      * Creates a new object from a TokenStream.
+     *
      * @param source the source for new tokens
      * @param context the interpreter context
      * @param typesetter the typesetter
+     *
+     * @return a new instance with the value from the input stream
      *
      * @throws InterpreterException in case of an error
      */
@@ -170,65 +373,6 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
             throws InterpreterException {
 
         return parse(context, source, typesetter, false);
-    }
-
-    /**
-     * Parses a token stream for a float and returns it as fixed point number.
-     *
-     * @param context the interpreter context
-     * @param source the source for new tokens
-     * @param start the initial token to start with
-     *
-     * @return the fixed point representation of the floating number in units
-     * of 2<sup>16</sup>.
-     * @throws InterpreterException in case of an error
-     */
-    public static long scanFloat(final Context context,
-            final TokenSource source, final Token start)
-            throws InterpreterException {
-
-        boolean neg = false;
-        long val = 0;
-        int post = 0;
-        Token t = start;
-
-        while (t != null) {
-            if (t.equals(Catcode.OTHER, '-')) {
-                neg = !neg;
-            } else if (!t.equals(Catcode.OTHER, '+')) {
-                break;
-            }
-            t = source.scanNonSpace(context);
-        }
-        if (t != null && !t.equals(Catcode.OTHER, ".")
-                && !t.equals(Catcode.OTHER, ",")) {
-            val = source.scanNumber(context, t);
-            t = source.getToken(context);
-        }
-        if (t != null
-                && (t.equals(Catcode.OTHER, '.') || t
-                        .equals(Catcode.OTHER, ','))) {
-            // @see "TeX -- The Program [102]"
-            int[] dig = new int[FLOAT_DIGITS];
-            int k = 0;
-            for (t = source.scanToken(context); t instanceof OtherToken
-                    && t.getChar().isDigit(); t = source.scanToken(context)) {
-                if (k < FLOAT_DIGITS) {
-                    dig[k++] = t.getChar().getCodePoint() - '0';
-                }
-            }
-            if (k < FLOAT_DIGITS) {
-                k = FLOAT_DIGITS;
-            }
-            post = 0;
-            while (k-- > 0) {
-                post = (post + dig[k] * (1 << FLOAT_DIGITS)) / 10;
-            }
-            post = (post + 1) / 2;
-        }
-        source.push(t);
-        val = val << 16 | post;
-        return (neg ? -val : val);
     }
 
     /**
@@ -349,17 +493,6 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
     }
 
     /**
-     * Getter for the localizer.
-     * The localizer is associated with the name of the class GlueComponent.
-     *
-     * @return the localizer
-     */
-    protected Localizer getMyLocalizer() {
-
-        return LocalizerFactory.getLocalizer(GlueComponent.class.getName());
-    }
-
-    /**
      * @see de.dante.extex.interpreter.type.glue.FixedGlueComponent#getOrder()
      */
     public int getOrder() {
@@ -441,238 +574,7 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
      */
     public boolean ne(final FixedGlueComponent d) {
 
-        return (d != null && //
-        (value != d.getValue() || order != d.getOrder()));
-    }
-
-    /**
-     * Set the value and order from the data gathered by parsing a token source.
-     *
-     * @param context the interpreter context
-     * @param source the source for next tokens
-     * @param typesetter the typesetter
-     *
-     * @throws InterpreterException in case of an error
-     */
-    public void set(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws InterpreterException {
-
-        set(context, source, typesetter, true);
-    }
-
-    /**
-     * Set the value and order from the data gathered by parsing a token source.
-     *
-     * @param context the interpreter context
-     * @param source the source for next tokens
-     * @param typesetter the typesetter
-     * @param fixed this argument indicates that no fil parts of the object
-     *  should be filled. This means that the component is in fact a fixed
-     *  Dimen value.
-     *
-     * @throws InterpreterException in case of an error
-     */
-    protected void set(final Context context, final TokenSource source,
-            final Typesetter typesetter, final boolean fixed)
-            throws InterpreterException {
-
-        Token t;
-        for (;;) {
-            t = source.getNonSpace(context);
-            if (t == null) {
-                throw new HelpingException(getMyLocalizer(), "TTP.IllegalUnit");
-            } else if (t instanceof CodeToken) {
-                Code code = context.getCode((CodeToken) t);
-                if (code instanceof DimenConvertible) {
-                    value = ((DimenConvertible) code).convertDimen(context,
-                            source, typesetter);
-                    return;
-                } else if (code instanceof ExpandableCode) {
-                    ((ExpandableCode) code).expand(Flags.NONE, context, source,
-                            typesetter);
-                } else {
-                    break;
-                }
-            } else {
-                break;
-            }
-        }
-
-        value = scanFloat(context, source, t);
-
-        long mag = 1000;
-        if (source.getKeyword(context, "true")) { // cf. TTP[453], TTP[457]
-            source.push(t);
-            mag = context.getMagnification();
-        }
-
-        t = source.scanNonSpace(context);
-
-        // cf. TTP[458]
-        if (t instanceof CodeToken) {
-            Code code = context.getCode((CodeToken) t);
-            if (code instanceof DimenConvertible) {
-                value = value
-                        * ((DimenConvertible) code).convertDimen(context,
-                                source, typesetter) / ONE;
-                return;
-            }
-        } else if (t instanceof LetterToken) {
-            int c = t.getChar().getCodePoint();
-            t = source.getToken(context);
-            if (t == null) {
-                throw new HelpingException(getMyLocalizer(), "TTP.IllegalUnit");
-            }
-            switch (c) {
-                case 'b':
-                    if (t.equals(Catcode.LETTER, 'p')) {
-                        value = value * POINT_PER_100_IN / BP100_PER_IN;
-                    } else {
-                        break;
-                    }
-                    if (mag != 1000) {
-                        value = value * mag / 1000;
-                    }
-                    source.skipSpace();
-                    return;
-                case 'c':
-                    if (t.equals(Catcode.LETTER, 'm')) {
-                        value = value * POINT_PER_100_IN / CM100_PER_IN;
-                    } else if (t.equals(Catcode.LETTER, 'c')) {
-                        value = value * 14856 / 1157;
-                    } else {
-                        break;
-                    }
-                    if (mag != 1000) {
-                        value = value * mag / 1000;
-                    }
-                    source.skipSpace();
-                    return;
-                case 'd':
-                    if (t.equals(Catcode.LETTER, 'd')) {
-                        value = value * 1238 / 1157;
-                    } else if (t.equals(Catcode.LETTER, 'm')) {
-                        value = value * POINT_PER_100_IN / CM100_PER_IN / 10;
-                    } else {
-                        break;
-                    }
-                    if (mag != 1000) {
-                        value = value * mag / 1000;
-                    }
-                    source.skipSpace();
-                    return;
-                case 'e':
-                    if (t.equals(Catcode.LETTER, 'x')) {
-                        Dimen ex = context.getTypesettingContext().getFont()
-                                .getEm();
-                        value = value * ex.getValue() / ONE;
-                    } else if (t.equals(Catcode.LETTER, 'm')) {
-                        Dimen em = context.getTypesettingContext().getFont()
-                                .getEm();
-                        value = value * em.getValue() / ONE;
-                    } else {
-                        break;
-                    }
-                    if (mag != 1000) {
-                        value = value * mag / 1000;
-                    }
-                    source.skipSpace();
-                    return;
-                case 'f':
-                    if (fixed && t.equals(Catcode.LETTER, 'i')) {
-                        order = 1;
-                        for (t = source.getToken(context); //
-                        (t != null && (t.equals('l') || t.equals('L'))); //
-                        t = source.getToken(context)) {
-                            order++;
-                        }
-                        source.push(t);
-                        if (order > MAX_ORDER) {
-                            break;
-                        }
-                        source.skipSpace();
-                        return;
-                    }
-                    break;
-                case 'i':
-                    if (t.equals(Catcode.LETTER, 'n')) {
-                        value = value * POINT_PER_100_IN / 100;
-                    } else {
-                        break;
-                    }
-                    if (mag != 1000) {
-                        value = value * mag / 1000;
-                    }
-                    source.skipSpace();
-                    return;
-                case 'k':
-                    if (t.equals(Catcode.LETTER, 'm')) {
-                        value = value * POINT_PER_100_IN / CM100_PER_IN
-                                / 100000;
-                    } else {
-                        break;
-                    }
-                    if (mag != 1000) {
-                        value = value * mag / 1000;
-                    }
-                    source.skipSpace();
-                    return;
-                case 'm':
-                    if (t.equals(Catcode.LETTER, 'm')) {
-                        value = value * POINT_PER_100_IN / (CM100_PER_IN * 10);
-                    } else {
-                        break;
-                    }
-                    if (mag != 1000) {
-                        value = value * mag / 1000;
-                    }
-                    source.skipSpace();
-                    return;
-                case 'n':
-                    if (t.equals(Catcode.LETTER, 'd')) {
-                        value = value * 4818 / 635;
-                    } else if (t.equals(Catcode.LETTER, 'c')) {
-                        value = value * 803 / 1270;
-                    } else {
-                        break;
-                    }
-                    if (mag != 1000) {
-                        value = value * mag / 1000;
-                    }
-                    source.skipSpace();
-                    return;
-                case 'p':
-                    if (t.equals(Catcode.LETTER, 't')) {
-                        // nothing to do
-                    } else if (t.equals(Catcode.LETTER, 'c')) {
-                        value = value * PT_PER_PC;
-                    } else {
-                        break;
-                    }
-                    if (mag != 1000) {
-                        value = value * mag / 1000;
-                    }
-                    source.skipSpace();
-                    return;
-                case 's':
-                    if (t.equals(Catcode.LETTER, 'p')) {
-                        value = value / ONE;
-                    } else {
-                        break;
-                    }
-                    if (mag != 1000) {
-                        value = value * mag / 1000;
-                    }
-                    source.skipSpace();
-                    return;
-                default:
-                    break;
-            }
-        }
-
-        source.push(t);
-        // cf. TTP [459]
-        throw new HelpingException(getMyLocalizer(), "TTP.IllegalUnit");
+        return (d != null && (value != d.getValue() || order != d.getOrder()));
     }
 
     /**
@@ -920,9 +822,10 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
                     Namespace.DEFAULT_NAMESPACE));
             toks.add(factory.createToken(Catcode.LETTER, 'i',
                     Namespace.DEFAULT_NAMESPACE));
+            Token l = factory.createToken(Catcode.LETTER, 'l',
+                    Namespace.DEFAULT_NAMESPACE);
             for (int i = order; i > 0; i--) {
-                toks.add(factory.createToken(Catcode.LETTER, 'l',
-                        Namespace.DEFAULT_NAMESPACE));
+                toks.add(l);
             }
         } else {
             throw new ImpossibleException("illegal order "
