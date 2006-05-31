@@ -34,7 +34,7 @@ import de.dante.util.exception.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class BasicColorConverter implements ColorConverter {
 
@@ -110,7 +110,7 @@ public class BasicColorConverter implements ColorConverter {
 
     /**
      * The field <tt>GRAY_CONVERTER</tt> contains the converter for colors to
-     * the grayscale model.
+     * the gray-scale model.
      */
     private static final ColorVisitor GRAY_CONVERTER = new ColorVisitor() {
 
@@ -301,7 +301,7 @@ public class BasicColorConverter implements ColorConverter {
     }
 
     /**
-     * Convert an arbitrary color to the RGB model.
+     * Convert an arbitrary color to the gray-scale model.
      * If an conversion is not supported then <code>null</code> is returned.
      *
      * @param color the color to convert
