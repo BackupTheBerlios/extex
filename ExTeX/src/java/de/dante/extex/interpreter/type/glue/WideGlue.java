@@ -32,7 +32,7 @@ import de.dante.extex.interpreter.type.dimen.ImmutableDimen;
  * order should determine the value.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class WideGlue {
 
@@ -57,7 +57,7 @@ public class WideGlue {
     private long[] stretch = new long[SIZE];
 
     /**
-     * The field <tt>unit</tt> contains the printable representation for the
+     * The field <tt>UNIT</tt> contains the printable representation for the
      * unit of the orders.
      */
     private static final String[] UNIT = {"sp", "fi", "fil", "fill", "filll",
@@ -73,9 +73,9 @@ public class WideGlue {
     }
 
     /**
-     * Add some more dimen to the natural length.
+     * Add some length to the natural length.
      *
-     * @param dimen the dimen to add
+     * @param dimen the length to add
      */
     public void add(final FixedDimen dimen) {
 
@@ -113,9 +113,9 @@ public class WideGlue {
     }
 
     /**
-     * Add some more dimen to the stretch.
+     * Add some length to the stretch.
      *
-     * @param s the dimen to add
+     * @param s the length to add
      */
     public void addStretch(final FixedDimen s) {
 
@@ -171,7 +171,7 @@ public class WideGlue {
      *
      * @return the stretch component
      */
-    public GlueComponent getStretch() {
+    public FixedGlueComponent getStretch() {
 
         for (int i = SIZE - 1; i >= 0; i--) {
             if (stretch[i] != 0) {
@@ -246,9 +246,9 @@ public class WideGlue {
     }
 
     /**
-     * Subtract some more dimen to this one.
+     * Subtract some length from this one.
      *
-     * @param dimen the dimen to add
+     * @param dimen the length to subtract
      */
     public void subtract(final FixedDimen dimen) {
 
