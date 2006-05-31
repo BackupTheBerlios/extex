@@ -29,7 +29,7 @@ import de.dante.util.exception.GeneralException;
  * channel.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public interface Color extends Serializable {
 
@@ -68,5 +68,12 @@ public interface Color extends Serializable {
      * @throws GeneralException in case of an error
      */
     Object visit(ColorVisitor visitor, Object value) throws GeneralException;
+
+    /**
+     * Provide the string representation for the color.
+     *
+     * @return the string representation
+     */
+    String toString();
 
 }
