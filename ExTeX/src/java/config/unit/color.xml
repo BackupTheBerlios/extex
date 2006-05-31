@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--
-  -  Copyright (C) 2005 The ExTeX Group
+  -  Copyright (C) 2005-2006 The ExTeX Group
   -
   -  This library is free software; you can redistribute it and/or modify it
   -  under the terms of the GNU Lesser General Public License as published by
@@ -21,6 +21,8 @@
   <primitives>
     <define name="color"
             class="de.dante.extex.interpreter.primitives.color.ColorPrimitive"/>
+    <define name="colordef"
+            class="de.dante.extex.interpreter.primitives.color.Colordef"/>
   </primitives>
  </unit>
  
