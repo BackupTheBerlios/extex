@@ -91,11 +91,11 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  *
- * To protect the buildin registers one might consider to use the key
+ * To protect the built-in registers one might consider to use the key
  * "#<i>name</i>" or "skip#<i>name</i>".
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class Skipdef extends AbstractSkip {
 
@@ -128,8 +128,7 @@ public class Skipdef extends AbstractSkip {
         CodeToken cs = source.getControlSequence(context);
         source.getOptionalEquals(context);
         String key = getKey(context, source);
-        context.setCode(cs, new SkipParameter(key), prefix.isGlobal());
-        prefix.clearGlobal();
+        context.setCode(cs, new SkipParameter(key), prefix.clearGlobal());
     }
 
 }

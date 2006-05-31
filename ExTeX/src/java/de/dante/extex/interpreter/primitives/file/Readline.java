@@ -66,7 +66,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Readline extends AbstractAssignment implements LogEnabled {
 
@@ -163,8 +163,7 @@ public class Readline extends AbstractAssignment implements LogEnabled {
         }
 
         context.setCode(cs, new MacroCode(cs.getName(), prefix,
-                MacroPattern.EMPTY, toks), prefix.isGlobal());
-        prefix.clearGlobal();
+                MacroPattern.EMPTY, toks), prefix.clearGlobal());
     }
 
     /**

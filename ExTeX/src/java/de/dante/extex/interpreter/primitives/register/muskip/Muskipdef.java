@@ -95,7 +95,7 @@ import de.dante.extex.typesetter.Typesetter;
  * "#<i>name</i>" or "muskip#<i>name</i>".
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class Muskipdef extends AbstractMuskip {
 
@@ -128,8 +128,7 @@ public class Muskipdef extends AbstractMuskip {
         CodeToken cs = source.getControlSequence(context);
         source.getOptionalEquals(context);
         String key = getKey(source, context);
-        context.setCode(cs, new MuskipParameter(key), prefix.isGlobal());
-        prefix.clearGlobal();
+        context.setCode(cs, new MuskipParameter(key), prefix.clearGlobal());
     }
 
 }

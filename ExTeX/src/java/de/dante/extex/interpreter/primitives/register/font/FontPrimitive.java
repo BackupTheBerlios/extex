@@ -135,7 +135,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.39 $
+ * @version $Revision: 1.40 $
  */
 public class FontPrimitive extends AbstractAssignment
         implements
@@ -240,8 +240,7 @@ public class FontPrimitive extends AbstractAssignment
         }
 
         Code code = new FontCode(fontId.getName(), font);
-        context.setCode(fontId, code, prefix.isGlobal());
-        prefix.clearGlobal();
+        context.setCode(fontId, code, prefix.clearGlobal());
     }
 
     /**

@@ -71,7 +71,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.36 $
+ * @version $Revision: 1.37 $
  */
 public class Write extends AbstractCode
         implements
@@ -157,12 +157,11 @@ public class Write extends AbstractCode
         String key = AbstractFileCode.scanOutFileKey(context, source,
                 typesetter);
 
-        if (prefix.isImmediate()) {
+        if (prefix.clearImmediate()) {
 
             Tokens toks = source.scanUnprotectedTokens(context, false, false,
                     getName());
             write(key, toks, context);
-            prefix.clearImmediate();
 
         } else {
 

@@ -111,7 +111,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public class CatcodePrimitive extends AbstractAssignment
         implements
@@ -151,8 +151,7 @@ public class CatcodePrimitive extends AbstractAssignment
 
         try {
             context.setCatcode(charCode, Catcode.toCatcode((int) ccNumber),
-                    prefix.isGlobal());
-            prefix.clearGlobal();
+                    prefix.clearGlobal());
         } catch (CatcodeException e) {
             throw new InvalidCodeException(Long.toString(ccNumber), //
                     Integer.toString(Catcode.getCatcodeMax()));

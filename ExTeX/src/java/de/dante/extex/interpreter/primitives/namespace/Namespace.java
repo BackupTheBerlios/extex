@@ -56,7 +56,7 @@ import de.dante.extex.typesetter.Typesetter;
  * @see de.dante.extex.interpreter.primitives.namespace.Import
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Namespace extends AbstractAssignment
         implements
@@ -90,8 +90,7 @@ public class Namespace extends AbstractAssignment
             throws InterpreterException {
 
         Tokens toks = source.getTokens(context, source, typesetter);
-        context.setNamespace(toks.toText(), prefix.isGlobal());
-        prefix.clearGlobal();
+        context.setNamespace(toks.toText(), prefix.clearGlobal());
     }
 
     /**

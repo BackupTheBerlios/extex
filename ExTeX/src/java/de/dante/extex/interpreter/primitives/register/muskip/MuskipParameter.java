@@ -47,7 +47,7 @@ import de.dante.util.exception.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class MuskipParameter extends AbstractAssignment
         implements
@@ -86,8 +86,7 @@ public class MuskipParameter extends AbstractAssignment
         source.getKeyword(context, "by");
         Muskip ms = new Muskip(context, source, typesetter);
         ms.add(context.getMuskip(key));
-        context.setMuskip(key, ms, prefix.isGlobal());
-        prefix.clearGlobal();
+        context.setMuskip(key, ms, prefix.clearGlobal());
     }
 
     /**
@@ -104,8 +103,7 @@ public class MuskipParameter extends AbstractAssignment
         String key = getKey(context, source);
         source.getOptionalEquals(context);
         Muskip skip = new Muskip(context, source, typesetter);
-        context.setMuskip(key, skip, prefix.isGlobal());
-        prefix.clearGlobal();
+        context.setMuskip(key, skip, prefix.clearGlobal());
     }
 
     /**
@@ -130,8 +128,7 @@ public class MuskipParameter extends AbstractAssignment
 
         Muskip ms = new Muskip(context.getMuskip(key));
         ms.multiply(1, value);
-        context.setMuskip(key, ms, prefix.isGlobal());
-        prefix.clearGlobal();
+        context.setMuskip(key, ms, prefix.clearGlobal());
     }
 
     /**
@@ -170,8 +167,7 @@ public class MuskipParameter extends AbstractAssignment
 
         Muskip ms = new Muskip(context.getMuskip(key));
         ms.multiply(value, 1);
-        context.setMuskip(key, ms, prefix.isGlobal());
-        prefix.clearGlobal();
+        context.setMuskip(key, ms, prefix.clearGlobal());
     }
 
     /**

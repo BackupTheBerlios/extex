@@ -70,13 +70,13 @@ package de.dante.extex.interpreter;
  *   <td><b>protected</b></td>
  *   <td><tt>\protected</tt></td>
  *   <td>The protected flag controls the expansion of the macro when the
- *    arguments for <tt>\edef</tt> and friends i expanded.
+ *    argument for <tt>\edef</tt> and friends is expanded.
  *   </td>
  *  </tr>
  * </table>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public interface Flags {
 
@@ -93,33 +93,45 @@ public interface Flags {
 
     /**
      * Setter for the expanded flag.
+     *
+     * @return the old value of the expanded flag
      */
-    void clearExpanded();
+    boolean clearExpanded();
 
     /**
      * Setter for the global flag.
+     *
+     * @return the old value of the global flag
      */
-    void clearGlobal();
+    boolean clearGlobal();
 
     /**
      * Setter for the immediate flag.
+     *
+     * @return the old value of the immediate flag
      */
-    void clearImmediate();
+    boolean clearImmediate();
 
     /**
      * Setter for the long flag.
+     *
+     * @return the old value of the long flag
      */
-    void clearLong();
+    boolean clearLong();
 
     /**
      * Setter for the outer flag.
+     *
+     * @return the old value of the outer flag
      */
-    void clearOuter();
+    boolean clearOuter();
 
     /**
      * Setter for the protected flag.
+     *
+     * @return the old value of the proteced flag
      */
-    void clearProtected();
+    boolean clearProtected();
 
     /**
      * Clone an instance.

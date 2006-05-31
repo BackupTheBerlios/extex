@@ -81,7 +81,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public class DimenPrimitive extends AbstractDimen
         implements
@@ -124,8 +124,7 @@ public class DimenPrimitive extends AbstractDimen
 
         Dimen d = Dimen.parse(context, source, typesetter);
         d.add(context.getDimen(key));
-        context.setDimen(key, d, prefix.isGlobal());
-        prefix.clearGlobal();
+        context.setDimen(key, d, prefix.clearGlobal());
     }
 
     /**
@@ -143,8 +142,7 @@ public class DimenPrimitive extends AbstractDimen
         source.getOptionalEquals(context);
 
         Dimen dimen = Dimen.parse(context, source, typesetter);
-        context.setDimen(key, dimen, prefix.isGlobal());
-        prefix.clearGlobal();
+        context.setDimen(key, dimen, prefix.clearGlobal());
     }
 
     /**
@@ -192,8 +190,7 @@ public class DimenPrimitive extends AbstractDimen
         }
 
         Dimen d = new Dimen(context.getDimen(key).getValue() / value);
-        context.setDimen(key, d, prefix.isGlobal());
-        prefix.clearGlobal();
+        context.setDimen(key, d, prefix.clearGlobal());
     }
 
     /**
@@ -232,8 +229,7 @@ public class DimenPrimitive extends AbstractDimen
         source.getKeyword(context, "by");
         long value = Count.scanCount(context, source, null);
         Dimen d = new Dimen(context.getDimen(key).getValue() * value);
-        context.setDimen(key, d, prefix.isGlobal());
-        prefix.clearGlobal();
+        context.setDimen(key, d, prefix.clearGlobal());
     }
 
     /**

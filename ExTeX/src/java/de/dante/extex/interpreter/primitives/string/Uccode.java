@@ -60,7 +60,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public class Uccode extends AbstractAssignment
         implements
@@ -101,8 +101,7 @@ public class Uccode extends AbstractAssignment
         try {
             UnicodeChar lcCode = source.scanCharacterCode(context, typesetter,
                     getName());
-            context.setUccode(ucCode, lcCode, prefix.isGlobal());
-            prefix.clearGlobal();
+            context.setUccode(ucCode, lcCode, prefix.clearGlobal());
         } catch (InvalidCharacterException e) {
             throw new InvalidCodeException(e.getChar(), Integer
                     .toString(UCharacter.MAX_VALUE));

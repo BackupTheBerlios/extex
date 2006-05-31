@@ -52,7 +52,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class NullfontPrimitive extends AbstractCode implements FontConvertible {
 
@@ -89,8 +89,7 @@ public class NullfontPrimitive extends AbstractCode implements FontConvertible {
             throws InterpreterException {
 
         try {
-            context.set(nullFont, prefix.isGlobal());
-            prefix.clearGlobal();
+            context.set(nullFont, prefix.clearGlobal());
         } catch (ConfigurationException e) {
             throw new InterpreterException(e);
         }

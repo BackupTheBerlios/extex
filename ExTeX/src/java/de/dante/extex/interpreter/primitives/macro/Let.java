@@ -77,7 +77,7 @@ import de.dante.util.exception.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.36 $
+ * @version $Revision: 1.37 $
  */
 public class Let extends AbstractAssignment {
 
@@ -391,8 +391,7 @@ public class Let extends AbstractAssignment {
         } catch (Exception e) {
             throw new InterpreterException(e);
         }
-        context.setCode(cs, code, prefix.isGlobal());
-        prefix.clearGlobal();
+        context.setCode(cs, code, prefix.clearGlobal());
     }
 
 }

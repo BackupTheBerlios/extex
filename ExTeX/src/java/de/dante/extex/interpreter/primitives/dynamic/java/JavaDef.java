@@ -131,7 +131,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.30 $
+ * @version $Revision: 1.31 $
  */
 public class JavaDef extends AbstractAssignment implements Definer {
 
@@ -214,8 +214,7 @@ public class JavaDef extends AbstractAssignment implements Definer {
             throw new HelpingException(getLocalizer(), "ClassNotFound",
                     classname);
         }
-        context.setCode(cs, code, prefix.isGlobal());
-        prefix.setGlobal(false);
+        context.setCode(cs, code, prefix.clearGlobal());
     }
 
 }

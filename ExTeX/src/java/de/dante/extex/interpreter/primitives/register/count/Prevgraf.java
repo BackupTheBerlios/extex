@@ -50,7 +50,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Prevgraf extends CountPrimitive {
 
@@ -74,7 +74,8 @@ public class Prevgraf extends CountPrimitive {
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */
-    protected String getKey(final Context context, final TokenSource source, Typesetter typesetter) {
+    protected String getKey(final Context context, final TokenSource source,
+            final Typesetter typesetter) {
 
         return getName();
     }
@@ -100,8 +101,7 @@ public class Prevgraf extends CountPrimitive {
             throw new HelpingException(getLocalizer(), "TTP.BadPrevGraf",
                     printableControlSequence(context), Long.toString(value));
         }
-        context.setCount(key, value, prefix.isGlobal());
-        prefix.clearGlobal();
+        context.setCount(key, value, prefix.clearGlobal());
     }
 
     /**
@@ -123,8 +123,7 @@ public class Prevgraf extends CountPrimitive {
             throw new HelpingException(getLocalizer(), "TTP.BadPrevGraf",
                     printableControlSequence(context), Long.toString(value));
         }
-        context.setCount(key, value, prefix.isGlobal());
-        prefix.clearGlobal();
+        context.setCount(key, value, prefix.clearGlobal());
     }
 
     /**
@@ -153,8 +152,7 @@ public class Prevgraf extends CountPrimitive {
             throw new HelpingException(getLocalizer(), "TTP.BadPrevGraf",
                     printableControlSequence(context), Long.toString(value));
         }
-        context.setCount(key, value, prefix.isGlobal());
-        prefix.clearGlobal();
+        context.setCount(key, value, prefix.clearGlobal());
     }
 
     /**
@@ -177,8 +175,7 @@ public class Prevgraf extends CountPrimitive {
             throw new HelpingException(getLocalizer(), "TTP.BadPrevGraf",
                     printableControlSequence(context), Long.toString(value));
         }
-        context.setCount(key, value, prefix.isGlobal());
-        prefix.clearGlobal();
+        context.setCount(key, value, prefix.clearGlobal());
     }
 
 }

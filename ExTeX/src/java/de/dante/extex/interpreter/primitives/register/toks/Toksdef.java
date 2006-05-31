@@ -95,7 +95,7 @@ import de.dante.extex.typesetter.Typesetter;
  * "#<i>name</i>" or "toks#<i>name</i>".
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class Toksdef extends AbstractToks {
 
@@ -128,8 +128,7 @@ public class Toksdef extends AbstractToks {
         CodeToken cs = source.getControlSequence(context);
         source.getOptionalEquals(context);
         String key = getKey(source, context);
-        context.setCode(cs, new ToksParameter(key), prefix.isGlobal());
-        prefix.clearGlobal();
+        context.setCode(cs, new ToksParameter(key), prefix.clearGlobal());
     }
 
 }

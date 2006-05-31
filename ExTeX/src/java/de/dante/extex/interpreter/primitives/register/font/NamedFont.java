@@ -34,7 +34,7 @@ import de.dante.extex.typesetter.Typesetter;
  * context.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class NamedFont extends AbstractAssignment implements FontConvertible {
 
@@ -68,8 +68,7 @@ public class NamedFont extends AbstractAssignment implements FontConvertible {
         source.getOptionalEquals(context);
 
         Font font = source.getFont(context, getName());
-        context.setFont(key, font, prefix.isGlobal());
-        prefix.clearGlobal();
+        context.setFont(key, font, prefix.clearGlobal());
     }
 
     /**

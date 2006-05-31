@@ -69,7 +69,7 @@ import de.dante.util.exception.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class SkipPrimitive extends AbstractSkip
         implements
@@ -109,8 +109,7 @@ public class SkipPrimitive extends AbstractSkip
         source.getKeyword(context, "by");
         Glue g = Glue.parse(source, context, typesetter);
         g.add(context.getGlue(key));
-        context.setGlue(key, g, prefix.isGlobal());
-        prefix.clearGlobal();
+        context.setGlue(key, g, prefix.clearGlobal());
     }
 
     /**
@@ -127,8 +126,7 @@ public class SkipPrimitive extends AbstractSkip
         String key = getKey(context, source);
         source.getOptionalEquals(context);
         Glue g = Glue.parse(source, context, typesetter);
-        context.setGlue(key, g, prefix.isGlobal());
-        prefix.clearGlobal();
+        context.setGlue(key, g, prefix.clearGlobal());
     }
 
     /**
@@ -166,8 +164,7 @@ public class SkipPrimitive extends AbstractSkip
 
         Glue g = new Glue(context.getGlue(key));
         g.multiplyAll(1, value);
-        context.setGlue(key, g, prefix.isGlobal());
-        prefix.clearGlobal();
+        context.setGlue(key, g, prefix.clearGlobal());
     }
 
     /**
@@ -187,8 +184,7 @@ public class SkipPrimitive extends AbstractSkip
 
         Glue g = new Glue(context.getGlue(key));
         g.multiplyAll(value, 1);
-        context.setGlue(key, g, prefix.isGlobal());
-        prefix.clearGlobal();
+        context.setGlue(key, g, prefix.clearGlobal());
     }
 
     /**

@@ -50,7 +50,7 @@ import de.dante.util.UnicodeChar;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class Mathcode extends AbstractAssignment {
 
@@ -84,8 +84,7 @@ public class Mathcode extends AbstractAssignment {
                 getName());
         source.getOptionalEquals(context);
         Count mathCode = new Count(source.scanNumber(context));
-        context.setMathcode(charCode, mathCode, prefix.isGlobal());
-        prefix.clearGlobal();
+        context.setMathcode(charCode, mathCode, prefix.clearGlobal());
     }
 
 }

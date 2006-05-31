@@ -51,7 +51,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class Mathchardef extends AbstractAssignment {
 
@@ -85,8 +85,7 @@ public class Mathchardef extends AbstractAssignment {
         source.getOptionalEquals(context);
         Count mathchar = Count.parse(context, source, typesetter);
         context.setCode(cs, new MathcharCode(cs.toString(), mathchar), prefix
-                .isGlobal());
-        prefix.clearGlobal();
+                .clearGlobal());
     }
 
 }

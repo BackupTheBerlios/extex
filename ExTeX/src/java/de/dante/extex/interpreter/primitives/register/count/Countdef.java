@@ -96,7 +96,7 @@ import de.dante.extex.typesetter.Typesetter;
  * "#<i>name</i>" or "count#<i>name</i>".
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class Countdef extends AbstractCount {
 
@@ -129,8 +129,7 @@ public class Countdef extends AbstractCount {
         CodeToken cs = source.getControlSequence(context);
         source.getOptionalEquals(context);
         String key = getKey(context, source, typesetter);
-        context.setCode(cs, new IntegerParameter(key), prefix.isGlobal());
-        prefix.clearGlobal();
+        context.setCode(cs, new IntegerParameter(key), prefix.clearGlobal());
     }
 
 }

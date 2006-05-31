@@ -57,7 +57,7 @@ import de.dante.util.UnicodeChar;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Sfcode extends AbstractAssignment
         implements
@@ -108,8 +108,7 @@ public class Sfcode extends AbstractAssignment
                     Integer.toString(MAX_SF_CODE));
         }
 
-        context.setSfcode(charCode, sfCode, prefix.isGlobal());
-        prefix.clearGlobal();
+        context.setSfcode(charCode, sfCode, prefix.clearGlobal());
     }
 
     /**

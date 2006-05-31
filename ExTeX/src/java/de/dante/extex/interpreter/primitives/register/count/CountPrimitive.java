@@ -71,7 +71,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
 public class CountPrimitive extends AbstractCount
         implements
@@ -114,8 +114,7 @@ public class CountPrimitive extends AbstractCount
         long value = Count.scanCount(context, source, typesetter);
         value += context.getCount(key).getValue();
 
-        context.setCount(key, value, prefix.isGlobal());
-        prefix.clearGlobal();
+        context.setCount(key, value, prefix.clearGlobal());
     }
 
     /**
@@ -133,8 +132,7 @@ public class CountPrimitive extends AbstractCount
         source.getOptionalEquals(context);
 
         long value = Count.scanCount(context, source, typesetter);
-        context.setCount(key, value, prefix.isGlobal());
-        prefix.clearGlobal();
+        context.setCount(key, value, prefix.clearGlobal());
     }
 
     /**
@@ -187,8 +185,7 @@ public class CountPrimitive extends AbstractCount
         }
 
         value = context.getCount(key).getValue() / value;
-        context.setCount(key, value, prefix.isGlobal());
-        prefix.clearGlobal();
+        context.setCount(key, value, prefix.clearGlobal());
     }
 
     /**
@@ -207,8 +204,7 @@ public class CountPrimitive extends AbstractCount
 
         long value = Count.scanCount(context, source, typesetter);
         value *= context.getCount(key).getValue();
-        context.setCount(key, value, prefix.isGlobal());
-        prefix.clearGlobal();
+        context.setCount(key, value, prefix.clearGlobal());
     }
 
     /**
