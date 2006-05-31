@@ -27,7 +27,7 @@ import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.Code;
-import de.dante.extex.interpreter.type.glue.GlueComponent;
+import de.dante.extex.interpreter.type.scaled.ScaledNumber;
 import de.dante.extex.scanner.type.token.CodeToken;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.util.framework.i18n.LocalizerFactory;
@@ -37,7 +37,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * math unints (mu).
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Mudimen implements Serializable {
 
@@ -75,7 +75,7 @@ public class Mudimen implements Serializable {
                         source, null);
             }
         }
-        long value = GlueComponent.scanFloat(context, source, t);
+        long value = ScaledNumber.scanFloat(context, source, t);
         if (!source.getKeyword(context, "mu")) {
             throw new HelpingException(//
                     LocalizerFactory.getLocalizer(Mudimen.class.getName()),
