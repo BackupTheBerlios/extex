@@ -25,7 +25,7 @@ import junit.framework.TestCase;
  * Test cases for the flags implementation.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class FlagsImplTest extends TestCase {
 
@@ -38,7 +38,7 @@ public class FlagsImplTest extends TestCase {
         junit.textui.TestRunner.run(FlagsImplTest.class);
     }
 
-    /*
+    /**
      */
     public void testClear() {
 
@@ -58,7 +58,7 @@ public class FlagsImplTest extends TestCase {
         assertFalse(f.isProtected());
     }
 
-    /*
+    /**
      */
     public void testIsExpanded1() {
 
@@ -66,7 +66,7 @@ public class FlagsImplTest extends TestCase {
         assertFalse(f.isExpanded());
     }
 
-    /*
+    /**
      */
     public void testIsGlobal() {
 
@@ -74,7 +74,7 @@ public class FlagsImplTest extends TestCase {
         assertFalse(f.isGlobal());
     }
 
-    /*
+    /**
      */
     public void testIsImmediate() {
 
@@ -82,7 +82,7 @@ public class FlagsImplTest extends TestCase {
         assertFalse(f.isImmediate());
     }
 
-    /*
+    /**
      */
     public void testIsLong() {
 
@@ -90,7 +90,7 @@ public class FlagsImplTest extends TestCase {
         assertFalse(f.isLong());
     }
 
-    /*
+    /**
      */
     public void testIsOuter() {
 
@@ -98,7 +98,7 @@ public class FlagsImplTest extends TestCase {
         assertFalse(f.isOuter());
     }
 
-    /*
+    /**
      */
     public void testIsProtected() {
 
@@ -106,7 +106,7 @@ public class FlagsImplTest extends TestCase {
         assertFalse(f.isProtected());
     }
 
-    /*
+    /**
      */
     public void testSetExpanded() {
 
@@ -115,7 +115,7 @@ public class FlagsImplTest extends TestCase {
         assertTrue(f.isExpanded());
     }
 
-    /*
+    /**
      */
     public void testSetGlobal() {
 
@@ -129,7 +129,7 @@ public class FlagsImplTest extends TestCase {
         assertFalse(f.isProtected());
     }
 
-    /*
+    /**
      */
     public void testSetGlobalBoolean1() {
 
@@ -143,7 +143,7 @@ public class FlagsImplTest extends TestCase {
         assertFalse(f.isProtected());
     }
 
-    /*
+    /**
      */
     public void testSetGlobalBoolean2() {
 
@@ -157,7 +157,7 @@ public class FlagsImplTest extends TestCase {
         assertFalse(f.isProtected());
     }
 
-    /*
+    /**
      */
     public void testSetImmediate() {
 
@@ -171,7 +171,7 @@ public class FlagsImplTest extends TestCase {
         assertFalse(f.isProtected());
     }
 
-    /*
+    /**
      */
     public void testSetLong() {
 
@@ -185,7 +185,7 @@ public class FlagsImplTest extends TestCase {
         assertFalse(f.isProtected());
     }
 
-    /*
+    /**
      */
     public void testSetOuter() {
 
@@ -199,7 +199,7 @@ public class FlagsImplTest extends TestCase {
         assertFalse(f.isProtected());
     }
 
-    /*
+    /**
      */
     public void testSetProtected() {
 
