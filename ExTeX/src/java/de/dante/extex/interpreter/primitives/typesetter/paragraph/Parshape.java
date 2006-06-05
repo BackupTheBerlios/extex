@@ -54,7 +54,7 @@ import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
  *  specification is repeated.
  * </p>
  * <p>
- *  If several <tt>\parshape</tt> declarations are given in one oaragraph then
+ *  If several <tt>\parshape</tt> declarations are given in one paragraph then
  *  the one is used which is in effect at the end of the paragraph. This means
  *  that later declarations overrule earlier ones.
  * </p>
@@ -88,7 +88,7 @@ import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class Parshape extends AbstractCode implements CountConvertible, Theable {
 
