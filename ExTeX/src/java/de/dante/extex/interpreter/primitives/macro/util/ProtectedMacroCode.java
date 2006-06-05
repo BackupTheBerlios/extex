@@ -17,7 +17,7 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.macro;
+package de.dante.extex.interpreter.primitives.macro.util;
 
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.type.ProtectedCode;
@@ -28,7 +28,7 @@ import de.dante.extex.interpreter.type.tokens.Tokens;
  * implements the marker interface ProtectedCode.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
 public class ProtectedMacroCode extends MacroCode implements ProtectedCode {
 

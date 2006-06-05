@@ -17,7 +17,7 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.macro;
+package de.dante.extex.interpreter.primitives.macro.util;
 
 import de.dante.extex.interpreter.type.tokens.Tokens;
 
@@ -25,7 +25,7 @@ import de.dante.extex.interpreter.type.tokens.Tokens;
  * This class provides a container for the pattern of a macro.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.1 $
  */
 public class MacroPattern extends Tokens {
 

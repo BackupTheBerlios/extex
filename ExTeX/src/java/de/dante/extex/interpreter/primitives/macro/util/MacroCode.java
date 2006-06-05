@@ -17,7 +17,7 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.macro;
+package de.dante.extex.interpreter.primitives.macro.util;
 
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
@@ -57,7 +57,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.31 $
+ * @version $Revision: 1.1 $
  */
 public class MacroCode extends AbstractCode
         implements
