@@ -42,15 +42,16 @@ import de.dante.util.exception.GeneralException;
  * <doc name="wd">
  * <h3>The Primitive <tt>\wd</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The primitive <tt>\wd</tt> refers to the width of a box register.
+ *  It can be used in various contexts.
  * </p>
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;wd&rang;
  *      &rarr; <tt>\wd</tt> {@linkplain
- *        de.dante.extex.interpreter.TokenSource#scanRegisterName(Context,String)
- *        &lang;register name&rang;} {@linkplain
+ *        de.dante.extex.interpreter.primitives.register.box.AbstractBox#getKey(Context,Source,String)
+ *        &lang;box register name&rang;} {@linkplain
  *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
  *        &lang;equals&rang;} {@linkplain
  *        de.dante.extex.interpreter.type.dimen#Dimen(Context,TokenSource)
@@ -70,7 +71,7 @@ import de.dante.util.exception.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
 public class Wd extends Setbox
         implements

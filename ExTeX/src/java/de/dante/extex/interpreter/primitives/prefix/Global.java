@@ -45,11 +45,16 @@ import de.dante.extex.typesetter.Typesetter;
  *  which the global modifier is applicable then a warning might be raised.
  * </p>
  * <p>
- *  The formal description of this primitive is the following:
- *  <pre class="syntax">
- *    &lang;global&rang;
- *      &rarr; <tt>\global</tt>  </pre>
+ *  Multiple <tt>\global</tt> prefixes act identical to a single one.
  * </p>
+ *
+ * <h4>Syntax</h4>
+ * <p>
+ *  The formal description of this primitive is the following:
+ * </p>
+ * <pre class="syntax">
+ *   &lang;global&rang;
+ *     &rarr; <tt>\global</tt>  </pre>
  *
  * <h4>Examples</h4>
  * <p>
@@ -78,7 +83,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class Global extends AbstractCode implements PrefixCode {
 

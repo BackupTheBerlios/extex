@@ -75,11 +75,15 @@ import de.dante.util.framework.logger.LogEnabled;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;font&rang;
- *      &rarr; <tt>\font</tt> {@linkplain
+ *      &rarr; &lang;prefix&rang; <tt>\font</tt> {@linkplain
  *       de.dante.extex.interpreter.TokenSource#getControlSequence(Context)
  *       &lang;control sequence&rang;} {@linkplain
  *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
  *        &lang;equals&rang;} &lang;font name&rang; &lang;options&rang;
+ *
+ *    &lang;prefix&rang;
+ *      &rarr;
+ *       |  <tt>\global</tt>
  *
  *    &lang;options&rang;
  *      &rarr; &lang;option&rang;
@@ -135,7 +139,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.40 $
+ * @version $Revision: 1.41 $
  */
 public class FontPrimitive extends AbstractAssignment
         implements

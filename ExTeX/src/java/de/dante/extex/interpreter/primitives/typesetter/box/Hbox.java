@@ -38,7 +38,7 @@ import de.dante.extex.typesetter.Typesetter;
  * <p>
  *  The primitive <tt>\hbox</tt> takes arguments enclosed in braces and
  *  typesets this contents in horizontal mode. If a width is given then
- *  the hbox is soread to this width. Otherwise the hbox has the natural width
+ *  the hbox is spread to this width. Otherwise the hbox has the natural width
  *  of its contents.
  * </p>
  * <p>
@@ -50,12 +50,12 @@ import de.dante.extex.typesetter.Typesetter;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;hbox&rang;
- *    &rarr; <tt>\hbox</tt> &lang;box specification&rang; <tt>{</tt> &lang;horizontal material&rang; <tt>}</tt>
+ *      &rarr; <tt>\hbox</tt> &lang;box specification&rang; <tt>{</tt> &lang;horizontal material&rang; <tt>}</tt>
  *
  *    &lang;box specification&rang;
- *        &rarr;
- *         | <tt>to</tt> &lang;rule dimension&rang;
- *         | <tt>spread</tt> &lang;rule dimension&rang;  </pre>
+ *      &rarr;
+ *       |  <tt>to</tt> &lang;rule dimension&rang;
+ *       |  <tt>spread</tt> &lang;rule dimension&rang;  </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
@@ -77,7 +77,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class Hbox extends AbstractBoxPrimitive {
 

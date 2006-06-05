@@ -50,11 +50,50 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *  which is inserted at the end of display math. Those tokens take effect just
  *  before the math mode is ended but after any tokens given explicitly.
  * </p>
+ *
+ * <h4>Syntax</h4>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;everydisplayend&rang;
+ *      &rarr; <tt>\everydisplayend</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+ *        &lang;equals&rang;} {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getTokens(Context,TokenSource,Typesetter)
+ *        &lang;tokens&rang;}  </pre>
+ *
+ * <h4>Examples</h4>
+ *  <pre class="TeXSample">
+ *    \everydisplayend={\,}  </pre>
+ *
+ * </doc>
+ *
+ * <doc name="everydisplay" type="register">
+ * <h3>The Tokens Parameter <tt>\everydisplay</tt></h3>
+ * <p>
+ *  The tokens parameter <tt>\everydisplay</tt> contains a list of tokens which
+ *  is inserted at the beginning of display math. Those tokens take effect after
+ *  the math mode has been entered but before any tokens given explicitly.
+ * </p>
+ *
+ * <h4>Syntax</h4>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;everydisplay&rang;
+ *      &rarr; <tt>\everydisplay</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+ *        &lang;equals&rang;} {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getTokens(Context,TokenSource,Typesetter)
+ *        &lang;tokens&rang;}  </pre>
+ *
+ * <h4>Examples</h4>
+ *  <pre class="TeXSample">
+ *    \everydisplay={\,}  </pre>
+ *
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class DisplaymathListMaker extends MathListMaker implements EqConsumer {
 

@@ -36,16 +36,19 @@ import de.dante.util.framework.logger.LogEnabled;
  * <doc name="showbox">
  * <h3>The Primitive <tt>\showbox</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The primitive <tt>\showbox</tt> produces a listing of the box register
+ *  given as parameter. The listing is restricted in breadth and depth by the
+ *  count registers <tt>\showboxbreadth</tt> and <tt>\showboxdepth</tt>
+ *  respectively.
  * </p>
  *
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;showbox&rang;
- *       &rarr; <tt>\showbox</tt> {@linkplain
- *          de.dante.extex.interpreter.TokenSource#scanNumber(Context)
- *          &lang;8-bit&nbsp;number&rang;} </pre>
+ *      &rarr; <tt>\showbox</tt> {@linkplain
+ *        de.dante.extex.interpreter.primitives.register.box.AbstractBox#getKey(Context,Source,String)
+ *        &lang;box&nbsp;register&nbsp;name&rang;}  </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
@@ -61,6 +64,20 @@ import de.dante.util.framework.logger.LogEnabled;
  *  the box produced by <tt>\showbox</tt> should be presented.
  * </p>
  *
+ * <h4>Syntax</h4>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;showboxbreadth&rang;
+ *      &rarr; <tt>\showboxbreadth</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+ *        &lang;equals&rang;} {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#scanInteger(Context,Typesetter)
+ *        &lang;number&rang;}  </pre>
+ *
+ * <h4>Examples</h4>
+ *  <pre class="TeXSample">
+ *    \showboxbreadth=16  </pre>
+ *
  * </doc>
  *
  *
@@ -71,11 +88,25 @@ import de.dante.util.framework.logger.LogEnabled;
  *  the box produced by <tt>\showbox</tt> should be presented.
  * </p>
  *
+ * <h4>Syntax</h4>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;showboxdepth&rang;
+ *      &rarr; <tt>\showboxdepth</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+ *        &lang;equals&rang;} {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#scanInteger(Context,Typesetter)
+ *        &lang;number&rang;}  </pre>
+ *
+ * <h4>Examples</h4>
+ *  <pre class="TeXSample">
+ *    \showboxdepth=16  </pre>
+ *
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class Showbox extends AbstractBox implements LogEnabled {
 

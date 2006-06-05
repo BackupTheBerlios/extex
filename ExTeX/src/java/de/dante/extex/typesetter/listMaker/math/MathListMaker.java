@@ -97,6 +97,21 @@ import de.dante.util.framework.logger.LogEnabled;
  *  inserted at the beginning of inline math. Those tokens take effect after the
  *  math mode has been entered but before any tokens given explicitly.
  * </p>
+ *
+ * <h4>Syntax</h4>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;everymath&rang;
+ *      &rarr; <tt>\everymath</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+ *        &lang;equals&rang;} {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getTokens(Context,TokenSource,Typesetter)
+ *        &lang;tokens&rang;}  </pre>
+ *
+ * <h4>Examples</h4>
+ *  <pre class="TeXSample">
+ *    \everymath={\,}  </pre>
+ *
  * </doc>
  *
  * <doc name="everymathend" type="register">
@@ -106,11 +121,26 @@ import de.dante.util.framework.logger.LogEnabled;
  *  is inserted at the end of inline math. Those tokens take effect just before
  *  the math mode is ended but after any tokens given explicitly.
  * </p>
+ *
+ * <h4>Syntax</h4>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;everymathend&rang;
+ *      &rarr; <tt>\everymathend</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+ *        &lang;equals&rang;} {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getTokens(Context,TokenSource,Typesetter)
+ *        &lang;tokens&rang;}  </pre>
+ *
+ * <h4>Examples</h4>
+ *  <pre class="TeXSample">
+ *    \everymathend={\,}  </pre>
+ *
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.42 $
+ * @version $Revision: 1.43 $
  */
 public class MathListMaker extends HorizontalListMaker
         implements
@@ -122,7 +152,7 @@ public class MathListMaker extends HorizontalListMaker
      * It is used to store to the stack and restore the state from the stack.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.42 $
+     * @version $Revision: 1.43 $
      */
     private class MathMemento {
 

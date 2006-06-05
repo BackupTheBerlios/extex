@@ -31,7 +31,15 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="botmark">
  * <h3>The Primitive <tt>\botmark</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  The primitive <tt>\botmark</tt> expands to the last mark on the current
+ *  page. If no mark has been encountered on the current page then it
+ *  expands to the last mark on the previous page. If no mark has been
+ *  placed ever then the primitive expands to the empty token list.
+ * </p>
+ * <p>
+ *  See the documentation of the primitive
+ *  {@link de.dante.extex.interpreter.primitives.typesetter.mark.Mark \mark}
+ *  for further explanation of marks.
  * </p>
  *
  * <h4>Syntax</h4>
@@ -47,7 +55,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Botmark extends Botmarks {
 

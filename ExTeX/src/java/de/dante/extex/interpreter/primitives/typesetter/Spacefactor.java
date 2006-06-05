@@ -48,7 +48,11 @@ import de.dante.extex.typesetter.exception.TypesetterUnsupportedException;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;spacefactor&rang;
- *      &rarr; <tt>\spacefactor ...</tt>  </pre>
+ *      &rarr; <tt>\spacefactor</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+ *        &lang;equals&rang;} {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#scanInteger(Context,Typesetter)
+ *        &lang;number&rang;}  </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
@@ -57,7 +61,7 @@ import de.dante.extex.typesetter.exception.TypesetterUnsupportedException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Spacefactor extends AbstractCode
         implements

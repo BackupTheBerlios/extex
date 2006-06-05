@@ -54,8 +54,10 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *  <pre class="syntax">
  *    &lang;marks&rang;
  *      &rarr; <tt>\marks</tt> {@linkplain
- *        de.dante.extex.interpreter.TokenSource#scanRegisterName(Context,String)
- *        &lang;mark name&rang;} &lang;tokens&rang;  </pre>
+ *        de.dante.extex.interpreter.primitives.typesetter.mark.AbstractMarksCode#getKey(Context,TokenSource,Typesetter)
+ *        &lang;mark name&rang;} {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getTokens(Context,TokenSource,Typesetter)
+ *        &lang;tokens&rang;}  </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
@@ -64,7 +66,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Marks extends AbstractMarkCode {
 

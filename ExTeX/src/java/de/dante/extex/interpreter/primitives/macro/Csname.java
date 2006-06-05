@@ -45,14 +45,15 @@ import de.dante.util.framework.i18n.Localizer;
  * <h3>The Primitive <tt>\csname</tt></h3>
  * <p>
  *  The primitive <tt>\csname</tt> absorbs further tokens until a matching
- *  <tt>\endcsname</tt> is found. The tokens found are expanded. Spaces are
- *  ignored. The expansion
+ *  {@link de.dante.extex.interpreter.primitives.macro.Endcsname \endcsname}
+ *  is found. The tokens found are expanded. Spaces are ignored. The expansion
  *  should lead to character tokens only. A new token is constructed from the
  *  characters. The escape character is the current escape character.
  * </p>
  * <p>
  *  If the meaning of the new token is currently not defined then it is defined
- *  to be equivalent to the original meaning of <tt>\relax</tt>.
+ *  to be equivalent to the original meaning of
+ *  {@link de.dante.extex.interpreter.primitives.Relax \relax}.
  * </p>
  * <p>
  *  If a non-expandable token is encountered then an error is raised.
@@ -88,7 +89,7 @@ import de.dante.util.framework.i18n.Localizer;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.34 $
+ * @version $Revision: 1.35 $
  */
 public class Csname extends AbstractCode implements ExpandableCode {
 

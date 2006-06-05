@@ -37,7 +37,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.32 $
+ * @version $Revision: 1.33 $
  */
 public class Dimen extends GlueComponent implements Serializable, FixedDimen {
 
@@ -80,6 +80,8 @@ public class Dimen extends GlueComponent implements Serializable, FixedDimen {
      *  <pre class="syntax">
      *    &lang;dimen&rang;
      *      &rarr; &lang;float&rang; &lang;dimen unit&rang;
+     *       |  &lang;float&rang; <tt>true</tt> &lang;dimen unit&rang;
+     *       |  &lang;dimen variable&rang;
      *
      *    &lang;float&rang;
      *      &rarr; [+-]? [0-9]+

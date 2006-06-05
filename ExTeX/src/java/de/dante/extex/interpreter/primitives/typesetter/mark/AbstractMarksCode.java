@@ -33,7 +33,7 @@ import de.dante.extex.typesetter.Typesetter;
  * Thus abstract base class for marks primitives provides the common features.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public abstract class AbstractMarksCode extends AbstractCode
         implements
@@ -94,6 +94,64 @@ public abstract class AbstractMarksCode extends AbstractCode
 
     /**
      * Get the key for this mark.
+     *
+     * <doc type="syntax" name="mark name">
+     * <h3>A Mark Name</h3>
+     * <p>
+     *  A mark name determines under which key a mark can be
+     *  addressed. In <logo>TeX</logo> this used to be a positive number only.
+     *  This has been extended to allow also a token list in braces.
+     * </p>
+     * <p>
+     *  The alternative is controlled by the count register
+     *  <tt>\register.max</tt>. The following interpretation of the value of this
+     *   count is used:
+     *  <ul>
+     *   <li>If the value of this count register is negative
+     *    then a arbitrary non-negative number is allowed as register name
+     *    as well as any list of tokens enclosed in braces.</li>
+     *   <li>If the value of this count register is not-negative
+     *    then a only a non-negative number is allowed as register name
+     *    which does not exceed the value of the count register.</li>
+     *  </ul>
+     * </p>
+     * <p>
+     *  The value of the count register <tt>\register.max</tt> is set differently
+     *  for various configurations of <logo>ExTeX</logo>:
+     *  <ul>
+     *   <li><logo>TeX</logo> uses the value 255.</li>
+     *   <li><logo>eTeX</logo> uses the value 32767.</li>
+     *   <li><logo>Omega</logo> uses the value 65536.</li>
+     *   <li><logo>ExTeX</logo> uses the value -1.</li>
+     *  </ul>
+     * </p>
+     * <p>
+     *  Note that the register name <tt>\register.max</tt> contains a period.
+     *  Thus it can normally not be entered easily since the catcode of the
+     *  period is OTHER but needs to be LETTER. Thus you have to use a
+     *  temporarily reassigned category code (see
+     *  {@link de.dante.extex.interpreter.primitives.register.CatcodePrimitive \catcode})
+     *   or use
+     *  {@link de.dante.extex.interpreter.primitives.macro.Csname \csname}.
+     * </p>
+     *
+     * <h4>Syntax</h4>
+     * <pre class="syntax">
+     *   &lang;register name&rang;
+     *       &rarr; {@linkplain
+     *        de.dante.extex.interpreter.TokenSource#scanTokens(Context)
+     *        &lang;tokens&rang;}
+     *        | {@linkplain de.dante.extex.interpreter.TokenSource#scanNumber(Context)
+     *        &lang;number&rang;}  </pre>
+     *
+     * <h4>Examples</h4>
+     * <pre class="TeXSample">
+     *  123
+     *  {abc}
+     * </pre>
+     *
+     * </doc>
+     *
      *
      * @param context the interpreter context
      * @param source the source for new tokens

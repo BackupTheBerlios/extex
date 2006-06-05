@@ -35,26 +35,57 @@ import de.dante.extex.typesetter.Typesetter;
  * <h3>The Primitive <tt>\errmessage</tt></h3>
  * <p>
  *  The primitive <tt>\errmessage</tt> takes one argument. This argument is an
- *  expanded list of tokens. Those tokens are presented as error message
+ *  expanded list of tokens. Those tokens are presented as error message. The
+ *  help text is taken from the token register <tt>\errhelp</tt>
  * </p>
  *
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    &lang;eqno&rang;
+ *    &lang;errmessage&rang;
  *       &rarr; <tt>\errmessage</tt> {@linkplain
  *        de.dante.extex.interpreter.TokenSource#scanTokens(Context)
  *        &lang;tokens&rang;}  </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
- *    \errmessage{}  </pre>
+ *    \errhelp={Too bad}
+ *    \errmessage{I found an error}  </pre>
  *
  * </doc>
  *
+ *
+ * <doc name="errhelp" type="register">
+ * <h3>The Token Register <tt>\errhelp</tt></h3>
+ * <p>
+ *  The token register <tt>\errhelp</tt> contains the help text for the
+ *  primitive
+ *  {@link de.dante.extex.interpreter.primitives.info.Errmessage \errmessage}.
+ *  Nevertheless this register can be used in any place where a token register
+ *  is needed.
+ * </p>
+ *
+ * <h4>Syntax</h4>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;errhelp&rang;
+ *      &rarr; <tt>\errhelp</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+ *        &lang;equals&rang;} {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getTokens(Context, TokenSource, Typesetter)
+ *        &lang;tokens&rang;}  </pre>
+ *
+ * <h4>Examples</h4>
+ *  <pre class="TeXSample">
+ *    \errhelp={Too bad}
+ *    \errmessage{I found an error}  </pre>
+ *
+ * </doc>
+ *
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class Errmessage extends AbstractCode {
 

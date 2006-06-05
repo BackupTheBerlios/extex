@@ -36,25 +36,47 @@ import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
 
 /**
- * This class provides an implementation for the primitive <code>\count</code>.
+ * This class provides an implementation for the primitive <code>\mag</code>.
  * It sets the named count register to the value given,
  * and as a side effect all prefixes are zeroed.
  *
  * <doc name="mag">
  * <h3>The Primitive <tt>\mag</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The primitive <tt>\mag</tt> provides a means to set the magnification
+ *  factor for the current document. The primitive acts like a normal count
+ *  register. The magnification factor is given in multiples of 1000. This means
+ *  that the default value 1000 corresponds to an unmagnified output.
+ * </p>
+ * <p>
+ *  The effect of the setting of the magnification factor is that all length
+ *  values are multiplied with the magnification factor (divided by 1000). An
+ *  exception are the <i>true</i> length values. This means a length of
+ *  1&nbsp;pt at a magnification of 1200 is in effect 1.2&nbsp;pt long.
+ *  Whereas a length of 1&nbsp;true&nbsp;pt remains unaffected by the
+ *  magnification.
+ * </p>
+ * <p>
+ *  The magnification can only changed once at the beginning of a run.
+ * </p>
+ * <p>
+ *  An attempt to assign a non-positive number to <tt>\mag</tt> leads to an
+ *  error.
  * </p>
  *
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;mag&rang;
- *      &rarr; <tt>\mag</tt>  </pre>
+ *      &rarr; <tt>\mag</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+ *        &lang;equals&rang;} {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#scanInteger(Context,Typesetter)
+ *        &lang;number&rang;}  </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
- *    \count23=-456  </pre>
+ *    \mag=1600  </pre>
  * </doc>
  *
  * @see de.dante.extex.interpreter.type.arithmetic.Advanceable
@@ -63,7 +85,7 @@ import de.dante.extex.typesetter.Typesetter;
  * @see de.dante.extex.interpreter.type.Theable
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class Mag extends AbstractCount
         implements

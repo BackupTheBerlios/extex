@@ -54,11 +54,14 @@ import de.dante.util.exception.GeneralException;
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\toks</tt> {@linkplain
+ *    &lang;toks&rang;
+ *      &rarr; <tt>\toks</tt> {@linkplain
  *        de.dante.extex.interpreter.TokenSource#scanRegisterName(Context,String)
  *        &lang;register name&rang;} {@linkplain
- *    de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
- *    &lang;equals&rang;} &lang;tokens&rang; </pre>
+ *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+ *        &lang;equals&rang;} {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getTokens(Context,TokenSource,Typesetter)
+ *        &lang;tokens&rang;}  </pre>
  * <p>
  *  In <logo>TeX</logo> the register name is a number in the range 0 to 255.
  *  Extensions to this are defined in <logo>eTeX</logo> and <logo>Omega</logo>
@@ -82,7 +85,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class ToksPrimitive extends AbstractToks
         implements

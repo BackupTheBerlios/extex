@@ -35,24 +35,27 @@ import de.dante.extex.typesetter.Typesetter;
  * <p>
  *  TODO missing documentation
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;setbox&rang;
- *      &rarr; <tt>\setbox</tt> {@linkplain
- *        de.dante.extex.interpreter.TokenSource#scanRegisterName(Context,String)
- *        &lang;register name&rang;}...</pre>
- * </p>
- * <p>
- *  Examples:
+ *      &rarr; &lang;optional prefix&rang; <tt>\setbox</tt> {@linkplain
+ *        de.dante.extex.interpreter.primitives.register.box.AbstractBox#getKey(Context,Source,String)
+ *        &lang;box register name&rang;} &lang;box&rang;
+ *
+ *    &lang;optional prefix&rang;
+ *      &rarr;
+ *       |  <tt>\global</tt> &lang;optional prefix&rang;  </pre>
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \setbox0\hbox{abc}  </pre>
- * </p>
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class Setbox extends AbstractBox implements Code {
 
@@ -87,9 +90,8 @@ public class Setbox extends AbstractBox implements Code {
         String key = getKey(context, source, getName());
         source.getOptionalEquals(context);
         Box box = source.getBox(prefix, context, typesetter);
-        context.setBox(key, box, prefix.isGlobal());
+        context.setBox(key, box, f.clearGlobal());
         prefix.set(f);
-        prefix.clearGlobal();
     }
 
 }

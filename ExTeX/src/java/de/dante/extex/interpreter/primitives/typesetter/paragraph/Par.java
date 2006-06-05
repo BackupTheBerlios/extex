@@ -64,8 +64,34 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * </doc>
  *
+ *
+ * <doc name="parindent" type="register">
+ * <h3>The Dimen Parameter <tt>\parindent</tt></h3>
+ * <p>
+ *  The dimen parameter <tt>\parindent</tt> contains indentation to be applied
+ *  for each paragraph.
+ * </p>
+ *
+ * <h4>Syntax</h4>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;parindent&rang;
+ *      &rarr; <tt>\parindent</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+ *        &lang;equals&rang;} {@linkplain
+ *        de.dante.extex.interpreter.type.dimen.Dimen#parse(Context,TokenSource,Typesetter)
+ *        &lang;dimen&rang;}  </pre>
+ *
+ * <h4>Examples</h4>
+ *  <pre class="TeXSample">
+ *    \parindent=12em  </pre>
+ *
+ * </doc>
+ *
+ *
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Par extends AbstractCode {
 

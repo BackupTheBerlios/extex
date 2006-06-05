@@ -32,7 +32,7 @@ import de.dante.extex.interpreter.type.AbstractCode;
  * It provides a method to get the key of a box register.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public abstract class AbstractBox extends AbstractCode implements Serializable {
 
@@ -40,10 +40,43 @@ public abstract class AbstractBox extends AbstractCode implements Serializable {
      * Return the key (the number) for the box register.
      *
      * <doc type="syntax" name="box register name">
+     * <h3>A Box Register Name</h3>
      * <p>
      *  A box register name determines under which key a box register can be
      *  addressed. In <logo>TeX</logo> this used to be a positive number only.
      *  This has been extended to allow also a token list in braces.
+     * </p>
+     * <p>
+     *  The alternative is controlled by the count register
+     *  <tt>\register.max</tt>. The following interpretation of the value of this
+     *   count is used:
+     *  <ul>
+     *   <li>If the value of this count register is negative
+     *    then a arbitrary non-negative number is allowed as register name
+     *    as well as any list of tokens enclosed in braces.</li>
+     *   <li>If the value of this count register is not-negative
+     *    then a only a non-negative number is allowed as register name
+     *    which does not exceed the value of the count register.</li>
+     *  </ul>
+     * </p>
+     * <p>
+     *  The value of the count register <tt>\register.max</tt> is set differently
+     *  for various configurations of <logo>ExTeX</logo>:
+     *  <ul>
+     *   <li><logo>TeX</logo> uses the value 255.</li>
+     *   <li><logo>eTeX</logo> uses the value 32767.</li>
+     *   <li><logo>Omega</logo> uses the value 65536.</li>
+     *   <li><logo>ExTeX</logo> uses the value -1.</li>
+     *  </ul>
+     * </p>
+     * <p>
+     *  Note that the register name <tt>\register.max</tt> contains a period.
+     *  Thus it can normally not be entered easily since the catcode of the
+     *  period is OTHER but needs to be LETTER. Thus you have to use a
+     *  temporarily reassigned category code (see
+     *  {@link de.dante.extex.interpreter.primitives.register.CatcodePrimitive \catcode})
+     *   or use
+     *  {@link de.dante.extex.interpreter.primitives.macro.Csname \csname}.
      * </p>
      *
      * <h4>Syntax</h4>
@@ -54,8 +87,6 @@ public abstract class AbstractBox extends AbstractCode implements Serializable {
      *        &lang;tokens&rang;}
      *        | {@linkplain de.dante.extex.interpreter.TokenSource#scanNumber(Context)
      *        &lang;number&rang;}  </pre>
-     *
-     * TODO gene: doc incomplete
      *
      * <h4>Examples</h4>
      * <pre class="TeXSample">

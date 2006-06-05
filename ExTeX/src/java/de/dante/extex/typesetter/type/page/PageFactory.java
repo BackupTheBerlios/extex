@@ -59,8 +59,175 @@ import de.dante.util.framework.logger.LogEnabled;
 /**
  * This class provides a factory for page instances.
  *
+ * <p>
+ *  The separation of the page into a logical page and a physical page is
+ *  depicted in the figure below.
+ * </p>
+ * <div class="figure">
+ *  <img src="doc-files/page-1.png" title="Dimensions of a Page"/>
+ *  <div class="caption">
+ *   Dimensions of a page
+ *  </div>
+ * </div>
+ * <p>
+ *  The physical page denotes the real paper. DVI has no notion of the physical
+ *  page but PDF knows of those bounds. The logical page is placed somewhere on
+ *  the physical page. The physical page has the width <tt>\mediawidth</tt>
+ *  and the height <tt>\mediaheight</tt>.
+ * </p>
+ * <p>
+ *  The logical page is the area used by <logo>TeX</logo> to place material on.
+ *  It has a reference point which is in its upper left corner. This reference
+ *  point is 1&nbsp;in right and 1&nbsp;in down from the corner of the physical
+ *  page. The reference point can be shifted further by using the dimen
+ *  registers <tt>\hoffset</tt> and <tt>\voffset</tt>.
+ * </p>
+ *
+ *
+ * <h2>Parameters</h2>
+ *
+ * <doc name="mediawidth" type="register">
+ * <h3>The Dimen Parameter <tt>\mediawidth</tt></h3>
+ * <p>
+ *  The dimen parameter <tt>\mediawidth</tt> contains the physical width of the
+ *  page. The logical page is usually smaller.
+ * </p>
+ * <p>
+ *  The value of this  parameter is used when a page is shipped out and
+ *  attached to the page. Any modifications of the parameter have no effect
+ *  to the value stored.
+ * </p>
+ *
+ * <h4>Syntax</h4>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;mediawidth&rang;
+ *      &rarr; &lang;optional prefix&rang; <tt>\mediawidth</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+ *        &lang;equals&rang;} {@link
+ *        de.dante.extex.interpreter.type.dimen.Dimen#parse(Context,TokenSource,Typesetter)
+ *        &lang;dimen value&rang;}
+ *
+ *    &lang;optional prefix&rang;
+ *      &rarr;
+ *       |  <tt>\global</tt> &lang;optional prefix&rang; </pre>
+ *
+ * <h4>Examples</h4>
+ * <pre class="TeXSample">
+ *   \mediawidth=210mm </pre>
+ * </doc>
+ *
+ *
+ * <doc name="mediaheight" type="register">
+ * <h3>The Dimen Parameter <tt>\mediaheight</tt></h3>
+ * <p>
+ *  The dimen parameter <tt>\mediaheight</tt> contains the physical height of
+ *  the page. The logical page is usually smaller.
+ * </p>
+ * <p>
+ *  The value of this  parameter is used when a page is shipped out and
+ *  attached to the page. Any modifications of the parameter have no effect
+ *  to the value stored.
+ * </p>
+ *
+ * <h4>Syntax</h4>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;mediaheight&rang;
+ *      &rarr; &lang;optional prefix&rang; <tt>\mediaheight</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+ *        &lang;equals&rang;} {@link
+ *        de.dante.extex.interpreter.type.dimen.Dimen#parse(Context,TokenSource,Typesetter)
+ *        &lang;dimen value&rang;}
+ *
+ *    &lang;optional prefix&rang;
+ *      &rarr;
+ *       |  <tt>\global</tt> &lang;optional prefix&rang; </pre>
+ *
+ * <h4>Examples</h4>
+ * <pre class="TeXSample">
+ *   \mediaheight=297mm </pre>
+ * </doc>
+ *
+ *
+ * <doc name="hoffset" type="register">
+ * <h3>The Dimen Parameter <tt>\hoffset</tt></h3>
+ * <p>
+ *  The logical page is placed on the physical page such that the upper left
+ *  corner of the logical page is 1&nbsp;in down and 1&nbsp;in to the right of
+ *  the physical page. This placement can be influence by the dimen parameter
+ *  <tt>\hoffset</tt>.
+ *  The dimen parameter <tt>\hoffset</tt> contains the horizontal offset
+ *  added to the reference point when placing the logical page.
+ *  The default value is 0&nbsp;pt. Thus the reference point is 1&nbsp;in to the
+ *  right. A positive value shifts the reference point rightwards.
+ * </p>
+ * <p>
+ *  The value of this  parameter is used when a page is shipped out and
+ *  attached to the page. Any modifications of the parameter have no effect
+ *  to the value stored.
+ * </p>
+ *
+ * <h4>Syntax</h4>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;hoffset&rang;
+ *      &rarr; &lang;optional prefix&rang; <tt>\hoffset</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+ *        &lang;equals&rang;} {@link
+ *        de.dante.extex.interpreter.type.dimen.Dimen#parse(Context,TokenSource,Typesetter)
+ *        &lang;dimen value&rang;}
+ *
+ *    &lang;optional prefix&rang;
+ *      &rarr;
+ *       |  <tt>\global</tt> &lang;optional prefix&rang; </pre>
+ *
+ * <h4>Examples</h4>
+ * <pre class="TeXSample">
+ *   \hoffset=-.5in </pre>
+ * </doc>
+ *
+ *
+ * <doc name="voffset" type="register">
+ * <h3>The Dimen Parameter <tt>\voffset</tt></h3>
+ * <p>
+ *  The logical page is placed on the physical page such that the upper left
+ *  corner of the logical page is 1&nbsp;in down and 1&nbsp;in to the right of
+ *  the physical page. This placement can be influence by the dimen parameter
+ *  <tt>\voffset</tt>.
+ *  The dimen parameter <tt>\voffset</tt> contains the vertical offset
+ *  added to the reference point when placing the logical page.
+ *  The default value is 0&nbsp;pt. Thus the reference point is 1&nbsp;in down.
+ *  A positive value shifts the reference point downwards.
+ * </p>
+ * <p>
+ *  The value of this  parameter is used when a page is shipped out and
+ *  attached to the page. Any modifications of the parameter have no effect
+ *  to the value stored.
+ * </p>
+ *
+ * <h4>Syntax</h4>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;voffset&rang;
+ *      &rarr; &lang;optional prefix&rang; <tt>\voffset</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+ *        &lang;equals&rang;} {@link
+ *        de.dante.extex.interpreter.type.dimen.Dimen#parse(Context,TokenSource,Typesetter)
+ *        &lang;dimen value&rang;}
+ *
+ *    &lang;optional prefix&rang;
+ *      &rarr;
+ *       |  <tt>\global</tt> &lang;optional prefix&rang; </pre>
+ *
+ * <h4>Examples</h4>
+ * <pre class="TeXSample">
+ *   \voffset=1in </pre>
+ * </doc>
+ *
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class PageFactory implements LogEnabled {
 
@@ -443,8 +610,12 @@ public class PageFactory implements LogEnabled {
 
         page.setMediaWidth(context.getDimen("mediawidth"));
         page.setMediaHeight(context.getDimen("mediaheight"));
-        //page.setMediaHOffset(context.getDimen("mediawidth"));
-        //page.setMediaVOffset(context.getDimen("mediaheight"));
+        Dimen off = new Dimen(Dimen.ONE_INCH);
+        off.add(context.getDimen("hoffset"));
+        page.setMediaHOffset(off);
+        off.set(Dimen.ONE_INCH);
+        off.add(context.getDimen("voffset"));
+        page.setMediaVOffset(off);
 
         context.startMarks();
         visitor.setPage(page);

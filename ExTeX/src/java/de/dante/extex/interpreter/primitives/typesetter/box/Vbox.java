@@ -38,7 +38,7 @@ import de.dante.extex.typesetter.type.NodeList;
  * <doc name="vbox">
  * <h3>The Primitive <tt>\vbox</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  TODO gene: missing documentation
  * </p>
  * <p>
  *  The contents of the toks register <tt>\everyvbox</tt> is inserted at the
@@ -53,8 +53,12 @@ import de.dante.extex.typesetter.type.NodeList;
  *
  *    &lang;box specification&rang;
  *      &rarr;
- *         | <tt>to</tt> &lang;rule dimension&rang;
- *         | <tt>spread</tt> &lang;rule dimension&rang;  </pre>
+ *         | <tt>to</tt> {@link
+ *           de.dante.extex.interpreter.type.dimen.Dimen#parse(Context,TokenSource,Typesetter)
+ *           &lang;rule dimension&rang;
+ *         | <tt>spread</tt> {@link
+ *           de.dante.extex.interpreter.type.dimen.Dimen#parse(Context,TokenSource,Typesetter)
+ *           &lang;rule dimension&rang;  </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
@@ -76,7 +80,7 @@ import de.dante.extex.typesetter.type.NodeList;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class Vbox extends AbstractBoxPrimitive {
 

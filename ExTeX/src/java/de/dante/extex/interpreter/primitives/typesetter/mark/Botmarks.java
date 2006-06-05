@@ -27,10 +27,19 @@ import de.dante.extex.interpreter.type.tokens.Tokens;
  * This class provides an implementation for the primitive
  * <code>\botmarks</code>.
  *
+ *
  * <doc name="botmarks">
  * <h3>The Primitive <tt>\botmarks</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  The primitive <tt>\botmarks</tt> expands to the last mark on the current
+ *  page of the given class. If no mark has been encountered on the current page
+ *  then it expands to the last mark on the previous page. If no mark has been
+ *  placed ever then the primitive expands to the empty token list.
+ * </p>
+ * <p>
+ *  See the documentation of the primitive
+ *  {@link de.dante.extex.interpreter.primitives.typesetter.mark.Marks \marks}
+ *  for further explanation of marks.
  * </p>
  *
  * <h4>Syntax</h4>
@@ -38,7 +47,7 @@ import de.dante.extex.interpreter.type.tokens.Tokens;
  *  <pre class="syntax">
  *    &lang;botmark&rang;
  *      &rarr; <tt>\botmarks</tt> {@linkplain
- *        de.dante.extex.interpreter.TokenSource#scanRegisterName(Context,String)
+ *        de.dante.extex.interpreter.primitives.typesetter.mark.AbstractMarksCode#getKey(Context,TokenSource,Typesetter)
  *        &lang;mark name&rang;}  </pre>
  *
  * <h4>Examples</h4>
@@ -49,8 +58,9 @@ import de.dante.extex.interpreter.type.tokens.Tokens;
  *
  * </doc>
  *
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Botmarks extends AbstractMarksCode {
 

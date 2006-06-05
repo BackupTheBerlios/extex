@@ -40,27 +40,28 @@ import de.dante.extex.typesetter.Typesetter;
  *  inserted after the next assignment. Thus the primitive may overwrite any
  *  previously registered token.
  * </p>
- * <p>
+ *
+ * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;afterassignment&rang;
  *      &rarr; <tt>\afterassignment</tt> {@linkplain
  *         de.dante.extex.interpreter.TokenSource#getToken(Context)
  *         &lang;token&rang;} </pre>
- * </p>
- * <p>
- *  Examples:
+ *
+ * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \afterassignment\abc  </pre>
  *  <pre class="TeXSample">
  *    \afterassignment X  </pre>
  *  <pre class="TeXSample">
  *    \afterassignment ~  </pre>
- * </p>
+ *
  * </doc>
  *
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Afterassignment extends AbstractCode {
 

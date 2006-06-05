@@ -37,13 +37,21 @@ import de.dante.extex.interpreter.exception.InterpreterException;
  * This key is constructed from the name, a hash mark and the running number.
  * </p>
  *
- * <p>Example</p>
- * <pre>
- * \muskip12=345pt plus 12em
- * </pre>
+ * <doc name="muskip">
+ * <h3>The Primitive <tt>\muskip</tt></h3>
+ * <p>
+ *  TODO gene: missing documentation
+ * </p>
+ *
+ * <h4>Examples</h4>
+ *  <pre class="TeXSample">
+ *   \muskip12=345mu plus 12mu  </pre>
+ *
+ * </doc>
+ *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class MuskipPrimitive extends MuskipParameter {
 

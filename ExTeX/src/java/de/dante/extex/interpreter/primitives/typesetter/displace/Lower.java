@@ -33,7 +33,13 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="lower">
  * <h3>The Primitive <tt>\lower</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The primitive <tt>\lower</tt> takes a box and a length and shifts down the
+ *  amount specified by the length. If the length is negative then the shift
+ *  is done upwards.
+ * </p>
+ * <p>
+ *  The primitive <tt>\lower</tt> is the counterpart to
+ *  {@link de.dante.extex.interpreter.primitives.typesetter.displace.Raise \raise}.
  * </p>
  *
  * <h4>Syntax</h4>
@@ -43,7 +49,7 @@ import de.dante.extex.typesetter.Typesetter;
  *      &rarr; <tt>\lower</tt> {@linkplain
  *        de.dante.extex.interpreter.type.dimen#Dimen(Context,TokenSource)
  *        &lang;dimen&rang;} {@linkplain
- *        de.dante.extex.interpreter.TokenSource#getBox(Context,de.dante.extex.typesetter.Typesetter)
+ *        de.dante.extex.interpreter.TokenSource#getBox(Context,Typesetter)
  *        &lang;box&rang;} </pre>
  *
  * <h4>Examples</h4>
@@ -58,7 +64,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Lower extends AbstractBoxPrimitive {
 

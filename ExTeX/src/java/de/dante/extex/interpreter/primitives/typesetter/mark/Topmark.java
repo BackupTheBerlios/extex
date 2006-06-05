@@ -37,7 +37,12 @@ import de.dante.extex.typesetter.Typesetter;
  * </p>
  * <p>
  *  The primitive is a tokens register. It can be used wherever a tokens value
- *  is expected. The value is empty when no topmark is available yet.
+ *  is expected. The value is empty when no top mark is available yet.
+ * </p>
+ * <p>
+ *  See the documentation of the primitive
+ *  {@link de.dante.extex.interpreter.primitives.typesetter.mark.Mark \mark}
+ *  for further explanation of marks.
  * </p>
  *
  * <h4>Syntax</h4>
@@ -55,7 +60,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Topmark extends Topmarks {
 

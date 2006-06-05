@@ -26,8 +26,6 @@ import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.primitives.register.box.AbstractBox;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.extex.typesetter.exception.TypesetterException;
-import de.dante.extex.typesetter.type.node.ExplicitKernNode;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
@@ -37,7 +35,14 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * <doc name="indent">
  * <h3>The Primitive <tt>\indent</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The primitive <tt>\indent</tt> ensures that the further processing appears
+ *  in horizontal mode and inserts horizontal spacing in the width of
+ *  the dimen register <tt>\parindent</tt>.
+ * </p>
+ * <p>
+ *  Note that the spacing is inserted in any case. Thus several successive
+ *  invocations lead to more spacing. This can even happen in the middle of a
+ *  paragraph.
  * </p>
  *
  * <h4>Syntax</h4>
@@ -48,12 +53,12 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
- *      </pre>
+ *    \indent  </pre>
  *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Indent extends AbstractBox {
 
