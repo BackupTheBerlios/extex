@@ -34,7 +34,7 @@ import de.dante.extex.typesetter.Typesetter;
  * <h3>The Primitive <tt>\ignorespaces</tt></h3>
  * <p>
  *  The primitive <tt>\ignorespaces</tt> arranges that the scanner discards
- *  following whitespace.
+ *  following white-space.
  * </p>
  *
  * <h4>Syntax</h4>
@@ -50,7 +50,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class Ignorespaces extends AbstractCode {
 
