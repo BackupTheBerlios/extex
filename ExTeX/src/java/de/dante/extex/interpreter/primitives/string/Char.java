@@ -27,9 +27,7 @@ import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.exception.TypesetterException;
-import de.dante.extex.typesetter.type.Node;
 import de.dante.util.UnicodeChar;
-import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * This class provides an implementation for the primitive <code>\char</code>.
@@ -68,7 +66,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
 public class Char extends AbstractCode implements ExpandableCode {
 
