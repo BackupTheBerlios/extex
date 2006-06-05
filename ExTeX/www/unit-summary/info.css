@@ -46,6 +46,10 @@ table {
   border-right-width:0pt;
   margin:12pt;
 }
+td {
+  vertical-align:top;
+  padding-right:2pt;
+}
 .unit {
   font-size:80%;
   background-color:#eeeeee;
@@ -57,6 +61,10 @@ table {
   padding:3pt;
 }
 .copyright {
+  font-size:80%;
+  padding:3pt;
+}
+.noframes {
   font-size:80%;
   padding:3pt;
 }
