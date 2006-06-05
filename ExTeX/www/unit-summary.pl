@@ -1,6 +1,6 @@
 #!/bin/perl.exe -w
 ##*****************************************************************************
-## $Id: unit-summary.pl,v 1.2 2006/05/19 15:17:25 gene Exp $
+## $Id: unit-summary.pl,v 1.3 2006/06/05 15:35:55 gene Exp $
 ##*****************************************************************************
 ## Author: Gerd Neugebauer
 ##=============================================================================
@@ -64,12 +64,18 @@ GetOptions("h|help"	=> \&usage,
 	   "v|verbose"	=> \$verbose,
 	  );
 
+my @d    = localtime;
+my $date = $d[5] + 1900;
+
 my $BASEDIR = dirname($0) . '/../';
+$BASEDIR    =~ s|^./||;
 
 my %info;
 my %infoAuthor;
 my %infoIncomplete = ( '' => 1 );
 
+my %links;
+my %syntax;
 my @units;
 my @primitives;
 my @configurations;
@@ -79,8 +85,13 @@ mkdir $targetdir if not -e $targetdir;
 
 chdir dirname($0);
 
+print STDERR "Scanning sources [${BASEDIR}src/java]..." if $verbose;
 find({no_chdir => 1, wanted => \&analyze}, $BASEDIR . 'src/java');
-print "\n" if $verbose;
+print STDERR "\n" if $verbose;
+
+foreach $_ (keys %syntax) {
+  process_syntax(makeReference($_), $syntax{$_});
+}
 
 foreach $_ (glob 'unit-summary/*') {
   next if m/CVS/;
@@ -133,9 +144,8 @@ sub make_units {
   my $out = HTML_start("$targetdir/units.html",
 		       'All Units',
 		       'navi.css',
-		       '', <<__EOF__);
-<h2>All Units</h2>
-__EOF__
+		       '',
+		       "<h2>All Units</h2>\n");
 
   foreach $_ (sort {return lc($$a[0]) cmp lc($$b[0])} @primitives) {
     my @a = @$_;
@@ -165,15 +175,17 @@ sub analyze {
   my $class = basename($_,'.java');
   my $fd    = new FileHandle($_, 'r') || die "$_: $!\n";
   s|^./||;
-  s:\.(java|html)$::;
+  s/\.(java|html)$//;
   s|/|.|g;
-  my $base     = $_;
-  my $inDoc    = undef;
-  my $type     = "";
-  my $name     = "";
-  my $contents = "";
-  my $package  = "";
-  my $author   = '';
+  my $base	  = $_;
+  my $inDoc	  = undef;
+  my $type	  = "";
+  my $name	  = "";
+  my $contents	  = "";
+  my $package	  = "";
+  my $author	  = '';
+  my $last	  = undef;
+  my $isInterface = undef;
   local $_;
 
   while(<$fd>) {
@@ -185,10 +197,12 @@ sub analyze {
         $info{"$package.$class:$type:$name"} = $contents;
         $info{"$package.$class:$type"} = $contents;
         $info{"$package.$class:$name"} = $contents;
-        $inDoc                = undef;
-        $type		      = "";
-        $name		      = "";
-        $contents	      = "";
+        $info{":$package.$class"} = $name;
+	$last	  = "$package.$class:$name" if $type eq 'syntax';
+        $inDoc	  = undef;
+        $type	  = "";
+        $name	  = "";
+        $contents = "";
       } else {
         s/^\s*\* ?//;
         $contents  .= $_;
@@ -198,7 +212,7 @@ sub analyze {
  #     $noDocs++;
       if (m/name="([^"]*)"/) { $name = $1; }
       if (m/type="([^"]*)"/) { $type = $1; }
-      if ( $name eq '' ) { print STDERR "\n$file: Missing name\n"; }
+      print STDERR "\n$file: Missing name [$_]\n" if $name eq '';
       $inDoc = 1;
     } elsif (m/\@author\s+(.*)/) {
       $_ = $1;
@@ -208,6 +222,16 @@ sub analyze {
       $author .= $_;
     } elsif (m/TODO.*unimplemented/) {
       $infoIncomplete{"$package.$class"} = 1;
+    } elsif (m/^public interface/) {
+      $isInterface = 1;
+    } elsif ($isInterface and m/^\s+[a-zA-Z0-9_]+\s+(\S+)\(/ and defined $last) {
+      $syntax{"$package.$class\_$1"} = $last;
+      $links{$1} = $last;
+      undef $last;
+    } elsif (not $isInterface and m/^\s+public\s+.*\s(\S+)\(/ and defined $last) {
+      $syntax{"$package.$class\_$1"} = $last;
+      $links{$1} = $last;
+      undef $last;
     }
   }
 
@@ -224,7 +248,7 @@ sub process_cfg {
   my $ok     = 0;
   my $banner = '';
   my @u;
-  print STDERR "--- Processing configuration $cfg\n" if $verbose;
+  print STDERR "Processing configuration $cfg\n" if $verbose;
   my $fd = new FileHandle($file, 'r') || die "$file: $!\n";;
 
   while (<$fd>) {
@@ -271,7 +295,7 @@ sub process_unit {
   my @prim;
   my $see = undef;
 
-  print STDERR "--- Processing unit $unit\n" if $verbose;
+  print STDERR "Processing unit $unit\n" if $verbose;
 
   push @units, $unit;
 
@@ -288,9 +312,7 @@ sub process_unit {
       $class = '' if $def ne '';
       my $s  = $class;
       $s     =~ s/.*primitives.//;
-      if (not defined $info{"$class:$name"}) {
-	$s .= "_$name";
-      }
+      $s    .= "_$name" if not defined $info{"$class:$name"};
       push @prim, [$name, $class, $s, $def, $unit];
       push @primitives, [$name, $class, $s, $def, $unit];
       undef $name;
@@ -325,13 +347,25 @@ __EOF__
   HTML_end($fd);
 
   foreach $_ (@prim) {
-    doit(@$_);
+    process_page(@$_);
   }
 }
 
 #------------------------------------------------------------------------------
 #
-sub doit {
+sub process_syntax {
+  my $file = shift;
+  local $_ = shift;
+  make_info_page("$targetdir/$file",
+		 $info{$_},
+		 "Syntactic entity",
+		 "Syntactic entity ...",
+		 "");
+}
+
+#------------------------------------------------------------------------------
+#
+sub process_page {
   my ($name,$class,$short,$def,$unit) = @_;
   my $doc    = '';
   my $author = '';
@@ -347,34 +381,55 @@ sub doit {
   }
   if (not defined $doc) {
     $doc = '';
-    print STDERR "*** $name undocumented\n" if $verbose;
+    print STDERR "*** \\$name undocumented\n" if $verbose;
   } elsif($doc eq '?') {
     $doc = '';
-    print STDERR "*** $name ambiguous\n" if $verbose;
+    print STDERR "*** \\$name ambiguous\n" if $verbose;
   }
 
-  $warn = "<p><img src=\"unimplemented.png\"></p>\n"
-      if $infoIncomplete{$class};
+  make_info_page("$targetdir/$short",
+		 $doc,
+		 "From unit $unit",
+		 "The Primitive \\$name",
+		 $author,
+		 $infoIncomplete{$class});
+}
+
+#------------------------------------------------------------------------------
+#
+sub make_info_page {
+  my ($file, $doc, $headline, $title, $author, $incomplete) = @_;
+  local $_;
 
   if ($doc eq '') {
-    $warn = "<p><img src=\"unimplemented.png\"></p>\n";
-    $doc     = <<__EOF__;
-<h3>The Primitive \\$name</h3>
+    $incomplete = 1;
+    $doc	= <<__EOF__;
+<h3>$title</h3>
 <p><img src="construct.gif" alt="missing" title="missing"/></p>
 __EOF__
   } else {
-    $doc  =~ s|TODO (.*)|<p><img src="construct.gif" alt="$1" title="$1"/></p>|g;
-    $doc =~ s|\{[@]linkplain\s*[^{}]+\)\s+([^\}]+)\}|$1|gsm;
-    $doc =~ s|\{[@]link\s*[^{}]+\)\s+([^\}]+)\}|$1|gsm;
+    $doc	 =~ s|TODO (.*).|<p><img src="construct.gif" alt="$1" title="$1"/></p>|g;
+    $doc	 =~ s|<logo>eTeX</logo>|<logo>&epsilon;-TeX</logo>|g;
+    $_		 = '';
+    while ($doc =~ m/\{\@(link|linkplain)\s+([^{}]+)\)\s+([^\}]+)\}/sm) {
+      $doc  = $';
+      $_   .= $`;
+      $_   .= makeLink($2, $3, $1 eq 'link');
+    }
+    $doc = $_ . $doc;
+    $_ 	 = '';
+
+    while ($doc =~ m/\{\@(link|linkplain)\s+([^{}]+)\s+([^{}]+)\}/sm) {
+      $doc  = $';
+      $_   .= $`;
+      $_   .= makeLink($2, $3, $1 eq 'link');
+    }
+    $doc = $_ . $doc;
   }
 
-  my @d    = localtime;
-  my $date = $d[5] + 1900;
-  my $fd   = HTML_start("$targetdir/$short",
-			"Primitive \\$name",
-			'info.css',
-			$author, <<__EOF__);
-<div class="unit">From unit $unit</div>
+  my $warn = ($incomplete ? "<p><img src=\"unimplemented.png\"></p>\n" : '');
+  my $fd   = HTML_start($file, $title, 'info.css', $author, <<__EOF__);
+<div class="unit">$headline</div>
 <hr />
 $warn$doc
 <hr />
@@ -391,23 +446,64 @@ __EOF__
 
 #------------------------------------------------------------------------------
 #
+sub makeLink {
+  local $_ = shift;
+  my $arg  = $_;
+  my $t	   = shift;
+  my $link = shift;
+  s/\s+//g;
+  s/\(.*//;
+  if ( not m/#/ ) {
+       if (defined $info{":$_"}) {
+         s/.*primitives.//;
+       } else {
+	 return $t;
+       }
+  } else {
+    s/\#/_/;
+    s/.*extex\.interpreter\./S_/;
+  }
+  return ($link
+	  ? "<a href=\"$_\"><tt>$t</tt></a>"
+	  : "<a href=\"$_\">$t</a>");
+}
+
+#------------------------------------------------------------------------------
+#
+sub makeReference {
+  local $_ = shift;
+  s/.*extex\.interpreter\./S_/;
+  s/\s+//g;
+  s/\(.*//;
+  s/\#/_/;
+  return $_;
+}
+
+#------------------------------------------------------------------------------
+#
+#
 sub HTML_start {
   my $file   = shift;
   my $title  = shift;
   my $style  = shift;
   my $author = shift;
+  my $t	     = $title;
+  $t 	     =~ s|\\|\\\\|g;
+  $t 	     =~ s|['"]||g; #'
   my $fd     = new FileHandle($file, 'w') || die "$file: $!\n";;
-
+  
   $author = "\n  <meta name=\"Author\" content=\"$author\">" if $author ne '';
 
   print $fd <<__EOF__;
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//3.2//EN">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
   <title>$title</title>$author
   <link rel="stylesheet" href="$style">
+  <script src="reframe.js" type="text/javascript"/>
 </head>
-<body>
+<body onload='parent.document.title="$t";'>
+<noscript><a class="noframes" href="frameset.html" target="_top">Frames</a></noscript>
 __EOF__
   local $_;
   while (defined($_=shift)) {
