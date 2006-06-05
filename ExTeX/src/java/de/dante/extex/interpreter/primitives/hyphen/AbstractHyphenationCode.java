@@ -22,7 +22,6 @@ package de.dante.extex.interpreter.primitives.hyphen;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
-import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.language.Language;
 
@@ -45,9 +44,59 @@ import de.dante.extex.language.Language;
  * </p>
  *
  *
+ * <doc name="lang" type="register">
+ * <h3>The Tokens Register <tt>\lang</tt></h3>
+ * <p>
+ *  The tokens register <tt>\lang</tt> is the primary source of information to
+ *  determine the current language. If this register is not defined or has the
+ *  empty value then the count register <tt>\language</tt> is used instead.
+ * </p>
+ *
+ * <h4>Syntax</h4>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;lang&rang;
+ *      &rarr; <tt>\lang</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+ *        &lang;equals&rang;} {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getTokens(Context,TokenSource,Typesetter)
+ *        &lang;tokens&rang;}  </pre>
+ *
+ * <h4>Examples</h4>
+ *  <pre class="TeXSample">
+ *    \lang={de}  </pre>
+ *
+ * </doc>
+ *
+ *
+ * <doc name="language" type="register">
+ * <h3>The Count Register <tt>\language</tt></h3>
+ * <p>
+ *  The count register <tt>\language</tt> is the secondary source of information
+ *  to determine the current language. If this tokens register <tt>\lang</tt> is
+ *  not defined or has the empty value then this is used instead.
+ * </p>
+ *
+ * <h4>Syntax</h4>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;language&rang;
+ *      &rarr; <tt>\language</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+ *        &lang;equals&rang;} {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#scanInteger(Context,Typesetter)
+ *        &lang;number&rang;}  </pre>
+ *
+ * <h4>Examples</h4>
+ *  <pre class="TeXSample">
+ *    \language=1  </pre>
+ *
+ * </doc>
+ *
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public abstract class AbstractHyphenationCode extends AbstractCode {
 

@@ -47,7 +47,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.69 $
+ * @version $Revision: 1.70 $
  */
 public interface TokenSource {
 
@@ -153,18 +153,42 @@ public interface TokenSource {
      * return <code>null</code>.
      *
      * <p>
-     * This method parses the following syntactic entity:
+     *  This method parses the following syntactic entity:
      * </p>
      *
      * <doc type="syntax" name="control sequence">
      * <h3>A Control Sequence</h3>
      *
-     * <pre class="syntax">
-     *   &lang;control sequence&rang; </pre>
      * <p>
      *  A control sequence is either a active character or an escape sequence.
+     *  Macros can be assigned to control sequences only.
+     * </p>
+     * <p>
+     *  The definition of a control sequence highly depends on the current
+     *  configuration of the parser as stored in the category codes. An active
+     *  character is one with category code 13. A escape sequence starts with
+     *  a character with category code 0 followed by an arbitrary number of
+     *  letters &ndash; category code 11 &ndash; or a single character with any
+     *  other category code.
      * </p>
      *
+     * <h4>Syntax</h4>
+     *  The formal description of this syntactic entity is the following:
+     * <pre class="syntax">
+     *   &lang;control sequence&rang;
+     *     &rarr; <i>?<sub>13</sub></i>
+     *      |  <i>?<sub>0</sub></i><i>?</i>
+     *      |  <i>?<sub>0</sub></i><i>?<sub>11</sub></i>*   </pre>
+     *
+     * <h4>Examples</h4>
+     *  <pre class="TeXSample">
+     *    ~  </pre>
+     *  <p>
+     *  </p>
+     *  <pre class="TeXSample">
+     *    \abc  </pre>
+     *  <p>
+     *  </p>
      * </doc>
      *
      * @param context the interpreter context
@@ -521,8 +545,7 @@ public interface TokenSource {
      *  especially<br>
      *  MissingNumberException in case that no number could be read
      */
-    long scanNumber(Context context, Token token)
-            throws InterpreterException;
+    long scanNumber(Context context, Token token) throws InterpreterException;
 
     /**
      * Scan the input streams for an entity to denote a register name.
@@ -530,16 +553,59 @@ public interface TokenSource {
      *
      * <doc type="syntax" name="register name">
      * <h3>A Register Name</h3>
-     *
-     * <pre class="syntax">
-     *   &lang;register name&rang; </pre>
      * <p>
-     *  A register name accepts at least any number in the range from 0 to 255.
-     *  A number consists of a non-empty sequence of digits with category code
-     *  {@link de.dante.extex.scanner.type.Catcode#OTHER OTHER}.
-     *  The check for a maximal value of 255 is not performed in
-     *  <logo>ExTeX</logo>.
+     *  A register name determines under which key a register can be
+     *  addressed. In <logo>TeX</logo> this used to be a positive number only.
+     *  This has been extended to allow also a token list in braces.
      * </p>
+     * <p>
+     *  The alternative is controlled by the count register
+     *  <tt>\register.max</tt>. The following interpretation of the value of this
+     *   count is used:
+     *  <ul>
+     *   <li>If the value of this count register is negative
+     *    then a arbitrary non-negative number is allowed as register name
+     *    as well as any list of tokens enclosed in braces.</li>
+     *   <li>If the value of this count register is not-negative
+     *    then a only a non-negative number is allowed as register name
+     *    which does not exceed the value of the count register.</li>
+     *  </ul>
+     * </p>
+     * <p>
+     *  The value of the count register <tt>\register.max</tt> is set differently
+     *  for various configurations of <logo>ExTeX</logo>:
+     *  <ul>
+     *   <li><logo>TeX</logo> uses the value 255.</li>
+     *   <li><logo>eTeX</logo> uses the value 32767.</li>
+     *   <li><logo>Omega</logo> uses the value 65536.</li>
+     *   <li><logo>ExTeX</logo> uses the value -1.</li>
+     *  </ul>
+     * </p>
+     * <p>
+     *  Note that the register name <tt>\register.max</tt> contains a period.
+     *  Thus it can normally not be entered easily since the catcode of the
+     *  period is OTHER but needs to be LETTER. Thus you have to use a
+     *  temporarily reassigned category code (see
+     *  {@link de.dante.extex.interpreter.primitives.register.CatcodePrimitive \catcode})
+     *   or use
+     *  {@link de.dante.extex.interpreter.primitives.macro.Csname \csname}.
+     * </p>
+     *
+     * <h4>Syntax</h4>
+     * <pre class="syntax">
+     *   &lang;register name&rang;
+     *       &rarr; {@linkplain
+     *        de.dante.extex.interpreter.TokenSource#scanTokens(Context)
+     *        &lang;tokens&rang;}
+     *        | {@linkplain de.dante.extex.interpreter.TokenSource#scanNumber(Context)
+     *        &lang;number&rang;}  </pre>
+     *
+     * <h4>Examples</h4>
+     * <pre class="TeXSample">
+     *  123
+     *  {abc}
+     * </pre>
+     *
      * </doc>
      *
      *

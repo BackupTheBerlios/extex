@@ -34,16 +34,20 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="else">
  * <h3>The Primitive <tt>\else</tt></h3>
  * <p>
+ *  The primitive <tt>\else</tt> can appear in the context of a conditional.
+ *  It terminates the preceding branch and starts the next one.
+ * </p>
+ * <p>
  *  The primitive <tt>\else</tt> can not be used alone. It always comes in
- *  conjunction with a conditional. A isolated <tt>\else</tt> leads to an
- *  error immediately.
+ *  conjunction with a conditional. A isolated <tt>\else</tt> leads immediately
+ *  to an error.
  * </p>
  *
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;else&rang;
- *      &rarr; <tt>\else</tt> &lang;...&rang; </pre>
+ *      &rarr; <tt>\else</tt>  </pre>
  * </p>
  *
  * <h4>Examples</h4>
@@ -56,7 +60,7 @@ import de.dante.extex.typesetter.Typesetter;
  * This primitive is <emph>not</emph> expandable!
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public class Else extends AbstractCode {
 

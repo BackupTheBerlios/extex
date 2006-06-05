@@ -54,11 +54,11 @@ import de.dante.util.exception.GeneralException;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;hyphenchar&rang;
- *       &rarr; <tt>\hyphenchar</tt> &lang;font&rang; {@linkplain
- *          de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
- *          &lang;equals&rang;} {@linkplain
- *          de.dante.extex.interpreter.TokenSource#scanNumber(Context)
- *          &lang;8-bit&nbsp;number&rang;} </pre>
+ *      &rarr; <tt>\hyphenchar</tt> &lang;font&rang; {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+ *        &lang;equals&rang;} {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#scanNumber(Context)
+ *        &lang;8-bit&nbsp;number&rang;} </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
@@ -68,13 +68,14 @@ import de.dante.util.exception.GeneralException;
  * <p>
  *  The TeXbook gives no indication ow the primitive should react for negative
  *  values &ndash; except -1. The implementation of <logo>TeX</logo> allows to store
- *  and retrieve arbirary negative values. This behaviour of <logo>TeX</logo>
+ *  and retrieve arbitrary negative values. This behavior of <logo>TeX</logo>
  *  is not preserved in  <logo>ExTeX</logo>.
  * </p>
  * </doc>
  *
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
 public class Hyphenchar extends AbstractAssignment
         implements

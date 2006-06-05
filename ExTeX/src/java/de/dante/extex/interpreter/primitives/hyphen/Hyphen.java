@@ -31,7 +31,6 @@ import de.dante.extex.typesetter.type.node.CharNode;
 import de.dante.extex.typesetter.type.node.DiscretionaryNode;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
 import de.dante.util.UnicodeChar;
-import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
@@ -40,7 +39,17 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * <doc name="-">
  * <h3>The Primitive <tt>\-</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The primitive <tt>\-</tt> inserts a soft hyphenation into the current list.
+ *  The effect is that the current position is considered as point to insert a
+ *  hyphenation mark and break the line here.
+ * </p>
+ * <p>
+ *  <logo>TeX</logo> has another mechanism for describing conditional text
+ *  insertions when line breaking appears at a certain place. Those are
+ *  associated with the primitive
+ *  {@link de.dante.extex.interpreter.primitives.hyphen.Discretionary \discretionary}.
+ *  In this context the primitive <tt>\-</tt> is an abbreviation for
+ *  <tt>\discretionary{-}{}{}</tt>.
  * </p>
  *
  * <h4>Syntax</h4>
@@ -55,8 +64,9 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * </doc>
  *
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Hyphen extends AbstractCode {
 
@@ -91,9 +101,8 @@ public class Hyphen extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        NodeList hyphen = new HorizontalListNode();
         TypesettingContext tc = context.getTypesettingContext();
-        hyphen.add(new CharNode(tc, HYPHEN));
+        NodeList hyphen = new HorizontalListNode(new CharNode(tc, HYPHEN));
 
         try {
             typesetter.add(new DiscretionaryNode(hyphen, null, null));

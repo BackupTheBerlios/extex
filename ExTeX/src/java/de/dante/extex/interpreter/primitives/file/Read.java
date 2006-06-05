@@ -27,8 +27,8 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.interaction.Interaction;
-import de.dante.extex.interpreter.primitives.macro.MacroCode;
-import de.dante.extex.interpreter.primitives.macro.MacroPattern;
+import de.dante.extex.interpreter.primitives.macro.util.MacroCode;
+import de.dante.extex.interpreter.primitives.macro.util.MacroPattern;
 import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.interpreter.type.file.InFile;
 import de.dante.extex.interpreter.type.tokens.Tokens;
@@ -44,26 +44,35 @@ import de.dante.util.framework.logger.LogEnabled;
  * <p>
  *  The primitive <tt>\read</tt> read a line of text from the given input stream
  *  into a control sequence. The input stream should be opened with
- *  <tt>\openin</tt>. If a stream name is used which has not been opened or
+ *  {@link de.dante.extex.interpreter.primitives.file.Openin \openin}.
+ *  If a stream name is used which has not been opened or
  *  has already been closed then the default input stream is used instead.
  * </p>
  * <p>
- *  The primitive can be prefixed with <tt>\global</tt>. In this case the
- *  assignment to the control sequence is global instead of the default of
- *  assigning it locally to the current group.
+ *  The primitive can be prefixed with
+ *  {@link de.dante.extex.interpreter.primitives.prefix.Global \global}.
+ *  In this case the assignment to the control sequence is global instead of
+ *  the default of assigning it locally to the current group.
  * </p>
  * <p>
  *  The primitive implements an assignment. Thus the definition of
- *  <tt>\afterassignment</tt> and <tt>>\globaldefs</tt> are honored.
+ *  <tt>\afterassignment</tt> and <tt>\globaldefs</tt> are honored.
  * </p>
  *
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;read&rang;
- *       &rarr; <tt>\read</tt> &lang;read&rang; <tt>to</tt> {@linkplain
- *       de.dante.extex.interpreter.TokenSource#getControlSequence(Context)
- *       &lang;control sequence&rang;}  </pre>
+ *      &rarr; &lang;optional prefix&rang;<tt>\read</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#scanNumber(Context)
+ *        &lang;8-bit&nbsp;number&rang;} <tt>to</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getControlSequence(Context)
+ *        &lang;control sequence&rang;}
+ *
+ *    &lang;optional prefix&rang;
+ *      &rarr;
+ *       |  <tt>\global</tt> &lang;optional prefix&rang;  </pre>
+ *  </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
@@ -74,7 +83,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.32 $
+ * @version $Revision: 1.33 $
  */
 public class Read extends AbstractAssignment implements LogEnabled {
 

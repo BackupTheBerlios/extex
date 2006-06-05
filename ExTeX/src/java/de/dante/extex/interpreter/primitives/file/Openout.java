@@ -38,7 +38,16 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * <doc name="openout">
  * <h3>The Primitive <tt>\openout</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The primitive <tt>\openout</tt> tries to open a file or other named resource
+ *  for writing. The reference is stored in a write register to be used with
+ *  {@link de.dante.extex.interpreter.primitives.file.Write \write].
+ *  If the opening fails then the write register is void.
+ * </p>
+ * <p>
+ *  The opening of a write register is delayed until the nodes are shipped out.
+ *  If the invocation is prefixed with
+ *  {@link de.dante.extex.interpreter.primitives.prefix.Immediate \immediate}
+ *  then the resource is opened immediately.
  * </p>
  * <p>
  *  The primitive <tt>\openout</tt> is not considered as assignment. Nor can
@@ -50,7 +59,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;openout&rang;
- *      &rarr; &lang;modifier&rang; <tt>\openout</tt> {@linkplain
+ *      &rarr; &lang;optional prefix&rang; <tt>\openout</tt> {@linkplain
  *        de.dante.extex.interpreter.TokenSource#scanNumber(Context)
  *        &lang;8-bit&nbsp;number&rang;} {@linkplain
  *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
@@ -58,9 +67,9 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *        de.dante.extex.interpreter.primitive.file.AbstractFileCode#scanFileName(Context,TokenSource)
  *        &lang;file name&rang;}
  *
- *    &lang;modifier&rang;
+ *    &lang;optional prefix&rang;
  *      &rarr;
- *       |  <tt>\immediate</tt> &lang;modifier&rang;  </pre>
+ *       |  <tt>\immediate</tt> &lang;optional prefix&rang;  </pre>
  *
  * <h4>Examples</h4>
  * <pre class="TeXSample">
@@ -71,7 +80,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public class Openout extends AbstractFileCode {
 

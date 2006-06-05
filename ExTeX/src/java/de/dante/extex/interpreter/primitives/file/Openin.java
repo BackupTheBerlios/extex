@@ -37,23 +37,28 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * <p>
  *  The primitive <tt>\openin</tt> tries to open a file or other named resource
  *  for reading. The reference is stored in a read register to be used with
- *  <tt>\read</tt>. If the opening fails then the read register is void. This
- *  can be checked with the primitive <tt>\ifeof</tt>.
+ *  {@link de.dante.extex.interpreter.primitives.file.Read \read}.
+ *  If the opening fails then the read register is void. This
+ *  can be checked with the primitive
+ *  {@link de.dante.extex.interpreter.primitives.conditional.Ifeof \ifeof}.
  * </p>
  * <p>
  *  The assignment to a read register is local to the current group unless
- *  specified differently. If the prefix <tt>\global</tt> is given then the
- *  read register is assigned globally.
+ *  specified differently. If the prefix
+ *  {@link de.dante.extex.interpreter.primitives.prefix.Global \global}
+ *  is given then the read register is assigned globally.
  * </p>
  * <p>
- *  The stream should be closed with <tt>\closein</tt> when not needed any more.
+ *  The stream should be closed with
+ *  {@link de.dante.extex.interpreter.primitives.file.Closein \closein}
+ *  when not needed any more.
  * </p>
  *
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;openin&rang;
- *      &rarr; &lang;modifier&rang; <tt>\openin</tt> {@linkplain
+ *      &rarr; &lang;optional prefix&rang; <tt>\openin</tt> {@linkplain
  *        de.dante.extex.interpreter.TokenSource#scanNumber(Context)
  *        &lang;8-bit&nbsp;number&rang;} {@linkplain
  *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
@@ -61,9 +66,9 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *        de.dante.extex.interpreter.primitive.file.AbstractFileCode#scanFileName(Context,TokenSource)
  *        &lang;file name&rang;}
  *
- *    &lang;modifier&rang;
+ *    &lang;optional prefix&rang;
  *      &rarr;
- *       |  <tt>\global</tt>  </pre>
+ *       |  <tt>\global</tt> &lang;optional prefix&rang; </pre>
  *
  * <h4>Examples</h4>
  * <pre class="TeXSample">
@@ -74,7 +79,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public class Openin extends AbstractFileCode {
 

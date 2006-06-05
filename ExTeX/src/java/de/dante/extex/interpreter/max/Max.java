@@ -123,6 +123,20 @@ import de.dante.util.framework.logger.LogEnabled;
  *  This count parameter has been introduced by <logo>ExTeX</logo>.
  * </p>
  *
+ * <h4>Syntax</h4>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;ignorevoid&rang;
+ *      &rarr; <tt>\ignorevoid</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+ *        &lang;equals&rang;} {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#scanInteger(Context,Typesetter)
+ *        &lang;number&rang;}  </pre>
+ *
+ * <h4>Examples</h4>
+ *  <pre class="TeXSample">
+ *    \ignorevoid=1  </pre>
+ *
  * </doc>
  *
  * <doc name="everyjob" type="register">
@@ -136,7 +150,9 @@ import de.dante.util.framework.logger.LogEnabled;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;everyjob&rang;
- *       &rarr; <tt>\everyjob</tt> ...  </pre>
+ *       &rarr; <tt>\everyjob</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getTokens(Context,TokenSource,Typesetter)
+ *        &lang;tokens&rang;}  </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
@@ -147,7 +163,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.100 $
+ * @version $Revision: 1.101 $
  */
 public abstract class Max
         implements
@@ -875,6 +891,16 @@ public abstract class Max
      *  this value is overwritten when the format file is read back in.
      * </p>
      *
+     * <h4>Syntax</h4>
+     *  The formal description of this primitive is the following:
+     *  <pre class="syntax">
+     *    &lang;day&rang;
+     *      &rarr; <tt>\day</tt> {@linkplain
+     *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+     *        &lang;equals&rang;} {@linkplain
+     *        de.dante.extex.interpreter.TokenSource#scanInteger(Context,Typesetter)
+     *        &lang;number&rang;}  </pre>
+     *
      * <h4>Examples</h4>
      *  <pre class="TeXSample">
      *    \the\day  </pre>
@@ -897,6 +923,16 @@ public abstract class Max
      *  this value is overwritten when the format file is read back in.
      * </p>
      *
+     * <h4>Syntax</h4>
+     *  The formal description of this primitive is the following:
+     *  <pre class="syntax">
+     *    &lang;month&rang;
+     *      &rarr; <tt>\month</tt> {@linkplain
+     *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+     *        &lang;equals&rang;} {@linkplain
+     *        de.dante.extex.interpreter.TokenSource#scanInteger(Context,Typesetter)
+     *        &lang;number&rang;}  </pre>
+     *
      * <h4>Examples</h4>
      *  <pre class="TeXSample">
      *    \the\month  </pre>
@@ -917,6 +953,16 @@ public abstract class Max
      *  The value is stored when a format file is written. Note however that
      *  this value is overwritten when the format file is read back in.
      * </p>
+     *
+     * <h4>Syntax</h4>
+     *  The formal description of this primitive is the following:
+     *  <pre class="syntax">
+     *    &lang;year&rang;
+     *      &rarr; <tt>\year</tt> {@linkplain
+     *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+     *        &lang;equals&rang;} {@linkplain
+     *        de.dante.extex.interpreter.TokenSource#scanInteger(Context,Typesetter)
+     *        &lang;number&rang;}  </pre>
      *
      * <h4>Examples</h4>
      *  <pre class="TeXSample">
@@ -940,6 +986,16 @@ public abstract class Max
      *  The value is stored when a format file is written. Note however that
      *  this value is overwritten when the format file is read back in.
      * </p>
+     *
+     * <h4>Syntax</h4>
+     *  The formal description of this primitive is the following:
+     *  <pre class="syntax">
+     *    &lang;time&rang;
+     *      &rarr; <tt>\time</tt> {@linkplain
+     *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+     *        &lang;equals&rang;} {@linkplain
+     *        de.dante.extex.interpreter.TokenSource#scanInteger(Context,Typesetter)
+     *        &lang;number&rang;}  </pre>
      *
      * <h4>Examples</h4>
      *  <pre class="TeXSample">

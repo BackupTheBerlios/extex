@@ -19,7 +19,7 @@
    Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
    " />
   <meta name="author" content="Gerd Neugebauer" />
-  <meta name="version" content="$Revision: 1.1 $" />
+  <meta name="version" content="$Revision: 1.2 $" />
  </head>
  <body>
   This package contains primitives for <logo>ExTeX</logo>'s
@@ -42,7 +42,11 @@
   The formal description of this primitive is the following:
   <pre class="syntax">
     &lang;eTeXversion&rang;
-       &rarr; <tt>\eTeXversion</tt> ...  </pre>
+       &rarr; <tt>\eTeXversion</tt> {@linkplain
+         de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+         &lang;equals&rang;} {@linkplain
+         de.dante.extex.interpreter.TokenSource#scanInteger(Context,Typesetter)
+         &lang;number&rang;}  </pre>
 
  <h4>Examples</h4>
   <pre class="TeXSample">
@@ -66,11 +70,36 @@
   The formal description of this primitive is the following:
   <pre class="syntax">
     &lang;eTeXrevision&rang;
-       &rarr; <tt>\eTeXrevision</tt> ...  </pre>
+       &rarr; <tt>\eTeXrevision</tt> {@linkplain
+         de.dante.extex.interpreter.TokenSource#getTokens(Context,TokenSource,Typesetter)
+         &lang;tokens&rang;}  </pre>
 
  <h4>Examples</h4>
   <pre class="TeXSample">
     \the\eTeXrevision  </pre>
+
+ </doc>
+
+ <doc name="TeXXeTstate" type="register">
+ <h3>The Count Parameter <tt>\TeXXeTstate</tt></h3>
+ <p>
+  The count register <tt>\TeXXeTstate</tt> controlls the LR typesetting
+  in <logo>eTeX</logo> and some primitives.
+ </p>
+
+ <h4>Syntax</h4>
+  The formal description of this primitive is the following:
+  <pre class="syntax">
+    &lang;TeXXeTstate&rang;
+       &rarr; <tt>\TeXXeTstate</tt> {@linkplain
+         de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+         &lang;equals&rang;} {@linkplain
+         de.dante.extex.interpreter.TokenSource#scanInteger(Context,Typesetter)
+         &lang;number&rang;}  </pre>
+
+ <h4>Examples</h4>
+  <pre class="TeXSample">
+    \TeXXeTstate=1  </pre>
 
  </doc>
 

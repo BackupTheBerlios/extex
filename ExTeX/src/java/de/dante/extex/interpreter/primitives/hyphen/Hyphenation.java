@@ -19,25 +19,17 @@
 
 package de.dante.extex.interpreter.primitives.hyphen;
 
-import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.exception.helping.MissingLeftBraceException;
 import de.dante.extex.interpreter.primitives.register.CharCode;
 import de.dante.extex.interpreter.type.Code;
-import de.dante.extex.language.Language;
-import de.dante.extex.language.hyphenation.exception.HyphenationException;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.CatcodeException;
 import de.dante.extex.scanner.type.token.CodeToken;
-import de.dante.extex.scanner.type.token.LeftBraceToken;
 import de.dante.extex.scanner.type.token.LetterToken;
 import de.dante.extex.scanner.type.token.OtherToken;
-import de.dante.extex.scanner.type.token.RightBraceToken;
 import de.dante.extex.scanner.type.token.Token;
-import de.dante.extex.typesetter.Typesetter;
-import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.unicode.Unicode;
 import de.dante.util.UnicodeChar;
 import de.dante.util.UnicodeCharList;
@@ -72,13 +64,12 @@ import de.dante.util.UnicodeCharList;
  *  this implementation can be used to insert words with hyphens as well. To
  *  specify the places where a hyphen occurs literally you just ave to include
  *  two hyphens in the hyphenation list.
- *  To
  * </p>
  *
  * <h4>Syntax</h4>
  *  <pre class="syntax">
  *    &lang;hyphenation&rang;
- *     &rarr; <tt>\hyphenation</tt> {...} </pre>
+ *     &rarr; <tt>\hyphenation</tt> {...}  </pre>
  *
  * <h4>Example:</h4>
  *  <pre class="TeXSample">
@@ -91,7 +82,7 @@ import de.dante.util.UnicodeCharList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class Hyphenation extends HyphenationPrimitive {
 

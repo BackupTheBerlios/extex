@@ -45,6 +45,53 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * interface required and forwards the request for processing to the appropriate
  * interpreter.
  *
+ *
+ * <doc name="output" type="register">
+ * <h3>The Tokens Register <tt>\output</tt></h3>
+ * <p>
+ *  The tokens register <tt>\output</tt> contains the program executed whenever
+ *  a page is completed. If it is not defined then the built-in output routine
+ *  will be used.
+ * </p>
+ * <p>
+ *  The box register 255 is used to pass in the current vertical list. This list
+ *  is assumed to make it to the page. For this purpose the primitive
+ *  {@link de.dante.extex.interpreter.primitives.typesetter.output.Shipout \shipout}
+ *  can be used.
+ * </p>
+ * <p>
+ *  The output routine is assumed to clear the box register 255. If some
+ *  material is left in this box register then this is considered an error.
+ * </p>
+ * <p>
+ *  The output routine is assumed to invoke
+ *  {@link de.dante.extex.interpreter.primitives.typesetter.output.Shipout \shipout}.
+ *  This does not have to happen at each invocation of the output routine.
+ *  The count register
+ *  <tt>\maxdeadcycles</tt> determines how many invocations are allowed which
+ *  do not call
+ *  {@link de.dante.extex.interpreter.primitives.typesetter.output.Shipout \shipout}.
+ *  The count register <tt>\deadcycles</tt>
+ *  contains the number of dead cycles encountered already.
+ * </p>
+ *
+ * <h4>Syntax</h4>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;output&rang;
+ *      &rarr; <tt>\output</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+ *        &lang;equals&rang;} {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getTokens(Context,TokenSource,Typesetter)
+ *        &lang;tokens&rang;}  </pre>
+ *
+ * <h4>Examples</h4>
+ *  <pre class="TeXSample">
+ *    \output={}  </pre>
+ *
+ * </doc>
+ *
+ *
  * <doc name="deadcycles" type="register">
  * <h3>The Count Parameter <tt>\deadcycles</tt></h3>
  * <p>
@@ -54,14 +101,18 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *  the output is delayed. Thus a large number of dead cycles can indicate a
  *  problem in the output routine.
  *  The register <tt>\deadcycles</tt> is compared with the register
- *  <tt>\deadcycles</tt> to decide when an intervention seem appropriate.
+ *  <tt>\maxdeadcycles</tt> to decide when an intervention seem appropriate.
  * </p>
  *
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;deadcycles&rang;
- *       &rarr; <tt>\deadcycles</tt> ...  </pre>
+ *      &rarr; <tt>\deadcycles</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+ *        &lang;equals&rang;} {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#scanInteger(Context,Typesetter)
+ *        &lang;number&rang;}  </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
@@ -80,14 +131,18 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *  Thus a large number of dead cycles can indicate a problem in the output
  *  routine.
  *  The register <tt>\deadcycles</tt> is compared with the register
- *  <tt>\deadcycles</tt> to decide when an intervention seem appropriate.
+ *  <tt>\maxdeadcycles</tt> to decide when an intervention seem appropriate.
  * </p>
  *
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;maxdeadcycles&rang;
- *       &rarr; <tt>\maxdeadcycles</tt> ...  </pre>
+ *      &rarr; <tt>\maxdeadcycles</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+ *        &lang;equals&rang;} {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#scanInteger(Context,Typesetter)
+ *        &lang;number&rang;}  </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
@@ -96,31 +151,8 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * </doc>
  *
  *
- * <doc name="output" type="register">
- * <h3>The Tokens Register <tt>\output</tt></h3>
- * <p>
- *  The tokens register <tt>\output</tt> contains the program executed whenever
- *  a page is completed.
- *  TODO gene: missing documentation
- * </p>
- *
- * <h4>Syntax</h4>
- *  The formal description of this primitive is the following:
- *  <pre class="syntax">
- *    &lang;output&rang;
- *       &rarr; <tt>\output</tt> {@linkplain
- *    de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
- *    &lang;equals&rang;} &lang;tokens&rang;  </pre>
- *
- * <h4>Examples</h4>
- *  <pre class="TeXSample">
- *    \output={}  </pre>
- *
- * </doc>
- *
- *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class TeXOutputRoutine implements OutputRoutine {
 

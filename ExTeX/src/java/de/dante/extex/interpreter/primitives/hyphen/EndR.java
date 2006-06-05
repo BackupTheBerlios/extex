@@ -37,7 +37,14 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * <doc name="endR">
  * <h3>The Primitive <tt>\endR</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  The primitive <tt>\endR</tt> indicates that the following text is typeset
+ *  in the way it was before the matching
+ *  {@link de.dante.extex.interpreter.primitives.hyphen.BeginR \beginR}
+ *  has been encountered.
+ * </p>
+ * <p>
+ *  This primitive is deactivated unless the count register <tt>\TeXXeTstate</tt>
+ *  has a positive value.
  * </p>
  *
  * <h4>Syntax</h4>
@@ -47,13 +54,13 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * <h4>Example:</h4>
  *  <pre class="TeXSample">
- *   \endR  </pre>
+ *   \beginR ... \endR  </pre>
  *
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class EndR extends AbstractCode {
 

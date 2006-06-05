@@ -57,7 +57,9 @@ import de.dante.util.framework.logger.LogEnabled;
  *  The general form of this primitive is
  * <pre class="syntax">
  *   &lang;ensureloaded&rang;
- *       &rarr; <tt>\ensureloaded</tt> <i>&lang;tokens&rang;</i> </pre>
+ *       &rarr; <tt>\ensureloaded</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getTokens(Context,TokenSource,Typesetter)
+ *        &lang;tokens&rang;} </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
@@ -69,7 +71,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class EnsureLoaded extends AbstractCode implements LogEnabled {
 

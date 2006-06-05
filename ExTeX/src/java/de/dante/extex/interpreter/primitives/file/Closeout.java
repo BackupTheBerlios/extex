@@ -42,7 +42,10 @@ import de.dante.util.framework.logger.LogEnabled;
  * <h3>The Primitive <tt>\closeout</tt></h3>
  * <p>
  *  The primitive takes one expanded integer argument. This argument denotes a
- *  write register which will be closed if it is currently assigned to a file.
+ *  write register which will be closed if it is currently assigned to a file
+ *  &ndash; with {@link de.dante.extex.interpreter.primitives.file.Openout \openout}.
+ *  If the input file assigned to the given number has not been opened or has
+ *  been closed before then this primitive simply does nothing.
  * </p>
  *
  * <h4>Syntax</h4>
@@ -64,7 +67,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
 public class Closeout extends AbstractCode implements LogEnabled {
 

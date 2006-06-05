@@ -50,7 +50,11 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * <h4>Syntax</h4>
  *  <pre class="syntax">
  *    &lang;lefthyphenmin&rang;
- *     &rarr; <tt>\lefthyphenmin</tt> = ... </pre>
+ *      &rarr; <tt>\lefthyphenmin</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+ *        &lang;equals&rang;} {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#scanInteger(Context,Typesetter)
+ *        &lang;number&rang;}  </pre>
  *
  * <h4>Example:</h4>
  *  <pre class="TeXSample">
@@ -67,7 +71,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class LeftHyphenmin extends AbstractHyphenationCode
         implements

@@ -37,7 +37,12 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * <doc name="beginR">
  * <h3>The Primitive <tt>\beginR</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  The primitive <tt>\beginR</tt> indicates that the following text is typeset
+ *  right to left.
+ * </p>
+ * <p>
+ *  This primitive is deactivated unless the count register <tt>\TeXXeTstate</tt>
+ *  has a positive value.
  * </p>
  *
  * <h4>Syntax</h4>
@@ -47,13 +52,13 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * <h4>Example:</h4>
  *  <pre class="TeXSample">
- *   \beginR  </pre>
+ *   \beginR ... \endR </pre>
  *
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class BeginR extends AbstractCode {
 
