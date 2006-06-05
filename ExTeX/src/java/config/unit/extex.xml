@@ -30,6 +30,12 @@
             class="de.dante.extex.interpreter.primitives.hyphen.Hyphenation"/>
     <define name="ignorevoid"
             class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
+    <define name="lang"
+            class="de.dante.extex.interpreter.primitives.register.toks.ToksParameter"/>
+    <define name="mediaheight"
+            class="de.dante.extex.interpreter.primitives.register.dimen.DimenParameter"/>
+    <define name="mediawidth"
+            class="de.dante.extex.interpreter.primitives.register.dimen.DimenParameter"/>
  </primitives>
  </unit>
  
