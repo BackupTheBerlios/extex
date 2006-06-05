@@ -38,7 +38,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * mathematical appearance.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class MathContext {
 
@@ -144,7 +144,7 @@ public class MathContext {
      */
     public Dimen convert(final Mudimen mudimen) throws TypesetterException {
 
-        Dimen length = new Dimen(mudimen.getLength());
+        Dimen length = new Dimen(mudimen.getLength().getValue());
         length.multiply(mathParameter(MathFontParameter.MATH_QUAD, style)
                 .getValue(), MU_UNIT);
 
