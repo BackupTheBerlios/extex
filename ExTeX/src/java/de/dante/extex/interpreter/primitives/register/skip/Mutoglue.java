@@ -35,7 +35,9 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="mutoglue">
  * <h3>The Primitive <tt>\mutoglue</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  The primitive <tt>\mutoglue</tt> converts a muglue specification to a glue
+ *  specification. For this conversion 1mu=1pt is assumed. This primitive can be
+ *  used wherever a glue is expected.
  * </p>
  *
  * <h4>Syntax</h4>
@@ -54,7 +56,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Mutoglue extends AbstractCode implements GlueConvertible {
 
@@ -82,7 +84,7 @@ public class Mutoglue extends AbstractCode implements GlueConvertible {
     public Glue convertGlue(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        Muskip muskip = new Muskip(context, source, typesetter);
+        Muskip muskip = Muskip.parse(context, source, typesetter);
 
         return new Glue(muskip.getLength(), muskip.getStretch(), muskip
                 .getShrink());

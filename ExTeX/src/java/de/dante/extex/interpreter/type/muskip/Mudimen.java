@@ -27,30 +27,28 @@ import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.Code;
+import de.dante.extex.interpreter.type.glue.GlueComponent;
 import de.dante.extex.interpreter.type.scaled.ScaledNumber;
+import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.scanner.type.CatcodeException;
 import de.dante.extex.scanner.type.token.CodeToken;
 import de.dante.extex.scanner.type.token.Token;
+import de.dante.extex.scanner.type.token.TokenFactory;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
  * This class provides a dimen value with a length which is a multiple of
- * math unints (mu).
+ * math units (mu).
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Mudimen implements Serializable {
 
     /**
-     * The constant <tt>ONE</tt> contains the internal representation for 1mu.
-     * @see "<logo>TeX</logo> &ndash; The Program [101]"
-     */
-    private static final long ONE = 1 << 16;
-
-    /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 20060605L;
 
     /**
      * Scan a math unit.
@@ -62,7 +60,7 @@ public class Mudimen implements Serializable {
      *
      * @throws InterpreterException in case of an error
      */
-    public static long scanMu(final Context context, final TokenSource source)
+    protected static long scanMu(final Context context, final TokenSource source)
             throws InterpreterException {
 
         Token t = source.getToken(context);
@@ -87,7 +85,7 @@ public class Mudimen implements Serializable {
     /**
      * The field <tt>length</tt> contains the the natural length.
      */
-    private long value;
+    private GlueComponent length = new GlueComponent(0);
 
     /**
      * Creates a new object.
@@ -96,7 +94,6 @@ public class Mudimen implements Serializable {
     public Mudimen() {
 
         super();
-        this.value = 0;
     }
 
     /**
@@ -124,7 +121,28 @@ public class Mudimen implements Serializable {
             throws InterpreterException {
 
         super();
-        this.value = scanMu(context, source);
+        this.length.set(scanMu(context, source));
+    }
+
+    /**
+     * Creates a new object.
+     *
+     * @param len the length
+     */
+    public Mudimen(final long len) {
+
+        super();
+        length.set(len);
+    }
+
+    /**
+     * Add some other length to the current value.
+     *
+     * @param value the value to add
+     */
+    public void add(final long value) {
+
+        this.length.add(new GlueComponent(value));
     }
 
     /**
@@ -132,9 +150,33 @@ public class Mudimen implements Serializable {
      *
      * @return the length
      */
-    public long getLength() {
+    public GlueComponent getLength() {
 
-        return this.value;
+        return this.length;
+    }
+
+    /**
+     * Check for a zero value.
+     *
+     * @return <code>true</code> iff the length is zero
+     */
+    public boolean isZero() {
+
+        return length.eq(GlueComponent.ZERO);
+    }
+
+    /**
+     * Multiply the value by an integer fraction.
+     * <p>
+     *  <i>length</i> = <i>length</i> * <i>nom</i> / <i>denom</i>
+     * </p>
+     *
+     * @param nom nominator
+     * @param denom denominator
+     */
+    public void multiply(final long nom, final long denom) {
+
+        length.multiply(nom, denom);
     }
 
     /**
@@ -157,60 +199,28 @@ public class Mudimen implements Serializable {
      */
     public void toString(final StringBuffer sb) {
 
-        toString(sb, 'm', 'u');
+        length.toString(sb, 'm', 'u');
     }
 
     /**
-     * Determine the printable representation of the object and append it to
-     * the given StringBuffer.
+     * Determine the printable representation of the object and return it as a
+     * list of Tokens.
+     * The value returned is exactly the string which would be produced by
+     * <logo>TeX</logo> to print the Mudimen. This means the result is expressed
+     * in mu and properly rounded to be read back in again without loss of
+     * information.
      *
-     * @param sb the output string buffer
-     * @param c1 the first character for the length of order 0
-     * @param c2 the second character for the length of order 0
+     * @param toks the tokens to append to
+     * @param factory the token factory to get the required tokens from
+     * @param c1 the first character of the unit
+     * @param c2 the second character of the unit
      *
-     * @see #toString(StringBuffer)
+     * @throws CatcodeException in case of an error
      */
-    public void toString(final StringBuffer sb, final char c1, final char c2) {
+    public void toToks(final Tokens toks, final TokenFactory factory,
+            final char c1, final char c2) throws CatcodeException {
 
-        long val = value;
-
-        if (val < 0) {
-            sb.append('-');
-            val = -val;
-        }
-
-        long v = val / ONE;
-        if (v == 0) {
-            sb.append('0');
-        } else {
-            long m = 1;
-            while (m <= v) {
-                m *= 10;
-            }
-            m /= 10;
-            while (m > 0) {
-                sb.append((char) ('0' + (v / m)));
-                v = v % m;
-                m /= 10;
-            }
-        }
-
-        sb.append('.');
-
-        val = 10 * (val % ONE) + 5;
-        long delta = 10;
-        do {
-            if (delta > ONE) {
-                val = val + 0100000 - 50000; // round the last digit
-            }
-            int i = (int) (val / ONE);
-            sb.append((char) ('0' + i));
-            val = 10 * (val % ONE);
-            delta *= 10;
-        } while (val > delta);
-
-        sb.append(c1);
-        sb.append(c2);
+        length.toToks(toks, factory, c1, c2);
     }
 
 }
