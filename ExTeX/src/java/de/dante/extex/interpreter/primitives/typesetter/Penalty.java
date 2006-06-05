@@ -26,12 +26,10 @@ import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.node.PenaltyNode;
-import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
- * This class provides an implementation for the primitive
- * <code>\penalty</code>.
+ * This class provides an implementation for the primitive <code>\penalty</code>.
  *
  * <doc name="penalty">
  * <h3>The Primitive <tt>\penalty</tt></h3>
@@ -49,8 +47,8 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *  <pre class="syntax">
  *    &lang;penalty&rang;
  *        &rarr; <tt>\penalty</tt> {@linkplain
- *    de.dante.extex.interpreter.TokenSource#scanNumber(Context)
- *    &lang;8-bit&nbsp;number&rang;}  </pre>
+ *          de.dante.extex.interpreter.TokenSource#scanNumber(Context)
+ *          &lang;8-bit&nbsp;number&rang;}  </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
@@ -64,7 +62,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Penalty extends AbstractCode {
 
@@ -94,12 +92,9 @@ public class Penalty extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        long penalty = 0;
+        long penalty = source.scanInteger(context, typesetter);
         try {
-            penalty = source.scanInteger(context, typesetter);
             typesetter.add(new PenaltyNode(penalty));
-        } catch (GeneralException e) {
-            throw new InterpreterException(e);
         } catch (ConfigurationException e) {
             throw new InterpreterException(e);
         }
