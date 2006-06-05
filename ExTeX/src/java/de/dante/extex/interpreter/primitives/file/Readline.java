@@ -29,8 +29,8 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.interaction.Interaction;
-import de.dante.extex.interpreter.primitives.macro.MacroCode;
-import de.dante.extex.interpreter.primitives.macro.MacroPattern;
+import de.dante.extex.interpreter.primitives.macro.util.MacroCode;
+import de.dante.extex.interpreter.primitives.macro.util.MacroPattern;
 import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.interpreter.type.file.InFile;
 import de.dante.extex.interpreter.type.tokens.Tokens;
@@ -46,7 +46,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * <doc name="readline">
  * <h3>The Primitive <tt>\readline</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  TODO gene: missing documentation
  * </p>
  *
  * <h4>Syntax</h4>
@@ -66,7 +66,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Readline extends AbstractAssignment implements LogEnabled {
 
