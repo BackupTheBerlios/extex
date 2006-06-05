@@ -110,7 +110,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.95 $
+ * @version $Revision: 1.96 $
  */
 public class Moritz extends Max
         implements
@@ -1309,7 +1309,7 @@ public class Moritz extends Max
         }
 
         long registerNumber = scanNumber(context, token);
-        if (registerMax > 0 && registerNumber > registerMax) {
+        if (registerMax >= 0 && registerNumber > registerMax) {
             throw new IllegalRegisterException(Long.toString(registerNumber));
         }
         return Long.toString(registerNumber);
@@ -1346,7 +1346,7 @@ public class Moritz extends Max
 
         Tokens toks = new Tokens();
         skipSpaces = true;
-        Token token = getToken(context);
+        Token token = scanToken(context);
 
         if (token == null) {
             throw new EofException(primitive);
