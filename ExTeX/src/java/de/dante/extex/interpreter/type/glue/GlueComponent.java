@@ -60,7 +60,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.48 $
+ * @version $Revision: 1.49 $
  */
 public class GlueComponent implements Serializable, FixedGlueComponent {
 
@@ -824,7 +824,7 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
                     Namespace.DEFAULT_NAMESPACE));
             Token l = factory.createToken(Catcode.LETTER, 'l',
                     Namespace.DEFAULT_NAMESPACE);
-            for (int i = order; i > 0; i--) {
+            for (int i = order; i > 1; i--) {
                 toks.add(l);
             }
         } else {
