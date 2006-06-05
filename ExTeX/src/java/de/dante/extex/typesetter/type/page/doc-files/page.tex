@@ -1,0 +1,75 @@
+%%*****************************************************************************
+%% $Id: page.tex,v 1.1 2006/06/05 15:34:49 gene Exp $
+%%*****************************************************************************
+%% Author: Gerd Neugebauer
+%%-----------------------------------------------------------------------------
+\documentclass{article}
+\usepackage{graphicx,color}
+\pagestyle{empty}
+\voffset=-1in
+\hoffset=-1in
+\paperwidth=100mm
+\begin{document}%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\sf\large
+
+\begin{picture}(210,297)
+  \definecolor{PP}{gray}{.95}
+  \definecolor{LP}{gray}{.9}
+  \definecolor{LPC}{gray}{.85}
+  \fboxsep=0pt
+  \put(0,0){\makebox(210,297){\colorbox{PP}{\makebox(210,297){}}}}
+  \put(15,37){\makebox(170,240){\colorbox{LP}{\makebox(170,240){}}}}
+  \put(15,37){\makebox(0,0)[bl]{\colorbox{LPC}{\makebox(170,15){}}}}
+  \put(15,262){\makebox(0,0)[bl]{\colorbox{LPC}{\makebox(170,15){}}}}
+  \put(15,60){\makebox(0,0)[bl]{\colorbox{LPC}{\makebox(80,194){}}}}
+  \put(105,60){\makebox(0,0)[bl]{\colorbox{LPC}{\makebox(80,194){}}}}
+  \thicklines
+  \put(0,0){\framebox(210,297)[b]{Physical Page\rule[-1ex]{0pt}{2ex}}}
+  \put(15,37){\framebox(170,240){Logical Page}}
+  \thinlines
+
+  \put(15,277){\circle*{3}}
+  \put(15,277){\line(1,-1){25}}
+  \put(40,247){\makebox(0,0)[l]{\small Reference}}
+
+  \put(-10,260){\vector(1,0){10}}
+  \put(25,260){\vector(-1,0){10}}
+  \put(7.5,260){\makebox(0,0){\rotatebox{90}{\small\tt \char`\\hoffset}}}
+
+  \put(30,307){\vector(0,-1){10}}
+  \put(30,267){\vector(0,1){10}}
+  \put(30,287){\makebox(0,0){\small\tt \char`\\voffset}}
+
+  \put(210,0){\line(1,0){10}}
+  \put(210,297){\line(1,0){10}}
+  \put(218,148.5){\makebox(0,0){\rotatebox{90}{\small\tt \char`\\mediaheight}}}
+  \put(218,110){\vector(0,-1){110}}
+  \put(218,187){\vector(0,1){110}}
+
+  \put(0,0){\line(0,-1){10}}
+  \put(210,0){\line(0,-1){10}}
+  \put(105,-8){\makebox(0,0){\small\tt \char`\\mediawidth}}
+  \put(70,-8){\vector(-1,0){70}}
+  \put(140,-8){\vector(1,0){70}}
+
+
+  \put(185,37){\line(1,0){10}}
+  \put(185,277){\line(1,0){10}}
+  \put(193,157){\makebox(0,0){\rotatebox{90}{\small\tt \char`\\vsize}}}
+  \put(193,137){\vector(0,-1){100}}
+  \put(193,177){\vector(0,1){100}}
+
+  \put(15,37){\line(0,-1){10}}
+  \put(185,37){\line(0,-1){10}}
+  \put(100,29){\makebox(0,0){\small\tt \char`\\hsize}}
+  \put(80,29){\vector(-1,0){65}}
+  \put(120,29){\vector(1,0){65}}
+
+\end{picture}
+
+\end{document}%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Local Variables: 
+% mode: latex
+% TeX-master: nil
+% End: 
