@@ -25,7 +25,18 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.primitives.register.box.AbstractBox;
+import de.dante.extex.interpreter.exception.helping.EofException;
+import de.dante.extex.interpreter.exception.helping.EofInToksException;
+import de.dante.extex.interpreter.exception.helping.MissingLeftBraceException;
+import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.interpreter.type.Code;
+import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.interpreter.type.tokens.TokensConvertible;
+import de.dante.extex.scanner.type.Catcode;
+import de.dante.extex.scanner.type.token.CodeToken;
+import de.dante.extex.scanner.type.token.LeftBraceToken;
+import de.dante.extex.scanner.type.token.RightBraceToken;
+import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.framework.logger.LogEnabled;
 
@@ -35,7 +46,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * <doc name="showtokens">
  * <h3>The Primitive <tt>\showtokens</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  TODO gene: missing documentation
  * </p>
  *
  * <h4>Syntax</h4>
@@ -47,18 +58,20 @@ import de.dante.util.framework.logger.LogEnabled;
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \showtokens {1234}  </pre>
+ *  <pre class="TeXSample">
+ *    \showtokens \expandafter{\jobname}  </pre>
  *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class Showtokens extends AbstractBox implements LogEnabled {
+public class Showtokens extends AbstractCode implements LogEnabled {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 20060512L;
+    protected static final long serialVersionUID = 20060603L;
 
     /**
      * The field <tt>logger</tt> contains the target channel for the message.
@@ -95,8 +108,56 @@ public class Showtokens extends AbstractBox implements LogEnabled {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        //TODO gene: unimplemented
-        throw new RuntimeException("unimplemented");
+        Tokens tokens = getTokens(context, source, typesetter);
+        logger.info("\n> " + tokens.toText() + ".\n");
+    }
+
+    /**
+     * Collect some tokens but expand until the starting brace is found.
+     *
+     * @param context the interpreter context
+     * @param source the source for new tokens
+     * @param typesetter the typesetter
+     *
+     * @return the tokens collected
+     *
+     * @throws InterpreterException in case of an error
+     */
+    private Tokens getTokens(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
+
+        Tokens tokens = new Tokens();
+        Token token = source.scanToken(context);
+
+        if (token instanceof LeftBraceToken) {
+            int balance = 1;
+
+            for (token = source.getToken(context); token != null; token = source
+                    .getToken(context)) {
+
+                if (token.isa(Catcode.LEFTBRACE)) {
+                    ++balance;
+                } else if (token instanceof RightBraceToken && --balance <= 0) {
+                    return tokens;
+                }
+
+                tokens.add(token);
+            }
+
+            throw new EofInToksException(printableControlSequence(context));
+
+        } else if (token instanceof CodeToken) {
+            Code code = context.getCode((CodeToken) token);
+            if (code instanceof TokensConvertible) {
+                return ((TokensConvertible) code).convertTokens(context,
+                        source, typesetter);
+            }
+
+        } else if (token == null) {
+            throw new EofException(getLocalizer().format("Tokens.Text"));
+        }
+
+        throw new MissingLeftBraceException("???");
     }
 
 }

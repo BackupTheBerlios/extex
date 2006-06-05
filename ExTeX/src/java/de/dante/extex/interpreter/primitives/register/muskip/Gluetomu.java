@@ -35,7 +35,9 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="gluetomu">
  * <h3>The Primitive <tt>\gluetomu</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  The primitive <tt>\gluetomu</tt> converts a glue specification to a muglue
+ *  specification. For this conversion 1mu=1pt is assumed. This primitive can be
+ *  used wherever a muskip is expected.
  * </p>
  *
  * <h4>Syntax</h4>
@@ -52,7 +54,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Gluetomu extends AbstractCode implements MuskipConvertible {
 
@@ -72,21 +74,6 @@ public class Gluetomu extends AbstractCode implements MuskipConvertible {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.glue.GlueConvertible#convertGlue(
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.typesetter.Typesetter)
-     */
-    public Glue convertGlue(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws InterpreterException {
-
-        Muskip muskip = new Muskip(context, source, typesetter);
-
-        return new Glue(muskip.getLength(), muskip.getStretch(), muskip
-                .getShrink());
-    }
-
-    /**
      * @see de.dante.extex.interpreter.type.muskip.MuskipConvertible#convertMuskip(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
@@ -96,10 +83,9 @@ public class Gluetomu extends AbstractCode implements MuskipConvertible {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-//        Glue glue = new Glue(context, source, typesetter);
+        Glue glue = Glue.parse(source, context, typesetter);
 
-//        return new Muskip(glue.getLength(), glue.getStretch(), glue.getShrink());
-        return null;
+        return new Muskip(glue.getLength(), glue.getStretch(), glue.getShrink());
     }
 
 }
