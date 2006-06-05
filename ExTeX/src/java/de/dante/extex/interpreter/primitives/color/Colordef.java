@@ -24,13 +24,9 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Color;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.primitives.color.util.ColorParser;
 import de.dante.extex.interpreter.type.AbstractAssignment;
-import de.dante.extex.interpreter.type.Code;
-import de.dante.extex.interpreter.type.color.ColorConvertible;
 import de.dante.extex.scanner.type.token.CodeToken;
-import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
 
 /**
@@ -39,40 +35,68 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="colordef">
  * <h3>The Primitive <tt>\colordef</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  The primitive <tt>\colordef</tt> defines a color variable and assigns it to
+ *  a control sequence. The color is initialized with a given color &ndash;
+ *  either a color constant or a color variable.
+ * </p>
+ * <p>
+ *  The control sequence can later be used wherever a color is expected.
+ * </p>
+ * <p>
+ *  The primitive <tt>\colordef</tt> constitutes an assignment. Thus the
+ *  count register <tt>\globaldefs</tt> and the token register
+ *  <tt>\afterassignment</tt> interact with it as for each assignment.
+ * </p>
+ * <p>
+ *  The primitive can be prefixed with the <tt>\global</tt> flag. In this case
+ *  the definition is performed globally. Otherwise the control sequence holds
+ *  the color value in the current group only. It is reset to the previous
+ *  value when the group is ended.
+ * </p>
+ * <p>
+ *  The color variable can be manipulated by assigning new colors to it. The
+ *  assignment is accomplished by specifying the new value after an optional
+ *  equals sign. Note that the assignment can not be prefixed by a
+ *  <tt>\global</tt> modifier since the scope has already been specified in the
+ *  declaration with <tt>\colordef</tt>.
  * </p>
  *
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;colordef&rang;
- *      &rarr; &lang;prefix&rang; <tt>\colordef</tt> &lang;...&rang;   </pre>
+ *      &rarr; &lang;prefix&rang; <tt>\colordef</tt> {@linkplain
+ *       de.dante.extex.interpreter.TokenSource#getControlSequence(Context)
+ *       &lang;control sequence&rang;} &lang;color&rang;
+ *
+ *    &lang;prefix&rang;
+ *      &rarr;
+ *       |  <tt>\global</tt>   </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
- *    \colordef\col alpha 1234 rgb {\r \b \g}  </pre>
+ *    \colordef\col alpha .1234 rgb {.2 .3 .4}  </pre>
  *  <p>
  *  </p>
  *  <pre class="TeXSample">
- *    \colordef\col\color{\r \b \g}  </pre>
+ *    \global\colordef\col\color  </pre>
  *  <p>
  *  </p>
  *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Colordef extends AbstractAssignment {
 
     /**
-     * This inner class carries a color value for storing it as a code in
-     * the context.
+     * This class carries a color value for storing it as code in the context.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
-    private class CC extends AbstractColor {
+    private class ColorCode extends AbstractColor {
 
         /**
          * The field <tt>serialVersionUID</tt> contains the version number for
@@ -91,7 +115,7 @@ public class Colordef extends AbstractAssignment {
          * @param color the color
          * @param name the name of the primitive
          */
-        public CC(final Color color, final String name) {
+        public ColorCode(final Color color, final String name) {
 
             super(name);
             this.color = color;
@@ -156,25 +180,10 @@ public class Colordef extends AbstractAssignment {
 
         CodeToken cs = source.getControlSequence(context);
         source.getOptionalEquals(context);
-        Token t = source.getNonSpace(context);
-        Color color = null;
-        if (t instanceof CodeToken) {
-            Code code = context.getCode((CodeToken) t);
-            if (code instanceof ColorConvertible) {
-                color = ((ColorConvertible) code).convertColor(context, source,
-                        typesetter);
-            }
-        } else {
-            source.push(t);
-            color = ColorParser.parseColor(context, source, typesetter,
-                    getName());
-        }
-
-        if (color == null) {
-            throw new HelpingException(getLocalizer(), "MissingColor");
-        }
-
-        context.setCode(cs, new CC(color, cs.getName()), prefix.clearGlobal());
+        Color color = ColorParser.parseColor(context, source, typesetter,
+                getName());
+        context.setCode(cs, new ColorCode(color, cs.getName()), prefix
+                .clearGlobal());
     }
 
 }
