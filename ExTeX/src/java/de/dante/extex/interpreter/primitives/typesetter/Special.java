@@ -36,7 +36,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * <doc name="special">
  * <h3>The Primitive <tt>\special</tt></h3>
  * <p>
- *  This primitive sends a string to the backend driver.
+ *  This primitive sends a string to the back-end driver.
  *  The argument is a balanced block of text which is expanded and translated
  *  into a string.  The string is given in
  *  a {@link de.dante.extex.typesetter.type.node.SpecialNode SpecialNode} to
@@ -58,15 +58,15 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *    \special{ps: \abc}  </pre>
  *
  * <p>
- *  For several backend drivers for <logo>TeX</logo> a quasi-standard has
- *  emerged which uses a prefix ended by a colon to indicate the backend driver
+ *  For several back-end drivers for <logo>TeX</logo> a quasi-standard has
+ *  emerged which uses a prefix ended by a colon to indicate the back-end driver
  *  the special is targeted at.
  * </p>
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Special extends AbstractCode {
 
