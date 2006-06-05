@@ -45,7 +45,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This abstract class provides some methods common to all ListMakers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public abstract class AbstractListMaker implements ListMaker {
 
@@ -163,7 +163,7 @@ public abstract class AbstractListMaker implements ListMaker {
                         .getLocator()));
                 source.push(context.getToks("everydisplay"));
             }
-            //TODO gene: ??? context.setCount("fam", -1, false);
+            context.setCount("fam", -1, false);
 
         } catch (TypesetterException e) {
             throw e;
