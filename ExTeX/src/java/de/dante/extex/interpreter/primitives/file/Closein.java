@@ -45,10 +45,9 @@ import de.dante.extex.typesetter.Typesetter;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;closein&rang;
- *       &rarr; <tt>\closein</tt> {@linkplain
- *       de.dante.extex.interpreter.TokenSource#scanInteger(Context,Typesetter)
- *       &lang;number&rang;} </pre>
- * </p>
+ *       &rarr; <tt>\closein</tt>  {@linkplain
+ *        de.dante.extex.interpreter.primitives.file.AbstractFileCode#scanInFileKey(Context,TokenSource,Typesetter)
+ *        &lang;infile&nbsp;name&rang;} </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
@@ -60,7 +59,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class Closein extends AbstractCode {
 

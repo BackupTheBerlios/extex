@@ -47,7 +47,7 @@ import de.dante.extex.typesetter.Typesetter;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *   &lang;divide&rang;
- *     &rarr; <tt>\divide</tt> &lang;dividable&rang;
+ *     &rarr; &lang;optional prefix&rang; <tt>\divide</tt> &lang;dividable&rang;
  *
  *   &lang;dividable&rang;
  *     &rarr; &lang;integer variable&rang; &lang;optional <tt>by</tt>&rang; {@linkplain
@@ -62,6 +62,10 @@ import de.dante.extex.typesetter.Typesetter;
  *      |  &lang;muglue variable&rang; &lang;optional <tt>by</tt>&rang; {@linkplain
  *      de.dante.extex.interpreter.TokenSource#scanNumber(Context)
  *      &lang;8-bit&nbsp;number&rang;}
+ *
+ *   &lang;optional prefix&rang;
+ *     &rarr;
+ *      |  <tt>\global</tt> &lang;optional prefix&rang;
  *
  *   &lang;optional <tt>by</tt>&rang;
  *     &rarr; [by]
@@ -80,7 +84,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * @see de.dante.extex.interpreter.type.arithmetic.Divideable
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class Divide extends AbstractAssignment {
 

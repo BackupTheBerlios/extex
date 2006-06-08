@@ -48,7 +48,7 @@ import de.dante.extex.typesetter.Typesetter;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *   &lang;multiply&rang;
- *     &rarr; <tt>\multiply</tt> &lang;multiplyable&rang;
+ *     &rarr; &lang;optional prefix&rang; <tt>\multiply</tt> &lang;multiplyable&rang;
  *
  *   &lang;multiplyable&rang;
  *     &rarr; &lang;integer variable&rang; &lang;optional <tt>by</tt>&rang; {@linkplain
@@ -64,10 +64,14 @@ import de.dante.extex.typesetter.Typesetter;
  *      de.dante.extex.interpreter.TokenSource#scanNumber(Context)
  *      &lang;8-bit&nbsp;number&rang;}
  *
+ *   &lang;optional prefix&rang;
+ *     &rarr;
+ *      |  <tt>\global</tt> &lang;optional prefix&rang;
+ *
  *   &lang;optional <tt>by</tt>&rang;
  *     &rarr; [by]
  *      |  {@linkplain de.dante.extex.interpreter.TokenSource#skipSpace()
-*            &lang;optional spaces&rang;}
+ *            &lang;optional spaces&rang;}
  *   </pre>
  *
  * <h4>Examples</h4>
@@ -81,7 +85,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * @see de.dante.extex.interpreter.type.arithmetic.Multiplyable
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class Multiply extends AbstractAssignment {
 

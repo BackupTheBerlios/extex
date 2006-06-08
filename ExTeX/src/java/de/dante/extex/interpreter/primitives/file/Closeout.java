@@ -53,8 +53,8 @@ import de.dante.util.framework.logger.LogEnabled;
  *  <pre class="syntax">
  *    &lang;closeout&rang;
  *       &rarr; <tt>\closeout</tt> {@linkplain
- *       de.dante.extex.interpreter.TokenSource#scanInteger(Context,Typesetter)
- *       &lang;number&rang;} </pre>
+ *        de.dante.extex.interpreter.primitives.file.AbstractFileCode#scanOutFileKey(Context,TokenSource,Typesetter)
+ *        &lang;outfile&nbsp;name&rang;} </pre>
  * </p>
  *
  * <h4>Examples</h4>
@@ -67,7 +67,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
 public class Closeout extends AbstractCode implements LogEnabled {
 

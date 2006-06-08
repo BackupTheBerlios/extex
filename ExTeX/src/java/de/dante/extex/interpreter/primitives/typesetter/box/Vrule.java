@@ -50,7 +50,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  *    &lang;rule specification&rang;
  *        &rarr; {@linkplain de.dante.extex.interpreter.TokenSource#skipSpace()
- *            &lang;optional spaces&rang;}
+ *            &lang;optional&nbsp;spaces&rang;}
  *         |  &lang;rule dimension&rang; &lang;rule specification&rang;
  *
  *    &lang;rule dimension&rang;
@@ -80,7 +80,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Vrule extends AbstractCode implements RuleConvertible {
 

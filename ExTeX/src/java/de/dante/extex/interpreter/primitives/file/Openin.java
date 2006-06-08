@@ -43,10 +43,9 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *  {@link de.dante.extex.interpreter.primitives.conditional.Ifeof \ifeof}.
  * </p>
  * <p>
- *  The assignment to a read register is local to the current group unless
- *  specified differently. If the prefix
- *  {@link de.dante.extex.interpreter.primitives.prefix.Global \global}
- *  is given then the read register is assigned globally.
+ *  The assignment to a read register is always global. If the prefix
+ *  {@link de.dante.extex.interpreter.primitives.prefix.Immediate \immediate}
+ *  is given then the opening of the read register is delayed.
  * </p>
  * <p>
  *  The stream should be closed with
@@ -58,9 +57,9 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;openin&rang;
- *      &rarr; &lang;optional prefix&rang; <tt>\openin</tt> {@linkplain
- *        de.dante.extex.interpreter.TokenSource#scanNumber(Context)
- *        &lang;8-bit&nbsp;number&rang;} {@linkplain
+ *      &rarr; &lang;optional prefix&rang; <tt>\openin</tt>  {@linkplain
+ *        de.dante.extex.interpreter.primitives.file.AbstractFileCode#scanInFileKey(Context,TokenSource,Typesetter)
+ *        &lang;infile&nbsp;name&rang;} {@linkplain
  *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
  *        &lang;equals&rang;} {@linkplain
  *        de.dante.extex.interpreter.primitive.file.AbstractFileCode#scanFileName(Context,TokenSource)
@@ -68,7 +67,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  *    &lang;optional prefix&rang;
  *      &rarr;
- *       |  <tt>\global</tt> &lang;optional prefix&rang; </pre>
+ *       |  <tt>\immediate</tt> &lang;optional prefix&rang; </pre>
  *
  * <h4>Examples</h4>
  * <pre class="TeXSample">
@@ -79,14 +78,14 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public class Openin extends AbstractFileCode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    private static final long serialVersionUID = 20060411L;
+    protected static final long serialVersionUID = 20060411L;
 
     /**
      * Creates a new object.
@@ -114,6 +113,7 @@ public class Openin extends AbstractFileCode {
         source.getOptionalEquals(context);
         String name = scanFileName(context, source);
 
+        //TODO gene: use \immediate
         InFile file;
         try {
             file = new InFile(source.getTokenStreamFactory().newInstance(name,

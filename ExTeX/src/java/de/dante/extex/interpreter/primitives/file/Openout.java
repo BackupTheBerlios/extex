@@ -60,8 +60,8 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *  <pre class="syntax">
  *    &lang;openout&rang;
  *      &rarr; &lang;optional prefix&rang; <tt>\openout</tt> {@linkplain
- *        de.dante.extex.interpreter.TokenSource#scanNumber(Context)
- *        &lang;8-bit&nbsp;number&rang;} {@linkplain
+ *        de.dante.extex.interpreter.primitives.file.AbstractFileCode#scanOutFileKey(Context,TokenSource,Typesetter)
+ *        &lang;outfile&nbsp;name&rang;} {@linkplain
  *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
  *        &lang;equals&rang;} {@linkplain
  *        de.dante.extex.interpreter.primitive.file.AbstractFileCode#scanFileName(Context,TokenSource)
@@ -80,7 +80,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
 public class Openout extends AbstractFileCode {
 
@@ -119,7 +119,7 @@ public class Openout extends AbstractFileCode {
 
         if (prefix.clearImmediate()) {
             file.open();
-            context.setOutFile(key, file, prefix.clearGlobal());
+            context.setOutFile(key, file, true);
         } else {
             try {
                 typesetter.add(new WhatsItOpenNode(key, file));

@@ -49,13 +49,17 @@ import de.dante.extex.typesetter.Typesetter;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;count&rang;
- *      &rarr; <tt>\count</tt> {@linkplain
+ *      &rarr; &lang;optional prefix&rang; <tt>\count</tt> {@linkplain
  *        de.dante.extex.interpreter.TokenSource#scanRegisterName(Context,String)
  *        &lang;register name&rang;} {@linkplain
  *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
  *        &lang;equals&rang;} {@linkplain
  *        de.dante.extex.interpreter.TokenSource#scanInteger(Context,Typesetter)
- *        &lang;number&rang;}</pre>
+ *        &lang;number&rang;}
+ *
+ *   &lang;optional prefix&rang;
+ *     &rarr;
+ *      |  <tt>\global</tt> &lang;optional prefix&rang;  </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
@@ -71,7 +75,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.30 $
+ * @version $Revision: 1.31 $
  */
 public class CountPrimitive extends AbstractCount
         implements
@@ -136,21 +140,6 @@ public class CountPrimitive extends AbstractCount
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.ExpandableCode#expand(
-     *      de.dante.extex.interpreter.Flags,
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.typesetter.Typesetter)
-     */
-    public void expand(final Flags prefix, final Context context,
-            final TokenSource source, final Typesetter typesetter)
-            throws InterpreterException {
-
-        String key = getKey(context, source, typesetter);
-        source.push(context.getCount(key).toToks(context));
-    }
-
-    /**
      * @see de.dante.extex.interpreter.type.count.CountConvertible#convertCount(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource, Typesetter)
@@ -186,6 +175,21 @@ public class CountPrimitive extends AbstractCount
 
         value = context.getCount(key).getValue() / value;
         context.setCount(key, value, prefix.clearGlobal());
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.ExpandableCode#expand(
+     *      de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public void expand(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws InterpreterException {
+
+        String key = getKey(context, source, typesetter);
+        source.push(context.getCount(key).toToks(context));
     }
 
     /**

@@ -53,13 +53,17 @@ import de.dante.util.exception.GeneralException;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;skip&rang;
- *        &rarr; <tt>\skip</tt> {@linkplain
+ *        &rarr; &lang;optional prefix&rang; <tt>\skip</tt> {@linkplain
  *        de.dante.extex.interpreter.TokenSource#scanRegisterName(Context,String)
  *        &lang;register name&rang;} {@linkplain
  *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
  *        &lang;equals&rang;} {@link
  *        de.dante.extex.interpreter.type.glue.Glue#parse(TokenSource,Context,Typesetter)
- *        &lang;glue&rang;}  </pre>
+ *        &lang;glue&rang;}
+ *
+ *   &lang;optional prefix&rang;
+ *     &rarr;
+ *      |  <tt>\global</tt> &lang;optional prefix&rang;  </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
@@ -69,7 +73,7 @@ import de.dante.util.exception.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class SkipPrimitive extends AbstractSkip
         implements

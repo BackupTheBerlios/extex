@@ -65,11 +65,11 @@ import de.dante.extex.typesetter.Typesetter;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;colordef&rang;
- *      &rarr; &lang;prefix&rang; <tt>\colordef</tt> {@linkplain
+ *      &rarr; &lang;optional prefix&rang; <tt>\colordef</tt> {@linkplain
  *       de.dante.extex.interpreter.TokenSource#getControlSequence(Context)
  *       &lang;control sequence&rang;} &lang;color&rang;
  *
- *    &lang;prefix&rang;
+ *    &lang;optional prefix&rang;
  *      &rarr;
  *       |  <tt>\global</tt>   </pre>
  *
@@ -86,7 +86,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Colordef extends AbstractAssignment {
 
@@ -94,7 +94,7 @@ public class Colordef extends AbstractAssignment {
      * This class carries a color value for storing it as code in the context.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.2 $
+     * @version $Revision: 1.3 $
      */
     private class ColorCode extends AbstractColor {
 

@@ -43,15 +43,33 @@ import de.dante.extex.interpreter.exception.InterpreterException;
  *  TODO gene: missing documentation
  * </p>
  *
+ * <h4>Syntax</h4>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;muskip&rang;
+ *      &rarr; &lang;optional prefix&rang; <tt>\muskip</tt>  {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#scanRegisterName(Context,String)
+ *        &lang;register name&rang;} {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+ *        &lang;equals&rang;} {@link
+ *        de.dante.extex.interpreter.type.muskip.Muskip#parse(Context,TokenSource,Typesetter)
+ *        &lang;muglue&rang;}
+ *
+ *   &lang;optional prefix&rang;
+ *     &rarr;
+ *      |  <tt>\global</tt> &lang;optional prefix&rang;  </pre>
+ *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *   \muskip12=345mu plus 12mu  </pre>
+ *  <pre class="TeXSample">
+ *   \muskip12=0mu plus 1.2fil  </pre>
  *
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class MuskipPrimitive extends MuskipParameter {
 

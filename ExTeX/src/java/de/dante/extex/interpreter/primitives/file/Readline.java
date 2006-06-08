@@ -46,16 +46,27 @@ import de.dante.util.framework.logger.LogEnabled;
  * <doc name="readline">
  * <h3>The Primitive <tt>\readline</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  The primitive <tt>\readline</tt> read characters from an input stream until
+ *  the end of line is encountered. The characters are translated to tokens
+ *  with the category code OTHER except the white-space characters which receive
+ *  the category code SPACE. This mapping is performed ignoring the setting
+ *  of {@linkplain de.dante.extex.interpreter.primitives.register.CatcodePrimitive \catcode}.
+ *  The resulting token list is bound to the control sequence given.
  * </p>
  *
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;readline&rang;
- *       &rarr; <tt>\readline</tt> &lang;read&rang; <tt>to</tt> {@linkplain
- *       de.dante.extex.interpreter.TokenSource#getControlSequence(Context)
- *       &lang;control sequence&rang;}   </pre>
+ *      &rarr; &lang;optional prefix&rang; <tt>\readline</tt> {@linkplain
+ *        de.dante.extex.interpreter.primitives.file.AbstractFileCode#scanInFileKey(Context,TokenSource,Typesetter)
+ *        &lang;infile&nbsp;name&rang;} <tt>to</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getControlSequence(Context)
+ *        &lang;control sequence&rang;}
+ *
+ *    &lang;optional prefix&rang;
+ *      &rarr;
+ *       |  <tt>\global</tt> &lang;optional prefix&rang; </pre>
  *
  * <h4>Examples</h4>
  * <pre class="TeXSample">
@@ -66,7 +77,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Readline extends AbstractAssignment implements LogEnabled {
 

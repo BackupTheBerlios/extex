@@ -38,7 +38,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * files.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.32 $
+ * @version $Revision: 1.33 $
  */
 public abstract class AbstractFileCode extends AbstractCode
         implements
@@ -66,6 +66,24 @@ public abstract class AbstractFileCode extends AbstractCode
      * Scan the input source for some tokens making up the key for an infile
      * register. Currently only numbers in a certain range are allowed.
      *
+     *
+     * <doc name="infile name" type="syntax">
+     * <h3>The Infile Name</h3>
+     * <p>
+     *  The infile name is a symbolic key to reference an input file.
+     *  This is a number in the range from 0 to 15.
+     * </p>
+     *
+     * <h4>Syntax</h4>
+     *  The formal description of this primitive is the following:
+     *  <pre class="syntax">
+     *    &lang;infile&nbsp;name&rang;
+     *      &rarr; {@linkplain
+     *        de.dante.extex.interpreter.TokenSource#scanInteger(Context,Typesetter)
+     *        &lang;number&rang;} </pre>
+     * </doc>
+     *
+     *
      * @param context the interpreter context
      * @param source the token source to read from
      * @param typesetter the typesetter
@@ -92,6 +110,23 @@ public abstract class AbstractFileCode extends AbstractCode
     /**
      * Scan the input source for some tokens making up the key for an outfile
      * register. Currently only numbers are allowed.
+     *
+     * <doc name="outfile name" type="syntax">
+     * <h3>The Outfile Name</h3>
+     * <p>
+     *  The outfile name is a symbolic key to reference an output file.
+     *  This is a number in the range from 0 to 15.
+     * </p>
+     *
+     * <h4>Syntax</h4>
+     *  The formal description of this primitive is the following:
+     *  <pre class="syntax">
+     *    &lang;infile&nbsp;name&rang;
+     *      &rarr; {@linkplain
+     *        de.dante.extex.interpreter.TokenSource#scanInteger(Context,Typesetter)
+     *        &lang;number&rang;} </pre>
+     * </doc>
+     *
      *
      * @param context the interpreter context
      * @param source the token source to read from

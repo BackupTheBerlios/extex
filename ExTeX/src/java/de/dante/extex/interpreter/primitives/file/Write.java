@@ -55,12 +55,12 @@ import de.dante.util.framework.logger.LogEnabled;
  *  <pre class="syntax">
  *    &lang;write&rang;
  *      &rarr; &lang;modifier&rang; <tt>\write</tt> {@linkplain
- *        de.dante.extex.interpreter.TokenSource#scanNumber(Context)
- *        &lang;8-bit&nbsp;number&rang;} ...
+ *        de.dante.extex.interpreter.primitives.file.AbstractFileCode#scanOutFileKey(Context,TokenSource,Typesetter)
+ *        &lang;outfile&nbsp;name&rang;} ...
  *
  *    &lang;modifier&rang;
  *      &rarr;
- *       |  <tt>\global</tt>  </pre>
+ *       |  <tt>\immediate</tt> &lang;modifier&rang;  </pre>
  *
  * <h4>Examples</h4>
  * <pre class="TeXSample">
@@ -71,7 +71,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.37 $
+ * @version $Revision: 1.38 $
  */
 public class Write extends AbstractCode
         implements
