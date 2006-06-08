@@ -47,7 +47,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.70 $
+ * @version $Revision: 1.71 $
  */
 public interface TokenSource {
 
@@ -291,7 +291,7 @@ public interface TokenSource {
      * <pre class="syntax">
      *   &lang;equals&rang;
      *     &rarr; {@linkplain de.dante.extex.interpreter.TokenSource#skipSpace()
-     *            &lang;optional spaces&rang;}
+     *            &lang;optional&nbsp;spaces&rang;}
      *      |  {@linkplain de.dante.extex.interpreter.TokenSource#skipSpace()
      *            &lang;optional spaces&rang;} <tt>=</tt><sub>12</sub> {@linkplain
      *            de.dante.extex.interpreter.TokenSource#skipSpace()
