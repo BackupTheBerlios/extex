@@ -25,3 +25,4 @@ maven-*
 .checkclipse
 *.ps
 *.rtf
+*.fls
