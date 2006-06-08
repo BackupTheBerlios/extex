@@ -42,16 +42,16 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * Several color models are supported.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public final class ColorParser {
 
     /**
-     * This internal interface is used to describe the parsers for the differnt
+     * This internal interface is used to describe the parsers for the different
      * color models.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.2 $
+     * @version $Revision: 1.3 $
      */
     private interface ColorMode {
 
@@ -60,6 +60,7 @@ public final class ColorParser {
          *
          * @param context the interpreter context
          * @param source the token source
+         * @param typesetter the typesetter
          * @param alpha the alpha channel
          * @param name the name of the primitive
          *
@@ -67,8 +68,8 @@ public final class ColorParser {
          *
          * @throws InterpreterException in case of an error
          */
-        Color parse(Context context, TokenSource source, int alpha, String name)
-                throws InterpreterException;
+        Color parse(Context context, TokenSource source, Typesetter typesetter,
+                int alpha, String name) throws InterpreterException;
     }
 
     /**
@@ -77,32 +78,44 @@ public final class ColorParser {
     private static final ColorMode CMYK_MODE = new ColorMode() {
 
         /**
-         * @see de.dante.extex.interpreter.primitives.color.ColorPrimitive.ColorMode#parse()
+         * @see de.dante.extex.interpreter.primitives.color.util.ColorParser.ColorMode#parse(
+         *      de.dante.extex.interpreter.context.Context,
+         *      de.dante.extex.interpreter.TokenSource,
+         *      de.dante.extex.typesetter.Typesetter,
+         *      int,
+         *      java.lang.String)
          */
         public Color parse(final Context context, final TokenSource source,
-                final int alpha, final String name) throws InterpreterException {
+                final Typesetter typesetter, final int alpha, final String name)
+                throws InterpreterException {
 
-            int c = scanColorComponent(context, source, name);
-            int m = scanColorComponent(context, source, name);
-            int y = scanColorComponent(context, source, name);
-            int k = scanColorComponent(context, source, name);
+            int c = scanColorComponent(context, source, typesetter, name);
+            int m = scanColorComponent(context, source, typesetter, name);
+            int y = scanColorComponent(context, source, typesetter, name);
+            int k = scanColorComponent(context, source, typesetter, name);
             return ColorFactory.getCmyk(c, m, y, k, alpha);
         }
 
     };
 
     /**
-     * The field <tt>GRAY_MODE</tt> contains the parser for a grayscale color.
+     * The field <tt>GRAY_MODE</tt> contains the parser for a gray-scale color.
      */
     private static final ColorMode GRAY_MODE = new ColorMode() {
 
         /**
-         * @see de.dante.extex.interpreter.primitives.color.ColorPrimitive.ColorMode#parse()
+         * @see de.dante.extex.interpreter.primitives.color.util.ColorParser.ColorMode#parse(
+         *      de.dante.extex.interpreter.context.Context,
+         *      de.dante.extex.interpreter.TokenSource,
+         *      de.dante.extex.typesetter.Typesetter,
+         *      int,
+         *      java.lang.String)
          */
         public Color parse(final Context context, final TokenSource source,
-                final int alpha, final String name) throws InterpreterException {
+                final Typesetter typesetter, final int alpha, final String name)
+                throws InterpreterException {
 
-            int gray = scanColorComponent(context, source, name);
+            int gray = scanColorComponent(context, source, typesetter, name);
             return ColorFactory.getGray(gray, alpha);
         }
 
@@ -114,21 +127,32 @@ public final class ColorParser {
     private static final ColorMode HSV_MODE = new ColorMode() {
 
         /**
-         * @see de.dante.extex.interpreter.primitives.color.ColorPrimitive.ColorMode#parse()
+         * @see de.dante.extex.interpreter.primitives.color.util.ColorParser.ColorMode#parse(
+         *      de.dante.extex.interpreter.context.Context,
+         *      de.dante.extex.interpreter.TokenSource,
+         *      de.dante.extex.typesetter.Typesetter,
+         *      int,
+         *      java.lang.String)
          */
         public Color parse(final Context context, final TokenSource source,
-                final int alpha, final String name) throws InterpreterException {
+                final Typesetter typesetter, final int alpha, final String name)
+                throws InterpreterException {
 
-            int h = scanColorComponent(context, source, name);
-            int s = scanColorComponent(context, source, name);
-            int v = scanColorComponent(context, source, name);
+            int h = scanColorComponent(context, source, typesetter, name);
+            int s = scanColorComponent(context, source, typesetter, name);
+            int v = scanColorComponent(context, source, typesetter, name);
             return ColorFactory.getHsv(h, s, v, alpha);
         }
 
     };
 
     /**
-     * The field <tt>RGB_MODE</tt> contains the parser for a rgb color.
+     * @see de.dante.extex.interpreter.primitives.color.util.ColorParser.ColorMode#parse(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter,
+     *      int,
+     *      java.lang.String)
      */
     private static final ColorMode RGB_MODE = new ColorMode() {
 
@@ -136,11 +160,12 @@ public final class ColorParser {
          * @see de.dante.extex.interpreter.primitives.color.ColorPrimitive.ColorMode#parse()
          */
         public Color parse(final Context context, final TokenSource source,
-                final int alpha, final String name) throws InterpreterException {
+                final Typesetter typesetter, final int alpha, final String name)
+                throws InterpreterException {
 
-            int r = scanColorComponent(context, source, name);
-            int g = scanColorComponent(context, source, name);
-            int b = scanColorComponent(context, source, name);
+            int r = scanColorComponent(context, source, typesetter, name);
+            int g = scanColorComponent(context, source, typesetter, name);
+            int b = scanColorComponent(context, source, typesetter, name);
             return ColorFactory.getRgb(r, g, b, alpha);
         }
 
@@ -212,7 +237,7 @@ public final class ColorParser {
 
         for (;;) {
             if (source.getKeyword(context, "alpha")) {
-                alpha = scanColorComponent(context, source, name);
+                alpha = scanColorComponent(context, source, typesetter, name);
             } else if (source.getKeyword(context, "rgb")) {
                 mode = RGB_MODE;
             } else if (source.getKeyword(context, "gray")) {
@@ -234,7 +259,7 @@ public final class ColorParser {
                     "MissingLeftBrace");
         }
 
-        Color color = mode.parse(context, source, alpha, name);
+        Color color = mode.parse(context, source, typesetter, alpha, name);
         t = source.getNonSpace(context);
         if (!(t instanceof RightBraceToken)) {
             throw new HelpingException(LocalizerFactory
@@ -249,6 +274,7 @@ public final class ColorParser {
      *
      * @param context the interpreter context
      * @param source the token source
+     * @param typesetter the typesetter
      * @param name the name of the primitive for error messages
      *
      * @return the color component in units of Color.MAX_VALUE
@@ -256,15 +282,15 @@ public final class ColorParser {
      * @throws InterpreterException in case of an error
      */
     private static int scanColorComponent(final Context context,
-            final TokenSource source, final String name)
-            throws InterpreterException {
+            final TokenSource source, final Typesetter typesetter,
+            final String name) throws InterpreterException {
 
-        Token t = source.getNonSpace(context);
-        if (t == null) {
+        long cc;
+        try {
+            cc = ScaledNumber.parse(context, source, typesetter);
+        } catch (EofException e) {
             throw new EofException(name);
         }
-
-        long cc = ScaledNumber.scanFloat(context, source, t);
         if (cc < 0 || cc > ScaledNumber.ONE) {
             throw new HelpingException(LocalizerFactory
                     .getLocalizer(ColorParser.class.getName()), "IllegalValue",
