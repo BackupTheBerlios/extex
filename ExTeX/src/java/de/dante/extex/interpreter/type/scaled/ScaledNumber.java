@@ -19,24 +19,105 @@
 
 package de.dante.extex.interpreter.type.scaled;
 
+import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.exception.helping.ArithmeticOverflowException;
+import de.dante.extex.interpreter.exception.helping.EofException;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
+import de.dante.extex.interpreter.exception.helping.MissingNumberException;
+import de.dante.extex.interpreter.type.Code;
+import de.dante.extex.interpreter.type.ExpandableCode;
+import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.CatcodeException;
+import de.dante.extex.scanner.type.token.CodeToken;
 import de.dante.extex.scanner.type.token.OtherToken;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.scanner.type.token.TokenFactory;
+import de.dante.extex.typesetter.Typesetter;
+import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
  * This class provides a fixed point number.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ScaledNumber {
+
+    /**
+     * This interface describes a binary operation on two longs.
+     *
+     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+     * @version $Revision: 1.2 $
+     */
+    private interface BinOp {
+
+        /**
+         * Apply the operation on the arguments.
+         *
+         * @param arg1 the first argument
+         * @param arg2 the second argument
+         *
+         * @return the result
+         */
+        long apply(long arg1, long arg2);
+    }
+
+    /**
+     * This operation subtracts the second argument from the first one.
+     *
+     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+     * @version $Revision: 1.2 $
+     */
+    private static final class Minus implements BinOp {
+
+        /**
+         * @see de.dante.extex.interpreter.primitives.register.count.Numexpr.BinOp#apply(long, long)
+         */
+        public long apply(final long arg1, final long arg2) {
+
+            return arg1 - arg2;
+        }
+    }
+
+    /**
+     * This operation adds the arguments.
+     *
+     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+     * @version $Revision: 1.2 $
+     */
+    private static final class Plus implements BinOp {
+
+        /**
+         * @see de.dante.extex.interpreter.primitives.register.count.Numexpr.BinOp#apply(long, long)
+         */
+        public long apply(final long arg1, final long arg2) {
+
+            return arg1 + arg2;
+        }
+    }
+
+    /**
+     * This operation ignores the first argument and returns the second one.
+     *
+     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+     * @version $Revision: 1.2 $
+     */
+    private static final class Second implements BinOp {
+
+        /**
+         * @see de.dante.extex.interpreter.primitives.register.count.Numexpr.BinOp#apply(long, long)
+         */
+        public long apply(final long arg1, final long arg2) {
+
+            return arg2;
+        }
+    }
 
     /**
      * The constant <tt>FLOAT_DIGITS</tt> contains the number of digits to
@@ -48,10 +129,139 @@ public class ScaledNumber {
     private static final int FLOAT_DIGITS = 17;
 
     /**
+     * The field <tt>MINUS</tt> contains the subtractor.
+     */
+    private static final BinOp MINUS = new Minus();
+
+    /**
      * The constant <tt>ONE</tt> contains the internal representation for 1pt.
      * @see "<logo>TeX</logo> &ndash; The Program [101]"
      */
     public static final long ONE = 1 << 16;
+
+    /**
+     * The field <tt>PLUS</tt> contains the adder.
+     */
+    private static final BinOp PLUS = new Plus();
+
+    /**
+     * The field <tt>SECOND</tt> contains the operation to select the second
+     * argument.
+     */
+    private static final BinOp SECOND = new Second();
+
+    /**
+     * Evaluate an expression.
+     *
+     * @param context the interpreter context
+     * @param source the source for new tokens
+     * @param typesetter the typesetter
+     *
+     * @return the result
+     *
+     * @throws InterpreterException in case of an error
+     */
+    private static long evalExpr(final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws InterpreterException {
+
+        long saveVal = 0;
+        BinOp op = SECOND;
+        long val = parse(context, source, typesetter);
+
+        for (;;) {
+
+            Token t = source.getNonSpace(context);
+            if (t == null) {
+                throw new EofException();
+
+            } else if (t.equals(Catcode.OTHER, '*')) {
+                val *= parse(context, source, typesetter);
+                val /= ONE;
+
+            } else if (t.equals(Catcode.OTHER, '/')) {
+                long x = parse(context, source, typesetter);
+                if (x == 0) {
+                    throw new ArithmeticOverflowException("");
+                }
+                val *= ONE;
+                val /= x;
+
+            } else if (t.equals(Catcode.OTHER, '+')) {
+                saveVal = op.apply(saveVal, val);
+                val = parse(context, source, typesetter);
+                op = PLUS;
+
+            } else if (t.equals(Catcode.OTHER, '-')) {
+                saveVal = op.apply(saveVal, val);
+                val = parse(context, source, typesetter);
+                op = MINUS;
+
+            } else {
+                source.push(t);
+                return op.apply(saveVal, val);
+            }
+        }
+    }
+
+    /**
+     * Evaluate an expression.
+     *
+     * @param context the interpreter context
+     * @param source the source for new tokens
+     * @param typesetter the typesetter
+     *
+     * @return the result
+     *
+     * @throws InterpreterException in case of an error
+     */
+    public static long parse(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
+
+        for (;;) {
+            Token t = source.getNonSpace(context);
+            if (t == null) {
+                throw new EofException();
+
+            } else if (t.equals(Catcode.OTHER, '(')) {
+                long val = evalExpr(context, source, typesetter);
+                t = source.getToken(context);
+                if (t.equals(Catcode.OTHER, ')')) {
+                    return val;
+                }
+
+                throw new HelpingException(LocalizerFactory
+                        .getLocalizer(ScaledNumber.class.getName()),
+                        "MissingParenthesis", (t == null ? "null" : t
+                                .toString()));
+
+            } else if (t.equals(Catcode.OTHER, '-')) {
+                return -parse(context, source, typesetter);
+
+            } else if (t instanceof CodeToken) {
+                Code code = context.getCode((CodeToken) t);
+                if (code instanceof ScaledConvertible) {
+                    return ((ScaledConvertible) code).convertScaled(context,
+                            source, typesetter);
+
+                } else if (code instanceof CountConvertible) {
+                    return ((CountConvertible) code).convertCount(context,
+                            source, typesetter)
+                            * ONE;
+
+                } else if (code instanceof ExpandableCode) {
+                    ((ExpandableCode) code).expand(Flags.NONE, context, source,
+                            typesetter);
+                } else {
+                    break;
+                }
+            } else {
+                return scanFloat(context, source, t);
+            }
+        }
+
+        throw new MissingNumberException();
+    }
 
     /**
      * Parses a token stream for a float and returns it as fixed point number.
@@ -72,6 +282,9 @@ public class ScaledNumber {
         long val = 0;
         int post = 0;
         Token t = start;
+        if (t == null) {
+            t = source.scanNonSpace(context);
+        }
 
         while (t != null) {
             if (t.equals(Catcode.OTHER, '-')) {
@@ -117,16 +330,16 @@ public class ScaledNumber {
      *
      * @param context the interpreter context
      * @param source the source for new tokens
-     * @param start the initial token to start with
+     * @param typesetter the typesetter
      *
      * @return the fixed point representation of the floating point number
      * @throws InterpreterException in case of an error
      */
     public static ScaledNumber scanScaledNumber(final Context context,
-            final TokenSource source, final Token start)
+            final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        return new ScaledNumber(scanFloat(context, source, start));
+        return new ScaledNumber(parse(context, source, typesetter));
     }
 
     /**
@@ -160,9 +373,29 @@ public class ScaledNumber {
      *
      * @param scaled the number to add
      */
+    public void add(final long scaled) {
+
+        this.value += scaled;
+    }
+
+    /**
+     * Add a number to the current one.
+     *
+     * @param scaled the number to add
+     */
     public void add(final ScaledNumber scaled) {
 
         this.value += scaled.value;
+    }
+
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param scaled
+     */
+    public void divide(final long scaled) {
+
+        value = value / scaled * ONE;
     }
 
     /**
@@ -191,6 +424,16 @@ public class ScaledNumber {
     }
 
     /**
+     * TODO gene: missing JavaDoc
+     *
+     * @return
+     */
+    public long getValue() {
+
+        return value;
+    }
+
+    /**
      * Compares the current instance with another ScaledNumber.
      *
      * @param d the other ScaledNumber to compare to
@@ -215,6 +458,16 @@ public class ScaledNumber {
     }
 
     /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param scaled
+     */
+    public void multiply(final long scaled) {
+
+        value = value * scaled / ONE;
+    }
+
+    /**
      * Multiply the value by an integer fraction.
      * <p>
      *  <i>length</i> = <i>length</i> * <i>nom</i> / <i>denom</i>
@@ -234,6 +487,26 @@ public class ScaledNumber {
     public void negate() {
 
         this.value = -this.value;
+    }
+
+    /**
+     * Set the value to a new one
+     *
+     * @param scaled the new value
+     */
+    public void set(final long scaled) {
+
+        value = scaled;
+    }
+
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param scaled
+     */
+    public void set(final ScaledNumber scaled) {
+
+        value = scaled.value;
     }
 
     /**
