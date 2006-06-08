@@ -19,6 +19,8 @@
 
 package de.dante.extex.interpreter.primitives.register.count;
 
+import java.lang.Integer;
+
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
@@ -74,7 +76,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 
 public class Lastnodetype extends AbstractReadonlyCount {
