@@ -30,7 +30,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class EofException extends HelpingException {
 
@@ -42,25 +42,37 @@ public class EofException extends HelpingException {
     /**
      * Creates a new object.
      *
-     * @param localizer the localizer to use
-     * @param messageTag the name of the message
-     * @param a1 the argument
      */
-    public EofException(final Localizer localizer, final String messageTag,
-            final String a1) {
+    public EofException() {
 
-        super(localizer, messageTag, a1);
+        super(LocalizerFactory.getLocalizer(EofException.class.getName()),
+                "UnexpectedEof");
     }
 
     /**
      * Creates a new object.
      *
-     * @param macro the name of the macro in which the eof has been encountered
+     * @param localizer the localizer to use
+     * @param messageTag the name of the message
+     * @param a the argument
+     */
+    public EofException(final Localizer localizer, final String messageTag,
+            final String a) {
+
+        super(localizer, messageTag, a);
+    }
+
+    /**
+     * Creates a new object.
+     *
+     * @param macro the name of the macro in which the eof has been encountered.
+     *  If the value is <code>null</code> then a shortened error message is
+     *  used.
      */
     public EofException(final String macro) {
 
         super(LocalizerFactory.getLocalizer(EofException.class.getName()),
-                "UnexpectedEofIn", macro);
+                (macro != null ? "UnexpectedEofIn" : "UnexpectedEof"), macro);
     }
 
 }

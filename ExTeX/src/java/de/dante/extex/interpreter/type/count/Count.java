@@ -39,7 +39,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public class Count implements Serializable, FixedCount {
 
@@ -102,7 +102,7 @@ public class Count implements Serializable, FixedCount {
         Token t = source.getNonSpace(context);
 
         if (t == null) {
-            throw new EofException(null);
+            throw new EofException();
         }
 
         source.push(t);

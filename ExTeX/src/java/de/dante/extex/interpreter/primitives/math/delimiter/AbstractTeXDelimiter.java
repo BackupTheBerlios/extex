@@ -47,7 +47,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * to and from their <logo>TeX</logo> encoding as numbers to abstract math code.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public abstract class AbstractTeXDelimiter extends AbstractMathCode {
 
@@ -392,7 +392,7 @@ public abstract class AbstractTeXDelimiter extends AbstractMathCode {
                 }
             }
         }
-        throw new EofException("???");
+        throw new EofException();
     }
 
     /**

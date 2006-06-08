@@ -52,7 +52,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.34 $
+ * @version $Revision: 1.35 $
  */
 public class Box implements BoxOrRule, Serializable {
 
@@ -94,7 +94,7 @@ public class Box implements BoxOrRule, Serializable {
         Token t = source.getToken(context);
 
         if (t == null) {
-            throw new EofException(null);
+            throw new EofException();
         } else if (!t.isa(Catcode.LEFTBRACE)) {
             throw new MissingLeftBraceException(null);
         }
