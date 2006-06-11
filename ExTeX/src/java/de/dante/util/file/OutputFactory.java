@@ -42,7 +42,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationMissingExcep
  * configuration.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class OutputFactory extends AbstractFactory
         implements
@@ -52,7 +52,7 @@ public class OutputFactory extends AbstractFactory
      * This class provides a mutable Integer.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.17 $
+     * @version $Revision: 1.18 $
      */
     private class Int {
 
@@ -117,9 +117,20 @@ public class OutputFactory extends AbstractFactory
     private String basename;
 
     /**
+     * The field <tt>continuousNumbering</tt> contains the indicator for
+     * omitting the special treatment of the first stream.
+     */
+    private boolean continuousNumbering = false;
+
+    /**
      * The field <tt>countMap</tt> contains the internal counter for file names.
      */
     private Map countMap = new HashMap();
+
+    /**
+     * The field <tt>defaultExtension</tt> contains the default extension.
+     */
+    private String defaultExtension = null;
 
     /**
      * The field <tt>defaultStream</tt> contains the default output stream to be
@@ -132,11 +143,6 @@ public class OutputFactory extends AbstractFactory
      * is usally the file name &ndash; or at least the base without extension.
      */
     private String destination;
-
-    /**
-     * The field <tt>defaultExtension</tt> contains the default extension.
-     */
-    private String defaultExtension = null;
 
     /**
      * The field <tt>outputDirectories</tt> contaoins the list of output
@@ -228,7 +234,7 @@ public class OutputFactory extends AbstractFactory
         String filename;
         long cnt = iCount.incr();
 
-        if (cnt == 0 && name == null) {
+        if (!continuousNumbering && cnt == 0 && name == null) {
             cnt = 1;
             if (defaultStream != null) {
                 return defaultStream;
