@@ -20,13 +20,17 @@
 package de.dante.extex.typesetter.listMaker;
 
 import de.dante.extex.typesetter.Mode;
+import de.dante.extex.typesetter.TypesetterOptions;
+import de.dante.extex.typesetter.exception.TypesetterException;
+import de.dante.extex.typesetter.type.NodeList;
 import de.dante.util.Locator;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * This is the derived class for a list maker in restricted horizontal mode.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class RestrictedHorizontalListMaker extends HorizontalListMaker {
 
@@ -49,5 +53,16 @@ public class RestrictedHorizontalListMaker extends HorizontalListMaker {
 
         return Mode.RESTRICTED_HORIZONTAL;
     }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#complete(TypesetterOptions)
+     */
+    public NodeList complete(final TypesetterOptions context)
+            throws TypesetterException,
+                ConfigurationException {
+
+        return getNodes(); //TODO gene: correct?
+    }
+
 
 }
