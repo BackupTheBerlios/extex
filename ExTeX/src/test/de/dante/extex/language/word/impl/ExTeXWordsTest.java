@@ -34,14 +34,14 @@ import de.dante.extex.typesetter.type.node.HorizontalListNode;
 import de.dante.extex.typesetter.type.node.LigatureNode;
 import de.dante.extex.typesetter.type.node.factory.NodeFactory;
 import de.dante.extex.typesetter.type.node.factory.SimpleNodeFactory;
-import de.dante.test.CMR10;
+import de.dante.test.font.CMR10;
 import de.dante.util.UnicodeChar;
 
 /**
  * TODO gene: missing JavaDoc.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ExTeXWordsTest extends TestCase {
 
