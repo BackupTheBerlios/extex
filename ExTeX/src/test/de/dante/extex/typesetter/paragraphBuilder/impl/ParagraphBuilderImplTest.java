@@ -24,6 +24,7 @@ import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.context.TypesettingContextFactory;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.count.FixedCount;
+import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
@@ -41,7 +42,7 @@ import de.dante.util.exception.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class ParagraphBuilderImplTest extends TestCase {
 
@@ -49,7 +50,7 @@ public class ParagraphBuilderImplTest extends TestCase {
      * Inner class for the typesetter options.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.11 $
+     * @version $Revision: 1.12 $
      */
     private class MockOptions implements TypesetterOptions {
 
@@ -78,7 +79,10 @@ public class ParagraphBuilderImplTest extends TestCase {
          */
         public FixedDimen getDimenOption(final String name) {
 
-            return null;
+            if (name.equals("hsize")) {
+                return new Dimen(300 * Dimen.ONE);
+            }
+            return Dimen.ZERO_PT;
         }
 
         /**
@@ -172,7 +176,7 @@ public class ParagraphBuilderImplTest extends TestCase {
         /**
          * @see de.dante.extex.typesetter.TypesetterOptions#getMuskip(java.lang.String)
          */
-        public Muskip getMuskip(String name) {
+        public Muskip getMuskip(final String name) {
 
             // TODO gene: getMuskip unimplemented
             return null;
