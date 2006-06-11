@@ -29,7 +29,7 @@ import de.dante.test.NoFlagsButGlobalPrimitiveTester;
  * This is a test suite for the primitive <tt>\color</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class ColorTest extends NoFlagsButGlobalPrimitiveTester {
 
@@ -58,7 +58,7 @@ public class ColorTest extends NoFlagsButGlobalPrimitiveTester {
      */
     public ColorTest(final String arg) {
 
-        super(arg, "color", "{1 2 3}", "");
+        super(arg, "color", "{.1 .2 .3}", "");
     }
 
     /**
@@ -78,7 +78,8 @@ public class ColorTest extends NoFlagsButGlobalPrimitiveTester {
 
     /**
      * <testcase primitive="\color">
-     *  Test case checking that <tt>\color</tt> ...
+     *  Test case checking that <tt>\color</tt> needs a left brace to start a
+     *  RGB color triple.
      * </testcase>
      *
      * @throws Exception in case of an error
