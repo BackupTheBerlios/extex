@@ -34,6 +34,7 @@ import de.dante.extex.scanner.type.CatcodeException;
 import de.dante.extex.scanner.type.token.CodeToken;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.scanner.type.token.TokenFactory;
+import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
@@ -41,7 +42,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * math units (mu).
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Mudimen implements Serializable {
 
@@ -55,12 +56,14 @@ public class Mudimen implements Serializable {
      *
      * @param context the processor context
      * @param source the source for new tokens
+     * @param typesetter the typesetter
      *
      * @return the number of scaled points for the mu
      *
      * @throws InterpreterException in case of an error
      */
-    protected static long scanMu(final Context context, final TokenSource source)
+    protected static long scanMu(final Context context,
+            final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
         Token t = source.getToken(context);
@@ -73,7 +76,7 @@ public class Mudimen implements Serializable {
                         source, null);
             }
         }
-        long value = ScaledNumber.scanFloat(context, source, t);
+        long value = ScaledNumber.scanFloat(context, source, typesetter, t);
         if (!source.getKeyword(context, "mu")) {
             throw new HelpingException(//
                     LocalizerFactory.getLocalizer(Mudimen.class.getName()),
@@ -117,11 +120,11 @@ public class Mudimen implements Serializable {
      *
      * @throws InterpreterException in case of an error
      */
-    public Mudimen(final Context context, final TokenSource source)
+    public static Mudimen parseMudimen(final Context context,
+            final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        super();
-        this.length.set(scanMu(context, source));
+        return new Mudimen(scanMu(context, source, typesetter));
     }
 
     /**
