@@ -24,7 +24,7 @@ package de.dante.extex.interpreter.primitives.register.dimen;
  * This is a test suite for the primitive <tt>\pdfpageheight</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class PdfpageheightTest extends AbstractDimenRegisterTester {
 
@@ -54,7 +54,7 @@ public class PdfpageheightTest extends AbstractDimenRegisterTester {
      */
     public PdfpageheightTest(final String arg) {
 
-        super(arg, "pdfpageheight", "", "0.0pt");
+        super(arg, "pdfpageheight", "", "845.04684pt");
     }
 
     //TODO implement the primitive specific test cases

@@ -24,7 +24,7 @@ package de.dante.extex.interpreter.primitives.register.count;
  * This is a test suite for the primitive <tt>\pdfpkresolution</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class PdfpkresolutionTest extends AbstractCountRegisterTester {
 
@@ -54,7 +54,7 @@ public class PdfpkresolutionTest extends AbstractCountRegisterTester {
      */
     public PdfpkresolutionTest(final String arg) {
 
-        super(arg, "pdfpkresolution", "", "0");
+        super(arg, "pdfpkresolution", "", "600");
     }
 
     //TODO implement the primitive specific test cases
