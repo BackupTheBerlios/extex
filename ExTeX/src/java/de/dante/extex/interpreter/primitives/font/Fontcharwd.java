@@ -67,7 +67,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class Fontcharwd extends AbstractCode
         implements
@@ -153,7 +153,7 @@ public class Fontcharwd extends AbstractCode
             return (width != null ? width : Dimen.ZERO_PT);
 
         } catch (EofException e) {
-            throw new EofException(context.esc(getName()));
+            throw new EofException(printableControlSequence(context));
         }
     }
 

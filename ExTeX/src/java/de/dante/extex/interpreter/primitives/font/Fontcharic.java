@@ -67,7 +67,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Fontcharic extends AbstractCode
         implements
@@ -154,7 +154,7 @@ public class Fontcharic extends AbstractCode
             return (ic != null ? ic : Dimen.ZERO_PT);
 
         } catch (EofException e) {
-            throw new EofException(context.esc(getName()));
+            throw new EofException(printableControlSequence(context));
         }
     }
 
