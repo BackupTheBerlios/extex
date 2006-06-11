@@ -64,6 +64,7 @@ import de.dante.extex.interpreter.type.CsConvertible;
 import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.box.Boxable;
+import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.font.FontConvertible;
@@ -110,7 +111,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.96 $
+ * @version $Revision: 1.97 $
  */
 public class Moritz extends Max
         implements
@@ -404,7 +405,7 @@ public class Moritz extends Max
         Token t = getToken(context);
 
         if (t == null) {
-            throw new EofException(primitive);
+            throw new EofException(context.esc(primitive));
 
         } else if (t instanceof CodeToken) {
             Code code = context.getCode((CodeToken) t);
@@ -413,7 +414,8 @@ public class Moritz extends Max
                         .printable(context, t));
 
             } else if (code instanceof FontConvertible) {
-                return ((FontConvertible) code).convertFont(context, this);
+                return ((FontConvertible) code).convertFont(context, this,
+                        getTypesetter());
             }
 
         }
@@ -1035,7 +1037,8 @@ public class Moritz extends Max
      * @throws MissingNumberException in case of a missing number
      *
      * @see de.dante.extex.interpreter.TokenSource#scanInteger(
-     *      de.dante.extex.interpreter.context.Context, Typesetter)
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.typesetter.Typesetter)
      */
     public long scanInteger(final Context context, final Typesetter typesetter)
             throws InterpreterException,
@@ -1069,7 +1072,9 @@ public class Moritz extends Max
                     break;
                 }
             } else {
-                return (neg ? -scanNumber(context, t) : scanNumber(context, t));
+                return (neg
+                        ? -Count.scanNumber(context, this, typesetter, t)
+                        : Count.scanNumber(context, this, typesetter, t));
             }
         }
 
@@ -1099,201 +1104,34 @@ public class Moritz extends Max
     }
 
     /**
-     * Scan the input stream for tokens making up a number, this means a
-     * sequence of digits with category code OTHER. Alternative notations for
-     * a number may exist. The number can be preceded by optional white space.
-     *
-     * @param context the interpreter context
-     *
-     * @return the value of the integer scanned
-     *
-     * @throws InterpreterException in case that no number is found or the
-     *  end of file has been reached before an integer could be acquired
-     *
      * @see de.dante.extex.interpreter.TokenSource#scanNumber(Context)
      */
     public long scanNumber(final Context context) throws InterpreterException {
 
-        return scanNumber(context, getNonSpace(context));
+        return Count.scanNumber(context, this, getTypesetter(),
+                getNonSpace(context));
     }
 
     /**
-     * Scan a number with a given first token.
-     *
-     * @param context the interpreter context
-     * @param token the first token to consider
-     *
-     * @return the value of the integer scanned
-     *
-     * @throws InterpreterException in case that no number is found or the
-     *  end of file has been reached before an integer could be acquired
-     *
      * @see de.dante.extex.interpreter.TokenSource#scanNumber(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.scanner.type.token.Token)
      */
     public long scanNumber(final Context context, final Token token)
-            throws InterpreterException,
-                MissingNumberException {
+            throws InterpreterException {
 
-        long n = 0;
-        Token t = token;
-        int no;
-
-        while (t != null) {
-
-            if (t instanceof OtherToken) {
-                int c = t.getChar().getCodePoint();
-                switch (c) {
-                    case '0':
-                    case '1':
-                    case '2':
-                    case '3':
-                    case '4':
-                    case '5':
-                    case '6':
-                    case '7':
-                    case '8':
-                    case '9':
-                        n = c - '0';
-
-                        for (t = getToken(context); t instanceof OtherToken
-                                && t.getChar().isDigit(); t = getToken(context)) {
-                            n = n * 10 + t.getChar().getCodePoint() - '0';
-                        }
-
-                        /*
-                         while (t instanceof SpaceToken) {
-                         t = getToken(context);
-                         }
-                         */
-                        if (t instanceof SpaceToken) {
-                            skipSpaces = true;
-                        } else {
-                            put(t);
-                        }
-                        return n;
-
-                    case '`':
-                        t = getToken(context);
-
-                        if (t instanceof ControlSequenceToken) {
-                            String s = ((ControlSequenceToken) t).getName();
-                            return ("".equals(s) ? 0 : s.charAt(0));
-                        } else if (t != null) {
-                            return t.getChar().getCodePoint();
-                        }
-                        // fall through to error handling
-                        break;
-
-                    case '\'':
-                        t = scanToken(context);
-                        if (!(t instanceof OtherToken)) {
-                            throw new MissingNumberException();
-                        }
-                        n = t.getChar().getCodePoint() - '0';
-                        if (n < 0 || n > 7) {
-                            throw new MissingNumberException();
-                        }
-                        for (t = scanToken(context); t instanceof OtherToken; //
-                        t = scanToken(context)) {
-                            no = t.getChar().getCodePoint() - '0';
-                            if (no < 0 || no > 7) {
-                                break;
-                            }
-                            n = n * 8 + no;
-                        }
-
-                        while (t instanceof SpaceToken) {
-                            t = getToken(context);
-                        }
-                        put(t);
-                        return n;
-
-                    case '"':
-
-                        for (t = scanToken(context); //
-                        t instanceof OtherToken || t instanceof LetterToken; //
-                        t = scanToken(context)) {
-                            no = t.getChar().getCodePoint();
-                            switch (no) {
-                                case '0':
-                                case '1':
-                                case '2':
-                                case '3':
-                                case '4':
-                                case '5':
-                                case '6':
-                                case '7':
-                                case '8':
-                                case '9':
-                                    n = n * 16 + no - '0';
-                                    break;
-                                case 'a':
-                                case 'b':
-                                case 'c':
-                                case 'd':
-                                case 'e':
-                                case 'f':
-                                    n = n * 16 + no - 'a' + 10;
-                                    break;
-                                case 'A':
-                                case 'B':
-                                case 'C':
-                                case 'D':
-                                case 'E':
-                                case 'F':
-                                    n = n * 16 + no - 'A' + 10;
-                                    break;
-                                default:
-                                    put(t);
-                                    skipSpaces = true;
-                                    return n;
-                            }
-                        }
-
-                        while (t instanceof SpaceToken) {
-                            t = getToken(context);
-                        }
-                        put(t);
-                        return n;
-
-                    default:
-                        throw new MissingNumberException();
-                }
-            } else if (t instanceof CodeToken) {
-                Code code = context.getCode((CodeToken) t);
-                if (code == null) {
-
-                    throw new MissingNumberException();
-
-                } else if (code instanceof CountConvertible) {
-                    return ((CountConvertible) code).convertCount(context,
-                            this, getTypesetter());
-                } else if (code instanceof ExpandableCode) {
-                    ((ExpandableCode) code).expand(Flags.NONE, context, this,
-                            getTypesetter());
-                    t = getToken(context);
-                } else {
-
-                    throw new MissingNumberException();
-                }
-            } else {
-
-                throw new MissingNumberException();
-            }
-        }
-
-        throw new MissingNumberException();
+        return Count.scanNumber(context, this, getTypesetter(), token);
     }
 
     /**
      * @see de.dante.extex.interpreter.TokenSource#scanRegisterName(
      *      de.dante.extex.interpreter.context.Context,
-     *      java.lang.String)
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter, java.lang.String)
      */
-    public String scanRegisterName(final Context context, final String primitive)
-            throws InterpreterException {
+    public String scanRegisterName(final Context context,
+            final TokenSource source, final Typesetter typesetter,
+            final String primitive) throws InterpreterException {
 
         skipSpaces = true;
         Token token = getToken(context);
@@ -1308,7 +1146,8 @@ public class Moritz extends Max
             return scanTokensAsString(context, primitive);
         }
 
-        long registerNumber = scanNumber(context, token);
+        long registerNumber = Count.scanNumber(context, source, typesetter,
+                token);
         if (registerMax >= 0 && registerNumber > registerMax) {
             throw new IllegalRegisterException(Long.toString(registerNumber));
         }
