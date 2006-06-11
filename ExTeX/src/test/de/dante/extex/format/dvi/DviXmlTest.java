@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -53,28 +53,28 @@ import de.dante.util.resource.ResourceFinderFactory;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 
 public class DviXmlTest extends TestCase {
 
     /**
-     * path
+     * path.
      */
-    private static final String PATH = "src/test/data/dvi/";
+    private static final String PATH = "develop/test/data/dvi/";
 
     /**
-     * files
+     * files.
      */
     private static final String[] FILES = {"lettrine", "listings"};
 
     /**
-     * write xml file
+     * write xml file.
      */
     private static final boolean WRITEXML = true;
 
     /**
-     * test the dviXml interpreter
+     * test the dviXml interpreter.
      * @throws Exception if an error occurs
      */
     public void testlettrine() throws Exception {
@@ -110,7 +110,7 @@ public class DviXmlTest extends TestCase {
     }
 
     /**
-     * test the dviXml interpreter
+     * test the dviXml interpreter.
      * @throws Exception if an error occurs
      */
     public void testlistings() throws Exception {
@@ -120,7 +120,7 @@ public class DviXmlTest extends TestCase {
     }
 
     /**
-     * read the xml
+     * read the xml.
      * @param nr    the file-nr
      * @return Return the root element
      * @throws Exception if an error occurs
@@ -162,7 +162,7 @@ public class DviXmlTest extends TestCase {
     private Properties props = null;
 
     /**
-     * make a font factory
+     * make a font factory.
      * @return  Return the font factory
      * @throws Exception if an error occurs.
      */
@@ -256,7 +256,7 @@ public class DviXmlTest extends TestCase {
     }
 
     /**
-     * test DviXml
+     * test DviXml.
      * @param args  the commandline
      */
     public static void main(final String[] args) {

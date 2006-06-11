@@ -65,7 +65,7 @@ import de.dante.util.xml.XMLStreamWriter;
  * </ul>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 
 public class FontMap extends AbstractFontUtil {
@@ -96,7 +96,7 @@ public class FontMap extends AbstractFontUtil {
     private GlyphName glyphName;
 
     /**
-     * The font eky factory.
+     * The font key factory.
      */
     private FontKeyFactory fontKeyFactory;
 
@@ -258,7 +258,7 @@ public class FontMap extends AbstractFontUtil {
     /**
      * Adds the entries.
      * @param fe    The PsFontEncoding.
-     * @throws ConfigurationException from the config system.
+     * @throws ConfigurationException from the configuration system.
      * @throws FontException if an font error occurred.
      */
     private void addEntries(final PsFontEncoding fe)

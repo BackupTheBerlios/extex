@@ -37,7 +37,7 @@ import de.dante.util.xml.XMLStreamWriter;
  * Convert a TFM-file to a XML-file.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public final class TFM2XML extends AbstractFontUtil {
 
@@ -88,9 +88,11 @@ public final class TFM2XML extends AbstractFontUtil {
             // pfb file
             InputStream pfbin = getFinder().findResource(pfbfile, "");
             if (pfbin == null) {
-                throw new FileNotFoundException(pfbfile);
+                // throw new FileNotFoundException(pfbfile);
+                System.err.println("Warning: file " + pfbfile + " not found!");
+            } else {
+                font.setPfbParser(new PfbParser(pfbin));
             }
-            font.setPfbParser(new PfbParser(pfbin));
         }
 
         // write to xml-file

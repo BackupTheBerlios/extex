@@ -41,7 +41,7 @@
   <rtf     class="de.dante.extex.backend.documentWriter.rtf.RtfDocumentWriter"/>
   <svg     class="de.dante.extex.backend.documentWriter.svg.SVGDocumentWriter"
            encoding="ISO-8859-1"
-           debug="false"/>
+           debug="true"/>
   <text    class="de.dante.extex.backend.documentWriter.text.TextDocumentWriter"/>
   <xml     class="de.dante.extex.backend.documentWriter.xml.XMLDocumentWriter"
            encoding="ISO-8859-1"

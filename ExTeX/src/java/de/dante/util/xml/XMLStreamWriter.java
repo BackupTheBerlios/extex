@@ -32,7 +32,7 @@ import java.util.LinkedList;
  * <p>only xml version 1.0</p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 
 public class XMLStreamWriter {
@@ -96,6 +96,42 @@ public class XMLStreamWriter {
     private boolean docopen = false;
 
     /**
+     * The system id (doctpye).
+     */
+    private String systemID;
+
+    /**
+     * The public id (doctype).
+     */
+    private String publicID;
+
+    /**
+     * The name of the root element (for doctype)..
+     */
+    private String rootName;
+
+    /**
+     * Set the doctpye definition.
+     *
+     * @param rootn     The root element.
+     * @param publicId  The public id.
+     * @param systemId  The system id.
+     * @throws IOException if an IO-error occurred.
+     */
+    public void setDocType(final String rootn, final String publicId,
+            final String systemId) throws IOException {
+
+        if (!docopen) {
+            rootName = rootn;
+            publicID = publicId;
+            systemID = systemId;
+        } else {
+            throw new IOException("only before writeStartDocument()!");
+        }
+
+    }
+
+    /**
      * Write the start of the document.
      * <p>
      * A newline is write after the header, without attend
@@ -107,6 +143,15 @@ public class XMLStreamWriter {
     public void writeStartDocument() throws IOException {
 
         out.write("<?xml version=\"1.0\" encoding=\"" + encoding + "\"?>\n");
+        if (rootName != null && publicID != null && systemID != null) {
+            out.write("<!DOCTYPE ");
+            out.write(rootName);
+            out.write(" PUBLIC \"");
+            out.write(publicID);
+            out.write("\" \"");
+            out.write(systemID);
+            out.write("\">\n");
+        }
         docopen = true;
     }
 

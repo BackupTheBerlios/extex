@@ -32,9 +32,9 @@ import de.dante.util.file.random.RandomAccessR;
 import de.dante.util.xml.XMLStreamWriter;
 
 /**
- * Class for TFM param table.
+ * Class for TFM parameter table.
  *
- * <p>param : array [0 .. (np-1)] of fix word</p>
+ * <p>parameter : array [0 .. (np-1)] of fix word</p>
  *
  * <p>
  * Information from:
@@ -43,7 +43,7 @@ import de.dante.util.xml.XMLStreamWriter;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class TfmParamArray
@@ -68,7 +68,7 @@ public class TfmParamArray
      *
      * @param rar   the input
      * @param size  number of words in the table
-     * @param ft    the fonttpye
+     * @param ft    the font type
      * @throws IOException if an IO-error occurs.
      */
     public TfmParamArray(final RandomAccessR rar, final int size,
@@ -94,13 +94,13 @@ public class TfmParamArray
     }
 
     /**
-     * labels for VANILLA.
+     * Labels for VANILLA.
      */
     public static final String[] LABEL_VANILLA = {"SLANT", "SPACE", "STRETCH",
             "SHRINK", "XHEIGHT", "QUAD", "EXTRASPACE"};
 
     /**
-     * lables for MATHSY.
+     * Labels for MATHSY.
      */
     public static final String[] LABEL_MATHSY = {"SLANT", "SPACE", "STRETCH",
             "SHRINK", "XHEIGHT", "QUAD", "EXTRASPACE", "NUM1", "NUM2", "NUM3",
@@ -108,7 +108,7 @@ public class TfmParamArray
             "SUPDROP", "SUBDROP", "DELIM1", "DELIM2", "AXISHEIGHT"};
 
     /**
-     * labels for MATHEX.
+     * Labels for MATHEX.
      */
     public static final String[] LABEL_MATHEX = {"SLANT", "SPACE", "STRETCH",
             "SHRINK", "XHEIGHT", "QUAD", "EXTRASPACE", "DEFAULTRULETHICKNESS",
@@ -116,8 +116,55 @@ public class TfmParamArray
             "BIGOPSPACING5"};
 
     /**
+     * Returns the length of the parameter array.
+     * @return Returns the length of the parameter array.
+     */
+    public int getLength() {
+
+        return table.length;
+    }
+
+    /**
+     * Returns the parameter with the index <code>i</code>.
+     * @param i The index in the array.
+     * @return Returns the parameter with the index <code>i</code>.
+     */
+    public TfmFixWord getParam(final int i) {
+
+        if (i < table.length) {
+            return table[i];
+        }
+        return TfmFixWord.ZERO;
+    }
+
+    /**
+     * Returns the parameter with the name <code>name</code>.
+     * @param name  The name of the parameter.
+     * @return Returns the parameter with the name <code>name</code>.
+     */
+    public TfmFixWord getParam(final String name) {
+
+        if (name != null) {
+            String[] labels = null;
+            if (fonttpye.getType() == TfmFontType.MATHEX) {
+                labels = LABEL_MATHEX;
+            } else if (fonttpye.getType() == TfmFontType.MATHSY) {
+                labels = LABEL_MATHSY;
+            } else {
+                labels = LABEL_VANILLA;
+            }
+            for (int i = 0; i < labels.length; i++) {
+                if (name.equals(labels[i])) {
+                    return table[i];
+                }
+            }
+        }
+        return TfmFixWord.ZERO;
+    }
+
+    /**
      * Returns the label of the parameter, or a empty string,
-     * if no labelname exits.
+     * if no label name exits.
      * @param id    the id
      * @return Returns the label of the parameter.
      */
@@ -139,7 +186,7 @@ public class TfmParamArray
     }
 
     /**
-     * Add the param to the element.
+     * Add the parameter to the element.
      * @param element   the element
      */
     public void addParam(final Element element) {

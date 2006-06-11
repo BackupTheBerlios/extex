@@ -29,7 +29,7 @@ import de.dante.util.xml.XMLStreamWriter;
  * Class to handle efm font metrics.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 
 public class EfmFont {
@@ -60,6 +60,11 @@ public class EfmFont {
     private EfmMetric metric;
 
     /**
+     * The data values.
+     */
+    private EfmDataValues dataValues;
+
+    /**
      * The font name.
      */
     private String fontName;
@@ -82,6 +87,7 @@ public class EfmFont {
     public EfmFont(final TfmReader tfm) {
 
         metric = new EfmMetric(tfm);
+        dataValues = new EfmDataValues(tfm);
         fontName = tfm.getFontname();
         exFontFile = tfm.getPfbfilename();
         designSize = tfm.getDesignSizeAsDouble();
@@ -109,9 +115,13 @@ public class EfmFont {
         writer.writeAttribute(ATT_EXTERNALFONTFILE, exFontFile);
         writer.writeAttribute(ATT_DESIGNSIZE, designSize);
 
+        // write data values
+        dataValues.write(writer);
+
+        // write metric
         metric.write(writer);
 
-        // encoding
+        // write encoding
         if (encFile != null && encFile.length() > 0) {
             writer.writeStartElement("xi", "include");
             writer.writeAttribute("href", encFile);

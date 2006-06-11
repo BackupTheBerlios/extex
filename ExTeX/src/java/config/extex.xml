@@ -154,6 +154,7 @@
     <pdf format="{0}{1}{2,number,0000}.pdf"/>
     <rtf format="{0}{1}{2,number,0000}.rtf"/>
     <text format="{0}{1}{2,number,0000}.txt"/>
+    <svg format="{0}{1}{2,number,0000}.svg"/>
     <xml format="{0}{1}{2,number,0000}.xml"/>
   </Output>
  

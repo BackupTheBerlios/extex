@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -25,7 +25,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.LineNumberReader;
 import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
@@ -55,18 +54,18 @@ import de.dante.util.resource.ResourceFinderFactory;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 
 public class DviTypeTest extends TestCase {
 
     /**
-     * path
+     * path.
      */
-    private static final String PATH = "src/test/data/dvi/";
+    private static final String PATH = "develop/test/data/dvi/";
 
     /**
-     * files
+     * files.
      */
     private static final String[] FILES = {"lettrine", "listings", "andre"};
 
@@ -91,7 +90,7 @@ public class DviTypeTest extends TestCase {
     }
 
     /**
-     * test the dviXml interpreter
+     * test the dviXml interpreter.
      * @throws IOException if a IO-error occurs
      */
     public void testlettrine() throws IOException {
@@ -100,7 +99,7 @@ public class DviTypeTest extends TestCase {
     }
 
     /**
-     * test the dviXml interpreter
+     * test the dviXml interpreter.
      * @throws IOException if a IO-error occurs
      */
     public void testlistings() throws IOException {
@@ -109,7 +108,7 @@ public class DviTypeTest extends TestCase {
     }
 
     /**
-     * test the dviXml interpreter
+     * test the dviXml interpreter.
      * @throws IOException if a IO-error occurs
      */
     public void testandre() throws IOException {
@@ -118,6 +117,7 @@ public class DviTypeTest extends TestCase {
     }
 
     /**
+     * Check the file.
      * @param file  the file to test
      * @throws IOException if an io-error occurs
      */
@@ -149,7 +149,7 @@ public class DviTypeTest extends TestCase {
     }
 
     /**
-     * remove the vv- or hh-value
+     * remove the vv- or hh-value.
      * @param s the String
      * @return Returns the String witout vv.. / hh..
      */
@@ -171,6 +171,7 @@ public class DviTypeTest extends TestCase {
     // --------------------------------------
 
     /**
+     * Read the file.
      * @param in    the input
      * @param map   the map
      * @throws IOException if an io-error occurs
@@ -196,12 +197,12 @@ public class DviTypeTest extends TestCase {
     private Properties props = null;
 
     /**
-     * finder
+     * finder.
      */
     private ResourceFinder finder;
 
     /**
-     * make a font factroy
+     * make a font factroy.
      * @return  Return the fontfactory
      * @throws Exception if an error occurs.
      */
@@ -305,7 +306,7 @@ public class DviTypeTest extends TestCase {
     }
 
     /**
-     * test DviXml
+     * test DviXml.
      * @param args  the commandline
      */
     public static void main(final String[] args) {
