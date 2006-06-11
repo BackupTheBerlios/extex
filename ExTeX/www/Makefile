@@ -23,11 +23,20 @@ DEST = ../target/www
 FLAGS = -verbose -src=src -dest=$(DEST)
 UFLAGS = -verbose
 
-all:
+all: test-summary site rss units
+
+site:
 	@perl .make.pl $(FLAGS)
 
 units:
 	@perl unit-summary.pl $(UFLAGS)
+
+rss:
+	@perl make-rss.pl
+
+test-summary:
+	@perl make-test-summary.pl
+
 
 clean:
 	$(RM) -rf www

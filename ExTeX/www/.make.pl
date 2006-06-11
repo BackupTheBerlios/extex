@@ -1,6 +1,6 @@
 #!/bin/perl.exe -w
 ##*****************************************************************************
-## $Id: .make.pl,v 1.9 2006/05/08 16:00:53 gene Exp $
+## $Id: .make.pl,v 1.10 2006/06/11 20:20:26 gene Exp $
 ##*****************************************************************************
 ## Author: Gerd Neugebauer
 ##=============================================================================
@@ -270,6 +270,8 @@ sub includeFile
       includeFile($fromdir,".info",$out,$top,$fromdir);
     } elsif ( m|<tabs[ ]*/>|i ) {
       includeFile($fromdir,".tabs",$out,$top,$fromdir);
+    } elsif ( m|<include[ ]*src="(.*)"/>|i ) {
+      includeFile($fromdir,$1,$out,$top,$fromdir);
     } elsif ( m|<directory[ ]*/>|i ) {
 
       print $out "  <table>\n";
