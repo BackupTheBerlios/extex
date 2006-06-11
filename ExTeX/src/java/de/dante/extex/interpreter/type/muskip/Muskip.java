@@ -47,7 +47,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * The actual length is a multiple of math units (mu).
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public class Muskip extends Mudimen implements Serializable {
 
@@ -95,13 +95,23 @@ public class Muskip extends Mudimen implements Serializable {
             }
         }
 
-        source.push(t);
-        Muskip ms = new Muskip(scanMu(context, source));
+
+        if (t == null) {
+            throw new EofException("mu");
+        }
+        long value = ScaledNumber.scanFloat(context, source, typesetter, t);
+        if (!source.getKeyword(context, "mu")) {
+            throw new HelpingException(//
+                    LocalizerFactory.getLocalizer(Muskip.class.getName()),
+                    "TTP.IllegalMu");
+        }
+        Muskip ms =  new Muskip(new Dimen(value));
+
         if (source.getKeyword(context, "plus")) {
-            ms.stretch = scanMuOrFill(context, source);
+            ms.stretch = scanMuOrFill(context, source, typesetter);
         }
         if (source.getKeyword(context, "minus")) {
-            ms.shrink = scanMuOrFill(context, source);
+            ms.shrink = scanMuOrFill(context, source, typesetter);
         }
         ms.kill = false;
         return ms;
@@ -112,19 +122,21 @@ public class Muskip extends Mudimen implements Serializable {
      *
      * @param context the processor context
      * @param source the source for new tokens
+     * @param typesetter the typesetter
      *
      * @return the number of scaled points for the mu
      *
      * @throws InterpreterException in case of an error
      */
     private static GlueComponent scanMuOrFill(final Context context,
-            final TokenSource source) throws InterpreterException {
+            final TokenSource source, final Typesetter typesetter)
+            throws InterpreterException {
 
         Token t = source.getToken(context);
         if (t == null) {
             throw new EofException("mu");
         }
-        long value = ScaledNumber.scanFloat(context, source, t);
+        long value = ScaledNumber.scanFloat(context, source, typesetter, t);
         if (source.getKeyword(context, "mu")) {
             return new GlueComponent(value);
         } else if (source.getKeyword(context, "fillll")) {
