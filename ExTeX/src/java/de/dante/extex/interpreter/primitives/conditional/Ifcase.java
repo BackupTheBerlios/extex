@@ -26,6 +26,7 @@ import de.dante.extex.interpreter.exception.ImpossibleException;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.Code;
+import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.scanner.type.token.CodeToken;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
@@ -69,7 +70,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.32 $
+ * @version $Revision: 1.33 $
  */
 public class Ifcase extends AbstractIf {
 
@@ -114,7 +115,7 @@ public class Ifcase extends AbstractIf {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        long branch = source.scanInteger(context, typesetter);
+        long branch = Count.scanInteger(context, source, typesetter);
         if (branch < 0) {
             if (skipToElseOrFi(context, source)) {
                 context.pushConditional(source.getLocator(), true, this, -1,
@@ -215,7 +216,7 @@ public class Ifcase extends AbstractIf {
      * This is an internal class for type-safe values.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.32 $
+     * @version $Revision: 1.33 $
      */
     protected static final class Tag {
 

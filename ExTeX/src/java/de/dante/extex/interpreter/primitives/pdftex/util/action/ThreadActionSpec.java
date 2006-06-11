@@ -29,7 +29,7 @@ import de.dante.extex.typesetter.Typesetter;
  * This class represents a thread action spec.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class ThreadActionSpec extends ActionSpec {
 
@@ -54,7 +54,7 @@ public class ThreadActionSpec extends ActionSpec {
             file = source.scanTokensAsString(context, name);
         }
 
-        IdSpec id = IdSpec.parseIdSpec(source, context, name);
+        IdSpec id = IdSpec.parseIdSpec(context, source, typesetter, name);
 
         return new ThreadActionSpec(file, id);
     }

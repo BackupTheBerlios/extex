@@ -24,6 +24,7 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
+import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
@@ -67,7 +68,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class Ifnum extends AbstractIf {
 
@@ -96,7 +97,7 @@ public class Ifnum extends AbstractIf {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        long value = source.scanInteger(context, typesetter);
+        long value = Count.scanInteger(context, source, typesetter);
         Token rel = source.getToken(context);
         if (rel == null) {
             throw new EofException(printableControlSequence(context));
@@ -104,11 +105,14 @@ public class Ifnum extends AbstractIf {
         if (rel.getCatcode() == Catcode.OTHER) {
             switch (rel.getChar().getCodePoint()) {
                 case '<':
-                    return (value < source.scanInteger(context, typesetter));
+                    return (value < Count.scanInteger(context, source,
+                            typesetter));
                 case '=':
-                    return (value == source.scanInteger(context, typesetter));
+                    return (value == Count.scanInteger(context, source,
+                            typesetter));
                 case '>':
-                    return (value > source.scanInteger(context, typesetter));
+                    return (value > Count.scanInteger(context, source,
+                            typesetter));
                 default:
             // fall-through
             }

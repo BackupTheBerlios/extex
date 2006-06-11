@@ -29,6 +29,7 @@ import de.dante.extex.interpreter.exception.helping.MissingNumberException;
 import de.dante.extex.interpreter.primitives.math.AbstractMathCode;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.ExpandableCode;
+import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.scanner.type.token.CodeToken;
 import de.dante.extex.scanner.type.token.OtherToken;
 import de.dante.extex.scanner.type.token.Token;
@@ -47,7 +48,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * to and from their <logo>TeX</logo> encoding as numbers to abstract math code.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public abstract class AbstractTeXDelimiter extends AbstractMathCode {
 
@@ -278,10 +279,10 @@ public abstract class AbstractTeXDelimiter extends AbstractMathCode {
             final MathClass mClass, final String primitive)
             throws InterpreterException {
 
-        int smallFam = (int) source.scanNumber(context);
+        int smallFam = (int) Count.scanNumber(context, source, typesetter);
         UnicodeChar smallChar = source.scanCharacterCode(context, typesetter,
                 primitive);
-        int largeFam = (int) source.scanNumber(context);
+        int largeFam = (int) Count.scanNumber(context, source, typesetter);
         UnicodeChar largeChar = source.scanCharacterCode(context, typesetter,
                 primitive);
 
@@ -316,7 +317,8 @@ public abstract class AbstractTeXDelimiter extends AbstractMathCode {
             if (t instanceof CodeToken) {
                 Code code = context.getCode((CodeToken) t);
                 if (code instanceof Delimiter) {
-                    return newMathDelimiter(source.scanNumber(context));
+                    return newMathDelimiter(Count.scanNumber(context, source,
+                            typesetter));
                 } else if (code instanceof ExpandableCode) {
                     ((ExpandableCode) code).expand(Flags.NONE, context, source,
                             typesetter);
@@ -332,7 +334,8 @@ public abstract class AbstractTeXDelimiter extends AbstractMathCode {
                 } else if (t instanceof OtherToken) {
                     source.push(t);
                     try {
-                        return newMathDelimiter(source.scanNumber(context));
+                        return newMathDelimiter(Count.scanNumber(context,
+                                source, typesetter));
                     } catch (MissingNumberException e) {
                         throw new HelpingException(getMyLocalizer(),
                                 "TTP.MissingDelim");

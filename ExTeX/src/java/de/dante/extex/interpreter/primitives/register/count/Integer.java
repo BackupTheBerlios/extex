@@ -25,7 +25,7 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.primitives.register.count.util.IntegerCode;
 import de.dante.extex.interpreter.type.AbstractAssignment;
-import de.dante.extex.interpreter.type.scaled.ScaledNumber;
+import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.scanner.type.token.CodeToken;
 import de.dante.extex.typesetter.Typesetter;
 
@@ -79,7 +79,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Integer extends AbstractAssignment {
 
@@ -111,7 +111,7 @@ public class Integer extends AbstractAssignment {
 
         CodeToken cs = source.getControlSequence(context);
         source.getOptionalEquals(context);
-        long value = source.scanInteger(context, typesetter);
+        long value = Count.scanInteger(context, source, typesetter);
         context.setCode(cs, new IntegerCode(getName(), value), prefix
                 .clearGlobal());
     }

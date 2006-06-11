@@ -25,6 +25,7 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.box.Box;
+import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.node.pdftex.PdfXForm;
@@ -52,7 +53,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Pdfxform extends AbstractPdftexCode {
 
@@ -97,7 +98,7 @@ public class Pdfxform extends AbstractPdftexCode {
             }
         }
 
-        long b = source.scanInteger(context, typesetter);
+        long b = Count.scanInteger(context, source, typesetter);
         Box box = context.getBox(Long.toString(b));
         PdfXForm form = writer.getXForm(attr, resources, box);
 

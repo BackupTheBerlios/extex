@@ -50,7 +50,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Prevgraf extends CountPrimitive {
 
@@ -94,7 +94,7 @@ public class Prevgraf extends CountPrimitive {
         String key = getKey(context, source, typesetter);
         source.getKeyword(context, "by");
 
-        long value = Count.scanCount(context, source, null)
+        long value = Count.scanInteger(context, source, null)
                 + context.getCount(key).getValue();
 
         if (value < 0) {
@@ -118,7 +118,7 @@ public class Prevgraf extends CountPrimitive {
         String key = getKey(context, source, typesetter);
         source.getOptionalEquals(context);
 
-        long value = Count.scanCount(context, source, typesetter);
+        long value = Count.scanInteger(context, source, typesetter);
         if (value < 0) {
             throw new HelpingException(getLocalizer(), "TTP.BadPrevGraf",
                     printableControlSequence(context), Long.toString(value));
@@ -140,7 +140,7 @@ public class Prevgraf extends CountPrimitive {
         String key = getKey(context, source, typesetter);
         source.getKeyword(context, "by");
 
-        long value = Count.scanCount(context, source, null);
+        long value = Count.scanInteger(context, source, null);
 
         if (value == 0) {
             throw new ArithmeticOverflowException(
@@ -169,7 +169,7 @@ public class Prevgraf extends CountPrimitive {
         String key = getKey(context, source, typesetter);
         source.getKeyword(context, "by");
 
-        long value = Count.scanCount(context, source, null);
+        long value = Count.scanInteger(context, source, null);
         value *= context.getCount(key).getValue();
         if (value < 0) {
             throw new HelpingException(getLocalizer(), "TTP.BadPrevGraf",

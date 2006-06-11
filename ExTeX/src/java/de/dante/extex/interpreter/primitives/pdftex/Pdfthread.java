@@ -53,7 +53,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Pdfthread extends AbstractPdftexCode {
 
@@ -103,7 +103,7 @@ public class Pdfthread extends AbstractPdftexCode {
             }
         }
 
-        IdSpec id = IdSpec.parseIdSpec(source, context, getName());
+        IdSpec id = IdSpec.parseIdSpec(context, source, typesetter, getName());
 
         PdfThread thread = new PdfThread(new RuleNode(width, height, depth,
                 null, true), attr, id);

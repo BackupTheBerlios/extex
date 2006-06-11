@@ -111,7 +111,7 @@ import de.dante.util.UnicodeChar;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Delcode extends AbstractAssignment
         implements
@@ -151,7 +151,7 @@ public class Delcode extends AbstractAssignment
                 getName());
         source.getKeyword(context, "by");
 
-        long value = Count.scanCount(context, source, null);
+        long value = Count.scanInteger(context, source, null);
         MathDelimiter delcode = context.getDelcode(charCode);
         value += AbstractTeXDelimiter.toTeX(delcode);
 
@@ -238,7 +238,7 @@ public class Delcode extends AbstractAssignment
                 getName());
         source.getKeyword(context, "by");
 
-        long value = Count.scanCount(context, source, null);
+        long value = Count.scanInteger(context, source, null);
         MathDelimiter delcode = context.getDelcode(charCode);
         if (value == 0) {
             throw new ArithmeticOverflowException(
@@ -264,7 +264,7 @@ public class Delcode extends AbstractAssignment
                 getName());
         source.getKeyword(context, "by");
 
-        long value = Count.scanCount(context, source, null);
+        long value = Count.scanInteger(context, source, null);
         MathDelimiter delcode = context.getDelcode(charCode);
         value *= AbstractTeXDelimiter.toTeX(delcode);
         assign(prefix, context, source, charCode, value);

@@ -28,6 +28,7 @@ import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.arithmetic.Advanceable;
 import de.dante.extex.interpreter.type.arithmetic.Divideable;
 import de.dante.extex.interpreter.type.arithmetic.Multiplyable;
+import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.dimen.DimenConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
@@ -71,7 +72,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public class RightHyphenmin extends AbstractHyphenationCode
         implements
@@ -116,7 +117,7 @@ public class RightHyphenmin extends AbstractHyphenationCode
         Language table = getHyphenationTable(context);
         source.getKeyword(context, "by");
         long righthyphenmin = table.getRightHyphenmin();
-        righthyphenmin += source.scanInteger(context, typesetter);
+        righthyphenmin += Count.scanInteger(context, source, typesetter);
 
         try {
             table.setRightHyphenmin(righthyphenmin);
@@ -178,7 +179,7 @@ public class RightHyphenmin extends AbstractHyphenationCode
         Language table = getHyphenationTable(context);
         source.getKeyword(context, "by");
         long righthyphenmin = table.getRightHyphenmin();
-        long arg = source.scanInteger(context, typesetter);
+        long arg = Count.scanInteger(context, source, typesetter);
         if (arg == 0) {
             throw new ArithmeticOverflowException(
                     printableControlSequence(context));
@@ -223,7 +224,7 @@ public class RightHyphenmin extends AbstractHyphenationCode
 
         Language table = getHyphenationTable(context);
         source.getOptionalEquals(context);
-        long righthyphenmin = source.scanInteger(context, typesetter);
+        long righthyphenmin = Count.scanInteger(context, source, typesetter);
 
         try {
             table.setRightHyphenmin(righthyphenmin);
@@ -261,7 +262,7 @@ public class RightHyphenmin extends AbstractHyphenationCode
         Language table = getHyphenationTable(context);
         source.getKeyword(context, "by");
         long righthyphenmin = table.getRightHyphenmin();
-        righthyphenmin *= source.scanInteger(context, typesetter);
+        righthyphenmin *= Count.scanInteger(context, source, typesetter);
 
         try {
             table.setRightHyphenmin(righthyphenmin);

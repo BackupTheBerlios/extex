@@ -50,7 +50,7 @@ import de.dante.extex.typesetter.Typesetter;
  *  <pre class="syntax">
  *    &lang;count&rang;
  *      &rarr; &lang;optional prefix&rang; <tt>\count</tt> {@linkplain
- *        de.dante.extex.interpreter.TokenSource#scanRegisterName(Context,String)
+ *        de.dante.extex.interpreter.TokenSource#scanRegisterName(Context,TokenSource,Typesetter,String)
  *        &lang;register name&rang;} {@linkplain
  *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
  *        &lang;equals&rang;} {@linkplain
@@ -75,7 +75,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.31 $
+ * @version $Revision: 1.32 $
  */
 public class CountPrimitive extends AbstractCount
         implements
@@ -115,7 +115,7 @@ public class CountPrimitive extends AbstractCount
         String key = getKey(context, source, typesetter);
         source.getKeyword(context, "by");
 
-        long value = Count.scanCount(context, source, typesetter);
+        long value = Count.scanInteger(context, source, typesetter);
         value += context.getCount(key).getValue();
 
         context.setCount(key, value, prefix.clearGlobal());
@@ -135,7 +135,7 @@ public class CountPrimitive extends AbstractCount
         String key = getKey(context, source, typesetter);
         source.getOptionalEquals(context);
 
-        long value = Count.scanCount(context, source, typesetter);
+        long value = Count.scanInteger(context, source, typesetter);
         context.setCount(key, value, prefix.clearGlobal());
     }
 
@@ -166,7 +166,7 @@ public class CountPrimitive extends AbstractCount
         String key = getKey(context, source, typesetter);
         source.getKeyword(context, "by");
 
-        long value = Count.scanCount(context, source, typesetter);
+        long value = Count.scanInteger(context, source, typesetter);
 
         if (value == 0) {
             throw new ArithmeticOverflowException(
@@ -206,7 +206,7 @@ public class CountPrimitive extends AbstractCount
         String key = getKey(context, source, typesetter);
         source.getKeyword(context, "by");
 
-        long value = Count.scanCount(context, source, typesetter);
+        long value = Count.scanInteger(context, source, typesetter);
         value *= context.getCount(key).getValue();
         context.setCount(key, value, prefix.clearGlobal());
     }

@@ -26,6 +26,7 @@ import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.InvalidCodeException;
 import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.interpreter.type.Theable;
+import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.Catcode;
@@ -142,7 +143,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
 public class CatcodePrimitive extends AbstractAssignment
         implements
@@ -178,7 +179,7 @@ public class CatcodePrimitive extends AbstractAssignment
         UnicodeChar charCode = source.scanCharacterCode(context, typesetter,
                 getName());
         source.getOptionalEquals(context);
-        long ccNumber = source.scanInteger(context, typesetter);
+        long ccNumber = Count.scanInteger(context, source, typesetter);
 
         try {
             context.setCatcode(charCode, Catcode.toCatcode((int) ccNumber),

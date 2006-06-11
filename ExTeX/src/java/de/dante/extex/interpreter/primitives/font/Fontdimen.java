@@ -27,6 +27,7 @@ import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.Theable;
+import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.tokens.Tokens;
@@ -80,7 +81,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.36 $
+ * @version $Revision: 1.37 $
  */
 public class Fontdimen extends AbstractAssignment
         implements
@@ -163,8 +164,7 @@ public class Fontdimen extends AbstractAssignment
             return key;
         }
         source.push(t);
-        long idx = source.scanInteger(context, typesetter);
-        return Long.toString(idx);
+        return Long.toString(Count.scanInteger(context, source, typesetter));
     }
 
     /**

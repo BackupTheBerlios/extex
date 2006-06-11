@@ -49,7 +49,7 @@ import de.dante.util.UnicodeChar;
  *  The primitive <tt>\mathchar</tt> inserts a mathematical character consisting
  *  of a math class and a character code inti the current math list. This is
  *  supposed to work in math mode only.
- *  TODO missing documentation
+ *  TODO gene: missing documentation
  * </p>
  *
  * <h4>Syntax</h4>
@@ -66,7 +66,7 @@ import de.dante.util.UnicodeChar;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Mathchar extends AbstractMathCode {
 
@@ -145,13 +145,13 @@ public class Mathchar extends AbstractMathCode {
             if (mc == null) {
                 throw new HelpingException(getLocalizer(), "MathClass", mclass);
             }
-            int fam = (int) source.scanNumber(context);
-            int code = (int) source.scanNumber(context);
+            int fam = (int) Count.scanNumber(context, source, typesetter);
+            int code = (int) Count.scanNumber(context, source, typesetter);
             MathGlyph mg = new MathGlyph(fam, UnicodeChar.get(code));
             nc.add(mc, mg, context.getTypesettingContext());
         } else {
             source.push(t);
-            insert(nc, Count.scanCount(context, source, typesetter), context
+            insert(nc, Count.scanInteger(context, source, typesetter), context
                     .getTypesettingContext());
         }
     }

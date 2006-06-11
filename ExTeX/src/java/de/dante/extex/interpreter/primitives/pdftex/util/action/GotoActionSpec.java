@@ -26,13 +26,14 @@ import de.dante.extex.interpreter.exception.pdftex.InterpreterPdftexActionTypeEx
 import de.dante.extex.interpreter.exception.pdftex.InterpreterPdftexIdentifierTypeException;
 import de.dante.extex.interpreter.primitives.pdftex.util.id.NameIdSpec;
 import de.dante.extex.interpreter.primitives.pdftex.util.id.NumIdSpec;
+import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.typesetter.Typesetter;
 
 /**
  * This class provides an abstract base for goto actions in PDF.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public abstract class GotoActionSpec extends ActionSpec {
 
@@ -53,7 +54,7 @@ public abstract class GotoActionSpec extends ActionSpec {
             final String name) throws InterpreterException {
 
         if (source.getKeyword(context, "num")) {
-            long num = source.scanNumber(context);
+            long num = Count.scanNumber(context, source, typesetter);
             return new GotoIdActionSpec(null, new NumIdSpec(num), null);
 
         } else if (source.getKeyword(context, "name")) {
@@ -61,7 +62,7 @@ public abstract class GotoActionSpec extends ActionSpec {
             return new GotoIdActionSpec(null, new NameIdSpec(id), null);
 
         } else if (source.getKeyword(context, "page")) {
-            long page = source.scanNumber(context);
+            long page = Count.scanNumber(context, source, typesetter);
             String text = source.scanTokensAsString(context, name);
             return new GotoPageActionSpec(null, page, text, null);
 
@@ -81,7 +82,7 @@ public abstract class GotoActionSpec extends ActionSpec {
             return new GotoIdActionSpec(file, new NameIdSpec(id), newWindow);
 
         } else if (source.getKeyword(context, "page")) {
-            long page = source.scanNumber(context);
+            long page = Count.scanNumber(context, source, typesetter);
             String text = source.scanTokensAsString(context, name);
             Boolean newWindow = null;
             if (source.getKeyword(context, "newwindow")) {

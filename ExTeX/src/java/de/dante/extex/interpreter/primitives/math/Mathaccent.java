@@ -24,6 +24,7 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
+import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
 import de.dante.extex.typesetter.type.noad.AccentNoad;
@@ -53,7 +54,7 @@ import de.dante.extex.typesetter.type.noad.Noad;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class Mathaccent extends AbstractMathCode {
 
@@ -90,7 +91,7 @@ public class Mathaccent extends AbstractMathCode {
             throws InterpreterException {
 
         NoadConsumer nc = getListMaker(context, typesetter);
-        long accent = source.scanNumber(context);
+        long accent = Count.scanNumber(context, source, typesetter);
         if (accent > CHARCODE_MAX) {
             throw new HelpingException(getLocalizer(), "TTP.BadMathCharCode",
                     Long.toHexString(accent));

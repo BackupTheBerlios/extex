@@ -23,13 +23,15 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.pdftex.InterpreterPdftexIdentifierTypeException;
+import de.dante.extex.interpreter.type.count.Count;
+import de.dante.extex.typesetter.Typesetter;
 
 /**
  * This is the abstract base class for ids.
  * An id can either be a number or a name.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public abstract class IdSpec {
 
@@ -44,12 +46,12 @@ public abstract class IdSpec {
      *
      * @throws InterpreterException in case of an parse error
      */
-    public static IdSpec parseIdSpec(final TokenSource source,
-            final Context context, final String name)
+    public static IdSpec parseIdSpec(final Context context,
+            final TokenSource source, Typesetter typesetter, final String name)
             throws InterpreterException {
 
         if (source.getKeyword(context, "num")) {
-            long num = source.scanNumber(context);
+            long num = Count.scanNumber(context, source, typesetter);
             return new NumIdSpec(num);
         } else if (source.getKeyword(context, "name")) {
             String id = source.scanTokensAsString(context, name);

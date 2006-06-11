@@ -68,11 +68,16 @@ import de.dante.extex.typesetter.Typesetter;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;mag&rang;
- *      &rarr; <tt>\mag</tt> {@linkplain
+ *      &rarr; &lang;optional prefix&rang; <tt>\mag</tt> {@linkplain
  *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
  *        &lang;equals&rang;} {@linkplain
  *        de.dante.extex.interpreter.TokenSource#scanInteger(Context,Typesetter)
- *        &lang;number&rang;}  </pre>
+ *        &lang;number&rang;}
+ *
+ *    &lang;optional prefix&rang;
+ *      &rarr;
+ *       |  <tt>\global</tt>
+ *       |  <tt>\immediate</tt>  </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
@@ -85,7 +90,7 @@ import de.dante.extex.typesetter.Typesetter;
  * @see de.dante.extex.interpreter.type.Theable
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class Mag extends AbstractCount
         implements
@@ -124,10 +129,10 @@ public class Mag extends AbstractCount
 
         source.getKeyword(context, "by");
 
-        long value = Count.scanCount(context, source, null);
+        long value = Count.scanInteger(context, source, null);
         value += context.getMagnification();
 
-        context.setMagnification(value);
+        context.setMagnification(value, true);
     }
 
     /**
@@ -143,8 +148,8 @@ public class Mag extends AbstractCount
 
         source.getOptionalEquals(context);
 
-        long value = Count.scanCount(context, source, typesetter);
-        context.setMagnification(value);
+        long value = Count.scanInteger(context, source, typesetter);
+        context.setMagnification(value, true);
     }
 
     /**
@@ -171,7 +176,7 @@ public class Mag extends AbstractCount
 
         source.getKeyword(context, "by");
 
-        long value = Count.scanCount(context, source, null);
+        long value = Count.scanInteger(context, source, null);
 
         if (value == 0) {
             throw new ArithmeticOverflowException(
@@ -179,7 +184,7 @@ public class Mag extends AbstractCount
         }
 
         value = context.getMagnification() / value;
-        context.setMagnification(value);
+        context.setMagnification(value, true);
     }
 
     /**
@@ -211,8 +216,8 @@ public class Mag extends AbstractCount
             return;
         }
         source.push(t);
-        long value = Count.scanCount(context, source, typesetter);
-        context.setMagnification(value);
+        long value = Count.scanInteger(context, source, typesetter);
+        context.setMagnification(value, false);
     }
 
     /**
@@ -228,9 +233,9 @@ public class Mag extends AbstractCount
 
         source.getKeyword(context, "by");
 
-        long value = Count.scanCount(context, source, null);
+        long value = Count.scanInteger(context, source, null);
         value *= context.getMagnification();
-        context.setMagnification(value);
+        context.setMagnification(value, true);
     }
 
     /**

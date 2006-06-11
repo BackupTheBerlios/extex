@@ -35,7 +35,7 @@ import de.dante.util.exception.GeneralException;
  * numbered count registers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public abstract class AbstractCount extends AbstractAssignment
         implements
@@ -69,7 +69,7 @@ public abstract class AbstractCount extends AbstractAssignment
 
         String name;
         try {
-            name = source.scanRegisterName(context, getName());
+            name = source.scanRegisterName(context, source, typesetter, getName());
         } catch (GeneralException e) {
             throw new InterpreterException(e);
         }
@@ -95,7 +95,7 @@ public abstract class AbstractCount extends AbstractAssignment
             return;
         }
         source.push(t);
-        long value = Count.scanCount(context, source, typesetter);
+        long value = Count.scanInteger(context, source, typesetter);
         context.setCount(getKey(context, source, typesetter), value, true);
     }
 

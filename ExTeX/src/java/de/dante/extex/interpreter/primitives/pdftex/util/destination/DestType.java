@@ -23,6 +23,7 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.pdftex.InterpreterPdftexDestinationTypeException;
+import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.node.RuleNode;
@@ -31,7 +32,7 @@ import de.dante.extex.typesetter.type.node.RuleNode;
  * This is the abstract base class for destination types in PDF.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public abstract class DestType {
 
@@ -255,7 +256,7 @@ public abstract class DestType {
                     true));
 
         } else if (source.getKeyword(context, "zoom")) {
-            long zoom = source.scanInteger(context, typesetter);
+            long zoom = Count.scanInteger(context, source, typesetter);
             return new ZoomDestType(zoom);
         }
 

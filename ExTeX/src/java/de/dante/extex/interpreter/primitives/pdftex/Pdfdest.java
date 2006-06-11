@@ -52,7 +52,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Pdfdest extends AbstractPdftexCode {
 
@@ -84,7 +84,7 @@ public class Pdfdest extends AbstractPdftexCode {
 
         ensurePdftex(context, typesetter);
 
-        IdSpec id = IdSpec.parseIdSpec(source, context, getName());
+        IdSpec id = IdSpec.parseIdSpec(context, source, typesetter, getName());
         DestType type = DestType.parseDestType(context, source, typesetter,
                 getName());
 

@@ -23,6 +23,7 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.InitializableCode;
+import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.framework.configuration.Configurable;
@@ -44,7 +45,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class IntegerParameter extends CountPrimitive
         implements
@@ -107,7 +108,9 @@ public class IntegerParameter extends CountPrimitive
      * @throws InterpreterException in case of an error
      *
      * @see de.dante.extex.interpreter.type.InitializableCode#init(
-     *      de.dante.extex.interpreter.context.Context, TokenSource, Typesetter)
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
      */
     public void init(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
@@ -116,10 +119,9 @@ public class IntegerParameter extends CountPrimitive
             Token t = source.getToken(context);
             if (t != null) {
                 source.push(t);
-                long value = source.scanInteger(context, typesetter);
-                context
-                        .setCount(getKey(context, null, typesetter), value,
-                                true);
+                long value = Count.scanInteger(context, source, typesetter);
+                context.setCount(getKey(context, source, typesetter), value,
+                        true);
             }
         }
     }

@@ -26,6 +26,7 @@ import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.Theable;
+import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.tokens.Tokens;
@@ -56,7 +57,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Efcode extends AbstractCode
         implements
@@ -94,7 +95,7 @@ public class Efcode extends AbstractCode
         UnicodeChar uc = source.scanCharacterCode(context, typesetter,
                 getName());
         source.getOptionalEquals(context);
-        long code = source.scanInteger(context, typesetter);
+        long code = Count.scanInteger(context, source, typesetter);
         // TODO gene: incomplete
         //font.setEfcode(uc, code);
     }

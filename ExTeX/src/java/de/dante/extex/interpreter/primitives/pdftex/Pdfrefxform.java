@@ -23,6 +23,7 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.node.pdftex.PdfRefXForm;
@@ -52,7 +53,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Pdfrefxform extends AbstractPdftexCode {
 
@@ -84,7 +85,7 @@ public class Pdfrefxform extends AbstractPdftexCode {
 
         ensurePdftex(context, typesetter);
 
-        long no = source.scanNumber(context);
+        long no = Count.scanNumber(context, source, typesetter);
 
         try {
             typesetter.add(new PdfRefXForm(no));
