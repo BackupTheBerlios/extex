@@ -22,10 +22,10 @@ package de.dante.extex.interpreter.primitives.color;
 import de.dante.test.NoFlagsButGlobalPrimitiveTester;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This is a test suite for the primitive <tt>\colordef</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ColordefTest extends NoFlagsButGlobalPrimitiveTester {
 
