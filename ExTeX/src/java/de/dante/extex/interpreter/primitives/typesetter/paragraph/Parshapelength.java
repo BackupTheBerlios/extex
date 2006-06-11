@@ -24,6 +24,7 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Theable;
+import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.DimenConvertible;
@@ -64,7 +65,7 @@ import de.dante.util.exception.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Parshapelength extends AbstractCode
         implements
@@ -106,7 +107,7 @@ public class Parshapelength extends AbstractCode
     public long convertDimen(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        int n = (int) source.scanInteger(context, typesetter);
+        int n = (int) Count.scanInteger(context, source, typesetter);
         ParagraphShape parshape = context.getParshape();
         return (parshape == null || n < 0 ? 0 : parshape.getLength(n)
                 .getValue());
@@ -120,7 +121,7 @@ public class Parshapelength extends AbstractCode
     public Tokens the(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        int n = (int) source.scanInteger(context, typesetter);
+        int n = (int) Count.scanInteger(context, source, typesetter);
         ParagraphShape parshape = context.getParshape();
         FixedDimen d = (parshape == null || n < 0 ? Dimen.ZERO_PT : parshape
                 .getLength(n));

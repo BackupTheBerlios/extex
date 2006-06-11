@@ -23,16 +23,17 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.token.LeftBraceToken;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
 
 /**
- * Thus abstract base class for mark primitives provides the common features.
+ * This abstract base class for mark primitives provides the common features.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public abstract class AbstractMarkCode extends AbstractCode {
 
@@ -65,10 +66,9 @@ public abstract class AbstractMarkCode extends AbstractCode {
         if (t instanceof LeftBraceToken) {
             Tokens tokens = source.scanTokens(context, false, false, getName());
             return (tokens == null ? "" : tokens.toText());
-        } else {
-            long idx = source.scanInteger(context, typesetter);
-            return Long.toString(idx);
         }
+
+        return Long.toString(Count.scanInteger(context, source, typesetter));
     }
 
 }

@@ -25,6 +25,7 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.ExpandableCode;
+import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
 
@@ -52,7 +53,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Number extends AbstractCode implements ExpandableCode {
 
@@ -82,7 +83,7 @@ public class Number extends AbstractCode implements ExpandableCode {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        long n = source.scanInteger(context, typesetter);
+        long n = Count.scanInteger(context, source, typesetter);
         source.push(new Tokens(context, Long.toString(n)));
     }
 
@@ -97,7 +98,7 @@ public class Number extends AbstractCode implements ExpandableCode {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        long n = source.scanInteger(context, typesetter);
+        long n = Count.scanInteger(context, source, typesetter);
         source.push(new Tokens(context, Long.toString(n)));
     }
 

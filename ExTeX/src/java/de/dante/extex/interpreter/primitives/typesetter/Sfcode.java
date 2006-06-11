@@ -57,7 +57,7 @@ import de.dante.util.UnicodeChar;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Sfcode extends AbstractAssignment
         implements
@@ -101,7 +101,7 @@ public class Sfcode extends AbstractAssignment
         UnicodeChar charCode = source.scanCharacterCode(context, typesetter,
                 getName());
         source.getOptionalEquals(context);
-        Count sfCode = new Count(source.scanInteger(context, typesetter));
+        Count sfCode = Count.parse(context, source, typesetter);
 
         if (sfCode.lt(Count.ZERO) || sfCode.getValue() > MAX_SF_CODE) {
             throw new InvalidCodeException(sfCode.toString(), //

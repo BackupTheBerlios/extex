@@ -25,6 +25,7 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Theable;
+import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.tokens.Tokens;
@@ -88,7 +89,7 @@ import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Parshape extends AbstractCode implements CountConvertible, Theable {
 
@@ -130,7 +131,7 @@ public class Parshape extends AbstractCode implements CountConvertible, Theable 
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        long n = source.scanInteger(context, typesetter);
+        long n = Count.scanInteger(context, source, typesetter);
         if (n <= 0) {
             context.setParshape(null);
         } else {

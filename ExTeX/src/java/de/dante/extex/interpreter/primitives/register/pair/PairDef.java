@@ -37,7 +37,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class PairDef extends AbstractAssignment {
 
@@ -64,7 +64,7 @@ public class PairDef extends AbstractAssignment {
         CodeToken tok = source.getControlSequence(context);
         source.getOptionalEquals(context);
         String key = "pair#"
-                + Long.toString(Count.scanCount(context, source, typesetter));
+                + Long.toString(Count.scanInteger(context, source, typesetter));
         context.setCode(tok, new NamedPair(key), prefix.isGlobal());
         prefix.clearGlobal();
     }

@@ -36,7 +36,7 @@ import de.dante.extex.scanner.type.token.Token;
  * Bool
  *
  * @author <a href="mailto:m.g.sn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Bool implements Serializable {
 
@@ -107,7 +107,7 @@ public class Bool implements Serializable {
 
         source.push(tok);
         if (tok.getChar().isDigit()) {
-            return (new Bool(Count.scanCount(context, source, null)))
+            return (new Bool(Count.scanInteger(context, source, null)))
                     .getValue();
         }
 

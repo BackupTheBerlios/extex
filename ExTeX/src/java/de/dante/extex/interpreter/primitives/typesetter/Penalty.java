@@ -24,6 +24,7 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.node.PenaltyNode;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
@@ -62,7 +63,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class Penalty extends AbstractCode {
 
@@ -92,7 +93,7 @@ public class Penalty extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        long penalty = source.scanInteger(context, typesetter);
+        long penalty = Count.scanInteger(context, source, typesetter);
         try {
             typesetter.add(new PenaltyNode(penalty));
         } catch (ConfigurationException e) {

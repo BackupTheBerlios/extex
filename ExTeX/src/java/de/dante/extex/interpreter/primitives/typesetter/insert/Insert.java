@@ -26,6 +26,7 @@ import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.primitives.register.box.AbstractBox;
 import de.dante.extex.interpreter.type.box.Box;
+import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.node.InsertionNode;
@@ -54,7 +55,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class Insert extends AbstractBox {
 
@@ -86,7 +87,7 @@ public class Insert extends AbstractBox {
 
         Flags f = prefix.copy();
         prefix.clear();
-        long index = source.scanNumber(context);
+        long index = Count.scanNumber(context, source, typesetter);
         Box b = new Box(context, source, typesetter, false, null);
 
         Mode mode = typesetter.getMode();

@@ -61,7 +61,7 @@ import de.dante.extex.typesetter.exception.TypesetterUnsupportedException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Spacefactor extends AbstractCode
         implements
@@ -115,7 +115,7 @@ public class Spacefactor extends AbstractCode
             throws InterpreterException {
 
         source.getOptionalEquals(context);
-        long factor = source.scanInteger(context, typesetter);
+        long factor = Count.scanInteger(context, source, typesetter);
 
         try {
             typesetter.setSpacefactor(new Count(factor));
