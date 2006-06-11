@@ -26,7 +26,7 @@ import de.dante.test.ExTeXLauncher;
  * It provides some test cases common to all dimen registers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
 
@@ -73,6 +73,8 @@ public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
      * @param arg the name of the test suite
      * @param primitive the name of the integer register to test
      * @param args the parameters for the invocation
+     * @param init the initial value
+     * @param prepare the prepare code
      */
     public AbstractDimenRegisterTester(final String arg,
             final String primitive, final String args, final String init,
@@ -114,6 +116,23 @@ public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
                 "You can't use the prefix `\\long' with the control sequence"
                         + (primitive.length() > 19 ? "\n" : " ") + "\\"
                         + primitive);
+    }
+
+    /**
+     * <testcase>
+     *  Test case showing that an assignment of a skip constant does not
+     *  absorb the plus component.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testDimenRegisterNoSkip1() throws Exception {
+
+        assertSuccess(//--- input code ---
+                prepare + "\\" + invocation + "=123pt plus 1pt \\the\\"
+                + invocation + "\\end",
+                //--- output channel ---
+                "plus 1pt 123.0pt" + TERM);
     }
 
     /**
