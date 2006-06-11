@@ -65,7 +65,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * classes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.31 $
+ * @version $Revision: 1.32 $
  */
 public class MockContext implements Context, TypesetterOptions {
 
@@ -518,7 +518,7 @@ public class MockContext implements Context, TypesetterOptions {
      */
     public TypesettingContext getTypesettingContext() {
 
-        throw new RuntimeException("unimplemented");
+        return new TypesettingContextImpl();
     }
 
     /**
@@ -782,7 +782,7 @@ public class MockContext implements Context, TypesetterOptions {
     /**
      * @see de.dante.extex.interpreter.context.Context#setMagnification(long)
      */
-    public void setMagnification(final long mag) throws HelpingException {
+    public void setMagnification(final long mag, boolean lock) throws HelpingException {
 
         throw new RuntimeException("unimplemented");
     }
