@@ -30,11 +30,13 @@ import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.exception.helping.MissingNumberException;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.ExpandableCode;
+import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.CatcodeException;
 import de.dante.extex.scanner.type.token.CodeToken;
+import de.dante.extex.scanner.type.token.LetterToken;
 import de.dante.extex.scanner.type.token.OtherToken;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.scanner.type.token.TokenFactory;
@@ -45,7 +47,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This class provides a fixed point number.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ScaledNumber {
 
@@ -53,7 +55,7 @@ public class ScaledNumber {
      * This interface describes a binary operation on two longs.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.2 $
+     * @version $Revision: 1.3 $
      */
     private interface BinOp {
 
@@ -72,7 +74,7 @@ public class ScaledNumber {
      * This operation subtracts the second argument from the first one.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.2 $
+     * @version $Revision: 1.3 $
      */
     private static final class Minus implements BinOp {
 
@@ -89,7 +91,7 @@ public class ScaledNumber {
      * This operation adds the arguments.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.2 $
+     * @version $Revision: 1.3 $
      */
     private static final class Plus implements BinOp {
 
@@ -106,7 +108,7 @@ public class ScaledNumber {
      * This operation ignores the first argument and returns the second one.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.2 $
+     * @version $Revision: 1.3 $
      */
     private static final class Second implements BinOp {
 
@@ -223,20 +225,24 @@ public class ScaledNumber {
             if (t == null) {
                 throw new EofException();
 
-            } else if (t.equals(Catcode.OTHER, '(')) {
-                long val = evalExpr(context, source, typesetter);
-                t = source.getToken(context);
-                if (t.equals(Catcode.OTHER, ')')) {
-                    return val;
+            } else if (t instanceof OtherToken) {
+                if (t.equals(Catcode.OTHER, '(')) {
+                    long val = evalExpr(context, source, typesetter);
+                    t = source.getToken(context);
+                    if (t.equals(Catcode.OTHER, ')')) {
+                        return val;
+                    }
+
+                    throw new HelpingException(LocalizerFactory
+                            .getLocalizer(ScaledNumber.class.getName()),
+                            "MissingParenthesis", (t == null ? "null" : t
+                                    .toString()));
+
+                } else if (t.equals(Catcode.OTHER, '-')) {
+                    return -parse(context, source, typesetter);
+                } else {
+                    return scanFloat(context, source, typesetter, t);
                 }
-
-                throw new HelpingException(LocalizerFactory
-                        .getLocalizer(ScaledNumber.class.getName()),
-                        "MissingParenthesis", (t == null ? "null" : t
-                                .toString()));
-
-            } else if (t.equals(Catcode.OTHER, '-')) {
-                return -parse(context, source, typesetter);
 
             } else if (t instanceof CodeToken) {
                 Code code = context.getCode((CodeToken) t);
@@ -253,10 +259,26 @@ public class ScaledNumber {
                     ((ExpandableCode) code).expand(Flags.NONE, context, source,
                             typesetter);
                 } else {
+                    source.push(t);
                     break;
                 }
+            } else if (t instanceof LetterToken) {
+                source.push(t);
+                if (source.getKeyword(context, "min")) {
+                    // TODO
+
+                } else if (source.getKeyword(context, "max")) {
+                    // TODO
+
+                } else if (source.getKeyword(context, "sin")) {
+                    // TODO
+
+                }
+
+                break;
+
             } else {
-                return scanFloat(context, source, t);
+                break;
             }
         }
 
@@ -275,8 +297,8 @@ public class ScaledNumber {
      * @throws InterpreterException in case of an error
      */
     public static long scanFloat(final Context context,
-            final TokenSource source, final Token start)
-            throws InterpreterException {
+            final TokenSource source, final Typesetter typesetter,
+            final Token start) throws InterpreterException {
 
         boolean neg = false;
         long val = 0;
@@ -296,7 +318,7 @@ public class ScaledNumber {
         }
         if (t != null && !t.equals(Catcode.OTHER, ".")
                 && !t.equals(Catcode.OTHER, ",")) {
-            val = source.scanNumber(context, t);
+            val = Count.scanNumber(context, source, typesetter, t);
             t = source.getToken(context);
         }
         if (t != null
