@@ -28,6 +28,8 @@
             class="de.dante.extex.interpreter.primitives.register.toks.ToksParameter"/>
     <define name="hyphenation"
             class="de.dante.extex.interpreter.primitives.hyphen.Hyphenation"/>
+    <define name="ifscaled"
+            class="de.dante.extex.interpreter.primitives.conditional.Ifscaled"/>
     <define name="ignorevoid"
             class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
     <define name="integer"
