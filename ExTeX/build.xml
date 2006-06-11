@@ -24,6 +24,7 @@
 
   <description>ExTeX build file</description>
 
+  <!-- ==================================================================== -->
   <target name="help" description="Displays usage information">
     <echo>Usage: ant &lt;target&gt;
           The following targets are supported:
@@ -94,6 +95,7 @@
     </fileset>
   </path>
 
+  <!-- ==================================================================== -->
   <taskdef resource="checkstyletask.properties">
     <classpath>
       <pathelement location="develop/lib/checkstyle-all-3.4.jar" />
@@ -101,6 +103,7 @@
     </classpath>
   </taskdef>
 
+  <!-- ==================================================================== -->
   <taskdef name="izpack"
            classpath="util/Installer/IzPack/lib/compiler.jar"
            classname="com.izforge.izpack.ant.IzPackTask" />
@@ -109,10 +112,9 @@
           description="Build nearly everything"
           depends="installer,javadoc,checkstyle,tests" />
 
+  <!-- ==================================================================== -->
   <target name="compile" description="Compile the Java files (without tests)">
-    <!-- create empty output directory for classes if not present -->
     <mkdir dir="${classes}" />
-    <!-- compile the application code -->
     <javac srcdir="${src}"
            destdir="${classes}"
            debug="on"
@@ -127,14 +129,16 @@
     </copy>
   </target>
 
+  <!-- ==================================================================== -->
   <target name="compile.tests"
           description="Compile the Java files (with tests)">
-    <!-- create empty output directory for classes if not present -->
     <mkdir dir="${classes}" />
-    <!-- compile the application code -->
     <javac srcdir="${src.tests}" destdir="${classes}" debug="on">
       <classpath refid="main.class.path" />
-      <classpath refid="main.class.path" />
+      <classpath refid="develop.class.path" />
+      <classpath>
+       <pathelement path="${classes}"/>
+      </classpath>
     </javac>
     <copy todir="${classes}">
       <fileset dir="src">
@@ -145,6 +149,7 @@
     </copy>
   </target>
 
+  <!-- ==================================================================== -->
   <target name="jar"
           depends="compile"
           description="Create ExTeX jar file containing all compiled classes except test cases.">
@@ -169,7 +174,7 @@
     </jar>
   </target>
 
-  <!-- make a jar from the classes matching magic testcase identifiers-->
+  <!-- ==================================================================== -->
   <target name="jar.tests"
           depends="compile.tests"
           description="Create test suite jar file">
@@ -188,16 +193,16 @@
     </jar>
   </target>
 
-  <target name="tests" depends="lsr,jar,jar.tests" description="Run JUnit tests">
-    <!-- create output directories for test reports -->
+  <!-- ==================================================================== -->
+  <target name="tests"
+          description="Run JUnit tests"
+          depends="lsr,jar,jar.tests">
     <delete dir="${target.tests}" />
     <mkdir dir="${target.tests}" />
-    <!-- Performing tests:                                         -->
-    <!-- Run all classes "*Test.java" in the folder "${src.tests}" -->
     <junit printsummary="on" haltonfailure="${tests.haltonfailure}">
-     <jvmarg value="-Xms64m"/>
-     <jvmarg value="-Xmx128m"/>
-     <classpath>
+      <jvmarg value="-Xms64m"/>
+      <jvmarg value="-Xmx256m"/>
+      <classpath>
         <pathelement path="${classes}" />
       </classpath>
       <classpath refid="test.class.path" />
@@ -210,55 +215,63 @@
     </junit>
   </target>
 
-    <target name="mgntest" depends="lsr,jar,jar.tests" description="Run JUnit test (mgn)">
-      <!-- create output directories for test reports -->
-      <delete dir="${target.tests}" />
-      <mkdir dir="${target.tests}" />
-      <!-- Performing tests:                                         -->
-      <!-- Run test "MGNTest.java"                                   -->
-      <junit printsummary="on" haltonfailure="${tests.haltonfailure}">
-       <jvmarg value="-Xms64m"/>
-       <jvmarg value="-Xmx256m"/>
-       <classpath>
-          <pathelement path="${classes}" />
-        </classpath>
-        <classpath refid="test.class.path" />
-        <formatter type="brief" />
-        <batchtest fork="yes" todir="${target.tests}">
-          <fileset dir="${src.tests}">
-            <include name="${mgncases}" />
-          </fileset>
-        </batchtest>
-      </junit>
-    </target>
+  <!-- ==================================================================== -->
+  <target name="mgntest"
+          depends="lsr,jar,jar.tests"
+          description="Run JUnit test (mgn)">
+    <delete dir="${target.tests}" />
+    <mkdir dir="${target.tests}" />
+    <!-- Performing tests:                                         -->
+    <!-- Run test "MGNTest.java"                                   -->
+    <junit printsummary="on" haltonfailure="${tests.haltonfailure}">
+      <jvmarg value="-Xms64m"/>
+      <jvmarg value="-Xmx256m"/>
+      <classpath>
+        <pathelement path="${classes}" />
+      </classpath>
+      <classpath refid="test.class.path" />
+      <formatter type="brief" />
+      <batchtest fork="yes" todir="${target.tests}">
+        <fileset dir="${src.tests}">
+          <include name="${mgncases}" />
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
 
-    <target name="testreport" depends="compile-develop,jar,checkstyle41-xml" 
-            description="Run Checkstyle and create a HTML report">
-        <java fork="true" classname="org.extex.checkstyle.ReportAddAuthor" 
-              classpath="${target}/tmp">
+  <!-- ==================================================================== -->
+  <target name="testreport" depends="compile-develop,jar,checkstyle41-xml" 
+          description="Run Checkstyle and create a HTML report">
+    <java fork="true"
+          classname="org.extex.checkstyle.ReportAddAuthor" 
+          classpath="${target}/tmp">
           <classpath path="${target.lib}/${extexjarfile}.jar"/>
           <classpath refid="main.class.path" />
           <classpath refid="develop.class.path" />
           <arg value="${target}/checkstyle.xml"/>
           <arg value="${target}/checkstyle-author.xml"/>
-        </java>
-        <mkdir dir="${target}/html" />
-        <xslt style="src/xslt/checkstyleauthorreport.xsl" 
-              out="${target}/html/checkstyleauthorreport.html"
-              in="${target}/checkstyle-author.xml" />
-    </target>
+    </java>
+    <mkdir dir="${target}/html" />
+    <xslt style="src/xslt/checkstyleauthorreport.xsl" 
+          out="${target}/html/checkstyleauthorreport.html"
+          in="${target}/checkstyle-author.xml" />
+  </target>
 
-    <target name="compile-develop" 
-            description="Compile the source in develop.">
+  <!-- ==================================================================== -->
+  <target name="compile-develop" 
+          description="Compile the source in develop.">
         <mkdir dir="${target}/tmp" />
         <javac srcdir="develop/reports"
                destdir="${target}/tmp"
                debug="on">
            <classpath refid="main.class.path" />
+          <classpath>
+           <pathelement path="${classes}"/>
+          </classpath>
         </javac>
     </target>
- 
     
+  <!-- ==================================================================== -->
   <target name="site" depends="compile-develop"
           description="">
     <java classname="org.extex.site.report.Summary"
@@ -275,6 +288,7 @@
     </xslt>
   </target>
 
+  <!-- ==================================================================== -->
   <target name="tests99" depends="lsr,jar,jar.tests"
           description="Run JUnit tests and produce an HTML test report">
     <delete dir="${target.tests}" />
@@ -295,6 +309,7 @@
     </junit>
   </target>
 
+  <!-- ==================================================================== -->
   <target name="junitreport"
        	  depends="jar,jar.tests"
           description="Run JUnit tests and produce an HTML test report">
@@ -322,6 +337,7 @@
     </junitreport>
   </target>
 
+  <!-- ==================================================================== -->
   <target name="checkstyle"
           description="Generates a report of violations of the coding conventions.">
     <checkstyle config="develop/eclipse/checkstyle.cfg"
@@ -332,6 +348,7 @@
     </checkstyle>
   </target>
 
+  <!-- ==================================================================== -->
   <target name="checkstyle41"
 	  description="Generates a report of violations of the coding conventions using version 4.1.">
 	  <checkstyle config="develop/eclipse/extex_checkstyle.xml"
@@ -346,6 +363,7 @@
 	  </checkstyle>
   </target>
 
+  <!-- ==================================================================== -->
   <target name="checkstyle41-xml"
 	  description="Generates a report of violations of the coding conventions using version 4.1. (only in src/java)">
 	  <checkstyle config="develop/eclipse/extex_checkstyle.xml"
@@ -361,6 +379,7 @@
 	  </checkstyle>
   </target>
 
+  <!-- ==================================================================== -->
   <target name="checkstyle-xml"
           description="Generates a report of violations of the coding conventions.">
     <checkstyle config="develop/eclipse/checkstyle.cfg"
@@ -373,6 +392,7 @@
     </checkstyle>
   </target>
 
+  <!-- ==================================================================== -->
   <target name="cx"
           description="Generates a report of violations of the coding conventions.">
     <xslt basedir="${target}"
@@ -384,10 +404,12 @@
     </xslt>
   </target>
 
+  <!-- ==================================================================== -->
   <target name="dist"
           depends="deploy"
           description="This is just an alias for old make freaks;-)" />
 
+  <!-- ==================================================================== -->
   <target name="deploy"
           depends="jar"
           description="Create jar file with the compiled classes">
@@ -406,6 +428,7 @@
     <delete file="${tmp}/ExTeX-${DSTAMP}.tar" />
   </target>
 
+  <!-- ==================================================================== -->
   <target name="install"
           depends="jar"
           description="Install ExTeX in the directory given by -Dinstalldir=">
@@ -443,6 +466,7 @@
     <echo>ExTeX has been installed in ${installdir}</echo>
   </target>
 
+  <!-- ==================================================================== -->
   <target name="installer"
           depends="jar"
           description="Create a standalone installer for ExTeX.">
@@ -453,7 +477,9 @@
             izPackDir="${installer.dir}/IzPack/" />
   </target>
 
-  <target name="clean" description="Remove unneccesary files and directories.">
+  <!-- ==================================================================== -->
+  <target name="clean"
+          description="Remove unneccesary files and directories.">
     <delete dir="${classes}" />
     <delete dir="${deploy}" />
     <delete dir="${target.tests}" />
@@ -469,7 +495,9 @@
     <delete file="${target}/ExTeX-setup.jar" />
   </target>
 
-  <target name="javadoc" description="Create JavaDoc HTML pages.">
+  <!-- ==================================================================== -->
+  <target name="javadoc"
+          description="Create JavaDoc HTML pages.">
     <mkdir dir="${javadoc}" />
     <javadoc destdir="${javadoc}"
              overview="${src}/overview.html"
@@ -494,7 +522,9 @@
     </copy>
   </target>
 
-  <target name="dbdoclet" description="Create dbjavadoc">
+  <!-- ==================================================================== -->
+  <target name="dbdoclet"
+          description="Create dbjavadoc">
     <mkdir dir="${dbdoclet}" />
     <copy todir="${dbdoclet}">
       <fileset dir="src">
@@ -528,6 +558,7 @@
     </javadoc>
   </target>
 
+  <!-- ==================================================================== -->
   <target name="gcview"
           description="Show the logfile from the GC in the gcviewer">
     <java fork="true" jar="develop/lib/gcviewer.jar">
@@ -535,6 +566,7 @@
     </java>
   </target>
 
+  <!-- ==================================================================== -->
   <target name="tar" description="create a tar file with all source files, ...">
     <tar destfile="${tmp}/extex.tar.bz2" compression="bzip2" basedir="./">
       <include name="doc/**/*" />
@@ -581,6 +613,7 @@
         </target>
 -->
 
+  <!-- ==================================================================== -->
   <target name="onejar"
           depends="jar"
           description="Create one extex-jar-archive which include all other needed classes from all libs">
@@ -596,6 +629,7 @@
     </java>
   </target>
     
+  <!-- ==================================================================== -->
   <target name="lsr"
           depends="jar"
           description="Create a ls-R file for src and test-data">
