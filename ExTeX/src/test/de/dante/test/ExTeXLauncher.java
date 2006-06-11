@@ -23,6 +23,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.charset.CharacterCodingException;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,27 +35,19 @@ import java.util.logging.StreamHandler;
 
 import junit.framework.TestCase;
 import de.dante.extex.ExTeX;
-import de.dante.extex.font.FontByteArray;
 import de.dante.extex.font.FontFactory;
-import de.dante.extex.font.FountKey;
-import de.dante.extex.font.Glyph;
-import de.dante.extex.font.Kerning;
-import de.dante.extex.font.Ligature;
 import de.dante.extex.font.exception.FontException;
-import de.dante.extex.font.type.BoundingBox;
 import de.dante.extex.interpreter.ErrorHandler;
 import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.dimen.Dimen;
-import de.dante.extex.interpreter.type.font.Font;
-import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.main.errorHandler.editHandler.EditHandler;
 import de.dante.extex.main.logging.LogFormatter;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.extex.scanner.type.token.Token;
-import de.dante.util.UnicodeChar;
+import de.dante.test.font.LancherFont;
 import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
@@ -64,7 +57,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * running an instance of <logo>ExTeX</logo>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.43 $
+ * @version $Revision: 1.44 $
  */
 public class ExTeXLauncher extends TestCase {
 
@@ -72,7 +65,7 @@ public class ExTeXLauncher extends TestCase {
      * Inner class for the error handler.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.43 $
+     * @version $Revision: 1.44 $
      */
     private class EHandler implements ErrorHandler {
 
@@ -205,6 +198,11 @@ public class ExTeXLauncher extends TestCase {
     private Properties props = null;
 
     /**
+     * The field <tt>setHsize</tt> contains the indicator to use a wider hsize.
+     */
+    private boolean setHsize = true;
+
+    /**
      * Creates a new object.
      *
      * @param arg the name
@@ -280,7 +278,10 @@ public class ExTeXLauncher extends TestCase {
         ExTeX extex = new ExTeX(properties) {
 
             /**
-             * @see de.dante.extex.ExTeX#makeInterpreter(de.dante.util.framework.configuration.Configuration, de.dante.extex.scanner.stream.TokenStreamFactory, de.dante.extex.font.FontFactory)
+             * @see de.dante.extex.ExTeX#makeInterpreter(
+             *      de.dante.util.framework.configuration.Configuration,
+             *      de.dante.extex.scanner.stream.TokenStreamFactory,
+             *      de.dante.extex.font.FontFactory)
              */
             protected Interpreter makeInterpreter(final Configuration config,
                     final TokenStreamFactory factory,
@@ -292,199 +293,15 @@ public class ExTeXLauncher extends TestCase {
 
                 Interpreter interpreter = super.makeInterpreter(config,
                         factory, fontFactory);
-                interpreter.getContext().set(new Font() {
-
-                    public UnicodeChar getHyphenChar() {
-
-                        return null;
-                    }
-
-                    public UnicodeChar getSkewChar() {
-
-                        return null;
-                    }
-
-                    public void setHyphenChar(final UnicodeChar hyphen) {
-
-                    }
-
-                    public void setSkewChar(final UnicodeChar skew) {
-
-                    }
-
-                    public void setFontDimen(final String key, final Dimen value) {
-
-                    }
-
-                    public Glyph getGlyph(final UnicodeChar c) {
-
-                        return new Glyph() {
-
-                            public Dimen getDepth() {
-
-                                return Dimen.ONE_PT;
-                            }
-
-                            public void setDepth(final Dimen d) {
-
-                            }
-
-                            public Dimen getHeight() {
-
-                                return Dimen.ONE_PT;
-                            }
-
-                            public void setHeight(final Dimen h) {
-
-                            }
-
-                            public Dimen getItalicCorrection() {
-
-                                return Dimen.ZERO_PT;
-                            }
-
-                            public void setItalicCorrection(final Dimen d) {
-
-                            }
-
-                            public Dimen getWidth() {
-
-                                return Dimen.ONE_PT;
-                            }
-
-                            public void setWidth(final Dimen w) {
-
-                            }
-
-                            public String getName() {
-
-                                return "?";
-                            }
-
-                            public void setName(final String n) {
-
-                            }
-
-                            public String getNumber() {
-
-                                return c.toString();
-                            }
-
-                            public void setNumber(final String nr) {
-
-                            }
-
-                            public void addKerning(final Kerning kern) {
-
-                            }
-
-                            public Dimen getKerning(final UnicodeChar uc) {
-
-                                return Dimen.ZERO_PT;
-                            }
-
-                            public void addLigature(final Ligature lig) {
-
-                            }
-
-                            public UnicodeChar getLigature(final UnicodeChar uc) {
-
-                                return null;
-                            }
-
-                            public FontByteArray getExternalFile() {
-
-                                return null;
-                            }
-
-                            public void setExternalFile(final FontByteArray file) {
-
-                            }
-
-                            public Dimen getLeftSpace() {
-
-                                return Dimen.ZERO_PT;
-                            }
-
-                            public void setLeftSpace(final Dimen ls) {
-
-                            }
-
-                            public Dimen getRightSpace() {
-
-                                return Dimen.ZERO_PT;
-                            }
-
-                            public void setRightSpace(final Dimen rs) {
-
-                            }};
-                    }
-
-                    public Glue getSpace() {
-
-                        return new Glue(Dimen.ONE_PT.getValue() * 10);
-                    }
-
-                    public Dimen getEm() {
-
-                        return new Dimen(Dimen.ONE_PT.getValue() * 10);
-                    }
-
-                    public Dimen getEx() {
-
-                        return new Dimen(Dimen.ONE_PT.getValue() * 5);
-                    }
-
-                    public Dimen getFontDimen(final String key) {
-
-                        return new Dimen(Dimen.ZERO_PT.getValue());
-                    }
-
-                    public String getProperty(final String key) {
-
-                        return null;
-                    }
-
-                    public String getFontName() {
-
-                        return "testfont";
-                    }
-
-                    public int getCheckSum() {
-
-                        return 0;
-                    }
-
-                    public BoundingBox getBoundingBox() {
-
-                        return null;
-                    }
-
-                    public Glue getLetterSpacing() {
-
-                        return new Glue(Dimen.ZERO_PT.getValue());
-                    }
-
-                    public Dimen getDesignSize() {
-
-                        return new Dimen(Dimen.ONE_PT.getValue() * 10);
-                  }
-
-                    public Dimen getActualSize() {
-
-                        return new Dimen(Dimen.ONE_PT.getValue() * 10);
-                    }
-
-                    public FountKey getFontKey() {
-
-                        return null;
-                    }
-
-                    public FontByteArray getFontByteArray() {
-
-                        return null;
-                    }
-                }, true);
+                Context context = interpreter.getContext();
+                context.set(new LancherFont(), true);
+                context.setStandardTokenStream(factory
+                        .newInstance(new InputStreamReader(System.in)));
+                if (setHsize) {
+                    context
+                            .setDimen("hsize", new Dimen(Dimen.ONE * 3000),
+                                    true);
+                }
                 return interpreter;
             }
 
@@ -659,6 +476,16 @@ public class ExTeXLauncher extends TestCase {
     }
 
     /**
+     * Getter for setHsize.
+     *
+     * @return the setHsize
+     */
+    protected boolean isSetHsize() {
+
+        return this.setHsize;
+    }
+
+    /**
      * Run <logo>ExTeX</logo> on a file.
      *
      * @param file the name of the file to read from
@@ -711,6 +538,16 @@ public class ExTeXLauncher extends TestCase {
         handler.close();
         logger.removeHandler(handler);
         return bytes.toString();
+    }
+
+    /**
+     * Setter for setHsize.
+     *
+     * @param setHsize the setHsize to set
+     */
+    protected void setHsize(boolean setHsize) {
+
+        this.setHsize = setHsize;
     }
 
     /**
