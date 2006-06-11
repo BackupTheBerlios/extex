@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\openin</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class OpeninTest extends NoFlagsPrimitiveTester {
 
@@ -46,7 +46,7 @@ public class OpeninTest extends NoFlagsPrimitiveTester {
      */
     public OpeninTest(final String arg) {
 
-        super(arg, "openin", "1 src/test/data/empty.tex ");
+        super(arg, "openin", "1 develop/test/data/empty.tex ");
     }
 
     /**

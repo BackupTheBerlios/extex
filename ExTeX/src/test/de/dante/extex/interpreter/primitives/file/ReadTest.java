@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsButGlobalPrimitiveTester;
  * This is a test suite for the primitive <tt>\read</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class ReadTest extends NoFlagsButGlobalPrimitiveTester {
 
@@ -46,7 +46,8 @@ public class ReadTest extends NoFlagsButGlobalPrimitiveTester {
      */
     public ReadTest(final String arg) {
 
-        super(arg, "read", "1 to \\x", "\\openin1 src/test/data/read_data.tex ");
+        super(arg, "read", "1 to \\x",
+                "\\openin1 develop/test/data/read_data.tex ");
     }
 
     /**
@@ -108,8 +109,8 @@ public class ReadTest extends NoFlagsButGlobalPrimitiveTester {
     public void test1() throws Exception {
 
         assertSuccess(//--- input code ---
-                DEFINE_CATCODES + "\\openin1 src/test/data/read_data.tex " +
-                "\\read 1 to \\x " + "\\x" + "\\end",
+                DEFINE_CATCODES + "\\openin1 develop/test/data/read_data.tex "
+                        + "\\read 1 to \\x " + "\\x" + "\\end",
                 //--- output channel ---
                 "123xyz" + TERM);
     }
@@ -125,8 +126,8 @@ public class ReadTest extends NoFlagsButGlobalPrimitiveTester {
     public void test2() throws Exception {
 
         assertSuccess(//--- input code ---
-                DEFINE_CATCODES + "\\openin1 src/test/data/read_data.tex " +
-                "{\\global\\read 1 to \\x}" + "\\x" + "\\end",
+                DEFINE_CATCODES + "\\openin1 develop/test/data/read_data.tex "
+                        + "{\\global\\read 1 to \\x}" + "\\x" + "\\end",
                 //--- output channel ---
                 "123xyz" + TERM);
     }
@@ -142,8 +143,8 @@ public class ReadTest extends NoFlagsButGlobalPrimitiveTester {
     public void test3() throws Exception {
 
         assertFailure(//--- input code ---
-                DEFINE_CATCODES + "\\openin1 src/test/data/read_data.tex " +
-                "{\\read 1 to \\x}" + "\\x" + "\\end",
+                DEFINE_CATCODES + "\\openin1 develop/test/data/read_data.tex "
+                        + "{\\read 1 to \\x}" + "\\x" + "\\end",
                 //--- output channel ---
                 "Undefined control sequence \\x");
     }
