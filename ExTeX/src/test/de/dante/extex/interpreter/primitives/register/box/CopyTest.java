@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\copy</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class CopyTest extends NoFlagsPrimitiveTester {
 
@@ -76,7 +76,7 @@ public class CopyTest extends NoFlagsPrimitiveTester {
         assertSuccess(//--- input code ---
                 DEFINE_BRACES + "\\setbox1\\hbox{A}\\copy1\\end",
                 //--- output channel ---
-                "A" + TERM);
+                "A\n" + TERM);
     }
 
     /**
