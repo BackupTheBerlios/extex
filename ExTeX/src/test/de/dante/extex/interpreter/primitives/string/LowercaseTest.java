@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\lowercase</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class LowercaseTest extends NoFlagsPrimitiveTester {
 
@@ -61,7 +61,7 @@ public class LowercaseTest extends NoFlagsPrimitiveTester {
         assertFailure(//--- input code ---
                 "\\lowercase",
                 //--- log message ---
-                "Unexpected end of file while processing tokens");
+                "Unexpected end of file while processing \\lowercase");
     }
 
     /**

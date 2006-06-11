@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>&#x5c;uppercase</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class UppercaseTest extends NoFlagsPrimitiveTester {
 
@@ -60,7 +60,7 @@ public class UppercaseTest extends NoFlagsPrimitiveTester {
         assertFailure(//--- input code ---
                 "\\uppercase",
                 //--- log message ---
-                "Unexpected end of file while processing tokens");
+                "Unexpected end of file while processing \\uppercase");
     }
 
     /**
