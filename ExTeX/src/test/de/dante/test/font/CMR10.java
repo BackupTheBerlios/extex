@@ -17,8 +17,9 @@
  *
  */
 
-package de.dante.test;
+package de.dante.test.font;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,24 +33,23 @@ import de.dante.extex.font.type.BoundingBox;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.Glue;
-import de.dante.extex.interpreter.type.glue.GlueComponent;
 import de.dante.util.UnicodeChar;
 
 /**
  * This class encapsulates cmr10.tfm for testing purposes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public class CMR10 implements Font {
+public class CMR10 implements Font, Serializable {
 
     /**
      * Private implementation of the glyph interface.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.2 $
+     * @version $Revision: 1.1 $
      */
-    private class MyGlyph extends GlyphImpl {
+    public class MyGlyph extends GlyphImpl implements Serializable {
 
         /**
          * Creates a new object.
@@ -81,12 +81,12 @@ public class CMR10 implements Font {
         }
 
         /**
-         * TODO gene: missing JavaDoc
+         * Add a ligature entry.
          *
-         * @param c ...
-         * @param d ...
+         * @param c the next letter
+         * @param d the ligature letter
          */
-        public void addLig(char c, char d) {
+        public void addLig(final char c, final char d) {
 
             Ligature lig = new Ligature();
             lig.setLetter(Character.toString(c));
@@ -97,10 +97,10 @@ public class CMR10 implements Font {
         }
 
         /**
-         * TODO gene: missing JavaDoc
+         * Add a kerning entry.
          *
-         * @param c ...
-         * @param dimen ...
+         * @param c the character
+         * @param dimen the kerning
          */
         public void addKern(final char c, final Dimen dimen) {
 
@@ -148,37 +148,44 @@ public class CMR10 implements Font {
     };
 
     /**
-     * The field <tt>SLANT</tt> contains the ...
+     * The field <tt>SLANT</tt> contains the font dimen position
+     * for the slant parameter.
      */
     private static final int SLANT = 0;
 
     /**
-     * The field <tt>SPACE</tt> contains the ...
+     * The field <tt>SPACE</tt> contains the font dimen position
+     * for the space parameter.
      */
     private static final int SPACE = 1;
 
     /**
-     * The field <tt>STRETCH</tt> contains the ...
+     * The field <tt>STRETCH</tt> contains the font dimen position
+     * for the stretch parameter.
      */
     private static final int STRETCH = 2;
 
     /**
-     * The field <tt>SHRINK</tt> contains the ...
+     * The field <tt>SHRINK</tt> contains the font dimen position
+     * for the shrink parameter.
      */
     private static final int SHRINK = 3;
 
     /**
-     * The field <tt>XHEIGHT</tt> contains the ...
+     * The field <tt>XHEIGHT</tt> contains the font dimen position
+     * for the xheight parameter.
      */
     private static final int XHEIGHT = 4;
 
     /**
-     * The field <tt>QUAD</tt> contains the ...
+     * The field <tt>QUAD</tt> contains the font dimen position
+     * for the quad parameter.
      */
     private static final int QUAD = 5;
 
     /**
-     * The field <tt>EXTRASPACE</tt> contains the ...
+     * The field <tt>EXTRASPACE</tt> contains the font dimen position
+     * for the extraspace parameter.
      */
     private static final int EXTRASPACE = 6;
 
@@ -200,7 +207,8 @@ public class CMR10 implements Font {
     /**
      * The field <tt>space</tt> contains the space specification.
      */
-    private Glue space = new Glue(fontdimen[1], fontdimen[2], fontdimen[3]);
+    private Glue space = new Glue(fontdimen[SPACE], fontdimen[STRETCH],
+            fontdimen[SHRINK]);
 
     /**
      * Creates a new object.
@@ -1126,8 +1134,7 @@ public class CMR10 implements Font {
      */
     public Dimen getFontDimen(final String key) {
 
-        // TODO gene: getFontDimen unimplemented
-        return null;
+        return fontdimen[Integer.parseInt(key)];
     }
 
     /**
@@ -1238,7 +1245,7 @@ public class CMR10 implements Font {
      */
     public void setFontDimen(final String key, final Dimen value) {
 
-        // TODO gene: setFontDimen unimplemented
+        fontdimen[Integer.parseInt(key)].set(value);
     }
 
     /**
