@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- ====================================================================== -->
+<item>
+  <title>Snapshots Available</title>
+  <description>The <a href="&top;snapshot/ExTeX-setup.jar">&ExTeX; installer</a>
+     is available in a snapshot version. This snapshot version is automatically
+     generated once a day. Note: it may not be complete nor suitable for any
+     purpose.</description>
+  <author>gene@gerd-neugebauer.de (Gerd Neugebauer)<author>
+  <pubDate>Tue, 03 Jun 2003 09:39:21 GMT</pubDate>
+</item>
