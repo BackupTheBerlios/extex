@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsButGlobalPrimitiveTester;
  * This is a test suite for the primitive <tt>\countdef</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ScaledTest extends NoFlagsButGlobalPrimitiveTester {
 
@@ -238,7 +238,7 @@ public class ScaledTest extends NoFlagsButGlobalPrimitiveTester {
                 + "\\scaled\\x=\\a+1 "
                 + "\\the\\x \\end",
                 //--- output channel ---
-                "+1\n123.0" + TERM);
+                "+1 123.0" + TERM);
     }
 
     /**
