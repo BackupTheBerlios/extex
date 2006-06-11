@@ -24,7 +24,7 @@ package de.dante.extex.interpreter.primitives.register.dimen;
  * This is a test suite for the primitive <tt>\hsize</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class HsizeTest extends AbstractDimenRegisterTester {
 
@@ -45,6 +45,7 @@ public class HsizeTest extends AbstractDimenRegisterTester {
     public HsizeTest(final String arg) {
 
         super(arg, "hsize", "", "0.0pt");
+        setHsize(false);
     }
 
     //TODO implement the primitive specific test cases
