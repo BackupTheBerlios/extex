@@ -47,7 +47,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.71 $
+ * @version $Revision: 1.72 $
  */
 public interface TokenSource {
 
@@ -485,6 +485,8 @@ public interface TokenSource {
      * @throws InterpreterException in case of an error in an observer<br>
      *  especially<br>
      *  MissingNumberException in case that no number could be read
+     *
+     * @deprecated use Count.scanInteger() instead
      */
     long scanInteger(Context context, Typesetter typesetter)
             throws InterpreterException;
@@ -511,6 +513,8 @@ public interface TokenSource {
      * @return the value of the integer scanned
      *
      * @throws InterpreterException in case of an error
+     *
+     * @deprecated use Count.scanNumber() instead
      */
     long scanNumber(Context context) throws InterpreterException;
 
@@ -544,6 +548,8 @@ public interface TokenSource {
      * @throws InterpreterException in case of an error in an observer<br>
      *  especially<br>
      *  MissingNumberException in case that no number could be read
+     *
+     * @deprecated use Count.scanNumber() instead
      */
     long scanNumber(Context context, Token token) throws InterpreterException;
 
@@ -610,13 +616,16 @@ public interface TokenSource {
      *
      *
      * @param context the interpreter context
+     * @param source the source for new tokens
+     * @param typesetter the typesetter
      * @param primitive the name of the invoking primitive for error handling
      *
      * @return the register name encountered
      *
      * @throws InterpreterException in case of an error
      */
-    String scanRegisterName(Context context, String primitive)
+    String scanRegisterName(Context context, TokenSource source,
+            Typesetter typesetter, String primitive)
             throws InterpreterException;
 
     /**
