@@ -22,6 +22,7 @@ package de.dante.extex.interpreter.primitives.register.skip;
 import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.typesetter.Typesetter;
 
 /**
  * This class provides an implementation for the primitive <code>\skip</code>.
@@ -41,7 +42,7 @@ import de.dante.extex.interpreter.context.Context;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class SkipParameter extends SkipPrimitive {
 
@@ -68,7 +69,7 @@ public class SkipParameter extends SkipPrimitive {
      *
      * @return the key for the skip register
      */
-    protected String getKey(final Context context, final TokenSource source) {
+    protected String getKey(final Context context, final TokenSource source, Typesetter typesetter) {
 
         if (Namespace.SUPPORT_NAMESPACE_SKIP) {
             return context.getNamespace() + "\b" + getName();

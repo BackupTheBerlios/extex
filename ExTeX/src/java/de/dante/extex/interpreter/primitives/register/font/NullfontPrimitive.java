@@ -52,7 +52,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class NullfontPrimitive extends AbstractCode implements FontConvertible {
 
@@ -98,10 +98,11 @@ public class NullfontPrimitive extends AbstractCode implements FontConvertible {
     /**
      * @see de.dante.extex.interpreter.type.font.FontConvertible#convertFont(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
      */
-    public Font convertFont(final Context context, final TokenSource source)
-            throws InterpreterException {
+    public Font convertFont(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
 
         return nullFont;
     }

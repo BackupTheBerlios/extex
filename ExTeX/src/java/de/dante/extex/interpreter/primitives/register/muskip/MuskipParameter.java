@@ -48,7 +48,7 @@ import de.dante.util.exception.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class MuskipParameter extends AbstractAssignment
         implements
@@ -84,7 +84,7 @@ public class MuskipParameter extends AbstractAssignment
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String key = getKey(context, source);
+        String key = getKey(context, source, typesetter);
         source.getKeyword(context, "by");
         Muskip ms = Muskip.parse(context, source, typesetter);
         ms.add(context.getMuskip(key));
@@ -102,7 +102,7 @@ public class MuskipParameter extends AbstractAssignment
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String key = getKey(context, source);
+        String key = getKey(context, source, typesetter);
         source.getOptionalEquals(context);
         Muskip skip = Muskip.parse(context, source, typesetter);
         context.setMuskip(key, skip, prefix.clearGlobal());
@@ -118,7 +118,7 @@ public class MuskipParameter extends AbstractAssignment
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String key = getKey(context, source);
+        String key = getKey(context, source, typesetter);
         return context.getMuskip(key);
     }
 
@@ -133,9 +133,9 @@ public class MuskipParameter extends AbstractAssignment
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String key = getKey(context, source);
+        String key = getKey(context, source, typesetter);
         source.getKeyword(context, "by");
-        long value = Count.scanCount(context, source, null);
+        long value = Count.scanInteger(context, source, null);
 
         if (value == 0) {
             throw new ArithmeticOverflowException(
@@ -149,15 +149,17 @@ public class MuskipParameter extends AbstractAssignment
 
     /**
      * Return the key (the number) for the skip register.
+     *
      * @param context the interpreter context to use
      * @param source the source for the next tokens &ndash; if required
+     * @param typesetter the typesetter
      *
      * @return the key for the skip register
      *
      * @throws InterpreterException in case of an error
      */
-    protected String getKey(final Context context, final TokenSource source)
-            throws InterpreterException {
+    protected String getKey(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
 
         if (Namespace.SUPPORT_NAMESPACE_MUSKIP) {
             return context.getNamespace() + "\b" + getName();
@@ -177,9 +179,9 @@ public class MuskipParameter extends AbstractAssignment
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String key = getKey(context, source);
+        String key = getKey(context, source, typesetter);
         source.getKeyword(context, "by");
-        long value = Count.scanCount(context, source, null);
+        long value = Count.scanInteger(context, source, null);
 
         Muskip ms = new Muskip(context.getMuskip(key));
         ms.multiply(value, 1);
@@ -195,7 +197,7 @@ public class MuskipParameter extends AbstractAssignment
     public Tokens the(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        String key = getKey(context, source);
+        String key = getKey(context, source, typesetter);
         try {
             return context.getMuskip(key).toToks(context.getTokenFactory());
         } catch (InterpreterException e) {

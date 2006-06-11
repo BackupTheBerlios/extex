@@ -56,7 +56,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class Unhbox extends AbstractBox {
 
@@ -86,7 +86,7 @@ public class Unhbox extends AbstractBox {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String key = getKey(context, source, getName());
+        String key = getKey(context, source, typesetter, getName());
         Box b = context.getBox(key);
         if (b == null || b.isVoid()) {
             // nothing to do

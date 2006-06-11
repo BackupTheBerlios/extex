@@ -55,7 +55,7 @@ import de.dante.extex.typesetter.Typesetter;
  *        &lang;control sequence&rang;} {@linkplain
  *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
  *        &lang;equals&rang;} {@linkplain
- *        de.dante.extex.interpreter.TokenSource#scanRegisterName(Context,String)
+ *        de.dante.extex.interpreter.TokenSource#scanRegisterName(Context,TokenSource,Typesetter,String)
  *        &lang;register name&rang;}
  *
  *    &lang;modifier&rang;
@@ -95,7 +95,7 @@ import de.dante.extex.typesetter.Typesetter;
  * "#<i>name</i>" or "dimen#<i>name</i>".
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class Dimendef extends AbstractDimen {
 
@@ -127,7 +127,7 @@ public class Dimendef extends AbstractDimen {
 
         CodeToken cs = source.getControlSequence(context);
         source.getOptionalEquals(context);
-        String key = getKey(context, source);
+        String key = getKey(context, source, typesetter);
         context.setCode(cs, new DimenParameter(key), prefix.clearGlobal());
     }
 

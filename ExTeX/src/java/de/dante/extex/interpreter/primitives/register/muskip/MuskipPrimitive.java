@@ -23,6 +23,8 @@ import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.type.count.Count;
+import de.dante.extex.typesetter.Typesetter;
 
 /**
  * This class provides an implementation for the primitive <code>\muskip</code>.
@@ -48,7 +50,7 @@ import de.dante.extex.interpreter.exception.InterpreterException;
  *  <pre class="syntax">
  *    &lang;muskip&rang;
  *      &rarr; &lang;optional prefix&rang; <tt>\muskip</tt>  {@linkplain
- *        de.dante.extex.interpreter.TokenSource#scanRegisterName(Context,String)
+ *        de.dante.extex.interpreter.TokenSource#scanRegisterName(Context,TokenSource,Typesetter,String)
  *        &lang;register name&rang;} {@linkplain
  *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
  *        &lang;equals&rang;} {@link
@@ -69,7 +71,7 @@ import de.dante.extex.interpreter.exception.InterpreterException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class MuskipPrimitive extends MuskipParameter {
 
@@ -90,17 +92,20 @@ public class MuskipPrimitive extends MuskipParameter {
 
     /**
      * Return the key (the number) for the muskip register.
+     *
      * @param context the interpreter context to use
      * @param source the source for the next tokens &ndash; if required
+     * @param typesetter the typesetter
      *
      * @return the key for the muskip register
      *
      * @throws InterpreterException in case of an error
      */
-    protected String getKey(final Context context, final TokenSource source)
-            throws InterpreterException {
+    protected String getKey(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
 
-        String number = Long.toString(source.scanNumber(context));
+        String number = Long.toString(Count.scanNumber(context, source,
+                typesetter));
 
         if (Namespace.SUPPORT_NAMESPACE_MUSKIP) {
             return context.getNamespace() + "\b" + getName() + "#" + number;

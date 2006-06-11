@@ -61,7 +61,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Vsplit extends AbstractBox implements Boxable, LogEnabled {
 
@@ -142,7 +142,7 @@ public class Vsplit extends AbstractBox implements Boxable, LogEnabled {
     private NodeList vsplit(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        String key = getKey(context, source, getName());
+        String key = getKey(context, source, typesetter, getName());
         if (!source.getKeyword(context, "to")) {
             throw new HelpingException(getLocalizer(), "TTP.MissingToForVsplit");
         }

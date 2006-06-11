@@ -24,13 +24,14 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractAssignment;
+import de.dante.extex.typesetter.Typesetter;
 
 /**
  * This abstract base class provides the methods to compute the keys for
  * numbered dimen registers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public abstract class AbstractDimen extends AbstractAssignment {
 
@@ -47,20 +48,23 @@ public abstract class AbstractDimen extends AbstractAssignment {
     /**
      * Return the key (the name of the primitive) for the numbered dimen
      * register.
+     *
      * @param context the interpreter context to use
      * @param source the source for new tokens
+     * @param typesetter the typesetter
      *
      * @return the key for the current register
      *
-     * @throws InterpreterException in case that a derived class need to throw an
-     *             Exception this on e is declared.
+     * @throws InterpreterException in case that a derived class need to throw
+     *  an Exception this on e is declared.
      */
-    protected String getKey(final Context context, final TokenSource source)
-            throws InterpreterException {
+    protected String getKey(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
 
         String name;
         try {
-            name = source.scanRegisterName(context, getName());
+            name = source.scanRegisterName(context, source, typesetter,
+                    getName());
         } catch (InterpreterException e) {
             throw e;
         }

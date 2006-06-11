@@ -32,6 +32,7 @@ import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.Theable;
+import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.DimenConvertible;
@@ -113,7 +114,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Dimenexpr extends AbstractCode
         implements
@@ -277,7 +278,7 @@ public class Dimenexpr extends AbstractCode
                     source.push(t);
                     return Dimen.parse(context, source, typesetter).getValue();
                 }
-                long pre = source.scanNumber(context, t);
+                long pre = Count.scanNumber(context, source, typesetter, t);
                 t = source.getToken(context);
                 if (t == null) {
                     return pre;
@@ -299,7 +300,7 @@ public class Dimenexpr extends AbstractCode
                 } else {
                     source.push(t);
                     source.push(new Tokens(context, pre));
-                    return source.scanNumber(context);
+                    return Count.scanNumber(context, source, typesetter);
                 }
 
             } else if (t instanceof CodeToken) {

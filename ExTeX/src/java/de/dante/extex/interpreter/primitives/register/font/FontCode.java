@@ -36,7 +36,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class FontCode extends AbstractCode implements FontConvertible, Theable {
 
@@ -94,10 +94,11 @@ public class FontCode extends AbstractCode implements FontConvertible, Theable {
     /**
      * @see de.dante.extex.interpreter.type.font.FontConvertible#convertFont(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
      */
-    public Font convertFont(final Context context, final TokenSource source)
-            throws InterpreterException {
+    public Font convertFont(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
 
         return font;
     }

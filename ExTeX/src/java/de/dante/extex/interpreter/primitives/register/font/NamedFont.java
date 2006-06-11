@@ -34,7 +34,7 @@ import de.dante.extex.typesetter.Typesetter;
  * context.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class NamedFont extends AbstractAssignment implements FontConvertible {
 
@@ -64,7 +64,7 @@ public class NamedFont extends AbstractAssignment implements FontConvertible {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String key = getKey(context, source);
+        String key = getKey(context, source, typesetter);
         source.getOptionalEquals(context);
 
         Font font = source.getFont(context, getName());
@@ -74,16 +74,18 @@ public class NamedFont extends AbstractAssignment implements FontConvertible {
     /**
      * @see de.dante.extex.interpreter.type.font.FontConvertible#convertFont(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
      */
-    public Font convertFont(final Context context, final TokenSource source)
-            throws InterpreterException {
+    public Font convertFont(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
 
-        return context.getFont(getKey(context, source));
+        return context.getFont(getKey(context, source, typesetter));
     }
 
     /**
      * Return the key (the number) for the font register.
+     *
      * @param context the interpreter context to use
      * @param source the source for the next tokens &ndash; if required
      *
@@ -91,8 +93,8 @@ public class NamedFont extends AbstractAssignment implements FontConvertible {
      *
      * @throws InterpreterException in case oif an error
      */
-    protected String getKey(final Context context, final TokenSource source)
-            throws InterpreterException {
+    protected String getKey(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
 
         if (Namespace.SUPPORT_NAMESPACE_FONT) {
             return context.getNamespace() + "\b" + getName();

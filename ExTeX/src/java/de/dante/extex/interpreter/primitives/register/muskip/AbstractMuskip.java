@@ -24,13 +24,14 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractAssignment;
+import de.dante.extex.typesetter.Typesetter;
 
 /**
  * This abstract base class provides the methods to compute the keys for
  * numbered muskip registers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public abstract class AbstractMuskip extends AbstractAssignment {
 
@@ -50,16 +51,18 @@ public abstract class AbstractMuskip extends AbstractAssignment {
      *
      * @param source the source for new tokens
      * @param context the interpreter context to use
+     * @param typesetter the typesetter
      *
      * @return the key for the current register
      *
      * @throws InterpreterException in case that a derived class need to throw
      *  an Exception this one is declared.
      */
-    protected String getKey(final TokenSource source, final Context context)
-            throws InterpreterException {
+    protected String getKey(final TokenSource source, final Context context,
+            final Typesetter typesetter) throws InterpreterException {
 
-        String name = source.scanRegisterName(context, getName());
+        String name = source.scanRegisterName(context, source, typesetter,
+                getName());
 
         if (Namespace.SUPPORT_NAMESPACE_SKIP) {
             return context.getNamespace() + "muskip#" + name;

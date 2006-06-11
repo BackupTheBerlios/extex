@@ -56,7 +56,7 @@ import de.dante.util.exception.GeneralException;
  *  <pre class="syntax">
  *    &lang;toks&rang;
  *      &rarr; <tt>\toks</tt> {@linkplain
- *        de.dante.extex.interpreter.TokenSource#scanRegisterName(Context,String)
+ *        de.dante.extex.interpreter.TokenSource#scanRegisterName(Context,TokenSource,Typesetter,String)
  *        &lang;register name&rang;} {@linkplain
  *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
  *        &lang;equals&rang;} {@linkplain
@@ -85,7 +85,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class ToksPrimitive extends AbstractToks
         implements
@@ -118,7 +118,7 @@ public class ToksPrimitive extends AbstractToks
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String key = getKey(source, context);
+        String key = getKey(context, source, typesetter);
         source.getOptionalEquals(context);
         Tokens toks = source.getTokens(context, source, typesetter);
         context.setToks(key, toks, prefix.clearGlobal());
@@ -134,7 +134,7 @@ public class ToksPrimitive extends AbstractToks
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String key = getKey(source, context);
+        String key = getKey(context, source, typesetter);
         return context.getToks(key);
     }
 
@@ -170,7 +170,7 @@ public class ToksPrimitive extends AbstractToks
     public Tokens the(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        return context.getToks(getKey(source, context));
+        return context.getToks(getKey(context, source, typesetter));
     }
 
 }

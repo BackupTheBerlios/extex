@@ -23,6 +23,8 @@ import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.type.count.Count;
+import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
 
 /**
@@ -30,7 +32,7 @@ import de.dante.extex.typesetter.TypesetterOptions;
  * number in the context.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class NumberedFont extends NamedFont {
 
@@ -90,6 +92,7 @@ public class NumberedFont extends NamedFont {
     /**
      * Return the key (the name of the primitive) for the numbered font
      * register.
+     *
      * @param context the interpreter context to use
      * @param source the source for new tokens
      *
@@ -97,12 +100,17 @@ public class NumberedFont extends NamedFont {
      *
      * @throws InterpreterException in case that a derived class need to throw an
      *  Exception this one is declared.
+     *
+     * @see de.dante.extex.interpreter.primitives.register.font.NamedFont#getKey(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
      */
-    protected String getKey(final Context context, final TokenSource source)
-            throws InterpreterException {
+    protected String getKey(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
 
         return key(context, getName(), //
-                Long.toString(source.scanNumber(context)));
+                Long.toString(Count.scanNumber(context, source, typesetter)));
     }
 
 }

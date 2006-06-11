@@ -139,7 +139,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.41 $
+ * @version $Revision: 1.42 $
  */
 public class FontPrimitive extends AbstractAssignment
         implements
@@ -197,7 +197,7 @@ public class FontPrimitive extends AbstractAssignment
             }
 
         } else if (source.getKeyword(context, "scaled")) {
-            long s = source.scanInteger(context, typesetter);
+            long s = Count.scanInteger(context, source, typesetter);
             if (s <= 0) {
                 throw new HelpingException(getLocalizer(), "TTP.IllegalMag",
                         Long.toString(s), "32768"); //TODO gene: max ok?
@@ -250,10 +250,11 @@ public class FontPrimitive extends AbstractAssignment
     /**
      * @see de.dante.extex.interpreter.type.font.FontConvertible#convertFont(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
      */
-    public Font convertFont(final Context context, final TokenSource source)
-            throws InterpreterException {
+    public Font convertFont(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
 
         return context.getTypesettingContext().getFont();
     }

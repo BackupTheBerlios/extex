@@ -54,7 +54,7 @@ import de.dante.util.exception.GeneralException;
  *  <pre class="syntax">
  *    &lang;skip&rang;
  *        &rarr; &lang;optional prefix&rang; <tt>\skip</tt> {@linkplain
- *        de.dante.extex.interpreter.TokenSource#scanRegisterName(Context,String)
+ *        de.dante.extex.interpreter.TokenSource#scanRegisterName(Context,TokenSource,Typesetter,String)
  *        &lang;register name&rang;} {@linkplain
  *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
  *        &lang;equals&rang;} {@link
@@ -73,7 +73,7 @@ import de.dante.util.exception.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class SkipPrimitive extends AbstractSkip
         implements
@@ -109,7 +109,7 @@ public class SkipPrimitive extends AbstractSkip
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String key = getKey(context, source);
+        String key = getKey(context, source, typesetter);
         source.getKeyword(context, "by");
         Glue g = Glue.parse(source, context, typesetter);
         g.add(context.getGlue(key));
@@ -127,7 +127,7 @@ public class SkipPrimitive extends AbstractSkip
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String key = getKey(context, source);
+        String key = getKey(context, source, typesetter);
         source.getOptionalEquals(context);
         Glue g = Glue.parse(source, context, typesetter);
         context.setGlue(key, g, prefix.clearGlobal());
@@ -142,7 +142,7 @@ public class SkipPrimitive extends AbstractSkip
     public Glue convertGlue(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        String key = getKey(context, source);
+        String key = getKey(context, source, typesetter);
         return context.getGlue(key);
     }
 
@@ -157,9 +157,9 @@ public class SkipPrimitive extends AbstractSkip
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String key = getKey(context, source);
+        String key = getKey(context, source, typesetter);
         source.getKeyword(context, "by");
-        long value = Count.scanCount(context, source, null);
+        long value = Count.scanInteger(context, source, null);
 
         if (value == 0) {
             throw new ArithmeticOverflowException(
@@ -182,9 +182,9 @@ public class SkipPrimitive extends AbstractSkip
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String key = getKey(context, source);
+        String key = getKey(context, source, typesetter);
         source.getKeyword(context, "by");
-        long value = Count.scanCount(context, source, null);
+        long value = Count.scanInteger(context, source, null);
 
         Glue g = new Glue(context.getGlue(key));
         g.multiplyAll(value, 1);
@@ -200,7 +200,7 @@ public class SkipPrimitive extends AbstractSkip
     public Tokens the(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        String key = getKey(context, source);
+        String key = getKey(context, source, typesetter);
         try {
             return context.getGlue(key).toToks(context.getTokenFactory());
         } catch (InterpreterException e) {

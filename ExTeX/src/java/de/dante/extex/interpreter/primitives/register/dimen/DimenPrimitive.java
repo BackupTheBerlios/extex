@@ -55,7 +55,7 @@ import de.dante.extex.typesetter.Typesetter;
  *  <pre class="syntax">
  *    &lang;dimen&rang;
  *      &rarr; &lang;optional prefix&rang; <tt>\dimen</tt> {@linkplain
- *        de.dante.extex.interpreter.TokenSource#scanRegisterName(Context,String)
+ *        de.dante.extex.interpreter.TokenSource#scanRegisterName(Context,TokenSource,Typesetter,String)
  *        &lang;register name&rang;} {@linkplain
  *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
  *        &lang;equals&rang;} {@link
@@ -72,7 +72,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
 public class DimenPrimitive extends AbstractDimen
         implements
@@ -110,7 +110,7 @@ public class DimenPrimitive extends AbstractDimen
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String key = getKey(context, source);
+        String key = getKey(context, source, typesetter);
         source.getKeyword(context, "by");
 
         Dimen d = Dimen.parse(context, source, typesetter);
@@ -129,7 +129,7 @@ public class DimenPrimitive extends AbstractDimen
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String key = getKey(context, source);
+        String key = getKey(context, source, typesetter);
         source.getOptionalEquals(context);
 
         Dimen dimen = Dimen.parse(context, source, typesetter);
@@ -144,7 +144,7 @@ public class DimenPrimitive extends AbstractDimen
     public long convertCount(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        String key = getKey(context, source);
+        String key = getKey(context, source, typesetter);
         Dimen d = context.getDimen(key);
         return (d != null ? d.getValue() : 0);
     }
@@ -171,9 +171,9 @@ public class DimenPrimitive extends AbstractDimen
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String key = getKey(context, source);
+        String key = getKey(context, source, typesetter);
         source.getKeyword(context, "by");
-        long value = Count.scanCount(context, source, null);
+        long value = Count.scanInteger(context, source, null);
 
         if (value == 0) {
             throw new ArithmeticOverflowException(
@@ -195,7 +195,7 @@ public class DimenPrimitive extends AbstractDimen
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String key = getKey(context, source);
+        String key = getKey(context, source, typesetter);
         try {
             Tokens toks = context.getDimen(key).toToks(
                     context.getTokenFactory());
@@ -216,9 +216,9 @@ public class DimenPrimitive extends AbstractDimen
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String key = getKey(context, source);
+        String key = getKey(context, source, typesetter);
         source.getKeyword(context, "by");
-        long value = Count.scanCount(context, source, null);
+        long value = Count.scanInteger(context, source, null);
         Dimen d = new Dimen(context.getDimen(key).getValue() * value);
         context.setDimen(key, d, prefix.clearGlobal());
     }
@@ -231,7 +231,7 @@ public class DimenPrimitive extends AbstractDimen
     public Tokens the(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        String key = getKey(context, source);
+        String key = getKey(context, source, typesetter);
         try {
             return context.getDimen(key).toToks(context.getTokenFactory());
         } catch (CatcodeException e) {
