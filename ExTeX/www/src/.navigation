@@ -9,6 +9,7 @@
      <a href="&top;development/systems.html">&TeX; and Successors</a><br />
      <a href="&top;development/bug-tracking.html">Bug Tracking</a><br />
      <a href="&top;development/feature-requests.html">Feature Requests</a><br />
+     <a href="&top;development/nightly-build.html">Nightly Build</a><br />
     </div>
 
     <a href="&top;documentation/index.html">Documentation</a><br />
@@ -24,7 +25,7 @@
     <div class="navitems">
      <i>Current Stable Release</i><br />
      <a href="&top;snapshot/ExTeX-setup.jar">Installer (Snapshot)</a><br />
-     <a href="&top;sources/repository.html">Repository</a><br />
+     <a href="&top;sources/repository.html">Repository (CVS)</a><br />
     </div>
    </div>
 

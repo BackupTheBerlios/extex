@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//3.2//EN">
+<html>
+<head>
+  <title>ExTeX: Nightly Build</title>
+  <meta name="Author" content="Gerd Neugebauer">
+  <meta http_equiv="Content-Type" content="text/html;CHARSET=iso-8859-1">
+</head>
+<body>
+
+<h1>Nightly Build</h1>
+
+<p>
+ &ExTeX; is rebuild automatically once a day. The results are publised
+ on the &ExTeX; site. The following results can be seen:
+</p>
+<ul>
+ <li><a href="&top;snapshot/ExTeX-setup.jar">Installer</a></li>
+ <li><a href="&top;snapshot/javadoc/index.html">Javadoc (HTML)</a></li>
+ <li><a href="&top;unit/index.html">Primitive and Syntax Reference (HTML)</a></li>
+ <li><a href="&top;documentation/man/extex-users.pdf">User's Guide</a></li>
+ <li><a href="&top;documentation/man/extex-developers.pdf">Developer's Guide</a></li>
+ <li><a href="&top;reports/tests/index.html">Test Reports (HTML)</a></li>
+</ul>
+
+<h2>Snapshot Installer</h2>
+
+<p>
+ The snapshot installer represents the last version from the
+ repository. The least requirement for the snapshot is thta the
+ sources are compilable without error. If the sources do not compile
+ then no new snapshot installer is published but the old one remains
+ on the web site. Thus always a corrctly compiled version can be
+ accessed.
+</p>
+<p>
+ Note that the tests do not influence the publishing of a new snapshot
+ installer.
+</p>
+
+
+<h2>Test Suite</h2>
+
+<p>
+ &ExTeX; contains a test suite which is processed during the nightly
+ build. The tests should be green for stable releases. For snapshots
+ some test mights not be green.
+</p>
+
+<include src="../../../target/www/reports/test-summary.html"/>
+
+<p>
+ The <a href="&top;reports/tests/index.html">Test Reports</a> provide
+ some detailed insight into the results.
+</p>
+
+</body>
+</html>
