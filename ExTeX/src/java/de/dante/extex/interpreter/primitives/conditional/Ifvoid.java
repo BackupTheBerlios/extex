@@ -56,7 +56,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class Ifvoid extends AbstractIf {
 
@@ -85,7 +85,7 @@ public class Ifvoid extends AbstractIf {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String key = AbstractBox.getKey(context, source, getName());
+        String key = AbstractBox.getKey(context, source, typesetter, getName());
         Box box = context.getBox(key);
         return (box == null || box.isVoid());
     }

@@ -26,13 +26,14 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.typesetter.Typesetter;
 
 /**
  * This is the abstract base class for primitives dealing with box registers.
  * It provides a method to get the key of a box register.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public abstract class AbstractBox extends AbstractCode implements Serializable {
 
@@ -98,6 +99,7 @@ public abstract class AbstractBox extends AbstractCode implements Serializable {
      *
      * @param context the interpreter context to use
      * @param source the source for new tokens
+     * @param typesetter the typesetter
      * @param name the name of the primitive for error messages
      *
      * @return the key for the box register
@@ -105,10 +107,10 @@ public abstract class AbstractBox extends AbstractCode implements Serializable {
      * @throws InterpreterException in case of an error
      */
     public static String getKey(final Context context,
-            final TokenSource source, final String name)
-            throws InterpreterException {
+            final TokenSource source, final Typesetter typesetter,
+            final String name) throws InterpreterException {
 
-        String key = source.scanRegisterName(context, name);
+        String key = source.scanRegisterName(context, source, typesetter, name);
 
         if (Namespace.SUPPORT_NAMESPACE_BOX) {
             return context.getNamespace() + "#box#" + key;
