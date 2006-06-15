@@ -21,12 +21,25 @@ package de.dante.extex.interpreter.type.dimen;
 
 import java.io.Serializable;
 
+import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.ArithmeticOverflowException;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
+import de.dante.extex.interpreter.exception.helping.MissingNumberException;
+import de.dante.extex.interpreter.type.Code;
+import de.dante.extex.interpreter.type.ExpandableCode;
+import de.dante.extex.interpreter.type.dimen.parser.LengthParser;
 import de.dante.extex.interpreter.type.glue.FixedGlueComponent;
 import de.dante.extex.interpreter.type.glue.GlueComponent;
+import de.dante.extex.interpreter.type.scaled.ScaledConvertible;
+import de.dante.extex.interpreter.type.scaled.ScaledNumber;
+import de.dante.extex.scanner.type.Catcode;
+import de.dante.extex.scanner.type.token.CodeToken;
+import de.dante.extex.scanner.type.token.LetterToken;
+import de.dante.extex.scanner.type.token.OtherToken;
+import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.i18n.LocalizerFactory;
@@ -37,7 +50,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.33 $
+ * @version $Revision: 1.34 $
  */
 public class Dimen extends GlueComponent implements Serializable, FixedDimen {
 
@@ -105,9 +118,7 @@ public class Dimen extends GlueComponent implements Serializable, FixedDimen {
     public static Dimen parse(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        GlueComponent gc = GlueComponent.parse(context, source, typesetter,
-                false);
-        return new Dimen(gc.getValue());
+        return LengthParser.parse(context, source, typesetter);
     }
 
     /**
