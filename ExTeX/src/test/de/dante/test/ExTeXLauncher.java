@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -57,7 +57,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * running an instance of <logo>ExTeX</logo>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.44 $
+ * @version $Revision: 1.45 $
  */
 public class ExTeXLauncher extends TestCase {
 
@@ -65,7 +65,7 @@ public class ExTeXLauncher extends TestCase {
      * Inner class for the error handler.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.44 $
+     * @version $Revision: 1.45 $
      */
     private class EHandler implements ErrorHandler {
 
@@ -190,6 +190,12 @@ public class ExTeXLauncher extends TestCase {
         LEVEL_MAP.put("finer", Level.FINER);
         LEVEL_MAP.put("finest", Level.FINEST);
     }
+
+    /**
+     * The field <tt>defaultLog</tt> contains the default log output unless
+     * specified explicitly.
+     */
+    private String defaultLog = "";
 
     /**
      * The field <tt>props</tt> contains the merged properties from the
@@ -394,7 +400,7 @@ public class ExTeXLauncher extends TestCase {
     public Interpreter assertSuccess(final Properties properties,
             final String code, final String expect) throws Exception {
 
-        return assertOutput(properties, code, "", expect);
+        return assertOutput(properties, code, defaultLog, expect);
     }
 
     /**
@@ -412,7 +418,7 @@ public class ExTeXLauncher extends TestCase {
     public Interpreter assertSuccess(final String code, final String expect)
             throws Exception {
 
-        return assertOutput(getProps(), code, "", expect);
+        return assertOutput(getProps(), code, defaultLog, expect);
     }
 
     /**
@@ -423,6 +429,16 @@ public class ExTeXLauncher extends TestCase {
     protected String getConfig() {
 
         return "extex.xml";
+    }
+
+    /**
+     * Getter for defaultLog.
+     *
+     * @return the defaultLog
+     */
+    protected String getDefaultLog() {
+
+        return this.defaultLog;
     }
 
     /**
@@ -538,6 +554,16 @@ public class ExTeXLauncher extends TestCase {
         handler.close();
         logger.removeHandler(handler);
         return bytes.toString();
+    }
+
+    /**
+     * Setter for defaultLog.
+     *
+     * @param defaultLog the defaultLog to set
+     */
+    protected void setDefaultLog(String defaultLog) {
+
+        this.defaultLog = defaultLog;
     }
 
     /**
