@@ -68,7 +68,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.89 $
+ * @version $Revision: 1.90 $
  */
 public class TypesetterImpl
         implements
@@ -151,8 +151,8 @@ public class TypesetterImpl
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#addGlue(
-     *     de.dante.extex.interpreter.type.glue.FixedGlue)
+     * @see de.dante.extex.typesetter.ListMaker#add(
+     *      de.dante.extex.interpreter.type.glue.FixedGlue)
      */
     public void add(final FixedGlue glue) throws TypesetterException {
 
@@ -442,7 +442,8 @@ public class TypesetterImpl
      * @see de.dante.extex.typesetter.ListMaker#letter(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.context.TypesettingContext,
-     *      de.dante.util.UnicodeChar)
+     *      de.dante.util.UnicodeChar,
+     *      de.dante.util.Locator)
      */
     public void letter(final Context context, final TypesettingContext tc,
             final UnicodeChar uc, final Locator locator)

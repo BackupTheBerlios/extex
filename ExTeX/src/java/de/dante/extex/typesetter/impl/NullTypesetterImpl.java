@@ -54,7 +54,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class NullTypesetterImpl implements Typesetter {
 
@@ -73,7 +73,7 @@ public class NullTypesetterImpl implements Typesetter {
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#addGlue(
+     * @see de.dante.extex.typesetter.ListMaker#add(
      *      de.dante.extex.interpreter.type.glue.FixedGlue)
      */
     public void add(final FixedGlue g) throws TypesetterException {
@@ -259,6 +259,8 @@ public class NullTypesetterImpl implements Typesetter {
     /**
      * Notification method to deal the case that a left brace hs been
      * encountered.
+     *
+     * @see de.dante.extex.typesetter.ListMaker#leftBrace()
      */
     public void leftBrace() {
 
@@ -266,9 +268,10 @@ public class NullTypesetterImpl implements Typesetter {
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#letter(
-     *      Context,
+     *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.context.TypesettingContext,
-     *      de.dante.util.UnicodeChar)
+     *      de.dante.util.UnicodeChar,
+     *      de.dante.util.Locator)
      */
     public void letter(final Context context, final TypesettingContext tc,
             final UnicodeChar uc, final Locator locator)

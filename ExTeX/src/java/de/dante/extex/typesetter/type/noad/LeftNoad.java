@@ -37,7 +37,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [687]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class LeftNoad extends AbstractNoad {
 
@@ -83,7 +83,6 @@ public class LeftNoad extends AbstractNoad {
      *      int,
      *      de.dante.extex.typesetter.type.NodeList,
      *      de.dante.extex.typesetter.type.noad.util.MathContext,
-     *      de.dante.extex.typesetter.TypesetterOptions,
      *      java.util.logging.Logger)
      */
     public void typeset(final Noad previousNoad, final NoadList noads,

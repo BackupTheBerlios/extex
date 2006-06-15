@@ -39,7 +39,7 @@ import de.dante.util.exception.GeneralException;
  * This class is used to represent composed characters from virtual fonts.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class VirtualCharNode extends CharNode implements NodeList {
 
@@ -48,7 +48,7 @@ public class VirtualCharNode extends CharNode implements NodeList {
      * It is here to compensate the missing multiple inheritance of Java.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.17 $
+     * @version $Revision: 1.18 $
      */
     private class NL extends GenericNodeList {
 
@@ -209,7 +209,7 @@ public class VirtualCharNode extends CharNode implements NodeList {
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.node.AbstractNode#getDepth()
+     * @see de.dante.extex.typesetter.type.Node#getDepth()
      */
     public Dimen getDepth() {
 
@@ -217,7 +217,7 @@ public class VirtualCharNode extends CharNode implements NodeList {
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.node.AbstractNode#getHeight()
+     * @see de.dante.extex.typesetter.type.Node#getHeight()
      */
     public Dimen getHeight() {
 
@@ -241,7 +241,7 @@ public class VirtualCharNode extends CharNode implements NodeList {
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.node.AbstractNode#getVerticalSize()
+     * @see de.dante.extex.typesetter.type.Node#getVerticalSize()
      */
     public FixedDimen getVerticalSize() {
 
@@ -249,7 +249,7 @@ public class VirtualCharNode extends CharNode implements NodeList {
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.node.AbstractNode#getWidth()
+     * @see de.dante.extex.typesetter.type.Node#getWidth()
      */
     public Dimen getWidth() {
 
@@ -273,19 +273,19 @@ public class VirtualCharNode extends CharNode implements NodeList {
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.node.AbstractNode#setDepth(
-     *      de.dante.extex.interpreter.type.dimen.Dimen)
+     * @see de.dante.extex.typesetter.type.Node#setDepth(
+     *      de.dante.extex.interpreter.type.dimen.FixedDimen)
      */
-    public void setDepth(final Dimen depth) {
+    public void setDepth(final FixedDimen depth) {
 
         this.nodes.setDepth(depth);
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.node.AbstractNode#setHeight(
-     *      de.dante.extex.interpreter.type.dimen.Dimen)
+     * @see de.dante.extex.typesetter.type.Node#setHeight(
+     *      de.dante.extex.interpreter.type.dimen.FixedDimen)
      */
-    public void setHeight(final Dimen height) {
+    public void setHeight(final FixedDimen height) {
 
         this.nodes.setHeight(height);
     }
@@ -319,7 +319,7 @@ public class VirtualCharNode extends CharNode implements NodeList {
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.node.AbstractNode#setWidth(
+     * @see de.dante.extex.typesetter.type.Node#setWidth(
      *      de.dante.extex.interpreter.type.dimen.FixedDimen)
      */
     public void setWidth(final FixedDimen width) {
@@ -336,7 +336,7 @@ public class VirtualCharNode extends CharNode implements NodeList {
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.node.AbstractNode#spreadWidth(
+     * @see de.dante.extex.typesetter.type.Node#spreadWidth(
      *      de.dante.extex.interpreter.type.dimen.FixedDimen,
      *      de.dante.extex.interpreter.type.glue.FixedGlueComponent)
      */

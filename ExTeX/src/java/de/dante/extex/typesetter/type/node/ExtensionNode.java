@@ -28,7 +28,7 @@ import de.dante.extex.typesetter.type.Node;
  * possible to insert arbitrary nodes into the typesetter tree.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class ExtensionNode extends WhatsItNode implements Node {
 
@@ -78,19 +78,19 @@ public class ExtensionNode extends WhatsItNode implements Node {
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.node.AbstractNode#setDepth(
-     *      de.dante.extex.interpreter.type.dimen.Dimen)
+     * @see de.dante.extex.typesetter.type.Node#setDepth(
+     *      de.dante.extex.interpreter.type.dimen.FixedDimen)
      */
-    public void setDepth(final Dimen depth) {
+    public void setDepth(final FixedDimen depth) {
 
         this.extension.setDepth(depth);
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.node.AbstractNode#setHeight(
-     *      de.dante.extex.interpreter.type.dimen.Dimen)
+     * @see de.dante.extex.typesetter.type.Node#setHeight(
+     *      de.dante.extex.interpreter.type.dimen.FixedDimen)
      */
-    public void setHeight(final Dimen height) {
+    public void setHeight(final FixedDimen height) {
 
         this.extension.setHeight(height);
     }
