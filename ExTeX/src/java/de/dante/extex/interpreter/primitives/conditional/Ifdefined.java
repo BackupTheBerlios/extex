@@ -32,7 +32,7 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="ifdefined">
  * <h3>The Primitive <tt>&#x005c;unless</tt></h3>
  *
- * <p><strong>Copied from the eTeX reference</strong>:
+ * <p><strong>Copied from the <logo>eTeX</logo> reference</strong>:
  * </p>
  * <p><i>
  *  similar in effect to <tt>&#x005c;unless</tt> <tt>\ifx</tt>
@@ -50,12 +50,13 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * <h4>Examples</h4>
  * <pre class="TeXSample">
- * &#x005c;ifdefined\TESTNAME\else not\fi defined</pre>
+ *   &#x005c;ifdefined\TESTNAME\else not\fi defined  </pre>
+ *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class Ifdefined extends AbstractIf {
 

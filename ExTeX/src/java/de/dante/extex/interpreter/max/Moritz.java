@@ -111,7 +111,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.97 $
+ * @version $Revision: 1.98 $
  */
 public class Moritz extends Max
         implements
@@ -263,6 +263,17 @@ public class Moritz extends Max
      *  into the current input stream. Thus thus tokens are processed before
      *  the expansion continues to look for any other tokens from other sources.
      * </p>
+     *
+     *
+     * <h4>Syntax</h4>
+     *  The formal description of this primitive is the following:
+     *  <pre class="syntax">
+     *    &lang;everyveof&rang;
+     *      &rarr; <tt>\everyeof</tt> {@linkplain
+     *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+     *        &lang;equals&rang;} {@linkplain
+     *        de.dante.extex.interpreter.TokenSource#getTokens(Context,TokenSource,Typesetter)
+     *        &lang;tokens&rang;}  </pre>
      *
      * <h4>Examples</h4>
      *  <pre class="TeXSample">

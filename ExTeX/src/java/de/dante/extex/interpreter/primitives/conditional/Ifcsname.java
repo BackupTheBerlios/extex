@@ -49,14 +49,13 @@ import de.dante.extex.typesetter.Typesetter;
  *       |  <tt>\ifcsname</tt> ... <tt>\endcsname</tt> &lang;true text&rang; <tt>\else</tt> &lang;false text&rang; <tt>\fi</tt>  </pre>
  *
  * <h4>Examples</h4>
- *  <pre class="syntax">
- *    &lang;ifcsname&rang;
- *     &rarr; <tt>\ifcsname</tt>def\endcsname ok\fi</pre>
+ *  <pre class="TeXSample">
+ *     \ifcsname def\endcsname ok\fi  </pre>
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Ifcsname extends AbstractIf {
 
