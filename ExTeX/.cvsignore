@@ -26,3 +26,4 @@ maven-*
 *.ps
 *.rtf
 *.fls
+*.aux
