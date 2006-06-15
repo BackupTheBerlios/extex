@@ -121,7 +121,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *  be added easily.
  * </p>
  *
- * <pre>
+ * <pre class="Configuration">
  *  &lt;define name="nativeload"
  *          class="de.dante.extex.interpreter.primitives.dynamic.NativeLoad"&gt;
  *    &lt;load name="java"
@@ -144,7 +144,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class NativeLoad extends AbstractCode
         implements

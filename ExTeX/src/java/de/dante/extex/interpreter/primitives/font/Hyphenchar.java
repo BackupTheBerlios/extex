@@ -45,7 +45,7 @@ import de.dante.util.exception.GeneralException;
  * <h3>The Primitive <tt>\hyphenchar</tt></h3>
  * <p>
  *  The primitive <tt>\hyphenchar</tt> can be used to set the hyphenation
- *  character for a given font. The undefined character &ndash represented
+ *  character for a given font. The undefined character &ndash; represented
  *  by a negative value &ndash; indicates that no hyphenation should be
  *  applied. Otherwise the given character will be used when hyphenating
  *  words.
@@ -76,7 +76,7 @@ import de.dante.util.exception.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.30 $
+ * @version $Revision: 1.31 $
  */
 public class Hyphenchar extends AbstractAssignment
         implements

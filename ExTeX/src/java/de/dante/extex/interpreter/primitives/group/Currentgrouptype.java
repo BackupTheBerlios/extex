@@ -35,12 +35,12 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="currentgrouptype">
  * <h3>The Primitive <tt>\currentgrouptype</tt></h3>
  * <p>
- *  TODO gene: documentation incomplete
+ *  TODO gene: missing documentation
  * </p>
  *
  *
  *
- * <table>
+ * <table format="rl">
  *  <tr><td> 0</td><td>bottom level (no group)</td></tr>
  *  <tr><td> 1</td><td>simple group</td></tr>
  *  <tr><td> 2</td><td>hbox group</td></tr>
@@ -76,7 +76,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Currentgrouptype extends AbstractCode
         implements

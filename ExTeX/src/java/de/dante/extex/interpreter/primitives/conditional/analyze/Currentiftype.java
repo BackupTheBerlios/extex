@@ -66,7 +66,7 @@ import de.dante.extex.typesetter.Typesetter;
  *  The following table lists the return values for the different types of
  *  conditionals:
  * </p>
- * <table>
+ * <table format="ll">
  *  <tr><td><tt>/if</tt></td><td>1</td></tr>
  *  <tr><td><tt>/ifcat</tt></td><td>2</td></tr>
  *  <tr><td><tt>/ifnum</tt></td><td>3</td></tr>
@@ -106,7 +106,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Currentiftype extends AbstractCode
         implements

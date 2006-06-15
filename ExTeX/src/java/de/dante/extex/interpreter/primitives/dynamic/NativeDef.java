@@ -117,7 +117,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *  be added easily.
  * </p>
  *
- * <pre>
+ * <pre class="Configuration">
  *  &lt;define name="nativedef"
  *          class="de.dante.extex.interpreter.primitives.dynamic.NativeDef"&gt;
  *    &lt;load name="java"
@@ -140,7 +140,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class NativeDef extends AbstractAssignment
         implements
@@ -153,7 +153,7 @@ public class NativeDef extends AbstractAssignment
      * inheritance in Java.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.10 $
+     * @version $Revision: 1.11 $
      */
     protected class Factory extends AbstractFactory {
 
