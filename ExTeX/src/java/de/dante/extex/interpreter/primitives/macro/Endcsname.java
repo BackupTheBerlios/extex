@@ -35,9 +35,9 @@ import de.dante.extex.typesetter.Typesetter;
  * <h3>The Primitive <tt>\endcsname</tt></h3>
  * <p>
  *  The macro <tt>\endcsname</tt> is used in combination with the macro
- *  {@link de.dante.extex.interpreter.primitives.macro.Csname \csname} only.
- *  Whenever a <tt>\endcsname</tt> is seen alone it must
- *  be an error. Thus thus primitive produces an error message in any case.
+ *  {@link de.dante.extex.interpreter.primitives.macro.Csname <tt>\csname</tt>}
+ *  only. Whenever a <tt>\endcsname</tt> is seen alone it must be an error.
+ *  Thus thus primitive produces an error message in any case.
  * </p>
  *
  * <h4>Syntax</h4>
@@ -60,7 +60,7 @@ import de.dante.extex.typesetter.Typesetter;
  * @see "TTP [1134]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class Endcsname extends AbstractCode {
 

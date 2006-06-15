@@ -39,9 +39,9 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </p>
  * <p>
  *  The group is usually ended by a corresponding
- *  {@link de.dante.extex.interpreter.primitives.group.Endgroup \endgroup}.
+ *  {@link de.dante.extex.interpreter.primitives.group.Endgroup <tt>\endgroup</tt>}.
  *  If the job is completed without encountering a proper
- *  {@link de.dante.extex.interpreter.primitives.group.Endgroup \endgroup}.
+ *  {@link de.dante.extex.interpreter.primitives.group.Endgroup <tt>\endgroup</tt>}.
  *  then an error is raised.
  * </p>
  *
@@ -58,7 +58,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class Begingroup extends AbstractCode {
 

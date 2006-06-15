@@ -38,7 +38,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </p>
  * <p>
  *  See the documentation of the primitive
- *  {@link de.dante.extex.interpreter.primitives.typesetter.mark.Mark \mark}
+ *  {@link de.dante.extex.interpreter.primitives.typesetter.mark.Mark <tt>\mark</tt>}
  *  for further explanation of marks.
  * </p>
  *
@@ -56,7 +56,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Firstmark extends Firstmarks {
 

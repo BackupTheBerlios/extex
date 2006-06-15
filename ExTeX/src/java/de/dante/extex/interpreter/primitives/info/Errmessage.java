@@ -60,7 +60,7 @@ import de.dante.extex.typesetter.Typesetter;
  * <p>
  *  The token register <tt>\errhelp</tt> contains the help text for the
  *  primitive
- *  {@link de.dante.extex.interpreter.primitives.info.Errmessage \errmessage}.
+ *  {@link de.dante.extex.interpreter.primitives.info.Errmessage <tt>\errmessage</tt>}.
  *  Nevertheless this register can be used in any place where a token register
  *  is needed.
  * </p>
@@ -72,7 +72,7 @@ import de.dante.extex.typesetter.Typesetter;
  *      &rarr; <tt>\errhelp</tt> {@linkplain
  *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
  *        &lang;equals&rang;} {@linkplain
- *        de.dante.extex.interpreter.TokenSource#getTokens(Context, TokenSource, Typesetter)
+ *        de.dante.extex.interpreter.TokenSource#getTokens(Context,TokenSource,Typesetter)
  *        &lang;tokens&rang;}  </pre>
  *
  * <h4>Examples</h4>
@@ -85,7 +85,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class Errmessage extends AbstractCode {
 

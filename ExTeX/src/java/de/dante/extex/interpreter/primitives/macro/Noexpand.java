@@ -60,7 +60,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class Noexpand extends AbstractCode
         implements
@@ -110,7 +110,6 @@ public class Noexpand extends AbstractCode
 
     /**
      * @see de.dante.extex.interpreter.type.CodeExpander#expandCode(
-     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter,

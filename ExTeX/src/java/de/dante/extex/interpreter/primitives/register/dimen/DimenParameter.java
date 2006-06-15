@@ -41,7 +41,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class DimenParameter extends DimenPrimitive
         implements
@@ -92,9 +92,11 @@ public class DimenParameter extends DimenPrimitive
      *
      * @see de.dante.extex.interpreter.primitives.register.dimen.AbstractDimen#getKey(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
      */
-    protected String getKey(final Context context, final TokenSource source, Typesetter typesetter) {
+    protected String getKey(final Context context, final TokenSource source,
+            final Typesetter typesetter) {
 
         return key;
     }

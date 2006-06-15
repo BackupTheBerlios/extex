@@ -57,7 +57,7 @@ import de.dante.util.exception.GeneralException;
  *        de.dante.extex.interpreter.TokenSource#scanRegisterName(Context,TokenSource,Typesetter,String)
  *        &lang;register name&rang;} {@linkplain
  *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
- *        &lang;equals&rang;} {@link
+ *        &lang;equals&rang;} {@linkplain
  *        de.dante.extex.interpreter.type.glue.Glue#parse(TokenSource,Context,Typesetter)
  *        &lang;glue&rang;}
  *
@@ -73,7 +73,7 @@ import de.dante.util.exception.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class SkipPrimitive extends AbstractSkip
         implements

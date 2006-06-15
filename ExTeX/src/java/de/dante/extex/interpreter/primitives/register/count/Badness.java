@@ -37,26 +37,27 @@ import de.dante.extex.typesetter.Typesetter;
  * <p>
  *  TODO gene: missing documentation
  * </p>
- * <p>
- *  The formal description of this primitive is the following:
- *  <pre class="syntax">
- *    &lang;badness&rang;
- *      &rarr; <tt>\badness</tt> {@linkplain
- *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
- *        &lang;equals&rang;} {@linkplain
- *        de.dante.extex.interpreter.TokenSource#scanNumber(Context)
- *        &lang;number&rang;} </pre>
- * </p>
+ *
+ * <h4>Syntax</h4>
+ * The formal description of this primitive is the following:
+ * <pre class="syntax">
+ *   &lang;badness&rang;
+ *     &rarr; <tt>\badness</tt> {@linkplain
+ *       de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+ *       &lang;equals&rang;} {@linkplain
+ *       de.dante.extex.interpreter.TokenSource#scanNumber(Context)
+ *       &lang;number&rang;} </pre>
+ *
  * <h4>Examples</h4>
- * <p>
- * </p>
+ * <pre class="TeXSample">
+ *   \badness=999  </pre>
  * <pre class="TeXSample">
  *   \count1=\badness  </pre>
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class Badness extends AbstractCode implements CountConvertible, Theable {
 

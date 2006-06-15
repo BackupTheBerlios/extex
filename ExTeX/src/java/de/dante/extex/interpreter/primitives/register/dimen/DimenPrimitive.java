@@ -58,7 +58,7 @@ import de.dante.extex.typesetter.Typesetter;
  *        de.dante.extex.interpreter.TokenSource#scanRegisterName(Context,TokenSource,Typesetter,String)
  *        &lang;register name&rang;} {@linkplain
  *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
- *        &lang;equals&rang;} {@link
+ *        &lang;equals&rang;} {@linkplain
  *        de.dante.extex.interpreter.type.dimen.Dimen#parse(Context,TokenSource,Typesetter)
  *        &lang;dimen value&rang;}
  *
@@ -72,7 +72,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
 public class DimenPrimitive extends AbstractDimen
         implements

@@ -33,7 +33,7 @@ import de.dante.extex.typesetter.Typesetter;
  * <p>
  *  The primitive <tt>\mark</tt> places its argument as a mark node on the
  *  current node list. The argument is expanded during this operation as in
- *  {@link de.dante.extex.interpreter.primitives.macro.Edef \edef}.
+ *  {@link de.dante.extex.interpreter.primitives.macro.Edef <tt>\edef</tt>}.
  * </p>
  * <p>
  *  The tokens are stored in the current node list. They are not affected by
@@ -44,12 +44,12 @@ import de.dante.extex.typesetter.Typesetter;
  *  marks <tt>a</tt> and <tt>b</tt>. Page 3 does not contain any marks. Page 4
  *  contains the mark <tt>c</tt> and page 5 does not contain any marks.
  *  The marks and the expansion text of the primitives
- *  {@link de.dante.extex.interpreter.primitives.typesetter.mark.Topmark \topmark},
- *  {@link de.dante.extex.interpreter.primitives.typesetter.mark.Firstmark \firstmark},
- *  and {@link de.dante.extex.interpreter.primitives.typesetter.mark.Botmark \botmark}
+ *  {@link de.dante.extex.interpreter.primitives.typesetter.mark.Topmark <tt>\topmark</tt>},
+ *  {@link de.dante.extex.interpreter.primitives.typesetter.mark.Firstmark <tt>\firstmark</tt>},
+ *  and {@link de.dante.extex.interpreter.primitives.typesetter.mark.Botmark <tt>\botmark</tt>}
  *  are shown in the table below.
  * </p>
- * <table>
+ * <table format="ccccccc">
  *  <tr>
  *   <td align="center"></td>
  *   <td align="center">on page 1</td>
@@ -106,7 +106,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class Mark extends Marks {
 

@@ -43,7 +43,7 @@ import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
  *  <pre class="syntax">
  *    &lang;mkern&rang;
  *       &rarr; <tt>\mkern</tt> {@linkplain
- *          de.dante.extex.interpreter.type.muskip.Mudimen#parseMudimen(Context,TokenSource, Typesetter)
+ *          de.dante.extex.interpreter.type.muskip.Mudimen#parseMudimen(Context,TokenSource,Typesetter)
  *          &lang;mudimen&rang;} </pre>
  *
  * <h4>Examples</h4>
@@ -53,7 +53,7 @@ import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Mkern extends AbstractMathCode {
 

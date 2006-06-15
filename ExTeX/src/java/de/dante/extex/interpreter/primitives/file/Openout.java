@@ -40,13 +40,13 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * <p>
  *  The primitive <tt>\openout</tt> tries to open a file or other named resource
  *  for writing. The reference is stored in a write register to be used with
- *  {@link de.dante.extex.interpreter.primitives.file.Write \write].
+ *  {@link de.dante.extex.interpreter.primitives.file.Write <tt>\write</tt>].
  *  If the opening fails then the write register is void.
  * </p>
  * <p>
  *  The opening of a write register is delayed until the nodes are shipped out.
  *  If the invocation is prefixed with
- *  {@link de.dante.extex.interpreter.primitives.prefix.Immediate \immediate}
+ *  {@link de.dante.extex.interpreter.primitives.prefix.Immediate <tt>\immediate</tt>}
  *  then the resource is opened immediately.
  * </p>
  * <p>
@@ -73,14 +73,14 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * <h4>Examples</h4>
  * <pre class="TeXSample">
- * \immediate\openout3= abc.def
- * \write3{Hi there!}
- * \closeout3 </pre>
+ *  \immediate\openout3= abc.def
+ *  \write3{Hi there!}
+ *  \closeout3 </pre>
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
 public class Openout extends AbstractFileCode {
 

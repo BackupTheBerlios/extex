@@ -39,7 +39,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </p>
  * <p>
  *  The primitive <tt>\lower</tt> is the counterpart to
- *  {@link de.dante.extex.interpreter.primitives.typesetter.displace.Lower \lower}.
+ *  {@link de.dante.extex.interpreter.primitives.typesetter.displace.Lower <tt>\lower</tt>}.
  * </p>
  *
  * <h4>Syntax</h4>
@@ -64,7 +64,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class Raise extends AbstractBoxPrimitive {
 

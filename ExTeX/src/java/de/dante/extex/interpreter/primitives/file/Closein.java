@@ -36,7 +36,7 @@ import de.dante.extex.typesetter.Typesetter;
  * <p>
  *  The primitive takes one expanded integer argument. This argument denotes a
  *  read register which will be closed if it is currently assigned to a file
- *  &ndash; with {@link de.dante.extex.interpreter.primitives.file.Openin \openin}.
+ *  &ndash; with {@link de.dante.extex.interpreter.primitives.file.Openin <tt>\openin</tt>}.
  *  If the input file assigned to the given number has not been opened or has
  *  been closed before then this primitive simply does nothing.
  * </p>
@@ -59,7 +59,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class Closein extends AbstractCode {
 

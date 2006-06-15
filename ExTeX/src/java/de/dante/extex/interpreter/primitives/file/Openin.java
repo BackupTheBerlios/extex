@@ -37,19 +37,19 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * <p>
  *  The primitive <tt>\openin</tt> tries to open a file or other named resource
  *  for reading. The reference is stored in a read register to be used with
- *  {@link de.dante.extex.interpreter.primitives.file.Read \read}.
+ *  {@link de.dante.extex.interpreter.primitives.file.Read <tt>\read</tt>}.
  *  If the opening fails then the read register is void. This
  *  can be checked with the primitive
- *  {@link de.dante.extex.interpreter.primitives.conditional.Ifeof \ifeof}.
+ *  {@link de.dante.extex.interpreter.primitives.conditional.Ifeof <tt>\ifeof</tt>}.
  * </p>
  * <p>
  *  The assignment to a read register is always global. If the prefix
- *  {@link de.dante.extex.interpreter.primitives.prefix.Immediate \immediate}
+ *  {@link de.dante.extex.interpreter.primitives.prefix.Immediate <tt>\immediate</tt>}
  *  is given then the opening of the read register is delayed.
  * </p>
  * <p>
  *  The stream should be closed with
- *  {@link de.dante.extex.interpreter.primitives.file.Closein \closein}
+ *  {@link de.dante.extex.interpreter.primitives.file.Closein <tt>\closein</tt>}
  *  when not needed any more.
  * </p>
  *
@@ -71,14 +71,14 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * <h4>Examples</h4>
  * <pre class="TeXSample">
- * \openin3= abc.def
- * \read3 to \line
- * \closein3 </pre>
+ *  \openin3= abc.def
+ *  \read3 to \line
+ *  \closein3 </pre>
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
 public class Openin extends AbstractFileCode {
 

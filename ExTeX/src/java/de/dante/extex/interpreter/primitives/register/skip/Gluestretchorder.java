@@ -52,7 +52,7 @@ import de.dante.extex.typesetter.Typesetter;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;gluestretchorder&rang;
- *      &rarr; <tt>\gluestretchorder</tt> {@link
+ *      &rarr; <tt>\gluestretchorder</tt> {@linkplain
  *        de.dante.extex.interpreter.type.glue.Glue#parse(TokenSource,Context,Typesetter)
  *        &lang;glue&rang;} </pre>
  *
@@ -63,7 +63,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Gluestretchorder extends AbstractCode
         implements

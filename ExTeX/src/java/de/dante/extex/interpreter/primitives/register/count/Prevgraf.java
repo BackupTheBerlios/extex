@@ -50,7 +50,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class Prevgraf extends CountPrimitive {
 
@@ -72,7 +72,8 @@ public class Prevgraf extends CountPrimitive {
     /**
      * @see de.dante.extex.interpreter.primitives.register.count.AbstractCount#getKey(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
      */
     protected String getKey(final Context context, final TokenSource source,
             final Typesetter typesetter) {

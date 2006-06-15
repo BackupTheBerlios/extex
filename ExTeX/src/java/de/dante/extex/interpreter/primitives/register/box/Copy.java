@@ -39,7 +39,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * <p>
  *  The primitive <tt>\copy</tt> inserts the contents of the named box register
  *  at the current position. In contrast to the
- *  {@link de.dante.extex.interpreter.primitives.register.box.BoxPrimitive \box}
+ *  {@link de.dante.extex.interpreter.primitives.register.box.BoxPrimitive <tt>\box</tt>}
  *  primitive the box register is not cleared.
  * </p>
  * <p>
@@ -62,7 +62,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public class Copy extends BoxPrimitive implements Boxable, Serializable {
 

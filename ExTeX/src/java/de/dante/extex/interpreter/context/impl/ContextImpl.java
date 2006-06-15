@@ -139,7 +139,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.108 $
+ * @version $Revision: 1.109 $
  */
 public class ContextImpl
         implements
@@ -1233,7 +1233,7 @@ public class ContextImpl
     /**
      * @see de.dante.extex.interpreter.context.observer.count.CountObservable#registerCountObserver(
      *      java.lang.String,
-     *      de.dante.extex.interpreter.context.observer.CountObserver)
+     *      de.dante.extex.interpreter.context.observer.count.CountObserver)
      */
     public synchronized void registerCountObserver(final String name,
             final CountObserver observer) {
@@ -1249,7 +1249,7 @@ public class ContextImpl
     /**
      * @see de.dante.extex.interpreter.context.observer.dimen.DimenObservable#registerDimenObserver(
      *      java.lang.String,
-     *      de.dante.extex.interpreter.context.observer.DimenObserver)
+     *      de.dante.extex.interpreter.context.observer.dimen.DimenObserver)
      */
     public synchronized void registerDimenObserver(final String name,
             final DimenObserver observer) {
@@ -1962,7 +1962,7 @@ public class ContextImpl
     /**
      * @see de.dante.extex.interpreter.context.observer.count.CountObservable#unregisterCountObserver(
      *      java.lang.String,
-     *      de.dante.extex.interpreter.context.observer.CountObserver)
+     *      de.dante.extex.interpreter.context.observer.count.CountObserver)
      */
     public synchronized void unregisterCountObserver(final String name,
             final CountObserver observer) {
@@ -1978,7 +1978,7 @@ public class ContextImpl
     /**
      * @see de.dante.extex.interpreter.context.observer.dimen.DimenObservable#unregisterDimenObserver(
      *      java.lang.String,
-     *      de.dante.extex.interpreter.context.observer.DimenObserver)
+     *      de.dante.extex.interpreter.context.observer.dimen.DimenObserver)
      */
     public synchronized void unregisterDimenObserver(final String name,
             final DimenObserver observer) {
@@ -2021,8 +2021,8 @@ public class ContextImpl
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.ContextInteraction#unregisterInteractionObserver(
-     *      de.dante.extex.interpreter.context.observer.InteractionObserver)
+     * @see de.dante.extex.interpreter.context.observer.interaction.InteractionObservable#unregisterInteractionObserver(
+     *      de.dante.extex.interpreter.context.observer.interaction.InteractionObserver)
      */
     public synchronized void unregisterInteractionObserver(
             final InteractionObserver observer) {

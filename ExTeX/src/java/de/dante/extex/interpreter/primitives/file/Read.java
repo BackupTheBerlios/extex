@@ -44,13 +44,13 @@ import de.dante.util.framework.logger.LogEnabled;
  * <p>
  *  The primitive <tt>\read</tt> read a line of text from the given input stream
  *  into a control sequence. The input stream should be opened with
- *  {@link de.dante.extex.interpreter.primitives.file.Openin \openin}.
+ *  {@linkplain de.dante.extex.interpreter.primitives.file.Openin <tt>\openin</tt>}.
  *  If a stream name is used which has not been opened or
  *  has already been closed then the default input stream is used instead.
  * </p>
  * <p>
  *  The primitive can be prefixed with
- *  {@link de.dante.extex.interpreter.primitives.prefix.Global \global}.
+ *  {@linkplain de.dante.extex.interpreter.primitives.prefix.Global <tt>\global</tt>}.
  *  In this case the assignment to the control sequence is global instead of
  *  the default of assigning it locally to the current group.
  * </p>
@@ -72,7 +72,6 @@ import de.dante.util.framework.logger.LogEnabled;
  *    &lang;optional prefix&rang;
  *      &rarr;
  *       |  <tt>\global</tt> &lang;optional prefix&rang;  </pre>
- *  </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
@@ -83,7 +82,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.34 $
+ * @version $Revision: 1.35 $
  */
 public class Read extends AbstractAssignment implements LogEnabled {
 
