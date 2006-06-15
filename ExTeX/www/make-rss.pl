@@ -1,6 +1,6 @@
 #!/bin/perl.exe -w
 ##*****************************************************************************
-## $Id: make-rss.pl,v 1.1 2006/06/11 20:20:13 gene Exp $
+## $Id: make-rss.pl,v 1.2 2006/06/15 19:51:39 gene Exp $
 ##*****************************************************************************
 ## Author: Gerd Neugebauer
 ##=============================================================================
@@ -50,8 +50,8 @@ sub usage
   Pod::Text->new()->parse_from_filehandle(new FileHandle($0,'r'),\*STDERR);
 }
 
-my $target = dirname($0) . "/../target/www/ExTeX.rss";
-my $MAX    = 4;
+my $target = dirname($0) . "/../target/www/rss/2.0/ExTeX.rss";
+my $MAX    = 8;
 
 #------------------------------------------------------------------------------
 # Variable:	$verbose
@@ -66,21 +66,12 @@ GetOptions("h|help"	=> \&usage,
 	   "v|verbose"	=> \$verbose,
 	  );
 
+mkdir dirname($target);
+
 my $out     = ($target eq '' ? \*STDERR : new FileHandle($target, 'w'));
 my $gendate = formatDate(localtime);
-
-sub formatDate {
-  
-  return sprintf("%s, %s %s %s %02d:%02d:%02d GMT",
-		 ('Sun','Mon','Tue','Wed','Thu','Fri','Sat')[$_[6]],
-		 $_[3],
-		 ('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec')[$_[4]],
-		 $_[5] + 1900,
-		 $_[2],
-		 $_[1],
-		 $_[0]
-		);
-}
+@_ = localtime;
+my $year = $_[] + 1900;
 
 print $out <<__EOF__;
 <?xml version="1.0"?>
@@ -88,18 +79,25 @@ print $out <<__EOF__;
   <channel>
     <title>ExTeX News</title>
     <link>http://www.extex.org/</link>
-    <description>ExTeX &ndash; Typesetting for the 21st Century</description>
+    <description>ExTeX - Typesetting for the 21st Century</description>
     <language>en-us</language>
+    <copyright>(c) $year The ExTeX Group</copyright>
     <pubDate>$gendate</pubDate>
     <lastBuildDate>$gendate</lastBuildDate>
     <docs>http://blogs.law.harvard.edu/tech/rss</docs>
     <generator>ExTeX Site Builder</generator>
     <managingEditor>gene\@gerd-neugebauer.de</managingEditor>
     <webMaster>gene\@gerd-neugebauer.de</webMaster>
+    <ttl>1440</ttl>
+    <image>
+      <url>http://www.extex.org/rss/ExTeX.png</url>
+      <title>ExTeX News</title>
+      <link>http://www.extex.org/</link>
+    </image>
 __EOF__
 
   my $no = 0;
-  foreach my $f ( sort glob(dirname($0)."/src/news/*.xml") ) {
+  foreach my $f (reverse sort glob(dirname($0)."/src/news/*.xml") ) {
     last if $no++ >= $MAX;
     include($no, $f);
   }
@@ -111,6 +109,21 @@ __EOF__
 
 close $out if $out != \*STDOUT;
 
+
+#------------------------------------------------------------------------------
+#
+sub formatDate {
+  
+  return sprintf("%s, %s %s %s %02d:%02d:%02d GMT",
+                 ('Sun','Mon','Tue','Wed','Thu','Fri','Sat')[$_[6]],
+                 $_[3],
+                 ('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec')[$_[4]],
+                 $_[5] + 1900,
+                 $_[2],
+                 $_[1],
+                 $_[0]
+                );
+}
 
 #------------------------------------------------------------------------------
 #
