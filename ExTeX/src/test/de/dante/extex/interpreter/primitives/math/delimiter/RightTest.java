@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -25,7 +25,7 @@ import de.dante.extex.interpreter.primitives.math.AbstractMathTester;
  * This is a test suite for the primitive <tt>\right</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class RightTest extends AbstractMathTester {
 
@@ -36,7 +36,10 @@ public class RightTest extends AbstractMathTester {
      */
     public RightTest(final String arg) {
 
-        super(arg, "right", "123 ");
+        super(arg, "right", ". ");
+        appendToPrepare("\\left. ");
     }
+
+    //TODO implement the primitive specific test cases
 
 }

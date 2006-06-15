@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\box</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class BoxTest extends NoFlagsPrimitiveTester {
 
@@ -76,7 +76,7 @@ public class BoxTest extends NoFlagsPrimitiveTester {
         assertSuccess(//--- input code ---
                 DEFINE_BRACES + "\\setbox1\\hbox{A}\\box1\\end",
                 //--- output channel ---
-                "A\n" + TERM);
+                "A" + TERM);
     }
 
     /**
@@ -91,7 +91,7 @@ public class BoxTest extends NoFlagsPrimitiveTester {
         assertSuccess(//--- input code ---
                 DEFINE_BRACES + "\\setbox1\\hbox{A}\\box1\\box1\\end",
                 //--- output channel ---
-                "A\n" + TERM);
+                "A" + TERM);
     }
 
 }

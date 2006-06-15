@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\wd</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class WdTest extends NoFlagsPrimitiveTester {
 
@@ -76,7 +76,7 @@ public class WdTest extends NoFlagsPrimitiveTester {
         assertFailure(//--- input code ---
                 "\\wd 12 ",
                 //--- log message ---
-                "Illegal unit of measure (pt inserted)");
+                "Missing number, treated as zero");
     }
 
     /**

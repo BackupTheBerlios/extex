@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -19,13 +19,14 @@
 
 package de.dante.extex.interpreter.primitives.conditional;
 
+import de.dante.extex.interpreter.primitives.math.AbstractMathTester;
 import de.dante.test.ExTeXLauncher;
 
 /**
  * This is a test suite for the primitive <tt>\u005cnless</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class UnlessTest extends ExTeXLauncher {
 
@@ -59,7 +60,7 @@ public class UnlessTest extends ExTeXLauncher {
     public void testErr1() throws Exception {
 
         assertFailure(
-                //--- input code ---
+        //--- input code ---
                 "\\unless\\relax",
                 //--- error channel ---
                 "You can't use `\\relax' after \\unless");
@@ -75,7 +76,7 @@ public class UnlessTest extends ExTeXLauncher {
     public void testErr2() throws Exception {
 
         assertFailure(
-                //--- input code ---
+        //--- input code ---
                 "\\unless\\ifcase",
                 //--- error channel ---
                 "You can't use `\\ifcase' after \\unless");
@@ -91,7 +92,7 @@ public class UnlessTest extends ExTeXLauncher {
     public void test1() throws Exception {
 
         assertSuccess(
-                //--- input code ---
+        //--- input code ---
                 "\\unless\\ifnum1=1 a\\else b\\fi \\end",
                 //--- output channel ---
                 "b" + TERM);
@@ -107,7 +108,7 @@ public class UnlessTest extends ExTeXLauncher {
     public void test2() throws Exception {
 
         assertSuccess(
-                //--- input code ---
+        //--- input code ---
                 "\\unless\\ifnum1=3 a\\else b\\fi \\end",
                 //--- output channel ---
                 "a" + TERM);
@@ -213,9 +214,9 @@ public class UnlessTest extends ExTeXLauncher {
     public void testA8() throws Exception {
 
         assertSuccess(
-                //--- input code ---
-                DEFINE_CATCODES
-                        + "$\\unless\\ifmmode a\\else b\\fi$\\end",
+        //--- input code ---
+                AbstractMathTester.DEFINE_MATH_FONTS + DEFINE_CATCODES
+                + "$\\unless\\ifmmode a\\else b\\fi$\\end",
                 //--- log message ---
                 "b" + TERM);
     }
@@ -335,7 +336,7 @@ public class UnlessTest extends ExTeXLauncher {
     public void testA19() throws Exception {
 
         assertSuccess(
-                //--- input code ---
+        //--- input code ---
                 "\\unless\\ifcsname aaa\\endcsname a\\else b\\fi\\end",
                 //--- log message ---
                 "a" + TERM);

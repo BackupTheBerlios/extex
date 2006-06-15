@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\ifvmode</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class IfvmodeTest extends ExTeXLauncher {
 
@@ -93,7 +93,7 @@ public class IfvmodeTest extends ExTeXLauncher {
                 + "\\catcode`}=2 "
                 + "\\vbox{\\ifvmode a\\else b\\fi}\\end",
                 //--- output channel ---
-                "a\n" + TERM);
+                "a\n\n" + TERM);
     }
 
     /**
