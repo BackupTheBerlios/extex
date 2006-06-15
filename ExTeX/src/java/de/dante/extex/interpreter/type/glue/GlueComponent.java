@@ -60,7 +60,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.50 $
+ * @version $Revision: 1.51 $
  */
 public class GlueComponent implements Serializable, FixedGlueComponent {
 
@@ -90,7 +90,8 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
     /**
      * The constant <tt>MINUS_ONE_FIL</tt> contains the value of -1 fil.
      */
-    public static final FixedGlueComponent MINUS_ONE_FIL = new GlueComponent(-ONE, 2);
+    public static final FixedGlueComponent MINUS_ONE_FIL = new GlueComponent(
+            -ONE, 2);
 
     /**
      * The constant <tt>ONE_FI</tt> contains the value of 1 fi.
@@ -182,9 +183,38 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
 
         value = ScaledNumber.scanFloat(context, source, typesetter, t);
 
+        GlueComponent gc = attachUnit(value, context, source, typesetter, fixed);
+        if (gc == null) {
+            // cf. TTP [459]
+            throw new HelpingException(getMyLocalizer(), "TTP.IllegalUnit");
+        }
+        return gc;
+    }
+
+    /**
+     * Convert a value by scanning a unit and storing its converted value in a
+     * GlueComponent.
+     *
+     * @param context the interpreter context
+     * @param source the source for the tokens to be read
+     * @param typesetter the typesetter
+     * @param fixed if <code>true</code> then no glue order is allowed
+     * @param value the value to encapsulate
+     *
+     * @return the value converted into a GlueComponent or <code>null</code>
+     *  if no suitable unit could be found
+     *
+     * @throws InterpreterException in case of an error
+     */
+    public static GlueComponent attachUnit(final long val,
+            final Context context, final TokenSource source,
+            final Typesetter typesetter, final boolean fixed)
+            throws InterpreterException {
+
+        Token t;
+        long value = val;
         long mag = 1000;
         if (source.getKeyword(context, "true")) { // cf. TTP[453], TTP[457]
-            source.push(t);
             mag = context.getMagnification();
         }
 
@@ -353,8 +383,7 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
         }
 
         source.push(t);
-        // cf. TTP [459]
-        throw new HelpingException(getMyLocalizer(), "TTP.IllegalUnit");
+        return null;
     }
 
     /**
