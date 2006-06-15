@@ -24,7 +24,7 @@ package de.dante.test;
  * primitives. They verify that prefix macros always lead to an error.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public abstract class NoFlagsPrimitiveTester extends ExTeXLauncher {
 
@@ -94,6 +94,16 @@ public abstract class NoFlagsPrimitiveTester extends ExTeXLauncher {
         this(arg, primitive, arguments);
         this.prepare = DEFINE_BRACES + prepare;
         this.out = out;
+    }
+
+    /**
+     * Add some code to the end of the preparation code.
+     *
+     * @param add addition
+     */
+    public void appendToPrepare(final String add) {
+
+        this.prepare = this.prepare + add;
     }
 
     /**
