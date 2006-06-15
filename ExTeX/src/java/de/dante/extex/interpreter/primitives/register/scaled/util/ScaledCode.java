@@ -36,10 +36,10 @@ import de.dante.extex.scanner.type.CatcodeException;
 import de.dante.extex.typesetter.Typesetter;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This class provides a object usable as Code carrying a scaled number.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ScaledCode extends AbstractAssignment
         implements
