@@ -25,7 +25,7 @@ import de.dante.extex.interpreter.primitives.math.AbstractMathTester;
  * This is a test suite for the primitive <tt>\everymath</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class EverymathTest extends AbstractToksRegisterTester {
 
@@ -74,9 +74,9 @@ public class EverymathTest extends AbstractToksRegisterTester {
 
         assertSuccess(//--- input code ---
                 AbstractMathTester.DEFINE_MATH_FONTS + DEFINE_BRACES
-                        + DEFINE_MATH + "\\everymath{x}B$$ z $$C" + "\\end",
+                        + DEFINE_MATH + "\\everymath{x}B$$  $$C" + "\\end",
                 //--- output channel ---
-                "BzC" + TERM);
+                "BC" + TERM);
     }
 
     /**
