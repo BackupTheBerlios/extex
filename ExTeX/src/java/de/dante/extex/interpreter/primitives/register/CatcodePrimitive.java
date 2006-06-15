@@ -59,7 +59,7 @@ import de.dante.util.UnicodeChar;
  *  The following table contains the category codes with their meaning and the
  *  mapping to numerical values.
  * </p>
- * <table format="lrl">
+ * <table format="lrp{.6\textwidth}">
  *  <tr><td>ESCAPE</td><td>0</td>
  *   <td>This character code signals the beginning of an escape sequence.
  *    The following letters are absorbed into the name. If the following token
@@ -143,7 +143,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.30 $
+ * @version $Revision: 1.31 $
  */
 public class CatcodePrimitive extends AbstractAssignment
         implements
