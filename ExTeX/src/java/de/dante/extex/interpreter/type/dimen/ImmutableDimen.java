@@ -21,11 +21,6 @@ package de.dante.extex.interpreter.type.dimen;
 
 import java.io.Serializable;
 
-import de.dante.extex.interpreter.TokenSource;
-import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.typesetter.Typesetter;
-
 /**
  * This class provides objects of type
  * {@link de.dante.extex.interpreter.type.dimen.Dimen Dimen} where all
@@ -33,7 +28,7 @@ import de.dante.extex.typesetter.Typesetter;
  * Thus the object is in fact immutable.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class ImmutableDimen extends Dimen implements Serializable {
 
@@ -97,33 +92,10 @@ public class ImmutableDimen extends Dimen implements Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.glue.GlueComponent#set(
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource, Typesetter)
-     */
-    public void set(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws InterpreterException {
-
-        throw new RuntimeException("Unable to set an immutable object");
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.type.glue.GlueComponent#set(
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource, Typesetter, boolean)
-     */
-    protected void set(final Context context, final TokenSource source,
-            final Typesetter typesetter, final boolean fixed)
-            throws InterpreterException {
-
-        throw new RuntimeException("Unable to set an immutable object");
-    }
-
-    /**
      * @see de.dante.extex.interpreter.type.dimen.Dimen#subtract(
      *      de.dante.extex.interpreter.type.dimen.FixedDimen)
      */
-    public void subtract(final Dimen d) {
+    public void subtract(final FixedDimen d) {
 
         throw new RuntimeException(
                 "Unable to subtract from an immutable object");
