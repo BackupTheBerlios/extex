@@ -51,7 +51,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * Test the vftovp class.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 
 public class VftoVpTest extends TestCase {
@@ -59,7 +59,7 @@ public class VftoVpTest extends TestCase {
     /**
      * path
      */
-    private static final String PATH = "src/test/data/font/";
+    private static final String PATH = "develop/test/data/font/";
 
     /**
      * files
@@ -91,6 +91,8 @@ public class VftoVpTest extends TestCase {
 
         Configuration config = new ConfigurationFactory()
                 .newInstance("config/extex.xml");
+        Configuration resource = new ConfigurationFactory()
+                .newInstance("config/path/fileFinder.xml");
 
         Configuration cfgfonts = config.getConfiguration("Fonts");
 
@@ -103,8 +105,7 @@ public class VftoVpTest extends TestCase {
         }
 
         ResourceFinder finder = (new ResourceFinderFactory())
-                .createResourceFinder(cfgfonts.getConfiguration("Resource"),
-                        null, prop);
+                .createResourceFinder(resource, null, prop);
 
         //        EncFactory ef = new EncFactory(finder);
 

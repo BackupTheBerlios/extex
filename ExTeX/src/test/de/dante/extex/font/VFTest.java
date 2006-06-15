@@ -49,7 +49,7 @@ import de.dante.util.xml.XMLStreamWriter;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 
 public class VFTest extends TestCase {
@@ -57,7 +57,7 @@ public class VFTest extends TestCase {
     /**
      * path
      */
-    private static final String PATH = "src/test/data/font/";
+    private static final String PATH = "develop/test/data/font/";
 
     /**
      * files
@@ -71,6 +71,8 @@ public class VFTest extends TestCase {
 
         Configuration config = new ConfigurationFactory()
                 .newInstance("config/extex.xml");
+        Configuration resource = new ConfigurationFactory()
+                .newInstance("config/path/fileFinder.xml");
 
         Configuration cfgfonts = config.getConfiguration("Fonts");
 
@@ -83,8 +85,7 @@ public class VFTest extends TestCase {
         }
 
         ResourceFinder finder = (new ResourceFinderFactory())
-                .createResourceFinder(cfgfonts.getConfiguration("Resource"),
-                        null, prop);
+                .createResourceFinder(resource, null, prop);
 
         //       EncFactory ef = new EncFactory(finder);
 
@@ -174,14 +175,15 @@ public class VFTest extends TestCase {
 
         FontFactory fontFactory;
         String fontClass = config.getAttribute("class");
+        Configuration resource = new ConfigurationFactory()
+                .newInstance("config/path/fileFinder.xml");
 
         if (fontClass == null || fontClass.equals("")) {
             throw new ConfigurationMissingAttributeException("class", config);
         }
 
         ResourceFinder fontFinder = (new ResourceFinderFactory())
-                .createResourceFinder(config.getConfiguration("Resource"),
-                        null, getProps());
+                .createResourceFinder(resource, null, getProps());
         if (Boolean.valueOf(getProps().getProperty("extex.trace.font.files"))
                 .booleanValue()) {
             fontFinder.enableTracing(true);

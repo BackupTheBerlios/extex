@@ -47,7 +47,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * Test the tftopl class.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 
 public class TftoPlTest extends TestCase {
@@ -55,7 +55,7 @@ public class TftoPlTest extends TestCase {
     /**
      * path
      */
-    private static final String PATH = "src/test/data/font/";
+    private static final String PATH = "develop/test/data/font/";
 
     /**
      * files
@@ -133,6 +133,8 @@ public class TftoPlTest extends TestCase {
 
         Configuration config = new ConfigurationFactory()
                 .newInstance("config/extex.xml");
+        Configuration resource = new ConfigurationFactory()
+                .newInstance("config/path/fileFinder.xml");
 
         Configuration cfgfonts = config.getConfiguration("Fonts");
 
@@ -145,8 +147,7 @@ public class TftoPlTest extends TestCase {
         }
 
         ResourceFinder finder = (new ResourceFinderFactory())
-                .createResourceFinder(cfgfonts.getConfiguration("Resource"),
-                        null, prop);
+                .createResourceFinder(resource, null, prop);
 
         EncFactory ef = new EncFactory(finder);
 

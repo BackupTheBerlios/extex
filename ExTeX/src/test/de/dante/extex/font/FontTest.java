@@ -36,7 +36,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * Test the font-system
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class FontTest extends TestCase {
 
@@ -50,12 +50,10 @@ public class FontTest extends TestCase {
 
     }
 
-
     /**
      * Dimen 12 pt
      */
     private static final Dimen DIM12 = new Dimen(GlueComponent.ONE * 12);
-
 
     /**
      * Make a <code>FontFactory</code>.
@@ -63,8 +61,7 @@ public class FontTest extends TestCase {
      * @return a <code>FontFactory</code>
      * @exception Exception if an error occurs
      */
-    private FontFactory makeFontFactory()
-        throws Exception {
+    private FontFactory makeFontFactory() throws Exception {
 
         FontFactory fontFactory;
         ResourceFinder fontFinder;
@@ -72,28 +69,27 @@ public class FontTest extends TestCase {
         Properties properties = System.getProperties();
 
         Configuration config = new ConfigurationFactory()
-            .newInstance("config/extex.xml");
+                .newInstance("config/extex.xml");
 
         Configuration fontConfig = config.getConfiguration("Fonts");
+        Configuration resource = new ConfigurationFactory()
+                .newInstance("config/path/fileFinder.xml");
 
         String fontClass = fontConfig.getAttribute("class");
 
         // load user properties
-        properties.load(new FileInputStream(".extex"));
+        properties.load(new FileInputStream(".extex-test"));
 
         // test configuration
         assertNotNull(fontClass);
         assertTrue(!fontClass.equals(""));
 
-        fontFinder = (new ResourceFinderFactory())
-            .createResourceFinder(fontConfig.getConfiguration("Resource"),
-                                  Logger.global, properties);
+        fontFinder = (new ResourceFinderFactory()).createResourceFinder(
+                resource, Logger.global, properties);
 
-        fontFactory = (FontFactory) (Class.forName(fontClass)
-            .getConstructor(
-                new Class[]{Configuration.class,
-                            ResourceFinder.class})
-                                .newInstance(new Object[]{fontConfig, fontFinder}));
+        fontFactory = (FontFactory) (Class.forName(fontClass).getConstructor(
+                new Class[]{Configuration.class, ResourceFinder.class})
+                .newInstance(new Object[]{fontConfig, fontFinder}));
 
         return fontFactory;
     }
