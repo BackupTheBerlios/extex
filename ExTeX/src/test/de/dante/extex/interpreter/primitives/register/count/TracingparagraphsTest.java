@@ -24,7 +24,7 @@ package de.dante.extex.interpreter.primitives.register.count;
  * This is a test suite for the primitive <tt>\tracingparagraphs</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class TracingparagraphsTest extends AbstractCountRegisterTester {
 
@@ -45,6 +45,7 @@ public class TracingparagraphsTest extends AbstractCountRegisterTester {
     public TracingparagraphsTest(final String arg) {
 
         super(arg, "tracingparagraphs", "", "0");
+        setDefaultLog(null); // ignore log output in some inherited test cases
     }
 
     //TODO implement the primitive specific test cases
