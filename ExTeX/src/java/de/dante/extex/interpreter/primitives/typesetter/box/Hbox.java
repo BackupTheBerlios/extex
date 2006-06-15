@@ -67,17 +67,32 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * </doc>
  *
+ *
  * <doc type="parameter" name="everyhbox">
  * <h3>The Tokens Parameter <tt>\everyhbox</tt></h3>
  * <p>
  *  The tokens parameter is used in <tt>/hbox</tt>. The tokens contained are
  *  inserted at the beginning of the horizontal material of the horizontal box.
  * </p>
+ *
+ * <h4>Syntax</h4>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;everyhbox&rang;
+ *      &rarr; <tt>\everyhbox</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+ *        &lang;equals&rang;} {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getTokens(Context,TokenSource,Typesetter)
+ *        &lang;tokens&rang;}  </pre>
+ *
+ * <h4>Examples</h4>
+ *  <pre class="TeXSample">
+ *    \everyhbox{\message{Hi there}}  </pre>
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class Hbox extends AbstractBoxPrimitive {
 

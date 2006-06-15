@@ -45,7 +45,7 @@ import de.dante.extex.typesetter.type.NodeList;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;vtop&rang;
- *      &rarr; <tt>\vtop</tt> &lang;box specification&rang; <tt>{</tt> &lang;vertical material&rang; <tt>{</tt>
+ *      &rarr; <tt>\vtop</tt> &lang;box specification&rang; <tt>{</tt> &lang;vertical material&rang; <tt>}</tt>
  *
  *    &lang;box specification&rang;
  *      &rarr;
@@ -63,7 +63,7 @@ import de.dante.extex.typesetter.type.NodeList;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Vtop extends Vbox {
 

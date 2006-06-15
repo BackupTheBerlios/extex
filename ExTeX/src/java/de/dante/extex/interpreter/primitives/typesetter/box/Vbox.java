@@ -49,16 +49,16 @@ import de.dante.extex.typesetter.type.NodeList;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;vbox&rang;
- *      &rarr; <tt>\vbox</tt> &lang;box specification&rang; <tt>{</tt> &lang;vertical material&rang; <tt>{</tt>
+ *      &rarr; <tt>\vbox</tt> &lang;box specification&rang; <tt>{</tt> &lang;vertical material&rang; <tt>}</tt>
  *
  *    &lang;box specification&rang;
  *      &rarr;
- *         | <tt>to</tt> {@link
+ *         | <tt>to</tt> {@linkplain
  *           de.dante.extex.interpreter.type.dimen.Dimen#parse(Context,TokenSource,Typesetter)
- *           &lang;rule dimension&rang;
- *         | <tt>spread</tt> {@link
+ *           &lang;rule dimension&rang;}
+ *         | <tt>spread</tt> {@linkplain
  *           de.dante.extex.interpreter.type.dimen.Dimen#parse(Context,TokenSource,Typesetter)
- *           &lang;rule dimension&rang;  </pre>
+ *           &lang;rule dimension&rang;}  </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
@@ -76,11 +76,25 @@ import de.dante.extex.typesetter.type.NodeList;
  *  The tokens parameter is used in <tt>\vbox</tt>. The tokens contained are
  *  inserted at the beginning of the vertical material of the vbox.
  * </p>
+ *
+ * <h4>Syntax</h4>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;everyvbox&rang;
+ *      &rarr; <tt>\everyvbox</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+ *        &lang;equals&rang;} {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getTokens(Context,TokenSource,Typesetter)
+ *        &lang;tokens&rang;}  </pre>
+ *
+ * <h4>Examples</h4>
+ *  <pre class="TeXSample">
+ *    \everyvbox{\message{Hi there}}  </pre>
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class Vbox extends AbstractBoxPrimitive {
 
@@ -175,16 +189,16 @@ public class Vbox extends AbstractBoxPrimitive {
     protected Box acquireBox(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        Tokens toks = context.getToks("everyvbox");
-        Token t = context.getAfterassignment();
+        Tokens everyvbox = context.getToks("everyvbox");
+        Token afterassignment = context.getAfterassignment();
         Tokens insert;
 
-        if (t == null) {
-            insert = toks;
+        if (afterassignment == null) {
+            insert = everyvbox;
         } else {
-            insert = new Tokens(t);
-            if (toks != null) {
-                insert.add(toks);
+            insert = new Tokens(afterassignment);
+            if (everyvbox != null) {
+                insert.add(everyvbox);
             }
         }
 
