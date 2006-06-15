@@ -47,7 +47,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This class provides a fixed point number.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class ScaledNumber {
 
@@ -55,7 +55,7 @@ public class ScaledNumber {
      * This interface describes a binary operation on two longs.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.3 $
+     * @version $Revision: 1.4 $
      */
     private interface BinOp {
 
@@ -71,57 +71,6 @@ public class ScaledNumber {
     }
 
     /**
-     * This operation subtracts the second argument from the first one.
-     *
-     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.3 $
-     */
-    private static final class Minus implements BinOp {
-
-        /**
-         * @see de.dante.extex.interpreter.primitives.register.count.Numexpr.BinOp#apply(long, long)
-         */
-        public long apply(final long arg1, final long arg2) {
-
-            return arg1 - arg2;
-        }
-    }
-
-    /**
-     * This operation adds the arguments.
-     *
-     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.3 $
-     */
-    private static final class Plus implements BinOp {
-
-        /**
-         * @see de.dante.extex.interpreter.primitives.register.count.Numexpr.BinOp#apply(long, long)
-         */
-        public long apply(final long arg1, final long arg2) {
-
-            return arg1 + arg2;
-        }
-    }
-
-    /**
-     * This operation ignores the first argument and returns the second one.
-     *
-     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.3 $
-     */
-    private static final class Second implements BinOp {
-
-        /**
-         * @see de.dante.extex.interpreter.primitives.register.count.Numexpr.BinOp#apply(long, long)
-         */
-        public long apply(final long arg1, final long arg2) {
-
-            return arg2;
-        }
-    }
-
-    /**
      * The constant <tt>FLOAT_DIGITS</tt> contains the number of digits to
      * consider when producing a string representation of this type.
      *
@@ -133,7 +82,17 @@ public class ScaledNumber {
     /**
      * The field <tt>MINUS</tt> contains the subtractor.
      */
-    private static final BinOp MINUS = new Minus();
+    private static final BinOp MINUS = new BinOp() {
+
+        /**
+         * @see de.dante.extex.interpreter.primitives.register.count.Numexpr.BinOp#apply(
+         *      long, long)
+         */
+        public long apply(final long arg1, final long arg2) {
+
+            return arg1 - arg2;
+        }
+    };
 
     /**
      * The constant <tt>ONE</tt> contains the internal representation for 1pt.
@@ -144,13 +103,34 @@ public class ScaledNumber {
     /**
      * The field <tt>PLUS</tt> contains the adder.
      */
-    private static final BinOp PLUS = new Plus();
+    private static final BinOp PLUS = new BinOp() {
+
+        /**
+         * @see de.dante.extex.interpreter.primitives.register.count.Numexpr.BinOp#apply(
+         *      long, long)
+         */
+        public long apply(final long arg1, final long arg2) {
+
+            return arg1 + arg2;
+        }
+    };
 
     /**
      * The field <tt>SECOND</tt> contains the operation to select the second
      * argument.
      */
-    private static final BinOp SECOND = new Second();
+    private static final BinOp SECOND = new BinOp(){
+
+        /**
+         * @see de.dante.extex.interpreter.primitives.register.count.Numexpr.BinOp#apply(
+         *      long, long)
+         */
+        public long apply(final long arg1, final long arg2) {
+
+            return arg2;
+        }
+
+    };
 
     /**
      * Evaluate an expression.
@@ -293,7 +273,7 @@ public class ScaledNumber {
      * @param start the initial token to start with
      *
      * @return the fixed point representation of the floating number in units
-     * of 2<sup>16</sup>.
+     * of 2<sup>-16</sup>.
      * @throws InterpreterException in case of an error
      */
     public static long scanFloat(final Context context,
@@ -365,6 +345,53 @@ public class ScaledNumber {
     }
 
     /**
+     * Determine the printable representation of the object and append it to
+     * the given StringBuffer.
+     *
+     * @param sb the output string buffer
+     * @param value the internal value in multiples of ONE
+     */
+    public static void toString(final StringBuffer sb, final long value) {
+
+        long val = value;
+
+        if (val < 0) {
+            sb.append('-');
+            val = -val;
+        }
+
+        long v = val / ONE;
+        if (v == 0) {
+            sb.append('0');
+        } else {
+            long m = 1;
+            while (m <= v) {
+                m *= 10;
+            }
+            m /= 10;
+            while (m > 0) {
+                sb.append((char) ('0' + (v / m)));
+                v = v % m;
+                m /= 10;
+            }
+        }
+
+        sb.append('.');
+
+        val = 10 * (val % ONE) + 5;
+        long delta = 10;
+        do {
+            if (delta > ONE) {
+                val = val + 0100000 - 50000; // round the last digit
+            }
+            int i = (int) (val / ONE);
+            sb.append((char) ('0' + i));
+            val = 10 * (val % ONE);
+            delta *= 10;
+        } while (val > delta);
+    }
+
+    /**
      * The field <tt>value</tt> contains the value.
      */
     private long value;
@@ -411,9 +438,9 @@ public class ScaledNumber {
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * Divide the scaled value by a number.
      *
-     * @param scaled
+     * @param scaled the divisor
      */
     public void divide(final long scaled) {
 
@@ -446,9 +473,9 @@ public class ScaledNumber {
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * Getter for the value.
      *
-     * @return
+     * @return the value
      */
     public long getValue() {
 
@@ -480,9 +507,9 @@ public class ScaledNumber {
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * Multiply the current value by a scaled number.
      *
-     * @param scaled
+     * @param scaled the multiplicant
      */
     public void multiply(final long scaled) {
 
@@ -522,9 +549,9 @@ public class ScaledNumber {
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * Setter for the value
      *
-     * @param scaled
+     * @param scaled the new value
      */
     public void set(final ScaledNumber scaled) {
 
@@ -552,54 +579,8 @@ public class ScaledNumber {
     public String toString() {
 
         StringBuffer sb = new StringBuffer();
-        toString(sb);
+        toString(sb, this.value);
         return sb.toString();
-    }
-
-    /**
-     * Determine the printable representation of the object and append it to
-     * the given StringBuffer.
-     *
-     * @param sb the output string buffer
-     */
-    public void toString(final StringBuffer sb) {
-
-        long val = this.value;
-
-        if (val < 0) {
-            sb.append('-');
-            val = -val;
-        }
-
-        long v = val / ONE;
-        if (v == 0) {
-            sb.append('0');
-        } else {
-            long m = 1;
-            while (m <= v) {
-                m *= 10;
-            }
-            m /= 10;
-            while (m > 0) {
-                sb.append((char) ('0' + (v / m)));
-                v = v % m;
-                m /= 10;
-            }
-        }
-
-        sb.append('.');
-
-        val = 10 * (val % ONE) + 5;
-        long delta = 10;
-        do {
-            if (delta > ONE) {
-                val = val + 0100000 - 50000; // round the last digit
-            }
-            int i = (int) (val / ONE);
-            sb.append((char) ('0' + i));
-            val = 10 * (val % ONE);
-            delta *= 10;
-        } while (val > delta);
     }
 
     /**
@@ -616,9 +597,6 @@ public class ScaledNumber {
      * @throws CatcodeException in case of an error
      *
      * @see "<logo>TeX</logo> &ndash; The Program [103]"
-     * @see #toToks(TokenFactory)
-     * @see #toString()
-     * @see #toString(StringBuffer)
      */
     public void toToks(final Tokens toks, final TokenFactory factory)
             throws CatcodeException {
