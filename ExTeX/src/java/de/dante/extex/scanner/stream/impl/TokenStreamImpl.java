@@ -51,7 +51,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationSyntaxExcept
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.51 $
+ * @version $Revision: 1.52 $
  */
 public class TokenStreamImpl extends TokenStreamBaseImpl implements TokenStream {
 
@@ -59,7 +59,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements TokenStream 
      * This is a type-safe class to represent state information.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.51 $
+     * @version $Revision: 1.52 $
      */
     private static final class State {
 
@@ -722,11 +722,15 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements TokenStream 
             return false;
         }
 
-        do {
-            if (pointer < line.length()) {
-                return false;
-            }
-        } while (refill());
+        try {
+            do {
+                if (pointer < line.length()) {
+                    return false;
+                }
+            } while (refill());
+        } catch (ScannerException e) {
+            return true;
+        }
 
         return true;
     }
