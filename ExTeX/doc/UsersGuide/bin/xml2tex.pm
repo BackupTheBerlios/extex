@@ -1,6 +1,6 @@
 #!/usr/local/bin/perl
 ##*****************************************************************************
-## $Id: xml2tex.pm,v 1.2 2005/06/20 11:18:11 gene Exp $
+## $Id: xml2tex.pm,v 1.3 2006/06/15 20:34:19 gene Exp $
 ##*****************************************************************************
 ## Author: Gerd Neugebauer
 ##=============================================================================
@@ -48,7 +48,7 @@ our @EXPORT_OK = qw();
 # Variable:	$VERSION
 # Description:	
 #
-our $VERSION = ('$Revision: 1.2 $ ' =~ m/[0-9.]+/ ? $& : '0.0' );
+our $VERSION = ('$Revision: 1.3 $ ' =~ m/[0-9.]+/ ? $& : '0.0' );
 
 #------------------------------------------------------------------------------
 # Function:	translate
@@ -75,13 +75,13 @@ sub translate {
   s|<tt>{</tt>|\\texttt{\\char\`\\{}|g;
   s|<tt>}</tt>|\\texttt{\\char\`\\}}|g;
   s|<tt>([^<]*)</tt>|\\texttt{$1}|g;
+  s|<sub>([^<]*)</sub>|\\ensuremath{_{$1}}|g;
+  s|<sup>([^<]*)</sup>|\\ensuremath{^{$1}}|g;
   s|<i>([^<]*)</i>|\\textit{$1}|g;
   s|<b>([^<]*)</b>|\\emph{$1}|g;
   s|<strong>|\\emph{|g;
   s|</strong>|}|g;
   s|<em>([^<]*)</em>|\\emph{$1}|g;
-  s|<sub>([^<]*)</sub>|\\ensuremath{_{$1}}|g;
-  s|<sup>([^<]*)</sup>|\\ensuremath{^{$1}}|g;
 
   return $_;
 }
@@ -107,8 +107,8 @@ sub processDocTag {
 
     $_ = translate($_);
 
-    s|<h3>(.*)</h3>\s*|\\subsection*{$1}|;
-    s|<h4>(.*)</h4>|\\subsubsection*{$1}|;
+    s|<h3>(.*)</h3>\s*|\\subsection*{$1}\n|;
+    s|<h4>(.*)</h4>|\\subsubsection*{$1}\n|;
     s|<p>\s*||g;
     s|<dl>|\\begin{description}|g;
     s|</dl>|\\end{description}|g;
@@ -121,7 +121,7 @@ sub processDocTag {
     s|<tr>||g;
     s|</td></tr>|\\\\|g;
     s|</tr>|\\\\|g;
-    s|<td>||g;
+    s|<td[^>]*>||g;
     s|</td>|\&|g;
     s|<ul>|\\begin{itemize}|g;
     s|</ul>|\\end{itemize}|g;
@@ -130,10 +130,15 @@ sub processDocTag {
     s|<p class="TeXbook">\s*|\\|g;
     s|</p>\s*|\\par |;
     s|<br[ /]*>|\\ |;
+    s|<i>|{\\it |;
+    s|\s*</i>|}|;
     if (m/\s*<pre\s+class="syntax">/) {
       $s .= $`;
       my $spec = '\\begin{syntax}';
       while(<$fd>) {
+	chop;
+	$_ = $_ . "\n";
+	s|^ *\* ?||;
 	$_ = translate($_) ;
 	next if m/^\s*$/;
 	
@@ -150,8 +155,8 @@ sub processDocTag {
       $_ = $spec;
 #	s|\@linkplain\s+\\([^)]+\\)\s+||sg;
 #	s|\@linkplain\s+[^()]+\s+||sg;
-      s|\@linkplain\s+\S+\s+||sg;
-      s|\@link\s+\w+\\([^)]+\\)\s+||sg;
+      s|\@linkplain\s+[a-zA-Z0-9.\#(,)_]+\s+||sg;
+      s|\@link\s+[a-zA-Z0-9.\#_]+\\([^)]+\\)\s+||sg;
       s|\@link\s+[^()]+\s+||sg;
       s/\n/\t\\\\\n/mg;
       $_ .= "\n\\end{syntax}\n";
@@ -183,11 +188,31 @@ sub processDocTag {
       while(<$fd>) {
 	chomp;
 	$_ = $_ . "\n";
-	s|^ \* ?||;
+	s|^ *\* ?||;
 #	  s|([~_\%\$])|\\$1|g;
 	s|\&\#x0*5c;|\\|g;
 	s|\&ndash;\s*|--|g;
 	s|</?[bi]>||g;
+	
+	if (m|</pre>|) {
+	  $spec .= $`;
+	  last;
+	}
+	$spec .= $_;
+      }
+      $_ = $spec;
+      $_ .= "\n\\end{lstlisting}\n";
+      
+    } elsif (m/\s*<pre\s+class="Configuration">/) {
+      $s .= $`;
+      my $spec = '\\begin{lstlisting}{language=XML}' . $';
+      while(<$fd>) {
+	chomp;
+	$_ = $_ . "\n";
+	s|^ *\* ?||;
+#	  s|([~_\%\$])|\\$1|g;
+	s|\&\#x0*5c;|\\|g;
+	s|\&ndash;\s*|--|g;
 	
 	if (m|</pre>|) {
 	  $spec .= $`;
@@ -203,14 +228,14 @@ sub processDocTag {
     print STDERR "$name: unprocessed: $&\n" if(m|</?[a-z][a-z0-9]*|i);
     s|\&lt;|<|g;
     s|\&gt;|>|g;
-    s|\@linkplain\s+\S+\s+||smg;
-    s|\@link\s+\S+\s+||smg;
+    s|\@linkplain\s+[a-zA-Z0-9.#(,)_]+\s+||smg;
+    s|\@link\s+[a-zA-Z0-9.#(,)_]+\s+||smg;
     $s .= $_;
   }
 
   $_ = $s;
-  s|\@linkplain\s+\S+\s+||smg;
-  s|\@link\s+\S+\s+||smg;
+  s|\@linkplain\s+[a-zA-Z0-9.#(,)_]+\s+||smg;
+  s|\@link\s+[a-zA-Z0-9.#(,)_]+\s+||smg;
   s/\\par\s+/\n\n/g;
   s/\n\n\n+/\n\n/g;
   s|\&lt;|<|g;
