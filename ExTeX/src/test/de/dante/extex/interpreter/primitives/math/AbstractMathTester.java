@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -25,12 +25,13 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is an abstract base class for testing math primitives.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class AbstractMathTester extends NoFlagsPrimitiveTester {
 
     /**
-     * The field <tt>DEFINE_MATH_FONTS</tt> contains the ...
+     * The field <tt>DEFINE_MATH_FONTS</tt> contains the definition for the
+     * required fonts.
      */
     public static final String DEFINE_MATH_FONTS =
         "\\font\\f cmsy10 \\textfont2=\\f"
@@ -43,14 +44,14 @@ public class AbstractMathTester extends NoFlagsPrimitiveTester {
         + "\\font\\f cmmi7 \\scriptfont1=\\f "
         + "\\font\\f cmmi5 \\scriptscriptfont1=\\f ";
 
-
     /**
      * The field <tt>primitive</tt> contains the name of the primitive to test.
      */
     private String primitive;
 
     /**
-     * The field <tt>arguments</tt> contains the ...
+     * The field <tt>arguments</tt> contains the arguments for the primitive
+     * invocation.
      */
     private String arguments;
 
