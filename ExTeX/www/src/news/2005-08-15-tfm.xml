@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- ====================================================================== -->
+<item>
+  <title>TFM-Daten anschaulich darstellen (German)</title>
+  <description>
+    Mit Hilfe von ExTeX kann eine TFM-Datei durch
+    eine Transformation in eine gestaltete HTML-Datei umgewandelt
+    werden, um sie optisch »aufgepeppt« darzustellen.
+  </description>
+  <author>m.g.n@gmx.de (Michael Niedermair)</author>
+  <link>http://www.extex.org/documentation/publ/dtk05_3_niedermair_neues.pdf</link>
+</item>

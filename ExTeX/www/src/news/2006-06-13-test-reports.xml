@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- ====================================================================== -->
+<item>
+  <title>Nightly Test Reports</title>
+  <description>The nightly build runs the test suite of ExTeX. The
+  results it produces can be viewed online.</description>
+  <author>gene@gerd-neugebauer.de (Gerd Neugebauer)</author>
+  <pubDate>Tue, 13 Jun 2003 12:00:00 GMT</pubDate>
+  <link>http://www.extex.org/reports/tests/</link>
+</item>
