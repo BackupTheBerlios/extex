@@ -28,6 +28,7 @@ import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.context.TypesettingContextImpl;
+import de.dante.extex.interpreter.context.group.GroupType;
 import de.dante.extex.interpreter.context.observer.group.AfterGroupObserver;
 import de.dante.extex.interpreter.context.observer.group.AfterGroupObserverList;
 import de.dante.extex.interpreter.exception.InterpreterException;
@@ -47,6 +48,7 @@ import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.token.CodeToken;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.type.math.MathDelimiter;
+import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
 
 /**
@@ -56,7 +58,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.61 $
+ * @version $Revision: 1.62 $
  */
 public class GroupImpl implements Group, Tokenizer, Serializable {
 
@@ -161,6 +163,11 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     private Map lccodeMap = new HashMap();
 
     /**
+     * The field <tt>locator</tt> contains the ...
+     */
+    private Locator locator;
+
+    /**
      * The field <tt>mathcodeMap</tt> contains the map for the catcodes.
      */
     private Map mathcodeMap = new HashMap();
@@ -202,6 +209,11 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     private transient TokenStream standardTokenStream = null;
 
     /**
+     * The field <tt>start</tt> contains the ...
+     */
+    private Token start;
+
+    /**
      * The field <tt>toksMap</tt> contains the map for the tokens registers.
      */
     private Map toksMap = new HashMap();
@@ -210,7 +222,7 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
      * The field <tt>type</tt> contains the type number of the group as returned
      * by <tt>\currentgrouptype</tt>.
      */
-    private int type = 0;
+    private GroupType type = GroupType.BOTTOM_LEVEL_GROUP;
 
     /**
      * The field <tt>typesettingContext</tt> contains the typesetting context
@@ -508,6 +520,14 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
+     * @see de.dante.extex.interpreter.context.impl.Group#getLocator()
+     */
+    public Locator getLocator() {
+
+        return this.locator;
+    }
+
+    /**
      * @see de.dante.extex.interpreter.context.impl.Group#getMathcode(
      *      de.dante.util.UnicodeChar)
      */
@@ -627,6 +647,14 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
+     * @see de.dante.extex.interpreter.context.impl.Group#getStart()
+     */
+    public Token getStart() {
+
+        return this.start;
+    }
+
+    /**
      * @see de.dante.extex.interpreter.context.impl.Group#getToks(
      *      java.lang.String)
      */
@@ -650,7 +678,7 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     /**
      * @see de.dante.extex.interpreter.context.impl.Group#getType()
      */
-    public int getType() {
+    public GroupType getType() {
 
         return type;
     }
@@ -851,6 +879,16 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
+     * Setter for locator.
+     *
+     * @param locator the locator to set
+     */
+    public void setLocator(Locator locator) {
+
+        this.locator = locator;
+    }
+
+    /**
      * @see de.dante.extex.interpreter.context.impl.Group#setMathcode(
      *      de.dante.util.UnicodeChar,
      *      de.dante.extex.interpreter.type.count.Count, boolean)
@@ -952,6 +990,16 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
+     * Setter for start.
+     *
+     * @param start the start to set
+     */
+    public void setStart(Token start) {
+
+        this.start = start;
+    }
+
+    /**
      * @see de.dante.extex.interpreter.context.impl.Group#setToks(
      *      java.lang.String,
      *      de.dante.extex.interpreter.type.tokens.Tokens, boolean)
@@ -967,9 +1015,10 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setType(int)
+     * @see de.dante.extex.interpreter.context.impl.Group#setType(
+     *      de.dante.extex.interpreter.context.group.GroupType)
      */
-    public void setType(final int type) {
+    public void setType(final GroupType type) {
 
         this.type = type;
     }

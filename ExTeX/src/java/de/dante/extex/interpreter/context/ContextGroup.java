@@ -20,10 +20,13 @@
 package de.dante.extex.interpreter.context;
 
 import de.dante.extex.interpreter.TokenSource;
+import de.dante.extex.interpreter.context.group.GroupInfo;
+import de.dante.extex.interpreter.context.group.GroupType;
 import de.dante.extex.interpreter.context.observer.group.AfterGroupObserver;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.util.Locator;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
@@ -31,7 +34,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * context.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public interface ContextGroup {
 
@@ -63,6 +66,16 @@ public interface ContextGroup {
             throws InterpreterException;
 
     /**
+     * Getter for the array of group information describing the currently open
+     * groups. The elements represent the groups in ascending order. Thus the
+     * element 0 always represents the global group. Thi one is guaranteed to be
+     * present. This means that the arras has always at least one element.
+     *
+     * @return the array of group infos
+     */
+    GroupInfo[] getGroupInfos();
+
+    /**
      * Getter for the group level. The group level is the number of groups which
      * are currently open. Thus this number of groups can be closed.
      *
@@ -75,7 +88,7 @@ public interface ContextGroup {
      *
      * @return the group type
      */
-    int getGroupType();
+    GroupType getGroupType();
 
     /**
      * Test whether this group is the first one, which means that there is no
@@ -90,10 +103,16 @@ public interface ContextGroup {
      * pushed onto the stack to be reactivated when the new group will be
      * closed.
      *
+     * @param id the type of the group
+     * @param locator the locator for the start
+     * @param start the token which started the group
+     *
      * @throws ConfigurationException in case of an error in the configuration,
      *             e.g. the class for the group can not be determined.
      * @throws InterpreterException in case of an error
      */
-    void openGroup(int id) throws ConfigurationException, InterpreterException;
+    void openGroup(GroupType id, Locator locator, Token start)
+            throws ConfigurationException,
+                InterpreterException;
 
 }

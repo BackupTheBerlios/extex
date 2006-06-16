@@ -43,6 +43,8 @@ import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.context.TypesettingContextFactory;
 import de.dante.extex.interpreter.context.extension.ContextExtensionPoint;
 import de.dante.extex.interpreter.context.extension.ExtensionPoint;
+import de.dante.extex.interpreter.context.group.GroupInfo;
+import de.dante.extex.interpreter.context.group.GroupType;
 import de.dante.extex.interpreter.context.observer.code.CodeObservable;
 import de.dante.extex.interpreter.context.observer.code.CodeObserver;
 import de.dante.extex.interpreter.context.observer.conditional.ConditionalObservable;
@@ -139,7 +141,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.109 $
+ * @version $Revision: 1.110 $
  */
 public class ContextImpl
         implements
@@ -493,7 +495,7 @@ public class ContextImpl
         groupFactory = new GroupFactory(configuration
                 .getConfiguration(GROUP_TAG));
         try {
-            openGroup(0);
+            openGroup(GroupType.BOTTOM_LEVEL_GROUP, null, null);
         } catch (InterpreterException e) {
             throw new ConfigurationWrapperException(e);
         }
@@ -789,6 +791,24 @@ public class ContextImpl
     }
 
     /**
+     * @see de.dante.extex.interpreter.context.ContextGroup#getGroupInfos()
+     */
+    public GroupInfo[] getGroupInfos() {
+
+        int level = (int) group.getLevel() + 1;
+        GroupInfoImpl[] gi = new GroupInfoImpl[level];
+
+        Group g = group;
+        while (level-- > 0) {
+            gi[level] = new GroupInfoImpl(g.getLocator(), g.getType(), g
+                    .getStart());
+            g = g.getNext();
+        }
+
+        return gi;
+    }
+
+    /**
      * Getter for the group level. The group level is the number of groups which
      * are currently open. Thus this number of groups can be closed.
      *
@@ -804,7 +824,7 @@ public class ContextImpl
     /**
      * @see de.dante.extex.interpreter.context.ContextGroup#getGroupType()
      */
-    public int getGroupType() {
+    public GroupType getGroupType() {
 
         return group.getType();
     }
@@ -1086,13 +1106,17 @@ public class ContextImpl
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#openGroup(int)
+     * @see de.dante.extex.interpreter.context.ContextGroup#openGroup(
+     *      de.dante.extex.interpreter.context.group.GroupType,
+     *      de.dante.util.Locator,
+     *      de.dante.extex.scanner.type.token.Token)
      */
-    public void openGroup(final int type)
+    public void openGroup(final GroupType type, final Locator locator,
+            final Token start)
             throws ConfigurationException,
                 InterpreterException {
 
-        group = groupFactory.newInstance(group, type);
+        group = groupFactory.newInstance(group, locator, start, type);
         group.setStandardTokenStream(standardTokenStream);
         if (groupObservers != null) {
             int size = groupObservers.size();
@@ -1760,7 +1784,6 @@ public class ContextImpl
      */
     public void setMagnification(final long mag, final boolean lock)
             throws HelpingException {
-
 
         if (magnificationLock && this.magnification != mag) {
             throw new HelpingException(localizer, "TTP.IncompatibleMag", //

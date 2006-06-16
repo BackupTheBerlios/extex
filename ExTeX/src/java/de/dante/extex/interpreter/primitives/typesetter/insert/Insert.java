@@ -22,6 +22,7 @@ package de.dante.extex.interpreter.primitives.typesetter.insert;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.context.group.GroupType;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.primitives.register.box.AbstractBox;
@@ -55,7 +56,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class Insert extends AbstractBox {
 
@@ -88,7 +89,8 @@ public class Insert extends AbstractBox {
         Flags f = prefix.copy();
         prefix.clear();
         long index = Count.scanNumber(context, source, typesetter);
-        Box b = new Box(context, source, typesetter, false, null);
+        Box b = new Box(context, source, typesetter, false, null,
+                GroupType.INSERT_GROUP, source.getLastToken());
 
         Mode mode = typesetter.getMode();
         if (mode != Mode.VERTICAL && mode != Mode.INNER_VERTICAL) {

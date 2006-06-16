@@ -27,6 +27,7 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.context.group.GroupType;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
@@ -140,7 +141,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.44 $
+ * @version $Revision: 1.45 $
  */
 public class MathListMaker extends HorizontalListMaker
         implements
@@ -152,7 +153,7 @@ public class MathListMaker extends HorizontalListMaker
      * It is used to store to the stack and restore the state from the stack.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.44 $
+     * @version $Revision: 1.45 $
      */
     private class MathMemento {
 
@@ -484,7 +485,7 @@ public class MathListMaker extends HorizontalListMaker
         // see [TTP 1196]
         list.add(new BeforeMathNode(mathsurround));
         noads.typeset(null, null, 0, list, new MathContext(StyleNoad.TEXTSTYLE,
-                        context), logger);
+                context), logger);
         // see [TTP 1196]
         list.add(new AfterMathNode(mathsurround));
         // see [TTP 1196]
@@ -773,7 +774,8 @@ public class MathListMaker extends HorizontalListMaker
             man.push(lm);
             if (t.isa(Catcode.LEFTBRACE)) {
                 lm.leftBrace();
-                context.openGroup(999); //TODO gene: provide correct value
+                context.openGroup(GroupType.MATH_GROUP, source.getLocator(),
+                        null); //TODO gene: provide correct value
                 source.executeGroup();
             } else {
                 source.execute(t, context, typesetter);

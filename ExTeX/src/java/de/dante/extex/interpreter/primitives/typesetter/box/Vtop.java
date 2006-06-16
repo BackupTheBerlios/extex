@@ -21,9 +21,11 @@ package de.dante.extex.interpreter.primitives.typesetter.box;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.context.group.GroupType;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
@@ -63,14 +65,14 @@ import de.dante.extex.typesetter.type.NodeList;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Vtop extends Vbox {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 20060617L;
 
     /**
      * Creates a new object.
@@ -86,12 +88,15 @@ public class Vtop extends Vbox {
      * @see de.dante.extex.interpreter.primitives.typesetter.box.Vbox#constructBox(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.typesetter.Typesetter)
+     *      de.dante.extex.typesetter.Typesetter,
+     *      de.dante.extex.scanner.type.token.Token)
      */
     protected Box constructBox(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws InterpreterException {
+            final Typesetter typesetter, final Token startToken)
+            throws InterpreterException {
 
-        Box box = acquireBox(context, source, typesetter);
+        Box box = acquireBox(context, source, typesetter, GroupType.VTOP_GROUP,
+                startToken);
         NodeList nodes = box.getNodes();
         Dimen depth = new Dimen(box.getDepth());
         depth.add(box.getHeight());

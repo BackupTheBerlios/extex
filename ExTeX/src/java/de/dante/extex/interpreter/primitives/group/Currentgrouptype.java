@@ -21,6 +21,7 @@ package de.dante.extex.interpreter.primitives.group;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.context.group.GroupTypeVisitor;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Theable;
@@ -37,8 +38,6 @@ import de.dante.extex.typesetter.Typesetter;
  * <p>
  *  TODO gene: missing documentation
  * </p>
- *
- *
  *
  * <table format="rl">
  *  <tr><td> 0</td><td>bottom level (no group)</td></tr>
@@ -60,9 +59,6 @@ import de.dante.extex.typesetter.Typesetter;
  *  <tr><td>16</td><td>math left group</td></tr>
  * </table>
  *
- *
- *
- *
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
@@ -75,13 +71,174 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * </doc>
  *
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Currentgrouptype extends AbstractCode
         implements
             CountConvertible,
             Theable {
+
+    /**
+     * The field <tt>gtv</tt> contains the group visitor to map the group type
+     * to te integer representation of <logo>eTeX</logo>.
+     */
+    private static final GroupTypeVisitor gtv = new GroupTypeVisitor() {
+
+        /**
+         * @see de.dante.extex.interpreter.context.group.GroupTypeVisitor#visitBottomLevelGroup(
+         *     java.lang.Object)
+         */
+        public Object visitBottomLevelGroup(final Object arg) {
+
+            return new Long(0);
+        }
+
+        /**
+         * @see de.dante.extex.interpreter.context.group.GroupTypeVisitor#visitSimpleGroup(
+         *     java.lang.Object)
+         */
+        public Object visitSimpleGroup(final Object arg) {
+
+            return new Long(1);
+        }
+
+        /**
+         * @see de.dante.extex.interpreter.context.group.GroupTypeVisitor#visitHboxGroup(
+         *     java.lang.Object)
+         */
+        public Object visitHboxGroup(final Object arg) {
+
+            return new Long(2);
+        }
+
+        /**
+         * @see de.dante.extex.interpreter.context.group.GroupTypeVisitor#visitAdjustedHboxGroup(
+         *     java.lang.Object)
+         */
+        public Object visitAdjustedHboxGroup(final Object arg) {
+
+            return new Long(3);
+        }
+
+        /**
+         * @see de.dante.extex.interpreter.context.group.GroupTypeVisitor#visitVboxGroup(
+         *     java.lang.Object)
+         */
+        public Object visitVboxGroup(final Object arg) {
+
+            return new Long(4);
+        }
+
+        /**
+         * @see de.dante.extex.interpreter.context.group.GroupTypeVisitor#visitVtopGroup(
+         *     java.lang.Object)
+         */
+        public Object visitVtopGroup(final Object arg) {
+
+            return new Long(5);
+        }
+
+        /**
+         * @see de.dante.extex.interpreter.context.group.GroupTypeVisitor#visitAlignGroup(
+         *     java.lang.Object)
+         */
+        public Object visitAlignGroup(final Object arg) {
+
+            return new Long(6);
+        }
+
+        /**
+         * @see de.dante.extex.interpreter.context.group.GroupTypeVisitor#visitNoAlignGroup(
+         *     java.lang.Object)
+         */
+        public Object visitNoAlignGroup(final Object arg) {
+
+            return new Long(7);
+        }
+
+        /**
+         * @see de.dante.extex.interpreter.context.group.GroupTypeVisitor#visitOutputGroup(
+         *     java.lang.Object)
+         */
+        public Object visitOutputGroup(final Object arg) {
+
+            return new Long(8);
+        }
+
+        /**
+         * @see de.dante.extex.interpreter.context.group.GroupTypeVisitor#visitMathGroup(
+         *     java.lang.Object)
+         */
+        public Object visitMathGroup(final Object arg) {
+
+            return new Long(9);
+        }
+
+        /**
+         * @see de.dante.extex.interpreter.context.group.GroupTypeVisitor#visitDiscGroup(
+         *     java.lang.Object)
+         */
+        public Object visitDiscGroup(final Object arg) {
+
+            return new Long(10);
+        }
+
+        /**
+         * @see de.dante.extex.interpreter.context.group.GroupTypeVisitor#visitInsertGroup(
+         *     java.lang.Object)
+         */
+        public Object visitInsertGroup(final Object arg) {
+
+            return new Long(11);
+        }
+
+        /**
+         * @see de.dante.extex.interpreter.context.group.GroupTypeVisitor#visitVcenterGroup(
+         *     java.lang.Object)
+         */
+        public Object visitVcenterGroup(final Object arg) {
+
+            return new Long(12);
+        }
+
+        /**
+         * @see de.dante.extex.interpreter.context.group.GroupTypeVisitor#visitMathChoiceGroup(
+         *     java.lang.Object)
+         */
+        public Object visitMathChoiceGroup(final Object arg) {
+
+            return new Long(13);
+        }
+
+        /**
+         * @see de.dante.extex.interpreter.context.group.GroupTypeVisitor#visitSemiSimpleGroup(
+         *     java.lang.Object)
+         */
+        public Object visitSemiSimpleGroup(final Object arg) {
+
+            return new Long(14);
+        }
+
+        /**
+         * @see de.dante.extex.interpreter.context.group.GroupTypeVisitor#visitMathShiftGroup(
+         *     java.lang.Object)
+         */
+        public Object visitMathShiftGroup(final Object arg) {
+
+            return new Long(15);
+        }
+
+        /**
+         * @see de.dante.extex.interpreter.context.group.GroupTypeVisitor#visitMathLeftGroup(
+         *     java.lang.Object)
+         */
+        public Object visitMathLeftGroup(final Object arg) {
+
+            return new Long(16);
+        }
+    };
 
     /**
      * The field <tt>serialVersionUID</tt> contains the id for serialization.
@@ -107,7 +264,7 @@ public class Currentgrouptype extends AbstractCode
     public long convertCount(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        return context.getGroupType();
+        return ((Long) context.getGroupType().visit(gtv, null)).longValue();
     }
 
     /**

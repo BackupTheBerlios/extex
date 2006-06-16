@@ -21,6 +21,7 @@ package de.dante.extex.interpreter.primitives.typesetter.box;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.context.group.GroupType;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.exception.helping.MissingLeftBraceException;
@@ -92,7 +93,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class Hbox extends AbstractBoxPrimitive {
 
@@ -120,18 +121,22 @@ public class Hbox extends AbstractBoxPrimitive {
     public Box getBox(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
+        Token startToken = source.getLastToken();
         Box box;
         try {
             if (source.getKeyword(context, "to")) {
                 Dimen d = Dimen.parse(context, source, typesetter);
-                box = acquireBox(context, source, typesetter);
+                box = acquireBox(context, source, typesetter, startToken,
+                        GroupType.ADJUSTED_HBOX_GROUP);
                 box.setWidth(d);
             } else if (source.getKeyword(context, "spread")) {
                 Dimen d = Dimen.parse(context, source, typesetter);
-                box = acquireBox(context, source, typesetter);
+                box = acquireBox(context, source, typesetter, startToken,
+                        GroupType.ADJUSTED_HBOX_GROUP);
                 box.spreadWidth(d);
             } else {
-                box = acquireBox(context, source, typesetter);
+                box = acquireBox(context, source, typesetter, startToken,
+                        GroupType.HBOX_GROUP);
             }
         } catch (EofException e) {
             throw new EofException(printableControlSequence(context));
@@ -149,13 +154,15 @@ public class Hbox extends AbstractBoxPrimitive {
      * @param context the interpreter context
      * @param source the source for new tokens
      * @param typesetter the typesetter
+     * @param startToken the token which started the group
      *
      * @return the complete Box
      *
      * @throws InterpreterException in case of an error
      */
     private Box acquireBox(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws InterpreterException {
+            final Typesetter typesetter, final Token startToken,
+            final GroupType groupType) throws InterpreterException {
 
         Tokens toks = context.getToks("everyhbox");
         Token t = context.getAfterassignment();
@@ -170,6 +177,8 @@ public class Hbox extends AbstractBoxPrimitive {
             }
         }
 
-        return new Box(context, source, typesetter, true, insert);
+        return new Box(context, source, typesetter, true, insert, groupType,
+                startToken);
     }
+
 }

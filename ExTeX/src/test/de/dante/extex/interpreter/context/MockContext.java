@@ -25,6 +25,8 @@ import de.dante.extex.interpreter.Conditional;
 import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.Tokenizer;
+import de.dante.extex.interpreter.context.group.GroupInfo;
+import de.dante.extex.interpreter.context.group.GroupType;
 import de.dante.extex.interpreter.context.observer.group.AfterGroupObserver;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
@@ -65,7 +67,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * classes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.32 $
+ * @version $Revision: 1.33 $
  */
 public class MockContext implements Context, TypesetterOptions {
 
@@ -329,6 +331,14 @@ public class MockContext implements Context, TypesetterOptions {
     }
 
     /**
+     * @see de.dante.extex.interpreter.context.ContextGroup#getGroupInfos()
+     */
+    public GroupInfo[] getGroupInfos() {
+
+        throw new RuntimeException("unimplemented");
+    }
+
+    /**
      * @see de.dante.extex.interpreter.context.ContextGroup#getGroupLevel()
      */
     public long getGroupLevel() {
@@ -339,9 +349,9 @@ public class MockContext implements Context, TypesetterOptions {
     /**
      * @see de.dante.extex.interpreter.context.ContextGroup#getGroupType()
      */
-    public int getGroupType() {
+    public GroupType getGroupType() {
 
-        return 0;
+        return null;
     }
 
     /**
@@ -554,9 +564,12 @@ public class MockContext implements Context, TypesetterOptions {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.ContextGroup#openGroup()
+     * @see de.dante.extex.interpreter.context.ContextGroup#openGroup(
+     *      de.dante.extex.interpreter.context.group.GroupType,
+     *      de.dante.util.Locator,
+     *      de.dante.extex.scanner.type.token.Token)
      */
-    public void openGroup(int id)
+    public void openGroup(GroupType id, Locator locator, Token start)
             throws ConfigurationException,
                 InterpreterException {
 
@@ -782,7 +795,8 @@ public class MockContext implements Context, TypesetterOptions {
     /**
      * @see de.dante.extex.interpreter.context.Context#setMagnification(long)
      */
-    public void setMagnification(final long mag, boolean lock) throws HelpingException {
+    public void setMagnification(final long mag, boolean lock)
+            throws HelpingException {
 
         throw new RuntimeException("unimplemented");
     }

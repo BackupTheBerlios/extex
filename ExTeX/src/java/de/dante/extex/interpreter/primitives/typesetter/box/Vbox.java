@@ -21,6 +21,7 @@ package de.dante.extex.interpreter.primitives.typesetter.box;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.context.group.GroupType;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.exception.helping.MissingLeftBraceException;
@@ -94,7 +95,7 @@ import de.dante.extex.typesetter.type.NodeList;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class Vbox extends AbstractBoxPrimitive {
 
@@ -122,18 +123,19 @@ public class Vbox extends AbstractBoxPrimitive {
     public Box getBox(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
+        Token startToken = source.getLastToken();
         Box box;
         try {
             if (source.getKeyword(context, "to")) {
                 Dimen d = Dimen.parse(context, source, typesetter);
-                box = constructBox(context, source, typesetter);
+                box = constructBox(context, source, typesetter, startToken);
                 box.setHeight(d);
             } else if (source.getKeyword(context, "spread")) {
                 Dimen d = Dimen.parse(context, source, typesetter);
-                box = constructBox(context, source, typesetter);
+                box = constructBox(context, source, typesetter, startToken);
                 box.spreadHeight(d);
             } else {
-                box = constructBox(context, source, typesetter);
+                box = constructBox(context, source, typesetter, startToken);
             }
         } catch (EofException e) {
             throw new EofException(printableControlSequence(context));
@@ -151,15 +153,18 @@ public class Vbox extends AbstractBoxPrimitive {
      * @param context the interpreter context
      * @param source the source for new tokens
      * @param typesetter the typesetter
+     * @param startToken the token which started the group
      *
      * @return the complete Box
      *
      * @throws InterpreterException in case of an error
      */
     protected Box constructBox(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws InterpreterException {
+            final Typesetter typesetter, final Token startToken)
+            throws InterpreterException {
 
-        Box box = acquireBox(context, source, typesetter);
+        Box box = acquireBox(context, source, typesetter, GroupType.VBOX_GROUP,
+                startToken);
         NodeList nodes = box.getNodes();
         Dimen depth = new Dimen(box.getDepth());
         depth.add(box.getHeight());
@@ -181,13 +186,16 @@ public class Vbox extends AbstractBoxPrimitive {
      * @param context the interpreter context
      * @param source the source for new tokens
      * @param typesetter the typesetter
+     * @param groupType the group type
+     * @param startToken the token which started the group
      *
      * @return the complete Box
      *
      * @throws InterpreterException in case of an error
      */
     protected Box acquireBox(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws InterpreterException {
+            final Typesetter typesetter, final GroupType groupType,
+            final Token startToken) throws InterpreterException {
 
         Tokens everyvbox = context.getToks("everyvbox");
         Token afterassignment = context.getAfterassignment();
@@ -202,7 +210,8 @@ public class Vbox extends AbstractBoxPrimitive {
             }
         }
 
-        return new Box(context, source, typesetter, false, insert);
+        return new Box(context, source, typesetter, false, insert, groupType,
+                startToken);
     }
 
 }

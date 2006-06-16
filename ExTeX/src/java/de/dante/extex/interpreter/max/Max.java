@@ -34,6 +34,7 @@ import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.ContextFactory;
+import de.dante.extex.interpreter.context.group.GroupType;
 import de.dante.extex.interpreter.context.observer.group.SwitchObserver;
 import de.dante.extex.interpreter.context.observer.load.LoadedObservable;
 import de.dante.extex.interpreter.exception.ErrorLimitException;
@@ -163,7 +164,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.101 $
+ * @version $Revision: 1.102 $
  */
 public abstract class Max
         implements
@@ -1459,7 +1460,7 @@ public abstract class Max
             reportDirtyFlag(token);
         }
         try {
-            context.openGroup(1);
+            context.openGroup(GroupType.SIMPLE_GROUP, getLocator(), token);
         } catch (ConfigurationException e) {
             throw new InterpreterException(e);
         }

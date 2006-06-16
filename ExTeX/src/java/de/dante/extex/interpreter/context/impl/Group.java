@@ -23,6 +23,7 @@ import java.io.Serializable;
 
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.context.group.GroupType;
 import de.dante.extex.interpreter.context.observer.group.AfterGroupObserver;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.Code;
@@ -40,6 +41,7 @@ import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.token.CodeToken;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.type.math.MathDelimiter;
+import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
 
 /**
@@ -53,7 +55,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.39 $
+ * @version $Revision: 1.40 $
  */
 public interface Group extends Tokenizer, Serializable {
 
@@ -204,6 +206,13 @@ public interface Group extends Tokenizer, Serializable {
     long getLevel();
 
     /**
+     * Getter for the locator describing where the group started.
+     *
+     * @return the locator
+     */
+    Locator getLocator();
+
+    /**
      * Getter for the math code of a character.
      *
      * @param uc the character to get the math code for
@@ -291,6 +300,13 @@ public interface Group extends Tokenizer, Serializable {
     TokenStream getStandardTokenStream();
 
     /**
+     * Getter for the token which started the group.
+     *
+     * @return the start token
+     */
+    Token getStart();
+
+    /**
      * Getter for the named toks register in the current group. The name can
      * either be a string representing a number or an arbitrary string. In the
      * first case the behavior of the numbered toks registers is emulated. The
@@ -330,7 +346,7 @@ public interface Group extends Tokenizer, Serializable {
      *
      * @return the group type
      */
-    int getType();
+    GroupType getType();
 
     /**
      * Getter for the typesetting context.
@@ -463,6 +479,13 @@ public interface Group extends Tokenizer, Serializable {
     void setLccode(UnicodeChar uc, UnicodeChar lc, boolean global);
 
     /**
+     * Setter for the locator.
+     *
+     * @param locator the locator
+     */
+    void setLocator(Locator locator);
+
+    /**
      * Setter for the math code of a character.
      *
      * @param uc the character to set the math code for
@@ -528,6 +551,13 @@ public interface Group extends Tokenizer, Serializable {
     void setStandardTokenStream(TokenStream standardTokenStream);
 
     /**
+     * Setter for the start token.
+     *
+     * @param start the start token
+     */
+    void setStart(Token start);
+
+    /**
      * Setter for a toks register in all groups.
      *
      * @param name the name of the toks register
@@ -542,7 +572,7 @@ public interface Group extends Tokenizer, Serializable {
      *
      * @param type the type of the group
      */
-    void setType(int type);
+    void setType(GroupType type);
 
     /**
      * Setter for the typesetting context in the specified groups.

@@ -24,6 +24,7 @@ import java.util.List;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.context.group.GroupType;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.exception.helping.MissingLeftBraceException;
@@ -74,7 +75,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.30 $
+ * @version $Revision: 1.31 $
  */
 public class Halign extends AbstractAlign implements Boxable {
 
@@ -164,7 +165,7 @@ public class Halign extends AbstractAlign implements Boxable {
         }
 
         try {
-            context.openGroup(6); //gene: correct value?
+            context.openGroup(GroupType.ALIGN_GROUP, source.getLocator(), t); //gene: correct value?
         } catch (ConfigurationException e) {
             throw new InterpreterException(e);
         }

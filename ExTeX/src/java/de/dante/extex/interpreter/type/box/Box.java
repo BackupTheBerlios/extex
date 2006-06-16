@@ -26,6 +26,7 @@ import javax.naming.OperationNotSupportedException;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.context.group.GroupType;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.exception.helping.MissingLeftBraceException;
@@ -52,7 +53,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.35 $
+ * @version $Revision: 1.36 $
  */
 public class Box implements BoxOrRule, Serializable {
 
@@ -82,12 +83,15 @@ public class Box implements BoxOrRule, Serializable {
      *  constructed. The alternative is a <tt>\vbox</tt>.
      * @param insert tokens to insert at the beginning or <code>null</code>
      *  for none
+     * @param groupType the type of the group just entered
+     * @param startToken the token which started the group
      *
      * @throws InterpreterException in case of an error
      */
     public Box(final Context context, final TokenSource source,
             final Typesetter typesetter, final boolean isHorizontal,
-            final Tokens insert) throws InterpreterException {
+            final Tokens insert, final GroupType groupType,
+            final Token startToken) throws InterpreterException {
 
         super();
 
@@ -111,7 +115,7 @@ public class Box implements BoxOrRule, Serializable {
         typesetter.push(lm);
 
         try {
-            context.openGroup(isHorizontal ? 2 : 4); //gene: correct value?
+            context.openGroup(groupType, source.getLocator(), startToken);
         } catch (ConfigurationException e) {
             throw new InterpreterException(e);
         }

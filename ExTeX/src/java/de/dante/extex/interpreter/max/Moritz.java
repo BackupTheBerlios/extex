@@ -111,7 +111,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.98 $
+ * @version $Revision: 1.99 $
  */
 public class Moritz extends Max
         implements
@@ -193,6 +193,11 @@ public class Moritz extends Max
      * token streams.
      */
     private TokenStreamFactory tokenStreamFactory = null;
+
+    /**
+     * The field <tt>lastToken</tt> contains the lat token read.
+     */
+    private Token lastToken = null;
 
     /**
      * Creates a new object.
@@ -701,6 +706,7 @@ public class Moritz extends Max
                     } while (t != null && t instanceof SpaceToken);
 
                     if (t != null) {
+                        lastToken = t;
                         return t;
                     }
 
@@ -719,6 +725,7 @@ public class Moritz extends Max
                         if (observersPop != null) {
                             observersPop.update(t);
                         }
+                        lastToken = t;
                         return t;
                     }
                     closeStream(context);
@@ -730,7 +737,16 @@ public class Moritz extends Max
         if (observersEOF != null) {
             observersEOF.update();
         }
+        lastToken = null;
         return null;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.TokenSource#getLastToken()
+     */
+    public Token getLastToken() {
+
+        return lastToken;
     }
 
     /**
