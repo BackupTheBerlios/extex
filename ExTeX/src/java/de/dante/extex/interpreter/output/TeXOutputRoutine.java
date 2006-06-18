@@ -153,7 +153,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class TeXOutputRoutine implements OutputRoutine {
 
@@ -209,9 +209,10 @@ public class TeXOutputRoutine implements OutputRoutine {
         }
 
         deadcyles.add(1);
-        if (deadcyles.ge(context.getCount("maxdeadcycles"))) {
+        if (deadcyles.gt(context.getCount("maxdeadcycles"))) {
             throw new InterpreterException(LocalizerFactory.getLocalizer(
-                    TeXOutputRoutine.class.getName()).format("TTP.TooMuchDead"));
+                    TeXOutputRoutine.class.getName()).format("TTP.TooMuchDead",
+                    deadcyles.toString()));
         }
 
         Box box = context.getBox(OUTPUT_BOX);
