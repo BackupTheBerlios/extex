@@ -58,7 +58,7 @@ import de.dante.extex.typesetter.type.node.GlueNode;
  * @see "TTP [764]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public final class MathSpacing {
 
@@ -147,6 +147,10 @@ public final class MathSpacing {
             final MathContext mathContext) throws TypesetterException {
 
         if (spec == null || previous == null) {
+            return;
+        }
+
+        if (previous.id < 0) { //TODO gene: correct?
             return;
         }
 
