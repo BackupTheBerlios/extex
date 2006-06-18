@@ -20,15 +20,15 @@
 package de.dante.extex.interpreter.primitives.conditional.analyze;
 
 import de.dante.extex.interpreter.primitives.math.AbstractMathTester;
-import de.dante.test.ExTeXLauncher;
+import de.dante.extex.interpreter.primitives.register.count.AbstractReadonlyCountRegisterTester;
 
 /**
  * This is a test suite for the primitive <tt>\currentiftype</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class CurrentiftypeTest extends ExTeXLauncher {
+public class CurrentiftypeTest extends AbstractReadonlyCountRegisterTester {
 
     /**
      * Method for running the tests standalone.
@@ -47,37 +47,7 @@ public class CurrentiftypeTest extends ExTeXLauncher {
      */
     public CurrentiftypeTest(final String arg) {
 
-        super(arg);
-    }
-
-    /**
-     * <testcase primitive="\currentiftype">
-     *  Test case checking that <tt>\currentiftype</tt>...
-     * </testcase>
-     *
-     * @throws Exception in case of an error
-     */
-    public void testErr1() throws Exception {
-
-        assertFailure(//--- input code ---
-                "\\currentiftype ",
-                //--- log message ---
-                "You can't use `\\currentiftype' in vertical mode");
-    }
-
-    /**
-     * <testcase primitive="\currentiftype">
-     *  Test case checking that <tt>\currentiftype</tt>...
-     * </testcase>
-     *
-     * @throws Exception in case of an error
-     */
-    public void test0() throws Exception {
-
-        assertSuccess(//--- input code ---
-                "\\the\\currentiftype \\end",
-                //--- log message ---
-                "0" + TERM);
+        super(arg, "currentiftype", "0");
     }
 
     /**
@@ -245,21 +215,6 @@ public class CurrentiftypeTest extends ExTeXLauncher {
                 "\\ifx AA \\the\\currentiftype \\fi\\end",
                 //--- log message ---
                 "13" + TERM);
-    }
-
-    /**
-     * <testcase primitive="\currentiftype">
-     *  Test case checking that <tt>\currentiftype</tt>...
-     * </testcase>
-     *
-     * @throws Exception in case of an error
-     */
-    public void test14() throws Exception {
-
-        assertSuccess(//--- input code ---
-                "\\ifeof1 \\the\\currentiftype \\fi\\end",
-                //--- log message ---
-                "14" + TERM);
     }
 
     /**
@@ -437,13 +392,13 @@ public class CurrentiftypeTest extends ExTeXLauncher {
      */
     public void testNeg8() throws Exception {
 
-        assertSuccess(
+        assertOutput(
                 //--- input code ---
                 AbstractMathTester.DEFINE_MATH_FONTS
                         + DEFINE_CATCODES
-                        + "$\\unless\\ifmmode \\else\\the\\currentiftype \\fi$\\end",
+                        + "$\\unless\\ifmmode \\else\\showthe\\currentiftype \\fi$\\end",
                 //--- log message ---
-                "-8" + TERM);
+                "> -8.\n", "");
     }
 
     /**
@@ -513,21 +468,6 @@ public class CurrentiftypeTest extends ExTeXLauncher {
      *
      * @throws Exception in case of an error
      */
-    public void testNeg14() throws Exception {
-
-        assertSuccess(//--- input code ---
-                "\\unless\\ifeof1 \\else\\the\\currentiftype \\fi\\end",
-                //--- log message ---
-                "-14" + TERM);
-    }
-
-    /**
-     * <testcase primitive="\currentiftype">
-     *  Test case checking that <tt>\currentiftype</tt>...
-     * </testcase>
-     *
-     * @throws Exception in case of an error
-     */
     public void testNeg15() throws Exception {
 
         assertSuccess(//--- input code ---
@@ -581,6 +521,38 @@ public class CurrentiftypeTest extends ExTeXLauncher {
                 "\\unless\\iffontchar\\nullfont`\\a \\the\\currentiftype \\fi\\end",
                 //--- log message ---
                 "-20" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\currentiftype">
+     *  Test case checking that <tt>\currentiftype</tt>...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test14() throws Exception {
+
+        assertSuccess(//--- input code ---
+                "\\nonstopmode" +
+                "\\ifeof1 \\the\\currentiftype \\else\\the\\currentiftype \\fi\\end",
+                //--- log message ---
+                "14" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\currentiftype">
+     *  Test case checking that <tt>\currentiftype</tt>...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testNeg14() throws Exception {
+
+        assertSuccess(//--- input code ---
+                "\\nonstopmode" +
+                "\\unless\\ifeof1 \\the\\currentiftype \\else\\the\\currentiftype \\fi\\end",
+                //--- log message ---
+                "-14" + TERM);
     }
 
 }

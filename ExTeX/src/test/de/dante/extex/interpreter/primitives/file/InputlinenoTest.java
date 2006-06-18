@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -19,15 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.file;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.extex.interpreter.primitives.register.count.AbstractReadonlyCountRegisterTester;
 
 /**
  * This is a test suite for the primitive <tt>\inputlineno</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
-public class InputlinenoTest extends ExTeXLauncher {
+public class InputlinenoTest extends AbstractReadonlyCountRegisterTester {
 
     /**
      * Method for running the tests standalone.
@@ -46,53 +46,7 @@ public class InputlinenoTest extends ExTeXLauncher {
      */
     public InputlinenoTest(final String arg) {
 
-        super(arg);
-    }
-
-    /**
-     * <testcase primitive="\inputlineno">
-     *  Test case checking that a <tt>\inputlineno</tt> works with <tt>\the</tt>.
-     * </testcase>
-     *
-     * @throws Exception in case of an error
-     */
-    public void test0() throws Exception {
-
-        assertFailure(//--- input code ---
-                "\\showthe\\inputlineno \\end",
-                //--- output channel ---
-                "> 1.\n");
-    }
-
-    /**
-     * <testcase primitive="\inputlineno">
-     *  Test case checking that a <tt>\inputlineno</tt> works.
-     * </testcase>
-     *
-     * @throws Exception in case of an error
-     */
-    public void test1() throws Exception {
-
-        assertFailure(//--- input code ---
-                "\\count0=\\inputlineno "
-                + "\\showthe\\count0 \\end",
-                //--- output channel ---
-                "> 1.\n");
-    }
-
-    /**
-     * <testcase primitive="\inputlineno">
-     *  Test case checking that a <tt>\inputlineno</tt> can not be assigned.
-     * </testcase>
-     *
-     * @throws Exception in case of an error
-     */
-    public void testSet1() throws Exception {
-
-        assertFailure(//--- input code ---
-                "\\inputlineno=123 ",
-                //--- error channel ---
-                "You can't use `\\inputlineno' in vertical mode");
+        super(arg, "inputlineno", "1");
     }
 
 }

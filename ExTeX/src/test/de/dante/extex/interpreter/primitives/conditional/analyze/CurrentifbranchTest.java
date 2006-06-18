@@ -19,15 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.conditional.analyze;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.extex.interpreter.primitives.register.count.AbstractReadonlyCountRegisterTester;
 
 /**
  * This is a test suite for the primitive <tt>\currentifbranch</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class CurrentifbranchTest extends ExTeXLauncher {
+public class CurrentifbranchTest extends AbstractReadonlyCountRegisterTester {
 
     /**
      * Method for running the tests standalone.
@@ -46,39 +46,7 @@ public class CurrentifbranchTest extends ExTeXLauncher {
      */
     public CurrentifbranchTest(final String arg) {
 
-        super(arg);
-    }
-
-    /**
-     * <testcase primitive="\currentifbranch">
-     *  Test case checking that <tt>\currentifbranch</tt> can not be used
-     *  in vertical mode.
-     * </testcase>
-     *
-     * @throws Exception in case of an error
-     */
-    public void testErr1() throws Exception {
-
-        assertFailure(//--- input code ---
-                "\\currentifbranch ",
-                //--- log message ---
-                "You can't use `\\currentifbranch' in vertical mode");
-    }
-
-    /**
-     * <testcase primitive="\currentifbranch">
-     *  Test case checking that <tt>\currentifbranch</tt> outside of a
-     *  conditional returns 0.
-     * </testcase>
-     *
-     * @throws Exception in case of an error
-     */
-    public void test0() throws Exception {
-
-        assertSuccess(//--- input code ---
-                "\\the\\currentifbranch \\end",
-                //--- log message ---
-                "0" + TERM);
+        super(arg, "currentifbranch", "0");
     }
 
     /**

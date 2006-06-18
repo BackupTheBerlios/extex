@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -19,15 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.conditional.analyze;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.extex.interpreter.primitives.register.count.AbstractReadonlyCountRegisterTester;
 
 /**
  * This is a test suite for the primitive <tt>\currentiflevel</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class CurrentiflevelTest extends ExTeXLauncher {
+public class CurrentiflevelTest extends AbstractReadonlyCountRegisterTester {
 
     /**
      * Method for running the tests standalone.
@@ -46,37 +46,7 @@ public class CurrentiflevelTest extends ExTeXLauncher {
      */
     public CurrentiflevelTest(final String arg) {
 
-        super(arg);
-    }
-
-    /**
-     * <testcase primitive="\currentiflevel">
-     *  Test case checking that <tt>\currentiflevel</tt>...
-     * </testcase>
-     *
-     * @throws Exception in case of an error
-     */
-    public void testErr1() throws Exception {
-
-        assertFailure(//--- input code ---
-                "\\currentiflevel ",
-                //--- log message ---
-                "You can't use `\\currentiflevel' in vertical mode");
-    }
-    
-    /**
-     * <testcase primitive="\currentiflevel">
-     *  Test case checking that <tt>\currentiflevel</tt>...
-     * </testcase>
-     *
-     * @throws Exception in case of an error
-     */
-    public void test0() throws Exception {
-
-        assertSuccess(//--- input code ---
-                "\\the\\currentiflevel \\end",
-                //--- log message ---
-                "0" + TERM);
+        super(arg, "currentiflevel", "0");
     }
 
     /**

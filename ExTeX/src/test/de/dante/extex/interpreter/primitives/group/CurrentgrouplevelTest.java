@@ -19,15 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.group;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.extex.interpreter.primitives.register.count.AbstractReadonlyCountRegisterTester;
 
 /**
  * This is a test suite for the primitive <tt>\currentgrouplevel</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
-public class CurrentgrouplevelTest extends ExTeXLauncher {
+public class CurrentgrouplevelTest extends AbstractReadonlyCountRegisterTester {
 
     /**
      * Method for running the tests standalone.
@@ -46,39 +46,7 @@ public class CurrentgrouplevelTest extends ExTeXLauncher {
      */
     public CurrentgrouplevelTest(final String arg) {
 
-        super(arg);
-    }
-
-    /**
-     * <testcase primitive="\currentgrouplevel">
-     *  Test case checking that a lonely <tt>\currentgrouplevel</tt>
-     *  leads to an error.
-     * </testcase>
-     *
-     * @throws Exception in case of an error
-     */
-    public void testError1() throws Exception {
-
-        assertFailure(//--- input code ---
-                "\\currentgrouplevel ",
-                //--- error message ---
-                "You can't use `\\currentgrouplevel' in vertical mode");
-    }
-
-    /**
-     * <testcase primitive="\currentgrouplevel">
-     *  Test case checking that <tt>\currentgrouplevel</tt> outside any group
-     *  returns 0.
-     * </testcase>
-     *
-     * @throws Exception in case of an error
-     */
-    public void testLevel0() throws Exception {
-
-        assertSuccess(//--- input code ---
-                "\\the\\currentgrouplevel \\end",
-                //--- log message ---
-                "0" + TERM);
+        super(arg, "currentgrouplevel", "0");
     }
 
     /**
@@ -131,5 +99,7 @@ public class CurrentgrouplevelTest extends ExTeXLauncher {
                 //--- log message ---
                 "2" + TERM);
     }
+
+    //TODO implement more primitive specific test cases
 
 }

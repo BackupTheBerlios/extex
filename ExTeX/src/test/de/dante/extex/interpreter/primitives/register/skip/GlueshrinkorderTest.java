@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -19,15 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.register.skip;
 
-import de.dante.test.ExTeXLauncher;
+import de.dante.extex.interpreter.primitives.register.count.AbstractReadonlyCountRegisterTester;
 
 /**
  * This is a test suite for the primitive <tt>\glueshrinkorder</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class GlueshrinkorderTest extends ExTeXLauncher {
+public class GlueshrinkorderTest extends AbstractReadonlyCountRegisterTester {
 
     /**
      * Command line interface.
@@ -45,23 +45,7 @@ public class GlueshrinkorderTest extends ExTeXLauncher {
      */
     public GlueshrinkorderTest(final String arg) {
 
-        super(arg);
-    }
-
-    /**
-     * <testcase>
-     *  Test case showing that <tt>\glueshrinkorder</tt> can not be used to assign
-     *  something to it.
-     * </testcase>
-     *
-     * @throws Exception in case of an error
-     */
-    public void testErr1() throws Exception {
-
-        assertFailure(//--- input code ---
-                "\\glueshrinkorder\\skip0=1 ",
-                //--- error channel ---
-                "You can't use `\\glueshrinkorder\' in vertical mode");
+        super(arg, "glueshrinkorder", "\\skip0 ", "0");
     }
 
     /**
