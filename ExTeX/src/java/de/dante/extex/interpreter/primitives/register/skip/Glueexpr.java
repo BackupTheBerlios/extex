@@ -22,6 +22,7 @@ package de.dante.extex.interpreter.primitives.register.skip;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.interpreter.type.muskip.MuskipConvertible;
 import de.dante.extex.typesetter.Typesetter;
@@ -53,17 +54,18 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class Glueexpr implements MuskipConvertible {
+public class Glueexpr extends AbstractCode implements MuskipConvertible {
 
     /**
      * Creates a new object.
      *
+     * @param codeName the name
      */
-    public Glueexpr() {
+    public Glueexpr(final String codeName) {
 
-        super();
+        super(codeName);
     }
 
     /**
