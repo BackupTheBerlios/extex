@@ -62,10 +62,10 @@ import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.logger.LogEnabled;
 
 /**
- * This is the abstract base clas to test a paragraph builder.
+ * This is the abstract base class to test a paragraph builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public abstract class AbstractParagraphBuiderTester extends TestCase {
 
@@ -73,7 +73,7 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
      * Inner class for the typesetter options.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.4 $
+     * @version $Revision: 1.5 $
      */
     private class MockOptions implements TypesetterOptions {
 
@@ -197,7 +197,7 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
         /**
          * @see de.dante.extex.typesetter.TypesetterOptions#getMuskip(java.lang.String)
          */
-        public Muskip getMuskip(String name) {
+        public Muskip getMuskip(final String name) {
 
             // TODO gene: getMuskip unimplemented
             return null;
@@ -219,8 +219,14 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
      */
     private TypesettingContextImpl tc = new TypesettingContextImpl(new Font() {
 
+        /**
+         * The field <tt>hyphenChar</tt> contains the ...
+         */
         private UnicodeChar hyphenChar = UnicodeChar.get('-');
 
+        /**
+         * The field <tt>skewChar</tt> contains the ...
+         */
         private UnicodeChar skewChar = null;
 
         /**
@@ -624,9 +630,9 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
      * This method provides an indicator whether or not the tracing should be
      * written to the console.
      * This method is meant to be overwritten by derived classes to change the
-     * default behaviour.
+     * default behavior.
      *
-     * @return <code>true</code> iff te tracing is requesten
+     * @return <code>true</code> iff the tracing is requested
      */
     protected boolean traceonline() {
 
