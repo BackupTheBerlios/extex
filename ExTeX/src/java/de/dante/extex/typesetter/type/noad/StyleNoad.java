@@ -176,7 +176,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public final class StyleNoad implements Noad {
 
@@ -186,14 +186,14 @@ public final class StyleNoad implements Noad {
      * some methods-
      */
     private static final StyleNoad[] STYLE = {//
-    new StyleNoad(0, "display", "\\displaystyle"),
-            new StyleNoad(1, "display", "\\displaystyle"),
-            new StyleNoad(2, "text", "\\textstyle"),
-            new StyleNoad(3, "text", "\\textstyle"),
-            new StyleNoad(4, "script", "\\scriptstyle"),
-            new StyleNoad(5, "script", "\\scriptstyle"),
-            new StyleNoad(6, "scriptscript", "\\scriptscriptstyle"),
-            new StyleNoad(7, "scriptscript", "\\scriptscriptstyle")};
+            new StyleNoad(0, "displaystyle", "textfont"),
+            new StyleNoad(1, "displaystyle", "textfont"),
+            new StyleNoad(2, "textstyle", "textfont"),
+            new StyleNoad(3, "textstyle", "textfont"),
+            new StyleNoad(4, "scriptstyle", "scriptfont"),
+            new StyleNoad(5, "scriptstyle", "scriptfont"),
+            new StyleNoad(6, "scriptscriptstyle", "scriptscriptfont"),
+            new StyleNoad(7, "scriptscriptstyle", "scriptscriptfont")};
 
     /**
      * The field <tt>CRAMPED</tt> contains the mapping to cramped styles.
@@ -261,11 +261,6 @@ public final class StyleNoad implements Noad {
     private int no;
 
     /**
-     * The field <tt>printName</tt> contains the printable representation.
-     */
-    private String printName;
-
-    /**
      * The field <tt>spacingClass</tt> contains the spacing class.
      */
     private MathSpacing spacingClass = MathSpacing.UNDEF;
@@ -285,15 +280,14 @@ public final class StyleNoad implements Noad {
      *
      * @param no the index of this style
      * @param style the style
-     * @param printName the printable representation
+     * @param fontName the name of the font to use
      */
-    private StyleNoad(final int no, final String style, final String printName) {
+    private StyleNoad(final int no, final String style, final String fontName) {
 
         super();
         this.no = no;
         this.style = style;
-        this.printName = printName;
-        this.fontName = (style.equals("display") ? "textfont" : style + "font");
+        this.fontName = fontName;
     }
 
     /**
@@ -331,16 +325,6 @@ public final class StyleNoad implements Noad {
     }
 
     /**
-     * Getter for name.
-     *
-     * @return the name
-     */
-    public String getName() {
-
-        return this.style;
-    }
-
-    /**
      * @see de.dante.extex.typesetter.type.noad.Noad#getSpacingClass()
      */
     public MathSpacing getSpacingClass() {
@@ -355,7 +339,7 @@ public final class StyleNoad implements Noad {
      */
     public String getStyleName() {
 
-        return this.style + "style";
+        return this.style;
     }
 
     /**
@@ -471,7 +455,7 @@ public final class StyleNoad implements Noad {
      */
     public String toString() {
 
-        return printName;
+        return "\\" + style;
     }
 
     /**
@@ -485,7 +469,7 @@ public final class StyleNoad implements Noad {
      */
     public void toString(final StringBuffer sb) {
 
-        sb.append(printName);
+        sb.append("\\" + style);
     }
 
     /**
