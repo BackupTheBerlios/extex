@@ -1,6 +1,6 @@
 #!/bin/perl.exe -w
 ##*****************************************************************************
-## $Id: make-rss.pl,v 1.2 2006/06/15 19:51:39 gene Exp $
+## $Id: make-rss.pl,v 1.3 2006/06/18 22:26:34 gene Exp $
 ##*****************************************************************************
 ## Author: Gerd Neugebauer
 ##=============================================================================
@@ -70,8 +70,8 @@ mkdir dirname($target);
 
 my $out     = ($target eq '' ? \*STDERR : new FileHandle($target, 'w'));
 my $gendate = formatDate(localtime);
-@_ = localtime;
-my $year = $_[] + 1900;
+my @t = localtime;
+my $year = $t[5] + 1900;
 
 print $out <<__EOF__;
 <?xml version="1.0"?>
