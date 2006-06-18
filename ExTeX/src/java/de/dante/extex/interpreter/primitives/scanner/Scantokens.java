@@ -19,12 +19,7 @@
 
 package de.dante.extex.interpreter.primitives.scanner;
 
-import de.dante.extex.interpreter.Flags;
-import de.dante.extex.interpreter.TokenSource;
-import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
-import de.dante.extex.typesetter.Typesetter;
 
 /**
  * This class provides an implementation for the primitive
@@ -47,44 +42,29 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
- *    \scantokens  </pre>
+ *    \scantokens...  </pre>
  *
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Scantokens extends AbstractCode {
 
     /**
-     * The field <tt>serialVersionUID</tt> contains the ...
+     * The field <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 20060617L;
+    protected static final long serialVersionUID = 20060616L;
 
     /**
      * Creates a new object.
      *
-     * @param name the name
+     * @param codeName
      */
-    public Scantokens(final String name) {
+    public Scantokens(final String codeName) {
 
-        super(name);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.type.AbstractCode#execute(
-     *      de.dante.extex.interpreter.Flags,
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.typesetter.Typesetter)
-     */
-    public void execute(final Flags prefix, final Context context,
-            final TokenSource source, final Typesetter typesetter)
-            throws InterpreterException {
-
-        //TODO gene: unimplemented
-        throw new RuntimeException("unimplemented");
+        super(codeName);
     }
 
 }
