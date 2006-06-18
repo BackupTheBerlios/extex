@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\hskip</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class HskipTest extends NoFlagsPrimitiveTester {
 
@@ -50,8 +50,7 @@ public class HskipTest extends NoFlagsPrimitiveTester {
 
     /**
      * <testcase primitive="\hskip">
-     *  Test case checking that <tt>\hskip</tt> switches to vertical mode and
-     *  inserts a glue node with the appropriate value.
+     *  Test case checking that a lonely <tt>\hskip</tt> is discarded.
      * </testcase>
      *
      * @throws Exception in case of an error
@@ -62,14 +61,12 @@ public class HskipTest extends NoFlagsPrimitiveTester {
         //--- input code ---
                 "\\hskip 123pt\\end ",
                 //--- output channel ---
-                "\\vbox(0.0pt+0.0pt)x123.0pt\n" + //
-                ".\\hbox(0.0pt+0.0pt)x123.0pt\n" + //
-                "..\\glue123.0pt\n");
+                "");
     }
 
     /**
      * <testcase primitive="\hskip">
-     *  Test case checking that <tt>\hskip</tt> switches to vertical mode and
+     *  Test case checking that <tt>\hskip</tt> switches to horizontal mode and
      *  inserts a glue node with the appropriate value.
      * </testcase>
      *
@@ -79,11 +76,34 @@ public class HskipTest extends NoFlagsPrimitiveTester {
 
         assertSuccess(showNodesProperties(),
         //--- input code ---
-                "\\hskip 123pt plus 1.2fil\\end ",
+                "x\\hskip 123pt x\\end ",
                 //--- output channel ---
-                "\\vbox(0.0pt+0.0pt)x123.0pt\n" + //
-                ".\\hbox(0.0pt+0.0pt)x123.0pt\n" + //
-                "..\\glue123.0pt plus 1.2fil\n");
+                "\\vbox(1.0pt+1.0pt)x125.0pt\n" + //
+                ".\\hbox(1.0pt+1.0pt)x125.0pt\n" + //
+                "..x\n" + //
+                "..\\glue123.0pt\n" + //
+                "..x\n");
+    }
+
+    /**
+     * <testcase primitive="\hskip">
+     *  Test case checking that <tt>\hskip</tt> switches to horizontal mode and
+     *  inserts a glue node with the appropriate value.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test3() throws Exception {
+
+        assertSuccess(showNodesProperties(),
+        //--- input code ---
+                "x\\hskip 123pt plus 1.2fil x\\end ",
+                //--- output channel ---
+                "\\vbox(1.0pt+1.0pt)x125.0pt\n" + //
+                ".\\hbox(1.0pt+1.0pt)x125.0pt\n" + //
+                "..x\n" + //
+                "..\\glue123.0pt plus 1.2fil\n" + //
+                "..x\n");
     }
 
 }
