@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\kern</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class KernTest extends NoFlagsPrimitiveTester {
 
@@ -58,7 +58,7 @@ public class KernTest extends NoFlagsPrimitiveTester {
         assertFailure(//--- input code ---
                 "x\\kern ",
                 //--- log message ---
-                "Illegal unit of measure (pt inserted)");
+                "Missing number, treated as zero");
     }
 
     /**
@@ -73,8 +73,8 @@ public class KernTest extends NoFlagsPrimitiveTester {
                 "x\\kern 123pt"
                 + "\\end ",
                 //--- output channel ---
-                "\\vbox(0.0pt+0.0pt)x123.0pt\n"
-                + ".\\hbox(0.0pt+0.0pt)x123.0pt\n"
+                "\\vbox(1.0pt+1.0pt)x124.0pt\n"
+                + ".\\hbox(1.0pt+1.0pt)x124.0pt\n"
                 + "..x\n"
                 + "..\\kern123.0pt\n");
     }
