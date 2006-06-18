@@ -47,7 +47,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This class provides a container for a mathematical character.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class CharNoad extends AbstractNoad {
 
@@ -112,7 +112,7 @@ public class CharNoad extends AbstractNoad {
         StyleNoad style = mathContext.getStyle();
         UnicodeChar c = glyph.getCharacter();
         Font font = context.getFont(NumberedFont.key(context, //
-                style.getName() + "font", Integer.toString(glyph.getFamily())));
+                style.getFontName(), Integer.toString(glyph.getFamily())));
         if (font instanceof NullFont) {
             throw new TypesetterException(new HelpingException(getLocalizer(),
                     "TTP.UndefinedFamily", style.getStyleName(), Integer
@@ -173,7 +173,7 @@ public class CharNoad extends AbstractNoad {
         StyleNoad style = mathContext.getStyle();
         UnicodeChar c = glyph.getCharacter();
         Font font = context.getFont(NumberedFont.key(context, //
-                style.getName() + "font", Integer.toString(glyph.getFamily())));
+                style.getFontName(), Integer.toString(glyph.getFamily())));
         if (font instanceof NullFont) {
             throw new TypesetterException(new HelpingException(getLocalizer(),
                     "TTP.UndefinedFamily", style.getStyleName(), Integer
