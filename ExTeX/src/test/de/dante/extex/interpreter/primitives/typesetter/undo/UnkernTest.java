@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>&#x5c;unkern</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class UnkernTest extends NoFlagsPrimitiveTester {
 
@@ -93,7 +93,7 @@ public class UnkernTest extends NoFlagsPrimitiveTester {
     public void test1() throws Exception {
 
         assertSuccess(showNodesProperties(),
-        //--- input code ---
+                //--- input code ---
                 "a\\unkern\\end ",
                 //--- output channel ---
                 "" + //
