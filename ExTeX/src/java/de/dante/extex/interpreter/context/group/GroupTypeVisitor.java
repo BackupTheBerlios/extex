@@ -23,14 +23,16 @@ package de.dante.extex.interpreter.context.group;
  * This interface describes a visitor for group types.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface GroupTypeVisitor {
 
     /**
-     * This method is invoked when an adjustedhbox group has been encountered.
+     * This method is invoked when an adjusted hbox group has been encountered.
      *
      * @param arg the argument
+     *
+     * @return some object
      */
     Object visitAdjustedHboxGroup(Object arg);
 
@@ -38,6 +40,8 @@ public interface GroupTypeVisitor {
      * This method is invoked when an align group has been encountered.
      *
      * @param arg the argument
+     *
+     * @return some object
      */
     Object visitAlignGroup(Object arg);
 
@@ -45,6 +49,8 @@ public interface GroupTypeVisitor {
      * This method is invoked when a bottom level group has been encountered.
      *
      * @param arg the argument
+     *
+     * @return some object
      */
     Object visitBottomLevelGroup(Object arg);
 
@@ -52,6 +58,8 @@ public interface GroupTypeVisitor {
      * This method is invoked when a disc group has been encountered.
      *
      * @param arg the argument
+     *
+     * @return some object
      */
     Object visitDiscGroup(Object arg);
 
@@ -59,6 +67,8 @@ public interface GroupTypeVisitor {
      * This method is invoked when a hbox group has been encountered.
      *
      * @param arg the argument
+     *
+     * @return some object
      */
     Object visitHboxGroup(Object arg);
 
@@ -66,6 +76,8 @@ public interface GroupTypeVisitor {
      * This method is invoked when an insert group has been encountered.
      *
      * @param arg the argument
+     *
+     * @return some object
      */
     Object visitInsertGroup(Object arg);
 
@@ -73,6 +85,8 @@ public interface GroupTypeVisitor {
      * This method is invoked when a math choice group has been encountered.
      *
      * @param arg the argument
+     *
+     * @return some object
      */
     Object visitMathChoiceGroup(Object arg);
 
@@ -80,6 +94,8 @@ public interface GroupTypeVisitor {
      * This method is invoked when a math group has been encountered.
      *
      * @param arg the argument
+     *
+     * @return some object
      */
     Object visitMathGroup(Object arg);
 
@@ -87,6 +103,8 @@ public interface GroupTypeVisitor {
      * This method is invoked when a math left group has been encountered.
      *
      * @param arg the argument
+     *
+     * @return some object
      */
     Object visitMathLeftGroup(Object arg);
 
@@ -94,6 +112,8 @@ public interface GroupTypeVisitor {
      * This method is invoked when a math shift group has been encountered.
      *
      * @param arg the argument
+     *
+     * @return some object
      */
     Object visitMathShiftGroup(Object arg);
 
@@ -101,6 +121,8 @@ public interface GroupTypeVisitor {
      * This method is invoked when a no align group has been encountered.
      *
      * @param arg the argument
+     *
+     * @return some object
      */
     Object visitNoAlignGroup(Object arg);
 
@@ -108,6 +130,8 @@ public interface GroupTypeVisitor {
      * This method is invoked when a output group has been encountered.
      *
      * @param arg the argument
+     *
+     * @return some object
      */
     Object visitOutputGroup(Object arg);
 
@@ -115,6 +139,8 @@ public interface GroupTypeVisitor {
      * This method is invoked when a semi simple group has been encountered.
      *
      * @param arg the argument
+     *
+     * @return some object
      */
     Object visitSemiSimpleGroup(Object arg);
 
@@ -122,6 +148,8 @@ public interface GroupTypeVisitor {
      * This method is invoked when a simple group has been encountered.
      *
      * @param arg the argument
+     *
+     * @return some object
      */
     Object visitSimpleGroup(Object arg);
 
@@ -129,6 +157,8 @@ public interface GroupTypeVisitor {
      * This method is invoked when a vbox group has been encountered.
      *
      * @param arg the argument
+     *
+     * @return some object
      */
     Object visitVboxGroup(Object arg);
 
@@ -136,6 +166,8 @@ public interface GroupTypeVisitor {
      * This method is invoked when a vcenter group has been encountered.
      *
      * @param arg the argument
+     *
+     * @return some object
      */
     Object visitVcenterGroup(Object arg);
 
@@ -143,6 +175,8 @@ public interface GroupTypeVisitor {
      * This method is invoked when a vtop group has been encountered.
      *
      * @param arg the argument
+     *
+     * @return some object
      */
     Object visitVtopGroup(Object arg);
 
