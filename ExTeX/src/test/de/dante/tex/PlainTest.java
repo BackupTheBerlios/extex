@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is the test suite for plain.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class PlainTest extends ExTeXLauncher {
 
@@ -56,9 +56,13 @@ public class PlainTest extends ExTeXLauncher {
      *
      * @throws Exception in case of an error
      */
-    public void ______testPlain() throws Exception {
+    public void testPlain() throws Exception {
 
-        runFile("plain.tex");
+        assertOutput(
+                "\\input develop/test/data/plain-dump \\end",
+                "",
+                "Preloading the plain format: codes, registers, parameters, fonts, more fonts,\n"
+                + "macros, math definitions, output routines, hyphenation");
     }
 
 }
