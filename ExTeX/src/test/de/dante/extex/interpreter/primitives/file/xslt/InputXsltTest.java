@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsButGlobalPrimitiveTester;
  * This is a test suite for the primitive <tt>\inputXSLT</tt>.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class InputXsltTest extends NoFlagsButGlobalPrimitiveTester {
 
@@ -48,15 +48,7 @@ public class InputXsltTest extends NoFlagsButGlobalPrimitiveTester {
 
         super(arg, "javadef",
                 "\\inputXSLT{de.dante.extex.interpreter.primitives.file.xslt.InputXslt}");
-
-    }
-
-    /**
-     * @see de.dante.test.ExTeXLauncher#getConfig()
-     */
-    protected String getConfig() {
-
-        return "extex-jx.xml";
+        setConfig("extex-jx");
     }
 
     /**

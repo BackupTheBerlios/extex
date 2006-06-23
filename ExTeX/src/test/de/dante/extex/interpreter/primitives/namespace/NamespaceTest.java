@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsButGlobalPrimitiveTester;
  * This is a test suite for the primitive <tt>\namespace</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class NamespaceTest extends NoFlagsButGlobalPrimitiveTester {
 
@@ -46,16 +46,7 @@ public class NamespaceTest extends NoFlagsButGlobalPrimitiveTester {
     public NamespaceTest(final String arg) {
 
         super(arg, "namespace", "{a}", DEFINE_BRACES);
-    }
-
-    /**
-     * Getter for the configuration name.
-     *
-     * @return the name of the configuration
-     */
-    protected String getConfig() {
-
-        return "nextex.xml";
+        setConfig("nextex");
     }
 
     /**

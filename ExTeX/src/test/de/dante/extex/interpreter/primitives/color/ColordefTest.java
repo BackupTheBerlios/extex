@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsButGlobalPrimitiveTester;
  * This is a test suite for the primitive <tt>\colordef</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ColordefTest extends NoFlagsButGlobalPrimitiveTester {
 
@@ -40,14 +40,6 @@ public class ColordefTest extends NoFlagsButGlobalPrimitiveTester {
     }
 
     /**
-     * @see de.dante.test.ExTeXLauncher#getConfig()
-     */
-    protected String getConfig() {
-
-        return "colorextex";
-    }
-
-    /**
      * Creates a new object.
      *
      * @param arg the name
@@ -55,6 +47,7 @@ public class ColordefTest extends NoFlagsButGlobalPrimitiveTester {
     public ColordefTest(final String arg) {
 
         super(arg, "colordef", "\\x{.1 .2 .3}", "");
+        setConfig("colorextex");
     }
 
     /**
