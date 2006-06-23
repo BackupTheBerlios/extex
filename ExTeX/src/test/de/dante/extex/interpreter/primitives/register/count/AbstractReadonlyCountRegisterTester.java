@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for read-only count registers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class AbstractReadonlyCountRegisterTester extends ExTeXLauncher {
 
@@ -43,6 +43,11 @@ public abstract class AbstractReadonlyCountRegisterTester extends ExTeXLauncher 
      * The field <tt>argument</tt> contains the argument.
      */
     private String argument = "";
+
+    /**
+     * The field <tt>prepare</tt> contains the ...
+     */
+    private String prepare = "";
 
     /**
      * Creates a new object.
@@ -75,6 +80,26 @@ public abstract class AbstractReadonlyCountRegisterTester extends ExTeXLauncher 
         this.primitive = primitive;
         this.defaultValue = defaultValue;
         this.argument = argument;
+    }
+
+    /**
+     * Creates a new object.
+     *
+     * @param arg the name
+     * @param primitive the name of the primitive
+     * @param argument the argument
+     * @param defaultValue the default value
+     * @param prepare ...
+     */
+    public AbstractReadonlyCountRegisterTester(final String arg,
+            final String primitive, final String argument,
+            final String defaultValue, final String prepare) {
+
+        super(arg);
+        this.primitive = primitive;
+        this.defaultValue = defaultValue;
+        this.argument = argument;
+        this.prepare = prepare;
     }
 
     /**
@@ -181,7 +206,7 @@ public abstract class AbstractReadonlyCountRegisterTester extends ExTeXLauncher 
     public void testDefaultValue1() throws Exception {
 
         assertSuccess(//--- input code ---
-                "\\the\\" + primitive + argument + " \\end",
+                prepare + "\\the\\" + primitive + argument + " \\end",
                 //--- log message ---
                 defaultValue + TERM);
     }
@@ -196,7 +221,7 @@ public abstract class AbstractReadonlyCountRegisterTester extends ExTeXLauncher 
     public void testCountAssignment1() throws Exception {
 
         assertSuccess(//--- input code ---
-                "\\count0=\\" + primitive + argument + "\\the\\count0\\end",
+                prepare + "\\count0=\\" + primitive + argument + "\\the\\count0\\end",
                 //--- log message ---
                 defaultValue + TERM);
     }
