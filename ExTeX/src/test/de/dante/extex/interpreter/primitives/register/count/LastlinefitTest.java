@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -19,14 +19,13 @@
 
 package de.dante.extex.interpreter.primitives.register.count;
 
-
 /**
- * This is a test suite for the primitive <tt>\doublehyphendemerits</tt>.
+ * This is a test suite for the primitive <tt>\lastlinefit</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public class DoubleyphendemeritsTest extends AbstractCountRegisterTester {
+public class LastlinefitTest extends AbstractCountRegisterTester {
 
     /**
      * Command line interface.
@@ -34,7 +33,7 @@ public class DoubleyphendemeritsTest extends AbstractCountRegisterTester {
      */
     public static void main(final String[] args) {
 
-        junit.textui.TestRunner.run(DoubleyphendemeritsTest.class);
+        junit.textui.TestRunner.run(LastlinefitTest.class);
     }
 
     /**
@@ -42,9 +41,9 @@ public class DoubleyphendemeritsTest extends AbstractCountRegisterTester {
      *
      * @param arg the name
      */
-    public DoubleyphendemeritsTest(final String arg) {
+    public LastlinefitTest(final String arg) {
 
-        super(arg, "doublehyphendemerits", "", "0");
+        super(arg, "lastlinefit", "", "0");
     }
 
     //TODO implement the primitive specific test cases

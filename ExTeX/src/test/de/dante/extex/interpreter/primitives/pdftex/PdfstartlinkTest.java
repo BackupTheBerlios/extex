@@ -27,24 +27,17 @@ import de.dante.test.NoFlagsButProtectedPrimitiveTester;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @version $Revision: 1.1 $
  */
-public class PdfStartlinkTest extends NoFlagsButProtectedPrimitiveTester {
+public class PdfstartlinkTest extends NoFlagsButProtectedPrimitiveTester {
 
     /**
      * Creates a new object.
      *
      * @param arg the name
      */
-    public PdfStartlinkTest(final String arg) {
+    public PdfstartlinkTest(final String arg) {
 
         super(arg, "pdfstartlink", " user{u}", "a ");
-    }
-
-    /**
-     * @see de.dante.test.ExTeXLauncher#getConfig()
-     */
-    protected String getConfig() {
-
-        return "pdftex.xml";
+        setConfig("pdftex-112");
     }
 
     /**
