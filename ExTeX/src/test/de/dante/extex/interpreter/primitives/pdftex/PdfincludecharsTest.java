@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsButProtectedPrimitiveTester;
  * This is a test suite for the primitive <tt>\pdfincludechars</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class PdfincludecharsTest extends NoFlagsButProtectedPrimitiveTester {
 
@@ -37,14 +37,7 @@ public class PdfincludecharsTest extends NoFlagsButProtectedPrimitiveTester {
     public PdfincludecharsTest(final String arg) {
 
         super(arg, "pdfincludechars", "\\f{}", "\\font\\f=cmr10 ");
-    }
-
-    /**
-     * @see de.dante.test.ExTeXLauncher#getConfig()
-     */
-    protected String getConfig() {
-
-        return "pdftex.xml";
+        setConfig("pdftex-112");
     }
 
     /**

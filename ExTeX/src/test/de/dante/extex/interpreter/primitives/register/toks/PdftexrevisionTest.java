@@ -23,7 +23,7 @@ package de.dante.extex.interpreter.primitives.register.toks;
  * This is a test suite for the primitive <tt>\pdftexrevision</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class PdftexrevisionTest extends AbstractToksRegisterTester {
 
@@ -37,16 +37,6 @@ public class PdftexrevisionTest extends AbstractToksRegisterTester {
     }
 
     /**
-     * Getter for the configuration name.
-     *
-     * @return the name of the configuration
-     */
-    protected String getConfig() {
-
-        return "pdftex-112.xml";
-    }
-
-    /**
      * Creates a new object.
      *
      * @param arg the name
@@ -54,6 +44,7 @@ public class PdftexrevisionTest extends AbstractToksRegisterTester {
     public PdftexrevisionTest(final String arg) {
 
         super(arg, "pdftexrevision", "", "r");
+        setConfig("pdftex-112");
     }
 
     //TODO implement the primitive specific test cases

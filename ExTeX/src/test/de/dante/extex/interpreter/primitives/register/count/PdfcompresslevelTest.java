@@ -23,7 +23,7 @@ package de.dante.extex.interpreter.primitives.register.count;
  * This is a test suite for the primitive <tt>\pdfcompresslevel</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class PdfcompresslevelTest extends AbstractCountRegisterTester {
 
@@ -37,16 +37,6 @@ public class PdfcompresslevelTest extends AbstractCountRegisterTester {
     }
 
     /**
-     * Getter for the configuration name.
-     *
-     * @return the name of the configuration
-     */
-    protected String getConfig() {
-
-        return "pdftex-112.xml";
-    }
-
-    /**
      * Creates a new object.
      *
      * @param arg the name
@@ -54,6 +44,7 @@ public class PdfcompresslevelTest extends AbstractCountRegisterTester {
     public PdfcompresslevelTest(final String arg) {
 
         super(arg, "pdfcompresslevel", "", "9");
+        setConfig("pdftex-112");
     }
 
     //TODO implement the primitive specific test cases

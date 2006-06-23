@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsButProtectedPrimitiveTester;
  * This is a test suite for the primitive <tt>\pdfliteral</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class PdfliteralTest extends NoFlagsButProtectedPrimitiveTester {
 
@@ -37,14 +37,7 @@ public class PdfliteralTest extends NoFlagsButProtectedPrimitiveTester {
     public PdfliteralTest(final String arg) {
 
         super(arg, "pdfliteral", "{}", "");
-    }
-
-    /**
-     * @see de.dante.test.ExTeXLauncher#getConfig()
-     */
-    protected String getConfig() {
-
-        return "pdftex.xml";
+        setConfig("pdftex-112");
     }
 
     /**

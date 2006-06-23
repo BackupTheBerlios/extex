@@ -26,7 +26,7 @@ import de.dante.test.NoFlagsButImmediateAndProtectedPrimitiveTester;
  * This is a test suite for the primitive <tt>\pdfannot</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class PdfannotTest
         extends
@@ -40,14 +40,7 @@ public class PdfannotTest
     public PdfannotTest(final String arg) {
 
         super(arg, "pdfannot", "{}");
-    }
-
-    /**
-     * @see de.dante.test.ExTeXLauncher#getConfig()
-     */
-    protected String getConfig() {
-
-        return "pdftex-112.xml";
+        setConfig("pdftex-112");
     }
 
     /**

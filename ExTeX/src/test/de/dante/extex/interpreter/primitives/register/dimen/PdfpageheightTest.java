@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -19,12 +19,11 @@
 
 package de.dante.extex.interpreter.primitives.register.dimen;
 
-
 /**
  * This is a test suite for the primitive <tt>\pdfpageheight</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class PdfpageheightTest extends AbstractDimenRegisterTester {
 
@@ -38,16 +37,6 @@ public class PdfpageheightTest extends AbstractDimenRegisterTester {
     }
 
     /**
-     * Getter for the configuration name.
-     *
-     * @return the name of the configuration
-     */
-    protected String getConfig() {
-
-        return "pdftex.xml";
-    }
-
-    /**
      * Creates a new object.
      *
      * @param arg the name
@@ -55,6 +44,7 @@ public class PdfpageheightTest extends AbstractDimenRegisterTester {
     public PdfpageheightTest(final String arg) {
 
         super(arg, "pdfpageheight", "", "845.04684pt");
+        setConfig("pdftex-112");
     }
 
     //TODO implement the primitive specific test cases

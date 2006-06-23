@@ -19,12 +19,11 @@
 
 package de.dante.extex.interpreter.primitives.register.count;
 
-
 /**
  * This is a test suite for the primitive <tt>\pdfmovechars</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class PdfmovecharsTest extends AbstractCountRegisterTester {
 
@@ -38,16 +37,6 @@ public class PdfmovecharsTest extends AbstractCountRegisterTester {
     }
 
     /**
-     * Getter for the configuration name.
-     *
-     * @return the name of the configuration
-     */
-    protected String getConfig() {
-
-        return "pdftex.xml";
-    }
-
-    /**
      * Creates a new object.
      *
      * @param arg the name
@@ -55,6 +44,7 @@ public class PdfmovecharsTest extends AbstractCountRegisterTester {
     public PdfmovecharsTest(final String arg) {
 
         super(arg, "pdfmovechars", "", "0");
+        setConfig("pdftex-112");
     }
 
     //TODO implement the primitive specific test cases
