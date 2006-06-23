@@ -24,7 +24,7 @@ import junit.framework.TestCase;
  * Test for grouping.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class GroupingTest extends TestCase {
 
@@ -44,7 +44,7 @@ public class GroupingTest extends TestCase {
     public void testGroup()
         throws Exception {
 
-        TestTeX.test("jugrouping", "src/test/data/jugrouping.testtxt");
+        TestTeX.test("jugrouping");
     }
 
 }
