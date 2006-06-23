@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -26,7 +26,7 @@ import de.dante.test.ExTeXLauncher;
  * It provides some test cases common to all count registers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public abstract class AbstractCountRegisterTester extends ExTeXLauncher {
 
@@ -151,6 +151,22 @@ public abstract class AbstractCountRegisterTester extends ExTeXLauncher {
                 prepare + "\\the\\" + invocation + "\\end",
                 //--- output channel ---
                 init + TERM);
+    }
+
+    /**
+     * <testcase>
+     *  Test case showing that the primitive is applicable fro \showthe.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testCountRegisterShowthe1() throws Exception {
+
+        assertOutput(//--- input code ---
+                prepare + "\\showthe\\" + invocation + "\\end",
+                //--- output channel ---
+                "> " + init + ".\n",
+                "");
     }
 
     /**
@@ -635,7 +651,7 @@ public abstract class AbstractCountRegisterTester extends ExTeXLauncher {
 
     /**
      * <testcase>
-     *  Test case showing that an multiplication by the constant -12 works.
+     *  Test case showing that an division by the constant -12 works.
      * </testcase>
      *
      * @throws Exception in case of an error
@@ -684,6 +700,24 @@ public abstract class AbstractCountRegisterTester extends ExTeXLauncher {
                         + "-123 \\endgroup" + "\\the\\" + invocation + "\\end",
                 //--- output channel ---
                 "2" + TERM);
+    }
+
+    /**
+     * <testcase>
+     *  Test case showing that an division by the constant 12 works rounds to
+     *  an integer.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testCountRegisterDivide7() throws Exception {
+
+        assertSuccess(//--- input code ---
+                prepare + "\\" + invocation + "=37 " + "\\divide\\"
+                        + invocation + "-12 " + "\\the\\" + invocation
+                        + "\\end",
+                //--- output channel ---
+                "-3" + TERM);
     }
 
     /**
