@@ -48,7 +48,7 @@
     <define name="pdfhorigin"
           class="de.dante.extex.interpreter.primitives.register.dimen.DimenParameter"/>
     <define name="pdfimageresolution"
-            class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
+            class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter">600</define>
     <define name="pdfincludechars"
             class="de.dante.extex.interpreter.primitives.pdftex.Pdfincludechars"/><!-- <font> <general text> -->
     <define name="pdfinfo"
