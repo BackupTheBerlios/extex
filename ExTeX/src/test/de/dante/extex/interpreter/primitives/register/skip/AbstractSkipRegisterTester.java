@@ -26,7 +26,7 @@ import de.dante.test.ExTeXLauncher;
  * It provides some test cases common to all skip registers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
 
@@ -167,6 +167,22 @@ public abstract class AbstractSkipRegisterTester extends ExTeXLauncher {
                 prepare + "\\the\\" + invocation + "\\end",
                 //--- output channel ---
                 init + TERM);
+    }
+
+    /**
+     * <testcase>
+     *  Test case showing that the primitive is applicable to \showthe.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testSkipRegisterShowthe1() throws Exception {
+
+        assertOutput(//--- input code ---
+                prepare + "\\showthe\\" + invocation + "\\end",
+                //--- output channel ---
+                "> " + init + ".\n",
+                "");
     }
 
     /**
