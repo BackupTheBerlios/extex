@@ -25,8 +25,10 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractAssignment;
+import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.font.FontConvertible;
+import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
 
 /**
@@ -34,9 +36,12 @@ import de.dante.extex.typesetter.Typesetter;
  * context.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
-public class NamedFont extends AbstractAssignment implements FontConvertible {
+public class NamedFont extends AbstractAssignment
+        implements
+            FontConvertible,
+            Theable {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
@@ -101,6 +106,20 @@ public class NamedFont extends AbstractAssignment implements FontConvertible {
         } else {
             return getName();
         }
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.Theable#the(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public Tokens the(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
+
+        String key = getKey(context, source, typesetter);
+        Font font = context.getFont(key);
+        return new Tokens(context, context.esc(font.getFontName()));
     }
 
 }
