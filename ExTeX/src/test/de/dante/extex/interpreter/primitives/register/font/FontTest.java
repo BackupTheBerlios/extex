@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -27,7 +27,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\font</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class FontTest extends ExTeXLauncher {
 
@@ -42,13 +42,23 @@ public class FontTest extends ExTeXLauncher {
     }
 
     /**
+     * The field <tt>primitive</tt> contains the ...
+     */
+    private String primitive = "font";
+
+    /**
+     * The field <tt>arguments</tt> contains the ...
+     */
+    private String arguments = "";
+
+    /**
      * Test case checking that \fontdimen on unset keys returns 0 pt.
      * @throws Exception in case of an error
      */
     public void testNoMacro1() throws Exception {
 
         assertFailure(//--- input code ---
-                "\\font noFont at 10pt " + "\\end",
+                "\\" + primitive + arguments + " noFont at 10pt " + "\\end",
                 //--- log message ---
                 "Missing control sequence inserted");
     }
@@ -60,7 +70,8 @@ public class FontTest extends ExTeXLauncher {
     public void testUndefined1() throws Exception {
 
         assertFailure(//--- input code ---
-                "\\font\\abc=noFont at 10pt " + "\\end",
+                "\\" + primitive + arguments + "\\abc=noFont at 10pt "
+                        + "\\end",
                 //--- log message ---
                 "Font \\abc=noFont not loadable: Metric (TFM) file not found");
     }
@@ -76,8 +87,9 @@ public class FontTest extends ExTeXLauncher {
         properties.setProperty("extex.output", "text");
 
         assertSuccess(properties,
-                //--- input code ---
-                "\\font\\abc=cmtt12 " + "\\abc x" + "\\end",
+        //--- input code ---
+                "\\" + primitive + arguments + "\\abc=cmtt12 " + "\\abc x"
+                        + "\\end",
                 //--- output channel ---
                 "\nx\n");
     }
@@ -90,7 +102,8 @@ public class FontTest extends ExTeXLauncher {
     public void testFont2() throws Exception {
 
         assertSuccess(//--- input code ---
-                "\\font\\abc=cmtt12 at 10pt " + "\\end",
+                "\\" + primitive + arguments + "\\abc=cmtt12 at 10pt "
+                        + "\\end",
                 //--- output channel ---
                 "");
     }
@@ -103,7 +116,8 @@ public class FontTest extends ExTeXLauncher {
     public void testFont3() throws Exception {
 
         assertSuccess(//--- input code ---
-                "\\font\\abc=cmtt12 scaled 2000 " + "\\end",
+                "\\" + primitive + arguments + "\\abc=cmtt12 scaled 2000 "
+                        + "\\end",
                 //--- output channel ---
                 "");
     }
@@ -116,7 +130,8 @@ public class FontTest extends ExTeXLauncher {
     public void testFont4() throws Exception {
 
         assertSuccess(//--- input code ---
-                "\\catcode`/=13 " + "\\font/=cmtt12 " + "\\end",
+                "\\catcode`/=13 " + "\\" + primitive + arguments + "/=cmtt12 "
+                        + "\\end",
                 //--- output channel ---
                 "");
     }
@@ -129,7 +144,8 @@ public class FontTest extends ExTeXLauncher {
     public void testNegativeScale1() throws Exception {
 
         assertFailure(//--- input code ---
-                "\\font\\abc=cmtt12 scaled -2000 " + "\\end",
+                "\\" + primitive + arguments + "\\abc=cmtt12 scaled -2000 "
+                        + "\\end",
                 //--- log message ---
                 "Illegal magnification has been changed to 1000");
     }
@@ -141,7 +157,7 @@ public class FontTest extends ExTeXLauncher {
     public void testNonEmf1() throws Exception {
 
         assertSuccess(//--- input code ---
-                "\\font\\abc=cmr10\\relax " + "\\end",
+                "\\" + primitive + arguments + "\\abc=cmr10\\relax " + "\\end",
                 //--- output channel ---
                 "");
     }
