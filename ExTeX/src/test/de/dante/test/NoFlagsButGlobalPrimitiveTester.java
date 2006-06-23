@@ -24,7 +24,7 @@ package de.dante.test;
  * global flag lead to an error.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public abstract class NoFlagsButGlobalPrimitiveTester extends ExTeXLauncher {
 
@@ -110,7 +110,9 @@ public abstract class NoFlagsButGlobalPrimitiveTester extends ExTeXLauncher {
                 prepare + "\\immediate\\" + primitive + arguments,
                 //--- log message ---
                 out + "You can\'t use the prefix `\\immediate\' "
-                        + "with the control sequence \\" + primitive);
+                        + "with the control sequence"
+                        + (primitive.length() < 16 ? " " : "\n")
+                        + "\\" + primitive);
     }
 
     /**
@@ -161,7 +163,9 @@ public abstract class NoFlagsButGlobalPrimitiveTester extends ExTeXLauncher {
                 prepare + "\\protected\\" + primitive + arguments,
                 //--- log message ---
                 out + "You can\'t use the prefix `\\protected\' "
-                        + "with the control sequence \\" + primitive);
+                        + "with the control sequence"
+                        + (primitive.length() < 16 ? " " : "\n")
+                        + "\\" + primitive);
     }
 
 }
