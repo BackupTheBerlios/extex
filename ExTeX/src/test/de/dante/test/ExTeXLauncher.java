@@ -57,7 +57,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * running an instance of <logo>ExTeX</logo>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.46 $
+ * @version $Revision: 1.47 $
  */
 public class ExTeXLauncher extends TestCase {
 
@@ -65,7 +65,7 @@ public class ExTeXLauncher extends TestCase {
      * Inner class for the error handler.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.46 $
+     * @version $Revision: 1.47 $
      */
     private class EHandler implements ErrorHandler {
 
@@ -141,6 +141,15 @@ public class ExTeXLauncher extends TestCase {
      * String representation to Level values.
      */
     private static final Map LEVEL_MAP = new HashMap();
+    {
+        LEVEL_MAP.put("config", Level.CONFIG);
+        LEVEL_MAP.put("info", Level.INFO);
+        LEVEL_MAP.put("warning", Level.WARNING);
+        LEVEL_MAP.put("severe", Level.SEVERE);
+        LEVEL_MAP.put("fine", Level.FINE);
+        LEVEL_MAP.put("finer", Level.FINER);
+        LEVEL_MAP.put("finest", Level.FINEST);
+    }
 
     /**
      * The constant <tt>TERM</tt> contains the terminating string for output.
@@ -181,15 +190,10 @@ public class ExTeXLauncher extends TestCase {
         }
     }
 
-    {
-        LEVEL_MAP.put("config", Level.CONFIG);
-        LEVEL_MAP.put("info", Level.INFO);
-        LEVEL_MAP.put("warning", Level.WARNING);
-        LEVEL_MAP.put("severe", Level.SEVERE);
-        LEVEL_MAP.put("fine", Level.FINE);
-        LEVEL_MAP.put("finer", Level.FINER);
-        LEVEL_MAP.put("finest", Level.FINEST);
-    }
+    /**
+     * The field <tt>config</tt> contains the name of the configuration to use.
+     */
+    private String config = "extex.xml";
 
     /**
      * The field <tt>defaultLog</tt> contains the default log output unless
@@ -423,16 +427,6 @@ public class ExTeXLauncher extends TestCase {
     }
 
     /**
-     * Getter for the configuration name.
-     *
-     * @return the name of the configuration
-     */
-    protected String getConfig() {
-
-        return "extex.xml";
-    }
-
-    /**
      * Getter for defaultLog.
      *
      * @return the defaultLog
@@ -558,6 +552,16 @@ public class ExTeXLauncher extends TestCase {
     }
 
     /**
+     * Setter for config.
+     *
+     * @param config the config to set
+     */
+    public void setConfig(final String config) {
+
+        this.config = config;
+    }
+
+    /**
      * Setter for defaultLog.
      *
      * @param defaultLog the defaultLog to set
@@ -587,6 +591,17 @@ public class ExTeXLauncher extends TestCase {
         Properties p = getProps();
         p.put("extex.output", "dump");
         return p;
+    }
+
+    
+    /**
+     * Getter for config.
+     *
+     * @return the config
+     */
+    protected String getConfig() {
+    
+        return this.config;
     }
 
 }
