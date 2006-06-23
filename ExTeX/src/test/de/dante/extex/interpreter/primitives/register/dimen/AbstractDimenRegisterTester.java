@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -26,7 +26,7 @@ import de.dante.test.ExTeXLauncher;
  * It provides some test cases common to all dimen registers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
 
@@ -47,7 +47,8 @@ public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
     private String init;
 
     /**
-     * The field <tt>prepare</tt> contains the ...
+     * The field <tt>prepare</tt> contains the the initializing code which goes
+     * before the invocation.
      */
     private String prepare = "";
 
@@ -57,6 +58,7 @@ public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
      * @param arg the name of the test suite
      * @param primitive the name of the integer register to test
      * @param args the parameters for the invocation
+     * @param init the initializing code which goes before the invocation
      */
     public AbstractDimenRegisterTester(final String arg,
             final String primitive, final String args, final String init) {
@@ -166,6 +168,22 @@ public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
                 prepare + "\\the\\" + invocation + "\\end",
                 //--- output channel ---
                 init + TERM);
+    }
+
+    /**
+     * <testcase>
+     *  Test case showing that the primitive is applicable to \showthe.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testDimenShowthe1() throws Exception {
+
+        assertOutput(//--- input code ---
+                prepare + "\\showthe\\" + invocation + "\\end",
+                //--- output channel ---
+                "> " + init + ".\n",
+                "");
     }
 
     /**

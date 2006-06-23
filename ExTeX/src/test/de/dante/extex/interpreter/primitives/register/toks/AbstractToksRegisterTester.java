@@ -26,7 +26,7 @@ import de.dante.test.ExTeXLauncher;
  * It provides some test cases common to all toks registers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public abstract class AbstractToksRegisterTester extends ExTeXLauncher {
 
@@ -147,6 +147,22 @@ public abstract class AbstractToksRegisterTester extends ExTeXLauncher {
                 prepare + "\\the\\" + invocation + "\\end",
                 //--- output channel ---
                 init + (init.length() != 0 ? TERM : ""));
+    }
+
+    /**
+     * <testcase>
+     *  Test case showing that the primitive is applicable to \showthe.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testToksRegisterShowthe1() throws Exception {
+
+        assertOutput(//--- input code ---
+                prepare + "\\showthe\\" + invocation + "\\end",
+                //--- output channel ---
+                "> " + init + ".\n",
+                "");
     }
 
     /**
