@@ -30,6 +30,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
 import de.dante.util.framework.configuration.exception.ConfigurationIOException;
 import de.dante.util.framework.configuration.exception.ConfigurationInstantiationException;
 import de.dante.util.framework.configuration.exception.ConfigurationInvalidClassException;
+import de.dante.util.framework.configuration.exception.ConfigurationInvalidConstructorException;
 import de.dante.util.framework.configuration.exception.ConfigurationInvalidResourceException;
 import de.dante.util.framework.configuration.exception.ConfigurationMissingAttributeException;
 import de.dante.util.framework.configuration.exception.ConfigurationMissingException;
@@ -66,7 +67,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public abstract class AbstractFactory
         implements
@@ -466,8 +467,7 @@ public abstract class AbstractFactory
             throw new ConfigurationInstantiationException(e);
         }
 
-        throw new ConfigurationInvalidClassException("", target.getName(),
-                config);
+        throw new ConfigurationInvalidConstructorException(className, config);
     }
 
     /**
