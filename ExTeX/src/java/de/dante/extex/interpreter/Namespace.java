@@ -24,7 +24,7 @@ package de.dante.extex.interpreter;
  * is supposed to be instantiated.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public final class Namespace {
 
@@ -33,6 +33,13 @@ public final class Namespace {
      * name space.
      */
     public static final String DEFAULT_NAMESPACE = "";
+
+    /**
+     * The constant <tt>SYSTEM_NAMESPACE</tt> contains the name of the system
+     * name space.
+     */
+    public static final String SYSTEM_NAMESPACE = "system";
+
 
     /**
      * The constant <tt>SUPPORT_NAMESPACE_BOX</tt> contains the flag
