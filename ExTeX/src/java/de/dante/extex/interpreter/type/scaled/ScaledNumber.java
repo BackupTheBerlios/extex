@@ -47,7 +47,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This class provides a fixed point number.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class ScaledNumber {
 
@@ -55,7 +55,7 @@ public class ScaledNumber {
      * This interface describes a binary operation on two longs.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.4 $
+     * @version $Revision: 1.5 $
      */
     private interface BinOp {
 
@@ -119,7 +119,7 @@ public class ScaledNumber {
      * The field <tt>SECOND</tt> contains the operation to select the second
      * argument.
      */
-    private static final BinOp SECOND = new BinOp(){
+    private static final BinOp SECOND = new BinOp() {
 
         /**
          * @see de.dante.extex.interpreter.primitives.register.count.Numexpr.BinOp#apply(
@@ -210,6 +210,7 @@ public class ScaledNumber {
                     long val = evalExpr(context, source, typesetter);
                     t = source.getToken(context);
                     if (t.equals(Catcode.OTHER, ')')) {
+                        source.skipSpace();
                         return val;
                     }
 
@@ -227,13 +228,17 @@ public class ScaledNumber {
             } else if (t instanceof CodeToken) {
                 Code code = context.getCode((CodeToken) t);
                 if (code instanceof ScaledConvertible) {
-                    return ((ScaledConvertible) code).convertScaled(context,
-                            source, typesetter);
+                    long val = ((ScaledConvertible) code).convertScaled(
+                            context, source, typesetter);
+                    source.skipSpace();
+                    return val;
 
                 } else if (code instanceof CountConvertible) {
-                    return ((CountConvertible) code).convertCount(context,
+                    long val = ((CountConvertible) code).convertCount(context,
                             source, typesetter)
                             * ONE;
+                    source.skipSpace();
+                    return val;
 
                 } else if (code instanceof ExpandableCode) {
                     ((ExpandableCode) code).expand(Flags.NONE, context, source,
@@ -323,6 +328,7 @@ public class ScaledNumber {
             post = (post + 1) / 2;
         }
         source.push(t);
+        source.skipSpace();
         val = val << 16 | post;
         return (neg ? -val : val);
     }
