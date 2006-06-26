@@ -75,8 +75,8 @@
   <Finder class="de.dante.util.resource.LsrFinder"
           capacity="88888"
           default="default">
-    <path property="extex.fonts"></path>
-    <path property="texmf.path"></path>
+    <path property="extex.fonts"/>
+    <path property="texmf.path"/>
     <path property="extex.texinputs"/>
     <path property="texinputs"/>
 
