@@ -26,6 +26,7 @@ import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.ArithmeticOverflowException;
 import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.interpreter.type.ExpandableCode;
+import de.dante.extex.interpreter.type.InitializableCode;
 import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.arithmetic.Advanceable;
 import de.dante.extex.interpreter.type.arithmetic.Divideable;
@@ -39,7 +40,7 @@ import de.dante.extex.typesetter.Typesetter;
  * This class provides an object which acts like a count register.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class IntegerCode extends AbstractAssignment
         implements
@@ -48,7 +49,8 @@ public class IntegerCode extends AbstractAssignment
             Multiplyable,
             Divideable,
             Advanceable,
-            ExpandableCode {
+            ExpandableCode,
+            InitializableCode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
@@ -58,12 +60,24 @@ public class IntegerCode extends AbstractAssignment
     /**
      * The field <tt>value</tt> contains the value stored in this object.
      */
-    private long value = 0;
+    private long value;
 
     /**
      * Creates a new object.
      *
      * @param name the first name of the primitive
+     */
+    public IntegerCode(final String name) {
+
+        super(name);
+        this.value = 0;
+    }
+
+    /**
+     * Creates a new object.
+     *
+     * @param name the first name of the primitive
+     * @param value the initial value
      */
     public IntegerCode(final String name, final long value) {
 
@@ -150,6 +164,28 @@ public class IntegerCode extends AbstractAssignment
     }
 
     /**
+     * Getter for value.
+     *
+     * @return the value
+     */
+    public long getValue() {
+
+        return this.value;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.InitializableCode#init(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public void init(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
+
+        value = Count.scanInteger(context, source, typesetter);
+    }
+
+    /**
      * @see de.dante.extex.interpreter.type.arithmetic.Multiplyable#multiply(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
@@ -163,6 +199,16 @@ public class IntegerCode extends AbstractAssignment
         source.getKeyword(context, "by");
         Count v = Count.parse(context, source, typesetter);
         value *= v.getValue();
+    }
+
+    /**
+     * Setter for value.
+     *
+     * @param value the value to set
+     */
+    public void setValue(long value) {
+
+        this.value = value;
     }
 
     /**
