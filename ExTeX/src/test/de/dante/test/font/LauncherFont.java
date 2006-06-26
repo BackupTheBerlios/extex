@@ -19,7 +19,7 @@ import de.dante.util.UnicodeChar;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @version $Revision: 1.1 $
  */
-public class LancherFont implements Font, Serializable {
+public class LauncherFont implements Font, Serializable {
 
     /**
      * The field <tt>serialVersionUID</tt> contains the ...

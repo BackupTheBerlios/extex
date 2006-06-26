@@ -47,7 +47,7 @@ import de.dante.extex.main.errorHandler.editHandler.EditHandler;
 import de.dante.extex.main.logging.LogFormatter;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.extex.scanner.type.token.Token;
-import de.dante.test.font.LancherFont;
+import de.dante.test.font.LauncherFont;
 import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
@@ -57,7 +57,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * running an instance of <logo>ExTeX</logo>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.47 $
+ * @version $Revision: 1.48 $
  */
 public class ExTeXLauncher extends TestCase {
 
@@ -65,7 +65,7 @@ public class ExTeXLauncher extends TestCase {
      * Inner class for the error handler.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.47 $
+     * @version $Revision: 1.48 $
      */
     private class EHandler implements ErrorHandler {
 
@@ -304,7 +304,7 @@ public class ExTeXLauncher extends TestCase {
                 Interpreter interpreter = super.makeInterpreter(config,
                         factory, fontFactory);
                 Context context = interpreter.getContext();
-                context.set(new LancherFont(), true);
+                context.set(new LauncherFont(), true);
                 context.setStandardTokenStream(factory
                         .newInstance(new InputStreamReader(System.in)));
                 context.set(context.getLanguage("0"), true);
@@ -427,6 +427,16 @@ public class ExTeXLauncher extends TestCase {
     }
 
     /**
+     * Getter for config.
+     *
+     * @return the config
+     */
+    protected String getConfig() {
+
+        return this.config;
+    }
+
+    /**
      * Getter for defaultLog.
      *
      * @return the defaultLog
@@ -467,8 +477,6 @@ public class ExTeXLauncher extends TestCase {
                     FileInputStream inputStream = new FileInputStream(file);
                     props.load(inputStream);
                     inputStream.close();
-                    //} catch (FileNotFoundException e) {
-                    // ignored on purpose
                 } catch (IOException e) {
                     // ignored on purpose
                 }
@@ -494,6 +502,20 @@ public class ExTeXLauncher extends TestCase {
     protected boolean isSetHsize() {
 
         return this.setHsize;
+    }
+
+    /**
+     * Format a log messages properly. This emulates the way <logo>TeX</logo>
+     * does it; i.e. prefix and postfix are appended and line breaking is
+     * applied.
+     *
+     * @param message the message to format
+     *
+     * @return the formatted message according to the log channel rules
+     */
+    public String out(final String message) {
+
+        return "> " + message + ".\n";
     }
 
     /**
@@ -591,17 +613,6 @@ public class ExTeXLauncher extends TestCase {
         Properties p = getProps();
         p.put("extex.output", "dump");
         return p;
-    }
-
-    
-    /**
-     * Getter for config.
-     *
-     * @return the config
-     */
-    protected String getConfig() {
-    
-        return this.config;
     }
 
 }
