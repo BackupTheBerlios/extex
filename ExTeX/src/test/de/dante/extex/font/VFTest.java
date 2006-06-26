@@ -49,7 +49,7 @@ import de.dante.util.xml.XMLStreamWriter;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 
 public class VFTest extends TestCase {
@@ -211,6 +211,7 @@ public class VFTest extends TestCase {
             throw new ConfigurationClassNotFoundException(fontClass);
         }
 
+        fontFactory.setProperties(getProps());
         return fontFactory;
     }
 
