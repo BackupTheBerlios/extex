@@ -227,9 +227,15 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class PageFactory implements LogEnabled {
+
+    /**
+     * The field <tt>x</tt> contains the ...
+     */
+    private static String[] NO = {"0", "1", "2", "3", "4", "5", "6", "7", "8",
+            "9"};
 
     /**
      * The field <tt>logger</tt> contains the logger.
@@ -603,8 +609,7 @@ public class PageFactory implements LogEnabled {
 
         FixedCount[] pageNo = new FixedCount[10];
         for (int i = 0; i < 10; i++) {
-            pageNo[i] = new ImmutableCount(context
-                    .getCount(Integer.toString(i)));
+            pageNo[i] = new ImmutableCount(context.getCount(NO[i]));
         }
         PageImpl page = new PageImpl(nodes, pageNo);
 
