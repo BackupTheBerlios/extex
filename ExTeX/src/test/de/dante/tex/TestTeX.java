@@ -44,7 +44,7 @@ import de.dante.util.framework.configuration.ConfigurationFactory;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public final class TestTeX {
 
@@ -103,15 +103,20 @@ public final class TestTeX {
         Reader stringReader = new StringReader(output.toString());
         BufferedReader intxt = new BufferedReader(stringReader);
 
-        String linetxt, linetesttxt;
-        while ((linetxt = intxt.readLine()) != null) {
-            linetesttxt = intesttxt.readLine().toString();
+        try {
+            String linetxt, linetesttxt;
+            while ((linetxt = intxt.readLine()) != null) {
+                linetesttxt = intesttxt.readLine();
 
-            Assert.assertEquals(linetesttxt, linetxt);
+                Assert.assertEquals(linetesttxt, linetxt);
+            }
+
+            Assert.assertTrue(!intesttxt.ready());
+
+        } finally { // gene: to assure that the resources are freed
+            intxt.close();
+            intesttxt.close();
         }
-        Assert.assertTrue(!intesttxt.ready());
-        intxt.close();
-        intesttxt.close();
     }
 
     public static void test(final String basename) throws Exception {
