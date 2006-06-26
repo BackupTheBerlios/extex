@@ -23,12 +23,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 
 /**
  * This class provides a type-safe list of observers for the format load event.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public final class LoadObserverList implements LoadObserver {
 
@@ -81,7 +82,7 @@ public final class LoadObserverList implements LoadObserver {
      * @see de.dante.extex.interpreter.observer.load.LoadObserver#update(
      *      de.dante.extex.interpreter.context.Context)
      */
-    public void update(final Context context) {
+    public void update(final Context context) throws InterpreterException {
 
         int size = list.size();
         for (int i = 0; i < size; i++) {

@@ -20,13 +20,14 @@
 package de.dante.extex.interpreter.observer.start;
 
 import de.dante.extex.interpreter.Interpreter;
+import de.dante.extex.interpreter.exception.InterpreterException;
 
 /**
  * This interface describes the ability to receive a notification just after
  * the engine has been started.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface StartObserver {
 
@@ -34,7 +35,9 @@ public interface StartObserver {
      * This method is meant to be invoked just after the start has occurred.
      *
      * @param interpreter the interpreter to be started
+     *
+     * @throws InterpreterException in case of an error
      */
-    void update(Interpreter interpreter);
+    void update(Interpreter interpreter) throws InterpreterException;
 
 }

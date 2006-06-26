@@ -20,13 +20,14 @@
 package de.dante.extex.interpreter.observer.load;
 
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 
 /**
  * This interface describes the ability to receive a notification just after
  * a format has been loaded.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface LoadObserver {
 
@@ -35,7 +36,9 @@ public interface LoadObserver {
      * occurred.
      *
      * @param context the new interpreter context
+     *
+     * @throws InterpreterException in case of an error
      */
-    void update(Context context);
+    void update(Context context) throws InterpreterException;
 
 }
