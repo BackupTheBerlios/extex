@@ -32,6 +32,7 @@ import de.dante.extex.scanner.type.token.ControlSequenceToken;
 import de.dante.extex.scanner.type.token.MacroParamToken;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.scanner.type.token.TokenFactory;
+import de.dante.util.UnicodeChar;
 
 /**
  * This class is a container for a list of
@@ -39,7 +40,7 @@ import de.dante.extex.scanner.type.token.TokenFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class Tokens implements Serializable, FixedTokens {
 
@@ -330,6 +331,25 @@ public class Tokens implements Serializable, FixedTokens {
         for (int i = 0; i < size; i++) {
             Token t = (Token) tokens.get(i);
             sb.append(t.toText());
+            if (t instanceof ControlSequenceToken && i != size - 1) {
+                sb.append(' ');
+            }
+        }
+
+        return sb.toString();
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.tokens.FixedTokens#toText(UnicodeChar)
+     */
+    public String toText(final UnicodeChar esc) {
+
+        StringBuffer sb = new StringBuffer();
+
+        int size = tokens.size();
+        for (int i = 0; i < size; i++) {
+            Token t = (Token) tokens.get(i);
+            sb.append(t.toText(esc));
             if (t instanceof ControlSequenceToken && i != size - 1) {
                 sb.append(' ');
             }

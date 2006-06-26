@@ -33,7 +33,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface Token {
 
@@ -112,16 +112,6 @@ public interface Token {
     void toString(StringBuffer sb);
 
     /**
-     * Return the printable representation of this token as it can be read back
-     * in.
-     *
-     * @param esc the escape character
-     *
-     * @return the printable representation
-     */
-    String toText(UnicodeChar esc);
-
-    /**
      * This method returns the textual representation for the Token.
      * This textual representation might not contain the full information but
      * can be used as an abbreviated form to be shown to the end user.
@@ -131,6 +121,16 @@ public interface Token {
      * @return the textual representation
      */
     String toText();
+
+    /**
+     * Return the printable representation of this token as it can be read back
+     * in.
+     *
+     * @param esc the escape character
+     *
+     * @return the printable representation
+     */
+    String toText(UnicodeChar esc);
 
     /**
      * Invoke the appropriate visit method for the current class.
