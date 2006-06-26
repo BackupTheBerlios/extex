@@ -31,6 +31,7 @@ import de.dante.extex.interpreter.ErrorHandler;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.FlagsImpl;
 import de.dante.extex.interpreter.Interpreter;
+import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.ContextFactory;
@@ -67,6 +68,7 @@ import de.dante.extex.interpreter.observer.start.StartObserverList;
 import de.dante.extex.interpreter.observer.stop.StopObservable;
 import de.dante.extex.interpreter.observer.stop.StopObserver;
 import de.dante.extex.interpreter.observer.stop.StopObserverList;
+import de.dante.extex.interpreter.primitives.register.count.util.IntegerCode;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.CodeExpander;
@@ -77,6 +79,8 @@ import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.language.LanguageManagerFactory;
 import de.dante.extex.scanner.stream.TokenStream;
+import de.dante.extex.scanner.type.Catcode;
+import de.dante.extex.scanner.type.CatcodeException;
 import de.dante.extex.scanner.type.token.ActiveCharacterToken;
 import de.dante.extex.scanner.type.token.CodeToken;
 import de.dante.extex.scanner.type.token.ControlSequenceToken;
@@ -97,6 +101,7 @@ import de.dante.extex.scanner.type.token.TokenVisitor;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.util.Switch;
+import de.dante.util.UnicodeChar;
 import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.Registrar;
 import de.dante.util.framework.configuration.Configurable;
@@ -164,7 +169,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.102 $
+ * @version $Revision: 1.103 $
  */
 public abstract class Max
         implements
@@ -239,7 +244,8 @@ public abstract class Max
      * the run is terminated. This value can be overwritten in the
      * configuration.
      */
-    private int maxErrors = MAX_ERRORS_DEFAULT;
+    private IntegerCode maxErrors = new IntegerCode("maxErrors",
+            MAX_ERRORS_DEFAULT);
 
     /**
      * This observer list is used for the observers which are registered to
@@ -479,9 +485,25 @@ public abstract class Max
         super();
         registerObserver(new StartObserver() {
 
-            public void update(final Interpreter interpreter) {
+            /**
+             * @see de.dante.extex.interpreter.observer.start.StartObserver#update(
+             *      de.dante.extex.interpreter.Interpreter)
+             */
+            public void update(final Interpreter interpreter)
+                    throws InterpreterException {
 
-                maxErrors = (int) getContext().getCount("error.max").getValue();
+                try {
+                    Context c = getContext();
+                    CodeToken t = (CodeToken) c.getTokenFactory().createToken(
+                            Catcode.ESCAPE, UnicodeChar.get('\\'), "maxErrors",
+                            Namespace.SYSTEM_NAMESPACE);
+                    Code code = c.getCode(t);
+                    if (code instanceof IntegerCode) {
+                        maxErrors = (IntegerCode) code;
+                    }
+                } catch (CatcodeException e) {
+                    throw new InterpreterException(e);
+                }
             }
         });
     }
@@ -703,6 +725,44 @@ public abstract class Max
     }
 
     /**
+     * @see de.dante.extex.interpreter.Interpreter#expand(
+     *      de.dante.extex.interpreter.type.tokens.Tokens,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public Tokens expand(final Tokens tokens, final Typesetter ts)
+            throws InterpreterException {
+
+        Tokens result = new Tokens();
+        TokenStream stream;
+        try {
+            stream = getTokenStreamFactory().newInstance("");
+        } catch (ConfigurationException e) {
+            throw new InterpreterException(e);
+        }
+
+        for (int i = tokens.length() - 1; i >= 0; i--) {
+            stream.put(tokens.get(i));
+        }
+
+        try {
+            for (;;) {
+                Token t = stream.get(null, null);
+                if (t == null) {
+                    return result;
+                }
+                t = (Token) t.visit(tv, stream);
+                if (t != null) {
+                    result.add(t);
+                }
+            }
+        } catch (InterpreterException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new InterpreterException(e);
+        }
+    }
+
+    /**
      * Take the token given and expand it as possible while honoring the
      * protected code. If the token is not protected and expandable then the
      * expansion is performed until an un-expandable token has been found.
@@ -740,44 +800,6 @@ public abstract class Max
             t = getToken(context);
         }
         return t;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.Interpreter#expand(
-     *      de.dante.extex.interpreter.type.tokens.Tokens,
-     *      de.dante.extex.typesetter.Typesetter)
-     */
-    public Tokens expand(final Tokens tokens, final Typesetter ts)
-            throws InterpreterException {
-
-        Tokens result = new Tokens();
-        TokenStream stream;
-        try {
-            stream = getTokenStreamFactory().newInstance("");
-        } catch (ConfigurationException e) {
-            throw new InterpreterException(e);
-        }
-
-        for (int i = tokens.length() - 1; i >= 0; i--) {
-            stream.put(tokens.get(i));
-        }
-
-        try {
-            for (;;) {
-                Token t = stream.get(null, null);
-                if (t == null) {
-                    return result;
-                }
-                t = (Token) t.visit(tv, stream);
-                if (t != null) {
-                    result.add(t);
-                }
-            }
-        } catch (InterpreterException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new InterpreterException(e);
-        }
     }
 
     /**
@@ -841,20 +863,20 @@ public abstract class Max
      * This method represents the error handler invocation.
      *
      * @param token the current token
-     * @param theContext the current context
+     * @param cx the current context
      * @param e the current exception
-     * @param typesetter the typesetter
+     * @param ts the typesetter
      *
      * @throws InterpreterException in case of an error<br>
      *  especially<br>
      *  ErrorLimitException in case that the error limit has been exceeded.
      */
-    private void handleException(final Token token, final Context theContext,
-            final InterpreterException e, final Typesetter typesetter)
+    private void handleException(final Token token, final Context cx,
+            final InterpreterException e, final Typesetter ts)
             throws InterpreterException {
 
         if (e.isProcessed()) {
-            typesetter.getManager().pop();
+            ts.getManager().pop();
             return;
         }
 
@@ -862,10 +884,10 @@ public abstract class Max
             observersError.update(e);
         }
 
-        if (theContext.incrementErrorCount() > maxErrors) { // cf. TTP[82]
-            throw new ErrorLimitException(maxErrors);
+        if (cx.incrementErrorCount() > maxErrors.getValue()) { // cf. TTP[82]
+            throw new ErrorLimitException(maxErrors.getValue());
         } else if (errorHandler != null && //
-                errorHandler.handleError(e, token, this, theContext)) {
+                errorHandler.handleError(e, token, this, cx)) {
             return;
         }
         e.setProcessed(true);
@@ -1084,7 +1106,11 @@ public abstract class Max
         }
 
         if (observersLoad != null) {
-            observersLoad.update(context);
+            try {
+                observersLoad.update(context);
+            } catch (InterpreterException e) {
+                throw new LoaderException(e);
+            }
         }
     }
 

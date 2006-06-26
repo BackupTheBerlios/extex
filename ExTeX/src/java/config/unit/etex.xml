@@ -19,10 +19,12 @@
   -->
 <unit>
   <primitives>
-    <define name="error.max"
-            class="de.dante.extex.interpreter.primitives.register.count.MaxRegister">100</define>
-    <define name="register.max"
-            class="de.dante.extex.interpreter.primitives.register.count.MaxRegister">32768</define>
+    <define name="maxError"
+            namespace="system"
+            class="de.dante.extex.interpreter.primitives.register.count.util.IntegerCode">100</define>
+    <define name="maxRegister"
+            namespace="system"
+            class="de.dante.extex.interpreter.primitives.register.count.util.IntegerCode">32768</define>
 
     <define name="TeXXeTstate" 
             class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>

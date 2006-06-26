@@ -21,10 +21,12 @@
   <setup class="de.dante.extex.interpreter.unit.tex.Setup"/>
 
   <primitives>
-    <define name="error.max"
-            class="de.dante.extex.interpreter.primitives.register.count.MaxRegister">100</define>
-    <define name="register.max"
-            class="de.dante.extex.interpreter.primitives.register.count.MaxRegister">255</define>
+    <define name="maxError"
+            namespace="system"
+            class="de.dante.extex.interpreter.primitives.register.count.util.IntegerCode">100</define>
+    <define name="maxRegister"
+            namespace="system"
+            class="de.dante.extex.interpreter.primitives.register.count.util.IntegerCode">255</define>
 
     <define name=" "
             class="de.dante.extex.interpreter.primitives.typesetter.spacing.Space"/>

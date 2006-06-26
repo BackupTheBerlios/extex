@@ -19,8 +19,12 @@
   -->
 <unit>
   <primitives>
-    <define name="register.max"
-            class="de.dante.extex.interpreter.primitives.register.count.MaxRegister">65535</define>
+     <define name="maxError"
+            namespace="system"
+            class="de.dante.extex.interpreter.primitives.register.count.util.IntegerCode">100</define>
+     <define name="maxRegister"
+            namespace="system"
+            class="de.dante.extex.interpreter.primitives.register.count.util.IntegerCode">65535</define>
 
     <Define name="addafterocplist"
             class=""/>

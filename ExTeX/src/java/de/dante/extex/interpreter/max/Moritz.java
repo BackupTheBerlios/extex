@@ -28,7 +28,7 @@ import com.ibm.icu.lang.UCharacter;
 import de.dante.extex.backend.documentWriter.OutputStreamFactory;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.Interpreter;
-import de.dante.extex.interpreter.RegisterMaxObserver;
+import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.Context;
@@ -57,6 +57,7 @@ import de.dante.extex.interpreter.observer.start.StartObserver;
 import de.dante.extex.interpreter.observer.streamClose.StreamCloseObservable;
 import de.dante.extex.interpreter.observer.streamClose.StreamCloseObserver;
 import de.dante.extex.interpreter.observer.streamClose.StreamCloseObserverList;
+import de.dante.extex.interpreter.primitives.register.count.util.IntegerCode;
 import de.dante.extex.interpreter.primitives.register.toks.ToksParameter;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Code;
@@ -80,6 +81,7 @@ import de.dante.extex.scanner.stream.observer.reader.OpenReaderObserver;
 import de.dante.extex.scanner.stream.observer.string.OpenStringObservable;
 import de.dante.extex.scanner.stream.observer.string.OpenStringObserver;
 import de.dante.extex.scanner.type.Catcode;
+import de.dante.extex.scanner.type.CatcodeException;
 import de.dante.extex.scanner.type.token.CodeToken;
 import de.dante.extex.scanner.type.token.ControlSequenceToken;
 import de.dante.extex.scanner.type.token.LeftBraceToken;
@@ -109,9 +111,48 @@ import de.dante.util.observer.NotObservableException;
  * Wilhelm Busch)
  * </p>
  *
+ *
+ * <doc name="maxRegister">
+ * <h3>The Integer Register <tt>\maxRegister</tt></h3>
+ * <p>
+ *  The integer register <tt>\maxRegister</tt> controls the scanning of
+ *  register names. The following interpretation for the values is given:
+ * </p>
+ * <ul>
+ *  <li>
+ *   If the value is positive than the register name must be a number in the
+ *   range from 0 to the value given.
+ *  </li>
+ *  <li>
+ *   If the value is zero then the register name must be a number. The number is
+ *   not restricted any further.
+ *  </li>
+ *  <li>
+ *   If the value is less then zero then the register name can be a number or
+ *   a token list (in braces).
+ *  </li>
+ * </ul>
+ *
+ * <p>
+ *  The integer register <tt>\max.register</tt> is not affected by grouping.
+ *  This means that any assignment is always global.
+ * </p>
+ * <p>
+ *  The primitive <tt>\maxRegister</tt> is usually defined in the name space
+ *  <tt>system</tt> thus you have to take special means to access it. 
+ * </p>
+ *
+ * <h4>Examples</h4>
+ * <p>
+ * </p>
+ * <pre class="TeXSample">
+ *   \namespace{system}\maxRegister=1024\namespace{}  </pre>
+ * </doc>
+ *
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.99 $
+ * @version $Revision: 1.100 $
  */
 public class Moritz extends Max
         implements
@@ -123,8 +164,7 @@ public class Moritz extends Max
             EofObservable,
             OpenFileObservable,
             OpenStringObservable,
-            OpenReaderObservable,
-            RegisterMaxObserver {
+            OpenReaderObservable {
 
     /**
      * The constant <tt>MAX_CHAR_CODE</tt> contains the maximum value for a
@@ -157,16 +197,18 @@ public class Moritz extends Max
     /**
      * The field <tt>observersPush</tt> contains the observer list is used for
      * the observers which are registered to receive a notification when a new
-     * token is pushed back to the input stream. The argument is the token to be
-     * pushed.
+     * token is pushed back to the input stream. The argument is the token to
+     * be pushed.
      */
     private PushObserver observersPush = null;
 
     /**
-     * The field <tt>registerMax</tt> contains the contains the indicator for
-     * the max register value.
+     * The field <tt>maxRegister</tt> contains the indicator for the max
+     * register value. Positive values are interpreted literally. Negative
+     * values have a speacial meaning indicating that arbitrary token lists
+     * are allowed in addition to arbitrary numbers.
      */
-    private long registerMax;
+    private IntegerCode maxRegister = new IntegerCode("maxRegister", 255);
 
     /**
      * The field <tt>skipSpaces</tt> contains the indicator that space tokens
@@ -195,7 +237,7 @@ public class Moritz extends Max
     private TokenStreamFactory tokenStreamFactory = null;
 
     /**
-     * The field <tt>lastToken</tt> contains the lat token read.
+     * The field <tt>lastToken</tt> contains the last token read.
      */
     private Token lastToken = null;
 
@@ -207,9 +249,25 @@ public class Moritz extends Max
         super();
         registerObserver(new StartObserver() {
 
-            public void update(final Interpreter interpreter) {
+            /**
+             * @see de.dante.extex.interpreter.observer.start.StartObserver#update(
+             *      de.dante.extex.interpreter.Interpreter)
+             */
+            public void update(final Interpreter interpreter)
+                    throws InterpreterException {
 
-                registerMax = getContext().getCount("register.max").getValue();
+                try {
+                    Context c = getContext();
+                    CodeToken t = (CodeToken) c.getTokenFactory().createToken(
+                            Catcode.ESCAPE, UnicodeChar.get('\\'),
+                            "maxRegister", Namespace.SYSTEM_NAMESPACE);
+                    Code code = c.getCode(t);
+                    if (code instanceof IntegerCode) {
+                        maxRegister = ((IntegerCode) code);
+                    }
+                } catch (CatcodeException e) {
+                    throw new InterpreterException(e);
+                }
             }
         });
     }
@@ -1168,14 +1226,15 @@ public class Moritz extends Max
             throw new MissingNumberException();
         }
 
-        if (registerMax < 0 && token.isa(Catcode.LEFTBRACE)) {
+        long maxRegisterValue = maxRegister.getValue();
+        if (maxRegisterValue < 0 && token.isa(Catcode.LEFTBRACE)) {
             push(token);
             return scanTokensAsString(context, primitive);
         }
 
         long registerNumber = Count.scanNumber(context, source, typesetter,
                 token);
-        if (registerMax >= 0 && registerNumber > registerMax) {
+        if (maxRegisterValue >= 0 && registerNumber > maxRegisterValue) {
             throw new IllegalRegisterException(Long.toString(registerNumber));
         }
         return Long.toString(registerNumber);
@@ -1318,14 +1377,6 @@ public class Moritz extends Max
                 toks.add(token);
             }
         }
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.RegisterMaxObserver#setRegisterMax(long)
-     */
-    public void setRegisterMax(final long value) {
-
-        registerMax = value;
     }
 
     /**
