@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- ====================================================================== -->
+<item>
+  <title>ExTeX has an Animal</title>
+  <description>
+    In the tradition of TeX a heraldic animal for ExTeX has been drawn.
+    It shows a young lion and is called Eli.
+  </description>
+  <author>gene@gerd-neugebauer.de (Gerd Neugebauer)</author>
+  <link>http://www.extex.org/documentation/logo/index.html</link>
+</item>
