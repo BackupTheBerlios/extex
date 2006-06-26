@@ -24,12 +24,12 @@ import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.scanner.type.token.CodeToken;
 
 /**
- * This interface describes the container for all data of an interpreter
+ * This interface describes the container for all code of an interpreter
  * context.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public interface ContextCode {
 
@@ -37,7 +37,6 @@ public interface ContextCode {
      * Convenience method to get the code assigned to a Token.
      * If the Token is a ControlSequenceToken then the macro is returned.
      * If the Token is a ActiveCharacterToken then the active value is returned.
-     * Otherwise <code>null</code> is returned.
      *
      * @param t the Token to differentiate on
      *
