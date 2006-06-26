@@ -17,70 +17,60 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.register.muskip;
+package de.dante.extex.interpreter.primitives.dynamic;
 
-import de.dante.test.NonExecuteTester;
+import de.dante.test.NoFlagsPrimitiveTester;
 
 /**
- * This is a test suite for the primitive <tt>\gluetomu</tt>.
+ * This is a test suite for the primitive <tt>\ensureloaded</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public class GluetomuTest extends NonExecuteTester {
-
-    /**
-     * Command line interface.
-     * @param args the arguments
-     */
-    public static void main(final String[] args) {
-
-        junit.textui.TestRunner.run(GluetomuTest.class);
-    }
+public class EnsureloadedTest extends NoFlagsPrimitiveTester {
 
     /**
      * Creates a new object.
      *
      * @param arg the name
      */
-    public GluetomuTest(final String arg) {
+    public EnsureloadedTest(final String arg) {
 
-        super(arg, "gluetomu", "");
+        super(arg, "ensureloaded", "{tex}");
     }
 
     /**
-     * <testcase>
-     *  Test case showing that ...
+     * <testcase primitive="\ensureloaded">
+     *  Test case checking that <tt>\ensureloaded</tt> ...
      * </testcase>
      *
      * @throws Exception in case of an error
      */
     public void test1() throws Exception {
 
-        assertOutput(
+        assertSuccess(
         //--- input code ---
-                "\\muskip0=\\gluetomu1.2pt \\showthe\\muskip0 \\end",
-                //--- output channel ---
-                "> 1.2mu.\n", "");
+                DEFINE_BRACES + "\\ensureloaded{etex}"
+                        + "\\the\\TeXXeTstate" + " \\end",
+                //--- log message ---
+                "0" + TERM);
     }
 
     /**
-     * <testcase>
-     *  Test case showing that ...
+     * <testcase primitive="\ensureloaded">
+     *  Test case checking that <tt>\ensureloaded</tt> ...
      * </testcase>
      *
      * @throws Exception in case of an error
      */
-    public void testShowthe1() throws Exception {
+    public void test2() throws Exception {
 
-        assertOutput(
+        assertSuccess(
         //--- input code ---
-                "\\showthe\\gluetomu1.2pt \\end",
-                //--- output channel ---
-                "You can't use `the control sequence \\gluetomu' after \\showthe",
-                "");
+                DEFINE_BRACES + "\\ensureloaded{jx}"
+                        + "\\ifdefined\\javadef ok\\fi" + " \\end",
+                //--- log message ---
+                "ok" + TERM);
     }
-
-    //TODO implement the primitive specific test cases
 
 }

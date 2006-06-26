@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -17,37 +17,37 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.typesetter.mark;
+package de.dante.extex.interpreter.primitives.file;
 
-import de.dante.test.NoFlagsPrimitiveTester;
+import de.dante.test.NoFlagsButGlobalPrimitiveTester;
 
 /**
- * This is a test suite for the primitive <tt>\splitfirstmark</tt>.
+ * This is a test suite for the primitive <tt>\realine</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public class SplitfirstmarkTest extends NoFlagsPrimitiveTester {
+public class ReadlineTest extends NoFlagsButGlobalPrimitiveTester {
 
     /**
-     * Command line interface.
-     * @param args the arguments
+     * Method for running the tests standalone.
+     *
+     * @param args command line parameter
      */
     public static void main(final String[] args) {
 
-        junit.textui.TestRunner.run(SplitfirstmarkTest.class);
+        junit.textui.TestRunner.run(ReadlineTest.class);
     }
 
     /**
-     * Constructor for SplitfirstmarkTest.
+     * Creates a new object.
      *
      * @param arg the name
      */
-    public SplitfirstmarkTest(final String arg) {
+    public ReadlineTest(final String arg) {
 
-        super(arg, "splitfirstmark", "");
+        super(arg, "readline", "1 to \\x",
+                "\\openin1 develop/test/data/read_data.tex ");
     }
-
-    //TODO implement primitive specific test cases
 
 }

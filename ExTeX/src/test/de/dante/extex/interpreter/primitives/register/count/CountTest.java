@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -19,14 +19,13 @@
 
 package de.dante.extex.interpreter.primitives.register.count;
 
-
 /**
  * This is a test suite for the primitive <tt>\count</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class CountTest extends AbstractCountRegisterTester {
+public class CountTest extends AbstractCountArrayTester {
 
     /**
      * Command line interface.
@@ -44,9 +43,7 @@ public class CountTest extends AbstractCountRegisterTester {
      */
     public CountTest(final String arg) {
 
-        super(arg, "count", "42", "0");
+        super(arg, "count", "255", "0");
     }
-
-    //TODO implement the primitive specific test cases
 
 }

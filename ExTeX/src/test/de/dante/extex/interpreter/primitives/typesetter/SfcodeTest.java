@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -17,17 +17,17 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.typesetter.mark;
+package de.dante.extex.interpreter.primitives.typesetter;
 
-import de.dante.test.NoFlagsPrimitiveTester;
+import de.dante.test.NoFlagsButGlobalPrimitiveTester;
 
 /**
- * This is a test suite for the primitive <tt>\splitfirstmark</tt>.
+ * This is a test suite for the primitive <tt>\sfcode</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public class SplitfirstmarkTest extends NoFlagsPrimitiveTester {
+public class SfcodeTest extends NoFlagsButGlobalPrimitiveTester {
 
     /**
      * Command line interface.
@@ -35,19 +35,19 @@ public class SplitfirstmarkTest extends NoFlagsPrimitiveTester {
      */
     public static void main(final String[] args) {
 
-        junit.textui.TestRunner.run(SplitfirstmarkTest.class);
+        junit.textui.TestRunner.run(SfcodeTest.class);
     }
 
     /**
-     * Constructor for SplitfirstmarkTest.
+     * Creates a new object.
      *
      * @param arg the name
      */
-    public SplitfirstmarkTest(final String arg) {
+    public SfcodeTest(final String arg) {
 
-        super(arg, "splitfirstmark", "");
+        super(arg, "sfcode", "1 1000");
     }
 
-    //TODO implement primitive specific test cases
+    //TODO implement the primitive specific test cases
 
 }
