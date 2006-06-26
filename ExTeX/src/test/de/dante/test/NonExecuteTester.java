@@ -23,7 +23,7 @@ package de.dante.test;
  * This is a test suite for ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public abstract class NonExecuteTester extends ExTeXLauncher {
 
@@ -33,10 +33,10 @@ public abstract class NonExecuteTester extends ExTeXLauncher {
     private String primitive;
 
     /**
-     * The field <tt>args</tt> contains the additional arguments for the
+     * The field <tt>arguments</tt> contains the additional arguments for the
      * flag test.
      */
-    private String args;
+    private String arguments;
 
     /**
      * The field <tt>prepare</tt> contains the preparation code.
@@ -48,14 +48,14 @@ public abstract class NonExecuteTester extends ExTeXLauncher {
      *
      * @param name the name of the test case
      * @param primitive the name of the primitive
-     * @param args additional arguments for the flag test
+     * @param arguments additional arguments for the flag test
      */
     public NonExecuteTester(final String name, final String primitive,
-            final String args) {
+            final String arguments) {
 
         super(name);
         this.primitive = primitive;
-        this.args = args;
+        this.arguments = arguments;
     }
 
     /**
@@ -63,13 +63,13 @@ public abstract class NonExecuteTester extends ExTeXLauncher {
      *
      * @param arg the name of the test suite
      * @param primitive the name of the integer register to test
-     * @param args the parameters for the invocation
+     * @param arguments the parameters for the invocation
      * @param prepare the preparation code
      */
     public NonExecuteTester(final String arg, final String primitive,
-            final String args, final String prepare) {
+            final String arguments, final String prepare) {
 
-        this(arg, primitive, args);
+        this(arg, primitive, arguments);
         this.prepare = DEFINE_CATCODES + prepare;
     }
 
@@ -83,7 +83,7 @@ public abstract class NonExecuteTester extends ExTeXLauncher {
     public void testVerticalMode1() throws Exception {
 
         assertFailure(//--- input code ---
-                prepare + "\\" + primitive + args,
+                prepare + "\\" + primitive + arguments,
                 //--- error channel ---
                 "You can't use `\\" + primitive + "' in vertical mode");
     }
@@ -99,7 +99,7 @@ public abstract class NonExecuteTester extends ExTeXLauncher {
     public void testInnerVerticalMode1() throws Exception {
 
         assertFailure(//--- input code ---
-                prepare + "\\vbox{\\" + primitive + args + "}\\end",
+                prepare + "\\vbox{\\" + primitive + arguments + "}\\end",
                 //--- error channel ---
                 "You can't use `\\" + primitive + "' in inner vertical mode");
     }
@@ -114,7 +114,7 @@ public abstract class NonExecuteTester extends ExTeXLauncher {
     public void testHorizontalMode1() throws Exception {
 
         assertFailure(//--- input code ---
-                prepare + "x\\" + primitive + args + "\\end",
+                prepare + "x\\" + primitive + arguments + "\\end",
                 //--- error channel ---
                 "You can't use `\\" + primitive + "' in horizontal mode");
     }
@@ -130,7 +130,7 @@ public abstract class NonExecuteTester extends ExTeXLauncher {
     public void testRestrictedHorizontalMode1() throws Exception {
 
         assertFailure(//--- input code ---
-                prepare + "\\hbox{\\" + primitive + args + "}\\end",
+                prepare + "\\hbox{\\" + primitive + arguments + "}\\end",
                 //--- error channel ---
                 "You can't use `\\" + primitive
                         + "' in restricted horizontal mode");
@@ -146,7 +146,7 @@ public abstract class NonExecuteTester extends ExTeXLauncher {
     public void testMathMode1() throws Exception {
 
         assertFailure(//--- input code ---
-                prepare + "$\\" + primitive + args + "$\\end",
+                prepare + "$\\" + primitive + arguments + "$\\end",
                 //--- error channel ---
                 "You can't use `\\" + primitive + "' in math mode");
     }
@@ -162,7 +162,7 @@ public abstract class NonExecuteTester extends ExTeXLauncher {
     public void testDisplayMathMode1() throws Exception {
 
         assertFailure(//--- input code ---
-                prepare + "$$\\" + primitive + args + "$$\\end",
+                prepare + "$$\\" + primitive + arguments + "$$\\end",
                 //--- error channel ---
                 "You can't use `\\" + primitive + "' in displaymath mode");
     }
