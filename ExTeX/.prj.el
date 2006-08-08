@@ -1,6 +1,6 @@
 ; author: Sebastian Waschik
 ; created: 2004-07-26
-; RCS-ID: $Id: .prj.el,v 1.6 2005/08/17 22:04:05 plaicy Exp $
+; RCS-ID: $Id: .prj.el,v 1.7 2006/08/08 08:13:17 plaicy Exp $
 (jde-project-file-version "1.0")
 (jde-set-variables
  '(jde-project-name "ExTeX")
@@ -47,6 +47,7 @@
  '(jde-run-read-app-args t)
 
  ;; style
+ '(require-final-newline nil)
  '(jde-import-auto-sort t)
  '(jde-gen-k&r t)
 
