@@ -169,7 +169,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.103 $
+ * @version $Revision: 1.104 $
  */
 public abstract class Max
         implements
@@ -628,7 +628,10 @@ public abstract class Max
                 }
 
             } catch (InterpreterException e) {
-
+                for (Throwable x = e.getCause();
+                	x instanceof InterpreterException; x = e.getCause()) {
+                    e = (InterpreterException) x;
+                }
                 handleException(token, context, e, typesetter);
 
             } catch (RuntimeException e) {
