@@ -382,7 +382,7 @@
     <define name="mathsurround"
             class="de.dante.extex.interpreter.primitives.register.dimen.DimenParameter"/>
     <define name="maxdeadcycles"
-            class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
+            class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter">25</define>
     <define name="maxdepth"
             class="de.dante.extex.interpreter.primitives.register.dimen.DimenParameter"/>
     <define name="meaning"
