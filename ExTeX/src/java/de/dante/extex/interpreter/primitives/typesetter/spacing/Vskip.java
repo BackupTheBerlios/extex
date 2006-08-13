@@ -56,7 +56,7 @@ import de.dante.util.exception.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class Vskip extends AbstractVerticalCode implements VerticalSkip {
 
@@ -87,11 +87,7 @@ public class Vskip extends AbstractVerticalCode implements VerticalSkip {
             throws InterpreterException {
 
         ensureVerticalMode(typesetter);
-        try {
-            typesetter.add(Glue.parse(source, context, typesetter));
-        } catch (GeneralException e) {
-            throw new InterpreterException(e);
-        }
+        typesetter.add(Glue.parse(source, context, typesetter));
     }
 
     /**
