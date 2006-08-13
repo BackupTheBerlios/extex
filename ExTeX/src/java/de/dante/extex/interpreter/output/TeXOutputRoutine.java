@@ -153,7 +153,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class TeXOutputRoutine implements OutputRoutine {
 
@@ -222,7 +222,7 @@ public class TeXOutputRoutine implements OutputRoutine {
                     "TTP.NonEmptyOutBox", context.esc("box"), OUTPUT_BOX);
         }
 
-        context.setBox(OUTPUT_BOX, new Box(page.getNodes()), true);
+        context.setBox(OUTPUT_BOX, new Box(page.getNodes()), false);
         interpreter.push(rightBrace);
         interpreter.push(output);
         try {
@@ -232,7 +232,8 @@ public class TeXOutputRoutine implements OutputRoutine {
         }
         interpreter.executeGroup();
 
-        if (!box.isVoid()) {
+        box = context.getBox(OUTPUT_BOX);
+        if (box != null && !box.isVoid()) {
             throw new HelpingException(LocalizerFactory
                     .getLocalizer(TeXOutputRoutine.class.getName()),
                     "TTP.NonEmptyOutBoxAfter", context.esc("box"), OUTPUT_BOX);
