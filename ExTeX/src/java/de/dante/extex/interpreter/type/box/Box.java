@@ -53,7 +53,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.36 $
+ * @version $Revision: 1.37 $
  */
 public class Box implements BoxOrRule, Serializable {
 
@@ -332,6 +332,16 @@ public class Box implements BoxOrRule, Serializable {
             nodes.getHeight().add(spread);
         }
 
+    }
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+        if (nodes == null) {
+            return "void";
+        }
+        return nodes.toString();
     }
 
     /**
