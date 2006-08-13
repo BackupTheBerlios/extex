@@ -47,7 +47,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This class provides a fixed point number.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class ScaledNumber {
 
@@ -55,7 +55,7 @@ public class ScaledNumber {
      * This interface describes a binary operation on two longs.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.5 $
+     * @version $Revision: 1.6 $
      */
     private interface BinOp {
 
@@ -312,8 +312,8 @@ public class ScaledNumber {
             // @see "TeX -- The Program [102]"
             int[] dig = new int[FLOAT_DIGITS];
             int k = 0;
-            for (t = source.scanToken(context); t instanceof OtherToken
-                    && t.getChar().isDigit(); t = source.scanToken(context)) {
+            for (t = source.getToken(context); t instanceof OtherToken
+                    && t.getChar().isDigit(); t = source.getToken(context)) {
                 if (k < FLOAT_DIGITS) {
                     dig[k++] = t.getChar().getCodePoint() - '0';
                 }

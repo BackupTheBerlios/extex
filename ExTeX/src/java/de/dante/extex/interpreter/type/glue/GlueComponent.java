@@ -60,7 +60,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.51 $
+ * @version $Revision: 1.52 $
  */
 public class GlueComponent implements Serializable, FixedGlueComponent {
 
@@ -218,7 +218,7 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
             mag = context.getMagnification();
         }
 
-        t = source.scanNonSpace(context);
+        t = source.getNonSpace(context);
 
         // cf. TTP[458]
         if (t instanceof CodeToken) {
