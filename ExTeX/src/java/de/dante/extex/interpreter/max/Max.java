@@ -169,7 +169,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.104 $
+ * @version $Revision: 1.105 $
  */
 public abstract class Max
         implements
@@ -879,7 +879,8 @@ public abstract class Max
             throws InterpreterException {
 
         if (e.isProcessed()) {
-            ts.getManager().pop();
+            // TODO gene: why???
+            //ts.getManager().pop();
             return;
         }
 
