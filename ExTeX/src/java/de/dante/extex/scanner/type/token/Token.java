@@ -33,13 +33,13 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public interface Token {
 
     /**
      * Compare the current token with a pair of catcode and character value.
-     * This pair constitutes a vitual token. They are the same if the catcode
+     * This pair constitutes a virtual token. They are the same if the catcode
      * and the value are the same.
      *
      * @param cc the catcode
@@ -51,7 +51,7 @@ public interface Token {
 
     /**
      * Compare the current token with a pair of catcode and String value. This
-     * pair constitutes a vitual token. They are the same if the catcode and
+     * pair constitutes a virtual token. They are the same if the catcode and
      * the value are the same.
      *
      * @param cc the catcode
