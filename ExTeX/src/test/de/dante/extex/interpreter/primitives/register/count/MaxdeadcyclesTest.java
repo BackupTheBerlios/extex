@@ -24,7 +24,7 @@ package de.dante.extex.interpreter.primitives.register.count;
  * This is a test suite for the primitive <tt>\maxdeadcycles</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class MaxdeadcyclesTest extends AbstractCountRegisterTester {
 
@@ -44,7 +44,7 @@ public class MaxdeadcyclesTest extends AbstractCountRegisterTester {
      */
     public MaxdeadcyclesTest(final String arg) {
 
-        super(arg, "maxdeadcycles", "", "0");
+        super(arg, "maxdeadcycles", "", "25");
     }
 
     //TODO implement the primitive specific test cases
