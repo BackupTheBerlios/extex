@@ -50,9 +50,15 @@ import de.dante.util.framework.logger.LogEnabled;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class ErrorHandlerImpl implements ErrorHandler, LogEnabled, Localizable {
+
+    /**
+     * The field <tt>ENABLE_DEBUG</tt> contains the indicator for turning on
+     * the dubugging emulation.
+     */
+    private static boolean ENABLE_DEBUG = false;
 
     /**
      * The constant <tt>NL</tt> contains the String with the newline character,
@@ -131,8 +137,14 @@ public class ErrorHandlerImpl implements ErrorHandler, LogEnabled, Localizable {
                                 break;
                             case 'd':
                             case 'D':
-                                // TTP[84] TTP[1338]
-                                handleDebug();
+                                if (ENABLE_DEBUG) {
+                                    // TTP[84] TTP[1338]
+                                    handleDebug();
+                                } else {
+                                    logger.severe(localizer
+                                            .format("ErrorHandler.help")
+                                            + NL);
+                                }
                                 break;
                             case 'e':
                             case 'E':
@@ -202,8 +214,6 @@ public class ErrorHandlerImpl implements ErrorHandler, LogEnabled, Localizable {
                 }
             } catch (ConfigurationException e) {
                 throw new GeneralException(e);
-            } catch (GeneralException e) {
-                throw e;
             }
         }
 
@@ -274,22 +284,25 @@ public class ErrorHandlerImpl implements ErrorHandler, LogEnabled, Localizable {
     }
 
     /**
-     * Special treatment of the debug case.
+     * Special treatment of the debug case. This method is meant to be redefined
+     * to provide additional functionality.
      *
      * @throws HelpingException in case of EOF on terminal
      *
      * @see "TTP[1338]"
      */
-    private void handleDebug() throws HelpingException {
+    protected void handleDebug() throws HelpingException {
 
         for (;;) {
             String line = promptAndReadLine(localizer
-                    .format("ErrorHandler.Prompt"));
+                    .format("ErrorHandler.DebugPrompt"));
             logger.config(line);
 
-            if ("1".equals(line)) {
-
+            if (line.startsWith("-")) {
+                return;
+                // TODO gene: handleDebug unimplemented
                 /*
+                 } else if ("1".equals(line)) {
                  } else if ("2".equals(line)) {
                  } else if ("3".equals(line)) {
                  } else if ("4".equals(line)) {
@@ -306,13 +319,10 @@ public class ErrorHandlerImpl implements ErrorHandler, LogEnabled, Localizable {
                  } else if ("15".equals(line)) {
                  } else if ("16".equals(line)) {
                  */
-            } else if (line.startsWith("-")) {
-                return;
             } else {
                 logger.config(localizer.format("ErrorHandler.DebugElsePrompt"));
             }
         }
-        // TODO gene: handleDebug unimplemented
     }
 
     /**
