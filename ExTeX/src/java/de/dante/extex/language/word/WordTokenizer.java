@@ -19,6 +19,8 @@
 
 package de.dante.extex.language.word;
 
+import java.io.Serializable;
+
 import de.dante.extex.language.hyphenation.exception.HyphenationException;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.type.NodeList;
@@ -31,9 +33,9 @@ import de.dante.util.UnicodeCharList;
  * This kind of tokenizer might be language specific.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public interface WordTokenizer {
+public interface WordTokenizer extends Serializable {
 
     /**
      * Extract a word from a node list.

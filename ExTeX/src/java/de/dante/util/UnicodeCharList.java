@@ -18,6 +18,7 @@
 
 package de.dante.util;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -25,9 +26,15 @@ import java.util.ArrayList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
-public class UnicodeCharList {
+public class UnicodeCharList implements Serializable {
+
+    /**
+     * The field <tt>serialVersionUID</tt> contains the version number for
+     * serialization.
+     */
+    private static final long serialVersionUID = 20060814L;
 
     /**
      * The field <tt>list</tt> contains the list.
@@ -48,7 +55,7 @@ public class UnicodeCharList {
      * Create a new object.
      * This list is initially empty.
      *
-     * @param initsize initsize for the <code>ArrayList</code>
+     * @param initsize initial size for the <code>ArrayList</code>
      */
     public UnicodeCharList(final int initsize) {
 
