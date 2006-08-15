@@ -50,7 +50,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
 public class Count implements Serializable, FixedCount {
 
@@ -82,7 +82,7 @@ public class Count implements Serializable, FixedCount {
      * This interface describes a binary operation on two longs.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.28 $
+     * @version $Revision: 1.29 $
      */
     private interface BinOp {
 
@@ -101,7 +101,7 @@ public class Count implements Serializable, FixedCount {
      * This operation subtracts the second argument from the first one.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.28 $
+     * @version $Revision: 1.29 $
      */
     private static final class Minus implements BinOp {
 
@@ -118,7 +118,7 @@ public class Count implements Serializable, FixedCount {
      * This operation adds the arguments.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.28 $
+     * @version $Revision: 1.29 $
      */
     private static final class Plus implements BinOp {
 
@@ -135,7 +135,7 @@ public class Count implements Serializable, FixedCount {
      * This operation ignores the first argument and returns the second one.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.28 $
+     * @version $Revision: 1.29 $
      */
     private static final class Second implements BinOp {
 
@@ -544,9 +544,9 @@ public class Count implements Serializable, FixedCount {
      *
      * @param denom the denominator to divide by
      *
-     * @throws GeneralException in case of a division by zero
+     * @throws ArithmeticOverflowException in case of a division by zero
      */
-    public void divide(final long denom) throws GeneralException {
+    public void divide(final long denom) throws ArithmeticOverflowException {
 
         if (denom == 0) {
             throw new ArithmeticOverflowException("");
