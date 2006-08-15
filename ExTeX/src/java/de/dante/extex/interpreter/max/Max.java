@@ -169,7 +169,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.106 $
+ * @version $Revision: 1.107 $
  */
 public abstract class Max
         implements
@@ -1261,7 +1261,7 @@ public abstract class Max
 
         execute(new Switch(true));
 
-        typesetter.finish(context);
+        typesetter.finish();
 
         // TTP [1335]
         long groupLevel = context.getGroupLevel();
