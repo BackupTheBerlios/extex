@@ -59,7 +59,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public final class LoadUnit extends AbstractFactory {
 
@@ -106,7 +106,6 @@ public final class LoadUnit extends AbstractFactory {
 
         TokenFactory tokenFactory = context.getTokenFactory();
         LoadUnit primitiveFactory = new LoadUnit();
-        Iterator iterator = configuration.iterator("primitives");
 
         Configuration setup = configuration.findConfiguration("setup");
         if (setup != null) {
@@ -116,14 +115,25 @@ public final class LoadUnit extends AbstractFactory {
             factory.createLoad().load(context, source, typesetter);
         }
 
+        Iterator iterator = configuration.iterator("primitives");
         while (iterator.hasNext()) {
             primitiveFactory.define((Configuration) iterator.next(),
                     tokenFactory, context, typesetter, logger, outputFactory);
         }
 
-        String imp = configuration.getAttribute("import");
-        if (imp != null) {
+        iterator = configuration.iterator("import");
+        while (iterator.hasNext()) {
+            Configuration x = (Configuration) iterator.next();
+            x.getAttribute("namespace");
             //TODO gene: do import
+        }
+
+        Configuration start = configuration.findConfiguration("start");
+        if (start != null) {
+            LoaderFactory factory = new LoaderFactory();
+            factory.enableLogging(logger);
+            factory.configure(start);
+            factory.createLoad().load(context, source, typesetter);
         }
     }
 
