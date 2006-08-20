@@ -20,10 +20,11 @@
 package de.dante.extex.interpreter.exception.pdftex;
 
 /**
- * This exception is raised when a <logo>pdfTeX</logo> ...
+ * This exception is raised when a <logo>pdfTeX</logo> encounters an invalid
+ * action type.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class InterpreterPdftexActionTypeException
         extends
