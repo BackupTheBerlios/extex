@@ -582,7 +582,7 @@ import de.dante.util.resource.ResourceFinder;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class TeX extends ExTeX {
 
@@ -755,7 +755,6 @@ public class TeX extends ExTeX {
      * @return <code>true</code> if the stream have not been initialized
      *
      * @throws ConfigurationException in case of a configuration error
-     * @throws IOException in case of an IO error
      *
      * @see de.dante.extex.ExTeX#initializeStreams(
      *      de.dante.extex.interpreter.Interpreter,
@@ -763,42 +762,21 @@ public class TeX extends ExTeX {
      */
     protected boolean initializeStreams(final Interpreter interpreter,
             final Properties properties)
-            throws ConfigurationException,
-                IOException {
+            throws ConfigurationException {
 
         TokenStreamFactory factory = interpreter.getTokenStreamFactory();
-        boolean notInitialized = true;
 
         try {
             interpreter.addStream(factory.newInstance(new TeXInputReader(
                     getLogger(), properties.getProperty(PROP_ENCODING))));
-            notInitialized = false;
         } catch (UnsupportedEncodingException e) {
             throw new ConfigurationUnsupportedEncodingException(properties
-                    .getProperty(PROP_ENCODING), "???");
+                    .getProperty(PROP_ENCODING), "<stdin>");
         }
 
-        if (!super.initializeStreams(interpreter, properties)) {
-            notInitialized = false;
-        }
+        super.initializeStreams(interpreter, properties);
 
-        String post = properties.getProperty(PROP_CODE);
-
-        if (post != null && !post.equals("")) {
-            interpreter.addStream(factory.newInstance(post));
-            notInitialized = false;
-        }
-
-        if (notInitialized) {
-            try {
-                interpreter.addStream(factory.newInstance(new TeXInputReader(
-                        getLogger(), properties.getProperty(PROP_ENCODING))));
-            } catch (UnsupportedEncodingException e) {
-                throw new ConfigurationUnsupportedEncodingException(properties
-                        .getProperty(PROP_ENCODING), "???");
-            }
-        }
-        return notInitialized;
+        return false;
     }
 
     /**
