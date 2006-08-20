@@ -26,7 +26,7 @@ import java.util.List;
  * This class provides a container for a list of Noads.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class NoadList {
 
@@ -34,7 +34,7 @@ public class NoadList {
      * The field <tt>list</tt> is the container for the elements of this node
      * list.
      */
-    private List list = new ArrayList();
+    private List list = new ArrayList(16);
 
     /**
      * Creates a new object containing no elements.
