@@ -45,7 +45,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This is the derived class for a list maker in inner vertical list mode.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class InnerVerticalListMaker extends AbstractListMaker {
 
@@ -190,11 +190,11 @@ public class InnerVerticalListMaker extends AbstractListMaker {
      *      de.dante.util.UnicodeChar,
      *      de.dante.util.Locator)
      */
-    public void letter(final Context context, final TypesettingContext tc,
+    public boolean letter(final Context context, final TypesettingContext tc,
             final UnicodeChar symbol, final Locator locator)
             throws TypesetterException {
 
-        getManager().ensureHorizontalMode(locator).letter(context, tc,
+        return getManager().ensureHorizontalMode(locator).letter(context, tc,
                 symbol, locator);
     }
 

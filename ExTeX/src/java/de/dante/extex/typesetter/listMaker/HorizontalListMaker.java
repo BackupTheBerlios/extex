@@ -30,6 +30,7 @@ import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.count.FixedCount;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
+import de.dante.extex.interpreter.type.font.FontUtil;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.typesetter.Mode;
@@ -59,7 +60,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.32 $
+ * @version $Revision: 1.33 $
  */
 public class HorizontalListMaker extends AbstractListMaker {
 
@@ -259,7 +260,7 @@ public class HorizontalListMaker extends AbstractListMaker {
      *      de.dante.util.Locator)
      * @see "The TeXbook [p.76]"
      */
-    public void letter(final Context context, final TypesettingContext tc,
+    public boolean letter(final Context context, final TypesettingContext tc,
             final UnicodeChar symbol, final Locator locator)
             throws TypesetterException {
 
@@ -291,7 +292,7 @@ public class HorizontalListMaker extends AbstractListMaker {
         }
         node = getManager().getNodeFactory().getNode(tc, c);
         if (node == null) {
-            return;
+            return true;
         }
 
         nodes.add(node);
@@ -305,6 +306,7 @@ public class HorizontalListMaker extends AbstractListMaker {
                 ? DEFAULT_SPACEFACTOR : f);
             }
         }
+        return false;
     }
 
     /**
@@ -354,29 +356,6 @@ public class HorizontalListMaker extends AbstractListMaker {
             }
             list.add(n);
         }
-        return size;
-    }
-
-    /**
-     * Extract a word from nodes into a NodeList.
-     *
-     * @param start the start index
-     * @param list the target list
-     * @param size the length of the node list
-     *
-     * @return the index of the first node not considered
-     */
-    private int parseWord(final int start, final NodeList list, final int size) {
-
-        for (int i = start; i < size; i++) {
-            Node n = nodes.get(i);
-            if (n instanceof CharNode) {
-                list.add(n);
-            } else if (!(n instanceof ImplicitKernNode)) {
-                return i;
-            }
-        }
-
         return size;
     }
 

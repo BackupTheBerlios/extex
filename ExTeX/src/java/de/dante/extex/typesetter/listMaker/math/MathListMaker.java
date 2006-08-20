@@ -141,7 +141,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.46 $
+ * @version $Revision: 1.47 $
  */
 public class MathListMaker extends HorizontalListMaker
         implements
@@ -153,7 +153,7 @@ public class MathListMaker extends HorizontalListMaker
      * It is used to store to the stack and restore the state from the stack.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.46 $
+     * @version $Revision: 1.47 $
      */
     private class MathMemento {
 
@@ -239,7 +239,7 @@ public class MathListMaker extends HorizontalListMaker
      *
      * @param options the options
      *
-     * @return <code>true</code> iff the needed font dimens are present
+     * @return <code>true</code> iff the needed font dimens are not present
      *
      * @see "[TTP 1195]"
      */
@@ -627,12 +627,13 @@ public class MathListMaker extends HorizontalListMaker
      *      de.dante.util.UnicodeChar,
      *      de.dante.util.Locator)
      */
-    public void letter(final Context context, final TypesettingContext tc,
+    public boolean letter(final Context context, final TypesettingContext tc,
             final UnicodeChar symbol, final Locator locator) {
 
         Count mcode = context.getMathcode(symbol);
         insertionPoint.add(NOAD_FACTORY.getNoad((mcode == null ? 0 : mcode
                 .getValue()), tc));
+        return false;
     }
 
     /**

@@ -42,7 +42,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "<logo>TeX</logo> &ndash; The Program [211]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.50 $
+ * @version $Revision: 1.51 $
  */
 public interface ListMaker {
 
@@ -191,9 +191,12 @@ public interface ListMaker {
      * @param uc the character
      * @param locator the locator
      *
+     * @return <code>true</code> iff the character has been discarded because
+     *   it is not defined in the current font.
+     *
      * @throws TypesetterException in case of an error
      */
-    void letter(Context context, TypesettingContext tc, UnicodeChar uc,
+    boolean letter(Context context, TypesettingContext tc, UnicodeChar uc,
             Locator locator) throws TypesetterException;
 
     /**
