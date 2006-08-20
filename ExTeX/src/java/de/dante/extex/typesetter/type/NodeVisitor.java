@@ -56,7 +56,7 @@ import de.dante.util.exception.GeneralException;
  *  let it have one common method to invoke it. This turns out not to be
  *  practical for modular components where the algorithm might be exchanged.
  *  This is the case for the
- *  {@link de.dante.extex.documentWriter.DocumentWriter DocumentWriter}
+ *  {@link de.dante.extex.backend.documentWriter.DocumentWriter DocumentWriter}
  *  which might produce Text, PDF, DVI, or some other output format. Any new
  *  implementation of this interface would have the need to extend the Node
  *  classes.
@@ -206,7 +206,7 @@ import de.dante.util.exception.GeneralException;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public interface NodeVisitor {
 
