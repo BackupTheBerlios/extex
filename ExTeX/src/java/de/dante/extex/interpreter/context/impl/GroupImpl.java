@@ -58,7 +58,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.62 $
+ * @version $Revision: 1.63 $
  */
 public class GroupImpl implements Group, Tokenizer, Serializable {
 
@@ -163,12 +163,13 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     private Map lccodeMap = new HashMap();
 
     /**
-     * The field <tt>locator</tt> contains the ...
+     * The field <tt>locator</tt> contains the locator to determine the
+     * position a token came from.
      */
     private Locator locator;
 
     /**
-     * The field <tt>mathcodeMap</tt> contains the map for the catcodes.
+     * The field <tt>mathcodeMap</tt> contains the map for the category codes.
      */
     private Map mathcodeMap = new HashMap();
 
@@ -209,7 +210,7 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     private transient TokenStream standardTokenStream = null;
 
     /**
-     * The field <tt>start</tt> contains the ...
+     * The field <tt>start</tt> contains the start token.
      */
     private Token start;
 
@@ -990,9 +991,9 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * Setter for start.
+     * Setter for start token.
      *
-     * @param start the start to set
+     * @param start the start token to set
      */
     public void setStart(Token start) {
 
