@@ -49,7 +49,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.71 $
+ * @version $Revision: 1.72 $
  */
 public interface Context
         extends
@@ -108,7 +108,7 @@ public interface Context
      * <p>
      *  If the value is less than zero then the escape character is assumed to
      *  be undefined. In this case the control sequence is not prefixed by any
-     *  character. 
+     *  character.
      * </p>
      * <p>
      *  Note that the escape character does not need to be in sync with the
@@ -121,7 +121,11 @@ public interface Context
      *  The formal description of this primitive is the following:
      *  <pre class="syntax">
      *    &lang;escapechar&rang;
-     *       &rarr; <tt>\escapechar</tt> ...  </pre>
+     *     &rarr; <tt>\escapechar</tt> {@linkplain
+     *       de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
+     *       &lang;equals&rang;} {@linkplain
+     *       de.dante.extex.interpreter.TokenSource#scanNumber(Context)
+     *       &lang;number&rang;} </pre>
      *
      * <h4>Examples</h4>
      *  <pre class="TeXSample">
