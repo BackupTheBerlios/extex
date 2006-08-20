@@ -19,14 +19,13 @@
 
 package de.dante.extex.interpreter.type.count;
 
-import de.dante.util.exception.GeneralException;
 
 /**
  * This class provides an implementation of a Count where all methods modifying
  * the contents are redefined to produce an exception.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class ImmutableCount extends Count {
 

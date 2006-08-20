@@ -40,7 +40,6 @@ import de.dante.extex.scanner.type.token.OtherToken;
 import de.dante.extex.scanner.type.token.SpaceToken;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
@@ -50,7 +49,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
 public class Count implements Serializable, FixedCount {
 
@@ -82,7 +81,7 @@ public class Count implements Serializable, FixedCount {
      * This interface describes a binary operation on two longs.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.29 $
+     * @version $Revision: 1.30 $
      */
     private interface BinOp {
 
@@ -101,7 +100,7 @@ public class Count implements Serializable, FixedCount {
      * This operation subtracts the second argument from the first one.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.29 $
+     * @version $Revision: 1.30 $
      */
     private static final class Minus implements BinOp {
 
@@ -118,7 +117,7 @@ public class Count implements Serializable, FixedCount {
      * This operation adds the arguments.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.29 $
+     * @version $Revision: 1.30 $
      */
     private static final class Plus implements BinOp {
 
@@ -135,7 +134,7 @@ public class Count implements Serializable, FixedCount {
      * This operation ignores the first argument and returns the second one.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.29 $
+     * @version $Revision: 1.30 $
      */
     private static final class Second implements BinOp {
 
