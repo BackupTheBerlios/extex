@@ -76,7 +76,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Currentgrouptype extends AbstractCode
         implements
@@ -95,7 +95,7 @@ public class Currentgrouptype extends AbstractCode
          */
         public Object visitAdjustedHboxGroup(final Object arg) {
 
-            return LONG_3;
+            return ADJUSTED_HBOX;
         }
 
         /**
@@ -104,7 +104,7 @@ public class Currentgrouptype extends AbstractCode
          */
         public Object visitAlignGroup(final Object arg) {
 
-            return LONG_6;
+            return ALIGNMENT;
         }
 
         /**
@@ -113,7 +113,7 @@ public class Currentgrouptype extends AbstractCode
          */
         public Object visitBottomLevelGroup(final Object arg) {
 
-            return LONG_0;
+            return BOTTOM_LEVEL;
         }
 
         /**
@@ -122,7 +122,7 @@ public class Currentgrouptype extends AbstractCode
          */
         public Object visitDiscGroup(final Object arg) {
 
-            return LONG_10;
+            return DISCRETIONARY;
         }
 
         /**
@@ -131,7 +131,7 @@ public class Currentgrouptype extends AbstractCode
          */
         public Object visitHboxGroup(final Object arg) {
 
-            return LONG_2;
+            return HBOX;
         }
 
         /**
@@ -140,7 +140,7 @@ public class Currentgrouptype extends AbstractCode
          */
         public Object visitInsertGroup(final Object arg) {
 
-            return LONG_11;
+            return INSERT;
         }
 
         /**
@@ -149,7 +149,7 @@ public class Currentgrouptype extends AbstractCode
          */
         public Object visitMathChoiceGroup(final Object arg) {
 
-            return LONG_13;
+            return MATH_CHOICE;
         }
 
         /**
@@ -158,7 +158,7 @@ public class Currentgrouptype extends AbstractCode
          */
         public Object visitMathGroup(final Object arg) {
 
-            return LONG_9;
+            return MATH;
         }
 
         /**
@@ -167,7 +167,7 @@ public class Currentgrouptype extends AbstractCode
          */
         public Object visitMathLeftGroup(final Object arg) {
 
-            return new Long(16);
+            return MATH_LEFT;
         }
 
         /**
@@ -176,7 +176,7 @@ public class Currentgrouptype extends AbstractCode
          */
         public Object visitMathShiftGroup(final Object arg) {
 
-            return LONG_15;
+            return MATH_SHIFT;
         }
 
         /**
@@ -185,7 +185,7 @@ public class Currentgrouptype extends AbstractCode
          */
         public Object visitNoAlignGroup(final Object arg) {
 
-            return LONG_7;
+            return NO_ALIGN;
         }
 
         /**
@@ -194,7 +194,7 @@ public class Currentgrouptype extends AbstractCode
          */
         public Object visitOutputGroup(final Object arg) {
 
-            return LONG_8;
+            return OUTPUT;
         }
 
         /**
@@ -203,7 +203,7 @@ public class Currentgrouptype extends AbstractCode
          */
         public Object visitSemiSimpleGroup(final Object arg) {
 
-            return LONG_14;
+            return SEMI_SIMPLE;
         }
 
         /**
@@ -212,7 +212,7 @@ public class Currentgrouptype extends AbstractCode
          */
         public Object visitSimpleGroup(final Object arg) {
 
-            return LONG_1;
+            return SIMPLE;
         }
 
         /**
@@ -221,7 +221,7 @@ public class Currentgrouptype extends AbstractCode
          */
         public Object visitVboxGroup(final Object arg) {
 
-            return LONG_4;
+            return VBOX;
         }
 
         /**
@@ -230,7 +230,7 @@ public class Currentgrouptype extends AbstractCode
          */
         public Object visitVcenterGroup(final Object arg) {
 
-            return LONG_12;
+            return VCENTER;
         }
 
         /**
@@ -239,89 +239,104 @@ public class Currentgrouptype extends AbstractCode
          */
         public Object visitVtopGroup(final Object arg) {
 
-            return LONG_5;
+            return VTOP;
         }
     };
 
     /**
-     * The field <tt>LONG_0</tt> contains the ...
+     * The field <tt>BOTTOM_LEVEL</tt> contains the return value for a bottom
+     * level group.
      */
-    private static final Long LONG_0 = new Long(0);
+    private static final Long BOTTOM_LEVEL = new Long(0);
 
     /**
-     * The field <tt>LONG_1</tt> contains the ...
+     * The field <tt>SIMPLE</tt> contains the return value for a simple group.
      */
-    private static final Long LONG_1 = new Long(1);
+    private static final Long SIMPLE = new Long(1);
 
     /**
-     * The field <tt>LONG_10</tt> contains the ...
+     * The field <tt>DISCRETIONARY</tt> contains the return value for a
+     * discretionary group.
      */
-    private static final Long LONG_10 = new Long(10);
+    private static final Long DISCRETIONARY = new Long(10);
 
     /**
-     * The field <tt>LONG_11</tt> contains the ...
+     * The field <tt>INSERT</tt> contains the return value for an insert group.
      */
-    private static final Long LONG_11 = new Long(11);
+    private static final Long INSERT = new Long(11);
 
     /**
-     * The field <tt>LONG_12</tt> contains the ...
+     * The field <tt>VCENTER</tt> contains the return value for a vcenter group.
      */
-    private static final Long LONG_12 = new Long(12);
+    private static final Long VCENTER = new Long(12);
 
     /**
-     * The field <tt>LONG_13</tt> contains the ...
+     * The field <tt>MATH_CHOICE</tt> contains the return value for a math
+     * choice group.
      */
-    private static final Long LONG_13 = new Long(13);
+    private static final Long MATH_CHOICE = new Long(13);
 
     /**
-     * The field <tt>LONG_14</tt> contains the ...
+     * The field <tt>SEMI_SIMPLE</tt> contains the return value for a
+     * semi-simple group.
      */
-    private static final Long LONG_14 = new Long(14);
+    private static final Long SEMI_SIMPLE = new Long(14);
 
     /**
-     * The field <tt>LONG_15</tt> contains the ...
+     * The field <tt>MATH_SHIFT</tt> contains the return value for a math shift
+     * group.
      */
-    private static final Long LONG_15 = new Long(15);
+    private static final Long MATH_SHIFT = new Long(15);
 
     /**
-     * The field <tt>LONG_2</tt> contains the ...
+     * The field <tt>MATH_LEFT</tt> contains the return value for a math left
+     * group.
      */
-    private static final Long LONG_2 = new Long(2);
+    private static final Long MATH_LEFT = new Long(16);
 
     /**
-     * The field <tt>LONG_3</tt> contains the ...
+     * The field <tt>HBOX</tt> contains the return value for a hbox group.
      */
-    private static final Long LONG_3 = new Long(3);
+    private static final Long HBOX = new Long(2);
 
     /**
-     * The field <tt>LONG_4</tt> contains the ...
+     * The field <tt>LONG_3</tt> contains the return value for an adjusted
+     * hbox group.
      */
-    private static final Long LONG_4 = new Long(4);
+    private static final Long ADJUSTED_HBOX = new Long(3);
 
     /**
-     * The field <tt>LONG_5</tt> contains the ...
+     * The field <tt>LONG_4</tt> contains the return value for a vbox group.
      */
-    private static final Long LONG_5 = new Long(5);
+    private static final Long VBOX = new Long(4);
 
     /**
-     * The field <tt>LONG_6</tt> contains the ...
+     * The field <tt>LONG_5</tt> contains the return value for a vtop group.
      */
-    private static final Long LONG_6 = new Long(6);
+    private static final Long VTOP = new Long(5);
 
     /**
-     * The field <tt>LONG_7</tt> contains the ...
+     * The field <tt>LONG_6</tt> contains the return value for an alignment
+     * group.
      */
-    private static final Long LONG_7 = new Long(7);
+    private static final Long ALIGNMENT = new Long(6);
 
     /**
-     * The field <tt>LONG_8</tt> contains the ...
+     * The field <tt>LONG_7</tt> contains the return value for a no align
+     * group.
      */
-    private static final Long LONG_8 = new Long(8);
+    private static final Long NO_ALIGN = new Long(7);
 
     /**
-     * The field <tt>LONG_9</tt> contains the ...
+     * The field <tt>LONG_8</tt> contains the return value for an output
+     * group.
      */
-    private static final Long LONG_9 = new Long(9);
+    private static final Long OUTPUT = new Long(8);
+
+    /**
+     * The field <tt>LONG_9</tt> contains the return value for a math group.
+     */
+    private static final Long MATH = new Long(9);
 
     /**
      * The field <tt>serialVersionUID</tt> contains the id for serialization.
