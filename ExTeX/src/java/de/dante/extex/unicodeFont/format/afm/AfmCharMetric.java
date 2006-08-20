@@ -27,7 +27,7 @@ import java.util.HashMap;
  * AFM CharMetric.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class AfmCharMetric implements Serializable {
@@ -274,5 +274,14 @@ public class AfmCharMetric implements Serializable {
     public void setWx(final float iwx) {
 
         wx = iwx;
+    }
+
+    /**
+     * Return the name and the number of the glyph.
+     * @return Return the name and the number of the glyph.
+     */
+    public String toString() {
+
+        return n + " c=" + c;
     }
 }
