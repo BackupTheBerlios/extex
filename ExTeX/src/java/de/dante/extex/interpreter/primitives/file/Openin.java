@@ -26,6 +26,7 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.file.InFile;
+import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
@@ -43,9 +44,8 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *  {@link de.dante.extex.interpreter.primitives.conditional.Ifeof <tt>\ifeof</tt>}.
  * </p>
  * <p>
- *  The assignment to a read register is always global. If the prefix
- *  {@link de.dante.extex.interpreter.primitives.prefix.Immediate <tt>\immediate</tt>}
- *  is given then the opening of the read register is delayed.
+ *  The assignment to a read register is always global. The opening is always
+ *  performed immediately. Thus no prefix is allowed.
  * </p>
  * <p>
  *  The stream should be closed with
@@ -57,17 +57,13 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;openin&rang;
- *      &rarr; &lang;optional prefix&rang; <tt>\openin</tt>  {@linkplain
+ *      &rarr; <tt>\openin</tt>  {@linkplain
  *        de.dante.extex.interpreter.primitives.file.AbstractFileCode#scanInFileKey(Context,TokenSource,Typesetter)
  *        &lang;infile&nbsp;name&rang;} {@linkplain
  *        de.dante.extex.interpreter.TokenSource#getOptionalEquals(Context)
  *        &lang;equals&rang;} {@linkplain
  *        de.dante.extex.interpreter.primitive.file.AbstractFileCode#scanFileName(Context,TokenSource)
- *        &lang;file name&rang;}
- *
- *    &lang;optional prefix&rang;
- *      &rarr;
- *       |  <tt>\immediate</tt> &lang;optional prefix&rang; </pre>
+ *        &lang;file name&rang;}   </pre>
  *
  * <h4>Examples</h4>
  * <pre class="TeXSample">
@@ -78,14 +74,14 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
 public class Openin extends AbstractFileCode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 20060411L;
+    protected static final long serialVersionUID = 20060819L;
 
     /**
      * Creates a new object.
@@ -113,14 +109,15 @@ public class Openin extends AbstractFileCode {
         source.getOptionalEquals(context);
         String name = scanFileName(context, source);
 
-        //TODO gene: use \immediate
         InFile file;
         try {
-            file = new InFile(source.getTokenStreamFactory().newInstance(name,
-                    "tex", getEncoding(context)), false);
-        } catch (FileNotFoundException e) {
-            file = null;
-            //ignored on purpose
+            TokenStream stream = source.getTokenStreamFactory().newInstance(
+                    name, "tex", getEncoding(context));
+            if (stream != null) {
+                file = new InFile(stream, false);
+            } else {
+                file = null;
+            }
         } catch (ConfigurationException e) {
             throw new InterpreterException(e);
         }

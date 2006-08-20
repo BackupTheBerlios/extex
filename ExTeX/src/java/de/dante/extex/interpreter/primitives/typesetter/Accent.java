@@ -37,7 +37,6 @@ import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.node.AccentKernNode;
 import de.dante.util.UnicodeChar;
-import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
@@ -64,7 +63,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [1123]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class Accent extends AbstractCode {
 
@@ -138,15 +137,9 @@ public class Accent extends AbstractCode {
 
             if (glyph != null) {
                 if (g == null) {
-                    try {
-                        typesetter.letter(context, tc, accent, source
-                                .getLocator());
-                    } catch (GeneralException e) {
-                        throw new InterpreterException(e);
-                    }
+                    typesetter.letter(context, tc, accent, source.getLocator());
                 } else {
-                    Node node = typesetter.getNodeFactory().getNode(tc,
-                            accent);
+                    Node node = typesetter.getNodeFactory().getNode(tc, accent);
                     if (node == null) {
                         //TODO gene: undefined character
                         return;
@@ -154,12 +147,12 @@ public class Accent extends AbstractCode {
                     long w = g.getWidth().getValue();
                     long h = g.getHeight().getValue();
                     Dimen d = new Dimen();
-//                    if (h != x) {
-//                        NodeList n = new HorizontalListNode(node);
-//                        d.set(x - h);
-//                        n.setShift(d);
-//                        node = n;
-//                    }
+                    //                    if (h != x) {
+                    //                        NodeList n = new HorizontalListNode(node);
+                    //                        d.set(x - h);
+                    //                        n.setShift(d);
+                    //                        node = n;
+                    //                    }
                     // compute delta TTP [1125]
                     long delta = (w - a) / 2 + (h - x) * s / UNIT;
                     d.set(delta);
@@ -169,18 +162,12 @@ public class Accent extends AbstractCode {
                         d.set(-a - delta);
                         typesetter.add(new AccentKernNode(d));
                         typesetter.letter(context, tc, c, source.getLocator());
-                    } catch (GeneralException e) {
-                        throw new InterpreterException(e);
                     } catch (ConfigurationException e) {
                         throw new InterpreterException(e);
                     }
                 }
             } else if (g != null) {
-                try {
-                    typesetter.letter(context, tc, c, source.getLocator());
-                } catch (GeneralException e) {
-                    throw new InterpreterException(e);
-                }
+                typesetter.letter(context, tc, c, source.getLocator());
             } else {
                 //TODO gene: letter and accent are undefined
                 throw new RuntimeException("unimplemented");
@@ -197,11 +184,7 @@ public class Accent extends AbstractCode {
             throw new RuntimeException("unimplemented");
         }
 
-        try {
-            typesetter.setSpacefactor(Count.THOUSAND);
-        } catch (GeneralException e) {
-            throw new InterpreterException(e);
-        }
+        typesetter.setSpacefactor(Count.THOUSAND);
     }
 
 }

@@ -25,6 +25,7 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
@@ -43,9 +44,15 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </pre>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class InputFileEncoding extends InputFile {
+
+    /**
+     * The field <tt>serialVersionUID</tt> contains the version number for
+     * serialization.
+     */
+    protected static final long serialVersionUID = 2006L;
 
     /**
      * Creates a new object.
@@ -76,9 +83,12 @@ public class InputFileEncoding extends InputFile {
         TokenStreamFactory factory = source.getTokenStreamFactory();
 
         try {
-            source.addStream(factory.newInstance(name, "tex", encoding));
-        } catch (FileNotFoundException e) {
-            throw new InterpreterException(e);
+            TokenStream stream = factory.newInstance(name, "tex", encoding);
+            if (stream != null) {
+                source.addStream(stream);
+            } else {
+                throw new InterpreterException(new FileNotFoundException(name));
+            }
         } catch (ConfigurationException e) {
             throw new InterpreterException(e);
         }

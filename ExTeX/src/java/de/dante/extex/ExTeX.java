@@ -21,7 +21,6 @@ package de.dante.extex;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -330,7 +329,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.130 $
+ * @version $Revision: 1.131 $
  */
 public class ExTeX {
 
@@ -866,11 +865,10 @@ public class ExTeX {
      * @return <code>true</code> if the stream have not been initialized
      *
      * @throws ConfigurationException in case of a configuration error
-     * @throws IOException in case of an IO error
      */
 
     protected boolean initializeStreams(final Interpreter interpreter,
-            final Properties prop) throws ConfigurationException, IOException {
+            final Properties prop) throws ConfigurationException {
 
         TokenStreamFactory factory = interpreter.getTokenStreamFactory();
         boolean notInitialized = true;
@@ -879,13 +877,13 @@ public class ExTeX {
 
         if (filename != null && !filename.equals("")) {
 
-            try {
-                TokenStream stream = factory.newInstance(filename, "tex", prop
-                        .getProperty(PROP_ENCODING));
+            TokenStream stream = factory.newInstance(filename, "tex", prop
+                    .getProperty(PROP_ENCODING));
+            if (stream == null) {
+                logger.severe(localizer.format("TTP.FileNotFound", filename));
+            } else {
                 interpreter.addStream(stream);
                 notInitialized = false;
-            } catch (FileNotFoundException e) {
-                logger.severe(localizer.format("TTP.FileNotFound", filename));
             }
         }
 
