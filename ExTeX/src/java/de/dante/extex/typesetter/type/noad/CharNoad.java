@@ -23,7 +23,6 @@ import java.util.logging.Logger;
 
 import de.dante.extex.font.type.other.NullFont;
 import de.dante.extex.interpreter.context.Color;
-import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.context.TypesettingContextFactory;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
@@ -47,7 +46,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This class provides a container for a mathematical character.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class CharNoad extends AbstractNoad {
 
@@ -181,11 +180,7 @@ public class CharNoad extends AbstractNoad {
         }
 
         if (font.getGlyph(c) == null) {
-            //see "TTP [581]"
-            if (context.getCountOption("tracinglostchars").gt(Count.ZERO)) {
-                logger.info(getLocalizer().format("TTP.MissingChar",
-                        c.toString(), font.getFontName()));
-            }
+            FontUtil.charWarning(logger, context, font, c);
             setSpacingClass(MathSpacing.UNDEF);
             return;
         }
