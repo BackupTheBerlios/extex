@@ -24,7 +24,7 @@ package de.dante.extex.interpreter.primitives.register.count;
  * This is a test suite for the primitive <tt>\tracinglostchars</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class TracinglostcharsTest extends AbstractCountRegisterTester {
 
@@ -47,6 +47,77 @@ public class TracinglostcharsTest extends AbstractCountRegisterTester {
         super(arg, "tracinglostchars", "", "0");
     }
 
-    //TODO implement the primitive specific test cases
+    /**
+     * <testcase primitive="\tracinglostchars">
+     *  Test case checking that <tt>\tracinglostchars</tt> ...
+     * <testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test01() throws Exception {
+
+        assertOutput(//--- input code ---
+                "\\nullfont\\tracinglostchars=1 a \\end",
+                //--- log message ---
+                "Missing character: There is no a in font nullfont!",
+                //--- output stream ---
+                "");
+    }
+
+    /**
+     * <testcase primitive="\tracinglostchars">
+     *  Test case checking that <tt>\tracinglostchars</tt> ...
+     * <testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test1() throws Exception {
+
+        assertOutput(//--- input code ---
+                "\\tracinglostchars=1 a \\end",
+                //--- log message ---
+                "",
+                //--- output stream ---
+                "a" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\tracinglostchars">
+     *  Test case checking that <tt>\tracinglostchars</tt> ...
+     * <testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test02() throws Exception {
+
+        assertOutput(//--- input code ---
+                DEFINE_BRACES +
+                "\\nullfont\\tracinglostchars=1\\hbox{a}\\end",
+                //--- log message ---
+                "Missing character: There is no a in font nullfont!",
+                //--- output stream ---
+                "");
+    }
+
+    /**
+     * <testcase primitive="\tracinglostchars">
+     *  Test case checking that <tt>\tracinglostchars</tt> ...
+     * <testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test2() throws Exception {
+
+        assertOutput(//--- input code ---
+                DEFINE_BRACES +
+                "\\tracinglostchars=1\\hbox{a}\\end",
+                //--- log message ---
+                "",
+                //--- output stream ---
+                "a" + TERM);
+    }
+
+
+    //TODO implement more primitive specific test cases (lost chars in math mode...)
 
 }
