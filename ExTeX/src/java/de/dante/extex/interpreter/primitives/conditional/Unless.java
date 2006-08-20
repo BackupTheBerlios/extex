@@ -49,7 +49,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </p>
  * <p>
  *  The formal description of this primitive is the following:
- * TODO gene: doc missing
+ *  TODO gene: missing documentation
  * </p>
  * <p>
  *  Examples:
@@ -60,7 +60,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class Unless extends AbstractCode {
 

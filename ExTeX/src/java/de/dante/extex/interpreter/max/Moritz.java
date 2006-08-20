@@ -152,7 +152,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.100 $
+ * @version $Revision: 1.101 $
  */
 public class Moritz extends Max
         implements
@@ -732,7 +732,8 @@ public class Moritz extends Max
      * could be read. If all stream are at the end then <code>null</code> is
      * returned.
      * <p>
-     * Whenever a file stream is closed then the tokens from the ...
+     * Whenever a file stream is closed then the tokens from the stream are
+     * discarted. This holds also for the tokens pushed back onto this stream.
      * </p>
      *
      * @param context the interpreter context
