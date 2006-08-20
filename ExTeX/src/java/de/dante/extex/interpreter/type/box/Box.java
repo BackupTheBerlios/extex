@@ -53,7 +53,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.37 $
+ * @version $Revision: 1.38 $
  */
 public class Box implements BoxOrRule, Serializable {
 
@@ -116,21 +116,21 @@ public class Box implements BoxOrRule, Serializable {
 
         try {
             context.openGroup(groupType, source.getLocator(), startToken);
+            source.push(insert);
+            source.executeGroup();
         } catch (ConfigurationException e) {
             throw new InterpreterException(e);
-        }
+        } finally {
+            try {
+                while (typesetter.getListMaker() != lm) {
+                    typesetter.add(typesetter
+                            .complete((TypesetterOptions) context));
+                }
 
-        source.push(insert);
-        source.executeGroup();
-        try {
-            while (typesetter.getListMaker() != lm) {
-                typesetter
-                        .add(typesetter.complete((TypesetterOptions) context));
+                nodes = typesetter.complete((TypesetterOptions) context);
+            } catch (ConfigurationException e) {
+                throw new InterpreterException(e);
             }
-
-            nodes = typesetter.complete((TypesetterOptions) context);
-        } catch (ConfigurationException e) {
-            throw new InterpreterException(e);
         }
     }
 
@@ -338,6 +338,7 @@ public class Box implements BoxOrRule, Serializable {
      * @see java.lang.Object#toString()
      */
     public String toString() {
+
         if (nodes == null) {
             return "void";
         }
