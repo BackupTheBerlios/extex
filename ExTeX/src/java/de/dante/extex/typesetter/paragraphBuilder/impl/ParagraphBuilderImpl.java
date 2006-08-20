@@ -93,7 +93,9 @@ import de.dante.util.framework.logger.LogEnabled;
  * <doc name="hyphenpenalty" type="register">
  * <h3>The Parameter <tt>\hyphenpenalty</tt></h3>
  *
- * TODO gene: missing documentation
+ *  The parameter <tt>\hyphenpenalty</tt> contains the penalty inserted whenever
+ *  a hyphenation is applied. Thus paragraphs with less hyphenations are
+ *  preferred over those with more hyphenations.
  * </doc>
  *
  * <doc name="leftskip" type="register">
@@ -159,7 +161,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * Treat segments of a paragraph separated by forced breaks separately.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.33 $
+ * @version $Revision: 1.34 $
  */
 public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled {
 
