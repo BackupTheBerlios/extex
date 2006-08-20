@@ -33,6 +33,8 @@ extex.fonts = $INSTALL_PATH/font
 ##    This parameter contains the name of the property indicating
 ##    where to find font files. The value is a path similar to
 ##    extex.texinputs.
+##    NOTE: if you add a reference to a texmf tree then the file ls-R
+##          MUST be present in this directory
 ##-----------------------------------------------------------------------------
 ##
 #extex.halt.on.error =
@@ -111,6 +113,8 @@ extex.fonts = $INSTALL_PATH/font
 extex.texinputs = $INSTALL_PATH/texmf
 ##    This parameter contains the additional directories for searching
 ##    TeX input files.
+##    NOTE: if you add a reference to a texmf tree then the file ls-R
+##          MUST be present in this directory
 ##-----------------------------------------------------------------------------
 ##
 #extex.trace.input.files = false

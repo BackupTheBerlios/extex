@@ -2,7 +2,7 @@
 rem ---------------------------------------------------------------------------
 rem  This is the start script for ExTeX
 rem ---------------------------------------------------------------------------
-rem  Copyright (C) 2004-2005 The ExTeX Group
+rem  Copyright (C) 2004-2006 The ExTeX Group
 rem 
 rem  This library is free software; you can redistribute it and/or modify it
 rem  under the terms of the GNU Lesser General Public License as published by
@@ -28,15 +28,15 @@ if "%JAVA_HOME%"=="" (
   goto end
   )
 
-set EXTEX_HOME="$INSTALL_PATH"
-set LIBDIR="%EXTEX_HOME%\lib"
-set LOCALCLASSPATH="%EXTEX_HOME%\classes"
+set EXTEX_HOME=$INSTALL_PATH
+set LIBDIR=%EXTEX_HOME%\lib
+set LOCALCLASSPATH=%EXTEX_HOME%\classes
 
 for %%i in (%LIBDIR%\*.jar) do (
-    set LOCALCLASSPATH=%LOCALCLASSPATH%;%%i
-  )
+  set LOCALCLASSPATH=%LOCALCLASSPATH%;%%i
+)
 
-java -classpath %LOCALCLASSPATH% de.dante.extex.main.TeX %*
+java -classpath LOCALCLASSPATH de.dante.extex.main.TeX %*
 
 :end
 

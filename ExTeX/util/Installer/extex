@@ -2,7 +2,7 @@
 #------------------------------------------------------------------------------
 # This is the start script for ExTeX
 #------------------------------------------------------------------------------
-# Copyright (C) 2004-2005 The ExTeX Group
+# Copyright (C) 2004-2006 The ExTeX Group
 #
 # This library is free software; you can redistribute it and/or modify it under
 # the terms of the GNU Lesser General Public License as published by the Free
@@ -20,20 +20,38 @@
 #
 #------------------------------------------------------------------------------
 
-EXTEX_HOME="$INSTALL_PATH"
-JAVA_DIR="$JAVA_HOME"
+if [ "$JAVA_HOME" = "" ] ; then
+  echo "ERROR: JAVA_HOME not found in your environment."
+  echo
+  echo "Please, set the JAVA_HOME variable in your environment to match the"
+  echo "location of the Java Virtual Machine you want to use."
+  exit 1
+fi
 
+EXTEX_HOME=`dirname $0`
+LIBDIR="$EXTEX_HOME/lib"
+
+# OS specific support.
 case "`uname`" in
-  CYGWIN*)    sep=';'    ;;
-  *)          sep=':'    ;;
+  CYGWIN*)
+    # For Cygwin, ensure paths are in UNIX format before anything is touched
+    [ -n "$JAVA_HOME" ] &&
+        JAVA_HOME=`cygpath --unix "$JAVA_HOME"`
+    sep=';'
+    LOCALCLASSPATH=.$sep$EXTEX_HOME/config$sep$EXTEX_HOME/target/classes
+    for i in $LIBDIR/*.jar ; do
+      LOCALCLASSPATH=$LOCALCLASSPATH$sep`cygpath --unix "$i"`
+    done
+    ;;
+  *)
+    sep=':'
+    LOCALCLASSPATH=.$sep$EXTEX_HOME/config$sep$EXTEX_HOME/target/classes
+    for i in $LIBDIR/*.jar ; do
+      LOCALCLASSPATH=$LOCALCLASSPATH$sep$i
+    done
+    ;;
 esac
 
-CP=$EXTEX_HOME/classes
-for i in $EXTEX_HOME/lib/*.jar ; do
-    CP=$CP$sep$i
-done
-CP=$CP$sep$EXTEX_HOME/
+exec java $EXTEX_JAVA_OPTS -classpath "$LOCALCLASSPATH" de.dante.extex.main.TeX $*
 
-exec $JAVA_DIR/bin/java -classpath "$CP" de.dante.extex.main.TeX $*
-  
 #
