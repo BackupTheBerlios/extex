@@ -23,9 +23,11 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.box.Boxable;
+import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
@@ -55,7 +57,7 @@ import de.dante.extex.typesetter.type.NodeList;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Lastbox extends AbstractCode implements Boxable {
 
@@ -85,6 +87,13 @@ public class Lastbox extends AbstractCode implements Boxable {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
+        Mode mode = typesetter.getMode();
+        if (mode == Mode.MATH || mode == Mode.DISPLAYMATH) {
+            throw new HelpingException(getLocalizer(), "TTP.LastBoxIn", //
+                    context.esc(getName()), mode.toString());
+        }
+
+        //TODO gene: what's to do?
     }
 
     /**
@@ -96,6 +105,12 @@ public class Lastbox extends AbstractCode implements Boxable {
     public Box getBox(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
+        Mode mode = typesetter.getMode();
+        if (mode == Mode.MATH || mode == Mode.DISPLAYMATH) {
+            throw new HelpingException(getLocalizer(), "TTP.LastBoxIn", //
+                    context.esc(getName()), mode.toString());
+        }
+
         Node nodes = typesetter.getLastNode();
         Box box = null;
 
@@ -106,5 +121,4 @@ public class Lastbox extends AbstractCode implements Boxable {
 
         return box;
     }
-
 }
