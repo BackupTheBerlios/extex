@@ -48,7 +48,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @see de.dante.extex.scanner.stream.impl.TokenStreamImpl
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 
 public class TokenStreamImpl32 extends TokenStreamImpl {
@@ -157,12 +157,12 @@ public class TokenStreamImpl32 extends TokenStreamImpl {
                         // '^^^'
                         pointer--;
                         String unicodename = scanUnicodeName();
-                        UnicodeChar ucn = new UnicodeChar(unicodename);
+                        UnicodeChar ucn = UnicodeChar.get(unicodename);
 
                         if (ucn.getCodePoint() < 0) {
                             throw new ScannerNoUnicodeNameException(unicodename);
                         }
-                        uc = new UnicodeChar(ucn.getCodePoint());
+                        uc = UnicodeChar.get(ucn.getCodePoint());
                     }
                 } else {
                     // '^^'
@@ -171,20 +171,20 @@ public class TokenStreamImpl32 extends TokenStreamImpl {
                         savePointer = pointer;
                         uc = getRawChar();
                         if (uc == null) {
-                            uc = new UnicodeChar(hexHigh);
+                            uc = UnicodeChar.get(hexHigh);
                         } else {
                             int hexLow = hex2int(uc.getCodePoint());
                             if (hexLow < 0) {
                                 pointer = savePointer;
-                                uc = new UnicodeChar(hexHigh);
+                                uc = UnicodeChar.get(hexHigh);
                             } else {
-                                uc = new UnicodeChar((hexHigh << SHIFT4)
+                                uc = UnicodeChar.get((hexHigh << SHIFT4)
                                         + hexLow);
                             }
                         }
                     } else if (c != null) {
                         hexHigh = c.getCodePoint();
-                        uc = new UnicodeChar(((hexHigh < CARET_LIMIT) ? hexHigh
+                        uc = UnicodeChar.get(((hexHigh < CARET_LIMIT) ? hexHigh
                                 + CARET_LIMIT : hexHigh - CARET_LIMIT));
                     }
                 }
@@ -227,7 +227,7 @@ public class TokenStreamImpl32 extends TokenStreamImpl {
         if (buf.length() == 0) {
             throw new ScannerNoHexDigitFoundException();
         }
-        return new UnicodeChar(Integer.parseInt(buf.toString(), HEX));
+        return UnicodeChar.get(Integer.parseInt(buf.toString(), HEX));
     }
 
     /**
@@ -295,6 +295,6 @@ public class TokenStreamImpl32 extends TokenStreamImpl {
     /**
      * Unicode char for ';'
      */
-    private static final UnicodeChar CPOINT = new UnicodeChar(';');
+    private static final UnicodeChar CPOINT = UnicodeChar.get(';');
 
 }
