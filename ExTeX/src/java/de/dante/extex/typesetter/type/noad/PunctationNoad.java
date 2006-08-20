@@ -26,7 +26,6 @@ import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
 import de.dante.extex.typesetter.type.noad.util.MathSpacing;
-import de.dante.extex.typesetter.type.node.CharNode;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
@@ -35,7 +34,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [682]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class PunctationNoad extends AbstractNucleusNoad implements SimpleNoad {
 
