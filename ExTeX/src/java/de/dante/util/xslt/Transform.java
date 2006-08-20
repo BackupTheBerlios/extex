@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -23,9 +23,10 @@ import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintStream;
 import java.io.Writer;
-import java.util.Properties;
 
+import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -38,13 +39,13 @@ import javax.xml.transform.stream.StreamSource;
  * Transform a xml-file with a xslt-file.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 
 public final class Transform {
 
     /**
-     * private: no instance
+     * private: no instance.
      */
     private Transform() {
 
@@ -61,14 +62,19 @@ public final class Transform {
     private static final int BUFFERSIZE = 0xffff;
 
     /**
-     * main
+     * PrintStream for the error channel.
+     */
+    private static PrintStream outerr = System.err;
+
+    /**
+     * The main method.
      * @param args      the command line arguments
      * @throws Exception  in case of an error
      */
     public static void main(final String[] args) throws Exception {
 
         if (args.length != PARAMETER) {
-            System.err.println("java de.dante.util.xslt.Transform "
+            outerr.println("java de.dante.util.xslt.Transform "
                     + "<xml-file> <xsl-file> <out-file>");
             System.exit(1);
         }
@@ -82,7 +88,7 @@ public final class Transform {
     }
 
     /**
-     * transform a xml file with xslt.
+     * Transform a xml file with xslt.
      * @param xml       The xml source.
      * @param xsl       The xsl source.
      * @param resolver  The URIResolver, to get stream (xsl:include)
@@ -105,7 +111,7 @@ public final class Transform {
     }
 
     /**
-     * transform a xml file with xslt.
+     * Transform a xml file with xslt.
      * @param xml       The xml source.
      * @param xsl       The xsl source.
      * @param resolver  The URIResolver, to get stream (xsl:include)
@@ -126,4 +132,26 @@ public final class Transform {
         transformer.transform(xml, result);
         out.close();
     }
+
+    /**
+     * Transform a xml file with xslt.
+     * @param xml       The xml source.
+     * @param xsl       The xsl source.
+     * @param resolver  The URIResolver, to get stream (xsl:include)
+     * @param result    The result.
+     * @throws TransformerException if a transformer error occurred.
+     * @throws IOException if a IO error occurred.
+     */
+    public static void transform(final Source xml, final Source xsl,
+            final URIResolver resolver, final Result result)
+            throws TransformerException, IOException {
+
+        TransformerFactory factory = TransformerFactory.newInstance();
+        if (resolver != null) {
+            factory.setURIResolver(resolver);
+        }
+        Transformer transformer = factory.newTransformer(xsl);
+        transformer.transform(xml, result);
+    }
+
 }
