@@ -46,7 +46,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TokenStreamStringImpl32Test extends TestCase {
 
@@ -270,7 +270,7 @@ public class TokenStreamStringImpl32Test extends TestCase {
      */
     public void testHex1() throws Exception {
 
-        context.setCatcode(new UnicodeChar('^'), Catcode.SUPMARK, true);
+        context.setCatcode(UnicodeChar.get('^'), Catcode.SUPMARK, true);
         TokenStream stream = makeStream("^^^^41 ");
         assertEquals("the letter A", stream.get(fac, tokenizer).toString());
         Token token = stream.get(fac, tokenizer);
@@ -286,7 +286,7 @@ public class TokenStreamStringImpl32Test extends TestCase {
      */
     public void testHex2() throws Exception {
 
-        context.setCatcode(new UnicodeChar('^'), Catcode.SUPMARK, true);
+        context.setCatcode(UnicodeChar.get('^'), Catcode.SUPMARK, true);
         TokenStream stream = makeStream("^^^^fffe");
         Token t = stream.get(fac, tokenizer);
         if (t instanceof OtherToken) {
@@ -306,7 +306,7 @@ public class TokenStreamStringImpl32Test extends TestCase {
      */
     public void testUnicodeName1() throws Exception {
 
-        context.setCatcode(new UnicodeChar('^'), Catcode.SUPMARK, true);
+        context.setCatcode(UnicodeChar.get('^'), Catcode.SUPMARK, true);
         TokenStream stream = makeStream("^^^LATIN SMALL LETTER A;");
         assertEquals("the letter a", stream.get(fac, tokenizer).toString());
         Token token = stream.get(fac, tokenizer);
@@ -322,7 +322,7 @@ public class TokenStreamStringImpl32Test extends TestCase {
      */
     public void testUnicodeName2() throws Exception {
 
-        context.setCatcode(new UnicodeChar('^'), Catcode.SUPMARK, true);
+        context.setCatcode(UnicodeChar.get('^'), Catcode.SUPMARK, true);
         TokenStream stream = makeStream("^^^LATIN CAPITAL LETTER A;");
         assertEquals("the letter A", stream.get(fac, tokenizer).toString());
         Token token = stream.get(fac, tokenizer);
@@ -338,7 +338,7 @@ public class TokenStreamStringImpl32Test extends TestCase {
      */
     public void testUnicodeName3() throws Exception {
 
-        context.setCatcode(new UnicodeChar('^'), Catcode.SUPMARK, true);
+        context.setCatcode(UnicodeChar.get('^'), Catcode.SUPMARK, true);
         TokenStream stream = makeStream("^^^LATIN ERROR LETTER A;");
         try {
             assertEquals("the letter A", stream.get(fac, tokenizer).toString());
@@ -383,7 +383,7 @@ public class TokenStreamStringImpl32Test extends TestCase {
      */
     public void testCaret1() throws Exception {
 
-        context.setCatcode(new UnicodeChar('^'), Catcode.SUPMARK, true);
+        context.setCatcode(UnicodeChar.get('^'), Catcode.SUPMARK, true);
         TokenStream stream = makeStream("^1");
         assertEquals("superscript character ^", stream.get(fac, tokenizer)
                 .toString());
@@ -400,7 +400,7 @@ public class TokenStreamStringImpl32Test extends TestCase {
      */
     public void testCaretA() throws Exception {
 
-        context.setCatcode(new UnicodeChar('^'), Catcode.SUPMARK, true);
+        context.setCatcode(UnicodeChar.get('^'), Catcode.SUPMARK, true);
         TokenStream stream = makeStream("^^41");
         assertEquals("the letter A", stream.get(fac, tokenizer).toString());
         Token token = stream.get(fac, tokenizer);
@@ -415,7 +415,7 @@ public class TokenStreamStringImpl32Test extends TestCase {
      */
     public void testCaretA2() throws Exception {
 
-        context.setCatcode(new UnicodeChar('^'), Catcode.SUPMARK, true);
+        context.setCatcode(UnicodeChar.get('^'), Catcode.SUPMARK, true);
         TokenStream stream = makeStream("^^A");
         assertEquals("the character \1", stream.get(fac, tokenizer).toString());
         Token token = stream.get(fac, tokenizer);
@@ -430,7 +430,7 @@ public class TokenStreamStringImpl32Test extends TestCase {
      */
     public void testCaretA3() throws Exception {
 
-        context.setCatcode(new UnicodeChar('^'), Catcode.SUPMARK, true);
+        context.setCatcode(UnicodeChar.get('^'), Catcode.SUPMARK, true);
         TokenStream stream = makeStream("^^A;");
         assertEquals("the character \1", stream.get(fac, tokenizer).toString());
         assertEquals("the character ;", stream.get(fac, tokenizer).toString());
@@ -446,7 +446,7 @@ public class TokenStreamStringImpl32Test extends TestCase {
      */
     public void testCaretEnd() throws Exception {
 
-        context.setCatcode(new UnicodeChar('^'), Catcode.SUPMARK, true);
+        context.setCatcode(UnicodeChar.get('^'), Catcode.SUPMARK, true);
         TokenStream stream = makeStream("^");
         assertEquals("superscript character ^", stream.get(fac, tokenizer)
                 .toString());
