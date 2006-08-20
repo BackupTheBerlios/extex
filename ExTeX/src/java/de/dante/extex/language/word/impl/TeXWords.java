@@ -39,9 +39,14 @@ import de.dante.util.UnicodeCharList;
  * <logo>TeX</logo>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class TeXWords extends ExTeXWords implements WordTokenizer {
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    protected static final long serialVersionUID = 2006L;
 
     /**
      * Creates a new object.

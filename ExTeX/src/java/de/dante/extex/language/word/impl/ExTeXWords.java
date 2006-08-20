@@ -44,9 +44,14 @@ import de.dante.util.UnicodeCharList;
  * <logo>ExTeX</logo>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class ExTeXWords implements WordTokenizer {
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    protected static final long serialVersionUID = 2006L;
 
     /**
      * Hyphenate subsequent char nodes from a ligature.
