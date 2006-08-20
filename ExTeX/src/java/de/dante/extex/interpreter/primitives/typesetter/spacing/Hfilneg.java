@@ -28,7 +28,6 @@ import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.glue.GlueComponent;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.exception.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\hfilneg</code>.
@@ -55,7 +54,7 @@ import de.dante.util.exception.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Hfilneg extends AbstractHorizontalCode implements HorizontalSkip {
 
@@ -92,11 +91,7 @@ public class Hfilneg extends AbstractHorizontalCode implements HorizontalSkip {
             throws InterpreterException {
 
         switchToHorizontalMode(typesetter);
-        try {
-            typesetter.add(FIL_NEG);
-        } catch (GeneralException e) {
-            throw new InterpreterException(e);
-        }
+        typesetter.add(FIL_NEG);
     }
 
     /**

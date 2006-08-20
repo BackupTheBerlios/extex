@@ -27,7 +27,6 @@ import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.count.ImmutableCount;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
@@ -57,7 +56,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Space extends AbstractCode {
 
@@ -95,8 +94,6 @@ public class Space extends AbstractCode {
 
         try {
             typesetter.addSpace(context.getTypesettingContext(), SPACEFACTOR);
-        } catch (GeneralException e) {
-            throw new InterpreterException(e);
         } catch (ConfigurationException e) {
             throw new InterpreterException(e);
         }

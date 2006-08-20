@@ -26,7 +26,6 @@ import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.primitives.typesetter.AbstractVerticalCode;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.exception.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\vss</code>.
@@ -51,7 +50,7 @@ import de.dante.util.exception.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Vss extends AbstractVerticalCode implements VerticalSkip {
 
@@ -82,11 +81,7 @@ public class Vss extends AbstractVerticalCode implements VerticalSkip {
             throws InterpreterException {
 
         ensureVerticalMode(typesetter);
-        try {
-            typesetter.add(FixedGlue.S_S);
-        } catch (GeneralException e) {
-            throw new InterpreterException(e);
-        }
+        typesetter.add(FixedGlue.S_S);
     }
 
     /**

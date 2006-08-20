@@ -38,7 +38,6 @@ import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.listMaker.HAlignListMaker;
 import de.dante.extex.typesetter.type.NodeList;
-import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
@@ -75,7 +74,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.31 $
+ * @version $Revision: 1.32 $
  */
 public class Halign extends AbstractAlign implements Boxable {
 
@@ -173,8 +172,6 @@ public class Halign extends AbstractAlign implements Boxable {
         source.executeGroup();
         try {
             return typesetter.complete((TypesetterOptions) context);
-        } catch (GeneralException e) {
-            throw new InterpreterException(e);
         } catch (ConfigurationException e) {
             throw new InterpreterException(e);
         }

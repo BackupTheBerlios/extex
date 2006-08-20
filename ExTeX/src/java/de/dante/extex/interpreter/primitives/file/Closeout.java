@@ -30,7 +30,6 @@ import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.file.OutFile;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.node.WhatsItCloseNode;
-import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 import de.dante.util.framework.logger.LogEnabled;
 
@@ -67,7 +66,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.31 $
+ * @version $Revision: 1.32 $
  */
 public class Closeout extends AbstractCode implements LogEnabled {
 
@@ -130,8 +129,6 @@ public class Closeout extends AbstractCode implements LogEnabled {
         } else {
             try {
                 typesetter.add(new WhatsItCloseNode(key));
-            } catch (GeneralException e) {
-                throw new InterpreterException(e);
             } catch (ConfigurationException e) {
                 throw new InterpreterException(e);
             }

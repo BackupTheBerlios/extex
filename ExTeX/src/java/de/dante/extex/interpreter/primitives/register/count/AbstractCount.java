@@ -28,14 +28,13 @@ import de.dante.extex.interpreter.type.InitializableCode;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.exception.GeneralException;
 
 /**
  * This abstract base class provides the methods to compute the keys for
  * numbered count registers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public abstract class AbstractCount extends AbstractAssignment
         implements
@@ -68,11 +67,7 @@ public abstract class AbstractCount extends AbstractAssignment
             final Typesetter typesetter) throws InterpreterException {
 
         String name;
-        try {
-            name = source.scanRegisterName(context, source, typesetter, getName());
-        } catch (GeneralException e) {
-            throw new InterpreterException(e);
-        }
+        name = source.scanRegisterName(context, source, typesetter, getName());
 
         if (Namespace.SUPPORT_NAMESPACE_COUNT) {
             return context.getNamespace() + "\b" + name;

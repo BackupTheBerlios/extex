@@ -76,7 +76,7 @@ import de.dante.util.exception.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.31 $
+ * @version $Revision: 1.32 $
  */
 public class Hyphenchar extends AbstractAssignment
         implements
@@ -145,8 +145,6 @@ public class Hyphenchar extends AbstractAssignment
             }
         } catch (EofException e) {
             throw new EofException(printableControlSequence(context));
-        } catch (GeneralException e) {
-            throw new InterpreterException(e);
         }
     }
 

@@ -35,7 +35,6 @@ import de.dante.extex.typesetter.listMaker.RestrictedHorizontalListMaker;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.node.DiscretionaryNode;
 import de.dante.util.Locator;
-import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
@@ -75,7 +74,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public class Discretionary extends AbstractCode {
 
@@ -117,8 +116,6 @@ public class Discretionary extends AbstractCode {
                     context, locator), //
                     fill(post, tc, typesetter, context, locator), //
                     fill(nobreak, tc, typesetter, context, locator)));
-        } catch (GeneralException e) {
-            throw new InterpreterException(e);
         } catch (ConfigurationException e) {
             throw new InterpreterException(e);
         }

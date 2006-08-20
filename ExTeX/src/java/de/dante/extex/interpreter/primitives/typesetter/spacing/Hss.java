@@ -26,7 +26,6 @@ import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.primitives.typesetter.AbstractHorizontalCode;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.exception.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\hss</code>.
@@ -52,7 +51,7 @@ import de.dante.util.exception.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Hss extends AbstractHorizontalCode implements HorizontalSkip {
 
@@ -83,11 +82,7 @@ public class Hss extends AbstractHorizontalCode implements HorizontalSkip {
             throws InterpreterException {
 
         switchToHorizontalMode(typesetter);
-        try {
-            typesetter.add(FixedGlue.S_S);
-        } catch (GeneralException e) {
-            throw new InterpreterException(e);
-        }
+        typesetter.add(FixedGlue.S_S);
     }
 
     /**

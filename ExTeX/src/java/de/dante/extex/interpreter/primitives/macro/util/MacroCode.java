@@ -57,7 +57,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class MacroCode extends AbstractCode
         implements
@@ -377,6 +377,8 @@ public class MacroCode extends AbstractCode
             toks.add(context.getTokenFactory(), " ->");
             body.show(context, toks);
             return toks;
+        } catch (InterpreterException e) {
+            throw e;
         } catch (GeneralException e) {
             throw new InterpreterException(e);
         }

@@ -28,7 +28,6 @@ import de.dante.extex.interpreter.primitives.register.box.AbstractBox;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.NodeList;
-import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
@@ -56,7 +55,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class Unvcopy extends AbstractBox {
 
@@ -88,21 +87,20 @@ public class Unvcopy extends AbstractBox {
 
         String key = getKey(context, source, typesetter, getName());
         Box b = context.getBox(key);
+
         if (b == null || b.isVoid()) {
             // nothing to do
-        } else if (!b.isVbox()) {
-            throw new HelpingException(getLocalizer(), "TTP.IncompatibleUnbox");
-        } else {
+        } else if (b.isVbox()) {
             NodeList nl = b.getNodes();
-            for (int i = 0; i < nl.size(); i++) {
-                try {
+            try {
+                for (int i = 0; i < nl.size(); i++) {
                     typesetter.add(nl.get(i));
-                } catch (GeneralException e) {
-                    throw new InterpreterException(e);
-                } catch (ConfigurationException e) {
-                    throw new InterpreterException(e);
                 }
+            } catch (ConfigurationException e) {
+                throw new InterpreterException(e);
             }
+        } else {
+            throw new HelpingException(getLocalizer(), "TTP.IncompatibleUnbox");
         }
     }
 

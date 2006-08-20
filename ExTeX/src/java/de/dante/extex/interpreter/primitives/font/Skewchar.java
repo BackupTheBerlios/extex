@@ -71,7 +71,7 @@ import de.dante.util.exception.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class Skewchar extends AbstractAssignment
         implements
@@ -140,8 +140,6 @@ public class Skewchar extends AbstractAssignment
             }
         } catch (EofException e) {
             throw new EofException(printableControlSequence(context));
-        } catch (GeneralException e) {
-            throw new InterpreterException(e);
         }
     }
 

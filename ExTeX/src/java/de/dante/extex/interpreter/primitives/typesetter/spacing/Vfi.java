@@ -28,7 +28,6 @@ import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.glue.GlueComponent;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.exception.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\vfi</code>.
@@ -53,7 +52,7 @@ import de.dante.util.exception.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Vfi extends AbstractVerticalCode implements VerticalSkip {
 
@@ -90,11 +89,7 @@ public class Vfi extends AbstractVerticalCode implements VerticalSkip {
             throws InterpreterException {
 
         ensureVerticalMode(typesetter);
-        try {
-            typesetter.add(FI);
-        } catch (GeneralException e) {
-            throw new InterpreterException(e);
-        }
+        typesetter.add(FI);
     }
 
     /**

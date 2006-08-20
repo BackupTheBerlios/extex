@@ -28,7 +28,6 @@ import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.file.OutFile;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.node.WhatsItOpenNode;
-import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
@@ -80,7 +79,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.30 $
+ * @version $Revision: 1.31 $
  */
 public class Openout extends AbstractFileCode {
 
@@ -123,8 +122,6 @@ public class Openout extends AbstractFileCode {
         } else {
             try {
                 typesetter.add(new WhatsItOpenNode(key, file));
-            } catch (GeneralException e) {
-                throw new InterpreterException(e);
             } catch (ConfigurationException e) {
                 throw new InterpreterException(e);
             }
