@@ -169,7 +169,7 @@
       </fileset>
       <manifest>
         <attribute name="Built-By" value="${user.name}" />
-        <attribute name="Main-Class" value="de.dante.extex.ExTeX" />
+        <attribute name="Main-Class" value="de.dante.extex.main.TeX" />
       </manifest>
     </jar>
   </target>
@@ -316,6 +316,8 @@
     <delete dir="${target.tests}" />
     <mkdir dir="${target.tests}" />
     <junit printsummary="on" haltonfailure="no">
+      <jvmarg value="-Xms128m"/>
+      <jvmarg value="-Xmx512m"/>
       <classpath>
         <pathelement path="${classes}" />
       </classpath>
