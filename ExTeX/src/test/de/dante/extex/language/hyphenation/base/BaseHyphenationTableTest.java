@@ -27,7 +27,6 @@ import de.dante.extex.font.Kerning;
 import de.dante.extex.font.Ligature;
 import de.dante.extex.font.type.BoundingBox;
 import de.dante.extex.font.type.tfm.TFMFixWord;
-import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.MockContext;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.context.TypesettingContextImpl;
@@ -50,7 +49,7 @@ import de.dante.util.UnicodeCharList;
  * Test suite for the base hyphenation table.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class BaseHyphenationTableTest extends TestCase {
 
@@ -58,7 +57,7 @@ public class BaseHyphenationTableTest extends TestCase {
      * Mock implementation of a font.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.4 $
+     * @version $Revision: 1.5 $
      */
     private class MockFont implements Font {
 
@@ -234,7 +233,7 @@ public class BaseHyphenationTableTest extends TestCase {
      * This is a mock implementation of a glyph.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.4 $
+     * @version $Revision: 1.5 $
      */
     private class MockGlyph implements Glyph {
 
@@ -384,7 +383,7 @@ public class BaseHyphenationTableTest extends TestCase {
      * This mock implementation is for test purposes only.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.4 $
+     * @version $Revision: 1.5 $
      */
     private class MyMockContext extends MockContext {
 
@@ -474,7 +473,6 @@ public class BaseHyphenationTableTest extends TestCase {
     protected void setUp() throws Exception {
 
         context = new MyMockContext();
-        Context c = new MockContext();
         language = makeLanguage();
         language.addHyphenation(makeList("abc-def"), context);
         language.addHyphenation(makeList("d-e-f"), context);
