@@ -22,7 +22,7 @@ package de.dante.extex.typesetter.paragraphBuilder.texImpl;
 /**
  * This class provides a finite enumeration for fitness values.
  *
- * @see "TTP [817]"
+ * <i>
  *  817.
  *
  *    When looking for optimal line breaks, TeX creates a "break node"
@@ -45,10 +45,12 @@ package de.dante.extex.typesetter.paragraphBuilder.texImpl;
  *    more than their stretchability}
  *
  *    define decent_fit=2  {fitness classification for all other lines}
+ * </i>
  *
+ * @see "TTP [817]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public final class Fitness {
 
