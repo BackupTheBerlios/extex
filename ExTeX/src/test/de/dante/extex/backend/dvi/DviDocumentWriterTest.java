@@ -17,7 +17,7 @@
  *
  */
 
-package de.dante.extex.documentWriter.dvi;
+package de.dante.extex.backend.dvi;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
@@ -51,7 +51,7 @@ import de.dante.util.framework.configuration.Configuration;
  * JUnit tests for class <code>DviDocumentWriter</code>.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.1 $
  */
 public class DviDocumentWriterTest extends TestCase {
 

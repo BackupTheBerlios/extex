@@ -17,7 +17,7 @@
  *
  */
 
-package de.dante.extex.documentWriter.util;
+package de.dante.extex.backend.util;
 
 import junit.framework.TestCase;
 import de.dante.extex.backend.documentWriter.util.PageManager;
@@ -26,7 +26,7 @@ import de.dante.extex.backend.documentWriter.util.PageManager;
  * This class contains a test suite for the PageManager.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.1 $
  */
 public class PageManagerTest extends TestCase {
 
