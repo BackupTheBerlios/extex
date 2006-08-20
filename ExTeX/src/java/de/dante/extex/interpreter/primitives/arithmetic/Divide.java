@@ -57,7 +57,7 @@ import de.dante.extex.typesetter.Typesetter;
  *      de.dante.extex.interpreter.TokenSource#scanNumber(Context)
  *      &lang;8-bit&nbsp;number&rang;}
  *      |  &lang;glue variable&rang; &lang;optional <tt>by</tt>&rang; {@linkplain
- *      de.dante.extex.interpreter.TokenSource#scanNumber(Cntext)
+ *      de.dante.extex.interpreter.TokenSource#scanNumber(Context)
  *      &lang;8-bit&nbsp;number&rang;}
  *      |  &lang;muglue variable&rang; &lang;optional <tt>by</tt>&rang; {@linkplain
  *      de.dante.extex.interpreter.TokenSource#scanNumber(Context)
@@ -84,7 +84,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * @see de.dante.extex.interpreter.type.arithmetic.Divideable
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class Divide extends AbstractAssignment {
 

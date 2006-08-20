@@ -41,7 +41,7 @@ import de.dante.extex.typesetter.Typesetter;
  *  <pre class="syntax">
  *    &lang;setbox&rang;
  *      &rarr; &lang;optional prefix&rang; <tt>\setbox</tt> {@linkplain
- *        de.dante.extex.interpreter.primitives.register.box.AbstractBox#getKey(Context,Source,String)
+ *        de.dante.extex.interpreter.primitives.register.box.AbstractBox#getKey(Context,Source,Typesetter,String)
  *        &lang;box register name&rang;} &lang;box&rang;
  *
  *    &lang;optional prefix&rang;
@@ -55,7 +55,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public class Setbox extends AbstractBox implements Code {
 

@@ -33,7 +33,7 @@ import de.dante.extex.typesetter.Typesetter;
  * Thus abstract base class for marks primitives provides the common features.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public abstract class AbstractMarksCode extends AbstractCode
         implements
@@ -139,7 +139,7 @@ public abstract class AbstractMarksCode extends AbstractCode
      * <pre class="syntax">
      *   &lang;register name&rang;
      *       &rarr; {@linkplain
-     *        de.dante.extex.interpreter.TokenSource#scanTokens(Context)
+     *        de.dante.extex.interpreter.TokenSource#scanTokens(Context,boolean,boolean,String)
      *        &lang;tokens&rang;}
      *        | {@linkplain de.dante.extex.interpreter.TokenSource#scanNumber(Context)
      *        &lang;number&rang;}  </pre>

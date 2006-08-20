@@ -43,7 +43,7 @@ import de.dante.extex.typesetter.Typesetter;
  *  <pre class="syntax">
  *    &lang;namespace&rang;
  *      &rarr; <tt>\namespace</tt> {@linkplain
- *      de.dante.extex.interpreter.TokenSource#getTokens()
+ *      de.dante.extex.interpreter.TokenSource#getTokens(Context,TokenSource,Typesetter)
  *      &lang;replacement text&rang;}  </pre>
  *
  * <h4>Examples</h4>
@@ -56,7 +56,7 @@ import de.dante.extex.typesetter.Typesetter;
  * @see de.dante.extex.interpreter.primitives.namespace.Import
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Namespace extends AbstractAssignment
         implements

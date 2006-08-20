@@ -33,7 +33,7 @@ import de.dante.extex.typesetter.Typesetter;
  * It provides a method to get the key of a box register.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public abstract class AbstractBox extends AbstractCode implements Serializable {
 
@@ -84,7 +84,7 @@ public abstract class AbstractBox extends AbstractCode implements Serializable {
      * <pre class="syntax">
      *   &lang;box register name&rang;
      *       &rarr; {@linkplain
-     *        de.dante.extex.interpreter.TokenSource#scanTokens(Context)
+     *        de.dante.extex.interpreter.TokenSource#scanTokens(Context,boolean,boolean,String)
      *        &lang;tokens&rang;}
      *        | {@linkplain de.dante.extex.interpreter.TokenSource#scanNumber(Context)
      *        &lang;number&rang;}  </pre>

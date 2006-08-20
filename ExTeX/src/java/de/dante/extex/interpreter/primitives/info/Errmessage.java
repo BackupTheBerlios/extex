@@ -44,7 +44,7 @@ import de.dante.extex.typesetter.Typesetter;
  *  <pre class="syntax">
  *    &lang;errmessage&rang;
  *       &rarr; <tt>\errmessage</tt> {@linkplain
- *        de.dante.extex.interpreter.TokenSource#scanTokens(Context)
+ *        de.dante.extex.interpreter.TokenSource#scanTokens(Context,boolean,boolean,String)
  *        &lang;tokens&rang;}  </pre>
  *
  * <h4>Examples</h4>
@@ -85,7 +85,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class Errmessage extends AbstractCode {
 

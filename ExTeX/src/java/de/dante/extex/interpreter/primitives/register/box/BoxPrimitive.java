@@ -28,7 +28,6 @@ import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.box.Boxable;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
@@ -50,7 +49,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *  <pre class="syntax">
  *    &lang;box&rang;
  *      &rarr; <tt>\box</tt> {@linkplain
- *        de.dante.extex.interpreter.primitives.register.box.AbstractBox#getKey(Context,Source,String)
+ *        de.dante.extex.interpreter.primitives.register.box.AbstractBox#getKey(Context,Source,Typesetter,String)
  *        &lang;box register name&rang;} </pre>
  *
  * <h4>Examples</h4>
@@ -61,7 +60,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public class BoxPrimitive extends AbstractBox implements Boxable, Serializable {
 
@@ -96,8 +95,6 @@ public class BoxPrimitive extends AbstractBox implements Boxable, Serializable {
         if (box != null) {
             try {
                 typesetter.add(box.getNodes());
-            } catch (GeneralException e) {
-                throw new InterpreterException(e);
             } catch (ConfigurationException e) {
                 throw new InterpreterException(e);
             }

@@ -48,7 +48,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *  <pre class="syntax">
  *    &lang;special&rang;
  *        &rarr; <tt>\special</tt> {@linkplain
- *           de.dante.extex.interpreter.TokenSource#scanTokens(Context)
+ *           de.dante.extex.interpreter.TokenSource#scanTokens(Context,boolean,boolean,String)
  *           &lang;general text&rang;}  </pre>
  *
  * <h4>Examples</h4>
@@ -66,7 +66,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class Special extends AbstractCode {
 

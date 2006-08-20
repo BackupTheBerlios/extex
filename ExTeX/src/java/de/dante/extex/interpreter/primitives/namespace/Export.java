@@ -61,7 +61,7 @@ import de.dante.extex.typesetter.Typesetter;
  *  <pre class="syntax">
  *    &lang;export&rang;
  *      &rarr; &lang;prefix&rang; <tt>\export</tt> {@linkplain
- *      de.dante.extex.interpreter.TokenSource#getTokens()
+ *      de.dante.extex.interpreter.TokenSource#getTokens(Context,TokenSource,Typesetter)
  *      &lang;replacement text&rang;}
  *
  *    &lang;prefix&rang;
@@ -79,7 +79,7 @@ import de.dante.extex.typesetter.Typesetter;
  * @see de.dante.extex.interpreter.primitives.namespace.Import
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Export extends AbstractAssignment {
 
