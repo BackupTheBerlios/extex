@@ -36,7 +36,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class LanguageObserver implements CountObserver, TokensObserver {
 
@@ -49,7 +49,7 @@ public class LanguageObserver implements CountObserver, TokensObserver {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.observer.CountObserver#receiveCountChange(
+     * @see de.dante.extex.interpreter.context.observer.count.CountObserver#receiveCountChange(
      *      de.dante.extex.interpreter.context.ContextInternals,
      *      java.lang.String,
      *      de.dante.extex.interpreter.type.count.Count)
@@ -67,7 +67,7 @@ public class LanguageObserver implements CountObserver, TokensObserver {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.observer.TokensObserver#receiveTokensChange(
+     * @see de.dante.extex.interpreter.context.observer.tokens.TokensObserver#receiveTokensChange(
      *      de.dante.extex.interpreter.context.ContextInternals,
      *      java.lang.String,
      *      de.dante.extex.interpreter.type.tokens.Tokens)

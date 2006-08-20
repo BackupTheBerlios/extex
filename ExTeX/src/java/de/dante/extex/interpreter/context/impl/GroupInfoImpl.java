@@ -26,11 +26,11 @@ import de.dante.util.Locator;
 
 /**
  * This class provides a reference implementation for a
- * {@link de.dante.extex.interpreter.context.GroupInfo GroupInfo}.
+ * {@link de.dante.extex.interpreter.context.group.GroupInfo GroupInfo}.
  * It is a mere container with some getters.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class GroupInfoImpl implements GroupInfo {
 
@@ -74,7 +74,7 @@ public class GroupInfoImpl implements GroupInfo {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.GroupInfo#getGroupStart()
+     * @see de.dante.extex.interpreter.context.group.GroupInfo#getGroupStart()
      */
     public Token getGroupStart() {
 
@@ -82,7 +82,7 @@ public class GroupInfoImpl implements GroupInfo {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.GroupInfo#getGroupType()
+     * @see de.dante.extex.interpreter.context.group.GroupInfo#getGroupType()
      */
     public GroupType getGroupType() {
 
@@ -90,7 +90,7 @@ public class GroupInfoImpl implements GroupInfo {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.GroupInfo#getLocator()
+     * @see de.dante.extex.interpreter.context.group.GroupInfo#getLocator()
      */
     public Locator getLocator() {
 

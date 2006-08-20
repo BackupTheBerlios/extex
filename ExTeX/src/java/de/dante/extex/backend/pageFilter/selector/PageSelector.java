@@ -31,7 +31,7 @@ import de.dante.extex.typesetter.type.page.Page;
  * This page filter selects some pages to be shipped out.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class PageSelector implements PagePipe {
 
@@ -113,7 +113,7 @@ public class PageSelector implements PagePipe {
     }
 
     /**
-     * @see de.dante.extex.backend.nodeFilter.NodePipe#close()
+     * @see de.dante.extex.backend.pageFilter.PagePipe#close()
      */
     public void close() throws BackendException {
 
@@ -125,8 +125,8 @@ public class PageSelector implements PagePipe {
     }
 
     /**
-     * @see de.dante.extex.backend.nodeFilter.NodePipe#setOutput(
-     *      de.dante.extex.backend.nodeFilter.NodePipe)
+     * @see de.dante.extex.backend.nodeFilter.PagePipe#setOutput(
+     *      de.dante.extex.backend.nodeFilter.PagePipe)
      */
     public void setOutput(final PagePipe pipe) {
 
@@ -134,7 +134,7 @@ public class PageSelector implements PagePipe {
     }
 
     /**
-     * @see de.dante.extex.backend.nodeFilter.NodePipe#setParameter(
+     * @see de.dante.extex.backend.nodeFilter.PagePipe#setParameter(
      *      java.lang.String, java.lang.String)
      */
     public void setParameter(final String name, final String value) {
@@ -142,7 +142,7 @@ public class PageSelector implements PagePipe {
     }
 
     /**
-     * @see de.dante.extex.backend.nodeFilter.NodePipe#shipout(
+     * @see de.dante.extex.backend.nodeFilter.PagePipe#shipout(
      *      de.dante.extex.typesetter.type.page.Page)
      */
     public void shipout(final Page page) throws BackendException {

@@ -71,7 +71,7 @@ import de.dante.util.xml.XMLStreamWriter;
  * This is a xml implementation of a document writer.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class XMLDocumentWriter
         implements
@@ -264,7 +264,7 @@ public class XMLDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#close()
+     * @see de.dante.extex.backend.documentWriter.DocumentWriter#close()
      */
     public void close() throws DocumentWriterException {
 
@@ -286,7 +286,7 @@ public class XMLDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#getExtension()
+     * @see de.dante.extex.backend.documentWriter.DocumentWriter#getExtension()
      */
     public String getExtension() {
 
@@ -294,7 +294,7 @@ public class XMLDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#getPages()
+     * @see de.dante.extex.backend.documentWriter.DocumentWriter#getPages()
      */
     public int getPages() {
 
@@ -328,7 +328,7 @@ public class XMLDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#setOutputStream(
+     * @see de.dante.extex.backend.documentWriter.DocumentWriter#setOutputStream(
      *      java.io.OutputStream)
      */
     public void setOutputStream(final OutputStream outStream) {
@@ -342,7 +342,7 @@ public class XMLDocumentWriter
     private Map param = new HashMap();
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#setParameter(
+     * @see de.dante.extex.backend.documentWriter.DocumentWriter#setParameter(
      *      java.lang.String,
      *      java.lang.String)
      */
@@ -393,7 +393,7 @@ public class XMLDocumentWriter
     private XMLStreamWriter writer;
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#shipout(
+     * @see de.dante.extex.backend.documentWriter.DocumentWriter#shipout(
      *      de.dante.extex.typesetter.type.NodeList)
      */
     public int shipout(final Page page) throws GeneralException {

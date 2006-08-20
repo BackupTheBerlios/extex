@@ -2,7 +2,7 @@
  <head>
   <title>ExTeX: Document Writer</title>
   <meta name="copyright" content="
-   Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+   Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
 
    This library is free software; you can redistribute it and/or modify it
    under the terms of the GNU Lesser General Public License as published by
@@ -19,7 +19,7 @@
    Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
   " />
   <meta name="author" content="Gerd Neugebauer" />
-  <meta name="version" content="$Revision: 1.1 $" />
+  <meta name="version" content="$Revision: 1.2 $" />
  </head>
  <body>
   This package contains the backends of <logo>ExTeX</logo> which are
@@ -31,14 +31,14 @@
   <p>
    To write a document writer you start to create a class which
    implements the interface {@link
-   de.dante.extex.documentWriter.DocumentWriter DocumentWriter}. This
-   interface describes the ability to receive some nodes for
+   de.dante.extex.backend.documentWriter.DocumentWriter DocumentWriter}.
+   This interface describes the ability to receive some nodes for
    processing. This is usually not enough. In addition it is necessary
    to send the result to some destination. This is accomplished by the
    interfaces {@link
-   de.dante.extex.documentWriter.SingleDocumentStream
+   de.dante.extex.backend.documentWriter.SingleDocumentStream
    SingleDocumentStream} and {@link
-   de.dante.extex.documentWriter.MultipleDocumentStream
+   de.dante.extex.backend.documentWriter.MultipleDocumentStream
    MultipleDocumentStream}.
   </p>
   <h4>Output Streams</h4>
@@ -53,7 +53,7 @@
   </p>
   <p>
    The interface {@link
-   de.dante.extex.documentWriter.SingleDocumentStream
+   de.dante.extex.backend.documentWriter.SingleDocumentStream
    SingleDocumentStream} is used by those document writers which send
    the output to a single destination. At startup the method
    setOutputStream() is invoked and the output stream is passed to the
@@ -62,7 +62,7 @@
   </p>
   <p>
    The interface {@link
-   de.dante.extex.documentWriter.MultipleDocumentStream
+   de.dante.extex.backend.documentWriter.MultipleDocumentStream
    MultipleDocumentStream} is used by those document writers which
    send the output to several destinations. As an example consider an
    EPS writer which produces one file per page. Here the method

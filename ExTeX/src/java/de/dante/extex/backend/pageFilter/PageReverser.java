@@ -31,7 +31,7 @@ import de.dante.extex.typesetter.type.page.Page;
  * This page filter reverses the order of the pages shipped out.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class PageReverser implements PagePipe {
 
@@ -55,7 +55,7 @@ public class PageReverser implements PagePipe {
     }
 
     /**
-     * @see de.dante.extex.backend.nodeFilter.NodePipe#close()
+     * @see de.dante.extex.backend.pageFilter.PagePipe#close()
      */
     public void close() throws BackendException {
 
@@ -70,8 +70,8 @@ public class PageReverser implements PagePipe {
     }
 
     /**
-     * @see de.dante.extex.backend.nodeFilter.NodePipe#setOutput(
-     *      de.dante.extex.backend.nodeFilter.NodePipe)
+     * @see de.dante.extex.backend.pageFilter.PagePipe#setOutput(
+     *     de.dante.extex.backend.pageFilter.PagePipe)
      */
     public void setOutput(final PagePipe pipe) {
 
@@ -79,15 +79,15 @@ public class PageReverser implements PagePipe {
     }
 
     /**
-     * @see de.dante.extex.backend.nodeFilter.NodePipe#setParameter(
-     *      java.lang.String, java.lang.String)
+     * @see de.dante.extex.backend.pageFilter.PagePipe#setParameter(
+     *     java.lang.String, java.lang.String)
      */
     public void setParameter(final String name, final String value) {
 
     }
 
     /**
-     * @see de.dante.extex.backend.nodeFilter.NodePipe#shipout(
+     * @see de.dante.extex.backend.pageFilter.PagePipe#shipout(
      *      de.dante.extex.typesetter.type.page.Page)
      */
     public void shipout(final Page page) throws DocumentWriterException {

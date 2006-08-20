@@ -26,7 +26,7 @@ import de.dante.util.Switch;
  * {@link de.dante.util.Switch Switch} when an event is received.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class SwitchObserver implements AfterGroupObserver {
 
@@ -56,7 +56,7 @@ public class SwitchObserver implements AfterGroupObserver {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.observer.afterGroup.AfterGroupObserver#update()
+     * @see de.dante.extex.interpreter.context.observer.group.AfterGroupObserver#update()
      */
     public void update() {
 
