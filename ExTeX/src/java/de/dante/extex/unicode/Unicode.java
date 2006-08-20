@@ -25,14 +25,15 @@ import de.dante.util.UnicodeChar;
  * Central utility class for Unicode compatibility in <logo>ExTeX</logo>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public final class Unicode {
 
     /**
-     * The field <tt>BREAK_PERMITTED_HERE</tt> contains the ...
+     * The field <tt>BREAK_PERMITTED_HERE</tt> contains the optional break.
      */
-    public static final UnicodeChar BREAK_PERMITTED_HERE = new UnicodeChar(0x82);
+    public static final UnicodeChar BREAK_PERMITTED_HERE = UnicodeChar
+            .get(0x82);
 
     /**
      * The field <tt>NEXT_LINE</tt> contains the next line control character.
@@ -40,7 +41,7 @@ public final class Unicode {
     public static final UnicodeChar NEXT_LINE = UnicodeChar.get(0x85);
 
     /**
-     * The field <tt>NO_BREAK_HERE</tt> contains the ...
+     * The field <tt>NO_BREAK_HERE</tt> contains the break inhibitor.
      */
     public static final UnicodeChar NO_BREAK_HERE = UnicodeChar.get(0x83);
 
