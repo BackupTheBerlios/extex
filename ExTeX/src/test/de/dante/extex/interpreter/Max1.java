@@ -59,7 +59,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.77 $
+ * @version $Revision: 1.78 $
  */
 public class Max1 extends TestCase {
 
@@ -279,10 +279,11 @@ public class Max1 extends TestCase {
          *      de.dante.util.UnicodeChar,
          *      de.dante.util.Locator)
          */
-        public void letter(final Context context, final TypesettingContext tc,
+        public boolean letter(final Context context, final TypesettingContext tc,
                 final UnicodeChar uc, final Locator locator)
                 throws TypesetterException {
 
+            return false;
         }
 
         /**
