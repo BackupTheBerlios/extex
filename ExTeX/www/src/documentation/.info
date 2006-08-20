@@ -2,6 +2,12 @@
     Recent&nbsp;Publications
     <div class="infoitems">
      <div class="pdf">
+      <a href="publ/dtk_06_3_neugebauer_minimal.pdf">
+      <img src="&top;image/pdf.gif" border="0"/>
+      Minimal? &ndash; Vom Testen eines Textsatzsystems</a>,
+      Die TeXnische Komödie 3/2006.
+     </div>
+     <div class="pdf">
       <a href="publ/dtk_05_3_niedermair_neues.pdf"> 
       <img src="&top;image/pdf.gif" border="0"/>
       Neues von &ExTeX;: TFM-Daten anschaulich darstellen</a>,

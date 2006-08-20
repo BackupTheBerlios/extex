@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- ====================================================================== -->
+<item>
+  <title>Minimal? -- Vom Testen eines Textsatzsystems (German)</title>
+  <description>
+    Ein System wie ExTeX muss getestet werden. Dabei kommt die Kunst
+    der Minimalbeispiele zum Einsatz. Diese treten hier in der Form von
+    Testfällen auf. ExTeX soll durch Testfälle so abgesichert werden,
+    dass während der Weiterentwicklung keine ungewollten Veränderungen
+    an den implementierten Funktionalitäten auftreten.
+  </description>
+  <author>gene@gerd-neugebauer.de (Gerd Neugebauer)</author>
+  <link>http://www.extex.org/documentation/publ/dtk06_3_neugebuaer_minimal.pdf</link>
+</item>
