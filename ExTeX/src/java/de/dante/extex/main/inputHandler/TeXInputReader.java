@@ -33,7 +33,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * prompt before each line of input.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class TeXInputReader extends Reader {
 
@@ -76,7 +76,7 @@ public class TeXInputReader extends Reader {
         reader = new InputStreamReader(System.in, charset);
         Localizer localizer = LocalizerFactory
                 .getLocalizer(TeXInputReader.class.getName());
-        prompt = localizer.format("CLI.PromptInput");
+        prompt = localizer.format("TTP.PromptInput");
     }
 
     /**
