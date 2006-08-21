@@ -582,7 +582,7 @@ import de.dante.util.resource.ResourceFinder;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class TeX extends ExTeX {
 
@@ -761,8 +761,7 @@ public class TeX extends ExTeX {
      *      java.util.Properties)
      */
     protected boolean initializeStreams(final Interpreter interpreter,
-            final Properties properties)
-            throws ConfigurationException {
+            final Properties properties) throws ConfigurationException {
 
         TokenStreamFactory factory = interpreter.getTokenStreamFactory();
 
@@ -808,17 +807,20 @@ public class TeX extends ExTeX {
      * @see de.dante.extex.ExTeX#makeInterpreter(
      *      de.dante.util.framework.configuration.Configuration,
      *      de.dante.extex.scanner.stream.TokenStreamFactory,
-     *      de.dante.extex.font.FontFactory)
+     *      de.dante.extex.font.FontFactory,
+     *      de.dante.util.resource.ResourceFinder,
+     *      java.lang.String)
      */
     protected Interpreter makeInterpreter(final Configuration config,
-            final TokenStreamFactory factory, final FontFactory fontFactory)
+            final TokenStreamFactory factory, final FontFactory fontFactory,
+            final ResourceFinder finder, final String jobname)
             throws ConfigurationException,
                 GeneralException,
                 FontException,
                 IOException {
 
         Interpreter interpreter = super.makeInterpreter(config, factory,
-                fontFactory);
+                fontFactory, finder, jobname);
         Logger logger = getLogger();
 
         interpreter.getContext().setStandardTokenStream(
@@ -936,13 +938,15 @@ public class TeX extends ExTeX {
                                 getLocalizer().format("ExTeX.Copyright",
                                         copyrightYear));
                         onceMore = false;
+                    } else if ("-copying".startsWith(arg)) {
+                        
+                        onceMore = false;
                     } else if ("-help".startsWith(arg)) {
                         getLogger().info(
                                 getLocalizer().format("ExTeX.Usage", "extex"));
                         onceMore = false;
                     } else if ("-fmt".startsWith(arg)) {
                         useArg(PROP_FMT, args, ++i);
-                        i++;
                     } else if (arg.startsWith("-fmt=")) {
                         setProperty(PROP_FMT, arg.substring("-fmt=".length()));
                     } else if ("-halt-on-error".startsWith(arg)) {
@@ -1009,7 +1013,10 @@ public class TeX extends ExTeX {
             }
         } catch (MainException e) {
             showBanner(null, Level.INFO);
-            logException(getLogger(), e.getLocalizedMessage(), e);
+            if (!(e.getCause() instanceof InterpreterException || ((InterpreterException) e
+                    .getCause()).isProcessed())) {
+                logException(getLogger(), e.getLocalizedMessage(), e);
+            }
             returnCode = e.getCode();
         } catch (Throwable e) {
             showBanner(null, Level.INFO);

@@ -51,13 +51,14 @@ import de.dante.test.font.LauncherFont;
 import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
+import de.dante.util.resource.ResourceFinder;
 
 /**
  * This base class for test cases handles all the nifty gritty details of
  * running an instance of <logo>ExTeX</logo>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.48 $
+ * @version $Revision: 1.49 $
  */
 public class ExTeXLauncher extends TestCase {
 
@@ -65,7 +66,7 @@ public class ExTeXLauncher extends TestCase {
      * Inner class for the error handler.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.48 $
+     * @version $Revision: 1.49 $
      */
     private class EHandler implements ErrorHandler {
 
@@ -295,14 +296,15 @@ public class ExTeXLauncher extends TestCase {
              */
             protected Interpreter makeInterpreter(final Configuration config,
                     final TokenStreamFactory factory,
-                    final FontFactory fontFactory)
+                    final FontFactory fontFactory, final ResourceFinder finder,
+                    final String jobname)
                     throws ConfigurationException,
                         GeneralException,
                         FontException,
                         IOException {
 
                 Interpreter interpreter = super.makeInterpreter(config,
-                        factory, fontFactory);
+                        factory, fontFactory, finder, jobname);
                 Context context = interpreter.getContext();
                 context.set(new LauncherFont(), true);
                 context.setStandardTokenStream(factory
