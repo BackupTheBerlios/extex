@@ -170,7 +170,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.108 $
+ * @version $Revision: 1.109 $
  */
 public abstract class Max
         implements
@@ -1092,7 +1092,9 @@ public abstract class Max
 
         if (newContext instanceof Configurable) {
             try {
-                ((Configurable) newContext).configure(configuration);
+                //TODO gene: provide the correct configuration instead of the constant one
+                ((Configurable) newContext).configure(configuration
+                        .getConfiguration("Context").getConfiguration("ExTeX"));
             } catch (ConfigurationException e) {
                 throw new LoaderException(e);
             }
@@ -1271,7 +1273,7 @@ public abstract class Max
             String endPrimitive = loc.format("TTP.EndPrimitive");
             String message = loc.format("TTP.EndGroup", context
                     .esc(endPrimitive), Long.toString(groupLevel));
-            logger.warning(message);
+            //logger.warning(message);
             InterpreterException e = new InterpreterException(message);
             if (observersError != null) {
                 observersError.update(e);
