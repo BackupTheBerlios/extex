@@ -141,7 +141,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.111 $
+ * @version $Revision: 1.112 $
  */
 public class ContextImpl
         implements
@@ -495,10 +495,12 @@ public class ContextImpl
 
         groupFactory = new GroupFactory(configuration
                 .getConfiguration(GROUP_TAG));
-        try {
-            openGroup(GroupType.BOTTOM_LEVEL_GROUP, null, null);
-        } catch (InterpreterException e) {
-            throw new ConfigurationWrapperException(e);
+        if (group == null) {
+            try {
+                openGroup(GroupType.BOTTOM_LEVEL_GROUP, null, null);
+            } catch (InterpreterException e) {
+                throw new ConfigurationWrapperException(e);
+            }
         }
 
         Configuration typesettingConfig = configuration
