@@ -2,24 +2,24 @@
     Recent&nbsp;Publications
     <div class="infoitems">
      <div class="pdf">
-      <a href="publ/dtk_06_3_neugebauer_minimal.pdf">
+      <a href="&top;documentation/publ/dtk06_3_neugebauer_minimal.pdf">
       <img src="&top;image/pdf.gif" border="0"/>
       Minimal? &ndash; Vom Testen eines Textsatzsystems</a>,
       Die TeXnische Komödie 3/2006.
      </div>
      <div class="pdf">
-      <a href="publ/dtk_05_3_niedermair_neues.pdf"> 
+      <a href="&top;documentation/publ/dtk05_3_niedermair_neues.pdf"> 
       <img src="&top;image/pdf.gif" border="0"/>
       Neues von &ExTeX;: TFM-Daten anschaulich darstellen</a>,
       Die TeXnische Komödie 3/2005.
      </div>
      <div class="pdf">
-      <a href="publ/eurotex-2005-extex-namespaces.pdf">
+      <a href="&top;documentation/publ/eurotex-2005-extex-namespaces.pdf">
       <img src="&top;image/pdf.gif" border="0"/>
       Namespaces for &ExTeX;</a>, EuroTeX 2005 (Slides)
      </div>
      <div class="pdf">
-      <a href="publ/eurotex-2005-extex-tutorial.pdf">
+      <a href="&top;documentation/publ/eurotex-2005-extex-tutorial.pdf">
       <img src="&top;image/pdf.gif" border="0"/>
       &ExTeX; &ndash; Under the Hood</a>, EuroTeX 2005 (Slides)
      </div>
