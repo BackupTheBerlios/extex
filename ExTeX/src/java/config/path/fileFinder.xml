@@ -31,7 +31,6 @@
       <path property="extex.texinputs"/>
       <path property="texinputs"/>
       <path>.</path>
-      <extension></extension>
       <extension>.fmt</extension>
     </fmt>
     <efm>
