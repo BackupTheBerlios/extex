@@ -329,7 +329,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.131 $
+ * @version $Revision: 1.132 $
  */
 public class ExTeX {
 
@@ -934,14 +934,15 @@ public class ExTeX {
             try {
                 interpreter.loadFormat(stream, fmt);
             } catch (LoaderException e) {
+                logger.throwing(this.getClass().getName(), "loadFormat()", e);
                 throw new HelpingException(localizer, "TTP.FormatFileError",
                         format);
             }
-            logger.finer(localizer.format("ExTeX.FormatDate", format, time));
+            logger.fine(localizer.format("ExTeX.FormatDate", format, time));
         } else if (!ini) {
             throw new GeneralException();
         } else {
-            logger.finer(localizer.format("ExTeX.NoFormatDate", time));
+            logger.fine(localizer.format("ExTeX.NoFormatDate", time));
         }
         interpreter.setJobname(jobname);
     }
@@ -1163,6 +1164,8 @@ public class ExTeX {
      * @param config the configuration object for the interpreter
      * @param factory the factory for new token streams
      * @param fontFactory the font factory to request the default font from
+     * @param finder the resource finder
+     * @param jobname the job name
      *
      * @return the new interpreter
      *
@@ -1173,7 +1176,8 @@ public class ExTeX {
      * @throws IOException in case of an IO error
      */
     protected Interpreter makeInterpreter(final Configuration config,
-            final TokenStreamFactory factory, final FontFactory fontFactory)
+            final TokenStreamFactory factory, final FontFactory fontFactory,
+            final ResourceFinder finder, final String jobname)
             throws ConfigurationException,
                 GeneralException,
                 FontException,
@@ -1216,6 +1220,10 @@ public class ExTeX {
         Configuration fontConfiguration = config.findConfiguration(TAG_FONT);
         context.set(makeDefaultFont(fontConfiguration, fontFactory), true);
         context.set(context.getLanguage("0"), true);
+
+        loadFormat(interpreter, finder, properties.getProperty(PROP_FMT),
+                jobname);
+
         if (Boolean.valueOf((String) properties.get(PROP_TRACING_ONLINE))
                 .booleanValue()) {
             context.setCount("tracingonline", 1, true);
@@ -1427,7 +1435,7 @@ public class ExTeX {
 
             Interpreter interpreter = makeInterpreter(//
                     config.getConfiguration("Interpreter"), //
-                    tokenStreamFactory, fontFactory);
+                    tokenStreamFactory, fontFactory, finder, jobname);
 
             BackendDriver backend = makeBackend(//
                     config.getConfiguration("DocumentWriter"), //
@@ -1441,9 +1449,6 @@ public class ExTeX {
                             .getContext());
             typesetter.setOutputRoutine(new TeXOutputRoutine(interpreter));
             interpreter.setTypesetter(typesetter);
-
-            loadFormat(interpreter, finder, properties.getProperty(PROP_FMT),
-                    jobname);
 
             interpreter.run();
 
@@ -1469,15 +1474,16 @@ public class ExTeX {
             Throwable cause = e.getCause();
             if (cause instanceof InterpreterException) {
                 logger.severe(cause.getLocalizedMessage());
-                //logger.throwing(this.getClass().getName(), "run", cause);
                 throw (InterpreterException) cause;
             } else {
                 logger.severe(e.getLocalizedMessage());
-                //logger.throwing(this.getClass().getName(), "run", e);
                 throw e;
             }
         } catch (InterpreterException e) {
-            logger.throwing(this.getClass().getName(), "run", e);
+            if (!e.isProcessed()) {
+                e.setProcessed(true);
+                logger.severe("\n" + e.getLocalizedMessage() + "\n");
+            }
             throw e;
         } catch (Throwable e) {
             logInternalError(e);
