@@ -2,7 +2,7 @@
 #------------------------------------------------------------------------------
 # This is the start script for ExTeX
 #------------------------------------------------------------------------------
-# Copyright (C) 2004-2005 The ExTeX Group
+# Copyright (C) 2004-2006 The ExTeX Group
 #
 # This library is free software; you can redistribute it and/or modify it under
 # the terms of the GNU Lesser General Public License as published by the Free
@@ -28,28 +28,29 @@ if [ "$JAVA_HOME" = "" ] ; then
   exit 1
 fi
 
-sep=':'
+EXTEX_HOME=`dirname $0`
+LIBDIR="$EXTEX_HOME/lib"
 
 # OS specific support.
-cygwin=false;
 case "`uname`" in
-  CYGWIN*) cygwin=true ;;
-esac
-
-# For Cygwin, ensure paths are in UNIX format before anything is touched
-if $cygwin ; then
+  CYGWIN*)
+    # For Cygwin, ensure paths are in UNIX format before anything is touched
     [ -n "$JAVA_HOME" ] &&
         JAVA_HOME=`cygpath --unix "$JAVA_HOME"`
     sep=';'
-fi
-
-EXTEX_HOME=`dirname $0`
-LIBDIR="$EXTEX_HOME/lib"
-LOCALCLASSPATH=.$sep$EXTEX_HOME/config$sep$EXTEX_HOME/target/classes
-
-for i in $LIBDIR/*.jar ; do
-    LOCALCLASSPATH=$LOCALCLASSPATH$sep$i
-done
+    LOCALCLASSPATH=.$sep$EXTEX_HOME/config$sep$EXTEX_HOME/target/classes
+    for i in $LIBDIR/*.jar ; do
+      LOCALCLASSPATH=$LOCALCLASSPATH$sep`cygpath --unix "$i"`
+    done
+    ;;
+  *)
+    sep=':'
+    LOCALCLASSPATH=.$sep$EXTEX_HOME/config$sep$EXTEX_HOME/target/classes
+    for i in $LIBDIR/*.jar ; do
+      LOCALCLASSPATH=$LOCALCLASSPATH$sep$i
+    done
+    ;;
+esac
 
 exec java $EXTEX_JAVA_OPTS -classpath "$LOCALCLASSPATH" de.dante.extex.main.TeX $*
 
