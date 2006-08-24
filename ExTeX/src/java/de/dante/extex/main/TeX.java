@@ -25,6 +25,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.CharacterCodingException;
 import java.util.ArrayList;
@@ -582,7 +583,7 @@ import de.dante.util.resource.ResourceFinder;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class TeX extends ExTeX {
 
@@ -939,7 +940,7 @@ public class TeX extends ExTeX {
                                         copyrightYear));
                         onceMore = false;
                     } else if ("-copying".startsWith(arg)) {
-                        
+                        copying();
                         onceMore = false;
                     } else if ("-help".startsWith(arg)) {
                         getLogger().info(
@@ -1032,13 +1033,39 @@ public class TeX extends ExTeX {
     }
 
     /**
+     * Print the copying file.
+     *
+     * @throws IOException in case of an IO error
+     */
+    private void copying() throws IOException {
+
+        String file = this.getClass().getName().replace('.', '/').replaceAll(
+                "[a-z0-9_A-Z]+$", "LICENSE.txt");
+        PrintStream printStream = System.err;
+        ClassLoader classLoader = this.getClass().getClassLoader();
+        InputStream stream = classLoader.getResourceAsStream(file);
+        if (stream == null) {
+            printStream.println(file + ": resource not found");
+            return;
+        }
+        try {
+            int c;
+            while ((c = stream.read()) >= 0) {
+                printStream.print((char) c);
+            }
+        } finally {
+            stream.close();
+        }
+    }
+
+    /**
      * Run super.run() and remap the Exceptions
      *
      * @return the interpreter instance used
      *
      * @throws MainException in case of an error
      */
-    private Interpreter run2() throws MainException {
+    private Interpreter runAndRemapExceptions() throws MainException {
 
         try {
             return run();
@@ -1077,7 +1104,7 @@ public class TeX extends ExTeX {
             setProperty(PROP_CODE, in.toString());
         }
 
-        run2();
+        runAndRemapExceptions();
     }
 
     /**
@@ -1118,7 +1145,8 @@ public class TeX extends ExTeX {
         QueryFileHandler queryHandler = getQueryFileHandler();
         setInputFileName((queryHandler != null //
                 ? queryHandler.query(getLogger()) : null));
-        run2();
+
+        runAndRemapExceptions();
     }
 
     /**
