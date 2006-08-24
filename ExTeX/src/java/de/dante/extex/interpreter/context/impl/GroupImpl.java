@@ -19,13 +19,11 @@
 
 package de.dante.extex.interpreter.context.impl;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 import de.dante.extex.font.type.other.NullFont;
 import de.dante.extex.interpreter.Namespace;
-import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.context.TypesettingContextImpl;
 import de.dante.extex.interpreter.context.group.GroupType;
@@ -58,9 +56,9 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.63 $
+ * @version $Revision: 1.64 $
  */
-public class GroupImpl implements Group, Tokenizer, Serializable {
+public class GroupImpl implements Group {
 
     /**
      * The constant <tt>INVALID_CHAR_CODE</tt> contains the code for an
