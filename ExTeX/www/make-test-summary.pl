@@ -1,6 +1,6 @@
 #!/bin/perl.exe -w
 ##*****************************************************************************
-## $Id: make-test-summary.pl,v 1.1 2006/06/11 20:20:13 gene Exp $
+## $Id: make-test-summary.pl,v 1.2 2006/08/24 07:34:06 gene Exp $
 ##*****************************************************************************
 ## Author: Gerd Neugebauer
 ##=============================================================================
@@ -59,6 +59,10 @@ my $target = dirname($0) . "/../target/www/reports/test-summary.html";
 #
 my $verbose = 0;
 
+#------------------------------------------------------------------------------
+# Width of the bar graph
+my $w 	 = 512;
+
 use Getopt::Long;
 GetOptions("h|help"	=> \&usage,
 	   "output=s"   => \$target,
@@ -66,22 +70,38 @@ GetOptions("h|help"	=> \&usage,
 	  );
 
 local $_;
+my $no	 = 'undefined';
+my $err	 = 'undefined';
+my $fail = 'undefined';
+my $succ = 'undefined';
+my $g	 = 0;
+my $o	 = 0;
+my $r 	 = $w;
+
 { local $/=undef;
   my $file = dirname($0) . "/../target/www/reports/tests/overview-summary.html";
   my $fd = new FileHandle($file, 'r');
-  $_ = <$fd>;
-  $fd->close();
-}
+  if (defined $fd) {
+    $_ = <$fd>;
+    $fd->close();
 
-m|<td><a href=\"all-tests.html\"[^>]*\">([0-9]+)</a></td><td><a href=\"alltests-fails.html\"[^>]*>([0-9]+)</a></td><td><a href=\"alltests-errors.html\"[^>]*>([0-9]+)</a></td><td>([0-9.]+)%</td><td>([0-9.]+)</td>|;
-my $no	 = $1;
-my $err	 = $3;
-my $fail = $2;
-my $succ = $4;
-my $w 	 = 512;
-my $g	 = int($w*($no-$err-$fail)/$no);
-my $o	 = int($w*$fail/$no);
-my $r	 = int($w*$err/$no);
+    m|<td><a href=\"all-tests.html\"[^>]*\">([0-9]+)</a></td><td><a href=\"alltests-fails.html\"[^>]*>([0-9]+)</a></td><td><a href=\"alltests-errors.html\"[^>]*>([0-9]+)</a></td><td>([0-9.]+)%</td><td>([0-9.]+)</td>|;
+    $no   = $1;
+    $err  = $3;
+    $fail = $2;
+    $succ = $4;
+    $g    = int($w*($no-$err-$fail)/$no);
+    $o    = int($w*$fail/$no);
+    $r    = int($w*$err/$no);
+  } else {
+    print STDERR <<__EOF__
+*** $file not found.
+*** Run
+***	../build junitreport
+*** to generate it.
+__EOF__
+  }
+}
 
 my $out = ($target eq '' ? \*STDERR : new FileHandle($target, 'w'));
 
