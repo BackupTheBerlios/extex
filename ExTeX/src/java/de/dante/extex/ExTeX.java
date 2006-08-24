@@ -329,7 +329,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.132 $
+ * @version $Revision: 1.133 $
  */
 public class ExTeX {
 
@@ -905,11 +905,13 @@ public class ExTeX {
      * @param fmt the name of the format to use or <code>null</code>
      * @param jobname the name of the job
      *
+     * @return the context read
+     *
      * @throws GeneralException in case of some error
      * @throws IOException in case, well, you guess it
      * @throws ConfigurationException in case of a configuration error
      */
-    protected void loadFormat(final Interpreter interpreter,
+    protected Context loadFormat(final Interpreter interpreter,
             final ResourceFinder finder, final String fmt, final String jobname)
             throws IOException,
                 GeneralException,
@@ -938,13 +940,16 @@ public class ExTeX {
                 throw new HelpingException(localizer, "TTP.FormatFileError",
                         format);
             }
-            logger.fine(localizer.format("ExTeX.FormatDate", format, time));
+            logger.fine(localizer.format("ExTeX.FormatDate", //
+                    interpreter.getContext().getId(), time));
         } else if (!ini) {
             throw new GeneralException();
         } else {
             logger.fine(localizer.format("ExTeX.NoFormatDate", time));
         }
         interpreter.setJobname(jobname);
+
+        return interpreter.getContext();
     }
 
     /**
@@ -1221,8 +1226,8 @@ public class ExTeX {
         context.set(makeDefaultFont(fontConfiguration, fontFactory), true);
         context.set(context.getLanguage("0"), true);
 
-        loadFormat(interpreter, finder, properties.getProperty(PROP_FMT),
-                jobname);
+        context = loadFormat(interpreter, finder, //
+                properties.getProperty(PROP_FMT), jobname);
 
         if (Boolean.valueOf((String) properties.get(PROP_TRACING_ONLINE))
                 .booleanValue()) {
