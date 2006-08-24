@@ -23,8 +23,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InvalidClassException;
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.logging.Logger;
 
+import de.dante.extex.backend.documentWriter.OutputStreamFactory;
 import de.dante.extex.font.FontFactory;
 import de.dante.extex.interpreter.Conditional;
 import de.dante.extex.interpreter.ErrorHandler;
@@ -47,6 +49,7 @@ import de.dante.extex.interpreter.exception.helping.UnusedPrefixException;
 import de.dante.extex.interpreter.interaction.Interaction;
 import de.dante.extex.interpreter.loader.LoaderException;
 import de.dante.extex.interpreter.loader.SerialLoader;
+import de.dante.extex.interpreter.max.util.LoadUnit;
 import de.dante.extex.interpreter.observer.command.CommandObservable;
 import de.dante.extex.interpreter.observer.command.CommandObserver;
 import de.dante.extex.interpreter.observer.command.CommandObserverList;
@@ -76,7 +79,6 @@ import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.PrefixCode;
 import de.dante.extex.interpreter.type.ProtectedCode;
 import de.dante.extex.interpreter.type.count.Count;
-import de.dante.extex.interpreter.type.font.FontUtil;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.language.LanguageManagerFactory;
 import de.dante.extex.scanner.stream.TokenStream;
@@ -105,12 +107,15 @@ import de.dante.util.Switch;
 import de.dante.util.UnicodeChar;
 import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.Registrar;
+import de.dante.util.framework.RegistrarObserver;
 import de.dante.util.framework.configuration.Configurable;
 import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 import de.dante.util.framework.configuration.exception.ConfigurationMissingException;
+import de.dante.util.framework.configuration.exception.ConfigurationWrapperException;
 import de.dante.util.framework.i18n.Localizable;
 import de.dante.util.framework.i18n.Localizer;
+import de.dante.util.framework.i18n.LocalizerFactory;
 import de.dante.util.framework.logger.LogEnabled;
 
 /**
@@ -170,7 +175,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.109 $
+ * @version $Revision: 1.110 $
  */
 public abstract class Max
         implements
@@ -529,6 +534,35 @@ public abstract class Max
         makeContext(config);
         context.setTokenFactory(tokenFactory);
         configureHyhenation(config);
+
+    
+    
+        OutputStreamFactory outputFactory = null; //TODO gene: provide OutputStreamFactory
+
+        Context ctx = getContext();
+        Typesetter ts = getTypesetter();
+        Logger log = getLogger();
+        try {
+            ctx.setInteraction(Interaction.ERRORSTOPMODE);
+
+            for (Iterator iterator = configuration.iterator("unit"); iterator
+                    .hasNext();) {
+                LoadUnit.loadUnit((Configuration) iterator.next(), ctx, this,
+                        ts, log, outputFactory);
+            }
+
+            initializeDate(Calendar.getInstance());
+        } catch (ConfigurationException e) {
+            throw e;
+        } catch (GeneralException e) {
+            Throwable cause = e.getCause();
+            if (cause instanceof ConfigurationException) {
+                throw (ConfigurationException) cause;
+            }
+            throw new ConfigurationWrapperException(e);
+        }
+
+    
     }
 
     /**
@@ -1072,7 +1106,33 @@ public abstract class Max
 
         Context newContext;
         try {
-            //Registrar.register( xxx , Code.class);
+            Registrar.register(new RegistrarObserver() {
+
+                /**
+                 * @see de.dante.util.framework.RegistrarObserver#reconnect(
+                 *      java.lang.Object)
+                 */
+                public Object reconnect(final Object object) {
+
+                    ((LogEnabled) object).enableLogging(logger);
+                    return object;
+                }
+
+            }, LogEnabled.class);
+            Registrar.register(new RegistrarObserver() {
+
+                /**
+                 * @see de.dante.util.framework.RegistrarObserver#reconnect(
+                 *      java.lang.Object)
+                 */
+                public Object reconnect(final Object object) {
+
+                    ((Localizable) object).enableLocalization(LocalizerFactory
+                            .getLocalizer(object.getClass().getName()));
+                    return object;
+                }
+
+            }, Localizable.class);
             newContext = new SerialLoader().load(stream);
             Registrar.reset();
         } catch (InvalidClassException e) {

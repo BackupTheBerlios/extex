@@ -20,12 +20,9 @@
 package de.dante.extex.interpreter.max;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Iterator;
 
 import com.ibm.icu.lang.UCharacter;
 
-import de.dante.extex.backend.documentWriter.OutputStreamFactory;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.Namespace;
@@ -42,8 +39,6 @@ import de.dante.extex.interpreter.exception.helping.InvalidCharacterNameExceptio
 import de.dante.extex.interpreter.exception.helping.MissingLeftBraceException;
 import de.dante.extex.interpreter.exception.helping.MissingNumberException;
 import de.dante.extex.interpreter.exception.helping.UndefinedControlSequenceException;
-import de.dante.extex.interpreter.interaction.Interaction;
-import de.dante.extex.interpreter.max.util.LoadUnit;
 import de.dante.extex.interpreter.observer.eof.EofObservable;
 import de.dante.extex.interpreter.observer.eof.EofObserver;
 import de.dante.extex.interpreter.observer.eof.EofObserverList;
@@ -96,9 +91,7 @@ import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
 import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.Configurable;
-import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
-import de.dante.util.framework.configuration.exception.ConfigurationWrapperException;
 import de.dante.util.observer.NotObservableException;
 
 /**
@@ -152,7 +145,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.101 $
+ * @version $Revision: 1.102 $
  */
 public class Moritz extends Max
         implements
@@ -366,42 +359,6 @@ public class Moritz extends Max
     }
 
     /**
-     * This method adapts the configurable settings according to the values from
-     * the given configuration.
-     *
-     * @see de.dante.util.framework.configuration.Configurable#configure(
-     *      de.dante.util.framework.configuration.Configuration)
-     */
-    public void configure(final Configuration configuration)
-            throws ConfigurationException {
-
-        super.configure(configuration);
-        OutputStreamFactory outputFactory = null; //TODO gene: provide OutputStreamFactory
-
-        try {
-            getContext().setInteraction(Interaction.ERRORSTOPMODE);
-
-            Iterator iterator = configuration.iterator("unit");
-
-            while (iterator.hasNext()) {
-                LoadUnit.loadUnit((Configuration) iterator.next(),
-                        getContext(), this, getTypesetter(), getLogger(),
-                        outputFactory);
-            }
-
-            initializeDate(Calendar.getInstance());
-        } catch (ConfigurationException e) {
-            throw e;
-        } catch (GeneralException e) {
-            Throwable cause = e.getCause();
-            if (cause instanceof ConfigurationException) {
-                throw (ConfigurationException) cause;
-            }
-            throw new ConfigurationWrapperException(e);
-        }
-    }
-
-    /**
      * @see de.dante.extex.interpreter.TokenSource#getBox(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
@@ -582,8 +539,7 @@ public class Moritz extends Max
      * @throws InterpreterException in case that no number is found or the
      *  end of file has been reached before an integer could be acquired
      * @throws MissingNumberException in case that no number is found or
-     *  the end of file has been
-     *  reached before an integer could be acquired
+     *  the end of file has been reached before an integer could be acquired
      */
     public long getNumber(final Token token)
             throws InterpreterException,
