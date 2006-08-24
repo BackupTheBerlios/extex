@@ -97,6 +97,7 @@ import de.dante.extex.typesetter.type.math.MathDelimiter;
 import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
 import de.dante.util.exception.GeneralException;
+import de.dante.util.framework.Registrar;
 import de.dante.util.framework.configuration.Configurable;
 import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
@@ -141,7 +142,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.112 $
+ * @version $Revision: 1.113 $
  */
 public class ContextImpl
         implements
@@ -410,7 +411,6 @@ public class ContextImpl
                 GeneralException {
 
         this();
-        init();
         configure(configuration);
     }
 
@@ -1200,7 +1200,7 @@ public class ContextImpl
     }
 
     /**
-     * This method is maps instances to their normal representations if
+     * This method maps instances to their normal representations if
      * required. It is used during the deserialization.
      *
      * @return the normalized object
@@ -1209,6 +1209,7 @@ public class ContextImpl
      */
     public Object readResolve() throws ObjectStreamException {
 
+        Registrar.reconnect(this);
         init();
         return this;
     }
