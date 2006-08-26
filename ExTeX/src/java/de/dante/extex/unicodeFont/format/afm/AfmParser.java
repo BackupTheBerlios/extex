@@ -35,6 +35,7 @@ import de.dante.extex.unicodeFont.format.afm.exception.AfmMissingEndCharMetricsE
 import de.dante.extex.unicodeFont.format.afm.exception.AfmMissingEndFontMetricsException;
 import de.dante.extex.unicodeFont.format.afm.exception.AfmMissingEndKernPairsException;
 import de.dante.extex.unicodeFont.format.afm.exception.AfmMissingStartCharMetricsException;
+import de.dante.util.EFMWriterConvertible;
 import de.dante.util.XMLWriterConvertible;
 import de.dante.util.xml.XMLStreamWriter;
 
@@ -42,10 +43,14 @@ import de.dante.util.xml.XMLStreamWriter;
  * Parse a afm file.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 
-public class AfmParser implements Serializable, XMLWriterConvertible {
+public class AfmParser
+        implements
+            Serializable,
+            XMLWriterConvertible,
+            EFMWriterConvertible {
 
     /**
      * Create a new object.
@@ -521,6 +526,118 @@ public class AfmParser implements Serializable, XMLWriterConvertible {
             writer.writeEndElement();
         }
 
+        writer.writeEndElement();
+
+    }
+
+    /**
+     * @see de.dante.util.EFMWriterConvertible#writeEFM(de.dante.util.xml.XMLStreamWriter)
+     */
+    public void writeEFM(final XMLStreamWriter writer) throws IOException {
+
+        writer.writeStartElement("font");
+        writer.writeAttribute("id", header.getFontname());
+        writer.writeAttribute("type", "type1");
+        writer.writeAttribute("font-name", header.getFontname());
+        writer.writeAttribute("font-fullname", header.getFullname());
+        writer.writeAttribute("font-family", header.getFamilyname());
+        writer.writeAttribute("font-weight", header.getWeight());
+        writer.writeAttribute("units-per-em", "1000");
+        writer.writeAttribute("bbox", String.valueOf(header.getLlx()) + ' '
+                + String.valueOf(header.getLly()) + ' '
+                + String.valueOf(header.getUrx()) + ' '
+                + String.valueOf(header.getUry()));
+        if (header.getUnderlinethickness() != 0) {
+            writer.writeAttribute("underline-position", String.valueOf(header
+                    .getUnderlineposition()));
+            writer.writeAttribute("underline-thickness", String.valueOf(header
+                    .getUnderlinethickness()));
+        }
+        writer.writeAttribute("xheight", String.valueOf(header.getXheight()));
+        writer.writeAttribute("capheight", String
+                .valueOf(header.getCapheight()));
+
+        for (int i = 0; i < afmCharMetrics.size(); i++) {
+
+            // create  glyph
+            writer.writeStartElement("glyph");
+
+            // get the AFMCharMertix-object
+            AfmCharMetric cm = (AfmCharMetric) afmCharMetrics.get(i);
+
+            // create attributes
+            if (cm.getC() >= 0) {
+                writer.writeAttribute("ID", String.valueOf(cm.getC()));
+            } else {
+                writer.writeAttribute("ID", cm.getN());
+            }
+            writer.writeAttribute("glyph-number", String.valueOf(cm.getC()));
+            writer.writeAttribute("glyph-name", cm.getN());
+
+            if (cm.getWx() != AfmHeader.NOTINIT) {
+                writer.writeAttribute("width", String.valueOf(cm.getWx()));
+            } else {
+                // calculate with from bbox
+                if (cm.getBllx() != AfmHeader.NOTINIT) {
+                    writer.writeAttribute("width", String.valueOf(cm.getBllx()
+                            + cm.getBurx()));
+                }
+            }
+
+            if (cm.getBllx() != AfmHeader.NOTINIT) {
+                if (cm.getBlly() < 0) {
+                    writer.writeAttribute("depth", String
+                            .valueOf(-cm.getBlly()));
+                } else {
+                    writer.writeAttribute("depth", "0");
+                }
+                if (cm.getBury() > 0) {
+                    writer.writeAttribute("height", String
+                            .valueOf(cm.getBury()));
+                } else {
+                    writer.writeAttribute("height", "0");
+                }
+            } else {
+                throw new IOException("no bounding box found");
+                // ...
+                //                throw new AfmNoBoundingBoxFoundException(String.valueOf(cm
+                //                        .getC()));
+            }
+            writer.writeAttribute("italic", String.valueOf(header
+                    .getItalicangle()));
+
+            // kerning
+            String glyphname = cm.getN();
+            AfmKernPairs kp;
+
+            for (int k = 0; k < afmKerningPairs.size(); k++) {
+                kp = (AfmKernPairs) afmKerningPairs.get(k);
+                if (kp.getCharpre().equals(glyphname)) {
+                    writer.writeStartElement("kerning");
+                    writer.writeAttribute("glyph-name", kp.getCharpost());
+                    writer.writeAttribute("glyph-id", getIDforName(kp
+                            .getCharpost()));
+                    writer.writeAttribute("size", kp.getKerningsize());
+                    writer.writeEndElement();
+                }
+            }
+
+            // ligature
+            if (cm.getL() != null) {
+                Iterator iterator = cm.getL().keySet().iterator();
+                while (iterator.hasNext()) {
+                    String key = (String) iterator.next();
+                    writer.writeStartElement("ligature");
+                    writer.writeAttribute("letter", key);
+                    writer.writeAttribute("letter-id", getIDforName(key));
+                    String value = (String) cm.getL().get(key);
+                    writer.writeAttribute("lig", value);
+                    writer.writeAttribute("lig-id", getIDforName(value));
+                    writer.writeEndElement();
+                }
+            }
+            writer.writeEndElement();
+        }
         writer.writeEndElement();
 
     }
