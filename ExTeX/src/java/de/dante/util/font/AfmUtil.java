@@ -19,14 +19,21 @@
 
 package de.dante.util.font;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
 
+import de.dante.extex.unicodeFont.exception.FontException;
+import de.dante.extex.unicodeFont.format.afm.AfmCharMetric;
 import de.dante.extex.unicodeFont.format.afm.AfmParser;
+import de.dante.extex.unicodeFont.format.tex.psfontmap.enc.EncReader;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 import de.dante.util.xml.XMLStreamWriter;
 
@@ -34,9 +41,14 @@ import de.dante.util.xml.XMLStreamWriter;
  * Utilities for a afm file.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public final class AfmUtil extends AbstractFontUtil {
+
+    /**
+     * Number of glyphs.
+     */
+    private static final int NUMBEROFGLYPHS = 256;
 
     /**
      * Create a xml file.
@@ -57,6 +69,21 @@ public final class AfmUtil extends AbstractFontUtil {
      * The efm file name.
      */
     private String efmname = "";
+
+    /**
+     * The list for the encoding vectors.
+     */
+    private ArrayList enclist = new ArrayList();
+
+    /**
+     * Create encoding vectors.
+     */
+    private boolean toenc = false;
+
+    /**
+     * The name for the encoding vectors.
+     */
+    private String encname = "";
 
     /**
      * Create a new object.
@@ -100,6 +127,146 @@ public final class AfmUtil extends AbstractFontUtil {
 
         if (toefm) {
             toEfm(parser);
+        }
+
+        if (toenc) {
+            toEnc(parser);
+        }
+    }
+
+    /**
+     * Create encoding vectors.
+     * @param parser    The afm parser.
+     * @throws IOException if an IO-error occurred.
+     * @throws ConfigurationException from the configuration system.
+     * @throws FontException if a font error occurred.
+     */
+    private void toEnc(final AfmParser parser) throws IOException,
+            ConfigurationException, FontException {
+
+        // read all glyphs from the encoding vectors
+        ArrayList readenc = new ArrayList();
+        readAllGlyphName(readenc);
+
+        // get the glpyh names form the afm file.
+        ArrayList names = readGlyphNames(parser);
+        Collections.sort(names);
+
+        // remove all names from readenc in names
+        removeExistingNames(readenc, names);
+
+        createEncFiles(names);
+
+    }
+
+    /**
+     * Create the encoding files.
+     * @param names     The names for the files.
+     * @throws IOException if a IO-error occurred.
+     */
+    private void createEncFiles(final ArrayList names) throws IOException {
+
+        int cnt = 0;
+        int filecnt = 0;
+        BufferedWriter out = null;
+        for (int i = 0, n = names.size(); i < n; i++) {
+            if (cnt == 0) {
+                String na = encname + filecnt;
+                File newenc = new File(na + ".enc");
+                out = new BufferedWriter(new FileWriter(newenc));
+                out.write("% created with ExTeX....\n");
+                out.write("/" + na + "Encoding [\n");
+            }
+            out.write("% " + cnt++ + "\n");
+            out.write("/" + names.get(i) + "\n");
+            if (cnt == NUMBEROFGLYPHS) {
+                out.write("] def\n");
+                out.close();
+                cnt = 0;
+                filecnt++;
+            }
+        }
+        if (cnt != 0) {
+            for (int i = cnt; i < NUMBEROFGLYPHS; i++) {
+                out.write("% " + i + "\n");
+                out.write("/.notdef\n");
+            }
+            out.write("] def\n");
+            out.close();
+        }
+        getLogger().severe(
+                getLocalizer().format("AfmUtil.EncCreate",
+                        String.valueOf(names.size()), String.valueOf(filecnt)));
+
+    }
+
+    /**
+     * Remove existing glyph name from the list.
+     * @param readenc   The existing glyph names.
+     * @param names     The glyph names from the afm file.
+     */
+    private void removeExistingNames(final ArrayList readenc,
+            final ArrayList names) {
+
+        for (int i = 0, n = readenc.size(); i < n; i++) {
+            String name = (String) readenc.get(i);
+            names.remove(name);
+        }
+    }
+
+    /**
+     * Read the glyph names.
+     * @param parser    The afm parser.
+     * @return Returns the glyph name list.
+     */
+    private ArrayList readGlyphNames(final AfmParser parser) {
+
+        ArrayList cmlist = parser.getAfmCharMetrics();
+        ArrayList names = new ArrayList(cmlist.size());
+
+        for (int i = 0, n = cmlist.size(); i < n; i++) {
+            AfmCharMetric cm = (AfmCharMetric) cmlist.get(i);
+            names.add(cm.getN());
+        }
+        return names;
+    }
+
+    /**
+     * Read all glyph names from the encoding vectors.
+     *
+     * @param readenc   The list for the names.
+     * @throws IOException if an IO-error occurred.
+     * @throws ConfigurationException from the configuration system.
+     * @throws FontException if a font error occurred.
+     */
+    private void readAllGlyphName(final ArrayList readenc) throws IOException,
+            ConfigurationException, FontException {
+
+        for (int i = 0, n = enclist.size(); i < n; i++) {
+
+            String encv = (String) enclist.get(i);
+
+            InputStream encin = null;
+            File encfile = new File(encv);
+            if (encfile.canRead()) {
+                encin = new FileInputStream(encfile);
+            } else {
+                // use the file finder
+                encin = getFinder().findResource(encfile.getName(), "");
+            }
+
+            if (encin == null) {
+                throw new FileNotFoundException(encv);
+            }
+
+            EncReader enc = new EncReader(encin);
+
+            String[] table = enc.getTable();
+
+            for (int k = 0; k < table.length; k++) {
+                String name = table[k].replaceAll("/", "");
+                readenc.add(name);
+            }
         }
     }
 
@@ -170,6 +337,9 @@ public final class AfmUtil extends AbstractFontUtil {
         String xmlname = "";
         boolean toefm = false;
         String efmname = "";
+        ArrayList enclist = new ArrayList();
+        boolean toenc = false;
+        String encname = "";
         String file = "";
 
         int i = 0;
@@ -185,6 +355,15 @@ public final class AfmUtil extends AbstractFontUtil {
                     efmname = args[++i];
                 }
 
+            } else if ("-c".equals(args[i]) || "--createenc".equals(args[i])) {
+                if (i + 1 < args.length) {
+                    toenc = true;
+                    encname = args[++i];
+                }
+            } else if ("-v".equals(args[i]) || "--encvector".equals(args[i])) {
+                if (i + 1 < args.length) {
+                    enclist.add(args[++i]);
+                }
             } else {
                 file = args[i];
             }
@@ -195,6 +374,9 @@ public final class AfmUtil extends AbstractFontUtil {
         afm.setXmlname(xmlname);
         afm.setToefm(toefm);
         afm.setEfmname(efmname);
+        afm.setEnclist(enclist);
+        afm.setToenc(toenc);
+        afm.setEncname(encname);
 
         afm.doIt(file);
     }
@@ -269,5 +451,59 @@ public final class AfmUtil extends AbstractFontUtil {
     public void setToefm(final boolean efm) {
 
         toefm = efm;
+    }
+
+    /**
+     * Returns the enclist.
+     * @return Returns the enclist.
+     */
+    public ArrayList getEnclist() {
+
+        return enclist;
+    }
+
+    /**
+     * The enclist to set.
+     * @param list The enclist to set.
+     */
+    public void setEnclist(final ArrayList list) {
+
+        enclist = list;
+    }
+
+    /**
+     * Returns the encname.
+     * @return Returns the encname.
+     */
+    public String getEncname() {
+
+        return encname;
+    }
+
+    /**
+     * The encname to set.
+     * @param name The encname to set.
+     */
+    public void setEncname(final String name) {
+
+        encname = name;
+    }
+
+    /**
+     * Returns the toenc.
+     * @return Returns the toenc.
+     */
+    public boolean isToenc() {
+
+        return toenc;
+    }
+
+    /**
+     * The toenc to set.
+     * @param enc The toenc to set.
+     */
+    public void setToenc(final boolean enc) {
+
+        toenc = enc;
     }
 }
