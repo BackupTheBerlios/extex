@@ -26,6 +26,7 @@ import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.StringTokenizer;
 
 import de.dante.extex.unicodeFont.exception.FontException;
@@ -34,15 +35,17 @@ import de.dante.extex.unicodeFont.format.afm.exception.AfmMissingEndCharMetricsE
 import de.dante.extex.unicodeFont.format.afm.exception.AfmMissingEndFontMetricsException;
 import de.dante.extex.unicodeFont.format.afm.exception.AfmMissingEndKernPairsException;
 import de.dante.extex.unicodeFont.format.afm.exception.AfmMissingStartCharMetricsException;
+import de.dante.util.XMLWriterConvertible;
+import de.dante.util.xml.XMLStreamWriter;
 
 /**
  * Parse a afm file.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
-public class AfmParser implements Serializable {
+public class AfmParser implements Serializable, XMLWriterConvertible {
 
     /**
      * Create a new object.
@@ -358,7 +361,7 @@ public class AfmParser implements Serializable {
         if (id >= 0) {
             return String.valueOf(id);
         }
-        return "notdef_" + n;
+        return n;
     }
 
     /**
@@ -431,4 +434,94 @@ public class AfmParser implements Serializable {
         return null;
     }
 
+    /**
+     * @see de.dante.util.XMLWriterConvertible#writeXML(de.dante.util.xml.XMLStreamWriter)
+     */
+    public void writeXML(final XMLStreamWriter writer) throws IOException {
+
+        writer.writeStartElement("afm");
+        writer.writeAttribute("name", header.getFontname());
+
+        header.writeXML(writer);
+        for (int i = 0; i < afmCharMetrics.size(); i++) {
+
+            // glyph
+            writer.writeStartElement("glyph");
+
+            // get the AFMCharMertix-object
+            AfmCharMetric cm = (AfmCharMetric) afmCharMetrics.get(i);
+
+            // create attributes
+            if (cm.getC() >= 0) {
+                writer.writeAttribute("ID", String.valueOf(cm.getC()));
+            } else {
+                writer.writeAttribute("ID", cm.getN());
+            }
+            writer.writeAttribute("glyph-number", String.valueOf(cm.getC()));
+            writer.writeAttribute("glyph-name", cm.getN());
+
+            if (cm.getWx() != AfmHeader.NOTINIT) {
+                writer.writeAttribute("width", String.valueOf(cm.getWx()));
+            } else {
+                // calculate with from bbox
+                if (cm.getBllx() != AfmHeader.NOTINIT) {
+                    writer.writeAttribute("width", String.valueOf(cm.getBllx()
+                            + cm.getBurx()));
+                }
+            }
+
+            if (cm.getBllx() != AfmHeader.NOTINIT) {
+                if (cm.getBlly() < 0) {
+                    writer.writeAttribute("depth", String
+                            .valueOf(-cm.getBlly()));
+                } else {
+                    writer.writeAttribute("depth", "0");
+                }
+                if (cm.getBury() > 0) {
+                    writer.writeAttribute("height", String
+                            .valueOf(cm.getBury()));
+                } else {
+                    writer.writeAttribute("height", "0");
+                }
+            }
+            writer.writeAttribute("italic", String.valueOf(header
+                    .getItalicangle()));
+
+            // kerning
+            String glyphname = cm.getN();
+            AfmKernPairs kp;
+
+            for (int k = 0; k < afmKerningPairs.size(); k++) {
+                kp = (AfmKernPairs) afmKerningPairs.get(k);
+                if (kp.getCharpre().equals(glyphname)) {
+                    writer.writeStartElement("kerning");
+                    writer.writeAttribute("glyph-name", kp.getCharpost());
+                    writer.writeAttribute("glyph-id", getIDforName(kp
+                            .getCharpost()));
+                    writer.writeAttribute("size", kp.getKerningsize());
+                    writer.writeEndElement();
+                }
+            }
+
+            // ligature
+            if (cm.getL() != null) {
+                Iterator iterator = cm.getL().keySet().iterator();
+                while (iterator.hasNext()) {
+                    String key = (String) iterator.next();
+                    writer.writeStartElement("ligature");
+                    writer.writeAttribute("letter", key);
+                    writer.writeAttribute("letter-id", getIDforName(key));
+                    String value = (String) cm.getL().get(key);
+                    writer.writeAttribute("lig", value);
+                    writer.writeAttribute("lig-id", getIDforName(value));
+                    writer.writeEndElement();
+                }
+            }
+
+            writer.writeEndElement();
+        }
+
+        writer.writeEndElement();
+
+    }
 }

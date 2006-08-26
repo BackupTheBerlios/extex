@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,11 +20,12 @@
 package de.dante.util.font;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 
-import de.dante.extex.font.type.afm.AfmFont;
+import de.dante.extex.unicodeFont.format.afm.AfmParser;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 import de.dante.util.xml.XMLStreamWriter;
 
@@ -32,69 +33,78 @@ import de.dante.util.xml.XMLStreamWriter;
  * Convert a AFM-file to a XML-file.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.1 $
  */
-public final class AFM2XML extends AbstractFontUtil {
+public final class Afm2Xml extends AbstractFontUtil {
 
     /**
      * Create a new object.
      *
      * @throws ConfigurationException if a config-error occurs.
      */
-    private AFM2XML() throws ConfigurationException {
+    private Afm2Xml() throws ConfigurationException {
 
-        super();
+        super(Afm2Xml.class);
     }
 
     /**
      * do it.
      *
-     * @param args the comandline
+     * @param args the command line arguments.
      * @throws Exception if an error occurs.
      */
     private void doIt(final String[] args) throws Exception {
 
         File xmlfile = new File(args[1]);
-        String fontname = args[0].replaceAll("\\.afm|\\.AFM", "");
+        InputStream afmin = null;
 
-        // afm-file
-        InputStream afmin = getFinder().findResource(args[0], "");
+        // find directly the afm file.
+        File afmfile = new File(args[0]);
+
+        if (afmfile.canRead()) {
+            afmin = new FileInputStream(afmfile);
+        } else {
+            // use the file finder
+            afmin = getFinder().findResource(afmfile.getName(), "");
+        }
 
         if (afmin == null) {
             throw new FileNotFoundException(args[0]);
         }
 
-        AfmFont font = new AfmFont(afmin, fontname);
+        AfmParser parser = new AfmParser(afmin);
 
         // write to xml-file
         XMLStreamWriter writer = new XMLStreamWriter(new FileOutputStream(
                 xmlfile), "ISO-8859-1");
         writer.setBeauty(true);
         writer.writeStartDocument();
-        font.writeXML(writer);
+        writer.writeComment("created with ExTEX ...");
+        parser.writeXML(writer);
         writer.writeEndDocument();
         writer.close();
     }
 
     /**
-     * parameter
+     * parameter.
      */
     private static final int PARAMETER = 2;
 
     /**
-     * main
-     * @param args the commandlinearguments
+     * main.
+     * @param args the command line arguments.
      * @throws Exception if a error occurs.
      */
     public static void main(final String[] args) throws Exception {
 
+        Afm2Xml afm2xml = new Afm2Xml();
+
         if (args.length != PARAMETER) {
-            System.err
-                    .println("java de.dante.util.font.AFM2XML <afm-file> <xml-file>");
+            afm2xml.getLogger().severe(
+                    afm2xml.getLocalizer().format("Afm2Xml.Call"));
             System.exit(1);
         }
 
-        AFM2XML afm2xml = new AFM2XML();
         afm2xml.doIt(args);
     }
 }
