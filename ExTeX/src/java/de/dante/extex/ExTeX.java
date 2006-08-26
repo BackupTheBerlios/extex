@@ -329,7 +329,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.133 $
+ * @version $Revision: 1.134 $
  */
 public class ExTeX {
 
@@ -847,7 +847,7 @@ public class ExTeX {
      *
      * @return the version number for this class
      */
-    public String getVersion() {
+    public static String getVersion() {
 
         return EXTEX_VERSION;
     }
