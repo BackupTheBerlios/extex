@@ -22,12 +22,13 @@ package de.dante.extex.unicodeFont.format.afm;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * AFM CharMetric.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 
 public class AfmCharMetric implements Serializable {
@@ -283,5 +284,14 @@ public class AfmCharMetric implements Serializable {
     public String toString() {
 
         return n + " c=" + c;
+    }
+
+    /**
+     * Returns the kerning.
+     * @return Returns the kerning.
+     */
+    public List getK() {
+
+        return k;
     }
 }
