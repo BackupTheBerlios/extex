@@ -28,8 +28,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 
+import de.dante.extex.ExTeX;
 import de.dante.extex.unicodeFont.exception.FontException;
 import de.dante.extex.unicodeFont.format.afm.AfmCharMetric;
 import de.dante.extex.unicodeFont.format.afm.AfmParser;
@@ -41,7 +43,7 @@ import de.dante.util.xml.XMLStreamWriter;
  * Utilities for a afm file.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public final class AfmUtil extends AbstractFontUtil {
 
@@ -86,6 +88,21 @@ public final class AfmUtil extends AbstractFontUtil {
     private String encname = "";
 
     /**
+     * The directory for the output.
+     */
+    private String outdir = ".";
+
+    /**
+     * Create a map file.
+     */
+    private boolean tomap = false;
+
+    /**
+     * Writer for the map file.
+     */
+    private BufferedWriter mapout = null;
+
+    /**
      * Create a new object.
      *
      * @throws ConfigurationException if a config-error occurs.
@@ -94,6 +111,16 @@ public final class AfmUtil extends AbstractFontUtil {
 
         super(AfmUtil.class);
     }
+
+    /**
+     * The afm parser.
+     */
+    private AfmParser parser;
+
+    /**
+     * The afm file.
+     */
+    private File afmfile;
 
     /**
      * do it.
@@ -106,7 +133,7 @@ public final class AfmUtil extends AbstractFontUtil {
         InputStream afmin = null;
 
         // find directly the afm file.
-        File afmfile = new File(file);
+        afmfile = new File(file);
 
         if (afmfile.canRead()) {
             afmin = new FileInputStream(afmfile);
@@ -119,37 +146,43 @@ public final class AfmUtil extends AbstractFontUtil {
             throw new FileNotFoundException(file);
         }
 
-        AfmParser parser = new AfmParser(afmin);
+        parser = new AfmParser(afmin);
 
         if (toxml) {
-            toXml(parser);
+            toXml();
         }
 
         if (toefm) {
-            toEfm(parser);
+            toEfm();
         }
 
+        if (tomap) {
+            mapout = new BufferedWriter(new FileWriter(outdir + File.separator
+                    + encname + ".map"));
+        }
         if (toenc) {
-            toEnc(parser);
+            toEnc();
+        }
+        if (mapout != null) {
+            mapout.close();
         }
     }
 
     /**
      * Create encoding vectors.
-     * @param parser    The afm parser.
      * @throws IOException if an IO-error occurred.
      * @throws ConfigurationException from the configuration system.
      * @throws FontException if a font error occurred.
      */
-    private void toEnc(final AfmParser parser) throws IOException,
-            ConfigurationException, FontException {
+    private void toEnc() throws IOException, ConfigurationException,
+            FontException {
 
         // read all glyphs from the encoding vectors
         ArrayList readenc = new ArrayList();
         readAllGlyphName(readenc);
 
         // get the glpyh names form the afm file.
-        ArrayList names = readGlyphNames(parser);
+        ArrayList names = readGlyphNames();
         Collections.sort(names);
 
         // remove all names from readenc in names
@@ -168,14 +201,33 @@ public final class AfmUtil extends AbstractFontUtil {
 
         int cnt = 0;
         int filecnt = 0;
+        char filechar = 'a';
         BufferedWriter out = null;
         for (int i = 0, n = names.size(); i < n; i++) {
             if (cnt == 0) {
-                String na = encname + filecnt;
-                File newenc = new File(na + ".enc");
+                String na = encname + filechar;
+                File newenc = new File(outdir + File.separator + na + ".enc");
                 out = new BufferedWriter(new FileWriter(newenc));
-                out.write("% created with ExTeX....\n");
+                out.write("% " + createVersion() + "\n");
                 out.write("/" + na + "Encoding [\n");
+
+                if (tomap && mapout != null) {
+                    mapout.write(na);
+                    mapout.write(" ");
+                    mapout.write(parser.getHeader().getFontname());
+                    mapout.write(" ");
+                    mapout.write("\" ");
+                    mapout.write(na + "Encoding");
+                    mapout.write(" \" ");
+                    mapout.write("<");
+                    mapout.write(na + ".enc");
+                    mapout.write(" ");
+                    mapout.write("<");
+                    mapout.write(afmfile.getName().replaceAll(
+                            "\\.[aA][fF][mM]", ".pfb"));
+                    mapout.write("\n");
+                }
+
             }
             out.write("% " + cnt++ + "\n");
             out.write("/" + names.get(i) + "\n");
@@ -184,6 +236,7 @@ public final class AfmUtil extends AbstractFontUtil {
                 out.close();
                 cnt = 0;
                 filecnt++;
+                filechar = (char) (filechar + 1);
             }
         }
         if (cnt != 0) {
@@ -216,10 +269,9 @@ public final class AfmUtil extends AbstractFontUtil {
 
     /**
      * Read the glyph names.
-     * @param parser    The afm parser.
      * @return Returns the glyph name list.
      */
-    private ArrayList readGlyphNames(final AfmParser parser) {
+    private ArrayList readGlyphNames() {
 
         ArrayList cmlist = parser.getAfmCharMetrics();
         ArrayList names = new ArrayList(cmlist.size());
@@ -267,24 +319,41 @@ public final class AfmUtil extends AbstractFontUtil {
                 String name = table[k].replaceAll("/", "");
                 readenc.add(name);
             }
+
+            if (tomap && mapout != null) {
+                mapout.write(encname);
+                mapout.write(encv.replaceAll("\\.[eE][nN][cC]", ""));
+                mapout.write(" ");
+                mapout.write(parser.getHeader().getFontname());
+                mapout.write(" ");
+                mapout.write("\" ");
+                mapout.write(enc.getEncname());
+                mapout.write(" \" ");
+                mapout.write("<");
+                mapout.write(encv);
+                mapout.write(" ");
+                mapout.write("<");
+                mapout.write(afmfile.getName().replaceAll("\\.[aA][fF][mM]",
+                        ".pfb"));
+                mapout.write("\n");
+            }
         }
     }
 
     /**
      * Export to xml.
-     * @param parser    The afm parser.
      * @throws IOException  if a IO-error occurred.
      */
-    private void toXml(final AfmParser parser) throws IOException {
+    private void toXml() throws IOException {
 
-        File xmlfile = new File(xmlname);
+        File xmlfile = new File(outdir + File.separator + xmlname);
 
         // write to xml-file
         XMLStreamWriter writer = new XMLStreamWriter(new FileOutputStream(
                 xmlfile), "ISO-8859-1");
         writer.setBeauty(true);
         writer.writeStartDocument();
-        writer.writeComment("created with ExTEX ...");
+        writer.writeComment(createVersion());
         parser.writeXML(writer);
         writer.writeEndDocument();
         writer.close();
@@ -294,24 +363,34 @@ public final class AfmUtil extends AbstractFontUtil {
 
     /**
      * Export to efm.
-     * @param parser    The afm parser.
      * @throws IOException  if a IO-error occurred.
      */
-    private void toEfm(final AfmParser parser) throws IOException {
+    private void toEfm() throws IOException {
 
-        File efmfile = new File(efmname);
+        File efmfile = new File(outdir + File.separator + efmname);
 
         // write to efm-file
         XMLStreamWriter writer = new XMLStreamWriter(new FileOutputStream(
                 efmfile), "ISO-8859-1");
         writer.setBeauty(true);
         writer.writeStartDocument();
-        writer.writeComment("created with ExTEX ...");
+        writer.writeComment(createVersion());
         parser.writeEFM(writer);
         writer.writeEndDocument();
         writer.close();
 
         getLogger().severe(getLocalizer().format("AfmUtil.EfmCreate", efmname));
+    }
+
+    /**
+     * Create the comment with ExTeX-version and date.
+     * @return Returns the comment with the ExTeX-Version and the date.
+     */
+    private String createVersion() {
+
+        Calendar cal = Calendar.getInstance();
+        return getLocalizer().format("AfmUtil.Version", ExTeX.getVersion(),
+                cal.getTime().toString());
     }
 
     /**
@@ -340,6 +419,8 @@ public final class AfmUtil extends AbstractFontUtil {
         ArrayList enclist = new ArrayList();
         boolean toenc = false;
         String encname = "";
+        boolean tomap = false;
+        String outdir = ".";
         String file = "";
 
         int i = 0;
@@ -364,6 +445,12 @@ public final class AfmUtil extends AbstractFontUtil {
                 if (i + 1 < args.length) {
                     enclist.add(args[++i]);
                 }
+            } else if ("-o".equals(args[i]) || "--outdir".equals(args[i])) {
+                if (i + 1 < args.length) {
+                    outdir = args[++i];
+                }
+            } else if ("-m".equals(args[i]) || "--map".equals(args[i])) {
+                tomap = true;
             } else {
                 file = args[i];
             }
@@ -377,6 +464,8 @@ public final class AfmUtil extends AbstractFontUtil {
         afm.setEnclist(enclist);
         afm.setToenc(toenc);
         afm.setEncname(encname);
+        afm.setOutdir(outdir);
+        afm.setTomap(tomap);
 
         afm.doIt(file);
     }
@@ -505,5 +594,41 @@ public final class AfmUtil extends AbstractFontUtil {
     public void setToenc(final boolean enc) {
 
         toenc = enc;
+    }
+
+    /**
+     * Returns the outdir.
+     * @return Returns the outdir.
+     */
+    public String getOutdir() {
+
+        return outdir;
+    }
+
+    /**
+     * The outdir to set.
+     * @param out The outdir to set.
+     */
+    public void setOutdir(final String out) {
+
+        outdir = out;
+    }
+
+    /**
+     * Returns the tomap.
+     * @return Returns the tomap.
+     */
+    public boolean isTomap() {
+
+        return tomap;
+    }
+
+    /**
+     * The tomap to set.
+     * @param map The tomap to set.
+     */
+    public void setTomap(final boolean map) {
+
+        tomap = map;
     }
 }
