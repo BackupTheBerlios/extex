@@ -33,13 +33,16 @@ import de.dante.extex.unicodeFont.exception.FontException;
 import de.dante.extex.unicodeFont.format.afm.AfmCharMetric;
 import de.dante.extex.unicodeFont.format.afm.AfmKernPairs;
 import de.dante.extex.unicodeFont.format.afm.AfmParser;
+import de.dante.extex.unicodeFont.format.tex.psfontmap.enc.EncReader;
+import de.dante.extex.unicodeFont.glyphname.GlyphName;
+import de.dante.util.UnicodeChar;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * Print information about a afm file.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public final class AfmInfo extends AbstractFontUtil {
 
@@ -57,6 +60,16 @@ public final class AfmInfo extends AbstractFontUtil {
      * The glyphname to print.
      */
     private String glyphname = "";
+
+    /**
+     * Check if the glyphs in the encoding are exists.
+     */
+    private boolean encoding = false;
+
+    /**
+     * The name of the encoding file.
+     */
+    private String encname = "";
 
     /**
      * Create a new object.
@@ -228,6 +241,61 @@ public final class AfmInfo extends AbstractFontUtil {
                 }
             }
         }
+
+        if (encoding) {
+            InputStream encin = null;
+            File encfile = new File(encname);
+            if (encfile.canRead()) {
+                encin = new FileInputStream(encfile);
+            } else {
+                // use the file finder
+                encin = getFinder().findResource(encfile.getName(), "");
+            }
+
+            if (encin == null) {
+                throw new FileNotFoundException(file);
+            }
+
+            EncReader enc = new EncReader(encin);
+
+            GlyphName glyphname = GlyphName.getInstance();
+
+            String[] table = enc.getTable();
+
+            for (int i = 0; i < table.length; i++) {
+                String name = table[i].replaceAll("/", "");
+                boolean found = true;
+                String ucname = "";
+
+                if (!".notdef".equals(name)) {
+                    AfmCharMetric cm = parser.getAfmCharMetric(name);
+                    if (cm == null) {
+                        found = false;
+                        UnicodeChar uc = glyphname.getUnicode(name);
+                        if (uc != null) {
+                            int cp = uc.getCodePoint();
+                            String snr = "0000" + Integer.toHexString(cp);
+                            ucname = "uni" + snr.substring(snr.length() - 4);
+                            cm = parser.getAfmCharMetric(ucname);
+                            if (cm != null) {
+                                ucname = "";
+                            }
+                        }
+                    }
+                }
+                String sfound = found ? getLocalizer().format(
+                        "AfmInfo.GlyphFound") : getLocalizer().format(
+                        "AfmInfo.GlyphNotFound");
+                String rename = "".equals(ucname) ? ucname : getLocalizer()
+                        .format("AfmInfo.GlyphRename", ucname);
+
+                getLogger().severe(
+                        getLocalizer().format("AfmInfo.GlyphTest", name,
+                                sfound, rename));
+
+            }
+
+        }
     }
 
     /**
@@ -252,6 +320,8 @@ public final class AfmInfo extends AbstractFontUtil {
         boolean listglyphs = false;
         boolean glyphinfo = false;
         String glyphname = "";
+        boolean encoding = false;
+        String encname = "";
         String file = "";
 
         int i = 0;
@@ -263,6 +333,12 @@ public final class AfmInfo extends AbstractFontUtil {
                     glyphinfo = true;
                     glyphname = args[++i];
                 }
+            } else if ("-e".equals(args[i])
+                    || "--encodingcheck".equals(args[i])) {
+                if (i + 1 < args.length) {
+                    encoding = true;
+                    encname = args[++i];
+                }
             } else {
                 file = args[i];
             }
@@ -272,6 +348,8 @@ public final class AfmInfo extends AbstractFontUtil {
         info.setGlyphinfo(glyphinfo);
         info.setGlyphname(glyphname);
         info.setListglyphs(listglyphs);
+        info.setEncoding(encoding);
+        info.setEncname(encname);
 
         info.doIt(file);
     }
@@ -328,5 +406,41 @@ public final class AfmInfo extends AbstractFontUtil {
     public void setListglyphs(final boolean alistglyphs) {
 
         listglyphs = alistglyphs;
+    }
+
+    /**
+     * Returns the encoding.
+     * @return Returns the encoding.
+     */
+    public boolean isEncoding() {
+
+        return encoding;
+    }
+
+    /**
+     * The encoding to set.
+     * @param aencoding The encoding to set.
+     */
+    public void setEncoding(final boolean aencoding) {
+
+        encoding = aencoding;
+    }
+
+    /**
+     * Returns the encname.
+     * @return Returns the encname.
+     */
+    public String getEncname() {
+
+        return encname;
+    }
+
+    /**
+     * The encname to set.
+     * @param aencname The encname to set.
+     */
+    public void setEncname(final String aencname) {
+
+        encname = aencname;
     }
 }
