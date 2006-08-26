@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -26,28 +26,24 @@ import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
 
 /**
- * Font-key-class.
+ * Font key class.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 
 public class FountKey implements Serializable {
 
     /**
-     * The name of the font
+     * The field <tt>serialVersionUID</tt> contains the version number for
+     * serialization.
      */
-    private String name;
+    protected static final long serialVersionUID = 2006L;
 
     /**
-     * The size of the font
+     * kerning on/off
      */
-    private Dimen size;
-
-    /**
-     * The scale factor of the font.
-     */
-    private Count scale;
+    private boolean kerning;
 
     /**
      * The glue for letter space
@@ -60,9 +56,38 @@ public class FountKey implements Serializable {
     private boolean ligatures;
 
     /**
-     * kerning on/off
+     * The name of the font
      */
-    private boolean kerning;
+    private String name;
+
+    /**
+     * The scale factor of the font.
+     */
+    private Count scale;
+
+    /**
+     * The size of the font
+     */
+    private Dimen size;
+
+    /**
+     * Create a new object.
+     * @param n     the name
+     */
+    public FountKey(final String n) {
+
+        this(n, null, null, new Glue(0), false, false);
+    }
+
+    /**
+     * Create a new object.
+     * @param n     the name
+     * @param s     the size
+     */
+    public FountKey(final String n, final Dimen s) {
+
+        this(n, s, null, new Glue(0), false, false);
+    }
 
     /**
      * Create a new object.
@@ -85,49 +110,31 @@ public class FountKey implements Serializable {
     }
 
     /**
-     * Create a new object.
-     * @param n     the name
+     * Check, if the key have the same values.
+     *
+     * @param key   the fount key
+     * @return Returns <code>true</code>, if the two objects are equals,
+     *         or <code>false</code>, if not.
      */
-    public FountKey(final String n) {
+    public boolean eq(final FountKey key) {
 
-        this(n, null, null, new Glue(0), false, false);
-    }
-
-    /**
-     * Create a new object.
-     * @param n     the name
-     * @param s     the size
-     */
-    public FountKey(final String n, final Dimen s) {
-
-        this(n, s, null, new Glue(0), false, false);
-    }
-
-    /**
-     * @see java.lang.Object#toString()
-     */
-    public String toString() {
-
-        return name + size + scale + letterspaced + String.valueOf(ligatures)
-                + String.valueOf(kerning);
-    }
-
-    /**
-     * Returns the kerning.
-     * @return Returns the kerning.
-     */
-    public boolean isKerning() {
-
-        return kerning;
-    }
-
-    /**
-     * Set the kerning.
-     * @param k The kerning to set.
-     */
-    public void setKerning(final boolean k) {
-
-        kerning = k;
+        if (key != null) {
+            if (key.getName() != null && key.getName().equals(name)) {
+                if (key.getSize() != null && key.getSize().eq(size)) {
+                    if (key.getScale() != null && key.getScale().eq(scale)) {
+                        //if (key.getLetterspaced() != null && key.getLetterspaced().eq) {
+                        // TODO Glue.eq() missing
+                        if (key.isKerning() == kerning) {
+                            if (key.isLigatures() == ligatures) {
+                                return true;
+                            }
+                        }
+                        //}
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -137,33 +144,6 @@ public class FountKey implements Serializable {
     public Glue getLetterspaced() {
 
         return letterspaced;
-    }
-
-    /**
-     * Set the letter spaced.
-     * @param l The letter spaced to set.
-     */
-    public void setLetterspaced(final Glue l) {
-
-        letterspaced = l;
-    }
-
-    /**
-     * Returns the ligatures.
-     * @return Returns the ligatures.
-     */
-    public boolean isLigatures() {
-
-        return ligatures;
-    }
-
-    /**
-     * Set the ligatures.
-     * @param l The ligatures to set.
-     */
-    public void setLigatures(final boolean l) {
-
-        ligatures = l;
     }
 
     /**
@@ -194,6 +174,51 @@ public class FountKey implements Serializable {
     }
 
     /**
+     * Returns the kerning.
+     * @return Returns the kerning.
+     */
+    public boolean isKerning() {
+
+        return kerning;
+    }
+
+    /**
+     * Returns the ligatures.
+     * @return Returns the ligatures.
+     */
+    public boolean isLigatures() {
+
+        return ligatures;
+    }
+
+    /**
+     * Set the kerning.
+     * @param k The kerning to set.
+     */
+    public void setKerning(final boolean k) {
+
+        kerning = k;
+    }
+
+    /**
+     * Set the letter spaced.
+     * @param l The letter spaced to set.
+     */
+    public void setLetterspaced(final Glue l) {
+
+        letterspaced = l;
+    }
+
+    /**
+     * Set the ligatures.
+     * @param l The ligatures to set.
+     */
+    public void setLigatures(final boolean l) {
+
+        ligatures = l;
+    }
+
+    /**
      * Set the name.
      * @param n The name to set.
      */
@@ -221,30 +246,12 @@ public class FountKey implements Serializable {
     }
 
     /**
-     * Check, if the key have the same values.
-     *
-     * @param key   the fount key
-     * @return Returns <code>true</code>, if the two objects are equals,
-     *         or <code>false</code>, if not.
+     * @see java.lang.Object#toString()
      */
-    public boolean eq(final FountKey key) {
+    public String toString() {
 
-        if (key != null) {
-            if (key.getName() != null && key.getName().equals(name)) {
-                if (key.getSize() != null && key.getSize().eq(size)) {
-                    if (key.getScale() != null && key.getScale().eq(scale)) {
-                        //if (key.getLetterspaced() != null && key.getLetterspaced().eq) {
-                        // TODO Glue.eq() missing
-                        if (key.isKerning() == kerning) {
-                            if (key.isLigatures() == ligatures) {
-                                return true;
-                            }
-                        }
-                        //}
-                    }
-                }
-            }
-        }
-        return false;
+        return name + size + scale + letterspaced + String.valueOf(ligatures)
+                + String.valueOf(kerning);
     }
+
 }
