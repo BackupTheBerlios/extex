@@ -41,7 +41,7 @@ import de.dante.util.framework.i18n.Localizer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public abstract class AbstractCode implements Code, Localizable, Serializable {
 
@@ -70,7 +70,7 @@ public abstract class AbstractCode implements Code, Localizable, Serializable {
      * The field <tt>localizer</tt> contains the localizer or <code>null</code>
      * if none has been set yet.
      */
-    private Localizer localizer = null;
+    private transient Localizer localizer = null;
 
     /**
      * The field <tt>name</tt> contains the name of this code for debugging.
