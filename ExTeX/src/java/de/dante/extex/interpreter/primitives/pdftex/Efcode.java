@@ -42,6 +42,9 @@ import de.dante.util.UnicodeChar;
  *  This primitive ...
  *  TODO gene: missing documentation
  * </p>
+ * <p>
+ *  The default value is 1000.
+ * </p>
  *
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
@@ -51,13 +54,13 @@ import de.dante.util.UnicodeChar;
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
- *    \efcode {...}  </pre>
+ *    \efcode\f`A 1200  </pre>
  *
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Efcode extends AbstractCode
         implements
@@ -96,8 +99,7 @@ public class Efcode extends AbstractCode
                 getName());
         source.getOptionalEquals(context);
         long code = Count.scanInteger(context, source, typesetter);
-        // TODO gene: incomplete
-        //font.setEfcode(uc, code);
+        font.setEfcode(uc, code);
     }
 
     /**
@@ -113,9 +115,7 @@ public class Efcode extends AbstractCode
         UnicodeChar uc = source.scanCharacterCode(context, typesetter,
                 getName());
 
-        // TODO gene: convertCount incomplete
-        //return font.getEfcode(uc);
-        return 0;
+        return font.getEfcode(uc);
     }
 
     /**
