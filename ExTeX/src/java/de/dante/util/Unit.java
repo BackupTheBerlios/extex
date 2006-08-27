@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,13 +22,14 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.glue.GlueComponent;
 
 /**
  * This class implements a converter e.g for dimen values.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public final class Unit {
 
@@ -79,7 +80,7 @@ public final class Unit {
      * @param value the <code>Dimen</code>
      * @return Returns the <code>Dimen</code>-value as BP
      */
-    public static float getDimenAsBP(final Dimen value) {
+    public static float getDimenAsBP(final FixedDimen value) {
 
         return ((float) value.getValue() * MULBP) / (DEN << SHIFT);
     }
@@ -89,7 +90,7 @@ public final class Unit {
      * @param value the <code>Dimen</code>
      * @return Returns the <code>Dimen</code>-value as PT
      */
-    public static double getDimenAsPT(final Dimen value) {
+    public static double getDimenAsPT(final FixedDimen value) {
 
         return ((double) value.getValue()) / GlueComponent.ONE;
     }
@@ -99,7 +100,7 @@ public final class Unit {
      * @param value the <code>Dimen</code>
      * @return Returns the <code>Dimen</code>-value (round) as PT as String
      */
-    public static String getDimenAsPTString(final Dimen value) {
+    public static String getDimenAsPTString(final FixedDimen value) {
 
         return getDimenAsPTString(value, 2);
     }
@@ -110,7 +111,8 @@ public final class Unit {
      * @param round the round position
      * @return Returns the <code>Dimen</code>-value (round) as PT as String
      */
-    public static String getDimenAsPTString(final Dimen value, final int round) {
+    public static String getDimenAsPTString(final FixedDimen value,
+            final int round) {
 
         NumberFormat nf = NumberFormat.getInstance(Locale.ENGLISH);
         nf.setGroupingUsed(false);
@@ -123,7 +125,7 @@ public final class Unit {
      * @param value the <code>Dimen</code>
      * @return Returns the <code>Dimen</code>-value as MM
      */
-    public static double getDimenAsMM(final Dimen value) {
+    public static double getDimenAsMM(final FixedDimen value) {
 
         return ((double) value.getValue() * MULMM) / (DEN << SHIFT);
     }
@@ -133,7 +135,7 @@ public final class Unit {
      * @param value the <code>Dimen</code>
      * @return Returns the <code>Dimen</code>-value as CM
      */
-    public static double getDimenAsCM(final Dimen value) {
+    public static double getDimenAsCM(final FixedDimen value) {
 
         return ((double) value.getValue() * MULCM) / (DEN << SHIFT);
     }
@@ -143,7 +145,7 @@ public final class Unit {
      * @param value the <code>Dimen</code>
      * @return Returns the <code>Dimen</code>-value as IN
      */
-    public static double getDimenAsIN(final Dimen value) {
+    public static double getDimenAsIN(final FixedDimen value) {
 
         return ((double) value.getValue() * MULIN) / (DEN << SHIFT);
     }
@@ -182,4 +184,5 @@ public final class Unit {
         return Math.round(value * Math.pow(BASIS10, round))
                 / Math.pow(BASIS10, round);
     }
+
 }

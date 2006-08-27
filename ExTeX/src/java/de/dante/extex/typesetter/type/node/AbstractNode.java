@@ -24,6 +24,7 @@ import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.FixedGlueComponent;
+import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.glue.WideGlue;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.Node;
@@ -36,7 +37,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This abstract class provides some methods common to all Nodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public abstract class AbstractNode implements Node {
 
@@ -49,13 +50,13 @@ public abstract class AbstractNode implements Node {
      * The field <tt>depth</tt> contains the depth of the node.
      * The depth is the extend of the node below the baseline.
      */
-    private Dimen depth;
+    private Glue depth;
 
     /**
      * The field <tt>height</tt> contains the height of the node.
      * The height is the extend of the node above the baseline.
      */
-    private Dimen height;
+    private Glue height;
 
     /**
      * The field <tt>localizer</tt> contains the localizer.
@@ -66,7 +67,7 @@ public abstract class AbstractNode implements Node {
      * This is the width of the node.
      * The width is the extend of the node along the baseline.
      */
-    private Dimen width;
+    private Glue width;
 
     /**
      * Creates a new object.
@@ -75,9 +76,9 @@ public abstract class AbstractNode implements Node {
     public AbstractNode() {
 
         super();
-        width = new Dimen();
-        height = new Dimen();
-        depth = new Dimen();
+        width = new Glue();
+        height = new Glue();
+        depth = new Glue();
     }
 
     /**
@@ -88,9 +89,9 @@ public abstract class AbstractNode implements Node {
     public AbstractNode(final FixedDimen aWidth) {
 
         super();
-        this.width = new Dimen(aWidth);
-        this.height = new Dimen();
-        this.depth = new Dimen();
+        this.width = new Glue(aWidth);
+        this.height = new Glue();
+        this.depth = new Glue();
     }
 
     /**
@@ -104,9 +105,65 @@ public abstract class AbstractNode implements Node {
             final FixedDimen aDepth) {
 
         super();
-        this.width = new Dimen(aWidth);
-        this.height = new Dimen(aHeight);
-        this.depth = new Dimen(aDepth);
+        this.width = new Glue(aWidth);
+        this.height = new Glue(aHeight);
+        this.depth = new Glue(aDepth);
+    }
+
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param x
+     */
+    public void advanceWidth(final FixedDimen x) {
+
+        width.add(x);
+    }
+
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param x
+     */
+    public void advanceHeight(final FixedDimen x) {
+
+        height.add(x);
+    }
+
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param x
+     */
+    public void maxHeight(final FixedDimen x) {
+
+        if (height.getLength().lt(x)) {
+            height.setLength(x);
+        }
+    }
+
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param x
+     */
+    public void maxWidth(final FixedDimen x) {
+
+        if (width.getLength().lt(x)) {
+            width.setLength(x);
+        }
+    }
+
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param x
+     */
+    public void maxDepth(final FixedDimen x) {
+
+        if (depth.getLength().lt(x)) {
+            depth.setLength(x);
+        }
     }
 
     /**
@@ -214,17 +271,17 @@ public abstract class AbstractNode implements Node {
     /**
      * @see de.dante.extex.typesetter.type.Node#getDepth()
      */
-    public Dimen getDepth() {
+    public FixedDimen getDepth() {
 
-        return depth;
+        return depth.getLength();
     }
 
     /**
      * @see de.dante.extex.typesetter.type.Node#getHeight()
      */
-    public Dimen getHeight() {
+    public FixedDimen getHeight() {
 
-        return height;
+        return height.getLength();
     }
 
     /**
@@ -246,7 +303,7 @@ public abstract class AbstractNode implements Node {
      */
     public FixedDimen getVerticalSize() {
 
-        Dimen h = getHeight();
+        FixedDimen h = getHeight();
         Dimen d = new Dimen(getDepth());
 
         if (h.ge(Dimen.ZERO)) {
@@ -272,36 +329,36 @@ public abstract class AbstractNode implements Node {
     /**
      * @see de.dante.extex.typesetter.type.Node#getWidth()
      */
-    public Dimen getWidth() {
+    public FixedDimen getWidth() {
 
-        return width;
+        return width.getLength();
     }
 
     /**
      * @see de.dante.extex.typesetter.type.Node#setDepth(
      *      de.dante.extex.interpreter.type.dimen.FixedDimen)
      */
-    public void setDepth(final FixedDimen d) {
+    public void setDepth(final FixedDimen glue) {
 
-        depth.set(d);
+        depth.set(glue);
     }
 
     /**
      * @see de.dante.extex.typesetter.type.Node#setHeight(
      *      de.dante.extex.interpreter.type.dimen.FixedDimen)
      */
-    public void setHeight(final FixedDimen h) {
+    public void setHeight(final FixedDimen glue) {
 
-        height.set(h);
+        height.set(glue);
     }
 
     /**
      * @see de.dante.extex.typesetter.type.Node#setWidth(
      *      de.dante.extex.interpreter.type.dimen.FixedDimen)
      */
-    public void setWidth(final FixedDimen w) {
+    public void setWidth(final FixedDimen glue) {
 
-        width.set(w);
+        width.set(glue);
     }
 
     /**
