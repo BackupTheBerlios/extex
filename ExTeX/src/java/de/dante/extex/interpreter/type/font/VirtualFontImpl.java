@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -20,7 +20,7 @@
 package de.dante.extex.interpreter.type.font;
 
 import de.dante.extex.font.Glyph;
-import de.dante.extex.font.type.Fount;
+import de.dante.extex.font.type.InternalFount;
 import de.dante.extex.font.type.ModifiableFount;
 import de.dante.extex.font.type.VirtualFount;
 import de.dante.extex.font.type.efm.commands.EfmHVW;
@@ -31,12 +31,17 @@ import de.dante.extex.typesetter.type.node.VirtualCharNode;
 import de.dante.util.UnicodeChar;
 
 /**
- * Implemetation for a virtual font.
+ * Implementation for a virtual font.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class VirtualFontImpl extends FontImpl implements VirtualFount {
+
+    /**
+     * The field <tt>serialVersionUID</tt> contains the ...
+     */
+    private static final long serialVersionUID = 2006L;
 
     /**
      * Create a new Object
@@ -57,7 +62,7 @@ public class VirtualFontImpl extends FontImpl implements VirtualFount {
 
         VirtualCharNode cnode = new VirtualCharNode(context, uc);
 
-        Fount fount = getFount();
+        InternalFount fount = getFount();
         Glyph vglyph = fount.getGlyph(uc);
 
         // h and v position
