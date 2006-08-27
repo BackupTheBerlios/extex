@@ -42,7 +42,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.30 $
+ * @version $Revision: 1.31 $
  */
 public class Glue implements Serializable, FixedGlue {
 
@@ -136,6 +136,17 @@ public class Glue implements Serializable, FixedGlue {
     private GlueComponent stretch;
 
     /**
+     * Creates a new object with a zero length.
+     */
+    public Glue() {
+
+        super();
+        this.length = new GlueComponent(0);
+        this.stretch = new GlueComponent(0);
+        this.shrink = new GlueComponent(0);
+    }
+
+    /**
      * Creates a new object with a fixed length.
      *
      * @param theLength the natural length
@@ -156,7 +167,7 @@ public class Glue implements Serializable, FixedGlue {
     public Glue(final FixedGlue glue) {
 
         super();
-        this.length = glue.getLength().copy();
+        this.length = new Dimen(glue.getLength());
         this.stretch = glue.getStretch().copy();
         this.shrink = glue.getShrink().copy();
     }
@@ -487,6 +498,16 @@ public class Glue implements Serializable, FixedGlue {
             shrink.toToks(toks, factory, 'p', 't');
         }
         return toks;
+    }
+
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param x
+     */
+    public void setLength(FixedDimen x) {
+
+        length.set(x);
     }
 
 }
