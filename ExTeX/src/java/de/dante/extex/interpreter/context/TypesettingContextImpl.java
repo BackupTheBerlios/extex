@@ -30,14 +30,14 @@ import de.dante.extex.language.Language;
  * appearance of glyphs or other nodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public class TypesettingContextImpl implements ModifiableTypesettingContext {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2006L;
 
     /**
      * The field <tt>color</tt> contains the color to use.
@@ -50,13 +50,13 @@ public class TypesettingContextImpl implements ModifiableTypesettingContext {
      * <li>in a HListNode or VListNode it is the background color</li>
      * </ul>
      */
-    private Color color;
+    private Color color = ColorFactory.BLACK;
 
     /**
      * The field <tt>direction</tt> contains the direction for advancing the
      * cursor. This is one of the constants in {@link Direction Direction}.
      */
-    private Direction direction;
+    private Direction direction = Direction.LR;
 
     /**
      * The field <tt>font</tt> contains the font to use.
@@ -64,7 +64,7 @@ public class TypesettingContextImpl implements ModifiableTypesettingContext {
     private Font font;
 
     /**
-     * The field <tt>hyphenation</tt> contains the hyphenation table for the
+     * The field <tt>language</tt> contains the hyphenation table for the
      * current language.
      */
     private Language language;
@@ -75,10 +75,6 @@ public class TypesettingContextImpl implements ModifiableTypesettingContext {
     public TypesettingContextImpl() {
 
         super();
-        this.font = new NullFont();
-        this.color = ColorFactory.BLACK;
-        this.direction = Direction.LR;
-        this.language = null;
     }
 
     /**
@@ -91,9 +87,6 @@ public class TypesettingContextImpl implements ModifiableTypesettingContext {
 
         super();
         this.font = theFont;
-        this.color = ColorFactory.BLACK;
-        this.direction = Direction.LR;
-        this.language = null;
     }
 
     /**
@@ -104,13 +97,7 @@ public class TypesettingContextImpl implements ModifiableTypesettingContext {
     public TypesettingContextImpl(final TypesettingContext tc) {
 
         super();
-        if (tc == null) {
-            this.font = new NullFont();
-            this.color = ColorFactory.BLACK;
-            this.direction = Direction.LR;
-            this.language = null;
-
-        } else {
+        if (tc != null) {
             this.font = tc.getFont();
             this.color = tc.getColor();
             this.direction = tc.getDirection();
@@ -162,7 +149,7 @@ public class TypesettingContextImpl implements ModifiableTypesettingContext {
         if (context != null) {
             this.font = context.getFont();
             this.color = context.getColor();
-            this.direction = Direction.LR;
+            this.direction = context.getDirection();
             this.language = context.getLanguage();
         }
     }
