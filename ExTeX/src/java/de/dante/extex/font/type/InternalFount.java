@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -18,30 +18,25 @@
 
 package de.dante.extex.font.type;
 
-import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.font.Glyph;
+import de.dante.util.UnicodeChar;
 
 /**
- * ModifiableFont Interface
+ * Fount Interface (only getter)
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+ * @version $Revision: 1.1 $
  */
-public interface ModifiableFount extends InternalFount {
+public interface InternalFount extends Fount {
 
     /**
-     * Setter for the font-property
+     * Return the Glyph of a <code>UnicodeChar</code>, or
+     * null, if the character is not defined.
      *
-     * @param key       the key
-     * @param value     the value for the key
+     * @param c the Unicode char
+     * @return the <code>Glyph</code>
      */
-    void setProperty(String key, String value);
-
-    /**
-     * Setter for the font dimen register.
-     *
-     * @param key       the key
-     * @param value     the value for the key
-     */
-    void setFontDimen(String key, Dimen value);
+    Glyph getGlyph(UnicodeChar c);
 
 }
