@@ -28,7 +28,9 @@ import de.dante.extex.font.FountKey;
 import de.dante.extex.font.Glyph;
 import de.dante.extex.font.type.BoundingBox;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.font.Font;
+import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.util.UnicodeChar;
 
@@ -37,15 +39,31 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class NullFont implements Font, Serializable {
+
+    /**
+     * The field <tt>DEFAULT_EF_CODE</tt> contains the default value for the
+     * ef code.
+     */
+    private static final int DEFAULT_EF_CODE = 1000;
 
     /**
      * The field <tt>serialVersionUID</tt> contains the version number for
      * serialization.
      */
     protected static final long serialVersionUID = 2006L;
+
+    /**
+     * The field <tt>efCode</tt> contains the ef code.
+     */
+    private Map efCode = null;
+
+    /**
+     * The field <tt>fontDimens</tt> contains the map for font dimens.
+     */
+    private Map fontDimens = null;
 
     /**
      * The field <tt>hyphen</tt> contains the hyphen char for this font.
@@ -66,83 +84,97 @@ public class NullFont implements Font, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.font.Font#getHyphenChar()
+     * @see de.dante.extex.font.type.Fount#getActualSize()
      */
-    public UnicodeChar getHyphenChar() {
+    public FixedDimen getActualSize() {
 
-        return hyphen;
+        return Dimen.ZERO_PT;
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.font.Font#getSkewChar()
+     * @see de.dante.extex.font.type.Fount#getBoundingBox()
      */
-    public UnicodeChar getSkewChar() {
+    public BoundingBox getBoundingBox() {
 
-        return skew;
+        return null;
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.font.Font#setHyphenChar(
+     * @see de.dante.extex.font.type.Fount#getCheckSum()
+     */
+    public int getCheckSum() {
+
+        return -1;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.font.Font#getDepth(
      *      de.dante.util.UnicodeChar)
      */
-    public void setHyphenChar(final UnicodeChar ahyphen) {
+    public FixedGlue getDepth(final UnicodeChar uc) {
 
-        this.hyphen = ahyphen;
+        return null;
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.font.Font#setSkewChar(
-     *      de.dante.util.UnicodeChar)
+     * @see de.dante.extex.font.type.Fount#getDesignSize()
      */
-    public void setSkewChar(final UnicodeChar askew) {
+    public FixedDimen getDesignSize() {
 
-        this.skew = askew;
+        return Dimen.ZERO_PT;
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.font.Font#getSpace()
+     * @see de.dante.extex.interpreter.type.font.Font#getEfcode()
      */
-    public Glue getSpace() {
+    public long getEfcode(final UnicodeChar uc) {
 
-        return new Glue(0);
+        if (efCode == null) {
+            return DEFAULT_EF_CODE;
+        }
+        Long code = (Long) efCode.get(uc);
+        return (code == null ? DEFAULT_EF_CODE : code.longValue());
     }
 
     /**
      * @see de.dante.extex.interpreter.type.font.Font#getEm()
      */
-    public Dimen getEm() {
+    public FixedDimen getEm() {
 
         return new Dimen(0);
-    }
-
-    /**
-     * map for fontdimen
-     */
-    private Map fdmap = new HashMap();
-
-    /**
-     * @see de.dante.extex.interpreter.type.font.Font#setFontDimen(
-     *      java.lang.String, de.dante.extex.interpreter.type.dimen.Dimen)
-     */
-    public void setFontDimen(final String key, final Dimen value) {
-
-        fdmap.put(key, value);
     }
 
     /**
      * @see de.dante.extex.interpreter.type.font.Font#getEx()
      */
-    public Dimen getEx() {
+    public FixedDimen getEx() {
 
         return new Dimen(0);
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.font.Font#getFontDimen(java.lang.String)
+     * @see de.dante.extex.font.type.Fount#getFontByteArray()
      */
-    public Dimen getFontDimen(final String key) {
+    public FontByteArray getFontByteArray() {
 
-        return (Dimen) fdmap.get(key);
+        return null;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.font.Font#getFontDimen(
+     *      java.lang.String)
+     */
+    public FixedDimen getFontDimen(final String key) {
+
+        return (fontDimens == null ? null : (FixedDimen) fontDimens.get(key));
+    }
+
+    /**
+     * @see de.dante.extex.font.type.Fount#getFontKey()
+     */
+    public FountKey getFontKey() {
+
+        return new FountKey("nullfont");
     }
 
     /**
@@ -163,15 +195,61 @@ public class NullFont implements Font, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.font.Font#getLetterSpacing()
+     * @see de.dante.extex.interpreter.type.font.Font#getHeight(
+     *      de.dante.util.UnicodeChar)
      */
-    public Glue getLetterSpacing() {
+    public FixedGlue getHeight(final UnicodeChar uc) {
 
         return null;
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.font.Font#getProperty(java.lang.String)
+     * @see de.dante.extex.interpreter.type.font.Font#getHyphenChar()
+     */
+    public UnicodeChar getHyphenChar() {
+
+        return hyphen;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.font.Font#getItalicCorrection(
+     *      de.dante.util.UnicodeChar)
+     */
+    public FixedDimen getItalicCorrection(final UnicodeChar uc) {
+
+        return null;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.font.Font#getKerning(
+     *      de.dante.util.UnicodeChar, de.dante.util.UnicodeChar)
+     */
+    public FixedDimen getKerning(final UnicodeChar uc1, final UnicodeChar uc2) {
+
+        return null;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.font.Font#getLetterSpacing()
+     */
+    public FixedGlue getLetterSpacing() {
+
+        return null;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.font.Font#getLigature(
+     *      de.dante.util.UnicodeChar,
+     *      de.dante.util.UnicodeChar)
+     */
+    public UnicodeChar getLigature(final UnicodeChar uc1, final UnicodeChar uc2) {
+
+        return null;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.font.Font#getProperty(
+     *      java.lang.String)
      */
     public String getProperty(final String key) {
 
@@ -179,35 +257,28 @@ public class NullFont implements Font, Serializable {
     }
 
     /**
-     * @see de.dante.extex.font.type.Fount#getCheckSum()
+     * @see de.dante.extex.interpreter.type.font.Font#getSkewChar()
      */
-    public int getCheckSum() {
+    public UnicodeChar getSkewChar() {
 
-        return -1;
+        return skew;
     }
 
     /**
-     * @see de.dante.extex.font.type.Fount#getBoundingBox()
+     * @see de.dante.extex.interpreter.type.font.Font#getSpace()
      */
-    public BoundingBox getBoundingBox() {
+    public FixedGlue getSpace() {
+
+        return new Glue();
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.font.Font#getWidth(
+     *      de.dante.util.UnicodeChar)
+     */
+    public FixedGlue getWidth(final UnicodeChar uc) {
 
         return null;
-    }
-
-    /**
-     * @see de.dante.extex.font.type.Fount#getActualSize()
-     */
-    public Dimen getActualSize() {
-
-        return Dimen.ZERO_PT;
-    }
-
-    /**
-     * @see de.dante.extex.font.type.Fount#getDesignSize()
-     */
-    public Dimen getDesignSize() {
-
-        return Dimen.ZERO_PT;
     }
 
     /**
@@ -219,18 +290,45 @@ public class NullFont implements Font, Serializable {
     }
 
     /**
-     * @see de.dante.extex.font.type.Fount#getFontKey()
+     * @see de.dante.extex.interpreter.type.font.Font#setEfcode(
+     *      de.dante.util.UnicodeChar, long)
      */
-    public FountKey getFontKey() {
+    public void setEfcode(final UnicodeChar uc, final long code) {
 
-        return new FountKey("nullfont");
+        if (efCode == null) {
+            efCode = new HashMap();
+        }
+        efCode.put(uc, new Long(code));
     }
 
     /**
-     * @see de.dante.extex.font.type.Fount#getFontByteArray()
+     * @see de.dante.extex.interpreter.type.font.Font#setFontDimen(
+     *      java.lang.String, de.dante.extex.interpreter.type.dimen.Dimen)
      */
-    public FontByteArray getFontByteArray() {
+    public void setFontDimen(final String key, final Dimen value) {
 
-        return null;
+        if (fontDimens == null) {
+            fontDimens = new HashMap();
+        }
+        fontDimens.put(key, value);
     }
+
+    /**
+     * @see de.dante.extex.interpreter.type.font.Font#setHyphenChar(
+     *      de.dante.util.UnicodeChar)
+     */
+    public void setHyphenChar(final UnicodeChar ahyphen) {
+
+        this.hyphen = ahyphen;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.font.Font#setSkewChar(
+     *      de.dante.util.UnicodeChar)
+     */
+    public void setSkewChar(final UnicodeChar askew) {
+
+        this.skew = askew;
+    }
+
 }

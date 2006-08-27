@@ -27,17 +27,16 @@ import de.dante.extex.font.FountKey;
 import de.dante.extex.font.Glyph;
 import de.dante.extex.font.type.BoundingBox;
 import de.dante.extex.font.type.ModifiableFount;
-import de.dante.extex.font.type.efm.EfmReader;
-import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
-import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
+import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.util.UnicodeChar;
 
 /**
  * ModifiableFount for AFM.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ModifiableFountAFM implements ModifiableFount, Serializable {
 
@@ -140,7 +139,7 @@ public class ModifiableFountAFM implements ModifiableFount, Serializable {
     /**
      * @see de.dante.extex.font.type.Fount#getSpace()
      */
-    public Glue getSpace() {
+    public FixedGlue getSpace() {
 
         return null;
     }
@@ -148,7 +147,7 @@ public class ModifiableFountAFM implements ModifiableFount, Serializable {
     /**
      * @see de.dante.extex.font.type.Fount#getEm()
      */
-    public Dimen getEm() {
+    public FixedDimen getEm() {
 
         return null;
     }
@@ -156,7 +155,7 @@ public class ModifiableFountAFM implements ModifiableFount, Serializable {
     /**
      * @see de.dante.extex.font.type.Fount#getEx()
      */
-    public Dimen getEx() {
+    public FixedDimen getEx() {
 
         return null;
     }
@@ -164,7 +163,7 @@ public class ModifiableFountAFM implements ModifiableFount, Serializable {
     /**
      * @see de.dante.extex.font.type.Fount#getFontDimen(java.lang.String)
      */
-    public Dimen getFontDimen(final String key) {
+    public FixedDimen getFontDimen(final String key) {
 
         return null;
     }
@@ -204,7 +203,7 @@ public class ModifiableFountAFM implements ModifiableFount, Serializable {
     /**
      * @see de.dante.extex.font.type.Fount#getLetterSpacing()
      */
-    public Glue getLetterSpacing() {
+    public FixedGlue getLetterSpacing() {
 
         return null;
     }
@@ -212,7 +211,7 @@ public class ModifiableFountAFM implements ModifiableFount, Serializable {
     /**
      * @see de.dante.extex.font.type.Fount#getDesignSize()
      */
-    public Dimen getDesignSize() {
+    public FixedDimen getDesignSize() {
 
         return null;
     }
@@ -220,7 +219,7 @@ public class ModifiableFountAFM implements ModifiableFount, Serializable {
     /**
      * @see de.dante.extex.font.type.Fount#getActualSize()
      */
-    public Dimen getActualSize() {
+    public FixedDimen getActualSize() {
 
         return null;
     }
