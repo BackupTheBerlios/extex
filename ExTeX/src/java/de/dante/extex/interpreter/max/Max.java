@@ -175,7 +175,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.110 $
+ * @version $Revision: 1.111 $
  */
 public abstract class Max
         implements
@@ -535,8 +535,6 @@ public abstract class Max
         context.setTokenFactory(tokenFactory);
         configureHyhenation(config);
 
-    
-    
         OutputStreamFactory outputFactory = null; //TODO gene: provide OutputStreamFactory
 
         Context ctx = getContext();
@@ -562,7 +560,6 @@ public abstract class Max
             throw new ConfigurationWrapperException(e);
         }
 
-    
     }
 
     /**
