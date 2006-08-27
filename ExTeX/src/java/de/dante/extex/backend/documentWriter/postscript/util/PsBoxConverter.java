@@ -27,6 +27,7 @@ import de.dante.extex.backend.documentWriter.exception.DocumentWriterException;
 import de.dante.extex.backend.documentWriter.exception.DocumentWriterIOException;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeVisitor;
@@ -60,7 +61,7 @@ import de.dante.util.exception.GeneralException;
  * boxes of the characters.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class PsBoxConverter implements PsConverter, NodeVisitor {
 
@@ -109,7 +110,7 @@ public class PsBoxConverter implements PsConverter, NodeVisitor {
      * @param box the name of the box command to use for printing
      */
     private void drawBox(final Node node, final StringBuffer out,
-            final Dimen height, final String box) {
+            final FixedDimen height, final String box) {
 
         if (height.ne(Dimen.ZERO_PT)) {
             PsUnit.toPoint(node.getWidth(), out, false);

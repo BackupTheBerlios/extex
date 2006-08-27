@@ -33,6 +33,7 @@ import de.dante.extex.backend.documentWriter.OutputStreamFactory;
 import de.dante.extex.backend.documentWriter.exception.DocumentWriterException;
 import de.dante.extex.backend.documentWriter.exception.DocumentWriterIOException;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeIterator;
@@ -71,7 +72,7 @@ import de.dante.util.xml.XMLStreamWriter;
  * TODO incomplete !!!
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class SVGDocumentWriter
         implements
@@ -189,12 +190,12 @@ public class SVGDocumentWriter
      * @param dimen     the dimen
      * @throws IOException if an IO-error occurred.
      */
-    private void setDimenLength(final String name, final Dimen dimen)
+    private void setDimenLength(final String name, final FixedDimen dimen)
             throws IOException {
 
-        Dimen d = dimen;
+        FixedDimen d = dimen;
         if (dimen == null) {
-            d = new Dimen();
+            d = Dimen.ZERO_PT;
         }
         writer.writeAttribute(name, FORMAT.format(Unit.getDimenAsMM(d)) + "mm");
     }
