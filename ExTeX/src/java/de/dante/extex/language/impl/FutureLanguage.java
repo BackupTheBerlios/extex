@@ -19,6 +19,9 @@
 
 package de.dante.extex.language.impl;
 
+import java.io.ObjectStreamException;
+import java.io.Serializable;
+
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.language.Language;
@@ -29,6 +32,7 @@ import de.dante.extex.typesetter.type.node.CharNode;
 import de.dante.extex.typesetter.type.node.factory.NodeFactory;
 import de.dante.util.UnicodeChar;
 import de.dante.util.UnicodeCharList;
+import de.dante.util.framework.Registrar;
 
 /**
  * This class implements the future pattern for a language object. The real
@@ -36,9 +40,9 @@ import de.dante.util.UnicodeCharList;
  * loading or the creation should be performed.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
-public class FutureLanguage implements Language {
+public class FutureLanguage implements ManagedLanguage, Serializable {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
@@ -49,19 +53,19 @@ public class FutureLanguage implements Language {
      * The field <tt>creator</tt> contains the creator which should be contacted
      * to perform the real task.
      */
-    private LanguageCreator creator;
-
-    /**
-     * The field <tt>index</tt> contains the name of the language for the
-     * creator.
-     */
-    private String index;
+    private transient LanguageCreator creator = null;
 
     /**
      * The field <tt>language</tt> contains the language for which we are acting
      * as proxy.
      */
     private Language language = null;
+
+    /**
+     * The field <tt>name</tt> contains the name of the language for the
+     * creator.
+     */
+    private String name;
 
     /**
      * Creates a new object.
@@ -73,7 +77,7 @@ public class FutureLanguage implements Language {
     public FutureLanguage(final String index, final LanguageCreator creator) {
 
         super();
-        this.index = index;
+        this.name = index;
         this.creator = creator;
     }
 
@@ -86,7 +90,7 @@ public class FutureLanguage implements Language {
             final TypesetterOptions context) throws HyphenationException {
 
         if (language == null) {
-            language = creator.loadLanguageInstance(index);
+            language = creator.loadLanguageInstance(name);
         }
         language.addHyphenation(word, context);
     }
@@ -98,7 +102,7 @@ public class FutureLanguage implements Language {
     public void addPattern(final Tokens pattern) throws HyphenationException {
 
         if (language == null) {
-            language = creator.createLanguageInstance(index);
+            language = creator.createLanguageInstance(name);
         }
         language.addPattern(pattern);
     }
@@ -113,7 +117,7 @@ public class FutureLanguage implements Language {
             final UnicodeCharList word) throws HyphenationException {
 
         if (language == null) {
-            language = creator.createLanguageInstance(index);
+            language = creator.createLanguageInstance(name);
         }
         return language.findWord(nodes, start, word);
     }
@@ -124,7 +128,7 @@ public class FutureLanguage implements Language {
     public long getLeftHyphenmin() throws HyphenationException {
 
         if (language == null) {
-            language = creator.loadLanguageInstance(index);
+            language = creator.loadLanguageInstance(name);
         }
         return language.getLeftHyphenmin();
     }
@@ -139,9 +143,17 @@ public class FutureLanguage implements Language {
             final Font f) throws HyphenationException {
 
         if (language == null) {
-            language = creator.loadLanguageInstance(index);
+            language = creator.loadLanguageInstance(name);
         }
         return language.getLigature(c1, c2, f);
+    }
+
+    /**
+     * @see de.dante.extex.language.Language#getName()
+     */
+    public String getName() {
+
+        return name;
     }
 
     /**
@@ -150,7 +162,7 @@ public class FutureLanguage implements Language {
     public long getRightHyphenmin() throws HyphenationException {
 
         if (language == null) {
-            language = creator.loadLanguageInstance(index);
+            language = creator.loadLanguageInstance(name);
         }
         return language.getRightHyphenmin();
     }
@@ -170,7 +182,7 @@ public class FutureLanguage implements Language {
             throws HyphenationException {
 
         if (language == null) {
-            language = creator.loadLanguageInstance(index);
+            language = creator.loadLanguageInstance(name);
         }
         return language.hyphenate(nodelist, context, hyphen, start, forall,
                 nodeFactory);
@@ -184,7 +196,7 @@ public class FutureLanguage implements Language {
             throws HyphenationException {
 
         if (language == null) {
-            language = creator.loadLanguageInstance(index);
+            language = creator.loadLanguageInstance(name);
         }
         return language.insertLigatures(list, start);
     }
@@ -201,7 +213,7 @@ public class FutureLanguage implements Language {
             throws HyphenationException {
 
         if (language == null) {
-            language = creator.createLanguageInstance(index);
+            language = creator.createLanguageInstance(name);
         }
         language.insertShy(nodes, insertionPoint, spec, hyphenNode);
     }
@@ -212,7 +224,7 @@ public class FutureLanguage implements Language {
     public boolean isHyphenActive() throws HyphenationException {
 
         if (language == null) {
-            language = creator.loadLanguageInstance(index);
+            language = creator.loadLanguageInstance(name);
         }
         return language.isHyphenActive();
     }
@@ -226,9 +238,30 @@ public class FutureLanguage implements Language {
             final TypesetterOptions options) throws HyphenationException {
 
         if (language == null) {
-            language = creator.createLanguageInstance(index);
+            language = creator.createLanguageInstance(name);
         }
         return language.normalize(word, options);
+    }
+
+    /**
+     * Magic method for deserialization.
+     *
+     * @return the reconnection result
+     *
+     * @throws ObjectStreamException in case of an error
+     */
+    protected Object readResolve() throws ObjectStreamException {
+
+        return Registrar.reconnect(this);
+    }
+
+    /**
+     * @see de.dante.extex.language.impl.ManagedLanguage#setCreator(
+     *      de.dante.extex.language.LanguageManager)
+     */
+    public void setCreator(final LanguageCreator creator) {
+
+        this.creator = creator;
     }
 
     /**
@@ -238,7 +271,7 @@ public class FutureLanguage implements Language {
             throws HyphenationException {
 
         if (language == null) {
-            language = creator.createLanguageInstance(index);
+            language = creator.createLanguageInstance(name);
         }
         language.setHyphenActive(active);
     }
@@ -249,9 +282,17 @@ public class FutureLanguage implements Language {
     public void setLeftHyphenmin(final long left) throws HyphenationException {
 
         if (language == null) {
-            language = creator.createLanguageInstance(index);
+            language = creator.createLanguageInstance(name);
         }
         language.setLeftHyphenmin(left);
+    }
+
+    /**
+     * @see de.dante.extex.language.Language#setName(java.lang.String)
+     */
+    public void setName(final String name) {
+
+        this.name = name;
     }
 
     /**
@@ -260,7 +301,7 @@ public class FutureLanguage implements Language {
     public void setRightHyphenmin(final long right) throws HyphenationException {
 
         if (language == null) {
-            language = creator.createLanguageInstance(index);
+            language = creator.createLanguageInstance(name);
         }
         language.setRightHyphenmin(right);
     }

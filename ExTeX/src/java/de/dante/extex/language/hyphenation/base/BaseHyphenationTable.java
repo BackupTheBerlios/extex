@@ -19,6 +19,8 @@
 
 package de.dante.extex.language.hyphenation.base;
 
+import java.io.ObjectStreamException;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,15 +38,16 @@ import de.dante.extex.typesetter.type.node.factory.NodeFactory;
 import de.dante.extex.unicode.Unicode;
 import de.dante.util.UnicodeChar;
 import de.dante.util.UnicodeCharList;
+import de.dante.util.framework.Registrar;
 
 /**
  * This class stores the values for hyphenations and hyphenates words.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
-public class BaseHyphenationTable implements ModifiableLanguage {
+public class BaseHyphenationTable implements ModifiableLanguage, Serializable {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
@@ -111,6 +114,11 @@ public class BaseHyphenationTable implements ModifiableLanguage {
      * The field <tt>ligatureBuilder</tt> contains the ligature builder.
      */
     private LigatureBuilder ligatureBuilder = null;
+
+    /**
+     * The field <tt>name</tt> contains the ...
+     */
+    private String name;
 
     /**
      * The field <tt>righthyphenmin</tt> contains the minimum distance from the
@@ -183,6 +191,14 @@ public class BaseHyphenationTable implements ModifiableLanguage {
             final Font f) throws HyphenationException {
 
         return this.ligatureBuilder.getLigature(c1, c2, f);
+    }
+
+    /**
+     * @see de.dante.extex.language.Language#getName()
+     */
+    public String getName() {
+
+        return name;
     }
 
     /**
@@ -311,6 +327,18 @@ public class BaseHyphenationTable implements ModifiableLanguage {
     }
 
     /**
+     * Magic method for deserialization.
+     *
+     * @return the reconnection result
+     *
+     * @throws ObjectStreamException in case of an error
+     */
+    protected Object readResolve() throws ObjectStreamException {
+
+        return Registrar.reconnect(this);
+    }
+
+    /**
      * @see de.dante.extex.language.Language#setHyphenActive(boolean)
      */
     public void setHyphenActive(final boolean active)
@@ -334,6 +362,16 @@ public class BaseHyphenationTable implements ModifiableLanguage {
     public void setLigatureBuilder(final LigatureBuilder builder) {
 
         this.ligatureBuilder = builder;
+    }
+
+    /**
+     * Setter for name.
+     *
+     * @param name the name to set
+     */
+    public void setName(final String name) {
+
+        this.name = name;
     }
 
     /**

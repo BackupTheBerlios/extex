@@ -19,8 +19,6 @@
 
 package de.dante.extex.language;
 
-import java.io.Serializable;
-
 import de.dante.extex.language.hyphenation.Hyphenator;
 import de.dante.extex.language.ligature.LigatureBuilder;
 import de.dante.extex.language.word.WordTokenizer;
@@ -33,13 +31,26 @@ import de.dante.extex.language.word.WordTokenizer;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface Language
         extends
             Hyphenator,
             LigatureBuilder,
-            WordTokenizer,
-            Serializable {
+            WordTokenizer {
+
+    /**
+     * Getter for the name.
+     *
+     * @return the name
+     */
+    String getName();
+
+    /**
+     * Setter for the name.
+     *
+     * @param name the name
+     */
+    void setName(String name);
 
 }
