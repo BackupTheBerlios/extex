@@ -32,6 +32,7 @@ import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.DimenConvertible;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.scaled.ScaledNumber;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.Catcode;
@@ -60,7 +61,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.53 $
+ * @version $Revision: 1.54 $
  */
 public class GlueComponent implements Serializable, FixedGlueComponent {
 
@@ -275,12 +276,12 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
                     return new GlueComponent(v);
                 case 'e':
                     if (t.equals(Catcode.LETTER, 'x')) {
-                        Dimen ex = context.getTypesettingContext().getFont()
-                                .getEm();
+                        FixedDimen ex = context.getTypesettingContext()
+                                .getFont().getEm();
                         v = v * ex.getValue() / ONE;
                     } else if (t.equals(Catcode.LETTER, 'm')) {
-                        Dimen em = context.getTypesettingContext().getFont()
-                                .getEm();
+                        FixedDimen em = context.getTypesettingContext()
+                                .getFont().getEm();
                         v = v * em.getValue() / ONE;
                     } else {
                         break;
@@ -319,8 +320,7 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
                     return new GlueComponent(v);
                 case 'k':
                     if (t.equals(Catcode.LETTER, 'm')) {
-                        v = v * POINT_PER_100_IN / CM100_PER_IN
-                                / 100000;
+                        v = v * POINT_PER_100_IN / CM100_PER_IN / 100000;
                     } else {
                         break;
                     }

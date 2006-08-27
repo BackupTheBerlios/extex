@@ -41,7 +41,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class VerticalListNode extends GenericNodeList implements NodeList {
 
@@ -68,10 +68,10 @@ public class VerticalListNode extends GenericNodeList implements NodeList {
     public void add(final int index, final Node node) {
 
         super.add(index, node);
-        getWidth().max(node.getWidth());
-        Dimen d = getDepth();
+        maxWidth(node.getWidth());
+        Dimen d = new Dimen(getDepth());
         if (index == 0) {
-            getHeight().set(node.getHeight());
+            setHeight(node.getHeight());
         } else {
             d.add(node.getHeight());
         }
@@ -85,10 +85,10 @@ public class VerticalListNode extends GenericNodeList implements NodeList {
     public void add(final Node node) {
 
         super.add(node);
-        getWidth().max(node.getWidth());
-        Dimen d = getDepth();
+        maxWidth(node.getWidth());
+        Dimen d = new Dimen(getDepth());
         if (size() == 1) {
-            getHeight().set(node.getHeight());
+            setHeight(node.getHeight());
         } else {
             d.add(node.getHeight());
         }
@@ -234,7 +234,7 @@ public class VerticalListNode extends GenericNodeList implements NodeList {
             get(i).spreadHeight(w, s);
         }
 
-        getHeight().add(w);
+        advanceHeight(w);
     }
 
     /**

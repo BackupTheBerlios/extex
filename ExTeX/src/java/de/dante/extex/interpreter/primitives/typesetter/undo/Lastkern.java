@@ -27,11 +27,13 @@ import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.DimenConvertible;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.CatcodeException;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.node.KernNode;
+import de.dante.util.exception.GeneralException;
 
 /**
  * This class provides an implementation for the primitive
@@ -51,7 +53,7 @@ import de.dante.extex.typesetter.type.node.KernNode;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Lastkern extends AbstractCode
         implements
@@ -110,12 +112,13 @@ public class Lastkern extends AbstractCode
             final Typesetter typesetter) throws InterpreterException {
 
         Node node = typesetter.getLastNode();
-        Dimen pen = (node instanceof KernNode
-                ? ((KernNode) node).getWidth()
-                : Dimen.ZERO_PT);
+        FixedDimen pen = (node instanceof KernNode ? ((KernNode) node)
+                .getWidth() : Dimen.ZERO_PT);
         try {
             return pen.toToks(context.getTokenFactory());
-        } catch (CatcodeException e) {
+        } catch (InterpreterException e) {
+            throw e;
+        } catch (GeneralException e) {
             throw new InterpreterException(e);
         }
     }

@@ -20,7 +20,6 @@
 package de.dante.extex.typesetter.type.node;
 
 import de.dante.extex.interpreter.context.TypesettingContext;
-import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeVisitor;
@@ -33,7 +32,7 @@ import de.dante.util.exception.GeneralException;
  * @see "<logo>TeX</logo> &ndash; The Program [138]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class RuleNode extends AbstractNode implements Node {
 
@@ -114,7 +113,7 @@ public class RuleNode extends AbstractNode implements Node {
     public void toString(final StringBuffer sb, final String prefix,
             final int breadth, final int depth) {
 
-        Dimen x = getHeight();
+        FixedDimen x = getHeight();
         String h = (x == null ? "*" : x.toString());
         x = getDepth();
         String d = (x == null ? "*" : x.toString());
@@ -130,7 +129,7 @@ public class RuleNode extends AbstractNode implements Node {
      */
     public void toText(final StringBuffer sb, final String prefix) {
 
-        Dimen x = getHeight();
+        FixedDimen x = getHeight();
         String h = (x == null ? "*" : x.toString());
         x = getDepth();
         String d = (x == null ? "*" : x.toString());

@@ -58,7 +58,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public abstract class AbstractNoad implements Noad {
 
@@ -232,7 +232,7 @@ public abstract class AbstractNoad implements Noad {
             sub = new HorizontalListNode();
             mc.setStyle(style.sub());
             subscript.typeset(null, null, 0, sub, mc, logger);
-            sub.getWidth().add(options.getDimenOption("scriptspace"));
+            sub.advanceWidth(options.getDimenOption("scriptspace"));
             mc.setStyle(style);
         }
 
@@ -255,7 +255,7 @@ public abstract class AbstractNoad implements Noad {
         mc.setStyle(style.sup());
         superscript.typeset(null, null, 0, sup, mc, logger);
         mc.setStyle(style);
-        sup.getWidth().add(options.getDimenOption("scriptspace"));
+        sup.advanceWidth(options.getDimenOption("scriptspace"));
 
         if (style.isCramped()) {
             clr.set(mc.mathParameter(MathFontParameter.SUP3));

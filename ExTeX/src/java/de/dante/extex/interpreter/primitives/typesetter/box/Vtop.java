@@ -25,6 +25,7 @@ import de.dante.extex.interpreter.context.group.GroupType;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.Node;
@@ -65,7 +66,7 @@ import de.dante.extex.typesetter.type.NodeList;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Vtop extends Vbox {
 
@@ -102,7 +103,7 @@ public class Vtop extends Vbox {
         depth.add(box.getHeight());
         if (nodes.size() > 0) {
             Node top = nodes.get(0);
-            Dimen height = top.getHeight();
+            FixedDimen height = top.getHeight();
             box.setHeight(height);
             depth.subtract(height);
             box.setDepth(depth);

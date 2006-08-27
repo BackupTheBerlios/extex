@@ -141,7 +141,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.47 $
+ * @version $Revision: 1.48 $
  */
 public class MathListMaker extends HorizontalListMaker
         implements
@@ -153,7 +153,7 @@ public class MathListMaker extends HorizontalListMaker
      * It is used to store to the stack and restore the state from the stack.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.47 $
+     * @version $Revision: 1.48 $
      */
     private class MathMemento {
 
@@ -344,7 +344,7 @@ public class MathListMaker extends HorizontalListMaker
      * @see de.dante.extex.typesetter.ListMaker#add(
      *      de.dante.extex.interpreter.type.glue.FixedGlue)
      */
-    public void add(final FixedGlue g) throws TypesetterException {
+    public void add(final FixedDimen g) throws TypesetterException {
 
         insertionPoint.add(new NodeNoad(new GlueNode(g, true)));
     }

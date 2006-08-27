@@ -57,7 +57,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
 
@@ -187,8 +187,8 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
      */
     private int breakLine(final int start, final int len,
             final HorizontalListNode nodes, final HorizontalListNode hlist,
-            final Dimen width, final WideGlue accumulator, final Dimen height,
-            final Dimen depth) {
+            final Dimen width, final WideGlue accumulator, final FixedDimen height,
+            final FixedDimen depth) {
 
         Node node = nodes.get(start);
         hlist.add(node);
@@ -421,7 +421,7 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
      */
     private int saveNodes(final HorizontalListNode nodes, final int start,
             final int end, final HorizontalListNode hlist,
-            final WideGlue accumulator, final Dimen height, final Dimen depth) {
+            final WideGlue accumulator, final FixedDimen height, final FixedDimen depth) {
 
         Node node;
         for (int i = start; i < end; i++) {
@@ -431,10 +431,10 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
                 node.addWidthTo(accumulator);
             }
             if (height.lt(node.getHeight())) {
-                height.set(node.getHeight());
+                hlist.setHeight(node.getHeight());
             }
             if (depth.lt(node.getDepth())) {
-                depth.set(node.getDepth());
+                hlist.setDepth(node.getDepth());
             }
         }
         return end;

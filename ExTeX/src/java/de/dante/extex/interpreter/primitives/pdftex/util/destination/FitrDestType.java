@@ -19,14 +19,14 @@
 
 package de.dante.extex.interpreter.primitives.pdftex.util.destination;
 
-import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.typesetter.type.node.RuleNode;
 
 /**
  * This is the fitr destination type for PDF.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class FitrDestType extends DestType {
 
@@ -64,7 +64,7 @@ public class FitrDestType extends DestType {
     public String toString() {
 
         StringBuffer sb = new StringBuffer("fitr ");
-        Dimen x = rule.getWidth();
+        FixedDimen x = rule.getWidth();
         if (x != null) {
             sb.append("width ");
             x.toString(sb);

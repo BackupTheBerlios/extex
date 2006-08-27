@@ -39,7 +39,7 @@ import de.dante.extex.interpreter.type.glue.WideGlue;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public abstract class AbstractExpandableNode extends AbstractNode {
 
@@ -165,7 +165,7 @@ public abstract class AbstractExpandableNode extends AbstractNode {
 
         long adjust = computeAdjustment(height.getValue(), this.size, sum);
         if (adjust != 0) {
-            getHeight().add(adjust);
+            advanceHeight(new Dimen(adjust));
         }
     }
 
@@ -187,7 +187,7 @@ public abstract class AbstractExpandableNode extends AbstractNode {
 
         long adjust = computeAdjustment(width.getValue(), this.size, sum);
         if (adjust != 0) {
-            getWidth().add(adjust);
+            advanceWidth(new Dimen(adjust));
         }
     }
 

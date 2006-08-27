@@ -29,8 +29,8 @@ import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.count.FixedCount;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.font.Font;
-import de.dante.extex.interpreter.type.font.FontUtil;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.typesetter.Mode;
@@ -60,7 +60,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.33 $
+ * @version $Revision: 1.34 $
  */
 public class HorizontalListMaker extends AbstractListMaker {
 
@@ -149,7 +149,7 @@ public class HorizontalListMaker extends AbstractListMaker {
                 ConfigurationException {
 
         long sf = (sfCount != null ? sfCount.getValue() : spaceFactor);
-        Glue space = context.getFont().getSpace();
+        Glue space = new Glue(context.getFont().getSpace());
 
         // gene: maybe my interpretation of the TeXbook is slightly wrong
         if (sf != DEFAULT_SPACEFACTOR) { // normal case handled first
@@ -279,12 +279,9 @@ public class HorizontalListMaker extends AbstractListMaker {
                         nodes.remove(size - 1);
                         c = lig;
                     } else {
-                        Glyph glyph = f.getGlyph(c);
-                        if (glyph != null) {
-                            Dimen kerning = glyph.getKerning(symbol);
-                            if (kerning.ne(Dimen.ZERO_PT)) {
-                                nodes.add(new ImplicitKernNode(kerning, true));
-                            }
+                        FixedDimen kerning = f.getKerning(c, symbol);
+                        if (kerning != null && kerning.ne(Dimen.ZERO_PT)) {
+                            nodes.add(new ImplicitKernNode(kerning, true));
                         }
                     }
                 }

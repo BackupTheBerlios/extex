@@ -38,7 +38,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * mathematical appearance.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class MathContext {
 
@@ -106,7 +106,7 @@ public class MathContext {
 
         Font font = options.getFont(NumberedFont.key(options, //
                 actualStyle.getFontName(), p.inSymbol() ? "2" : "3"));
-        Dimen value;
+        FixedDimen value;
         if (font == null || (value = font.getFontDimen(p.getNo())) == null) {
             throw new TypesetterException(
                     //

@@ -36,7 +36,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class BeforeMathNode extends AbstractNode implements Discardable {
 
@@ -75,7 +75,7 @@ public class BeforeMathNode extends AbstractNode implements Discardable {
     public void toString(final StringBuffer sb, final String prefix,
             final int breadth, final int depth) {
 
-        Dimen width = getWidth();
+        FixedDimen width = getWidth();
 
         if (width.eq(Dimen.ZERO_PT)) {
             sb.append(getLocalizer().format("String.Format"));

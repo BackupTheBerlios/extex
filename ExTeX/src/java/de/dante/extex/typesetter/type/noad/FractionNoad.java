@@ -43,7 +43,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [683]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class FractionNoad extends AbstractNoad {
 
@@ -166,8 +166,8 @@ public class FractionNoad extends AbstractNoad {
         denominator.typeset(null, noads, index, den, mathContext, logger);
         mathContext.setStyle(style);
 
-        Dimen wNum = num.getWidth();
-        Dimen wDen = den.getWidth();
+        Dimen wNum = new Dimen(num.getWidth());
+        Dimen wDen = new Dimen(den.getWidth());
         if (wNum.lt(wDen)) {
             num.add(0, new GlueNode(FixedGlue.S_S, true));
             num.add(new GlueNode(FixedGlue.S_S, true));

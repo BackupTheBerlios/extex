@@ -27,8 +27,8 @@ import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.context.TypesettingContextFactory;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.primitives.register.font.NumberedFont;
-import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.font.FontUtil;
 import de.dante.extex.typesetter.TypesetterOptions;
@@ -46,7 +46,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This class provides a container for a mathematical character.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public class CharNoad extends AbstractNoad {
 
@@ -118,7 +118,7 @@ public class CharNoad extends AbstractNoad {
                             .toString(glyph.getFamily()), c.toString()));
         }
 
-        if (font.getGlyph(c) == null) {
+        if (font.getWidth(c) == null) {
             FontUtil.charWarning(logger, context, font, c);
             return;
         }
@@ -129,9 +129,8 @@ public class CharNoad extends AbstractNoad {
             if (n instanceof CharNode) {
                 CharNode cn = ((CharNode) n);
                 if (cn.getTypesettingContext().getFont().equals(font)) {
-                    Dimen kerning = font.getGlyph(cn.getCharacter())
-                            .getKerning(c);
-                    if (!kerning.isZero()) {
+                    FixedDimen kerning = font.getKerning(cn.getCharacter(), c);
+                    if (kerning.ne(Dimen.ZERO_PT)) {
                         nodes.add(new ImplicitKernNode(kerning, true));
                     }
                 }
@@ -140,12 +139,11 @@ public class CharNoad extends AbstractNoad {
 
         TypesettingContextFactory tcFactory = context
                 .getTypesettingContextFactory();
-        TypesettingContext tc = tcFactory.newInstance();
-        tc = tcFactory.newInstance(tc, font);
+        TypesettingContext tc = tcFactory.newInstance(context.getTypesettingContext(), font);
         tc = tcFactory.newInstance(tc, color);
         CharNode charNode = new CharNode(tc, c);
-        font.getGlyph(c).getItalicCorrection();
-        Dimen delta = font.getGlyph(c).getItalicCorrection();
+        //font.getGlyph(c).getItalicCorrection();
+        FixedDimen delta = font.getItalicCorrection(c);
         Node scripts = makeScripts(charNode, mathContext, delta, logger);
 
         if (scripts != null) {

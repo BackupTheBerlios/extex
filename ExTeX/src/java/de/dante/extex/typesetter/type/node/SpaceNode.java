@@ -19,7 +19,7 @@
 
 package de.dante.extex.typesetter.type.node;
 
-import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeVisitor;
 import de.dante.util.exception.GeneralException;
@@ -29,14 +29,14 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class SpaceNode extends GlueNode implements Node {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 2006L;
 
     /**
      * The field <tt>DEVELOP</tt> contains the indicator that part of the code
@@ -47,14 +47,14 @@ public class SpaceNode extends GlueNode implements Node {
     /**
      * The field <tt>size</tt> contains the width of the space to insert.
      */
-    private Glue size;
+    private FixedGlue size;
 
     /**
      * Creates a new object.
      *
      * @param theWidth the size of the space
      */
-    public SpaceNode(final Glue theWidth) {
+    public SpaceNode(final FixedGlue theWidth) {
 
         super(theWidth, true);
         this.size = theWidth;

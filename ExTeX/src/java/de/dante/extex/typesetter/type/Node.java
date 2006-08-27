@@ -22,8 +22,8 @@ package de.dante.extex.typesetter.type;
 import java.io.Serializable;
 
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
+import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.FixedGlueComponent;
 import de.dante.extex.interpreter.type.glue.WideGlue;
 import de.dante.extex.typesetter.Typesetter;
@@ -43,7 +43,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public interface Node extends Serializable {
 
@@ -111,14 +111,14 @@ public interface Node extends Serializable {
      *
      * @return the depth
      */
-    Dimen getDepth();
+    FixedDimen getDepth();
 
     /**
      * Getter for the height of the node.
      *
      * @return the height
      */
-    Dimen getHeight();
+    FixedDimen getHeight();
 
     /**
      * Compute the vertical size of a node.
@@ -154,7 +154,7 @@ public interface Node extends Serializable {
      *
      * @return the width
      */
-    Dimen getWidth();
+    FixedDimen getWidth();
 
     /**
      * Setter for the depth of the node.
@@ -175,7 +175,7 @@ public interface Node extends Serializable {
      *
      * @param width the new width
      */
-    void setWidth(FixedDimen width);
+    void setWidth(FixedDimen glue);
 
     /**
      * Adjust the height of a flexible node. This method is a noop for any but

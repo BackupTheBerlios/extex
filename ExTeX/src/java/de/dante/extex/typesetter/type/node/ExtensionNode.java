@@ -19,8 +19,8 @@
 
 package de.dante.extex.typesetter.type.node;
 
-import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
+import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.typesetter.type.Node;
 
 /**
@@ -28,7 +28,7 @@ import de.dante.extex.typesetter.type.Node;
  * possible to insert arbitrary nodes into the typesetter tree.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class ExtensionNode extends WhatsItNode implements Node {
 
@@ -56,7 +56,7 @@ public class ExtensionNode extends WhatsItNode implements Node {
     /**
      * @see de.dante.extex.typesetter.type.node.AbstractNode#getDepth()
      */
-    public Dimen getDepth() {
+    public FixedDimen getDepth() {
 
         return this.extension.getDepth();
     }
@@ -64,7 +64,7 @@ public class ExtensionNode extends WhatsItNode implements Node {
     /**
      * @see de.dante.extex.typesetter.type.node.AbstractNode#getHeight()
      */
-    public Dimen getHeight() {
+    public FixedDimen getHeight() {
 
         return this.extension.getHeight();
     }
@@ -72,7 +72,7 @@ public class ExtensionNode extends WhatsItNode implements Node {
     /**
      * @see de.dante.extex.typesetter.type.node.AbstractNode#getWidth()
      */
-    public Dimen getWidth() {
+    public FixedDimen getWidth() {
 
         return this.extension.getWidth();
     }

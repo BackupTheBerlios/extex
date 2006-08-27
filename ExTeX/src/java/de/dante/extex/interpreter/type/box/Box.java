@@ -53,7 +53,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.38 $
+ * @version $Revision: 1.39 $
  */
 public class Box implements BoxOrRule, Serializable {
 
@@ -276,7 +276,7 @@ public class Box implements BoxOrRule, Serializable {
      *
      * @param height the new width
      */
-    public void setHeight(final Dimen height) {
+    public void setHeight(final FixedDimen height) {
 
         if (nodes != null) {
             nodes.setHeight(height);
@@ -314,7 +314,7 @@ public class Box implements BoxOrRule, Serializable {
      *
      * @param width the new width
      */
-    public void setWidth(final Dimen width) {
+    public void setWidth(final FixedDimen width) {
 
         if (nodes != null) {
             nodes.setWidth(width);
@@ -329,9 +329,10 @@ public class Box implements BoxOrRule, Serializable {
     public void spreadHeight(final FixedDimen spread) {
 
         if (nodes != null) {
-            nodes.getHeight().add(spread);
+            Dimen x = new Dimen(nodes.getHeight());
+            x.add(spread);
+            setHeight(x);
         }
-
     }
 
     /**
@@ -353,9 +354,10 @@ public class Box implements BoxOrRule, Serializable {
     public void spreadWidth(final FixedDimen spread) {
 
         if (nodes != null) {
-            nodes.getWidth().add(spread);
+            Dimen x = new Dimen(nodes.getWidth());
+            x.add(spread);
+            setWidth(x);
         }
-
     }
 
     /**

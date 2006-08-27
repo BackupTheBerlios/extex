@@ -40,7 +40,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [687]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class OverlinedNoad extends AbstractNucleusNoad {
 
@@ -132,7 +132,7 @@ public class OverlinedNoad extends AbstractNucleusNoad {
 
         Dimen h = new Dimen(vlist.getHeight());
         h.add(vlist.getDepth());
-        Dimen d = hlist.getDepth();
+        Dimen d = new Dimen(hlist.getDepth());
         vlist.setDepth(d);
         h.subtract(d);
         vlist.setHeight(h);
