@@ -26,12 +26,14 @@ import de.dante.extex.font.Glyph;
 import de.dante.extex.font.Kerning;
 import de.dante.extex.font.Ligature;
 import de.dante.extex.font.type.BoundingBox;
+import de.dante.extex.font.type.other.NullFont;
 import de.dante.extex.font.type.tfm.TFMFixWord;
 import de.dante.extex.interpreter.context.MockContext;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.context.TypesettingContextImpl;
 import de.dante.extex.interpreter.type.dimen.Dimen;
-import de.dante.extex.interpreter.type.font.Font;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
+import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.language.Language;
 import de.dante.extex.language.word.impl.TeXWords;
@@ -49,7 +51,7 @@ import de.dante.util.UnicodeCharList;
  * Test suite for the base hyphenation table.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class BaseHyphenationTableTest extends TestCase {
 
@@ -57,9 +59,9 @@ public class BaseHyphenationTableTest extends TestCase {
      * Mock implementation of a font.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.5 $
+     * @version $Revision: 1.6 $
      */
-    private class MockFont implements Font {
+    private class MockFont extends NullFont {
 
         /**
          * The field <tt>hyphen</tt> contains the hyphenation character.
@@ -74,7 +76,7 @@ public class BaseHyphenationTableTest extends TestCase {
         /**
          * @see de.dante.extex.font.type.Fount#getActualSize()
          */
-        public Dimen getActualSize() {
+        public FixedDimen getActualSize() {
 
             return Dimen.ONE_INCH;
         }
@@ -98,7 +100,7 @@ public class BaseHyphenationTableTest extends TestCase {
         /**
          * @see de.dante.extex.font.type.Fount#getDesignSize()
          */
-        public Dimen getDesignSize() {
+        public FixedDimen getDesignSize() {
 
             return Dimen.ONE_INCH;
         }
@@ -106,7 +108,7 @@ public class BaseHyphenationTableTest extends TestCase {
         /**
          * @see de.dante.extex.font.type.Fount#getEm()
          */
-        public Dimen getEm() {
+        public FixedDimen getEm() {
 
             return Dimen.ONE_INCH;
         }
@@ -114,7 +116,7 @@ public class BaseHyphenationTableTest extends TestCase {
         /**
          * @see de.dante.extex.font.type.Fount#getEx()
          */
-        public Dimen getEx() {
+        public FixedDimen getEx() {
 
             return Dimen.ONE_INCH;
         }
@@ -130,7 +132,7 @@ public class BaseHyphenationTableTest extends TestCase {
         /**
          * @see de.dante.extex.font.type.Fount#getFontDimen(java.lang.String)
          */
-        public Dimen getFontDimen(final String key) {
+        public FixedDimen getFontDimen(final String key) {
 
             return Dimen.ONE_INCH;
         }
@@ -173,7 +175,7 @@ public class BaseHyphenationTableTest extends TestCase {
         /**
          * @see de.dante.extex.font.type.Fount#getLetterSpacing()
          */
-        public Glue getLetterSpacing() {
+        public FixedGlue getLetterSpacing() {
 
             return null;
         }
@@ -197,7 +199,7 @@ public class BaseHyphenationTableTest extends TestCase {
         /**
          * @see de.dante.extex.font.type.Fount#getSpace()
          */
-        public Glue getSpace() {
+        public FixedGlue getSpace() {
 
             return new Glue(10 * Dimen.ONE);
         }
@@ -227,13 +229,31 @@ public class BaseHyphenationTableTest extends TestCase {
 
         }
 
+        /**
+         * @see de.dante.extex.interpreter.type.font.Font#setEfcode(de.dante.util.UnicodeChar, long)
+         */
+        public void setEfcode(UnicodeChar uc, long code) {
+
+            // TODO gene: setEfcode unimplemented
+            
+        }
+
+        /**
+         * @see de.dante.extex.interpreter.type.font.Font#getEfcode()
+         */
+        public long getEfcode(UnicodeChar uc) {
+
+            // TODO gene: getEfcode unimplemented
+            return 0;
+        }
+
     }
 
     /**
      * This is a mock implementation of a glyph.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.5 $
+     * @version $Revision: 1.6 $
      */
     private class MockGlyph implements Glyph {
 
@@ -383,7 +403,7 @@ public class BaseHyphenationTableTest extends TestCase {
      * This mock implementation is for test purposes only.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.5 $
+     * @version $Revision: 1.6 $
      */
     private class MyMockContext extends MockContext {
 

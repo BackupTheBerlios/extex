@@ -70,7 +70,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * This is the abstract base class to test a paragraph builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public abstract class AbstractParagraphBuiderTester extends TestCase {
 
@@ -78,7 +78,7 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
      * Inner class for the typesetter options.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.6 $
+     * @version $Revision: 1.7 $
      */
     private class MockOptions implements TypesetterOptions {
 
@@ -142,6 +142,14 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
         }
 
         /**
+         * @see de.dante.extex.typesetter.TypesetterOptions#getMuskip(java.lang.String)
+         */
+        public Muskip getMuskip(final String name) {
+
+            throw new RuntimeException("unimplemented");
+        }
+
+        /**
          * @see de.dante.extex.typesetter.TypesetterOptions#getNamespace()
          */
         public String getNamespace() {
@@ -198,21 +206,33 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
         public void setParshape(final ParagraphShape shape) {
 
         }
-
-        /**
-         * @see de.dante.extex.typesetter.TypesetterOptions#getMuskip(java.lang.String)
-         */
-        public Muskip getMuskip(final String name) {
-
-            // TODO gene: getMuskip unimplemented
-            return null;
-        }
     }
+
+    /**
+     * The field <tt>p1</tt> contains the ...
+     */
+    private static Pattern p1 = null;
+
+    /**
+     * The field <tt>p2</tt> contains the ...
+     */
+    private static Pattern p2 = null;
+
+    /**
+     * The field <tt>p3</tt> contains the ...
+     */
+    private static Pattern p3 = null;
+
+    /**
+     * The field <tt>tracer</tt> contains the logger for the output.
+     */
+    private static Logger tracer = null;;
 
     /**
      * The field <tt>VPT</tt> contains the constant for 5pt.
      */
     protected static final Dimen VPT = new Dimen(Dimen.ONE * 5);
+
 
     /**
      * The field <tt>pb</tt> contains the paragraph builder to test.
@@ -223,6 +243,107 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
      * The field <tt>tc</tt> contains the mock typesetting context.
      */
     private TypesettingContextImpl tc = new TypesettingContextImpl(new Font() {
+
+
+        {
+            tc.setLanguage(new Language() {
+
+                public void addHyphenation(final UnicodeCharList word,
+                        final TypesetterOptions context)
+                        throws HyphenationException {
+
+                    throw new RuntimeException("unimplemented");
+                }
+
+                public void addPattern(final Tokens pattern)
+                        throws HyphenationException {
+
+                    throw new RuntimeException("unimplemented");
+                }
+
+                public int findWord(final NodeList nodes, final int start,
+                        final UnicodeCharList word) throws HyphenationException {
+
+                    throw new RuntimeException("unimplemented");
+                }
+
+                public long getLeftHyphenmin() throws HyphenationException {
+
+                    return 0;
+                }
+
+                public UnicodeChar getLigature(final UnicodeChar c1,
+                        final UnicodeChar c2, Font f) throws HyphenationException {
+
+                    return f.getGlyph(c1).getLigature(c2);
+                }
+
+                public String getName() {
+
+                    throw new RuntimeException("unimplemented");
+                }
+
+                public long getRightHyphenmin() throws HyphenationException {
+
+                    return 0;
+                }
+
+                public boolean hyphenate(NodeList nodelist,
+                        TypesetterOptions context, UnicodeChar hyphen, int start,
+                        boolean forall, NodeFactory nodeFactory)
+                        throws HyphenationException {
+
+                    // TODO gene: hyphenate unimplemented
+                    return false;
+                }
+
+                public int insertLigatures(final NodeList list, final int start)
+                        throws HyphenationException {
+
+                    // TODO gene: insertLigatures unimplemented
+                    return 0;
+                }
+
+                public void insertShy(final NodeList nodes, final int insertionPoint,
+                        final boolean[] spec, final CharNode hyphenNode)
+                        throws HyphenationException {
+
+                    throw new RuntimeException("unimplemented");
+                }
+
+                public boolean isHyphenActive() throws HyphenationException {
+
+                    return false;
+                }
+
+                public UnicodeCharList normalize(final UnicodeCharList word,
+                        final TypesetterOptions options) throws HyphenationException {
+
+                    throw new RuntimeException("unimplemented");
+                }
+
+                public void setHyphenActive(final boolean active)
+                        throws HyphenationException {
+
+                }
+
+                public void setLeftHyphenmin(final long left)
+                        throws HyphenationException {
+
+                }
+
+                public void setName(final String name) {
+
+                    throw new RuntimeException("unimplemented");
+                }
+
+                public void setRightHyphenmin(final long right)
+                        throws HyphenationException {
+
+                }
+
+            });
+        }
 
         /**
          * The field <tt>hyphenChar</tt> contains the ...
@@ -237,7 +358,7 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
         /**
          * @see de.dante.extex.font.type.Fount#getActualSize()
          */
-        public Dimen getActualSize() {
+        public FixedDimen getActualSize() {
 
             return VPT;
         }
@@ -257,19 +378,32 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
 
             return 0;
         }
+        /**
+         * @see de.dante.extex.interpreter.type.font.Font#getDepth(de.dante.util.UnicodeChar)
+         */
+        public FixedGlue getDepth(final UnicodeChar uc) {
+
+            return null;
+        }
 
         /**
          * @see de.dante.extex.font.type.Fount#getDesignSize()
          */
-        public Dimen getDesignSize() {
+        public FixedDimen getDesignSize() {
 
             return VPT;
+        }
+
+        public long getEfcode(UnicodeChar uc) {
+
+            // TODO gene: getEfcode unimplemented
+            return 0;
         }
 
         /**
          * @see de.dante.extex.font.type.Fount#getEm()
          */
-        public Dimen getEm() {
+        public FixedDimen getEm() {
 
             return VPT;
         }
@@ -277,7 +411,7 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
         /**
          * @see de.dante.extex.font.type.Fount#getEx()
          */
-        public Dimen getEx() {
+        public FixedDimen getEx() {
 
             return VPT;
         }
@@ -293,7 +427,7 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
         /**
          * @see de.dante.extex.font.type.Fount#getFontDimen(java.lang.String)
          */
-        public Dimen getFontDimen(final String key) {
+        public FixedDimen getFontDimen(final String key) {
 
             return Dimen.ZERO_PT;
         }
@@ -313,7 +447,6 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
 
             return "fnt";
         }
-
         /**
          * @see de.dante.extex.font.type.Fount#getGlyph(de.dante.util.UnicodeChar)
          */
@@ -489,6 +622,14 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
         }
 
         /**
+         * @see de.dante.extex.interpreter.type.font.Font#getHeight(de.dante.util.UnicodeChar)
+         */
+        public FixedGlue getHeight(final UnicodeChar uc) {
+
+            return null;
+        }
+
+        /**
          * @see de.dante.extex.interpreter.type.font.Font#getHyphenChar()
          */
         public UnicodeChar getHyphenChar() {
@@ -497,9 +638,33 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
         }
 
         /**
+         * @see de.dante.extex.interpreter.type.font.Font#getItalicCorrection(de.dante.util.UnicodeChar)
+         */
+        public FixedDimen getItalicCorrection(final UnicodeChar uc) {
+
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.interpreter.type.font.Font#getKerning(de.dante.util.UnicodeChar, de.dante.util.UnicodeChar)
+         */
+        public FixedDimen getKerning(final UnicodeChar uc1, final UnicodeChar uc2) {
+
+            return null;
+        }
+
+        /**
          * @see de.dante.extex.font.type.Fount#getLetterSpacing()
          */
-        public Glue getLetterSpacing() {
+        public FixedGlue getLetterSpacing() {
+
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.interpreter.type.font.Font#getLigature(de.dante.util.UnicodeChar, de.dante.util.UnicodeChar)
+         */
+        public UnicodeChar getLigature(final UnicodeChar uc1, final UnicodeChar uc2) {
 
             return null;
         }
@@ -523,9 +688,23 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
         /**
          * @see de.dante.extex.font.type.Fount#getSpace()
          */
-        public Glue getSpace() {
+        public FixedGlue getSpace() {
 
             return null;
+        }
+
+        /**
+         * @see de.dante.extex.interpreter.type.font.Font#getWidth(de.dante.util.UnicodeChar)
+         */
+        public FixedGlue getWidth(final UnicodeChar uc) {
+
+            return null;
+        }
+
+        public void setEfcode(UnicodeChar uc, long code) {
+
+            // TODO gene: setEfcode unimplemented
+            
         }
 
         /**
@@ -551,339 +730,6 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
             skewChar = skew;
         }
     });
-
-    {
-        tc.setLanguage(new Language() {
-
-            public void addHyphenation(final UnicodeCharList word,
-                    final TypesetterOptions context)
-                    throws HyphenationException {
-
-                //TODO gene: unimplemented
-                throw new RuntimeException("unimplemented");
-            }
-
-            public void addPattern(final Tokens pattern)
-                    throws HyphenationException {
-
-                //TODO gene: unimplemented
-                throw new RuntimeException("unimplemented");
-            }
-
-            public long getLeftHyphenmin() throws HyphenationException {
-
-                return 0;
-            }
-
-            public long getRightHyphenmin() throws HyphenationException {
-
-                return 0;
-            }
-
-            public boolean hyphenate(NodeList nodelist,
-                    TypesetterOptions context, UnicodeChar hyphen, int start,
-                    boolean forall, NodeFactory nodeFactory)
-                    throws HyphenationException {
-
-                // TODO gene: hyphenate unimplemented
-                return false;
-            }
-
-            public boolean isHyphenActive() throws HyphenationException {
-
-                return false;
-            }
-
-            public void setHyphenActive(final boolean active)
-                    throws HyphenationException {
-
-            }
-
-            public void setLeftHyphenmin(final long left)
-                    throws HyphenationException {
-
-            }
-
-            public void setRightHyphenmin(final long right)
-                    throws HyphenationException {
-
-            }
-
-            public int insertLigatures(final NodeList list, final int start)
-                    throws HyphenationException {
-
-                // TODO gene: insertLigatures unimplemented
-                return 0;
-            }
-
-            public UnicodeChar getLigature(final UnicodeChar c1,
-                    final UnicodeChar c2, Font f) throws HyphenationException {
-
-                return f.getGlyph(c1).getLigature(c2);
-            }
-
-            public int findWord(final NodeList nodes, final int start,
-                    final UnicodeCharList word) throws HyphenationException {
-
-                //TODO gene: unimplemented
-                throw new RuntimeException("unimplemented");
-//                return 0;
-            }
-
-            public void insertShy(final NodeList nodes, final int insertionPoint,
-                    final boolean[] spec, final CharNode hyphenNode)
-                    throws HyphenationException {
-
-                //TODO gene: unimplemented
-                throw new RuntimeException("unimplemented");
-            }
-
-            public UnicodeCharList normalize(final UnicodeCharList word,
-                    final TypesetterOptions options) throws HyphenationException {
-
-                //TODO gene: unimplemented
-                throw new RuntimeException("unimplemented");
-            }
-
-        });
-    };
-
-    /**
-     * The field <tt>p1</tt> contains the ...
-     */
-    private static Pattern p1 = null;
-
-    /**
-     * The field <tt>p2</tt> contains the ...
-     */
-    private static Pattern p2 = null;
-
-    /**
-     * The field <tt>p3</tt> contains the ...
-     */
-    private static Pattern p3 = null;
-
-    /**
-     * The field <tt>tracer</tt> contains the logger for the output.
-     */
-    private static Logger tracer = null;
-
-    /**
-     * This method creates a new paragraph builder to be tested.
-     *
-     * @return the new paragraph builder
-     */
-    protected abstract ParagraphBuilder getParagraphBuilder();
-
-    /**
-     * Build a node list from a string specification.
-     *
-     * @param spec the spec
-     * @return the node list
-     */
-    protected HorizontalListNode makeList(final String spec) {
-
-        String s = spec;
-        if (p1 == null) {
-            p1 = Pattern
-                    .compile("^\\discretionary\\{([^{}]*)\\}\\{([^{}]*)\\}\\{([^{}]*)\\}(.*)");
-            p2 = Pattern.compile("^\\rule\\{([^{}]*)\\}(.*)");
-            p3 = Pattern.compile("^\\glue(.*)");
-        }
-        HorizontalListNode nodes = new HorizontalListNode();
-
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            if (c == ' ') {
-                nodes.add(new SpaceNode(new Glue(Dimen.ONE_PT)));
-            } else if (c == '\\') {
-                Matcher m = p1.matcher(s.substring(i));
-                if (m.matches()) {
-                    nodes.add(new DiscretionaryNode(makeList(m.group(1)),
-                            makeList(m.group(2)), makeList(m.group(3))));
-                    s = m.group(4);
-                    i = -1;
-                    continue;
-                }
-                m = p2.matcher(s.substring(i));
-                if (m.matches()) {
-                    nodes.add(new RuleNode(VPT, Dimen.ONE_PT, Dimen.ONE_PT, tc,
-                            true));
-                    s = m.group(2);
-                    i = -1;
-                    continue;
-                }
-                m = p3.matcher(s.substring(i));
-                if (m.matches()) {
-                    nodes.add(new GlueNode(Dimen.ONE_PT, true));
-                    s = m.group(1);
-                    i = -1;
-                    continue;
-                }
-            } else {
-                nodes.add(new CharNode(tc, UnicodeChar.get('a')));
-            }
-        }
-        return nodes;
-    }
-
-    /**
-     * This method provides an indicator whether or not the tracing should be
-     * written to the console.
-     * This method is meant to be overwritten by derived classes to change the
-     * default behavior.
-     *
-     * @return <code>true</code> iff the tracing is requested
-     */
-    protected boolean traceonline() {
-
-        return false;
-    }
-
-    /**
-     * @see junit.framework.TestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-
-        super.setUp();
-
-        if (tracer == null) {
-            tracer = Logger.getLogger(AbstractParagraphBuiderTester.class
-                    .getName());
-            tracer.setUseParentHandlers(false);
-            if (traceonline()) {
-                Handler handler = new ConsoleHandler();
-                handler.setLevel(Level.ALL);
-                handler.setFormatter(new LogFormatter());
-                tracer.addHandler(handler);
-                tracer.setLevel(Level.ALL);
-            }
-        }
-
-        pb = getParagraphBuilder();
-        if (pb instanceof LogEnabled) {
-            ((LogEnabled) pb).enableLogging(tracer);
-        }
-        pb.setOptions(new MockOptions());
-    }
-
-    /**
-     * <testcase>
-     *  Test case checking that the empty list is treated correctly.
-     * </testcase>
-     *
-     * @throws Exception in case of an error
-     */
-    public void _testEmpty1() throws Exception {
-
-        NodeList list = pb.build(makeList(""));
-
-        assertTrue(list instanceof VerticalListNode);
-        assertEquals(0, list.size());
-    }
-
-    /**
-     * <testcase>
-     *  Test case checking that ...
-     * </testcase>
-     *
-     * @throws Exception in case of an error
-     */
-    public void _testBreak1() throws Exception {
-
-        NodeList list = pb.build(makeList("a"));
-
-        assertTrue(list instanceof VerticalListNode);
-        assertEquals(1, list.size());
-
-        Node node = list.get(0);
-        assertTrue(node instanceof HorizontalListNode);
-        list = (NodeList) node;
-        assertTrue(list.get(0) instanceof CharNode);
-        assertTrue(list.get(1) instanceof PenaltyNode);
-        assertTrue(list.get(2) instanceof GlueNode);
-        assertEquals(3, list.size());
-    }
-
-    /**
-     * <testcase>
-     *  Test case checking that ...
-     * </testcase>
-     *
-     * @throws Exception in case of an error
-     */
-    public void _testBreak2() throws Exception {
-
-        HorizontalListNode nodes = new HorizontalListNode();
-        nodes.add(new GlueNode(VPT, true));
-        nodes.add(new CharNode(tc, UnicodeChar.get('a')));
-        nodes.add(new CharNode(tc, UnicodeChar.get('b')));
-        nodes.add(new SpaceNode(new Glue(Dimen.ONE_PT)));
-        nodes.add(new CharNode(tc, UnicodeChar.get('c')));
-        nodes.add(new CharNode(tc, UnicodeChar.get('d')));
-        nodes.add(new SpaceNode(new Glue(Dimen.ONE_PT)));
-        nodes.add(new CharNode(tc, UnicodeChar.get('e')));
-
-        NodeList list = pb.build(nodes);
-
-        assertTrue(list instanceof VerticalListNode);
-        assertEquals(2, list.size());
-    }
-
-    /**
-     * <testcase>
-     *  Test case checking that discretionary without content may be contained
-     *  in the non-broken text.
-     * </testcase>
-     *
-     * @throws Exception in case of an error
-     */
-    public void testDisc1() throws Exception {
-
-        HorizontalListNode nodes = new HorizontalListNode();
-        nodes.add(new GlueNode(VPT, true));
-        nodes.add(new CharNode(tc, UnicodeChar.get('a')));
-        nodes.add(new CharNode(tc, UnicodeChar.get('b')));
-        nodes.add(new SpaceNode(new Glue(Dimen.ONE_PT)));
-        nodes.add(new CharNode(tc, UnicodeChar.get('c')));
-        nodes.add(new DiscretionaryNode(null, null, null));
-        nodes.add(new CharNode(tc, UnicodeChar.get('d')));
-        nodes.add(new SpaceNode(new Glue(Dimen.ONE_PT)));
-        nodes.add(new CharNode(tc, UnicodeChar.get('e')));
-
-        NodeList list = pb.build(nodes);
-
-        assertTrue(list instanceof VerticalListNode);
-        assertEquals(2, list.size());
-    }
-
-    /**
-     * <testcase>
-     *  Test case checking that discretionary without content may be contained
-     *  in the non-broken text.
-     * </testcase>
-     *
-     * @throws Exception in case of an error
-     */
-    public void _testDisc2() throws Exception {
-
-        HorizontalListNode nodes = new HorizontalListNode();
-        nodes.add(new GlueNode(VPT, true));
-        nodes.add(new CharNode(tc, UnicodeChar.get('a')));
-        nodes.add(new CharNode(tc, UnicodeChar.get('b')));
-        nodes.add(new SpaceNode(new Glue(Dimen.ONE_PT)));
-        nodes.add(new CharNode(tc, UnicodeChar.get('c')));
-        nodes.add(new DiscretionaryNode(new HorizontalListNode(),
-                new HorizontalListNode(), new HorizontalListNode()));
-        nodes.add(new CharNode(tc, UnicodeChar.get('d')));
-        nodes.add(new SpaceNode(new Glue(Dimen.ONE_PT)));
-        nodes.add(new CharNode(tc, UnicodeChar.get('e')));
-
-        NodeList list = pb.build(nodes);
-
-        assertTrue(list instanceof VerticalListNode);
-        assertEquals(2, list.size());
-    }
 
     /**
      * <testcase>
@@ -947,6 +793,183 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
      *
      * @throws Exception in case of an error
      */
+    public void _testBreak1() throws Exception {
+
+        NodeList list = pb.build(makeList("a"));
+
+        assertTrue(list instanceof VerticalListNode);
+        assertEquals(1, list.size());
+
+        Node node = list.get(0);
+        assertTrue(node instanceof HorizontalListNode);
+        list = (NodeList) node;
+        assertTrue(list.get(0) instanceof CharNode);
+        assertTrue(list.get(1) instanceof PenaltyNode);
+        assertTrue(list.get(2) instanceof GlueNode);
+        assertEquals(3, list.size());
+    }
+
+    /**
+     * <testcase>
+     *  Test case checking that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void _testBreak2() throws Exception {
+
+        HorizontalListNode nodes = new HorizontalListNode();
+        nodes.add(new GlueNode(VPT, true));
+        nodes.add(new CharNode(tc, UnicodeChar.get('a')));
+        nodes.add(new CharNode(tc, UnicodeChar.get('b')));
+        nodes.add(new SpaceNode(new Glue(Dimen.ONE_PT)));
+        nodes.add(new CharNode(tc, UnicodeChar.get('c')));
+        nodes.add(new CharNode(tc, UnicodeChar.get('d')));
+        nodes.add(new SpaceNode(new Glue(Dimen.ONE_PT)));
+        nodes.add(new CharNode(tc, UnicodeChar.get('e')));
+
+        NodeList list = pb.build(nodes);
+
+        assertTrue(list instanceof VerticalListNode);
+        assertEquals(2, list.size());
+    }
+
+    /**
+     * <testcase>
+     *  Test case checking that discretionary without content may be contained
+     *  in the non-broken text.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void _testDisc2() throws Exception {
+
+        HorizontalListNode nodes = new HorizontalListNode();
+        nodes.add(new GlueNode(VPT, true));
+        nodes.add(new CharNode(tc, UnicodeChar.get('a')));
+        nodes.add(new CharNode(tc, UnicodeChar.get('b')));
+        nodes.add(new SpaceNode(new Glue(Dimen.ONE_PT)));
+        nodes.add(new CharNode(tc, UnicodeChar.get('c')));
+        nodes.add(new DiscretionaryNode(new HorizontalListNode(),
+                new HorizontalListNode(), new HorizontalListNode()));
+        nodes.add(new CharNode(tc, UnicodeChar.get('d')));
+        nodes.add(new SpaceNode(new Glue(Dimen.ONE_PT)));
+        nodes.add(new CharNode(tc, UnicodeChar.get('e')));
+
+        NodeList list = pb.build(nodes);
+
+        assertTrue(list instanceof VerticalListNode);
+        assertEquals(2, list.size());
+    }
+
+    /**
+     * <testcase>
+     *  Test case checking that the empty list is treated correctly.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void _testEmpty1() throws Exception {
+
+        NodeList list = pb.build(makeList(""));
+
+        assertTrue(list instanceof VerticalListNode);
+        assertEquals(0, list.size());
+    }
+
+    /**
+     * This method creates a new paragraph builder to be tested.
+     *
+     * @return the new paragraph builder
+     */
+    protected abstract ParagraphBuilder getParagraphBuilder();
+
+    /**
+     * Build a node list from a string specification.
+     *
+     * @param spec the spec
+     * @return the node list
+     */
+    protected HorizontalListNode makeList(final String spec) {
+
+        String s = spec;
+        if (p1 == null) {
+            p1 = Pattern
+                    .compile("^\\discretionary\\{([^{}]*)\\}\\{([^{}]*)\\}\\{([^{}]*)\\}(.*)");
+            p2 = Pattern.compile("^\\rule\\{([^{}]*)\\}(.*)");
+            p3 = Pattern.compile("^\\glue(.*)");
+        }
+        HorizontalListNode nodes = new HorizontalListNode();
+
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c == ' ') {
+                nodes.add(new SpaceNode(new Glue(Dimen.ONE_PT)));
+            } else if (c == '\\') {
+                Matcher m = p1.matcher(s.substring(i));
+                if (m.matches()) {
+                    nodes.add(new DiscretionaryNode(makeList(m.group(1)),
+                            makeList(m.group(2)), makeList(m.group(3))));
+                    s = m.group(4);
+                    i = -1;
+                    continue;
+                }
+                m = p2.matcher(s.substring(i));
+                if (m.matches()) {
+                    nodes.add(new RuleNode(VPT, Dimen.ONE_PT, Dimen.ONE_PT, tc,
+                            true));
+                    s = m.group(2);
+                    i = -1;
+                    continue;
+                }
+                m = p3.matcher(s.substring(i));
+                if (m.matches()) {
+                    nodes.add(new GlueNode(Dimen.ONE_PT, true));
+                    s = m.group(1);
+                    i = -1;
+                    continue;
+                }
+            } else {
+                nodes.add(new CharNode(tc, UnicodeChar.get('a')));
+            }
+        }
+        return nodes;
+    }
+
+    /**
+     * @see junit.framework.TestCase#setUp()
+     */
+    protected void setUp() throws Exception {
+
+        super.setUp();
+
+        if (tracer == null) {
+            tracer = Logger.getLogger(AbstractParagraphBuiderTester.class
+                    .getName());
+            tracer.setUseParentHandlers(false);
+            if (traceonline()) {
+                Handler handler = new ConsoleHandler();
+                handler.setLevel(Level.ALL);
+                handler.setFormatter(new LogFormatter());
+                tracer.addHandler(handler);
+                tracer.setLevel(Level.ALL);
+            }
+        }
+
+        pb = getParagraphBuilder();
+        if (pb instanceof LogEnabled) {
+            ((LogEnabled) pb).enableLogging(tracer);
+        }
+        pb.setOptions(new MockOptions());
+    }
+
+    /**
+     * <testcase>
+     *  Test case checking that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
     public void test6() throws Exception {
 
         HorizontalListNode nodes = new HorizontalListNode();
@@ -984,6 +1007,46 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
         StringBuffer sb = new StringBuffer();
         list.toString(sb, "\n", Integer.MAX_VALUE, Integer.MAX_VALUE);
         tracer.info(sb.toString());
+    }
+
+    /**
+     * <testcase>
+     *  Test case checking that discretionary without content may be contained
+     *  in the non-broken text.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testDisc1() throws Exception {
+
+        HorizontalListNode nodes = new HorizontalListNode();
+        nodes.add(new GlueNode(VPT, true));
+        nodes.add(new CharNode(tc, UnicodeChar.get('a')));
+        nodes.add(new CharNode(tc, UnicodeChar.get('b')));
+        nodes.add(new SpaceNode(new Glue(Dimen.ONE_PT)));
+        nodes.add(new CharNode(tc, UnicodeChar.get('c')));
+        nodes.add(new DiscretionaryNode(null, null, null));
+        nodes.add(new CharNode(tc, UnicodeChar.get('d')));
+        nodes.add(new SpaceNode(new Glue(Dimen.ONE_PT)));
+        nodes.add(new CharNode(tc, UnicodeChar.get('e')));
+
+        NodeList list = pb.build(nodes);
+
+        assertTrue(list instanceof VerticalListNode);
+        assertEquals(2, list.size());
+    }
+
+    /**
+     * This method provides an indicator whether or not the tracing should be
+     * written to the console.
+     * This method is meant to be overwritten by derived classes to change the
+     * default behavior.
+     *
+     * @return <code>true</code> iff the tracing is requested
+     */
+    protected boolean traceonline() {
+
+        return false;
     }
 
 }

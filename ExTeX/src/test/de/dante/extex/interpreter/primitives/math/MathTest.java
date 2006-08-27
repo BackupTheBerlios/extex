@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for math.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class MathTest extends ExTeXLauncher {
 
@@ -40,31 +40,53 @@ public class MathTest extends ExTeXLauncher {
     }
 
     /**
-     * Test case checking that \mathaccent needs the math mode.
+     * <testcase>
+     *  Test case checking that missing fonts leads to an error.
+     * </testcase>
      * @throws Exception in case of an error
      */
-    public void testMath1() throws Exception {
+    public void _testMathError1() throws Exception {
+
+        assertFailure(//--- input code ---
+                DEFINE_MATH + "$a$ \\end",
+                //--- output channel ---
+                "Math formula deleted: Insufficient symbol fonts");
+    }
+
+    /**
+     * <testcase>
+     *  Test case checking that a simple character can be typeset in math mode.
+     * </testcase>
+     * @throws Exception in case of an error
+     */
+    public void _testMath1() throws Exception {
 
         assertSuccess(//--- input code ---
-                "\\catcode`$=3 "
-                + "$a$ \\end",
+                AbstractMathTester.DEFINE_MATH_FONTS + DEFINE_MATH
+                        + "$a$ \\end",
                 //--- output channel ---
                 "a" + TERM);
     }
 
     /**
-     * Test case checking that \mathaccent needs the math mode.
+     * <testcase>
+     *  Test case checking that a simple character can be typeset in math mode.
+     * </testcase>
      * @throws Exception in case of an error
      */
     public void testMath2() throws Exception {
 
-        assertSuccess(//--- input code ---
-                "\\catcode`\\{=1 "
-                + "\\catcode`\\}=2 "
-                + "\\catcode`$=3 "
-                + "${a \\over b}$ \\end",
+        assertSuccess(showNodesProperties(),
+        //--- input code ---
+                "\\hsize=100pt" +
+                AbstractMathTester.DEFINE_MATH_FONTS + DEFINE_CATCODES
+                        + "$a_b$ \\end",
                 //--- output channel ---
-                "???"); //TODO gene: check
+                "\\vbox(4.8611pt+0.0pt)x8.80255pt\n"
+                        + ".\\hbox(4.8611pt+0.0pt)x8.80255pt\n" //
+                        + "..a\n" //
+                        + "..\\hbox(4.8611pt+0.0pt)x3.51666pt\n" //
+                        + "...b\n");
     }
 
 }

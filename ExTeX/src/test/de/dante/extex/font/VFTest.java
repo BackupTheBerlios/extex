@@ -38,6 +38,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
 import de.dante.util.framework.configuration.exception.ConfigurationInstantiationException;
 import de.dante.util.framework.configuration.exception.ConfigurationMissingAttributeException;
 import de.dante.util.framework.configuration.exception.ConfigurationNoSuchMethodException;
+import de.dante.util.resource.PropertyConfigurable;
 import de.dante.util.resource.ResourceFinder;
 import de.dante.util.resource.ResourceFinderFactory;
 import de.dante.util.xml.XMLStreamWriter;
@@ -49,7 +50,7 @@ import de.dante.util.xml.XMLStreamWriter;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 
 public class VFTest extends TestCase {
@@ -211,7 +212,7 @@ public class VFTest extends TestCase {
             throw new ConfigurationClassNotFoundException(fontClass);
         }
 
-        fontFactory.setProperties(getProps());
+        ((PropertyConfigurable)fontFactory).setProperties(getProps());
         return fontFactory;
     }
 

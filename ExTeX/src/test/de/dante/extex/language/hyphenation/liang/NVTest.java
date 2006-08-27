@@ -29,14 +29,16 @@ import de.dante.extex.font.Glyph;
 import de.dante.extex.font.Kerning;
 import de.dante.extex.font.Ligature;
 import de.dante.extex.font.type.BoundingBox;
+import de.dante.extex.font.type.other.NullFont;
 import de.dante.extex.font.type.tfm.TFMFixWord;
 import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.context.ModifiableTypesettingContext;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.context.TypesettingContextImpl;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.font.Font;
-import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.language.ModifiableLanguage;
 import de.dante.extex.language.hyphenation.base.BaseHyphenationTable;
 import de.dante.extex.language.ligature.impl.LigatureBuilderImpl;
@@ -53,7 +55,7 @@ import de.dante.util.UnicodeChar;
  * This is the test class for NV.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class NVTest extends TestCase {
 
@@ -61,9 +63,9 @@ public class NVTest extends TestCase {
      * This is a mock implementation of a font.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.10 $
+     * @version $Revision: 1.11 $
      */
-    private class MockFont implements Font {
+    private class MockFont extends NullFont {
 
         /**
          * The field <tt>FF</tt> contains the ligature character ff.
@@ -107,7 +109,7 @@ public class NVTest extends TestCase {
         /**
          * @see de.dante.extex.font.type.Fount#getActualSize()
          */
-        public Dimen getActualSize() {
+        public FixedDimen getActualSize() {
 
             return Dimen.ONE_INCH;
         }
@@ -131,7 +133,7 @@ public class NVTest extends TestCase {
         /**
          * @see de.dante.extex.font.type.Fount#getDesignSize()
          */
-        public Dimen getDesignSize() {
+        public FixedDimen getDesignSize() {
 
             return Dimen.ONE_INCH;
         }
@@ -139,7 +141,7 @@ public class NVTest extends TestCase {
         /**
          * @see de.dante.extex.font.type.Fount#getEm()
          */
-        public Dimen getEm() {
+        public FixedDimen getEm() {
 
             return Dimen.ONE_INCH;
         }
@@ -147,7 +149,7 @@ public class NVTest extends TestCase {
         /**
          * @see de.dante.extex.font.type.Fount#getEx()
          */
-        public Dimen getEx() {
+        public FixedDimen getEx() {
 
             return Dimen.ONE_INCH;
         }
@@ -163,7 +165,7 @@ public class NVTest extends TestCase {
         /**
          * @see de.dante.extex.font.type.Fount#getFontDimen(java.lang.String)
          */
-        public Dimen getFontDimen(final String key) {
+        public FixedDimen getFontDimen(final String key) {
 
             return Dimen.ONE_INCH;
         }
@@ -203,7 +205,7 @@ public class NVTest extends TestCase {
         /**
          * @see de.dante.extex.font.type.Fount#getLetterSpacing()
          */
-        public Glue getLetterSpacing() {
+        public FixedGlue getLetterSpacing() {
 
             return null;
         }
@@ -227,7 +229,7 @@ public class NVTest extends TestCase {
         /**
          * @see de.dante.extex.font.type.Fount#getSpace()
          */
-        public Glue getSpace() {
+        public FixedGlue getSpace() {
 
             return null;
         }
@@ -253,13 +255,31 @@ public class NVTest extends TestCase {
         public void setSkewChar(final UnicodeChar skew) {
 
         }
+
+        /**
+         * @see de.dante.extex.interpreter.type.font.Font#setEfcode(de.dante.util.UnicodeChar, long)
+         */
+        public void setEfcode(UnicodeChar uc, long code) {
+
+            // TODO gene: setEfcode unimplemented
+            
+        }
+
+        /**
+         * @see de.dante.extex.interpreter.type.font.Font#getEfcode()
+         */
+        public long getEfcode(UnicodeChar uc) {
+
+            // TODO gene: getEfcode unimplemented
+            return 0;
+        }
     }
 
     /**
      * This is a mock implementation of a glyph.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.10 $
+     * @version $Revision: 1.11 $
      */
     private class MockGlyph implements Glyph {
 

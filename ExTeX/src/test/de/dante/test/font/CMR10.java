@@ -31,7 +31,9 @@ import de.dante.extex.font.Kerning;
 import de.dante.extex.font.Ligature;
 import de.dante.extex.font.type.BoundingBox;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.font.Font;
+import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.util.UnicodeChar;
 
@@ -39,7 +41,7 @@ import de.dante.util.UnicodeChar;
  * This class encapsulates cmr10.tfm for testing purposes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class CMR10 implements Font, Serializable {
 
@@ -52,7 +54,7 @@ public class CMR10 implements Font, Serializable {
      * Private implementation of the glyph interface.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.2 $
+     * @version $Revision: 1.3 $
      */
     public class MyGlyph extends GlyphImpl implements Serializable {
 
@@ -1085,7 +1087,7 @@ public class CMR10 implements Font, Serializable {
     /**
      * @see de.dante.extex.font.type.Fount#getActualSize()
      */
-    public Dimen getActualSize() {
+    public FixedDimen getActualSize() {
 
         return designSize;
     }
@@ -1109,7 +1111,7 @@ public class CMR10 implements Font, Serializable {
     /**
      * @see de.dante.extex.font.type.Fount#getDesignSize()
      */
-    public Dimen getDesignSize() {
+    public FixedDimen getDesignSize() {
 
         return designSize;
     }
@@ -1117,7 +1119,7 @@ public class CMR10 implements Font, Serializable {
     /**
      * @see de.dante.extex.font.type.Fount#getEm()
      */
-    public Dimen getEm() {
+    public FixedDimen getEm() {
 
         // TODO gene: getEm unimplemented
         return null;
@@ -1126,7 +1128,7 @@ public class CMR10 implements Font, Serializable {
     /**
      * @see de.dante.extex.font.type.Fount#getEx()
      */
-    public Dimen getEx() {
+    public FixedDimen getEx() {
 
         return fontdimen[XHEIGHT];
     }
@@ -1142,7 +1144,7 @@ public class CMR10 implements Font, Serializable {
     /**
      * @see de.dante.extex.font.type.Fount#getFontDimen(java.lang.String)
      */
-    public Dimen getFontDimen(final String key) {
+    public FixedDimen getFontDimen(final String key) {
 
         return fontdimen[Integer.parseInt(key)];
     }
@@ -1182,7 +1184,7 @@ public class CMR10 implements Font, Serializable {
     /**
      * @see de.dante.extex.font.type.Fount#getLetterSpacing()
      */
-    public Glue getLetterSpacing() {
+    public FixedGlue getLetterSpacing() {
 
         return null;
     }
@@ -1206,7 +1208,7 @@ public class CMR10 implements Font, Serializable {
     /**
      * @see de.dante.extex.font.type.Fount#getSpace()
      */
-    public Glue getSpace() {
+    public FixedGlue getSpace() {
 
         return space;
     }
@@ -1274,6 +1276,78 @@ public class CMR10 implements Font, Serializable {
     public void setSkewChar(final UnicodeChar skew) {
 
         this.skewChar = skew;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.font.Font#setEfcode(de.dante.util.UnicodeChar, long)
+     */
+    public void setEfcode(UnicodeChar uc, long code) {
+
+        // TODO gene: setEfcode unimplemented
+
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.font.Font#getEfcode()
+     */
+    public long getEfcode(UnicodeChar uc) {
+
+        // TODO gene: getEfcode unimplemented
+        return 0;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.font.Font#getDepth(de.dante.util.UnicodeChar)
+     */
+    public FixedGlue getDepth(UnicodeChar uc) {
+
+        // TODO gene: getDepth unimplemented
+        return null;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.font.Font#getHeight(de.dante.util.UnicodeChar)
+     */
+    public FixedGlue getHeight(UnicodeChar uc) {
+
+        // TODO gene: getHeight unimplemented
+        return null;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.font.Font#getItalicCorrection(de.dante.util.UnicodeChar)
+     */
+    public FixedDimen getItalicCorrection(UnicodeChar uc) {
+
+        // TODO gene: getItalicCorrection unimplemented
+        return null;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.font.Font#getKerning(de.dante.util.UnicodeChar, de.dante.util.UnicodeChar)
+     */
+    public FixedDimen getKerning(UnicodeChar uc1, UnicodeChar uc2) {
+
+        // TODO gene: getKerning unimplemented
+        return null;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.font.Font#getLigature(de.dante.util.UnicodeChar, de.dante.util.UnicodeChar)
+     */
+    public UnicodeChar getLigature(UnicodeChar uc1, UnicodeChar uc2) {
+
+        // TODO gene: getLigature unimplemented
+        return null;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.font.Font#getWidth(de.dante.util.UnicodeChar)
+     */
+    public FixedGlue getWidth(UnicodeChar uc) {
+
+        // TODO gene: getWidth unimplemented
+        return null;
     }
 
 }
