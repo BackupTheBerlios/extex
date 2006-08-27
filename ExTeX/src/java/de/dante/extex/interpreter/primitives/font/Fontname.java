@@ -26,12 +26,12 @@ import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.ExpandableCode;
-import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.tokens.Tokens;
-import de.dante.extex.scanner.type.CatcodeException;
 import de.dante.extex.scanner.type.token.TokenFactory;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.util.exception.GeneralException;
 
 /**
  * This class provides an implementation for the primitive
@@ -72,7 +72,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class Fontname extends AbstractCode implements ExpandableCode {
 
@@ -114,13 +114,15 @@ public class Fontname extends AbstractCode implements ExpandableCode {
             throw new EofException(printableControlSequence(context));
         }
         Tokens fontname = new Tokens(context, font.getFontName());
-        Dimen size = font.getActualSize();
+        FixedDimen size = font.getActualSize();
         if (font.getDesignSize().ne(size)) {
             TokenFactory tokenFactory = context.getTokenFactory();
             try {
                 fontname.add(tokenFactory, " at ");
                 fontname.add(size.toToks(tokenFactory));
-            } catch (CatcodeException e) {
+            } catch (InterpreterException e) {
+                throw e;
+            } catch (GeneralException e) {
                 throw new InterpreterException(e);
             }
         }

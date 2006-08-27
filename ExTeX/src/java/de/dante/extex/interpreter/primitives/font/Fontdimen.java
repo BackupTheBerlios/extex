@@ -29,12 +29,14 @@ import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.CatcodeException;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.util.exception.GeneralException;
 
 /**
  * This class provides an implementation for the primitive
@@ -81,7 +83,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.38 $
+ * @version $Revision: 1.39 $
  */
 public class Fontdimen extends AbstractAssignment
         implements
@@ -179,12 +181,14 @@ public class Fontdimen extends AbstractAssignment
             String key = getKey(context, source, typesetter);
             source.skipSpace();
             Font font = source.getFont(context, getName());
-            Dimen size = font.getFontDimen(key);
+            FixedDimen size = font.getFontDimen(key);
             if (null == size) {
                 size = Dimen.ZERO_PT;
             }
             return size.toToks(context.getTokenFactory());
-        } catch (CatcodeException e) {
+        } catch (InterpreterException e) {
+            throw e;
+        } catch (GeneralException e) {
             throw new InterpreterException(e);
         }
     }
