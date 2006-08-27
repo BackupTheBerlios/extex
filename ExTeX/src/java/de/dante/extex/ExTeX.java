@@ -48,6 +48,7 @@ import de.dante.extex.color.ColorAware;
 import de.dante.extex.color.ColorConverter;
 import de.dante.extex.color.ColorConverterFacory;
 import de.dante.extex.font.FontFactory;
+import de.dante.extex.font.FountKey;
 import de.dante.extex.font.exception.FontException;
 import de.dante.extex.interpreter.ErrorHandler;
 import de.dante.extex.interpreter.ErrorHandlerFactory;
@@ -65,6 +66,7 @@ import de.dante.extex.interpreter.max.StringSource;
 import de.dante.extex.interpreter.output.TeXOutputRoutine;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
+import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.main.logging.LogFormatter;
 import de.dante.extex.main.observer.InteractionModeObserver;
 import de.dante.extex.scanner.stream.TokenStream;
@@ -329,7 +331,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.134 $
+ * @version $Revision: 1.135 $
  */
 public class ExTeX {
 
@@ -1085,26 +1087,29 @@ public class ExTeX {
                 FontException {
 
         if (config == null) {
-            return fontFactory.getInstance();
+            return fontFactory.getInstance(null);
         }
         final String attributeName = "name";
         final String attributeSize = "size";
         String defaultFont = config.getAttribute(attributeName);
 
         if (defaultFont == null || defaultFont.equals("")) {
-            return fontFactory.getInstance();
+            return fontFactory.getInstance(null);
         }
 
         String size = config.getAttribute(attributeSize);
         if (size == null) {
-            return fontFactory.getInstance(defaultFont);
+            return fontFactory.getInstance(new FountKey(defaultFont, null,
+                    null, new Glue(0), false, false));
         }
 
         Font font = null;
         try {
             float f = Float.parseFloat(size);
-            font = fontFactory.getInstance(defaultFont, new Dimen(
-                    ((long) (Dimen.ONE * f))));
+            font = fontFactory
+                    .getInstance(new FountKey(defaultFont, new Dimen(
+                            ((long) (Dimen.ONE * f))), null, new Glue(0),
+                            false, false));
         } catch (NumberFormatException e) {
             throw new ConfigurationSyntaxException(attributeSize, config
                     .toString());
