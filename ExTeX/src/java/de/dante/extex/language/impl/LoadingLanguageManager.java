@@ -23,13 +23,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 import de.dante.extex.language.Language;
 import de.dante.extex.language.hyphenation.exception.HyphenationException;
+import de.dante.util.framework.Registrar;
+import de.dante.util.framework.RegistrarException;
+import de.dante.util.framework.RegistrarObserver;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
@@ -46,6 +48,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * the resulting language is put into the map overwriting the future object.
  * </p>
  * <p>
+ *  ...
  * </p>
  *
  * <h2>Configuration</h2>
@@ -57,23 +60,47 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class LoadingLanguageManager extends BaseLanguageManager
         implements
-            LanguageCreator,
-            Serializable {
+            LanguageCreator {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 2006L;
 
     /**
      * The field <tt>TABLE_EXTENSION</tt> contains the extension for language
      * files.
      */
     private static final String TABLE_EXTENSION = ".lfm";
+
+    /**
+     * The field <tt>creator</tt> contains the reference to the instance for
+     * communication to the registrar.
+     */
+    private transient LanguageCreator creator;
+
+    /**
+     * Creates a new object.
+     */
+    public LoadingLanguageManager() {
+
+        super();
+        creator = this;
+        Registrar.register(new RegistrarObserver() {
+
+            public Object reconnect(final Object object)
+                    throws RegistrarException {
+
+                ManagedLanguage lang = (ManagedLanguage) object;
+                lang.setCreator(creator);
+                return object;
+            }
+        }, ManagedLanguage.class);
+    }
 
     /**
      * @see de.dante.extex.language.impl.BaseLanguageManager#createLanguage(
@@ -98,6 +125,7 @@ public class LoadingLanguageManager extends BaseLanguageManager
         } catch (ConfigurationException e) {
             throw new HyphenationException(e);
         }
+        language.setName(name);
         getTables().put(name, language);
         return language;
     }

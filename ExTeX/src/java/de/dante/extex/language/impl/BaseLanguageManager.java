@@ -29,6 +29,9 @@ import de.dante.extex.language.ModifiableLanguage;
 import de.dante.extex.language.ligature.LigatureBuilder;
 import de.dante.extex.language.word.WordTokenizer;
 import de.dante.util.framework.AbstractFactory;
+import de.dante.util.framework.Registrar;
+import de.dante.util.framework.RegistrarException;
+import de.dante.util.framework.RegistrarObserver;
 import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
@@ -48,7 +51,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class BaseLanguageManager extends AbstractFactory
         implements
@@ -58,13 +61,33 @@ public class BaseLanguageManager extends AbstractFactory
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 20060827L;
 
     /**
      * The field <tt>tables</tt> contains the mapping from index to
      * hyphenation table.
      */
     private Map tables = new HashMap();
+
+    /**
+     * Creates a new object.
+     *
+     */
+    public BaseLanguageManager() {
+
+        super();
+        Registrar.register(new RegistrarObserver() {
+
+            public Object reconnect(final Object object)
+                    throws RegistrarException {
+
+                Language lang = (Language) object;
+                tables.put(lang.getName(), lang);
+
+                return object;
+            }
+        }, Language.class);
+    }
 
     /**
      * Create a new language and put it into the table.
@@ -78,23 +101,24 @@ public class BaseLanguageManager extends AbstractFactory
     protected Language createLanguage(final String name)
             throws ConfigurationException {
 
-        ModifiableLanguage table;
+        ModifiableLanguage lang;
         Configuration cfg = selectConfiguration(name);
-        table = (ModifiableLanguage) createInstanceForConfiguration(cfg,
+        lang = (ModifiableLanguage) createInstanceForConfiguration(cfg,
                 ModifiableLanguage.class);
 
         Configuration config = cfg.findConfiguration("LigatureBuilder");
-        table.setLigatureBuilder(//
+        lang.setLigatureBuilder(//
                 (LigatureBuilder) createInstanceForConfiguration(config,
                         LigatureBuilder.class));
 
         config = cfg.findConfiguration("WordTokenizer");
-        table.setWordTokenizer(//
+        lang.setWordTokenizer(//
                 (WordTokenizer) createInstanceForConfiguration(config,
                         WordTokenizer.class));
 
-        tables.put(name, table);
-        return table;
+        lang.setName(name);
+        tables.put(name, lang);
+        return lang;
     }
 
     /**
