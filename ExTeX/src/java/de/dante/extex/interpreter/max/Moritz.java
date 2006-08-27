@@ -145,7 +145,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.102 $
+ * @version $Revision: 1.103 $
  */
 public class Moritz extends Max
         implements
@@ -1052,7 +1052,7 @@ public class Moritz extends Max
         } else {
 
             push(t);
-            cc = scanInteger(context, typesetter);
+            cc = Count.scanInteger(context, this, typesetter);
 
             if (cc < 0 || cc > MAX_CHAR_CODE) {
                 throw new InvalidCharacterException(Long.toString(cc));
@@ -1060,67 +1060,6 @@ public class Moritz extends Max
         }
 
         return UnicodeChar.get((int) cc);
-    }
-
-    /**
-     * Scan the input stream for tokens making up an integer, this is a number
-     * optionally preceded by a sign (+ or -). The number can be preceded by
-     * optional white space. White space is also ignored between the sign and
-     * the number. All non-whitespace characters must have the category code
-     * OTHER.
-     *
-     * @param context the interpreter context
-     * @param typesetter the typesetter
-     *
-     * @return the value of the integer scanned
-     *
-     * @throws InterpreterException in case that the end of file has been
-     *  reached before an integer could be acquired
-     * @throws MissingNumberException in case of a missing number
-     *
-     * @see de.dante.extex.interpreter.TokenSource#scanInteger(
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.typesetter.Typesetter)
-     */
-    public long scanInteger(final Context context, final Typesetter typesetter)
-            throws InterpreterException,
-                MissingNumberException {
-
-        boolean neg = false;
-        Token t;
-
-        for (t = getNonSpace(context); t != null; t = getNonSpace(context)) {
-
-            if (t.equals(Catcode.OTHER, '-')) {
-                neg = !neg;
-
-            } else if (t.equals(Catcode.OTHER, '+')) {
-                // + is absorbed
-
-            } else if (t instanceof CodeToken) {
-                Code code = context.getCode((CodeToken) t);
-
-                if (code instanceof CountConvertible) {
-
-                    return ((CountConvertible) code).convertCount(context,
-                            this, typesetter);
-
-                } else if (code instanceof ExpandableCode) {
-
-                    ((ExpandableCode) code).expand(Flags.NONE, context, this,
-                            typesetter);
-
-                } else {
-                    break;
-                }
-            } else {
-                return (neg
-                        ? -Count.scanNumber(context, this, typesetter, t)
-                        : Count.scanNumber(context, this, typesetter, t));
-            }
-        }
-
-        throw new MissingNumberException();
     }
 
     /**
@@ -1132,6 +1071,9 @@ public class Moritz extends Max
      *
      * @throws InterpreterException
      *  in case of an error in {@link #scanToken(Context) scanToken()}
+     *
+     * @see de.dante.extex.interpreter.TokenSource#scanNonSpace(
+     *      de.dante.extex.interpreter.context.Context)
      */
     public Token scanNonSpace(final Context context)
             throws InterpreterException {

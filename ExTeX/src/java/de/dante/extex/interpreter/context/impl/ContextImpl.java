@@ -142,7 +142,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.113 $
+ * @version $Revision: 1.114 $
  */
 public class ContextImpl
         implements
@@ -397,24 +397,6 @@ public class ContextImpl
     }
 
     /**
-     * Creates a new object.
-     *
-     * @param configuration the configuration to use
-     *
-     * @throws ConfigurationException in case of an configuration error
-     * @throws GeneralException in case of an execution error
-     *
-     * @deprecated Use the interface Configurable instead
-     */
-    protected ContextImpl(final Configuration configuration)
-            throws ConfigurationException,
-                GeneralException {
-
-        this();
-        configure(configuration);
-    }
-
-    /**
      * @see de.dante.extex.interpreter.context.Context#afterGroup(
      *      AfterGroupObserver)
      */
@@ -493,6 +475,9 @@ public class ContextImpl
     public void configure(final Configuration configuration)
             throws ConfigurationException {
 
+        magnificationMax = configuration.getValueAsInteger(
+                "maximalMagnification", (int) MAGNIFICATION_MAX);
+
         groupFactory = new GroupFactory(configuration
                 .getConfiguration(GROUP_TAG));
         if (group == null) {
@@ -523,17 +508,21 @@ public class ContextImpl
             throw new ConfigurationMissingException(TYPESETTING_CONTEXT_TAG,
                     configuration.toString());
         }
-
-        typesettingContextFactory = new TypesettingContextFactory();
+        if (typesettingContextFactory == null) {
+            typesettingContextFactory = new TypesettingContextFactory();
+        }
         typesettingContextFactory.configure(typesettingConfig);
-        typesettingContextFactory.setLanguageManager(languageManager);
-        TypesettingContext typesettingContext = typesettingContextFactory
-                .newInstance();
+        TypesettingContext tc;
 
-        set(typesettingContext, true);
-
-        magnificationMax = configuration.getValueAsInteger(
-                "maximalMagnification", (int) MAGNIFICATION_MAX);
+        if (languageManager != null) {
+            typesettingContextFactory.setLanguageManager(languageManager);
+            tc = typesettingContextFactory.initial();
+            tc = typesettingContextFactory.newInstance(tc, languageManager
+                    .getLanguage("0"));
+        } else {
+            tc = typesettingContextFactory.initial();
+        }
+        set(tc, true);
     }
 
     /**

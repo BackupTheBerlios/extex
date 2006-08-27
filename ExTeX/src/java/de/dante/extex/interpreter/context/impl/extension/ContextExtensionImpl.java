@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -39,13 +39,18 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * ExTeX functions.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class ContextExtensionImpl extends ContextImpl
         implements
             Context,
             ContextExtension,
             Serializable {
+
+    /**
+     * The field <tt>serialVersionUID</tt> contains the ...
+     */
+    private static final long serialVersionUID = 2006L;
 
     /**
      * Creates a new object.
@@ -56,7 +61,8 @@ public class ContextExtensionImpl extends ContextImpl
     public ContextExtensionImpl(final Configuration config)
             throws ConfigurationException, GeneralException {
 
-        super(config);
+        super();
+        configure(config);
         if (!(getGroup() instanceof GroupExtension)) {
             throw new InterpreterExtensionException();
         }
