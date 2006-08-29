@@ -35,7 +35,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * @see <a href="package-summary.html#font-enc">font encoding file</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 
 public class EncReader implements Serializable {
@@ -114,6 +114,23 @@ public class EncReader implements Serializable {
     public String[] getTable() {
 
         return table;
+    }
+
+    /**
+     * Returns the position of the glyph in the table.
+     * @param name  The glyph name.
+     * @return Returns the position of the glyph in the table or -1 if not found.
+     */
+    public int getPosition(final String name) {
+
+        String n = "/" + name.replaceAll("/", "");
+
+        for (int i = 0; i < table.length; i++) {
+            if (table[i].equals(n)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     /**

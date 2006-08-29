@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -27,6 +27,31 @@ import de.dante.util.xml.XMLStreamWriter;
 
 /**
  * The 'cmap' table maps character codes to glyph indices.
+ * The choice of encoding for a particular font is dependent upon the conventions used
+ * by the intended platform. A font intended to run on multiple platforms with different
+ * encoding conventions will require multiple encoding tables. As a result, the 'cmap' table
+ * may contain multiple subtables, one for each supported encoding scheme.
+ *
+ * Character codes that do not correspond to any glyph in the font should be mapped
+ * to glyph index 0.
+ * At this location in the font there must be a special glyph representing a missing character,
+ * typically a box. No character code should be mapped to glyph index -1, which is a special
+ * value reserved in processing to indicate the position of a glyph deleted from the glyph stream.
+ *
+ * The 'cmap' table begins with an index containing the table version number followed by the number
+ * of encoding tables. The encoding subtables follow.
+ *
+ * The original definition of the 'cmap' table only allowed for mappings from traditional character
+ * set standards, which used eight, a mixture of eight and sixteen, or sixteen bits for each
+ * character. With the introduction of ISO/IEC 10646-1 and the use of surrogates in versions
+ * of Unicode from 2.0 onwards, it is possible that fonts may require references to data that
+ * uses a mixture of sixteen and thirty-two or thirty-two bits per character.
+ *
+ * It was originally suggested that a version number of 0 is used to indicate that only encoding
+ * subtables of types 0 through 6 are present in the 'cmap' table. If the 'cmap' table contains
+ * encoding subtables of types 8.0 or higher, the version number would then be set to 1.
+ * These latter encoding subtable types have been introduced to provide better support for
+ * Unicode text encoded using surrogates.
  *
  * <table BORDER="1">
  *   <tbody>
@@ -39,7 +64,7 @@ import de.dante.util.xml.XMLStreamWriter;
  * TODO incompelte
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TtfTableCMAP extends AbstractXtfTable
         implements
@@ -49,22 +74,22 @@ public class TtfTableCMAP extends AbstractXtfTable
     // -------------------------------------------------------
     // -------------------------------------------------------
     /**
-     * Platform ID: PLATFORMAPPLEUNICODE
+     * Platform ID: PLATFORMAPPLEUNICODE.
      */
     public static final short PLATFORM_APPLE_UNICODE = 0;
 
     /**
-     * Platform ID: PLATFORM_MACINTOSH
+     * Platform ID: PLATFORM_MACINTOSH.
      */
     public static final short PLATFORM_MACINTOSH = 1;
 
     /**
-     * Platform ID: PLATFORM_ISO
+     * Platform ID: PLATFORM_ISO.
      */
     public static final short PLATFORM_ISO = 2;
 
     /**
-     * Platform ID: PLATFORM_MICROSOFT
+     * Platform ID: PLATFORM_MICROSOFT.
      */
     public static final short PLATFORM_MICROSOFT = 3;
 
@@ -72,12 +97,12 @@ public class TtfTableCMAP extends AbstractXtfTable
     // -------------------------------------------------------
 
     /**
-     * Microsoft Encoding IDs: ENCODING_UNDEFINED
+     * Microsoft Encoding IDs: ENCODING_UNDEFINED.
      */
     public static final short ENCODING_UNDEFINED = 0;
 
     /**
-     * Microsoft Encoding IDs: ENCODING_UG
+     * Microsoft Encoding IDs: ENCODING_UG.
      */
     public static final short ENCODING_UGL = 1;
 
@@ -85,168 +110,168 @@ public class TtfTableCMAP extends AbstractXtfTable
     // -------------------------------------------------------
 
     /**
-     * Macintosh Encoding IDs: ENCODING_ROMAN
+     * Macintosh Encoding IDs: ENCODING_ROMAN.
 
      */
     public static final short ENCODING_ROMAN = 0;
 
     /**
-     * Macintosh Encoding IDs: ENCODING_JAPENESE
+     * Macintosh Encoding IDs: ENCODING_JAPENESE.
      */
     public static final short ENCODING_JAPENESE = 1;
 
     /**
-     * Macintosh Encoding IDs: ENCODING_CHINESE
+     * Macintosh Encoding IDs: ENCODING_CHINESE.
      */
     public static final short ENCODING_CHINESE = 2;
 
     /**
-     * Macintosh Encoding IDs: ENCODING_KOREAN
+     * Macintosh Encoding IDs: ENCODING_KOREAN.
      */
     public static final short ENCODING_KOREAN = 3;
 
     /**
-     * Macintosh Encoding IDs: ENCODING_ARABI
+     * Macintosh Encoding IDs: ENCODING_ARABI.
      */
     public static final short ENCODING_ARABIC = 4;
 
     /**
-     * Macintosh Encoding IDs: ENCODING_HEBREW
+     * Macintosh Encoding IDs: ENCODING_HEBREW.
      */
     public static final short ENCODING_HEBREW = 5;
 
     /**
-     * Macintosh Encoding IDs: ENCODING_GREE
+     * Macintosh Encoding IDs: ENCODING_GREE.
      */
     public static final short ENCODING_GREEK = 6;
 
     /**
-     * Macintosh Encoding IDs: ENCODING_RUSSIA
+     * Macintosh Encoding IDs: ENCODING_RUSSIA.
      */
     public static final short ENCODING_RUSSIAN = 7;
 
     /**
-     * Macintosh Encoding IDs: ENCODING_R_SYMBOL
+     * Macintosh Encoding IDs: ENCODING_R_SYMBOL.
      */
     public static final short ENCODING_R_SYMBOL = 8;
 
     /**
-     * Macintosh Encoding IDs: ENCODING_DEVANAGARI
+     * Macintosh Encoding IDs: ENCODING_DEVANAGARI.
      */
     public static final short ENCODING_DEVANAGARI = 9;
 
     /**
-     * Macintosh Encoding IDs: ENCODING_GURMUKHI
+     * Macintosh Encoding IDs: ENCODING_GURMUKHI.
      */
     public static final short ENCODING_GURMUKHI = 10;
 
     /**
-     * Macintosh Encoding IDs: ENCODING_GUJARATI
+     * Macintosh Encoding IDs: ENCODING_GUJARATI.
      */
     public static final short ENCODING_GUJARATI = 11;
 
     /**
-     * Macintosh Encoding IDs: ENCODING_ORIYA
+     * Macintosh Encoding IDs: ENCODING_ORIYA.
      */
     public static final short ENCODING_ORIYA = 12;
 
     /**
-     * Macintosh Encoding IDs: ENCODING_BENGALI
+     * Macintosh Encoding IDs: ENCODING_BENGALI.
      */
     public static final short ENCODING_BENGALI = 13;
 
     /**
-     * Macintosh Encoding IDs: ENCODING_TAMIL
+     * Macintosh Encoding IDs: ENCODING_TAMIL.
      */
     public static final short ENCODING_TAMIL = 14;
 
     /**
-     * Macintosh Encoding IDs: ENCODING_TELUGU
+     * Macintosh Encoding IDs: ENCODING_TELUGU.
      */
     public static final short ENCODING_TELUGU = 15;
 
     /**
-     * Macintosh Encoding IDs: ENCODING_KANADA
+     * Macintosh Encoding IDs: ENCODING_KANADA.
      */
     public static final short ENCODING_KANADA = 16;
 
     /**
-     * Macintosh Encoding IDs: ENCODING_MALAYALEM
+     * Macintosh Encoding IDs: ENCODING_MALAYALEM.
      */
     public static final short ENCODING_MALAYALEM = 17;
 
     /**
-     * Macintosh Encoding IDs: ENCODING_SINHALESE
+     * Macintosh Encoding IDs: ENCODING_SINHALESE.
      */
     public static final short ENCODING_SINHALESE = 18;
 
     /**
-     * Macintosh Encoding IDs: ENCODING_BURMES
+     * Macintosh Encoding IDs: ENCODING_BURMES.
      */
     public static final short ENCODING_BURMESE = 19;
 
     /**
-     * Macintosh Encoding IDs: ENCODING_KHMER
+     * Macintosh Encoding IDs: ENCODING_KHMER.
      */
     public static final short ENCODING_KHMER = 20;
 
     /**
-     * Macintosh Encoding IDs: ENCODING_THAI
+     * Macintosh Encoding IDs: ENCODING_THAI.
      */
     public static final short ENCODING_THAI = 21;
 
     /**
-     * Macintosh Encoding IDs: ENCODING_LAOTION
+     * Macintosh Encoding IDs: ENCODING_LAOTION.
      */
     public static final short ENCODING_LAOTION = 22;
 
     /**
-     * Macintosh Encoding IDs: ENCODING_GEORGIAN
+     * Macintosh Encoding IDs: ENCODING_GEORGIAN.
      */
     public static final short ENCODING_GEORGIAN = 23;
 
     /**
-     * Macintosh Encoding IDs: ENCODING_ARMENIAN
+     * Macintosh Encoding IDs: ENCODING_ARMENIAN.
      */
     public static final short ENCODING_ARMENIAN = 24;
 
     /**
-     * Macintosh Encoding IDs: ENCODING_MALDIVIAN
+     * Macintosh Encoding IDs: ENCODING_MALDIVIAN.
      */
     public static final short ENCODING_MALDIVIAN = 25;
 
     /**
-     * Macintosh Encoding IDs: ENCODING_TIBETAN
+     * Macintosh Encoding IDs: ENCODING_TIBETAN.
      */
     public static final short ENCODING_TIBETAN = 26;
 
     /**
-     * Macintosh Encoding IDs: ENCODING_MONGLIAN
+     * Macintosh Encoding IDs: ENCODING_MONGLIAN.
      */
     public static final short ENCODING_MONGLIAN = 27;
 
     /**
-     * Macintosh Encoding IDs: ENCODING_GEEZ
+     * Macintosh Encoding IDs: ENCODING_GEEZ.
      */
     public static final short ENCODING_GEEZ = 28;
 
     /**
-     * Macintosh Encoding IDs: ENCODING_SLAVIC
+     * Macintosh Encoding IDs: ENCODING_SLAVIC.
      */
     public static final short ENCODING_SLAVIC = 29;
 
     /**
-     * Macintosh Encoding IDs: ENCODING_VIETNAMESE
+     * Macintosh Encoding IDs: ENCODING_VIETNAMESE.
      */
     public static final short ENCODING_VIETNAMESE = 30;
 
     /**
-     * Macintosh Encoding IDs: ENCODING_SINDHI
+     * Macintosh Encoding IDs: ENCODING_SINDHI.
      */
     public static final short ENCODING_SINDHI = 31;
 
     /**
-     * Macintosh Encoding IDs: ENCODING_UNITERP
+     * Macintosh Encoding IDs: ENCODING_UNITERP.
      */
     public static final short ENCODING_UNITERP = 32;
 
@@ -254,17 +279,17 @@ public class TtfTableCMAP extends AbstractXtfTable
     // -------------------------------------------------------
 
     /**
-     * ISO Encoding ISs: ENCODING_ISO_ASCII
+     * ISO Encoding ISs: ENCODING_ISO_ASCII.
      */
     public static final short ENCODING_ISO_ASCII = 0;
 
     /**
-     * ISO Encoding ISs: ENCODING_ISO_ISO10646
+     * ISO Encoding ISs: ENCODING_ISO_ISO10646.
      */
     public static final short ENCODING_ISO_ISO10646 = 1;
 
     /**
-     * ISO Encoding ISs:
+     * ISO Encoding ISs: ENCODING_ISO_ISO8859_1.
      */
     public static final short ENCODING_ISO_ISO8859_1 = 2;
 
@@ -272,369 +297,369 @@ public class TtfTableCMAP extends AbstractXtfTable
     // -------------------------------------------------------
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_SQI
+     * Microsoft Language IDs: LANGUAGE_MS_SQI.
      */
     public static final short LANGUAGE_MS_SQI = 0x041c;
 
     /**
-     * Microsoft Language IDs:
+     * Microsoft Language IDs: LANGUAGE_MS_EUQ.
      */
     public static final short LANGUAGE_MS_EUQ = 0x042d;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_SQI
+     * Microsoft Language IDs: LANGUAGE_MS_SQI.
      */
     public static final short LANGUAGE_MS_BEL = 0x0423;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_BGR
+     * Microsoft Language IDs: LANGUAGE_MS_BGR.
      */
     public static final short LANGUAGE_MS_BGR = 0x0402;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_BGR
+     * Microsoft Language IDs: LANGUAGE_MS_CAT.
      */
     public static final short LANGUAGE_MS_CAT = 0x0403;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_SHL
+     * Microsoft Language IDs: LANGUAGE_MS_SHL.
      */
     public static final short LANGUAGE_MS_SHL = 0x041a;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_CSY
+     * Microsoft Language IDs: LANGUAGE_MS_CSY.
      */
     public static final short LANGUAGE_MS_CSY = 0x0405;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_DAN
+     * Microsoft Language IDs: LANGUAGE_MS_DAN.
      */
     public static final short LANGUAGE_MS_DAN = 0x0406;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_NLD
+     * Microsoft Language IDs: LANGUAGE_MS_NLD.
      */
     public static final short LANGUAGE_MS_NLD = 0x0413;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_NLD
+     * Microsoft Language IDs: LANGUAGE_MS_NLD.
      */
     public static final short LANGUAGE_MS_NLB = 0x0813;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_ENU
+     * Microsoft Language IDs: LANGUAGE_MS_ENU.
      */
     public static final short LANGUAGE_MS_ENU = 0x0409;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_ENG
+     * Microsoft Language IDs: LANGUAGE_ENG.
      */
     public static final short LANGUAGE_ENG = 0x0809;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_ENA
+     * Microsoft Language IDs: LANGUAGE_MS_ENA.
      */
     public static final short LANGUAGE_MS_ENA = 0x0c09;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_ENC
+     * Microsoft Language IDs: LANGUAGE_MS_ENC.
      */
     public static final short LANGUAGE_MS_ENC = 0x1009;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_ENC
+     * Microsoft Language IDs: LANGUAGE_MS_ENC.
      */
     public static final short LANGUAGE_MS_ENZ = 0x1409;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_ENI
+     * Microsoft Language IDs: LANGUAGE_MS_ENI.
      */
     public static final short LANGUAGE_MS_ENI = 0x1809;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_ETI
+     * Microsoft Language IDs: LANGUAGE_MS_ETI.
      */
     public static final short LANGUAGE_MS_ETI = 0x0425;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_ETI
+     * Microsoft Language IDs: LANGUAGE_MS_ETI.
      */
     public static final short LANGUAGE_MS_FIN = 0x040b;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_FRA
+     * Microsoft Language IDs: LANGUAGE_MS_FRA.
      */
     public static final short LANGUAGE_MS_FRA = 0x040c;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_FRB
+     * Microsoft Language IDs: LANGUAGE_MS_FRB.
      */
     public static final short LANGUAGE_MS_FRB = 0x080c;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_FRC
+     * Microsoft Language IDs: LANGUAGE_MS_FRC.
      */
     public static final short LANGUAGE_MS_FRC = 0x0c0c;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_FRS
+     * Microsoft Language IDs: LANGUAGE_MS_FRS.
      */
     public static final short LANGUAGE_MS_FRS = 0x100c;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_FRL
+     * Microsoft Language IDs: LANGUAGE_MS_FRL.
      */
     public static final short LANGUAGE_MS_FRL = 0x140c;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_FRL
+     * Microsoft Language IDs: LANGUAGE_MS_FRL.
      */
     public static final short LANGUAGE_MS_DEU = 0x0407;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_DES
+     * Microsoft Language IDs: LANGUAGE_MS_DES.
      */
     public static final short LANGUAGE_MS_DES = 0x0807;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_DEA
+     * Microsoft Language IDs: LANGUAGE_MS_DEA.
      */
     public static final short LANGUAGE_MS_DEA = 0x0c07;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_DEL
+     * Microsoft Language IDs: LANGUAGE_MS_DEL.
      */
     public static final short LANGUAGE_MS_DEL = 0x1007;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_DEC
+     * Microsoft Language IDs: LANGUAGE_MS_DEC.
      */
     public static final short LANGUAGE_MS_DEC = 0x1407;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_DEC
+     * Microsoft Language IDs: LANGUAGE_MS_DEC.
      */
     public static final short LANGUAGE_MS_ELL = 0x0408;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_HUN
+     * Microsoft Language IDs: LANGUAGE_MS_HUN.
      */
     public static final short LANGUAGE_MS_HUN = 0x040e;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_ISL
+     * Microsoft Language IDs: LANGUAGE_MS_ISL.
      */
     public static final short LANGUAGE_MS_ISL = 0x040f;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_ISL
+     * Microsoft Language IDs: LANGUAGE_MS_ISL.
      */
     public static final short LANGUAGE_MS_ITA = 0x0410;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_ITS
+     * Microsoft Language IDs: LANGUAGE_MS_ITS.
      */
     public static final short LANGUAGE_MS_ITS = 0x0810;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_LVI
+     * Microsoft Language IDs: LANGUAGE_MS_LVI.
      */
     public static final short LANGUAGE_MS_LVI = 0x0426;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_LTH
+     * Microsoft Language IDs: LANGUAGE_MS_LTH.
      */
     public static final short LANGUAGE_MS_LTH = 0x0427;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_NOR
+     * Microsoft Language IDs: LANGUAGE_MS_NOR.
      */
     public static final short LANGUAGE_MS_NOR = 0x0414;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_NOR
+     * Microsoft Language IDs: LANGUAGE_MS_NOR.
      */
     public static final short LANGUAGE_MS_NON = 0x0814;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_NOR
+     * Microsoft Language IDs: LANGUAGE_MS_PLK.
      */
     public static final short LANGUAGE_MS_PLK = 0x0415;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_PTB
+     * Microsoft Language IDs: LANGUAGE_MS_PTB.
      */
     public static final short LANGUAGE_MS_PTB = 0x0416;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_PTG
+     * Microsoft Language IDs: LANGUAGE_MS_PTG.
      */
     public static final short LANGUAGE_MS_PTG = 0x0816;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_PTG
+     * Microsoft Language IDs: LANGUAGE_MS_PTG.
      */
     public static final short LANGUAGE_MS_ROM = 0x0418;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_RUS
+     * Microsoft Language IDs: LANGUAGE_MS_RUS.
      */
     public static final short LANGUAGE_MS_RUS = 0x0419;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_SKY
+     * Microsoft Language IDs: LANGUAGE_MS_SKY.
      */
     public static final short LANGUAGE_MS_SKY = 0x041b;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_SLV
+     * Microsoft Language IDs: LANGUAGE_MS_SLV.
      */
     public static final short LANGUAGE_MS_SLV = 0x0424;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_ESP
+     * Microsoft Language IDs: LANGUAGE_MS_ESP.
      */
     public static final short LANGUAGE_MS_ESP = 0x040a;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_ESM
+     * Microsoft Language IDs: LANGUAGE_MS_ESM.
      */
     public static final short LANGUAGE_MS_ESM = 0x080a;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_ESN
+     * Microsoft Language IDs: LANGUAGE_MS_ESN.
      */
     public static final short LANGUAGE_MS_ESN = 0x0c0a;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_SVE
+     * Microsoft Language IDs: LANGUAGE_MS_SVE.
      */
     public static final short LANGUAGE_MS_SVE = 0x041d;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_TRK
+     * Microsoft Language IDs: LANGUAGE_MS_TRK.
      */
     public static final short LANGUAGE_MS_TRK = 0x041f;
 
     /**
-     * Microsoft Language IDs: LANGUAGE_MS_UKR
+     * Microsoft Language IDs: LANGUAGE_MS_UKR.
      */
     public static final short LANGUAGE_MS_UKR = 0x0422;
 
     // ---------------------------------------------
     // ---------------------------------------------
     /**
-     * Macintosh Language IDs: LANGUAGE_MAC_ENGLISH
+     * Macintosh Language IDs: LANGUAGE_MAC_ENGLISH.
      */
     public static final short LANGUAGE_MAC_ENGLISH = 0;
 
     /**
-     * Macintosh Language IDs: LANGUAGE_MAC_FRENCH
+     * Macintosh Language IDs: LANGUAGE_MAC_FRENCH.
      */
     public static final short LANGUAGE_MAC_FRENCH = 1;
 
     /**
-     * Macintosh Language IDs: LANGUAGE_MAC_GERMAN
+     * Macintosh Language IDs: LANGUAGE_MAC_GERMAN.
      */
     public static final short LANGUAGE_MAC_GERMAN = 2;
 
     /**
-     * Macintosh Language IDs: LANGUAGE_MAC_ITALIAN
+     * Macintosh Language IDs: LANGUAGE_MAC_ITALIAN.
      */
     public static final short LANGUAGE_MAC_ITALIAN = 3;
 
     /**
-     * Macintosh Language IDs: LANGUAGE_MAC_DUTCH
+     * Macintosh Language IDs: LANGUAGE_MAC_DUTCH.
      */
     public static final short LANGUAGE_MAC_DUTCH = 4;
 
     /**
-     * Macintosh Language IDs: LANGUAGE_MAC_DUTCH
+     * Macintosh Language IDs: LANGUAGE_MAC_DUTCH.
      */
     public static final short LANGUAGE_MAC_SWEDISH = 5;
 
     /**
-     * Macintosh Language IDs: LANGUAGE_MAC_SPANISH
+     * Macintosh Language IDs: LANGUAGE_MAC_SPANISH.
      */
     public static final short LANGUAGE_MAC_SPANISH = 6;
 
     /**
-     * Macintosh Language IDs: LANGUAGE_MAC_DANISH
+     * Macintosh Language IDs: LANGUAGE_MAC_DANISH.
      */
     public static final short LANGUAGE_MAC_DANISH = 7;
 
     /**
-     * Macintosh Language IDs: languagePortuguese
+     * Macintosh Language IDs: languagePortuguese.
      */
     public static final short LANGUAGE_MAC_PORTUGUESE = 8;
 
     /**
-     * Macintosh Language IDs: LANGUAGE_MAC_NORWEGIAN
+     * Macintosh Language IDs: LANGUAGE_MAC_NORWEGIAN.
      */
     public static final short LANGUAGE_MAC_NORWEGIAN = 9;
 
     /**
-     * Macintosh Language IDs: LANGUAGE_MAC_NORWEGIAN
+     * Macintosh Language IDs: LANGUAGE_MAC_NORWEGIAN.
      */
     public static final short LANGUAGE_MAC_HEBREW = 10;
 
     /**
-     * Macintosh Language IDs: LANGUAGE_MAC_JAPANESE
+     * Macintosh Language IDs: LANGUAGE_MAC_JAPANESE.
      */
     public static final short LANGUAGE_MAC_JAPANESE = 11;
 
     /**
-     * Macintosh Language IDs: LANGUAGE_MAC_ARABIC
+     * Macintosh Language IDs: LANGUAGE_MAC_ARABIC.
      */
     public static final short LANGUAGE_MAC_ARABIC = 12;
 
     /**
-     * Macintosh Language IDs: LANGUAGE_MAC_FINNISH
+     * Macintosh Language IDs: LANGUAGE_MAC_FINNISH.
      */
     public static final short LANGUAGE_MAC_FINNISH = 13;
 
     /**
-     * Macintosh Language IDs: LANGUAGE_MAC_GREEK
+     * Macintosh Language IDs: LANGUAGE_MAC_GREEK.
      */
     public static final short LANGUAGE_MAC_GREEK = 14;
 
     /**
-     * Macintosh Language IDs: LANGUAGE_MAC_ICELANDIC
+     * Macintosh Language IDs: LANGUAGE_MAC_ICELANDIC.
      */
     public static final short LANGUAGE_MAC_ICELANDIC = 15;
 
     /**
-     * Macintosh Language IDs: LANGUAGE_MAC_ICELANDIC
+     * Macintosh Language IDs: LANGUAGE_MAC_ICELANDIC.
      */
     public static final short LANGUAGE_MAC_MATESE = 16;
 
     /**
-     * Macintosh Language IDs: LANGUAGE_TURKISH
+     * Macintosh Language IDs: LANGUAGE_TURKISH.
      */
     public static final short LANGUAGE_TURKISH = 17;
 
     /**
-     * Macintosh Language IDs: LANGUAGE_MAC_YUGOSLAVIAN
+     * Macintosh Language IDs: LANGUAGE_MAC_YUGOSLAVIAN.
      */
     public static final short LANGUAGE_MAC_YUGOSLAVIAN = 18;
 
     /**
-     * Macintosh Language IDs: LANGUAGE_MAC_YUGOSLAVIAN
+     * Macintosh Language IDs: LANGUAGE_MAC_YUGOSLAVIAN.
      */
     public static final short LANGUAGE_MAC_CHINESE = 19;
 
     /**
-     * Macintosh Language IDs: LANGUAGE_MAC_YUGOSLAVIAN
+     * Macintosh Language IDs: LANGUAGE_MAC_YUGOSLAVIAN.
      */
     public static final short LANGUAGE_MAC_URDU = 20;
 
     /**
-     * Macintosh Language IDs: LANGUAGE_MAC_YUGOSLAVIAN
+     * Macintosh Language IDs: LANGUAGE_MAC_YUGOSLAVIAN.
      */
     public static final short LANGUAGE_MAC_HINDI = 21;
 
     /**
-     * Macintosh Language IDs: LANGUAGE_MAC_THAI
+     * Macintosh Language IDs: LANGUAGE_MAC_THAI.
      */
     public static final short LANGUAGE_MAC_THAI = 22;
 
@@ -644,57 +669,57 @@ public class TtfTableCMAP extends AbstractXtfTable
     // --------------------------------------
 
     /**
-     * format 0
+     * format 0.
      */
     static final int FORMAT0 = 0;
 
     /**
-     * format 2
+     * format 2.
      */
     static final int FORMAT2 = 2;
 
     /**
-     * format 4
+     * format 4.
      */
     static final int FORMAT4 = 4;
 
     /**
-     * format 6
+     * format 6.
      */
     static final int FORMAT6 = 6;
 
     /**
-     * format 8
+     * format 8.
      */
     static final int FORMAT8 = 8;
 
     /**
-     * format 10
+     * format 10.
      */
     static final int FORMAT10 = 10;
 
     /**
-     * format 12
+     * format 12.
      */
     static final int FORMAT12 = 12;
 
     /**
-     * Version
+     * Version.
      */
     private int version;
 
     /**
-     * number of tables
+     * number of tables.
      */
     private int numTables;
 
     /**
-     * index entries
+     * index entries.
      */
     private IndexEntry[] entries;
 
     /**
-     * formats
+     * formats.
      */
     private Format[] formats;
 
@@ -757,7 +782,7 @@ public class TtfTableCMAP extends AbstractXtfTable
     }
 
     /**
-     * Returns the cmap format
+     * Returns the cmap format.
      * @param platformId    platform id
      * @param encodingId    encoding id
      * @return Returns the cmap format
@@ -839,10 +864,16 @@ public class TtfTableCMAP extends AbstractXtfTable
         writer.writeAttribute("numberoftables", String.valueOf(numTables));
 
         for (int i = 0; i < entries.length; i++) {
-            entries[i].writeXML(writer);
+            IndexEntry ie = entries[i];
+            if (ie != null) {
+                entries[i].writeXML(writer);
+            }
         }
         for (int i = 0; i < formats.length; i++) {
-            formats[i].writeXML(writer);
+            Format f = formats[i];
+            if (f != null) {
+                formats[i].writeXML(writer);
+            }
         }
         writer.writeEndElement();
     }
@@ -868,17 +899,17 @@ public class TtfTableCMAP extends AbstractXtfTable
     public class IndexEntry implements XMLWriterConvertible {
 
         /**
-         * platform id
+         * platform id.
          */
         private int platformId;
 
         /**
-         * encoding id
+         * encoding id.
          */
         private int encodingId;
 
         /**
-         * offset
+         * offset.
          */
         private int offset;
 
@@ -896,7 +927,7 @@ public class TtfTableCMAP extends AbstractXtfTable
         }
 
         /**
-         * Returns the encoding id
+         * Returns the encoding id.
          * @return Returns the encoding id
          */
         public int getEncodingId() {
@@ -905,7 +936,7 @@ public class TtfTableCMAP extends AbstractXtfTable
         }
 
         /**
-         * Returns the offset
+         * Returns the offset.
          * @return returns the offset
          */
         public int getOffset() {
@@ -914,7 +945,7 @@ public class TtfTableCMAP extends AbstractXtfTable
         }
 
         /**
-         * Returns the platform id
+         * Returns the platform id.
          * @return Returns the platform id
          */
         public int getPlatformId() {
@@ -923,52 +954,42 @@ public class TtfTableCMAP extends AbstractXtfTable
         }
 
         /**
-         * Macintosh
-         */
-        private static final int MACINTOSH = 1;
-
-        /**
-         * Windows
-         */
-        private static final int WINDOWS = 3;
-
-        /**
-         * symbol
+         * symbol.
          */
         private static final int ENC_SYMBOL = 0;
 
         /**
-         * unicode
+         * unicode.
          */
         private static final int ENC_UNICODE = 1;
 
         /**
-         * shiftjis
+         * shiftjis.
          */
         private static final int ENC_SHIFTJIS = 2;
 
         /**
-         * big5
+         * big5.
          */
         private static final int ENC_BIG5 = 3;
 
         /**
-         * prc
+         * prc.
          */
         private static final int ENC_PRC = 4;
 
         /**
-         * wansung
+         * wansung.
          */
         private static final int ENC_WANSUNG = 5;
 
         /**
-         * johab
+         * johab.
          */
         private static final int ENC_JOHAB = 6;
 
         /**
-         * Returns the info for this class
+         * Returns the info for this class.
          * @return Returns the info for this class
          */
         public String toString() {
@@ -977,16 +998,22 @@ public class TtfTableCMAP extends AbstractXtfTable
             String encoding = "";
 
             switch (platformId) {
-                case MACINTOSH :
+                case PLATFORM_APPLE_UNICODE :
+                    platform = " (Apple Unicode)";
+                    break;
+                case PLATFORM_MACINTOSH :
                     platform = " (Macintosh)";
                     break;
-                case WINDOWS :
+                case PLATFORM_ISO :
+                    platform = " (Iso)";
+                    break;
+                case PLATFORM_MICROSOFT :
                     platform = " (Windows)";
                     break;
                 default :
-                    platform = "";
+                    platform = "???";
             }
-            if (platformId == WINDOWS) {
+            if (platformId == PLATFORM_MICROSOFT) {
                 // Windows specific encodings
                 switch (encodingId) {
                     case ENC_SYMBOL :
@@ -1039,18 +1066,24 @@ public class TtfTableCMAP extends AbstractXtfTable
             String encoding = "";
 
             switch (platformId) {
-                case MACINTOSH :
+                case PLATFORM_APPLE_UNICODE :
+                    platform = " (Apple Unicode)";
+                    break;
+                case PLATFORM_MACINTOSH :
                     platform = " (Macintosh)";
                     break;
-                case WINDOWS :
+                case PLATFORM_ISO :
+                    platform = " (Iso)";
+                    break;
+                case PLATFORM_MICROSOFT :
                     platform = " (Windows)";
                     break;
                 default :
-                    platform = "";
+                    platform = "???";
             }
             writer.writeAttribute("platform", platform);
 
-            if (platformId == WINDOWS) {
+            if (platformId == PLATFORM_MICROSOFT) {
                 // Windows specific encodings
                 switch (encodingId) {
                     case ENC_SYMBOL :
@@ -1091,22 +1124,22 @@ public class TtfTableCMAP extends AbstractXtfTable
     // -------------------------------------------
 
     /**
-     * Abstract class for all formats
+     * Abstract class for all formats.
      */
     public abstract class Format implements XMLWriterConvertible {
 
         /**
-         * format
+         * format.
          */
         private int format;
 
         /**
-         * length
+         * length.
          */
         private int length;
 
         /**
-         * version
+         * version.
          */
         private int fversion;
 
@@ -1125,7 +1158,7 @@ public class TtfTableCMAP extends AbstractXtfTable
         }
 
         /**
-         * Returns the format
+         * Returns the format.
          * @return Returns the format
          */
         public int getFormat() {
@@ -1134,7 +1167,7 @@ public class TtfTableCMAP extends AbstractXtfTable
         }
 
         /**
-         * Returns the length
+         * Returns the length.
          * @return Returns the length
          */
         public int getLength() {
@@ -1143,7 +1176,7 @@ public class TtfTableCMAP extends AbstractXtfTable
         }
 
         /**
-         * Returns the version
+         * Returns the version.
          * @return returns the version
          */
         public int getVersion() {
@@ -1152,14 +1185,14 @@ public class TtfTableCMAP extends AbstractXtfTable
         }
 
         /**
-         * map char code
+         * map char code.
          * @param charCode  the charcode
          * @return Returns the map char code
          */
         public abstract int mapCharCode(final int charCode);
 
         /**
-         * Returns the info for this class
+         * Returns the info for this class.
          * @return Returns the info for this class
          */
         public String toString() {
@@ -1177,7 +1210,8 @@ public class TtfTableCMAP extends AbstractXtfTable
          * @param writer    The xml writer.
          * @throws IOException if an IO-error occurs.
          */
-        public void addAttributes(XMLStreamWriter writer) throws IOException {
+        public void addAttributes(final XMLStreamWriter writer)
+                throws IOException {
 
             writer.writeAttribute("version", fversion);
             writer.writeAttribute("format", format);
@@ -1193,7 +1227,7 @@ public class TtfTableCMAP extends AbstractXtfTable
      * <table BORDER="1">
      *   <tbody>
      *     <tr><td><b>Type</b></td><td><b>Name</b></td><td><b>Description</b></td></tr>
-     *   <tbody>
+     *   </tbody>
      *   <tr><td>USHORT</td><td>format</td><td>Format number is set to 0.</td></tr>
      *   <tr><td>USHORT</td><td>length</td><td>This is the length in bytes
      *                                         of the subtable.</td></tr>
@@ -1205,12 +1239,12 @@ public class TtfTableCMAP extends AbstractXtfTable
     public class Format0 extends Format {
 
         /**
-         * Size of the glyph-id-array
+         * Size of the glyph-id-array.
          */
         private static final int ARRAYSIZE = 256;
 
         /**
-         * glyph id array
+         * glyph id array.
          */
         private byte[] glyphIdArray = new byte[ARRAYSIZE];
 
@@ -1247,7 +1281,17 @@ public class TtfTableCMAP extends AbstractXtfTable
 
             writer.writeStartElement("format");
             addAttributes(writer);
-            writer.writeByteArray(glyphIdArray);
+            writer.writeStartElement("mapcharcode");
+            for (int i = 0; i < 0xff; i++) {
+                int c = mapCharCode(i);
+                if (c > 0) {
+                    writer.writeStartElement("entry");
+                    writer.writeAttribute("charcode", i);
+                    writer.writeAttribute("value", c);
+                    writer.writeEndElement();
+                }
+            }
+            writer.writeEndElement();
             writer.writeEndElement();
         }
     }
@@ -1373,7 +1417,7 @@ public class TtfTableCMAP extends AbstractXtfTable
      * <table BORDER="1">
      *   <tbody>
      *     <tr><td><b>Type</b></td><td><b>Name</b></td><td><b>Description</b></td></tr>
-     *   </tbody
+     *   </tbody>
      *   <tr><td>USHORT</td><td>format</td><td>Format number is set to 4.</td></tr>
      *   <tr><td>USHORT</td><td>length</td><td>Length in bytes.</td></tr>
      *   <tr><td>USHORT</td><td>version</td><td>Version number (starts at 0).</td></tr>
@@ -1398,57 +1442,57 @@ public class TtfTableCMAP extends AbstractXtfTable
     public class Format4 extends Format {
 
         /**
-         * language
+         * language.
          */
         private int language;
 
         /**
-         * segCountX2
+         * segCountX2.
          */
         private int segCountX2;
 
         /**
-         * searchRange
+         * searchRange.
          */
         private int searchRange;
 
         /**
-         * entrySelector
+         * entrySelector.
          */
         private int entrySelector;
 
         /**
-         * rangeShift
+         * rangeShift.
          */
         private int rangeShift;
 
         /**
-         * endCode
+         * endCode.
          */
         private int[] endCode;
 
         /**
-         * startCode
+         * startCode.
          */
         private int[] startCode;
 
         /**
-         * idDelta
+         * idDelta.
          */
         private int[] idDelta;
 
         /**
-         * idRangeOffset
+         * idRangeOffset.
          */
         private int[] idRangeOffset;
 
         /**
-         * glyphIdArray
+         * glyphIdArray.
          */
         private int[] glyphIdArray;
 
         /**
-         * segCount
+         * segCount.
          */
         private int segCount;
 
@@ -1513,8 +1557,7 @@ public class TtfTableCMAP extends AbstractXtfTable
                     }
                 }
             } catch (ArrayIndexOutOfBoundsException e) {
-                System.err.println("error: Array out of bounds - "
-                        + e.getMessage());
+                return -1;
             }
             return 0;
         }
@@ -1619,7 +1662,7 @@ public class TtfTableCMAP extends AbstractXtfTable
         }
 
         /**
-         * Returns the info for this class
+         * Returns the info for this class.
          * @return Returns the info for this class
          */
         public String toString() {
@@ -1652,6 +1695,34 @@ public class TtfTableCMAP extends AbstractXtfTable
 
             writer.writeStartElement("format");
             addAttributes(writer);
+            writer.writeAttribute("segCountX2", segCountX2);
+            writer.writeAttribute("searchRange", searchRange);
+            writer.writeAttribute("entryselector", entrySelector);
+            writer.writeAttribute("rangeshift", rangeShift);
+            writer.writeStartElement("endcode");
+            writer.writeIntArrayAsEntries(endCode);
+            writer.writeEndElement();
+            writer.writeStartElement("startcode");
+            writer.writeIntArrayAsEntries(startCode);
+            writer.writeEndElement();
+            writer.writeStartElement("idDelta");
+            writer.writeIntArrayAsEntries(idDelta);
+            writer.writeEndElement();
+            writer.writeStartElement("idRangeOffset");
+            writer.writeIntArrayAsEntries(idRangeOffset);
+            writer.writeEndElement();
+
+            writer.writeStartElement("mapcharcode");
+            for (int i = 0; i < 0xffff; i++) {
+                int c = mapCharCode(i);
+                if (c > 0) {
+                    writer.writeStartElement("entry");
+                    writer.writeAttribute("charcode", i);
+                    writer.writeAttribute("value", c);
+                    writer.writeEndElement();
+                }
+            }
+            writer.writeEndElement();
 
             writer.writeEndElement();
         }

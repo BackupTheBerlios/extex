@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-20056 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,9 +21,6 @@ package de.dante.extex.unicodeFont.format.xtf;
 
 import java.io.IOException;
 
-import org.jdom.Element;
-
-import de.dante.util.XMLConvertible;
 import de.dante.util.XMLWriterConvertible;
 import de.dante.util.file.random.RandomAccessR;
 import de.dante.util.xml.XMLStreamWriter;
@@ -32,12 +29,12 @@ import de.dante.util.xml.XMLStreamWriter;
  * Table gpos.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class OtfTableGPOS extends AbstractXtfTable
         implements
             XtfTable,
-            XMLWriterConvertible{
+            XMLWriterConvertible {
 
     /**
      * Version.
@@ -88,6 +85,7 @@ public class OtfTableGPOS extends AbstractXtfTable
 
         return XtfReader.GPOS;
     }
+
     /**
      * @see de.dante.extex.unicodeFont.format.xtf.XtfTable#getShortcur()
      */

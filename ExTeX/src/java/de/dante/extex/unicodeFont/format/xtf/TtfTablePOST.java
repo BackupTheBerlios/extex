@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,9 +21,6 @@ package de.dante.extex.unicodeFont.format.xtf;
 
 import java.io.IOException;
 
-import org.jdom.Element;
-
-import de.dante.util.XMLConvertible;
 import de.dante.util.XMLWriterConvertible;
 import de.dante.util.file.random.RandomAccessR;
 import de.dante.util.xml.XMLStreamWriter;
@@ -85,7 +82,7 @@ import de.dante.util.xml.XMLStreamWriter;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TtfTablePOST extends AbstractXtfTable
         implements
@@ -93,27 +90,27 @@ public class TtfTablePOST extends AbstractXtfTable
             XMLWriterConvertible {
 
     /**
-     * Format 1
+     * Format 1.
      */
     public static final int FORMAT1 = 0x00010000;
 
     /**
-     * Format 2
+     * Format 2.
      */
     public static final int FORMAT2 = 0x00020000;
 
     /**
-     * Format 2.5
+     * Format 2.5.
      */
     public static final int FORMAT25 = 0x00020005;
 
     /**
-     * Format 3
+     * Format 3.
      */
     public static final int FORMAT3 = 0x00030000;
 
     /**
-     * Format 4
+     * Format 4.
      */
     public static final int FORMAT4 = 0x00040000;
 
@@ -389,62 +386,62 @@ public class TtfTablePOST extends AbstractXtfTable
     };
 
     /**
-     * version
+     * version.
      */
     private int version;
 
     /**
-     * italicAngle
+     * italicAngle.
      */
     private int italicAngle;
 
     /**
-     * underlinePosition
+     * underlinePosition.
      */
     private short underlinePosition;
 
     /**
-     * underlineThickness
+     * underlineThickness.
      */
     private short underlineThickness;
 
     /**
-     * isFixedPitch
+     * isFixedPitch.
      */
     private int isFixedPitch;
 
     /**
-     * minMemType42
+     * minMemType42.
      */
     private int minMemType42;
 
     /**
-     * maxMemType42
+     * maxMemType42.
      */
     private int maxMemType42;
 
     /**
-     * minMemType1
+     * minMemType1.
      */
     private int minMemType1;
 
     /**
-     * maxMemType1
+     * maxMemType1.
      */
     private int maxMemType1;
 
     /**
-     * numGlyphs
+     * numGlyphs.
      */
     private int numGlyphs;
 
     /**
-     * glyphNameIndex
+     * glyphNameIndex.
      */
     private int[] glyphNameIndex;
 
     /**
-     * psGlyphName
+     * psGlyphName.
      */
     private String[] psGlyphName;
 
@@ -516,7 +513,7 @@ public class TtfTablePOST extends AbstractXtfTable
     }
 
     /**
-     * Returns the highest glyph index
+     * Returns the highest glyph index.
      * @return Returns the highest glyph index
      */
     private int highestGlyphNameIndex() {
@@ -531,7 +528,7 @@ public class TtfTablePOST extends AbstractXtfTable
     }
 
     /**
-     * Returns the glyph name
+     * Returns the glyph name.
      * @param i index
      * @return Returns the glyph name
      */

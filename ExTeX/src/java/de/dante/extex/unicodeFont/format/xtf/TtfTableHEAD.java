@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -97,7 +97,7 @@ import de.dante.util.xml.XMLStreamWriter;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TtfTableHEAD extends AbstractXtfTable
         implements
@@ -105,92 +105,92 @@ public class TtfTableHEAD extends AbstractXtfTable
             XMLWriterConvertible {
 
     /**
-     * version
+     * version.
      */
     private int version;
 
     /**
-     * font revision
+     * font revision.
      */
     private Fixed32 fontRevision;
 
     /**
-     * checksumadjustment
+     * checksumadjustment.
      */
     private int checkSumAdjustment;
 
     /**
-     * magic number
+     * magic number.
      */
     private int magicNumber;
 
     /**
-     * flags
+     * flags.
      */
     private short flags;
 
     /**
-     * units per em
+     * units per em.
      */
     private short unitsPerEm;
 
     /**
-     * created
+     * created.
      */
     private long created;
 
     /**
-     * modified
+     * modified.
      */
     private long modified;
 
     /**
-     * xmin
+     * xmin.
      */
     private short xMin;
 
     /**
-     * ymin
+     * ymin.
      */
     private short yMin;
 
     /**
-     * xmax
+     * xmax.
      */
     private short xMax;
 
     /**
-     * ymax
+     * ymax.
      */
     private short yMax;
 
     /**
-     * macstyle
+     * macstyle.
      */
     private short macStyle;
 
     /**
-     * lowestRecPPEM
+     * lowestRecPPEM.
      */
     private short lowestRecPPEM;
 
     /**
-     * fontDirectionHint
+     * fontDirectionHint.
      */
     private short fontDirectionHint;
 
     /**
-     * indexToLocFormat
+     * indexToLocFormat.
      */
     private short indexToLocFormat;
 
     /**
-     * glyphDataFormat
+     * glyphDataFormat.
      */
     private short glyphDataFormat;
 
     /**
-     * Create a new object
+     * Create a new object.
      *
      * @param tablemap  the tablemap
      * @param de        entry

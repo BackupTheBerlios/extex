@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -27,6 +27,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 
+import de.dante.extex.unicodeFont.format.xtf.TtfTableCMAP.Format;
 import de.dante.util.XMLWriterConvertible;
 import de.dante.util.file.random.RandomAccessInputFile;
 import de.dante.util.file.random.RandomAccessInputStream;
@@ -37,7 +38,7 @@ import de.dante.util.xml.XMLStreamWriter;
  * Reader for a TrueType / OpenType font.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class XtfReader implements XMLWriterConvertible {
 
@@ -350,57 +351,57 @@ public class XtfReader implements XMLWriterConvertible {
     public static final int TRAK = 0x7472616b;
 
     /**
-     * TableDirectory
+     * TableDirectory.
      */
     private XtfTableDirectory tableDirectory = null;
 
     /**
-     * Table os2 (required)
+     * Table os2 (required).
      */
     private TtfTableOS2 os2;
 
     /**
-     * Table cmap (required)
+     * Table cmap (required).
      */
     private TtfTableCMAP cmap;
 
     /**
-     * Table glyf (required)
+     * Table glyf (required).
      */
     private TtfTableGLYF glyf;
 
     /**
-     * Table head (required)
+     * Table head (required).
      */
     private TtfTableHEAD head;
 
     /**
-     * Table hhea (required)
+     * Table hhea (required).
      */
     private TtfTableHHEA hhea;
 
     /**
-     * Table hmtx (required)
+     * Table hmtx (required).
      */
     private TtfTableHMTX hmtx;
 
     /**
-     * Table loca (required)
+     * Table loca (required).
      */
     private TtfTableLOCA loca;
 
     /**
-     * Table maxp (required)
+     * Table maxp (required).
      */
     private TtfTableMAXP maxp;
 
     /**
-     * Table name (required)
+     * Table name (required).
      */
     private TtfTableNAME name;
 
     /**
-     * Table post (required)
+     * Table post (required).
      */
     private TtfTablePOST post;
 
@@ -448,12 +449,12 @@ public class XtfReader implements XMLWriterConvertible {
     }
 
     /**
-     * Map for all tables
+     * Map for all tables.
      */
     private XtfTableMap tablemap;
 
     /**
-     * Return the table with the special type
+     * Return the table with the special type.
      * @param tabletype the table type
      * @return Returns the table
      */
@@ -463,7 +464,7 @@ public class XtfReader implements XMLWriterConvertible {
     }
 
     /**
-     * Returns the os2 table
+     * Returns the os2 table.
      * @return Returns the os2 table
      */
     public TtfTableOS2 getOS2Table() {
@@ -472,7 +473,7 @@ public class XtfReader implements XMLWriterConvertible {
     }
 
     /**
-     * Returns the cmap table
+     * Returns the cmap table.
      * @return Returns the cmap table
      */
     public TtfTableCMAP getCmapTable() {
@@ -481,7 +482,7 @@ public class XtfReader implements XMLWriterConvertible {
     }
 
     /**
-     * Returns the head table
+     * Returns the head table.
      * @return Returns the head table
      */
     public TtfTableHEAD getHeadTable() {
@@ -490,7 +491,7 @@ public class XtfReader implements XMLWriterConvertible {
     }
 
     /**
-     * Returns the hhea table
+     * Returns the hhea table.
      * @return Returns the hhea table
      */
     public TtfTableHHEA getHheaTable() {
@@ -499,7 +500,7 @@ public class XtfReader implements XMLWriterConvertible {
     }
 
     /**
-     * Returns the hmtx table
+     * Returns the hmtx table.
      * @return Returns the hmtx table
      */
     public TtfTableHMTX getHmtxTable() {
@@ -508,7 +509,7 @@ public class XtfReader implements XMLWriterConvertible {
     }
 
     /**
-     * Returns the loca table
+     * Returns the loca table.
      * @return Returns the loca table
      */
     public TtfTableLOCA getLocaTable() {
@@ -517,7 +518,7 @@ public class XtfReader implements XMLWriterConvertible {
     }
 
     /**
-     * Returns the os2 table
+     * Returns the os2 table.
      * @return Returns the os2 table
      */
     public TtfTableMAXP getMaxpTable() {
@@ -526,7 +527,7 @@ public class XtfReader implements XMLWriterConvertible {
     }
 
     /**
-     * Returns the maxp table
+     * Returns the maxp table.
      * @return Returns the maxp table
      */
     public TtfTableNAME getNameTable() {
@@ -544,7 +545,7 @@ public class XtfReader implements XMLWriterConvertible {
     }
 
     /**
-     * Returns the post table
+     * Returns the post table.
      * @return Returns the post table
      */
     public TtfTablePOST getPostTable() {
@@ -553,7 +554,7 @@ public class XtfReader implements XMLWriterConvertible {
     }
 
     /**
-     * Returns the ascent
+     * Returns the ascent.
      * @return Returns the ascent
      */
     public int getAscent() {
@@ -562,7 +563,7 @@ public class XtfReader implements XMLWriterConvertible {
     }
 
     /**
-     * Returns the descent
+     * Returns the descent.
      * @return Returns the descent
      */
     public int getDescent() {
@@ -634,7 +635,7 @@ public class XtfReader implements XMLWriterConvertible {
     }
 
     /**
-     * Returns the glyph
+     * Returns the glyph.
      * @param   i   glyph number
      * @return Returns the glyph
      */
@@ -646,7 +647,7 @@ public class XtfReader implements XMLWriterConvertible {
     }
 
     /**
-     * Returns the table directory
+     * Returns the table directory.
      * @return Returns the table directory
      */
     public XtfTableDirectory getTableDirectory() {
@@ -655,7 +656,7 @@ public class XtfReader implements XMLWriterConvertible {
     }
 
     /**
-     * Read the TTF
+     * Read the TTF.
      * @param rar   input
      * @throws IOException if an IO-error occurs.
      */
@@ -712,7 +713,7 @@ public class XtfReader implements XMLWriterConvertible {
     }
 
     /**
-     * Create the table
+     * Create the table.
      * @param de        directory entry
      * @param rar       input
      * @return Returns the table
@@ -908,7 +909,31 @@ public class XtfReader implements XMLWriterConvertible {
     }
 
     /**
-     * Convert a Fixed value (Version)
+     * Returns the glyphname for the char by using the platform and encoding. If no char ist found,
+     * <code>null</code> will be returnd.
+     *
+     * @param charCode   Teh charcode.
+     * @param platformId The platform id.
+     * @param encodingId The encoding id.
+     * @return Returns the glyphname for the char.
+     */
+    public String mapCharCodeToGlyphname(final int charCode,
+            final short platformId, final short encodingId) {
+
+        // get format
+        Format format = getCmapTable().getFormat(platformId, encodingId);
+        if (format != null) {
+            int glyphpos = format.mapCharCode(charCode);
+
+            if (glyphpos > 0) {
+                return getPostTable().getGlyphName(glyphpos);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Convert a Fixed value (Version).
      *
      * @param value the fixed value
      * @return Returns the float-value
@@ -939,7 +964,7 @@ public class XtfReader implements XMLWriterConvertible {
      */
     //private static final long SECONDS1904TO1971 = 60 * 60 * 24 * (365 * (1971 - 1904) + 17);
     /**
-     * Convert a int value in a binary string
+     * Convert a int value in a binary string.
      * @param value the int value
      * @return Returns the binary string
      */
@@ -951,7 +976,7 @@ public class XtfReader implements XMLWriterConvertible {
     }
 
     /**
-     * Convert a int value in a hex string
+     * Convert a int value in a hex string.
      * @param value the int value
      * @return Returns the hex string
      */
@@ -965,7 +990,7 @@ public class XtfReader implements XMLWriterConvertible {
     }
 
     /**
-     * the type
+     * the type.
      */
     private Type type = TTF;
 
@@ -979,17 +1004,17 @@ public class XtfReader implements XMLWriterConvertible {
     }
 
     /**
-     * TTF
+     * TTF.
      */
     public static final Type TTF = new Type();
 
     /**
-     * OTF
+     * OTF.
      */
     public static final Type OTF = new Type();
 
     /**
-     * Font-Type
+     * Font-Type.
      */
     private static class Type {
 
@@ -1035,19 +1060,19 @@ public class XtfReader implements XMLWriterConvertible {
     }
 
     /**
-     * only for test
+     * only for test.
      * @param args  command line
      * @throws IOException if an IO-error occurs
      */
     public static void main(final String[] args) throws IOException {
 
-        XtfReader f = new XtfReader("src/font/Gara.ttf");
+        XtfReader f = new XtfReader("tmp/fltr.ttf");
         // XtfReader f = new XtfReader("src/font/Oregon LDO.otf");
 
         // write to xml-file
         XMLStreamWriter writer = new XMLStreamWriter(new FileOutputStream(
-                "x.tmp"), "ISO-8859-1");
-        //writer.setBeauty(true);
+                "tmp/x.tmp"), "ISO-8859-1");
+        writer.setBeauty(true);
         writer.writeStartDocument();
         f.writeXML(writer);
         writer.writeEndDocument();

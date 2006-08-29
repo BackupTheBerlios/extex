@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,6 +21,7 @@ package de.dante.extex.unicodeFont.format.xtf;
 
 import java.io.IOException;
 
+import de.dante.util.GroupEntries;
 import de.dante.util.XMLWriterConvertible;
 import de.dante.util.file.random.RandomAccessR;
 import de.dante.util.xml.XMLStreamWriter;
@@ -48,7 +49,7 @@ import de.dante.util.xml.XMLStreamWriter;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TtfTableNAME extends AbstractXtfTable
         implements
@@ -56,27 +57,27 @@ public class TtfTableNAME extends AbstractXtfTable
             XMLWriterConvertible {
 
     /**
-     * format
+     * format.
      */
     private short format;
 
     /**
-     * count
+     * count.
      */
     private short count;
 
     /**
-     * stringOffset
+     * stringOffset.
      */
     private short stringOffset;
 
     /**
-     * records
+     * records.
      */
     private NameRecord[] namerecords;
 
     /**
-     * Create a new object
+     * Create a new object.
      *
      * @param tablemap  the tablemap
      * @param de        directory entry
@@ -145,37 +146,37 @@ public class TtfTableNAME extends AbstractXtfTable
     public static final short TRADEMARK = 7;
 
     /**
-     * ID - name
+     * ID - name.
      */
     public static final String[] IDNAME = {"COPYRIGHTNOTICE", "FONTFAMILYNAME",
             "FONTSUBFAMILYNAM", "UNIQUEFONTIDENTIFIER", "FULLFONTNAME",
             "VERSIONSTRING", "POSTSCRIPTNAME", "TRADEMARK"};
 
     /**
-     * platform unicode
+     * platform apple unicode.
      */
-    public static final short UNICODE = 0;
+    public static final short APPLE_UNICODE = 0;
 
     /**
-     * platform macintosh
+     * platform macintosh.
      */
     public static final short MACINTOSH = 1;
 
     /**
-     * platform iso
+     * platform iso.
      */
     public static final short ISO = 2;
 
     /**
-     * platform microsoft
+     * platform microsoft.
      */
     public static final short MICROSOFT = 3;
 
     /**
-     * platform names
+     * platform names.
      */
-    public static final String[] PLATFORMNAME = {"UNICOD", "MACINTOSH", "ISO",
-            "MICROSOFT"};
+    public static final String[] PLATFORMNAME = {"APPLEUNICODE", "MACINTOSH",
+            "ISO", "MICROSOFT"};
 
     /**
      * Returns the record.
@@ -221,6 +222,7 @@ public class TtfTableNAME extends AbstractXtfTable
 
     /**
      * Returns the count.
+     * The number of nameRecords in this name table.
      * @return Returns the count.
      */
     public short getCount() {
@@ -238,12 +240,110 @@ public class TtfTableNAME extends AbstractXtfTable
     }
 
     /**
+     * Check, if a record for the platform exists.
+     * @param platfromid    Teh platform id.
+     * @return Returns <code>true</code>, if a record for the platform exists.
+     */
+    public boolean existsPlatfrom(final int platfromid) {
+
+        for (int i = 0; i < namerecords.length; i++) {
+            if (namerecords[i].getPlatformId() == platfromid) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns the namerecords for a platfrom id.
+     * @param platfromid The platform id.
+     * @return Returns the namerecords for a platfrom id.
+     */
+    public NameRecord[] getNameRecords(final int platfromid) {
+
+        int cnt = 0;
+        for (int i = 0; i < namerecords.length; i++) {
+            if (namerecords[i].getPlatformId() == platfromid) {
+                cnt++;
+            }
+        }
+
+        NameRecord[] pltrec = new NameRecord[cnt];
+        cnt = 0;
+        for (int i = 0; i < namerecords.length; i++) {
+            if (namerecords[i].getPlatformId() == platfromid) {
+                pltrec[cnt++] = namerecords[i];
+            }
+        }
+        return pltrec;
+    }
+
+    /**
+     * Returns the namerecords for a platfrom id.
+     * @param platfromid The platform id.
+     * @return Returns the namerecords for a platfrom id.
+     */
+    public String getRecordString(final int platfromid, final int id) {
+
+        NameRecord[] rec = getNameRecords(platfromid);
+
+        for (int i = 0; i < rec.length; i++) {
+            if (rec[i].getNameId() == id) {
+                return rec[i].getRecordString();
+            }
+        }
+        return "???";
+    }
+
+    /**
      * Returns the stringOffset.
      * @return Returns the stringOffset.
      */
     public short getStringOffset() {
 
         return stringOffset;
+    }
+
+    /**
+     * Returns the platform ids.
+     * @return Returns the platform ids.
+     */
+    public int[] getPlatformIDs() {
+
+        GroupEntries en = new GroupEntries();
+
+        for (int i = 0; i < count; i++) {
+            int id = namerecords[i].getPlatformId();
+            en.add(id);
+        }
+
+        return en.toIntArray();
+    }
+
+    /**
+     * Returns the platform name for a id.
+     * @param id    The platform id.
+     * @return Returns the platform name for a id.
+     */
+    public String getPlatformName(final int id) {
+
+        if (id >= 0 && id < PLATFORMNAME.length) {
+            return PLATFORMNAME[id];
+        }
+        return "???";
+    }
+
+    /**
+     * Returns the name for a id.
+     * @param id    The name id.
+     * @return Returns the name name for a id.
+     */
+    public String getIdName(final int id) {
+
+        if (id >= 0 && id < IDNAME.length) {
+            return IDNAME[id];
+        }
+        return "???";
     }
 
     /**
@@ -309,37 +409,37 @@ public class TtfTableNAME extends AbstractXtfTable
     public class NameRecord implements XMLWriterConvertible {
 
         /**
-         * platformId
+         * platformId.
          */
         private short platformId;
 
         /**
-         * encodingId
+         * encodingId.
          */
         private short encodingId;
 
         /**
-         * languageId
+         * languageId.
          */
         private short languageId;
 
         /**
-         * nameId
+         * nameId.
          */
         private short nameId;
 
         /**
-         * stringLength
+         * stringLength.
          */
         private short stringLength;
 
         /**
-         * stringOffset
+         * stringOffset.
          */
         private short stringOffset;
 
         /**
-         * record
+         * record.
          */
         private String record;
 
@@ -360,7 +460,7 @@ public class TtfTableNAME extends AbstractXtfTable
         }
 
         /**
-         * Returns the encoding id
+         * Returns the encoding id.
          * @return Returns the encoding id
          */
         public short getEncodingId() {
@@ -369,7 +469,7 @@ public class TtfTableNAME extends AbstractXtfTable
         }
 
         /**
-         * Returns the language id
+         * Returns the language id.
          * @return Returns the language id
          */
         public short getLanguageId() {
@@ -378,7 +478,7 @@ public class TtfTableNAME extends AbstractXtfTable
         }
 
         /**
-         * Returns the name id
+         * Returns the name id.
          * @return Returns the name id
          */
         public short getNameId() {
@@ -387,7 +487,7 @@ public class TtfTableNAME extends AbstractXtfTable
         }
 
         /**
-         * Returns the platform id
+         * Returns the platform id.
          * @return Returns the platform id
          */
         public short getPlatformId() {
@@ -396,7 +496,7 @@ public class TtfTableNAME extends AbstractXtfTable
         }
 
         /**
-         * Returns the record string
+         * Returns the record string.
          * @return Returns the record string
          */
         public String getRecordString() {
@@ -405,7 +505,7 @@ public class TtfTableNAME extends AbstractXtfTable
         }
 
         /**
-         * Load the string
+         * Load the string.
          * @param rar                   input
          * @param stringStorageOffset   offsset
          * @throws IOException if an IO-error occurs
@@ -416,7 +516,7 @@ public class TtfTableNAME extends AbstractXtfTable
             StringBuffer sb = new StringBuffer();
             rar.seek(stringStorageOffset + stringOffset);
             switch (platformId) {
-                case UNICODE :
+                case APPLE_UNICODE :
                     for (int i = 0; i < stringLength / 2; i++) {
                         sb.append(rar.readChar());
                     }
@@ -468,7 +568,7 @@ public class TtfTableNAME extends AbstractXtfTable
         }
 
         /**
-         * Returns the info for this class
+         * Returns the info for this class.
          * @return Returns the info for this class
          */
         public String toString() {

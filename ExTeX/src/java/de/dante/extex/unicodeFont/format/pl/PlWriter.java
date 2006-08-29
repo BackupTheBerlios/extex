@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -35,17 +35,17 @@ import de.dante.extex.unicodeFont.format.tex.tfm.TfmFixWord;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class PlWriter extends PrintWriter {
 
     /**
-     * level of the current property list
+     * Level of the current property list.
      */
     private int level = 0;
 
     /**
-     * newline set
+     * newline set.
      */
     private boolean newLine = true;
 
@@ -153,17 +153,17 @@ public class PlWriter extends PrintWriter {
     }
 
     /**
-     * Roman or Italic slope
+     * Roman or Italic slope.
      */
     private static final char[] RI = {'R', 'I'};
 
     /**
-     * Medium, Bold or Light weight
+     * Medium, Bold or Light weight.
      */
     private static final char[] MBL = {'M', 'B', 'L'};
 
     /**
-     * Regular, Condensed or Extended expansion
+     * Regular, Condensed or Extended expansion.
      */
     private static final char[] RCE = {'R', 'C', 'E'};
 
@@ -239,7 +239,7 @@ public class PlWriter extends PrintWriter {
     }
 
     /**
-     * Finishes all posibly unclosed property lists and closes the output.
+     * Finishes all possibly unclosed property lists and closes the output.
      */
     public void close() {
 
@@ -269,6 +269,24 @@ public class PlWriter extends PrintWriter {
 
         if (fw != null && fw.getValue() != 0) {
             plopen(name).addReal(fw).plclose();
+        } else {
+            if (printZeroWidth && "CHARWD".equals(name)) {
+                plopen(name).addReal(0.0d).plclose();
+            }
+        }
+        return this;
+    }
+
+    /**
+     * Add a char metric.
+     * @param val   the double value.
+     * @param name  the name
+     * @return Return this, reference for subsequent printing.
+     */
+    public PlWriter addCharMetric(final double val, final String name) {
+
+        if (val != 0) {
+            plopen(name).addReal(val).plclose();
         } else {
             if (printZeroWidth && "CHARWD".equals(name)) {
                 plopen(name).addReal(0.0d).plclose();

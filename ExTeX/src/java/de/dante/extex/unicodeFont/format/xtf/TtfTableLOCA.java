@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -39,7 +39,7 @@ import de.dante.util.xml.XMLStreamWriter;
  *   <tr><td>0</td><td>0</td><td>100</td></tr>
  *   <tr><td>1</td><td>100</td><td>150</td></tr>
  *   <tr><td>2</td><td>250</td><td></td></tr>
- *   <tr><td><td>...</td><td>...</td><td>...</td></tr>
+ *   <tr><td><td>..</td><td>..</td><td>..</td></tr>
  *   <tr><td>n-1</td><td>1170</td><td>120</td></tr>
  *   <tr><td>extra</td><td>1290</td><td></td></tr>
  * </table>
@@ -69,7 +69,7 @@ import de.dante.util.xml.XMLStreamWriter;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TtfTableLOCA extends AbstractXtfTable
         implements
@@ -77,24 +77,24 @@ public class TtfTableLOCA extends AbstractXtfTable
             XMLWriterConvertible {
 
     /**
-     * buffer
+     * buffer.
      */
     private byte[] buf = null;
 
     /**
-     * offsets
+     * offsets.
      */
     private int[] offsets = null;
 
     /**
-     * factor:
+     * factor.
      * <p>short : 2</p>
      * <p>long : 1</p>
      */
     private short factor = 0;
 
     /**
-     * Create a new object
+     * Create a new object.
      *
      * @param tablemap  the tablemap
      * @param de        entry
@@ -153,7 +153,7 @@ public class TtfTableLOCA extends AbstractXtfTable
     }
 
     /**
-     * Returns the offset
+     * Returns the offset.
      * @param i index
      * @return Returns the offset
      */

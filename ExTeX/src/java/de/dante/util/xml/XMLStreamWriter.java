@@ -32,7 +32,7 @@ import java.util.LinkedList;
  * <p>only xml version 1.0</p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 
 public class XMLStreamWriter {
@@ -490,6 +490,38 @@ public class XMLStreamWriter {
             }
         }
         writeCharacters(buf.toString());
+    }
+
+    /**
+     * Write a byte array as entries (hex).
+     *
+     * @param bytes The byte array.
+     * @throws IOException if an error occurs.
+     */
+    public void writeByteArrayAsEntries(final byte[] bytes) throws IOException {
+
+        for (int i = 0; i < bytes.length; i++) {
+            writeStartElement("entry");
+            writeAttribute("id", i);
+            writeAttribute("value", "0x" + toHexString(bytes[i], 2));
+            writeEndElement();
+        }
+    }
+
+    /**
+     * Write a int array as entries (hex).
+     *
+     * @param array The int array.
+     * @throws IOException if an error occurs.
+     */
+    public void writeIntArrayAsEntries(final int[] array) throws IOException {
+
+        for (int i = 0; i < array.length; i++) {
+            writeStartElement("entry");
+            writeAttribute("id", i);
+            writeAttribute("value", "0x" + toHexString(array[i], 8));
+            writeEndElement();
+        }
     }
 
     /**

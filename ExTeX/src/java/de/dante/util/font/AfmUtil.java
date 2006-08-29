@@ -30,11 +30,16 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 import de.dante.extex.ExTeX;
 import de.dante.extex.unicodeFont.exception.FontException;
 import de.dante.extex.unicodeFont.format.afm.AfmCharMetric;
+import de.dante.extex.unicodeFont.format.afm.AfmKernPairs;
 import de.dante.extex.unicodeFont.format.afm.AfmParser;
+import de.dante.extex.unicodeFont.format.pl.PlWriter;
 import de.dante.extex.unicodeFont.format.tex.psfontmap.enc.EncReader;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 import de.dante.util.xml.XMLStreamWriter;
@@ -43,7 +48,7 @@ import de.dante.util.xml.XMLStreamWriter;
  * Utilities for a afm file.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public final class AfmUtil extends AbstractFontUtil {
 
@@ -101,6 +106,11 @@ public final class AfmUtil extends AbstractFontUtil {
      * Writer for the map file.
      */
     private BufferedWriter mapout = null;
+
+    /**
+     * Create a pl file.
+     */
+    private boolean topl = false;
 
     /**
      * Create a new object.
@@ -284,6 +294,210 @@ public final class AfmUtil extends AbstractFontUtil {
     }
 
     /**
+     * Create a pl file.
+     * @param enc   The encdoing vector
+     * @param name  The name of the pl file.
+     * @throws IOException if an IO-error occurred.
+     */
+    private void createPl(final EncReader enc, final String name)
+            throws IOException {
+
+        PlWriter pl = new PlWriter(new FileOutputStream(outdir + File.separator
+                + name + ".pl"));
+
+        pl.addComment(createVersion());
+        pl.plopen("FAMILY").addStr(
+                parser.getHeader().getFontname().toUpperCase()).plclose();
+        pl.plopen("CODINGSCHEME").addStr(enc.getEncname().toUpperCase())
+                .plclose();
+        pl.plopen("DESIGNSIZE").addReal(10.0f).plclose();
+        pl.addComment("DESIGNSIZE IS IN POINTS");
+        pl.addComment("OTHER SIZES ARE MULTIPLES OF DESIGNSIZE");
+        pl.plopen("CHECKSUM").addOct(0).plclose();
+
+        printFontDimen(pl);
+
+        printLigTable(enc, pl);
+
+        printCharacter(enc, pl);
+
+        // close
+        pl.close();
+    }
+
+    /**
+     * Print Character.
+     * @param enc   The encoding table.
+     * @param pl    The pl writer.
+     */
+    private void printCharacter(final EncReader enc, final PlWriter pl) {
+
+        String[] table = enc.getTable();
+        for (int i = 0; i < table.length; i++) {
+
+            String glyph = table[i].replaceAll("/", "");
+            AfmCharMetric cm = parser.getAfmCharMetric(glyph);
+
+            if (cm != null) {
+                pl.plopen("CHARACTER").addChar((short) i);
+                pl.addComment(cm.getN());
+                pl.addCharMetric(scale((long) cm.getWx()), "CHARWD");
+                pl.addCharMetric(scale((long) cm.getBury()), "CHARHT");
+                pl.addCharMetric(scale(-(long) cm.getBlly()), "CHARDP");
+                if (cm.getBurx() > cm.getWx()) {
+                    pl.addCharMetric(scale((long) (cm.getBurx() - cm.getWx())),
+                            "CHARIC");
+                }
+                pl.plclose();
+            }
+        }
+    }
+
+    /**
+     * Print LigTable.
+     * @param enc   The encoding vector.
+     * @param pl    The pl writer.
+     */
+    private void printLigTable(final EncReader enc, final PlWriter pl) {
+
+        pl.plopen("LIGTABLE");
+
+        String[] table = enc.getTable();
+        for (int i = 0; i < table.length; i++) {
+
+            String glyph = table[i].replaceAll("/", "");
+            AfmCharMetric cm = parser.getAfmCharMetric(glyph);
+
+            if (cm != null && (cm.isKerning() || cm.isLigatur())) {
+                pl.plopen("LABEL").addChar((short) i).plclose();
+                pl.addComment(cm.getN());
+                if (cm.isLigatur()) {
+                    HashMap ligmap = cm.getL();
+                    Iterator it = ligmap.keySet().iterator();
+                    while (it.hasNext()) {
+                        String letter = (String) it.next();
+                        String lig = (String) ligmap.get(letter);
+                        short posletter = (short) enc.getPosition(letter);
+                        short poslig = (short) enc.getPosition(lig);
+                        if (posletter >= 0 && poslig >= 0) {
+                            pl.plopen("LIG").addChar(posletter).addChar(poslig)
+                                    .plclose();
+                        }
+                    }
+                }
+                if (cm.isKerning()) {
+                    List kernlist = cm.getK();
+                    for (int k = 0, n = kernlist.size(); k < n; k++) {
+                        AfmKernPairs kp = (AfmKernPairs) kernlist.get(k);
+                        String pre = kp.getCharpre();
+                        String post = kp.getCharpost();
+                        float size = kp.getKerningsize();
+                        short pospre = (short) enc.getPosition(pre);
+                        short pospost = (short) enc.getPosition(post);
+                        if (pospre >= 0 && pospost >= 0) {
+                            pl.plopen("KRN").addChar(pospost).addReal(
+                                    scale((long) size)).plclose();
+                        }
+                    }
+                }
+                pl.plopen("STOP").plclose();
+            }
+        }
+
+        pl.plclose();
+    }
+
+    /**
+     * Print the FONTDIMEN.
+     * @param pl    The pl writer.
+     */
+    private void printFontDimen(final PlWriter pl) {
+
+        pl.plopen("FONTDIMEN");
+
+        // slant
+        double newslant = slant
+                - efactor
+                * Math.tan(parser.getHeader().getItalicangle()
+                        * (Math.PI / 180.0));
+        pl.plopen("SLANT").addReal((long) (FIXFACTOR * newslant + 0.5))
+                .plclose();
+
+        // space
+        int fontspace = 0;
+        AfmCharMetric space = parser.getAfmCharMetric("space");
+        if (space != null) {
+            fontspace = (int) space.getWx();
+        } else {
+            space = parser.getAfmCharMetric(32);
+            if (space != null) {
+                fontspace = (int) space.getWx();
+            } else {
+                fontspace = transform(500, 0);
+            }
+        }
+        pl.plopen("SPACE").addReal(scale(fontspace)).plclose();
+
+        // stretch
+        pl.plopen("STRETCH").addReal(
+                (parser.getHeader().isFixedpitch()
+                        ? 0
+                        : scale((long) (300 * efactor + 0.5)))).plclose();
+        // shrink
+        pl.plopen("SHRINK").addReal(
+                (parser.getHeader().isFixedpitch()
+                        ? 0
+                        : scale((long) (100 * efactor + 0.5)))).plclose();
+
+        // xheight
+        pl.plopen("XHEIGHT").addReal(
+                scale((long) parser.getHeader().getXheight())).plclose();
+
+        // quad
+        pl.plopen("QUAD").addReal(scale((long) (1000 * efactor + 0.5)))
+                .plclose();
+        pl.plclose();
+    }
+
+    /**
+     * efactor.
+     */
+    private float efactor = 1.0f;
+
+    /**
+     * slant.
+     */
+    private float slant = 0.0f;
+
+    /**
+     * fixfactor.
+     */
+    private static final long FIXFACTOR = 0x100000L; // 2^{20}, the unit fixnum
+
+    /**
+     * scale (from afm2tfm.c).
+     * @param value  The value to scale
+     * @return Scale the value.
+     */
+    private double scale(final long value) {
+
+        //      (((what / 1000) << 20) + (((what % 1000) << 20) + 500) / 1000);
+        return value / 1000d;
+    }
+
+    /**
+     * transform (from afm2tfm.c).
+     * @param x
+     * @param y
+     * @return The transform value.
+     */
+    private int transform(final int x, final int y) {
+
+        double acc = efactor * x + slant * y;
+        return (int) (acc >= 0 ? Math.floor(acc + 0.5) : Math.ceil(acc - 0.5));
+    }
+
+    /**
      * Read all glyph names from the encoding vectors.
      *
      * @param readenc   The list for the names.
@@ -336,6 +550,10 @@ public final class AfmUtil extends AbstractFontUtil {
                 mapout.write(afmfile.getName().replaceAll("\\.[aA][fF][mM]",
                         ".pfb"));
                 mapout.write("\n");
+            }
+
+            if (tomap) {
+                createPl(enc, encname + encv.replaceAll("\\.[eE][nN][cC]", ""));
             }
         }
     }
@@ -420,6 +638,7 @@ public final class AfmUtil extends AbstractFontUtil {
         boolean toenc = false;
         String encname = "";
         boolean tomap = false;
+        boolean topl = false;
         String outdir = ".";
         String file = "";
 
@@ -451,6 +670,8 @@ public final class AfmUtil extends AbstractFontUtil {
                 }
             } else if ("-m".equals(args[i]) || "--map".equals(args[i])) {
                 tomap = true;
+            } else if ("-p".equals(args[i]) || "--pl".equals(args[i])) {
+                topl = true;
             } else {
                 file = args[i];
             }
@@ -630,5 +851,23 @@ public final class AfmUtil extends AbstractFontUtil {
     public void setTomap(final boolean map) {
 
         tomap = map;
+    }
+
+    /**
+     * Returns the topl.
+     * @return Returns the topl.
+     */
+    public boolean isTopl() {
+
+        return topl;
+    }
+
+    /**
+     * The topl to set.
+     * @param pl The topl to set.
+     */
+    public void setTopl(final boolean pl) {
+
+        topl = pl;
     }
 }
