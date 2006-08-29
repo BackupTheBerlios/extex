@@ -28,6 +28,7 @@ import java.util.Arrays;
 
 import de.dante.extex.unicodeFont.exception.FontException;
 import de.dante.extex.unicodeFont.format.xtf.TtfTableCMAP;
+import de.dante.extex.unicodeFont.format.xtf.TtfTableHMTX;
 import de.dante.extex.unicodeFont.format.xtf.TtfTableNAME;
 import de.dante.extex.unicodeFont.format.xtf.TtfTablePOST;
 import de.dante.extex.unicodeFont.format.xtf.XtfReader;
@@ -39,7 +40,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * Print information about a ttf/otf file.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public final class XtfInfo extends AbstractFontUtil {
 
@@ -128,9 +129,7 @@ public final class XtfInfo extends AbstractFontUtil {
     private void charInfo(final XtfReader parser) {
 
         TtfTableCMAP cmap = parser.getCmapTable();
-
         IndexEntry[] entries = cmap.getEntries();
-        Format[] formats = cmap.getFormats();
 
         for (int i = 0; i < entries.length; i++) {
             int pid = entries[i].getPlatformId();
@@ -159,6 +158,25 @@ public final class XtfInfo extends AbstractFontUtil {
      * @param parser    The ttf parser.
      */
     private void glyphInfo(final XtfReader parser) {
+
+        TtfTablePOST post = parser.getPostTable();
+        int gpos = post.getGlyphNamePosition(glyphname);
+
+        getLogger()
+                .severe(
+                        getLocalizer().format("XtfInfo.GlyphPOS", glyphname,
+                                String.valueOf(gpos),
+                                "0x" + Integer.toHexString(gpos)));
+
+        if (gpos >= 0) {
+            TtfTableHMTX hmtx = parser.getHmtxTable();
+
+            int width = hmtx.getAdvanceWidth(gpos);
+            getLogger().severe(
+                    getLocalizer().format("XtfInfo.GlyphWidth",
+                            String.valueOf(width)));
+
+        }
 
     }
 

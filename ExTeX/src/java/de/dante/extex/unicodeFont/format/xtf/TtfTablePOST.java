@@ -82,7 +82,7 @@ import de.dante.util.xml.XMLStreamWriter;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class TtfTablePOST extends AbstractXtfTable
         implements
@@ -547,6 +547,23 @@ public class TtfTablePOST extends AbstractXtfTable
                 break;
         }
         return null;
+    }
+
+    /**
+     * Returns the position of a glpyhname or -1 if not found.
+     * @param glypname The glpyh name.
+     * @return Returns the position of a glpyhname.
+     */
+    public int getGlyphNamePosition(final String glypname) {
+
+        if (glypname != null) {
+            for (int i = 0; i < numGlyphs; i++) {
+                if (glypname.equals(getGlyphName(i))) {
+                    return i;
+                }
+            }
+        }
+        return -1;
     }
 
     /**
