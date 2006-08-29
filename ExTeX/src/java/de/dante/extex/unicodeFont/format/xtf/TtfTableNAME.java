@@ -49,7 +49,7 @@ import de.dante.util.xml.XMLStreamWriter;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class TtfTableNAME extends AbstractXtfTable
         implements
@@ -325,12 +325,12 @@ public class TtfTableNAME extends AbstractXtfTable
      * @param id    The platform id.
      * @return Returns the platform name for a id.
      */
-    public String getPlatformName(final int id) {
+    public static String getPlatformName(final int id) {
 
         if (id >= 0 && id < PLATFORMNAME.length) {
             return PLATFORMNAME[id];
         }
-        return "???";
+        return "? " + id + " ?";
     }
 
     /**
@@ -338,12 +338,12 @@ public class TtfTableNAME extends AbstractXtfTable
      * @param id    The name id.
      * @return Returns the name name for a id.
      */
-    public String getIdName(final int id) {
+    public static String getIdName(final int id) {
 
         if (id >= 0 && id < IDNAME.length) {
             return IDNAME[id];
         }
-        return "???";
+        return "? " + id + " ?";
     }
 
     /**

@@ -24,17 +24,22 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 
 import de.dante.extex.unicodeFont.exception.FontException;
+import de.dante.extex.unicodeFont.format.xtf.TtfTableCMAP;
 import de.dante.extex.unicodeFont.format.xtf.TtfTableNAME;
+import de.dante.extex.unicodeFont.format.xtf.TtfTablePOST;
 import de.dante.extex.unicodeFont.format.xtf.XtfReader;
+import de.dante.extex.unicodeFont.format.xtf.TtfTableCMAP.Format;
+import de.dante.extex.unicodeFont.format.xtf.TtfTableCMAP.IndexEntry;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * Print information about a ttf/otf file.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public final class XtfInfo extends AbstractFontUtil {
 
@@ -54,14 +59,14 @@ public final class XtfInfo extends AbstractFontUtil {
     private String glyphname = "";
 
     /**
-     * Check if the glyphs in the encoding are exists.
+     * Print the charinfo.
      */
-    private boolean encoding = false;
+    private boolean charinfo = false;
 
     /**
-     * The name of the encoding file.
+     * The char to print.
      */
-    private String encname = "";
+    private int charcode;
 
     /**
      * Create a new object.
@@ -105,16 +110,73 @@ public final class XtfInfo extends AbstractFontUtil {
         if (!listglyphs) {
             doHead(file, parser);
         }
-        //        if (listglyphs) {
-        //            listGlyphs(parser);
-        //        }
-        //        if (glyphinfo) {
-        //            glyphInfo(parser);
-        //        }
-        //
-        //        if (encoding) {
-        //            encoding(file, parser);
-        //        }
+        if (listglyphs) {
+            listGlyphs(parser);
+        }
+        if (charinfo) {
+            charInfo(parser);
+        }
+        if (glyphinfo) {
+            glyphInfo(parser);
+        }
+    }
+
+    /**
+     * CharInfo.
+     * @param parser    The ttf parser.
+     */
+    private void charInfo(final XtfReader parser) {
+
+        TtfTableCMAP cmap = parser.getCmapTable();
+
+        IndexEntry[] entries = cmap.getEntries();
+        Format[] formats = cmap.getFormats();
+
+        for (int i = 0; i < entries.length; i++) {
+            int pid = entries[i].getPlatformId();
+            int eid = entries[i].getEncodingId();
+            String platformname = entries[i].getPlatformName();
+            String encname = entries[i].getEncodingName();
+            getLogger().severe(
+                    getLocalizer()
+                            .format("XtfInfo.CMAP", platformname, encname));
+            String gn = parser.mapCharCodeToGlyphname(charcode, (short) pid,
+                    (short) eid);
+            String cchex = "0x" + Integer.toHexString(charcode);
+            if (gn == null) {
+                gn = "-";
+            }
+            getLogger().severe(
+                    getLocalizer().format("XtfInfo.CHARMAP",
+                            String.valueOf(charcode), cchex, gn));
+
+        }
+
+    }
+
+    /**
+     * GlyphInfo.
+     * @param parser    The ttf parser.
+     */
+    private void glyphInfo(final XtfReader parser) {
+
+    }
+
+    /**
+     * List the glpyphs.
+     * @param parser    The ttf parser
+     */
+    private void listGlyphs(final XtfReader parser) {
+
+        TtfTablePOST post = parser.getPostTable();
+        String[] glyphs = post.getPsGlyphName();
+        Arrays.sort(glyphs);
+
+        for (int i = 0; i < glyphs.length; i++) {
+            getLogger().severe(
+                    getLocalizer().format("XtfInfo.ListGlyph", glyphs[i]));
+        }
+
     }
 
     /**
@@ -188,8 +250,8 @@ public final class XtfInfo extends AbstractFontUtil {
         boolean listglyphs = false;
         boolean glyphinfo = false;
         String glyphname = "";
-        boolean encoding = false;
-        String encname = "";
+        boolean charinfo = false;
+        int charcode = 0;
         String file = "";
 
         int i = 0;
@@ -201,11 +263,14 @@ public final class XtfInfo extends AbstractFontUtil {
                     glyphinfo = true;
                     glyphname = args[++i];
                 }
-            } else if ("-e".equals(args[i])
-                    || "--encodingcheck".equals(args[i])) {
+            } else if ("-c".equals(args[i]) || "--charinfo".equals(args[i])) {
                 if (i + 1 < args.length) {
-                    encoding = true;
-                    encname = args[++i];
+                    charinfo = true;
+                    try {
+                        charcode = Integer.parseInt(args[++i]);
+                    } catch (Exception e) {
+                        charcode = 0;
+                    }
                 }
             } else {
                 file = args[i];
@@ -216,8 +281,8 @@ public final class XtfInfo extends AbstractFontUtil {
         info.setGlyphinfo(glyphinfo);
         info.setGlyphname(glyphname);
         info.setListglyphs(listglyphs);
-        info.setEncoding(encoding);
-        info.setEncname(encname);
+        info.setCharinfo(charinfo);
+        info.setCharCode(charcode);
 
         info.doIt(file);
     }
@@ -277,38 +342,39 @@ public final class XtfInfo extends AbstractFontUtil {
     }
 
     /**
-     * Returns the encoding.
-     * @return Returns the encoding.
+     * Returns the charinfo.
+     * @return Returns the charinfo.
      */
-    public boolean isEncoding() {
+    public boolean isCharinfo() {
 
-        return encoding;
+        return charinfo;
     }
 
     /**
-     * The encoding to set.
-     * @param aencoding The encoding to set.
+     * The charinfo to set.
+     * @param info The charinfo to set.
      */
-    public void setEncoding(final boolean aencoding) {
+    public void setCharinfo(final boolean info) {
 
-        encoding = aencoding;
+        charinfo = info;
     }
 
     /**
-     * Returns the encname.
-     * @return Returns the encname.
+     * Returns the charcode.
+     * @return Returns the charcode.
      */
-    public String getEncname() {
+    public int getCharCode() {
 
-        return encname;
+        return charcode;
     }
 
     /**
-     * The encname to set.
-     * @param aencname The encname to set.
+     * The charcode to set.
+     * @param cc The charcode to set.
      */
-    public void setEncname(final String aencname) {
+    public void setCharCode(final int cc) {
 
-        encname = aencname;
+        charcode = cc;
     }
+
 }

@@ -64,7 +64,7 @@ import de.dante.util.xml.XMLStreamWriter;
  * TODO incompelte
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class TtfTableCMAP extends AbstractXtfTable
         implements
@@ -951,6 +951,45 @@ public class TtfTableCMAP extends AbstractXtfTable
         public int getPlatformId() {
 
             return platformId;
+        }
+
+        /**
+         * Returns the platform name.
+         * @return Returns the platform name.
+         */
+        public String getPlatformName() {
+
+            return TtfTableNAME.getPlatformName(platformId);
+        }
+
+        /**
+         * Returns the encoding name.
+         * @return Returns the encoding name.
+         */
+        public String getEncodingName() {
+
+            if (platformId == PLATFORM_MICROSOFT) {
+                // Windows specific encodings
+                switch (encodingId) {
+                    case ENC_SYMBOL :
+                        return " (Symbol)";
+                    case ENC_UNICODE :
+                        return " (Unicode)";
+                    case ENC_SHIFTJIS :
+                        return " (ShiftJIS)";
+                    case ENC_BIG5 :
+                        return " (Big5)";
+                    case ENC_PRC :
+                        return " (PRC)";
+                    case ENC_WANSUNG :
+                        return " (Wansung)";
+                    case ENC_JOHAB :
+                        return " (Johab)";
+                    default :
+                        return "? " + encodingId + " ?";
+                }
+            }
+            return "? " + encodingId + " ?";
         }
 
         /**
