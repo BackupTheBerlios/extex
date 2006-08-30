@@ -63,7 +63,7 @@ import de.dante.util.framework.i18n.Localizer;
  * This is a implementation of a dvi document writer.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class DviDocumentWriter
         implements
@@ -103,6 +103,15 @@ public class DviDocumentWriter
             dviWriter = theDviWriter;
         }
 
+
+        /**
+         * Get wrong node.
+         *
+         * @param node the wrong node
+         * @return Exception for this confusion.
+         *
+         * @exception GeneralException if an error occurs
+         */
         private GeneralException confusion(final String node)
                 throws GeneralException {
 
@@ -120,6 +129,11 @@ public class DviDocumentWriter
 
         }
 
+        /**
+         * Set the visitor for recursive inspection of Nodes (NodeLists).
+         *
+         * @param theVisitor the new <code>NodeVisitor</code>
+         */
         public void setVisitor(final NodeVisitor theVisitor) {
 
             // this method is needed for debugging
@@ -127,34 +141,86 @@ public class DviDocumentWriter
             visitor = theVisitor;
         }
 
-        public Object visitAdjust(final AdjustNode value, final Object value2)
+
+        /**
+         * Inspect Adjust for dvi file.
+         *
+         * @param node the <code>AdjustNode</code> value
+         * @param value ignored
+         * @return null
+         * @exception GeneralException if an error occurs
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitAdjust(AdjustNode,
+         *     java.lang.Object)
+         */
+        public Object visitAdjust(final AdjustNode node, final Object value)
                 throws GeneralException {
 
             // TODO unimplemented
             throw new GeneralException("unimplemented");
         }
 
-        public Object visitAfterMath(final AfterMathNode value,
-                final Object value2) throws GeneralException {
+        /**
+         * Inspect AfterMathNode for dvi file.
+         *
+         * @param node the <code>AfterMathNode</code> value
+         * @param value ignored
+         * @return null
+         * @exception GeneralException if an error occurs
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitAfterMath(AfterMathNode,
+         *     java.lang.Object)
+         */
+        public Object visitAfterMath(final AfterMathNode node,
+                final Object value) throws GeneralException {
 
             // TODO unimplemented
             throw new GeneralException("unimplemented");
         }
 
-        public Object visitAlignedLeaders(final AlignedLeadersNode value,
-                final Object value2) throws GeneralException {
+        /**
+         * Inspect AlignedLeadersNode for dvi file.
+         *
+         * @param node the <code>AlignedLeadersNode</code> value
+         * @param value ignored
+         * @return null
+         * @exception GeneralException if an error occurs
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitAlignedLeaders(AlignedLeadersNode,
+         *     java.lang.Object)
+         */
+        public Object visitAlignedLeaders(final AlignedLeadersNode node,
+                final Object value) throws GeneralException {
 
             // TODO unimplemented
             throw new GeneralException("unimplemented");
         }
 
+        /**
+         * Inspect BeforeMathNode for dvi file.
+         *
+         * @param node the <code>BeforeMathNode</code> value
+         * @param value ignored
+         * @return null
+         * @exception GeneralException if an error occurs
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitBeforeMath(BeforeMathNode,
+         *     java.lang.Object)
+         */
         public Object visitBeforeMath(final BeforeMathNode node,
-                final Object value2) throws GeneralException {
+                final Object value) throws GeneralException {
 
             // TODO unimplemented
             throw new GeneralException("unimplemented");
         }
 
+
+        /**
+         * Inspect CenteredLeadersNode for dvi file.
+         *
+         * @param node the <code>CenteredLeadersNode</code> value
+         * @param value ignored
+         * @return null
+         * @exception GeneralException if an error occurs
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitCenteredLeaders(CenteredLeadersNode,
+         *     java.lang.Object)
+         */
         public Object visitCenteredLeaders(final CenteredLeadersNode node,
                 final Object value) throws GeneralException {
 
@@ -187,6 +253,17 @@ public class DviDocumentWriter
             return null;
         }
 
+
+        /**
+         * Inspect DiscretionaryNode for dvi file.
+         *
+         * @param node the <code>DiscretionaryNode</code> value
+         * @param value ignored
+         * @return null
+         * @exception GeneralException if an error occurs
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitDiscretionary(DiscretionaryNode,
+         *     java.lang.Object)
+         */
         public Object visitDiscretionary(final DiscretionaryNode node,
                 final Object value) throws GeneralException {
 
@@ -194,6 +271,17 @@ public class DviDocumentWriter
             throw new GeneralException("unimplemented");
         }
 
+
+        /**
+         * Inspect ExpandedLeadersNode for dvi file.
+         *
+         * @param node the <code>ExpandedLeadersNode</code> value
+         * @param value ignored
+         * @return null
+         * @exception GeneralException if an error occurs
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitExpandedLeaders(ExpandedLeadersNode,
+         *     java.lang.Object)
+         */
         public Object visitExpandedLeaders(final ExpandedLeadersNode node,
                 final Object value) throws GeneralException {
 
@@ -201,6 +289,17 @@ public class DviDocumentWriter
             throw new GeneralException("unimplemented");
         }
 
+
+        /**
+         * Write an GlueNode to dvi file.
+         *
+         * @param node the <code>GlueNode</code> value
+         * @param value ignored
+         * @return null
+         * @exception GeneralException if an error occurs
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitGlue(GlueNode,
+         *     java.lang.Object)
+         */
         public Object visitGlue(final GlueNode node, final Object value)
                 throws GeneralException {
 
@@ -209,6 +308,17 @@ public class DviDocumentWriter
             return null;
         }
 
+
+        /**
+         * Write horizontal list to dvi file.
+         *
+         * @param nodes the <code>VerticalListNode</code> value
+         * @param value ignored
+         * @return null
+         * @exception GeneralException if an error occurs
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitHorizontalList(HorizontalListNode,
+         *     java.lang.Object)
+         */
         public Object visitHorizontalList(final HorizontalListNode nodes,
                 final Object value) throws GeneralException {
 
@@ -222,12 +332,34 @@ public class DviDocumentWriter
             return null;
         }
 
+
+        /**
+         * Inspect insertion for dvi file.
+         *
+         * @param node the <code>InsertionNode</code> value
+         * @param value ignored
+         * @return null
+         * @exception GeneralException if an error occurs
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitInsertion(InsertionNode,
+         *     java.lang.Object)
+         */
         public Object visitInsertion(final InsertionNode node,
                 final Object value) throws GeneralException {
 
             throw confusion("insertion");
         }
 
+
+        /**
+         * Write an KernNode to dvi file.
+         *
+         * @param node the <code>KernNode</code> value
+         * @param value ignored
+         * @return null
+         * @exception GeneralException if an error occurs
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitKern(KernNode,
+         *     java.lang.Object)
+         */
         public Object visitKern(final KernNode node, final Object value)
                 throws GeneralException {
 
@@ -236,6 +368,17 @@ public class DviDocumentWriter
             return null;
         }
 
+
+        /**
+         * Write an LigatureNode to dvi file.
+         *
+         * @param node the <code>LigatureNode</code> value
+         * @param value ignored
+         * @return null
+         * @exception GeneralException if an error occurs
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitLigature(LigatureNode,
+         *     java.lang.Object)
+         */
         public Object visitLigature(final LigatureNode node, final Object value)
                 throws GeneralException {
 
@@ -244,18 +387,51 @@ public class DviDocumentWriter
             return null;
         }
 
+
+        /**
+         * Inspect mark for dvi file.
+         *
+         * @param node the <code>MarkNode</code> value
+         * @param value ignored
+         * @return null
+         * @exception GeneralException if an error occurs
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitMark(MarkNode,
+         *     java.lang.Object)
+         */
         public Object visitMark(final MarkNode node, final Object value)
                 throws GeneralException {
 
             throw confusion("mark");
         }
 
+
+        /**
+         * Inspect PenaltyNode for dvi file.
+         *
+         * @param node the <code>PenaltyNode</code> value
+         * @param value ignored
+         * @return null
+         * @exception GeneralException if an error occurs
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitPenalty(PenaltyNode,
+         *     java.lang.Object)
+         */
         public Object visitPenalty(final PenaltyNode node, final Object value)
                 throws GeneralException {
 
             throw confusion("penalty");
         }
 
+
+        /**
+         * Write a RuleNode to dvi file.
+         *
+         * @param node the <code>RuleNode</code> value
+         * @param value ignored
+         * @return null
+         * @exception GeneralException if an error occurs
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitRule(RuleNode,
+         *     java.lang.Object)
+         */
         public Object visitRule(final RuleNode node, final Object value)
                 throws GeneralException {
 
@@ -264,6 +440,17 @@ public class DviDocumentWriter
             return null;
         }
 
+
+        /**
+         * Write a SpaceNode to dvi file.
+         *
+         * @param node the <code>SpaceNode</code> value
+         * @param value ignored
+         * @return null
+         * @exception GeneralException if an error occurs
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitSpace(SpaceNode,
+         *     java.lang.Object)
+         */
         public Object visitSpace(final SpaceNode node, final Object value)
                 throws GeneralException {
 
@@ -272,6 +459,17 @@ public class DviDocumentWriter
             return null;
         }
 
+
+        /**
+         * Write a vertical list to dvi file.
+         *
+         * @param nodes the <code>VerticalListNode</code> value
+         * @param value ignored
+         * @return null
+         * @exception GeneralException if an error occurs
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitVerticalList(VerticalListNode,
+         *     java.lang.Object)
+         */
         public Object visitVerticalList(final VerticalListNode nodes,
                 final Object value) throws GeneralException {
 
@@ -285,6 +483,7 @@ public class DviDocumentWriter
             return null;
         }
 
+
         /**
          * @see de.dante.extex.typesetter.type.NodeVisitor#visitVirtualChar(de.dante.extex.typesetter.type.node.VirtualCharNode, java.lang.Object)
          */
@@ -295,13 +494,29 @@ public class DviDocumentWriter
             return null;
         }
 
-        public Object visitWhatsIt(final WhatsItNode nde, final Object value)
+        /**
+         * Write a WhatsItNode to dvi file.
+         *
+         * @param node the <code>WhatsItNode</code> value
+         * @param value ignored
+         * @return null
+         * @exception GeneralException if an error occurs
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitWhatsIt(WhatsItNode,
+         *     java.lang.Object)
+         */
+        public Object visitWhatsIt(final WhatsItNode node, final Object value)
                 throws GeneralException {
 
-            dviWriter.writeNode(nde);
+            dviWriter.writeNode(node);
             return null;
         }
 
+        /**
+         * Write nodelist to dvi file.
+         *
+         * @param nodes <code>NodeList</code> for writing.
+         * @exception GeneralException if an error occurs
+         */
         private void writeNodes(final NodeList nodes) throws GeneralException {
 
             NodeIterator iterator = nodes.iterator();
@@ -326,14 +541,13 @@ public class DviDocumentWriter
 
     /**
      * Configuration of ExTeX.
-     *
      */
     private Configuration configuration = null;
+
 
     /**
      * Saves the current font.  Need the check if there is a font
      * change needed.
-     *
      */
     private Font currentFont = null;
 
@@ -482,7 +696,8 @@ public class DviDocumentWriter
      * This is the entry point for the document writer.  Exceptions of
      * the initialisation of the class will be thrown here.
      *
-     * @param nodes a <code>NodeList</code> value
+     * @param page the <code>Page</code> to send
+     * @return number of pages
      * @exception GeneralException if an error occurs
      * @exception IOException if an error occurs
      */
