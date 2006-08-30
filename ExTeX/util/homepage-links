@@ -1,0 +1,6 @@
+#!/bin/sh
+# author: Sebastian Waschik
+# created: 2006-08-22
+# RCS-ID: $Id: homepage-links,v 1.1 2006/08/30 20:33:34 plaicy Exp $
+
+checklink -D 20 -s -l http://www.extex.org/ http://www.extex.org/
