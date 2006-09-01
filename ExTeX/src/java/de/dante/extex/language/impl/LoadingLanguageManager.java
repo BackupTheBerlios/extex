@@ -21,18 +21,22 @@ package de.dante.extex.language.impl;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.ObjectStreamException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 import de.dante.extex.language.Language;
 import de.dante.extex.language.hyphenation.exception.HyphenationException;
 import de.dante.util.framework.Registrar;
-import de.dante.util.framework.RegistrarException;
-import de.dante.util.framework.RegistrarObserver;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
+import de.dante.util.resource.ResourceConsumer;
+import de.dante.util.resource.ResourceFinder;
 
 /**
  * This class manages the <code>Language</code>s. It is a container
@@ -60,11 +64,19 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class LoadingLanguageManager extends BaseLanguageManager
         implements
-            LanguageCreator {
+            LanguageCreator,
+            ResourceConsumer {
+
+    /**
+     * The constant <tt>NON_LOADABLE_LANGUAGE_PATTERN</tt> contains the patter
+     * to detect languages which should not be handled via external resources.
+     * Currently this value detects purely numerical names.
+     */
+    private static final String NON_LOADABLE_LANGUAGE_PATTERN = "^\\d+$";
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
@@ -78,10 +90,10 @@ public class LoadingLanguageManager extends BaseLanguageManager
     private static final String TABLE_EXTENSION = ".lfm";
 
     /**
-     * The field <tt>creator</tt> contains the reference to the instance for
-     * communication to the registrar.
+     * The field <tt>finder</tt> contains the resource finder to search for
+     * language files.
      */
-    private transient LanguageCreator creator;
+    private transient ResourceFinder finder;
 
     /**
      * Creates a new object.
@@ -89,25 +101,13 @@ public class LoadingLanguageManager extends BaseLanguageManager
     public LoadingLanguageManager() {
 
         super();
-        creator = this;
-        Registrar.register(new RegistrarObserver() {
-
-            public Object reconnect(final Object object)
-                    throws RegistrarException {
-
-                ManagedLanguage lang = (ManagedLanguage) object;
-                lang.setCreator(creator);
-                return object;
-            }
-        }, ManagedLanguage.class);
     }
 
     /**
      * @see de.dante.extex.language.impl.BaseLanguageManager#createLanguage(
      *      java.lang.String)
      */
-    protected Language createLanguage(final String name)
-            throws ConfigurationException {
+    protected Language createLanguage(final String name) {
 
         return new FutureLanguage(name, this);
     }
@@ -137,7 +137,42 @@ public class LoadingLanguageManager extends BaseLanguageManager
     public Language loadLanguageInstance(final String name)
             throws HyphenationException {
 
-        // TODO gene: loadLanguageInstance unimplemented
+        if (name.matches(NON_LOADABLE_LANGUAGE_PATTERN)) {
+            //
+        } else if (finder == null) {
+            getLogger().warning(getLocalizer().format("MissingResourceFinder"));
+        } else {
+            ObjectInputStream in = null;
+            try {
+                InputStream ins = finder.findResource(name, TABLE_EXTENSION);
+                if (ins != null) {
+                    in = new ObjectInputStream(new GZIPInputStream(ins));
+
+                    Language lang = (Language) in.readObject();
+
+                    in.close();
+                    getTables().put(name, lang);
+                    return lang;
+                } else {
+                    getLogger().warning(
+                            getLocalizer().format("LanguageNotFound", name));
+                }
+            } catch (ConfigurationException e) {
+                throw new HyphenationException(e);
+            } catch (IOException e) {
+                throw new HyphenationException(e);
+            } catch (ClassNotFoundException e) {
+                throw new HyphenationException(e);
+            } finally {
+                if (in != null) {
+                    try {
+                        in.close();
+                    } catch (IOException e) {
+                        throw new HyphenationException(e);
+                    }
+                }
+            }
+        }
 
         return createLanguageInstance(name);
     }
@@ -152,19 +187,32 @@ public class LoadingLanguageManager extends BaseLanguageManager
      * @throws ClassNotFoundException in case of a non existing class
      *  definition
      */
-    protected void readObject(final ObjectInputStream in)
+    private void readObject(final ObjectInputStream in)
             throws IOException,
                 ClassNotFoundException {
 
-        Map tables = getTables();
-        Map map = (Map) in.readObject();
-        Iterator iter = map.entrySet().iterator();
-        while (iter.hasNext()) {
-            Map.Entry e = (Map.Entry) iter.next();
-            String key = (String) e.getKey();
-            Object value = e.getValue();
-            tables.put(key, value);
+        //        Registrar.register(new CreatorInjector(this), ManagedLanguage.class);
+    }
+
+    /**
+     * Restore the internal state when the instance is loaded from file.
+     *
+     * @return the object which should be used instead of the one read
+     *
+     * @throws ObjectStreamException in case of an error
+     */
+    protected Object readResolve() throws ObjectStreamException {
+
+        Iterator iterator = getTables().values().iterator();
+        while (iterator.hasNext()) {
+            Object lang = iterator.next();
+            if (lang instanceof ManagedLanguage) {
+                ((ManagedLanguage) lang).setCreator(this);
+            }
+
         }
+
+        return Registrar.reconnect(this);
     }
 
     /**
@@ -183,21 +231,30 @@ public class LoadingLanguageManager extends BaseLanguageManager
      *
      * @throws IOException in case of an IO error
      */
-    protected boolean saveTable(final String key, final Object value)
+    protected boolean saveTable(final String key, final Language value)
             throws IOException {
 
-        if (key.matches("\\d+")) {
+        if (key.matches(NON_LOADABLE_LANGUAGE_PATTERN)) {
             return false;
         }
 
         String filename = key + TABLE_EXTENSION;
         FileOutputStream fos = new FileOutputStream(filename);
-        ObjectOutputStream out = new ObjectOutputStream(fos);
+        ObjectOutputStream out = new ObjectOutputStream(new GZIPOutputStream(
+                fos));
         out.writeObject(value);
         out.close();
-        getLogger().info("Hyphenation table " + key + //
-                " written to file " + filename);
+        getLogger().info(getLocalizer().format("LanguageSaved", key, filename));
         return true;
+    }
+
+    /**
+     * @see de.dante.util.resource.ResourceConsumer#setResourceFinder(
+     *      de.dante.util.resource.ResourceFinder)
+     */
+    public void setResourceFinder(final ResourceFinder finder) {
+
+        this.finder = finder;
     }
 
     /**
@@ -208,19 +265,18 @@ public class LoadingLanguageManager extends BaseLanguageManager
      *
      * @throws IOException in case of an IO error
      */
-    protected void writeObject(final ObjectOutputStream out) throws IOException {
+    private void writeObject(final ObjectOutputStream out) throws IOException {
 
         Map map = new HashMap();
         Iterator iter = getTables().entrySet().iterator();
         while (iter.hasNext()) {
             Map.Entry e = (Map.Entry) iter.next();
             String key = (String) e.getKey();
-            Object value = e.getValue();
+            Language value = (Language) e.getValue();
             if (!saveTable(key, value)) {
                 map.put(key, value);
             }
         }
-        out.writeObject(map);
     }
 
 }
