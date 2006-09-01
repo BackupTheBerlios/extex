@@ -77,6 +77,9 @@ import de.dante.extex.typesetter.TypesetterFactory;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.util.exception.GeneralException;
 import de.dante.util.file.OutputFactory;
+import de.dante.util.framework.Registrar;
+import de.dante.util.framework.RegistrarException;
+import de.dante.util.framework.RegistrarObserver;
 import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.ConfigurationFactory;
 import de.dante.util.framework.configuration.exception.ConfigurationClassNotFoundException;
@@ -331,9 +334,42 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.135 $
+ * @version $Revision: 1.136 $
  */
 public class ExTeX {
+
+    /**
+     * TODO gene: missing JavaDoc.
+     *
+     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+     * @version $Revision: 1.136 $
+     */
+    private class ResourceFinderInjector implements RegistrarObserver {
+
+        /**
+         * The field <tt>finder</tt> contains the ...
+         */
+        private ResourceFinder finder;
+
+        /**
+         * Creates a new object.
+         *
+         */
+        public ResourceFinderInjector(final ResourceFinder finder) {
+
+            super();
+            this.finder = finder;
+        }
+
+        /**
+         * @see de.dante.util.framework.RegistrarObserver#reconnect(java.lang.Object)
+         */
+        public Object reconnect(final Object object) throws RegistrarException {
+
+            ((ResourceConsumer) object).setResourceFinder(finder);
+            return object;
+        }
+    }
 
     /**
      * The field <tt>DEFAULT_JOBNAME</tt> contains the default for the job name
@@ -553,6 +589,16 @@ public class ExTeX {
      * configuration file which contains the specification for the font.
      */
     private static final String TAG_FONT = "Font";
+
+    /**
+     * Getter for the version.
+     *
+     * @return the version number for this class
+     */
+    public static String getVersion() {
+
+        return EXTEX_VERSION;
+    }
 
     /**
      * Log a {@link java.lang.Throwable Throwable} including its stack trace
@@ -845,16 +891,6 @@ public class ExTeX {
     }
 
     /**
-     * Getter for the version.
-     *
-     * @return the version number for this class
-     */
-    public static String getVersion() {
-
-        return EXTEX_VERSION;
-    }
-
-    /**
      * Initialize the input streams. If the property <i>extex.file</i> is set
      * and not the empty string, (e.g. from the command line) then this value
      * is used as file name to read from. If the property <i>extex.code</i>
@@ -897,7 +933,7 @@ public class ExTeX {
         }
 
         return notInitialized;
-    }
+    };
 
     /**
      * Load a format if a non-empty name of a format is given.
@@ -935,12 +971,17 @@ public class ExTeX {
             if (stream == null) {
                 throw new HelpingException(localizer, "FormatNotFound", format);
             }
+            Object ref = Registrar.register(new ResourceFinderInjector(finder),
+                    ResourceConsumer.class);
             try {
                 interpreter.loadFormat(stream, fmt);
+
             } catch (LoaderException e) {
                 logger.throwing(this.getClass().getName(), "loadFormat()", e);
                 throw new HelpingException(localizer, "TTP.FormatFileError",
                         format);
+            } finally {
+                Registrar.unregister(ref);
             }
             logger.fine(localizer.format("ExTeX.FormatDate", //
                     interpreter.getContext().getId(), time));
@@ -1471,6 +1512,18 @@ public class ExTeX {
 
             return interpreter;
 
+        } catch (InterpreterException e) {
+
+            while (!e.isProcessed()
+                    && e.getCause() instanceof InterpreterException) {
+                e = (InterpreterException) e.getCause();
+            }
+
+            if (!e.isProcessed()) {
+                e.setProcessed(true);
+                logger.severe("\n" + e.getLocalizedMessage() + "\n");
+            }
+            throw e;
         } catch (ConfigurationException e) {
             logger.throwing(this.getClass().getName(), "run", e);
             throw e;
@@ -1479,21 +1532,6 @@ public class ExTeX {
             throw e;
         } catch (IOException e) {
             logger.throwing(this.getClass().getName(), "run", e);
-            throw e;
-        } catch (TypesetterException e) {
-            Throwable cause = e.getCause();
-            if (cause instanceof InterpreterException) {
-                logger.severe(cause.getLocalizedMessage());
-                throw (InterpreterException) cause;
-            } else {
-                logger.severe(e.getLocalizedMessage());
-                throw e;
-            }
-        } catch (InterpreterException e) {
-            if (!e.isProcessed()) {
-                e.setProcessed(true);
-                logger.severe("\n" + e.getLocalizedMessage() + "\n");
-            }
             throw e;
         } catch (Throwable e) {
             logInternalError(e);
