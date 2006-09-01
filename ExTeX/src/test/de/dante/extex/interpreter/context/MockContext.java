@@ -67,7 +67,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * classes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.33 $
+ * @version $Revision: 1.34 $
  */
 public class MockContext implements Context, TypesetterOptions {
 
@@ -391,6 +391,14 @@ public class MockContext implements Context, TypesetterOptions {
      */
     public Language getLanguage(final String language)
             throws InterpreterException {
+
+        throw new RuntimeException("unimplemented");
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getLanguageManager()
+     */
+    public LanguageManager getLanguageManager() {
 
         throw new RuntimeException("unimplemented");
     }

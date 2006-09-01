@@ -142,7 +142,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.114 $
+ * @version $Revision: 1.115 $
  */
 public class ContextImpl
         implements
@@ -490,19 +490,6 @@ public class ContextImpl
 
         Configuration typesettingConfig = configuration
                 .getConfiguration(TYPESETTING_CONTEXT_TAG);
-
-        /*
-         if (hyphenationManager instanceof Configurable) {
-         Configuration config = configuration
-         .getConfiguration(HYPHENATION_MANAGER_TAG);
-
-         if (config == null) {
-         throw new ConfigurationMissingException(
-         HYPHENATION_MANAGER_TAG, configuration.toString());
-         }
-         ((Configurable) hyphenationManager).configure(config);
-         }
-         */
 
         if (typesettingConfig == null) {
             throw new ConfigurationMissingException(TYPESETTING_CONTEXT_TAG,
@@ -871,6 +858,14 @@ public class ContextImpl
         } catch (ConfigurationException e) {
             throw new InterpreterException(e);
         }
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getLanguageManager()
+     */
+    public LanguageManager getLanguageManager() {
+
+        return languageManager;
     }
 
     /**
