@@ -36,7 +36,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class LanguageObserver implements CountObserver, TokensObserver {
 
@@ -77,8 +77,13 @@ public class LanguageObserver implements CountObserver, TokensObserver {
             throws ConfigurationException {
 
         if ("lang".equals(name)) { // this should never fail; just to be sure
+
+            String s = value.toText();
+            if (s.equals("")) {
+                s = "0";
+            }
             context.getTypesettingContextFactory().newInstance(
-                    context.getTypesettingContext(), value.toString());
+                    context.getTypesettingContext(), s);
         }
     }
 
