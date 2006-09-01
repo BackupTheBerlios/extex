@@ -19,6 +19,7 @@
 
 package de.dante.extex.language.impl;
 
+import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,10 +31,10 @@ import de.dante.extex.language.ligature.LigatureBuilder;
 import de.dante.extex.language.word.WordTokenizer;
 import de.dante.util.framework.AbstractFactory;
 import de.dante.util.framework.Registrar;
-import de.dante.util.framework.RegistrarException;
-import de.dante.util.framework.RegistrarObserver;
 import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
+import de.dante.util.framework.i18n.Localizer;
+import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
  * This class manages the <code>HyphenationTable</code>s. It is a container
@@ -51,7 +52,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class BaseLanguageManager extends AbstractFactory
         implements
@@ -76,17 +77,6 @@ public class BaseLanguageManager extends AbstractFactory
     public BaseLanguageManager() {
 
         super();
-        Registrar.register(new RegistrarObserver() {
-
-            public Object reconnect(final Object object)
-                    throws RegistrarException {
-
-                Language lang = (Language) object;
-                tables.put(lang.getName(), lang);
-
-                return object;
-            }
-        }, Language.class);
     }
 
     /**
@@ -158,6 +148,16 @@ public class BaseLanguageManager extends AbstractFactory
     }
 
     /**
+     * Getter for a localizer
+     *
+     * @return the localizer
+     */
+    protected Localizer getLocalizer() {
+
+        return LocalizerFactory.getLocalizer(getClass().getName());
+    }
+
+    /**
      * Getter for the tables.
      *
      * @return the tables map
@@ -165,6 +165,18 @@ public class BaseLanguageManager extends AbstractFactory
     protected Map getTables() {
 
         return tables;
+    }
+
+    /**
+     * Restore the internal state when the instance is loaded from file.
+     *
+     * @return the object which should be used instead of the one read
+     *
+     * @throws ObjectStreamException in case of an error
+     */
+    protected Object readResolve() throws ObjectStreamException {
+
+        return Registrar.reconnect(this);
     }
 
 }
