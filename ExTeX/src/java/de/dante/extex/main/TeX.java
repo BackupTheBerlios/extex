@@ -135,7 +135,7 @@ import de.dante.util.resource.ResourceFinder;
  *   <dt><tt>&lang;file&rang;</tt></dt>
  *   <dd>
  *    This parameter contains the file to read from. A file name may
- *    not start with a backslash or a ampercent. It has no default.
+ *    not start with a backslash or an ampercent. It has no default.
  *   </dd>
  *   <dd>Property:
  *    <a href="#extex.file"><tt>extex.file</tt></a></dd>
@@ -583,7 +583,7 @@ import de.dante.util.resource.ResourceFinder;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class TeX extends ExTeX {
 
@@ -719,6 +719,32 @@ public class TeX extends ExTeX {
         super(theProperties, dotFile);
         localizer = LocalizerFactory.getLocalizer(TeX.class.getName());
         setQueryFileHandler(new QueryFileHandlerTeXImpl());
+    }
+
+    /**
+     * Print the copying file.
+     *
+     * @throws IOException in case of an IO error
+     */
+    private void copying() throws IOException {
+
+        String file = this.getClass().getName().replace('.', '/').replaceAll(
+                "[a-z0-9_A-Z]+$", "LICENSE.txt");
+        PrintStream printStream = System.err;
+        ClassLoader classLoader = this.getClass().getClassLoader();
+        InputStream stream = classLoader.getResourceAsStream(file);
+        if (stream == null) {
+            printStream.println(file + ": resource not found");
+            return;
+        }
+        try {
+            int c;
+            while ((c = stream.read()) >= 0) {
+                printStream.print((char) c);
+            }
+        } finally {
+            stream.close();
+        }
     }
 
     /**
@@ -925,10 +951,10 @@ public class TeX extends ExTeX {
                             runWithFile(args, i + 1);
                             onceMore = false;
                         } else {
-                            useArg(arg, args, ++i);
+                            setPropertyFromArgument(arg, args, ++i);
                         }
                     } else if ("-configuration".startsWith(arg)) {
-                        useArg(PROP_CONFIG, args, ++i);
+                        setPropertyFromArgument(PROP_CONFIG, args, ++i);
                     } else if ("-copyright".startsWith(arg)) {
                         int year = Calendar.getInstance().get(Calendar.YEAR);
                         String copyrightYear = (year <= COPYRIGHT_YEAR
@@ -947,13 +973,13 @@ public class TeX extends ExTeX {
                                 getLocalizer().format("ExTeX.Usage", "extex"));
                         onceMore = false;
                     } else if ("-fmt".startsWith(arg)) {
-                        useArg(PROP_FMT, args, ++i);
+                        setPropertyFromArgument(PROP_FMT, args, ++i);
                     } else if (arg.startsWith("-fmt=")) {
                         setProperty(PROP_FMT, arg.substring("-fmt=".length()));
                     } else if ("-halt-on-error".startsWith(arg)) {
                         setProperty(PROP_HALT_ON_ERROR, "true");
                     } else if ("-interaction".startsWith(arg)) {
-                        useArg(PROP_INTERACTION, args, ++i);
+                        setPropertyFromArgument(PROP_INTERACTION, args, ++i);
                         applyInteraction();
                     } else if ("-ini".startsWith(arg)) {
                         setProperty(PROP_INI, "true");
@@ -962,15 +988,15 @@ public class TeX extends ExTeX {
                                 .substring("-interaction=".length()));
                         applyInteraction();
                     } else if ("-job-name".startsWith(arg)) {
-                        useArg(PROP_JOBNAME_MASTER, args, ++i);
+                        setPropertyFromArgument(PROP_JOBNAME_MASTER, args, ++i);
                     } else if (arg.startsWith("-job-name=")) {
                         setProperty(PROP_JOBNAME_MASTER, arg
                                 .substring("-job-name=".length()));
                     } else if ("-language".startsWith(arg)) {
-                        useArg(PROP_LANG, args, ++i);
+                        setPropertyFromArgument(PROP_LANG, args, ++i);
                         applyLanguage();
                     } else if ("-progname".startsWith(arg)) {
-                        useArg(PROP_PROGNAME, args, ++i);
+                        setPropertyFromArgument(PROP_PROGNAME, args, ++i);
                     } else if (arg.startsWith("-progname=")) {
                         setProperty(PROP_PROGNAME, arg.substring("-progname="
                                 .length()));
@@ -982,17 +1008,18 @@ public class TeX extends ExTeX {
                                         getProperty("java.version")));
                         onceMore = false;
                     } else if ("-output".startsWith(arg)) {
-                        useArg(PROP_OUTPUT_TYPE, args, ++i);
+                        setPropertyFromArgument(PROP_OUTPUT_TYPE, args, ++i);
                     } else if ("-texinputs".startsWith(arg)) {
-                        useArg(PROP_TEXINPUTS, args, ++i);
+                        setPropertyFromArgument(PROP_TEXINPUTS, args, ++i);
                     } else if ("-texoutputs".startsWith(arg)) {
-                        useArg(PROP_OUTPUTDIR, args, ++i);
+                        setPropertyFromArgument(PROP_OUTPUTDIR, args, ++i);
                     } else if ("-texmfoutputs".startsWith(arg)) {
-                        useArg("extex.fallbackOutputdir", args, ++i);
+                        setPropertyFromArgument("extex.fallbackOutputdir",
+                                args, ++i);
                     } else if ("-debug".startsWith(arg)) {
                         useTrace(args, ++i);
                     } else if ("--".equals(arg)) {
-                        useArg(PROP_CONFIG, args, ++i);
+                        setPropertyFromArgument(PROP_CONFIG, args, ++i);
                     } else if (!loadArgumentFile(arg.substring(1))) {
                         throw new MainUnknownOptionException(arg);
                     }
@@ -1014,8 +1041,9 @@ public class TeX extends ExTeX {
             }
         } catch (MainException e) {
             showBanner(null, Level.INFO);
-            if (!(e.getCause() instanceof InterpreterException || ((InterpreterException) e
-                    .getCause()).isProcessed())) {
+            Throwable x = e.getCause();
+            if (!(x instanceof InterpreterException)
+                    || !((InterpreterException) x).isProcessed()) {
                 logException(getLogger(), e.getLocalizedMessage(), e);
             }
             returnCode = e.getCode();
@@ -1030,32 +1058,6 @@ public class TeX extends ExTeX {
         }
 
         return returnCode;
-    }
-
-    /**
-     * Print the copying file.
-     *
-     * @throws IOException in case of an IO error
-     */
-    private void copying() throws IOException {
-
-        String file = this.getClass().getName().replace('.', '/').replaceAll(
-                "[a-z0-9_A-Z]+$", "LICENSE.txt");
-        PrintStream printStream = System.err;
-        ClassLoader classLoader = this.getClass().getClassLoader();
-        InputStream stream = classLoader.getResourceAsStream(file);
-        if (stream == null) {
-            printStream.println(file + ": resource not found");
-            return;
-        }
-        try {
-            int c;
-            while ((c = stream.read()) >= 0) {
-                printStream.print((char) c);
-            }
-        } finally {
-            stream.close();
-        }
     }
 
     /**
@@ -1169,16 +1171,6 @@ public class TeX extends ExTeX {
     }
 
     /**
-     * Setter for queryFileHandler.
-     *
-     * @param queryFileHandler the queryFileHandler to set
-     */
-    public void setQueryFileHandler(final QueryFileHandler queryFileHandler) {
-
-        this.queryFileHandler = queryFileHandler;
-    }
-
-    /**
      * Acquire the next argument from the command line and set a property
      * accordingly. If none is found then an exception is thrown.
      *
@@ -1188,14 +1180,25 @@ public class TeX extends ExTeX {
      *
      * @throws MainMissingArgumentException in case of an error
      */
-    protected void useArg(final String name, final String[] arguments,
-            final int position) throws MainMissingArgumentException {
+    protected void setPropertyFromArgument(final String name,
+            final String[] arguments, final int position)
+            throws MainMissingArgumentException {
 
         if (position >= arguments.length) {
             throw new MainMissingArgumentException(name);
         }
 
         setProperty(name, arguments[position]);
+    }
+
+    /**
+     * Setter for queryFileHandler.
+     *
+     * @param queryFileHandler the queryFileHandler to set
+     */
+    public void setQueryFileHandler(final QueryFileHandler queryFileHandler) {
+
+        this.queryFileHandler = queryFileHandler;
     }
 
     /**
