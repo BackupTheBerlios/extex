@@ -80,6 +80,7 @@ import de.dante.extex.interpreter.type.PrefixCode;
 import de.dante.extex.interpreter.type.ProtectedCode;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.language.LanguageManager;
 import de.dante.extex.language.LanguageManagerFactory;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.type.Catcode;
@@ -175,7 +176,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.111 $
+ * @version $Revision: 1.112 $
  */
 public abstract class Max
         implements
@@ -649,22 +650,14 @@ public abstract class Max
 
                 token.visit(this, null);
 
-            } catch (TypesetterException e) {
-
-                final Throwable cause = e.getCause();
-                if (cause instanceof InterpreterException) {
-                    handleException(token, context,
-                            (InterpreterException) cause, typesetter);
-                } else {
-                    handleException(token, context, e, typesetter);
-                }
-
             } catch (InterpreterException e) {
-                for (Throwable x = e.getCause(); x instanceof InterpreterException; x = e
-                        .getCause()) {
-                    e = (InterpreterException) x;
+                Throwable x = e;
+                while (x.getCause() instanceof InterpreterException) {
+                    x = e.getCause();
                 }
-                handleException(token, context, e, typesetter);
+
+                handleException(token, context, (InterpreterException) x,
+                        typesetter);
 
             } catch (RuntimeException e) {
                 if (observersError != null) {
@@ -1102,39 +1095,42 @@ public abstract class Max
                 LoaderException {
 
         Context newContext;
+        Object ref1 = Registrar.register(new RegistrarObserver() {
+
+            /**
+             * @see de.dante.util.framework.RegistrarObserver#reconnect(
+             *      java.lang.Object)
+             */
+            public Object reconnect(final Object object) {
+
+                ((LogEnabled) object).enableLogging(logger);
+                return object;
+            }
+
+        }, LogEnabled.class);
+        Object ref2 = Registrar.register(new RegistrarObserver() {
+
+            /**
+             * @see de.dante.util.framework.RegistrarObserver#reconnect(
+             *      java.lang.Object)
+             */
+            public Object reconnect(final Object object) {
+
+                ((Localizable) object).enableLocalization(LocalizerFactory
+                        .getLocalizer(object.getClass().getName()));
+                return object;
+            }
+
+        }, Localizable.class);
         try {
-            Registrar.register(new RegistrarObserver() {
-
-                /**
-                 * @see de.dante.util.framework.RegistrarObserver#reconnect(
-                 *      java.lang.Object)
-                 */
-                public Object reconnect(final Object object) {
-
-                    ((LogEnabled) object).enableLogging(logger);
-                    return object;
-                }
-
-            }, LogEnabled.class);
-            Registrar.register(new RegistrarObserver() {
-
-                /**
-                 * @see de.dante.util.framework.RegistrarObserver#reconnect(
-                 *      java.lang.Object)
-                 */
-                public Object reconnect(final Object object) {
-
-                    ((Localizable) object).enableLocalization(LocalizerFactory
-                            .getLocalizer(object.getClass().getName()));
-                    return object;
-                }
-
-            }, Localizable.class);
             newContext = new SerialLoader().load(stream);
-            Registrar.reset();
         } catch (InvalidClassException e) {
             throw new LoaderException(getLocalizer().format(
                     "ClassLoaderIncompatibility", fmt, e.getMessage()));
+        } finally {
+
+            Registrar.unregister(ref2);
+            Registrar.unregister(ref1);
         }
 
         try {
@@ -1147,34 +1143,41 @@ public abstract class Max
             throw new LoaderException(e);
         }
 
-        if (newContext instanceof Configurable) {
-            try {
+        try {
+            if (newContext instanceof Configurable) {
                 //TODO gene: provide the correct configuration instead of the constant one
                 ((Configurable) newContext).configure(configuration
-                        .getConfiguration("Context").getConfiguration("ExTeX"));
-            } catch (ConfigurationException e) {
-                throw new LoaderException(e);
+                        .getConfiguration(CONTEXT_TAG)
+                        .getConfiguration("ExTeX"));
             }
+
+            LanguageManager languageManager = newContext.getLanguageManager();
+            if (languageManager instanceof Configurable) {
+
+                //TODO gene: provide the correct configuration instead of the constant one
+                ((Configurable) languageManager).configure(configuration
+                        .getConfiguration(LANGUAGE_TAG).getConfiguration(
+                                "ExTeX"));
+            }
+        } catch (ConfigurationException e) {
+            throw new LoaderException(e);
         }
+
         newContext.setFontFactory(context.getFontFactory());
         newContext.setTokenFactory(context.getTokenFactory());
         newContext.setStandardTokenStream(context.getStandardTokenStream());
         context = newContext;
 
-        if (context instanceof LoadedObservable) {
-            try {
+        try {
+            if (context instanceof LoadedObservable) {
                 ((LoadedObservable) context).receiveLoad(this);
-            } catch (InterpreterException e) {
-                throw new LoaderException(e);
             }
-        }
 
-        if (observersLoad != null) {
-            try {
+            if (observersLoad != null) {
                 observersLoad.update(context);
-            } catch (InterpreterException e) {
-                throw new LoaderException(e);
             }
+        } catch (InterpreterException e) {
+            throw new LoaderException(e);
         }
     }
 
@@ -1330,7 +1333,6 @@ public abstract class Max
             String endPrimitive = loc.format("TTP.EndPrimitive");
             String message = loc.format("TTP.EndGroup", context
                     .esc(endPrimitive), Long.toString(groupLevel));
-            //logger.warning(message);
             InterpreterException e = new InterpreterException(message);
             if (observersError != null) {
                 observersError.update(e);
