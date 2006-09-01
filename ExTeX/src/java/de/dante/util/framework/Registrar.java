@@ -65,7 +65,7 @@ import java.util.List;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public final class Registrar {
 
@@ -73,7 +73,7 @@ public final class Registrar {
      * This class provides a container for a pair of a class and an observer.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.5 $
+     * @version $Revision: 1.6 $
      */
     private static final class Obs {
 
@@ -158,19 +158,31 @@ public final class Registrar {
      *
      * @param observer the observer
      * @param type the interface or class to be observed
+     *
+     * @return a reference to an object which can be passed to unregister() for
+     *  removing the registered observer.
      */
-    public static void register(final RegistrarObserver observer,
+    public static Object register(final RegistrarObserver observer,
             final Class type) {
 
-        observers.add(new Obs(observer, type));
+        Obs obs = new Obs(observer, type);
+        observers.add(obs);
+        return obs;
     }
 
     /**
-     * Reset the list all observers which are registered.
+     * Unregister a registered observer.
+     *
+     * @param obs the reference obtained from register()
+     *
+     * @return <code>true</code> iff the removal succeeded
      */
-    public static void reset() {
+    public static boolean unregister(final Object obs) {
 
-        observers = new ArrayList();
+        if (!(obs instanceof Obs)) {
+            throw new IllegalArgumentException("#unregister()");
+        }
+        return observers.remove(obs);
     }
 
     /**
