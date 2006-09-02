@@ -93,6 +93,7 @@
       </fileset>
     </pack>
 
+<!--
     <pack name="Sources" id="src" required="no" preselected="no">
       <description/>
       <fileset dir="../../src/java"
@@ -100,7 +101,6 @@
       </fileset>
     </pack>
 
-<!--
     <pack name="JavaDoc" required="no">
       <description>The JavaDoc pack contains the documentation
       of the classes and interfaces in the extex.jar file.
