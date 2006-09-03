@@ -19,6 +19,7 @@
 
 package de.dante.extex;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -42,8 +43,9 @@ import de.dante.extex.backend.BackendDriverImpl;
 import de.dante.extex.backend.documentWriter.DocumentWriter;
 import de.dante.extex.backend.documentWriter.DocumentWriterFactory;
 import de.dante.extex.backend.documentWriter.DocumentWriterOptions;
-import de.dante.extex.backend.documentWriter.OutputStreamFactory;
 import de.dante.extex.backend.documentWriter.exception.DocumentWriterException;
+import de.dante.extex.backend.outputStream.OutputFactory;
+import de.dante.extex.backend.outputStream.OutputStreamFactory;
 import de.dante.extex.color.ColorAware;
 import de.dante.extex.color.ColorConverter;
 import de.dante.extex.color.ColorConverterFacory;
@@ -76,7 +78,6 @@ import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterFactory;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.util.exception.GeneralException;
-import de.dante.util.file.OutputFactory;
 import de.dante.util.framework.Registrar;
 import de.dante.util.framework.RegistrarException;
 import de.dante.util.framework.RegistrarObserver;
@@ -312,8 +313,8 @@ import de.dante.util.resource.ResourceFinderFactory;
  * <p>
  *  There is another level of properties which is considered between the
  *  compiled in defaults and the user's properties. Those are the system
- *  properties of the Java system. There system wide settings can be stored.
- *  Nevertheless, you should use this feature sparsely.
+ *  properties of the Java system. In those properties system wide settings can
+ *  be stored. Nevertheless, you should use this feature sparsely.
  * </p>
  *
  *
@@ -334,26 +335,28 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.136 $
+ * @version $Revision: 1.137 $
  */
 public class ExTeX {
 
     /**
-     * TODO gene: missing JavaDoc.
+     * This class is used to inject a resource finder when a class is loaded
+     * from a format which needs it.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.136 $
+     * @version $Revision: 1.137 $
      */
     private class ResourceFinderInjector implements RegistrarObserver {
 
         /**
-         * The field <tt>finder</tt> contains the ...
+         * The field <tt>finder</tt> contains the resource finder to inject.
          */
         private ResourceFinder finder;
 
         /**
          * Creates a new object.
          *
+         * @param finder the resource finder to inject
          */
         public ResourceFinderInjector(final ResourceFinder finder) {
 
@@ -776,6 +779,10 @@ public class ExTeX {
         try {
             interactionObserver.receiveInteractionChange(null, Interaction
                     .get(properties.getProperty(PROP_INTERACTION)));
+        } catch (InteractionUnknownException e) {
+            throw e;
+        } catch (RuntimeException e) {
+            throw e;
         } catch (Exception e) {
             throw new InteractionUnknownException("");
         }
@@ -959,6 +966,7 @@ public class ExTeX {
         String time = DateFormat.getDateTimeInstance(DateFormat.SHORT,
                 DateFormat.SHORT, Locale.ENGLISH).format(new Date());
 
+        Context context = interpreter.getContext();
         if (format != null && !format.equals("")) {
             InputStream stream = finder.findResource(fmt, FORMAT_TYPE);
 
@@ -983,16 +991,29 @@ public class ExTeX {
             } finally {
                 Registrar.unregister(ref);
             }
-            logger.fine(localizer.format("ExTeX.FormatDate", //
-                    interpreter.getContext().getId(), time));
-        } else if (!ini) {
-            throw new GeneralException();
-        } else {
+            context = interpreter.getContext();
+            logger.fine(localizer.format("ExTeX.FormatDate", context.getId(),
+                    time));
+        } else if (ini) {
             logger.fine(localizer.format("ExTeX.NoFormatDate", time));
+        } else {
+            throw new GeneralException();
         }
         interpreter.setJobname(jobname);
 
-        return interpreter.getContext();
+        if (context instanceof InteractionObservable) {
+            ((InteractionObservable) context)
+                    .registerInteractionObserver(interactionObserver);
+        } else {
+            logger.info(localizer.format("InteractionNotSupported"));
+        }
+
+        if (Boolean.valueOf((String) properties.get(PROP_TRACING_ONLINE))
+                .booleanValue()) {
+            context.setCount("tracingonline", 1, true);
+        }
+
+        return context;
     }
 
     /**
@@ -1079,7 +1100,7 @@ public class ExTeX {
         }
         docWriter.setParameter("Creator", "ExTeX " + EXTEX_VERSION.toString());
         docWriter.setParameter("Title", "");
-        docWriter.setParameter("Author", System.getProperty("user.name"));
+        docWriter.setParameter("Author", properties.getProperty("user.name"));
         docWriter.setParameter("Paper", "A4");
         docWriter.setParameter("Orientation", "Portrait");
         docWriter.setParameter("Pages", "*");
@@ -1253,36 +1274,54 @@ public class ExTeX {
                     .getProperty(PROP_ERROR_HANDLER));
         }
         interpreter.setErrorHandler(errHandler);
-        Context context = interpreter.getContext();
-        factory.setOptions((TokenStreamOptions) context);
         interpreter.setTokenStreamFactory(factory);
         interpreter.setFontFactory(fontFactory);
         interpreter.setInteraction(Interaction.get(properties
                 .getProperty(PROP_INTERACTION)));
-        if (context instanceof InteractionObservable) {
-            ((InteractionObservable) context)
-                    .registerInteractionObserver(interactionObserver);
-        } else {
-            logger.info(localizer.format("InteractionNotSupported"));
-        }
 
+        Context context = interpreter.getContext();
         makePageSize(context);
 
-        Configuration fontConfiguration = config.findConfiguration(TAG_FONT);
-        context.set(makeDefaultFont(fontConfiguration, fontFactory), true);
-        context.set(context.getLanguage("0"), true);
-
-        context = loadFormat(interpreter, finder, //
-                properties.getProperty(PROP_FMT), jobname);
-
-        if (Boolean.valueOf((String) properties.get(PROP_TRACING_ONLINE))
-                .booleanValue()) {
-            context.setCount("tracingonline", 1, true);
+        String fmt = properties.getProperty(PROP_FMT);
+        if (fmt == null || fmt.equals("")) {
+            Configuration fontConfiguration = config
+                    .findConfiguration(TAG_FONT);
+            context.set(makeDefaultFont(fontConfiguration, fontFactory), true);
+            context.set(context.getLanguage("0"), true);
         }
+
+        context = loadFormat(interpreter, finder, fmt, jobname);
+
+        factory.setOptions((TokenStreamOptions) context);
 
         initializeStreams(interpreter, properties);
 
         return interpreter;
+    }
+
+    /**
+     * Find the name for the log file
+     *
+     * @param jobname the name of the job
+     *
+     * @return the new file
+     */
+    protected File makeLogFile(final String jobname) {
+
+        File logFile = new File(properties.getProperty(PROP_OUTPUTDIR), //
+                jobname + ".log");
+
+        if (logFile.canWrite()) {
+            return logFile;
+        }
+
+        logFile = new File(properties.getProperty(PROP_OUTPUTDIR_FALLBACK),
+                jobname + ".log");
+
+        if (logFile.canWrite()) {
+            return logFile;
+        }
+        return null;
     }
 
     /**
@@ -1292,24 +1331,30 @@ public class ExTeX {
      *
      * @return the new handler
      */
-    protected Handler makeLogFileHandler(final String logFile) {
+    protected Handler makeLogHandler(final File logFile) {
 
-        Handler fileHandler = null;
+        if (logFile == null) {
+            return null;
+        }
+
+        Handler handler = null;
         try {
-            fileHandler = new StreamHandler(new FileOutputStream(logFile),
-                    new LogFormatter());
-            fileHandler.setLevel(Level.ALL);
-            logger.addHandler(fileHandler);
+            OutputStream stream = new BufferedOutputStream(
+                    new FileOutputStream(logFile));
+            handler = new StreamHandler(stream, new LogFormatter());
+            handler.setLevel(Level.ALL);
+            logger.addHandler(handler);
+
         } catch (SecurityException e) {
             logger.severe(localizer.format("ExTeX.LogFileError", e
                     .getLocalizedMessage()));
-            fileHandler = null;
+            handler = null;
         } catch (IOException e) {
             logger.severe(localizer.format("ExTeX.LogFileError", e
                     .getLocalizedMessage()));
-            fileHandler = null;
+            handler = null;
         }
-        return fileHandler;
+        return handler;
     }
 
     /**
@@ -1455,13 +1500,14 @@ public class ExTeX {
                 IOException,
                 InterpreterException {
 
-        final String jobname = determineJobname();
-        final String logFile = new File(properties.getProperty(PROP_OUTPUTDIR),
-                jobname + ".log").getPath();
-
-        Handler fileHandler = makeLogFileHandler(logFile);
+        String jobname = determineJobname();
+        File logFile = makeLogFile(jobname);
+        Handler logHandler = null;
 
         try {
+
+            logHandler = makeLogHandler(logFile);
+
             Configuration config = new ConfigurationFactory()
                     .newInstance(properties.getProperty(PROP_CONFIG));
             showBanner(config, (showBanner ? Level.INFO : Level.FINE));
@@ -1508,7 +1554,7 @@ public class ExTeX {
                     (pages == 0 ? "ExTeX.NoPages" : pages == 1
                             ? "ExTeX.Page"
                             : "ExTeX.Pages"), //
-                    outFactory.getDestination(), Integer.toString(pages)));
+                    logFile, Integer.toString(pages)));
 
             return interpreter;
 
@@ -1536,12 +1582,12 @@ public class ExTeX {
         } catch (Throwable e) {
             logInternalError(e);
         } finally {
-            if (fileHandler != null) {
-                fileHandler.close();
-                logger.removeHandler(fileHandler);
+            if (logHandler != null) {
+                logHandler.close();
+                logger.removeHandler(logHandler);
                 // see "TeX -- The Program [1333]"
-                logger.log((noBanner ? Level.INFO : Level.FINE), localizer
-                        .format("ExTeX.Logfile", logFile));
+                logger.log((noBanner ? Level.INFO : Level.FINE), //
+                        localizer.format("ExTeX.Logfile", logFile));
             }
         }
         return null;
@@ -1618,4 +1664,5 @@ public class ExTeX {
             showBanner = false;
         }
     }
+
 }
