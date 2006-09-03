@@ -34,7 +34,7 @@ import de.dante.extex.interpreter.exception.InterpreterException;
  * TODO gene: missing JavaDoc.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TeXTest extends TestCase {
 
@@ -83,8 +83,7 @@ public class TeXTest extends TestCase {
             int status = tex.run(args);
 
             assertEquals("", outBuffer.toString());
-            String err = errBuffer.toString();
-            assertEquals(result, err);
+            assertEquals(result, errBuffer.toString());
             assertEquals(exit, status);
 
         } finally {
@@ -105,7 +104,7 @@ public class TeXTest extends TestCase {
     public void test__undefined() throws Exception {
 
         runTest(new String[]{"--undefined"}, System.getProperties(), BANNER
-                + "Missing argument on command line", -10);
+                + "Missing argument on command line", -1);
     }
 
     /**
@@ -145,7 +144,7 @@ public class TeXTest extends TestCase {
      *
      * @throws Exception in case of an error
      */
-    public void test_progname() throws Exception {
+    public void test_progname1() throws Exception {
 
         Properties properties = new Properties();
         properties.put("java.version", System.getProperty("java.version"));
@@ -161,10 +160,58 @@ public class TeXTest extends TestCase {
      *
      * @throws Exception in case of an error
      */
+    public void test_progname2() throws Exception {
+
+        Properties properties = new Properties();
+        properties.put("java.version", System.getProperty("java.version"));
+        runTest(new String[]{"-prog", "abc", "-version"}, properties,
+                "This is abc, Version " + ExTeX.getVersion() + " ("
+                        + System.getProperty("java.version") + ")\n", 0);
+    }
+
+    /**
+     * <testcase>
+     *  This test case validates that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test_progname3() throws Exception {
+
+        Properties properties = new Properties();
+        properties.put("java.version", System.getProperty("java.version"));
+        runTest(new String[]{"-progname=abc", "-version"}, properties,
+                "This is abc, Version " + ExTeX.getVersion() + " ("
+                        + System.getProperty("java.version") + ")\n", 0);
+    }
+
+    /**
+     * <testcase>
+     *  This test case validates that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test_progname4() throws Exception {
+
+        Properties properties = new Properties();
+        properties.put("java.version", System.getProperty("java.version"));
+        runTest(new String[]{"-prog=abc", "-version"}, properties,
+                "This is abc, Version " + ExTeX.getVersion() + " ("
+                        + System.getProperty("java.version") + ")\n", 0);
+    }
+
+    /**
+     * <testcase>
+     *  This test case validates that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
     public void test0() throws Exception {
 
         System.setIn(new ByteArrayInputStream("\\relax\n\\end\\n".getBytes()));
-        runTest(new String[]{}, new Properties(), "This is ExTeX, Version "
+        runTest(new String[]{"-ini"}, new Properties(), "This is ExTeX, Version "
                 + ExTeX.getVersion() + " (ExTeX mode)\n"
                 + "**\n*\nNo pages of output.\nTranscript written on "
                 + (new File(".", "texput.log")).toString() + ".\n", 0);
@@ -179,7 +226,7 @@ public class TeXTest extends TestCase {
      */
     public void testFmt() throws Exception {
 
-        System.setIn(new ByteArrayInputStream("\\relax\n\\end\\n".getBytes()));
+        System.setIn(new ByteArrayInputStream("\\relax\n\\end\n".getBytes()));
         runTest(
                 new String[]{"&xyzzy"},
                 new Properties(),
@@ -190,6 +237,30 @@ public class TeXTest extends TestCase {
                         + "Sorry, I can't find the format `tex.fmt'!\n"
                         + "Transcript written on "
                         + (new File(".", "texput.log")).toString() + ".\n", -1);
+    }
+
+    /**
+     * <testcase>
+     *  This test case validates that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testStarStar1() throws Exception {
+
+        System.setIn(new ByteArrayInputStream("xyzzy\n".getBytes()));
+        runTest(
+                new String[]{"-ini"},
+                new Properties(),
+                "This is ExTeX, Version "
+                        + ExTeX.getVersion()
+                        + " (ExTeX mode)\n"
+                        + "**\n! I can't find file `xyzzy.tex'.\n"
+                        + "Please type another input file name: I can't find file `xyzzy'\n"
+                        + "*\n" + "No pages of output.\n"
+//                        + "Transcript written on "
+//                        + (new File(".", "xyzzy.log")).toString() + ".\n"
+                        , 0);
     }
 
     //TODO add more test cases
