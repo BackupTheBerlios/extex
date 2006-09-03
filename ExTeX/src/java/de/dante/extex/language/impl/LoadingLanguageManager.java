@@ -64,7 +64,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class LoadingLanguageManager extends BaseLanguageManager
         implements
@@ -76,7 +76,7 @@ public class LoadingLanguageManager extends BaseLanguageManager
      * to detect languages which should not be handled via external resources.
      * Currently this value detects purely numerical names.
      */
-    private static final String NON_LOADABLE_LANGUAGE_PATTERN = "^\\d+$";
+    private static final String NON_LOADABLE_LANGUAGE_PATTERN = "^\\d*$";
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
@@ -137,7 +137,7 @@ public class LoadingLanguageManager extends BaseLanguageManager
     public Language loadLanguageInstance(final String name)
             throws HyphenationException {
 
-        if (name.matches(NON_LOADABLE_LANGUAGE_PATTERN)) {
+        if (name == null || name.matches(NON_LOADABLE_LANGUAGE_PATTERN)) {
             //
         } else if (finder == null) {
             getLogger().warning(getLocalizer().format("MissingResourceFinder"));
@@ -224,27 +224,28 @@ public class LoadingLanguageManager extends BaseLanguageManager
      *  numerical names for hyphenation tables only.
      * </p>
      *
-     * @param key the name of the table
+     * @param name the name of the table
      * @param value the table itself
      *
      * @return <code>true</code> iff the table has been saved
      *
      * @throws IOException in case of an IO error
      */
-    protected boolean saveTable(final String key, final Language value)
+    protected boolean saveTable(final String name, final Language value)
             throws IOException {
 
-        if (key.matches(NON_LOADABLE_LANGUAGE_PATTERN)) {
+        if (name == null || name.matches(NON_LOADABLE_LANGUAGE_PATTERN)) {
             return false;
         }
 
-        String filename = key + TABLE_EXTENSION;
+        String filename = name + TABLE_EXTENSION;
         FileOutputStream fos = new FileOutputStream(filename);
         ObjectOutputStream out = new ObjectOutputStream(new GZIPOutputStream(
                 fos));
         out.writeObject(value);
         out.close();
-        getLogger().info(getLocalizer().format("LanguageSaved", key, filename));
+        getLogger()
+                .info(getLocalizer().format("LanguageSaved", name, filename));
         return true;
     }
 
