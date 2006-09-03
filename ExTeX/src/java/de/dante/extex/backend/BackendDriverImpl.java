@@ -24,9 +24,9 @@ import java.io.IOException;
 import de.dante.extex.backend.documentWriter.DocumentWriter;
 import de.dante.extex.backend.documentWriter.DocumentWriterOptions;
 import de.dante.extex.backend.documentWriter.MultipleDocumentStream;
-import de.dante.extex.backend.documentWriter.OutputStreamFactory;
 import de.dante.extex.backend.documentWriter.exception.DocumentWriterException;
 import de.dante.extex.backend.exception.BackendException;
+import de.dante.extex.backend.outputStream.OutputStreamFactory;
 import de.dante.extex.backend.pageFilter.PagePipe;
 import de.dante.extex.typesetter.type.page.Page;
 import de.dante.util.exception.GeneralException;
@@ -38,7 +38,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This document writer can be used to combine several components.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class BackendDriverImpl
         implements
@@ -50,7 +50,7 @@ public class BackendDriverImpl
      * This internal class acts as page counter as last element in the node pipe.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.6 $
+     * @version $Revision: 1.7 $
      */
     private class Counter implements PagePipe {
 
@@ -226,7 +226,7 @@ public class BackendDriverImpl
 
     /**
      * @see de.dante.extex.backend.documentWriter.MultipleDocumentStream#setOutputStreamFactory(
-     *      de.dante.extex.backend.documentWriter.OutputStreamFactory)
+     *      de.dante.extex.backend.outputStream.OutputStreamFactory)
      */
     public void setOutputStreamFactory(final OutputStreamFactory writerFactory) {
 

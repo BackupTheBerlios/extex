@@ -26,7 +26,7 @@ import java.util.Calendar;
 import java.util.Iterator;
 import java.util.logging.Logger;
 
-import de.dante.extex.backend.documentWriter.OutputStreamFactory;
+import de.dante.extex.backend.outputStream.OutputStreamFactory;
 import de.dante.extex.font.FontFactory;
 import de.dante.extex.interpreter.Conditional;
 import de.dante.extex.interpreter.ErrorHandler;
@@ -176,7 +176,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.112 $
+ * @version $Revision: 1.113 $
  */
 public abstract class Max
         implements

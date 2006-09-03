@@ -19,6 +19,8 @@
 
 package de.dante.extex.backend.documentWriter;
 
+import de.dante.extex.backend.outputStream.OutputStreamFactory;
+
 /**
  * This interface describes the ability of a class to produce multiple
  * output documents. For this purpose a factory is passed in to receive new
@@ -27,7 +29,7 @@ package de.dante.extex.backend.documentWriter;
  * @see de.dante.extex.backend.documentWriter.SingleDocumentStream
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface MultipleDocumentStream {
 

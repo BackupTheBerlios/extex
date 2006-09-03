@@ -25,9 +25,9 @@ import java.io.OutputStream;
 import de.dante.extex.backend.documentWriter.DocumentWriter;
 import de.dante.extex.backend.documentWriter.DocumentWriterOptions;
 import de.dante.extex.backend.documentWriter.MultipleDocumentStream;
-import de.dante.extex.backend.documentWriter.OutputStreamFactory;
 import de.dante.extex.backend.documentWriter.exception.DocumentWriterException;
 import de.dante.extex.backend.documentWriter.exception.DocumentWriterIOException;
+import de.dante.extex.backend.outputStream.OutputStreamFactory;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.NodeVisitor;
@@ -40,7 +40,7 @@ import de.dante.util.framework.configuration.Configuration;
  * Implementation of a pdf document writer.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class PdfSinglePageDocumentWriter
         implements
@@ -127,7 +127,7 @@ public class PdfSinglePageDocumentWriter
 
     /**
      * @see de.dante.extex.backend.documentWriter.MultipleDocumentStream#setOutputStreamFactory(
-     *      de.dante.extex.backend.documentWriter.OutputStreamFactory)
+     *      de.dante.extex.backend.outputStream.OutputStreamFactory)
      */
     public void setOutputStreamFactory(final OutputStreamFactory writerFactory) {
 
@@ -178,7 +178,7 @@ public class PdfSinglePageDocumentWriter
         try {
 
             // get the output from the factory
-            OutputStream out = outFactory.getOutputStream();
+            OutputStream out = outFactory.getOutputStream(null, null);
 
             // create a pdf document
             //            document = new PdfDocument(out);

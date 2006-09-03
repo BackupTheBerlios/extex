@@ -21,7 +21,7 @@ package de.dante.extex.interpreter.primitives.dynamic;
 
 import java.util.logging.Logger;
 
-import de.dante.extex.backend.documentWriter.OutputStreamFactory;
+import de.dante.extex.backend.outputStream.OutputStreamFactory;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -71,7 +71,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class EnsureLoaded extends AbstractCode implements LogEnabled {
 

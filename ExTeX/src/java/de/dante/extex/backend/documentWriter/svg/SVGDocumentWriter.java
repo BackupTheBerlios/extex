@@ -29,9 +29,9 @@ import java.util.Map;
 import de.dante.extex.backend.documentWriter.DocumentWriter;
 import de.dante.extex.backend.documentWriter.DocumentWriterOptions;
 import de.dante.extex.backend.documentWriter.MultipleDocumentStream;
-import de.dante.extex.backend.documentWriter.OutputStreamFactory;
 import de.dante.extex.backend.documentWriter.exception.DocumentWriterException;
 import de.dante.extex.backend.documentWriter.exception.DocumentWriterIOException;
+import de.dante.extex.backend.outputStream.OutputStreamFactory;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.font.Font;
@@ -72,7 +72,7 @@ import de.dante.util.xml.XMLStreamWriter;
  * TODO incomplete !!!
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class SVGDocumentWriter
         implements
@@ -215,7 +215,7 @@ public class SVGDocumentWriter
 
     /**
      * @see de.dante.extex.backend.documentWriter.MultipleDocumentStream#setOutputStreamFactory(
-     *      de.dante.extex.backend.documentWriter.OutputStreamFactory)
+     *      de.dante.extex.backend.outputStream.OutputStreamFactory)
      */
     public void setOutputStreamFactory(final OutputStreamFactory writerfactory) {
 
@@ -248,7 +248,7 @@ public class SVGDocumentWriter
             NodeList nodes = page.getNodes();
 
             writer = new XMLStreamWriter(writerFactory
-                    .getOutputStream(getExtension()), encoding);
+                    .getOutputStream(null, getExtension()), encoding);
             if (debug) {
                 writer.setBeauty(true);
             }

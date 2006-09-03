@@ -25,8 +25,8 @@ import java.io.OutputStream;
 import de.dante.extex.backend.documentWriter.DocumentWriter;
 import de.dante.extex.backend.documentWriter.DocumentWriterOptions;
 import de.dante.extex.backend.documentWriter.MultipleDocumentStream;
-import de.dante.extex.backend.documentWriter.OutputStreamFactory;
 import de.dante.extex.backend.documentWriter.exception.DocumentWriterException;
+import de.dante.extex.backend.outputStream.OutputStreamFactory;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.NodeVisitor;
@@ -64,7 +64,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class MultiDumpDocumentWriter
         implements
@@ -117,8 +117,8 @@ public class MultiDumpDocumentWriter
          *      de.dante.extex.typesetter.type.node.AfterMathNode,
          *      java.lang.Object)
          */
-        public Object visitAfterMath(final AfterMathNode node,
-                final Object oOut) throws GeneralException {
+        public Object visitAfterMath(final AfterMathNode node, final Object oOut)
+                throws GeneralException {
 
             if (node.getWidth().ne(Dimen.ZERO_PT)) {
                 write(' ');
@@ -459,7 +459,7 @@ public class MultiDumpDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.backend.documentWriter.MultipleDocumentStream#setOutputStreamFactory(de.dante.extex.backend.documentWriter.OutputStreamFactory)
+     * @see de.dante.extex.backend.documentWriter.MultipleDocumentStream#setOutputStreamFactory(de.dante.extex.backend.outputStream.OutputStreamFactory)
      */
     public void setOutputStreamFactory(final OutputStreamFactory writerFactory) {
 
@@ -481,7 +481,7 @@ public class MultiDumpDocumentWriter
     public int shipout(final Page page) throws DocumentWriterException {
 
         NodeList nodes = page.getNodes();
-        out = outputStreamFactory.getOutputStream();
+        out = outputStreamFactory.getOutputStream(null, null);
         try {
             if (tree) {
                 StringBuffer sb = new StringBuffer();
