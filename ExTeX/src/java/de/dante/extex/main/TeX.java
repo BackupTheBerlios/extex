@@ -44,6 +44,7 @@ import de.dante.extex.font.FontFactory;
 import de.dante.extex.font.exception.FontException;
 import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.interaction.InteractionUnknownException;
 import de.dante.extex.interpreter.observer.pop.PopObservable;
 import de.dante.extex.interpreter.observer.pop.PopObserver;
 import de.dante.extex.interpreter.observer.push.PushObservable;
@@ -77,15 +78,15 @@ import de.dante.util.resource.ResourceFinder;
 
 /**
  * This is the command line interface to <logo>ExTeX</logo>.
- * It does all the horrible things necessary to interact with the user of the
+ * It does all the horrible details necessary to interact with the user of the
  * command line in nearly the same way as <logo>TeX</logo> does.
  * <p>
  * The command line interface provides the following features:
  * </p>
  * <ul>
- * <li>Specifying format, input file and <logo>TeX</logo> code on the command
+ * <li>Specifying format, input file, and <logo>TeX</logo> code on the command
  *  line.</li>
- * <li>Interacting with the user to get a input file.</li>
+ * <li>Interacting with the user to get an input file.</li>
  * <li>Interacting with the user in case on an error</li>
  * </ul>
  *
@@ -99,7 +100,7 @@ import de.dante.util.resource.ResourceFinder;
  *  <a href="#invocation">Direct Java Invocation</a>.
  * </p>
  * <p>
- *  This program &ndash; called <tt>extex</tt> here &ndash; has in its normal
+ *  This program &ndash; called <tt>extex</tt> here &ndash; has in its simplest
  *  form of invocation one parameter. This parameter is the name of the file to
  *  process:
  * </p>
@@ -135,12 +136,49 @@ import de.dante.util.resource.ResourceFinder;
  *   <dt><tt>&lang;file&rang;</tt></dt>
  *   <dd>
  *    This parameter contains the file to read from. A file name may
- *    not start with a backslash or an ampercent. It has no default.
+ *    not start with a backslash or an ampercent. It has no default.<br />
+ *    Any arguments after the file name are treated as code to be executed
+ *    when the file has been processed.
  *   </dd>
  *   <dd>Property:
  *    <a href="#extex.file"><tt>extex.file</tt></a></dd>
  *
- *   <dt><a name="-configuration"><tt>-configuration &lang;resource&rang;</tt></a></dt>
+ *   <dt><tt>-- &lang;file&rang;</tt></dt>
+ *   <dd>
+ *    This parameter contains the file to read from. A file name may
+ *    start with any character since it is protected by the prefix <tt>--</tt>.
+ *    The file name has no default.<br />
+ *    Any arguments after the file name are treated as code to be executed
+ *    when the file has been processed.
+ *   </dd>
+ *   <dd>Property:
+ *    <a href="#extex.file"><tt>extex.file</tt></a></dd>
+ *
+ *   <dt><tt>--&lang;property&rang; &lang;value&rang;</tt></dt>
+ *   <dd>
+ *    <p>
+ *     The properties mentioned throughout this description can be set directly.
+ *     It is even possible to set a property with any name to a value. The name
+ *     is not checked checked against a list. Thus it is possible to overwrite
+ *     system and user settings.
+ *    </p>
+ *    <p>
+ *     For instance the properties <tt>user.name</tt> and <tt>java.version</tt>
+ *     are used at some places, but can not by set on the command line by other
+ *     means.
+ *    </p>
+ *    <p>Example: The following invocations are identical:
+ *     <pre>
+ *      extex --extex.file=abc
+ *      extex --extex.file abc
+ *      extex -- abc
+ *      extex abc </pre>
+ *    </p>
+ *   </dd>
+ *
+ *   <dt><a name="-configuration"><tt>-configuration &lang;resource&rang;</tt></a>
+ *    <br /><tt>-configuration=&lang;resource&rang;</tt></a>
+ *   </dt>
  *   <dd>
  *    This parameter contains the name of the configuration resource to use.
  *    This configuration resource is sought on the class path.
@@ -161,7 +199,9 @@ import de.dante.util.resource.ResourceFinder;
  *   </dd>
  *   <dd>Property: <tt><a href="#extex.format">extex.format</a></tt></dd>
  *
- *   <dt><a name="-debug"><tt>-debug &lang;spec&rang;</tt></a></dt>
+ *   <dt><a name="-debug"><tt>-debug &lang;spec&rang;</tt><br />
+ *     <tt>-debug=&lang;spec&rang;</tt>
+ *   </a></dt>
  *   <dd>
  *    This command line parameter can be used to instruct the program to produce
  *    debugging output of several kinds. The specification &lang;spec&rang; is
@@ -222,22 +262,28 @@ import de.dante.util.resource.ResourceFinder;
  *
  *   <dt><a name="-ini"><tt>-ini</tt></a></dt>
  *   <dd>
- *    If set to <code>true</code> then act as initex. This command line
- *    option is defined for compatibility to <logo>TeX</logo> only. In
- *   <logo>ExTeX</logo> it has no effect at all.
+ *    If set to <code>true</code> then the attempt to load a format with the
+ *    name derived from the prog name is omitted.
  *   </dd>
  *   <dd>Property: <tt><a href="#extex.ini">extex.ini</a></tt> </dd>
  *
- *   <dt><a name="-interaction"><tt>-interaction &lang;mode&rang;</tt></a></dt>
+ *   <dt><a name="-interaction"><tt>-interaction &lang;mode&rang;</tt>
+ *     <br /><tt>-interaction=&lang;mode&rang;</tt></a>
+ *   </a></dt>
  *   <dd>
  *    This parameter contains the interaction mode. Possible values are
  *    the numbers 0..3 and the symbolic names batchmode (0), nonstopmode (1),
- *    scrollmode (2), and errorstopmode (3).
+ *    scrollmode (2), and errorstopmode (3). The symbolic names can be
+ *    abbreviated up to at least one character.
  *   </dd>
  *   <dd>Property:
  *    <tt><a href="#extex.interaction">extex.interaction</a></tt></dd>
  *
- *   <dt><a name="-job"><tt>-job-name &lang;name&rang;</tt></a></dt>
+ *   <dt><a name="-job"><tt>-job-name &lang;name&rang;</tt><br />
+ *     <tt>-job-name=&lang;name&rang;</tt></a><br />
+ *     <tt>-jobname &lang;name&rang;</tt></a><br />
+ *     <tt>-jobname=&lang;name&rang;</tt></a>
+ *   </a></dt>
  *   <dd>
  *    This parameter contains the name of the job. It is overwritten
  *    if a file is given to read from. In this case the base name of
@@ -246,7 +292,9 @@ import de.dante.util.resource.ResourceFinder;
  *   <dd>Property:
  *    <tt><a href="#extex.jobname">extex.jobname</a></tt></dd>
  *
- *   <dt><a name="-language"><tt>-language &lang;language&rang;</tt></a></dt>
+ *   <dt><a name="-language"><tt>-language &lang;language&rang;</tt><br />
+ *     <tt>-language=&lang;language&rang;</tt>
+ *   </a></dt>
  *   <dd>
  *    This parameter contains the name of the locale to be used for the
  *    messages.
@@ -254,15 +302,32 @@ import de.dante.util.resource.ResourceFinder;
  *   <dd>Property:
  *    <tt><a href="#extex.lang">extex.lang</a></tt> </dd>
  *
- *   <dt><a name="-output"><tt>-output &lang;format&rang;</tt></a></dt>
+ *   <dt><a name="-output"><tt>-output &lang;format&rang;</tt><br />
+ *     <tt>-output=&lang;format&rang;</tt>
+ *   </a></dt>
  *   <dd>
  *    This parameter contains the output format. This logical name is resolved
- *    via the configuration.
+ *    via the configuration. Reasonable values are <tt>dvi</tt>, <tt>ps</tt>,
+ *    and <tt>pdf</tt>.
  *   </dd>
  *   <dd>Property:
  *    <tt><a href="#extex.output">extex.output</a></tt></dd>
  *
- *   <dt><a name="-progname"/><tt>-progname &lang;name&rang;</tt></dt>
+ *   <dt><a name="-outputdir"><tt>-output-directory &lang;directory&rang;</tt><br />
+ *     <tt>-output-directory=&lang;directory&rang;</tt><br />
+ *     <tt>-texoutputs &lang;directory&rang;</tt><br />
+ *     <tt>-texoutputs=&lang;directory&rang;</tt>
+ *   </a></dt>
+ *   <dd>
+ *    This parameter contains the output directory. The normal output files are
+ *    tried to place there. If this fails a fallback is tried additionally.
+ *   </dd>
+ *   <dd>Property:
+ *    <tt><a href="#extex.outputdir">extex.outputdir</a></tt></dd>
+ *
+ *   <dt><a name="-progname"/><tt>-progname &lang;name&rang;</tt><br />
+ *     <tt>-progname=&lang;name&rang;</tt>
+ *   </a></dt>
  *   <dd>
  *    This parameter can be used to overrule the name of the program shown in
  *    the banner and the version information.
@@ -270,7 +335,9 @@ import de.dante.util.resource.ResourceFinder;
  *   <dd>Property:
  *    <tt><a href="#extex.progname">extex.progname</a></tt></dd>
  *
- *   <dt><a name="-texinputs"/><tt>-texinputs &lang;path&rang;</tt></dt>
+ *   <dt><a name="-texinputs"/><tt>-texinputs &lang;path&rang;</tt><br />
+ *     <tt>-texinputs=&lang;path&rang;</tt>
+ *   </a></dt>
  *   <dd>
  *    This parameter contains the additional directories for searching
  *    <logo>ExTeX</logo> input files.
@@ -278,7 +345,9 @@ import de.dante.util.resource.ResourceFinder;
  *   <dd>Property:
  *    <tt><a href="#extex.texinputs">extex.texinputs</a></tt> </dd>
  *
- *   <dt><a name="-texmfoutputs"><tt>-texmfoutputs &lang;dir&rang;</tt></a></dt>
+ *   <dt><a name="-texmfoutputs"><tt>-texmfoutputs &lang;dir&rang;</tt><br />
+ *     <tt>-texmfoutputs=&lang;dir&rang;</tt>
+ *   </a></dt>
  *   <dd>
  *    This parameter contains the name of the
  *    property for the fallback if the output directory fails to be writable.
@@ -286,14 +355,6 @@ import de.dante.util.resource.ResourceFinder;
  *   <dd>Property:
  *    <tt><a href="#extex.outputdir.fallback">extex.outputdir.fallback</a></tt>
  *   </dd>
- *
- *   <dt><a name="-texoutputs"><tt>-texoutputs &lang;dir&rang;</tt></a></dt>
- *   <dd>
- *    This parameter contain the directory where output files should be
- *    created.
- *   </dd>
- *   <dd>Property:
- *    <tt><a href="#extex.outputdir">extex.outputdir</a></tt></dd>
  *
  *   <dt><a name="-version"/><tt>-version</tt></dt>
  *   <dd>
@@ -427,11 +488,14 @@ import de.dante.util.resource.ResourceFinder;
  *   <dt><a name="extex.jobname"/><tt>extex.jobname</tt></dt>
  *   <dd>
  *    This parameter contains the name of the job. It is overwritten
- *    if a file is given to read from. In this case the basename of
+ *    if a file is given to read from. In this case the base name of
  *    the input file is used instead.
  *   </dd>
- *   <dd>Command line:
- *    <a href="#-job"><tt>-job-name &lang;name&rang;</tt></a></dd>
+ *   <dd>Command line:<a href="#-job">
+ *    <tt>-job-name &lang;name&rang;</tt></a><br>
+ *    <tt>-jobname &lang;name&rang;</tt></a><br>
+ *    <tt>-job-name=&lang;name&rang;</tt></a><br>
+ *    <tt>-jobname=&lang;name&rang;</tt></a></dd>
  *   <dd>Default: <tt>texput</tt></dd>
  *
  *   <dt><a name="extex.jobnameMaster"/><tt>extex.jobnameMaster</tt></dt>
@@ -583,7 +647,7 @@ import de.dante.util.resource.ResourceFinder;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class TeX extends ExTeX {
 
@@ -605,7 +669,7 @@ public class TeX extends ExTeX {
      * The constant <tt>EXIT_INTERNAL_ERROR</tt> contains the exit code for
      * internal errors.
      */
-    protected static final int EXIT_INTERNAL_ERROR = -666;
+    protected static final int EXIT_INTERNAL_ERROR = -1;
 
     /**
      * The constant <tt>EXIT_OK</tt> contains the exit code of the program for
@@ -768,6 +832,16 @@ public class TeX extends ExTeX {
     }
 
     /**
+     * Log some message with the info level priority.
+     *
+     * @param message the message to log
+     */
+    private void info(final String message) {
+
+        getLogger().info(message);
+    }
+
+    /**
      * Initialize the input streams. If the property <i>extex.file</i> is set
      * and not the empty string, (e.g. from the command line) then this value
      * is used as file name to read from. If the property <i>extex.code</i>
@@ -803,31 +877,6 @@ public class TeX extends ExTeX {
         super.initializeStreams(interpreter, properties);
 
         return false;
-    }
-
-    /**
-     * Loads a properties file into the already existing properties.
-     * The values from the file overwrite existing values.
-     *
-     * @param arg the name of the resource to load
-     *
-     * @return <code>true</code> iff the resource has been loaded successfully
-     *
-     * @throws IOException just in case
-     */
-    protected boolean loadArgumentFile(final String arg) throws IOException {
-
-        InputStream is = getClass().getResourceAsStream("config.extex." + arg);
-        if (is == null) {
-            try {
-                is = new FileInputStream(new File(".extexcfg", arg));
-            } catch (FileNotFoundException e) {
-                return false;
-            }
-        }
-        getProperties().load(is);
-
-        return true;
     }
 
     /**
@@ -877,24 +926,6 @@ public class TeX extends ExTeX {
             interpreter.getContext().setCount("tracingcommands", 1, true);
         }
 
-        /*
-         interpreter.getContext().registerCountObserver("escapechar",
-         new CountObserver() {
-         **
-         * @see de.dante.extex.interpreter.context.observer.CountObserver#receiveCountChange(
-         *      de.dante.extex.interpreter.context.ContextInternals,
-         *      java.lang.String,
-         *      de.dante.extex.interpreter.type.count.Count)
-         *
-         public void receiveCountChange(
-         final ContextInternals context, final String name,
-         final Count value) throws Exception {
-
-         S ystem.err.println("change " + name + " to "
-         + value.toString());
-         }
-         });
-         */
         return interpreter;
     }
 
@@ -925,7 +956,32 @@ public class TeX extends ExTeX {
     }
 
     /**
-     * This class provides access to the whole functionality of
+     * Loads a properties file into the already existing properties.
+     * The values from the file overwrite existing values.
+     *
+     * @param arg the name of the resource to load
+     *
+     * @return <code>true</code> iff the resource has been loaded successfully
+     *
+     * @throws IOException just in case
+     */
+    protected boolean mergeProperties(final String arg) throws IOException {
+
+        InputStream is = getClass().getResourceAsStream("config.extex." + arg);
+        if (is == null) {
+            try {
+                is = new FileInputStream(new File(".extexcfg", arg));
+            } catch (FileNotFoundException e) {
+                return false;
+            }
+        }
+        getProperties().load(is);
+
+        return true;
+    }
+
+    /**
+     * This method provides access to the whole functionality of
      * <logo>ExTeX</logo> on the command line. The exception is that this
      * method does not call <code>{@link System#exit(int) System.exit()}</code>
      * but returns the exit status as result.
@@ -936,109 +992,10 @@ public class TeX extends ExTeX {
      */
     public int run(final String[] args) {
 
-        boolean onceMore = true;
-        int returnCode = EXIT_OK;
-
         try {
 
-            for (int i = 0; onceMore && i < args.length; i++) {
-                String arg = args[i];
+            return runCL(args);
 
-                if (arg.startsWith("-")) {
-                    if (arg.startsWith("--")) {
-                        arg = arg.substring(2);
-                        if ("".equals(arg)) {
-                            runWithFile(args, i + 1);
-                            onceMore = false;
-                        } else {
-                            setPropertyFromArgument(arg, args, ++i);
-                        }
-                    } else if ("-configuration".startsWith(arg)) {
-                        setPropertyFromArgument(PROP_CONFIG, args, ++i);
-                    } else if ("-copyright".startsWith(arg)) {
-                        int year = Calendar.getInstance().get(Calendar.YEAR);
-                        String copyrightYear = (year <= COPYRIGHT_YEAR
-                                ? Integer.toString(COPYRIGHT_YEAR)
-                                : Integer.toString(COPYRIGHT_YEAR) + "-"
-                                        + Integer.toString(year));
-                        getLogger().info(
-                                getLocalizer().format("ExTeX.Copyright",
-                                        copyrightYear));
-                        onceMore = false;
-                    } else if ("-copying".startsWith(arg)) {
-                        copying();
-                        onceMore = false;
-                    } else if ("-help".startsWith(arg)) {
-                        getLogger().info(
-                                getLocalizer().format("ExTeX.Usage", "extex"));
-                        onceMore = false;
-                    } else if ("-fmt".startsWith(arg)) {
-                        setPropertyFromArgument(PROP_FMT, args, ++i);
-                    } else if (arg.startsWith("-fmt=")) {
-                        setProperty(PROP_FMT, arg.substring("-fmt=".length()));
-                    } else if ("-halt-on-error".startsWith(arg)) {
-                        setProperty(PROP_HALT_ON_ERROR, "true");
-                    } else if ("-interaction".startsWith(arg)) {
-                        setPropertyFromArgument(PROP_INTERACTION, args, ++i);
-                        applyInteraction();
-                    } else if ("-ini".startsWith(arg)) {
-                        setProperty(PROP_INI, "true");
-                    } else if (arg.startsWith("-interaction=")) {
-                        setProperty(PROP_INTERACTION, arg
-                                .substring("-interaction=".length()));
-                        applyInteraction();
-                    } else if ("-job-name".startsWith(arg)) {
-                        setPropertyFromArgument(PROP_JOBNAME_MASTER, args, ++i);
-                    } else if (arg.startsWith("-job-name=")) {
-                        setProperty(PROP_JOBNAME_MASTER, arg
-                                .substring("-job-name=".length()));
-                    } else if ("-language".startsWith(arg)) {
-                        setPropertyFromArgument(PROP_LANG, args, ++i);
-                        applyLanguage();
-                    } else if ("-progname".startsWith(arg)) {
-                        setPropertyFromArgument(PROP_PROGNAME, args, ++i);
-                    } else if (arg.startsWith("-progname=")) {
-                        setProperty(PROP_PROGNAME, arg.substring("-progname="
-                                .length()));
-                    } else if ("-version".startsWith(arg)) {
-                        getLogger().info(
-                                getLocalizer().format("ExTeX.Version",
-                                        getProperty(PROP_PROGNAME),
-                                        getVersion(),
-                                        getProperty("java.version")));
-                        onceMore = false;
-                    } else if ("-output".startsWith(arg)) {
-                        setPropertyFromArgument(PROP_OUTPUT_TYPE, args, ++i);
-                    } else if ("-texinputs".startsWith(arg)) {
-                        setPropertyFromArgument(PROP_TEXINPUTS, args, ++i);
-                    } else if ("-texoutputs".startsWith(arg)) {
-                        setPropertyFromArgument(PROP_OUTPUTDIR, args, ++i);
-                    } else if ("-texmfoutputs".startsWith(arg)) {
-                        setPropertyFromArgument("extex.fallbackOutputdir",
-                                args, ++i);
-                    } else if ("-debug".startsWith(arg)) {
-                        useTrace(args, ++i);
-                    } else if ("--".equals(arg)) {
-                        setPropertyFromArgument(PROP_CONFIG, args, ++i);
-                    } else if (!loadArgumentFile(arg.substring(1))) {
-                        throw new MainUnknownOptionException(arg);
-                    }
-                } else if (arg.startsWith("&")) {
-                    setProperty(PROP_FMT, arg.substring(1));
-                    runWithFile(args, i + 1);
-                    onceMore = false;
-                } else if (arg.startsWith("\\")) {
-                    runWithArgs(args, i);
-                    onceMore = false;
-                } else if (!arg.equals("")) {
-                    runWithFile(args, i);
-                    onceMore = false;
-                }
-            }
-
-            if (onceMore) {
-                runWithoutFile();
-            }
         } catch (MainException e) {
             showBanner(null, Level.INFO);
             Throwable x = e.getCause();
@@ -1046,18 +1003,15 @@ public class TeX extends ExTeX {
                     || !((InterpreterException) x).isProcessed()) {
                 logException(getLogger(), e.getLocalizedMessage(), e);
             }
-            returnCode = e.getCode();
+            return EXIT_INTERNAL_ERROR;
         } catch (Throwable e) {
             showBanner(null, Level.INFO);
             logInternalError(e);
-            getLogger().info(
-                    getLocalizer().format("ExTeX.Logfile",
-                            getProperty(PROP_JOBNAME)));
+            info(getLocalizer().format("ExTeX.Logfile",
+                    getProperty(PROP_JOBNAME)));
 
-            returnCode = EXIT_INTERNAL_ERROR;
+            return EXIT_INTERNAL_ERROR;
         }
-
-        return returnCode;
     }
 
     /**
@@ -1069,8 +1023,15 @@ public class TeX extends ExTeX {
      */
     private Interpreter runAndRemapExceptions() throws MainException {
 
+        if (!Boolean.valueOf(getProperty(PROP_INI)).booleanValue()
+                && getProperty(PROP_FMT).equals("")) {
+            setProperty(PROP_FMT, getProperty(PROP_PROGNAME));
+        }
+
         try {
+
             return run();
+
         } catch (CharacterCodingException e) {
             throw new MainCodingException(e);
         } catch (ConfigurationException e) {
@@ -1083,16 +1044,217 @@ public class TeX extends ExTeX {
     }
 
     /**
+     * Process the command line arguments.
+     *
+     * @param args the command line arguments
+     *
+     * @return the exit code
+     *
+     * @throws MainException in case of an error
+     * @throws IOException in case of an IO error
+     */
+    protected int runCL(final String[] args) throws MainException, IOException {
+
+        for (int i = 0; i < args.length; i++) {
+            String arg = args[i];
+
+            if (arg.startsWith("&")) {
+                setProperty(PROP_FMT, arg.substring(1));
+            } else if (arg.startsWith("\\")) {
+                return runWithCode(args, i);
+            } else if (arg.startsWith("--")) {
+                if ("--".equals(arg)) {
+                    return runWithFile(args, i + 1);
+                }
+                int eq = arg.indexOf('=');
+                if (eq >= 0) {
+                    String val = arg.substring(eq + 1);
+                    setProperty(arg.substring(2, eq - 1), val);
+
+                } else if (++i < args.length) {
+                    setProperty(arg.substring(2), args[i]);
+                } else {
+                    throw new MainMissingArgumentException(arg);
+                }
+
+            } else if (arg.startsWith("-")) {
+                if (arg.equals("-")) {
+                    throw new MainUnknownOptionException(arg);
+                }
+                arg = arg.substring(1);
+                switch (arg.charAt(0)) {
+                    case 'c':
+                        if (set("configuration", PROP_CONFIG, args, i)) {
+                            i++;
+                        } else if (set("configuration", PROP_CONFIG, arg)) {
+                            // ok
+                        } else if ("copyright".startsWith(arg)) {
+                            int year = Calendar.getInstance()
+                                    .get(Calendar.YEAR);
+                            String copyrightYear = (year <= COPYRIGHT_YEAR
+                                    ? Integer.toString(COPYRIGHT_YEAR)
+                                    : Integer.toString(COPYRIGHT_YEAR) + "-"
+                                            + Integer.toString(year));
+                            info(getLocalizer().format("ExTeX.Copyright",
+                                    copyrightYear));
+                            return EXIT_OK;
+                        } else if ("copying".startsWith(arg)) {
+                            copying();
+                            return EXIT_OK;
+                        } else if (!mergeProperties(arg)) {
+                            throw new MainUnknownOptionException(arg);
+                        }
+                        break;
+                    case 'd':
+                        if ("debug".startsWith(arg)) {
+                            if (++i >= args.length) {
+                                throw new MainMissingArgumentException(arg);
+                            }
+                            useTrace(args[i]);
+                        } else if (arg.startsWith("debug=")) {
+                            useTrace(arg.substring(arg.indexOf('=') + 1));
+                        } else if (!mergeProperties(arg)) {
+                            throw new MainUnknownOptionException(arg);
+                        }
+                        break;
+                    case 'h':
+                        if ("help".startsWith(arg)) {
+                            info(getLocalizer().format("ExTeX.Usage", "extex"));
+                            return EXIT_OK;
+                        } else if ("halt-on-error".startsWith(arg)) {
+                            setProperty(PROP_HALT_ON_ERROR, "true");
+                        } else if (!mergeProperties(arg)) {
+                            throw new MainUnknownOptionException(arg);
+                        }
+                        break;
+                    case 'f':
+                        if (set("fmt", PROP_FMT, args, i)) {
+                            i++;
+                        } else if (set("fmt", PROP_FMT, arg)) {
+                            // ok
+                        } else if (!mergeProperties(arg)) {
+                            throw new MainUnknownOptionException(arg);
+                        }
+                        break;
+                    case 'i':
+                        if (set("interaction", PROP_INTERACTION, args, i)) {
+                            i++;
+                            try {
+                                applyInteraction();
+                            } catch (InteractionUnknownException e) {
+                                throw new MainException(e);
+                            }
+                        } else if (set("interaction", PROP_INTERACTION, arg)) {
+                            try {
+                                applyInteraction();
+                            } catch (InteractionUnknownException e) {
+                                throw new MainException(e);
+                            }
+                        } else if ("ini".startsWith(arg)) {
+                            setProperty(PROP_INI, "true");
+                        } else if (!mergeProperties(arg)) {
+                            throw new MainUnknownOptionException(arg);
+                        }
+                        break;
+                    case 'j':
+                        if (set("job-name", PROP_JOBNAME_MASTER, arg)
+                                || set("jobname", PROP_JOBNAME_MASTER, arg)) {
+                            // ok
+                        } else if (set("job-name", PROP_JOBNAME_MASTER, args, i)
+                                || set("jobname", PROP_JOBNAME_MASTER, args, i)) {
+                            i++;
+                        } else if (!mergeProperties(arg)) {
+                            throw new MainUnknownOptionException(arg);
+                        }
+                        break;
+                    case 'l':
+                        if (set("language", PROP_LANG, args, i)) {
+                            i++;
+                            applyLanguage();
+                        } else if (set("language", PROP_LANG, arg)) {
+                            applyLanguage();
+                        } else if (!mergeProperties(arg)) {
+                            throw new MainUnknownOptionException(arg);
+                        }
+                        break;
+                    case 'o':
+                        if (set("output", PROP_OUTPUT_TYPE, args, i)) {
+                            i++;
+                        } else if (set("output-directory", PROP_OUTPUTDIR,
+                                args, i)) {
+                            i++;
+                        } else if (set("output-directory", PROP_OUTPUTDIR, arg)) {
+                            // ok
+                        } else if (!mergeProperties(arg)) {
+                            throw new MainUnknownOptionException(arg);
+                        }
+                        break;
+                    case 'p':
+                        if (set("progname", PROP_PROGNAME, args, i)) {
+                            i++;
+                        } else if (set("progname", PROP_PROGNAME, arg)) {
+                            // ok
+                        } else if (!mergeProperties(arg)) {
+                            throw new MainUnknownOptionException(arg);
+                        }
+                        break;
+                    case 't':
+                        if (set("texinputs", PROP_TEXINPUTS, args, i)) {
+                            i++;
+                        } else if (set("texinputs", PROP_TEXINPUTS, arg)) {
+                            // ok
+                        } else if (set("texoutputs", PROP_OUTPUTDIR, args, i)) {
+                            i++;
+                        } else if (set("texoutputs", PROP_OUTPUTDIR, arg)) {
+                            // ok
+                        } else if (set("texmfoutputs", PROP_OUTPUTDIR_FALLBACK,
+                                args, i)) {
+                            i++;
+                        } else if (set("texmfoutputs", PROP_OUTPUTDIR_FALLBACK,
+                                arg)) {
+                            // ok
+                        } else if (!mergeProperties(arg)) {
+                            throw new MainUnknownOptionException(arg);
+                        }
+                        break;
+                    case 'v':
+                        if ("version".startsWith(arg)) {
+                            info(getLocalizer().format("ExTeX.Version",
+                                    getProperty(PROP_PROGNAME), getVersion(),
+                                    getProperty("java.version")));
+                            return EXIT_OK;
+                        } else if (!mergeProperties(arg)) {
+                            throw new MainUnknownOptionException(arg);
+                        }
+                        break;
+                    default:
+                        if (!mergeProperties(arg)) {
+                            throw new MainUnknownOptionException(arg);
+                        }
+                }
+            } else if (arg.equals("")) {
+                // silently ignored as TeXk does
+            } else {
+                return runWithFile(args, i);
+            }
+        }
+
+        return runWithoutFile();
+    }
+
+    /**
      * The command line is processed starting at an argument which starts with
-     * a backslash. This argument and any following argument are taken as input
-     * to the tokenizer.
+     * a backslash or follows a file name argument. This argument and any
+     * following arguments are taken as input to the tokenizer.
      *
      * @param arguments the list of arguments to process
      * @param position starting index
      *
+     * @return the exit code
+     *
      * @throws MainException in case of an error in {@link #run() run()}
      */
-    private void runWithArgs(final String[] arguments, final int position)
+    private int runWithCode(final String[] arguments, final int position)
             throws MainException {
 
         if (position < arguments.length) {
@@ -1107,6 +1269,7 @@ public class TeX extends ExTeX {
         }
 
         runAndRemapExceptions();
+        return EXIT_OK;
     }
 
     /**
@@ -1117,25 +1280,29 @@ public class TeX extends ExTeX {
      * @param arguments the list of arguments to process
      * @param position starting index
      *
+     * @return the exit code
+     *
      * @throws MainException in case of an error
      */
-    private void runWithFile(final String[] arguments, final int position)
+    private int runWithFile(final String[] arguments, final int position)
             throws MainException {
 
         if (position >= arguments.length) {
-            runWithoutFile();
+            return runWithoutFile();
         } else {
             setInputFileName(arguments[position]);
-            runWithArgs(arguments, position + 1);
+            return runWithCode(arguments, position + 1);
         }
     }
 
     /**
      * Ask the query file handler to provide a file name and use it.
      *
+     * @return the exit code
+     *
      * @throws MainException in case of an error
      */
-    private void runWithoutFile() throws MainException {
+    private int runWithoutFile() throws MainException {
 
         try {
             showBanner(new ConfigurationFactory()
@@ -1149,6 +1316,59 @@ public class TeX extends ExTeX {
                 ? queryHandler.query(getLogger()) : null));
 
         runAndRemapExceptions();
+        return EXIT_OK;
+    }
+
+    /**
+     * Parse a command line parameter of the form
+     * <i>key</i><tt>=</tt><i>value</i> and assign the value to a property
+     * with a given name.
+     *
+     * @param name the command line parameter in its longest form
+     * @param tag the name of the property
+     * @param value  the command line parameter including the value
+     *
+     * @return <code>true</code> iff the syntax is correct and the value of the
+     *   property has been set
+     */
+    private boolean set(final String name, final String tag, final String value) {
+
+        int i = value.indexOf('=');
+        if (i < 0 || !name.startsWith(value.substring(0, i))) {
+            return false;
+        }
+        setProperty(tag, value.substring(i + 1));
+        return true;
+    }
+
+    /**
+     * Acquire the next argument from the command line and set a property
+     * accordingly. If none is found then an exception is thrown.
+     *
+     * @param name the name of the argument
+     * @param tag the name of the property to set
+     * @param arguments the list of arguments
+     * @param position the starting index
+     *
+     * @return <code>true</code> iff the syntax is correct and the value of the
+     *   property has been set
+     *
+     * @throws MainMissingArgumentException in case of an error
+     */
+    protected boolean set(final String name, final String tag,
+            final String[] arguments, final int position)
+            throws MainMissingArgumentException {
+
+        if (!name.startsWith(arguments[position].substring(1))) {
+            return false;
+        }
+
+        if (position >= arguments.length - 1) {
+            throw new MainMissingArgumentException(tag);
+        }
+
+        setProperty(tag, arguments[position + 1]);
+        return true;
     }
 
     /**
@@ -1171,27 +1391,6 @@ public class TeX extends ExTeX {
     }
 
     /**
-     * Acquire the next argument from the command line and set a property
-     * accordingly. If none is found then an exception is thrown.
-     *
-     * @param name the name of the argument
-     * @param arguments the list of arguments
-     * @param position the starting index
-     *
-     * @throws MainMissingArgumentException in case of an error
-     */
-    protected void setPropertyFromArgument(final String name,
-            final String[] arguments, final int position)
-            throws MainMissingArgumentException {
-
-        if (position >= arguments.length) {
-            throw new MainMissingArgumentException(name);
-        }
-
-        setProperty(name, arguments[position]);
-    }
-
-    /**
      * Setter for queryFileHandler.
      *
      * @param queryFileHandler the queryFileHandler to set
@@ -1206,28 +1405,21 @@ public class TeX extends ExTeX {
      * specification to control the tracing features. The appropriate properties
      * are set accordingly.
      *
-     * @param arguments the list of arguments
-     * @param position the starting index
+     * @param arg the argument
      *
-     * @throws MainMissingArgumentException in case that no key letters follow
      * @throws MainUnknownOptionException in case that the specified option
      *  letter has no assigned property to set
      */
-    protected void useTrace(final String[] arguments, final int position)
-            throws MainUnknownOptionException,
-                MainMissingArgumentException {
+    protected void useTrace(final String arg) throws MainUnknownOptionException {
 
         getLogger().setLevel(Level.FINE);
-        if (position >= arguments.length) {
-            throw new MainMissingArgumentException("debug");
-        }
-        String s = arguments[position];
-        for (int i = 0; i < s.length(); i++) {
-            String prop = (String) TRACE_MAP.get(s.substring(i, i + 1));
+
+        for (int i = 0; i < arg.length(); i++) {
+            String prop = (String) TRACE_MAP.get(arg.substring(i, i + 1));
             if (prop != null) {
                 setProperty(prop, "true");
             } else {
-                throw new MainUnknownOptionException(s.substring(i, i + 1));
+                throw new MainUnknownOptionException(arg.substring(i, i + 1));
             }
         }
     }
