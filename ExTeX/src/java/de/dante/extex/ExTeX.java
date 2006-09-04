@@ -227,6 +227,11 @@ import de.dante.util.resource.ResourceFinderFactory;
  *    messages.
  *   </dd>
  *
+ *   <dt><a name="extex.name"/><tt>extex.name</tt></dt>
+ *   <dd>
+ *    This parameter contains the name of the program for messages.
+ *   </dd>
+ *
  *   <dt><a name="extex.nobanner"/><tt>extex.nobanner</tt></dt>
  *   <dd>
  *    This parameter contains a Boolean indicating that the banner should be
@@ -335,7 +340,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.137 $
+ * @version $Revision: 1.138 $
  */
 public class ExTeX {
 
@@ -344,7 +349,7 @@ public class ExTeX {
      * from a format which needs it.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.137 $
+     * @version $Revision: 1.138 $
      */
     private class ResourceFinderInjector implements RegistrarObserver {
 
@@ -398,6 +403,7 @@ public class ExTeX {
      */
     private static final String FORMAT_TYPE = "fmt";
 
+    protected static final String PROP_BANNER = "extex.banner";
     /**
      * The constant <tt>PROP_CODE</tt> contains the name of the property for the
      * <logo>TeX</logo> code to be inserted at the beginning of the job.
@@ -488,6 +494,12 @@ public class ExTeX {
     protected static final String PROP_LANG = "extex.lang";
 
     /**
+     * The constant <tt>PROP_NAME</tt> contains the name of the property for the
+     * program name used in messages.
+     */
+    protected static final String PROP_NAME = "extex.name";
+
+    /**
      * The constant <tt>PROP_NO_BANNER</tt> contains the name of the property
      * for the Boolean value indicating whether or not to show a program banner.
      */
@@ -521,7 +533,7 @@ public class ExTeX {
 
     /**
      * The constant <tt>PROP_PROGNAME</tt> contains the name of the
-     * property for the program name used in usage messages.
+     * property for the program name used in format loading.
      */
     protected static final String PROP_PROGNAME = "extex.progname";
 
@@ -688,6 +700,7 @@ public class ExTeX {
         super();
 
         this.properties = theProperties;
+        propertyDefault(PROP_BANNER, System.getProperty("java.version"));
         propertyDefault(PROP_CODE, "");
         propertyDefault(PROP_CONFIG, "extex.xml");
         propertyDefault(PROP_ENCODING, "ISO-8859-1");
@@ -698,6 +711,7 @@ public class ExTeX {
         propertyDefault(PROP_INTERACTION, "3");
         propertyDefault(PROP_JOBNAME, DEFAULT_JOBNAME);
         propertyDefault(PROP_JOBNAME_MASTER, "");
+        propertyDefault(PROP_NAME, "ExTeX");
         propertyDefault(PROP_NO_BANNER, "");
         propertyDefault(PROP_LANG, "");
         propertyDefault(PROP_OUTPUT_TYPE, "");
@@ -1600,17 +1614,17 @@ public class ExTeX {
      */
     public void setErrorHandler(final ErrorHandler handler) {
 
-        this.errorHandler = handler;
+        errorHandler = handler;
     }
 
     /**
      * Setter for logger.
      *
-     * @param aLogger the logger to set.
+     * @param logger the logger to set.
      */
-    public void setLogger(final Logger aLogger) {
+    public void setLogger(final Logger logger) {
 
-        this.logger = aLogger;
+        this.logger = logger;
     }
 
     /**
@@ -1631,37 +1645,45 @@ public class ExTeX {
      */
     protected void setProperty(final String key, final String value) {
 
-        this.properties.setProperty(key, value);
+        properties.setProperty(key, value);
     }
 
     /**
      * Print the program banner to the logger stream and remember that this has
-     * been done already to avoid repeating.
+     * been done already to avoid repetition.
+     * The property <tt>extex.nobanner</tt> can be used to suppress the banner.
      *
-     * @param configuration the configuration to use
+     * @param configuration the configuration to use. The configuration may
+     *   contain a tag <tt>banner</tt>. If present then the value is used.
+     *   The configuration can be <code>null</code>. Then it is ignored.
      * @param priority the log level
      */
     protected void showBanner(final Configuration configuration,
             final Level priority) {
 
         if (showBanner) {
+            showBanner = false;
+            if (Boolean.valueOf(getProperty(PROP_NO_BANNER)).booleanValue()) {
+                return;
+            }
+
             String banner;
             if (configuration != null) {
                 try {
                     banner = configuration.getConfiguration("banner")
                             .getValue();
                 } catch (ConfigurationException e) {
-                    banner = properties.getProperty("java.version");
+                    banner = properties.getProperty(PROP_BANNER);
                 }
             } else {
-                banner = properties.getProperty("java.version");
+                banner = properties.getProperty(PROP_BANNER);
             }
 
+            String name = properties.getProperty(PROP_NAME);
             logger.log(priority, localizer.format("ExTeX.Version", //
-                    properties.getProperty(PROP_PROGNAME), //
+                    name, //
                     EXTEX_VERSION, //
                     banner));
-            showBanner = false;
         }
     }
 
