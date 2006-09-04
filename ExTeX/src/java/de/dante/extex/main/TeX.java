@@ -44,6 +44,7 @@ import de.dante.extex.font.FontFactory;
 import de.dante.extex.font.exception.FontException;
 import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.interaction.Interaction;
 import de.dante.extex.interpreter.interaction.InteractionUnknownException;
 import de.dante.extex.interpreter.observer.pop.PopObservable;
 import de.dante.extex.interpreter.observer.pop.PopObserver;
@@ -647,7 +648,7 @@ import de.dante.util.resource.ResourceFinder;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class TeX extends ExTeX {
 
@@ -782,15 +783,18 @@ public class TeX extends ExTeX {
 
         super(theProperties, dotFile);
         localizer = LocalizerFactory.getLocalizer(TeX.class.getName());
+
         setQueryFileHandler(new QueryFileHandlerTeXImpl());
     }
 
     /**
      * Print the copying file.
      *
+     * @return the exit code
+     *
      * @throws IOException in case of an IO error
      */
-    private void copying() throws IOException {
+    private int copying() throws IOException {
 
         String file = this.getClass().getName().replace('.', '/').replaceAll(
                 "[a-z0-9_A-Z]+$", "LICENSE.txt");
@@ -799,7 +803,7 @@ public class TeX extends ExTeX {
         InputStream stream = classLoader.getResourceAsStream(file);
         if (stream == null) {
             printStream.println(file + ": resource not found");
-            return;
+            return EXIT_INTERNAL_ERROR;
         }
         try {
             int c;
@@ -809,6 +813,7 @@ public class TeX extends ExTeX {
         } finally {
             stream.close();
         }
+        return EXIT_OK;
     }
 
     /**
@@ -834,11 +839,14 @@ public class TeX extends ExTeX {
     /**
      * Log some message with the info level priority.
      *
+     * @return the exit code
+     *
      * @param message the message to log
      */
-    private void info(final String message) {
+    private int info(final String message) {
 
         getLogger().info(message);
+        return EXIT_OK;
     }
 
     /**
@@ -868,7 +876,8 @@ public class TeX extends ExTeX {
 
         try {
             interpreter.addStream(factory.newInstance(new TeXInputReader(
-                    getLogger(), properties.getProperty(PROP_ENCODING))));
+                    getLogger(), properties.getProperty(PROP_ENCODING),
+                    interpreter)));
         } catch (UnsupportedEncodingException e) {
             throw new ConfigurationUnsupportedEncodingException(properties
                     .getProperty(PROP_ENCODING), "<stdin>");
@@ -1003,15 +1012,14 @@ public class TeX extends ExTeX {
                     || !((InterpreterException) x).isProcessed()) {
                 logException(getLogger(), e.getLocalizedMessage(), e);
             }
-            return EXIT_INTERNAL_ERROR;
         } catch (Throwable e) {
             showBanner(null, Level.INFO);
             logInternalError(e);
             info(getLocalizer().format("ExTeX.Logfile",
                     getProperty(PROP_JOBNAME)));
 
-            return EXIT_INTERNAL_ERROR;
         }
+        return EXIT_INTERNAL_ERROR;
     }
 
     /**
@@ -1058,31 +1066,27 @@ public class TeX extends ExTeX {
         for (int i = 0; i < args.length; i++) {
             String arg = args[i];
 
-            if (arg.startsWith("&")) {
-                setProperty(PROP_FMT, arg.substring(1));
-            } else if (arg.startsWith("\\")) {
-                return runWithCode(args, i);
-            } else if (arg.startsWith("--")) {
-                if ("--".equals(arg)) {
-                    return runWithFile(args, i + 1);
-                }
-                int eq = arg.indexOf('=');
-                if (eq >= 0) {
-                    String val = arg.substring(eq + 1);
-                    setProperty(arg.substring(2, eq - 1), val);
-
-                } else if (++i < args.length) {
-                    setProperty(arg.substring(2), args[i]);
-                } else {
-                    throw new MainMissingArgumentException(arg);
-                }
-
-            } else if (arg.startsWith("-")) {
+            if (arg.startsWith("-")) {
                 if (arg.equals("-")) {
                     throw new MainUnknownOptionException(arg);
                 }
                 arg = arg.substring(1);
                 switch (arg.charAt(0)) {
+                    case '-':
+                        if ("-".equals(arg)) {
+                            return runWithFile(args, i + 1);
+                        }
+                        int eq = arg.indexOf('=');
+                        if (eq >= 0) {
+                            String val = arg.substring(eq + 1);
+                            setProperty(arg.substring(1, eq), val);
+                        } else if (++i < args.length) {
+                            setProperty(arg.substring(1), args[i]);
+                        } else {
+                            throw new MainMissingArgumentException("-" + arg);
+                        }
+                        break;
+
                     case 'c':
                         if (set("configuration", PROP_CONFIG, args, i)) {
                             i++;
@@ -1095,12 +1099,10 @@ public class TeX extends ExTeX {
                                     ? Integer.toString(COPYRIGHT_YEAR)
                                     : Integer.toString(COPYRIGHT_YEAR) + "-"
                                             + Integer.toString(year));
-                            info(getLocalizer().format("ExTeX.Copyright",
-                                    copyrightYear));
-                            return EXIT_OK;
+                            return info(getLocalizer().format(
+                                    "ExTeX.Copyright", copyrightYear));
                         } else if ("copying".startsWith(arg)) {
-                            copying();
-                            return EXIT_OK;
+                            return copying();
                         } else if (!mergeProperties(arg)) {
                             throw new MainUnknownOptionException(arg);
                         }
@@ -1119,8 +1121,8 @@ public class TeX extends ExTeX {
                         break;
                     case 'h':
                         if ("help".startsWith(arg)) {
-                            info(getLocalizer().format("ExTeX.Usage", "extex"));
-                            return EXIT_OK;
+                            return info(getLocalizer().format("ExTeX.Usage",
+                                    "extex"));
                         } else if ("halt-on-error".startsWith(arg)) {
                             setProperty(PROP_HALT_ON_ERROR, "true");
                         } else if (!mergeProperties(arg)) {
@@ -1139,17 +1141,9 @@ public class TeX extends ExTeX {
                     case 'i':
                         if (set("interaction", PROP_INTERACTION, args, i)) {
                             i++;
-                            try {
-                                applyInteraction();
-                            } catch (InteractionUnknownException e) {
-                                throw new MainException(e);
-                            }
+                            useInteraction();
                         } else if (set("interaction", PROP_INTERACTION, arg)) {
-                            try {
-                                applyInteraction();
-                            } catch (InteractionUnknownException e) {
-                                throw new MainException(e);
-                            }
+                            useInteraction();
                         } else if ("ini".startsWith(arg)) {
                             setProperty(PROP_INI, "true");
                         } else if (!mergeProperties(arg)) {
@@ -1219,9 +1213,7 @@ public class TeX extends ExTeX {
                         break;
                     case 'v':
                         if ("version".startsWith(arg)) {
-                            info(getLocalizer().format("ExTeX.Version",
-                                    getProperty(PROP_PROGNAME), getVersion(),
-                                    getProperty("java.version")));
+                            showBanner(null, Level.INFO);
                             return EXIT_OK;
                         } else if (!mergeProperties(arg)) {
                             throw new MainUnknownOptionException(arg);
@@ -1232,6 +1224,10 @@ public class TeX extends ExTeX {
                             throw new MainUnknownOptionException(arg);
                         }
                 }
+            } else if (arg.startsWith("&")) {
+                setProperty(PROP_FMT, arg.substring(1));
+            } else if (arg.startsWith("\\")) {
+                return runWithCode(args, i);
             } else if (arg.equals("")) {
                 // silently ignored as TeXk does
             } else {
@@ -1240,6 +1236,20 @@ public class TeX extends ExTeX {
         }
 
         return runWithoutFile();
+    }
+
+    /**
+     * Activate the interaction mode set.
+     *
+     * @throws MainException in case of an error
+     */
+    private void useInteraction() throws MainException {
+
+        try {
+            applyInteraction();
+        } catch (InteractionUnknownException e) {
+            throw new MainException(-1, e.getLocalizedMessage());
+        }
     }
 
     /**
@@ -1305,6 +1315,15 @@ public class TeX extends ExTeX {
     private int runWithoutFile() throws MainException {
 
         try {
+            if (!Interaction.get(getProperty(PROP_INTERACTION)).equals(
+                    Interaction.ERRORSTOPMODE)) {
+                return EXIT_INTERNAL_ERROR;
+            }
+        } catch (InteractionUnknownException e1) {
+            return EXIT_INTERNAL_ERROR;
+        }
+
+        try {
             showBanner(new ConfigurationFactory()
                     .newInstance(getProperty(PROP_CONFIG)), Level.INFO);
         } catch (ConfigurationException e) {
@@ -1361,9 +1380,7 @@ public class TeX extends ExTeX {
 
         if (!name.startsWith(arguments[position].substring(1))) {
             return false;
-        }
-
-        if (position >= arguments.length - 1) {
+        } else if (position >= arguments.length - 1) {
             throw new MainMissingArgumentException(tag);
         }
 
