@@ -25,6 +25,8 @@ import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.util.logging.Logger;
 
+import de.dante.extex.interpreter.Interpreter;
+import de.dante.extex.interpreter.interaction.Interaction;
 import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
@@ -33,7 +35,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * prompt before each line of input.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class TeXInputReader extends Reader {
 
@@ -60,16 +62,22 @@ public class TeXInputReader extends Reader {
     private boolean showPrompt = true;
 
     /**
+     * The field <tt>interpreter</tt> contains the interpreter.
+     */
+    private Interpreter interpreter;
+
+    /**
      * Creates a new object.
      *
      * @param logger the logger to write to
      * @param charset the character set to use
+     * @param interpreter the interpreter
      *
      * @throws UnsupportedEncodingException in case that the encoding is not
      *  known
      */
-    public TeXInputReader(final Logger logger, final String charset)
-            throws UnsupportedEncodingException {
+    public TeXInputReader(final Logger logger, final String charset,
+            final Interpreter interpreter) throws UnsupportedEncodingException {
 
         super();
         this.logger = logger;
@@ -77,6 +85,7 @@ public class TeXInputReader extends Reader {
         Localizer localizer = LocalizerFactory
                 .getLocalizer(TeXInputReader.class.getName());
         prompt = localizer.format("TTP.PromptInput");
+        this.interpreter = interpreter;
     }
 
     /**
@@ -117,6 +126,13 @@ public class TeXInputReader extends Reader {
     public int read(final char[] buffer, final int startIndex, final int arg2)
             throws IOException {
 
+        /*
+//        if (interpreter.getContext().getInteraction().getIndex() != Interaction.ERRORSTOPMODE
+//                .getIndex()) {
+//            return -1;
+//        }
+ * 
+ */
         if (showPrompt) {
             logger.severe(prompt);
             showPrompt = false;
