@@ -26,7 +26,7 @@ import java.io.OutputStream;
  * TODO gene: missing JavaDoc.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class NamedOutputStream extends OutputStream {
 
@@ -84,7 +84,7 @@ public class NamedOutputStream extends OutputStream {
      *
      * @return the name of the destination
      */
-    String getName() {
+    public String getName() {
 
         return name;
     }
