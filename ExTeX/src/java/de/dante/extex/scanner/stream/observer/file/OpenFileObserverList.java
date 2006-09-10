@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -19,15 +19,15 @@
 
 package de.dante.extex.scanner.stream.observer.file;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
 
 /**
  * This class provides a type-safe list of observers for the open file event.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public final class OpenFileObserverList implements OpenFileObserver {
 
@@ -79,12 +79,14 @@ public final class OpenFileObserverList implements OpenFileObserver {
      *
      * @see de.dante.extex.scanner.stream.observer.file.OpenFileObserver#update(
      *      java.lang.String,
-     *      java.lang.String)
+     *      java.lang.String,
+     *      java.io.InputStream)
      */
-    public void update(final String filename, final String filetype) {
+    public void update(final String filename, final String filetype,
+            final InputStream stream) {
 
         for (int i = 0; i < list.size(); i++) {
-            ((OpenFileObserver) list.get(i)).update(filename, filetype);
+            ((OpenFileObserver) list.get(i)).update(filename, filetype, stream);
         }
     }
 

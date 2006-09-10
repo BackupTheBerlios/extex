@@ -19,6 +19,7 @@
 
 package de.dante.extex.main.observer;
 
+import java.io.InputStream;
 import java.util.logging.Logger;
 
 import de.dante.extex.scanner.stream.observer.file.OpenFileObserver;
@@ -29,7 +30,7 @@ import de.dante.extex.scanner.stream.observer.file.OpenFileObserver;
  * name of the file.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class FileOpenObserver implements OpenFileObserver {
 
@@ -51,9 +52,12 @@ public class FileOpenObserver implements OpenFileObserver {
 
     /**
      * @see de.dante.extex.scanner.stream.observer.file.OpenFileObserver#update(
-     *      java.lang.String, java.lang.String)
+     *      java.lang.String,
+     *      java.lang.String,
+     *      java.io.InputStream)
      */
-    public void update(final String filename, final String filetype) {
+    public void update(final String filename, final String filetype,
+            final InputStream stream) {
 
         logger.info("(" + filename);
     }

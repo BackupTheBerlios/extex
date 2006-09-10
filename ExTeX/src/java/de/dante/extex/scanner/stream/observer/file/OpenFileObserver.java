@@ -19,12 +19,14 @@
 
 package de.dante.extex.scanner.stream.observer.file;
 
+import java.io.InputStream;
+
 /**
  * This interface describes the ability to receive a notification just after
  * a new file based stream has been opened.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface OpenFileObserver {
 
@@ -35,7 +37,8 @@ public interface OpenFileObserver {
      * @param filename the name of the file to be opened
      * @param filetype the type of the file to be opened. The type is resolved
      *  via the configuration to a file name pattern
+     * @param stream the input stream to read from
      */
-    void update(String filename, String filetype);
+    void update(String filename, String filetype, InputStream stream);
 
 }
