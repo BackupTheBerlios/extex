@@ -25,6 +25,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.CharacterCodingException;
@@ -40,6 +41,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import de.dante.extex.ExTeX;
+import de.dante.extex.backend.BackendDriver;
+import de.dante.extex.backend.documentWriter.DocumentWriterOptions;
+import de.dante.extex.backend.documentWriter.exception.DocumentWriterException;
+import de.dante.extex.backend.outputStream.NamedOutputStream;
+import de.dante.extex.backend.outputStream.OutputStreamFactory;
+import de.dante.extex.backend.outputStream.OutputStreamObserver;
 import de.dante.extex.font.FontFactory;
 import de.dante.extex.font.exception.FontException;
 import de.dante.extex.interpreter.Interpreter;
@@ -67,6 +74,7 @@ import de.dante.extex.main.observer.TokenPushObserver;
 import de.dante.extex.main.queryFile.QueryFileHandler;
 import de.dante.extex.main.queryFile.QueryFileHandlerTeXImpl;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
+import de.dante.extex.scanner.stream.observer.file.OpenFileObserver;
 import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.ConfigurationFactory;
@@ -326,6 +334,14 @@ import de.dante.util.resource.ResourceFinder;
  *   <dd>Property:
  *    <tt><a href="#extex.outputdir">extex.outputdir</a></tt></dd>
  *
+ *   <dt><a name="-parse-first-line"/><tt>-parse-first-line</tt></a></dt>
+ *   <dd>
+ *    This parameter can be used to force the parsing of the first line of the
+ *    input file.
+ *   </dd>
+ *   <dd>Property:
+ *    <tt><a href="#extex.parse.first.line">extex.parse.first.line</a></tt></dd>
+ *
  *   <dt><a name="-progname"/><tt>-progname &lang;name&rang;</tt><br />
  *     <tt>-progname=&lang;name&rang;</tt>
  *   </a></dt>
@@ -531,8 +547,9 @@ import de.dante.util.resource.ResourceFinder;
  *
  *   <dt><a name="extex.outputdir"/><tt>extex.outputdir</tt></dt>
  *   <dd>
- *    This parameter contain the directory where output files should be
- *    created.
+ *    This parameter contains the directory where output files should be
+ *    created. If the directory fails to be writable then a fallback is tried
+ *    instead.
  *   </dd>
  *   <dd>Command line:
  *    <a href="#-texoutputs"><tt>-texoutputs &lang;dir&rang;</tt></a></dd>
@@ -551,6 +568,14 @@ import de.dante.util.resource.ResourceFinder;
  *    This parameter contains the default size of the paper. It can be one of
  *    the symbolic names defined in <tt>paper/paper.xml</tt>. Otherwise the
  *    value is interpreted as a pair of width and height separated by a space.
+ *   </dd>
+ *
+ *   <dt><a name="extex.parse.first.line"/><tt>extex.parse.first.line</tt></dt>
+ *   <dd>
+ *    This boolean parameter controls whether the first line of the input file
+ *    should be parsed. If it is <code>true</code> and the first line starts
+ *    with <tt>%&amp;</tt> then the following characters up to a white-space
+ *    character are taken as the name of a format to be loaded.
  *   </dd>
  *
  *   <dt><a name="extex.progname"/><tt>extex.progname</tt></dt>
@@ -648,14 +673,14 @@ import de.dante.util.resource.ResourceFinder;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class TeX extends ExTeX {
 
     /**
      * The constant <tt>COPYRIGHT_YEAR</tt> contains the starting year of
      * development for the copyright message. This number is fixed to be the
-     * year 2003 and should no be modified.
+     * year 2003 and should not be modified.
      */
     private static final int COPYRIGHT_YEAR = 2003;
 
@@ -677,6 +702,11 @@ public class TeX extends ExTeX {
      * the success case.
      */
     protected static final int EXIT_OK = 0;
+
+    /**
+     * The field <tt>PROP_PARSE_FIRST_LINE</tt> contains the ...
+     */
+    private static final String PROP_PARSE_FIRST_LINE = "extex.parse.first.line";
 
     /**
      * The constant <tt>TRACE_MAP</tt> contains the mapping from single
@@ -728,10 +758,9 @@ public class TeX extends ExTeX {
             consoleHandler.setLevel(Level.WARNING);
             logger.addHandler(consoleHandler);
 
-            Localizer localizer = LocalizerFactory.getLocalizer(TeX.class
-                    .getName());
-            logException(logger, //
-                    localizer.format("ExTeX.SevereError", e.toString()), e);
+            logException(logger, LocalizerFactory.getLocalizer(
+                    TeX.class.getName()).format("ExTeX.SevereError",
+                    e.toString()), e);
             status = EXIT_INTERNAL_ERROR;
         }
 
@@ -741,7 +770,8 @@ public class TeX extends ExTeX {
     /**
      * The field <tt>localizer</tt> contains the localizer.
      */
-    private Localizer localizer;
+    private Localizer localizer = LocalizerFactory.getLocalizer(TeX.class
+            .getName());;
 
     /**
      * The field <tt>observers</tt> contains the observers.
@@ -757,7 +787,12 @@ public class TeX extends ExTeX {
      * The field <tt>queryFileHandler</tt> contains the instance of the handler
      * to ask for a file name if none is given.
      */
-    private QueryFileHandler queryFileHandler = null;
+    private QueryFileHandler queryFileHandler = new QueryFileHandlerTeXImpl();
+
+    /**
+     * The field <tt>interpreter</tt> contains the ...
+     */
+    private Interpreter interpreter;
 
     /**
      * Creates a new object and initializes the properties from given
@@ -771,7 +806,7 @@ public class TeX extends ExTeX {
      *            that this value is <code>null</code> no user properties
      *            will be considered.
      *
-     * @throws InterpreterException in case of an invalid inetraction mode
+     * @throws InterpreterException in case of an invalid interaction mode
      * @throws IOException in case of an IO Error during the reading of the
      *             properties file
      *
@@ -782,9 +817,7 @@ public class TeX extends ExTeX {
                 IOException {
 
         super(theProperties, dotFile);
-        localizer = LocalizerFactory.getLocalizer(TeX.class.getName());
-
-        setQueryFileHandler(new QueryFileHandlerTeXImpl());
+        propertyDefault(PROP_PARSE_FIRST_LINE, "");
     }
 
     /**
@@ -874,6 +907,8 @@ public class TeX extends ExTeX {
 
         TokenStreamFactory factory = interpreter.getTokenStreamFactory();
 
+        this.interpreter = interpreter;
+
         try {
             interpreter.addStream(factory.newInstance(new TeXInputReader(
                     getLogger(), properties.getProperty(PROP_ENCODING),
@@ -904,8 +939,8 @@ public class TeX extends ExTeX {
                 FontException,
                 IOException {
 
-        Interpreter interpreter = super.makeInterpreter(config, factory,
-                fontFactory, finder, jobname);
+        interpreter = super.makeInterpreter(config, factory, fontFactory,
+                finder, jobname);
         Logger logger = getLogger();
 
         interpreter.getContext().setStandardTokenStream(
@@ -916,8 +951,7 @@ public class TeX extends ExTeX {
             ((StreamCloseObservable) interpreter).registerObserver(observer);
             observers.add(observer);
         }
-        if (Boolean.valueOf(getProperties().getProperty(PROP_TRACE_TOKENIZER))
-                .booleanValue()) {
+        if (getBooleanProperty(PROP_TRACE_TOKENIZER)) {
 
             if (interpreter instanceof PopObservable) {
                 PopObserver observer = new TokenObserver(logger);
@@ -930,12 +964,51 @@ public class TeX extends ExTeX {
                 observers.add(observer);
             }
         }
-        if (Boolean.valueOf(getProperties().getProperty(PROP_TRACE_MACROS))
-                .booleanValue()) {
+        if (getBooleanProperty(PROP_TRACE_MACROS)) {
             interpreter.getContext().setCount("tracingcommands", 1, true);
         }
 
         return interpreter;
+    }
+
+    /**
+     * The field <tt>primaryFile</tt> contains the ...
+     */
+    private String primaryFile = null;
+
+    /**
+     * @see de.dante.extex.ExTeX#makeBackend(
+     *      de.dante.util.framework.configuration.Configuration,
+     *      java.lang.String,
+     *      de.dante.extex.backend.outputStream.OutputStreamFactory,
+     *      de.dante.extex.backend.documentWriter.DocumentWriterOptions,
+     *      de.dante.util.framework.configuration.Configuration,
+     *      de.dante.util.resource.ResourceFinder)
+     */
+    protected BackendDriver makeBackend(final Configuration config,
+            final String jobname, final OutputStreamFactory outFactory,
+            final DocumentWriterOptions options,
+            final Configuration colorConfig, final ResourceFinder finder)
+            throws DocumentWriterException,
+                ConfigurationException {
+
+        outFactory.register(new OutputStreamObserver() {
+
+            public void update(final String name, final String type,
+                    final OutputStream stream) {
+
+                if (primaryFile != null) {
+                    // ignore
+                } else if (stream instanceof NamedOutputStream) {
+                    primaryFile = ((NamedOutputStream) stream).getName();
+                } else if (stream != null) {
+                    primaryFile = name;
+                }
+            }
+        });
+
+        return super.makeBackend(config, jobname, outFactory, options,
+                colorConfig, finder);
     }
 
     /**
@@ -961,7 +1034,104 @@ public class TeX extends ExTeX {
                 finder);
         factory.registerObserver(new FileOpenObserver(getLogger()));
 
+        if (!"".equals(getProperty(PROP_FILE))
+                && getBooleanProperty(PROP_PARSE_FIRST_LINE)) {
+            factory.registerObserver(new OpenFileObserver() {
+
+                /**
+                 * The field <tt>first</tt> contains the ...
+                 */
+                boolean first = true;
+
+                /**
+                 * @see de.dante.extex.scanner.stream.observer.file.OpenFileObserver#update(
+                 *      java.lang.String,
+                 *      java.lang.String,
+                 *      java.io.InputStream)
+                 */
+                public void update(final String filename,
+                        final String filetype, final InputStream stream) {
+
+                    if ("tex".equals(filetype) && first) {
+                        first = false;
+                        if (stream.markSupported()) {
+                            stream.mark(1024);
+                            try {
+                                if (stream.read() == '%'
+                                        && stream.read() == '&') {
+                                    StringBuffer fmt = new StringBuffer();
+                                    for (int c = stream.read(); c > 0
+                                            && !Character
+                                                    .isWhitespace((char) c); c = stream
+                                            .read()) {
+                                        fmt.append((char) c);
+                                    }
+                                    loadFormat(interpreter, finder, fmt
+                                            .toString(),
+                                            getProperty(PROP_JOBNAME));
+                                } else {
+                                    stream.reset();
+                                }
+                            } catch (IOException e) {
+                                try {
+                                    stream.reset();
+                                } catch (IOException e1) {
+                                    getLogger().throwing(TeX.class.getName(),
+                                            "update()", e);
+                                }
+                            } catch (GeneralException e) {
+                                getLogger().throwing(TeX.class.getName(),
+                                        "update()", e);
+                            } catch (ConfigurationException e) {
+                                getLogger().throwing(TeX.class.getName(),
+                                        "update()", e);
+                            }
+                        }
+                    }
+                }
+
+            });
+        }
+
         return factory;
+    }
+
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param backend the back-end driver
+     */
+    protected void logPages(final BackendDriver backend) {
+
+        Level level = (getBooleanProperty(PROP_NO_BANNER)
+                ? Level.FINE
+                : Level.INFO);
+        int pages = backend.getPages();
+        String pattern;
+        switch ((pages < 2 ? pages : 2) + (primaryFile == null ? 0 : 3)) {
+            case 0:
+                pattern = "ExTeX.NoPages";
+                break;
+            case 1:
+                pattern = "ExTeX.Page";
+                break;
+            case 2:
+                pattern = "ExTeX.Pages";
+                break;
+            case 3:
+                pattern = "ExTeX.NoPages";
+                break;
+            case 4:
+                pattern = "ExTeX.File.Page";
+                break;
+            case 5:
+                pattern = "ExTeX.File.Pages";
+                break;
+            default:
+                pattern = "";
+        }
+        getLogger().log(level, localizer.format(pattern, primaryFile, //
+                Integer.toString(pages)));
     }
 
     /**
@@ -1012,6 +1182,13 @@ public class TeX extends ExTeX {
                     || !((InterpreterException) x).isProcessed()) {
                 logException(getLogger(), e.getLocalizedMessage(), e);
             }
+        } catch (InteractionUnknownException e) {
+            showBanner(null, Level.INFO);
+            Throwable x = e.getCause();
+            if (!(x instanceof InterpreterException)
+                    || !((InterpreterException) x).isProcessed()) {
+                logException(getLogger(), e.getLocalizedMessage(), e);
+            }
         } catch (Throwable e) {
             showBanner(null, Level.INFO);
             logInternalError(e);
@@ -1031,8 +1208,7 @@ public class TeX extends ExTeX {
      */
     private Interpreter runAndRemapExceptions() throws MainException {
 
-        if (!Boolean.valueOf(getProperty(PROP_INI)).booleanValue()
-                && getProperty(PROP_FMT).equals("")) {
+        if (!getBooleanProperty(PROP_INI) && getProperty(PROP_FMT).equals("")) {
             setProperty(PROP_FMT, getProperty(PROP_PROGNAME));
         }
 
@@ -1060,8 +1236,13 @@ public class TeX extends ExTeX {
      *
      * @throws MainException in case of an error
      * @throws IOException in case of an IO error
+     * @throws InteractionUnknownException in case of an unknown interaction
+     *  mode
      */
-    protected int runCL(final String[] args) throws MainException, IOException {
+    protected int runCL(final String[] args)
+            throws MainException,
+                IOException,
+                InteractionUnknownException {
 
         for (int i = 0; i < args.length; i++) {
             String arg = args[i];
@@ -1122,7 +1303,7 @@ public class TeX extends ExTeX {
                     case 'h':
                         if ("help".startsWith(arg)) {
                             return info(getLocalizer().format("ExTeX.Usage",
-                                    "extex"));
+                                    getProperty(PROP_PROGNAME)));
                         } else if ("halt-on-error".startsWith(arg)) {
                             setProperty(PROP_HALT_ON_ERROR, "true");
                         } else if (!mergeProperties(arg)) {
@@ -1141,9 +1322,9 @@ public class TeX extends ExTeX {
                     case 'i':
                         if (set("interaction", PROP_INTERACTION, args, i)) {
                             i++;
-                            useInteraction();
+                            applyInteraction();
                         } else if (set("interaction", PROP_INTERACTION, arg)) {
-                            useInteraction();
+                            applyInteraction();
                         } else if ("ini".startsWith(arg)) {
                             setProperty(PROP_INI, "true");
                         } else if (!mergeProperties(arg)) {
@@ -1188,6 +1369,8 @@ public class TeX extends ExTeX {
                             i++;
                         } else if (set("progname", PROP_PROGNAME, arg)) {
                             // ok
+                        } else if ("parse-first-line".startsWith(arg)) {
+                            setProperty(PROP_PARSE_FIRST_LINE, "true");
                         } else if (!mergeProperties(arg)) {
                             throw new MainUnknownOptionException(arg);
                         }
@@ -1239,20 +1422,6 @@ public class TeX extends ExTeX {
     }
 
     /**
-     * Activate the interaction mode set.
-     *
-     * @throws MainException in case of an error
-     */
-    private void useInteraction() throws MainException {
-
-        try {
-            applyInteraction();
-        } catch (InteractionUnknownException e) {
-            throw new MainException(-1, e.getLocalizedMessage());
-        }
-    }
-
-    /**
      * The command line is processed starting at an argument which starts with
      * a backslash or follows a file name argument. This argument and any
      * following arguments are taken as input to the tokenizer.
@@ -1299,10 +1468,10 @@ public class TeX extends ExTeX {
 
         if (position >= arguments.length) {
             return runWithoutFile();
-        } else {
-            setInputFileName(arguments[position]);
-            return runWithCode(arguments, position + 1);
         }
+
+        setInputFileName(arguments[position]);
+        return runWithCode(arguments, position + 1);
     }
 
     /**
