@@ -25,8 +25,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import de.dante.extex.backend.documentWriter.exception.DocumentWriterException;
@@ -41,7 +43,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationMissingExcep
  * configuration.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class OutputFactory extends AbstractFactory
         implements
@@ -51,7 +53,7 @@ public class OutputFactory extends AbstractFactory
      * This class provides a mutable Integer.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private class Int {
 
@@ -143,6 +145,11 @@ public class OutputFactory extends AbstractFactory
     private Map handlers = null;
 
     /**
+     * The field <tt>observers</tt> contains the ...
+     */
+    private List observers = null;
+
+    /**
      * The field <tt>outputDirectories</tt> contains the list of output
      * directories. The list is tried first to last.
      */
@@ -182,13 +189,9 @@ public class OutputFactory extends AbstractFactory
      * opened.
      *
      * @throws DocumentWriterException in case of an error
-     *
-     * @see de.dante.extex.backend.outputStream.OutputStreamFactory#getOutputStream(
-     *      java.lang.String,
-     *      java.lang.String)
      */
-    public OutputStream getOutputStream(final String name, final String type)
-            throws DocumentWriterException {
+    private OutputStream determineOutputStream(final String name,
+            final String type) throws DocumentWriterException {
 
         String t = (type != null ? type : defaultExtension != null
                 ? defaultExtension
@@ -261,6 +264,36 @@ public class OutputFactory extends AbstractFactory
     }
 
     /**
+     * Create an output stream of a certain type.
+     * The creation is tried in a number of directories. The first succeeding
+     * attempt is returned.
+     *
+     * @param name the name of the file to open
+     * @param type the type of the file
+     *
+     * @return a stream for the output or <code>null</code> if none could be
+     * opened.
+     *
+     * @throws DocumentWriterException in case of an error
+     *
+     * @see de.dante.extex.backend.outputStream.OutputStreamFactory#getOutputStream(
+     *      java.lang.String,
+     *      java.lang.String)
+     */
+    public OutputStream getOutputStream(final String name, final String type)
+            throws DocumentWriterException {
+
+        OutputStream stream = determineOutputStream(name, type);
+        if (observers != null) {
+            int size = observers.size();
+            for (int i = 0; i < size; i++) {
+                ((OutputStreamObserver) observers.get(i)).update(name, type, stream);
+            }
+        }
+        return stream;
+    }
+
+    /**
      * This method tries to open a new output stream.
      *
      * @param dir the directory or <code>null</code>
@@ -284,6 +317,18 @@ public class OutputFactory extends AbstractFactory
         } catch (FileNotFoundException e) {
             return null;
         }
+    }
+
+    /**
+     * @see de.dante.extex.backend.outputStream.OutputStreamFactory#register(
+     *      de.dante.extex.backend.outputStream.OutputStreamObserver)
+     */
+    public void register(final OutputStreamObserver observer) {
+
+        if (observers == null) {
+            observers = new ArrayList();
+        }
+        observers.add(observer);
     }
 
     /**

@@ -27,7 +27,7 @@ import de.dante.extex.backend.documentWriter.exception.DocumentWriterException;
  * This is the factory for new OutputStreams.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface OutputStreamFactory {
 
@@ -53,5 +53,12 @@ public interface OutputStreamFactory {
      * @param extension the default extension
      */
     void setExtension(String extension);
+
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param observer the observers to register
+     */
+    public void register(final OutputStreamObserver observer);
 
 }
