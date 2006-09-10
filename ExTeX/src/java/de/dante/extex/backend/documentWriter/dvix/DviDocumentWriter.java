@@ -83,7 +83,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This class provides a base implementation of a DVI document writer.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class DviDocumentWriter
         implements
@@ -396,7 +396,7 @@ public class DviDocumentWriter
             }
 
             if (horizontal) {
-                dviH += node.getGlyph().getWidth().getValue();
+                dviH += node.getWidth().getValue();
                 dviCode.add(new DviSetChar(node.getCharacter().getCodePoint()));
                 return Boolean.TRUE; // do not move any more
             } else {
