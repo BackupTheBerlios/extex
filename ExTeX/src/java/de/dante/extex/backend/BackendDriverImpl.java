@@ -35,10 +35,10 @@ import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
- * This document writer can be used to combine several components.
+ * This back-end driver can be used to combine several components.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class BackendDriverImpl
         implements
@@ -50,7 +50,7 @@ public class BackendDriverImpl
      * This internal class acts as page counter as last element in the node pipe.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.7 $
+     * @version $Revision: 1.8 $
      */
     private class Counter implements PagePipe {
 
@@ -228,11 +228,11 @@ public class BackendDriverImpl
      * @see de.dante.extex.backend.documentWriter.MultipleDocumentStream#setOutputStreamFactory(
      *      de.dante.extex.backend.outputStream.OutputStreamFactory)
      */
-    public void setOutputStreamFactory(final OutputStreamFactory writerFactory) {
+    public void setOutputStreamFactory(final OutputStreamFactory factory) {
 
         if (documentWriter instanceof MultipleDocumentStream) {
             ((MultipleDocumentStream) documentWriter)
-                    .setOutputStreamFactory(writerFactory);
+                    .setOutputStreamFactory(factory);
         }
     }
 
