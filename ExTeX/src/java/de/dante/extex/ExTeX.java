@@ -43,6 +43,7 @@ import de.dante.extex.backend.BackendDriverImpl;
 import de.dante.extex.backend.documentWriter.DocumentWriter;
 import de.dante.extex.backend.documentWriter.DocumentWriterFactory;
 import de.dante.extex.backend.documentWriter.DocumentWriterOptions;
+import de.dante.extex.backend.documentWriter.MultipleDocumentStream;
 import de.dante.extex.backend.documentWriter.exception.DocumentWriterException;
 import de.dante.extex.backend.outputStream.OutputFactory;
 import de.dante.extex.backend.outputStream.OutputStreamFactory;
@@ -272,10 +273,16 @@ import de.dante.util.resource.ResourceFinderFactory;
  *   </dd>
  *   <dd>Default: <tt>ExTeX</tt></dd>
  *
+ *   <dt><a name="extex.stacktrace.on.internal.error"/><tt>extex.stacktrace.on.internal.error</tt></dt>
+ *   <dd>
+ *    This boolean parameter contains indicator that a stack trace should be
+ *    written to the log stream on internal errors.
+ *   </dd>
+ *
  *   <dt><a name="extex.texinputs"/><tt>extex.texinputs</tt></dt>
  *   <dd>
- *    This parameter contains the additional directories for searching TeX
- *    input files.
+ *    This parameter contains the additional directories for searching
+ *    <logo>TeX</logo> input files.
  *   </dd>
  *
  *   <dt><a name="extex.token.stream"/><tt>extex.token.stream</tt></dt>
@@ -340,7 +347,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.138 $
+ * @version $Revision: 1.139 $
  */
 public class ExTeX {
 
@@ -349,7 +356,7 @@ public class ExTeX {
      * from a format which needs it.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.138 $
+     * @version $Revision: 1.139 $
      */
     private class ResourceFinderInjector implements RegistrarObserver {
 
@@ -403,7 +410,12 @@ public class ExTeX {
      */
     private static final String FORMAT_TYPE = "fmt";
 
+    /**
+     * The constant <tt>PROP_BANNER</tt> contains the name of the property for
+     * the ...
+     */
     protected static final String PROP_BANNER = "extex.banner";
+
     /**
      * The constant <tt>PROP_CODE</tt> contains the name of the property for the
      * <logo>TeX</logo> code to be inserted at the beginning of the job.
@@ -718,7 +730,7 @@ public class ExTeX {
         propertyDefault(PROP_OUTPUTDIR, ".");
         propertyDefault(PROP_OUTPUTDIR_FALLBACK, ".");
         propertyDefault(PROP_PAGE, "");
-        propertyDefault(PROP_PROGNAME, "ExTeX");
+        propertyDefault(PROP_PROGNAME, "extex");
         propertyDefault(PROP_TEXINPUTS, null);
         propertyDefault(PROP_TOKEN_STREAM, "base");
         propertyDefault(PROP_TRACE_INPUT_FILES, "");
@@ -729,10 +741,9 @@ public class ExTeX {
         propertyDefault(PROP_TYPESETTER_TYPE, "");
         propertyDefault(PROP_INTERNAL_STACKTRACE, "");
 
-        noBanner = !Boolean.valueOf(properties.getProperty(PROP_NO_BANNER))
-                .booleanValue();
-        showBanner = noBanner;
-        ini = !Boolean.valueOf(properties.getProperty(PROP_INI)).booleanValue();
+        noBanner = getBooleanProperty(PROP_NO_BANNER);
+        showBanner = !noBanner;
+        ini = !getBooleanProperty(PROP_INI);
 
         applyLanguage();
 
@@ -900,6 +911,18 @@ public class ExTeX {
     }
 
     /**
+     * Getter for a named property as boolean.
+     *
+     * @param key the property name
+     *
+     * @return the value of the named property
+     */
+    public boolean getBooleanProperty(final String key) {
+
+        return Boolean.valueOf(this.properties.getProperty(key)).booleanValue();
+    }
+
+    /**
      * Getter for a named property.
      *
      * @param key the property name
@@ -1022,8 +1045,7 @@ public class ExTeX {
             logger.info(localizer.format("InteractionNotSupported"));
         }
 
-        if (Boolean.valueOf((String) properties.get(PROP_TRACING_ONLINE))
-                .booleanValue()) {
+        if (getBooleanProperty(PROP_TRACING_ONLINE)) {
             context.setCount("tracingonline", 1, true);
         }
 
@@ -1052,8 +1074,7 @@ public class ExTeX {
      */
     protected void logInternalError(final Throwable e) {
 
-        if (Boolean.valueOf(properties.getProperty(PROP_INTERNAL_STACKTRACE))
-                .booleanValue()) {
+        if (getBooleanProperty(PROP_INTERNAL_STACKTRACE)) {
             e.printStackTrace();
         }
 
@@ -1071,6 +1092,15 @@ public class ExTeX {
         }
 
         logException(logger, localizer.format("ExTeX.InternalError", msg), e);
+    }
+
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param backend the back-end driver
+     */
+    protected void logPages(final BackendDriver backend) {
+
     }
 
     /**
@@ -1112,7 +1142,8 @@ public class ExTeX {
         if (docWriter instanceof ResourceConsumer) {
             ((ResourceConsumer) docWriter).setResourceFinder(finder);
         }
-        docWriter.setParameter("Creator", "ExTeX " + EXTEX_VERSION.toString());
+        docWriter.setParameter("Creator", properties.getProperty(PROP_NAME)
+                + " " + EXTEX_VERSION);
         docWriter.setParameter("Title", "");
         docWriter.setParameter("Author", properties.getProperty("user.name"));
         docWriter.setParameter("Paper", "A4");
@@ -1121,6 +1152,12 @@ public class ExTeX {
         docWriter.setParameter("PageOrder", "Ascend");
 
         backend.setDocumentWriter(docWriter);
+
+        if (backend instanceof MultipleDocumentStream) {
+            ((MultipleDocumentStream) backend)
+                    .setOutputStreamFactory(outFactory);
+        }
+
         return backend;
     }
 
@@ -1322,19 +1359,25 @@ public class ExTeX {
      */
     protected File makeLogFile(final String jobname) {
 
-        File logFile = new File(properties.getProperty(PROP_OUTPUTDIR), //
-                jobname + ".log");
+        String[] dirs = new String[]{properties.getProperty(PROP_OUTPUTDIR),
+                properties.getProperty(PROP_OUTPUTDIR_FALLBACK)};
 
-        if (logFile.canWrite()) {
-            return logFile;
+        for (int i = 0; i < dirs.length; i++) {
+
+            File logFile = new File(dirs[i], jobname + ".log");
+
+            if (logFile.exists()) {
+                if (logFile.canWrite()) {
+                    return logFile;
+                }
+            } else {
+                File dir = logFile.getParentFile();
+                if (dir != null && dir.canWrite()) {
+                    return logFile;
+                }
+            }
         }
 
-        logFile = new File(properties.getProperty(PROP_OUTPUTDIR_FALLBACK),
-                jobname + ".log");
-
-        if (logFile.canWrite()) {
-            return logFile;
-        }
         return null;
     }
 
@@ -1534,8 +1577,7 @@ public class ExTeX {
             outFactory.setDefaultStream(outStream);
 
             ResourceFinder finder = makeResourceFinder(config);
-            if (Boolean.valueOf(properties.getProperty(PROP_TRACE_INPUT_FILES))
-                    .booleanValue()) {
+            if (getBooleanProperty(PROP_TRACE_INPUT_FILES)) {
                 finder.enableTracing(true);
             }
             TokenStreamFactory tokenStreamFactory = makeTokenStreamFactory(
@@ -1563,12 +1605,7 @@ public class ExTeX {
 
             interpreter.run();
 
-            int pages = backend.getPages();
-            logger.log((noBanner ? Level.INFO : Level.FINE), localizer.format(
-                    (pages == 0 ? "ExTeX.NoPages" : pages == 1
-                            ? "ExTeX.Page"
-                            : "ExTeX.Pages"), //
-                    logFile, Integer.toString(pages)));
+            logPages(backend);
 
             return interpreter;
 
@@ -1595,12 +1632,13 @@ public class ExTeX {
             throw e;
         } catch (Throwable e) {
             logInternalError(e);
+            e.printStackTrace();
         } finally {
             if (logHandler != null) {
                 logHandler.close();
                 logger.removeHandler(logHandler);
                 // see "TeX -- The Program [1333]"
-                logger.log((noBanner ? Level.INFO : Level.FINE), //
+                logger.log((noBanner ? Level.FINE : Level.INFO), //
                         localizer.format("ExTeX.Logfile", logFile));
             }
         }
@@ -1663,7 +1701,7 @@ public class ExTeX {
 
         if (showBanner) {
             showBanner = false;
-            if (Boolean.valueOf(getProperty(PROP_NO_BANNER)).booleanValue()) {
+            if (getBooleanProperty(PROP_NO_BANNER)) {
                 return;
             }
 
