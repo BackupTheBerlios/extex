@@ -42,7 +42,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.31 $
+ * @version $Revision: 1.32 $
  */
 public class Glue implements Serializable, FixedGlue {
 
@@ -416,6 +416,16 @@ public class Glue implements Serializable, FixedGlue {
     }
 
     /**
+     * Negate the value. This is the same as multiplying with -1.
+     *
+     */
+    public void negateLength() {
+        
+        this.length.negate();
+    }
+
+
+    /**
      * Set the glue value to a non-stretchable and non-shrinkable length.
      *
      * @param theLength the new length
@@ -437,6 +447,49 @@ public class Glue implements Serializable, FixedGlue {
         this.length.set(theLength.getLength());
         this.shrink.set(theLength.getShrink());
         this.stretch.set(theLength.getStretch());
+    }
+
+    /**
+     * Setter for the length component
+     *
+     * @param x the new length component
+     */
+    public void setLength(FixedDimen x) {
+
+        length.set(x);
+    }
+
+    /**
+     * Setter for the shrink component
+     *
+     * @param x the new shrink component
+     */
+    public void setShrink(FixedDimen x) {
+
+        shrink.set(x);
+    }
+
+    /**
+     * Setter for the stretch component
+     *
+     * @param x the new stretch component
+     */
+    public void setStretch(FixedDimen x) {
+
+        stretch.set(x);
+    }
+
+    /**
+     * Subtract another glue to this one.
+     * The subtraction is performed independently on the components.
+     *
+     * @param g the glue to add
+     */
+    public void subtract(final FixedGlue g) {
+
+        this.length.add(g.getLength());
+        this.stretch.add(g.getStretch());
+        this.shrink.add(g.getShrink());
     }
 
     /**
@@ -498,16 +551,6 @@ public class Glue implements Serializable, FixedGlue {
             shrink.toToks(toks, factory, 'p', 't');
         }
         return toks;
-    }
-
-    /**
-     * TODO gene: missing JavaDoc
-     *
-     * @param x
-     */
-    public void setLength(FixedDimen x) {
-
-        length.set(x);
     }
 
 }
