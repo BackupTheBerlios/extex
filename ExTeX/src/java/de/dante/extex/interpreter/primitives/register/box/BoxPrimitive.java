@@ -60,7 +60,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
 public class BoxPrimitive extends AbstractBox implements Boxable, Serializable {
 
@@ -98,7 +98,7 @@ public class BoxPrimitive extends AbstractBox implements Boxable, Serializable {
             } catch (ConfigurationException e) {
                 throw new InterpreterException(e);
             }
-            context.setBox(key, null, prefix.clearGlobal());
+            box.clear();
         }
     }
 
@@ -112,8 +112,11 @@ public class BoxPrimitive extends AbstractBox implements Boxable, Serializable {
             final Typesetter typesetter) throws InterpreterException {
 
         String key = getKey(context, source, typesetter, getName());
-        Box box = context.getBox(key);
-        context.setBox(key, null, false);
+        Box b = context.getBox(key);
+        Box box = new Box(b);
+        if (b != null) {
+            b.clear();
+        }
         return box;
     }
 

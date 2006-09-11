@@ -55,7 +55,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class Unvbox extends AbstractBox {
 
@@ -86,14 +86,14 @@ public class Unvbox extends AbstractBox {
             throws InterpreterException {
 
         String key = getKey(context, source, typesetter, getName());
-        Box b = context.getBox(key);
-        if (b == null || b.isVoid()) {
+        Box box = context.getBox(key);
+        if (box == null || box.isVoid()) {
             // nothing to do
-        } else if (!b.isVbox()) {
+        } else if (!box.isVbox()) {
             throw new HelpingException(getLocalizer(), "TTP.IncompatibleUnbox");
         } else {
-            context.setBox(key, null, false);
-            NodeList nl = b.getNodes();
+            NodeList nl = box.getNodes();
+            box.clear();
             for (int i = 0; i < nl.size(); i++) {
                 try {
                     typesetter.add(nl.get(i));
