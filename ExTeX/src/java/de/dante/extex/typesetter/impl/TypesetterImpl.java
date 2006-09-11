@@ -55,6 +55,7 @@ import de.dante.extex.typesetter.type.node.PenaltyNode;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
 import de.dante.extex.typesetter.type.node.factory.CachingNodeFactory;
 import de.dante.extex.typesetter.type.node.factory.NodeFactory;
+import de.dante.extex.typesetter.type.page.Page;
 import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
@@ -68,7 +69,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.91 $
+ * @version $Revision: 1.92 $
  */
 public class TypesetterImpl
         implements
@@ -625,7 +626,7 @@ public class TypesetterImpl
      */
     public void shipout(final NodeList nodes) throws TypesetterException {
 
-        pageBuilder.flush(nodes, this);
+        pageBuilder.shipout(nodes, this);
         shipoutMark = true;
     }
 
