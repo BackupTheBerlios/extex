@@ -40,7 +40,7 @@ import de.dante.util.framework.Registrar;
  * loading or the creation should be performed.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class FutureLanguage implements ManagedLanguage, Serializable {
 
@@ -83,8 +83,8 @@ public class FutureLanguage implements ManagedLanguage, Serializable {
 
     /**
      * @see de.dante.extex.language.hyphenation.Hyphenator#addHyphenation(
-     *      de.dante.extex.interpreter.type.tokens.Tokens,
-     *      TypesetterOptions)
+     *      de.dante.util.UnicodeCharList,
+     *      de.dante.extex.typesetter.TypesetterOptions)
      */
     public void addHyphenation(final UnicodeCharList word,
             final TypesetterOptions context) throws HyphenationException {

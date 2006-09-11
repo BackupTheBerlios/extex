@@ -45,7 +45,7 @@ import de.dante.util.framework.Registrar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class BaseHyphenationTable implements ModifiableLanguage, Serializable {
 
@@ -141,9 +141,9 @@ public class BaseHyphenationTable implements ModifiableLanguage, Serializable {
     }
 
     /**
-     * @see de.dante.extex.language.Language#addHyphenation(
-     *      de.dante.extex.interpreter.type.tokens.Tokens,
-     *      TypesetterOptions)
+     * @see de.dante.extex.language.hyphenation.Hyphenator#addHyphenation(
+     *      de.dante.util.UnicodeCharList,
+     *      de.dante.extex.typesetter.TypesetterOptions)
      */
     public void addHyphenation(final UnicodeCharList word,
             final TypesetterOptions options) throws HyphenationException {
