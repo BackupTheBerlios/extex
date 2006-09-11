@@ -347,7 +347,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.139 $
+ * @version $Revision: 1.140 $
  */
 public class ExTeX {
 
@@ -356,7 +356,7 @@ public class ExTeX {
      * from a format which needs it.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.139 $
+     * @version $Revision: 1.140 $
      */
     private class ResourceFinderInjector implements RegistrarObserver {
 
@@ -1095,7 +1095,8 @@ public class ExTeX {
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * This method can be overwritten to provide logging functionality for the
+     * pages produced.
      *
      * @param backend the back-end driver
      */

@@ -23,20 +23,20 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This class provides a delegate to an output stream with an additional name.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class NamedOutputStream extends OutputStream {
 
     /**
-     * The field <tt>name</tt> contains the ...
+     * The field <tt>name</tt> contains the name.
      */
     private String name;
 
     /**
-     * The field <tt>stream</tt> contains the ...
+     * The field <tt>stream</tt> contains the encapsulated stream.
      */
     private OutputStream stream;
 
@@ -64,7 +64,7 @@ public class NamedOutputStream extends OutputStream {
     /**
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
 
         return this.stream.equals(obj);
     }
@@ -108,7 +108,7 @@ public class NamedOutputStream extends OutputStream {
     /**
      * @see java.io.OutputStream#write(byte[])
      */
-    public void write(byte[] b) throws IOException {
+    public void write(final byte[] b) throws IOException {
 
         this.stream.write(b);
     }
@@ -116,7 +116,8 @@ public class NamedOutputStream extends OutputStream {
     /**
      * @see java.io.OutputStream#write(byte[], int, int)
      */
-    public void write(byte[] b, int off, int len) throws IOException {
+    public void write(final byte[] b, final int off, final int len)
+            throws IOException {
 
         this.stream.write(b, off, len);
     }
@@ -124,7 +125,7 @@ public class NamedOutputStream extends OutputStream {
     /**
      * @see java.io.OutputStream#write(int)
      */
-    public void write(int b) throws IOException {
+    public void write(final int b) throws IOException {
 
         this.stream.write(b);
     }
