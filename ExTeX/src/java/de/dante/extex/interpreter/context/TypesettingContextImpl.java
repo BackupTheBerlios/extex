@@ -30,7 +30,7 @@ import de.dante.extex.language.Language;
  * appearance of glyphs or other nodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public class TypesettingContextImpl implements ModifiableTypesettingContext {
 
@@ -190,4 +190,22 @@ public class TypesettingContextImpl implements ModifiableTypesettingContext {
         this.language = language;
     }
 
+    /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+
+        StringBuffer sb = new StringBuffer("(");
+        sb.append(font.getFontKey().toString());
+        sb.append(' ');
+        sb.append(language.getName());
+        sb.append(' ');
+        sb.append(color.toString());
+        sb.append(' ');
+        sb.append(direction.toString());
+        sb.append(')');
+        return sb.toString();
+    }
+
+    
 }

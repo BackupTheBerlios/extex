@@ -28,7 +28,7 @@ import java.io.Serializable;
  * that additional directions are defined.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public final class Direction implements Serializable {
 
@@ -82,4 +82,13 @@ public final class Direction implements Serializable {
         return (lr ? LR : RL);
     }
 
+    /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+
+        return (lr ? "LR" : "RL");
+    }
+
+    
 }
