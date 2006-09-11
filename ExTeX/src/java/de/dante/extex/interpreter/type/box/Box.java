@@ -53,7 +53,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.39 $
+ * @version $Revision: 1.40 $
  */
 public class Box implements BoxOrRule, Serializable {
 
@@ -142,6 +142,16 @@ public class Box implements BoxOrRule, Serializable {
     public Box(final NodeList list) {
 
         nodes = list;
+    }
+
+    /**
+     * Creates a new object.
+     *
+     * @param box the box to copy (shallow)
+     */
+    public Box(final Box box) {
+
+        nodes = (box == null ? null : box.getNodes());
     }
 
     /**
