@@ -33,7 +33,7 @@ import de.dante.extex.typesetter.type.page.PageFactory;
  * This interface describes the capabilities of a page builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public interface PageBuilder {
 
@@ -58,6 +58,21 @@ public interface PageBuilder {
      * @throws TypesetterException in case of an error
      */
     void flush(NodeList nodes, Typesetter typesetter)
+            throws TypesetterException;
+
+    /**
+     * This method is used when the page builder has received its last nodes.
+     * It indicates that now the pages should be written out.
+     * <p>
+     * Nevertheless some ship-outs might come afterwards.
+     * </p>
+     *
+     * @param nodes the nodes to send
+     * @param typesetter the typesetter
+     *
+     * @throws TypesetterException in case of an error
+     */
+    void shipout(NodeList nodes, Typesetter typesetter)
             throws TypesetterException;
 
     /**

@@ -37,20 +37,20 @@ import de.dante.util.exception.GeneralException;
  * This is a first reference implementation of a page builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class TrivialPageBuilder implements PageBuilder {
-
-    /**
-     * The field <tt>context</tt> contains the interpreter context.
-     */
-    private Context context = null;
 
     /**
      * The field <tt>backend</tt> contains the target to receive
      * the pages.
      */
     private BackendDriver backend = null;
+
+    /**
+     * The field <tt>context</tt> contains the interpreter context.
+     */
+    private Context context = null;
 
     /**
      * The field <tt>options</tt> contains the options to control the behaviour.
@@ -138,15 +138,6 @@ public class TrivialPageBuilder implements PageBuilder {
     }
 
     /**
-     * @see de.dante.extex.typesetter.pageBuilder.PageBuilder#setContext(
-     *      de.dante.extex.interpreter.context.Context)
-     */
-    public void setContext(final Context context) {
-
-        this.context = context;
-    }
-
-    /**
      * Setter for the back-end driver.
      * This has to be provided before the page builder can be active.
      *
@@ -158,6 +149,15 @@ public class TrivialPageBuilder implements PageBuilder {
     public void setBackend(final BackendDriver backend) {
 
         this.backend = backend;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.pageBuilder.PageBuilder#setContext(
+     *      de.dante.extex.interpreter.context.Context)
+     */
+    public void setContext(final Context context) {
+
+        this.context = context;
     }
 
     /**
@@ -188,6 +188,29 @@ public class TrivialPageBuilder implements PageBuilder {
     public void setPageFactory(final PageFactory factory) {
 
         pageFactory = factory;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.pageBuilder.PageBuilder#shipout(
+     *      de.dante.extex.typesetter.type.NodeList,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public void shipout(final NodeList nodes, final Typesetter typesetter)
+            throws TypesetterException {
+
+        if (nodes.size() <= 0) {
+            return;
+        }
+        try {
+            Page page = pageFactory.newInstance(nodes, context, typesetter);
+            if (page != null) {
+                backend.shipout(page);
+            }
+            nodes.clear();
+        } catch (GeneralException e) {
+            throw new TypesetterException(e);
+        }
+
     }
 
 }

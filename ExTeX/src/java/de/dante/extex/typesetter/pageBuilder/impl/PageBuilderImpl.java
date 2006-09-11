@@ -37,7 +37,7 @@ import de.dante.util.exception.GeneralException;
  * This is a first reference implementation of a page builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
 public class PageBuilderImpl implements PageBuilder {
 
@@ -196,6 +196,29 @@ public class PageBuilderImpl implements PageBuilder {
     public void setPageFactory(final PageFactory factory) {
 
         pageFactory = factory;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.pageBuilder.PageBuilder#shipout(
+     *      de.dante.extex.typesetter.type.NodeList,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public void shipout(final NodeList nodes, final Typesetter typesetter)
+            throws TypesetterException {
+
+        if (nodes.size() <= 0) {
+            return;
+        }
+        try {
+            Page page = pageFactory.newInstance(nodes, context, typesetter);
+            if (page != null) {
+                backendDriver.shipout(page);
+            }
+            nodes.clear();
+        } catch (GeneralException e) {
+            throw new TypesetterException(e);
+        }
+
     }
 
 }
