@@ -142,7 +142,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.115 $
+ * @version $Revision: 1.116 $
  */
 public class ContextImpl
         implements
@@ -500,6 +500,7 @@ public class ContextImpl
         }
         typesettingContextFactory.configure(typesettingConfig);
         TypesettingContext tc;
+        TypesettingContext oldTc = getTypesettingContext();
 
         if (languageManager != null) {
             typesettingContextFactory.setLanguageManager(languageManager);
@@ -508,6 +509,9 @@ public class ContextImpl
                     .getLanguage("0"));
         } else {
             tc = typesettingContextFactory.initial();
+        }
+        if (oldTc != null) {
+            tc = typesettingContextFactory.newInstance(oldTc);
         }
         set(tc, true);
     }
