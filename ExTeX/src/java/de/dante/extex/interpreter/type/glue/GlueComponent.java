@@ -61,7 +61,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.54 $
+ * @version $Revision: 1.55 $
  */
 public class GlueComponent implements Serializable, FixedGlueComponent {
 
@@ -591,6 +591,15 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
     public void multiply(final long nom, final long denom) {
 
         this.value = this.value * nom / denom;
+    }
+
+    /**
+     * Negate the value. This is the same as multiplying with -1.
+     *
+     */
+    public void negate() {
+        
+        this.value = -this.value;
     }
 
     /**
