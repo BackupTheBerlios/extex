@@ -56,7 +56,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.64 $
+ * @version $Revision: 1.65 $
  */
 public class GroupImpl implements Group {
 
@@ -692,7 +692,7 @@ public class GroupImpl implements Group {
                 ? context //
                 : next != null
                         ? next.getTypesettingContext()
-                        : new TypesettingContextImpl();
+                        : null;
     }
 
     /**
