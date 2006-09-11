@@ -36,7 +36,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationMissingAttri
  *  TypesettingContext}.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public class TypesettingContextFactory extends AbstractFactory {
 
@@ -256,11 +256,31 @@ public class TypesettingContextFactory extends AbstractFactory {
      */
     public TypesettingContext initial() throws ConfigurationException {
 
-        ModifiableTypesettingContext c = newInstance();
+        ModifiableTypesettingContext tc = newInstance();
         if (languageManager != null) {
-            c.setLanguage(languageManager.getLanguage("0"));
+            tc.setLanguage(languageManager.getLanguage("0"));
         }
-        return c;
+        return tc;
+    }
+
+    /**
+     * Create a new instance of a typesetting context. The typesetting context
+     * passed in as argument may not be under the control of this factory.
+     *
+     * @param tc the typesetting context to take over
+     *
+     * @return a typesetting context with the same attributes as the argument
+     *
+     * @throws ConfigurationException in case of an error
+     */
+    public TypesettingContext newInstance(final TypesettingContext tc)
+            throws ConfigurationException {
+
+        if (languageManager != null) {
+            return newInstance(tc, languageManager.getLanguage(tc.getLanguage()
+                    .getName()));
+        }
+        return tc;
     }
 
 }
