@@ -39,7 +39,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class GenericNodeList extends AbstractNode implements NodeList {
 
@@ -383,8 +383,11 @@ public class GenericNodeList extends AbstractNode implements NodeList {
 
         sb.append("(");
         sb.append(getHeight().toString());
-        sb.append("+");
-        sb.append(getDepth().toString());
+        FixedDimen d = getDepth();
+        if (d.ge(Dimen.ZERO)) {
+            sb.append("+");
+        }
+        sb.append(d.toString());
         sb.append(")x");
         sb.append(getWidth().toString());
 
