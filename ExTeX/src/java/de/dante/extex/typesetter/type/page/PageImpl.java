@@ -29,7 +29,7 @@ import de.dante.extex.typesetter.type.NodeList;
  * contains additional administrative information.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class PageImpl implements Page {
 
@@ -192,6 +192,14 @@ public class PageImpl implements Page {
     public void setMediaWidth(final Dimen width) {
 
         mediaWidth.set(width);
+    }
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+
+        return nodes.toString();
     }
 
 }
