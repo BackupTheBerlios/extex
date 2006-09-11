@@ -395,6 +395,32 @@ import de.dante.util.resource.ResourceFinder;
  * </p>
  *
  *
+ * <a name="first-line"/><h3>First Line Parsing</h3>
+ *
+ * <p>
+ *  The feature of first line parsing can be enabled with the command line
+ *  option <tt>-parse-first-line</tt> and the property
+ *  <tt>extex.parse.first.line</tt>.
+ * </p>
+ * <p>
+ *  If the feature is enabled then the first line of the first input file
+ *  is parsed. If this line starts with <tt>%&</tt> then the next characters
+ *  up to a white-space are taken as format name to be loaded. The remaining
+ *  characters up to the newline characters are ignored.
+ * </p>
+ * <p>
+ *  The first line is simply passed to the interpreter if it does not start
+ *  with <tt>%&</tt>.
+ * </p>
+ * <p>
+ *  The following sample shows a first line which pre-loads the format
+ *  <tt>latex</tt>.
+ * </p>
+ * <pre class="TeX">
+ *  %&latex some comment
+ * </pre>
+ *
+ *
  * <a name="settings"/><h3>Settings and Command Line Parameters</h3>
  *
  * <p>
@@ -673,7 +699,7 @@ import de.dante.util.resource.ResourceFinder;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public class TeX extends ExTeX {
 
@@ -823,17 +849,18 @@ public class TeX extends ExTeX {
     /**
      * Print the copying file.
      *
+     * @param printStream the stream to print to
+     *
      * @return the exit code
      *
      * @throws IOException in case of an IO error
      */
-    private int copying() throws IOException {
+    private int copying(final PrintStream printStream) throws IOException {
 
         String file = this.getClass().getName().replace('.', '/').replaceAll(
                 "[a-z0-9_A-Z]+$", "LICENSE.txt");
-        PrintStream printStream = System.err;
-        ClassLoader classLoader = this.getClass().getClassLoader();
-        InputStream stream = classLoader.getResourceAsStream(file);
+        InputStream stream = getClass().getClassLoader().getResourceAsStream(
+                file);
         if (stream == null) {
             printStream.println(file + ": resource not found");
             return EXIT_INTERNAL_ERROR;
@@ -994,6 +1021,12 @@ public class TeX extends ExTeX {
 
         outFactory.register(new OutputStreamObserver() {
 
+            /**
+             * @see de.dante.extex.backend.outputStream.OutputStreamObserver#update(
+             *      java.lang.String,
+             *      java.lang.String,
+             *      java.io.OutputStream)
+             */
             public void update(final String name, final String type,
                     final OutputStream stream) {
 
@@ -1021,9 +1054,9 @@ public class TeX extends ExTeX {
      * @return the token stream factory
      *
      * @throws ConfigurationException in case that some kind of problems have
-     * been detected in the configuration
+     *   been detected in the configuration
      * @throws NotObservableException in case that the observer for file
-     * events could not be registered
+     *   events could not be registered
      */
     protected TokenStreamFactory makeTokenStreamFactory(
             final Configuration config, final ResourceFinder finder)
@@ -1055,16 +1088,20 @@ public class TeX extends ExTeX {
                     if ("tex".equals(filetype) && first) {
                         first = false;
                         if (stream.markSupported()) {
-                            stream.mark(1024);
+                            stream.mark(8);
                             try {
                                 if (stream.read() == '%'
                                         && stream.read() == '&') {
                                     StringBuffer fmt = new StringBuffer();
-                                    for (int c = stream.read(); c > 0
+                                    int c;
+                                    for (c = stream.read(); c > 0
                                             && !Character
                                                     .isWhitespace((char) c); c = stream
                                             .read()) {
                                         fmt.append((char) c);
+                                    }
+                                    while (c > 0 && c != '\n') {
+                                        c = stream.read();
                                     }
                                     loadFormat(interpreter, finder, fmt
                                             .toString(),
@@ -1089,7 +1126,6 @@ public class TeX extends ExTeX {
                         }
                     }
                 }
-
             });
         }
 
@@ -1097,9 +1133,11 @@ public class TeX extends ExTeX {
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * Write the indicator of the pages produced to the logger.
      *
      * @param backend the back-end driver
+     *
+     * @see de.dante.extex.ExTeX#logPages(de.dante.extex.backend.BackendDriver)
      */
     protected void logPages(final BackendDriver backend) {
 
@@ -1247,7 +1285,13 @@ public class TeX extends ExTeX {
         for (int i = 0; i < args.length; i++) {
             String arg = args[i];
 
-            if (arg.startsWith("-")) {
+            if (arg.equals("")) {
+                // silently ignored as TeXk does
+                continue;
+            }
+            int c = arg.charAt(0);
+
+            if (c == '-') {
                 if (arg.equals("-")) {
                     throw new MainUnknownOptionException(arg);
                 }
@@ -1283,7 +1327,7 @@ public class TeX extends ExTeX {
                             return info(getLocalizer().format(
                                     "ExTeX.Copyright", copyrightYear));
                         } else if ("copying".startsWith(arg)) {
-                            return copying();
+                            return copying(System.err);
                         } else if (!mergeProperties(arg)) {
                             throw new MainUnknownOptionException(arg);
                         }
@@ -1407,9 +1451,9 @@ public class TeX extends ExTeX {
                             throw new MainUnknownOptionException(arg);
                         }
                 }
-            } else if (arg.startsWith("&")) {
+            } else if (c == '&') {
                 setProperty(PROP_FMT, arg.substring(1));
-            } else if (arg.startsWith("\\")) {
+            } else if (c == '\\') {
                 return runWithCode(args, i);
             } else if (arg.equals("")) {
                 // silently ignored as TeXk does
