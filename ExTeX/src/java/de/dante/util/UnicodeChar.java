@@ -35,7 +35,7 @@ import com.ibm.icu.text.UTF16;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public class UnicodeChar implements Serializable {
 
@@ -63,8 +63,8 @@ public class UnicodeChar implements Serializable {
     protected static final long serialVersionUID = 1L;
 
     /**
-     * Factory method for Unicode characters.
      * Creates a new object from a integer code point.
+     * Factory method for Unicode characters.
      *
      * @param code the code point
      *
@@ -86,8 +86,8 @@ public class UnicodeChar implements Serializable {
     }
 
     /**
-     * Factory method for Unicode characters.
      * Creates a new object from a Unicode name.
+     * Factory method for Unicode characters.
      *
      * @param unicodeName the long name of the character
      *
@@ -179,19 +179,6 @@ public class UnicodeChar implements Serializable {
             throw new IllegalArgumentException("Codepoint out of bounds");
         }
         this.code = codePoint;
-    }
-
-    /**
-     * Creates a new object from a Unicode name.
-     *
-     * @param unicodeName Unicode name as String
-     *
-     * @deprecated use Unicode.get(String) instead
-     */
-    public UnicodeChar(final String unicodeName) {
-
-        super();
-        this.code = UCharacter.getCharFromName(unicodeName);
     }
 
     /**
