@@ -119,7 +119,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </i>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class TeXParagraphBuilder
         implements
@@ -3482,9 +3482,8 @@ public class TeXParagraphBuilder
         // repeat
         do {
             line = new HorizontalListNode();
-
+            adjust = new HorizontalListNode();
             int theBreak = curP.getCurBreak();
-            adjust.clear();
             fillLine(nodes, idx, theBreak, line, lineGlue, adjust);
             idx = theBreak;
 
