@@ -79,6 +79,7 @@ import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterFactory;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.util.exception.GeneralException;
+import de.dante.util.exception.NotObservableException;
 import de.dante.util.framework.Registrar;
 import de.dante.util.framework.RegistrarException;
 import de.dante.util.framework.RegistrarObserver;
@@ -92,7 +93,6 @@ import de.dante.util.framework.configuration.exception.ConfigurationNoSuchMethod
 import de.dante.util.framework.configuration.exception.ConfigurationSyntaxException;
 import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.i18n.LocalizerFactory;
-import de.dante.util.observer.NotObservableException;
 import de.dante.util.resource.PropertyConfigurable;
 import de.dante.util.resource.ResourceConsumer;
 import de.dante.util.resource.ResourceFinder;
@@ -246,18 +246,13 @@ import de.dante.util.resource.ResourceFinderFactory;
  *   </dd>
  *   <dd>Default: <tt>pdf</tt></dd>
  *
- *   <dt><a name="extex.outputdir"/><tt>extex.outputdir</tt></dt>
+ *   <dt><a name="extex.output.directories"/><tt>extex.output.directories</tt></dt>
  *   <dd>
- *    This parameter contain the directory where output files should be
- *    created.
+ *    This parameter contains a colon separated list of directories where output
+ *    files should be created. The directories are tried in turn until one is
+ *    found where the creation of the output file succeeds.
  *   </dd>
  *   <dd>Default: <tt>.</tt></dd>
- *
- *   <dt><a name="extex.outputdir.fallback"/><tt>extex.outputdir.fallback</tt></dt>
- *   <dd>
- *    This parameter contains the name of the
- *    property for the fallback if the output directory fails to be writable.
- *   </dd>
  *
  *   <dt><a name="extex.paper"/><tt>extex.paper</tt></dt>
  *   <dd>
@@ -320,6 +315,13 @@ import de.dante.util.resource.ResourceFinderFactory;
  *    This parameter contains the name of the typesetter to use. If it is
  *    not set then the default from the configuration file is used.
  *   </dd>
+ *
+ *   <dt><a name="extex.units"/><tt>extex.units</tt></dt>
+ *   <dd>
+ *    This parameter contains a colon separated list of units to be loaded into
+ *    <logo>ExTeX</logo>.
+ *   </dd>
+ *
  * </dl>
  *
  * <p>
@@ -347,7 +349,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.140 $
+ * @version $Revision: 1.141 $
  */
 public class ExTeX {
 
@@ -356,7 +358,7 @@ public class ExTeX {
      * from a format which needs it.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.140 $
+     * @version $Revision: 1.141 $
      */
     private class ResourceFinderInjector implements RegistrarObserver {
 
@@ -526,16 +528,10 @@ public class ExTeX {
     protected static final String PROP_OUTPUT_TYPE = "extex.output";
 
     /**
-     * The constant <tt>PROP_OUTPUTDIR</tt> contains the name of the
-     * property for the output directory.
+     * The constant <tt>PROP_OUTPUT_DIRS</tt> contains the name of the
+     * property for the output directory path.
      */
-    protected static final String PROP_OUTPUTDIR = "extex.outputdir";
-
-    /**
-     * The constant <tt>PROP_OUTPUTDIR_FALLBACK</tt> contains the name of the
-     * property for the fallback if the output directory fails to be writable.
-     */
-    protected static final String PROP_OUTPUTDIR_FALLBACK = "extex.outputdir.fallback";
+    protected static final String PROP_OUTPUT_DIRS = "extex.output.directories";
 
     /**
      * The constant <tt>PROP_PAGE</tt> contains the name of the property for the
@@ -727,8 +723,7 @@ public class ExTeX {
         propertyDefault(PROP_NO_BANNER, "");
         propertyDefault(PROP_LANG, "");
         propertyDefault(PROP_OUTPUT_TYPE, "");
-        propertyDefault(PROP_OUTPUTDIR, ".");
-        propertyDefault(PROP_OUTPUTDIR_FALLBACK, ".");
+        propertyDefault(PROP_OUTPUT_DIRS, ".");
         propertyDefault(PROP_PAGE, "");
         propertyDefault(PROP_PROGNAME, "extex");
         propertyDefault(PROP_TEXINPUTS, null);
@@ -1348,6 +1343,17 @@ public class ExTeX {
 
         initializeStreams(interpreter, properties);
 
+        String units = properties.getProperty("extex.units");
+        if (units != null) {
+            String[] u = units.split(":");
+            for (int i = 0; i < u.length; i++) {
+                String s = u[i];
+                if (!s.equals("")) {
+                    interpreter.loadUnit("unit/" + s);
+                }
+            }
+        }
+
         return interpreter;
     }
 
@@ -1360,8 +1366,7 @@ public class ExTeX {
      */
     protected File makeLogFile(final String jobname) {
 
-        String[] dirs = new String[]{properties.getProperty(PROP_OUTPUTDIR),
-                properties.getProperty(PROP_OUTPUTDIR_FALLBACK)};
+        String[] dirs = properties.getProperty(PROP_OUTPUT_DIRS).split(":");
 
         for (int i = 0; i < dirs.length; i++) {
 
@@ -1571,11 +1576,10 @@ public class ExTeX {
             showBanner(config, (showBanner ? Level.INFO : Level.FINE));
 
             OutputFactory outFactory = new OutputFactory(//
-                    config.getConfiguration("Output"), //
-                    new String[]{properties.getProperty(PROP_OUTPUTDIR),
-                            properties.getProperty(PROP_OUTPUTDIR_FALLBACK)},
+                    properties.getProperty(PROP_OUTPUT_DIRS).split(":"), //
                     jobname);
             outFactory.setDefaultStream(outStream);
+            outFactory.configure(config.getConfiguration("Output"));
 
             ResourceFinder finder = makeResourceFinder(config);
             if (getBooleanProperty(PROP_TRACE_INPUT_FILES)) {

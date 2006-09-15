@@ -76,13 +76,13 @@ import de.dante.extex.main.queryFile.QueryFileHandlerTeXImpl;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.extex.scanner.stream.observer.file.OpenFileObserver;
 import de.dante.util.exception.GeneralException;
+import de.dante.util.exception.NotObservableException;
 import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.ConfigurationFactory;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 import de.dante.util.framework.configuration.exception.ConfigurationUnsupportedEncodingException;
 import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.i18n.LocalizerFactory;
-import de.dante.util.observer.NotObservableException;
 import de.dante.util.resource.ResourceFinder;
 
 /**
@@ -332,7 +332,7 @@ import de.dante.util.resource.ResourceFinder;
  *    tried to place there. If this fails a fallback is tried additionally.
  *   </dd>
  *   <dd>Property:
- *    <tt><a href="#extex.outputdir">extex.outputdir</a></tt></dd>
+ *    <tt><a href="#tex.output.dir">tex.output.dir</a></tt></dd>
  *
  *   <dt><a name="-parse-first-line"/><tt>-parse-first-line</tt></a></dt>
  *   <dd>
@@ -370,7 +370,7 @@ import de.dante.util.resource.ResourceFinder;
  *    property for the fallback if the output directory fails to be writable.
  *   </dd>
  *   <dd>Property:
- *    <tt><a href="#extex.outputdir.fallback">extex.outputdir.fallback</a></tt>
+ *    <tt><a href="#tex.output.dir.fallback">tex.output.dir.fallback</a></tt>
  *   </dd>
  *
  *   <dt><a name="-version"/><tt>-version</tt></dt>
@@ -571,7 +571,7 @@ import de.dante.util.resource.ResourceFinder;
  *    <a href="#-output"><tt>-output &lang;format&rang;</tt></a></dd>
  *   <dd>Default: <tt>pdf</tt></dd>
  *
- *   <dt><a name="extex.outputdir"/><tt>extex.outputdir</tt></dt>
+ *   <dt><a name="tex.output.dir"/><tt>tex.output.dir</tt></dt>
  *   <dd>
  *    This parameter contains the directory where output files should be
  *    created. If the directory fails to be writable then a fallback is tried
@@ -579,9 +579,9 @@ import de.dante.util.resource.ResourceFinder;
  *   </dd>
  *   <dd>Command line:
  *    <a href="#-texoutputs"><tt>-texoutputs &lang;dir&rang;</tt></a></dd>
- *   <dd>Default: <tt>.</tt></dd>
+ *   <dd>Default: <i>none</i></dd>
  *
- *   <dt><a name="extex.outputdir.fallback"/><tt>extex.outputdir.fallback</tt></dt>
+ *   <dt><a name="tex.output.dir.fallback"/><tt>tex.output.dir.fallback</tt></dt>
  *   <dd>
  *    This parameter contains the name of the
  *    property for the fallback if the output directory fails to be writable.
@@ -699,7 +699,7 @@ import de.dante.util.resource.ResourceFinder;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public class TeX extends ExTeX {
 
@@ -739,6 +739,18 @@ public class TeX extends ExTeX {
      * characters to tracing property names.
      */
     private static final Map TRACE_MAP = new HashMap();
+
+    /**
+     * The field <tt>PROP_OUTPUTDIR</tt> contains the name of the
+     * property where the directory where output files should be created.
+     */
+    private static final String PROP_OUTPUT_DIR = "tex.output.dir";
+
+    /**
+     * The field <tt>PROP_OUTPUTDIR_FALLBACK</tt> contains the name of the
+     * for the fallback if the output directory fails to be writable.
+     */
+    private static final String PROP_OUTPUT_DIR_FALLBACK = "tex.output.dir.fallback";
 
     static {
         TRACE_MAP.put("+", PROP_TRACING_ONLINE);
@@ -816,7 +828,9 @@ public class TeX extends ExTeX {
     private QueryFileHandler queryFileHandler = new QueryFileHandlerTeXImpl();
 
     /**
-     * The field <tt>interpreter</tt> contains the ...
+     * The field <tt>interpreter</tt> contains the interpreter. This is an
+     * intermediate variable used to transport the interpreter to places where
+     *  it is needed.
      */
     private Interpreter interpreter;
 
@@ -1141,10 +1155,13 @@ public class TeX extends ExTeX {
      */
     protected void logPages(final BackendDriver backend) {
 
-        Level level = (getBooleanProperty(PROP_NO_BANNER)
-                ? Level.FINE
-                : Level.INFO);
         int pages = backend.getPages();
+
+        if (pages == 0 && primaryFile != null) {
+            new File(primaryFile).delete();
+            primaryFile = null;
+        }
+
         String pattern;
         switch ((pages < 2 ? pages : 2) + (primaryFile == null ? 0 : 3)) {
             case 0:
@@ -1168,8 +1185,10 @@ public class TeX extends ExTeX {
             default:
                 pattern = "";
         }
-        getLogger().log(level, localizer.format(pattern, primaryFile, //
-                Integer.toString(pages)));
+        getLogger().log(
+                (getBooleanProperty(PROP_NO_BANNER) ? Level.FINE : Level.INFO),
+                localizer.format(pattern, primaryFile, //
+                        Integer.toString(pages)));
     }
 
     /**
@@ -1245,6 +1264,19 @@ public class TeX extends ExTeX {
      * @throws MainException in case of an error
      */
     private Interpreter runAndRemapExceptions() throws MainException {
+
+        String out1 = getProperty(PROP_OUTPUT_DIR);
+        String out2 = getProperty(PROP_OUTPUT_DIR_FALLBACK);
+
+        if (out1 != null) {
+            if (out2 != null) {
+                setProperty(PROP_OUTPUT_DIRS, out1 + ":" + out2);
+            } else {
+                setProperty(PROP_OUTPUT_DIRS, out1 + ":.");
+            }
+        } else if (out2 != null) {
+            setProperty(PROP_OUTPUT_DIRS, ".:" + out2);
+        }
 
         if (!getBooleanProperty(PROP_INI) && getProperty(PROP_FMT).equals("")) {
             setProperty(PROP_FMT, getProperty(PROP_PROGNAME));
@@ -1399,10 +1431,14 @@ public class TeX extends ExTeX {
                     case 'o':
                         if (set("output", PROP_OUTPUT_TYPE, args, i)) {
                             i++;
-                        } else if (set("output-directory", PROP_OUTPUTDIR,
+                        } else if (set("output-path", PROP_OUTPUT_DIRS, args, i)) {
+                            i++;
+                        } else if (set("output-path", PROP_OUTPUT_DIRS, arg)) {
+                            // ok
+                        } else if (set("output-directory", PROP_OUTPUT_DIR,
                                 args, i)) {
                             i++;
-                        } else if (set("output-directory", PROP_OUTPUTDIR, arg)) {
+                        } else if (set("output-directory", PROP_OUTPUT_DIR, arg)) {
                             // ok
                         } else if (!mergeProperties(arg)) {
                             throw new MainUnknownOptionException(arg);
@@ -1424,14 +1460,14 @@ public class TeX extends ExTeX {
                             i++;
                         } else if (set("texinputs", PROP_TEXINPUTS, arg)) {
                             // ok
-                        } else if (set("texoutputs", PROP_OUTPUTDIR, args, i)) {
+                        } else if (set("texoutputs", PROP_OUTPUT_DIR, args, i)) {
                             i++;
-                        } else if (set("texoutputs", PROP_OUTPUTDIR, arg)) {
+                        } else if (set("texoutputs", PROP_OUTPUT_DIR, arg)) {
                             // ok
-                        } else if (set("texmfoutputs", PROP_OUTPUTDIR_FALLBACK,
+                        } else if (set("texmfoutputs", PROP_OUTPUT_DIR_FALLBACK,
                                 args, i)) {
                             i++;
-                        } else if (set("texmfoutputs", PROP_OUTPUTDIR_FALLBACK,
+                        } else if (set("texmfoutputs", PROP_OUTPUT_DIR_FALLBACK,
                                 arg)) {
                             // ok
                         } else if (!mergeProperties(arg)) {
@@ -1545,7 +1581,7 @@ public class TeX extends ExTeX {
 
         QueryFileHandler queryHandler = getQueryFileHandler();
         setInputFileName((queryHandler != null //
-                ? queryHandler.query(getLogger()) : null));
+                ? queryHandler.query(getLogger(), getProperties()) : null));
 
         runAndRemapExceptions();
         return EXIT_OK;
