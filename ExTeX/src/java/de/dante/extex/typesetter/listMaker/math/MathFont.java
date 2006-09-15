@@ -27,7 +27,6 @@ import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
-import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.util.UnicodeChar;
 
 /**
@@ -38,7 +37,7 @@ import de.dante.util.UnicodeChar;
  * @see "TTP [700]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class MathFont implements Font {
 
@@ -83,11 +82,28 @@ public class MathFont implements Font {
     }
 
     /**
+     * @see de.dante.extex.interpreter.type.font.Font#getDepth(
+     *      de.dante.util.UnicodeChar)
+     */
+    public FixedGlue getDepth(final UnicodeChar uc) {
+
+        return font.getDepth(uc);
+    }
+
+    /**
      * @see de.dante.extex.font.type.Fount#getDesignSize()
      */
     public FixedDimen getDesignSize() {
 
         return this.font.getDesignSize();
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.font.Font#getEfcode()
+     */
+    public long getEfcode(final UnicodeChar uc) {
+
+        return font.getEfcode(uc);
     }
 
     /**
@@ -147,6 +163,15 @@ public class MathFont implements Font {
     }
 
     /**
+     * @see de.dante.extex.interpreter.type.font.Font#getHeight(
+     *      de.dante.util.UnicodeChar)
+     */
+    public FixedGlue getHeight(final UnicodeChar uc) {
+
+        return font.getHeight(uc);
+    }
+
+    /**
      * @see de.dante.extex.interpreter.type.font.Font#getHyphenChar()
      */
     public UnicodeChar getHyphenChar() {
@@ -155,11 +180,38 @@ public class MathFont implements Font {
     }
 
     /**
+     * @see de.dante.extex.interpreter.type.font.Font#getItalicCorrection(
+     *      de.dante.util.UnicodeChar)
+     */
+    public FixedDimen getItalicCorrection(final UnicodeChar uc) {
+
+        return font.getItalicCorrection(uc);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.font.Font#getKerning(
+     *      de.dante.util.UnicodeChar, de.dante.util.UnicodeChar)
+     */
+    public FixedDimen getKerning(final UnicodeChar uc1, final UnicodeChar uc2) {
+
+        return font.getKerning(uc1, uc2);
+    }
+
+    /**
      * @see de.dante.extex.interpreter.type.font.Font#getLetterSpacing()
      */
     public FixedGlue getLetterSpacing() {
 
         return this.font.getLetterSpacing();
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.font.Font#getLigature(
+     *      de.dante.util.UnicodeChar, de.dante.util.UnicodeChar)
+     */
+    public UnicodeChar getLigature(final UnicodeChar uc1, final UnicodeChar uc2) {
+
+        return font.getLigature(uc1, uc2);
     }
 
     /**
@@ -184,6 +236,24 @@ public class MathFont implements Font {
     public FixedGlue getSpace() {
 
         return this.font.getSpace();
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.font.Font#getWidth(
+     *      de.dante.util.UnicodeChar)
+     */
+    public FixedGlue getWidth(final UnicodeChar uc) {
+
+        return font.getWidth(uc);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.font.Font#setEfcode(
+     *      de.dante.util.UnicodeChar, long)
+     */
+    public void setEfcode(final UnicodeChar uc, final long code) {
+
+        font.setEfcode(uc, code);
     }
 
     /**
@@ -216,78 +286,6 @@ public class MathFont implements Font {
     public String toString() {
 
         return this.font.toString();
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.type.font.Font#setEfcode(de.dante.util.UnicodeChar, long)
-     */
-    public void setEfcode(UnicodeChar uc, long code) {
-
-        // TODO gene: setEfcode unimplemented
-        throw new RuntimeException("unimplemented");
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.type.font.Font#getEfcode()
-     */
-    public long getEfcode(UnicodeChar uc) {
-
-        // TODO gene: getEfcode unimplemented
-        throw new RuntimeException("unimplemented");
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.type.font.Font#getDepth(de.dante.util.UnicodeChar)
-     */
-    public FixedGlue getDepth(UnicodeChar uc) {
-
-        // TODO gene: getDepth unimplemented
-        throw new RuntimeException("unimplemented");
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.type.font.Font#getHeight(de.dante.util.UnicodeChar)
-     */
-    public FixedGlue getHeight(UnicodeChar uc) {
-
-        // TODO gene: getHeight unimplemented
-        throw new RuntimeException("unimplemented");
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.type.font.Font#getItalicCorrection(de.dante.util.UnicodeChar)
-     */
-    public FixedDimen getItalicCorrection(UnicodeChar uc) {
-
-        // TODO gene: getItalicCorrection unimplemented
-        throw new RuntimeException("unimplemented");
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.type.font.Font#getKerning(de.dante.util.UnicodeChar, de.dante.util.UnicodeChar)
-     */
-    public FixedDimen getKerning(UnicodeChar uc1, UnicodeChar uc2) {
-
-        // TODO gene: getKerning unimplemented
-        throw new RuntimeException("unimplemented");
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.type.font.Font#getLigature(de.dante.util.UnicodeChar, de.dante.util.UnicodeChar)
-     */
-    public UnicodeChar getLigature(UnicodeChar uc1, UnicodeChar uc2) {
-
-        // TODO gene: getLigature unimplemented
-        throw new RuntimeException("unimplemented");
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.type.font.Font#getWidth(de.dante.util.UnicodeChar)
-     */
-    public FixedGlue getWidth(UnicodeChar uc) {
-
-        // TODO gene: getWidth unimplemented
-        throw new RuntimeException("unimplemented");
     }
 
 }
