@@ -71,7 +71,22 @@
     </default>
   </Finder>
 
+  <Finder class="de.dante.util.resource.ClasspathFinder"
+          trace="false"
+          default="default">
+    <fmt prefix="texmf/">
+      <extension>.fmt</extension>
+    </fmt>
+    <default skip="true">
+      <path property="extex.texinputs"/>
+      <path property="texinputs"/>
+      <path>.</path>
+      <extension></extension>
+    </default>
+  </Finder>
+
   <Finder class="de.dante.util.resource.LsrFinder"
+          trace="false"
           capacity="88888"
           default="default">
     <path property="extex.fonts"/>
@@ -88,7 +103,7 @@
     <map><extension/><extension>.map</extension></map>
     <ttf><extension/><extension>.ttf</extension></ttf>
     <tex><extension/><extension>.tex</extension></tex>
-    <fmt><extension>.fmt</extension></fmt>
+    <fmt skip="true" />
     <default><extension/></default>
   </Finder>
 
