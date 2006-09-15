@@ -27,7 +27,7 @@ import de.dante.extex.interpreter.type.dimen.FixedDimen;
  * This class contains some utility methods.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public abstract class PsUnit {
 
@@ -226,7 +226,7 @@ public abstract class PsUnit {
                 if (c == 't') {
                     return (length);
                 } else if (c == 'c') {
-                    return (length * 12);
+                    return (length * PT_PER_PC);
                 }
                 break;
             case 's':
