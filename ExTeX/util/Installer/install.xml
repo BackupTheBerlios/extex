@@ -67,6 +67,11 @@
       <parsable targetfile="$INSTALL_PATH/.extex"/>
     </pack>
 
+    <pack name="Formats" id="formats" required="yes">
+      <description/>
+      <file src="../../target/lib/extex-formats.jar" targetdir="$INSTALL_PATH/lib"/>
+    </pack>
+
     <pack name="Libraries" id="libs" required="yes">
       <description/>
       <fileset dir="../../lib" targetdir="$INSTALL_PATH/lib">

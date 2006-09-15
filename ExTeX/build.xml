@@ -31,7 +31,7 @@
           all
               Build nearly everything
           compile [-Djavac.deprecation=yes]
-              Compile all file except the tests.
+              Compile all files except the tests.
           jar
               Create the jar file.
           onejar
@@ -40,7 +40,7 @@
               Create the javadoc documentation in target/javadoc.
           checkstyle
               Apply the style rules.  
-        checkstyle41
+          checkstyle41
             Apply the style rules.  
           tests [-Dtests.haltonfailure=yes]
               Perfom all tests.
@@ -50,8 +50,8 @@
           install -Dinstalldir=...
               Install the relevant files in the given directory.
           tar
-        create a tar file with all source files, ...
-    lsr 
+              create a tar file with all source files, ...
+          lsr 
               Create a ls-R file for src/ and develop/test.
           clean
         </echo>
@@ -108,9 +108,17 @@
            classpath="util/Installer/IzPack/lib/compiler.jar"
            classname="com.izforge.izpack.ant.IzPackTask" />
 
+  <!-- ==================================================================== -->
   <target name="all"
           description="Build nearly everything"
           depends="installer,javadoc,checkstyle,tests" />
+
+  <!-- ==================================================================== -->
+  <target name="formats"
+          description="Compile the format files">
+    <ant dir="texmf" 
+         target="formats" />
+  </target>
 
   <!-- ==================================================================== -->
   <target name="compile" description="Compile the Java files (without tests)">
@@ -470,7 +478,7 @@
 
   <!-- ==================================================================== -->
   <target name="installer"
-          depends="jar"
+          depends="jar,formats"
           description="Create a standalone installer for ExTeX.">
     <izpack input="${installer.dir}/install.xml"
             output="${target}/ExTeX-setup.jar"

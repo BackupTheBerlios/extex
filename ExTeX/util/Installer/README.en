@@ -10,7 +10,12 @@
 
 <h1>Welcome to ExTeX</h1>
 <p>
-ExTeX is a typesetting program based on the experiences of TeX.
+ ExTeX is a typesetting program based on the experiences of TeX.
+ As a consequences ExTeX can be used instead of TeX.
+</p>
+<p>
+ ExTeX is a re-implementation. As such ExTeX contains some extensions to TeX.
+ Details can be found in the documentation.
 </p>
 
 <h1>Homepage</h1>

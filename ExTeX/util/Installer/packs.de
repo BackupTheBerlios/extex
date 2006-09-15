@@ -5,6 +5,9 @@
   <str id="core" txt="Basis"/>
   <str id="core.description" txt="Das Basispaket enthält eine TeX-kompatible Implementierung."/>
 
+  <str id="formats" txt="Formate"/>
+  <str id="formats.description" txt="Dieses Paket enthält einige vordefinierte Formate."/>
+
   <str id="libs" txt="Bibliotheken"/>
   <str id="libs.description" txt="Die benutzten Bibliotheken aus anderen Quellen."/>
 

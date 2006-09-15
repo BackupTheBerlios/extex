@@ -5,6 +5,9 @@
   <str id="core" txt="Core"/>
   <str id="core.description" txt="The core engine includes a TeX compatible implementation of a typesetter."/>
 
+  <str id="formats" txt="Formats"/>
+  <str id="formats.description" txt="This package contains some formats."/>
+
   <str id="libs" txt="Libraries"/>
   <str id="libs.description" txt="The third party libraries required for the core to work."/>
 

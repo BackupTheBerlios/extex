@@ -10,8 +10,12 @@
 
 <h1>Willkommen bei ExTeX</h1>
 <p>
-ExTeX ist ein Textsatzprogramm, das auf den Erfahrungen von TeX
-basiert. 
+ ExTeX ist ein Textsatzprogramm, das auf den Erfahrungen von TeX
+ basiert. Als solches kann ExTeX anstatt von TeX verwendet werden.
+</p>
+<p>
+ ExTeX ist eine Neuimplementierung. Als solche enthält ExTeX einige
+ Erweiterungen, gegenüber TeX. Details sind in der Dokumentation zu finden.
 </p>
 
 <h1>Homepage</h1>
