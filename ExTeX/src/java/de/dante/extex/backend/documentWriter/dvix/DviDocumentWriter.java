@@ -83,7 +83,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This class provides a base implementation of a DVI document writer.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class DviDocumentWriter
         implements
@@ -839,7 +839,7 @@ public class DviDocumentWriter
     private void writePreamble() throws IOException {
 
         long time = options.getCountOption("time").getValue();
-        String comment = " TeX output "
+        String comment = " ExTeX output "
                 + two("year")
                 + "."
                 + two("month")
