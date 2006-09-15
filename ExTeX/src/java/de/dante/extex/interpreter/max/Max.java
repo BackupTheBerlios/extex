@@ -111,6 +111,7 @@ import de.dante.util.framework.Registrar;
 import de.dante.util.framework.RegistrarObserver;
 import de.dante.util.framework.configuration.Configurable;
 import de.dante.util.framework.configuration.Configuration;
+import de.dante.util.framework.configuration.ConfigurationFactory;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 import de.dante.util.framework.configuration.exception.ConfigurationMissingException;
 import de.dante.util.framework.configuration.exception.ConfigurationWrapperException;
@@ -176,7 +177,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.113 $
+ * @version $Revision: 1.114 $
  */
 public abstract class Max
         implements
@@ -541,6 +542,7 @@ public abstract class Max
         Context ctx = getContext();
         Typesetter ts = getTypesetter();
         Logger log = getLogger();
+        Interaction mode = ctx.getInteraction();
         try {
             ctx.setInteraction(Interaction.ERRORSTOPMODE);
 
@@ -551,8 +553,35 @@ public abstract class Max
             }
 
             initializeDate(Calendar.getInstance());
-        } catch (ConfigurationException e) {
-            throw e;
+        } catch (GeneralException e) {
+            Throwable cause = e.getCause();
+            if (cause instanceof ConfigurationException) {
+                throw (ConfigurationException) cause;
+            }
+            throw new ConfigurationWrapperException(e);
+        } finally {
+            try {
+                if (mode != null) {
+                    ctx.setInteraction(mode);
+                }
+            } catch (InterpreterException e) {
+                throw new ConfigurationWrapperException(e);
+            }
+        }
+
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.Interpreter#loadUnit(java.lang.String)
+     */
+    public void loadUnit(final String name) throws ConfigurationException {
+
+        Configuration cfg = new ConfigurationFactory().newInstance(name);
+        OutputStreamFactory outputFactory = null; //TODO gene: provide OutputStreamFactory
+
+        try {
+            LoadUnit.loadUnit(cfg, getContext(), this, getTypesetter(),
+                    getLogger(), outputFactory);
         } catch (GeneralException e) {
             Throwable cause = e.getCause();
             if (cause instanceof ConfigurationException) {
@@ -560,7 +589,6 @@ public abstract class Max
             }
             throw new ConfigurationWrapperException(e);
         }
-
     }
 
     /**

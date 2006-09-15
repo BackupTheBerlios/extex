@@ -42,7 +42,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.34 $
+ * @version $Revision: 1.35 $
  */
 public interface Interpreter extends TokenSource {
 
@@ -81,6 +81,15 @@ public interface Interpreter extends TokenSource {
     void loadFormat(InputStream stream, String fmt)
             throws LoaderException,
                 IOException;
+
+    /**
+     * Load a unit.
+     *
+     * @param name the name of the configuration
+     *
+     * @throws ConfigurationException in case of an error
+     */
+    void loadUnit(final String name) throws ConfigurationException;
 
     /**
      * Process the current token streams by repeatedly reading a single token
