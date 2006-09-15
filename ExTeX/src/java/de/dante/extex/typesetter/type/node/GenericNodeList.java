@@ -39,7 +39,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class GenericNodeList extends AbstractNode implements NodeList {
 
@@ -53,7 +53,7 @@ public class GenericNodeList extends AbstractNode implements NodeList {
      * The field <tt>list</tt> is the container for the elements of this node
      * list.
      */
-    private List list = new ArrayList();
+    private ArrayList list = new ArrayList();
 
     /**
      * The field <tt>move</tt> contains the offset of the reference point in
@@ -176,6 +176,20 @@ public class GenericNodeList extends AbstractNode implements NodeList {
         setWidth(Dimen.ZERO_PT);
         setHeight(Dimen.ZERO_PT);
         setDepth(Dimen.ZERO_PT);
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.NodeList#copy()
+     */
+    public NodeList copy() {
+
+        try {
+            GenericNodeList clone = (GenericNodeList) this.clone();
+            clone.list = (ArrayList) list.clone();
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new ImpossibleException(e);
+        }
     }
 
     /**
