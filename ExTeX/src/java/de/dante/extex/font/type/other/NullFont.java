@@ -39,7 +39,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class NullFont implements Font, Serializable {
 
@@ -113,7 +113,7 @@ public class NullFont implements Font, Serializable {
      */
     public FixedGlue getDepth(final UnicodeChar uc) {
 
-        return null;
+        return Glue.ZERO;
     }
 
     /**
