@@ -37,7 +37,7 @@ import de.dante.util.exception.GeneralException;
  * This is a first reference implementation of a page builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
 public class PageBuilderImpl implements PageBuilder {
 
@@ -119,7 +119,6 @@ public class PageBuilderImpl implements PageBuilder {
         } catch (GeneralException e) {
             throw new TypesetterException(e);
         }
-        nodes.clear();
     }
 
     /**
@@ -214,11 +213,10 @@ public class PageBuilderImpl implements PageBuilder {
             if (page != null) {
                 backendDriver.shipout(page);
             }
-            nodes.clear();
+
         } catch (GeneralException e) {
             throw new TypesetterException(e);
         }
-
     }
 
 }
