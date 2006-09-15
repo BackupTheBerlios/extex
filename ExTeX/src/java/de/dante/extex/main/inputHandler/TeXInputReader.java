@@ -26,7 +26,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.logging.Logger;
 
 import de.dante.extex.interpreter.Interpreter;
-import de.dante.extex.interpreter.interaction.Interaction;
 import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
@@ -35,7 +34,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * prompt before each line of input.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class TeXInputReader extends Reader {
 
