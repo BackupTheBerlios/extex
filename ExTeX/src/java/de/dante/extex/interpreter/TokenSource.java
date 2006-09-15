@@ -32,7 +32,7 @@ import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
 import de.dante.util.exception.GeneralException;
-import de.dante.util.observer.NotObservableException;
+import de.dante.util.exception.NotObservableException;
 
 /**
  * This interface describes a class to acquire
@@ -47,7 +47,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.77 $
+ * @version $Revision: 1.78 $
  */
 public interface TokenSource {
 
