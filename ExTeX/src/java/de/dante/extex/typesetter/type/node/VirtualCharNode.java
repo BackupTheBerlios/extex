@@ -21,6 +21,7 @@ package de.dante.extex.typesetter.type.node;
 
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.exception.ImpossibleException;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
@@ -39,16 +40,15 @@ import de.dante.util.exception.GeneralException;
  * This class is used to represent composed characters from virtual fonts.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class VirtualCharNode extends CharNode implements NodeList {
-
     /**
      * This inner class provides the means to store nodes in a list.
      * It is here to compensate the missing multiple inheritance of Java.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.19 $
+     * @version $Revision: 1.20 $
      */
     private class NL extends GenericNodeList {
 
@@ -103,6 +103,7 @@ public class VirtualCharNode extends CharNode implements NodeList {
             return visitor.visitChar(node, value);
         }
     }
+
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
@@ -185,6 +186,18 @@ public class VirtualCharNode extends CharNode implements NodeList {
     }
 
     /**
+     * @see de.dante.extex.typesetter.type.NodeList#copy()
+     */
+    public NodeList copy() {
+
+        try {
+            return (NodeList) this.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new ImpossibleException(e);
+        }
+    }
+
+    /**
      * @see de.dante.extex.typesetter.type.node.CharNode#countChars()
      */
     public int countChars() {
@@ -230,6 +243,16 @@ public class VirtualCharNode extends CharNode implements NodeList {
     public Dimen getMove() {
 
         return this.nodes.getMove();
+    }
+
+    /**
+     * Getter for nodes.
+     *
+     * @return the nodes
+     */
+    public NodeList getNodes() {
+
+        return this.nodes;
     }
 
     /**
@@ -297,16 +320,6 @@ public class VirtualCharNode extends CharNode implements NodeList {
     public void setMove(final FixedDimen d) {
 
         this.nodes.setMove(d);
-    }
-
-    /**
-     * Getter for nodes.
-     *
-     * @return the nodes
-     */
-    public NodeList getNodes() {
-
-        return this.nodes;
     }
 
     /**
