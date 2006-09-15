@@ -90,14 +90,9 @@ extex.fonts = $INSTALL_PATH/font
 ##    resolved via the configuration.
 ##-----------------------------------------------------------------------------
 ##
-#extex.outputdir = .
-##    This parameter contain the directory where output files should
+#extex.output.directories = .
+##    This parameter contain the directories where output files should
 ##    be created.
-##-----------------------------------------------------------------------------
-##
-#extex.outputdir.fallback = .
-##    This parameter contains the name of the property for the
-##    fallback if the output directory fails to be writable.
 ##-----------------------------------------------------------------------------
 ##
 #extex.progname =

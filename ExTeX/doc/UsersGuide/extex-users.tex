@@ -1,6 +1,6 @@
 \nonstopmode
 %%*****************************************************************************
-%% $Id: extex-users.tex,v 1.23 2006/06/15 20:32:51 gene Exp $
+%% $Id: extex-users.tex,v 1.24 2006/09/15 15:14:27 gene Exp $
 %%*****************************************************************************
 %% Author: Gerd Neugebauer
 %%-----------------------------------------------------------------------------
@@ -33,7 +33,7 @@
 \newcommand\SyntaxOr{\>\(|\)\>}
 
 \def\setVersion$#1: #2.#3 ${\gdef\Version{0.0 (Revision #2.#3)}}
-\setVersion$Revision: 1.23 $
+\setVersion$Revision: 1.24 $
 
 \def\n{\char`\\n}
 \def\t{\char`\\t}
@@ -625,29 +625,14 @@ The following properties are used by \ExTeX:
   extex.output = pdf
 \end{lstlisting}
 
-\item[\Property{extex.outputdir}]\ \\
-  This parameter contains the directory where output files should be
+\item[\Property{extex.output.directories}]\ \\
+  This parameter contains the list of directories where output files should be
   created. The period is interpreted as the current directory. The
-  default is the current directory.
+  default is the current directory only.
 
   Example:
 \begin{lstlisting}{}
-  extex.outputdir = .
-\end{lstlisting}
-
-\item[\Property{extex.outputdir.fallback}]\ \\
-  This parameter contains the property for the fallback if the output
-  directory (\Property{extex.outputdir}) fails to be writable.  The
-  period is interpreted as the current directory.
-
-  The default is the current directory. Thus you can reset
-  \Property{extex.outputdir} and if this directory happens not to be
-  writable then the current directory is used to create the log file
-  and output files in.
-
-  Example:
-\begin{lstlisting}{}
-  extex.outputdir.fallback = .
+  extex.output.directories = .:/tmp
 \end{lstlisting}
 
 \item[\Property{extex.progname}]\ \\
