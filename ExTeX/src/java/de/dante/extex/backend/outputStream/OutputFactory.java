@@ -36,14 +36,13 @@ import de.dante.extex.backend.documentWriter.exception.OutputStreamOpenException
 import de.dante.util.framework.AbstractFactory;
 import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
-import de.dante.util.framework.configuration.exception.ConfigurationMissingException;
 
 /**
  * This factory creates an output stream from a specification in the
  * configuration.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class OutputFactory extends AbstractFactory
         implements
@@ -53,7 +52,7 @@ public class OutputFactory extends AbstractFactory
      * This class provides a mutable Integer.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.2 $
+     * @version $Revision: 1.3 $
      */
     private class Int {
 
@@ -145,7 +144,7 @@ public class OutputFactory extends AbstractFactory
     private Map handlers = null;
 
     /**
-     * The field <tt>observers</tt> contains the ...
+     * The field <tt>observers</tt> contains the list of registered observers.
      */
     private List observers = null;
 
@@ -158,21 +157,15 @@ public class OutputFactory extends AbstractFactory
     /**
      * Creates a new object.
      *
-     * @param configuration the configuration object for this instance
      * @param outdirs the list of output directories
      * @param basename the base name of the main stream
      *
      * @throws ConfigurationException in case of an configuration error
      */
-    public OutputFactory(final Configuration configuration,
-            final String[] outdirs, final String basename)
+    public OutputFactory(final String[] outdirs, final String basename)
             throws ConfigurationException {
 
         super();
-        if (configuration == null) {
-            throw new ConfigurationMissingException("Output");
-        }
-        configure(configuration);
         this.outputDirectories = outdirs;
         this.basename = basename;
     }
@@ -189,9 +182,41 @@ public class OutputFactory extends AbstractFactory
      * opened.
      *
      * @throws DocumentWriterException in case of an error
+     *
+     * @see de.dante.extex.backend.outputStream.OutputStreamFactory#getOutputStream(
+     *      java.lang.String,
+     *      java.lang.String)
      */
-    private OutputStream determineOutputStream(final String name,
-            final String type) throws DocumentWriterException {
+    public OutputStream getOutputStream(final String name, final String type)
+            throws DocumentWriterException {
+
+        OutputStream stream = makeOutputStream(name, type);
+
+        if (stream != null && observers != null) {
+            int size = observers.size();
+            for (int i = 0; i < size; i++) {
+                ((OutputStreamObserver) observers.get(i)).update(name, type,
+                        stream);
+            }
+        }
+        return stream;
+    }
+
+    /**
+     * Create an output stream of a certain type.
+     * The creation is tried in a number of directories. The first succeeding
+     * attempt is returned.
+     *
+     * @param name the name of the file to open
+     * @param type the type of the file
+     *
+     * @return a stream for the output or <code>null</code> if none could be
+     * opened.
+     *
+     * @throws DocumentWriterException in case of an error
+     */
+    private OutputStream makeOutputStream(final String name, final String type)
+            throws DocumentWriterException {
 
         String t = (type != null ? type : defaultExtension != null
                 ? defaultExtension
@@ -204,11 +229,16 @@ public class OutputFactory extends AbstractFactory
             }
         }
 
+        Configuration c = getConfiguration();
         String format;
-        try {
-            format = selectConfiguration(t).getAttribute(FORMAT_ATTRIBUTE);
-        } catch (ConfigurationException e) {
-            throw new DocumentWriterException(e);
+        if (c != null) {
+            try {
+                format = selectConfiguration(t).getAttribute(FORMAT_ATTRIBUTE);
+            } catch (ConfigurationException e) {
+                throw new DocumentWriterException(e);
+            }
+        } else {
+            format = "{0}{1}{2,number,0000}{3}";
         }
 
         Int iCount = (Int) countMap.get(t);
@@ -245,52 +275,23 @@ public class OutputFactory extends AbstractFactory
             }
         }
 
-        try {
-            Configuration cfg = getConfiguration().getConfiguration(t);
-            Iterator iter = cfg.iterator(PATH_TAG);
-            while (iter.hasNext()) {
-                OutputStream os = openOutputStream((String) (iter.next()),
-                        filename, isDefault);
-                if (os != null) {
-                    return os;
+        if (c != null) {
+            try {
+                Configuration cfg = c.getConfiguration(t);
+                Iterator iter = cfg.iterator(PATH_TAG);
+                while (iter.hasNext()) {
+                    OutputStream os = openOutputStream((String) (iter.next()),
+                            filename, isDefault);
+                    if (os != null) {
+                        return os;
+                    }
                 }
-            }
-        } catch (Exception e) {
-            throw new OutputStreamOpenException(name, e);
-        }
-
-        throw new OutputStreamOpenException(name, new FileNotFoundException(
-                name));
-    }
-
-    /**
-     * Create an output stream of a certain type.
-     * The creation is tried in a number of directories. The first succeeding
-     * attempt is returned.
-     *
-     * @param name the name of the file to open
-     * @param type the type of the file
-     *
-     * @return a stream for the output or <code>null</code> if none could be
-     * opened.
-     *
-     * @throws DocumentWriterException in case of an error
-     *
-     * @see de.dante.extex.backend.outputStream.OutputStreamFactory#getOutputStream(
-     *      java.lang.String,
-     *      java.lang.String)
-     */
-    public OutputStream getOutputStream(final String name, final String type)
-            throws DocumentWriterException {
-
-        OutputStream stream = determineOutputStream(name, type);
-        if (observers != null) {
-            int size = observers.size();
-            for (int i = 0; i < size; i++) {
-                ((OutputStreamObserver) observers.get(i)).update(name, type, stream);
+            } catch (Exception e) {
+                throw new OutputStreamOpenException(name, e);
             }
         }
-        return stream;
+
+        return null;
     }
 
     /**
