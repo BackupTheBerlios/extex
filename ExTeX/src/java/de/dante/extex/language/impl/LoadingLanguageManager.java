@@ -19,12 +19,16 @@
 
 package de.dante.extex.language.impl;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.ObjectStreamException;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -64,7 +68,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class LoadingLanguageManager extends BaseLanguageManager
         implements
@@ -88,6 +92,12 @@ public class LoadingLanguageManager extends BaseLanguageManager
      * files.
      */
     private static final String TABLE_EXTENSION = ".lfm";
+
+    /**
+     * The constant <tt>VERSION</tt> contains the version id to be written into
+     * the external file.
+     */
+    private static final String VERSION = "1.0";
 
     /**
      * The field <tt>finder</tt> contains the resource finder to search for
@@ -146,9 +156,18 @@ public class LoadingLanguageManager extends BaseLanguageManager
             try {
                 InputStream ins = finder.findResource(name, TABLE_EXTENSION);
                 if (ins != null) {
+
+                    ins = new BufferedInputStream(ins);
+
+                    for (int c = ins.read(); c != '\n'; c = ins.read()) {
+                        if (c < 0) {
+                            throw new HyphenationException("EOF");
+                        }
+                    }
+                    Object version = in.readObject();
                     in = new ObjectInputStream(new GZIPInputStream(ins));
 
-                    Language lang = (Language) in.readObject();
+                    Language lang = (Language) version;
 
                     in.close();
                     getTables().put(name, lang);
@@ -238,14 +257,17 @@ public class LoadingLanguageManager extends BaseLanguageManager
             return false;
         }
 
-        String filename = name + TABLE_EXTENSION;
-        FileOutputStream fos = new FileOutputStream(filename);
+        File file = new File(".", name + TABLE_EXTENSION);
+        OutputStream fos = new BufferedOutputStream(new FileOutputStream(file));
+        fos.write("#!extex -lfm\n".getBytes());
         ObjectOutputStream out = new ObjectOutputStream(new GZIPOutputStream(
                 fos));
+        out.writeObject(VERSION);
         out.writeObject(value);
         out.close();
-        getLogger()
-                .info(getLocalizer().format("LanguageSaved", name, filename));
+        getLogger().info(
+                getLocalizer().format("LanguageSaved", name,
+                        file.toString()));
         return true;
     }
 
