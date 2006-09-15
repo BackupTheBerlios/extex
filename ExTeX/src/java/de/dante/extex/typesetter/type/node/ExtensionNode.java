@@ -20,7 +20,6 @@
 package de.dante.extex.typesetter.type.node;
 
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
-import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.typesetter.type.Node;
 
 /**
@@ -28,7 +27,7 @@ import de.dante.extex.typesetter.type.Node;
  * possible to insert arbitrary nodes into the typesetter tree.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class ExtensionNode extends WhatsItNode implements Node {
 
