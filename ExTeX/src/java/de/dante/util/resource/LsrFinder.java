@@ -127,7 +127,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class LsrFinder
         implements
@@ -279,12 +279,22 @@ public class LsrFinder
             }
             cfg = config.getConfiguration(t);
             if (cfg == null) {
+                if (verbose) {
+                    trace("DefaultNotFound", type, t, null);
+                }
                 return null;
             }
-
             if (verbose) {
                 trace("ConfigurationNotFound", type, t, null);
             }
+        }
+        String t = config.getAttribute("skip");
+        if (t != null && Boolean.valueOf(t).booleanValue()) {
+
+            if (verbose) {
+                trace("Skipped", type, null, null);
+            }
+            return null;
         }
 
         StringListIterator it = cfg.getValues(EXTENSION_TAG).getIterator();
