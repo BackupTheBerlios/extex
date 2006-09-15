@@ -20,6 +20,7 @@
 package de.dante.extex.main.queryFile;
 
 import java.io.IOException;
+import java.util.Properties;
 import java.util.logging.Logger;
 
 import de.dante.extex.interpreter.exception.helping.HelpingException;
@@ -29,10 +30,13 @@ import de.dante.util.framework.i18n.LocalizerFactory;
 /**
  * This class implements the <logo>TeX</logo> version of a query file handler.
  * It presents a prompt to the user (**) and reads a file name from the console.
- * The value <tt>\relax</tt> is interpreted as no file name.
+ * <p>
+ *  If the file name starts with a backslash then it is prepended to the
+ *  code to be executed. and no file name is returned.
+ * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class QueryFileHandlerTeXImpl implements QueryFileHandler {
 
@@ -85,9 +89,10 @@ public class QueryFileHandlerTeXImpl implements QueryFileHandler {
 
     /**
      * @see de.dante.extex.main.queryFile.QueryFileHandler#query(
-     *      java.util.logging.Logger)
+     *      java.util.logging.Logger,
+     *      java.util.Properties)
      */
-    public String query(final Logger logger) {
+    public String query(final Logger logger, final Properties properties) {
 
         Localizer localizer = LocalizerFactory
                 .getLocalizer(QueryFileHandlerTeXImpl.class.getName());
@@ -104,7 +109,13 @@ public class QueryFileHandlerTeXImpl implements QueryFileHandler {
         } catch (IOException e) {
             return null;
         }
-        return (file.equals("\\relax") ? null : file);
+        if (file.startsWith("\\")) {
+            String code = properties.getProperty("extex.code");
+            code = file + " " + code;
+            properties.setProperty("extex.code", code);
+            return null;
+        }
+        return file;
     }
 
 }

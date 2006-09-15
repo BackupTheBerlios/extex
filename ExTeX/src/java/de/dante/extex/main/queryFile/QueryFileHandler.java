@@ -19,14 +19,16 @@
 
 package de.dante.extex.main.queryFile;
 
+import java.util.Properties;
 import java.util.logging.Logger;
 
 /**
- * This interface describes the capability to query a input file name.
+ * This interface describes the capability to query the user for an input file
+ * name.
  * This usually involves the querying the user for the information is some way.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface QueryFileHandler {
 
@@ -34,9 +36,10 @@ public interface QueryFileHandler {
      * Query the name of a input file.
      *
      * @param logger the logger stream for output messages
+     * @param properties the properties
      *
      * @return the file name or <code>null</code> if none has been given
      */
-    String query(Logger logger);
+    String query(Logger logger, Properties properties);
 
 }
