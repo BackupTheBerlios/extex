@@ -55,7 +55,7 @@ import de.dante.util.UnicodeChar;
  * This is the test class for NV.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class NVTest extends TestCase {
 
@@ -63,9 +63,14 @@ public class NVTest extends TestCase {
      * This is a mock implementation of a font.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.11 $
+     * @version $Revision: 1.12 $
      */
     private class MockFont extends NullFont {
+
+        /**
+         * The field <tt>serialVersionUID</tt> contains the ...
+         */
+        private static final long serialVersionUID = 1L;
 
         /**
          * The field <tt>FF</tt> contains the ligature character ff.
@@ -279,7 +284,7 @@ public class NVTest extends TestCase {
      * This is a mock implementation of a glyph.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.11 $
+     * @version $Revision: 1.12 $
      */
     private class MockGlyph implements Glyph {
 

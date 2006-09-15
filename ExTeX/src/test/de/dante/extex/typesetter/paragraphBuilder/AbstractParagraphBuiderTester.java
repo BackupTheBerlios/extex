@@ -70,7 +70,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * This is the abstract base class to test a paragraph builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public abstract class AbstractParagraphBuiderTester extends TestCase {
 
@@ -78,7 +78,7 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
      * Inner class for the typesetter options.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.7 $
+     * @version $Revision: 1.8 $
      */
     private class MockOptions implements TypesetterOptions {
 
@@ -247,6 +247,11 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
 
         {
             tc.setLanguage(new Language() {
+
+                /**
+                 * The field <tt>serialVersionUID</tt> contains the ...
+                 */
+                private static final long serialVersionUID = 1L;
 
                 public void addHyphenation(final UnicodeCharList word,
                         final TypesetterOptions context)
