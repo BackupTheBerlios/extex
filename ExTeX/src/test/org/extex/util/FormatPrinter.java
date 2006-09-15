@@ -19,10 +19,12 @@
 
 package org.extex.util;
 
+import java.io.BufferedInputStream;
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.io.PrintStream;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
@@ -31,136 +33,269 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.GZIPInputStream;
 
 import de.dante.extex.interpreter.loader.LoaderException;
-import de.dante.extex.interpreter.loader.SerialLoader;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.scanner.type.token.ControlSequenceToken;
+import de.dante.extex.scanner.type.token.LeftBraceToken;
+import de.dante.extex.scanner.type.token.LetterToken;
+import de.dante.extex.scanner.type.token.MacroParamToken;
+import de.dante.extex.scanner.type.token.MathShiftToken;
+import de.dante.extex.scanner.type.token.OtherToken;
+import de.dante.extex.scanner.type.token.RightBraceToken;
+import de.dante.extex.scanner.type.token.SpaceToken;
+import de.dante.extex.scanner.type.token.Token;
 import de.dante.util.UnicodeChar;
 
 /**
- * TODO gene: missing JavaDoc.
+ * Load a format file and print it in a reasonable form.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class FormatPrinter {
+public final class FormatPrinter {
 
     /**
-     * TODO gene: missing JavaDoc.
+     * This interface describes a function object for printing a data type.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     protected interface PrintRoutine {
 
+        /**
+         * Printing method.
+         *
+         * @param out the output stream
+         * @param obj the object to print
+         */
         void print(PrintStream out, Object obj);
     };
 
-    private static Map aaa = new HashMap();
-
+    /**
+     * The field <tt>deep</tt> contains the indicator for a deep dump.
+     */
     private static boolean deep = true;
 
+    /**
+     * The field <tt>listLimit</tt> contains the limit to restrict the printing
+     * of lists.
+     */
     private static int listLimit = Integer.MAX_VALUE;
 
+    /**
+     * The field <tt>mapLimit</tt> contains the limit to restrict the printing
+     * of map.
+     */
     private static int mapLimit = Integer.MAX_VALUE;
 
+    /**
+     * The field <tt>printerMap</tt> contains the mapping from class name to
+     * printing routine.
+     */
+    private static Map printerMap = new HashMap();
+
+    /**
+     * The field <tt>verbose</tt> contains the verbosity indicator.
+     */
     private static boolean verbose = false;
 
     static {
-        aaa.put(String.class, new PrintRoutine() {
+        printerMap.put(String.class, new PrintRoutine() {
 
-            public void print(PrintStream out, Object obj) {
+            public void print(final PrintStream out, final Object obj) {
 
                 out.print(" \"");
                 out.print(obj);
                 out.print("\"");
             }
         });
-        aaa.put(Long.class, new PrintRoutine() {
+        printerMap.put(Long.class, new PrintRoutine() {
 
-            public void print(PrintStream out, Object obj) {
+            public void print(final PrintStream out, final Object obj) {
 
                 out.print(" ");
                 out.print(((Long) obj).longValue());
             }
         });
-        aaa.put(Short.class, new PrintRoutine() {
+        printerMap.put(Short.class, new PrintRoutine() {
 
-            public void print(PrintStream out, Object obj) {
+            public void print(final PrintStream out, final Object obj) {
 
                 out.print(" ");
                 out.print(((Short) obj).shortValue());
             }
         });
-        aaa.put(Integer.class, new PrintRoutine() {
+        printerMap.put(Integer.class, new PrintRoutine() {
 
-            public void print(PrintStream out, Object obj) {
+            public void print(final PrintStream out, final Object obj) {
 
                 out.print(" ");
                 out.print(((Integer) obj).intValue());
             }
         });
-        aaa.put(Boolean.class, new PrintRoutine() {
+        printerMap.put(Boolean.class, new PrintRoutine() {
 
-            public void print(PrintStream out, Object obj) {
+            public void print(final PrintStream out, final Object obj) {
 
                 out.print(" ");
                 out.print(((Boolean) obj).booleanValue() ? "t" : "nil");
             }
         });
-        aaa.put(Count.class, new PrintRoutine() {
+        printerMap.put(Count.class, new PrintRoutine() {
 
-            public void print(PrintStream out, Object obj) {
-
-                out.print(" ");
-                out.print(obj.toString());
-            }
-        });
-        aaa.put(Glue.class, new PrintRoutine() {
-
-            public void print(PrintStream out, Object obj) {
+            public void print(final PrintStream out, final Object obj) {
 
                 out.print(" ");
                 out.print(obj.toString());
             }
         });
-        aaa.put(Dimen.class, new PrintRoutine() {
+        printerMap.put(Glue.class, new PrintRoutine() {
 
-            public void print(PrintStream out, Object obj) {
+            public void print(final PrintStream out, final Object obj) {
 
                 out.print(" ");
                 out.print(obj.toString());
             }
         });
-        aaa.put(UnicodeChar.class, new PrintRoutine() {
+        printerMap.put(Dimen.class, new PrintRoutine() {
 
-            public void print(PrintStream out, Object obj) {
+            public void print(final PrintStream out, final Object obj) {
+
+                out.print(" ");
+                out.print(obj.toString());
+            }
+        });
+        printerMap.put(Character.class, new PrintRoutine() {
+
+            public void print(final PrintStream out, final Object obj) {
 
                 out.print(" '");
-                UnicodeChar uc = ((UnicodeChar) obj);
+                char c = ((Character) obj).charValue();
+                switch (c) {
+                    case '\b':
+                        out.print("\\b");
+                        break;
+                    case '\f':
+                        out.print("\\f");
+                        break;
+                    case '\n':
+                        out.print("\\n");
+                        break;
+                    case '\r':
+                        out.print("\\r");
+                        break;
+                    case '\t':
+                        out.print("\\t");
+                        break;
+                    default:
+                        if (c < ' ') {
+                            out.print("\\");
+                            out.print(Integer.toOctalString(c));
+                        } else {
+                            out.print(c);
+                        }
+                }
+                out.print("'");
+            }
+        });
+        printerMap.put(UnicodeChar.class, new PrintRoutine() {
+
+            public void print(final PrintStream out, final Object obj) {
+
+                out.print(" \\u'");
                 out.print(obj.toString());
                 out.print("'");
             }
         });
-        aaa.put(Character.class, new PrintRoutine() {
+        printerMap.put(OtherToken.class, new PrintRoutine() {
 
-            public void print(PrintStream out, Object obj) {
+            public void print(final PrintStream out, final Object obj) {
 
-                out.print(" '");
-                Character uc = ((Character) obj);
-                out.print(obj.toString());
-                out.print("'");
+                out.print("(o '");
+                out.print(((Token) obj).getChar().toString());
+                out.print("')");
+            }
+        });
+        printerMap.put(LetterToken.class, new PrintRoutine() {
+
+            public void print(final PrintStream out, final Object obj) {
+
+                out.print("(l '");
+                out.print(((Token) obj).getChar().toString());
+                out.print("')");
+            }
+        });
+        printerMap.put(SpaceToken.class, new PrintRoutine() {
+
+            public void print(final PrintStream out, final Object obj) {
+
+                out.print("(s '");
+                out.print(((Token) obj).getChar().toString());
+                out.print("')");
+            }
+        });
+        printerMap.put(MacroParamToken.class, new PrintRoutine() {
+
+            public void print(final PrintStream out, final Object obj) {
+
+                out.print("(p '");
+                out.print(((Token) obj).getChar().toString());
+                out.print("')");
+            }
+        });
+        printerMap.put(MathShiftToken.class, new PrintRoutine() {
+
+            public void print(final PrintStream out, final Object obj) {
+
+                out.print("(m '");
+                out.print(((Token) obj).getChar().toString());
+                out.print("')");
+            }
+        });
+        printerMap.put(LeftBraceToken.class, new PrintRoutine() {
+
+            public void print(final PrintStream out, final Object obj) {
+
+                out.print("(lb '");
+                out.print(((Token) obj).getChar().toString());
+                out.print("')");
+            }
+        });
+        printerMap.put(RightBraceToken.class, new PrintRoutine() {
+
+            public void print(final PrintStream out, final Object obj) {
+
+                out.print("(rb '");
+                out.print(((Token) obj).getChar().toString());
+                out.print("')");
+            }
+        });
+        printerMap.put(ControlSequenceToken.class, new PrintRoutine() {
+
+            public void print(final PrintStream out, final Object obj) {
+
+                ControlSequenceToken cs = (ControlSequenceToken) obj;
+                out.print("(cs ");
+                UnicodeChar c = cs.getChar();
+                out.print((c == null ? "nil" : "'" + c.toString() + "'"));
+                out.print(" \"");
+                out.print(cs.getNamespace());
+                out.print("\" \"");
+                out.print(cs.getName());
+                out.print("\")");
             }
         });
 
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * command line interface.
      *
-     * @param args ...
+     * @param args the command line arguments
      */
     public static void main(final String[] args) {
 
@@ -170,7 +305,9 @@ public class FormatPrinter {
         try {
             for (String a = args[i]; a.startsWith("-"); a = args[++i]) {
                 if ("-help".startsWith(a)) {
+                    System.err.println("FormatPrinter [options] <file>\n" + "");
                     // TODO
+                    return;
                 } else if ("-listlimit".startsWith(a)) {
                     if (++i >= args.length) {
                         err.println("*** Missing argument");
@@ -220,24 +357,40 @@ public class FormatPrinter {
         }
 
         try {
-            Object obj = new SerialLoader().load(new FileInputStream(fmt));
-            print(System.out, "\n", obj);
+            InputStream inStream = new BufferedInputStream(new FileInputStream(
+                    fmt));
 
-        } catch (LoaderException e) {
+            for (int c = inStream.read(); c != '\n'; c = inStream.read()) {
+                if (c < 0) {
+                    throw new LoaderException("EOF");
+                }
+            }
+
+            ObjectInputStream in = new ObjectInputStream(new GZIPInputStream(
+                    inStream));
+
+            for (Object obj = in.readObject(); obj != null; obj = in
+                    .readObject()) {
+                print(System.out, "\n", obj);
+                
+            }
+
+        } catch (EOFException e) {
+            // ignored
+        } catch (Exception e) {
             e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            System.exit(-1);
         }
+
+        System.out.println();
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * Print an object.
      *
-     * @param out ...
-     * @param prefix ...
-     * @param obj ...
+     * @param out the target stream
+     * @param prefix the prefix to print after any new line
+     * @param obj the object to print
      */
     private static void print(final PrintStream out, final String prefix,
             final Object obj) {
@@ -274,9 +427,9 @@ public class FormatPrinter {
                 while (limit-- > 0 && iterator.hasNext()) {
                     Object key = iterator.next();
                     out.print(pre);
-                    print(out, pre2, key);
+                    print(out, pre, key);
                     out.print(" ");
-                    print(out, pre2, m.get(key));
+                    print(out, pre, m.get(key));
                 }
                 if (limit <= 0) {
                     out.print(pre);
@@ -292,10 +445,10 @@ public class FormatPrinter {
             List l = (List) obj;
             int size = l.size();
             if (size == 0) {
-                out.print(" (list)");
+                out.print("(list)");
             } else {
                 out.print(pre);
-                out.print(" (list ");
+                out.print("(list ");
                 int limit = listLimit;
                 Iterator iterator = l.iterator();
                 while (limit-- > 0 && iterator.hasNext()) {
@@ -315,7 +468,7 @@ public class FormatPrinter {
             //            Array a = ((Array) obj);
         }
 
-        PrintRoutine pr = (PrintRoutine) aaa.get(c);
+        PrintRoutine pr = (PrintRoutine) printerMap.get(c);
         if (pr != null) {
             pr.print(out, obj);
             return;
@@ -362,4 +515,14 @@ public class FormatPrinter {
         out.print(prefix);
         out.print(")");
     }
+
+    /**
+     * Creates a new object.
+     *
+     */
+    private FormatPrinter() {
+
+        super();
+    }
+
 }
