@@ -25,7 +25,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Properties;
 
 import junit.framework.TestCase;
@@ -37,7 +36,7 @@ import de.dante.extex.interpreter.exception.InterpreterException;
  * <logo>ExTeX</logo>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class TeXTest extends TestCase {
 
