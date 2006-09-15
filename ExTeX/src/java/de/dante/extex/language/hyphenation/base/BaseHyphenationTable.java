@@ -45,7 +45,7 @@ import de.dante.util.framework.Registrar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class BaseHyphenationTable implements ModifiableLanguage, Serializable {
 
@@ -150,7 +150,7 @@ public class BaseHyphenationTable implements ModifiableLanguage, Serializable {
 
         UnicodeCharList key = new UnicodeCharList();
         boolean[] vec = createHyphenation(word, options, key);
-        exceptionMap.put(wordTokenizer.normalize(word, options), vec);
+        exceptionMap.put(wordTokenizer.normalize(key, options), vec);
     }
 
     /**
