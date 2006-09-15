@@ -19,6 +19,7 @@
 
 package de.dante.extex.interpreter.primitives.file;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -26,6 +27,7 @@ import java.io.OutputStream;
 import java.util.Calendar;
 import java.util.logging.Logger;
 
+import de.dante.extex.backend.outputStream.OutputStreamFactory;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -68,7 +70,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.39 $
+ * @version $Revision: 1.40 $
  */
 public class Dump extends AbstractCode implements LogEnabled {
 
@@ -147,11 +149,12 @@ public class Dump extends AbstractCode implements LogEnabled {
                 + (calendar.get(Calendar.MONTH) + 1) + "."
                 + calendar.get(Calendar.DAY_OF_MONTH));
 
+        OutputStreamFactory outputFactory = null; // TODO gene use factory
         OutputStream stream = null;
         try {
-            String filename = jobname + FORMAT_EXTENSION;
-            stream = new FileOutputStream(filename);
-            logger.info(getLocalizer().format("TTP.Dumping", filename));
+            File file = new File(".", jobname + FORMAT_EXTENSION);
+            stream = new FileOutputStream(file);
+            logger.info(getLocalizer().format("TTP.Dumping", file.toString()));
             new SerialLoader().save(stream, jobname, context);
         } catch (FileNotFoundException e) {
             throw new InterpreterException(e);
