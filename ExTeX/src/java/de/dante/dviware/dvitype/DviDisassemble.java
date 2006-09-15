@@ -40,13 +40,13 @@ import de.dante.util.resource.ResourceFinderFactory;
  * This class provides a command line tool to disassemble a DVI file.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class DviDisassemble implements DviProcessor {
 
     /**
      * The field <tt>condensed</tt> contains the indicator that sequences of
-     * put_car instructions should be condensed.
+     * put_char instructions should be condensed.
      */
     private static boolean condensed = true;
 
