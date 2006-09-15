@@ -19,8 +19,6 @@
 
 package de.dante.extex.interpreter.primitives.file;
 
-import java.io.FileNotFoundException;
-
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -74,7 +72,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.30 $
+ * @version $Revision: 1.31 $
  */
 public class Openin extends AbstractFileCode {
 

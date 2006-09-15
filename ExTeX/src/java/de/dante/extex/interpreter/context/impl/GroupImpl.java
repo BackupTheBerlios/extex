@@ -25,7 +25,6 @@ import java.util.Map;
 import de.dante.extex.font.type.other.NullFont;
 import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.context.TypesettingContext;
-import de.dante.extex.interpreter.context.TypesettingContextImpl;
 import de.dante.extex.interpreter.context.group.GroupType;
 import de.dante.extex.interpreter.context.observer.group.AfterGroupObserver;
 import de.dante.extex.interpreter.context.observer.group.AfterGroupObserverList;
@@ -56,7 +55,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.65 $
+ * @version $Revision: 1.66 $
  */
 public class GroupImpl implements Group {
 
