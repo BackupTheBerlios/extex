@@ -23,72 +23,95 @@ import java.io.ObjectStreamException;
 import java.io.Serializable;
 
 /**
- * This class provides a limited set of writing directions. The writing
+ * This interface provides a limited set of writing directions. The writing
  * directions are defined as constants. The constructor is private to avoid
  * that additional directions are defined.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
-public final class Direction implements Serializable {
+public class Direction implements Serializable {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2006L;
 
     /**
      * The constant <tt>LR</tt> contains the direction for left-to-right
      * languages.
      */
-    public static final Direction LR = new Direction(true);
+    public static final Direction LR = new Direction() {
+
+        /**
+         * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+         */
+        protected static final long serialVersionUID = 2006L;
+
+        /**
+         * Return the singleton constant object after the serialized instance
+         * has been read back in.
+         *
+         * @return the one and only instance of this object
+         *
+         * @throws ObjectStreamException never
+         */
+        protected Object readResolve() throws ObjectStreamException {
+
+            return LR;
+        }
+
+        /**
+         * @see java.lang.Object#toString()
+         */
+        public String toString() {
+
+            return "LR";
+        }
+
+    };
 
     /**
      * The constant <tt>RL</tt> contains the direction for right-to-left
      * languages.
      */
-    public static final Direction RL = new Direction(false);
+    public static final Direction RL = new Direction() {
 
-    /**
-     * The field <tt>lr</tt> contains the indicator which constant this
-     * direction corresponds to.
-     */
-    private boolean lr;
+        /**
+         * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+         */
+        protected static final long serialVersionUID = 2006L;
+
+        /**
+         * Return the singleton constant object after the serialized instance
+         * has been read back in.
+         *
+         * @return the one and only instance of this object
+         *
+         * @throws ObjectStreamException never
+         */
+        protected Object readResolve() throws ObjectStreamException {
+
+            return RL;
+        }
+
+        /**
+         * @see java.lang.Object#toString()
+         */
+        public String toString() {
+
+            return "RL";
+        }
+
+    };
 
     /**
      * Creates a new object.
-     * This constructor is private since only a very limited set of instances
-     * of this class is allowed. Those are provided as constants.
      *
-     * @param isLR indicator for the direction; <code>true</code> denotes
-     *  left to right
      */
-    private Direction(final boolean isLR) {
+    private Direction() {
 
         super();
-        this.lr = isLR;
     }
 
-    /**
-     * Return the singleton constant object after the serialized instance
-     * has been read back in.
-     *
-     * @return the one and only instance of this object
-     *
-     * @throws ObjectStreamException never
-     */
-    protected Object readResolve() throws ObjectStreamException {
-
-        return (lr ? LR : RL);
-    }
-
-    /**
-     * @see java.lang.Object#toString()
-     */
-    public String toString() {
-
-        return (lr ? "LR" : "RL");
-    }
-
-    
 }
