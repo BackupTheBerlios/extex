@@ -26,16 +26,16 @@ import java.io.Serializable;
  * This class provides a type-save enumeration of the category codes for
  * characters.
  * This is accomplished by the use of several static classes which are
- * derived from the common abstract superclass Catcode.
+ * derived from the common abstract super class Catcode.
  * <p>
  * This class contains some inner classes representing the various incarnations
  * of a catcode.
- * Externally only some static constants for CATCODES are accessible.
+ * Externally only some static constants for category codes are accessible.
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public abstract class Catcode implements Serializable {
 
@@ -47,19 +47,34 @@ public abstract class Catcode implements Serializable {
         /**
          * The constant <tt>serialVersionUID</tt> contains the id for serialization.
          */
-        protected static final long serialVersionUID = 2005L;
+        protected static final long serialVersionUID = 2006L;
 
         /**
-         * Creates a new object.
+         * Getter for the name of the catcode.
+         *
+         * @return the name
          */
-        private CatcodeActive() {
+        public String getName() {
 
-            super("active");
+            return "active";
         }
 
         /**
-         * Catcodes support the visitor pattern. This method is the entry for
-         * visiting CATCODES.
+         * Return the singleton constant object after the serialized instance
+         * has been read back in.
+         *
+         * @return the one and only instance of this object
+         *
+         * @throws ObjectStreamException never
+         */
+        protected Object readResolve() throws ObjectStreamException {
+
+            return Catcode.ACTIVE;
+        }
+
+        /**
+         * Catcode supports the visitor pattern. This method is the entry for
+         * visiting category codes.
          * For active characters the visitor method visitActive() is invoked.
          *
          * @param visitor the visitor
@@ -77,19 +92,6 @@ public abstract class Catcode implements Serializable {
             return visitor.visitActive(arg1, arg2, arg3);
         }
 
-        /**
-         * Return the singleton constant object after the serialized instance
-         * has been read back in.
-         *
-         * @return the one and only instance of this object
-         *
-         * @throws ObjectStreamException never
-         */
-        protected Object readResolve() throws ObjectStreamException {
-
-            return Catcode.ACTIVE;
-        }
-
     }
 
     /**
@@ -100,19 +102,34 @@ public abstract class Catcode implements Serializable {
         /**
          * The constant <tt>serialVersionUID</tt> contains the id for serialization.
          */
-        protected static final long serialVersionUID = 2005L;
+        protected static final long serialVersionUID = 2006L;
 
         /**
-         * Creates a new object.
+         * Getter for the name of the catcode.
+         *
+         * @return the name
          */
-        private CatcodeComment() {
+        public String getName() {
 
-            super("comment");
+            return "comment";
         }
 
         /**
-         * Catcodes support the visitor pattern. This method is the entry for
-         * visiting CATCODES.
+         * Return the singleton constant object after the serialized instance
+         * has been read back in.
+         *
+         * @return the one and only instance of this object
+         *
+         * @throws ObjectStreamException never
+         */
+        protected Object readResolve() throws ObjectStreamException {
+
+            return Catcode.COMMENT;
+        }
+
+        /**
+         * Catcode supports the visitor pattern. This method is the entry for
+         * visiting category codes.
          * For comment starting characters the visitor method visitComment()
          * is invoked.
          *
@@ -131,19 +148,6 @@ public abstract class Catcode implements Serializable {
             return visitor.visitComment(arg1, arg2, arg3);
         }
 
-        /**
-         * Return the singleton constant object after the serialized instance
-         * has been read back in.
-         *
-         * @return the one and only instance of this object
-         *
-         * @throws ObjectStreamException never
-         */
-        protected Object readResolve() throws ObjectStreamException {
-
-            return Catcode.COMMENT;
-        }
-
     }
 
     /**
@@ -154,19 +158,34 @@ public abstract class Catcode implements Serializable {
         /**
          * The constant <tt>serialVersionUID</tt> contains the id for serialization.
          */
-        protected static final long serialVersionUID = 2005L;
+        protected static final long serialVersionUID = 2006L;
 
         /**
-         * Creates a new object.
+         * Getter for the name of the catcode.
+         *
+         * @return the name
          */
-        private CatcodeCr() {
+        public String getName() {
 
-            super("cr");
+            return "cr";
         }
 
         /**
-         * Catcodes support the visitor pattern. This method is the entry for
-         * visiting CATCODES.
+         * Return the singleton constant object after the serialized instance
+         * has been read back in.
+         *
+         * @return the one and only instance of this object
+         *
+         * @throws ObjectStreamException never
+         */
+        protected Object readResolve() throws ObjectStreamException {
+
+            return Catcode.CR;
+        }
+
+        /**
+         * Catcode supports the visitor pattern. This method is the entry for
+         * visiting category codes.
          * For CR characters the visitor method visitActive() is invoked.
          *
          * @param visitor the visitor
@@ -184,19 +203,6 @@ public abstract class Catcode implements Serializable {
             return visitor.visitCr(arg1, arg2, arg3);
         }
 
-        /**
-         * Return the singleton constant object after the serialized instance
-         * has been read back in.
-         *
-         * @return the one and only instance of this object
-         *
-         * @throws ObjectStreamException never
-         */
-        protected Object readResolve() throws ObjectStreamException {
-
-            return Catcode.CR;
-        }
-
     }
 
     /**
@@ -207,19 +213,34 @@ public abstract class Catcode implements Serializable {
         /**
          * The constant <tt>serialVersionUID</tt> contains the id for serialization.
          */
-        protected static final long serialVersionUID = 2005L;
+        protected static final long serialVersionUID = 2006L;
 
         /**
-         * Creates a new object.
+         * Getter for the name of the catcode.
+         *
+         * @return the name
          */
-        private CatcodeEscape() {
+        public String getName() {
 
-            super("escape");
+            return "escape";
         }
 
         /**
-         * Catcodes support the visitor pattern. This method is the entry for
-         * visiting CATCODES.
+         * Return the singleton constant object after the serialized instance
+         * has been read back in.
+         *
+         * @return the one and only instance of this object
+         *
+         * @throws ObjectStreamException never
+         */
+        protected Object readResolve() throws ObjectStreamException {
+
+            return Catcode.ESCAPE;
+        }
+
+        /**
+         * Catcode supports the visitor pattern. This method is the entry for
+         * visiting category codes.
          * For escape characters the visitor method visitEscape() is invoked.
          *
          * @param visitor the visitor
@@ -237,19 +258,6 @@ public abstract class Catcode implements Serializable {
             return visitor.visitEscape(arg1, arg2, arg3);
         }
 
-        /**
-         * Return the singleton constant object after the serialized instance
-         * has been read back in.
-         *
-         * @return the one and only instance of this object
-         *
-         * @throws ObjectStreamException never
-         */
-        protected Object readResolve() throws ObjectStreamException {
-
-            return Catcode.ESCAPE;
-        }
-
     }
 
     /**
@@ -260,19 +268,34 @@ public abstract class Catcode implements Serializable {
         /**
          * The constant <tt>serialVersionUID</tt> contains the id for serialization.
          */
-        protected static final long serialVersionUID = 2005L;
+        protected static final long serialVersionUID = 2006L;
 
         /**
-         * Creates a new object.
+         * Getter for the name of the catcode.
+         *
+         * @return the name
          */
-        private CatcodeIgnore() {
+        public String getName() {
 
-            super("ignore");
+            return "ignore";
         }
 
         /**
-         * Catcodes support the visitor pattern. This method is the entry for
-         * visiting CATCODES.
+         * Return the singleton constant object after the serialized instance
+         * has been read back in.
+         *
+         * @return the one and only instance of this object
+         *
+         * @throws ObjectStreamException never
+         */
+        protected Object readResolve() throws ObjectStreamException {
+
+            return Catcode.IGNORE;
+        }
+
+        /**
+         * Catcode supports the visitor pattern. This method is the entry for
+         * visiting category codes.
          * For ignored characters the visitor method visitIgnore() is invoked.
          *
          * @param visitor the visitor
@@ -290,19 +313,6 @@ public abstract class Catcode implements Serializable {
             return visitor.visitIgnore(arg1, arg2, arg3);
         }
 
-        /**
-         * Return the singleton constant object after the serialized instance
-         * has been read back in.
-         *
-         * @return the one and only instance of this object
-         *
-         * @throws ObjectStreamException never
-         */
-        protected Object readResolve() throws ObjectStreamException {
-
-            return Catcode.IGNORE;
-        }
-
     }
 
     /**
@@ -313,19 +323,34 @@ public abstract class Catcode implements Serializable {
         /**
          * The constant <tt>serialVersionUID</tt> contains the id for serialization.
          */
-        protected static final long serialVersionUID = 2005L;
+        protected static final long serialVersionUID = 2006L;
 
         /**
-         * Creates a new object.
+         * Getter for the name of the catcode.
+         *
+         * @return the name
          */
-        private CatcodeInvalid() {
+        public String getName() {
 
-            super("invalid");
+            return "invalid";
         }
 
         /**
-         * Catcodes support the visitor pattern. This method is the entry for
-         * visiting CATCODES.
+         * Return the singleton constant object after the serialized instance
+         * has been read back in.
+         *
+         * @return the one and only instance of this object
+         *
+         * @throws ObjectStreamException never
+         */
+        protected Object readResolve() throws ObjectStreamException {
+
+            return Catcode.INVALID;
+        }
+
+        /**
+         * Catcode supports the visitor pattern. This method is the entry for
+         * visiting category codes.
          * For invalid characters the visitor method visitInvalid() is invoked.
          *
          * @param visitor the visitor
@@ -343,19 +368,6 @@ public abstract class Catcode implements Serializable {
             return visitor.visitInvalid(arg1, arg2, arg3);
         }
 
-        /**
-         * Return the singleton constant object after the serialized instance
-         * has been read back in.
-         *
-         * @return the one and only instance of this object
-         *
-         * @throws ObjectStreamException never
-         */
-        protected Object readResolve() throws ObjectStreamException {
-
-            return Catcode.INVALID;
-        }
-
     }
 
     /**
@@ -366,19 +378,34 @@ public abstract class Catcode implements Serializable {
         /**
          * The constant <tt>serialVersionUID</tt> contains the id for serialization.
          */
-        protected static final long serialVersionUID = 2005L;
+        protected static final long serialVersionUID = 2006L;
 
         /**
-         * Creates a new object.
+         * Getter for the name of the catcode.
+         *
+         * @return the name
          */
-        private CatcodeLeftBrace() {
+        public String getName() {
 
-            super("leftbrace");
+            return "leftbrace";
         }
 
         /**
-         * Catcodes support the visitor pattern. This method is the entry for
-         * visiting CATCODES.
+         * Return the singleton constant object after the serialized instance
+         * has been read back in.
+         *
+         * @return the one and only instance of this object
+         *
+         * @throws ObjectStreamException never
+         */
+        protected Object readResolve() throws ObjectStreamException {
+
+            return Catcode.LEFTBRACE;
+        }
+
+        /**
+         * Catcode supports the visitor pattern. This method is the entry for
+         * visiting category codes.
          * For left brace characters the visitor method visitLeftBrace() is
          * invoked.
          *
@@ -397,19 +424,6 @@ public abstract class Catcode implements Serializable {
             return visitor.visitLeftBrace(arg1, arg2, arg3);
         }
 
-        /**
-         * Return the singleton constant object after the serialized instance
-         * has been read back in.
-         *
-         * @return the one and only instance of this object
-         *
-         * @throws ObjectStreamException never
-         */
-        protected Object readResolve() throws ObjectStreamException {
-
-            return Catcode.LEFTBRACE;
-        }
-
     }
 
     /**
@@ -420,19 +434,34 @@ public abstract class Catcode implements Serializable {
         /**
          * The constant <tt>serialVersionUID</tt> contains the id for serialization.
          */
-        protected static final long serialVersionUID = 2005L;
+        protected static final long serialVersionUID = 2006L;
 
         /**
-         * Creates a new object.
+         * Getter for the name of the catcode.
+         *
+         * @return the name
          */
-        private CatcodeLetter() {
+        public String getName() {
 
-            super("letter");
+            return "letter";
         }
 
         /**
-         * Catcodes support the visitor pattern. This method is the entry for
-         * visiting CATCODES.
+         * Return the singleton constant object after the serialized instance
+         * has been read back in.
+         *
+         * @return the one and only instance of this object
+         *
+         * @throws ObjectStreamException never
+         */
+        protected Object readResolve() throws ObjectStreamException {
+
+            return Catcode.LETTER;
+        }
+
+        /**
+         * Catcode supports the visitor pattern. This method is the entry for
+         * visiting category codes.
          * For letter characters the visitor method visitLetter() is invoked.
          *
          * @param visitor the visitor
@@ -450,19 +479,6 @@ public abstract class Catcode implements Serializable {
             return visitor.visitLetter(arg1, arg2, arg3);
         }
 
-        /**
-         * Return the singleton constant object after the serialized instance
-         * has been read back in.
-         *
-         * @return the one and only instance of this object
-         *
-         * @throws ObjectStreamException never
-         */
-        protected Object readResolve() throws ObjectStreamException {
-
-            return Catcode.LETTER;
-        }
-
     }
 
     /**
@@ -473,19 +489,34 @@ public abstract class Catcode implements Serializable {
         /**
          * The constant <tt>serialVersionUID</tt> contains the id for serialization.
          */
-        protected static final long serialVersionUID = 2005L;
+        protected static final long serialVersionUID = 2006L;
 
         /**
-         * Creates a new object.
+         * Getter for the name of the catcode.
+         *
+         * @return the name
          */
-        private CatcodeMacroParam() {
+        public String getName() {
 
-            super("macroparam");
+            return "macroparam";
         }
 
         /**
-         * Catcodes support the visitor pattern. This method is the entry for
-         * visiting CATCODES.
+         * Return the singleton constant object after the serialized instance
+         * has been read back in.
+         *
+         * @return the one and only instance of this object
+         *
+         * @throws ObjectStreamException never
+         */
+        protected Object readResolve() throws ObjectStreamException {
+
+            return Catcode.MACROPARAM;
+        }
+
+        /**
+         * Catcode supports the visitor pattern. This method is the entry for
+         * visiting category codes.
          * For macro parameter characters the visitor method visitMacroParam()
          * is invoked.
          *
@@ -504,19 +535,6 @@ public abstract class Catcode implements Serializable {
             return visitor.visitMacroParam(arg1, arg2, arg3);
         }
 
-        /**
-         * Return the singleton constant object after the serialized instance
-         * has been read back in.
-         *
-         * @return the one and only instance of this object
-         *
-         * @throws ObjectStreamException never
-         */
-        protected Object readResolve() throws ObjectStreamException {
-
-            return Catcode.MACROPARAM;
-        }
-
     }
 
     /**
@@ -527,19 +545,34 @@ public abstract class Catcode implements Serializable {
         /**
          * The constant <tt>serialVersionUID</tt> contains the id for serialization.
          */
-        protected static final long serialVersionUID = 2005L;
+        protected static final long serialVersionUID = 2006L;
 
         /**
-         * Creates a new object.
+         * Getter for the name of the catcode.
+         *
+         * @return the name
          */
-        private CatcodeMathShift() {
+        public String getName() {
 
-            super("mathshift");
+            return "mathshift";
         }
 
         /**
-         * Catcodes support the visitor pattern. This method is the entry for
-         * visiting CATCODES.
+         * Return the singleton constant object after the serialized instance
+         * has been read back in.
+         *
+         * @return the one and only instance of this object
+         *
+         * @throws ObjectStreamException never
+         */
+        protected Object readResolve() throws ObjectStreamException {
+
+            return Catcode.MATHSHIFT;
+        }
+
+        /**
+         * Catcode supports the visitor pattern. This method is the entry for
+         * visiting category codes.
          * For math shift characters the visitor method visitMathShift()
          * is invoked.
          *
@@ -558,19 +591,6 @@ public abstract class Catcode implements Serializable {
             return visitor.visitMathShift(arg1, arg2, arg3);
         }
 
-        /**
-         * Return the singleton constant object after the serialized instance
-         * has been read back in.
-         *
-         * @return the one and only instance of this object
-         *
-         * @throws ObjectStreamException never
-         */
-        protected Object readResolve() throws ObjectStreamException {
-
-            return Catcode.MATHSHIFT;
-        }
-
     }
 
     /**
@@ -581,19 +601,34 @@ public abstract class Catcode implements Serializable {
         /**
          * The constant <tt>serialVersionUID</tt> contains the id for serialization.
          */
-        protected static final long serialVersionUID = 2005L;
+        protected static final long serialVersionUID = 2006L;
 
         /**
-         * Creates a new object.
+         * Getter for the name of the catcode.
+         *
+         * @return the name
          */
-        private CatcodeOther() {
+        public String getName() {
 
-            super("other");
+            return "other";
         }
 
         /**
-         * Catcodes support the visitor pattern. This method is the entry for
-         * visiting CATCODES.
+         * Return the singleton constant object after the serialized instance
+         * has been read back in.
+         *
+         * @return the one and only instance of this object
+         *
+         * @throws ObjectStreamException never
+         */
+        protected Object readResolve() throws ObjectStreamException {
+
+            return Catcode.OTHER;
+        }
+
+        /**
+         * Catcode supports the visitor pattern. This method is the entry for
+         * visiting category codes.
          * For other characters the visitor method visitOther() is invoked.
          *
          * @param visitor the visitor
@@ -611,19 +646,6 @@ public abstract class Catcode implements Serializable {
             return visitor.visitOther(arg1, arg2, arg3);
         }
 
-        /**
-         * Return the singleton constant object after the serialized instance
-         * has been read back in.
-         *
-         * @return the one and only instance of this object
-         *
-         * @throws ObjectStreamException never
-         */
-        protected Object readResolve() throws ObjectStreamException {
-
-            return Catcode.OTHER;
-        }
-
     }
 
     /**
@@ -634,19 +656,34 @@ public abstract class Catcode implements Serializable {
         /**
          * The constant <tt>serialVersionUID</tt> contains the id for serialization.
          */
-        protected static final long serialVersionUID = 2005L;
+        protected static final long serialVersionUID = 2006L;
 
         /**
-         * Creates a new object.
+         * Getter for the name of the catcode.
+         *
+         * @return the name
          */
-        private CatcodeRigthBrace() {
+        public String getName() {
 
-            super("rightbrace");
+            return "rightbrace";
         }
 
         /**
-         * Catcodes support the visitor pattern. This method is the entry for
-         * visiting CATCODES.
+         * Return the singleton constant object after the serialized instance
+         * has been read back in.
+         *
+         * @return the one and only instance of this object
+         *
+         * @throws ObjectStreamException never
+         */
+        protected Object readResolve() throws ObjectStreamException {
+
+            return Catcode.RIGHTBRACE;
+        }
+
+        /**
+         * Catcode supports the visitor pattern. This method is the entry for
+         * visiting category codes.
          * For right brace characters the visitor method visitRightBrace()
          * is invoked.
          *
@@ -665,19 +702,6 @@ public abstract class Catcode implements Serializable {
             return visitor.visitRightBrace(arg1, arg2, arg3);
         }
 
-        /**
-         * Return the singleton constant object after the serialized instance
-         * has been read back in.
-         *
-         * @return the one and only instance of this object
-         *
-         * @throws ObjectStreamException never
-         */
-        protected Object readResolve() throws ObjectStreamException {
-
-            return Catcode.RIGHTBRACE;
-        }
-
     }
 
     /**
@@ -688,19 +712,34 @@ public abstract class Catcode implements Serializable {
         /**
          * The constant <tt>serialVersionUID</tt> contains the id for serialization.
          */
-        protected static final long serialVersionUID = 2005L;
+        protected static final long serialVersionUID = 2006L;
 
         /**
-         * Creates a new object.
+         * Getter for the name of the catcode.
+         *
+         * @return the name
          */
-        private CatcodeSpace() {
+        public String getName() {
 
-            super("space");
+            return "space";
         }
 
         /**
-         * Catcodes support the visitor pattern. This method is the entry for
-         * visiting CATCODES.
+         * Return the singleton constant object after the serialized instance
+         * has been read back in.
+         *
+         * @return the one and only instance of this object
+         *
+         * @throws ObjectStreamException never
+         */
+        protected Object readResolve() throws ObjectStreamException {
+
+            return Catcode.SPACE;
+        }
+
+        /**
+         * Catcode supports the visitor pattern. This method is the entry for
+         * visiting category codes.
          * For space characters the visitor method visitSpace() is invoked.
          *
          * @param visitor the visitor
@@ -718,19 +757,6 @@ public abstract class Catcode implements Serializable {
             return visitor.visitSpace(arg1, arg2, arg3);
         }
 
-        /**
-         * Return the singleton constant object after the serialized instance
-         * has been read back in.
-         *
-         * @return the one and only instance of this object
-         *
-         * @throws ObjectStreamException never
-         */
-        protected Object readResolve() throws ObjectStreamException {
-
-            return Catcode.SPACE;
-        }
-
     }
 
     /**
@@ -741,19 +767,34 @@ public abstract class Catcode implements Serializable {
         /**
          * The constant <tt>serialVersionUID</tt> contains the id for serialization.
          */
-        protected static final long serialVersionUID = 2005L;
+        protected static final long serialVersionUID = 2006L;
 
         /**
-         * Creates a new object.
+         * Getter for the name of the catcode.
+         *
+         * @return the name
          */
-        private CatcodeSubMark() {
+        public String getName() {
 
-            super("submark");
+            return "submark";
         }
 
         /**
-         * Catcodes support the visitor pattern. This method is the entry for
-         * visiting CATCODES.
+         * Return the singleton constant object after the serialized instance
+         * has been read back in.
+         *
+         * @return the one and only instance of this object
+         *
+         * @throws ObjectStreamException never
+         */
+        protected Object readResolve() throws ObjectStreamException {
+
+            return Catcode.SUBMARK;
+        }
+
+        /**
+         * Catcode supports the visitor pattern. This method is the entry for
+         * visiting category codes.
          * For sub mark characters the visitor method visitSubMark() is invoked.
          *
          * @param visitor the visitor
@@ -771,19 +812,6 @@ public abstract class Catcode implements Serializable {
             return visitor.visitSubMark(arg1, arg2, arg3);
         }
 
-        /**
-         * Return the singleton constant object after the serialized instance
-         * has been read back in.
-         *
-         * @return the one and only instance of this object
-         *
-         * @throws ObjectStreamException never
-         */
-        protected Object readResolve() throws ObjectStreamException {
-
-            return Catcode.SUBMARK;
-        }
-
     }
 
     /**
@@ -794,19 +822,34 @@ public abstract class Catcode implements Serializable {
         /**
          * The constant <tt>serialVersionUID</tt> contains the id for serialization.
          */
-        protected static final long serialVersionUID = 2005L;
+        protected static final long serialVersionUID = 2006L;
 
         /**
-         * Creates a new object.
+         * Getter for the name of the catcode.
+         *
+         * @return the name
          */
-        private CatcodeSupMark() {
+        public String getName() {
 
-            super("supmark");
+            return "supmark";
         }
 
         /**
-         * Catcodes support the visitor pattern. This method is the entry for
-         * visiting CATCODES.
+         * Return the singleton constant object after the serialized instance
+         * has been read back in.
+         *
+         * @return the one and only instance of this object
+         *
+         * @throws ObjectStreamException never
+         */
+        protected Object readResolve() throws ObjectStreamException {
+
+            return Catcode.SUPMARK;
+        }
+
+        /**
+         * Catcode supports the visitor pattern. This method is the entry for
+         * visiting category codes.
          * For sup mark characters the visitor method visitSupMark() is invoked.
          *
          * @param visitor the visitor
@@ -824,19 +867,6 @@ public abstract class Catcode implements Serializable {
             return visitor.visitSupMark(arg1, arg2, arg3);
         }
 
-        /**
-         * Return the singleton constant object after the serialized instance
-         * has been read back in.
-         *
-         * @return the one and only instance of this object
-         *
-         * @throws ObjectStreamException never
-         */
-        protected Object readResolve() throws ObjectStreamException {
-
-            return Catcode.SUPMARK;
-        }
-
     }
 
     /**
@@ -847,19 +877,34 @@ public abstract class Catcode implements Serializable {
         /**
          * The constant <tt>serialVersionUID</tt> contains the id for serialization.
          */
-        protected static final long serialVersionUID = 2005L;
+        protected static final long serialVersionUID = 2006L;
 
         /**
-         * Creates a new object.
+         * Getter for the name of the catcode.
+         *
+         * @return the name
          */
-        private CatcodeTabMark() {
+        public String getName() {
 
-            super("tabmark");
+            return "tabmark";
         }
 
         /**
-         * Catcodes support the visitor pattern. This method is the entry for
-         * visiting CATCODES.
+         * Return the singleton constant object after the serialized instance
+         * has been read back in.
+         *
+         * @return the one and only instance of this object
+         *
+         * @throws ObjectStreamException never
+         */
+        protected Object readResolve() throws ObjectStreamException {
+
+            return Catcode.TABMARK;
+        }
+
+        /**
+         * Catcode supports the visitor pattern. This method is the entry for
+         * visiting category codes.
          * For tab mark characters the visitor method visitTabMark() is invoked.
          *
          * @param visitor the visitor
@@ -875,19 +920,6 @@ public abstract class Catcode implements Serializable {
                 final Object arg2, final Object arg3) throws Exception {
 
             return visitor.visitTabMark(arg1, arg2, arg3);
-        }
-
-        /**
-         * Return the singleton constant object after the serialized instance
-         * has been read back in.
-         *
-         * @return the one and only instance of this object
-         *
-         * @throws ObjectStreamException never
-         */
-        protected Object readResolve() throws ObjectStreamException {
-
-            return Catcode.TABMARK;
         }
 
     }
@@ -990,7 +1022,7 @@ public abstract class Catcode implements Serializable {
     public static final Catcode TABMARK = new CatcodeTabMark();
 
     /**
-     * The field <tt>CATCODES</tt> contains an array of CATCODES where the
+     * The field <tt>CATCODES</tt> contains an array of category codes where the
      * integer catcode can be used as index.
      */
     private static final Catcode[] CATCODES = {ESCAPE, LEFTBRACE, RIGHTBRACE,
@@ -1005,6 +1037,33 @@ public abstract class Catcode implements Serializable {
     public static int getCatcodeMax() {
 
         return CATCODES.length - 1;
+    }
+
+    /**
+     * Get the numerical representation for the Catcode.
+     *
+     * @param cc the catcode to map
+     *
+     * @return the catcode as integer
+     */
+    public static int getCode(final Catcode cc) {
+
+        for (int i = 0; i < CATCODES.length; i++) {
+            if (CATCODES[i] == cc) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * Get the numerical representation for the Catcode.
+     *
+     * @return the catcode as integer
+     */
+    public int getCode() {
+
+        return getCode(this);
     }
 
     /**
@@ -1027,46 +1086,12 @@ public abstract class Catcode implements Serializable {
     }
 
     /**
-     * The field <tt>name</tt> contains the string representation of the
-     * catcode for debugging.
-     */
-    private String name;
-
-    /**
-     * The field <tt>code</tt> contains the cached numerical value. in case of a
-     * negative number no value has been cached yet.
-     */
-    private int code = -1;
-
-    /**
      * Creates a new object.
      * This constructor is private since only the static instances defined
      * above are allowed.
-     *
-     * @param theName the string representation
      */
-    private Catcode(final String theName) {
+    private Catcode() {
 
-        super();
-        this.name = theName;
-    }
-
-    /**
-     * Get the numerical representation for the Catcode.
-     *
-     * @return the catcode as integer
-     */
-    public int getCode() {
-
-        if (code < 0) {
-            for (int i = 0; i < CATCODES.length; i++) {
-                if (CATCODES[i] == this) {
-                    code = i;
-                    return i;
-                }
-            }
-        }
-        return code;
     }
 
     /**
@@ -1074,10 +1099,7 @@ public abstract class Catcode implements Serializable {
      *
      * @return the name
      */
-    public String getName() {
-
-        return name;
-    }
+    public abstract String getName();
 
     /**
      * Get the string representation of the catcode.
@@ -1086,7 +1108,7 @@ public abstract class Catcode implements Serializable {
      */
     public String toString() {
 
-        return name;
+        return getName();
     }
 
     /**
