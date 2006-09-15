@@ -38,7 +38,7 @@ import de.dante.util.UnicodeChar;
  * font.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class LigatureBuilderImpl implements LigatureBuilder {
 
@@ -62,10 +62,9 @@ public class LigatureBuilderImpl implements LigatureBuilder {
      *      de.dante.extex.interpreter.type.font.Font)
      */
     public UnicodeChar getLigature(final UnicodeChar c1, final UnicodeChar c2,
-            final Font f) throws HyphenationException {
+            final Font f) {
 
-        Glyph glyph = f.getGlyph(c1);
-        return (glyph != null ? glyph.getLigature(c2) : null);
+        return f.getLigature(c1,c2);
     }
 
     /**

@@ -19,7 +19,6 @@
 
 package de.dante.extex.interpreter.primitives.font;
 
-import de.dante.extex.font.Glyph;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -31,11 +30,14 @@ import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.DimenConvertible;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.font.Font;
+import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.CatcodeException;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.UnicodeChar;
+import de.dante.util.exception.GeneralException;
 
 /**
  * This class provides an implementation for the primitive
@@ -67,7 +69,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class Fontcharwd extends AbstractCode
         implements
@@ -141,16 +143,15 @@ public class Fontcharwd extends AbstractCode
      *
      * @throws InterpreterException in case of an error
      */
-    private Dimen get(final Context context, final TokenSource source,
+    private FixedDimen get(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
         Font fnt = source.getFont(context, getName());
         try {
             UnicodeChar uc = source
                     .scanCharacterCode(context, typesetter, null);
-            Glyph glyph = fnt.getGlyph(uc);
-            Dimen width = (glyph != null ? glyph.getWidth() : null);
-            return (width != null ? width : Dimen.ZERO_PT);
+            FixedGlue d = fnt.getWidth(uc);
+            return (d != null ? d.getLength() : Dimen.ZERO_PT);
 
         } catch (EofException e) {
             throw new EofException(printableControlSequence(context));
@@ -166,9 +167,13 @@ public class Fontcharwd extends AbstractCode
             final Typesetter typesetter) throws InterpreterException {
 
         try {
-            Dimen width = get(context, source, typesetter);
+            FixedDimen width = get(context, source, typesetter);
             return width.toToks(context.getTokenFactory());
         } catch (CatcodeException e) {
+            throw new InterpreterException(e);
+        } catch (InterpreterException e) {
+            throw e;
+        } catch (GeneralException e) {
             throw new InterpreterException(e);
         }
     }

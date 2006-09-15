@@ -33,7 +33,6 @@ import de.dante.extex.interpreter.type.dimen.DimenConvertible;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.tokens.Tokens;
-import de.dante.extex.scanner.type.CatcodeException;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.UnicodeChar;
 import de.dante.util.exception.GeneralException;
@@ -68,7 +67,7 @@ import de.dante.util.exception.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class Fontcharic extends AbstractCode
         implements

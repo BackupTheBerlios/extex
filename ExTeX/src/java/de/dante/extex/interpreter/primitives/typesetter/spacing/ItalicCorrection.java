@@ -19,13 +19,13 @@
 
 package de.dante.extex.interpreter.primitives.typesetter.spacing;
 
-import de.dante.extex.font.Glyph;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.Node;
@@ -57,7 +57,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class ItalicCorrection extends AbstractCode {
 
@@ -90,7 +90,7 @@ public class ItalicCorrection extends AbstractCode {
         Node node = typesetter.getLastNode();
 
         if (node instanceof CharNode) {
-            Dimen ic = italicCorrection(//
+            FixedDimen ic = italicCorrection(//
                     ((CharNode) node).getCharacter(), //
                     ((CharNode) node).getTypesettingContext().getFont());
             try {
@@ -110,14 +110,10 @@ public class ItalicCorrection extends AbstractCode {
      *
      * @return the italic correction
      */
-    private Dimen italicCorrection(final UnicodeChar uc,
-            final Font font) {
+    private FixedDimen italicCorrection(final UnicodeChar uc, final Font font) {
 
-        Glyph g = font.getGlyph(uc);
-        if (null == g) {
-            return Dimen.ZERO_PT;
-        }
-        return g.getItalicCorrection();
+        FixedDimen ic = font.getItalicCorrection(uc);
+        return (ic != null ? ic : Dimen.ZERO_PT);
     }
 
 }
