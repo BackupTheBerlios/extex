@@ -36,7 +36,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationMissingAttri
  *  TypesettingContext}.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public class TypesettingContextFactory extends AbstractFactory {
 
@@ -220,18 +220,18 @@ public class TypesettingContextFactory extends AbstractFactory {
      * Factory method to acquire an instance of the TypesettingContext with a
      * new value for the language. The language might be loaded if necessary.
      *
-     * @param context the typesetting context to clone
+     * @param tc the typesetting context to clone
      * @param language the new value for the hyphenation table
      *
      * @return an appropriate instance of the TypesettingContext.
      *
      * @throws ConfigurationException in case of a configuration problem
      */
-    public TypesettingContext newInstance(final TypesettingContext context,
+    public TypesettingContext newInstance(final TypesettingContext tc,
             final String language) throws ConfigurationException {
 
         ModifiableTypesettingContext c = newInstance();
-        c.set(context);
+        c.set(tc);
         c.setLanguage(languageManager.getLanguage(language));
 
         return c;

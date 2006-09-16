@@ -42,7 +42,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * configuration.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class OutputFactory extends AbstractFactory
         implements
@@ -52,7 +52,7 @@ public class OutputFactory extends AbstractFactory
      * This class provides a mutable Integer.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.3 $
+     * @version $Revision: 1.4 $
      */
     private class Int {
 
@@ -218,12 +218,12 @@ public class OutputFactory extends AbstractFactory
     private OutputStream makeOutputStream(final String name, final String type)
             throws DocumentWriterException {
 
-        String t = (type != null ? type : defaultExtension != null
+        String ext = (type != null ? type : defaultExtension != null
                 ? defaultExtension
                 : "");
 
         if (handlers != null) {
-            OutputStreamFactory handler = (OutputStreamFactory) handlers.get(t);
+            OutputStreamFactory handler = (OutputStreamFactory) handlers.get(ext);
             if (handler != null) {
                 return handler.getOutputStream(name, type);
             }
@@ -233,7 +233,7 @@ public class OutputFactory extends AbstractFactory
         String format;
         if (c != null) {
             try {
-                format = selectConfiguration(t).getAttribute(FORMAT_ATTRIBUTE);
+                format = selectConfiguration(ext).getAttribute(FORMAT_ATTRIBUTE);
             } catch (ConfigurationException e) {
                 throw new DocumentWriterException(e);
             }
@@ -241,10 +241,10 @@ public class OutputFactory extends AbstractFactory
             format = "{0}{1}{2,number,0000}{3}";
         }
 
-        Int iCount = (Int) countMap.get(t);
+        Int iCount = (Int) countMap.get(ext);
         if (iCount == null) {
             iCount = new Int(0);
-            countMap.put(t, iCount);
+            countMap.put(ext, iCount);
         }
         boolean isDefault = false;
         String filename;
@@ -256,13 +256,13 @@ public class OutputFactory extends AbstractFactory
                 return defaultStream;
             }
             isDefault = true;
-            filename = basename + (t == null ? "" : "." + t);
+            filename = basename + (ext == null ? "" : "." + ext);
         } else {
             filename = MessageFormat.format(format, //
                     new Object[]{basename, //
                             (name == null ? "" : name), //
                             new Long(cnt), //
-                            (t == null ? "" : "." + t)});
+                            (ext == null ? "" : ext)});
         }
 
         if (outputDirectories != null) {
@@ -277,7 +277,7 @@ public class OutputFactory extends AbstractFactory
 
         if (c != null) {
             try {
-                Configuration cfg = c.getConfiguration(t);
+                Configuration cfg = c.getConfiguration(ext);
                 Iterator iter = cfg.iterator(PATH_TAG);
                 while (iter.hasNext()) {
                     OutputStream os = openOutputStream((String) (iter.next()),
