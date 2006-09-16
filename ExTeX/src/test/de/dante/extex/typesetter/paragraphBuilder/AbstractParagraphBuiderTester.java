@@ -70,7 +70,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * This is the abstract base class to test a paragraph builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public abstract class AbstractParagraphBuiderTester extends TestCase {
 
@@ -78,7 +78,7 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
      * Inner class for the typesetter options.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.8 $
+     * @version $Revision: 1.9 $
      */
     private class MockOptions implements TypesetterOptions {
 
@@ -233,7 +233,6 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
      */
     protected static final Dimen VPT = new Dimen(Dimen.ONE * 5);
 
-
     /**
      * The field <tt>pb</tt> contains the paragraph builder to test.
      */
@@ -243,7 +242,6 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
      * The field <tt>tc</tt> contains the mock typesetting context.
      */
     private TypesettingContextImpl tc = new TypesettingContextImpl(new Font() {
-
 
         {
             tc.setLanguage(new Language() {
@@ -278,9 +276,10 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
                 }
 
                 public UnicodeChar getLigature(final UnicodeChar c1,
-                        final UnicodeChar c2, Font f) throws HyphenationException {
+                        final UnicodeChar c2, Font f)
+                        throws HyphenationException {
 
-                    return f.getGlyph(c1).getLigature(c2);
+                    return f.getLigature(c1, c2);
                 }
 
                 public String getName() {
@@ -294,8 +293,8 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
                 }
 
                 public boolean hyphenate(NodeList nodelist,
-                        TypesetterOptions context, UnicodeChar hyphen, int start,
-                        boolean forall, NodeFactory nodeFactory)
+                        TypesetterOptions context, UnicodeChar hyphen,
+                        int start, boolean forall, NodeFactory nodeFactory)
                         throws HyphenationException {
 
                     // TODO gene: hyphenate unimplemented
@@ -309,9 +308,9 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
                     return 0;
                 }
 
-                public void insertShy(final NodeList nodes, final int insertionPoint,
-                        final boolean[] spec, final CharNode hyphenNode)
-                        throws HyphenationException {
+                public void insertShy(final NodeList nodes,
+                        final int insertionPoint, final boolean[] spec,
+                        final CharNode hyphenNode) throws HyphenationException {
 
                     throw new RuntimeException("unimplemented");
                 }
@@ -322,7 +321,8 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
                 }
 
                 public UnicodeCharList normalize(final UnicodeCharList word,
-                        final TypesetterOptions options) throws HyphenationException {
+                        final TypesetterOptions options)
+                        throws HyphenationException {
 
                     throw new RuntimeException("unimplemented");
                 }
@@ -383,8 +383,10 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
 
             return 0;
         }
+
         /**
-         * @see de.dante.extex.interpreter.type.font.Font#getDepth(de.dante.util.UnicodeChar)
+         * @see de.dante.extex.interpreter.type.font.Font#getDepth(
+         *      de.dante.util.UnicodeChar)
          */
         public FixedGlue getDepth(final UnicodeChar uc) {
 
@@ -399,10 +401,9 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
             return VPT;
         }
 
-        public long getEfcode(UnicodeChar uc) {
+        public long getEfcode(final UnicodeChar uc) {
 
-            // TODO gene: getEfcode unimplemented
-            return 0;
+            return 1000;
         }
 
         /**
@@ -452,6 +453,7 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
 
             return "fnt";
         }
+
         /**
          * @see de.dante.extex.font.type.Fount#getGlyph(de.dante.util.UnicodeChar)
          */
@@ -653,7 +655,8 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
         /**
          * @see de.dante.extex.interpreter.type.font.Font#getKerning(de.dante.util.UnicodeChar, de.dante.util.UnicodeChar)
          */
-        public FixedDimen getKerning(final UnicodeChar uc1, final UnicodeChar uc2) {
+        public FixedDimen getKerning(final UnicodeChar uc1,
+                final UnicodeChar uc2) {
 
             return null;
         }
@@ -669,7 +672,8 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
         /**
          * @see de.dante.extex.interpreter.type.font.Font#getLigature(de.dante.util.UnicodeChar, de.dante.util.UnicodeChar)
          */
-        public UnicodeChar getLigature(final UnicodeChar uc1, final UnicodeChar uc2) {
+        public UnicodeChar getLigature(final UnicodeChar uc1,
+                final UnicodeChar uc2) {
 
             return null;
         }
@@ -699,28 +703,44 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
         }
 
         /**
-         * @see de.dante.extex.interpreter.type.font.Font#getWidth(de.dante.util.UnicodeChar)
+         * @see de.dante.extex.interpreter.type.font.Font#getWidth(
+         *      de.dante.util.UnicodeChar)
          */
         public FixedGlue getWidth(final UnicodeChar uc) {
 
             return null;
         }
 
-        public void setEfcode(UnicodeChar uc, long code) {
+        /**
+         * @see de.dante.extex.interpreter.type.font.Font#hasGlyph(
+         *      de.dante.util.UnicodeChar)
+         */
+        public boolean hasGlyph(final UnicodeChar uc) {
 
-            // TODO gene: setEfcode unimplemented
-            
+            return true;
         }
 
         /**
-         * @see de.dante.extex.interpreter.type.font.Font#setFontDimen(java.lang.String, de.dante.extex.interpreter.type.dimen.Dimen)
+         * @see de.dante.extex.interpreter.type.font.Font#setEfcode(
+         *      de.dante.util.UnicodeChar, long)
+         */
+        public void setEfcode(final UnicodeChar uc, final long code) {
+
+            // TODO gene: setEfcode unimplemented
+
+        }
+
+        /**
+         * @see de.dante.extex.interpreter.type.font.Font#setFontDimen(
+         *      java.lang.String, de.dante.extex.interpreter.type.dimen.Dimen)
          */
         public void setFontDimen(final String key, final Dimen value) {
 
         }
 
         /**
-         * @see de.dante.extex.interpreter.type.font.Font#setHyphenChar(de.dante.util.UnicodeChar)
+         * @see de.dante.extex.interpreter.type.font.Font#setHyphenChar(
+         *      de.dante.util.UnicodeChar)
          */
         public void setHyphenChar(final UnicodeChar hyphen) {
 
