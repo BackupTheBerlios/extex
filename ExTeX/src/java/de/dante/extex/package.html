@@ -2,7 +2,7 @@
  <head>
   <title>ExTeX</title>
   <meta name="copyright" content="
-   Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+   Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
 
    This library is free software; you can redistribute it and/or modify it
    under the terms of the GNU Lesser General Public License as published by
@@ -19,18 +19,119 @@
    Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
    " />
   <meta name="author" content="Gerd Neugebauer" />
-  <meta name="version" content="$Revision: 1.8 $" />
+  <meta name="version" content="$Revision: 1.9 $" />
  </head>
  <body>
   This package contains <logo>ExTeX</logo> &ndash; an implementation of a
-  typesetting engine based on the concepts of <logo>TeX</logo>.
+  typesetting engine based on the concepts of <logo>TeX</logo>. The following
+  figure gives a impression of the top-level components of <logo>ExTeX</logo>.
 
   <div class="Figure">
-   <img src="doc-files/components.png" />
+   <img src="doc-files/components.png" width="90%"/>
    <br />
    <caption>The top-level components of <logo>ExTeX</logo></caption>
   </div>
 
+  <dl>
+   <dt><b>Main</b></dt>
+   <dd>
+    <p>
+     The Main component encapsulates everything necessary to run
+     <logo>ExTeX</logo> from the command line. This includes the evaluation
+     of the command line arguments as well as handling the interaction with
+     the user &ndash; e.g. in case of an error. The remaining components
+     should not know anything about were the input is coming from or where
+     it is going to.
+    </p>
+    <p>
+     This component is located in the package Main.
+    </p>
+   </dd>
+   <dt><b>ExTeX</b></dt>
+   <dd>
+    <p>
+     The component called <b>ExTeX</b> is in fact just the glue which
+     ties together all other components. It constitutes the entry
+     point for any client using the <logo>ExTeX</logo> functionality.
+    </p>
+    <p>
+     This component is located in this package.
+    </p>
+   </dd>
+   <dt><b>Input Subsystem</b></dt>
+   <dd>
+    <p>
+     The component called <b>Input Subsystem</b> provides everything
+     to process the input from some raw bytes until a scanner has made
+     tokens out of them. A general purpose preprocessing might be
+     included into this process.
+    </p>
+    <p>
+     This component is located in the package Interpreter.
+    </p>
+   </dd>
+   <dt><b>Interpreter Subsystem</b></dt>
+   <dd>
+    <p>
+     The component called <b>Interpreter Subsystem</b> provides an
+     interpreter for the <logo>TeX</logo> language. This includes an
+     engine to parse instructions &ndash; ased on the tokens passed in
+     from the input subsystem &ndash; and evaluate them.
+    </p>
+    <p>
+     This component is located in the package Interpreter.
+    </p>
+   </dd>
+   <dt><b>Typesetting Subsystem</b></dt>
+   <dd>
+    <p>
+     The component called <b>Typesetting Subsystem</b> provides the
+     typesetting funtionality. It places objects on the page. These
+     objects are mainly characters or boxes filled with characters or
+     boxes.
+    </p>
+    <p>
+     This component is located in the package Typesetter.
+    </p>
+   </dd>
+   <dt><b>Font Subsystem</b></dt>
+   <dd>
+    <p>
+     The component called <b>Font Subsystem</b> provides means to deal
+     with fonts of several kinds. The abstraction provided by the
+     component encapsulates the technical details of the fonts from
+     the rest of the system.
+    </p>
+    <p>
+     This component is located in the package Font.
+    </p>
+   </dd>
+   <dt><b>Backend Subsystem</b></dt>
+   <dd>
+    <p>
+     The component called <b>Backend Subsystem</b> provides means to
+     translate the page description into an external format. The only
+     format knon by <logo>TeX</logo> is supproted as well as some
+     others. Tis translation might involve some postprocessing on the
+     level of pages. For instance the selection or re-arranging of
+     pages can be accomplished here.
+    </p>
+    <p>
+     This component is located in the package Backend.
+    </p>
+   </dd>
+   <dt><b>Framework</b></dt>
+   <dd>
+    <p>
+     The component called <b>Framework</b> is in fact not a component
+     of its own. It just provides cross-cutting functionality needed
+     by the other components.
+    </p>
+    <p>
+     This component is located in the package util/framework.
+    </p>
+   </dd>
+  </dl>
 
  </body>
 </html>
