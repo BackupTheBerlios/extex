@@ -59,9 +59,9 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
-class TokenFactoryFactory extends AbstractFactory {
+public class TokenFactoryFactory extends AbstractFactory {
 
     /**
      * The field <tt>configuration</tt> contains the configuration for
