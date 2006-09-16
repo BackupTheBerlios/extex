@@ -22,6 +22,7 @@ package de.dante.extex.interpreter.primitives.dynamic;
 import java.util.logging.Logger;
 
 import de.dante.extex.backend.outputStream.OutputStreamFactory;
+import de.dante.extex.backend.outputStream.TrivialOutputFactory;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -30,6 +31,7 @@ import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.max.util.LoadUnit;
 import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.interpreter.type.OutputStreamConsumer;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.exception.GeneralException;
@@ -71,9 +73,12 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
-public class EnsureLoaded extends AbstractCode implements LogEnabled {
+public class EnsureLoaded extends AbstractCode
+        implements
+            OutputStreamConsumer,
+            LogEnabled {
 
     /**
      * The constant <tt>CONFIG_UNIT</tt> contains the prefix for the
@@ -90,6 +95,11 @@ public class EnsureLoaded extends AbstractCode implements LogEnabled {
      * The field <tt>logger</tt> contains the logger to use.
      */
     private transient Logger logger = null;
+
+    /**
+     * The field <tt>outFactory</tt> contains the output factory.
+     */
+    private transient OutputStreamFactory outFactory;
 
     /**
      * Creates a new object.
@@ -127,12 +137,11 @@ public class EnsureLoaded extends AbstractCode implements LogEnabled {
             throw new EofException(getName());
         }
         String configName = tokens.toText();
-        OutputStreamFactory outputFactory = null; //TODO gene: provide OutputStreamFactory
         try {
             Configuration configuration = new ConfigurationFactory()
                     .newInstance(CONFIG_UNIT + configName);
             LoadUnit.loadUnit(configuration, context, source, typesetter,
-                    logger, outputFactory);
+                    logger, outFactory);
         } catch (InterpreterException e) {
             throw e;
         } catch (GeneralException e) {
@@ -153,6 +162,15 @@ public class EnsureLoaded extends AbstractCode implements LogEnabled {
     protected Logger getLogger() {
 
         return this.logger;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.OutputStreamConsumer#setOutputStreamFactory(
+     *      de.dante.extex.backend.outputStream.OutputStreamFactory)
+     */
+    public void setOutputStreamFactory(final OutputStreamFactory factory) {
+
+        this.outFactory = factory;
     }
 
 }

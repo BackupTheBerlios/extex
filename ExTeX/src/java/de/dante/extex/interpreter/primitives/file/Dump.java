@@ -19,14 +19,14 @@
 
 package de.dante.extex.interpreter.primitives.file;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Calendar;
 import java.util.logging.Logger;
 
+import de.dante.extex.backend.documentWriter.exception.DocumentWriterException;
+import de.dante.extex.backend.outputStream.NamedOutputStream;
 import de.dante.extex.backend.outputStream.OutputStreamFactory;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
@@ -36,6 +36,7 @@ import de.dante.extex.interpreter.exception.InterpreterPanicException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.loader.SerialLoader;
 import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.interpreter.type.OutputStreamConsumer;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.framework.logger.LogEnabled;
@@ -70,25 +71,33 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.40 $
+ * @version $Revision: 1.41 $
  */
-public class Dump extends AbstractCode implements LogEnabled {
+public class Dump extends AbstractCode
+        implements
+            LogEnabled,
+            OutputStreamConsumer {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 2006L;
 
     /**
      * The constant <tt>FORMAT_EXTENSION</tt> contains the extension for the
      * format file.
      */
-    private static final String FORMAT_EXTENSION = ".fmt";
+    private static final String FORMAT_EXTENSION = "fmt";
 
     /**
      * The field <tt>logger</tt> contains the target channel for the message.
      */
     private transient Logger logger = null;
+
+    /**
+     * The field <tt>outFactory</tt> contains the output factory.
+     */
+    private transient OutputStreamFactory outFactory;
 
     /**
      * Creates a new object.
@@ -136,6 +145,10 @@ public class Dump extends AbstractCode implements LogEnabled {
             throw new HelpingException(getLocalizer(), "TTP.DumpInGroup");
         }
 
+        if (outFactory == null) {
+            throw new RuntimeException("Missing output stream factory");
+        }
+
         Tokens jobnameTokens = context.getToks("jobname");
         if (jobnameTokens == null) {
             throw new InterpreterPanicException(getLocalizer(),
@@ -149,16 +162,21 @@ public class Dump extends AbstractCode implements LogEnabled {
                 + (calendar.get(Calendar.MONTH) + 1) + "."
                 + calendar.get(Calendar.DAY_OF_MONTH));
 
-        OutputStreamFactory outputFactory = null; // TODO gene use factory
         OutputStream stream = null;
         try {
-            File file = new File(".", jobname + FORMAT_EXTENSION);
-            stream = new FileOutputStream(file);
-            logger.info(getLocalizer().format("TTP.Dumping", file.toString()));
+            stream = outFactory.getOutputStream(jobname, FORMAT_EXTENSION);
+            String target = (stream instanceof NamedOutputStream
+                    ? ((NamedOutputStream) stream).getName()
+                    : jobname);
+            logger.info(getLocalizer().format("TTP.Dumping", target));
+
             new SerialLoader().save(stream, jobname, context);
+
         } catch (FileNotFoundException e) {
             throw new InterpreterException(e);
         } catch (IOException e) {
+            throw new InterpreterException(e);
+        } catch (DocumentWriterException e) {
             throw new InterpreterException(e);
         } finally {
             if (stream != null) {
@@ -169,6 +187,15 @@ public class Dump extends AbstractCode implements LogEnabled {
                 }
             }
         }
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.OutputStreamConsumer#setOutputStreamFactory(
+     *      de.dante.extex.backend.outputStream.OutputStreamFactory)
+     */
+    public void setOutputStreamFactory(final OutputStreamFactory factory) {
+
+        this.outFactory = factory;
     }
 
 }
