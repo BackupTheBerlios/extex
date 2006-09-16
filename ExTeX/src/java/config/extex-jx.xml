@@ -140,13 +140,15 @@
     -  The section "Output" contains the specification for the output file.
     -  The format attribute contains a format according to the MessageFormat
     -  specification of Java.
-    -  {0} is replaced with the bease name of the output file. 
+    -  {0} is replaced with the base name of the output file. 
     -  {1} is replaced with the name supplied or the empty string if null.
     -  {2} is replaced with the number. This can be formatted freely.
     -  {3} is replaced by the type preceeded by  period (.).
     -->
   <Output default="default">
     <default format="{0}{1}{2,number,0000}{3}"/>
+    <fmt format="{0}.{3}"/>
+    <tex format="{0}.{3}"/>
     <dump format="{0}{1}{2,number,0000}.out"/>
     <dvi format="{0}{1}{2,number,0000}.dvi"/>
     <out format="{0}{1}{2,number,0000}.out"/>
@@ -157,10 +159,21 @@
   </Output>
  
   <!-- 
-    -  The section "DocumentWriter" contains the specification for the backend.
-    -  Here another level of indirection is introduced which allows us to select
-    -  one of several backends programatically.
+    -  The section "Backend" contains the specification for the backend.
     -->
-  <DocumentWriter src="backend/documentWriter"/>
+  <Backend class="BackendDriverImpl">
+    <!-- 
+      -  The section "DocumentWriter" contains the specification for the
+      -  document writer
+      -->
+    <DocumentWriter src="backend/documentWriter"/>
+
+    <parameter name="Title" value=""/>
+    <parameter name="Author" property="user.name"/>
+    <parameter name="Paper" value="A4"/>
+    <parameter name="Orientation" value="Portrait"/>
+    <parameter name="Pages" value="*"/>
+    <parameter name="PageOrder" value="Ascend"/>
+  </Backend>
 
 </ExTeX>
