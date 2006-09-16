@@ -19,7 +19,6 @@
 
 package de.dante.extex.interpreter.primitives.typesetter;
 
-import de.dante.extex.font.Glyph;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -63,7 +62,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [1123]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class Accent extends AbstractCode {
 
@@ -120,10 +119,9 @@ public class Accent extends AbstractCode {
         Font currentFont = tc.getFont();
         long a = -1;
         long s = 0;
-        Glyph glyph = currentFont.getGlyph(accent);
-        if (glyph != null) {
-            a = glyph.getWidth().getValue();
-            s = glyph.getItalicCorrection().getValue(); // TODO gene: correct?
+        if (currentFont.hasGlyph(accent)) {
+            a = currentFont.getWidth(accent).getLength().getValue();
+            s = currentFont.getItalicCorrection(accent).getValue(); // TODO gene: correct?
         }
         long x = currentFont.getEx().getValue();
 
@@ -133,10 +131,9 @@ public class Accent extends AbstractCode {
 
         } else if (token.isa(Catcode.LETTER) || token.isa(Catcode.OTHER)) {
             UnicodeChar c = token.getChar();
-            Glyph g = currentFont.getGlyph(c);
 
-            if (glyph != null) {
-                if (g == null) {
+            if (currentFont.hasGlyph(accent)) {
+                if (!currentFont.hasGlyph(c)) {
                     typesetter.letter(context, tc, accent, source.getLocator());
                 } else {
                     Node node = typesetter.getNodeFactory().getNode(tc, accent);
@@ -144,8 +141,8 @@ public class Accent extends AbstractCode {
                         //TODO gene: undefined character
                         return;
                     }
-                    long w = g.getWidth().getValue();
-                    long h = g.getHeight().getValue();
+                    long w = currentFont.getWidth(c).getLength().getValue();
+                    long h = currentFont.getHeight(c).getLength().getValue();
                     Dimen d = new Dimen();
                     //                    if (h != x) {
                     //                        NodeList n = new HorizontalListNode(node);
@@ -166,7 +163,7 @@ public class Accent extends AbstractCode {
                         throw new InterpreterException(e);
                     }
                 }
-            } else if (g != null) {
+            } else if (currentFont.hasGlyph(c)) {
                 typesetter.letter(context, tc, c, source.getLocator());
             } else {
                 //TODO gene: letter and accent are undefined

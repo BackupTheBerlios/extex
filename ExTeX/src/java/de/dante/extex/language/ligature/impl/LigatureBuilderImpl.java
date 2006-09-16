@@ -19,9 +19,9 @@
 
 package de.dante.extex.language.ligature.impl;
 
-import de.dante.extex.font.Glyph;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.language.hyphenation.exception.HyphenationException;
 import de.dante.extex.language.ligature.LigatureBuilder;
@@ -38,7 +38,7 @@ import de.dante.util.UnicodeChar;
  * font.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class LigatureBuilderImpl implements LigatureBuilder {
 
@@ -64,7 +64,7 @@ public class LigatureBuilderImpl implements LigatureBuilder {
     public UnicodeChar getLigature(final UnicodeChar c1, final UnicodeChar c2,
             final Font f) {
 
-        return f.getLigature(c1,c2);
+        return f.getLigature(c1, c2);
     }
 
     /**
@@ -96,11 +96,11 @@ public class LigatureBuilderImpl implements LigatureBuilder {
                 return i;
             }
 
-            Glyph gc = font.getGlyph(charNode.getCharacter());
-            if (gc == null) {
+            if (!font.hasGlyph(charNode.getCharacter())) {
                 // undefined character
             } else {
-                UnicodeChar lig = gc.getLigature(cni.getCharacter());
+                UnicodeChar lig = font.getLigature(charNode.getCharacter(), cni
+                        .getCharacter());
                 if (lig != null) {
                     list.remove(i--);
                     list.remove(i);
@@ -108,7 +108,8 @@ public class LigatureBuilderImpl implements LigatureBuilder {
                             charNode, cni);
                     list.add(i--, charNode);
                 } else {
-                    Dimen kern = gc.getKerning(cni.getCharacter());
+                    FixedDimen kern = font.getKerning(charNode.getCharacter(),
+                            cni.getCharacter());
                     if (kern != null && kern.ne(Dimen.ZERO)) {
                         list.add(i, new ImplicitKernNode(kern, true));
                         i++;

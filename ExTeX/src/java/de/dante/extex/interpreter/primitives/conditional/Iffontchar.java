@@ -53,7 +53,7 @@ import de.dante.util.UnicodeChar;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Iffontchar extends AbstractIf {
 
@@ -85,7 +85,7 @@ public class Iffontchar extends AbstractIf {
         Font font = source.getFont(context, getName());
         UnicodeChar uc = source.scanCharacterCode(context, typesetter,
                 getName());
-        return (font.getGlyph(uc) != null);
+        return font.hasGlyph(uc);
     }
 
 }

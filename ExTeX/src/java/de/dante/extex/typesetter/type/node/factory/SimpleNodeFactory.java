@@ -27,13 +27,13 @@ import de.dante.extex.typesetter.type.node.CharNode;
 import de.dante.util.UnicodeChar;
 
 /**
- * This is the factory for
+ * This is a factory for
  * {@link de.dante.extex.typesetter.type.node.CharNode CharNode}s
  * and virtual chars.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class SimpleNodeFactory implements NodeFactory {
 
@@ -64,13 +64,11 @@ public class SimpleNodeFactory implements NodeFactory {
 
         Font font = typesettingContext.getFont();
 
-        if (font.getGlyph(uc) == null) {
+        if (!font.hasGlyph(uc)) {
             return null;
-        }
-
-        if (font instanceof VirtualFount) {
-            VirtualFount vf = (VirtualFount) font;
-            return vf.getVirtualCharNode(typesettingContext, uc);
+        } else if (font instanceof VirtualFount) {
+            return ((VirtualFount) font).getVirtualCharNode(typesettingContext,
+                    uc);
         }
 
         return new CharNode(typesettingContext, uc);
