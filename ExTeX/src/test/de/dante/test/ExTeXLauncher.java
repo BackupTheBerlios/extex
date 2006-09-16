@@ -35,6 +35,7 @@ import java.util.logging.StreamHandler;
 
 import junit.framework.TestCase;
 import de.dante.extex.ExTeX;
+import de.dante.extex.backend.outputStream.OutputStreamFactory;
 import de.dante.extex.font.FontFactory;
 import de.dante.extex.font.exception.FontException;
 import de.dante.extex.interpreter.ErrorHandler;
@@ -47,6 +48,7 @@ import de.dante.extex.main.errorHandler.editHandler.EditHandler;
 import de.dante.extex.main.logging.LogFormatter;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.extex.scanner.type.token.Token;
+import de.dante.extex.typesetter.Typesetter;
 import de.dante.test.font.LauncherFont;
 import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.Configuration;
@@ -58,7 +60,7 @@ import de.dante.util.resource.ResourceFinder;
  * running an instance of <logo>ExTeX</logo>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.49 $
+ * @version $Revision: 1.50 $
  */
 public class ExTeXLauncher extends TestCase {
 
@@ -66,7 +68,7 @@ public class ExTeXLauncher extends TestCase {
      * Inner class for the error handler.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.49 $
+     * @version $Revision: 1.50 $
      */
     private class EHandler implements ErrorHandler {
 
@@ -296,15 +298,17 @@ public class ExTeXLauncher extends TestCase {
              */
             protected Interpreter makeInterpreter(final Configuration config,
                     final TokenStreamFactory factory,
+                    OutputStreamFactory outFatory,
                     final FontFactory fontFactory, final ResourceFinder finder,
-                    final String jobname)
+                    final String jobname, final Typesetter typesetter)
                     throws ConfigurationException,
                         GeneralException,
                         FontException,
                         IOException {
 
                 Interpreter interpreter = super.makeInterpreter(config,
-                        factory, fontFactory, finder, jobname);
+                        factory, outFatory, fontFactory, finder, jobname,
+                        typesetter);
                 Context context = interpreter.getContext();
                 context.set(new LauncherFont(), true);
                 context.setStandardTokenStream(factory

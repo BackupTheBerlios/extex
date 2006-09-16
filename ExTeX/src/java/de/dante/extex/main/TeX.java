@@ -75,6 +75,7 @@ import de.dante.extex.main.queryFile.QueryFileHandler;
 import de.dante.extex.main.queryFile.QueryFileHandlerTeXImpl;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.extex.scanner.stream.observer.file.OpenFileObserver;
+import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.exception.GeneralException;
 import de.dante.util.exception.NotObservableException;
 import de.dante.util.framework.configuration.Configuration;
@@ -699,7 +700,7 @@ import de.dante.util.resource.ResourceFinder;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public class TeX extends ExTeX {
 
@@ -968,20 +969,23 @@ public class TeX extends ExTeX {
      * @see de.dante.extex.ExTeX#makeInterpreter(
      *      de.dante.util.framework.configuration.Configuration,
      *      de.dante.extex.scanner.stream.TokenStreamFactory,
+     *      de.dante.extex.backend.outStream.OutputStreamFactory,
      *      de.dante.extex.font.FontFactory,
      *      de.dante.util.resource.ResourceFinder,
      *      java.lang.String)
      */
     protected Interpreter makeInterpreter(final Configuration config,
-            final TokenStreamFactory factory, final FontFactory fontFactory,
-            final ResourceFinder finder, final String jobname)
+            final TokenStreamFactory factory,
+            final OutputStreamFactory outFactory,
+            final FontFactory fontFactory, final ResourceFinder finder,
+            final String jobname, final Typesetter typesetter)
             throws ConfigurationException,
                 GeneralException,
                 FontException,
                 IOException {
 
-        interpreter = super.makeInterpreter(config, factory, fontFactory,
-                finder, jobname);
+        interpreter = super.makeInterpreter(config, factory, outFactory,
+                fontFactory, finder, jobname, typesetter);
         Logger logger = getLogger();
 
         interpreter.getContext().setStandardTokenStream(
@@ -1464,11 +1468,11 @@ public class TeX extends ExTeX {
                             i++;
                         } else if (set("texoutputs", PROP_OUTPUT_DIR, arg)) {
                             // ok
-                        } else if (set("texmfoutputs", PROP_OUTPUT_DIR_FALLBACK,
-                                args, i)) {
+                        } else if (set("texmfoutputs",
+                                PROP_OUTPUT_DIR_FALLBACK, args, i)) {
                             i++;
-                        } else if (set("texmfoutputs", PROP_OUTPUT_DIR_FALLBACK,
-                                arg)) {
+                        } else if (set("texmfoutputs",
+                                PROP_OUTPUT_DIR_FALLBACK, arg)) {
                             // ok
                         } else if (!mergeProperties(arg)) {
                             throw new MainUnknownOptionException(arg);
