@@ -65,7 +65,7 @@ import java.util.List;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public final class Registrar {
 
@@ -73,7 +73,7 @@ public final class Registrar {
      * This class provides a container for a pair of a class and an observer.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.6 $
+     * @version $Revision: 1.7 $
      */
     private static final class Obs {
 
@@ -122,10 +122,71 @@ public final class Registrar {
     }
 
     /**
-     * The field <tt>observers</tt> contains the observers which are currently
-     * registered.
+     * The field <tt>active</tt> contains the currently active registrar.
      */
-    private static List observers = new ArrayList();
+    private static Registrar active = new Registrar();
+
+    /**
+     * The field <tt>pipe</tt> contains the list of registrars which wait to be
+     * activated.
+     */
+    private static List pipe = new ArrayList();
+
+    /**
+     * Create a new registrar and activate it.
+     *
+     * @return the new registrar
+     *
+     * @throws RegistrarException in case of an error
+     */
+    public static Registrar activate() throws RegistrarException {
+
+        Registrar registrar = new Registrar();
+        activate(registrar);
+        return registrar;
+    }
+
+    /**
+     * Activate an existing registrar.
+     *
+     * @param registrar the registrar to activate
+     *
+     * @throws RegistrarException in case of an error
+     */
+    public static void activate(final Registrar registrar)
+            throws RegistrarException {
+
+        if (active != null) {
+            pipe.add(registrar);
+            try {
+                registrar.wait();
+            } catch (InterruptedException e) {
+                // ignored;
+            }
+        }
+        active = registrar;
+    }
+
+    /**
+     * Deactivate a currently active registrar.
+     *
+     * @param registrar the registrar to deactivate
+     *
+     * @throws RegistrarException in case of an error
+     */
+    public static void deactivate(final Registrar registrar)
+            throws RegistrarException {
+
+        if (active != registrar) {
+            throw new RegistrarException("registrar is not active");
+        }
+        if (pipe.size() > 0) {
+            active = (Registrar) pipe.remove(0);
+            active.notifyAll();
+        } else {
+            active = null;
+        }
+    }
 
     /**
      * Find anyone interested in an object and let the object be integrated into
@@ -141,6 +202,7 @@ public final class Registrar {
             throws RegistrarException {
 
         Object ob = object;
+        List observers = active.observers;
         int n = observers.size();
         for (int i = 0; i < n; i++) {
             Obs obs = (Obs) observers.get(i);
@@ -166,7 +228,7 @@ public final class Registrar {
             final Class type) {
 
         Obs obs = new Obs(observer, type);
-        observers.add(obs);
+        active.observers.add(obs);
         return obs;
     }
 
@@ -182,14 +244,21 @@ public final class Registrar {
         if (!(obs instanceof Obs)) {
             throw new IllegalArgumentException("#unregister()");
         }
-        return observers.remove(obs);
+        return active.observers.remove(obs);
     }
+
+    /**
+     * The field <tt>observers</tt> contains the observers which are currently
+     * registered.
+     */
+    private List observers = new ArrayList();
 
     /**
      * Private constructor to avoid instantiation.
      */
     private Registrar() {
 
+        super();
     }
 
 }
