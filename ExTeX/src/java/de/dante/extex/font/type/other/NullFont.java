@@ -39,7 +39,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class NullFont implements Font, Serializable {
 
@@ -279,6 +279,15 @@ public class NullFont implements Font, Serializable {
     public FixedGlue getWidth(final UnicodeChar uc) {
 
         return null;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.font.Font#hasGlyph(
+     *      de.dante.util.UnicodeChar)
+     */
+    public boolean hasGlyph(final UnicodeChar uc) {
+
+        return false;
     }
 
     /**

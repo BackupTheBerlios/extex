@@ -45,7 +45,7 @@ import de.dante.util.framework.Registrar;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class FontImpl extends NullFont {
 
@@ -109,6 +109,15 @@ public class FontImpl extends NullFont {
     public FixedDimen getActualSize() {
 
         return fount.getActualSize();
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.font.Font#hasGlyph(
+     *      de.dante.util.UnicodeChar)
+     */
+    public boolean hasGlyph(final UnicodeChar uc) {
+
+        return getGlyph(uc) != null;
     }
 
     /**

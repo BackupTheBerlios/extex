@@ -37,7 +37,7 @@ import de.dante.util.UnicodeChar;
  * @see "TTP [700]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class MathFont implements Font {
 
@@ -245,6 +245,14 @@ public class MathFont implements Font {
     public FixedGlue getWidth(final UnicodeChar uc) {
 
         return font.getWidth(uc);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.font.Font#hasGlyph(de.dante.util.UnicodeChar)
+     */
+    public boolean hasGlyph(final UnicodeChar uc) {
+
+        return font.hasGlyph(uc);
     }
 
     /**

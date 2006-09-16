@@ -41,7 +41,7 @@ import de.dante.util.UnicodeChar;
  * This class encapsulates cmr10.tfm for testing purposes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class CMR10 implements Font, Serializable {
 
@@ -54,7 +54,7 @@ public class CMR10 implements Font, Serializable {
      * Private implementation of the glyph interface.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.3 $
+     * @version $Revision: 1.4 $
      */
     public class MyGlyph extends GlyphImpl implements Serializable {
 
@@ -1348,6 +1348,14 @@ public class CMR10 implements Font, Serializable {
 
         // TODO gene: getWidth unimplemented
         return null;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.font.Font#hasGlyph(de.dante.util.UnicodeChar)
+     */
+    public boolean hasGlyph(UnicodeChar uc) {
+
+        return true;
     }
 
 }

@@ -20,20 +20,15 @@ import de.dante.util.UnicodeChar;
  * TODO gene: missing JavaDoc.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class LauncherFont implements Font, Serializable {
-
-    /**
-     * The field <tt>serialVersionUID</tt> contains the ...
-     */
-    private static final long serialVersionUID = 1L;
 
     /**
      * TODO gene: missing JavaDoc.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.2 $
+     * @version $Revision: 1.3 $
      */
     final class LauncherGlyph implements Glyph, Serializable {
 
@@ -58,6 +53,14 @@ public class LauncherFont implements Font, Serializable {
             this.c = c;
         }
 
+        public void addKerning(final Kerning kern) {
+
+        }
+
+        public void addLigature(final Ligature lig) {
+
+        }
+
         /**
          * TODO gene: missing JavaDoc
          *
@@ -68,8 +71,9 @@ public class LauncherFont implements Font, Serializable {
             return Dimen.ONE_PT;
         }
 
-        public void setDepth(final Dimen d) {
+        public FontByteArray getExternalFile() {
 
+            return null;
         }
 
         public Dimen getHeight() {
@@ -77,71 +81,14 @@ public class LauncherFont implements Font, Serializable {
             return Dimen.ONE_PT;
         }
 
-        public void setHeight(final Dimen h) {
-
-        }
-
         public Dimen getItalicCorrection() {
 
             return Dimen.ZERO_PT;
         }
 
-        public void setItalicCorrection(final Dimen d) {
-
-        }
-
-        public Dimen getWidth() {
-
-            return Dimen.ONE_PT;
-        }
-
-        public void setWidth(final Dimen w) {
-
-        }
-
-        public String getName() {
-
-            return "?";
-        }
-
-        public void setName(final String n) {
-
-        }
-
-        public String getNumber() {
-
-            return this.c.toString();
-        }
-
-        public void setNumber(final String nr) {
-
-        }
-
-        public void addKerning(final Kerning kern) {
-
-        }
-
         public Dimen getKerning(final UnicodeChar uc) {
 
             return Dimen.ZERO_PT;
-        }
-
-        public void addLigature(final Ligature lig) {
-
-        }
-
-        public UnicodeChar getLigature(final UnicodeChar uc) {
-
-            return null;
-        }
-
-        public FontByteArray getExternalFile() {
-
-            return null;
-        }
-
-        public void setExternalFile(final FontByteArray file) {
-
         }
 
         /**
@@ -152,11 +99,19 @@ public class LauncherFont implements Font, Serializable {
             return Dimen.ZERO_PT;
         }
 
-        /**
-         * @see de.dante.extex.font.Glyph#setLeftSpace(de.dante.extex.interpreter.type.dimen.Dimen)
-         */
-        public void setLeftSpace(final Dimen ls) {
+        public UnicodeChar getLigature(final UnicodeChar uc) {
 
+            return null;
+        }
+
+        public String getName() {
+
+            return "?";
+        }
+
+        public String getNumber() {
+
+            return this.c.toString();
         }
 
         /**
@@ -167,70 +122,107 @@ public class LauncherFont implements Font, Serializable {
             return Dimen.ZERO_PT;
         }
 
+        public Dimen getWidth() {
+
+            return Dimen.ONE_PT;
+        }
+
+        public void setDepth(final Dimen d) {
+
+        }
+
+        public void setExternalFile(final FontByteArray file) {
+
+        }
+
+        public void setHeight(final Dimen h) {
+
+        }
+
+        public void setItalicCorrection(final Dimen d) {
+
+        }
+
+        /**
+         * @see de.dante.extex.font.Glyph#setLeftSpace(de.dante.extex.interpreter.type.dimen.Dimen)
+         */
+        public void setLeftSpace(final Dimen ls) {
+
+        }
+
+        public void setName(final String n) {
+
+        }
+
+        public void setNumber(final String nr) {
+
+        }
+
         /**
          * @see de.dante.extex.font.Glyph#setRightSpace(de.dante.extex.interpreter.type.dimen.Dimen)
          */
         public void setRightSpace(final Dimen rs) {
 
         }
+
+        public void setWidth(final Dimen w) {
+
+        }
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.font.Font#getHyphenChar()
+     * The field <tt>serialVersionUID</tt> contains the ...
      */
-    public UnicodeChar getHyphenChar() {
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * @see de.dante.extex.font.type.Fount#getActualSize()
+     */
+    public FixedDimen getActualSize() {
+
+        return new Dimen(Dimen.ONE_PT.getValue() * 10);
+    }
+
+    /**
+     * @see de.dante.extex.font.type.Fount#getBoundingBox()
+     */
+    public BoundingBox getBoundingBox() {
 
         return null;
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.font.Font#getSkewChar()
+     * @see de.dante.extex.font.type.Fount#getCheckSum()
      */
-    public UnicodeChar getSkewChar() {
+    public int getCheckSum() {
 
+        return 0;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.font.Font#getDepth(
+     *      de.dante.util.UnicodeChar)
+     */
+    public FixedGlue getDepth(final UnicodeChar uc) {
+
+        // TODO gene: getDepth unimplemented
         return null;
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.font.Font#setHyphenChar(
-     *      de.dante.util.UnicodeChar)
+     * @see de.dante.extex.font.type.Fount#getDesignSize()
      */
-    public void setHyphenChar(final UnicodeChar hyphen) {
+    public FixedDimen getDesignSize() {
 
+        return new Dimen(Dimen.ONE_PT.getValue() * 10);
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.font.Font#setSkewChar(
-     *      de.dante.util.UnicodeChar)
+     * @see de.dante.extex.interpreter.type.font.Font#getEfcode()
      */
-    public void setSkewChar(final UnicodeChar skew) {
+    public long getEfcode(final UnicodeChar uc) {
 
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.type.font.Font#setFontDimen(
-     *      java.lang.String,
-     *      de.dante.extex.interpreter.type.dimen.Dimen)
-     */
-    public void setFontDimen(final String key, final Dimen value) {
-
-    }
-
-    /**
-     * @see de.dante.extex.font.type.Fount#getGlyph(
-     *      de.dante.util.UnicodeChar)
-     */
-    public Glyph getGlyph(final UnicodeChar c) {
-
-        return new LauncherGlyph(c);
-    }
-
-    /**
-     * @see de.dante.extex.font.type.Fount#getSpace()
-     */
-    public FixedGlue getSpace() {
-
-        return new Glue(Dimen.ONE_PT.getValue() * 10);
+        return 1000;
     }
 
     /**
@@ -250,6 +242,14 @@ public class LauncherFont implements Font, Serializable {
     }
 
     /**
+     * @see de.dante.extex.font.type.Fount#getFontByteArray()
+     */
+    public FontByteArray getFontByteArray() {
+
+        return null;
+    }
+
+    /**
      * @see de.dante.extex.font.type.Fount#getFontDimen(java.lang.String)
      */
     public FixedDimen getFontDimen(final String key) {
@@ -258,9 +258,9 @@ public class LauncherFont implements Font, Serializable {
     }
 
     /**
-     * @see de.dante.extex.font.type.Fount#getProperty(java.lang.String)
+     * @see de.dante.extex.font.type.Fount#getFontKey()
      */
-    public String getProperty(final String key) {
+    public FountKey getFontKey() {
 
         return null;
     }
@@ -274,18 +274,50 @@ public class LauncherFont implements Font, Serializable {
     }
 
     /**
-     * @see de.dante.extex.font.type.Fount#getCheckSum()
+     * @see de.dante.extex.font.type.Fount#getGlyph(
+     *      de.dante.util.UnicodeChar)
      */
-    public int getCheckSum() {
+    public Glyph getGlyph(final UnicodeChar c) {
 
-        return 0;
+        return new LauncherGlyph(c);
     }
 
     /**
-     * @see de.dante.extex.font.type.Fount#getBoundingBox()
+     * @see de.dante.extex.interpreter.type.font.Font#getHeight(
+     *      de.dante.util.UnicodeChar)
      */
-    public BoundingBox getBoundingBox() {
+    public FixedGlue getHeight(UnicodeChar uc) {
 
+        // TODO gene: getHeight unimplemented
+        return null;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.font.Font#getHyphenChar()
+     */
+    public UnicodeChar getHyphenChar() {
+
+        return null;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.font.Font#getItalicCorrection(
+     *      de.dante.util.UnicodeChar)
+     */
+    public FixedDimen getItalicCorrection(final UnicodeChar uc) {
+
+        // TODO gene: getItalicCorrection unimplemented
+        return null;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.font.Font#getKerning(
+     *      de.dante.util.UnicodeChar,
+     *      de.dante.util.UnicodeChar)
+     */
+    public FixedDimen getKerning(final UnicodeChar uc1, final UnicodeChar uc2) {
+
+        // TODO gene: getKerning unimplemented
         return null;
     }
 
@@ -298,35 +330,56 @@ public class LauncherFont implements Font, Serializable {
     }
 
     /**
-     * @see de.dante.extex.font.type.Fount#getDesignSize()
+     * @see de.dante.extex.interpreter.type.font.Font#getLigature(
+     *      de.dante.util.UnicodeChar, de.dante.util.UnicodeChar)
      */
-    public FixedDimen getDesignSize() {
+    public UnicodeChar getLigature(final UnicodeChar uc1, final UnicodeChar uc2) {
 
-        return new Dimen(Dimen.ONE_PT.getValue() * 10);
+        // TODO gene: getLigature unimplemented
+        return null;
     }
 
     /**
-     * @see de.dante.extex.font.type.Fount#getActualSize()
+     * @see de.dante.extex.font.type.Fount#getProperty(java.lang.String)
      */
-    public FixedDimen getActualSize() {
-
-        return new Dimen(Dimen.ONE_PT.getValue() * 10);
-    }
-
-    /**
-     * @see de.dante.extex.font.type.Fount#getFontKey()
-     */
-    public FountKey getFontKey() {
+    public String getProperty(final String key) {
 
         return null;
     }
 
     /**
-     * @see de.dante.extex.font.type.Fount#getFontByteArray()
+     * @see de.dante.extex.interpreter.type.font.Font#getSkewChar()
      */
-    public FontByteArray getFontByteArray() {
+    public UnicodeChar getSkewChar() {
 
         return null;
+    }
+
+    /**
+     * @see de.dante.extex.font.type.Fount#getSpace()
+     */
+    public FixedGlue getSpace() {
+
+        return new Glue(Dimen.ONE_PT.getValue() * 10);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.font.Font#getWidth(
+     *      de.dante.util.UnicodeChar)
+     */
+    public FixedGlue getWidth(final UnicodeChar uc) {
+
+        // TODO gene: getWidth unimplemented
+        return null;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.font.Font#hasGlyph(
+     *      de.dante.util.UnicodeChar)
+     */
+    public boolean hasGlyph(final UnicodeChar uc) {
+
+        return true;
     }
 
     /**
@@ -335,70 +388,32 @@ public class LauncherFont implements Font, Serializable {
     public void setEfcode(UnicodeChar uc, long code) {
 
         // TODO gene: setEfcode unimplemented
-        
+
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.font.Font#getEfcode()
+     * @see de.dante.extex.interpreter.type.font.Font#setFontDimen(
+     *      java.lang.String,
+     *      de.dante.extex.interpreter.type.dimen.Dimen)
      */
-    public long getEfcode(UnicodeChar uc) {
+    public void setFontDimen(final String key, final Dimen value) {
 
-        // TODO gene: getEfcode unimplemented
-        return 0;
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.font.Font#getDepth(de.dante.util.UnicodeChar)
+     * @see de.dante.extex.interpreter.type.font.Font#setHyphenChar(
+     *      de.dante.util.UnicodeChar)
      */
-    public FixedGlue getDepth(UnicodeChar uc) {
+    public void setHyphenChar(final UnicodeChar hyphen) {
 
-        // TODO gene: getDepth unimplemented
-        return null;
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.font.Font#getHeight(de.dante.util.UnicodeChar)
+     * @see de.dante.extex.interpreter.type.font.Font#setSkewChar(
+     *      de.dante.util.UnicodeChar)
      */
-    public FixedGlue getHeight(UnicodeChar uc) {
+    public void setSkewChar(final UnicodeChar skew) {
 
-        // TODO gene: getHeight unimplemented
-        return null;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.type.font.Font#getItalicCorrection(de.dante.util.UnicodeChar)
-     */
-    public FixedDimen getItalicCorrection(UnicodeChar uc) {
-
-        // TODO gene: getItalicCorrection unimplemented
-        return null;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.type.font.Font#getKerning(de.dante.util.UnicodeChar, de.dante.util.UnicodeChar)
-     */
-    public FixedDimen getKerning(UnicodeChar uc1, UnicodeChar uc2) {
-
-        // TODO gene: getKerning unimplemented
-        return null;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.type.font.Font#getLigature(de.dante.util.UnicodeChar, de.dante.util.UnicodeChar)
-     */
-    public UnicodeChar getLigature(UnicodeChar uc1, UnicodeChar uc2) {
-
-        // TODO gene: getLigature unimplemented
-        return null;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.type.font.Font#getWidth(de.dante.util.UnicodeChar)
-     */
-    public FixedGlue getWidth(UnicodeChar uc) {
-
-        // TODO gene: getWidth unimplemented
-        return null;
     }
 
 }
