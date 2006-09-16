@@ -42,7 +42,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.35 $
+ * @version $Revision: 1.36 $
  */
 public interface Interpreter extends TokenSource {
 
@@ -127,9 +127,11 @@ public interface Interpreter extends TokenSource {
      * Setter for the context.
      * Use with care!
      *
+     * @return the old context
+     *
      * @param context the interpreter context
      */
-    void setContext(Context context);
+    Context setContext(Context context);
 
     /**
      * Setter for the error handler.
