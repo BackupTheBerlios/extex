@@ -141,7 +141,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.48 $
+ * @version $Revision: 1.49 $
  */
 public class MathListMaker extends HorizontalListMaker
         implements
@@ -153,7 +153,7 @@ public class MathListMaker extends HorizontalListMaker
      * It is used to store to the stack and restore the state from the stack.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.48 $
+     * @version $Revision: 1.49 $
      */
     private class MathMemento {
 
@@ -719,7 +719,7 @@ public class MathListMaker extends HorizontalListMaker
         MathMemento memento = (MathMemento) stack.pop();
         if (memento.isBlock()) {
             throw new TypesetterHelpingException(getLocalizer(),
-                    "TTP.ExtraOrForgotten", "\\right.");
+                    "TTP.ExtraRigt", "\\right.");
         }
 
         LeftNoad n = (LeftNoad) noads;
