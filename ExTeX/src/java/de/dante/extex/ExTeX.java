@@ -30,6 +30,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.CharacterCodingException;
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.logging.ConsoleHandler;
@@ -57,7 +58,9 @@ import de.dante.extex.interpreter.ErrorHandler;
 import de.dante.extex.interpreter.ErrorHandlerFactory;
 import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.InterpreterFactory;
+import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.context.ContextFactory;
 import de.dante.extex.interpreter.context.observer.interaction.InteractionObservable;
 import de.dante.extex.interpreter.context.observer.interaction.InteractionObserver;
 import de.dante.extex.interpreter.exception.InterpreterException;
@@ -66,15 +69,21 @@ import de.dante.extex.interpreter.interaction.Interaction;
 import de.dante.extex.interpreter.interaction.InteractionUnknownException;
 import de.dante.extex.interpreter.loader.LoaderException;
 import de.dante.extex.interpreter.max.StringSource;
+import de.dante.extex.interpreter.max.TokenFactoryFactory;
+import de.dante.extex.interpreter.max.util.LoadUnit;
 import de.dante.extex.interpreter.output.TeXOutputRoutine;
+import de.dante.extex.interpreter.type.OutputStreamConsumer;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.language.LanguageManager;
+import de.dante.extex.language.LanguageManagerFactory;
 import de.dante.extex.main.logging.LogFormatter;
 import de.dante.extex.main.observer.InteractionModeObserver;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.extex.scanner.stream.TokenStreamOptions;
+import de.dante.extex.scanner.type.token.TokenFactory;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterFactory;
 import de.dante.extex.typesetter.exception.TypesetterException;
@@ -89,6 +98,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationClassNotFoun
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 import de.dante.util.framework.configuration.exception.ConfigurationInstantiationException;
 import de.dante.util.framework.configuration.exception.ConfigurationMissingAttributeException;
+import de.dante.util.framework.configuration.exception.ConfigurationMissingException;
 import de.dante.util.framework.configuration.exception.ConfigurationNoSuchMethodException;
 import de.dante.util.framework.configuration.exception.ConfigurationSyntaxException;
 import de.dante.util.framework.i18n.Localizer;
@@ -349,7 +359,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.141 $
+ * @version $Revision: 1.142 $
  */
 public class ExTeX {
 
@@ -358,7 +368,7 @@ public class ExTeX {
      * from a format which needs it.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.141 $
+     * @version $Revision: 1.142 $
      */
     private class ResourceFinderInjector implements RegistrarObserver {
 
@@ -389,10 +399,22 @@ public class ExTeX {
     }
 
     /**
+     * The field <tt>CONTEXT_TAG</tt> contains the name of the tag for the
+     * configuration of the context.
+     */
+    private static final String CONTEXT_TAG = "Context";
+
+    /**
      * The field <tt>DEFAULT_JOBNAME</tt> contains the default for the job name
      * if none can be determined otherwise.
      */
     private static final String DEFAULT_JOBNAME = "texput";
+
+    /**
+     * The constant <tt>DEFAULT_LANGAGE_KEY</tt> contains the key for the
+     * default language.
+     */
+    private static final String DEFAULT_LANGAGE_KEY = "0";
 
     /**
      * The constant <tt>VERSION</tt> contains the manually incremented version
@@ -411,6 +433,12 @@ public class ExTeX {
      * The constant <tt>formatType</tt> contains the type for the format.
      */
     private static final String FORMAT_TYPE = "fmt";
+
+    /**
+     * The field <tt>LANGUAGE_TAG</tt> contains the name of the tag for the
+     * configuration of the language manager.
+     */
+    private static final String LANGUAGE_TAG = "Language";
 
     /**
      * The constant <tt>PROP_BANNER</tt> contains the name of the property for
@@ -520,18 +548,18 @@ public class ExTeX {
     protected static final String PROP_NO_BANNER = "extex.nobanner";
 
     /**
+     * The constant <tt>PROP_OUTPUT_DIRS</tt> contains the name of the
+     * property for the output directory path.
+     */
+    protected static final String PROP_OUTPUT_DIRS = "extex.output.directories";
+
+    /**
      * The constant <tt>PROP_OUTPUT_TYPE</tt> contains the name of the property
      * for the output driver. This value is resolved by the
      * {@link de.dante.extex.backend.documentWriter.DocumentWriterFactory
      * DocumentWriterFactory} to find the appropriate class.
      */
     protected static final String PROP_OUTPUT_TYPE = "extex.output";
-
-    /**
-     * The constant <tt>PROP_OUTPUT_DIRS</tt> contains the name of the
-     * property for the output directory path.
-     */
-    protected static final String PROP_OUTPUT_DIRS = "extex.output.directories";
 
     /**
      * The constant <tt>PROP_PAGE</tt> contains the name of the property for the
@@ -866,6 +894,18 @@ public class ExTeX {
     }
 
     /**
+     * Getter for a named property as boolean.
+     *
+     * @param key the property name
+     *
+     * @return the value of the named property
+     */
+    public boolean getBooleanProperty(final String key) {
+
+        return Boolean.valueOf(this.properties.getProperty(key)).booleanValue();
+    }
+
+    /**
      * Getter for localizer.
      *
      * @return the localizer
@@ -903,19 +943,7 @@ public class ExTeX {
     public Properties getProperties() {
 
         return this.properties;
-    }
-
-    /**
-     * Getter for a named property as boolean.
-     *
-     * @param key the property name
-     *
-     * @return the value of the named property
-     */
-    public boolean getBooleanProperty(final String key) {
-
-        return Boolean.valueOf(this.properties.getProperty(key)).booleanValue();
-    }
+    };
 
     /**
      * Getter for a named property.
@@ -972,7 +1000,7 @@ public class ExTeX {
         }
 
         return notInitialized;
-    };
+    }
 
     /**
      * Load a format if a non-empty name of a format is given.
@@ -1121,8 +1149,11 @@ public class ExTeX {
             throws DocumentWriterException,
                 ConfigurationException {
 
+        String c = config.getAttribute("class");
+        
         BackendDriver backend = new BackendDriverImpl(options);
-        DocumentWriterFactory factory = new DocumentWriterFactory(config);
+        DocumentWriterFactory factory = new DocumentWriterFactory(config
+                .getConfiguration("DocumentWriter"));
         factory.enableLogging(logger);
         DocumentWriter docWriter = factory.newInstance(//
                 properties.getProperty(PROP_OUTPUT_TYPE), //
@@ -1140,12 +1171,23 @@ public class ExTeX {
         }
         docWriter.setParameter("Creator", properties.getProperty(PROP_NAME)
                 + " " + EXTEX_VERSION);
-        docWriter.setParameter("Title", "");
-        docWriter.setParameter("Author", properties.getProperty("user.name"));
-        docWriter.setParameter("Paper", "A4");
-        docWriter.setParameter("Orientation", "Portrait");
-        docWriter.setParameter("Pages", "*");
-        docWriter.setParameter("PageOrder", "Ascend");
+
+        Iterator iterator = config.iterator("parameter");
+        while (iterator.hasNext()) {
+            Configuration p = (Configuration) iterator.next();
+            String name = p.getAttribute("name");
+            String s = p.getAttribute("value");
+            if (s != null) {
+                docWriter.setParameter(name, s);
+            } else {
+                s = p.getAttribute("property");
+                if (s != null) {
+                    docWriter.setParameter(name, properties.getProperty(s));
+                } else {
+                    throw new ConfigurationMissingAttributeException("value", p);
+                }
+            }
+        }
 
         backend.setDocumentWriter(docWriter);
 
@@ -1174,6 +1216,66 @@ public class ExTeX {
         factory.enableLogging(logger);
         return factory
                 .newInstance(properties.getProperty(PROP_COLOR_CONVERTER));
+    }
+
+    /**
+     * Prepare the context according to its configuration.
+     *
+     * @param config the configuration of the interpreter
+     * @param tokenFactory the token factory to inject
+     * @param typesetter the typesetter
+     * @param outFactory the output stream factory
+     * @param source the token source
+     * @param fontFactory the font factory
+     *
+     * @return the newly created context
+     *
+     * @throws ConfigurationException in case of a configuration error
+     * @throws FontException in case of a font error
+     * @throws GeneralException in case of an error
+     */
+    protected Context makeContext(final Configuration config,
+            final TokenFactory tokenFactory, final Typesetter typesetter,
+            final OutputStreamFactory outFactory, final TokenSource source,
+            final FontFactory fontFactory)
+            throws ConfigurationException,
+                GeneralException,
+                FontException {
+
+        Configuration cfg = config.getConfiguration(CONTEXT_TAG);
+        if (cfg == null) {
+            throw new ConfigurationMissingException(CONTEXT_TAG, config
+                    .toString());
+        }
+        ContextFactory contextFactory = new ContextFactory(cfg);
+        contextFactory.enableLogging(logger);
+        Context context = contextFactory.newInstance(null);
+
+        Configuration fontConfiguration = config.findConfiguration(TAG_FONT);
+        context.set(makeDefaultFont(fontConfiguration, fontFactory), true);
+
+        context.setLanguageManager(makeLanguageManager(config));
+        context.set(context.getLanguage(DEFAULT_LANGAGE_KEY), true);
+
+        context.setTokenFactory(tokenFactory);
+
+        Logger log = getLogger();
+        Interaction mode = context.getInteraction();
+        try {
+            context.setInteraction(Interaction.ERRORSTOPMODE);
+
+            for (Iterator iterator = config.iterator("unit"); iterator
+                    .hasNext();) {
+                LoadUnit.loadUnit((Configuration) iterator.next(), context,
+                        source, typesetter, log, outFactory);
+            }
+
+        } finally {
+            if (mode != null) {
+                context.setInteraction(mode);
+            }
+        }
+        return context;
     }
 
     /**
@@ -1282,9 +1384,11 @@ public class ExTeX {
      *
      * @param config the configuration object for the interpreter
      * @param factory the factory for new token streams
+     * @param outFactory the factory for new output streams
      * @param fontFactory the font factory to request the default font from
      * @param finder the resource finder
      * @param jobname the job name
+     * @param typesetter the typesetter
      *
      * @return the new interpreter
      *
@@ -1295,8 +1399,10 @@ public class ExTeX {
      * @throws IOException in case of an IO error
      */
     protected Interpreter makeInterpreter(final Configuration config,
-            final TokenStreamFactory factory, final FontFactory fontFactory,
-            final ResourceFinder finder, final String jobname)
+            final TokenStreamFactory factory,
+            final OutputStreamFactory outFactory,
+            final FontFactory fontFactory, final ResourceFinder finder,
+            final String jobname, final Typesetter typesetter)
             throws ConfigurationException,
                 GeneralException,
                 FontException,
@@ -1311,6 +1417,16 @@ public class ExTeX {
         if (interpreter instanceof PropertyConfigurable) {
             ((PropertyConfigurable) interpreter).setProperties(properties);
         }
+        if (interpreter instanceof OutputStreamConsumer) {
+            ((OutputStreamConsumer) interpreter)
+                    .setOutputStreamFactory(outFactory);
+        }
+
+        TokenFactory tokenFactory = makeTokenFactory(config);
+        TokenSource source = null; // TODO gene: provide token source?
+        Context context = makeContext(config, tokenFactory, typesetter,
+                outFactory, source, fontFactory);
+        interpreter.setContext(context);
 
         ErrorHandler errHandler = errorHandler;
         if (errHandler == null) {
@@ -1322,11 +1438,11 @@ public class ExTeX {
         }
         interpreter.setErrorHandler(errHandler);
         interpreter.setTokenStreamFactory(factory);
-        interpreter.setFontFactory(fontFactory);
         interpreter.setInteraction(Interaction.get(properties
                 .getProperty(PROP_INTERACTION)));
 
-        Context context = interpreter.getContext();
+        interpreter.setFontFactory(fontFactory);
+
         makePageSize(context);
 
         String fmt = properties.getProperty(PROP_FMT);
@@ -1334,14 +1450,12 @@ public class ExTeX {
             Configuration fontConfiguration = config
                     .findConfiguration(TAG_FONT);
             context.set(makeDefaultFont(fontConfiguration, fontFactory), true);
-            context.set(context.getLanguage("0"), true);
+            context.set(context.getLanguage(DEFAULT_LANGAGE_KEY), true);
         }
 
         context = loadFormat(interpreter, finder, fmt, jobname);
 
         factory.setOptions((TokenStreamOptions) context);
-
-        initializeStreams(interpreter, properties);
 
         String units = properties.getProperty("extex.units");
         if (units != null) {
@@ -1354,7 +1468,32 @@ public class ExTeX {
             }
         }
 
+        initializeStreams(interpreter, properties);
+
         return interpreter;
+    }
+
+    /**
+     * Prepare the hyphenation manager according to its configuration.
+     *
+     * @param config the configuration
+     *
+     * @return the language manager created
+     *
+     * @throws ConfigurationException in case of a configuration error
+     */
+    protected LanguageManager makeLanguageManager(final Configuration config)
+            throws ConfigurationException {
+
+        LanguageManagerFactory factory = new LanguageManagerFactory();
+        factory.enableLogging(logger);
+        Configuration cfg = config.findConfiguration(LANGUAGE_TAG);
+        if (cfg == null) {
+            throw new ConfigurationMissingException(LANGUAGE_TAG, config
+                    .toString());
+        }
+        factory.configure(cfg);
+        return factory.newInstance(DEFAULT_LANGAGE_KEY);
     }
 
     /**
@@ -1478,6 +1617,24 @@ public class ExTeX {
     }
 
     /**
+     * Prepare the token factory according to its configuration.
+     *
+     * @param config the configuration
+     *
+     * @return the token factory
+     *
+     * @throws ConfigurationException in case of a configuration error
+     */
+    protected TokenFactory makeTokenFactory(final Configuration config)
+            throws ConfigurationException {
+
+        TokenFactoryFactory factory = new TokenFactoryFactory(config
+                .getConfiguration("TokenFactory"));
+        factory.enableLogging(logger);
+        return factory.createInstance();
+    }
+
+    /**
      * Create a TokenStreamFactory.
      * Implicitly the logger is used.
      *
@@ -1593,10 +1750,11 @@ public class ExTeX {
 
             Interpreter interpreter = makeInterpreter(//
                     config.getConfiguration("Interpreter"), //
-                    tokenStreamFactory, fontFactory, finder, jobname);
+                    tokenStreamFactory, outFactory, fontFactory, finder,
+                    jobname, null); // TODO gene: provide typesetter?
 
             BackendDriver backend = makeBackend(//
-                    config.getConfiguration("DocumentWriter"), //
+                    config.getConfiguration("Backend"), //
                     jobname, //
                     outFactory, //
                     (DocumentWriterOptions) interpreter.getContext(), //

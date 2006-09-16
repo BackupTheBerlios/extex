@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InvalidClassException;
 import java.util.Calendar;
-import java.util.Iterator;
 import java.util.logging.Logger;
 
 import de.dante.extex.backend.outputStream.OutputStreamFactory;
@@ -36,7 +35,6 @@ import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.context.ContextFactory;
 import de.dante.extex.interpreter.context.group.GroupType;
 import de.dante.extex.interpreter.context.observer.group.SwitchObserver;
 import de.dante.extex.interpreter.context.observer.load.LoadedObservable;
@@ -76,12 +74,12 @@ import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.CodeExpander;
 import de.dante.extex.interpreter.type.ExpandableCode;
+import de.dante.extex.interpreter.type.OutputStreamConsumer;
 import de.dante.extex.interpreter.type.PrefixCode;
 import de.dante.extex.interpreter.type.ProtectedCode;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.language.LanguageManager;
-import de.dante.extex.language.LanguageManagerFactory;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.CatcodeException;
@@ -100,7 +98,6 @@ import de.dante.extex.scanner.type.token.SubMarkToken;
 import de.dante.extex.scanner.type.token.SupMarkToken;
 import de.dante.extex.scanner.type.token.TabMarkToken;
 import de.dante.extex.scanner.type.token.Token;
-import de.dante.extex.scanner.type.token.TokenFactory;
 import de.dante.extex.scanner.type.token.TokenVisitor;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.exception.TypesetterException;
@@ -177,7 +174,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.114 $
+ * @version $Revision: 1.115 $
  */
 public abstract class Max
         implements
@@ -191,7 +188,8 @@ public abstract class Max
             LoadObservable,
             StartObservable,
             StopObservable,
-            TokenVisitor {
+            TokenVisitor,
+            OutputStreamConsumer {
 
     /**
      * The field <tt>CONTEXT_TAG</tt> contains the name of the tag for the
@@ -245,7 +243,7 @@ public abstract class Max
      * The field <tt>logger</tt> contains the logger or
      * <code>null</code> if none has been set yet.
      */
-    private Logger logger = null;
+    private transient Logger logger = null;
 
     /**
      * The field <tt>maxErrors</tt> contains the number of errors after which
@@ -260,48 +258,53 @@ public abstract class Max
      * receive a notification when a new token is about to be expanded. The
      * argument is the token to be executed.
      */
-    private CommandObserver observersCommand = null;
+    private transient CommandObserver observersCommand = null;
 
     /**
      * This observer list is used for the observers which are registered to
      * receive a notification when an error occurs. The argument is the
      * exception encountered.
      */
-    private ErrorObserver observersError = null;
+    private transient ErrorObserver observersError = null;
 
     /**
      * This observer list is used for the observers which are registered to
      * receive a notification when a new token is about to be expanded. The
      * argument is the token to be expanded.
      */
-    private ExpandObserver observersExpand = null;
+    private transient ExpandObserver observersExpand = null;
 
     /**
      * The field <tt>observersLoad</tt> contains the observer list for the
      * observers which are registered to receive a notification when a format
      * is loaded.
      */
-    private LoadObserver observersLoad = null;
+    private transient LoadObserver observersLoad = null;
 
     /**
      * This observer list is used for the observers which are registered to
      * receive a notification when a macro is expanded.
      */
-    private ExpandMacroObserver observersMacro = null;
+    private transient ExpandMacroObserver observersMacro = null;
 
     /**
      * The field <tt>observersStart</tt> contains the observer list for the
      * observers which are registered to receive a notification when the
      * execution is started.
      */
-    private StartObserver observersStart = null;
+    private transient StartObserver observersStart = null;
 
     /**
      * The field <tt>observersStop</tt> contains the observer list for the
      * observers which are registered to receive a notification when the
      * execution is finished.
      */
-    private StopObserver observersStop = null;
+    private transient StopObserver observersStop = null;
+
+    /**
+     * The field <tt>outFactory</tt> contains the output factory.
+     */
+    private transient OutputStreamFactory outFactory = null;
 
     /**
      * This is the prefix for the next invocations.
@@ -531,103 +534,6 @@ public abstract class Max
         }
 
         this.configuration = config;
-
-        TokenFactory tokenFactory = configureTokenFactory(config);
-        makeContext(config);
-        context.setTokenFactory(tokenFactory);
-        configureHyhenation(config);
-
-        OutputStreamFactory outputFactory = null; //TODO gene: provide OutputStreamFactory
-
-        Context ctx = getContext();
-        Typesetter ts = getTypesetter();
-        Logger log = getLogger();
-        Interaction mode = ctx.getInteraction();
-        try {
-            ctx.setInteraction(Interaction.ERRORSTOPMODE);
-
-            for (Iterator iterator = configuration.iterator("unit"); iterator
-                    .hasNext();) {
-                LoadUnit.loadUnit((Configuration) iterator.next(), ctx, this,
-                        ts, log, outputFactory);
-            }
-
-            initializeDate(Calendar.getInstance());
-        } catch (GeneralException e) {
-            Throwable cause = e.getCause();
-            if (cause instanceof ConfigurationException) {
-                throw (ConfigurationException) cause;
-            }
-            throw new ConfigurationWrapperException(e);
-        } finally {
-            try {
-                if (mode != null) {
-                    ctx.setInteraction(mode);
-                }
-            } catch (InterpreterException e) {
-                throw new ConfigurationWrapperException(e);
-            }
-        }
-
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.Interpreter#loadUnit(java.lang.String)
-     */
-    public void loadUnit(final String name) throws ConfigurationException {
-
-        Configuration cfg = new ConfigurationFactory().newInstance(name);
-        OutputStreamFactory outputFactory = null; //TODO gene: provide OutputStreamFactory
-
-        try {
-            LoadUnit.loadUnit(cfg, getContext(), this, getTypesetter(),
-                    getLogger(), outputFactory);
-        } catch (GeneralException e) {
-            Throwable cause = e.getCause();
-            if (cause instanceof ConfigurationException) {
-                throw (ConfigurationException) cause;
-            }
-            throw new ConfigurationWrapperException(e);
-        }
-    }
-
-    /**
-     * Prepare the hyphenation manager according to its configuration.
-     *
-     * @param config the configuration
-     *
-     * @throws ConfigurationException in case of a configuration error
-     */
-    private void configureHyhenation(final Configuration config)
-            throws ConfigurationException {
-
-        LanguageManagerFactory factory = new LanguageManagerFactory();
-        factory.enableLogging(logger);
-        Configuration cfg = config.findConfiguration(LANGUAGE_TAG);
-        if (cfg == null) {
-            throw new ConfigurationMissingException(LANGUAGE_TAG, config
-                    .toString());
-        }
-        factory.configure(cfg);
-        context.setLanguageManager(factory.newInstance(""));
-    }
-
-    /**
-     * Prepare the token factory according to its configuration.
-     *
-     * @param config the configuration
-     *
-     * @return the token factory
-     *
-     * @throws ConfigurationException in case of a configuration error
-     */
-    private TokenFactory configureTokenFactory(final Configuration config)
-            throws ConfigurationException {
-
-        TokenFactoryFactory factory = new TokenFactoryFactory(config
-                .getConfiguration("TokenFactory"));
-        factory.enableLogging(logger);
-        return factory.createInstance();
     }
 
     /**
@@ -1150,8 +1056,11 @@ public abstract class Max
             }
 
         }, Localizable.class);
+
         try {
+
             newContext = new SerialLoader().load(stream);
+
         } catch (InvalidClassException e) {
             throw new LoaderException(getLocalizer().format(
                     "ClassLoaderIncompatibility", fmt, e.getMessage()));
@@ -1162,6 +1071,7 @@ public abstract class Max
         }
 
         try {
+            // obsolete; the date is initialized in run() anyhhow
             initializeDate(Calendar.getInstance());
         } catch (InterpreterException e) {
             Throwable cause = e.getCause();
@@ -1210,23 +1120,22 @@ public abstract class Max
     }
 
     /**
-     * Prepare the context according to its configuration.
-     *
-     * @param config the configuration
-     *
-     * @throws ConfigurationException in case of a configuration error
+     * @see de.dante.extex.interpreter.Interpreter#loadUnit(java.lang.String)
      */
-    private void makeContext(final Configuration config)
-            throws ConfigurationException {
+    public void loadUnit(final String name) throws ConfigurationException {
 
-        Configuration cfg = config.getConfiguration(CONTEXT_TAG);
-        if (cfg == null) {
-            throw new ConfigurationMissingException(CONTEXT_TAG, config
-                    .toString());
+        Configuration cfg = new ConfigurationFactory().newInstance(name);
+
+        try {
+            LoadUnit.loadUnit(cfg, getContext(), this, getTypesetter(),
+                    getLogger(), outFactory);
+        } catch (GeneralException e) {
+            Throwable cause = e.getCause();
+            if (cause instanceof ConfigurationException) {
+                throw (ConfigurationException) cause;
+            }
+            throw new ConfigurationWrapperException(e);
         }
-        ContextFactory contextFactory = new ContextFactory(cfg);
-        contextFactory.enableLogging(logger);
-        context = contextFactory.newInstance(null);
     }
 
     /**
@@ -1344,6 +1253,8 @@ public abstract class Max
                     + "#run()");
         }
 
+        initializeDate(Calendar.getInstance());
+
         if (observersStart != null) {
             observersStart.update(this);
         }
@@ -1403,9 +1314,11 @@ public abstract class Max
      * @see de.dante.extex.interpreter.Interpreter#setContext(
      *      de.dante.extex.interpreter.context.Context)
      */
-    public void setContext(final Context context) {
+    public Context setContext(final Context context) {
 
+        Context c = this.context;
         this.context = context;
+        return c;
     }
 
     /**
@@ -1447,6 +1360,15 @@ public abstract class Max
     public void setJobname(final String jobname) throws GeneralException {
 
         context.setToks("jobname", new Tokens(context, jobname), true);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.OutputStreamConsumer#setOutputStreamFactory(
+     *      de.dante.extex.backend.outputStream.OutputStreamFactory)
+     */
+    public void setOutputStreamFactory(final OutputStreamFactory factory) {
+
+        this.outFactory = factory;
     }
 
     /**
