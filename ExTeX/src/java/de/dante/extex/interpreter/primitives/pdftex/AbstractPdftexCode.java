@@ -31,7 +31,7 @@ import de.dante.extex.typesetter.Typesetter;
  * This class provides a base class for pdf<logo>TeX</logo> primitives.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public abstract class AbstractPdftexCode extends AbstractCode {
 
@@ -63,14 +63,14 @@ public abstract class AbstractPdftexCode extends AbstractCode {
     protected PdftexSupport ensurePdftex(final Context context,
             final Typesetter typesetter) throws InterpreterPdftexException {
 
-        DocumentWriter documentWriter = typesetter.getDocumentWriter();
+        DocumentWriter documentWriter = typesetter.getBackendDriver()
+                .getDocumentWriter();
 
         if (documentWriter instanceof PdftexSupport
                 && context.getCount("pdfoutput").gt(Count.ZERO)) {
             return (PdftexSupport) documentWriter;
         }
-        throw new InterpreterPdftexException(
-                printableControlSequence(context));
+        throw new InterpreterPdftexException(printableControlSequence(context));
     }
 
 }
