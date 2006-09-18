@@ -60,7 +60,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class EndL extends AbstractCode {
 
@@ -94,10 +94,13 @@ public class EndL extends AbstractCode {
             throw new ExtensionDisabledException(
                     printableControlSequence(context));
         }
-        //context.getTypesettingContext().getDirection();
-        //TODO gene: check what eTeX does
+        Direction dir = context.popDirection();
+        if (dir == null) {
+            //TODO gene: unimplemented
+            throw new RuntimeException("unimplemented");
+        }
         try {
-            context.set(Direction.RL, false);
+            context.set(dir, false);
         } catch (ConfigurationException e) {
             throw new InterpreterException(e);
         }

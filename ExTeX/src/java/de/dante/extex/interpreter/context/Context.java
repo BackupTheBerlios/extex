@@ -49,7 +49,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.73 $
+ * @version $Revision: 1.74 $
  */
 public interface Context
         extends
@@ -214,6 +214,11 @@ public interface Context
     Language getLanguage(String language) throws InterpreterException;
 
     /**
+     * Getter for the language manager.
+     */
+    LanguageManager getLanguageManager();
+
+    /**
      * Getter for the lccode mapping of upper case characters to their
      * lower case equivalent.
      *
@@ -323,6 +328,14 @@ public interface Context
     Conditional popConditional() throws InterpreterException;
 
     /**
+     * Pop a direction from the direction stack.
+     *
+     * @return the topmost direction on the stack or <code>null</code> if the
+     *   stack is empty
+     */
+    Direction popDirection();
+
+    /**
      * Put a value onto the conditional stack.
      *
      * @param locator the locator for the start of the if statement
@@ -334,6 +347,13 @@ public interface Context
      */
     void pushConditional(Locator locator, boolean value, Code primitive,
             long branch, boolean neg);
+
+    /**
+     * Push a direction onto the direction stack.
+     *
+     * @param dir the direction
+     */
+    void pushDirection(Direction dir);
 
     /**
      * Setter for the color in the current typesetting context.
@@ -462,11 +482,6 @@ public interface Context
      */
     void setLanguageManager(LanguageManager manager)
             throws ConfigurationException;
-
-    /**
-     * Getter for the language manager.
-     */
-    LanguageManager getLanguageManager();
 
     /**
      * Declare the translation from an upper case character to a lower case

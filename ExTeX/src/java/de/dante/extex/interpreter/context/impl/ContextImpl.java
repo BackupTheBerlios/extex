@@ -27,6 +27,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -142,7 +143,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.116 $
+ * @version $Revision: 1.117 $
  */
 public class ContextImpl
         implements
@@ -259,6 +260,11 @@ public class ContextImpl
      * The field <tt>conditionalStack</tt> contains the stack for conditionals.
      */
     private List conditionalStack = new ArrayList();
+
+    /**
+     * The field <tt>dirStack</tt> contains the ...
+     */
+    private Stack dirStack = new Stack();
 
     /**
      * The field <tt>errorCount</tt> contains the error counter.
@@ -1157,6 +1163,14 @@ public class ContextImpl
     }
 
     /**
+     * @see de.dante.extex.interpreter.context.Context#popDirection()
+     */
+    public Direction popDirection() {
+
+        return (Direction) (dirStack.isEmpty() ? null : dirStack.pop());
+    }
+
+    /**
      * @see de.dante.extex.interpreter.context.Context#pushConditional(
      *      de.dante.util.Locator,
      *      boolean,
@@ -1185,6 +1199,14 @@ public class ContextImpl
                 }
             }
         }
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#pushDirection(de.dante.extex.interpreter.context.Direction)
+     */
+    public void pushDirection(final Direction dir) {
+
+        dirStack.push(dir);
     }
 
     /**

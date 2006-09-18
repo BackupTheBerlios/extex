@@ -58,7 +58,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class BeginR extends AbstractCode {
 
@@ -92,8 +92,7 @@ public class BeginR extends AbstractCode {
             throw new ExtensionDisabledException(
                     printableControlSequence(context));
         }
-        //context.getTypesettingContext().getDirection();
-        //TODO gene: check what eTeX does
+        context.pushDirection(context.getTypesettingContext().getDirection());
         try {
             context.set(Direction.RL, false);
         } catch (ConfigurationException e) {
