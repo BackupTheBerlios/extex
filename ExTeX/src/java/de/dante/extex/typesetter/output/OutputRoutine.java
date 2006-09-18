@@ -17,7 +17,7 @@
  *
  */
 
-package de.dante.extex.typesetter;
+package de.dante.extex.typesetter.output;
 
 import de.dante.extex.backend.BackendDriver;
 import de.dante.extex.typesetter.type.page.Page;
@@ -30,7 +30,7 @@ import de.dante.util.exception.GeneralException;
  * extension language.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.1 $
  */
 public interface OutputRoutine {
 

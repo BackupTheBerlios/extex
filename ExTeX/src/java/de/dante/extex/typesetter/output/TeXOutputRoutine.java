@@ -17,7 +17,7 @@
  *
  */
 
-package de.dante.extex.interpreter.output;
+package de.dante.extex.typesetter.output;
 
 import de.dante.extex.backend.BackendDriver;
 import de.dante.extex.interpreter.Interpreter;
@@ -30,10 +30,11 @@ import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.Catcode;
+import de.dante.extex.scanner.type.CatcodeException;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.scanner.type.token.TokenFactory;
-import de.dante.extex.typesetter.OutputRoutine;
 import de.dante.extex.typesetter.type.page.Page;
+import de.dante.util.UnicodeChar;
 import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 import de.dante.util.framework.i18n.LocalizerFactory;
@@ -153,7 +154,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.1 $
  */
 public class TeXOutputRoutine implements OutputRoutine {
 
@@ -166,28 +167,35 @@ public class TeXOutputRoutine implements OutputRoutine {
     /**
      * The field <tt>interpreter</tt> contains the interpreter.
      */
-    private Interpreter interpreter;
+    private transient Interpreter interpreter;
 
     /**
      * The field <tt>rightBrace</tt> contains the group closing token.
      */
-    private Token rightBrace;
+    private transient Token rightBrace;
+
+    /**
+     * The field <tt>output</tt> contains the ...
+     */
+    private transient Token output;
 
     /**
      * Creates a new object.
      *
      * @param interpreter the interpreter
      *
-     * @throws GeneralException in case of an error
+     * @throws CatcodeException in case of an error
      */
     public TeXOutputRoutine(final Interpreter interpreter)
-            throws GeneralException {
+            throws CatcodeException {
 
         super();
         this.interpreter = interpreter;
         TokenFactory tokenFactory = interpreter.getContext().getTokenFactory();
         rightBrace = tokenFactory.createToken(Catcode.RIGHTBRACE, '}',
                 Namespace.DEFAULT_NAMESPACE);
+        output = tokenFactory.createToken(Catcode.ESCAPE,
+                UnicodeChar.get('\\'), "output", Namespace.DEFAULT_NAMESPACE);
     }
 
     /**
@@ -225,7 +233,8 @@ public class TeXOutputRoutine implements OutputRoutine {
         interpreter.push(rightBrace);
         interpreter.push(output);
         try {
-            context.openGroup(GroupType.OUTPUT_GROUP, null, null); //TODO gene: provide reasonable values
+            //TODO gene: provide reasonable value
+            context.openGroup(GroupType.OUTPUT_GROUP, null, this.output);
             context.setBox(OUTPUT_BOX, new Box(page.getNodes()), false);
         } catch (ConfigurationException e) {
             throw new GeneralException(e);
