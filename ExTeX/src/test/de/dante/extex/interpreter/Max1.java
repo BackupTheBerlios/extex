@@ -21,7 +21,6 @@ package de.dante.extex.interpreter;
 
 import junit.framework.TestCase;
 import de.dante.extex.backend.BackendDriver;
-import de.dante.extex.backend.documentWriter.DocumentWriter;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
@@ -35,7 +34,6 @@ import de.dante.extex.scanner.stream.impl.TokenStreamImpl;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Mode;
-import de.dante.extex.typesetter.OutputRoutine;
 import de.dante.extex.typesetter.ParagraphObserver;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
@@ -43,6 +41,7 @@ import de.dante.extex.typesetter.exception.InvalidSpacefactorException;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.exception.TypesetterUnsupportedException;
 import de.dante.extex.typesetter.listMaker.ListManager;
+import de.dante.extex.typesetter.output.OutputRoutine;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
@@ -59,7 +58,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.78 $
+ * @version $Revision: 1.79 $
  */
 public class Max1 extends TestCase {
 
@@ -186,9 +185,9 @@ public class Max1 extends TestCase {
         }
 
         /**
-         * @see de.dante.extex.typesetter.Typesetter#getDocumentWriter()
+         * @see de.dante.extex.typesetter.Typesetter#getBackendDriver()
          */
-        public DocumentWriter getDocumentWriter() {
+        public BackendDriver getBackendDriver() {
 
             return null;
         }
@@ -279,9 +278,9 @@ public class Max1 extends TestCase {
          *      de.dante.util.UnicodeChar,
          *      de.dante.util.Locator)
          */
-        public boolean letter(final Context context, final TypesettingContext tc,
-                final UnicodeChar uc, final Locator locator)
-                throws TypesetterException {
+        public boolean letter(final Context context,
+                final TypesettingContext tc, final UnicodeChar uc,
+                final Locator locator) throws TypesetterException {
 
             return false;
         }
@@ -554,19 +553,18 @@ public class Max1 extends TestCase {
         Configuration config = new ConfigurationFactory()
                 .newInstance("config/extex.xml");
 
-        InterpreterFactory interpreterFactory = new InterpreterFactory();
-        interpreterFactory.configure(config.getConfiguration("Interpreter"));
-        Interpreter interpreter = interpreterFactory.newInstance();
+        Interpreter interpreter = new InterpreterFactory(config
+                .getConfiguration("Interpreter"), null).newInstance(null, null);
         TokenStreamFactory factory = new TokenStreamFactory(config
                 .getConfiguration("Scanner"), "base");
         interpreter.setTokenStreamFactory(factory);
 
         TestTypesetter typesetter = new TestTypesetter();
-
         interpreter.setTypesetter(typesetter);
 
         TokenStream stream = new TokenStreamImpl(null, null, in, "");
         interpreter.run(stream);
+
         return typesetter.toString();
     }
 

@@ -47,7 +47,6 @@ import de.dante.extex.backend.documentWriter.exception.DocumentWriterException;
 import de.dante.extex.backend.outputStream.NamedOutputStream;
 import de.dante.extex.backend.outputStream.OutputStreamFactory;
 import de.dante.extex.backend.outputStream.OutputStreamObserver;
-import de.dante.extex.font.FontFactory;
 import de.dante.extex.font.exception.FontException;
 import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.exception.InterpreterException;
@@ -700,7 +699,7 @@ import de.dante.util.resource.ResourceFinder;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
 public class TeX extends ExTeX {
 
@@ -968,28 +967,25 @@ public class TeX extends ExTeX {
     /**
      * @see de.dante.extex.ExTeX#makeInterpreter(
      *      de.dante.util.framework.configuration.Configuration,
-     *      de.dante.extex.scanner.stream.TokenStreamFactory,
-     *      de.dante.extex.backend.outStream.OutputStreamFactory,
-     *      de.dante.extex.font.FontFactory,
+     *      de.dante.extex.backend.outputStream.OutputStreamFactory,
      *      de.dante.util.resource.ResourceFinder,
      *      java.lang.String)
      */
     protected Interpreter makeInterpreter(final Configuration config,
-            final TokenStreamFactory factory,
-            final OutputStreamFactory outFactory,
-            final FontFactory fontFactory, final ResourceFinder finder,
-            final String jobname, final Typesetter typesetter)
+            final OutputStreamFactory outFactory, final ResourceFinder finder,
+            final String jobname)
             throws ConfigurationException,
                 GeneralException,
                 FontException,
                 IOException {
 
-        interpreter = super.makeInterpreter(config, factory, outFactory,
-                fontFactory, finder, jobname, typesetter);
+        interpreter = super
+                .makeInterpreter(config, outFactory, finder, jobname);
         Logger logger = getLogger();
 
         interpreter.getContext().setStandardTokenStream(
-                factory.newInstance(new InputStreamReader(System.in)));
+                interpreter.getTokenStreamFactory().newInstance(
+                        new InputStreamReader(System.in)));
 
         if (interpreter instanceof StreamCloseObservable) {
             StreamCloseObserver observer = new FileCloseObserver(logger);
@@ -1024,14 +1020,13 @@ public class TeX extends ExTeX {
     /**
      * @see de.dante.extex.ExTeX#makeBackend(
      *      de.dante.util.framework.configuration.Configuration,
-     *      java.lang.String,
      *      de.dante.extex.backend.outputStream.OutputStreamFactory,
      *      de.dante.extex.backend.documentWriter.DocumentWriterOptions,
      *      de.dante.util.framework.configuration.Configuration,
      *      de.dante.util.resource.ResourceFinder)
      */
     protected BackendDriver makeBackend(final Configuration config,
-            final String jobname, final OutputStreamFactory outFactory,
+            final OutputStreamFactory outFactory,
             final DocumentWriterOptions options,
             final Configuration colorConfig, final ResourceFinder finder)
             throws DocumentWriterException,
@@ -1058,8 +1053,8 @@ public class TeX extends ExTeX {
             }
         });
 
-        return super.makeBackend(config, jobname, outFactory, options,
-                colorConfig, finder);
+        return super.makeBackend(config, outFactory, options, colorConfig,
+                finder);
     }
 
     /**
@@ -1121,9 +1116,12 @@ public class TeX extends ExTeX {
                                     while (c > 0 && c != '\n') {
                                         c = stream.read();
                                     }
-                                    loadFormat(interpreter, finder, fmt
-                                            .toString(),
-                                            getProperty(PROP_JOBNAME));
+                                    String format = fmt.toString();
+                                    if (!format.equals("")) {
+                                        loadFormat(format, interpreter, finder,
+                                                getProperty(PROP_JOBNAME),
+                                                null, null, null);
+                                    }
                                 } else {
                                     stream.reset();
                                 }
