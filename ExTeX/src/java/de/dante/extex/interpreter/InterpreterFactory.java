@@ -19,8 +19,15 @@
 
 package de.dante.extex.interpreter;
 
+import java.util.Properties;
+import java.util.logging.Logger;
+
+import de.dante.extex.backend.outputStream.OutputStreamFactory;
+import de.dante.extex.interpreter.type.OutputStreamConsumer;
 import de.dante.util.framework.AbstractFactory;
+import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
+import de.dante.util.resource.PropertyConfigurable;
 
 /**
  * This class provides a factory for
@@ -29,29 +36,49 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * present and required.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class InterpreterFactory extends AbstractFactory {
 
     /**
      * Creates a new factory object.
+     *
+     * @param configuration the configuration for this factory
+     * @param logger the logger
+     *
+     * @throws ConfigurationException in case of an error in the configuration.
      */
-    public InterpreterFactory() {
+    public InterpreterFactory(final Configuration configuration,
+            final Logger logger) throws ConfigurationException {
 
         super();
+        enableLogging(logger);
+        configure(configuration);
     }
 
     /**
      * Get a instance for the interface
      * <tt>{@link de.dante.extex.interpreter.Interpreter Interpreter}</tt>.
      *
+     * @param properties the properties
+     * @param outFactory the output stream factory
+     *
      * @return a new instance for the interface Interpreter
      *
      * @throws ConfigurationException in case of an error in the configuration
      */
-    public Interpreter newInstance() throws ConfigurationException {
+    public Interpreter newInstance(final Properties properties,
+            final OutputStreamFactory outFactory) throws ConfigurationException {
 
         Interpreter interpreter = (Interpreter) createInstance(Interpreter.class);
+
+        if (interpreter instanceof PropertyConfigurable) {
+            ((PropertyConfigurable) interpreter).setProperties(properties);
+        }
+        if (interpreter instanceof OutputStreamConsumer) {
+            ((OutputStreamConsumer) interpreter)
+                    .setOutputStreamFactory(outFactory);
+        }
 
         return interpreter;
     }
