@@ -23,6 +23,7 @@ import de.dante.extex.backend.BackendDriver;
 import de.dante.extex.backend.documentWriter.DocumentWriter;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.listMaker.ListManager;
+import de.dante.extex.typesetter.output.OutputRoutine;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
 import de.dante.extex.typesetter.type.NodeList;
@@ -39,7 +40,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @see "<logo>TeX</logo> &ndash; The Program [211]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.35 $
+ * @version $Revision: 1.36 $
  */
 public interface Typesetter extends ListMaker {
 
@@ -74,11 +75,11 @@ public interface Typesetter extends ListMaker {
     void finish() throws TypesetterException, ConfigurationException;
 
     /**
-     * Getter for the document writer.
+     * Getter for the back-end driver.
      *
-     * @return the document writer
+     * @return the back-end driver
      */
-    DocumentWriter getDocumentWriter();
+    BackendDriver getBackendDriver();
 
     /**
      * Getter for the current list maker.

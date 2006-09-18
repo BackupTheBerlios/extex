@@ -35,7 +35,6 @@ import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Mode;
-import de.dante.extex.typesetter.OutputRoutine;
 import de.dante.extex.typesetter.ParagraphObserver;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
@@ -45,6 +44,7 @@ import de.dante.extex.typesetter.exception.TypesetterUnsupportedException;
 import de.dante.extex.typesetter.listMaker.HorizontalListMaker;
 import de.dante.extex.typesetter.listMaker.ListManager;
 import de.dante.extex.typesetter.listMaker.VerticalListMaker;
+import de.dante.extex.typesetter.output.OutputRoutine;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
 import de.dante.extex.typesetter.type.Node;
@@ -68,7 +68,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.93 $
+ * @version $Revision: 1.94 $
  */
 public class TypesetterImpl
         implements
@@ -337,11 +337,15 @@ public class TypesetterImpl
     }
 
     /**
-     * @see de.dante.extex.typesetter.Typesetter#getDocumentWriter()
+     * Getter for back-end.
+     *
+     * @return the back-end
+     *
+     * @see de.dante.extex.typesetter.Typesetter#getBackendDriver()
      */
-    public DocumentWriter getDocumentWriter() {
-
-        return backend.getDocumentWriter();
+    public BackendDriver getBackendDriver() {
+    
+        return this.backend;
     }
 
     /**
@@ -687,6 +691,7 @@ public class TypesetterImpl
         listMaker.superscriptMark(context, source, typesetter, t);
     }
 
+    
     /**
      * @see de.dante.extex.typesetter.Typesetter#tab(
      *      Context,

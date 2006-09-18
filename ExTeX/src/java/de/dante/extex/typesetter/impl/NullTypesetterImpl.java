@@ -31,7 +31,6 @@ import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Mode;
-import de.dante.extex.typesetter.OutputRoutine;
 import de.dante.extex.typesetter.ParagraphObserver;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
@@ -39,6 +38,7 @@ import de.dante.extex.typesetter.exception.InvalidSpacefactorException;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.exception.TypesetterUnsupportedException;
 import de.dante.extex.typesetter.listMaker.ListManager;
+import de.dante.extex.typesetter.output.OutputRoutine;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
 import de.dante.extex.typesetter.type.Node;
@@ -54,7 +54,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class NullTypesetterImpl implements Typesetter {
 
@@ -177,11 +177,15 @@ public class NullTypesetterImpl implements Typesetter {
     }
 
     /**
-     * @see de.dante.extex.typesetter.Typesetter#getDocumentWriter()
+     * Getter for back-end.
+     *
+     * @return the back-end
+     *
+     * @see de.dante.extex.typesetter.Typesetter#getBackendDriver()
      */
-    public DocumentWriter getDocumentWriter() {
+    public BackendDriver getBackendDriver() {
 
-        return backend.getDocumentWriter();
+        return this.backend;
     }
 
     /**
