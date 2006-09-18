@@ -40,15 +40,11 @@ import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
 
 import de.dante.extex.backend.BackendDriver;
-import de.dante.extex.backend.BackendDriverImpl;
-import de.dante.extex.backend.documentWriter.DocumentWriter;
-import de.dante.extex.backend.documentWriter.DocumentWriterFactory;
+import de.dante.extex.backend.BackendFactory;
 import de.dante.extex.backend.documentWriter.DocumentWriterOptions;
-import de.dante.extex.backend.documentWriter.MultipleDocumentStream;
 import de.dante.extex.backend.documentWriter.exception.DocumentWriterException;
 import de.dante.extex.backend.outputStream.OutputFactory;
 import de.dante.extex.backend.outputStream.OutputStreamFactory;
-import de.dante.extex.color.ColorAware;
 import de.dante.extex.color.ColorConverter;
 import de.dante.extex.color.ColorConverterFacory;
 import de.dante.extex.font.FontFactory;
@@ -58,7 +54,6 @@ import de.dante.extex.interpreter.ErrorHandler;
 import de.dante.extex.interpreter.ErrorHandlerFactory;
 import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.InterpreterFactory;
-import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.ContextFactory;
 import de.dante.extex.interpreter.context.observer.interaction.InteractionObservable;
@@ -71,8 +66,6 @@ import de.dante.extex.interpreter.loader.LoaderException;
 import de.dante.extex.interpreter.max.StringSource;
 import de.dante.extex.interpreter.max.TokenFactoryFactory;
 import de.dante.extex.interpreter.max.util.LoadUnit;
-import de.dante.extex.interpreter.output.TeXOutputRoutine;
-import de.dante.extex.interpreter.type.OutputStreamConsumer;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.Glue;
@@ -83,10 +76,12 @@ import de.dante.extex.main.observer.InteractionModeObserver;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.extex.scanner.stream.TokenStreamOptions;
+import de.dante.extex.scanner.type.CatcodeException;
 import de.dante.extex.scanner.type.token.TokenFactory;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterFactory;
 import de.dante.extex.typesetter.exception.TypesetterException;
+import de.dante.extex.typesetter.output.OutputRoutineFactory;
 import de.dante.util.exception.GeneralException;
 import de.dante.util.exception.NotObservableException;
 import de.dante.util.framework.Registrar;
@@ -98,7 +93,6 @@ import de.dante.util.framework.configuration.exception.ConfigurationClassNotFoun
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 import de.dante.util.framework.configuration.exception.ConfigurationInstantiationException;
 import de.dante.util.framework.configuration.exception.ConfigurationMissingAttributeException;
-import de.dante.util.framework.configuration.exception.ConfigurationMissingException;
 import de.dante.util.framework.configuration.exception.ConfigurationNoSuchMethodException;
 import de.dante.util.framework.configuration.exception.ConfigurationSyntaxException;
 import de.dante.util.framework.i18n.Localizer;
@@ -359,7 +353,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.142 $
+ * @version $Revision: 1.143 $
  */
 public class ExTeX {
 
@@ -368,7 +362,7 @@ public class ExTeX {
      * from a format which needs it.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.142 $
+     * @version $Revision: 1.143 $
      */
     private class ResourceFinderInjector implements RegistrarObserver {
 
@@ -442,7 +436,7 @@ public class ExTeX {
 
     /**
      * The constant <tt>PROP_BANNER</tt> contains the name of the property for
-     * the ...
+     * the banner.
      */
     protected static final String PROP_BANNER = "extex.banner";
 
@@ -1005,29 +999,40 @@ public class ExTeX {
     /**
      * Load a format if a non-empty name of a format is given.
      *
+     * @param fmt the name of the format to use or <code>null</code>
      * @param interpreter the interpreter to delegate the loading to
      * @param finder  the resource finder to use for locating the format file
-     * @param fmt the name of the format to use or <code>null</code>
      * @param jobname the name of the job
+     * @param config the interpreter configuration
+     * @param outFactory the output stream factory
+     * @param tokenFactory the token factory
      *
-     * @return the context read
+     * @return the context
      *
      * @throws GeneralException in case of some error
      * @throws IOException in case, well, you guess it
      * @throws ConfigurationException in case of a configuration error
      */
-    protected Context loadFormat(final Interpreter interpreter,
-            final ResourceFinder finder, final String fmt, final String jobname)
+    protected Context loadFormat(final String fmt,
+            final Interpreter interpreter, final ResourceFinder finder,
+            final String jobname, final Configuration config,
+            final OutputStreamFactory outFactory,
+            final TokenFactory tokenFactory)
             throws IOException,
                 GeneralException,
                 ConfigurationException {
 
-        String format = fmt;
+        String format = (fmt == null ? "" : fmt);
         String time = DateFormat.getDateTimeInstance(DateFormat.SHORT,
                 DateFormat.SHORT, Locale.ENGLISH).format(new Date());
 
         Context context = interpreter.getContext();
-        if (format != null && !format.equals("")) {
+
+        if (tokenFactory != null) {
+            context.setTokenFactory(tokenFactory);
+        }
+
+        if (!format.equals("")) {
             InputStream stream = finder.findResource(fmt, FORMAT_TYPE);
 
             if (stream == null && !format.equals(FORMAT_FALLBACK)) {
@@ -1042,7 +1047,8 @@ public class ExTeX {
             Object ref = Registrar.register(new ResourceFinderInjector(finder),
                     ResourceConsumer.class);
             try {
-                interpreter.loadFormat(stream, fmt);
+                //TODO gene: provide adequate configuration names
+                interpreter.loadFormat(stream, format, "ExTeX", "ExTeX");
 
             } catch (LoaderException e) {
                 logger.throwing(this.getClass().getName(), "loadFormat()", e);
@@ -1056,9 +1062,27 @@ public class ExTeX {
                     time));
         } else if (ini) {
             logger.fine(localizer.format("ExTeX.NoFormatDate", time));
+
+            Interaction mode = context.getInteraction();
+            try {
+                context.setInteraction(Interaction.ERRORSTOPMODE);
+
+                for (Iterator iterator = config.iterator("unit"); iterator
+                        .hasNext();) {
+                    LoadUnit.loadUnit((Configuration) iterator.next(), context,
+                            interpreter, null, logger, outFactory);
+                }
+
+            } finally {
+                if (mode != null) {
+                    context.setInteraction(mode);
+                }
+            }
+
         } else {
             throw new GeneralException();
         }
+
         interpreter.setJobname(jobname);
 
         if (context instanceof InteractionObservable) {
@@ -1131,7 +1155,6 @@ public class ExTeX {
      * Create a new document writer.
      *
      * @param config the configuration object for the document writer
-     * @param jobname the job name to use
      * @param outFactory the output factory
      * @param options the options to be passed to the document writer
      * @param colorConfig the configuration for the color converter
@@ -1143,79 +1166,36 @@ public class ExTeX {
      * @throws ConfigurationException in case of a configuration problem
      */
     protected BackendDriver makeBackend(final Configuration config,
-            final String jobname, final OutputStreamFactory outFactory,
+            final OutputStreamFactory outFactory,
             final DocumentWriterOptions options,
             final Configuration colorConfig, final ResourceFinder finder)
             throws DocumentWriterException,
                 ConfigurationException {
 
-        String c = config.getAttribute("class");
-        
-        BackendDriver backend = new BackendDriverImpl(options);
-        DocumentWriterFactory factory = new DocumentWriterFactory(config
-                .getConfiguration("DocumentWriter"));
-        factory.enableLogging(logger);
-        DocumentWriter docWriter = factory.newInstance(//
+        return new BackendFactory(config, logger).newInstance(//
                 properties.getProperty(PROP_OUTPUT_TYPE), //
                 options, //
-                outFactory);
-        if (docWriter instanceof PropertyConfigurable) {
-            ((PropertyConfigurable) docWriter).setProperties(properties);
-        }
-        if (docWriter instanceof ColorAware) {
-            ((ColorAware) docWriter)
-                    .setColorConverter(makeColorConverter(colorConfig));
-        }
-        if (docWriter instanceof ResourceConsumer) {
-            ((ResourceConsumer) docWriter).setResourceFinder(finder);
-        }
-        docWriter.setParameter("Creator", properties.getProperty(PROP_NAME)
-                + " " + EXTEX_VERSION);
-
-        Iterator iterator = config.iterator("parameter");
-        while (iterator.hasNext()) {
-            Configuration p = (Configuration) iterator.next();
-            String name = p.getAttribute("name");
-            String s = p.getAttribute("value");
-            if (s != null) {
-                docWriter.setParameter(name, s);
-            } else {
-                s = p.getAttribute("property");
-                if (s != null) {
-                    docWriter.setParameter(name, properties.getProperty(s));
-                } else {
-                    throw new ConfigurationMissingAttributeException("value", p);
-                }
-            }
-        }
-
-        backend.setDocumentWriter(docWriter);
-
-        if (backend instanceof MultipleDocumentStream) {
-            ((MultipleDocumentStream) backend)
-                    .setOutputStreamFactory(outFactory);
-        }
-
-        return backend;
+                outFactory, //
+                finder, //
+                properties, //
+                properties.getProperty(PROP_NAME) + " " + EXTEX_VERSION, //
+                makeColorConverter(colorConfig));
     }
 
     /**
      * Make a new instance of a color converter.
      *
-     * @param cfg the configuration to use
+     * @param config the configuration to use
      *
-     *  @return the new color converter
+     * @return the new color converter
      *
      * @throws ConfigurationException in case of a configuration problem
      */
-    private ColorConverter makeColorConverter(final Configuration cfg)
+    protected ColorConverter makeColorConverter(final Configuration config)
             throws ConfigurationException {
 
-        ColorConverterFacory factory = new ColorConverterFacory();
-        factory.configure(cfg);
-        factory.enableLogging(logger);
-        return factory
-                .newInstance(properties.getProperty(PROP_COLOR_CONVERTER));
+        return new ColorConverterFacory(config, logger).newInstance(properties
+                .getProperty(PROP_COLOR_CONVERTER));
     }
 
     /**
@@ -1223,65 +1203,63 @@ public class ExTeX {
      *
      * @param config the configuration of the interpreter
      * @param tokenFactory the token factory to inject
-     * @param typesetter the typesetter
-     * @param outFactory the output stream factory
-     * @param source the token source
      * @param fontFactory the font factory
+     * @param interpreter the interpreter
+     * @param finder the resoruce finder
+     * @param jobname the job name
+     * @param outFactory the output stream factory
      *
      * @return the newly created context
      *
      * @throws ConfigurationException in case of a configuration error
      * @throws FontException in case of a font error
      * @throws GeneralException in case of an error
+     * @throws IOException in case of an IO error
      */
     protected Context makeContext(final Configuration config,
-            final TokenFactory tokenFactory, final Typesetter typesetter,
-            final OutputStreamFactory outFactory, final TokenSource source,
-            final FontFactory fontFactory)
+            final TokenFactory tokenFactory, final FontFactory fontFactory,
+            final Interpreter interpreter, final ResourceFinder finder,
+            final String jobname, final OutputStreamFactory outFactory)
             throws ConfigurationException,
                 GeneralException,
-                FontException {
+                FontException,
+                IOException {
 
-        Configuration cfg = config.getConfiguration(CONTEXT_TAG);
-        if (cfg == null) {
-            throw new ConfigurationMissingException(CONTEXT_TAG, config
-                    .toString());
-        }
-        ContextFactory contextFactory = new ContextFactory(cfg);
-        contextFactory.enableLogging(logger);
-        Context context = contextFactory.newInstance(null);
+        Context context = new ContextFactory(config
+                .getConfiguration(CONTEXT_TAG), logger).newInstance(null);
 
-        Configuration fontConfiguration = config.findConfiguration(TAG_FONT);
-        context.set(makeDefaultFont(fontConfiguration, fontFactory), true);
+        interpreter.setContext(context);
 
-        context.setLanguageManager(makeLanguageManager(config));
+        context.set(makeDefaultFont(config.findConfiguration(TAG_FONT),
+                fontFactory), true);
+
+        context.setLanguageManager(makeLanguageManager(config, outFactory,
+                finder));
         context.set(context.getLanguage(DEFAULT_LANGAGE_KEY), true);
 
-        context.setTokenFactory(tokenFactory);
+        context = loadFormat(properties.getProperty(PROP_FMT), interpreter,
+                finder, jobname, config, outFactory, tokenFactory);
 
-        Logger log = getLogger();
-        Interaction mode = context.getInteraction();
-        try {
-            context.setInteraction(Interaction.ERRORSTOPMODE);
-
-            for (Iterator iterator = config.iterator("unit"); iterator
-                    .hasNext();) {
-                LoadUnit.loadUnit((Configuration) iterator.next(), context,
-                        source, typesetter, log, outFactory);
-            }
-
-        } finally {
-            if (mode != null) {
-                context.setInteraction(mode);
+        String units = properties.getProperty("extex.units");
+        if (units != null) {
+            String[] u = units.split(":");
+            for (int i = 0; i < u.length; i++) {
+                String s = u[i];
+                if (!s.equals("")) {
+                    interpreter.loadUnit("unit/" + s);
+                }
             }
         }
+        makePageSize(context);
+
         return context;
     }
 
     /**
      * Create a default font for the interpreter context.
      *
-     * @param config the configuration object for the font
+     * @param config the configuration object for the font.
+     *   This can be <code>null</code>
      * @param fontFactory the font factory to request the font from
      *
      * @return the default font
@@ -1338,7 +1316,7 @@ public class ExTeX {
      * @return the new font factory
      *
      * @throws ConfigurationException in case that some kind of problems have
-     * been detected in the configuration
+     *   been detected in the configuration
      */
     protected FontFactory makeFontFactory(final Configuration config,
             final ResourceFinder finder) throws ConfigurationException {
@@ -1383,121 +1361,103 @@ public class ExTeX {
      * Create a new interpreter.
      *
      * @param config the configuration object for the interpreter
-     * @param factory the factory for new token streams
      * @param outFactory the factory for new output streams
-     * @param fontFactory the font factory to request the default font from
      * @param finder the resource finder
      * @param jobname the job name
-     * @param typesetter the typesetter
      *
      * @return the new interpreter
      *
      * @throws ConfigurationException in case that some kind of problems have
-     * been detected in the configuration
+     *   been detected in the configuration
      * @throws GeneralException in case of an error of some other kind
      * @throws FontException in case of problems with the font itself
      * @throws IOException in case of an IO error
      */
     protected Interpreter makeInterpreter(final Configuration config,
-            final TokenStreamFactory factory,
-            final OutputStreamFactory outFactory,
-            final FontFactory fontFactory, final ResourceFinder finder,
-            final String jobname, final Typesetter typesetter)
+            final OutputStreamFactory outFactory, final ResourceFinder finder,
+            final String jobname)
             throws ConfigurationException,
                 GeneralException,
                 FontException,
                 IOException {
 
-        InterpreterFactory interpreterFactory = new InterpreterFactory();
-        interpreterFactory.configure(config);
-        interpreterFactory.enableLogging(logger);
+        FontFactory fontFactory = makeFontFactory(config
+                .getConfiguration("Fonts"), finder);
 
-        Interpreter interpreter = interpreterFactory.newInstance();
+        TokenStreamFactory tokenStreamFactory = makeTokenStreamFactory(config
+                .getConfiguration("Scanner"), finder);
 
-        if (interpreter instanceof PropertyConfigurable) {
-            ((PropertyConfigurable) interpreter).setProperties(properties);
-        }
-        if (interpreter instanceof OutputStreamConsumer) {
-            ((OutputStreamConsumer) interpreter)
-                    .setOutputStreamFactory(outFactory);
-        }
+        Configuration interpreterConfig = config
+                .getConfiguration("Interpreter");
 
-        TokenFactory tokenFactory = makeTokenFactory(config);
-        TokenSource source = null; // TODO gene: provide token source?
-        Context context = makeContext(config, tokenFactory, typesetter,
-                outFactory, source, fontFactory);
-        interpreter.setContext(context);
+        Interpreter interpreter = new InterpreterFactory(interpreterConfig,
+                logger).newInstance(properties, outFactory);
 
-        ErrorHandler errHandler = errorHandler;
-        if (errHandler == null) {
-            ErrorHandlerFactory errorHandlerFactory = new ErrorHandlerFactory(
-                    config.getConfiguration(TAG_ERRORHANDLER));
-            errorHandlerFactory.enableLogging(logger);
-            errHandler = errorHandlerFactory.newInstance(properties
-                    .getProperty(PROP_ERROR_HANDLER));
-        }
-        interpreter.setErrorHandler(errHandler);
-        interpreter.setTokenStreamFactory(factory);
+        TokenFactory tokenFactory = makeTokenFactory(interpreterConfig
+                .getConfiguration("TokenFactory"));
+
+        interpreter.setContext(makeContext(interpreterConfig, tokenFactory,
+                fontFactory, interpreter, finder, jobname, outFactory));
+
         interpreter.setInteraction(Interaction.get(properties
                 .getProperty(PROP_INTERACTION)));
 
         interpreter.setFontFactory(fontFactory);
 
-        makePageSize(context);
-
-        String fmt = properties.getProperty(PROP_FMT);
-        if (fmt == null || fmt.equals("")) {
-            Configuration fontConfiguration = config
-                    .findConfiguration(TAG_FONT);
-            context.set(makeDefaultFont(fontConfiguration, fontFactory), true);
-            context.set(context.getLanguage(DEFAULT_LANGAGE_KEY), true);
+        ErrorHandler errHandler = errorHandler;
+        if (errHandler == null) {
+            ErrorHandlerFactory errorHandlerFactory = new ErrorHandlerFactory(
+                    interpreterConfig.getConfiguration(TAG_ERRORHANDLER));
+            errorHandlerFactory.enableLogging(logger);
+            errHandler = errorHandlerFactory.newInstance(properties
+                    .getProperty(PROP_ERROR_HANDLER));
         }
+        interpreter.setErrorHandler(errHandler);
 
-        context = loadFormat(interpreter, finder, fmt, jobname);
-
-        factory.setOptions((TokenStreamOptions) context);
-
-        String units = properties.getProperty("extex.units");
-        if (units != null) {
-            String[] u = units.split(":");
-            for (int i = 0; i < u.length; i++) {
-                String s = u[i];
-                if (!s.equals("")) {
-                    interpreter.loadUnit("unit/" + s);
-                }
-            }
-        }
+        interpreter.setTokenStreamFactory(tokenStreamFactory);
+        tokenStreamFactory.setOptions((TokenStreamOptions) interpreter
+                .getContext());
 
         initializeStreams(interpreter, properties);
+
+        interpreter.setTypesetter(makeTypesetter(interpreter, config,
+                outFactory, finder));
 
         return interpreter;
     }
 
     /**
      * Prepare the hyphenation manager according to its configuration.
+     * <p>
+     *  This method can be overwritten in derived classes to perform additional
+     *  tasks. In this case it might be a good idea to invoke this method from
+     *  the super-class to do its job.
+     * </p>
      *
      * @param config the configuration
+     * @param outFactory the output stream factory
+     * @param finder the resource finder
      *
      * @return the language manager created
      *
      * @throws ConfigurationException in case of a configuration error
      */
-    protected LanguageManager makeLanguageManager(final Configuration config)
+    protected LanguageManager makeLanguageManager(final Configuration config,
+            final OutputStreamFactory outFactory, final ResourceFinder finder)
             throws ConfigurationException {
 
-        LanguageManagerFactory factory = new LanguageManagerFactory();
-        factory.enableLogging(logger);
-        Configuration cfg = config.findConfiguration(LANGUAGE_TAG);
-        if (cfg == null) {
-            throw new ConfigurationMissingException(LANGUAGE_TAG, config
-                    .toString());
-        }
-        factory.configure(cfg);
-        return factory.newInstance(DEFAULT_LANGAGE_KEY);
+        return new LanguageManagerFactory(//
+                config.getConfiguration(LANGUAGE_TAG), logger).newInstance(
+                DEFAULT_LANGAGE_KEY, outFactory, finder);
     }
 
     /**
-     * Find the name for the log file
+     * Find the name for the log file.
+     * <p>
+     *  This method can be overwritten in derived classes to perform additional
+     *  tasks. In this case it might be a good idea to invoke this method from
+     *  the super-class to do its job.
+     * </p>
      *
      * @param jobname the name of the job
      *
@@ -1528,6 +1488,11 @@ public class ExTeX {
 
     /**
      * Create a new Handler for the log file.
+     * <p>
+     *  This method can be overwritten in derived classes to perform additional
+     *  tasks. In this case it might be a good idea to invoke this method from
+     *  the super-class to do its job.
+     * </p>
      *
      * @param logFile the name of the log file
      *
@@ -1557,6 +1522,28 @@ public class ExTeX {
             handler = null;
         }
         return handler;
+    }
+
+    /**
+     * Create the output factory.
+     *
+     * @param jobname the job name
+     * @param config the configuration
+     *
+     * @return the output factory
+     *
+     * @throws ConfigurationException in case of a configuration error
+     */
+    protected OutputFactory makeOutputFactory(final String jobname,
+            final Configuration config) throws ConfigurationException {
+
+        OutputFactory outFactory = new OutputFactory(//
+                properties.getProperty(PROP_OUTPUT_DIRS).split(":"), //
+                jobname);
+        outFactory.setDefaultStream(outStream);
+        outFactory.configure(config);
+        outFactory.enableLogging(logger);
+        return outFactory;
     }
 
     /**
@@ -1602,6 +1589,11 @@ public class ExTeX {
     /**
      * Create a ResourceFinder.
      * Implicitly the logger and the properties are used.
+     * <p>
+     *  This method can be overwritten in derived classes to perform additional
+     *  tasks. In this case it might be a good idea to invoke this method from
+     *  the super-class to do its job.
+     * </p>
      *
      * @param config the configuration
      *
@@ -1612,12 +1604,23 @@ public class ExTeX {
     protected ResourceFinder makeResourceFinder(final Configuration config)
             throws ConfigurationException {
 
-        return (new ResourceFinderFactory()).createResourceFinder(config
-                .getConfiguration("Resource"), logger, properties);
+        ResourceFinder finder = new ResourceFinderFactory()
+                .createResourceFinder(config, logger, properties);
+
+        if (getBooleanProperty(PROP_TRACE_INPUT_FILES)) {
+            finder.enableTracing(true);
+        }
+
+        return finder;
     }
 
     /**
      * Prepare the token factory according to its configuration.
+     * <p>
+     *  This method can be overwritten in derived classes to perform additional
+     *  tasks. In this case it might be a good idea to invoke this method from
+     *  the super-class to do its job.
+     * </p>
      *
      * @param config the configuration
      *
@@ -1628,15 +1631,17 @@ public class ExTeX {
     protected TokenFactory makeTokenFactory(final Configuration config)
             throws ConfigurationException {
 
-        TokenFactoryFactory factory = new TokenFactoryFactory(config
-                .getConfiguration("TokenFactory"));
-        factory.enableLogging(logger);
-        return factory.createInstance();
+        return new TokenFactoryFactory(config, logger).createInstance();
     }
 
     /**
      * Create a TokenStreamFactory.
-     * Implicitly the logger is used.
+     * The logger is used implicitly.
+     * <p>
+     *  This method can be overwritten in derived classes to perform additional
+     *  tasks. In this case it might be a good idea to invoke this method from
+     *  the super-class to do its job.
+     * </p>
      *
      * @param config the configuration object for the token stream factory
      * @param finder the file finder for the token stream factory
@@ -1664,27 +1669,51 @@ public class ExTeX {
 
     /**
      * Create a new typesetter.
+     * <p>
+     *  This method can be overwritten in derived classes to perform additional
+     *  tasks. In this case it might be a good idea to invoke this method from
+     *  the super-class to do its job.
+     * </p>
      *
-     * @param config the configuration object for the typesetter
-     * @param docWriter the document writer to be used as back end
-     * @param context the interpreter context
+     * @param interpreter the interpreter
+     * @param config the global configuration object
+     * @param outFactory the output stream factory
+     * @param finder the resource finder
      *
      * @return the new typesetter
      *
      * @throws ConfigurationException in case that some kind of problems have
      *  been detected in the configuration
      * @throws TypesetterException in case of an error
+     * @throws CatcodeException in case of a problem with catcodes
+     * @throws DocumentWriterException just in case
      */
-    protected Typesetter makeTypesetter(final Configuration config,
-            final BackendDriver docWriter, final Context context)
+    protected Typesetter makeTypesetter(final Interpreter interpreter,
+            final Configuration config, final OutputStreamFactory outFactory,
+            final ResourceFinder finder)
             throws TypesetterException,
-                ConfigurationException {
+                ConfigurationException,
+                CatcodeException,
+                DocumentWriterException {
 
-        TypesetterFactory factory = new TypesetterFactory(config);
+        Context context = interpreter.getContext();
+
+        BackendDriver backend = makeBackend(//
+                config.getConfiguration("Backend"), //
+                outFactory, //
+                (DocumentWriterOptions) context, //
+                config.getConfiguration("ColorConverter"), //
+                finder);
+
+        TypesetterFactory factory = new TypesetterFactory();
+        factory.configure(config.getConfiguration("Typesetter"));
         factory.enableLogging(logger);
         Typesetter typesetter = factory.newInstance(properties
-                .getProperty(PROP_TYPESETTER_TYPE), context);
-        typesetter.setBackend(docWriter);
+                .getProperty(PROP_TYPESETTER_TYPE), context, backend);
+
+        typesetter.setOutputRoutine(new OutputRoutineFactory(config
+                .getConfiguration("OutputRoutine"), logger)
+                .newInstance(interpreter));
 
         return typesetter;
     }
@@ -1732,43 +1761,15 @@ public class ExTeX {
                     .newInstance(properties.getProperty(PROP_CONFIG));
             showBanner(config, (showBanner ? Level.INFO : Level.FINE));
 
-            OutputFactory outFactory = new OutputFactory(//
-                    properties.getProperty(PROP_OUTPUT_DIRS).split(":"), //
+            Interpreter interpreter = makeInterpreter(config,
+                    makeOutputFactory(jobname, //
+                            config.getConfiguration("Output")),
+                    makeResourceFinder(config.getConfiguration("Resource")),
                     jobname);
-            outFactory.setDefaultStream(outStream);
-            outFactory.configure(config.getConfiguration("Output"));
-
-            ResourceFinder finder = makeResourceFinder(config);
-            if (getBooleanProperty(PROP_TRACE_INPUT_FILES)) {
-                finder.enableTracing(true);
-            }
-            TokenStreamFactory tokenStreamFactory = makeTokenStreamFactory(
-                    config.getConfiguration("Scanner"), finder);
-
-            FontFactory fontFactory = makeFontFactory(config
-                    .getConfiguration("Fonts"), finder);
-
-            Interpreter interpreter = makeInterpreter(//
-                    config.getConfiguration("Interpreter"), //
-                    tokenStreamFactory, outFactory, fontFactory, finder,
-                    jobname, null); // TODO gene: provide typesetter?
-
-            BackendDriver backend = makeBackend(//
-                    config.getConfiguration("Backend"), //
-                    jobname, //
-                    outFactory, //
-                    (DocumentWriterOptions) interpreter.getContext(), //
-                    config.getConfiguration("ColorConverter"), finder);
-
-            Typesetter typesetter = makeTypesetter(//
-                    config.getConfiguration("Typesetter"), backend, interpreter
-                            .getContext());
-            typesetter.setOutputRoutine(new TeXOutputRoutine(interpreter));
-            interpreter.setTypesetter(typesetter);
 
             interpreter.run();
 
-            logPages(backend);
+            logPages(interpreter.getTypesetter().getBackendDriver());
 
             return interpreter;
 
@@ -1795,7 +1796,9 @@ public class ExTeX {
             throw e;
         } catch (Throwable e) {
             logInternalError(e);
-            e.printStackTrace();
+            if (getBooleanProperty(PROP_INTERNAL_STACKTRACE)) {
+                e.printStackTrace(System.err);
+            }
         } finally {
             if (logHandler != null) {
                 logHandler.close();

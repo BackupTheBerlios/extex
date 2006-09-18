@@ -111,6 +111,13 @@
 
   </Interpreter>
 
+  <!--
+    -  The section "OutputRoutine" contains the specification for the output routine.
+    -  Currently only the TeX output routine is present. In the future this might
+    -  be a nice place to experiment with.
+    -->
+  <OutputRoutine class="de.dante.extex.typesetter.output.TeXOutputRoutine"/>
+
   <!-- 
     -  The section "Typesetter" contains the specification for the typesetter.
     -  Here another level of indirection is introduced which allows us to select
@@ -143,15 +150,16 @@
     -  The section "Output" contains the specification for the output file.
     -  The format attribute contains a format according to the MessageFormat
     -  specification of Java.
-    -  {0} is replaced with the bease name of the output file. 
+    -  {0} is replaced with the base name of the output file. 
     -  {1} is replaced with the name supplied or the empty string if null.
     -  {2} is replaced with the number. This can be formatted freely.
     -  {3} is replaced by the type preceeded by  period (.).
     -->
   <Output default="default">
-    <default format="{0}{1}{2,number,0000}{3}"/>
-    <fmt format="{0}.{3}"/>
-    <tex format="{0}.{3}"/>
+    <default format="{0}{1}{2,number,0000}.{3}"/>
+    <fmt format="{1}.{3}"/>
+    <lfm format="{1}.{3}"/>
+    <tex format="{1}.{3}"/>
     <dump format="{0}{1}{2,number,0000}.out"/>
     <dvi format="{0}{1}{2,number,0000}.dvi"/>
     <out format="{0}{1}{2,number,0000}.out"/>
@@ -165,7 +173,7 @@
   <!-- 
     -  The section "Backend" contains the specification for the backend.
     -->
-  <Backend class="BackendDriverImpl">
+  <Backend class="de.dante.extex.backend.BackendDriverImpl">
     <!-- 
       -  The section "DocumentWriter" contains the specification for the
       -  document writer
