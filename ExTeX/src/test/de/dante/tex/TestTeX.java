@@ -44,7 +44,7 @@ import de.dante.util.framework.configuration.ConfigurationFactory;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public final class TestTeX {
 
@@ -136,12 +136,10 @@ public final class TestTeX {
 
         Configuration config = new ConfigurationFactory().newInstance("config/"
                 + configurationFile);
-        Configuration intcfg = config.getConfiguration("Interpreter");
-        InterpreterFactory intf = new InterpreterFactory();
+        InterpreterFactory intf = new InterpreterFactory(config
+                .getConfiguration("Interpreter"), null);
 
-        intf.configure(intcfg);
-
-        return intf.newInstance();
+        return intf.newInstance(null, null);
     }
 
     /**

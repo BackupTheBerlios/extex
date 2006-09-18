@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -33,7 +33,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * Test cases for dimen registers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class DimenRegisterTest extends TestCase {
 
@@ -55,8 +55,6 @@ public class DimenRegisterTest extends TestCase {
         junit.textui.TestRunner.run(DimenRegisterTest.class);
     }
 
-    //TODO change InterpreterFactory
-
     /**
      * Performs test on a given String.
      *
@@ -75,11 +73,11 @@ public class DimenRegisterTest extends TestCase {
                 .newInstance("config/extex.xml");
         TokenStreamFactory fac = new TokenStreamFactory(config
                 .getConfiguration("Scanner"), "base");
-        InterpreterFactory interpreterFactory = new InterpreterFactory();
-        interpreterFactory.configure(config.getConfiguration("Interpreter"));
-        Interpreter source = interpreterFactory.newInstance();
+        Interpreter source = new InterpreterFactory(config
+                .getConfiguration("Interpreter"), null).newInstance(null, null);
         source.addStream(fac.newInstance(spec));
         source.setTokenStreamFactory(fac);
+
         return Dimen.parse(new MockContext(), source, null).getValue();
     }
 

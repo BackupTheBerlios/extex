@@ -36,7 +36,6 @@ import java.util.logging.StreamHandler;
 import junit.framework.TestCase;
 import de.dante.extex.ExTeX;
 import de.dante.extex.backend.outputStream.OutputStreamFactory;
-import de.dante.extex.font.FontFactory;
 import de.dante.extex.font.exception.FontException;
 import de.dante.extex.interpreter.ErrorHandler;
 import de.dante.extex.interpreter.Interpreter;
@@ -46,9 +45,7 @@ import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.main.errorHandler.editHandler.EditHandler;
 import de.dante.extex.main.logging.LogFormatter;
-import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.extex.scanner.type.token.Token;
-import de.dante.extex.typesetter.Typesetter;
 import de.dante.test.font.LauncherFont;
 import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.Configuration;
@@ -60,7 +57,7 @@ import de.dante.util.resource.ResourceFinder;
  * running an instance of <logo>ExTeX</logo>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.50 $
+ * @version $Revision: 1.51 $
  */
 public class ExTeXLauncher extends TestCase {
 
@@ -68,7 +65,7 @@ public class ExTeXLauncher extends TestCase {
      * Inner class for the error handler.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.50 $
+     * @version $Revision: 1.51 $
      */
     private class EHandler implements ErrorHandler {
 
@@ -293,26 +290,25 @@ public class ExTeXLauncher extends TestCase {
             /**
              * @see de.dante.extex.ExTeX#makeInterpreter(
              *      de.dante.util.framework.configuration.Configuration,
-             *      de.dante.extex.scanner.stream.TokenStreamFactory,
-             *      de.dante.extex.font.FontFactory)
+             *      de.dante.extex.backend.outputStream.OutputStreamFactory,
+             *      de.dante.util.resource.ResourceFinder,
+             *      java.lang.String)
              */
             protected Interpreter makeInterpreter(final Configuration config,
-                    final TokenStreamFactory factory,
-                    OutputStreamFactory outFatory,
-                    final FontFactory fontFactory, final ResourceFinder finder,
-                    final String jobname, final Typesetter typesetter)
+                    final OutputStreamFactory outFatory,
+                    final ResourceFinder finder, final String jobname)
                     throws ConfigurationException,
                         GeneralException,
                         FontException,
                         IOException {
 
                 Interpreter interpreter = super.makeInterpreter(config,
-                        factory, outFatory, fontFactory, finder, jobname,
-                        typesetter);
+                        outFatory, finder, jobname);
                 Context context = interpreter.getContext();
                 context.set(new LauncherFont(), true);
-                context.setStandardTokenStream(factory
-                        .newInstance(new InputStreamReader(System.in)));
+                context.setStandardTokenStream(interpreter
+                        .getTokenStreamFactory().newInstance(
+                                new InputStreamReader(System.in)));
                 context.set(context.getLanguage("0"), true);
                 if (setHsize) {
                     context
