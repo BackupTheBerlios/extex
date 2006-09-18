@@ -35,6 +35,10 @@ import java.util.Map;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
+import de.dante.extex.backend.documentWriter.exception.DocumentWriterException;
+import de.dante.extex.backend.outputStream.NamedOutputStream;
+import de.dante.extex.backend.outputStream.OutputStreamFactory;
+import de.dante.extex.interpreter.type.OutputStreamConsumer;
 import de.dante.extex.language.Language;
 import de.dante.extex.language.hyphenation.exception.HyphenationException;
 import de.dante.util.framework.Registrar;
@@ -56,7 +60,7 @@ import de.dante.util.resource.ResourceFinder;
  * the resulting language is put into the map overwriting the future object.
  * </p>
  * <p>
- *  ...
+ *  TODO gene: documentation incomplete
  * </p>
  *
  * <h2>Configuration</h2>
@@ -68,12 +72,13 @@ import de.dante.util.resource.ResourceFinder;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class LoadingLanguageManager extends BaseLanguageManager
         implements
             LanguageCreator,
-            ResourceConsumer {
+            ResourceConsumer,
+            OutputStreamConsumer {
 
     /**
      * The constant <tt>NON_LOADABLE_LANGUAGE_PATTERN</tt> contains the patter
@@ -91,7 +96,7 @@ public class LoadingLanguageManager extends BaseLanguageManager
      * The field <tt>TABLE_EXTENSION</tt> contains the extension for language
      * files.
      */
-    private static final String TABLE_EXTENSION = ".lfm";
+    private static final String TABLE_EXTENSION = "lfm";
 
     /**
      * The constant <tt>VERSION</tt> contains the version id to be written into
@@ -104,6 +109,11 @@ public class LoadingLanguageManager extends BaseLanguageManager
      * language files.
      */
     private transient ResourceFinder finder;
+
+    /**
+     * The field <tt>outFactory</tt> contains the output stream factory.
+     */
+    private OutputStreamFactory outFactory = null;
 
     /**
      * Creates a new object.
@@ -249,16 +259,22 @@ public class LoadingLanguageManager extends BaseLanguageManager
      * @return <code>true</code> iff the table has been saved
      *
      * @throws IOException in case of an IO error
+     * @throws DocumentWriterException ...
      */
     protected boolean saveTable(final String name, final Language value)
-            throws IOException {
+            throws IOException,
+                DocumentWriterException {
 
         if (name == null || name.matches(NON_LOADABLE_LANGUAGE_PATTERN)) {
             return false;
         }
 
-        File file = new File(".", name + TABLE_EXTENSION);
-        OutputStream fos = new BufferedOutputStream(new FileOutputStream(file));
+        OutputStream fos = outFactory.getOutputStream(name, TABLE_EXTENSION);
+
+        String file = name;
+        if (fos instanceof NamedOutputStream) {
+            file = ((NamedOutputStream) fos).getName();
+        }
         fos.write("#!extex -lfm\n".getBytes());
         ObjectOutputStream out = new ObjectOutputStream(new GZIPOutputStream(
                 fos));
@@ -266,9 +282,17 @@ public class LoadingLanguageManager extends BaseLanguageManager
         out.writeObject(value);
         out.close();
         getLogger().info(
-                getLocalizer().format("LanguageSaved", name,
-                        file.toString()));
+                getLocalizer().format("LanguageSaved", name, file));
         return true;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.OutputStreamConsumer#setOutputStreamFactory(
+     *      de.dante.extex.backend.outputStream.OutputStreamFactory)
+     */
+    public void setOutputStreamFactory(final OutputStreamFactory factory) {
+
+        this.outFactory = factory;
     }
 
     /**
@@ -288,7 +312,9 @@ public class LoadingLanguageManager extends BaseLanguageManager
      *
      * @throws IOException in case of an IO error
      */
-    private void writeObject(final ObjectOutputStream out) throws IOException {
+    private void writeObject(final ObjectOutputStream out)
+            throws IOException,
+                DocumentWriterException {
 
         Map map = new HashMap();
         Iterator iter = getTables().entrySet().iterator();
