@@ -21,10 +21,10 @@ package de.dante.extex.typesetter.pageBuilder;
 
 import de.dante.extex.backend.BackendDriver;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.typesetter.OutputRoutine;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
+import de.dante.extex.typesetter.output.OutputRoutine;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
 import de.dante.extex.typesetter.type.page.PageFactory;
@@ -33,7 +33,7 @@ import de.dante.extex.typesetter.type.page.PageFactory;
  * This interface describes the capabilities of a page builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public interface PageBuilder {
 

@@ -22,10 +22,10 @@ package de.dante.extex.typesetter.pageBuilder.impl;
 import de.dante.extex.backend.BackendDriver;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
-import de.dante.extex.typesetter.OutputRoutine;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
+import de.dante.extex.typesetter.output.OutputRoutine;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
@@ -37,7 +37,7 @@ import de.dante.util.exception.GeneralException;
  * This is a first reference implementation of a page builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.30 $
+ * @version $Revision: 1.31 $
  */
 public class PageBuilderImpl implements PageBuilder {
 
