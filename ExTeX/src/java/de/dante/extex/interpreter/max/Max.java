@@ -174,7 +174,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.115 $
+ * @version $Revision: 1.116 $
  */
 public abstract class Max
         implements
@@ -814,7 +814,7 @@ public abstract class Max
     }
 
     /**
-     * @see de.dante.extex.interpreter.max.Moritz#getTypesetter()
+     * @see de.dante.extex.interpreter.Interpreter#getTypesetter()
      */
     public Typesetter getTypesetter() {
 
@@ -1015,6 +1015,8 @@ public abstract class Max
      *
      * @param stream the stream to read the format information from
      * @param fmt the name of the format to be loaded
+     * @param contextType the configuration name for the context
+     * @param languageType the configuration name for the language manager
      *
      * @throws LoaderException in case that a class could not be found
      *  on the class path or a wrong class is contained in the format
@@ -1024,7 +1026,8 @@ public abstract class Max
      * @see de.dante.extex.interpreter.Interpreter#loadFormat(
      *      java.io.InputStream, java.lang.String)
      */
-    public void loadFormat(final InputStream stream, final String fmt)
+    public void loadFormat(final InputStream stream, final String fmt,
+            final String contextType, final String languageType)
             throws IOException,
                 LoaderException {
 
@@ -1071,39 +1074,28 @@ public abstract class Max
         }
 
         try {
-            // obsolete; the date is initialized in run() anyhhow
-            initializeDate(Calendar.getInstance());
-        } catch (InterpreterException e) {
-            Throwable cause = e.getCause();
-            if (cause instanceof ConfigurationException) {
-                throw new LoaderException(cause);
-            }
-            throw new LoaderException(e);
-        }
-
-        try {
             if (newContext instanceof Configurable) {
-                //TODO gene: provide the correct configuration instead of the constant one
                 ((Configurable) newContext).configure(configuration
-                        .getConfiguration(CONTEXT_TAG)
-                        .getConfiguration("ExTeX"));
+                        .getConfiguration(CONTEXT_TAG).getConfiguration(
+                                contextType));
             }
 
             LanguageManager languageManager = newContext.getLanguageManager();
             if (languageManager instanceof Configurable) {
 
-                //TODO gene: provide the correct configuration instead of the constant one
                 ((Configurable) languageManager).configure(configuration
                         .getConfiguration(LANGUAGE_TAG).getConfiguration(
-                                "ExTeX"));
+                                languageType));
             }
         } catch (ConfigurationException e) {
             throw new LoaderException(e);
         }
 
-        newContext.setFontFactory(context.getFontFactory());
-        newContext.setTokenFactory(context.getTokenFactory());
-        newContext.setStandardTokenStream(context.getStandardTokenStream());
+        if (context != null) {
+            newContext.setFontFactory(context.getFontFactory());
+            newContext.setTokenFactory(context.getTokenFactory());
+            newContext.setStandardTokenStream(context.getStandardTokenStream());
+        }
         context = newContext;
 
         try {
