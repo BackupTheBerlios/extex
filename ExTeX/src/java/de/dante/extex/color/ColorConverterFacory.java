@@ -19,23 +19,34 @@
 
 package de.dante.extex.color;
 
+import java.util.logging.Logger;
+
 import de.dante.util.framework.AbstractFactory;
+import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * This is the factory to provide an instance of a color converter.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class ColorConverterFacory extends AbstractFactory {
 
     /**
      * Creates a new object.
+     *
+     * @param config the configuration
+     * @param logger the logger
+     *
+     * @throws ConfigurationException in case of an error
      */
-    public ColorConverterFacory() {
+    public ColorConverterFacory(final Configuration config, final Logger logger)
+            throws ConfigurationException {
 
         super();
+        enableLogging(logger);
+        configure(config);
     }
 
     /**

@@ -19,6 +19,7 @@
 
 package de.dante.extex.typesetter;
 
+import de.dante.extex.backend.BackendDriver;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
@@ -82,22 +83,16 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public class TypesetterFactory extends AbstractFactory {
 
     /**
      * Creates a new object.
-     *
-     * @param configuration the configuration for this factory
-     *
-     * @throws ConfigurationException in case of an error in the configuration
      */
-    public TypesetterFactory(final Configuration configuration)
-            throws ConfigurationException {
+    public TypesetterFactory() {
 
         super();
-        configure(configuration);
     }
 
     /**
@@ -193,13 +188,15 @@ public class TypesetterFactory extends AbstractFactory {
      *
      * @param type the symbolic name of the configuration to use
      * @param context the interpreter context
+     * @param backend the back-end driver
      *
      * @return a new typesetter
      *
      * @throws ConfigurationException in case of an configuration error
      * @throws TypesetterException in case of another error
      */
-    public Typesetter newInstance(final String type, final Context context)
+    public Typesetter newInstance(final String type, final Context context,
+            final BackendDriver backend)
             throws TypesetterException,
                 ConfigurationException {
 
@@ -216,6 +213,7 @@ public class TypesetterFactory extends AbstractFactory {
         typesetter.setPageBuilder(makePageBuilder(cfg, context, typesetter));
 
         typesetter.setOptions((TypesetterOptions) context);
+        typesetter.setBackend(backend);
 
         return typesetter;
     }

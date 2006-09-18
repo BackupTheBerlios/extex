@@ -19,6 +19,8 @@
 
 package de.dante.extex.interpreter.max;
 
+import java.util.logging.Logger;
+
 import de.dante.extex.scanner.type.token.TokenFactory;
 import de.dante.util.framework.AbstractFactory;
 import de.dante.util.framework.configuration.Configuration;
@@ -42,7 +44,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *  </pre>
  * </p>
  * <p>
- *  The named class need to implement the interface
+ *  The named class needs to implement the interface
  *  {@link de.dante.extex.scanner.type.token.TokenFactory TokenFactory}. If
  *  this interface is not implemented an error is raised.
  * </p>
@@ -59,7 +61,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class TokenFactoryFactory extends AbstractFactory {
 
@@ -81,11 +83,13 @@ public class TokenFactoryFactory extends AbstractFactory {
      * </p>
      *
      * @param config the configuration to use
+     * @param logger the logger
      */
-    public TokenFactoryFactory(final Configuration config) {
+    public TokenFactoryFactory(final Configuration config, final Logger logger) {
 
         super();
         this.configuration = config;
+        enableLogging(logger);
     }
 
     /**
@@ -93,8 +97,7 @@ public class TokenFactoryFactory extends AbstractFactory {
      *
      * @return an appropriate instance
      *
-     * @throws ConfigurationException in case of an error in the
-     *  configuration
+     * @throws ConfigurationException in case of an error in the configuration
      */
     public TokenFactory createInstance() throws ConfigurationException {
 

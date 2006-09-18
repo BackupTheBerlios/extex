@@ -19,6 +19,8 @@
 
 package de.dante.extex.backend.documentWriter;
 
+import java.util.logging.Logger;
+
 import de.dante.extex.backend.documentWriter.exception.DocumentWriterException;
 import de.dante.extex.backend.outputStream.OutputStreamFactory;
 import de.dante.util.framework.AbstractFactory;
@@ -28,8 +30,47 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
 /**
  * This is the factory to provide an instance of a document writer.
  *
+ *
+ * <p>
+ *  The class to be instantiated can implements one or more interfaces which
+ *  trigger special actions:
+ * </p>
+ * <dl>
+ *  <dt>{@link de.dante.util.framework.configuration.Configurable Configurable}</dt>
+ *  <dd>
+ *   If this interface is implemented then a
+ *   {@link de.dante.util.framework.configuration.Configuration Configuration}
+ *   is passed in with the interface method.
+ *  </dd>
+ *  <dt>{@link de.dante.util.framework.logger.LogEnabled LogEnabled}</dt>
+ *  <dd>
+ *   If this interface is implemented then a
+ *   {@link java.util.logging.Logger Logger}
+ *   is passed in with the interface method.
+ *  </dd>
+ *  <dt>{@link de.dante.util.framework.i18n.Localizable Localizable}</dt>
+ *  <dd>
+ *   If this interface is implemented then a
+ *   {@link de.dante.util.framework.i18n.Localizer Localizer}
+ *   is passed in with the interface method.
+ *  </dd>
+ *  <dt>{@link de.dante.extex.backend.documentWriter.SingleDocumentStream SingleDocumentStream}</dt>
+ *  <dd>
+ *   If this interface is implemented then a
+ *   {@link java.io.OutputStream OutputStream}
+ *   is passed in with the interface method.
+ *  </dd>
+ *  <dt>{@link de.dante.extex.backend.documentWriter.MultipleDocumentStream MultipleDocumentStream}</dt>
+ *  <dd>
+ *   If this interface is implemented then a
+ *   {@link de.dante.extex.backend.outputStream.OutputStreamFactory OutputStreamFactory}
+ *   is passed in with the interface method.
+ *  </dd>
+ * </dl>
+ *
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class DocumentWriterFactory extends AbstractFactory {
 
@@ -37,13 +78,15 @@ public class DocumentWriterFactory extends AbstractFactory {
      * Creates a new object.
      *
      * @param configuration the configuration to use for the factory
+     * @param logger the logger
      *
      * @throws ConfigurationException in case of an error
      */
-    public DocumentWriterFactory(final Configuration configuration)
-            throws ConfigurationException {
+    public DocumentWriterFactory(final Configuration configuration,
+            final Logger logger) throws ConfigurationException {
 
         super();
+        enableLogging(logger);
         configure(configuration);
     }
 

@@ -19,8 +19,15 @@
 
 package de.dante.extex.language;
 
+import java.util.logging.Logger;
+
+import de.dante.extex.backend.outputStream.OutputStreamFactory;
+import de.dante.extex.interpreter.type.OutputStreamConsumer;
 import de.dante.util.framework.AbstractFactory;
+import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
+import de.dante.util.resource.ResourceConsumer;
+import de.dante.util.resource.ResourceFinder;
 
 /**
  * This class provides a factory for a
@@ -55,12 +62,67 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * &lt;/Language&gt;
  * </pre>
  *
+ * <p>
+ *  The class to be instantiated can implements one or more interfaces which
+ *  trigger special actions:
+ * </p>
+ * <dl>
+ *  <dt>{@link de.dante.util.framework.configuration.Configurable Configurable}</dt>
+ *  <dd>
+ *   If this interface is implemented then a
+ *   {@link de.dante.util.framework.configuration.Configuration Configuration}
+ *   is passed in with the interface method.
+ *  </dd>
+ *  <dt>{@link de.dante.util.framework.logger.LogEnabled LogEnabled}</dt>
+ *  <dd>
+ *   If this interface is implemented then a
+ *   {@link java.util.logging.Logger Logger}
+ *   is passed in with the interface method.
+ *  </dd>
+ *  <dt>{@link de.dante.util.framework.i18n.Localizable Localizable}</dt>
+ *  <dd>
+ *   If this interface is implemented then a
+ *   {@link de.dante.util.framework.i18n.Localizer Localizer}
+ *   is passed in with the interface method.
+ *  </dd>
+ *  <dt>{@link de.dante.util.resource.ResourceConsumer ResourceConsumer}</dt>
+ *  <dd>
+ *   If this interface is implemented then a
+ *   {@link de.dante.util.resource.ResourceFinder ResourceFinder}
+ *   is passed in with the interface method.
+ *  </dd>
+ *  <dt>{@link de.dante.extex.interpreter.type.OutputStreamConsumer OutputStreamConsumer}</dt>
+ *  <dd>
+ *   If this interface is implemented then a
+ *   {@link de.dante.extex.backend.outputStream.OutputStreamFactory OutputStreamFactory}
+ *   is passed in with the interface method.
+ *  </dd>
+ * </dl>
+ *
+ *
+ *
  * @see de.dante.util.framework.AbstractFactory
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class LanguageManagerFactory extends AbstractFactory {
+
+    /**
+     * Creates a new object.
+     *
+     * @param config the configuration
+     * @param logger the logger
+     *
+     * @throws ConfigurationException in case of an configuration error
+     */
+    public LanguageManagerFactory(final Configuration config,
+            final Logger logger) throws ConfigurationException {
+
+        super();
+        enableLogging(logger);
+        configure(config);
+    }
 
     /**
      * Get an instance of a
@@ -71,15 +133,27 @@ public class LanguageManagerFactory extends AbstractFactory {
      * configuration is used.
      *
      * @param type the type to use
+     * @param outFactory the output stream factory to pass in
+     * @param finder the resource finder to pass in
      *
      * @return a new context
      *
      * @throws ConfigurationException in case of an configuration error
      */
-    public LanguageManager newInstance(final String type)
+    public LanguageManager newInstance(final String type,
+            final OutputStreamFactory outFactory, final ResourceFinder finder)
             throws ConfigurationException {
 
-        return (LanguageManager) createInstance(type, LanguageManager.class);
+        LanguageManager manager = (LanguageManager) createInstance(type,
+                LanguageManager.class);
+        if (manager instanceof OutputStreamConsumer) {
+            ((OutputStreamConsumer) manager).setOutputStreamFactory(outFactory);
+        }
+        if (manager instanceof ResourceConsumer) {
+            ((ResourceConsumer) manager).setResourceFinder(finder);
+        }
+
+        return manager;
     }
 
 }
