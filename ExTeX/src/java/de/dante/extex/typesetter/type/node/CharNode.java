@@ -20,7 +20,7 @@
 package de.dante.extex.typesetter.type.node;
 
 import de.dante.extex.font.Glyph;
-import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.context.tc.TypesettingContext;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
@@ -35,7 +35,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class CharNode extends AbstractNode {
 

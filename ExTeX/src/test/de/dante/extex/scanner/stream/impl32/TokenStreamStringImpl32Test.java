@@ -26,9 +26,9 @@ import java.util.Iterator;
 import junit.framework.TestCase;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.context.TypesettingContextImpl;
 import de.dante.extex.interpreter.context.impl.ContextImpl;
 import de.dante.extex.interpreter.context.impl.GroupImpl;
+import de.dante.extex.interpreter.context.tc.TypesettingContextImpl;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.exception.ScannerNoUnicodeNameException;
 import de.dante.extex.scanner.type.Catcode;
@@ -46,7 +46,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class TokenStreamStringImpl32Test extends TestCase {
 

@@ -20,13 +20,13 @@
 package de.dante.extex.typesetter.type.noad;
 
 import de.dante.extex.interpreter.context.Color;
-import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.context.tc.TypesettingContext;
 
 /**
  * This abstract noad represents a Noad with a nucleus.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public abstract class AbstractNucleusNoad extends AbstractNoad {
 

@@ -21,7 +21,7 @@ package de.dante.extex.typesetter.type.noad;
 
 import java.util.logging.Logger;
 
-import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.context.tc.TypesettingContext;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.ImmutableDimen;
 import de.dante.extex.typesetter.exception.TypesetterException;
@@ -38,7 +38,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [682]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class OrdinaryNoad extends AbstractNucleusNoad implements SimpleNoad {
 

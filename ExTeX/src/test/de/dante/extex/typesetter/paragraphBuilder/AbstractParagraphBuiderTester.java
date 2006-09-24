@@ -33,9 +33,9 @@ import de.dante.extex.font.Glyph;
 import de.dante.extex.font.Kerning;
 import de.dante.extex.font.Ligature;
 import de.dante.extex.font.type.BoundingBox;
-import de.dante.extex.interpreter.context.TypesettingContext;
-import de.dante.extex.interpreter.context.TypesettingContextFactory;
-import de.dante.extex.interpreter.context.TypesettingContextImpl;
+import de.dante.extex.interpreter.context.tc.TypesettingContext;
+import de.dante.extex.interpreter.context.tc.TypesettingContextFactory;
+import de.dante.extex.interpreter.context.tc.TypesettingContextImpl;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.count.FixedCount;
 import de.dante.extex.interpreter.type.dimen.Dimen;
@@ -70,7 +70,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * This is the abstract base class to test a paragraph builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public abstract class AbstractParagraphBuiderTester extends TestCase {
 
@@ -78,7 +78,7 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
      * Inner class for the typesetter options.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.9 $
+     * @version $Revision: 1.10 $
      */
     private class MockOptions implements TypesetterOptions {
 

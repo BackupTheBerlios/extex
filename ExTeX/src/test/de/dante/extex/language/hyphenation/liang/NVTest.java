@@ -32,9 +32,9 @@ import de.dante.extex.font.type.BoundingBox;
 import de.dante.extex.font.type.other.NullFont;
 import de.dante.extex.font.type.tfm.TFMFixWord;
 import de.dante.extex.interpreter.Namespace;
-import de.dante.extex.interpreter.context.ModifiableTypesettingContext;
-import de.dante.extex.interpreter.context.TypesettingContext;
-import de.dante.extex.interpreter.context.TypesettingContextImpl;
+import de.dante.extex.interpreter.context.tc.ModifiableTypesettingContext;
+import de.dante.extex.interpreter.context.tc.TypesettingContext;
+import de.dante.extex.interpreter.context.tc.TypesettingContextImpl;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.font.Font;
@@ -55,7 +55,7 @@ import de.dante.util.UnicodeChar;
  * This is the test class for NV.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class NVTest extends TestCase {
 
@@ -63,7 +63,7 @@ public class NVTest extends TestCase {
      * This is a mock implementation of a font.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.12 $
+     * @version $Revision: 1.13 $
      */
     private class MockFont extends NullFont {
 
@@ -284,7 +284,7 @@ public class NVTest extends TestCase {
      * This is a mock implementation of a glyph.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.12 $
+     * @version $Revision: 1.13 $
      */
     private class MockGlyph implements Glyph {
 

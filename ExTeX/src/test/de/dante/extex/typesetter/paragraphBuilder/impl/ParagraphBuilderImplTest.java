@@ -20,8 +20,8 @@
 package de.dante.extex.typesetter.paragraphBuilder.impl;
 
 import junit.framework.TestCase;
-import de.dante.extex.interpreter.context.TypesettingContext;
-import de.dante.extex.interpreter.context.TypesettingContextFactory;
+import de.dante.extex.interpreter.context.tc.TypesettingContext;
+import de.dante.extex.interpreter.context.tc.TypesettingContextFactory;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.count.FixedCount;
 import de.dante.extex.interpreter.type.dimen.Dimen;
@@ -42,7 +42,7 @@ import de.dante.util.exception.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class ParagraphBuilderImplTest extends TestCase {
 
@@ -50,7 +50,7 @@ public class ParagraphBuilderImplTest extends TestCase {
      * Inner class for the typesetter options.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.12 $
+     * @version $Revision: 1.13 $
      */
     private class MockOptions implements TypesetterOptions {
 

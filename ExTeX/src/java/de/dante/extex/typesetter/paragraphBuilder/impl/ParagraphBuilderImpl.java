@@ -26,7 +26,7 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.context.tc.TypesettingContext;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
@@ -62,30 +62,30 @@ import de.dante.util.framework.logger.LogEnabled;
  * <doc name="emergencystretch" type="register">
  * <h3>The Parameter <tt>\emergencystretch</tt></h3>
  *
- * TODO gene: missing documentation
+ * TODO missing documentation
  * </doc>
  *
  * <doc name="exhyphenpenalty" type="register">
  * <h3>The Parameter <tt>\exhyphenpenalty</tt></h3>
  *
- * TODO gene: missing documentation
+ * TODO missing documentation
  * </doc>
  *
  * <doc name="hangafter" type="register">
  * <h3>The Parameter <tt>\hangafter</tt></h3>
  *
- * TODO gene: missing documentation
+ * TODO missing documentation
  * </doc>
  *
  * <doc name="hangindent" type="register">
  * <h3>The Parameter <tt>\hangindent</tt></h3>
  *
- * TODO gene: missing documentation
+ * TODO missing documentation
  * </doc>
  *
  * <doc name="hsize" type="register">
  * <h3>The Parameter <tt>\hsize</tt></h3>
- *  The parameter <tt>\hsize</tt> contains the horizotal size of the paragraph
+ *  The parameter <tt>\hsize</tt> contains the horizontal size of the paragraph
  *  to be build.
  *  See also \parshape, \hangindent, and \hangafter.
  * </doc>
@@ -127,7 +127,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * <doc name="pretolerance" type="register">
  * <h3>The Parameter <tt>\pretolerance</tt></h3>
  *
- * TODO gene: missing documentation
+ * TODO missing documentation
  * </doc>
  *
  * <doc name="rightskip" type="register">
@@ -146,13 +146,13 @@ import de.dante.util.framework.logger.LogEnabled;
  * <doc name="tolerance" type="register">
  * <h3>The Parameter <tt>\tolerance</tt></h3>
  *
- * TODO gene: missing documentation
+ * TODO missing documentation
  * </doc>
  *
  * <doc name="tracingparagraphs" type="register">
  * <h3>The Parameter <tt>\tracingparagraphs</tt></h3>
  *
- * TODO gene: missing documentation
+ * TODO missing documentation
  * </doc>
  *
  *
@@ -161,7 +161,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * Treat segments of a paragraph separated by forced breaks separately.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.34 $
+ * @version $Revision: 1.35 $
  */
 public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled {
 
@@ -250,7 +250,7 @@ public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled {
     public NodeList build(final HorizontalListNode nodes)
             throws HyphenationException {
 
-        //TODO gene: split into smaller methods
+        //split into smaller methods?
 
         if (!COMPLETE) {
             return nodes;

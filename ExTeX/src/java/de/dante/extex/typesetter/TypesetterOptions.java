@@ -19,8 +19,8 @@
 
 package de.dante.extex.typesetter;
 
-import de.dante.extex.interpreter.context.TypesettingContext;
-import de.dante.extex.interpreter.context.TypesettingContextFactory;
+import de.dante.extex.interpreter.context.tc.TypesettingContext;
+import de.dante.extex.interpreter.context.tc.TypesettingContextFactory;
 import de.dante.extex.interpreter.type.count.FixedCount;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.font.Font;
@@ -36,7 +36,7 @@ import de.dante.util.exception.GeneralException;
  * options.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public interface TypesetterOptions {
 

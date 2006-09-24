@@ -19,7 +19,7 @@
 
 package de.dante.extex.typesetter.type.noad;
 
-import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.context.tc.TypesettingContext;
 import de.dante.extex.typesetter.type.math.MathClass;
 import de.dante.extex.typesetter.type.math.MathClassVisitor;
 import de.dante.extex.typesetter.type.math.MathDelimiter;
@@ -28,7 +28,7 @@ import de.dante.extex.typesetter.type.math.MathDelimiter;
  * This class is a factory for CharNoades.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class NoadFactory {
 

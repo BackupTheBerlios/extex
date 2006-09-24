@@ -29,8 +29,8 @@ import de.dante.extex.font.type.BoundingBox;
 import de.dante.extex.font.type.other.NullFont;
 import de.dante.extex.font.type.tfm.TFMFixWord;
 import de.dante.extex.interpreter.context.MockContext;
-import de.dante.extex.interpreter.context.TypesettingContext;
-import de.dante.extex.interpreter.context.TypesettingContextImpl;
+import de.dante.extex.interpreter.context.tc.TypesettingContext;
+import de.dante.extex.interpreter.context.tc.TypesettingContextImpl;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
@@ -51,7 +51,7 @@ import de.dante.util.UnicodeCharList;
  * Test suite for the base hyphenation table.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class BaseHyphenationTableTest extends TestCase {
 
@@ -59,7 +59,7 @@ public class BaseHyphenationTableTest extends TestCase {
      * Mock implementation of a font.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.6 $
+     * @version $Revision: 1.7 $
      */
     private class MockFont extends NullFont {
 
@@ -253,7 +253,7 @@ public class BaseHyphenationTableTest extends TestCase {
      * This is a mock implementation of a glyph.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.6 $
+     * @version $Revision: 1.7 $
      */
     private class MockGlyph implements Glyph {
 
@@ -403,7 +403,7 @@ public class BaseHyphenationTableTest extends TestCase {
      * This mock implementation is for test purposes only.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.6 $
+     * @version $Revision: 1.7 $
      */
     private class MyMockContext extends MockContext {
 

@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.context.tc.TypesettingContext;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
@@ -45,7 +45,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This is the derived class for a list maker in inner vertical list mode.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class InnerVerticalListMaker extends AbstractListMaker {
 

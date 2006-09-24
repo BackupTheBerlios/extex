@@ -23,7 +23,7 @@ import de.dante.extex.backend.BackendDriver;
 import de.dante.extex.backend.documentWriter.DocumentWriter;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.context.tc.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.count.FixedCount;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
@@ -54,7 +54,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public class NullTypesetterImpl implements Typesetter {
 

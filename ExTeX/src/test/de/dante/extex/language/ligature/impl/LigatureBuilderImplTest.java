@@ -29,8 +29,8 @@ import de.dante.extex.font.Kerning;
 import de.dante.extex.font.Ligature;
 import de.dante.extex.font.type.other.NullFont;
 import de.dante.extex.font.type.tfm.TFMFixWord;
-import de.dante.extex.interpreter.context.TypesettingContext;
-import de.dante.extex.interpreter.context.TypesettingContextImpl;
+import de.dante.extex.interpreter.context.tc.TypesettingContext;
+import de.dante.extex.interpreter.context.tc.TypesettingContextImpl;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.glue.Glue;
@@ -50,7 +50,7 @@ import de.dante.util.UnicodeChar;
  * This is a test suite for the <tt>LigatureBuilderImpl</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class LigatureBuilderImplTest extends TestCase {
 
@@ -58,7 +58,7 @@ public class LigatureBuilderImplTest extends TestCase {
      * This class provides a mock implementation for a font.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.10 $
+     * @version $Revision: 1.11 $
      */
     private class MockFont extends NullFont {
 
@@ -117,7 +117,7 @@ public class LigatureBuilderImplTest extends TestCase {
      * This class provides a mock implementation for a glyph.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.10 $
+     * @version $Revision: 1.11 $
      */
     private class MockGlyph implements Glyph {
 

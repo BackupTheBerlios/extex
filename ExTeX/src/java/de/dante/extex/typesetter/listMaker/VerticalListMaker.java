@@ -37,25 +37,42 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * <doc name="baselineskip" type="register">
  * <h3>The Parameter <tt>\baselineskip</tt></h3>
  *
- * TODO gene: missing documentation
+ * <p>
+ *  The parameter <tt>\baselineskip</tt> contains the desirable skip between
+ *  lines. The depth of the first line is subtracted from this value to
+ *  determine the automatic skip value to be inserted. If this value is less
+ *  than the value of <tt>\lineskiplimit</tt> then the value of
+ *  <tt>\lineskip</tt> is used instead.
+ * </p>
  * </doc>
  *
  * <doc name="lineskiplimit" type="register">
  * <h3>The Parameter <tt>\lineskiplimit</tt></h3>
  *
- * TODO gene: missing documentation
+ * <p>
+ *  The parameter <tt>\lineskiplimit</tt> contains the limit for the automatic
+ *  inter line skip inserted. The automatic inter line skip is defendant on the
+ *  value of the parameter <tt>\baselineskip</tt>. It the automatic inter line
+ *  skip is less than <tt>\lineskiplimit</tt> the value of <tt>\lineskip</tt>
+ *  is used instead.
+ * </p>
  * </doc>
  *
  * <doc name="lineskip" type="register">
  * <h3>The Parameter <tt>\lineskip</tt></h3>
  *
- * TODO gene: missing documentation
+ * <p>
+ *  The parameter <tt>\lineskip</tt> contains the interline skip which is used
+ *  when the adjacent lines would come together too close. This is the case when
+ *  the interline glue inserted automatically is less than the value of
+ *  <tt>\lineskiplimit</tt>.
+ * </p>
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class VerticalListMaker extends InnerVerticalListMaker {
 
