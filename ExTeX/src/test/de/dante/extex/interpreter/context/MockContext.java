@@ -28,6 +28,10 @@ import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.group.GroupInfo;
 import de.dante.extex.interpreter.context.group.GroupType;
 import de.dante.extex.interpreter.context.observer.group.AfterGroupObserver;
+import de.dante.extex.interpreter.context.tc.Direction;
+import de.dante.extex.interpreter.context.tc.TypesettingContext;
+import de.dante.extex.interpreter.context.tc.TypesettingContextFactory;
+import de.dante.extex.interpreter.context.tc.TypesettingContextImpl;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.interaction.Interaction;
@@ -67,7 +71,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * classes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.34 $
+ * @version $Revision: 1.35 $
  */
 public class MockContext implements Context, TypesetterOptions {
 
@@ -935,6 +939,42 @@ public class MockContext implements Context, TypesetterOptions {
     public void startMarks() {
 
         throw new RuntimeException("unimplemented");
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#popDirection()
+     */
+    public Direction popDirection() {
+
+        // TODO gene: popDirection unimplemented
+        return null;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#pushDirection(de.dante.extex.interpreter.context.Direction)
+     */
+    public void pushDirection(Direction dir) {
+
+        // TODO gene: pushDirection unimplemented
+        
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#get(java.lang.Object, java.lang.Object)
+     */
+    public Object get(Object extension, Object key) {
+
+        // TODO gene: get unimplemented
+        return null;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#set(java.lang.Object, java.lang.Object, java.lang.Object, boolean)
+     */
+    public void set(Object extension, Object key, Object value, boolean global) {
+
+        // TODO gene: set unimplemented
+        
     }
 
 }
