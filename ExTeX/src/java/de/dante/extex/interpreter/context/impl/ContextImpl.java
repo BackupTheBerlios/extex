@@ -39,9 +39,6 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.Color;
 import de.dante.extex.interpreter.context.ContextInternals;
-import de.dante.extex.interpreter.context.Direction;
-import de.dante.extex.interpreter.context.TypesettingContext;
-import de.dante.extex.interpreter.context.TypesettingContextFactory;
 import de.dante.extex.interpreter.context.extension.ContextExtensionPoint;
 import de.dante.extex.interpreter.context.extension.ExtensionPoint;
 import de.dante.extex.interpreter.context.group.GroupInfo;
@@ -65,6 +62,9 @@ import de.dante.extex.interpreter.context.observer.load.LoadedObservable;
 import de.dante.extex.interpreter.context.observer.load.LoadedObserver;
 import de.dante.extex.interpreter.context.observer.tokens.TokensObservable;
 import de.dante.extex.interpreter.context.observer.tokens.TokensObserver;
+import de.dante.extex.interpreter.context.tc.Direction;
+import de.dante.extex.interpreter.context.tc.TypesettingContext;
+import de.dante.extex.interpreter.context.tc.TypesettingContextFactory;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.InterpreterExtensionInvalidException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
@@ -143,7 +143,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.117 $
+ * @version $Revision: 1.118 $
  */
 public class ContextImpl
         implements
@@ -570,6 +570,16 @@ public class ContextImpl
         long esc = getCount("escapechar").getValue();
 
         return (esc >= 0 ? UnicodeChar.get((int) esc) : null);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#get(
+     *      java.lang.Object,
+     *      java.lang.Object)
+     */
+    public Object get(final Object extension, final Object key) {
+
+        return group.get(extension, key);
     }
 
     /**
@@ -1538,6 +1548,19 @@ public class ContextImpl
 
         group.setTypesettingContext(typesettingContextFactory.newInstance(group
                 .getTypesettingContext(), language), global);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#set(
+     *      java.lang.Object,
+     *      java.lang.Object,
+     *      java.lang.Object,
+     *      boolean)
+     */
+    public void set(final Object extension, final Object key,
+            final Object value, final boolean global) {
+
+        group.set(extension, key, value, global);
     }
 
     /**
