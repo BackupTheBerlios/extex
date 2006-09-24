@@ -22,13 +22,19 @@ package de.dante.extex.interpreter.exception;
 
 /**
  * This exception is thrown when the main program use an
- * ExTeX extension witch is not avaiable.
+ * ExTeX extension witch is not available.
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class InterpreterExtensionException extends InterpreterException {
+
+    /**
+     * The field <tt>serialVersionUID</tt> contains the version number for
+     * serialization.
+     */
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * Creates a new object.
@@ -47,4 +53,5 @@ public class InterpreterExtensionException extends InterpreterException {
         return getLocalizer().format("MainExTeXExtensionException.Message",
                 super.getMessage());
     }
+
 }

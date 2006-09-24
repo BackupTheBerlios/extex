@@ -20,13 +20,19 @@
 package de.dante.extex.interpreter.exception;
 
 /**
- * InterpreterException, if arithmetic error is occured. 
+ * InterpreterException, if an arithmetic error has occurred. 
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class InterpreterArithmeticException extends InterpreterException {
+
+    /**
+     * The field <tt>serialVersionUID</tt> contains the version number for
+     * serialization.
+     */
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * Create a new object.
@@ -45,4 +51,5 @@ public class InterpreterArithmeticException extends InterpreterException {
 
         super(message);
     }
+
 }

@@ -21,13 +21,19 @@ package de.dante.extex.interpreter.exception;
 
 
 /**
- * InterpreterException, if a number is nit found.
+ * InterpreterException, if a number is not found.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class InterpreterMissingNumberException extends InterpreterException {
+
+    /**
+     * The field <tt>serialVersionUID</tt> contains the version number for
+     * serialization.
+     */
+    protected static final long serialVersionUID = 2005L;
 
     /**
      * Create a new object.
