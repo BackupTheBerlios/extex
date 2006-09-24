@@ -20,9 +20,6 @@
 package de.dante.extex.language.impl;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -54,7 +51,7 @@ import de.dante.util.resource.ResourceFinder;
  * used or an existing one should be loaded a future object is returned
  * which enables us to postpone the operation until the decision can be made.
  * <p>
- * The future object invokes one of th methods of
+ * The future object invokes one of the methods of
  * {@link LanguageCreator LanguageCreator}. In this case we know whether to
  * create or load the language. Thus the appropriate operation is performed and
  * the resulting language is put into the map overwriting the future object.
@@ -72,7 +69,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class LoadingLanguageManager extends BaseLanguageManager
         implements
