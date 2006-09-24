@@ -140,7 +140,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class NativeDef extends AbstractAssignment
         implements
@@ -153,7 +153,7 @@ public class NativeDef extends AbstractAssignment
      * inheritance in Java.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.11 $
+     * @version $Revision: 1.12 $
      */
     protected class Factory extends AbstractFactory {
 
@@ -174,12 +174,12 @@ public class NativeDef extends AbstractAssignment
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 2006L;
 
     /**
      * The field <tt>logger</tt> contains the logger to use.
      */
-    private Logger logger = null;
+    private transient Logger logger = null;
 
     /**
      * The field <tt>map</tt> contains the mapping from a symbolic name to a
