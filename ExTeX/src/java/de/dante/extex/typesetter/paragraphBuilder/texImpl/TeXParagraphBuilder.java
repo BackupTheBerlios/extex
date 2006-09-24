@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.context.tc.TypesettingContext;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
@@ -119,7 +119,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </i>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class TeXParagraphBuilder
         implements
@@ -152,7 +152,7 @@ public class TeXParagraphBuilder
      * <doc name="adjdemerits" type="register">
      * <h3>The Count Parameter <tt>\adjdemerits</tt></h3>
      *
-     * TODO gene: missing documentation
+     * TODO missing documentation
      * </doc>
      */
     private long adjDemerits;
@@ -174,7 +174,7 @@ public class TeXParagraphBuilder
      * <doc name="clubpenalty" type="register">
      * <h3>The Count Parameter <tt>\clubpenalty</tt></h3>
      *
-     * TODO gene: missing documentation
+     * TODO missing documentation
      * </doc>
      */
     private long clubPenalty;
@@ -183,7 +183,7 @@ public class TeXParagraphBuilder
      * <doc name="doublehyphendemerits" type="register">
      * <h3>The Count Parameter <tt>\doublehyphendemerits</tt></h3>
      *
-     * TODO gene: missing documentation
+     * TODO missing documentation
      * </doc>
      */
     private long doubleHyphenDemerits;
@@ -192,7 +192,7 @@ public class TeXParagraphBuilder
      * <doc name="emergencystretch" type="register">
      * <h3>The Count Parameter <tt>\emergencystretch</tt></h3>
      *
-     * TODO gene: missing documentation
+     * TODO missing documentation
      * </doc>
      */
     private FixedDimen emergencyStretch;
@@ -201,7 +201,7 @@ public class TeXParagraphBuilder
      * <doc name="exhyphenpenalty" type="register">
      * <h3>The CountParameter <tt>\exhyphenpenalty</tt></h3>
      *
-     * TODO gene: missing documentation
+     * TODO missing documentation
      * </doc>
      */
     private long exHyphenPenalty;
@@ -218,7 +218,7 @@ public class TeXParagraphBuilder
      * <doc name="finalwidowpenalty" type="register">
      * <h3>The Count Parameter <tt>\finalwidowpenalty</tt></h3>
      *
-     * TODO gene: missing documentation
+     * TODO missing documentation
      * </doc>
      */
     private long finalWidowPenalty;
@@ -238,7 +238,7 @@ public class TeXParagraphBuilder
      * <doc name="interlinepenalty" type="register">
      * <h3>The Count Parameter <tt>\interlinepenalty</tt></h3>
      *
-     * TODO gene: missing documentation
+     * TODO missing documentation
      * </doc>
      */
     private long interLinePenalty;
@@ -271,7 +271,7 @@ public class TeXParagraphBuilder
      * <doc name="linepenalty" type="register">
      * <h3>The Count Parameter <tt>\linepenalty</tt></h3>
      *
-     * TODO gene: missing documentation
+     * TODO missing documentation
      * </doc>
      */
     private long linePenalty;
@@ -280,7 +280,7 @@ public class TeXParagraphBuilder
      * <doc name="looseness" type="register">
      * <h3>The Count Parameter <tt>\looseness</tt></h3>
      *
-     * TODO gene: missing documentation
+     * TODO missing documentation
      * </doc>
      */
     private long looseness;
@@ -304,7 +304,7 @@ public class TeXParagraphBuilder
      * <doc name="pretolerance" type="register">
      * <h3>The Count Parameter <tt>\pretolerance</tt></h3>
      *
-     * TODO gene: missing documentation
+     * TODO missing documentation
      * </doc>
      */
     private long preTolerance;
@@ -341,7 +341,7 @@ public class TeXParagraphBuilder
      * <doc name="tolerance" type="register">
      * <h3>The CountParameter <tt>\tolerance</tt></h3>
      *
-     * TODO gene: missing documentation
+     * TODO missing documentation
      * </doc>
      */
     private long tolerance;
@@ -350,7 +350,7 @@ public class TeXParagraphBuilder
      * <doc name="tracingparagraphs" type="register">
      * <h3>The Count Parameter <tt>\tracingparagraphs</tt></h3>
      *
-     * TODO gene: missing documentation
+     * TODO missing documentation
      *
      * <h4>Examples</h4>
      *  <pre class="TeXSample">
