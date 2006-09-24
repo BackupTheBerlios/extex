@@ -1,0 +1,66 @@
+#!/bin/bash
+#--------------------------------------------------------------------
+# (c) 2003-2006 Gerd Neugebauer (gene@gerd-neugebauer.de)
+#
+CVSDIR=":pserver:anonymous@cvs.extex.berlios.de:/cvsroot/extex"
+MODULES="ExTeX"
+LOCALDIR="$HOME/build"
+LOG=$LOCALDIR/log
+
+export JAVA_HOME=$HOME/local/share/j2sdk1.4.2_09/
+export PATH=${JAVA_HOME}/bin:$PATH
+
+mkdir -p $LOCALDIR
+mkdir -p $LOG
+
+cd $LOCALDIR
+date >$LOG/export.log
+cvs -q -r -d $CVSDIR checkout -P $MODULES >>$LOG/export.log 2>&1
+cvs -q -r -d $CVSDIR update -P $MODULES >>$LOG/export.log 2>&1
+
+
+date >$LOG/www.log
+cd $LOCALDIR/ExTeX/www
+make >>$LOG/www.log 2>&1
+scp -q -r ../target/www/[a-qs-zA-Z]* shell.berlios.de:/home/groups/extex/htdocs/
+
+
+echo > .extex-test<<EOF
+#
+texmf.path=/usr/share/texmf
+#
+EOF
+
+
+
+cd $LOCALDIR/ExTeX
+date >$LOG/installer.log
+sh build installer >>$LOG/installer.log 2>&1
+if [ -e target/ExTeX-setup.jar ]
+then
+    scp -q target/ExTeX-setup.jar shell.berlios.de:/home/groups/extex/htdocs/snapshot
+else
+    cat $LOG/installer.log
+fi
+
+cd $LOCALDIR/ExTeX
+date >$LOG/javadoc.log
+sh build javadoc >>$LOG/javadoc.log 2>&1
+scp -q -r target/javadoc shell.berlios.de:/home/groups/extex/htdocs/snapshot
+cp -r target/javadoc ~/public_html/
+
+
+cd $LOCALDIR/ExTeX
+date >$LOG/test.log
+sh build clean junitreport >> $LOG/test.log 2>&1
+cp -r target/www/reports ~/public_html/
+
+
+cd $LOCALDIR/ExTeX/doc/DevelopersGuide
+date >$LOG/doc.log
+make >> $LOG/doc.log 2>&1
+cd $LOCALDIR/ExTeX/doc/UsersGuide
+make >> $LOG/doc.log 2>&1
+
+
+#
