@@ -24,10 +24,10 @@ import java.util.Map;
 
 import de.dante.extex.font.type.other.NullFont;
 import de.dante.extex.interpreter.Namespace;
-import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.context.group.GroupType;
 import de.dante.extex.interpreter.context.observer.group.AfterGroupObserver;
 import de.dante.extex.interpreter.context.observer.group.AfterGroupObserverList;
+import de.dante.extex.interpreter.context.tc.TypesettingContext;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.box.Box;
@@ -55,7 +55,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.66 $
+ * @version $Revision: 1.67 $
  */
 public class GroupImpl implements Group {
 
@@ -108,56 +108,77 @@ public class GroupImpl implements Group {
 
     /**
      * The field <tt>boxMap</tt> contains the map for the boxes.
+     * The field is initialized lacy. Thus new groups come up faster.
      */
-    private Map boxMap = new HashMap();
+    private Map boxMap;
 
     /**
      * The field <tt>catcodeMap</tt> contains the map for the catcodes.
+     * The field is initialized lacy. Thus new groups come up faster.
      */
-    private Map catcodeMap = new HashMap();
+    private Map catcodeMap;
+
+    //TODO gene: USE LACY INITIALIZATION FOR PERFORMANCE
 
     /**
      * The field <tt>codeMap</tt> contains the map for the active characters and
      * macros. The key is a Token. The value is a Code.
+     * The field is initialized lacy. Thus new groups come up faster.
      */
-    private Map codeMap = new HashMap();
+    private Map codeMap;
 
     /**
      * The field <tt>countMap</tt> contains the map for the count registers.
+     * The field is initialized lacy. Thus new groups come up faster.
      */
-    private Map countMap = new HashMap();
+    private Map countMap;
 
     /**
      * The field <tt>delcodeMap</tt> contains the map for the delimiter code
      * of the characters.
+     * The field is initialized lacy. Thus new groups come up faster.
      */
-    private Map delcodeMap = new HashMap();
+    private Map delcodeMap;
 
     /**
      * The field <tt>dimenMap</tt> contains the map for the dimen registers.
+     * The field is initialized lacy. Thus new groups come up faster.
      */
-    private Map dimenMap = new HashMap();
+    private Map dimenMap;
+
+    /**
+     * The field <tt>extensionMap</tt> contains the mapping from extension to
+     * their HashMap.
+     * The field is initialized lacy. Thus new groups come up faster.
+     */
+    private Map extensionMap;
 
     /**
      * The field <tt>fontMap</tt> contains the map for the fonts.
+     * The field is initialized lacy. Thus new groups come up faster.
      */
-    private Map fontMap = new HashMap();
+    private Map fontMap;
 
     /**
      * The field <tt>ifMap</tt> contains the map for the booleans.
+     * The field is initialized lacy. Thus new groups come up faster.
      */
-    private Map ifMap = new HashMap();
+    private Map ifMap;
 
     /**
      * The field <tt>inFileMap</tt> contains the map for the input files.
+     * The field is initialized lacy. Thus new groups come up faster.
+     * The map is not stored in the format file since files can not be kept
+     * open.
      */
-    private Map inFileMap = new HashMap();
+    private transient Map inFileMap;
 
     /**
      * The field <tt>lccodeMap</tt> contains the map for the translation to
      * lower case.
+     * The field is initialized lacy. Thus new groups come up faster.
      */
-    private Map lccodeMap = new HashMap();
+    private Map lccodeMap;
 
     /**
      * The field <tt>locator</tt> contains the locator to determine the
@@ -167,13 +188,15 @@ public class GroupImpl implements Group {
 
     /**
      * The field <tt>mathcodeMap</tt> contains the map for the category codes.
+     * The field is initialized lacy. Thus new groups come up faster.
      */
-    private Map mathcodeMap = new HashMap();
+    private Map mathcodeMap;
 
     /**
      * The field <tt>muskipMap</tt> contains the map for the muskip registers.
+     * The field is initialized lacy. Thus new groups come up faster.
      */
-    private Map muskipMap = new HashMap();
+    private Map muskipMap;
 
     /**
      * The field <tt>namespace</tt> contains the current name space.
@@ -187,18 +210,23 @@ public class GroupImpl implements Group {
 
     /**
      * The field <tt>outFileMap</tt> contains the map for the output files.
+     * The field is initialized lacy. Thus new groups come up faster.
+     * The map is not stored in the format file since files can not be kept
+     * open.
      */
-    private Map outFileMap = new HashMap();
+    private transient Map outFileMap;
 
     /**
      * The field <tt>sfcodeMap</tt> contains the map for the space factor.
+     * The field is initialized lacy. Thus new groups come up faster.
      */
-    private Map sfcodeMap = new HashMap();
+    private Map sfcodeMap;
 
     /**
      * The field <tt>skipMap</tt> contains the map for the skip registers
+     * The field is initialized lacy. Thus new groups come up faster.
      */
-    private Map skipMap = new HashMap();
+    private Map skipMap;
 
     /**
      * The field <tt>standardTokenStream</tt> contains the standard token
@@ -213,8 +241,9 @@ public class GroupImpl implements Group {
 
     /**
      * The field <tt>toksMap</tt> contains the map for the tokens registers.
+     * The field is initialized lacy. Thus new groups come up faster.
      */
-    private Map toksMap = new HashMap();
+    private Map toksMap;
 
     /**
      * The field <tt>type</tt> contains the type number of the group as returned
@@ -231,8 +260,9 @@ public class GroupImpl implements Group {
     /**
      * The field <tt>uccodeMap</tt> contains the map for the translation to
      * upper case.
+     * The field is initialized lacy. Thus new groups come up faster.
      */
-    private Map uccodeMap = new HashMap();
+    private Map uccodeMap;
 
     /**
      * Creates a new object.
@@ -270,6 +300,28 @@ public class GroupImpl implements Group {
     }
 
     /**
+     * @see de.dante.extex.interpreter.context.impl.Group#get(
+     *      java.lang.Object,
+     *      java.lang.Object)
+     */
+    public Object get(final Object extension, final Object key) {
+
+        Map map;
+        Object value;
+
+        if (extensionMap != null
+                && (map = (Map) extensionMap.get(extension)) != null
+                && (value = map.get(key)) != null) {
+            return value;
+        }
+        if (next != null) {
+            return next.get(extension, key);
+        }
+
+        return null;
+    }
+
+    /**
      * @see de.dante.extex.interpreter.context.impl.Group#getAfterGroup()
      */
     public Tokens getAfterGroup() {
@@ -283,13 +335,17 @@ public class GroupImpl implements Group {
      */
     public Box getBox(final String name) {
 
-        Box box = (Box) (boxMap.get(name));
-
-        if (box == null && next != null) {
-            box = next.getBox(name);
+        if (boxMap != null) {
+            Box box = (Box) (boxMap.get(name));
+            if (box != null) {
+                return box;
+            }
+        }
+        if (next != null) {
+            return next.getBox(name);
         }
 
-        return box;
+        return null;
     }
 
     /**
@@ -298,11 +354,14 @@ public class GroupImpl implements Group {
      */
     public Catcode getCatcode(final UnicodeChar c) {
 
-        Catcode value = (Catcode) catcodeMap.get(c);
+        if (catcodeMap != null) {
+            Catcode value = (Catcode) catcodeMap.get(c);
 
-        if (value != null) {
-            return value;
-        } else if (next != null) {
+            if (value != null) {
+                return value;
+            }
+        }
+        if (next != null) {
             return next.getCatcode(c);
         }
 
@@ -357,9 +416,13 @@ public class GroupImpl implements Group {
      */
     protected Code getCodeForToken(final CodeToken token) {
 
-        Code code = (Code) (codeMap.get(token));
-        return (code == null && next != null ? ((GroupImpl) next)
-                .getCodeForToken(token) : code);
+        if (codeMap != null) {
+            Code code = (Code) (codeMap.get(token));
+            if (code != null) {
+                return code;
+            }
+        }
+        return next != null ? ((GroupImpl) next).getCodeForToken(token) : null;
     }
 
     /**
@@ -368,18 +431,23 @@ public class GroupImpl implements Group {
      */
     public Count getCount(final String name) {
 
-        Count count = (Count) (countMap.get(name));
+        if (countMap != null) {
+            Count count = (Count) (countMap.get(name));
 
-        if (count == null) {
-            if (next != null) {
-                count = next.getCount(name);
-            } else {
-                count = new Count(0);
-                countMap.put(name, count);
+            if (count != null) {
+                return count;
             }
         }
-
-        return count;
+        if (next != null) {
+            return next.getCount(name);
+        } else {
+            Count count = new Count(0);
+            if (countMap == null) {
+                countMap = new HashMap();
+            }
+            countMap.put(name, count);
+            return count;
+        }
     }
 
     /**
@@ -388,18 +456,21 @@ public class GroupImpl implements Group {
      */
     public MathDelimiter getDelcode(final UnicodeChar c) {
 
-        MathDelimiter delcode = (MathDelimiter) (delcodeMap.get(c));
+        if (delcodeMap != null) {
+            MathDelimiter delcode = (MathDelimiter) (delcodeMap.get(c));
 
-        if (delcode != null) {
-            return delcode;
-        } else if (next != null) {
+            if (delcode != null) {
+                return delcode;
+            }
+        }
+        if (next != null) {
             return next.getDelcode(c);
         }
 
         // Fallback for predefined delimiter codes
         if (c.getCodePoint() == '.') {
             MathDelimiter del = new MathDelimiter(null, null, null);
-            delcodeMap.put(UnicodeChar.get('.'), del);
+            // delcodeMap.put(UnicodeChar.get('.'), del);
             return del;
         }
         return null;
@@ -412,18 +483,23 @@ public class GroupImpl implements Group {
      */
     public Dimen getDimen(final String name) {
 
-        Dimen dimen = (Dimen) (dimenMap.get(name));
+        if (dimenMap != null) {
+            Dimen dimen = (Dimen) (dimenMap.get(name));
 
-        if (dimen == null) {
-            if (next != null) {
-                dimen = next.getDimen(name);
-            } else {
-                dimen = new Dimen();
-                dimenMap.put(name, dimen);
+            if (dimen != null) {
+                return dimen;
             }
         }
-
-        return dimen;
+        if (next != null) {
+            return next.getDimen(name);
+        } else {
+            Dimen dimen = new Dimen();
+            if (dimenMap == null) {
+                dimenMap = new HashMap();
+            }
+            dimenMap.put(name, dimen);
+            return dimen;
+        }
     }
 
     /**
@@ -432,11 +508,14 @@ public class GroupImpl implements Group {
      */
     public Font getFont(final String name) {
 
-        Font font = (Font) (fontMap.get(name));
+        if (fontMap != null) {
+            Font font = (Font) (fontMap.get(name));
 
-        return (font != null ? font : next != null
-                ? next.getFont(name)
-                : new NullFont());
+            if (font != null) {
+                return font;
+            }
+        }
+        return next != null ? next.getFont(name) : new NullFont();
     }
 
     /**
@@ -445,10 +524,13 @@ public class GroupImpl implements Group {
      */
     public boolean getIf(final String name) {
 
-        Boolean b = (Boolean) (ifMap.get(name));
-        return b != null ? b.booleanValue() : next != null
-                ? next.getIf(name)
-                : false;
+        if (ifMap != null) {
+            Boolean b = (Boolean) (ifMap.get(name));
+            if (b != null) {
+                return b.booleanValue();
+            }
+        }
+        return next != null ? next.getIf(name) : false;
     }
 
     /**
@@ -469,10 +551,12 @@ public class GroupImpl implements Group {
             return new InFile(standardTokenStream, true);
         }
 
-        InFile inFile = (InFile) (inFileMap.get(name));
+        if (inFileMap != null) {
+            InFile inFile = (InFile) (inFileMap.get(name));
 
-        if (null != inFile) {
-            return inFile;
+            if (null != inFile) {
+                return inFile;
+            }
         }
 
         return (next != null ? next.getInFile(name) : new InFile(
@@ -485,18 +569,24 @@ public class GroupImpl implements Group {
      */
     public UnicodeChar getLccode(final UnicodeChar lc) {
 
-        UnicodeChar value = (UnicodeChar) lccodeMap.get(lc);
+        if (lccodeMap != null) {
+            UnicodeChar value = (UnicodeChar) lccodeMap.get(lc);
 
-        if (value != null) {
-            return value;
-        } else if (next != null) {
+            if (value != null) {
+                return value;
+            }
+        }
+        if (next != null) {
             return next.getLccode(lc);
         }
 
         // Fallback for predefined lccodes
         if (lc.isLetter()) {
-            value = lc.lower();
+            UnicodeChar value = lc.lower();
             // the value is stored to avoid constructing UnicodeChars again
+            if (lccodeMap == null) {
+                lccodeMap = new HashMap();
+            }
             lccodeMap.put(lc, value);
             return value;
         }
@@ -531,21 +621,22 @@ public class GroupImpl implements Group {
      */
     public Count getMathcode(final UnicodeChar c) {
 
-        Count mathcode = (Count) (mathcodeMap.get(c));
-
-        if (mathcode == null) {
-            if (next != null) {
-                return next.getMathcode(c);
-            } else if (c.isDigit()) {
-                return new Count(c.getCodePoint() + MATHCODE_DIGIT_OFFSET);
-            } else if (c.isLetter()) {
-                return new Count(c.getCodePoint() + MATHCODE_LETTER_OFFSET);
-            } else {
-                return new Count(c.getCodePoint());
+        if (mathcodeMap != null) {
+            Count mathcode = (Count) (mathcodeMap.get(c));
+            if (mathcode != null) {
+                return mathcode;
             }
         }
 
-        return mathcode;
+        if (next != null) {
+            return next.getMathcode(c);
+        } else if (c.isDigit()) {
+            return new Count(c.getCodePoint() + MATHCODE_DIGIT_OFFSET);
+        } else if (c.isLetter()) {
+            return new Count(c.getCodePoint() + MATHCODE_LETTER_OFFSET);
+        } else {
+            return new Count(c.getCodePoint());
+        }
     }
 
     /**
@@ -554,10 +645,13 @@ public class GroupImpl implements Group {
      */
     public Muskip getMuskip(final String name) {
 
-        Muskip muskip = (Muskip) (muskipMap.get(name));
-        return muskip != null ? muskip : next != null
-                ? next.getMuskip(name)
-                : new Muskip();
+        if (muskipMap != null) {
+            Muskip muskip = (Muskip) (muskipMap.get(name));
+            if (muskip != null) {
+                return muskip;
+            }
+        }
+        return next != null ? next.getMuskip(name) : new Muskip();
     }
 
     /**
@@ -593,9 +687,10 @@ public class GroupImpl implements Group {
      */
     public OutFile getOutFile(final String name) {
 
-        OutFile file = (OutFile) (outFileMap.get(name));
-
-        return file;
+        if (outFileMap != null) {
+            return (OutFile) (outFileMap.get(name));
+        }
+        return null;
     }
 
     /**
@@ -604,11 +699,13 @@ public class GroupImpl implements Group {
      */
     public Count getSfcode(final UnicodeChar c) {
 
-        Count sfcode = (Count) (sfcodeMap.get(c));
-
-        if (sfcode != null) {
-            return sfcode;
-        } else if (next != null) {
+        if (sfcodeMap != null) {
+            Count sfcode = (Count) (sfcodeMap.get(c));
+            if (sfcode != null) {
+                return sfcode;
+            }
+        }
+        if (next != null) {
             return next.getSfcode(c);
         }
 
@@ -626,10 +723,13 @@ public class GroupImpl implements Group {
      */
     public Glue getSkip(final String name) {
 
-        Glue skip = (Glue) (skipMap.get(name));
-        return skip != null ? skip : next != null
-                ? next.getSkip(name)
-                : new Glue(0);
+        if (skipMap != null) {
+            Glue skip = (Glue) (skipMap.get(name));
+            if (skip != null) {
+                return skip;
+            }
+        }
+        return next != null ? next.getSkip(name) : new Glue(0);
     }
 
     /**
@@ -658,10 +758,13 @@ public class GroupImpl implements Group {
      */
     public Tokens getToks(final String name) {
 
-        Tokens toks = (Tokens) (toksMap.get(name));
-        return toks != null ? toks : next != null
-                ? next.getToks(name)
-                : new Tokens();
+        if (toksMap != null) {
+            Tokens toks = (Tokens) (toksMap.get(name));
+            if (toks != null) {
+                return toks;
+            }
+        }
+        return next != null ? next.getToks(name) : new Tokens();
     }
 
     /**
@@ -669,8 +772,13 @@ public class GroupImpl implements Group {
      */
     public Tokens getToksOrNull(final String name) {
 
-        Tokens toks = (Tokens) (toksMap.get(name));
-        return toks != null ? toks : next != null ? next.getToks(name) : null;
+        if (toksMap != null) {
+            Tokens toks = (Tokens) (toksMap.get(name));
+            if (toks != null) {
+                return toks;
+            }
+        }
+        return next != null ? next.getToks(name) : null;
     }
 
     /**
@@ -687,11 +795,10 @@ public class GroupImpl implements Group {
     public TypesettingContext getTypesettingContext() {
 
         TypesettingContext context = typesettingContext;
+
         return context != null //
                 ? context //
-                : next != null
-                        ? next.getTypesettingContext()
-                        : null;
+                : next != null ? next.getTypesettingContext() : null;
     }
 
     /**
@@ -700,18 +807,24 @@ public class GroupImpl implements Group {
      */
     public UnicodeChar getUccode(final UnicodeChar uc) {
 
-        UnicodeChar value = (UnicodeChar) uccodeMap.get(uc);
+        if (uccodeMap != null) {
+            UnicodeChar value = (UnicodeChar) uccodeMap.get(uc);
+            if (value != null) {
+                return value;
+            }
+        }
 
-        if (value != null) {
-            return value;
-        } else if (next != null) {
+        if (next != null) {
             return next.getUccode(uc);
         }
 
         // Fallback for predefined uc codes
         if (uc.isLetter()) {
-            value = uc.upper();
+            UnicodeChar value = uc.upper();
             // the value is stored to avoid constructing UnicodeChars again
+            if (uccodeMap == null) {
+                uccodeMap = new HashMap();
+            }
             uccodeMap.put(uc, value);
             return value;
         }
@@ -729,10 +842,40 @@ public class GroupImpl implements Group {
     }
 
     /**
+     * @see de.dante.extex.interpreter.context.impl.Group#set(
+     *      java.lang.Object,
+     *      java.lang.Object,
+     *      java.lang.Object,
+     *      boolean)
+     */
+    public void set(final Object extension, final Object key,
+            final Object value, final boolean global) {
+
+        if (extensionMap == null) {
+            extensionMap = new HashMap();
+        }
+        Map map = (Map) extensionMap.get(extension);
+        if (map == null) {
+            map = new HashMap();
+            extensionMap.put(extension, map);
+        }
+
+        map.put(key, value);
+
+        if (global && next != null) {
+            next.set(extension, key, value, global);
+        }
+    }
+
+    /**
      * @see de.dante.extex.interpreter.context.impl.Group#setBox(
      *      java.lang.String, de.dante.extex.interpreter.type.box.Box, boolean)
      */
     public void setBox(final String name, final Box value, final boolean global) {
+
+        if (boxMap == null) {
+            boxMap = new HashMap();
+        }
 
         boxMap.put(name, value);
 
@@ -750,6 +893,10 @@ public class GroupImpl implements Group {
     public void setCatcode(final UnicodeChar uc, final Catcode code,
             final boolean global) {
 
+        if (catcodeMap == null) {
+            catcodeMap = new HashMap();
+        }
+
         catcodeMap.put(uc, code);
 
         if (global && next != null) {
@@ -763,6 +910,10 @@ public class GroupImpl implements Group {
      *      de.dante.extex.interpreter.type.Code, boolean)
      */
     public void setCode(final Token token, final Code code, final boolean global) {
+
+        if (codeMap == null) {
+            codeMap = new HashMap();
+        }
 
         codeMap.put(token, code);
 
@@ -780,6 +931,10 @@ public class GroupImpl implements Group {
     public void setCount(final String name, final Count value,
             final boolean global) {
 
+        if (countMap == null) {
+            countMap = new HashMap();
+        }
+
         countMap.put(name, value);
 
         if (global && next != null) {
@@ -794,6 +949,10 @@ public class GroupImpl implements Group {
      */
     public void setDelcode(final UnicodeChar c, final MathDelimiter code,
             final boolean global) {
+
+        if (delcodeMap == null) {
+            delcodeMap = new HashMap();
+        }
 
         delcodeMap.put(c, code);
 
@@ -810,6 +969,10 @@ public class GroupImpl implements Group {
     public void setDimen(final String name, final Dimen value,
             final boolean global) {
 
+        if (dimenMap == null) {
+            dimenMap = new HashMap();
+        }
+
         dimenMap.put(name, value);
 
         if (global && next != null) {
@@ -822,6 +985,10 @@ public class GroupImpl implements Group {
      *      java.lang.String, de.dante.extex.interpreter.type.font.Font, boolean)
      */
     public void setFont(final String name, final Font font, final boolean global) {
+
+        if (fontMap == null) {
+            fontMap = new HashMap();
+        }
 
         fontMap.put(name, font);
 
@@ -838,6 +1005,10 @@ public class GroupImpl implements Group {
     public void setIf(final String name, final boolean value,
             final boolean global) {
 
+        if (ifMap == null) {
+            ifMap = new HashMap();
+        }
+
         ifMap.put(name, (value ? Boolean.TRUE : Boolean.FALSE));
 
         if (global && next != null) {
@@ -852,6 +1023,10 @@ public class GroupImpl implements Group {
      */
     public void setInFile(final String name, final InFile file,
             final boolean global) {
+
+        if (inFileMap == null) {
+            inFileMap = new HashMap();
+        }
 
         inFileMap.put(name, file);
 
@@ -868,6 +1043,10 @@ public class GroupImpl implements Group {
      */
     public void setLccode(final UnicodeChar lc, final UnicodeChar uc,
             final boolean global) {
+
+        if (lccodeMap == null) {
+            lccodeMap = new HashMap();
+        }
 
         lccodeMap.put(lc, uc);
 
@@ -894,6 +1073,10 @@ public class GroupImpl implements Group {
     public void setMathcode(final UnicodeChar c, final Count code,
             final boolean global) {
 
+        if (mathcodeMap == null) {
+            mathcodeMap = new HashMap();
+        }
+
         mathcodeMap.put(c, code);
 
         if (global && next != null) {
@@ -908,6 +1091,10 @@ public class GroupImpl implements Group {
      */
     public void setMuskip(final String name, final Muskip value,
             final boolean global) {
+
+        if (muskipMap == null) {
+            muskipMap = new HashMap();
+        }
 
         muskipMap.put(name, value);
 
@@ -928,6 +1115,7 @@ public class GroupImpl implements Group {
     public void setNamespace(final String theNamespace, final boolean global) {
 
         this.namespace = theNamespace;
+
         if (global && next != null) {
             next.setNamespace(theNamespace, global);
         }
@@ -940,6 +1128,10 @@ public class GroupImpl implements Group {
      */
     public void setOutFile(final String name, final OutFile file,
             final boolean global) {
+
+        if (outFileMap == null) {
+            outFileMap = new HashMap();
+        }
 
         outFileMap.put(name, file);
 
@@ -956,6 +1148,10 @@ public class GroupImpl implements Group {
     public void setSfcode(final UnicodeChar c, final Count code,
             final boolean global) {
 
+        if (sfcodeMap == null) {
+            sfcodeMap = new HashMap();
+        }
+
         sfcodeMap.put(c, code);
 
         if (global && next != null) {
@@ -970,6 +1166,10 @@ public class GroupImpl implements Group {
      */
     public void setSkip(final String name, final Glue value,
             final boolean global) {
+
+        if (skipMap == null) {
+            skipMap = new HashMap();
+        }
 
         skipMap.put(name, value);
 
@@ -1004,6 +1204,10 @@ public class GroupImpl implements Group {
      */
     public void setToks(final String name, final Tokens value,
             final boolean global) {
+
+        if (toksMap == null) {
+            toksMap = new HashMap();
+        }
 
         toksMap.put(name, value);
 
@@ -1044,6 +1248,10 @@ public class GroupImpl implements Group {
      */
     public void setUccode(final UnicodeChar uc, final UnicodeChar lc,
             final boolean global) {
+
+        if (uccodeMap == null) {
+            uccodeMap = new HashMap();
+        }
 
         uccodeMap.put(uc, lc);
 
