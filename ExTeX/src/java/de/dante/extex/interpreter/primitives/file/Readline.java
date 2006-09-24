@@ -49,8 +49,8 @@ import de.dante.util.framework.logger.LogEnabled;
  *  The primitive <tt>\readline</tt> read characters from an input stream until
  *  the end of line is encountered. The characters are translated to tokens
  *  with the category code OTHER except the white-space characters which receive
- *  the category code SPACE. This mapping is performed ignoring the setting
- *  of {@linkplain de.dante.extex.interpreter.primitives.register.CatcodePrimitive <tt>\catcode</tt>}.
+ *  the category code SPACE. This mapping is performed ignoring the setting of
+ *  {@link de.dante.extex.interpreter.primitives.register.CatcodePrimitive \catcode}.
  *  The resulting token list is bound to the control sequence given.
  * </p>
  *
@@ -77,7 +77,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class Readline extends AbstractAssignment implements LogEnabled {
 
