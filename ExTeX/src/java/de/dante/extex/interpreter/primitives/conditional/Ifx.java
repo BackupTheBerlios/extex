@@ -32,7 +32,7 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="ifx">
  * <h3>The Primitive <tt>\ifx</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  TODO missing documentation
  * </p>
  *
  * <h4>Syntax</h4>
@@ -57,7 +57,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public class Ifx extends AbstractIf {
 

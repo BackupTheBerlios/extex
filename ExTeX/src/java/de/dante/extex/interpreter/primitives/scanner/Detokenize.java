@@ -38,7 +38,7 @@ import de.dante.extex.typesetter.Typesetter;
  *  The primitive <tt>\detokenize</tt> ...
  * </p>
  * <p>
- *  TODO gene: missing documentation
+ *  TODO missing documentation
  * </p>
  *
  * <h4>Syntax</h4>
@@ -55,7 +55,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Detokenize extends AbstractCode implements ExpandableCode {
 

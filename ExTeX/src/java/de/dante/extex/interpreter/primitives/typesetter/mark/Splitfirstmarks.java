@@ -30,7 +30,7 @@ import de.dante.extex.interpreter.type.tokens.Tokens;
  * <doc name="splitfirstmarks">
  * <h3>The Primitive <tt>\splitfirstmarks</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  TODO missing documentation
  * </p>
  *
  * <h4>Syntax</h4>
@@ -50,7 +50,7 @@ import de.dante.extex.interpreter.type.tokens.Tokens;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Splitfirstmarks extends AbstractMarksCode {
 

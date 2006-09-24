@@ -42,7 +42,7 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="count">
  * <h3>The Primitive <tt>\count</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  TODO missing documentation
  * </p>
  *
  * <h4>Syntax</h4>
@@ -75,7 +75,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.32 $
+ * @version $Revision: 1.33 $
  */
 public class CountPrimitive extends AbstractCount
         implements

@@ -37,7 +37,7 @@ import de.dante.extex.typesetter.Typesetter;
  *  The primitive <tt>\muexpr</tt> ...
  * </p>
  * <p>
- *  TODO gene: missing documentation
+ *  TODO missing documentation
  * </p>
  *
  * <h4>Syntax</h4>
@@ -54,7 +54,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Muexpr extends AbstractCode implements MuskipConvertible {
 

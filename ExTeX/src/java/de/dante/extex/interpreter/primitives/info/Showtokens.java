@@ -46,7 +46,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * <doc name="showtokens">
  * <h3>The Primitive <tt>\showtokens</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  TODO missing documentation
  * </p>
  *
  * <h4>Syntax</h4>
@@ -64,7 +64,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Showtokens extends AbstractCode implements LogEnabled {
 

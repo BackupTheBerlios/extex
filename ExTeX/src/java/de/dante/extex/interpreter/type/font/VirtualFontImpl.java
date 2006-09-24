@@ -24,7 +24,7 @@ import de.dante.extex.font.type.InternalFount;
 import de.dante.extex.font.type.ModifiableFount;
 import de.dante.extex.font.type.VirtualFount;
 import de.dante.extex.font.type.efm.commands.EfmHVW;
-import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.context.tc.TypesettingContext;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.type.node.AbstractNode;
 import de.dante.extex.typesetter.type.node.VirtualCharNode;
@@ -34,7 +34,7 @@ import de.dante.util.UnicodeChar;
  * Implementation for a virtual font.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class VirtualFontImpl extends FontImpl implements VirtualFount {
 

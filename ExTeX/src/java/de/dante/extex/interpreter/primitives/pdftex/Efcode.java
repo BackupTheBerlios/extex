@@ -40,7 +40,7 @@ import de.dante.util.UnicodeChar;
  * <h3>The PDF Primitive <tt>\efcode</tt></h3>
  * <p>
  *  This primitive ...
- *  TODO gene: missing documentation
+ *  TODO missing documentation
  * </p>
  * <p>
  *  The default value is 1000.
@@ -60,7 +60,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Efcode extends AbstractCode
         implements

@@ -42,7 +42,7 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="muskip">
  * <h3>The Primitive <tt>\muskip</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  TODO missing documentation
  * </p>
  *
  * <h4>Syntax</h4>
@@ -71,7 +71,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class MuskipPrimitive extends MuskipParameter {
 

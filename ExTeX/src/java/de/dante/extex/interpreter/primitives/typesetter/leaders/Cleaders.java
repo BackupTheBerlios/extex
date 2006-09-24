@@ -48,7 +48,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * <doc name="cleaders">
  * <h3>The Primitive <tt>\cleaders</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  TODO missing documentation
  * </p>
  *
  * <h4>Syntax</h4>
@@ -64,7 +64,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class Cleaders extends AbstractCode {
 

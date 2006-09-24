@@ -44,7 +44,7 @@ import de.dante.util.exception.GeneralException;
  * <doc name="prevdepth">
  * <h3>The Primitive <tt>\prevdepth</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  TODO missing documentation
  * </p>
  *
  * <h4>Syntax</h4>
@@ -64,7 +64,7 @@ import de.dante.util.exception.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Prevdepth extends AbstractAssignment
         implements

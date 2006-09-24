@@ -44,7 +44,7 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="def">
  * <h3>The Primitive <tt>\def</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  TODO missing documentation
  * </p>
  *
  * <h4>Syntax</h4>
@@ -75,7 +75,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.44 $
+ * @version $Revision: 1.45 $
  */
 public class Def extends AbstractAssignment {
 

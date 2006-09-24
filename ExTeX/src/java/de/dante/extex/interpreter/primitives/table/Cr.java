@@ -38,7 +38,7 @@ import de.dante.extex.typesetter.listMaker.AlignmentList;
  * <doc name="cr">
  * <h3>The Primitive <tt>\cr</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  TODO missing documentation
  * </p>
  *
  * <h4>Syntax</h4>
@@ -54,7 +54,7 @@ import de.dante.extex.typesetter.listMaker.AlignmentList;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Cr extends AbstractCode {
 

@@ -46,7 +46,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * <doc name="halign">
  * <h3>The Primitive <tt>\halign</tt></h3>
  * <p>
- *  TODO gene: missing documentation
+ *  TODO missing documentation
  * </p>
  *
  * <h4>Syntax</h4>
@@ -74,7 +74,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.32 $
+ * @version $Revision: 1.33 $
  */
 public class Halign extends AbstractAlign implements Boxable {
 

@@ -66,7 +66,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *  given as number after the keyword <tt>scaled</tt>. The value given is 1000
  *  times the scale factor to be used.
  * </p>
- *  TODO gene: missing documentation of the extensions
+ *  TODO missing documentation of the extensions
  * <p>
  *  This primitive is an assignment.
  * </p>
@@ -141,7 +141,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.43 $
+ * @version $Revision: 1.44 $
  */
 public class FontPrimitive extends AbstractAssignment
         implements
