@@ -78,7 +78,7 @@
 
         <!-- The implementation of the typesetting context to use.
           -->
-        <TypesettingContext class="de.dante.extex.interpreter.context.TypesettingContextImpl"/>
+        <TypesettingContext class="de.dante.extex.interpreter.context.tc.TypesettingContextImpl"/>
       </ExTeX>
     </Context>
 

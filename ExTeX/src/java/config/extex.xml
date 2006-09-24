@@ -84,7 +84,7 @@
 
         <!-- The implementation of the typesetting context to use.
           -->
-        <TypesettingContext class="de.dante.extex.interpreter.context.TypesettingContextImpl"/>
+        <TypesettingContext class="de.dante.extex.interpreter.context.tc.TypesettingContextImpl"/>
       </ExTeX>
     </Context>
 
@@ -103,7 +103,6 @@
 
     <unit src="unit/tex.xml"/>
     <unit src="unit/etex.xml"/>
-    <unit src="unit/omega.xml"/>
     <unit src="unit/ensureloaded.xml"/>
     <unit src="unit/namespace.xml"/>
     <unit src="unit/extex.xml"/>

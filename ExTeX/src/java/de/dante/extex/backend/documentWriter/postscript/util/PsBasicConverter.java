@@ -30,7 +30,7 @@ import de.dante.extex.color.ColorConverter;
 import de.dante.extex.color.model.GrayscaleColor;
 import de.dante.extex.color.model.RgbColor;
 import de.dante.extex.interpreter.context.Color;
-import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.context.tc.TypesettingContext;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.typesetter.type.Node;
@@ -67,7 +67,7 @@ import de.dante.util.resource.ResourceFinder;
  * This class provides a converter to PostScript code.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class PsBasicConverter
         implements
@@ -81,7 +81,7 @@ public class PsBasicConverter
      * for output.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.6 $
+     * @version $Revision: 1.7 $
      */
     private class Buffer {
 

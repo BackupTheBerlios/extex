@@ -19,7 +19,7 @@
 
 package de.dante.extex.font.type;
 
-import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.context.tc.TypesettingContext;
 import de.dante.extex.typesetter.type.node.VirtualCharNode;
 import de.dante.util.UnicodeChar;
 
@@ -27,7 +27,7 @@ import de.dante.util.UnicodeChar;
  * Virtual Fount Interface
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface VirtualFount {
 

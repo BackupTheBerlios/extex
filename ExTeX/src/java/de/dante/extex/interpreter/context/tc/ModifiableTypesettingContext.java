@@ -16,11 +16,9 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+package de.dante.extex.interpreter.context.tc;
 
-package de.dante.extex.interpreter.context;
-
-import java.io.Serializable;
-
+import de.dante.extex.interpreter.context.Color;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.language.Language;
 
@@ -29,36 +27,45 @@ import de.dante.extex.language.Language;
  * appearance of glyphs or other nodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.1 $
  */
-public interface TypesettingContext extends Serializable {
+public interface ModifiableTypesettingContext extends TypesettingContext {
 
     /**
-     * Getter for the color.
+     * Setter for all components.
+     * The components color, direction, font, language, etc are copied from
+     * the instance given.
      *
-     * @return the current color
+     * @param context the context to clone
      */
-    Color getColor();
+    void set(TypesettingContext context);
 
     /**
-     * Getter for the writing direction.
+     * Setter for the color.
      *
-     * @return the current direction
+     * @param color the new color
      */
-    Direction getDirection();
+    void setColor(Color color);
 
     /**
-     * Getter for the font component.
+     * Setter for the writing direction.
      *
-     * @return the font
+     * @param direction the new direction
      */
-    Font getFont();
+    void setDirection(Direction direction);
 
     /**
-     * Getter for the hyphenation table.
+     * Setter for the font component.
      *
-     * @return the hyphenation table
+     * @param font the font to store
      */
-    Language getLanguage();
+    void setFont(Font font);
+
+    /**
+     * Setter for the hyphenation table.
+     *
+     * @param language the hyphenation table
+     */
+    void setLanguage(Language language);
 
 }

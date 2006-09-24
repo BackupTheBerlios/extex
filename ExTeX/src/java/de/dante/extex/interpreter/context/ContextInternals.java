@@ -19,6 +19,7 @@
 
 package de.dante.extex.interpreter.context;
 
+import de.dante.extex.interpreter.context.tc.TypesettingContextFactory;
 import de.dante.extex.language.LanguageManagerCarrier;
 
 /**
@@ -26,7 +27,7 @@ import de.dante.extex.language.LanguageManagerCarrier;
  * internal methods.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface ContextInternals extends Context, LanguageManagerCarrier {
 
