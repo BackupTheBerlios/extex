@@ -77,7 +77,7 @@ import de.dante.util.exception.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.37 $
+ * @version $Revision: 1.38 $
  */
 public class Let extends AbstractAssignment {
 
@@ -359,6 +359,11 @@ public class Let extends AbstractAssignment {
         source.getOptionalEquals(context);
         Token t = source.getNonSpace(context);
 
+        if (t == null) {
+            throw new EofException(printableControlSequence(context));
+        }
+        
+
         let(prefix, context, cs, t);
     }
 
@@ -374,12 +379,8 @@ public class Let extends AbstractAssignment {
      *
      * @throws InterpreterException in case of an error
      */
-    protected void let(final Flags prefix, final Context context,
+    public static void let(final Flags prefix, final Context context,
             final CodeToken cs, final Token t) throws InterpreterException {
-
-        if (t == null) {
-            throw new EofException(printableControlSequence(context));
-        }
 
         Code code;
         try {
