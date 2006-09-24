@@ -22,7 +22,7 @@ package de.dante.extex.interpreter.primitives.hyphen;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.context.Direction;
+import de.dante.extex.interpreter.context.tc.Direction;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.ExtensionDisabledException;
 import de.dante.extex.interpreter.type.AbstractCode;
@@ -58,7 +58,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class BeginR extends AbstractCode {
 
