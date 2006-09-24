@@ -23,16 +23,20 @@ import java.util.Iterator;
 import java.util.logging.Logger;
 
 import de.dante.extex.backend.outputStream.OutputStreamFactory;
+import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.max.StringSource;
 import de.dante.extex.interpreter.primitives.dynamic.util.LoaderFactory;
+import de.dante.extex.interpreter.primitives.macro.Let;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.InitializableCode;
 import de.dante.extex.interpreter.type.OutputStreamConsumer;
+import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.token.CodeToken;
+import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.scanner.type.token.TokenFactory;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.UnicodeChar;
@@ -59,7 +63,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public final class LoadUnit extends AbstractFactory {
 
@@ -123,9 +127,26 @@ public final class LoadUnit extends AbstractFactory {
 
         iterator = configuration.iterator("import");
         while (iterator.hasNext()) {
-            Configuration x = (Configuration) iterator.next();
-            x.getAttribute("namespace");
-            //TODO gene: do import
+            String ns = ((Configuration) iterator.next())
+                    .getAttribute("namespace");
+            Tokens export = context.getToks(ns + "\bexport");
+            String namespace = context.getNamespace();
+            int length = export.length();
+
+            for (int i = 0; i < length; i++) {
+                Token t = export.get(i);
+                if (t instanceof CodeToken) {
+                    if (context.getCode((CodeToken) t) == null) {
+                        //TODO gene: unimplemented
+                        throw new RuntimeException("unimplemented");
+//                        throw new HelpingException(getLocalizer(),
+//                                "Namespace.Import.undef", t.toString());
+                    } else {
+                        Let.let(Flags.NONE, context, //
+                                ((CodeToken) t).cloneInNamespace(namespace), t);
+                    }
+                }
+            }
         }
 
         Configuration start = configuration.findConfiguration("start");
