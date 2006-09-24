@@ -24,6 +24,8 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 import de.dante.extex.scanner.stream.observer.file.OpenFileObservable;
 import de.dante.extex.scanner.stream.observer.file.OpenFileObserver;
@@ -106,7 +108,7 @@ import de.dante.util.resource.ResourceFinder;
  * <dl>
  *  <dt><tt>file</tt></dt>
  *  <dd>This event is triggered by the request for a TokenStream fed from a
- *   file. It is defered until the file has been found and opened.
+ *   file. It is deferred until the file has been found and opened.
  *   The name of the file is passed as argument to the observer.
  *  </dd>
  *
@@ -123,7 +125,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.37 $
+ * @version $Revision: 1.38 $
  */
 public class TokenStreamFactory extends AbstractFactory
         implements
@@ -142,6 +144,12 @@ public class TokenStreamFactory extends AbstractFactory
      * instance.
      */
     private Configuration configuration;
+
+    /**
+     * The field <tt>decorators</tt> contains the list of decorators for
+     * input streams acquired from a resource.
+     */
+    private List decorators = null;
 
     /**
      * The field <tt>openFileObservers</tt> contains the observers registered
@@ -173,8 +181,8 @@ public class TokenStreamFactory extends AbstractFactory
     private Constructor readerConstructor;
 
     /**
-     * The field <tt>resourceFinder</tt> contains the file finder used when trying
-     * to read from a file.
+     * The field <tt>resourceFinder</tt> contains the file finder used when
+     * trying to read from a resource.
      */
     private ResourceFinder resourceFinder = null;
 
@@ -334,10 +342,11 @@ public class TokenStreamFactory extends AbstractFactory
     }
 
     /**
-     * Provide a new instance of a token stream reading from a file.
+     * Provide a new instance of a token stream reading from a file or other
+     * resource.
      *
-     * @param fileName the name of the file to read
-     * @param fileType the type of the file to read
+     * @param name the name of the file to be read
+     * @param type the type of the file to be read
      * @param encoding the name of the encoding to use
      *
      * @return the new instance or <code>null</code> if the resource could not
@@ -345,25 +354,30 @@ public class TokenStreamFactory extends AbstractFactory
      *
      * @throws ConfigurationException in case of an error in the configuration
      */
-    public TokenStream newInstance(final String fileName,
-            final String fileType, final String encoding)
-            throws ConfigurationException {
+    public TokenStream newInstance(final String name, final String type,
+            final String encoding) throws ConfigurationException {
 
         if (resourceFinder == null) {
             throw new MissingResourceFinderException("");
         }
-        InputStream stream = resourceFinder.findResource(fileName, fileType);
+        InputStream stream = resourceFinder.findResource(name, type);
 
         if (stream == null) {
             return null;
         }
         stream = new BufferedInputStream(stream);
 
+        if (decorators != null) {
+            for (int i = 0; i < decorators.size(); i++) {
+                stream = ((StreamDecorator) decorators.get(i)).pipe(stream);
+            }
+        }
+
         TokenStream tokenStream;
         try {
-            tokenStream = (TokenStream) streamConstructor.newInstance(//
-                    new Object[]{configuration, options, stream, fileName,
-                            encoding});
+            tokenStream = (TokenStream) streamConstructor
+                    .newInstance(//
+                    new Object[]{configuration, options, stream, name, encoding});
 
         } catch (IllegalArgumentException e) {
             throw new ConfigurationInstantiationException(e);
@@ -377,11 +391,25 @@ public class TokenStreamFactory extends AbstractFactory
         }
 
         if (openFileObservers != null) {
-            openFileObservers.update(fileName, fileType, stream);
+            openFileObservers.update(name, type, stream);
         }
 
         enableLogging(stream, getLogger());
         return tokenStream;
+    }
+
+    /**
+     * Register a input stream decorator to be applied for each token stream
+     * originated at a resource.
+     *
+     * @param decorator the additional decorator
+     */
+    public void register(final StreamDecorator decorator) {
+
+        if (decorators == null) {
+            decorators = new ArrayList();
+        }
+        decorators.add(decorator);
     }
 
     /**
