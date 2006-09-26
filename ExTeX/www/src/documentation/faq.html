@@ -15,7 +15,9 @@
     <dt>Is &ExTeX; ready for use?</dt>
     <dd>&ExTeX; is still under development. When version 0.1 is
       released then you can consider it to be feature complete for the
-      &TeX; compatibility mode.
+      &TeX; compatibility mode. This means that DVI can be produced which
+      are comparable &ndash; but not necessarily identical &ndash; to those
+      obtained from &TeX;.
     </dd>
 
     <dt>Under which License is &ExTeX; distributed?</dt>
@@ -41,7 +43,7 @@
 
     <dt>Which version of Java is required for &ExTeX;?</dt>
     <dd>&ExTeX; requires Java in version 1.4.2 or newer. Older versions
-    may suffice but nobody has tries it.
+     may suffice but nobody has tried it.
     </dd>
 
     <dt>Does &ExTeX; run under a "free" Java?</dt>
@@ -49,6 +51,14 @@
      The last time we checked &ExTeX; did not compile with GCJ.
      If anyone is willing to work on a compatibility layer this
      help is welcome.
+    </dd>
+
+    <dt>Can &ExTeX; be used as Java component?</dt>
+    <dd>&ExTeX; has been designed with the application as library in
+     mind. Thus interaction with the user or the environemnt are
+     encapsulated and can be replaced. The command line interface is
+     one example how to do it. The test driver for Junit is also
+     embedding &ExTeX; directily.
     </dd>
 
   </dl>
