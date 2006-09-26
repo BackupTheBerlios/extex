@@ -55,7 +55,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.67 $
+ * @version $Revision: 1.68 $
  */
 public class GroupImpl implements Group {
 
@@ -117,8 +117,6 @@ public class GroupImpl implements Group {
      * The field is initialized lacy. Thus new groups come up faster.
      */
     private Map catcodeMap;
-
-    //TODO gene: USE LACY INITIALIZATION FOR PERFORMANCE
 
     /**
      * The field <tt>codeMap</tt> contains the map for the active characters and
