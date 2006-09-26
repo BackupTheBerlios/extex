@@ -27,6 +27,7 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.max.StringSource;
 import de.dante.extex.interpreter.primitives.dynamic.util.LoaderFactory;
 import de.dante.extex.interpreter.primitives.macro.Let;
@@ -44,6 +45,7 @@ import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.AbstractFactory;
 import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
+import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
  * This is a factory to units from a configuration.
@@ -63,7 +65,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public final class LoadUnit extends AbstractFactory {
 
@@ -137,10 +139,9 @@ public final class LoadUnit extends AbstractFactory {
                 Token t = export.get(i);
                 if (t instanceof CodeToken) {
                     if (context.getCode((CodeToken) t) == null) {
-                        //TODO gene: unimplemented
-                        throw new RuntimeException("unimplemented");
-//                        throw new HelpingException(getLocalizer(),
-//                                "Namespace.Import.undef", t.toString());
+                        throw new HelpingException(LocalizerFactory
+                                .getLocalizer(LoadUnit.class.getName()),
+                                "Loader.Import.undef", t.toString());
                     } else {
                         Let.let(Flags.NONE, context, //
                                 ((CodeToken) t).cloneInNamespace(namespace), t);
