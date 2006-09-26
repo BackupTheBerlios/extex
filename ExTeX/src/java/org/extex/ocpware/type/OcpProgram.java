@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.PushbackInputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -32,9 +33,14 @@ import java.util.Stack;
  * TODO gene: missing JavaDoc.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class OcpProgram {
+public class OcpProgram implements Serializable {
+
+    /**
+     * The field <tt>serialVersionUID</tt> contains the ...
+     */
+    private static final long serialVersionUID = 2006L;
 
     /**
      * Dump a number as hex and as decimal and optionally as character to an
@@ -64,7 +70,7 @@ public class OcpProgram {
     /**
      * Load an OCP program from an input stream.
      *
-     * @param in the input stream
+     * @param stream the input stream
      *
      * @return the program
      */
