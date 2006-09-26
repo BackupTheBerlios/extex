@@ -23,7 +23,9 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.interpreter.primitives.omega.mode.AbstractModeCode;
+import de.dante.extex.interpreter.primitives.omega.mode.OmegaMode;
+import de.dante.extex.interpreter.primitives.omega.ocp.util.OcpUtil;
 import de.dante.extex.typesetter.Typesetter;
 
 /**
@@ -48,9 +50,9 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class DefaultOutputTranslation extends AbstractCode {
+public class DefaultOutputTranslation extends AbstractModeCode {
 
     /**
      * The field <tt>serialVersionUID</tt> contains the version number for
@@ -78,6 +80,9 @@ public class DefaultOutputTranslation extends AbstractCode {
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
+
+        OmegaMode mode = scanOutputMode(context, source);
+        String resource = OcpUtil.scanOcpFileName(source, context);
 
         //TODO gene: unimplemented
         throw new RuntimeException("unimplemented");
