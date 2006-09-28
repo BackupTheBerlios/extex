@@ -38,7 +38,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class HorizontalListNode extends GenericNodeList {
 
@@ -163,7 +163,7 @@ public class HorizontalListNode extends GenericNodeList {
         if (w != null && w.ne(wd)) {
             wd.subtract(w);
             wd.negate();
-            FixedGlueComponent s = (w.ge(Dimen.ZERO) //
+            FixedGlueComponent s = (w.le(Dimen.ZERO) //
                     ? wg.getShrink() //
                     : wg.getStretch());
             for (int i = 0; i < size; i++) {
