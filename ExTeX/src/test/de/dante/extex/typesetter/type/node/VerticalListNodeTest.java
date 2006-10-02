@@ -19,14 +19,15 @@
 
 package de.dante.extex.typesetter.type.node;
 
-import de.dante.extex.interpreter.type.dimen.Dimen;
 import junit.framework.TestCase;
+import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.glue.Glue;
 
 /**
  * This file contains test cases for the vertical list node.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class VerticalListNodeTest extends TestCase {
 
@@ -71,6 +72,42 @@ public class VerticalListNodeTest extends TestCase {
         VerticalListNode vl = vlist.split(new Dimen(-42), null, null);
         assertTrue(vlist.empty());
         assertTrue(vl.empty());
+    }
+
+    /**
+     * Test that splitting an empty list works for a positive target height.
+     */
+    public void testVpack1() {
+
+        VerticalListNode vlist = new VerticalListNode();
+        vlist.add(new RuleNode(Dimen.ONE_INCH, Dimen.ONE_INCH, Dimen.ONE_INCH,
+                null, true));
+        Dimen h = new Dimen(Dimen.ONE_INCH);
+        h.multiply(2);
+        vlist.vpack(h);
+        assertFalse(vlist.empty());
+        assertEquals("\\vbox(144.53998pt+72.26999pt)x72.26999pt\n"
+                + ".\\rule72.26999pt+72.26999ptx72.26999pt", vlist.toString());
+    }
+
+    /**
+     * Test that splitting an empty list works for a positive target height.
+     */
+    public void testVpack2() {
+
+        VerticalListNode vlist = new VerticalListNode();
+        vlist.addSkip(Glue.S_S);
+        vlist.add(new RuleNode(Dimen.ONE_INCH, Dimen.ONE_INCH, Dimen.ONE_INCH,
+                null, true));
+        vlist.addSkip(Glue.S_S);
+        Dimen h = new Dimen(Dimen.ONE_INCH);
+        h.multiply(2);
+        assertEquals(0, vlist.vpack(h));
+        assertFalse(vlist.empty());
+        assertEquals("\\vbox(144.53998pt+0.0pt)x72.26999pt\n"
+                + ".\\glue0.0pt plus 1.0fil minus 1.0fil\n"
+                + ".\\rule72.26999pt+72.26999ptx72.26999pt\n"
+                + ".\\glue0.0pt plus 1.0fil minus 1.0fil", vlist.toString());
     }
 
 }
