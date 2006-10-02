@@ -45,7 +45,7 @@ import de.dante.util.framework.Registrar;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class FontImpl extends NullFont {
 
@@ -176,6 +176,14 @@ public class FontImpl extends NullFont {
     public FontByteArray getFontByteArray() {
 
         return fount.getFontByteArray();
+    }
+
+    /**
+     * @see de.dante.extex.font.type.Fount#getFontDimen(java.lang.String)
+     */
+    public FixedDimen getFontDimen(final String key) {
+
+        return fount.getFontDimen(key);
     }
 
     /**
