@@ -30,7 +30,7 @@ import java.util.ResourceBundle;
  * This factory provides means to get a localizer.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public final class LocalizerFactory {
 
@@ -39,14 +39,14 @@ public final class LocalizerFactory {
      * delivered by this factory.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.9 $
+     * @version $Revision: 1.10 $
      */
     private static class BasicLocalizer implements Localizer {
 
         /**
          * The constant <tt>serialVersionUID</tt> contains the id for serialization.
          */
-        private static final long serialVersionUID = 1L;
+        private static final long serialVersionUID = 2006L;
 
         /**
          * The field <tt>bundle</tt> contains the resource bundle for this
@@ -272,7 +272,25 @@ public final class LocalizerFactory {
      * constructed. The localizers are cache to minimize the overhead of
      * acquiring the same localizer several times.
      */
-    private static final Map cache = new HashMap();
+    private static final Map CACHE = new HashMap();
+
+    /**
+     * Return the localizer associated to a given name.
+     *
+     * @param theClass the class of the localizer
+     *
+     * @return the localizer for the given name
+     */
+    public static Localizer getLocalizer(final Class theClass) {
+
+        String name = theClass.getName();
+        Localizer loc = (Localizer) CACHE.get(name);
+        if (loc == null) {
+            loc = new BasicLocalizer(name);
+            CACHE.put(name, loc);
+        }
+        return loc;
+    }
 
     /**
      * Return the localizer associated to a given name.
@@ -283,10 +301,10 @@ public final class LocalizerFactory {
      */
     public static Localizer getLocalizer(final String name) {
 
-        Localizer loc = (Localizer) cache.get(name);
+        Localizer loc = (Localizer) CACHE.get(name);
         if (loc == null) {
             loc = new BasicLocalizer(name);
-            cache.put(name, loc);
+            CACHE.put(name, loc);
         }
         return loc;
     }

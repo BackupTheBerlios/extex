@@ -31,14 +31,14 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class InvalidCharacterException extends HelpingException {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2006L;
 
     /**
      * The field <tt>cc</tt> contains the invalid character.
@@ -52,9 +52,8 @@ public class InvalidCharacterException extends HelpingException {
      */
     public InvalidCharacterException(final UnicodeChar uc) {
 
-        super(LocalizerFactory.getLocalizer(//
-                InvalidCharacterException.class.getName()), "TTP.InvalidChar",
-                uc.toString());
+        super(LocalizerFactory.getLocalizer(InvalidCharacterException.class),
+                "TTP.InvalidChar", uc.toString());
         cc = uc.toString();
     }
 
@@ -65,9 +64,8 @@ public class InvalidCharacterException extends HelpingException {
      */
     public InvalidCharacterException(final String uc) {
 
-        super(LocalizerFactory.getLocalizer(//
-                InvalidCharacterException.class.getName()), "TTP.InvalidChar",
-                uc);
+        super(LocalizerFactory.getLocalizer(InvalidCharacterException.class),
+                "TTP.InvalidChar", uc);
         cc = uc;
     }
 

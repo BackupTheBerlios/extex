@@ -52,7 +52,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * value.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public final class LengthParser {
 
@@ -73,6 +73,7 @@ public final class LengthParser {
             arg1.sp = arg2.sp;
         }
     };
+
     /**
      * The field <tt>functions</tt> contains the function object attached to a
      * function name.
@@ -94,9 +95,8 @@ public final class LengthParser {
 
             if (arg1.sp != arg2.sp) {
                 throw new HelpingException(LocalizerFactory
-                        .getLocalizer(LengthParser.class.getName()),
-                        "IncompatibleUnit", "-", "sp^"
-                                + Integer.toString(arg1.sp), "sp^"
+                        .getLocalizer(LengthParser.class), "IncompatibleUnit",
+                        "-", "sp^" + Integer.toString(arg1.sp), "sp^"
                                 + Integer.toString(arg2.sp));
             }
             arg1.value -= arg2.value;
@@ -118,7 +118,7 @@ public final class LengthParser {
 
             if (arg1.sp != arg2.sp) {
                 throw new HelpingException(LocalizerFactory
-                        .getLocalizer(LengthParser.class.getName()),
+                        .getLocalizer(LengthParser.class),
                         "IncompatibleUnit", "+", "sp^"
                                 + Integer.toString(arg1.sp), "sp^"
                                 + Integer.toString(arg2.sp));
@@ -170,7 +170,7 @@ public final class LengthParser {
                     evalExpr(x, context, source, typesetter);
                     if (accumulator.sp != x.sp) {
                         throw new HelpingException(LocalizerFactory
-                                .getLocalizer(LengthParser.class.getName()),
+                                .getLocalizer(LengthParser.class),
                                 "IncompatibleUnit", "max", "sp^"
                                         + Integer.toString(accumulator.sp),
                                 "sp^" + Integer.toString(x.sp));
@@ -208,7 +208,7 @@ public final class LengthParser {
                     evalExpr(x, context, source, typesetter);
                     if (accumulator.sp != x.sp) {
                         throw new HelpingException(LocalizerFactory
-                                .getLocalizer(LengthParser.class.getName()),
+                                .getLocalizer(LengthParser.class),
                                 "IncompatibleUnit", "min", "sp^"
                                         + Integer.toString(accumulator.sp),
                                 "sp^" + Integer.toString(x.sp));
@@ -257,8 +257,8 @@ public final class LengthParser {
 
                 if (accumulator.sp != 0) {
                     throw new HelpingException(LocalizerFactory
-                            .getLocalizer(LengthParser.class.getName()),
-                            "NonScalar", "cos", accumulator.toString());
+                            .getLocalizer(LengthParser.class), "NonScalar",
+                            "cos", accumulator.toString());
                 }
                 double x = ((double) accumulator.value) / ScaledNumber.ONE;
                 accumulator.value = (long) (ScaledNumber.ONE * Math.cos(x));
@@ -278,8 +278,8 @@ public final class LengthParser {
 
                 if (accumulator.sp != 0) {
                     throw new HelpingException(LocalizerFactory
-                            .getLocalizer(LengthParser.class.getName()),
-                            "NonScalar", "sin", accumulator.toString());
+                            .getLocalizer(LengthParser.class), "NonScalar",
+                            "sin", accumulator.toString());
                 }
                 double x = ((double) accumulator.value) / ScaledNumber.ONE;
                 accumulator.value = (long) (ScaledNumber.ONE * Math.sin(x));
@@ -299,8 +299,8 @@ public final class LengthParser {
 
                 if (accumulator.sp != 0) {
                     throw new HelpingException(LocalizerFactory
-                            .getLocalizer(LengthParser.class.getName()),
-                            "NonScalar", "tan", accumulator.toString());
+                            .getLocalizer(LengthParser.class), "NonScalar",
+                            "tan", accumulator.toString());
                 }
                 double x = ((double) accumulator.value) / ScaledNumber.ONE;
                 accumulator.value = (long) (ScaledNumber.ONE * Math.tan(x));
@@ -415,7 +415,7 @@ public final class LengthParser {
                     }
 
                     throw new HelpingException(LocalizerFactory
-                            .getLocalizer(LengthParser.class.getName()),
+                            .getLocalizer(LengthParser.class),
                             "MissingParenthesis", (t == null ? "null" : t
                                     .toString()));
 
@@ -499,7 +499,7 @@ public final class LengthParser {
                     throw new EofException();
                 } else if (!t.equals(Catcode.OTHER, '(')) {
                     throw new HelpingException(LocalizerFactory
-                            .getLocalizer(LengthParser.class.getName()),
+                            .getLocalizer(LengthParser.class),
                             "MissingOpenParenthesis", name, t.toString());
                 }
                 if (f instanceof Function2) {
@@ -521,7 +521,7 @@ public final class LengthParser {
                     throw new EofException();
                 } else if (!t.equals(Catcode.OTHER, ')')) {
                     throw new HelpingException(LocalizerFactory
-                            .getLocalizer(LengthParser.class.getName()),
+                            .getLocalizer(LengthParser.class),
                             "MissingParenthesis", t.toString());
                 }
                 source.skipSpace();
@@ -553,9 +553,9 @@ public final class LengthParser {
         evalTerm(accumulator, context, source, typesetter);
         if (accumulator.sp != 1) {
             throw new HelpingException(LocalizerFactory
-                    .getLocalizer(LengthParser.class.getName()),
-                    (accumulator.sp == 0 ? "MissingUnit" : "IllegalUnit"),
-                    "sp^" + Integer.toString(accumulator.sp));
+                    .getLocalizer(LengthParser.class), (accumulator.sp == 0
+                    ? "MissingUnit"
+                    : "IllegalUnit"), "sp^" + Integer.toString(accumulator.sp));
         }
         source.skipSpace();
         return new Dimen(accumulator.value);
@@ -598,8 +598,8 @@ public final class LengthParser {
             throw new EofException();
         } else if (!t.equals(Catcode.OTHER, ',')) {
             throw new HelpingException(LocalizerFactory
-                    .getLocalizer(LengthParser.class.getName()),
-                    "MissingComma", t.toString());
+                    .getLocalizer(LengthParser.class), "MissingComma", t
+                    .toString());
         }
         source.skipSpace();
     }

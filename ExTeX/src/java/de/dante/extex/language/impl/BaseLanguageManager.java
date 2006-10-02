@@ -52,7 +52,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class BaseLanguageManager extends AbstractFactory
         implements
@@ -154,7 +154,7 @@ public class BaseLanguageManager extends AbstractFactory
      */
     protected Localizer getLocalizer() {
 
-        return LocalizerFactory.getLocalizer(getClass().getName());
+        return LocalizerFactory.getLocalizer(getClass());
     }
 
     /**

@@ -34,7 +34,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This an abstract base class for primitives in horizontal mode.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public abstract class AbstractHorizontalCode extends AbstractCode {
 
@@ -67,7 +67,7 @@ public abstract class AbstractHorizontalCode extends AbstractCode {
         Mode mode = typesetter.getMode();
         if (mode == Mode.VERTICAL || mode == Mode.INNER_VERTICAL) {
             throw new HelpingException(LocalizerFactory
-                    .getLocalizer(AbstractHorizontalCode.class.getName()),
+                    .getLocalizer(AbstractHorizontalCode.class),
                     "TTP.MissingInserted", "}");
         }
 

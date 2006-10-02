@@ -47,7 +47,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * The actual length is a multiple of math units (mu).
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public class Muskip extends Mudimen implements Serializable {
 
@@ -95,17 +95,15 @@ public class Muskip extends Mudimen implements Serializable {
             }
         }
 
-
         if (t == null) {
             throw new EofException("mu");
         }
         long value = ScaledNumber.scanFloat(context, source, typesetter, t);
         if (!source.getKeyword(context, "mu")) {
-            throw new HelpingException(//
-                    LocalizerFactory.getLocalizer(Muskip.class.getName()),
-                    "TTP.IllegalMu");
+            throw new HelpingException(LocalizerFactory
+                    .getLocalizer(Muskip.class), "TTP.IllegalMu");
         }
-        Muskip ms =  new Muskip(new Dimen(value));
+        Muskip ms = new Muskip(new Dimen(value));
 
         if (source.getKeyword(context, "plus")) {
             ms.stretch = scanMuOrFill(context, source, typesetter);
@@ -150,8 +148,7 @@ public class Muskip extends Mudimen implements Serializable {
         } else if (source.getKeyword(context, "fi")) {
             return new GlueComponent(value, 1);
         }
-        throw new HelpingException(//
-                LocalizerFactory.getLocalizer(Muskip.class.getName()),
+        throw new HelpingException(LocalizerFactory.getLocalizer(Muskip.class),
                 "TTP.IllegalMu");
 
     }

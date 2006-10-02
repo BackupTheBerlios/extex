@@ -40,14 +40,14 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This is the abstract base class for alignments.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public abstract class AbstractAlign extends AbstractCode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 2006L;
 
     /**
      * Creates a new object.
@@ -66,7 +66,7 @@ public abstract class AbstractAlign extends AbstractCode {
      */
     Localizer getMyLocalizer() {
 
-        return LocalizerFactory.getLocalizer(AbstractAlign.class.getName());
+        return LocalizerFactory.getLocalizer(AbstractAlign.class);
     }
 
     /**

@@ -33,7 +33,7 @@ import de.dante.util.resource.ResourceFinder;
  * Factory for enc-files.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class EncFactory implements Serializable {
 
@@ -67,7 +67,7 @@ public class EncFactory implements Serializable {
      * with a localizer for the name of this class.
      */
     private transient Localizer localizer = LocalizerFactory
-            .getLocalizer(EncFactory.class.getName());
+            .getLocalizer(EncFactory.class);
 
     /**
      * Returns the encoding table.
@@ -77,7 +77,8 @@ public class EncFactory implements Serializable {
      * @throws ConfigurationException from the resource finder.
      */
     public String[] getEncodingTable(final String filename)
-            throws FontException, ConfigurationException {
+            throws FontException,
+                ConfigurationException {
 
         String[] table = (String[]) data.get(filename);
 
@@ -102,7 +103,8 @@ public class EncFactory implements Serializable {
      * @throws ConfigurationException from the resource finder.
      */
     public String[] getEncodingTableWithoutSlash(final String filename)
-            throws FontException, ConfigurationException {
+            throws FontException,
+                ConfigurationException {
 
         String[] table = getEncodingTable(filename);
 

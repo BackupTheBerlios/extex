@@ -65,7 +65,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public final class LoadUnit extends AbstractFactory {
 
@@ -140,7 +140,7 @@ public final class LoadUnit extends AbstractFactory {
                 if (t instanceof CodeToken) {
                     if (context.getCode((CodeToken) t) == null) {
                         throw new HelpingException(LocalizerFactory
-                                .getLocalizer(LoadUnit.class.getName()),
+                                .getLocalizer(LoadUnit.class),
                                 "Loader.Import.undef", t.toString());
                     } else {
                         Let.let(Flags.NONE, context, //

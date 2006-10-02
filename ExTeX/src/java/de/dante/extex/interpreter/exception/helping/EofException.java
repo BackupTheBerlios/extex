@@ -30,14 +30,14 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class EofException extends HelpingException {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 2006L;
 
     /**
      * Creates a new object.
@@ -45,7 +45,7 @@ public class EofException extends HelpingException {
      */
     public EofException() {
 
-        super(LocalizerFactory.getLocalizer(EofException.class.getName()),
+        super(LocalizerFactory.getLocalizer(EofException.class),
                 "UnexpectedEof");
     }
 
@@ -71,7 +71,7 @@ public class EofException extends HelpingException {
      */
     public EofException(final String macro) {
 
-        super(LocalizerFactory.getLocalizer(EofException.class.getName()),
+        super(LocalizerFactory.getLocalizer(EofException.class), //
                 (macro != null ? "UnexpectedEofIn" : "UnexpectedEof"), macro);
     }
 

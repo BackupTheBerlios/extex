@@ -47,7 +47,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class GeneralException extends Exception {
 
@@ -138,6 +138,6 @@ public class GeneralException extends Exception {
      */
     protected Localizer getLocalizer() {
 
-        return LocalizerFactory.getLocalizer(this.getClass().getName());
+        return LocalizerFactory.getLocalizer(this.getClass());
     }
 }

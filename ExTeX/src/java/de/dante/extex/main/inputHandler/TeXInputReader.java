@@ -34,7 +34,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * prompt before each line of input.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class TeXInputReader extends Reader {
 
@@ -82,7 +82,7 @@ public class TeXInputReader extends Reader {
         this.logger = logger;
         reader = new InputStreamReader(System.in, charset);
         Localizer localizer = LocalizerFactory
-                .getLocalizer(TeXInputReader.class.getName());
+                .getLocalizer(TeXInputReader.class);
         prompt = localizer.format("TTP.PromptInput");
         this.interpreter = interpreter;
     }
@@ -126,12 +126,12 @@ public class TeXInputReader extends Reader {
             throws IOException {
 
         /*
-//        if (interpreter.getContext().getInteraction().getIndex() != Interaction.ERRORSTOPMODE
-//                .getIndex()) {
-//            return -1;
-//        }
- * 
- */
+         //        if (interpreter.getContext().getInteraction().getIndex() != Interaction.ERRORSTOPMODE
+         //                .getIndex()) {
+         //            return -1;
+         //        }
+         * 
+         */
         if (showPrompt) {
             logger.severe(prompt);
             showPrompt = false;

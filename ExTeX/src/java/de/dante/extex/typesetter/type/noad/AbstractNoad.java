@@ -58,7 +58,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public abstract class AbstractNoad implements Noad {
 
@@ -139,7 +139,7 @@ public abstract class AbstractNoad implements Noad {
      */
     public Localizer getLocalizer() {
 
-        return LocalizerFactory.getLocalizer(getClass().getName());
+        return LocalizerFactory.getLocalizer(getClass());
     }
 
     /**

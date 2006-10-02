@@ -30,23 +30,23 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class MissingMathException extends HelpingException {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 2006L;
 
     /**
      * Creates a new object.
      *
-     * @param macro the name of the macro in which the eof has been encoutered
+     * @param macro the name of the macro in which the eof has been encountered
      */
     public MissingMathException(final String macro) {
 
-        super(LocalizerFactory.getLocalizer(MissingMathException.class.getName()),
+        super(LocalizerFactory.getLocalizer(MissingMathException.class),
                 "TTP.MissingDollar", macro);
     }
 

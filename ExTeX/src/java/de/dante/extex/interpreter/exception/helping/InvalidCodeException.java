@@ -29,14 +29,14 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class InvalidCodeException extends HelpingException {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 2006L;
 
     /**
      * Creates a new object.
@@ -47,8 +47,7 @@ public class InvalidCodeException extends HelpingException {
     public InvalidCodeException(final String code, final String max) {
 
         super(LocalizerFactory.getLocalizer(//
-                InvalidCodeException.class.getName()), "TTP.InvalidCode", code,
-                max);
+                InvalidCodeException.class), "TTP.InvalidCode", code, max);
     }
 
 }

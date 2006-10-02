@@ -47,7 +47,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This class provides a fixed point number.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class ScaledNumber {
 
@@ -55,7 +55,7 @@ public class ScaledNumber {
      * This interface describes a binary operation on two longs.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.7 $
+     * @version $Revision: 1.8 $
      */
     private interface BinOp {
 
@@ -215,7 +215,7 @@ public class ScaledNumber {
                     }
 
                     throw new HelpingException(LocalizerFactory
-                            .getLocalizer(ScaledNumber.class.getName()),
+                            .getLocalizer(ScaledNumber.class),
                             "MissingParenthesis", (t == null ? "null" : t
                                     .toString()));
 

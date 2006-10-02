@@ -29,7 +29,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class ArithmeticOverflowException extends HelpingException {
 
@@ -46,8 +46,7 @@ public class ArithmeticOverflowException extends HelpingException {
     public ArithmeticOverflowException(final String macro) {
 
         super(LocalizerFactory.getLocalizer(//
-                ArithmeticOverflowException.class.getName()),
-                "TTP.ArithmeticOverflow");
+                ArithmeticOverflowException.class), "TTP.ArithmeticOverflow");
     }
 
 }

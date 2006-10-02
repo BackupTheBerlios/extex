@@ -31,7 +31,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public abstract class AbstractToken implements Token, Serializable {
 
@@ -122,7 +122,7 @@ public abstract class AbstractToken implements Token, Serializable {
      */
     protected Localizer getLocalizer() {
 
-        return LocalizerFactory.getLocalizer(Token.class.getName());
+        return LocalizerFactory.getLocalizer(Token.class);
     }
 
     /**

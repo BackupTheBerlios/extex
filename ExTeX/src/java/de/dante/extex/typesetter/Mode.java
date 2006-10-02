@@ -26,7 +26,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This class provides type-safe constants for the modes of a typesetter.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public abstract class Mode {
 
@@ -34,7 +34,7 @@ public abstract class Mode {
      * This inner class represents vertical modes.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.10 $
+     * @version $Revision: 1.11 $
      */
     private static class HorizontalMode extends Mode {
 
@@ -63,7 +63,7 @@ public abstract class Mode {
      * This inner class represents math modes.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.10 $
+     * @version $Revision: 1.11 $
      */
     private static class MathMode extends Mode {
 
@@ -92,7 +92,7 @@ public abstract class Mode {
      * This inner class represents vertical modes.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.10 $
+     * @version $Revision: 1.11 $
      */
     private static class VerticalMode extends Mode {
 
@@ -189,8 +189,7 @@ public abstract class Mode {
     protected Localizer getLocalizer() {
 
         if (this.localizer == null) {
-            this.localizer = LocalizerFactory
-                    .getLocalizer(Mode.class.getName());
+            this.localizer = LocalizerFactory.getLocalizer(Mode.class);
         }
         return this.localizer;
     }
@@ -233,8 +232,7 @@ public abstract class Mode {
     public String toString() {
 
         if (this.localizer == null) {
-            this.localizer = LocalizerFactory
-                    .getLocalizer(Mode.class.getName());
+            this.localizer = LocalizerFactory.getLocalizer(Mode.class);
         }
         return localizer.format(tag);
     }

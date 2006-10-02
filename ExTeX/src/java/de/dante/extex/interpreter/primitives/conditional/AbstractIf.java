@@ -44,7 +44,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public abstract class AbstractIf extends AbstractCode implements ExpandableCode {
 
@@ -55,7 +55,7 @@ public abstract class AbstractIf extends AbstractCode implements ExpandableCode 
      */
     protected static Localizer getMyLocalizer() {
 
-        return LocalizerFactory.getLocalizer(AbstractIf.class.getName());
+        return LocalizerFactory.getLocalizer(AbstractIf.class);
     }
 
     /**

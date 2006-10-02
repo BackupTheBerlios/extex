@@ -42,7 +42,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * math units (mu).
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Mudimen implements Serializable {
 
@@ -79,7 +79,7 @@ public class Mudimen implements Serializable {
         long value = ScaledNumber.scanFloat(context, source, typesetter, t);
         if (!source.getKeyword(context, "mu")) {
             throw new HelpingException(//
-                    LocalizerFactory.getLocalizer(Mudimen.class.getName()),
+                    LocalizerFactory.getLocalizer(Mudimen.class),
                     "TTP.IllegalMu");
         }
         return value;

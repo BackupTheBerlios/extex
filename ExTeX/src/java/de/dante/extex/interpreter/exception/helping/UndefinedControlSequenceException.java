@@ -26,14 +26,14 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * encountered.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class UndefinedControlSequenceException extends HelpingException {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 2006L;
 
     /**
      * Creates a new object.
@@ -42,10 +42,9 @@ public class UndefinedControlSequenceException extends HelpingException {
      */
     public UndefinedControlSequenceException(final String macro) {
 
-        super(
-                LocalizerFactory
-                        .getLocalizer(UndefinedControlSequenceException.class
-                                .getName()), "TTP.UndefinedToken", macro);
+        super(LocalizerFactory
+                .getLocalizer(UndefinedControlSequenceException.class),
+                "TTP.UndefinedToken", macro);
     }
 
 }

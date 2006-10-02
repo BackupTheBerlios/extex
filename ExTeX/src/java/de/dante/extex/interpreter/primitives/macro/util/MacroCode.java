@@ -58,7 +58,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class MacroCode extends AbstractCode
         implements
@@ -176,7 +176,7 @@ public class MacroCode extends AbstractCode
 
         Localizer localizer = super.getLocalizer();
         return (localizer != null ? localizer : LocalizerFactory
-                .getLocalizer(MacroCode.class.getName()));
+                .getLocalizer(MacroCode.class));
     }
 
     /**

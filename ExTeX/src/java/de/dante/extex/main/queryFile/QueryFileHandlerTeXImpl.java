@@ -36,7 +36,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class QueryFileHandlerTeXImpl implements QueryFileHandler {
 
@@ -95,7 +95,7 @@ public class QueryFileHandlerTeXImpl implements QueryFileHandler {
     public String query(final Logger logger, final Properties properties) {
 
         Localizer localizer = LocalizerFactory
-                .getLocalizer(QueryFileHandlerTeXImpl.class.getName());
+                .getLocalizer(QueryFileHandlerTeXImpl.class);
         String file;
         try {
             file = promptAndReadLine(localizer, logger, "TTP.PromptFile");

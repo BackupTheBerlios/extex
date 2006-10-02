@@ -38,7 +38,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * mathematical appearance.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class MathContext {
 
@@ -109,10 +109,9 @@ public class MathContext {
         FixedDimen value;
         if (font == null || (value = font.getFontDimen(p.getNo())) == null) {
             throw new TypesetterException(
-                    //
-                    new HelpingException(
-                            //
-                            LocalizerFactory.getLocalizer(getClass().getName()),
+            //
+                    new HelpingException(LocalizerFactory
+                            .getLocalizer(getClass()), //
                             p.inSymbol()
                                     ? "TTP.InsufficientSymbolFonts"
                                     : "TTP.InsufficientExtensionFonts"));

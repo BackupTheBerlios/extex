@@ -30,14 +30,14 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class CantUseInException extends HelpingException {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 2006L;
 
     /**
      * Creates a new object.
@@ -47,8 +47,7 @@ public class CantUseInException extends HelpingException {
      */
     public CantUseInException(final String macro, final String mode) {
 
-        super(LocalizerFactory.getLocalizer(//
-                CantUseInException.class.getName()),
+        super(LocalizerFactory.getLocalizer(CantUseInException.class),
                 "TTP.CantUseIn", macro, mode);
     }
 

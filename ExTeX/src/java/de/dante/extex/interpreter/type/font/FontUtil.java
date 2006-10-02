@@ -31,7 +31,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * Font utility methods.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public final class FontUtil {
 
@@ -47,7 +47,7 @@ public final class FontUtil {
      * class.
      */
     private static final Localizer LOCALIZER = LocalizerFactory
-            .getLocalizer(FontUtil.class.getName());
+            .getLocalizer(FontUtil.class);
 
     /**
      * This method produces a log entry for lost characters if the count

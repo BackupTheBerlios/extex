@@ -27,7 +27,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * detected.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public abstract class ConfigurationException extends Exception {
 
@@ -83,7 +83,7 @@ public abstract class ConfigurationException extends Exception {
 
         if (this.localizer == null) {
             this.localizer = LocalizerFactory
-                    .getLocalizer(ConfigurationException.class.getName());
+                    .getLocalizer(ConfigurationException.class);
         }
         return this.localizer;
     }

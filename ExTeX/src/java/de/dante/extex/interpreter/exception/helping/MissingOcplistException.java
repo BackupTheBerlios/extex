@@ -25,10 +25,10 @@ import de.dante.extex.scanner.type.token.Token;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
- * This exception is raised when direction is needed but not found.
+ * This exception is raised when direction is needed but has not been found.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class MissingOcplistException extends InterpreterException {
@@ -36,7 +36,7 @@ public class MissingOcplistException extends InterpreterException {
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2006L;
 
     /**
      * Creates a new object.
@@ -46,9 +46,8 @@ public class MissingOcplistException extends InterpreterException {
      */
     public MissingOcplistException(final Context context, final Token t) {
 
-        super(LocalizerFactory.getLocalizer(
-                MissingOcplistException.class.getName()).format(
-                "Omega.MissingOcplist"));
+        super(LocalizerFactory.getLocalizer(MissingOcplistException.class)
+                .format("Omega.MissingOcplist"));
     }
 
     /**

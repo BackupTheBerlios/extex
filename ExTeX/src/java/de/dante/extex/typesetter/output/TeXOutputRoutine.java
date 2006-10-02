@@ -154,7 +154,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class TeXOutputRoutine implements OutputRoutine {
 
@@ -195,8 +195,8 @@ public class TeXOutputRoutine implements OutputRoutine {
         TokenFactory tokenFactory = interpreter.getContext().getTokenFactory();
         rightBrace = tokenFactory.createToken(Catcode.RIGHTBRACE, '}',
                 Namespace.DEFAULT_NAMESPACE);
-        outputToken = tokenFactory.createToken(Catcode.ESCAPE,
-                UnicodeChar.get('\\'), "output", Namespace.DEFAULT_NAMESPACE);
+        outputToken = tokenFactory.createToken(Catcode.ESCAPE, UnicodeChar
+                .get('\\'), "output", Namespace.DEFAULT_NAMESPACE);
     }
 
     /**
@@ -220,14 +220,14 @@ public class TeXOutputRoutine implements OutputRoutine {
         deadcyles.add(1);
         if (deadcyles.gt(context.getCount("maxdeadcycles"))) {
             throw new InterpreterException(LocalizerFactory.getLocalizer(
-                    TeXOutputRoutine.class.getName()).format("TTP.TooMuchDead",
+                    TeXOutputRoutine.class).format("TTP.TooMuchDead",
                     deadcyles.toString()));
         }
 
         Box box = context.getBox(OUTPUT_BOX);
         if (box != null && !box.isVoid()) {
             throw new HelpingException(LocalizerFactory
-                    .getLocalizer(TeXOutputRoutine.class.getName()),
+                    .getLocalizer(TeXOutputRoutine.class),
                     "TTP.NonEmptyOutBox", context.esc("box"), OUTPUT_BOX);
         }
 
@@ -245,7 +245,7 @@ public class TeXOutputRoutine implements OutputRoutine {
         box = context.getBox(OUTPUT_BOX);
         if (box != null && !box.isVoid()) {
             throw new HelpingException(LocalizerFactory
-                    .getLocalizer(TeXOutputRoutine.class.getName()),
+                    .getLocalizer(TeXOutputRoutine.class),
                     "TTP.NonEmptyOutBoxAfter", context.esc("box"), OUTPUT_BOX);
         }
     }

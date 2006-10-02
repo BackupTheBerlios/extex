@@ -22,21 +22,21 @@ package de.dante.extex.interpreter.exception.helping;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
- * This exception is raised when a illegal file reference has been encoutered.
+ * This exception is raised when a illegal file reference has been encountered.
  * <p>
  *  The localization format is taken from the Localizer under the key
  *  <tt>TTP.BadFileNumber</tt>.
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class BadFileNumberException extends HelpingException {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 2006L;
 
     /**
      * Creates a new object.
@@ -48,9 +48,8 @@ public class BadFileNumberException extends HelpingException {
     public BadFileNumberException(final String value, final String min,
             final String max) {
 
-        super(LocalizerFactory.getLocalizer(//
-                BadFileNumberException.class.getName()), "TTP.BadFileNumber",
-                value, min, max);
+        super(LocalizerFactory.getLocalizer(BadFileNumberException.class),
+                "TTP.BadFileNumber", value, min, max);
     }
 
 }

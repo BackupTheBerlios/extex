@@ -40,7 +40,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * Abstract class for all font utilities.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 
 public abstract class AbstractFontUtil {
@@ -70,7 +70,7 @@ public abstract class AbstractFontUtil {
      * with a localizer for the name of this class.
      */
     private Localizer localizer = LocalizerFactory
-            .getLocalizer(AbstractFontUtil.class.getName());
+            .getLocalizer(AbstractFontUtil.class);
 
     /**
      * The console handler.
@@ -98,7 +98,7 @@ public abstract class AbstractFontUtil {
         consoleHandler.setLevel(Level.WARNING);
         logger.addHandler(consoleHandler);
 
-        localizer = LocalizerFactory.getLocalizer(loggerclass.getName());
+        localizer = LocalizerFactory.getLocalizer(loggerclass);
 
         // configuration
         config = new ConfigurationFactory().newInstance("config/extex.xml");

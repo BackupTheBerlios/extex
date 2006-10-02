@@ -48,7 +48,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * to and from their <logo>TeX</logo> encoding as numbers to abstract math code.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public abstract class AbstractTeXDelimiter extends AbstractMathCode {
 
@@ -212,8 +212,7 @@ public abstract class AbstractTeXDelimiter extends AbstractMathCode {
      */
     protected static Localizer getMyLocalizer() {
 
-        return LocalizerFactory.getLocalizer(AbstractTeXDelimiter.class
-                .getName());
+        return LocalizerFactory.getLocalizer(AbstractTeXDelimiter.class);
     }
 
     /**

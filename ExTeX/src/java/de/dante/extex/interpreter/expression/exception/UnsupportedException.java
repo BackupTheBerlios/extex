@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -17,39 +17,42 @@
  *
  */
 
-package de.dante.extex.interpreter.exception.helping;
+package de.dante.extex.interpreter.expression.exception;
 
+import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
- * This exception is raised when a situation is detected where the continuation
- * is illegal.
- * <p>
- *  The localization format is taken from the Localizer under the key
- *  <tt>TTP.CantUseAfter</tt>.
- * </p>
+ * This exception signals an unsupported operation in the evaluator.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.1 $
  */
-public class CantUseAfterException extends HelpingException {
+public class UnsupportedException extends HelpingException {
 
     /**
-     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     * The field <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2006L;
+    protected static final long serialVersionUID = 20060628L;
+
+    /**
+     * Creates a new object.
+     */
+    public UnsupportedException() {
+
+        super();
+    }
 
     /**
      * Creates a new object.
      *
-     * @param cause the name of the macro in which the condition has been
-     *  encountered
-     * @param predecessor the preceding token
+     * @param op the operation
+     * @param arg the argument
      */
-    public CantUseAfterException(final String cause, final String predecessor) {
+    public UnsupportedException(final String op, final String arg) {
 
-        super(LocalizerFactory.getLocalizer(CantUseAfterException.class),
-                "TTP.CantUseAfter", cause, predecessor);
+        super(LocalizerFactory.getLocalizer(UnsupportedException.class),
+                "UnsupportedException", op, arg);
     }
 
 }

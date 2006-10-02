@@ -35,7 +35,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * @see <a href="package-summary.html#font-enc">font encoding file</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 
 public class EncReader implements Serializable {
@@ -50,13 +50,13 @@ public class EncReader implements Serializable {
      * with a localizer for the name of this class.
      */
     private transient Localizer localizer = LocalizerFactory
-            .getLocalizer(EncReader.class.getName());
+            .getLocalizer(EncReader.class);
 
     /**
      * Create a new object.
      *
-     * @param in    inputstream for reading
-     * @throws FontException if an IO-error occured
+     * @param in    input stream for reading
+     * @throws FontException if an IO-error occurred
      */
     public EncReader(final InputStream in) throws FontException {
 

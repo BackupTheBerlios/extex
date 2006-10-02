@@ -53,7 +53,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.41 $
+ * @version $Revision: 1.42 $
  */
 public class Box implements BoxOrRule, Serializable {
 
@@ -189,7 +189,7 @@ public class Box implements BoxOrRule, Serializable {
      */
     protected Localizer getLocalizer() {
 
-        return LocalizerFactory.getLocalizer(Box.class.getName());
+        return LocalizerFactory.getLocalizer(Box.class);
     }
 
     /**

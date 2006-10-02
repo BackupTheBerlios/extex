@@ -37,7 +37,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This abstract class provides some methods common to all Nodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public abstract class AbstractNode implements Node {
 
@@ -274,8 +274,7 @@ public abstract class AbstractNode implements Node {
     protected Localizer getLocalizer() {
 
         if (this.localizer == null) {
-            this.localizer = LocalizerFactory.getLocalizer(this.getClass()
-                    .getName());
+            this.localizer = LocalizerFactory.getLocalizer(this.getClass());
         }
         return this.localizer;
     }

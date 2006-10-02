@@ -27,7 +27,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * encountered.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class BadDirectionException extends HelpingException {
 
@@ -43,8 +43,8 @@ public class BadDirectionException extends HelpingException {
      */
     public BadDirectionException() {
 
-        super(LocalizerFactory.getLocalizer(BadDirectionException.class
-                .getName()), "Omega.BadDirection");
+        super(LocalizerFactory.getLocalizer(BadDirectionException.class),
+                "Omega.BadDirection");
     }
 
 }

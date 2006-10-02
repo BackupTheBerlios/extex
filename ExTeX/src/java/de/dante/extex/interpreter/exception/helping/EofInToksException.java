@@ -30,7 +30,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class EofInToksException extends EofException {
 
@@ -47,9 +47,8 @@ public class EofInToksException extends EofException {
      */
     public EofInToksException(final String macro) {
 
-        super(
-                LocalizerFactory.getLocalizer(EofInToksException.class
-                        .getName()), "TTP.EOFinToks", macro);
+        super(LocalizerFactory.getLocalizer(EofInToksException.class),
+                "TTP.EOFinToks", macro);
     }
 
 }
