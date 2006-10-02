@@ -37,7 +37,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This abstract class provides some methods common to all Nodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public abstract class AbstractNode implements Node {
 
@@ -111,62 +111,12 @@ public abstract class AbstractNode implements Node {
     }
 
     /**
-     * Advance the width by some length. The length can also be nagative.
-     *
-     * @param x the length to add
+     * @see de.dante.extex.typesetter.type.Node#addDepthTo(
+     *      de.dante.extex.interpreter.type.glue.WideGlue)
      */
-    public void advanceWidth(final FixedDimen x) {
+    public void addDepthTo(final WideGlue glue) {
 
-        width.add(x);
-    }
-
-    /**
-     * Advance the height by some length. The length can also be nagative.
-     *
-     * @param x the length to add
-     */
-    public void advanceHeight(final FixedDimen x) {
-
-        height.add(x);
-    }
-
-    /**
-     * Assign the maximum of the current value and a comparison value to the
-     * height.
-     *
-     * @param x the length to compare to
-     */
-    public void maxHeight(final FixedDimen x) {
-
-        if (height.getLength().lt(x)) {
-            height.setLength(x);
-        }
-    }
-
-    /**
-     * Assign the maximum of the current value and a comparison value to the
-     * width.
-     *
-     * @param x the length to compare to
-     */
-    public void maxWidth(final FixedDimen x) {
-
-        if (width.getLength().lt(x)) {
-            width.setLength(x);
-        }
-    }
-
-    /**
-     * Assign the maximum of the current value and a comparison value to the
-     * depth.
-     *
-     * @param x the length to compare to
-     */
-    public void maxDepth(final FixedDimen x) {
-
-        if (depth.getLength().lt(x)) {
-            depth.setLength(x);
-        }
+        glue.add(depth);
     }
 
     /**
@@ -176,7 +126,6 @@ public abstract class AbstractNode implements Node {
     public void addHeightTo(final WideGlue glue) {
 
         glue.add(height);
-        glue.add(depth);
     }
 
     /**
@@ -186,6 +135,36 @@ public abstract class AbstractNode implements Node {
     public void addWidthTo(final WideGlue glue) {
 
         glue.add(width);
+    }
+
+    /**
+     * Advance the depth by some length. The length can also be negative.
+     *
+     * @param x the length to add
+     */
+    public void advanceDepth(final FixedDimen x) {
+
+        depth.add(x);
+    }
+
+    /**
+     * Advance the height by some length. The length can also be negative.
+     *
+     * @param x the length to add
+     */
+    public void advanceHeight(final FixedDimen x) {
+
+        height.add(x);
+    }
+
+    /**
+     * Advance the width by some length. The length can also be negative.
+     *
+     * @param x the length to add
+     */
+    public void advanceWidth(final FixedDimen x) {
+
+        width.add(x);
     }
 
     /**
@@ -335,6 +314,45 @@ public abstract class AbstractNode implements Node {
     public FixedDimen getWidth() {
 
         return width.getLength();
+    }
+
+    /**
+     * Assign the maximum of the current value and a comparison value to the
+     * depth.
+     *
+     * @param x the length to compare to
+     */
+    public void maxDepth(final FixedDimen x) {
+
+        if (depth.getLength().lt(x)) {
+            depth.setLength(x);
+        }
+    }
+
+    /**
+     * Assign the maximum of the current value and a comparison value to the
+     * height.
+     *
+     * @param x the length to compare to
+     */
+    public void maxHeight(final FixedDimen x) {
+
+        if (height.getLength().lt(x)) {
+            height.setLength(x);
+        }
+    }
+
+    /**
+     * Assign the maximum of the current value and a comparison value to the
+     * width.
+     *
+     * @param x the length to compare to
+     */
+    public void maxWidth(final FixedDimen x) {
+
+        if (width.getLength().lt(x)) {
+            width.setLength(x);
+        }
     }
 
     /**
