@@ -27,7 +27,6 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
-import de.dante.extex.interpreter.type.InitializableCode;
 import de.dante.extex.interpreter.type.TokensWriter;
 import de.dante.extex.interpreter.type.file.ExecuteFile;
 import de.dante.extex.interpreter.type.file.LogFile;
@@ -71,14 +70,13 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.38 $
+ * @version $Revision: 1.39 $
  */
 public class Write extends AbstractCode
         implements
             TokensWriter,
             LogEnabled,
-            Configurable,
-            InitializableCode {
+            Configurable {
 
     /**
      * The constant <tt>LOG_FILE</tt> contains the key for the log file.
@@ -88,7 +86,7 @@ public class Write extends AbstractCode
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 20060406L;
+    protected static final long serialVersionUID = 20061001L;
 
     /**
      * The field <tt>SYSTEM</tt> contains the key for the system execute
@@ -101,6 +99,11 @@ public class Write extends AbstractCode
      * log file.
      */
     private static final String USER_AND_LOG = "17";
+
+    /**
+     * The field <tt>init</tt> contains the ...
+     */
+    private transient boolean init = false;
 
     /**
      * The field <tt>logger</tt> contains the target channel for the message.
@@ -178,21 +181,6 @@ public class Write extends AbstractCode
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.InitializableCode#init(
-     *      de.dante.extex.interpreter.context.Context,
-     *      TokenSource, Typesetter)
-     */
-    public void init(final Context context, final TokenSource value,
-            final Typesetter typesetter) throws InterpreterException {
-
-        context.setOutFile(LOG_FILE, new LogFile(logger), true);
-        context.setOutFile(USER_AND_LOG, new UserAndLogFile(logger), true);
-        if (write18) {
-            context.setOutFile(SYSTEM, new ExecuteFile(logger), true);
-        }
-    }
-
-    /**
      * Write some tokens to a write register.
      *
      * @param key the name (number) of the write register
@@ -204,9 +192,19 @@ public class Write extends AbstractCode
     public void write(final String key, final Tokens toks, final Context context)
             throws InterpreterException {
 
+
         OutFile file = context.getOutFile(key);
 
         if (file == null || !file.isOpen()) {
+
+            if (!init) {
+                init = true;
+                context.setOutFile(LOG_FILE, new LogFile(logger), true);
+                context.setOutFile(USER_AND_LOG, new UserAndLogFile(logger), true);
+                if (write18) {
+                    context.setOutFile(SYSTEM, new ExecuteFile(logger), true);
+                }
+            }
 
             if (key == null || "".equals(key) || key.charAt(0) == '-') {
                 file = context.getOutFile(LOG_FILE);
