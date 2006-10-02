@@ -45,7 +45,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This abstract class provides some methods common to all ListMakers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public abstract class AbstractListMaker implements ListMaker {
 
@@ -243,6 +243,15 @@ public abstract class AbstractListMaker implements ListMaker {
 
         throw new TypesetterHelpingException(getMyLocalizer(),
                 "TTP.MisplacedTabMark", token.toString());
+    }
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+
+        String name = getClass().getName();
+        return name.substring(name.lastIndexOf('.') + 1);
     }
 
 }

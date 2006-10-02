@@ -59,7 +59,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.36 $
+ * @version $Revision: 1.37 $
  */
 public class HorizontalListMaker extends AbstractListMaker {
 
@@ -397,6 +397,14 @@ public class HorizontalListMaker extends AbstractListMaker {
         sb.append("spacefactor ");
         sb.append(spaceFactor);
         sb.append('\n');
+    }
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+
+        return super.toString() + "\n" + nodes.toString();
     }
 
 }

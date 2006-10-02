@@ -45,7 +45,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This is the derived class for a list maker in inner vertical list mode.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class InnerVerticalListMaker extends AbstractListMaker {
 
@@ -252,6 +252,14 @@ public class InnerVerticalListMaker extends AbstractListMaker {
             prevDepth.toString(sb);
         }
         sb.append('\n');
+    }
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+
+        return super.toString() + "\n" + nodes.toString();
     }
 
 }
