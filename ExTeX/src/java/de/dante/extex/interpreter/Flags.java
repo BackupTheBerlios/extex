@@ -76,7 +76,7 @@ package de.dante.extex.interpreter;
  * </table>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public interface Flags {
 
@@ -84,7 +84,72 @@ public interface Flags {
      * The constant <tt>NONE</tt> contains an instance where no flags are set.
      * Beware of changing this instance!
      */
-    Flags NONE = new FlagsImpl();
+    Flags NONE = new FlagsImpl() {
+
+        /**
+         * @see de.dante.extex.interpreter.Flags#set(de.dante.extex.interpreter.Flags)
+         */
+        public void set(final Flags flags) {
+
+            throw new UnsupportedOperationException();
+        }
+
+        /**
+         * @see de.dante.extex.interpreter.Flags#setExpanded()
+         */
+        public void setExpanded() {
+
+            throw new UnsupportedOperationException();
+        }
+
+        /**
+         * @see de.dante.extex.interpreter.Flags#setGlobal()
+         */
+        public void setGlobal() {
+
+            throw new UnsupportedOperationException();
+        }
+
+        /**
+         * @see de.dante.extex.interpreter.Flags#setGlobal(boolean)
+         */
+        public void setGlobal(final boolean value) {
+
+            throw new UnsupportedOperationException();
+        }
+
+        /**
+         * @see de.dante.extex.interpreter.Flags#setImmediate()
+         */
+        public void setImmediate() {
+
+            throw new UnsupportedOperationException();
+        }
+
+        /**
+         * @see de.dante.extex.interpreter.Flags#setLong()
+         */
+        public void setLong() {
+
+            throw new UnsupportedOperationException();
+        }
+
+        /**
+         * @see de.dante.extex.interpreter.Flags#setOuter()
+         */
+        public void setOuter() {
+
+            throw new UnsupportedOperationException();
+        }
+
+        /**
+         * @see de.dante.extex.interpreter.Flags#setProtected()
+         */
+        public void setProtected() {
+
+            throw new UnsupportedOperationException();
+        }
+    };
 
     /**
      * This method clears all flags.
@@ -139,6 +204,13 @@ public interface Flags {
      * @return a copy of the instance
      */
     Flags copy();
+
+    /**
+     * Getter for the text representations of the flags currently set.
+     *
+     * @return the array of flag names
+     */
+    String[] get();
 
     /**
      * Test if all flags are cleared.

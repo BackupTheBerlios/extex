@@ -19,12 +19,14 @@
 
 package de.dante.extex.interpreter;
 
+import de.dante.util.framework.i18n.LocalizerFactory;
+
 /**
  * This class implements a set of flags.
  * This is needed to pass controlling information to primitives.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class FlagsImpl implements Flags {
 
@@ -319,6 +321,16 @@ public class FlagsImpl implements Flags {
         sb.append(protectedP ? 'P' : '_');
         sb.append(expandedP ? 'X' : '_');
         return sb.toString();
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.Flags#get()
+     */
+    public String[] get() {
+
+        LocalizerFactory.getLocalizer(FlagsImpl.class);
+        // TODO gene: get unimplemented
+        return new String[]{};
     }
 
 }
