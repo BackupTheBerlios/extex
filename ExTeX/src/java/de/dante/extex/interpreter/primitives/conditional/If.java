@@ -25,6 +25,7 @@ import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.util.UnicodeChar;
 
 /**
  * This class provides an implementation for the primitive <code>\if</code>.
@@ -59,7 +60,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class If extends AbstractIf {
 
@@ -95,7 +96,9 @@ public class If extends AbstractIf {
             throw new EofException(printableControlSequence(context));
         }
 
-        return t1.getChar().equals(t2.getChar());
+        UnicodeChar c1 = t1.getChar();
+        UnicodeChar c2 = t2.getChar();
+        return (c1 == null ? c2 == null : c1.equals(c2));
     }
 
 }

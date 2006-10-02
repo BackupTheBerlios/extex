@@ -82,14 +82,14 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.35 $
+ * @version $Revision: 1.36 $
  */
 public class Read extends AbstractAssignment implements LogEnabled {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 20060410L;
+    protected static final long serialVersionUID = 20061001L;
 
     /**
      * The field <tt>logger</tt> contains the target channel for the message.
@@ -128,7 +128,7 @@ public class Read extends AbstractAssignment implements LogEnabled {
 
         InFile file = context.getInFile(key);
 
-        if (!file.isOpen()) {
+        if (file == null || !file.isOpen()) {
             file = context.getInFile(null);
             if (!file.isOpen()) {
                 throw new HelpingException(getLocalizer(), "TTP.EOFinRead",

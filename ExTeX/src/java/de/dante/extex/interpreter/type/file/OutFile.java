@@ -43,12 +43,13 @@ import de.dante.extex.scanner.type.token.SubMarkToken;
 import de.dante.extex.scanner.type.token.SupMarkToken;
 import de.dante.extex.scanner.type.token.TabMarkToken;
 import de.dante.extex.scanner.type.token.TokenVisitor;
+import de.dante.util.UnicodeChar;
 
 /**
  * This class holds an output file onto which tokens can be wrtitten.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class OutFile implements Serializable {
 
@@ -94,7 +95,10 @@ public class OutFile implements Serializable {
         public Object visitEscape(final ControlSequenceToken token,
                 final Object w) throws Exception {
 
-            ((Writer) w).write(token.getChar().getCodePoint());
+            UnicodeChar c = token.getChar();
+            if (c != null) {
+                ((Writer) w).write(c.getCodePoint());
+            }
             ((Writer) w).write(token.getName());
             return null;
         }
@@ -104,8 +108,8 @@ public class OutFile implements Serializable {
          *      de.dante.extex.scanner.type.LeftBraceToken,
          *      java.lang.Object)
          */
-        public Object visitLeftBrace(final LeftBraceToken token,
-                final Object w) throws Exception {
+        public Object visitLeftBrace(final LeftBraceToken token, final Object w)
+                throws Exception {
 
             ((Writer) w).write(token.getChar().getCodePoint());
             return null;
@@ -140,8 +144,8 @@ public class OutFile implements Serializable {
          *      de.dante.extex.scanner.type.MathShiftToken,
          *      java.lang.Object)
          */
-        public Object visitMathShift(final MathShiftToken token,
-                final Object w) throws Exception {
+        public Object visitMathShift(final MathShiftToken token, final Object w)
+                throws Exception {
 
             ((Writer) w).write(token.getChar().getCodePoint());
             return null;
