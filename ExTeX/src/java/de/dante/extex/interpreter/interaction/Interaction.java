@@ -31,15 +31,15 @@ import de.dante.util.exception.GeneralException;
  *
  * @see "<logo>TeX</logo> &ndash; The Program [73]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public abstract class Interaction implements Serializable {
 
     /**
-     * This inner class is use to represent the batch mode.
+     * This inner class is used to represent the batch mode.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.3 $
+     * @version $Revision: 1.4 $
      */
     private static class BatchMode extends Interaction {
 
@@ -47,6 +47,14 @@ public abstract class Interaction implements Serializable {
          * The constant <tt>serialVersionUID</tt> contains the id for serialization.
          */
         protected static final long serialVersionUID = 1L;
+
+        /**
+         * @see de.dante.extex.interpreter.Interaction#getIndex()
+         */
+        public String getIndex() {
+
+            return "0";
+        }
 
         /**
          * Return the singleton constant object after the serialized instance
@@ -62,11 +70,11 @@ public abstract class Interaction implements Serializable {
         }
 
         /**
-         * @see de.dante.extex.interpreter.Interaction#getIndex()
+         * @see java.lang.Object#toString()
          */
-        public String getIndex() {
+        public String toString() {
 
-            return "0";
+            return "\\batchmode";
         }
 
         /**
@@ -84,10 +92,10 @@ public abstract class Interaction implements Serializable {
     }
 
     /**
-     * This inner class is use to represent the error stop mode.
+     * This inner class is used to represent the error stop mode.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.3 $
+     * @version $Revision: 1.4 $
      */
     private static class ErrorstopMode extends Interaction {
 
@@ -96,6 +104,14 @@ public abstract class Interaction implements Serializable {
          * serialization.
          */
         protected static final long serialVersionUID = 1L;
+
+        /**
+         * @see de.dante.extex.interpreter.Interaction#getIndex()
+         */
+        public String getIndex() {
+
+            return "3";
+        }
 
         /**
          * Return the singleton constant object after the serialized instance
@@ -111,11 +127,11 @@ public abstract class Interaction implements Serializable {
         }
 
         /**
-         * @see de.dante.extex.interpreter.Interaction#getIndex()
+         * @see java.lang.Object#toString()
          */
-        public String getIndex() {
+        public String toString() {
 
-            return "3";
+            return "\\errorstopmode";
         }
 
         /**
@@ -133,10 +149,10 @@ public abstract class Interaction implements Serializable {
     }
 
     /**
-     * This inner class is use to represent the nonstop mode.
+     * This inner class is used to represent the nonstop mode.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.3 $
+     * @version $Revision: 1.4 $
      */
     private static class NonstopMode extends Interaction {
 
@@ -144,6 +160,14 @@ public abstract class Interaction implements Serializable {
          * The constant <tt>serialVersionUID</tt> contains the id for serialization.
          */
         protected static final long serialVersionUID = 1L;
+
+        /**
+         * @see de.dante.extex.interpreter.Interaction#getIndex()
+         */
+        public String getIndex() {
+
+            return "1";
+        }
 
         /**
          * Return the singleton constant object after the serialized instance
@@ -159,11 +183,11 @@ public abstract class Interaction implements Serializable {
         }
 
         /**
-         * @see de.dante.extex.interpreter.Interaction#getIndex()
+         * @see java.lang.Object#toString()
          */
-        public String getIndex() {
+        public String toString() {
 
-            return "1";
+            return "\\nonstopmode";
         }
 
         /**
@@ -181,10 +205,10 @@ public abstract class Interaction implements Serializable {
     }
 
     /**
-     * This inner class is use to represent the scroll mode.
+     * This inner class is used to represent the scroll mode.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.3 $
+     * @version $Revision: 1.4 $
      */
     private static class ScrollMode extends Interaction {
 
@@ -192,6 +216,14 @@ public abstract class Interaction implements Serializable {
          * The constant <tt>serialVersionUID</tt> contains the id for serialization.
          */
         protected static final long serialVersionUID = 1L;
+
+        /**
+         * @see de.dante.extex.interpreter.Interaction#getIndex()
+         */
+        public String getIndex() {
+
+            return "2";
+        }
 
         /**
          * Return the singleton constant object after the serialized instance
@@ -207,11 +239,11 @@ public abstract class Interaction implements Serializable {
         }
 
         /**
-         * @see de.dante.extex.interpreter.Interaction#getIndex()
+         * @see java.lang.Object#toString()
          */
-        public String getIndex() {
+        public String toString() {
 
-            return "2";
+            return "\\scrollmode";
         }
 
         /**
@@ -347,25 +379,6 @@ public abstract class Interaction implements Serializable {
     }
 
     /**
-     * This method provides an entry point for the visitor pattern.
-     *
-     * @param visitor this argument contains the visitor which has initiated
-     * the request.
-     * @param arg1 the first argument
-     * @param arg2 the second argument
-     * @param arg3 the third argument
-     *
-     * @return a boolean indicator
-     *
-     * @throws GeneralException in case of an error
-     *
-     * @see InteractionVisitor
-     */
-    public abstract boolean visit(final InteractionVisitor visitor,
-            final Object arg1, final Object arg2, final Object arg3)
-            throws GeneralException;
-
-    /**
      * Get the numeric index of the interaction mode.
      * According to the definition os <logo>TeX</logo> the following mapping
      * holds:
@@ -387,5 +400,24 @@ public abstract class Interaction implements Serializable {
      * @return the numeric index
      */
     public abstract String getIndex();
+
+    /**
+     * This method provides an entry point for the visitor pattern.
+     *
+     * @param visitor this argument contains the visitor which has initiated
+     * the request.
+     * @param arg1 the first argument
+     * @param arg2 the second argument
+     * @param arg3 the third argument
+     *
+     * @return a boolean indicator
+     *
+     * @throws GeneralException in case of an error
+     *
+     * @see InteractionVisitor
+     */
+    public abstract boolean visit(final InteractionVisitor visitor,
+            final Object arg1, final Object arg2, final Object arg3)
+            throws GeneralException;
 
 }
