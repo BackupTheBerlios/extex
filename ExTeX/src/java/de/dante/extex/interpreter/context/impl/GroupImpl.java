@@ -55,7 +55,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.68 $
+ * @version $Revision: 1.69 $
  */
 public class GroupImpl implements Group {
 
@@ -182,7 +182,7 @@ public class GroupImpl implements Group {
      * The field <tt>locator</tt> contains the locator to determine the
      * position a token came from.
      */
-    private Locator locator;
+    private transient Locator locator;
 
     /**
      * The field <tt>mathcodeMap</tt> contains the map for the category codes.
@@ -533,8 +533,8 @@ public class GroupImpl implements Group {
 
     /**
      * Getter for a input file register.  In the case that the named
-     * descriptor doe not exist yet a new one is returned. Especially if the
-     * name is <code>null</code> then the default input stream is used.
+     * descriptor does not exist yet <code>null</code> is returned.
+     * If the name is <code>null</code> then the default input stream is used.
      *
      * @param name the name or the number of the file register
      *
@@ -557,8 +557,7 @@ public class GroupImpl implements Group {
             }
         }
 
-        return (next != null ? next.getInFile(name) : new InFile(
-                standardTokenStream, true));
+        return next != null ? next.getInFile(name) : null;
     }
 
     /**
@@ -1058,7 +1057,7 @@ public class GroupImpl implements Group {
      *
      * @param locator the locator to set
      */
-    public void setLocator(Locator locator) {
+    public void setLocator(final Locator locator) {
 
         this.locator = locator;
     }
@@ -1190,7 +1189,7 @@ public class GroupImpl implements Group {
      *
      * @param start the start token to set
      */
-    public void setStart(Token start) {
+    public void setStart(final Token start) {
 
         this.start = start;
     }
