@@ -25,6 +25,7 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
+import de.dante.extex.interpreter.exception.helping.UndefinedControlSequenceException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.CodeExpander;
@@ -65,7 +66,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
 public class The extends AbstractCode implements ExpandableCode, CodeExpander {
 
@@ -111,6 +112,8 @@ public class The extends AbstractCode implements ExpandableCode, CodeExpander {
                 Tokens toks = ((Theable) code).the(context, source, typesetter);
                 source.push(toks);
                 return;
+            } else if (code == null) {
+                throw new UndefinedControlSequenceException(cs.toString());
             }
         }
 
