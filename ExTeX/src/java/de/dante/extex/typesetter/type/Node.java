@@ -23,7 +23,6 @@ import java.io.Serializable;
 
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
-import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.FixedGlueComponent;
 import de.dante.extex.interpreter.type.glue.WideGlue;
 import de.dante.extex.typesetter.Typesetter;
@@ -43,9 +42,16 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public interface Node extends Serializable {
+
+    /**
+     * Add the flexible depth of the current node to the given glue.
+     *
+     * @param glue the glue to add to.
+     */
+    void addDepthTo(WideGlue glue);
 
     /**
      * Add the flexible height of the current node to the given glue.
@@ -159,12 +165,12 @@ public interface Node extends Serializable {
     /**
      * Setter for the depth of the node.
      *
-     * @param depth the nde depth
+     * @param depth the node depth
      */
     void setDepth(FixedDimen depth);
 
     /**
-     * Setter for the heigth of the node.
+     * Setter for the height of the node.
      *
      * @param height the new height
      */
@@ -175,7 +181,7 @@ public interface Node extends Serializable {
      *
      * @param width the new width
      */
-    void setWidth(FixedDimen glue);
+    void setWidth(FixedDimen width);
 
     /**
      * Adjust the height of a flexible node. This method is a noop for any but
@@ -202,7 +208,7 @@ public interface Node extends Serializable {
      *
      * @param sb the output string buffer
      * @param prefix the prefix string inserted at the beginning of each line
-     * @param breadth the breadt of the nodes to display
+     * @param breadth the breadth of the nodes to display
      * @param depth the depth of the nodes to display
      */
     void toString(StringBuffer sb, String prefix, int breadth, int depth);
