@@ -23,11 +23,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Logger;
 
+import de.dante.extex.interpreter.interaction.Interaction;
 import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.i18n.LocalizerFactory;
 import de.dante.util.framework.logger.LogEnabled;
+import de.dante.util.resource.InteractionAware;
+import de.dante.util.resource.InteractionProvider;
 import de.dante.util.resource.RecursiveFinder;
 import de.dante.util.resource.ResourceFinder;
 
@@ -36,13 +39,14 @@ import de.dante.util.resource.ResourceFinder;
  * tries to find it via its parent.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class ResourceFinderImpl
         implements
             ResourceFinder,
             RecursiveFinder,
-            LogEnabled {
+            LogEnabled,
+            InteractionAware {
 
     /**
      * The field <tt>configuration</tt> contains the currently used
@@ -61,6 +65,11 @@ public class ResourceFinderImpl
      * <code>null</code> if none has been set yet.
      */
     private ResourceFinder parent = null;
+
+    /**
+     * The field <tt>provider</tt> contains the interaction provider.
+     */
+    private InteractionProvider provider = null;
 
     /**
      * Creates a new object.
@@ -125,6 +134,14 @@ public class ResourceFinderImpl
         Localizer localizer = LocalizerFactory
                 .getLocalizer(ResourceFinderImpl.class.getName());
 
+        if (provider != null) {
+            Interaction interaction = provider.getInteraction();
+            if (interaction != Interaction.ERRORSTOPMODE) {
+                return null;
+            }
+        }
+        
+        
         if (!line.equals("")) {
             logger.severe("\n! "
                     + localizer.format("CLI.FileNotFound", name, type));
@@ -165,6 +182,14 @@ public class ResourceFinderImpl
         return (sb.length() > 0 ? sb.toString() : null);
     }
 
+    /**
+     * @see de.dante.util.resource.InteractionAware#setInteractionProvider(
+     *      de.dante.util.resource.InteractionProvider)
+     */
+    public void setInteractionProvider(final InteractionProvider provider) {
+
+        this.provider = provider;
+    }
     /**
      * Setter for the parent resource finder.
      *
