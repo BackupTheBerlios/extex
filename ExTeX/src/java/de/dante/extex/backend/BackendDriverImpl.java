@@ -37,7 +37,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This back-end driver can be used to combine several components.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class BackendDriverImpl
         implements
@@ -49,7 +49,7 @@ public class BackendDriverImpl
      * This internal class acts as page counter as last element in the node pipe.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.9 $
+     * @version $Revision: 1.10 $
      */
     private class Counter implements PagePipe {
 
@@ -240,7 +240,9 @@ public class BackendDriverImpl
      */
     public void setParameter(final String name, final String value) {
 
-        // ignored
+        if (documentWriter != null) {
+            documentWriter.setParameter(name, value);
+        }
     }
 
     /**
