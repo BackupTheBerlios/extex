@@ -57,7 +57,7 @@ import de.dante.util.resource.ResourceFinder;
  * running an instance of <logo>ExTeX</logo>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.51 $
+ * @version $Revision: 1.52 $
  */
 public class ExTeXLauncher extends TestCase {
 
@@ -65,7 +65,7 @@ public class ExTeXLauncher extends TestCase {
      * Inner class for the error handler.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.51 $
+     * @version $Revision: 1.52 $
      */
     private class EHandler implements ErrorHandler {
 
@@ -141,7 +141,7 @@ public class ExTeXLauncher extends TestCase {
      * String representation to Level values.
      */
     private static final Map LEVEL_MAP = new HashMap();
-    {
+    static {
         LEVEL_MAP.put("config", Level.CONFIG);
         LEVEL_MAP.put("info", Level.INFO);
         LEVEL_MAP.put("warning", Level.WARNING);
@@ -338,7 +338,8 @@ public class ExTeXLauncher extends TestCase {
         if (Boolean.valueOf(
                 properties.getProperty("extex.launcher.verbose", "false"))
                 .booleanValue()) {
-            System.err.println(code);
+            Logger.getLogger(ExTeXLauncher.class.getName()).info(
+                    "Running:\n" + code + "\n");
         }
 
         init(extex);
