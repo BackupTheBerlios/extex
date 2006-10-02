@@ -33,6 +33,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import de.dante.extex.ExTeX;
 import de.dante.extex.unicodeFont.exception.FontException;
@@ -48,7 +50,7 @@ import de.dante.util.xml.XMLStreamWriter;
  * Utilities for a afm file.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public final class AfmUtil extends AbstractFontUtil {
 
@@ -113,6 +115,11 @@ public final class AfmUtil extends AbstractFontUtil {
     private boolean topl = false;
 
     /**
+     * A map for the glyphs.
+     */
+    private Map glyphmap;
+
+    /**
      * Create a new object.
      *
      * @throws ConfigurationException if a config-error occurs.
@@ -120,6 +127,8 @@ public final class AfmUtil extends AbstractFontUtil {
     private AfmUtil() throws ConfigurationException {
 
         super(AfmUtil.class);
+
+        glyphmap = new TreeMap();
     }
 
     /**
@@ -200,6 +209,27 @@ public final class AfmUtil extends AbstractFontUtil {
 
         createEncFiles(names);
 
+        createIncSty();
+
+    }
+
+    /**
+     * Create the include file for the package.
+     * @throws IOException if an IO-error occurred.
+     */
+    private void createIncSty() throws IOException {
+
+        BufferedWriter out = new BufferedWriter(new FileWriter(outdir
+                + File.separator + removeExtensions(afmfile) + ".inc"));
+
+        Iterator it = glyphmap.keySet().iterator();
+        while (it.hasNext()) {
+            String key = (String) it.next();
+            EncGlpyh eg = (EncGlpyh) glyphmap.get(key);
+            out.write(eg.toString());
+            out.newLine();
+        }
+        out.close();
     }
 
     /**
@@ -212,10 +242,12 @@ public final class AfmUtil extends AbstractFontUtil {
         int cnt = 0;
         int filecnt = 0;
         char filechar = 'a';
+        String na = "";
         BufferedWriter out = null;
+        String afm = removeExtensions(afmfile);
         for (int i = 0, n = names.size(); i < n; i++) {
             if (cnt == 0) {
-                String na = encname + filechar;
+                na = encname + filechar;
                 File newenc = new File(outdir + File.separator + na + ".enc");
                 out = new BufferedWriter(new FileWriter(newenc));
                 out.write("% " + createVersion() + "\n");
@@ -239,6 +271,10 @@ public final class AfmUtil extends AbstractFontUtil {
                 }
 
             }
+            EncGlpyh eg = new EncGlpyh(afm, afm + na, names.get(i).toString(),
+                    cnt);
+            glyphmap.put(eg.getGlyphname(), eg);
+
             out.write("% " + cnt++ + "\n");
             out.write("/" + names.get(i) + "\n");
             if (cnt == NUMBEROFGLYPHS) {
@@ -487,8 +523,8 @@ public final class AfmUtil extends AbstractFontUtil {
 
     /**
      * transform (from afm2tfm.c).
-     * @param x
-     * @param y
+     * @param x x
+     * @param y y
      * @return The transform value.
      */
     private int transform(final int x, final int y) {
@@ -532,6 +568,13 @@ public final class AfmUtil extends AbstractFontUtil {
             for (int k = 0; k < table.length; k++) {
                 String name = table[k].replaceAll("/", "");
                 readenc.add(name);
+
+                EncGlpyh eg = new EncGlpyh(removeExtensions(afmfile),
+                        removeExtensions(afmfile) + removeExtensions(encv),
+                        name, k);
+
+                glyphmap.put(eg.getGlyphname(), eg);
+
             }
 
             if (tomap && mapout != null) {
@@ -552,10 +595,48 @@ public final class AfmUtil extends AbstractFontUtil {
                 mapout.write("\n");
             }
 
-            if (tomap) {
+            if (topl) {
                 createPl(enc, encname + encv.replaceAll("\\.[eE][nN][cC]", ""));
             }
         }
+    }
+
+    /**
+     * Returns only the name of a file.
+     * @param n The name.
+     * @return Returns only the name of a file.
+     */
+    private String removeExtensions(final String n) {
+
+        StringBuffer buf = new StringBuffer();
+
+        boolean dotfound = false;
+        for (int i = n.length() - 1; i >= 0; i--) {
+            char c = n.charAt(i);
+            if (!dotfound && c == '.') {
+                dotfound = true;
+                continue;
+            }
+            if (dotfound) {
+                if (c == '/' || c == '\\') {
+                    break;
+                } else {
+                    buf.insert(0, c);
+                }
+            }
+        }
+
+        return buf.toString();
+    }
+
+    /**
+     * Returns only the name of a file.
+     * @param f The file.
+     * @return Returns only the name of a file.
+     */
+    private String removeExtensions(final File f) {
+
+        return removeExtensions(f.getName());
     }
 
     /**
@@ -687,6 +768,7 @@ public final class AfmUtil extends AbstractFontUtil {
         afm.setEncname(encname);
         afm.setOutdir(outdir);
         afm.setTomap(tomap);
+        afm.setTopl(topl);
 
         afm.doIt(file);
     }
@@ -870,4 +952,105 @@ public final class AfmUtil extends AbstractFontUtil {
 
         topl = pl;
     }
+
+    /**
+     * Container for the data: fontname + encoding vector - glyphname - number.
+     */
+    public class EncGlpyh {
+
+        /**
+         * The font.
+         */
+        private String font;
+
+        /**
+         * The font name (with the name of the encoding vector).
+         */
+        private String fonte = "";
+
+        /**
+         * The name of the glyph.
+         */
+        private String glyphname = "";
+
+        /**
+         * The number (Position in the encoding vector).
+         */
+        private int number;
+
+        /**
+         * Create a new object.
+         *
+         * @param basefont      The font
+         * @param fontencname   The fontname (with encoding vector)
+         * @param gn            The glyph name.
+         * @param n             The number.
+         */
+        public EncGlpyh(final String basefont, final String fontencname,
+                final String gn, final int n) {
+
+            font = basefont;
+            fonte = fontencname;
+            glyphname = gn;
+            number = n;
+        }
+
+        /**
+         * Returns the fonte.
+         * @return Returns the fonte.
+         */
+        public String getFonte() {
+
+            return fonte;
+        }
+
+        /**
+         * Returns the glyphname.
+         * @return Returns the glyphname.
+         */
+        public String getGlyphname() {
+
+            return glyphname;
+        }
+
+        /**
+         * Returns the number.
+         * @return Returns the number.
+         */
+        public int getNumber() {
+
+            return number;
+        }
+
+        /**
+         * Returns the info from the class.
+         * @return Returns the info from the class.
+         */
+        public String toString() {
+
+            StringBuffer buf = new StringBuffer();
+            // \DeclareTextGlyphX{fltr}{AEacute}{fltrla}{0}
+            buf.append("\\DeclareTextGlyphX{");
+            buf.append(font);
+            buf.append("}{");
+            buf.append(glyphname);
+            buf.append("}{");
+            buf.append(fonte);
+            buf.append("}{");
+            buf.append(number);
+            buf.append("}");
+
+            return buf.toString();
+        }
+
+        /**
+         * Returns the font.
+         * @return Returns the font.
+         */
+        public String getFont() {
+
+            return font;
+        }
+    }
+
 }

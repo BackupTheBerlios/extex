@@ -19,12 +19,26 @@
 
 package de.dante.util.font;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
+
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.Element;
+import com.lowagie.text.Font;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.Phrase;
+import com.lowagie.text.pdf.BaseFont;
+import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfWriter;
 
 import de.dante.extex.unicodeFont.exception.FontException;
 import de.dante.extex.unicodeFont.format.xtf.TtfTableCMAP;
@@ -32,7 +46,6 @@ import de.dante.extex.unicodeFont.format.xtf.TtfTableHMTX;
 import de.dante.extex.unicodeFont.format.xtf.TtfTableNAME;
 import de.dante.extex.unicodeFont.format.xtf.TtfTablePOST;
 import de.dante.extex.unicodeFont.format.xtf.XtfReader;
-import de.dante.extex.unicodeFont.format.xtf.TtfTableCMAP.Format;
 import de.dante.extex.unicodeFont.format.xtf.TtfTableCMAP.IndexEntry;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
@@ -40,7 +53,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * Print information about a ttf/otf file.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public final class XtfInfo extends AbstractFontUtil {
 
@@ -70,6 +83,31 @@ public final class XtfInfo extends AbstractFontUtil {
     private int charcode;
 
     /**
+     * Print glyphs.
+     */
+    private boolean printglyphs = false;
+
+    /**
+     * The font file.
+     */
+    private File xtffile;
+
+    /**
+     * The directory for the output.
+     */
+    private String outdir = ".";
+
+    /**
+     * Print the ttfinfo.
+     */
+    private boolean ttfinfo = false;
+
+    /**
+     * The directory with the ttf files.
+     */
+    private String ttfdir = "";
+
+    /**
      * Create a new object.
      *
      * @throws ConfigurationException if a configuration error occurs.
@@ -86,40 +124,251 @@ public final class XtfInfo extends AbstractFontUtil {
      * @throws IOException  if a IO-error occurred.
      * @throws ConfigurationException from the configuration system.
      * @throws FontException if a font error occurred.
+     * @throws DocumentException from iText
      */
     private void doIt(final String file) throws IOException,
-            ConfigurationException, FontException {
+            ConfigurationException, FontException, DocumentException {
 
-        InputStream xtfin = null;
-
-        // find directly the ttf file.
-        File ttffile = new File(file);
-
-        if (ttffile.canRead()) {
-            xtfin = new FileInputStream(ttffile);
+        if (ttfinfo) {
+            printttfindo();
         } else {
-            // use the file finder
-            xtfin = getFinder().findResource(ttffile.getName(), "");
+
+            InputStream xtfin = null;
+
+            // find directly the ttf file.
+            xtffile = new File(file);
+
+            if (xtffile.canRead()) {
+                xtfin = new FileInputStream(xtffile);
+            } else {
+                // use the file finder
+                xtfin = getFinder().findResource(xtffile.getName(), "");
+            }
+
+            if (xtfin == null) {
+                throw new FileNotFoundException(file);
+            }
+
+            XtfReader parser = new XtfReader(xtfin);
+
+            if (!listglyphs) {
+                doHead(file, parser);
+            }
+            if (listglyphs) {
+                listGlyphs(parser);
+            }
+            if (charinfo) {
+                charInfo(parser);
+            }
+            if (glyphinfo) {
+                glyphInfo(parser);
+            }
+
+            if (printglyphs) {
+                printGlpyhs(parser);
+            }
         }
 
-        if (xtfin == null) {
-            throw new FileNotFoundException(file);
+    }
+
+    /**
+     * Print the ttf info.
+     * @throws IOException if an IO-error occurred.
+     */
+    private void printttfindo() throws IOException {
+
+        File dir = new File(ttfdir);
+
+        if (dir.isDirectory()) {
+            String[] lists = dir.list(new FilenameFilter() {
+
+                /**
+                 * @see java.io.FilenameFilter#accept(java.io.File, java.lang.String)
+                 */
+                public boolean accept(final File dir, final String name) {
+
+                    return name.matches(".*\\.[tToO][tT][fF]");
+                }
+            });
+
+            Arrays.sort(lists);
+
+            BufferedWriter out = new BufferedWriter(new FileWriter(outdir
+                    + File.separator + "xtf.info"));
+
+            for (int i = 0; i < lists.length; i++) {
+
+                File file = new File(ttfdir + File.separator + lists[i]);
+                if (file.canRead()) {
+                    try {
+                        XtfReader parser = new XtfReader(new FileInputStream(
+                                file));
+                        TtfTableNAME name = parser.getNameTable();
+                        int[] platformids = name.getPlatformIDs();
+
+                        int pltid = TtfTableNAME.MICROSOFT;
+                        if (!name.existsPlatfrom(TtfTableNAME.MICROSOFT)) {
+                            // use the last one
+                            pltid = platformids[platformids.length - 1];
+                        }
+                        out.write(file.getName());
+                        out.write("\t;\t");
+                        out.write(name.getRecordString(pltid,
+                                TtfTableNAME.POSTSCRIPTNAME));
+                        out.newLine();
+                        out.flush();
+                    } catch (Exception e) {
+                        // ignore error
+                        System.err.println("error" + e.getMessage());
+                    }
+                }
+            }
+            out.close();
         }
 
-        XtfReader parser = new XtfReader(xtfin);
+    }
 
-        if (!listglyphs) {
-            doHead(file, parser);
+    /**
+     * How much glpyhs in one table row.
+     */
+    private static final int BLOCK = 8;
+
+    /**
+     * Print the glpyhs in a pdf file.
+     * @param parser    The xtf parser.
+     * @throws DocumentException from iText
+     * @throws IOException if an IO-error occurred.
+     */
+    private void printGlpyhs(final XtfReader parser) throws IOException,
+            DocumentException {
+
+        Document document = new Document();
+
+        if (!xtffile.canRead()) {
+            getLogger().severe(getLocalizer().format("XtfInfo.ErrPG"));
+
+        } else {
+
+            String pdfname = xtffile.getName().replaceAll("\\.[tToO][tT][fF]",
+                    "");
+            PdfWriter.getInstance(document, new FileOutputStream(outdir
+                    + File.separator + pdfname + ".pdf"));
+            document.open();
+
+            Font hex = new Font(Font.HELVETICA, 6);
+
+            BaseFont basefont = BaseFont.createFont(xtffile.getAbsolutePath(),
+                    BaseFont.IDENTITY_H, true);
+
+            Font font = new Font(basefont, 18, Font.NORMAL);
+
+            // first page
+
+            PdfPTable table1 = new PdfPTable(2);
+            table1.getDefaultCell().setBorderWidth(0);
+            table1.addCell("XtfInfo");
+            table1.addCell("");
+            table1.addCell("Filename");
+            table1.addCell(xtffile.getName());
+            table1.addCell("Fullname");
+            table1.addCell(parser.getFontFamilyName());
+
+            // name
+            TtfTableNAME name = parser.getNameTable();
+            int[] platformids = name.getPlatformIDs();
+
+            int pltid = TtfTableNAME.MICROSOFT;
+            if (!name.existsPlatfrom(TtfTableNAME.MICROSOFT)) {
+                // use the last one
+                pltid = platformids[platformids.length - 1];
+            }
+
+            table1.addCell("Platform");
+            table1.addCell(TtfTableNAME.getPlatformName(pltid));
+            table1.addCell("PSFontname");
+            table1.addCell(name.getRecordString(pltid,
+                    TtfTableNAME.POSTSCRIPTNAME));
+            table1.addCell("Subfamily");
+            table1.addCell(name.getRecordString(pltid,
+                    TtfTableNAME.FONTSUBFAMILYNAME));
+            table1.addCell("Version");
+            table1.addCell(name.getRecordString(pltid,
+                    TtfTableNAME.VERSIONSTRING));
+            table1.addCell("Number of Glpyhs");
+            table1.addCell(String.valueOf(parser.getNumberOfGlyphs()));
+
+            document.add(table1);
+
+            // add dummy text
+            Phrase dummy = new Phrase(
+                    "Es lebte einmal ein König und eine Königin, die waren reich und hatten alles, was sie sich wünschten, nur keine Kinder. Darüber klagte sie Tag und Nacht und sprach: »Ich bin wie ein Acker, auf dem nichts wächst.« Endlich erfüllte Gott ihre Wünsche; als das Kind aber zur Welt kam, sah's nicht aus wie ein Menschenkind, sondern war ein junges Eselein. Wie die Mutter das erblickte, fing ihr Jammer und Geschrei erst recht an, sie hätte lieber gar kein Kind gehabt als einen Esel und sagte, man sollt ihn ins Wasser werfen, damit ihn die Fische fräßen. Der König aber sprach: »Nein, hat Gott ihn gegeben, soll er auch mein Sohn und Erbe sein, nach meinem Tod auf dem königlichen Thron sitzen und die königliche Krone tragen.« Also ward das Eselein aufgezogen, nahm zu, und die Ohren wuchsen ihm auch fein hoch und gerad hinauf. Es war aber sonst fröhlicher Art, sprang herum, spielte und hatte besonders seine Lust an der Musik, so daß es zu einem berühmten Spielmann ging und sprach: »Lehre mich deine Kunst, daß ich so gut die Laute schlagen kann als du.«",
+                    font);
+
+            document.add(new Paragraph(dummy));
+
+            document.newPage();
+
+            // glyph table
+            PdfPTable table = new PdfPTable(BLOCK);
+            table.setWidthPercentage(100);
+            table.getDefaultCell().setBorderWidth(1);
+            table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
+            for (int k = 0; k < 0xffff; k += BLOCK) {
+
+                boolean glyphexists = false;
+                for (int b = 0; b < BLOCK; b++) {
+                    if (basefont.charExists((char) (k + b))) {
+                        glyphexists = true;
+                        break;
+                    }
+                }
+
+                if (glyphexists) {
+                    for (int b = 0; b < BLOCK; b++) {
+
+                        int kk = k + b;
+                        char c = (char) kk;
+
+                        if (basefont.charExists(c)) {
+                            Phrase ph = new Phrase(12,
+                                    new String(new char[]{c}), font);
+                            ph.add(new Phrase(12, "\n\n" + cst(kk) + "  (" + kk
+                                    + ")", hex));
+
+                            String namettf = parser.mapCharCodeToGlyphname(kk,
+                                    TtfTableCMAP.PLATFORM_MICROSOFT,
+                                    TtfTableCMAP.ENCODING_ISO_ISO10646);
+
+                            if (namettf == null) {
+                                namettf = "-xxx-";
+                            }
+                            Phrase glyphttf = new Phrase("\n" + namettf, hex);
+
+                            ph.add(glyphttf);
+                            table.addCell(ph);
+                        } else {
+                            Phrase ph = new Phrase("\u00a0");
+                            table.addCell(ph);
+                        }
+                    }
+                }
+            }
+            document.add(table);
+
         }
-        if (listglyphs) {
-            listGlyphs(parser);
-        }
-        if (charinfo) {
-            charInfo(parser);
-        }
-        if (glyphinfo) {
-            glyphInfo(parser);
-        }
+        document.close();
+
+    }
+
+    /**
+     * Convert a int to a tow digit hex string.
+     * @param c The int.
+     * @return Returns the hex value.
+     */
+    private String cst(final int c) {
+
+        String s = "0000" + Integer.toHexString(c).toUpperCase();
+        return "0x" + s.substring(s.length() - 4);
     }
 
     /**
@@ -222,7 +471,7 @@ public final class XtfInfo extends AbstractFontUtil {
 
         getLogger().severe(
                 getLocalizer().format("XtfInfo.Platform",
-                        name.getPlatformName(pltid)));
+                        TtfTableNAME.getPlatformName(pltid)));
         getLogger().severe(
                 getLocalizer().format(
                         "XtfInfo.PSName",
@@ -270,7 +519,11 @@ public final class XtfInfo extends AbstractFontUtil {
         String glyphname = "";
         boolean charinfo = false;
         int charcode = 0;
+        boolean printglyphs = false;
+        boolean ttfinfo = false;
+        String ttfdir = "";
         String file = "";
+        String outdir = ".";
 
         int i = 0;
         do {
@@ -281,6 +534,11 @@ public final class XtfInfo extends AbstractFontUtil {
                     glyphinfo = true;
                     glyphname = args[++i];
                 }
+            } else if ("-t".equals(args[i]) || "--ttfinfo".equals(args[i])) {
+                if (i + 1 < args.length) {
+                    ttfinfo = true;
+                    ttfdir = args[++i];
+                }
             } else if ("-c".equals(args[i]) || "--charinfo".equals(args[i])) {
                 if (i + 1 < args.length) {
                     charinfo = true;
@@ -289,6 +547,12 @@ public final class XtfInfo extends AbstractFontUtil {
                     } catch (Exception e) {
                         charcode = 0;
                     }
+                }
+            } else if ("-p".equals(args[i]) || "--printglyphs".equals(args[i])) {
+                printglyphs = true;
+            } else if ("-o".equals(args[i]) || "--outdir".equals(args[i])) {
+                if (i + 1 < args.length) {
+                    outdir = args[++i];
                 }
             } else {
                 file = args[i];
@@ -301,6 +565,10 @@ public final class XtfInfo extends AbstractFontUtil {
         info.setListglyphs(listglyphs);
         info.setCharinfo(charinfo);
         info.setCharCode(charcode);
+        info.setPrintglyphs(printglyphs);
+        info.setOutdir(outdir);
+        info.setTtfinfo(ttfinfo);
+        info.setTtfdir(ttfdir);
 
         info.doIt(file);
     }
@@ -393,6 +661,78 @@ public final class XtfInfo extends AbstractFontUtil {
     public void setCharCode(final int cc) {
 
         charcode = cc;
+    }
+
+    /**
+     * Returns the printglyphs.
+     * @return Returns the printglyphs.
+     */
+    public boolean isPrintglyphs() {
+
+        return printglyphs;
+    }
+
+    /**
+     * The printglyphs to set.
+     * @param pg The printglyphs to set.
+     */
+    public void setPrintglyphs(final boolean pg) {
+
+        printglyphs = pg;
+    }
+
+    /**
+     * Returns the outdir.
+     * @return Returns the outdir.
+     */
+    public String getOutdir() {
+
+        return outdir;
+    }
+
+    /**
+     * The outdir to set.
+     * @param dir The outdir to set.
+     */
+    public void setOutdir(final String dir) {
+
+        outdir = dir;
+    }
+
+    /**
+     * Returns the ttfdir.
+     * @return Returns the ttfdir.
+     */
+    public String getTtfdir() {
+
+        return ttfdir;
+    }
+
+    /**
+     * The ttfdir to set.
+     * @param dir The ttfdir to set.
+     */
+    public void setTtfdir(final String dir) {
+
+        ttfdir = dir;
+    }
+
+    /**
+     * Returns the ttfinfo.
+     * @return Returns the ttfinfo.
+     */
+    public boolean isTtfinfo() {
+
+        return ttfinfo;
+    }
+
+    /**
+     * The ttfinfo to set.
+     * @param ttf The ttfinfo to set.
+     */
+    public void setTtfinfo(final boolean ttf) {
+
+        ttfinfo = ttf;
     }
 
 }

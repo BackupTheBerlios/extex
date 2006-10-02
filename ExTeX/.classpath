@@ -14,5 +14,6 @@
 	<classpathentry kind="lib" path="develop/lib/saxpath.jar"/>
 	<classpathentry kind="lib" path="lib/PDFBox.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.9.jar"/>
+	<classpathentry kind="lib" path="lib/iText.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
