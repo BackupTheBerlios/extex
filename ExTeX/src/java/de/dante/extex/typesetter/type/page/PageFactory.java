@@ -29,6 +29,7 @@ import de.dante.extex.interpreter.max.StringSource;
 import de.dante.extex.interpreter.type.count.FixedCount;
 import de.dante.extex.interpreter.type.count.ImmutableCount;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.node.AdjustNode;
@@ -227,7 +228,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class PageFactory implements LogEnabled {
 
@@ -403,15 +404,16 @@ public class PageFactory implements LogEnabled {
          *      de.dante.extex.typesetter.type.node.GlueNode,
          *      java.lang.Object)
          */
-        public Object visitGlue(final GlueNode node, final Object value)
+        public Object visitGlue(final GlueNode node, final Object hMode)
                 throws GeneralException {
 
-            if (((Boolean) value).booleanValue()) {
+            if (((Boolean) hMode).booleanValue()) {
                 if (node.getWidth().eq(Dimen.ZERO_PT)) {
                     return null;
                 }
-            } else if (node.getVerticalSize().eq(Dimen.ZERO_PT)) {
-                return null;
+                //            } else if (node.getVerticalSize().eq(Dimen.ZERO_PT)
+                //                    && node.getSize().eq(Glue.ZERO)) {
+                //                return null;
             }
             return node;
         }
