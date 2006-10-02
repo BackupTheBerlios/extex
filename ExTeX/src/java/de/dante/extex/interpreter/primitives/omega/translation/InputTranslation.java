@@ -23,7 +23,9 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.interpreter.primitives.file.AbstractFileCode;
+import de.dante.extex.interpreter.primitives.omega.mode.AbstractModeCode;
+import de.dante.extex.interpreter.primitives.omega.ocp.util.OcpUtil;
 import de.dante.extex.typesetter.Typesetter;
 
 /**
@@ -48,15 +50,15 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class InputTranslation extends AbstractCode {
+public class InputTranslation extends AbstractModeCode {
 
     /**
      * The field <tt>serialVersionUID</tt> contains the version number for
      * serialization.
      */
-    private static final long serialVersionUID = 2006L;
+    protected static final long serialVersionUID = 2006L;
 
     /**
      * Creates a new object.
@@ -78,6 +80,14 @@ public class InputTranslation extends AbstractCode {
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
+
+        String file;
+        if (source.getKeyword(context, "currentfile")) {
+            file = null;
+        } else {
+            file = AbstractFileCode.scanInFileKey(context,source,typesetter);
+        }
+        String resource = OcpUtil.scanOcpFileName(source, context);
 
         //TODO gene: unimplemented
         throw new RuntimeException("unimplemented");
