@@ -53,7 +53,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.40 $
+ * @version $Revision: 1.41 $
  */
 public class Box implements BoxOrRule, Serializable {
 
@@ -240,7 +240,7 @@ public class Box implements BoxOrRule, Serializable {
     /**
      * Checks whether the box is a horizontal box.
      *
-     * @return <tt>true</tt> iff the box is a hbox.
+     * @return <tt>true</tt> iff the box is a horizontal box.
      */
     public boolean isHbox() {
 
@@ -250,7 +250,7 @@ public class Box implements BoxOrRule, Serializable {
     /**
      * Checks whether the box is a vertical box.
      *
-     * @return <tt>true</tt> iff the box is a vbox.
+     * @return <tt>true</tt> iff the box is a vertical box.
      */
     public boolean isVbox() {
 
@@ -289,7 +289,11 @@ public class Box implements BoxOrRule, Serializable {
     public void setHeight(final FixedDimen height) {
 
         if (nodes != null) {
-            nodes.setHeight(height);
+            if (nodes instanceof VerticalListNode) {
+                ((VerticalListNode) nodes).vpack(height);
+            } else {
+                nodes.setHeight(height);
+            }
         }
     }
 
@@ -328,6 +332,9 @@ public class Box implements BoxOrRule, Serializable {
 
         if (nodes != null) {
             nodes.setWidth(width);
+            if (nodes instanceof HorizontalListNode) {
+                ((HorizontalListNode) nodes).hpack(width);
+            }
         }
     }
 
