@@ -41,14 +41,22 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class VerticalListNode extends GenericNodeList implements NodeList {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 20060417L;
+    protected static final long serialVersionUID = 20060930L;
+
+    /**
+     * The field <tt>top</tt> contains the indicator that the adjustment
+     * should use the reference point of the fist box. This is the mode for
+     * <tt>\vtop</tt>. In contrast the last box is used. This is the mode for
+     * <tt>\vbox</tt>.
+     */
+    private boolean top = false;
 
     /**
      * Creates a new object.
@@ -69,13 +77,28 @@ public class VerticalListNode extends GenericNodeList implements NodeList {
 
         super.add(index, node);
         maxWidth(node.getWidth());
-        Dimen d = new Dimen(getDepth());
-        if (index == 0) {
+
+        int size = size();
+
+        if (size == 1) {
             setHeight(node.getHeight());
+            setDepth(node.getDepth());
+        } else if (top) {
+            if (index == 0) {
+                advanceDepth(getHeight());
+                setHeight(node.getHeight());
+            } else {
+                advanceDepth(node.getHeight());
+            }
+            advanceDepth(node.getDepth());
+        } else if (index == size) {
+            advanceHeight(getDepth());
+            advanceHeight(node.getHeight());
+            setDepth(node.getDepth());
         } else {
-            d.add(node.getHeight());
+            advanceHeight(node.getHeight());
+            advanceHeight(node.getDepth());
         }
-        d.add(node.getDepth());
     }
 
     /**
@@ -86,13 +109,18 @@ public class VerticalListNode extends GenericNodeList implements NodeList {
 
         super.add(node);
         maxWidth(node.getWidth());
-        Dimen d = new Dimen(getDepth());
+
         if (size() == 1) {
             setHeight(node.getHeight());
+            setDepth(node.getDepth());
+        } else if (top) {
+            advanceDepth(node.getDepth());
+            advanceDepth(node.getHeight());
         } else {
-            d.add(node.getHeight());
+            advanceHeight(getDepth());
+            advanceHeight(node.getHeight());
+            setDepth(node.getDepth());
         }
-        d.add(node.getDepth());
     }
 
     /**
@@ -119,32 +147,33 @@ public class VerticalListNode extends GenericNodeList implements NodeList {
     }
 
     /**
-     * Compute the penalty for the split at a given position.
+     * Getter for top.
      *
-     * @param penalty the base penalty optionally coming from a penalty node
-     * @param ht the actual height
-     * @param height the desired height
-     *
-     * @return the penalty in the range 0 to 10000, including
+     * @return the top
      */
-    private long computePenalty(final long penalty, final WideGlue ht,
-            final FixedDimen height) {
+    public boolean isTop() {
 
-        //        long badness = Badness.badness(height.getValue(), //
-        //                ht.getLength().getValue());
-        long p = penalty;
-        // TODO gene: computePenalty unimplemented
-        return p;
+        return this.top;
     }
 
     /**
-     * Split off material from a vertical list of a desired height. The
+     * Setter for top.
+     *
+     * @param top the top to set
+     */
+    public void setTop(final boolean top) {
+
+        this.top = top;
+    }
+
+    /**
+     * Split-off material from a vertical list of a desired height. The
      * splitting is performed at a position with minimal penalty. The list is
      * stretched to the desired height.
      *
      * @param height the target height
+     * @param logger the logger for normal logging output
      * @param traceLogger the logger for tracing
-     * @param logger the logger of normal logging output
      *
      * @return the split off material
      */
@@ -161,8 +190,9 @@ public class VerticalListNode extends GenericNodeList implements NodeList {
         for (int i = 0; i < size; i++) {
             Node node = get(i);
             node.addHeightTo(ht);
+            node.addDepthTo(ht);
             if (i + 1 >= size || !(get(i + 1) instanceof PenaltyNode)) {
-                penalty = computePenalty((node instanceof PenaltyNode
+                penalty = splitPenalty((node instanceof PenaltyNode
                         ? ((PenaltyNode) node).getPenalty()
                         : 0), ht, height);
                 if (penalty < bestPenalty) {
@@ -186,6 +216,25 @@ public class VerticalListNode extends GenericNodeList implements NodeList {
     }
 
     /**
+     * Compute the penalty for the split at a given position.
+     *
+     * @param penalty the base penalty optionally coming from a penalty node
+     * @param ht the actual height
+     * @param height the desired height
+     *
+     * @return the penalty in the range 0 to 10000, including
+     */
+    private long splitPenalty(final long penalty, final WideGlue ht,
+            final FixedDimen height) {
+
+        //        long badness = Badness.badness(height.getValue(), //
+        //                ht.getLength().getValue());
+        long p = penalty;
+        // TODO gene: splitPenalty() unimplemented
+        return p;
+    }
+
+    /**
      * Spread the list vertically to a desired size by distributing the
      * differences to the glues contained.
      *
@@ -195,15 +244,18 @@ public class VerticalListNode extends GenericNodeList implements NodeList {
      */
     public long spread(final FixedDimen height) {
 
-        WideGlue ht = new WideGlue();
         int size = size();
+
+        WideGlue ht = new WideGlue();
+
         for (int i = 0; i < size; i++) {
             get(i).addHeightTo(ht);
+            get(i).addDepthTo(ht);
         }
 
         FixedDimen length = ht.getLength();
         for (int i = 0; i < size; i++) {
-            get(i).spreadWidth(height, length);
+            get(i).spreadHeight(height, length);
         }
 
         return Badness.badness(height.getValue(), length.getValue());
@@ -216,25 +268,6 @@ public class VerticalListNode extends GenericNodeList implements NodeList {
      */
     public void spreadHeight(final FixedDimen w, final FixedGlueComponent sum) {
 
-        int size = size();
-        FixedGlueComponent s;
-
-        if (sum == null) {
-            WideGlue sx = new WideGlue();
-
-            for (int i = 0; i < size; i++) {
-                get(i).addWidthTo(sx);
-            }
-            s = (sx.getLength().ge(w) ? sx.getShrink() : sx.getStretch());
-        } else {
-            s = sum;
-        }
-
-        for (int i = 0; i < size; i++) {
-            get(i).spreadHeight(w, s);
-        }
-
-        advanceHeight(w);
     }
 
     /**
@@ -269,4 +302,55 @@ public class VerticalListNode extends GenericNodeList implements NodeList {
 
         return visitor.visitVerticalList(this, value);
     }
+
+    /**
+     * Adjust the variable nodes to achieve a given target height.
+     *
+     * @param targetHeight the target height
+     *
+     * @return the badness
+     */
+    public long vpack(final FixedDimen targetHeight) {
+
+        int size = size();
+
+        if (size == 0) {
+            setHeight(targetHeight);
+            return 0;
+        }
+
+        if (top) {
+            size = 1;
+        }
+
+        Dimen ht = new Dimen();
+        WideGlue flexibleHeight = new WideGlue();
+
+        ht.set(get(size - 1).getHeight());
+
+        for (int i = 0; i < size - 1; i++) {
+            Node node = get(i);
+            ht.add(node.getHeight());
+            ht.add(node.getDepth());
+            node.addHeightTo(flexibleHeight);
+            node.addDepthTo(flexibleHeight);
+        }
+
+        if (targetHeight.ne(ht)) {
+            ht.subtract(targetHeight);
+            ht.negate();
+            FixedGlueComponent s = (ht.le(Dimen.ZERO) //
+                    ? flexibleHeight.getShrink() //
+                    : flexibleHeight.getStretch());
+            for (int i = 0; i < size; i++) {
+                get(i).spreadHeight(ht, s);
+            }
+            setHeight(targetHeight);
+        } else {
+            setHeight(ht);
+        }
+
+        return 0; // TODO gene: compute badness
+    }
+
 }
