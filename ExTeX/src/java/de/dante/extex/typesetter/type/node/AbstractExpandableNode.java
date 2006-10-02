@@ -39,7 +39,7 @@ import de.dante.extex.interpreter.type.glue.WideGlue;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public abstract class AbstractExpandableNode extends AbstractNode {
 
@@ -49,15 +49,17 @@ public abstract class AbstractExpandableNode extends AbstractNode {
     protected static final long serialVersionUID = 20060320L;
 
     /**
+     * The field <tt>horizontal</tt> contains the indicator that the expansion
+     * takes place in horizontal direction. Otherwise the expansion occurs in
+     * vertical direction.
+     */
+    private boolean horizontal;
+
+    /**
      * The field <tt>size</tt> contains the glue specification for this node.
      * The natural size of the glue is the initial width of this node.
      */
     private Glue size;
-
-    /**
-     * The field <tt>horizontal</tt> contains the ...
-     */
-    private boolean horizontal;
 
     /**
      * Creates a new object.
@@ -105,6 +107,19 @@ public abstract class AbstractExpandableNode extends AbstractNode {
     }
 
     /**
+     * @see de.dante.extex.typesetter.type.Node#addDepthTo(
+     *      de.dante.extex.interpreter.type.glue.WideGlue)
+     */
+    public void addDepthTo(final WideGlue glue) {
+
+        if (horizontal) {
+            glue.add(getDepth());
+        } else {
+            glue.add(this.size);
+        }
+    }
+
+    /**
      * @see de.dante.extex.typesetter.type.Node#addHeightTo(
      *      de.dante.extex.interpreter.type.glue.WideGlue)
      */
@@ -112,7 +127,6 @@ public abstract class AbstractExpandableNode extends AbstractNode {
 
         if (horizontal) {
             glue.add(getHeight());
-            glue.add(getDepth());
         } else {
             glue.add(this.size);
         }
