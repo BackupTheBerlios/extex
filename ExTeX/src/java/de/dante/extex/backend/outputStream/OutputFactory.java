@@ -42,7 +42,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * configuration.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class OutputFactory extends AbstractFactory
         implements
@@ -52,7 +52,7 @@ public class OutputFactory extends AbstractFactory
      * This class provides a mutable Integer.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.4 $
+     * @version $Revision: 1.5 $
      */
     private class Int {
 
@@ -334,7 +334,7 @@ public class OutputFactory extends AbstractFactory
 
     /**
      * Register a handler for creation of an output stream of a certain type.
-     * If not handler is registered then an appropriate file is opened.
+     * If no handler is registered then an appropriate file is opened.
      * <p>
      *  You can register a handler if you want to redirect certain output
      *  streams to different directions. For instance if you want to process
