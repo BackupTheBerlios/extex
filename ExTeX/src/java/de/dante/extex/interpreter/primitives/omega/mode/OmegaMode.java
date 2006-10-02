@@ -19,36 +19,130 @@
 
 package de.dante.extex.interpreter.primitives.omega.mode;
 
+import java.io.ObjectStreamException;
+import java.io.Serializable;
+
+import de.dante.extex.scanner.type.Catcode;
+
 /**
- * TODO gene: missing JavaDoc.
+ * This class contains th definitions of input modes in Omega. The definitions
+ * are provides as constants defined in this class.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class OmegaMode {
+public class OmegaMode implements Serializable{
 
     /**
-     * The constant <tt>ONEBYTE</tt> contains the ...
+     * The field <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    public static final OmegaMode ONEBYTE = new OmegaMode();
+    protected static final long serialVersionUID = 2006L;
 
     /**
-     * The constant <tt>EBCDIC</tt> contains the ...
+     * The constant <tt>ONEBYTE</tt> contains the mode for a single byte stream.
+     * The encoding is more or less a variant of ASCII.
      */
-    public static final OmegaMode EBCDIC = new OmegaMode();
+    public static final OmegaMode ONEBYTE = new OmegaMode() {
+        
+        /**
+         * The field <tt>serialVersionUID</tt> contains the id for serialization.
+         */
+        protected static final long serialVersionUID = 2006L;
+
+        /**
+         * Return the singleton constant object after the serialized instance
+         * has been read back in.
+         *
+         * @return the one and only instance of this object
+         *
+         * @throws ObjectStreamException never
+         */
+        protected Object readResolve() throws ObjectStreamException {
+            
+            return ONEBYTE;
+        }
+    };
 
     /**
-     * The constant <tt>TWOBYTE</tt> contains the ...
+     * The constant <tt>EBCDIC</tt> contains the mode for a single byte stream.
+     * The encoding is more or less a variant of EBCDIC.
      */
-    public static final OmegaMode TWOBYTE = new OmegaMode();
+    public static final OmegaMode EBCDIC = new OmegaMode() {
+        
+        /**
+         * The field <tt>serialVersionUID</tt> contains the id for serialization.
+         */
+        protected static final long serialVersionUID = 2006L;
+
+        /**
+         * Return the singleton constant object after the serialized instance
+         * has been read back in.
+         *
+         * @return the one and only instance of this object
+         *
+         * @throws ObjectStreamException never
+         */
+        protected Object readResolve() throws ObjectStreamException {
+            
+            return EBCDIC;
+        }
+    };
 
     /**
-     * The constant <tt>TWOBYTE_LE</tt> contains the ...
+     * The constant <tt>TWOBYTE</tt> contains the mode for a double byte stream.
+     * The encoding is more or less a variant of Unicode with the higher
+     * endian byte first.
      */
-    public static final OmegaMode TWOBYTE_LE = new OmegaMode();
+    public static final OmegaMode TWOBYTE = new OmegaMode() {
+        
+        /**
+         * The field <tt>serialVersionUID</tt> contains the id for serialization.
+         */
+        protected static final long serialVersionUID = 2006L;
+
+        /**
+         * Return the singleton constant object after the serialized instance
+         * has been read back in.
+         *
+         * @return the one and only instance of this object
+         *
+         * @throws ObjectStreamException never
+         */
+        protected Object readResolve() throws ObjectStreamException {
+            
+            return TWOBYTE;
+        }
+    };
+
+    /**
+     * The constant <tt>TWOBYTE_LE</tt> contains the mode for a double byte
+     * stream. The encoding is more or less a variant of Unicode with the lower
+     * endian byte first.
+     */
+    public static final OmegaMode TWOBYTE_LE = new OmegaMode() {
+        
+        /**
+         * The field <tt>serialVersionUID</tt> contains the id for serialization.
+         */
+        protected static final long serialVersionUID = 2006L;
+
+        /**
+         * Return the singleton constant object after the serialized instance
+         * has been read back in.
+         *
+         * @return the one and only instance of this object
+         *
+         * @throws ObjectStreamException never
+         */
+        protected Object readResolve() throws ObjectStreamException {
+            
+            return TWOBYTE_LE;
+        }
+    };
 
     /**
      * Creates a new object.
+     * This constructor is private to avoid abuse.
      */
     private OmegaMode() {
 
