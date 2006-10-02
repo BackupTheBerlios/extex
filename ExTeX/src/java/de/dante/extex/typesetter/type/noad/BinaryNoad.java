@@ -34,7 +34,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [682]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class BinaryNoad extends AbstractNucleusNoad implements SimpleNoad {
 
@@ -94,7 +94,7 @@ public class BinaryNoad extends AbstractNucleusNoad implements SimpleNoad {
                 list, mathContext);
 
         //TODO gene: typeset() unimplemented
-        throw new RuntimeException("unimplemented");
+        //throw new RuntimeException("unimplemented");
     }
 
 }
