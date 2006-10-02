@@ -76,7 +76,7 @@ package de.dante.extex.interpreter;
  * </table>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public interface Flags {
 
@@ -305,4 +305,11 @@ public interface Flags {
      */
     void setProtected();
 
+    /**
+     * Determine a printable representation of the flags set.
+     * The representation takes into account the current locale.
+     *
+     * @return the list
+     */
+    String toText();
 }
