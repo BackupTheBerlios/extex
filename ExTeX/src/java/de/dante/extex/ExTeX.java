@@ -1,4 +1,4 @@
-</*
+/*
  * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
@@ -354,7 +354,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.145 $
+ * @version $Revision: 1.146 $
  */
 public class ExTeX {
 
@@ -363,7 +363,7 @@ public class ExTeX {
      * from a format which needs it.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.145 $
+     * @version $Revision: 1.146 $
      */
     private class ResourceFinderInjector implements RegistrarObserver {
 
@@ -681,7 +681,7 @@ public class ExTeX {
      * TODO gene: missing JavaDoc.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.145 $
+     * @version $Revision: 1.146 $
      */
     private interface MyInteractionProvider extends InteractionProvider {
 
