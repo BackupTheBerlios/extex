@@ -54,7 +54,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 
 public class DviXmlTest extends TestCase {
@@ -201,7 +201,7 @@ public class DviXmlTest extends TestCase {
         }
 
         ResourceFinder fontFinder = (new ResourceFinderFactory())
-                .createResourceFinder(finderCfg, null, getProps());
+                .createResourceFinder(finderCfg, null, getProps(), null);
         if (Boolean.valueOf(getProps().getProperty("extex.trace.font.files"))
                 .booleanValue()) {
             fontFinder.enableTracing(true);

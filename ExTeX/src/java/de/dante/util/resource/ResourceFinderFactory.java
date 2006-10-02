@@ -36,13 +36,13 @@ import de.dante.util.framework.logger.LogEnabled;
  * This class provides a factory for ResourceFinders.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class ResourceFinderFactory {
 
     /**
      * The constant <tt>CLASS_ATTRIBUTE</tt> contains the name of the attribute
-     * containg the class name.
+     * containing the class name.
      */
     private static final String CLASS_ATTRIBUTE = "class";
 
@@ -59,7 +59,8 @@ public class ResourceFinderFactory {
      *
      * @param config the configuration to use
      * @param logger the logger to pass to the Resource finder elements
-     * @param properties the properties topass to tjhe resource finder elements
+     * @param properties the properties to pass to the resource finder elements
+     * @param provider the interaction provider
      *
      * @return the resource finder
      *
@@ -67,8 +68,8 @@ public class ResourceFinderFactory {
      *  or during instantiation
      */
     public ResourceFinder createResourceFinder(final Configuration config,
-            final Logger logger, final Properties properties)
-            throws ConfigurationException {
+            final Logger logger, final Properties properties,
+            final InteractionProvider provider) throws ConfigurationException {
 
         ResourceFinderList list = new ResourceFinderList();
 
@@ -109,6 +110,9 @@ public class ResourceFinderFactory {
             }
             if (finder instanceof PropertyConfigurable) {
                 ((PropertyConfigurable) finder).setProperties(properties);
+            }
+            if (finder instanceof InteractionAware) {
+                ((InteractionAware) finder).setInteractionProvider(provider);
             }
             list.add(finder);
         }

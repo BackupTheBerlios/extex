@@ -40,7 +40,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * This class provides a command line tool to disassemble a DVI file.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class DviDisassemble implements DviProcessor {
 
@@ -115,7 +115,7 @@ public class DviDisassemble implements DviProcessor {
             config = new ConfigurationFactory().newInstance(properties
                     .getProperty(PROP_CONFIG));
             finder = new ResourceFinderFactory().createResourceFinder(config
-                    .getConfiguration("Resource"), logger, properties);
+                    .getConfiguration("Resource"), logger, properties, null);
             InputStream dvi = finder.findResource(arg, "dvi");
 
             if (dvi == null) {

@@ -54,7 +54,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 
 public class DviTypeTest extends TestCase {
@@ -215,7 +215,7 @@ public class DviTypeTest extends TestCase {
         props = getProps();
 
         finder = (new ResourceFinderFactory()).createResourceFinder(config
-                .getConfiguration("Resource"), null, props);
+                .getConfiguration("Resource"), null, props, null);
 
         FontFactory fontFactory = makeFontFactory(config
                 .getConfiguration("Fonts"));

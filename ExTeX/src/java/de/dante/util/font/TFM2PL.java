@@ -45,7 +45,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * Convert a TFM-file to a PL-file
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public final class TFM2PL {
 
@@ -95,7 +95,7 @@ public final class TFM2PL {
 
         ResourceFinder finder = (new ResourceFinderFactory())
                 .createResourceFinder(config.getConfiguration("Resource"),
-                        null, prop);
+                        null, prop, null);
 
         EncFactory ef = new EncFactory(finder);
 

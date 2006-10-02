@@ -47,7 +47,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * Test the tftopl class.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 
 public class TftoPlTest extends TestCase {
@@ -147,7 +147,7 @@ public class TftoPlTest extends TestCase {
         }
 
         ResourceFinder finder = (new ResourceFinderFactory())
-                .createResourceFinder(resource, null, prop);
+                .createResourceFinder(resource, null, prop, null);
 
         EncFactory ef = new EncFactory(finder);
 

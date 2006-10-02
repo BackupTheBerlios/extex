@@ -37,7 +37,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * Test the font-system
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class FontTest extends TestCase {
 
@@ -86,7 +86,7 @@ public class FontTest extends TestCase {
         assertTrue(!fontClass.equals(""));
 
         fontFinder = (new ResourceFinderFactory()).createResourceFinder(
-                resource, Logger.global, properties);
+                resource, Logger.global, properties, null);
 
         fontFactory = (FontFactory) (Class.forName(fontClass).getConstructor(
                 new Class[]{Configuration.class, ResourceFinder.class})

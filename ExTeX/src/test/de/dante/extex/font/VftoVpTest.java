@@ -52,7 +52,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * Test the vftovp class.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 
 public class VftoVpTest extends TestCase {
@@ -106,7 +106,7 @@ public class VftoVpTest extends TestCase {
         }
 
         ResourceFinder finder = (new ResourceFinderFactory())
-                .createResourceFinder(resource, null, prop);
+                .createResourceFinder(resource, null, prop, null);
 
         //        EncFactory ef = new EncFactory(finder);
 
@@ -289,7 +289,7 @@ public class VftoVpTest extends TestCase {
         Configuration resource = new ConfigurationFactory()
                 .newInstance("config/path/fileFinder.xml");
         ResourceFinder fontFinder = (new ResourceFinderFactory())
-                .createResourceFinder(resource, null, getProps());
+                .createResourceFinder(resource, null, getProps(), null);
         if (Boolean.valueOf(getProps().getProperty("extex.trace.font.files"))
                 .booleanValue()) {
             fontFinder.enableTracing(true);

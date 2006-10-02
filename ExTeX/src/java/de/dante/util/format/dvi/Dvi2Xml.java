@@ -48,7 +48,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * Convert a Dvi-File to to a XML-file
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public final class Dvi2Xml {
 
@@ -200,7 +200,7 @@ public final class Dvi2Xml {
 
         ResourceFinder fontFinder = (new ResourceFinderFactory())
                 .createResourceFinder(config.getConfiguration("Resource"),
-                        null, getProps());
+                        null, getProps(), null);
         if (Boolean.valueOf(getProps().getProperty("extex.trace.font.files"))
                 .booleanValue()) {
             fontFinder.enableTracing(true);

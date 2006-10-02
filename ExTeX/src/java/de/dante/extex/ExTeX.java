@@ -1,4 +1,4 @@
-/*
+</*
  * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
@@ -97,6 +97,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationNoSuchMethod
 import de.dante.util.framework.configuration.exception.ConfigurationSyntaxException;
 import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.i18n.LocalizerFactory;
+import de.dante.util.resource.InteractionProvider;
 import de.dante.util.resource.PropertyConfigurable;
 import de.dante.util.resource.ResourceConsumer;
 import de.dante.util.resource.ResourceFinder;
@@ -353,7 +354,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.144 $
+ * @version $Revision: 1.145 $
  */
 public class ExTeX {
 
@@ -362,7 +363,7 @@ public class ExTeX {
      * from a format which needs it.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.144 $
+     * @version $Revision: 1.145 $
      */
     private class ResourceFinderInjector implements RegistrarObserver {
 
@@ -677,6 +678,51 @@ public class ExTeX {
     private InteractionObserver interactionObserver = null;
 
     /**
+     * TODO gene: missing JavaDoc.
+     *
+     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+     * @version $Revision: 1.145 $
+     */
+    private interface MyInteractionProvider extends InteractionProvider {
+
+        /**
+         * Setter for the interpreter context.
+         *
+         * @param context the interprter context
+         */
+        void setContext(Context context);
+    }
+
+    /**
+     * The field <tt>iProvider</tt> contains the bridge from the resource
+     * finder to the context.
+     */
+    MyInteractionProvider iProvider = new MyInteractionProvider() {
+
+        /**
+         * The field <tt>context</tt> contains the interpreter context.
+         */
+        private Context context;
+
+        /**
+         * @see de.dante.util.resource.InteractionProvider#getInteraction()
+         */
+        public Interaction getInteraction() {
+
+            return context.getInteraction();
+        }
+
+        /**
+         * @see de.dante.extex.ExTeX.MyInteractionProvider#setContext(
+         *      de.dante.extex.interpreter.context.Context)
+         */
+        public void setContext(final Context context) {
+
+            this.context = context;
+        }
+    };
+
+    /**
      * The field <tt>localizer</tt> contains the localizer. It is initiated
      * with a localizer for the name of this class.
      */
@@ -927,7 +973,7 @@ public class ExTeX {
     public OutputStream getOutStream() {
 
         return this.outStream;
-    }
+    };
 
     /**
      * Getter for properties.
@@ -937,7 +983,7 @@ public class ExTeX {
     public Properties getProperties() {
 
         return this.properties;
-    };
+    }
 
     /**
      * Getter for a named property.
@@ -1097,6 +1143,8 @@ public class ExTeX {
         if (getBooleanProperty(PROP_TRACING_ONLINE)) {
             context.setCount("tracingonline", 1, true);
         }
+
+        iProvider.setContext(context);
 
         return context;
     }
@@ -1607,7 +1655,7 @@ public class ExTeX {
             throws ConfigurationException {
 
         ResourceFinder finder = new ResourceFinderFactory()
-                .createResourceFinder(config, logger, properties);
+                .createResourceFinder(config, logger, properties, iProvider);
 
         if (getBooleanProperty(PROP_TRACE_INPUT_FILES)) {
             finder.enableTracing(true);

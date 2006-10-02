@@ -40,7 +40,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * Abstract class for all font utilities.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 
 public abstract class AbstractFontUtil {
@@ -124,7 +124,7 @@ public abstract class AbstractFontUtil {
         }
 
         finder = (new ResourceFinderFactory()).createResourceFinder(config
-                .getConfiguration("Resource"), null, prop);
+                .getConfiguration("Resource"), null, prop, null);
 
     }
 

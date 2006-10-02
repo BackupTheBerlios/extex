@@ -45,7 +45,7 @@ import de.dante.util.xml.XMLStreamWriter;
  * Convert a VF-file to a XML-file
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public final class VF2XML {
 
@@ -92,7 +92,7 @@ public final class VF2XML {
 
         ResourceFinder finder = (new ResourceFinderFactory())
                 .createResourceFinder(config.getConfiguration("Resource"),
-                        null, prop);
+                        null, prop, null);
 
         // EncFactory ef = new EncFactory(finder);
 
@@ -170,7 +170,7 @@ public final class VF2XML {
 
         ResourceFinder fontFinder = (new ResourceFinderFactory())
                 .createResourceFinder(config.getConfiguration("Resource"),
-                        null, getProps());
+                        null, getProps(), null);
         if (Boolean.valueOf(getProps().getProperty("extex.trace.font.files"))
                 .booleanValue()) {
             fontFinder.enableTracing(true);

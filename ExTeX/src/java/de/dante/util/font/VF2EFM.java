@@ -48,7 +48,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * Convert a VF-file to a EFM-file
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public final class VF2EFM {
 
@@ -66,7 +66,7 @@ public final class VF2EFM {
 
     /**
      * main
-     * @param args      the comandlinearguments
+     * @param args      the comand line arguments
      * @throws Exception in case of an error.
      */
     public static void main(final String[] args) throws Exception {
@@ -95,7 +95,7 @@ public final class VF2EFM {
 
         ResourceFinder finder = (new ResourceFinderFactory())
                 .createResourceFinder(config.getConfiguration("Resource"),
-                        null, prop);
+                        null, prop, null);
 
         //       EncFactory ef = new EncFactory(finder);
 
@@ -167,7 +167,7 @@ public final class VF2EFM {
 
         ResourceFinder fontFinder = (new ResourceFinderFactory())
                 .createResourceFinder(config.getConfiguration("Resource"),
-                        null, getProps());
+                        null, getProps(), null);
         if (Boolean.valueOf(getProps().getProperty("extex.trace.font.files"))
                 .booleanValue()) {
             fontFinder.enableTracing(true);

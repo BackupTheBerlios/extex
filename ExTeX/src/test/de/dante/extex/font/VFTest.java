@@ -50,7 +50,7 @@ import de.dante.util.xml.XMLStreamWriter;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 
 public class VFTest extends TestCase {
@@ -86,7 +86,7 @@ public class VFTest extends TestCase {
         }
 
         ResourceFinder finder = (new ResourceFinderFactory())
-                .createResourceFinder(resource, null, prop);
+                .createResourceFinder(resource, null, prop, null);
 
         //       EncFactory ef = new EncFactory(finder);
 
@@ -184,7 +184,7 @@ public class VFTest extends TestCase {
         }
 
         ResourceFinder fontFinder = (new ResourceFinderFactory())
-                .createResourceFinder(resource, null, getProps());
+                .createResourceFinder(resource, null, getProps(), null);
         if (Boolean.valueOf(getProps().getProperty("extex.trace.font.files"))
                 .booleanValue()) {
             fontFinder.enableTracing(true);
