@@ -40,7 +40,10 @@ import de.dante.extex.typesetter.type.NodeList;
  * <doc name="vbox">
  * <h3>The Primitive <tt>\vbox</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The primitive <tt>\vbox</tt> constructs a box of vertical material. Any
+ *  boxes added to the vertical box are put below the boxes already contained.
+ *  The reference point of the last box contained is used for the whole
+ *  vertical box. The height may be adjusted if requested.
  * </p>
  * <p>
  *  The contents of the toks register <tt>\everyvbox</tt> is inserted at the
@@ -96,7 +99,7 @@ import de.dante.extex.typesetter.type.NodeList;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public class Vbox extends AbstractBoxPrimitive {
 
@@ -150,6 +153,11 @@ public class Vbox extends AbstractBoxPrimitive {
     /**
      * Acquire a Box and adjust its height and depth according to the rules
      * required.
+     * <p>
+     *  For a <tt>\vbox</tt> the alignment takes the last box contained and
+     *  uses its reference point. The depth is preserved and the height is
+     *  adjusted if required.
+     * </p>
      *
      * @param context the interpreter context
      * @param source the source for new tokens

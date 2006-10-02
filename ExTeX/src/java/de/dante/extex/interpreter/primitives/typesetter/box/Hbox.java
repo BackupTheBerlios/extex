@@ -38,9 +38,9 @@ import de.dante.extex.typesetter.Typesetter;
  * <h3>The Primitive <tt>\hbox</tt></h3>
  * <p>
  *  The primitive <tt>\hbox</tt> takes arguments enclosed in braces and
- *  typesets this contents in horizontal mode. If a width is given then
- *  the hbox is spread to this width. Otherwise the hbox has the natural width
- *  of its contents.
+ *  typesets this contents in horizontal mode. If a width is given then the
+ *  horizontal box is spread to this width. Otherwise the horizontal box has
+ *  the natural width of its contents.
  * </p>
  * <p>
  *  The contents of the tokens register <tt>\everyhbox</tt> is inserted at the
@@ -93,7 +93,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class Hbox extends AbstractBoxPrimitive {
 

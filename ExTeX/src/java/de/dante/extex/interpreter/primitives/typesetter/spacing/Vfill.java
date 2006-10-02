@@ -35,7 +35,9 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="vfill">
  * <h3>The Primitive <tt>\vfill</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The primitive <tt>\vfill</tt> inserts vertical glue into the current list.
+ *  It switches to vertical mode if necessary. The amount of glue inserted has
+ *  the natural height of 0pt and a stretchability of 1fill.
  * </p>
  *
  * <h4>Syntax</h4>
@@ -46,13 +48,13 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
- *    \vfill  </pre>
+ *    X \vfill X </pre>
  *
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Vfill extends AbstractVerticalCode implements VerticalSkip {
 
