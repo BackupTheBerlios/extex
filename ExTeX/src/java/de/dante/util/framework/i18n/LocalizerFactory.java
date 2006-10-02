@@ -30,7 +30,7 @@ import java.util.ResourceBundle;
  * This factory provides means to get a localizer.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public final class LocalizerFactory {
 
@@ -39,7 +39,7 @@ public final class LocalizerFactory {
      * delivered by this factory.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.10 $
+     * @version $Revision: 1.11 $
      */
     private static class BasicLocalizer implements Localizer {
 
@@ -182,6 +182,22 @@ public final class LocalizerFactory {
 
             return MessageFormat.format(format(fmt),
                     new Object[]{a, b, c, d, e});
+        }
+
+        /**
+         * Apply the given argument to the format string stored in the resource
+         * bundle under the given key. The argument object's value of toString()
+         * replaces the substring <tt>'{0}'</tt>,<tt>'{1}'</tt>,<tt>'{2}'</tt>,
+         * and so on in the format.
+         *
+         * @param fmt the key in the resource bundle to search for
+         * @param a the Object used for the substrings <tt>{<i>n</i>}</tt>
+         *
+         * @return the expanded format string
+         */
+        public String format(final String fmt, final Object[] a) {
+
+            return MessageFormat.format(format(fmt), a);
         }
 
         /**
