@@ -74,7 +74,6 @@ import de.dante.extex.main.queryFile.QueryFileHandler;
 import de.dante.extex.main.queryFile.QueryFileHandlerTeXImpl;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.extex.scanner.stream.observer.file.OpenFileObserver;
-import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.exception.GeneralException;
 import de.dante.util.exception.NotObservableException;
 import de.dante.util.framework.configuration.Configuration;
@@ -699,7 +698,7 @@ import de.dante.util.resource.ResourceFinder;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
 public class TeX extends ExTeX {
 

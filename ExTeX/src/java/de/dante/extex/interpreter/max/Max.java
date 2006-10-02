@@ -74,6 +74,7 @@ import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.CodeExpander;
 import de.dante.extex.interpreter.type.ExpandableCode;
+import de.dante.extex.interpreter.type.InitializableCode;
 import de.dante.extex.interpreter.type.OutputStreamConsumer;
 import de.dante.extex.interpreter.type.PrefixCode;
 import de.dante.extex.interpreter.type.ProtectedCode;
@@ -105,6 +106,7 @@ import de.dante.util.Switch;
 import de.dante.util.UnicodeChar;
 import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.Registrar;
+import de.dante.util.framework.RegistrarException;
 import de.dante.util.framework.RegistrarObserver;
 import de.dante.util.framework.configuration.Configurable;
 import de.dante.util.framework.configuration.Configuration;
@@ -174,7 +176,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.116 $
+ * @version $Revision: 1.117 $
  */
 public abstract class Max
         implements
