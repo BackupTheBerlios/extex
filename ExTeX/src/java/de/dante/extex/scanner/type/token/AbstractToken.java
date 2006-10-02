@@ -31,7 +31,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public abstract class AbstractToken implements Token, Serializable {
 
@@ -45,7 +45,7 @@ public abstract class AbstractToken implements Token, Serializable {
      * The field <tt>uniCode</tt> contains the Unicode character assigned to
      * this token. Note that <code>null</code> is a legal value.
      */
-    private UnicodeChar uniCode = null;
+    private UnicodeChar character = null;
 
     /**
      * Creates a new object for a Unicode character.
@@ -55,7 +55,7 @@ public abstract class AbstractToken implements Token, Serializable {
     protected AbstractToken(final UnicodeChar uc) {
 
         super();
-        this.uniCode = uc;
+        this.character = uc;
     }
 
     /**
@@ -76,7 +76,7 @@ public abstract class AbstractToken implements Token, Serializable {
     public boolean equals(final Catcode cc, final String s) {
 
         return getCatcode() == cc && s.length() == 1
-                && uniCode.getCodePoint() == s.charAt(0);
+                && character.getCodePoint() == s.charAt(0);
     }
 
     /**
@@ -112,7 +112,7 @@ public abstract class AbstractToken implements Token, Serializable {
      */
     public final UnicodeChar getChar() {
 
-        return uniCode;
+        return character;
     }
 
     /**
@@ -130,7 +130,7 @@ public abstract class AbstractToken implements Token, Serializable {
      */
     public int hashCode() {
 
-        return getCatcode().hashCode() + HASH_FACTOR * uniCode.hashCode();
+        return getCatcode().hashCode() + HASH_FACTOR * character.hashCode();
     }
 
     /**
@@ -156,7 +156,7 @@ public abstract class AbstractToken implements Token, Serializable {
      */
     public String toText() {
 
-        return uniCode.toString();
+        return character.toString();
     }
 
     /**
@@ -165,7 +165,7 @@ public abstract class AbstractToken implements Token, Serializable {
      */
     public String toText(final UnicodeChar esc) {
 
-        return uniCode.toString();
+        return character.toString();
     }
 
 }

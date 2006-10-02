@@ -154,7 +154,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TeXOutputRoutine implements OutputRoutine {
 
@@ -175,9 +175,10 @@ public class TeXOutputRoutine implements OutputRoutine {
     private transient Token rightBrace;
 
     /**
-     * The field <tt>output</tt> contains the ...
+     * The field <tt>output</tt> contains the token <i>output</i> in the
+     * default name space.
      */
-    private transient Token output;
+    private transient Token outputToken;
 
     /**
      * Creates a new object.
@@ -194,7 +195,7 @@ public class TeXOutputRoutine implements OutputRoutine {
         TokenFactory tokenFactory = interpreter.getContext().getTokenFactory();
         rightBrace = tokenFactory.createToken(Catcode.RIGHTBRACE, '}',
                 Namespace.DEFAULT_NAMESPACE);
-        output = tokenFactory.createToken(Catcode.ESCAPE,
+        outputToken = tokenFactory.createToken(Catcode.ESCAPE,
                 UnicodeChar.get('\\'), "output", Namespace.DEFAULT_NAMESPACE);
     }
 
@@ -234,7 +235,7 @@ public class TeXOutputRoutine implements OutputRoutine {
         interpreter.push(output);
         try {
             //TODO gene: provide reasonable value
-            context.openGroup(GroupType.OUTPUT_GROUP, null, this.output);
+            context.openGroup(GroupType.OUTPUT_GROUP, null, this.outputToken);
             context.setBox(OUTPUT_BOX, new Box(page.getNodes()), false);
         } catch (ConfigurationException e) {
             throw new GeneralException(e);
