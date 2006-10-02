@@ -29,7 +29,7 @@ import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.Node;
-import de.dante.extex.typesetter.type.NodeList;
+import de.dante.extex.typesetter.type.node.VerticalListNode;
 
 /**
  * This class provides an implementation for the primitive <code>\vtop</code>.
@@ -66,7 +66,7 @@ import de.dante.extex.typesetter.type.NodeList;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Vtop extends Vbox {
 
@@ -98,15 +98,17 @@ public class Vtop extends Vbox {
 
         Box box = acquireBox(context, source, typesetter, GroupType.VTOP_GROUP,
                 startToken);
-        NodeList nodes = box.getNodes();
+        VerticalListNode nodes = (VerticalListNode) box.getNodes();
         Dimen depth = new Dimen(box.getDepth());
         depth.add(box.getHeight());
-        if (nodes.size() > 0) {
+        if (nodes != null && nodes.size() > 0) {
+            nodes.setTop(true);
             Node top = nodes.get(0);
             FixedDimen height = top.getHeight();
             box.setHeight(height);
             depth.subtract(height);
             box.setDepth(depth);
+            //nodes.vpack()
         }
         return box;
     }
