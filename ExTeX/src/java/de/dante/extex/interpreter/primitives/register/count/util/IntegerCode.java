@@ -40,7 +40,7 @@ import de.dante.extex.typesetter.Typesetter;
  * This class provides an object which acts like a count register.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class IntegerCode extends AbstractAssignment
         implements
@@ -182,6 +182,9 @@ public class IntegerCode extends AbstractAssignment
     public void init(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
+        if (source == null) {
+            return;
+        }
         value = Count.scanInteger(context, source, typesetter);
     }
 

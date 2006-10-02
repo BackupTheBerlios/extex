@@ -34,7 +34,7 @@ import de.dante.extex.typesetter.Typesetter;
  * numbered count registers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public abstract class AbstractCount extends AbstractAssignment
         implements
@@ -85,6 +85,9 @@ public abstract class AbstractCount extends AbstractAssignment
     public void init(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
+        if (source == null) {
+            return;
+        }
         Token t = source.getNonSpace(context);
         if (t == null) {
             return;

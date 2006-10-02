@@ -90,7 +90,7 @@ import de.dante.extex.typesetter.Typesetter;
  * @see de.dante.extex.interpreter.type.Theable
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class Mag extends AbstractCount
         implements
@@ -211,6 +211,9 @@ public class Mag extends AbstractCount
     public void init(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
+        if (source == null) {
+            return;
+        }
         Token t = source.getNonSpace(context);
         if (t == null) {
             return;
