@@ -40,15 +40,16 @@ import de.dante.util.exception.GeneralException;
  * This class is used to represent composed characters from virtual fonts.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class VirtualCharNode extends CharNode implements NodeList {
+
     /**
      * This inner class provides the means to store nodes in a list.
      * It is here to compensate the missing multiple inheritance of Java.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.21 $
+     * @version $Revision: 1.22 $
      */
     private class NL extends GenericNodeList {
 
@@ -103,7 +104,6 @@ public class VirtualCharNode extends CharNode implements NodeList {
             return visitor.visitChar(node, value);
         }
     }
-
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
@@ -368,4 +368,5 @@ public class VirtualCharNode extends CharNode implements NodeList {
 
         return visitor.visitVirtualChar(this, value);
     }
+
 }
