@@ -33,13 +33,13 @@ import de.dante.util.UnicodeChar;
  *
  * <p>
  *  Note that in contrast to <logo>TeX</logo> the escape character leading to
- *  this control sequence token is stord in the character code of the abstract
+ *  this control sequence token is stored in the character code of the abstract
  *  base class.
  * </p>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class ControlSequenceToken extends AbstractToken implements CodeToken {
 
@@ -52,7 +52,7 @@ public class ControlSequenceToken extends AbstractToken implements CodeToken {
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 2006L;
 
     /**
      * The field <tt>value</tt> contains the string value.
@@ -82,8 +82,8 @@ public class ControlSequenceToken extends AbstractToken implements CodeToken {
     }
 
     /**
-     * Create a new instance of the token where the namespace is the default
-     * namespace and the other attributes are the same as for the current token.
+     * Create a new instance of the token where the name space is the default
+     * name space and the other attributes are the same as for the current token.
      *
      * @return the new token
      *
@@ -99,14 +99,15 @@ public class ControlSequenceToken extends AbstractToken implements CodeToken {
     }
 
     /**
-     * Create a new instance of the token where the namespace is the given one
+     * Create a new instance of the token where the name space is the given one
      * and the other attributes are the same as for the current token.
      *
-     * @param theNamespace the namespace to use
+     * @param theNamespace the name space to use
      *
      * @return the new token
      *
-     * @see de.dante.extex.scanner.type.token.CodeToken#cloneInNamespace(java.lang.String)
+     * @see de.dante.extex.scanner.type.token.CodeToken#cloneInNamespace(
+     *      java.lang.String)
      */
     public CodeToken cloneInNamespace(final String theNamespace) {
 
@@ -194,8 +195,9 @@ public class ControlSequenceToken extends AbstractToken implements CodeToken {
      */
     public String toString() {
 
+        UnicodeChar c = getChar();
         return getLocalizer().format("ControlSequenceToken.Text",
-                getChar().toString(), name, namespace);
+                (c != null ? c.toString() : ""), name, namespace);
     }
 
     /**
