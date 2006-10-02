@@ -37,7 +37,7 @@ import de.dante.util.exception.GeneralException;
  * This is a first reference implementation of a page builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.31 $
+ * @version $Revision: 1.32 $
  */
 public class PageBuilderImpl implements PageBuilder {
 
@@ -143,6 +143,7 @@ public class PageBuilderImpl implements PageBuilder {
         if (d.ge(options.getDimenOption("vsize"))) {
 
             flush(nodes, typesetter);
+            nodes.clear(); // TODO gene: split off the appropriate amount and leave the rest
         }
     }
 
