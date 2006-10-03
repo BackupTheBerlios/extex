@@ -25,7 +25,7 @@ import de.dante.extex.interpreter.type.tokens.Tokens;
  * This class provides a building block for the preamble of an alignment.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class PreambleItem {
 
@@ -70,6 +70,14 @@ public class PreambleItem {
     public Tokens getPre() {
 
         return this.pre;
+    }
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+
+        return "\npre = " + pre.toText() + "\npost = " + post.toText() + "\n";
     }
 
 }
