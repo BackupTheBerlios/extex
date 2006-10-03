@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InvalidClassException;
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.logging.Logger;
 
 import de.dante.extex.backend.outputStream.OutputStreamFactory;
@@ -38,6 +39,7 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.group.GroupType;
 import de.dante.extex.interpreter.context.observer.group.SwitchObserver;
 import de.dante.extex.interpreter.context.observer.load.LoadedObservable;
+import de.dante.extex.interpreter.context.observer.load.LoadedObserver;
 import de.dante.extex.interpreter.exception.ErrorLimitException;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.CantUseInException;
@@ -47,7 +49,6 @@ import de.dante.extex.interpreter.exception.helping.UnusedPrefixException;
 import de.dante.extex.interpreter.interaction.Interaction;
 import de.dante.extex.interpreter.loader.LoaderException;
 import de.dante.extex.interpreter.loader.SerialLoader;
-import de.dante.extex.interpreter.max.util.LoadUnit;
 import de.dante.extex.interpreter.observer.command.CommandObservable;
 import de.dante.extex.interpreter.observer.command.CommandObserver;
 import de.dante.extex.interpreter.observer.command.CommandObserverList;
@@ -79,6 +80,8 @@ import de.dante.extex.interpreter.type.PrefixCode;
 import de.dante.extex.interpreter.type.ProtectedCode;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.interpreter.unit.LoadUnit;
+import de.dante.extex.interpreter.unit.UnitInfo;
 import de.dante.extex.language.LanguageManager;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.type.Catcode;
@@ -174,7 +177,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.118 $
+ * @version $Revision: 1.119 $
  */
 public abstract class Max
         implements
@@ -1099,6 +1102,14 @@ public abstract class Max
         context = newContext;
 
         try {
+            Iterator unitIterator = context.unitIterator();
+            while (unitIterator.hasNext()) {
+                UnitInfo ui = (UnitInfo) unitIterator.next();
+                if (ui instanceof LoadedObserver) {
+                    ((LoadedObserver) ui).receiveLoaded(context, this);
+                }
+            }
+
             if (context instanceof LoadedObservable) {
                 ((LoadedObservable) context).receiveLoad(this);
             }
@@ -1211,22 +1222,7 @@ public abstract class Max
      */
     private void reportDirtyFlag(final Token token) throws HelpingException {
 
-        String cause = "???";
-
-        if (prefix.isGlobal()) {
-            cause = "global";
-        } else if (prefix.isImmediate()) {
-            cause = "immediate";
-        } else if (prefix.isLong()) {
-            cause = "long";
-        } else if (prefix.isOuter()) {
-            cause = "outer";
-        } else if (prefix.isExpanded()) {
-            cause = "expanded";
-        } else if (prefix.isProtected()) {
-            cause = "protected";
-        }
-
+        String cause = prefix.toText();
         prefix.clear();
         throw new UnusedPrefixException(context.esc(cause), token);
     }
