@@ -65,10 +65,10 @@ import de.dante.extex.interpreter.interaction.InteractionUnknownException;
 import de.dante.extex.interpreter.loader.LoaderException;
 import de.dante.extex.interpreter.max.StringSource;
 import de.dante.extex.interpreter.max.TokenFactoryFactory;
-import de.dante.extex.interpreter.max.util.LoadUnit;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.unit.LoadUnit;
 import de.dante.extex.language.LanguageManager;
 import de.dante.extex.language.LanguageManagerFactory;
 import de.dante.extex.main.logging.LogFormatter;
@@ -350,11 +350,137 @@ import de.dante.util.resource.ResourceFinderFactory;
  * TODO gene: doc incomplete
  *
  *
+ * <a name="running"/><h3>Programmatical Use</h3>
+ *
+ * <p>
+ *  This class is the central point for using an instance of <logo>ExTeX</logo>
+ *  from within a program. For this purpose the class has been specially
+ *  designed. The class can be used as is. This is not the normal way to
+ *  apply <logo>ExTeX</logo>. The configuration via configuration files and
+ *  properties can be used to influence the behavior of the instance.
+ *  Nevertheless the fine points in the live cycle can not be accessed this
+ *  way. This can be achieved via deriving another class from it.
+ * </p>
+ * <p>
+ *  The class provides several protected methods which are solemnly made
+ *  accessible to extend the functionality of the class. To do so you need
+ *  insight into the live cycle of the class.
+ * </p>
+ * <div class="figure">
+ *  <img src="doc-files/ExTeX-start.png" title="Starting ExTeX"/>
+ *  <div class="caption">
+ *   Starting <logo>ExTeX</logo>
+ *  </div>
+ * </div>
+ * <p>
+ *  Mainly there are two steps in using this class. The first step is the
+ *  creation of a new instance. This phase is depicted in the figure above.
+ *  Note that no interpreter is created during this phase. Thus the
+ *  possibilities to influence the run-time behavior is rather limited.
+ * </p>
+ * <dl>
+ *  <dt>{@link #propertyDefault(String,String) propertyDefault()}</dt>
+ *  <dd>
+ *   This method is invoked several times to provide the compiled-in defaults
+ *   for certain properties.
+ *  </dd>
+ *  <dt>{@link #applyLanguage() applyLanguage()}</dt>
+ *  <dd>
+ *   This method is invoked to adjust the setting for the language.
+ *  </dd>
+ *  <dt>{@link #applyInteraction() applyInteraction()}</dt>
+ *  <dd>
+ *   This method is invoked to adjust the setting for the interaction mode.
+ *  </dd>
+ * </dl>
+ * <p>
+ *  The major activities are carried out when the method
+ *  {@link #run() run()} is invoked. The methods used i n this phase are shown
+ *  in the figure below.
+ * </p>
+ * <div class="figure">
+ *  <img src="doc-files/ExTeX-run.png" title="Running ExTeX"/>
+ *  <div class="caption">
+ *   Running <logo>ExTeX</logo>
+ *  </div>
+ * </div>
+ * <dl>
+ *  <dt>{@link #makeLogFile(String) makeLogFile()}</dt>
+ *  <dd>
+ *   Creates the log file.
+ *  </dd>
+ *  <dt>{@link #makeLogHandler(File) makeLogHandler()}</dt>
+ *  <dd>
+ *   Creates the log handler.
+ *  </dd>
+ *  <dt>{@link #showBanner(Configuration,Level) showBanner()}</dt>
+ *  <dd>
+ *   Presents the banner if necessary.
+ *  </dd>
+ *  <dt>{@link #makeOutputFactory(String,Configuration) makeOutputFactory()}</dt>
+ *  <dd>
+ *   Creates the output factory.
+ *  </dd>
+ *  <dt>{@link #makeResourceFinder(Configuration) makeResourceFinder()}</dt>
+ *  <dd>
+ *   Creates the resource finder.
+ *  </dd>
+ *  <dt>{@link #makeInterpreter(Configuration,OutputStreamFactory,ResourceFinder,String) makeInterpreter()}</dt>
+ *  <dd>
+ *   Start to create the interpreter. In the course of this operation some
+ *   more methods are invoked:
+ *   <dl>
+ *    <dt>{@link #makeFontFactory(Configuration,ResourceFinder) makeFontFactory()}</dt>
+ *    <dd>
+ *     Creates the font factory.
+ *    </dd>
+ *    <dt>{@link #makeTokenFactory(Configuration) makeTokenFactory()}</dt>
+ *    <dd>
+ *     Creates the token factory.
+ *    </dd>
+ *    <dt>{@link #makeContext(Configuration,TokenFactory,FontFactory,Interpreter,ResourceFinder,String,OutputStreamFactory) makeContext()}</dt>
+ *    <dd>
+ *     Creates the initial context and optionally loads a format:
+ *     <dl>
+ *      <dt>{@link #makeDefaultFont(Configuration,FontFactory) makeDefaultFont()}</dt>
+ *      <dd>
+ *       Creates the default font from the specification in the configuration.
+ *      </dd>
+ *      <dt>{@link #makeLanguageManager(Configuration,OutputStreamFactory,ResourceFinder) makeLanguageManager()}</dt>
+ *      <dd>
+ *       Creates the language manager.
+ *      </dd>
+ *      <dt>{@link #loadFormat(String,Interpreter,ResourceFinder,String,Configuration,OutputStreamFactory,TokenFactory) loadFormat()}</dt>
+ *      <dd>
+ *       Loads a format if one is given.
+ *      </dd>
+ *     </dl>
+ *    </dd>
+ *    <dt>{@link #initializeStreams(Interpreter,Properties) initializeStreams()}</dt>
+ *    <dd>
+ *     Initialize the input and output streams.
+ *    </dd>
+ *    <dt>{@link #makeTypesetter(Interpreter,Configuration,OutputStreamFactory,ResourceFinder) makeTypesetter()}</dt>
+ *    <dd>
+ *     Creates the typesetter.
+ *    </dd>
+ *   </dl>
+ *  </dd>
+ *  <dt>{@link de.dante.extex.interpreter.Interpreter#run() run()}</dt>
+ *  <dd>
+ *   Runs the processing loop of the interpreter until it reaches an end.
+ *  </dd>
+ *  <dt>{@link #logPages(BackendDriver) logPages()}</dt>
+ *  <dd>
+ *   Do everything necessary to log the pages.
+ *  </dd>
+ * </dl>
+ *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.147 $
+ * @version $Revision: 1.148 $
  */
 public class ExTeX {
 
@@ -363,7 +489,7 @@ public class ExTeX {
      * from a format which needs it.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.147 $
+     * @version $Revision: 1.148 $
      */
     private class ResourceFinderInjector implements RegistrarObserver {
 
@@ -406,10 +532,10 @@ public class ExTeX {
     private static final String DEFAULT_JOBNAME = "texput";
 
     /**
-     * The constant <tt>DEFAULT_LANGAGE_KEY</tt> contains the key for the
+     * The constant <tt>DEFAULT_LANGUAGE_KEY</tt> contains the key for the
      * default language.
      */
-    private static final String DEFAULT_LANGAGE_KEY = "0";
+    private static final String DEFAULT_LANGUAGE_KEY = "0";
 
     /**
      * The constant <tt>VERSION</tt> contains the manually incremented version
@@ -678,10 +804,11 @@ public class ExTeX {
     private InteractionObserver interactionObserver = null;
 
     /**
-     * TODO gene: missing JavaDoc.
+     * This internal interface extends the interaction provider by the ability
+     * to set a context as final source of information.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.147 $
+     * @version $Revision: 1.148 $
      */
     private interface MyInteractionProvider extends InteractionProvider {
 
@@ -903,7 +1030,7 @@ public class ExTeX {
                         .substring(3, 4), lang.substring(6, 7)));
 
             } else {
-                localizer = LocalizerFactory.getLocalizer(ExTeX.class);
+                //localizer = LocalizerFactory.getLocalizer(ExTeX.class);
                 getLogger().warning(
                         localizer.format("ExTeX.locale.error", lang));
                 return;
@@ -1283,7 +1410,7 @@ public class ExTeX {
 
         context.setLanguageManager(makeLanguageManager(config, outFactory,
                 finder));
-        context.set(context.getLanguage(DEFAULT_LANGAGE_KEY), true);
+        context.set(context.getLanguage(DEFAULT_LANGUAGE_KEY), true);
 
         context = loadFormat(properties.getProperty(PROP_FMT), interpreter,
                 finder, jobname, config, outFactory, tokenFactory);
@@ -1351,7 +1478,6 @@ public class ExTeX {
             throw new ConfigurationSyntaxException(attributeSize, config
                     .toString());
         }
-
         return font;
     }
 
@@ -1496,7 +1622,7 @@ public class ExTeX {
 
         return new LanguageManagerFactory(//
                 config.getConfiguration(LANGUAGE_TAG), logger).newInstance(
-                DEFAULT_LANGAGE_KEY, outFactory, finder);
+                DEFAULT_LANGUAGE_KEY, outFactory, finder);
     }
 
     /**
