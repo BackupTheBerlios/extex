@@ -29,6 +29,7 @@ import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.primitives.typesetter.paragraph.Par;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Code;
+import de.dante.extex.interpreter.type.ComparableCode;
 import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.PrefixCode;
 import de.dante.extex.interpreter.type.Showable;
@@ -58,12 +59,13 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class MacroCode extends AbstractCode
         implements
             PrefixCode,
             ExpandableCode,
+            ComparableCode,
             Showable {
 
     /**
@@ -110,6 +112,32 @@ public class MacroCode extends AbstractCode
         this.pattern = thePattern;
         this.notLong = !flags.isLong();
         this.outerP = flags.isOuter();
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.ComparableCode#compare(
+     *      de.dante.extex.scanner.type.token.Token,
+     *      de.dante.extex.interpreter.context.Context)
+     */
+    public boolean compare(final Token token, final Context context)
+            throws InterpreterException {
+
+        if (!(token instanceof CodeToken)) {
+            return false;
+        }
+
+        Code code = context.getCode((CodeToken) token);
+
+        if (!(code instanceof MacroCode)) {
+            return false;
+        }
+        MacroCode macro = (MacroCode) code;
+        if (notLong != macro.notLong //
+                || outerP != macro.outerP //
+                || !pattern.equals(macro.pattern)) {
+            return false;
+        }
+        return body.equals(macro.body);
     }
 
     /**

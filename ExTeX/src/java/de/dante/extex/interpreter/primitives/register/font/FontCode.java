@@ -24,10 +24,14 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.interpreter.type.Code;
+import de.dante.extex.interpreter.type.ComparableCode;
 import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.font.FontConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.scanner.type.token.CodeToken;
+import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
@@ -36,9 +40,13 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
-public class FontCode extends AbstractCode implements FontConvertible, Theable {
+public class FontCode extends AbstractCode
+        implements
+            FontConvertible,
+            Theable,
+            ComparableCode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
@@ -60,6 +68,38 @@ public class FontCode extends AbstractCode implements FontConvertible, Theable {
 
         super(name);
         font = fontname;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.ComparableCode#compare(
+     *      de.dante.extex.scanner.type.token.Token,
+     *      de.dante.extex.interpreter.context.Context)
+     */
+    public boolean compare(final Token token, final Context context)
+            throws InterpreterException {
+
+        if (!(token instanceof CodeToken)) {
+            return false;
+        }
+
+        Code code = context.getCode((CodeToken) token);
+
+        if (!(code instanceof FontCode)) {
+            return false;
+        }
+        return font == ((FontCode) code).font;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.font.FontConvertible#convertFont(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public Font convertFont(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
+
+        return font;
     }
 
     /**
@@ -89,18 +129,6 @@ public class FontCode extends AbstractCode implements FontConvertible, Theable {
             final Typesetter typesetter) throws InterpreterException {
 
         return new Tokens(context, font.getFontName());
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.type.font.FontConvertible#convertFont(
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.typesetter.Typesetter)
-     */
-    public Font convertFont(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws InterpreterException {
-
-        return font;
     }
 
 }

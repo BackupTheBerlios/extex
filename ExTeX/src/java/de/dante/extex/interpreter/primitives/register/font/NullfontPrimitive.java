@@ -25,8 +25,10 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.interpreter.type.ComparableCode;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.font.FontConvertible;
+import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
@@ -52,9 +54,12 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
-public class NullfontPrimitive extends AbstractCode implements FontConvertible {
+public class NullfontPrimitive extends AbstractCode
+        implements
+            FontConvertible,
+            ComparableCode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
@@ -78,6 +83,29 @@ public class NullfontPrimitive extends AbstractCode implements FontConvertible {
     }
 
     /**
+     * @see de.dante.extex.interpreter.type.ComparableCode#compare(
+     *      de.dante.extex.scanner.type.token.Token,
+     *      de.dante.extex.interpreter.context.Context)
+     */
+    public boolean compare(final Token token, final Context context) {
+
+        // TODO gene: compare unimplemented
+        throw new RuntimeException("unimplemented");
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.font.FontConvertible#convertFont(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public Font convertFont(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
+
+        return nullFont;
+    }
+
+    /**
      * @see de.dante.extex.interpreter.type.Code#execute(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
@@ -93,18 +121,6 @@ public class NullfontPrimitive extends AbstractCode implements FontConvertible {
         } catch (ConfigurationException e) {
             throw new InterpreterException(e);
         }
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.type.font.FontConvertible#convertFont(
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.typesetter.Typesetter)
-     */
-    public Font convertFont(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws InterpreterException {
-
-        return nullFont;
     }
 
 }
