@@ -34,11 +34,11 @@ import de.dante.util.framework.configuration.exception.ConfigurationMissingAttri
 import de.dante.util.framework.logger.LogEnabled;
 
 /**
- * This file finder search recuriv in a directory.
+ * This file finder search recursively in a directory.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class FileFinderRPathImpl
         implements
@@ -64,7 +64,7 @@ public class FileFinderRPathImpl
     private Configuration config;
 
     /**
-     * The field <tt>properties</tt> contains the ...
+     * The field <tt>properties</tt> contains the properties.
      */
     private Properties properties = null;
 
@@ -121,7 +121,7 @@ public class FileFinderRPathImpl
                 path = c.getValue();
             }
 
-            // only for diretories
+            // only for directories
             File fpath = new File(path);
             if (!fpath.isDirectory()) {
                 if (trace && logger != null) {
@@ -140,12 +140,12 @@ public class FileFinderRPathImpl
     }
 
     /**
-     * find a file recursiv
+     * Find a file recursively.
      *
      * @param fpath path for searching
-     * @param name  the filename
+     * @param name  the file name
      * @param cfg   the configuration
-     * @return Returns the inputstream
+     * @return Returns the input stream
      */
     private InputStream findFile(final File fpath, final String name,
             final Configuration cfg) {
@@ -173,7 +173,7 @@ public class FileFinderRPathImpl
             }
         }
 
-        // call findFile recursiv
+        // call findFile recursively
         File[] files = fpath.listFiles();
         for (int i = 0; i < files.length; i++) {
             if (files[i].isDirectory()) {
