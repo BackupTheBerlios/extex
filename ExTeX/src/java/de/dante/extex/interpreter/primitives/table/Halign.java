@@ -38,6 +38,7 @@ import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.listMaker.HAlignListMaker;
 import de.dante.extex.typesetter.type.NodeList;
+import de.dante.util.Locator;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
@@ -74,7 +75,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.33 $
+ * @version $Revision: 1.34 $
  */
 public class Halign extends AbstractAlign implements Boxable {
 
@@ -152,6 +153,7 @@ public class Halign extends AbstractAlign implements Boxable {
             spread = true;
         }
         Token t = source.getToken(context);
+        Locator locator = source.getLocator();
         if (t == null) {
             throw new EofException(printableControlSequence(context));
         } else if (t.isa(Catcode.LEFTBRACE)) {
@@ -164,7 +166,7 @@ public class Halign extends AbstractAlign implements Boxable {
         }
 
         try {
-            context.openGroup(GroupType.ALIGN_GROUP, source.getLocator(), t); //gene: correct value?
+            context.openGroup(GroupType.ALIGN_GROUP, locator, t); //gene: correct value?
         } catch (ConfigurationException e) {
             throw new InterpreterException(e);
         }
