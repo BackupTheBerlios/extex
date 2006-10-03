@@ -17,7 +17,7 @@
  *
  */
 
-package de.dante.extex.interpreter.max.util;
+package de.dante.extex.interpreter.unit;
 
 import java.util.Iterator;
 import java.util.logging.Logger;
@@ -65,7 +65,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.1 $
  */
 public final class LoadUnit extends AbstractFactory {
 
@@ -113,12 +113,25 @@ public final class LoadUnit extends AbstractFactory {
         TokenFactory tokenFactory = context.getTokenFactory();
         LoadUnit primitiveFactory = new LoadUnit();
 
-        Configuration setup = configuration.findConfiguration("setup");
-        if (setup != null) {
-            LoaderFactory factory = new LoaderFactory();
+        String name = configuration.getAttribute("name");
+        if (name == null) {
+            name = "?";
+        }
+        UnitInfo unitInfo = new UnitInfo(name);
+
+        if (configuration.getAttribute("class") != null) {
+            UnitInfoFactory factory = new UnitInfoFactory();
             factory.enableLogging(logger);
-            factory.configure(setup);
-            factory.createLoad().load(context, source, typesetter);
+            factory.configure(configuration);
+            unitInfo = factory.createUnitInfo();
+            unitInfo.setName(name);
+        } else {
+            unitInfo = new UnitInfo(name);
+        }
+        context.addUnit(unitInfo);
+
+        if (unitInfo instanceof Loader) {
+            ((Loader) unitInfo).load(context, source, typesetter);
         }
 
         Iterator iterator = configuration.iterator("primitives");
@@ -150,12 +163,8 @@ public final class LoadUnit extends AbstractFactory {
             }
         }
 
-        Configuration start = configuration.findConfiguration("start");
-        if (start != null) {
-            LoaderFactory factory = new LoaderFactory();
-            factory.enableLogging(logger);
-            factory.configure(start);
-            factory.createLoad().load(context, source, typesetter);
+        if (unitInfo instanceof StartableUnit) {
+            ((StartableUnit) unitInfo).start(context, source, typesetter);
         }
     }
 
