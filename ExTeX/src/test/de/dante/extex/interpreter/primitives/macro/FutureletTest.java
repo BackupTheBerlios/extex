@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsButGlobalPrimitiveTester;
  * This is a test suite for the primitive <tt>\futurelet</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class FutureletTest extends NoFlagsButGlobalPrimitiveTester {
 
@@ -66,7 +66,7 @@ public class FutureletTest extends NoFlagsButGlobalPrimitiveTester {
         assertSuccess(//--- input code ---
                 "\\futurelet \\x ab" + "\\end",
                 //--- output message ---
-                "a" + TERM);
+                "ab" + TERM);
     }
 
     /**
@@ -81,7 +81,7 @@ public class FutureletTest extends NoFlagsButGlobalPrimitiveTester {
         assertSuccess(//--- input code ---
                 "\\futurelet \\x 1b" + "\\end",
                 //--- output message ---
-                "1" + TERM);
+                "1b" + TERM);
     }
 
     /**
@@ -112,7 +112,7 @@ public class FutureletTest extends NoFlagsButGlobalPrimitiveTester {
         assertSuccess(//--- input code ---
                 DEFINE_BRACES + "{\\global\\futurelet \\x AB}-\\x-" + "\\end",
                 //--- output message ---
-                "A-B-" + TERM);
+                "AB-B-" + TERM);
     }
 
     /**
@@ -128,7 +128,7 @@ public class FutureletTest extends NoFlagsButGlobalPrimitiveTester {
                 //--- input code ---
                 DEFINE_BRACES + "\\def\\z{-\\x-}\\futurelet \\x\\z B" + "\\end",
                 //--- output message ---
-                "-B-" + TERM);
+                "-B-B" + TERM);
     }
 
 }
