@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--
-  -  Copyright (C) 2004-2005 The ExTeX Group
+  -  Copyright (C) 2004-2006 The ExTeX Group
   -
   -  This library is free software; you can redistribute it and/or modify it
   -  under the terms of the GNU Lesser General Public License as published by
@@ -17,7 +17,7 @@
   -  Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
   -
   -->
-<unit>
+<unit name="pdftex">
   <primitives>
     <define name="efcode"
             class="de.dante.extex.interpreter.primitives.pdftex.Efcode"/><!-- (integer) -->
