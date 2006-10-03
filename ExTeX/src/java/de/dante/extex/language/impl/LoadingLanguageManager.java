@@ -69,7 +69,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class LoadingLanguageManager extends BaseLanguageManager
         implements
@@ -256,7 +256,7 @@ public class LoadingLanguageManager extends BaseLanguageManager
      * @return <code>true</code> iff the table has been saved
      *
      * @throws IOException in case of an IO error
-     * @throws DocumentWriterException ...
+     * @throws DocumentWriterException in case of an error
      */
     protected boolean saveTable(final String name, final Language value)
             throws IOException,

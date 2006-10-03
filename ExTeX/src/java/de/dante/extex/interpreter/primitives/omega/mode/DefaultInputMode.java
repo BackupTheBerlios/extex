@@ -42,9 +42,10 @@ import de.dante.extex.typesetter.Typesetter;
  *      &rarr; <tt>\DefaultInputMode</tt> &lang;mode&rang;
  *
  *    &lang;mode&rang;
- *      &rarr; ...
- *      
- *        </pre>
+ *      &rarr; <tt>onebyte</tt>
+ *       |  <tt>ebcdic</tt>
+ *       |  <tt>twobyte</tt>
+ *       |  <tt>twobyteLE</tt>     </pre>
  *
  * <h4>Examples</h4>
  * <pre class="TeXSample">
@@ -53,7 +54,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class DefaultInputMode extends AbstractModeCode {
 

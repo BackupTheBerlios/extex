@@ -29,7 +29,6 @@ import de.dante.extex.interpreter.max.StringSource;
 import de.dante.extex.interpreter.type.count.FixedCount;
 import de.dante.extex.interpreter.type.count.ImmutableCount;
 import de.dante.extex.interpreter.type.dimen.Dimen;
-import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.node.AdjustNode;
@@ -228,15 +227,16 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class PageFactory implements LogEnabled {
 
     /**
-     * The field <tt>x</tt> contains the ...
+     * The field <tt>x</tt> contains the static mapping from integers to the
+     * corresponding index of the count register for the page number.
      */
-    private static String[] NO = {"0", "1", "2", "3", "4", "5", "6", "7", "8",
-            "9"};
+    private static final String[] NO = {"0", "1", "2", "3", "4", "5", "6", "7",
+            "8", "9"};
 
     /**
      * The field <tt>logger</tt> contains the logger.

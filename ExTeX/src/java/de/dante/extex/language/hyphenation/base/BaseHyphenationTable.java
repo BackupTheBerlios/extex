@@ -45,7 +45,7 @@ import de.dante.util.framework.Registrar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class BaseHyphenationTable implements ModifiableLanguage, Serializable {
 
@@ -116,7 +116,7 @@ public class BaseHyphenationTable implements ModifiableLanguage, Serializable {
     private LigatureBuilder ligatureBuilder = null;
 
     /**
-     * The field <tt>name</tt> contains the ...
+     * The field <tt>name</tt> contains the name.
      */
     private String name;
 

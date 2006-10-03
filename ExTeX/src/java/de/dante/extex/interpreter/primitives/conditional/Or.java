@@ -34,16 +34,20 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="or">
  * <h3>The Primitive <tt>\or</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The primitive <tt>\or</tt> indicated the other branch in the context of
+ *  a <tt>\if</tt> primitive. If encountered outside of an if context an
+ *  error is raised.
  * </p>
- *  <pre class="syntax">
- *    &lang;or&rang;
- *     &rarr; <tt>\ifcase</tt> ... <tt>\or</tt> ... <tt>\fi</tt> </pre>
+ *
+ * <h4>Examples</h4>
+ *  <pre class="TeXSample">
+ *    \iffalse abc \or def \fi  </pre>
+ *
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class Or extends AbstractCode {
 

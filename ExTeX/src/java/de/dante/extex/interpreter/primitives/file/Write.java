@@ -70,7 +70,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.39 $
+ * @version $Revision: 1.40 $
  */
 public class Write extends AbstractCode
         implements
@@ -101,7 +101,8 @@ public class Write extends AbstractCode
     private static final String USER_AND_LOG = "17";
 
     /**
-     * The field <tt>init</tt> contains the ...
+     * The field <tt>init</tt> contains the indicator that the standard streams
+     * are initialized.
      */
     private transient boolean init = false;
 

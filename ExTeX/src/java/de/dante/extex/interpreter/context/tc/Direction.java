@@ -28,7 +28,7 @@ import java.io.Serializable;
  * that additional directions are defined.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Direction implements Serializable {
 
@@ -37,7 +37,7 @@ public class Direction implements Serializable {
      * direction.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     public static interface Dir extends Serializable {
 
@@ -237,17 +237,20 @@ public class Direction implements Serializable {
     };
 
     /**
-     * The field <tt>beginningOfLine</tt> contains the ...
+     * The field <tt>beginningOfLine</tt> contains the direction at the
+     * beginning of the line.
      */
     private Dir beginningOfLine;
 
     /**
-     * The field <tt>beginningOfPage</tt> contains the ...
+     * The field <tt>beginningOfPage</tt> contains the direction at the
+     * beginning of the page.
      */
     private Dir beginningOfPage;
 
     /**
-     * The field <tt>topOfLine</tt> contains the ...
+     * The field <tt>topOfLine</tt> contains the direction at the top of the
+     * line.
      */
     private Dir topOfLine;
 
