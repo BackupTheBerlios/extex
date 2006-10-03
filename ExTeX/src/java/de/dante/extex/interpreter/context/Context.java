@@ -20,6 +20,7 @@
 package de.dante.extex.interpreter.context;
 
 import java.io.Serializable;
+import java.util.Iterator;
 
 import de.dante.extex.interpreter.Conditional;
 import de.dante.extex.interpreter.Tokenizer;
@@ -33,6 +34,7 @@ import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.muskip.Muskip;
+import de.dante.extex.interpreter.unit.UnitInfo;
 import de.dante.extex.language.Language;
 import de.dante.extex.language.LanguageManager;
 import de.dante.extex.scanner.stream.TokenStream;
@@ -51,7 +53,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.75 $
+ * @version $Revision: 1.76 $
  */
 public interface Context
         extends
@@ -584,8 +586,38 @@ public interface Context
      */
     void setUccode(UnicodeChar lc, UnicodeChar uc, boolean global);
 
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param extension
+     * @param key
+     *
+     * @return
+     */
     Object get(Object extension, Object key);
 
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param extension
+     * @param key
+     * @param value
+     * @param global
+     */
     void set(Object extension, Object key, Object value, boolean global);
+
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param info the info of the unit loaded
+     */
+    void addUnit(UnitInfo info);
+
+    /**
+     * Get an iterator to enumerate all unit infos.
+     *
+     * @return the iterator for unit infos
+     */
+    Iterator unitIterator();
 
 }

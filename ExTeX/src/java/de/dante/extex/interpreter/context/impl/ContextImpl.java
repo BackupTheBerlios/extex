@@ -83,6 +83,7 @@ import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.interpreter.type.tokens.FixedTokens;
 import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.interpreter.unit.UnitInfo;
 import de.dante.extex.language.Language;
 import de.dante.extex.language.LanguageManager;
 import de.dante.extex.scanner.stream.TokenStream;
@@ -143,7 +144,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.118 $
+ * @version $Revision: 1.119 $
  */
 public class ContextImpl
         implements
@@ -262,7 +263,7 @@ public class ContextImpl
     private List conditionalStack = new ArrayList();
 
     /**
-     * The field <tt>dirStack</tt> contains the ...
+     * The field <tt>dirStack</tt> contains the stack of directions.
      */
     private Stack dirStack = new Stack();
 
@@ -394,12 +395,29 @@ public class ContextImpl
     private transient TypesettingContextFactory typesettingContextFactory;
 
     /**
+     * The field <tt>units</tt> contains the list of unit infos.
+     */
+    private List units = new ArrayList();
+
+    /**
      * Creates a new object.
      */
     public ContextImpl() {
 
         super();
         init();
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#addUnit(
+     *      de.dante.extex.interpreter.unit.UnitInfo)
+     */
+    public void addUnit(final UnitInfo info) {
+
+        if (info == null) {
+            throw new IllegalArgumentException("addUnit()");
+        }
+        units.add(info);
     }
 
     /**
@@ -1989,6 +2007,14 @@ public class ContextImpl
         topmarks.putAll(bottommarks);
         firstmarks.clear();
         bottommarks.clear();
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#unitIterator()
+     */
+    public Iterator unitIterator() {
+
+        return units.iterator();
     }
 
     /**

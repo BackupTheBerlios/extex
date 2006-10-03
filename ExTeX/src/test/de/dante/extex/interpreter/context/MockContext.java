@@ -19,6 +19,8 @@
 
 package de.dante.extex.interpreter.context;
 
+import java.util.Iterator;
+
 import de.dante.extex.color.ColorConverter;
 import de.dante.extex.font.FontFactory;
 import de.dante.extex.interpreter.Conditional;
@@ -48,6 +50,7 @@ import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.interpreter.unit.UnitInfo;
 import de.dante.extex.language.Language;
 import de.dante.extex.language.LanguageManager;
 import de.dante.extex.scanner.stream.TokenStream;
@@ -71,7 +74,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * classes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.35 $
+ * @version $Revision: 1.36 $
  */
 public class MockContext implements Context, TypesetterOptions {
 
@@ -91,6 +94,14 @@ public class MockContext implements Context, TypesetterOptions {
     public MockContext() {
 
         super();
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#addUnit(
+     *      de.dante.extex.interpreter.unit.UnitInfo)
+     */
+    public void addUnit(UnitInfo info) {
+
     }
 
     /**
@@ -163,6 +174,16 @@ public class MockContext implements Context, TypesetterOptions {
             throws GeneralException {
 
         throw new RuntimeException("unimplemented");
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#get(
+     *      java.lang.Object,
+     *      java.lang.Object)
+     */
+    public Object get(final Object extension, final Object key) {
+
+        return null;
     }
 
     /**
@@ -597,6 +618,14 @@ public class MockContext implements Context, TypesetterOptions {
     }
 
     /**
+     * @see de.dante.extex.interpreter.context.Context#popDirection()
+     */
+    public Direction popDirection() {
+
+        throw new RuntimeException("unimplemented");
+    }
+
+    /**
      * @see de.dante.extex.interpreter.context.Context#pushConditional(
      *      de.dante.util.Locator,
      *      boolean,
@@ -606,6 +635,14 @@ public class MockContext implements Context, TypesetterOptions {
      */
     public void pushConditional(final Locator locator, final boolean value,
             final Code primitive, final long branch, final boolean neg) {
+
+        throw new RuntimeException("unimplemented");
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#pushDirection(de.dante.extex.interpreter.context.Direction)
+     */
+    public void pushDirection(final Direction dir) {
 
         throw new RuntimeException("unimplemented");
     }
@@ -642,6 +679,19 @@ public class MockContext implements Context, TypesetterOptions {
      */
     public void set(final Language language, final boolean global)
             throws ConfigurationException {
+
+        throw new RuntimeException("unimplemented");
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#set(
+     *      java.lang.Object,
+     *      java.lang.Object,
+     *      java.lang.Object,
+     *      boolean)
+     */
+    public void set(final Object extension, final Object key,
+            final Object value, final boolean global) {
 
         throw new RuntimeException("unimplemented");
     }
@@ -942,39 +992,12 @@ public class MockContext implements Context, TypesetterOptions {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#popDirection()
+     * @see de.dante.extex.interpreter.context.Context#unitIterator()
      */
-    public Direction popDirection() {
+    public Iterator unitIterator() {
 
-        // TODO gene: popDirection unimplemented
+        // TODO gene: unitIterator unimplemented
         return null;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#pushDirection(de.dante.extex.interpreter.context.Direction)
-     */
-    public void pushDirection(Direction dir) {
-
-        // TODO gene: pushDirection unimplemented
-        
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#get(java.lang.Object, java.lang.Object)
-     */
-    public Object get(Object extension, Object key) {
-
-        // TODO gene: get unimplemented
-        return null;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#set(java.lang.Object, java.lang.Object, java.lang.Object, boolean)
-     */
-    public void set(Object extension, Object key, Object value, boolean global) {
-
-        // TODO gene: set unimplemented
-        
     }
 
 }
