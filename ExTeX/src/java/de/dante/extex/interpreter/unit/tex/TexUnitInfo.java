@@ -31,6 +31,7 @@ import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.observer.command.CommandObservable;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.unit.Loader;
+import de.dante.extex.interpreter.unit.UnitInfo;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.framework.logger.LogEnabled;
 
@@ -77,9 +78,13 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.1 $
  */
-public class Setup implements Loader, LoadedObserver, LogEnabled {
+public class TexUnitInfo extends UnitInfo
+        implements
+            Loader,
+            LoadedObserver,
+            LogEnabled {
 
     /**
      * The field <tt>TRACING_COMMANDS</tt> contains the name of the count
@@ -96,7 +101,7 @@ public class Setup implements Loader, LoadedObserver, LogEnabled {
     /**
      * The field <tt>logger</tt> contains the local reference to the logger.
      */
-    private Logger logger = null;
+    private transient Logger logger = null;
 
     /**
      * The field <tt>notRegistered</tt> contains the indicator that the observer
@@ -107,7 +112,7 @@ public class Setup implements Loader, LoadedObserver, LogEnabled {
     /**
      * Creates a new object.
      */
-    public Setup() {
+    public TexUnitInfo() {
 
         super();
     }
