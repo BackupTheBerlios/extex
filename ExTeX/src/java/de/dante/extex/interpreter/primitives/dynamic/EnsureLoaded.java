@@ -29,10 +29,10 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
-import de.dante.extex.interpreter.max.util.LoadUnit;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.OutputStreamConsumer;
 import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.interpreter.unit.LoadUnit;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.exception.GeneralException;
 import de.dante.util.framework.configuration.Configuration;
@@ -73,7 +73,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class EnsureLoaded extends AbstractCode
         implements
