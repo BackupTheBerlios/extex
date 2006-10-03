@@ -23,6 +23,9 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.EofException;
+import de.dante.extex.interpreter.type.Code;
+import de.dante.extex.interpreter.type.ComparableCode;
+import de.dante.extex.scanner.type.token.CodeToken;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
 
@@ -31,6 +34,17 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * <doc name="ifx">
  * <h3>The Primitive <tt>\ifx</tt></h3>
+ * <p>
+ *  The primitive <tt>\ifx</tt> compares the following two tokens. If the
+ *  following tokens are no macros then the comparison succeeds if they agree
+ *  in category code and character.
+ * </p>
+ * <p>
+ *  If the argument tokens are control sequences or active characters then the
+ *  assigned values are compared. If the arguments are bound to macros then
+ *  the comparison succeeds if the status of <i>outer</i> and </i>long</i> are
+ *  the same, the patterns are the same and the body texts are equivalent
+ * </p>
  * <p>
  *  TODO missing documentation
  * </p>
@@ -57,14 +71,14 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public class Ifx extends AbstractIf {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 2006L;
 
     /**
      * Creates a new object.
@@ -91,6 +105,22 @@ public class Ifx extends AbstractIf {
 
         if (t1 == null || t2 == null) {
             throw new EofException(printableControlSequence(context));
+        } else if (t1 instanceof CodeToken) {
+            Code c1 = context.getCode((CodeToken) t1);
+
+            if (c1 instanceof ComparableCode) {
+                return ((ComparableCode) c1).compare(t2, context);
+            }
+
+        }
+        if (t2 instanceof CodeToken) {
+
+            Code c2 = context.getCode((CodeToken) t2);
+
+            if (c2 instanceof ComparableCode) {
+                return ((ComparableCode) c2).compare(t1, context);
+            }
+
         }
 
         return t1.equals(t2);
