@@ -39,8 +39,6 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.Color;
 import de.dante.extex.interpreter.context.ContextInternals;
-import de.dante.extex.interpreter.context.extension.ContextExtensionPoint;
-import de.dante.extex.interpreter.context.extension.ExtensionPoint;
 import de.dante.extex.interpreter.context.group.GroupInfo;
 import de.dante.extex.interpreter.context.group.GroupType;
 import de.dante.extex.interpreter.context.observer.code.CodeObservable;
@@ -66,7 +64,6 @@ import de.dante.extex.interpreter.context.tc.Direction;
 import de.dante.extex.interpreter.context.tc.TypesettingContext;
 import de.dante.extex.interpreter.context.tc.TypesettingContextFactory;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.exception.InterpreterExtensionInvalidException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.interaction.Interaction;
 import de.dante.extex.interpreter.type.Code;
@@ -144,12 +141,11 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.119 $
+ * @version $Revision: 1.120 $
  */
 public class ContextImpl
         implements
             ContextInternals,
-            ContextExtensionPoint,
             CodeObservable,
             ConditionalObservable,
             CountObservable,
@@ -271,12 +267,6 @@ public class ContextImpl
      * The field <tt>errorCount</tt> contains the error counter.
      */
     private int errorCount = 0;
-
-    /**
-     * The field <tt>extensionMap</tt> contains the registered extension points
-     * for this context.
-     */
-    private Map extensionMap = null;
 
     /**
      * The field <tt>fontFactory</tt> contains the font factory to use.
@@ -481,13 +471,6 @@ public class ContextImpl
                 } catch (Exception e) {
                     throw new InterpreterException(e);
                 }
-            }
-        }
-        if (extensionMap != null) {
-            Iterator iterator = extensionMap.keySet().iterator();
-            while (iterator.hasNext()) {
-                ExtensionPoint ep = (ExtensionPoint) iterator.next();
-                ep.endGroup(this);
             }
         }
     }
@@ -716,40 +699,6 @@ public class ContextImpl
     public int getErrorCount() {
 
         return errorCount;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.extension.ContextExtensionPoint#getExtension(
-     *      java.lang.Class)
-     */
-    public ExtensionPoint getExtension(final Class c)
-            throws InterpreterException {
-
-        ExtensionPoint ep;
-        if (extensionMap != null) {
-            ep = (ExtensionPoint) extensionMap.get(c);
-            if (ep != null) {
-                return ep;
-            }
-        } else {
-            extensionMap = new HashMap();
-        }
-
-        if (!c.isAssignableFrom(ExtensionPoint.class)) {
-            throw new InterpreterExtensionInvalidException(c.getName());
-        }
-
-        try {
-            ep = (ExtensionPoint) c.newInstance();
-        } catch (InstantiationException e) {
-            throw new InterpreterExtensionInvalidException(c.getName(), e);
-        } catch (IllegalAccessException e) {
-            throw new InterpreterExtensionInvalidException(c.getName(), e);
-        }
-
-        ep.init(this);
-        extensionMap.put(c, ep);
-        return ep;
     }
 
     /**
@@ -1154,13 +1103,6 @@ public class ContextImpl
                 } catch (Exception e) {
                     throw new InterpreterException(e);
                 }
-            }
-        }
-        if (extensionMap != null) {
-            Iterator iterator = extensionMap.keySet().iterator();
-            while (iterator.hasNext()) {
-                ExtensionPoint ep = (ExtensionPoint) iterator.next();
-                ep.beginGroup(this);
             }
         }
     }
