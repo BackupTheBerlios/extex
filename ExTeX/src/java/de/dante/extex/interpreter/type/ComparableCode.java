@@ -24,10 +24,11 @@ import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.scanner.type.token.Token;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This interface descries the ability to compare the current code to some
+ * binding of a token in a context.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface ComparableCode {
 
