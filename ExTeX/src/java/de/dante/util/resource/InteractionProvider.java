@@ -22,15 +22,16 @@ package de.dante.util.resource;
 import de.dante.extex.interpreter.interaction.Interaction;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This interface describes a class which can be asked to provide the
+ * current interaction mode..
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface InteractionProvider {
 
     /**
-     * TODO gene: missing JavaDoc
+     * Getter for the interaction mode.
      *
      * @return the interaction mode
      */

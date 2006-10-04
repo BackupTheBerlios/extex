@@ -22,10 +22,11 @@ package de.dante.extex.interpreter.unit;
 import java.io.Serializable;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This is the base class for unit infos. Unit infos can be used to specify
+ * code to be executing in the course of loading a unit.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class UnitInfo implements Serializable {
 
