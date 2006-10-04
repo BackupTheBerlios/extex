@@ -16,6 +16,7 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter;
 
 import de.dante.extex.scanner.type.Catcode;
@@ -26,7 +27,7 @@ import de.dante.util.UnicodeChar;
  * the category codes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public interface Tokenizer {
 
