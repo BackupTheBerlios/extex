@@ -24,12 +24,12 @@ import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.scanner.type.token.CodeToken;
 
 /**
- * This interface describes the container for all code of an interpreter
+ * This interface describes the container for code of an interpreter
  * context.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public interface ContextCode {
 
@@ -43,6 +43,8 @@ public interface ContextCode {
      * @return the code for the token
      *
      * @throws InterpreterException in case of an error
+     *
+     * @see #setCode(CodeToken, Code, boolean)
      */
     Code getCode(CodeToken t) throws InterpreterException;
 
@@ -57,7 +59,9 @@ public interface ContextCode {
      * @param code the code for the token
      * @param global the indicator for the scope; <code>true</code> means all
      *            groups; otherwise the current group is affected only
-     * @throws InterpreterException In case of an error
+     * @throws InterpreterException in case of an error
+     *
+     * @see #getCode(CodeToken)
      */
     void setCode(CodeToken t, Code code, boolean global)
             throws InterpreterException;

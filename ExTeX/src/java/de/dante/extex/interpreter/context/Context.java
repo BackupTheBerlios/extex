@@ -53,7 +53,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.76 $
+ * @version $Revision: 1.77 $
  */
 public interface Context
         extends
@@ -69,6 +69,16 @@ public interface Context
             ContextMark,
             Tokenizer,
             Serializable {
+
+    /**
+     * Add a unit to the list of loaded units. The units can be notified when
+     * the context is loaded from a format.
+     *
+     * @param info the info of the unit loaded
+     *
+     * @see #unitIterator()
+     */
+    void addUnit(UnitInfo info);
 
     /**
      * Attach the current escape character in front of a name and return the
@@ -142,9 +152,23 @@ public interface Context
     UnicodeChar escapechar();
 
     /**
+     * Getter for a value from an extended section of the context.
+     *
+     * @param extension the name of the extension
+     * @param key the key for the value
+     *
+     * @return the value stored
+     *
+     * @see #set(Object, Object, Object, boolean)
+     */
+    Object get(Object extension, Object key);
+
+    /**
      * Getter for the afterassignment token.
      *
      * @return the afterassignment token.
+     *
+     * @see #setAfterassignment(Token)
      */
     Token getAfterassignment();
 
@@ -158,6 +182,8 @@ public interface Context
      * @param name the name or number of the count register
      *
      * @return the count register or <code>null</code> if it is void
+     *
+     * @see #setBox(String, Box, boolean)
      */
     Box getBox(String name);
 
@@ -165,6 +191,10 @@ public interface Context
      * Getter for the currently active conditional.
      *
      * @return the currently active conditional or <code>null</code> if none
+     *
+     * @see #popConditional()
+     * @see #pushConditional(Locator, boolean, Code, long, boolean)
+     * @see #getIfLevel()
      */
     Conditional getConditional();
 
@@ -174,6 +204,8 @@ public interface Context
      * @param c the character to which the delcode is assigned
      *
      * @return the delcode for the given character
+     *
+     * @see #setDelcode(UnicodeChar, MathDelimiter, boolean)
      */
     MathDelimiter getDelcode(UnicodeChar c);
 
@@ -184,6 +216,8 @@ public interface Context
      *
      * @return the value of the named glue register or <code>null</code>
      *  if none is set
+     *
+     * @see #setGlue(String, Glue, boolean)
      */
     Glue getGlue(String name);
 
@@ -193,6 +227,8 @@ public interface Context
      * <code>null</code> if not known yet.
      *
      * @return the id string
+     *
+     * @see #setId(String)
      */
     String getId();
 
@@ -200,6 +236,10 @@ public interface Context
      * Getter for the current if level.
      *
      * @return the current if level
+     *
+     * @see #getConditional()
+     * @see #popConditional()
+     * @see #pushConditional(Locator, boolean, Code, long, boolean)
      */
     long getIfLevel();
 
@@ -214,11 +254,17 @@ public interface Context
      * @return the hyphenation table for the requested language
      *
      * @throws InterpreterException in case of an error
+     *
+     * @see #set(Language, boolean)
      */
     Language getLanguage(String language) throws InterpreterException;
 
     /**
      * Getter for the language manager.
+     *
+     * @return the language manager
+     *
+     * @see #setLanguageManager(LanguageManager)
      */
     LanguageManager getLanguageManager();
 
@@ -229,6 +275,10 @@ public interface Context
      * @param uc the upper case character
      *
      * @return the lower case equivalent or null if none exists
+     *
+     * @see #setLccode(UnicodeChar, UnicodeChar, boolean)
+     * @see #getUccode(UnicodeChar)
+     * @see #setUccode(UnicodeChar, UnicodeChar, boolean)
      */
     UnicodeChar getLccode(UnicodeChar uc);
 
@@ -241,11 +291,13 @@ public interface Context
     long getMagnification();
 
     /**
-     * Getter for the mathcode of a character.
+     * Getter for the math code of a character.
      *
      * @param uc the character index
      *
-     * @return the mathcode
+     * @return the math code
+     *
+     * @see #setMathcode(UnicodeChar, Count, boolean)
      */
     Count getMathcode(UnicodeChar uc);
 
@@ -255,13 +307,17 @@ public interface Context
      * @param name the name or the number of the register
      *
      * @return the named muskip or <code>null</code> if none is set
+     *
+     * @see #setMuskip(String, Muskip, boolean)
      */
     Muskip getMuskip(String name);
 
     /**
      * Getter for the current name space.
      *
-     * @return the current namespace
+     * @return the current name space
+     *
+     * @see #setNamespace(String, boolean)
      */
     String getNamespace();
 
@@ -270,6 +326,8 @@ public interface Context
      *
      * @return the paragraph shape or <code>null</code> if no special shape
      *   is present
+     *
+     * @see #setParshape(ParagraphShape)
      */
     ParagraphShape getParshape();
 
@@ -279,6 +337,8 @@ public interface Context
      * @param uc the Unicode character
      *
      * @return the space factor code.
+     *
+     * @see #setSfcode(UnicodeChar, Count, boolean)
      */
     Count getSfcode(UnicodeChar uc);
 
@@ -286,6 +346,8 @@ public interface Context
      * Getter for standardTokenStream.
      *
      * @return the standardTokenStream
+     *
+     * @see #setStandardTokenStream(TokenStream)
      */
     TokenStream getStandardTokenStream();
 
@@ -294,13 +356,18 @@ public interface Context
      * tokens of some kind.
      *
      * @return the token factory
+     *
+     * @see #setTokenFactory(TokenFactory)
      */
     TokenFactory getTokenFactory();
 
     /**
-     * Getter for the tokenizer.
+     * Getter for the tokenizer. The tokenizer provides a way to evaluate the
+     * settings of the category codes.
      *
      * @return the tokenizer
+     *
+     * @see #setCatcode(UnicodeChar, Catcode, boolean)
      */
     Tokenizer getTokenizer();
 
@@ -308,6 +375,12 @@ public interface Context
      * Getter for the typesetting context.
      *
      * @return the typesetting context
+     *
+     * @see #set(Color, boolean)
+     * @see #set(Direction, boolean)
+     * @see #set(Font, boolean)
+     * @see #set(Language, boolean)
+     * @see #set(TypesettingContext, boolean)
      */
     TypesettingContext getTypesettingContext();
 
@@ -318,6 +391,10 @@ public interface Context
      * @param lc the upper case character
      *
      * @return the upper case equivalent or null if none exists
+     *
+     * @see #setUccode(UnicodeChar, UnicodeChar, boolean)
+     * @see #getLccode(UnicodeChar)
+     * @see #setLccode(UnicodeChar, UnicodeChar, boolean)
      */
     UnicodeChar getUccode(UnicodeChar lc);
 
@@ -328,6 +405,10 @@ public interface Context
      * @return the formerly topmost element from the conditional stack
      *
      * @throws InterpreterException in case of an error
+     *
+     * @see #pushConditional(Locator, boolean, Code, long, boolean)
+     * @see #getConditional()
+     * @see #getIfLevel()
      */
     Conditional popConditional() throws InterpreterException;
 
@@ -336,6 +417,8 @@ public interface Context
      *
      * @return the topmost direction on the stack or <code>null</code> if the
      *   stack is empty
+     *
+     * @see #pushDirection(Direction)
      */
     Direction popDirection();
 
@@ -348,6 +431,10 @@ public interface Context
      *  operation
      * @param branch the branch number
      * @param neg negation indicator
+     *
+     * @see #popConditional()
+     * @see #getConditional()
+     * @see #getIfLevel()
      */
     void pushConditional(Locator locator, boolean value, Code primitive,
             long branch, boolean neg);
@@ -356,6 +443,8 @@ public interface Context
      * Push a direction onto the direction stack.
      *
      * @param dir the direction
+     *
+     * @see #popDirection()
      */
     void pushDirection(Direction dir);
 
@@ -367,6 +456,8 @@ public interface Context
      *  groups; otherwise the current group is affected only
      *
      * @throws ConfigurationException in case of an error in the configuration.
+     *
+     * @see #getTypesettingContext()
      */
     void set(Color color, boolean global) throws ConfigurationException;
 
@@ -378,6 +469,8 @@ public interface Context
      *            groups; otherwise the current group is affected only
      *
      * @throws ConfigurationException in case of an error in the configuration.
+     *
+     * @see #getTypesettingContext()
      */
     void set(Direction direction, boolean global) throws ConfigurationException;
 
@@ -389,6 +482,8 @@ public interface Context
      *            groups; otherwise the current group is affected only
      *
      * @throws ConfigurationException in case of an error in the configuration.
+     *
+     * @see #getTypesettingContext()
      */
     void set(Font font, boolean global) throws ConfigurationException;
 
@@ -400,8 +495,23 @@ public interface Context
      *            groups; otherwise the current group is affected only
      *
      * @throws ConfigurationException in case of an error in the configuration.
+     *
+     * @see #getTypesettingContext()
      */
     void set(Language language, boolean global) throws ConfigurationException;
+
+    /**
+     * Setter for a value from an extended section of the context.
+     *
+     * @param extension the name of the extension
+     * @param key the key for the value
+     * @param value the value to store
+     * @param global the indicator for the scope; <code>true</code> means all
+     *   groups; otherwise the current group is affected only
+     *
+     * @see #get(Object, Object)
+     */
+    void set(Object extension, Object key, Object value, boolean global);
 
     /**
      * Setter for the typesetting context in the specified groups.
@@ -409,6 +519,8 @@ public interface Context
      * @param context the processor context
      * @param global the indicator for the scope; <code>true</code> means all
      *            groups; otherwise the current group is affected only
+     *
+     * @see #getTypesettingContext()
      */
     void set(TypesettingContext context, boolean global);
 
@@ -416,6 +528,8 @@ public interface Context
      * Setter for the afterassignment token.
      *
      * @param token the afterassignment token.
+     *
+     * @see #getAfterassignment()
      */
     void setAfterassignment(Token token);
 
@@ -430,6 +544,8 @@ public interface Context
      * @param value the new value of the register
      * @param global the indicator for the scope; <code>true</code> means all
      *            groups; otherwise the current group is affected only
+     *
+     * @see #getBox(String)
      */
     void setBox(String name, Box value, boolean global);
 
@@ -437,13 +553,15 @@ public interface Context
      * Setter for the catcode of a character in the specified groups.
      *
      * @param c the character to assign a catcode for
-     * @param cc the catcode of the character
+     * @param catcode the catcode of the character
      * @param global the indicator for the scope; <code>true</code> means all
      *            groups; otherwise the current group is affected only
      *
      * @throws HelpingException in case of an error
+     *
+     * @see #getTokenizer()
      */
-    void setCatcode(UnicodeChar c, Catcode cc, boolean global)
+    void setCatcode(UnicodeChar c, Catcode catcode, boolean global)
             throws HelpingException;
 
     /**
@@ -453,6 +571,8 @@ public interface Context
      * @param delimiter the delimiter code
      * @param global the indicator for the scope; <code>true</code> means all
      *            groups; otherwise the current group is affected only
+     *
+     * @see #getDelcode(UnicodeChar)
      */
     void setDelcode(UnicodeChar c, MathDelimiter delimiter, boolean global);
 
@@ -465,6 +585,8 @@ public interface Context
      *  groups; otherwise the current group is affected only
      *
      * @throws InterpreterException in case of an error
+     *
+     * @see #getGlue(String)
      */
     void setGlue(String name, Glue value, boolean global)
             throws InterpreterException;
@@ -474,6 +596,8 @@ public interface Context
      * original source like given in the format file.
      *
      * @param id the id string
+     *
+     * @see #getId()
      */
     void setId(String id);
 
@@ -483,6 +607,8 @@ public interface Context
      * @param manager the language manager
      *
      * @throws ConfigurationException in case of an configuration error
+     *
+     * @see #getLanguageManager()
      */
     void setLanguageManager(LanguageManager manager)
             throws ConfigurationException;
@@ -495,6 +621,10 @@ public interface Context
      * @param lc lower case equivalent
      * @param global the indicator for the scope; <code>true</code> means all
      *  groups; otherwise the current group is affected only
+     *
+     * @see #getLccode(UnicodeChar)
+     * @see #getUccode(UnicodeChar)
+     * @see #setUccode(UnicodeChar, UnicodeChar, boolean)
      */
     void setLccode(UnicodeChar uc, UnicodeChar lc, boolean global);
 
@@ -510,16 +640,20 @@ public interface Context
      * @throws HelpingException in case that the magnification factor is
      *  not in the allowed range or that the magnification has been
      *  set to a different value earlier.
+     *
+     * @see #getMagnification()
      */
     void setMagnification(long mag, boolean lock) throws HelpingException;
 
     /**
-     * Setter for the mathcode of a character
+     * Setter for the math code of a character
      *
      * @param uc the character index
-     * @param code the new mathcode
+     * @param code the new math code
      * @param global the indicator for the scope; <code>true</code> means all
      *  groups; otherwise the current group is affected only
+     *
+     * @see #getMathcode(UnicodeChar)
      */
     void setMathcode(UnicodeChar uc, Count code, boolean global);
 
@@ -530,6 +664,8 @@ public interface Context
      * @param value the new value
      * @param global the indicator for the scope; <code>true</code> means all
      *  groups; otherwise the current group is affected only
+     *
+     * @see #getMuskip(String)
      */
     void setMuskip(String name, Muskip value, boolean global);
 
@@ -539,6 +675,8 @@ public interface Context
      * @param namespace the new name space
      * @param global the indicator for the scope; <code>true</code> means all
      *  groups; otherwise the current group is affected only
+     *
+     * @see #getNamespace()
      */
     void setNamespace(String namespace, boolean global);
 
@@ -546,6 +684,8 @@ public interface Context
      * Setter for the paragraph shape.
      *
      * @param shape the new paragraph shape
+     *
+     * @see #getParshape()
      */
     void setParshape(ParagraphShape shape);
 
@@ -558,6 +698,8 @@ public interface Context
      * @param code the new sfcode
      * @param global the indicator for the scope; <code>true</code> means all
      *            groups; otherwise the current group is affected only
+     *
+     * @see #getSfcode(UnicodeChar)
      */
     void setSfcode(UnicodeChar uc, Count code, boolean global);
 
@@ -565,6 +707,8 @@ public interface Context
      * Setter for standardTokenStream.
      *
      * @param standardTokenStream the standardTokenStream to set.
+     *
+     * @see #getStandardTokenStream()
      */
     void setStandardTokenStream(TokenStream standardTokenStream);
 
@@ -572,6 +716,8 @@ public interface Context
      * Setter for the token factory.
      *
      * @param factory the new token factory
+     *
+     * @see #getTokenFactory()
      */
     void setTokenFactory(TokenFactory factory);
 
@@ -582,41 +728,20 @@ public interface Context
      * @param lc lower  case character
      * @param uc uppercase equivalent
      * @param global the indicator for the scope; <code>true</code> means all
-     *  groups; otherwise the current group is affected only
+     *   groups; otherwise the current group is affected only
+     *
+     * @see #getUccode(UnicodeChar)
+     * @see #getLccode(UnicodeChar)
+     * @see #setLccode(UnicodeChar, UnicodeChar, boolean)
      */
     void setUccode(UnicodeChar lc, UnicodeChar uc, boolean global);
-
-    /**
-     * TODO gene: missing JavaDoc
-     *
-     * @param extension
-     * @param key
-     *
-     * @return
-     */
-    Object get(Object extension, Object key);
-
-    /**
-     * TODO gene: missing JavaDoc
-     *
-     * @param extension
-     * @param key
-     * @param value
-     * @param global
-     */
-    void set(Object extension, Object key, Object value, boolean global);
-
-    /**
-     * TODO gene: missing JavaDoc
-     *
-     * @param info the info of the unit loaded
-     */
-    void addUnit(UnitInfo info);
 
     /**
      * Get an iterator to enumerate all unit infos.
      *
      * @return the iterator for unit infos
+     *
+     * @see #addUnit(UnitInfo)
      */
     Iterator unitIterator();
 

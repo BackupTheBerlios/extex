@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -27,7 +27,7 @@ import de.dante.extex.interpreter.type.file.OutFile;
  * context.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface ContextFile {
 
@@ -39,6 +39,8 @@ public interface ContextFile {
      * @param name the name or the number of the file register
      *
      * @return the input file descriptor
+     *
+     * @see #setInFile(String, InFile, boolean)
      */
     InFile getInFile(String name);
 
@@ -48,6 +50,8 @@ public interface ContextFile {
      * @param name the name or the number of the file register
      *
      * @return the output file descriptor
+     *
+     * @see #setOutFile(String, OutFile, boolean)
      */
     OutFile getOutFile(String name);
 
@@ -61,7 +65,9 @@ public interface ContextFile {
      * @param name the name or the number of the file register
      * @param file the input file descriptor
      * @param global the indicator for the scope; <code>true</code> means all
-     *            groups; otherwise the current group is affected only
+     *   groups; otherwise the current group is affected only
+     *
+     * @see #getInFile(String)
      */
     void setInFile(String name, InFile file, boolean global);
 
@@ -71,7 +77,9 @@ public interface ContextFile {
      * @param name the name or the number of the file register
      * @param file the descriptor of the output file
      * @param global the indicator for the scope; <code>true</code> means all
-     *  groups; otherwise the current group is affected only
+     *   groups; otherwise the current group is affected only
+     *
+     * @see #getOutFile(String)
      */
     void setOutFile(String name, OutFile file, boolean global);
 

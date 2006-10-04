@@ -76,7 +76,7 @@ package de.dante.extex.interpreter;
  * </table>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public interface Flags {
 
@@ -157,44 +157,63 @@ public interface Flags {
     void clear();
 
     /**
-     * Setter for the expanded flag.
+     * Setter for the expanded flag. The flag is reset to <code>false</code>.
      *
      * @return the old value of the expanded flag
+     *
+     * @see #isExpanded()
+     * @see #setExpanded()
      */
     boolean clearExpanded();
 
     /**
-     * Setter for the global flag.
+     * Setter for the global flag. The flag is reset to <code>false</code>.
      *
      * @return the old value of the global flag
+     *
+     * @see #isGlobal()
+     * @see #setGlobal()
+     * @see #setGlobal(boolean)
      */
     boolean clearGlobal();
 
     /**
-     * Setter for the immediate flag.
+     * Setter for the immediate flag. The flag is reset to <code>false</code>.
      *
      * @return the old value of the immediate flag
+     *
+     * @see #isImmediate()
+     * @see #setImmediate()
      */
     boolean clearImmediate();
 
     /**
-     * Setter for the long flag.
+     * Setter for the long flag. The flag is reset to <code>false</code>.
      *
      * @return the old value of the long flag
+     *
+     * @see #isLong()
+     * @see #setLong()
      */
     boolean clearLong();
 
     /**
-     * Setter for the outer flag.
+     * Setter for the outer flag. The flag is reset to <code>false</code>.
      *
      * @return the old value of the outer flag
+     *
+     * @see #isOuter()
+     * @see #setOuter()
      */
     boolean clearOuter();
 
     /**
-     * Setter for the protected flag.
+     * Setter for the protected flag. The flag is reset to <code>false</code>.
      *
      * @return the old value of the protected flag
+     *
+     * @see #isProtected()
+     * @see #setProtected()
      */
     boolean clearProtected();
 
@@ -223,6 +242,9 @@ public interface Flags {
      * Getter for the expanded flag.
      *
      * @return the current value of the expanded flag
+     *
+     * @see #clearExpanded()
+     * @see #setExpanded()
      */
     boolean isExpanded();
 
@@ -230,6 +252,10 @@ public interface Flags {
      * Getter for the global flag.
      *
      * @return the current value of the global flag
+     *
+     * @see #clearGlobal()
+     * @see #setGlobal()
+     * @see #setGlobal(boolean)
      */
     boolean isGlobal();
 
@@ -237,6 +263,9 @@ public interface Flags {
      * Getter for the immediate flag.
      *
      * @return the current value of the immediate flag
+     *
+     * @see #clearImmediate()
+     * @see #setImmediate()
      */
     boolean isImmediate();
 
@@ -244,6 +273,9 @@ public interface Flags {
      * Getter for the long flag.
      *
      * @return the current value of the long flag
+     *
+     * @see #clearLong()
+     * @see #setLong()
      */
     boolean isLong();
 
@@ -251,6 +283,9 @@ public interface Flags {
      * Getter for the outer flag.
      *
      * @return the current value of the outer flag
+     *
+     * @see #clearOuter()
+     * @see #setOuter()
      */
     boolean isOuter();
 
@@ -258,6 +293,9 @@ public interface Flags {
      * Getter for the protected flag.
      *
      * @return the current value of the protected flag
+     *
+     * @see #clearProtected()
+     * @see #setProtected()
      */
     boolean isProtected();
 
@@ -269,39 +307,62 @@ public interface Flags {
     void set(Flags flags);
 
     /**
-     * Setter for the expanded flag.
+     * Setter for the expanded flag. The flag is set to <code>true</code>.
+     *
+     * @see #clearExpanded()
+     * @see #isExpanded()
      */
     void setExpanded();
 
     /**
-     * Setter for the global flag.
+     * Setter for the global flag. The flag is set to <code>true</code>.
+     *
+     * @see #clearGlobal()
+     * @see #isGlobal()
+     * @see #setGlobal(boolean)
      */
     void setGlobal();
 
     /**
-     * Setter for the global flag.
+     * Setter for the global flag. The flag is set to <code>true</code>.
      *
      * @param value the new value for the global flag
+     *
+     * @see #clearGlobal()
+     * @see #isGlobal()
+     * @see #setGlobal()
      */
     void setGlobal(final boolean value);
 
     /**
-     * Setter for the immediate flag.
+     * Setter for the immediate flag. The flag is set to <code>true</code>.
+     *
+     * @see #clearImmediate()
+     * @see #isImmediate()
      */
     void setImmediate();
 
     /**
-     * Setter for the long flag.
+     * Setter for the long flag. The flag is set to <code>true</code>.
+     *
+     * @see #clearLong()
+     * @see #isLong()
      */
     void setLong();
 
     /**
-     * Setter for the outer flag.
+     * Setter for the outer flag. The flag is set to <code>true</code>.
+     *
+     * @see #clearOuter()
+     * @see #isOuter()
      */
     void setOuter();
 
     /**
-     * Setter for the protected flag.
+     * Setter for the protected flag. The flag is set to <code>true</code>.
+     *
+     * @see #clearProtected()
+     * @see #isProtected()
      */
     void setProtected();
 
@@ -312,4 +373,5 @@ public interface Flags {
      * @return the list
      */
     String toText();
+
 }

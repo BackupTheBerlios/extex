@@ -27,7 +27,7 @@ import de.dante.extex.interpreter.type.dimen.Dimen;
  * context.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public interface ContextDimen {
 
@@ -37,6 +37,9 @@ public interface ContextDimen {
      * @param name the name or the number of the register
      *
      * @return the dimen register for the given name
+     *
+     * @see #setDimen(String, Dimen, boolean)
+     * @see #setDimen(String, long, boolean)
      */
     Dimen getDimen(String name);
 
@@ -53,6 +56,8 @@ public interface ContextDimen {
      *            groups; otherwise the current group is affected only
      *
      * @throws InterpreterException in case of problems in an observer
+     *
+     * @see #getDimen(String)
      */
     void setDimen(String name, Dimen value, boolean global)
             throws InterpreterException;

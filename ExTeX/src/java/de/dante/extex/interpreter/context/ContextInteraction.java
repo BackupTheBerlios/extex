@@ -23,12 +23,12 @@ import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.interaction.Interaction;
 
 /**
- * This interface describes the container for all data of an interpreter
- * context.
+ * This interface describes the container for interaction-related data of an
+ * interpreter context.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public interface ContextInteraction {
 
@@ -38,6 +38,8 @@ public interface ContextInteraction {
      * in case of an error.
      *
      * @return the current interaction
+     *
+     * @see #setInteraction(Interaction)
      */
     Interaction getInteraction();
 
@@ -48,6 +50,8 @@ public interface ContextInteraction {
      * @param interaction the new value of the interaction
      *
      * @throws InterpreterException in case of an error
+     *
+     * @see #getInteraction()
      */
     void setInteraction(Interaction interaction) throws InterpreterException;
 

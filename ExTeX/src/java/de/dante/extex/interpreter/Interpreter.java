@@ -42,7 +42,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.37 $
+ * @version $Revision: 1.38 $
  */
 public interface Interpreter extends TokenSource {
 
@@ -50,6 +50,8 @@ public interface Interpreter extends TokenSource {
      * Getter for the context
      *
      * @return the context
+     *
+     * @see #setContext(Context)
      */
     Context getContext();
 
@@ -59,6 +61,8 @@ public interface Interpreter extends TokenSource {
      * returned.
      *
      * @return the error handler currently registered
+     *
+     * @see #setErrorHandler(ErrorHandler)
      */
     ErrorHandler getErrorHandler();
 
@@ -66,6 +70,8 @@ public interface Interpreter extends TokenSource {
      * Getter for the interaction mode.
      *
      * @return the interaction mode
+     *
+     * @see #setInteraction(Interaction)
      */
     Interaction getInteraction();
 
@@ -73,6 +79,8 @@ public interface Interpreter extends TokenSource {
      * Getter for the typesetter.
      *
      * @return the typesetter
+     *
+     * @see #setTypesetter(Typesetter)
      */
     Typesetter getTypesetter();
 
@@ -85,9 +93,8 @@ public interface Interpreter extends TokenSource {
      * @throws IOException in case of an IO error
      * @throws LoaderException in case of an error during loading
      */
-    void loadFormat(InputStream stream, String fmt, String contextType, String languageType)
-            throws LoaderException,
-                IOException;
+    void loadFormat(InputStream stream, String fmt, String contextType,
+            String languageType) throws LoaderException, IOException;
 
     /**
      * Load a unit.
@@ -107,6 +114,8 @@ public interface Interpreter extends TokenSource {
      * @throws ErrorLimitException in case that the error limit has been
      *  reached
      * @throws InterpreterException in case of another error
+     *
+     * @see #run(TokenStream)
      */
     void run()
             throws ConfigurationException,
@@ -137,6 +146,8 @@ public interface Interpreter extends TokenSource {
      * @return the old context
      *
      * @param context the interpreter context
+     *
+     * @see #getContext()
      */
     Context setContext(Context context);
 
@@ -146,6 +157,8 @@ public interface Interpreter extends TokenSource {
      * currently set.
      *
      * @param handler the new error handler
+     *
+     * @see #getErrorHandler()
      */
     void setErrorHandler(ErrorHandler handler);
 
@@ -162,6 +175,8 @@ public interface Interpreter extends TokenSource {
      * @param interaction the interaction mode
      *
      * @throws GeneralException in case of an error
+     *
+     * @see #getInteraction()
      */
     void setInteraction(Interaction interaction) throws GeneralException;
 
@@ -191,6 +206,8 @@ public interface Interpreter extends TokenSource {
      * Setter for the typesetter.
      *
      * @param typesetter the new typesetter
+     *
+     * @see #getTypesetter()
      */
     void setTypesetter(Typesetter typesetter);
 

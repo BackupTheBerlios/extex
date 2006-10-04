@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -27,7 +27,7 @@ import de.dante.extex.interpreter.type.font.Font;
  * context.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface ContextFont {
 
@@ -37,6 +37,8 @@ public interface ContextFont {
      * @param name the name or the number of the register
      *
      * @return the named font register or <code>null</code> if none is set
+     *
+     * @see #setFont(String, Font, boolean)
      */
     Font getFont(String name);
 
@@ -44,6 +46,8 @@ public interface ContextFont {
      * Getter for the font factory.
      *
      * @return the fontFactory.
+     *
+     * @see #setFontFactory(FontFactory)
      */
     FontFactory getFontFactory();
 
@@ -53,14 +57,18 @@ public interface ContextFont {
      * @param name the name or the number of the register
      * @param font the new Font value
      * @param global the indicator for the scope; <code>true</code> means all
-     *            groups; otherwise the current group is affected only
+     *   groups; otherwise the current group is affected only
+     *
+     * @see #getFont(String)
      */
     void setFont(String name, Font font, boolean global);
 
     /**
      * Setter for the font factory.
      *
-     * @param fontFactory the fontFactory to set.
+     * @param fontFactory the font factory to set.
+     *
+     * @see #getFontFactory()
      */
     void setFontFactory(FontFactory fontFactory);
 

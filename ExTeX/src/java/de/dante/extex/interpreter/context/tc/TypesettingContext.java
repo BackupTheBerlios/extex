@@ -27,10 +27,14 @@ import de.dante.extex.language.Language;
 
 /**
  * The typesetting context is a container for attributes describing the
- * appearance of glyphs or other nodes.
+ * appearance of glyphs or other nodes. This interface provides reading
+ * methods only. Thus the client can rely on an immutable object only.
+ *
+ *
+ * @see de.dante.extex.interpreter.context.tc.ModifiableTypesettingContext
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface TypesettingContext extends Serializable {
 

@@ -28,7 +28,7 @@ import de.dante.extex.interpreter.type.count.Count;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public interface ContextCount {
 
@@ -48,6 +48,8 @@ public interface ContextCount {
      * @param name the name or number of the count register
      *
      * @return the count register or <code>null</code> if it is not defined
+     *
+     * @see #setCount(String, long, boolean)
      */
     Count getCount(String name);
 
@@ -65,6 +67,8 @@ public interface ContextCount {
      *
      * @throws InterpreterException in case if an exception in a registered
      *  observer
+     *
+     * @see #getCount(String)
      */
     void setCount(String name, long value, boolean global)
             throws InterpreterException;

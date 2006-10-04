@@ -16,6 +16,7 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.context.tc;
 
 import de.dante.extex.interpreter.context.Color;
@@ -27,7 +28,7 @@ import de.dante.extex.language.Language;
  * appearance of glyphs or other nodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface ModifiableTypesettingContext extends TypesettingContext {
 
@@ -44,6 +45,8 @@ public interface ModifiableTypesettingContext extends TypesettingContext {
      * Setter for the color.
      *
      * @param color the new color
+     *
+     * @see TypesettingContext#getColor()
      */
     void setColor(Color color);
 
@@ -51,6 +54,8 @@ public interface ModifiableTypesettingContext extends TypesettingContext {
      * Setter for the writing direction.
      *
      * @param direction the new direction
+     *
+     * @see TypesettingContext#getDirection()
      */
     void setDirection(Direction direction);
 
@@ -58,6 +63,8 @@ public interface ModifiableTypesettingContext extends TypesettingContext {
      * Setter for the font component.
      *
      * @param font the font to store
+     *
+     * @see TypesettingContext#getFont()
      */
     void setFont(Font font);
 
@@ -65,6 +72,8 @@ public interface ModifiableTypesettingContext extends TypesettingContext {
      * Setter for the hyphenation table.
      *
      * @param language the hyphenation table
+     *
+     * @see TypesettingContext#getLanguage()
      */
     void setLanguage(Language language);
 

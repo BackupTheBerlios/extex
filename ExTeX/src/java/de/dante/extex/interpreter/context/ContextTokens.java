@@ -28,7 +28,7 @@ import de.dante.extex.interpreter.type.tokens.Tokens;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface ContextTokens {
 
@@ -42,6 +42,9 @@ public interface ContextTokens {
      * @param name the name or number of the token register
      *
      * @return the token register or a new one if it is not defined yet
+     *
+     * @see #getToksOrNull(String)
+     * @see #setToks(String, Tokens, boolean)
      */
     Tokens getToks(String name);
 
@@ -55,6 +58,9 @@ public interface ContextTokens {
      * @param name the name or number of the token register
      *
      * @return the token register or <code>null</code> if it is not defined
+     *
+     * @see #getToks(String)
+     * @see #setToks(String, Tokens, boolean)
      */
     Tokens getToksOrNull(String name);
 
@@ -71,6 +77,9 @@ public interface ContextTokens {
      *            groups; otherwise the current group is affected only
      *
      * @throws InterpreterException in case of a problem in an observer
+     *
+     * @see #getToks(String)
+     * @see #getToksOrNull(String)
      */
     void setToks(String name, Tokens toks, boolean global)
             throws InterpreterException;
