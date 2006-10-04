@@ -29,7 +29,6 @@ import java.util.logging.Logger;
 
 import de.dante.dviware.Dvi;
 import de.dante.dviware.DviProcessor;
-import de.dante.extex.main.TeX;
 import de.dante.extex.main.logging.LogFormatter;
 import de.dante.util.framework.configuration.Configuration;
 import de.dante.util.framework.configuration.ConfigurationFactory;
@@ -40,7 +39,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * This class provides a command line tool to disassemble a DVI file.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class DviDisassemble implements DviProcessor {
 
@@ -75,7 +74,7 @@ public class DviDisassemble implements DviProcessor {
      */
     public static void main(final String[] args) {
 
-        Logger logger = Logger.getLogger(TeX.class.getName());
+        Logger logger = Logger.getLogger(DviDisassemble.class.getName());
         logger.setUseParentHandlers(false);
         logger.setLevel(Level.ALL);
 
