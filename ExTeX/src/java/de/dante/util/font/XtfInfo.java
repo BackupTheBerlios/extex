@@ -61,7 +61,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * Print information about a ttf/otf file.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public final class XtfInfo extends AbstractFontUtil {
 
@@ -165,14 +165,15 @@ public final class XtfInfo extends AbstractFontUtil {
      */
     private void copyttf() throws IOException, DocumentException {
 
-        boolean group = Boolean.valueOf(props.getProperty("xtf.group",
-                "false"));
+        boolean group = Boolean
+                .valueOf(props.getProperty("xtf.group", "false"))
+                .booleanValue();
 
-        boolean printglyphs = Boolean.valueOf(props.getProperty(
-                "xtf.printglyphs", "false"));
+        boolean printglyphs = Boolean.valueOf(
+                props.getProperty("xtf.printglyphs", "false")).booleanValue();
 
-        boolean printfamily = Boolean.valueOf(props.getProperty(
-                "xtf.printfamily", "false"));
+        boolean printfamily = Boolean.valueOf(
+                props.getProperty("xtf.printfamily", "false")).booleanValue();
 
         ArrayList family = new ArrayList();
 
@@ -615,7 +616,7 @@ public final class XtfInfo extends AbstractFontUtil {
             table1.addCell("Numbers");
             table1.addCell("01234567890");
             table1.addCell("Umlaute");
-            table1.addCell("� � � �  � � �");
+            table1.addCell("Ö Ä Ü  ö ä ü ß");
             table1.addCell("Ligaturen");
             table1.addCell("fi ff ffl ffi");
 
