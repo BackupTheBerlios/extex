@@ -1,6 +1,6 @@
 #!/bin/perl.exe -w
 ##*****************************************************************************
-## $Id: unit-summary.pl,v 1.3 2006/06/05 15:35:55 gene Exp $
+## $Id: unit-summary.pl,v 1.4 2006/10/11 12:25:44 gene Exp $
 ##*****************************************************************************
 ## Author: Gerd Neugebauer
 ##=============================================================================
@@ -150,7 +150,7 @@ sub make_units {
   foreach $_ (sort {return lc($$a[0]) cmp lc($$b[0])} @primitives) {
     my @a = @$_;
     if ($a[3] eq '') {
-      print $out "<a href=\"$a[2]\" target=\"infoFrame\">\\$a[0]</a> ($a[4])<br />\n";
+      print $out "<a href=\"$a[2].html\" target=\"infoFrame\">\\$a[0]</a> ($a[4])<br />\n";
     } else {
       print $out "<span class=\"undef\">\\$a[0] ($a[4])</span><br />\n";
     }
@@ -387,7 +387,7 @@ sub process_page {
     print STDERR "*** \\$name ambiguous\n" if $verbose;
   }
 
-  make_info_page("$targetdir/$short",
+  make_info_page("$targetdir/$short.html",
 		 $doc,
 		 "From unit $unit",
 		 "The Primitive \\$name",
