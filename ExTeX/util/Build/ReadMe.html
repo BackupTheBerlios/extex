@@ -3,12 +3,97 @@
 <head>
   <title>The ExTeX Build System</title>
   <meta name="Author" content="Gerd Neugebauer">
-  <meta http_equiv="Content-Type" content="text/html;CHARSET=iso-8859-1">
-  <base target="_top">
 </head>
 <body>
 
 <h1>The ExTeX Build System </h1>
+
+<p>
+ The ExTeX build system is run on a regularily basis to regenerate all files
+ presented on the ExTeX web site <a
+ href="http://www.extex.org">www.extex.org</a>. 
+</p>
+
+<h2>Prerequisites</h2>
+<p>
+ There are a few things to do before the build can be used.
+</p>
+<ul>
+ <li>
+   The command <tt>cvs</tt> needs to be present on the user&quot;s execution path.
+   This is the case when cvs has been installed properly.
+ </li>
+ <li>
+   The command <tt>make</tt> needs to be present on the user&quot;s execution path.
+   This is the case when the development tools on Linux have been installed.
+ </li>
+ <li>
+   The command <tt>perl</tt> needs to be present on the user&quot;s execution path.
+ </li>
+ <li>
+   The command <tt>java</tt> needs to be present on the system.
+   For this a JDK has to be present. Currently Java 1.4.2 is used.
+ </li>
+</ul>
+
+
+<h2>Getting Things Started</h2>
+<p>
+ To get things started you need to check out or update the appropriate sources
+ from the repository. Next you set some environment variables. And finally you
+ execute a script retrieved from the repository. These tasks are automated in
+ the following script:
+</p>
+<pre>
+#--------------------------------------------------------------------
+# LOCALDIR contains the location where the build resides.
+# Here all temporary files are created.
+LOCALDIR="/serv/extex-project/build"
+#--------------------------------------------------------------------
+# INSTALLDIR contains the directory to store the web site in.
+INSTALLDIR=/serv/extex-project/www.extex.org
+#--------------------------------------------------------------------
+# Point to the Java SDK
+export JAVA_HOME=/serv/extex-project/lib/j2sdk1.4.2_09/
+#--------------------------------------------------------------------
+#
+CVSDIR=":pserver:anonymous@cvs.extex.berlios.de:/cvsroot/extex"
+#--------------------------------------------------------------------
+# MODULES contains the list of CVS modelues to check-out.
+MODULES="ExTeX"
+#--------------------------------------------------------------------
+# LOG contains the directory where the logs are stored.
+LOG=$LOCALDIR/log
+#--------------------------------------------------------------------
+
+mkdir -p $LOCALDIR $LOG
+cd $LOCALDIR
+date >$LOG/export.log
+cvs -q -r -d $CVSDIR checkout -P $MODULES >>$LOG/export.log 2>&1
+cvs -q -r -d $CVSDIR update -P $MODULES >>$LOG/export.log 2>&1
+
+source $LOCALDIR/ExTeX/util/Build/build.sh
+</pre>
+<p>
+ This script can be found in the repository in
+ <tt>util/Build/bootstrap.sh</tt>. Since this script carries the configuration
+ parameters it needs to be copied onto the build machine and adapted. The
+ comments above should be enough to fill in the appropriate values.
+</p>
+
+<h2>Nightly Build</h2>
+<p>
+ The nightly build is run on <tt>comedy.dante.de</tt>. It is started by a  cron
+ script. This cron job is declared in the following manner:
+</p>
+<pre>
+42 1 * * * /serv/extex-project/bin/bootstrap.sh
+</pre>
+
+<p>
+ To list the cron configuration you can use <tt>crontab -l</tt>.
+ To edit the cron configuration you can use <tt>crontab -e</tt>.
+</p>
 
 
 <address>
