@@ -11,7 +11,7 @@ LOCALDIR="/serv/extex-project/build"
 INSTALLDIR=/serv/extex-project/www.extex.org
 #--------------------------------------------------------------------
 # Point to the Java SDK
-export JAVA_HOME=$HOME/local/share/j2sdk1.4.2_09/
+export JAVA_HOME=/serv/extex-project/lib/j2sdk1.4.2_09/
 #--------------------------------------------------------------------
 #
 CVSDIR=":pserver:anonymous@cvs.extex.berlios.de:/cvsroot/extex"
@@ -22,9 +22,8 @@ MODULES="ExTeX"
 # LOG contains the directory where the logs are stored.
 LOG=$LOCALDIR/log
 #--------------------------------------------------------------------
-# 
-export PATH=${JAVA_HOME}/bin:$PATH
 
+mkdir -p $LOCALDIR $LOG
 cd $LOCALDIR
 date >$LOG/export.log
 cvs -q -r -d $CVSDIR checkout -P $MODULES >>$LOG/export.log 2>&1
