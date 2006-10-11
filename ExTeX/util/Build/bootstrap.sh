@@ -3,7 +3,7 @@
 # (c) 2003-2006 Gerd Neugebauer (gene@gerd-neugebauer.de)
 #
 #--------------------------------------------------------------------
-# LOCALDIR contains the lcation where the build resides.
+# LOCALDIR contains the location where the build resides.
 # Here all temporary files are created.
 LOCALDIR="$HOME/build"
 #--------------------------------------------------------------------
