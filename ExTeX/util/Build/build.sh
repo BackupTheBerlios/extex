@@ -3,19 +3,19 @@
 # (c) 2003-2006 Gerd Neugebauer (gene@gerd-neugebauer.de)
 #
 
-if "$LOCALDIR" == "" then
+if [ "$LOCALDIR" == "" ] then
     echo "LOCALDIR is undefined"
     exit 1
 fi
-if "$LOG" == "" then
+if [ "$LOG" == "" ] then
     echo "LOG is undefined"
     exit 1
 fi
-if "$JAVA_HOME" == "" then
+if [ "$JAVA_HOME" == "" ] then
     echo "JAVA_HOME is undefined"
     exit 1
 fi
-if "$INSTALLDIR" == "" then
+if [ "$INSTALLDIR" == "" ] then
     echo "INSTALLDIR is undefined"
     exit 1
 fi
