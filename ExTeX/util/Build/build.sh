@@ -24,9 +24,7 @@ fi
 #
 export PATH=${JAVA_HOME}/bin:$PATH
 
-mkdir -p $LOCALDIR
-mkdir -p $LOG
-mkdir -p $INSTALLDIR
+mkdir -p $LOCALDIR $LOG $INSTALLDIR $INSTALLDIR/snapshot
 
 #--------------------------------------------------------------------
 #
