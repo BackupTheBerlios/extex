@@ -1,6 +1,6 @@
 #!/bin/perl.exe -w
 ##*****************************************************************************
-## $Id: make-test-summary.pl,v 1.2 2006/08/24 07:34:06 gene Exp $
+## $Id: make-test-summary.pl,v 1.3 2006/10/11 12:32:52 gene Exp $
 ##*****************************************************************************
 ## Author: Gerd Neugebauer
 ##=============================================================================
@@ -85,14 +85,23 @@ my $r 	 = $w;
     $_ = <$fd>;
     $fd->close();
 
-    m|<td><a href=\"all-tests.html\"[^>]*\">([0-9]+)</a></td><td><a href=\"alltests-fails.html\"[^>]*>([0-9]+)</a></td><td><a href=\"alltests-errors.html\"[^>]*>([0-9]+)</a></td><td>([0-9.]+)%</td><td>([0-9.]+)</td>|;
-    $no   = $1;
-    $err  = $3;
-    $fail = $2;
-    $succ = $4;
-    $g    = int($w*($no-$err-$fail)/$no);
-    $o    = int($w*$fail/$no);
-    $r    = int($w*$err/$no);
+    if (m|<td><a href=\"all-tests.html\"[^>]*\">([0-9]+)</a></td><td><a href=\"alltests-fails.html\"[^>]*>([0-9]+)</a></td><td><a href=\"alltests-errors.html\"[^>]*>([0-9]+)</a></td><td>([0-9.]+)%</td><td>([0-9.]+)</td>|) {
+      $no   = $1;
+      $err  = $3;
+      $fail = $2;
+      $succ = $4;
+      $g    = int($w*($no-$err-$fail)/$no);
+      $o    = int($w*$fail/$no);
+      $r    = int($w*$err/$no);
+    } else {
+      $no   = 0;
+      $err  = 0;
+      $fail = 0;
+      $succ = 0;
+      $g    = 0;
+      $o    = 100;
+      $r    = 0;
+    }
   } else {
     print STDERR <<__EOF__
 *** $file not found.
