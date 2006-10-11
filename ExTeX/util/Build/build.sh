@@ -20,8 +20,9 @@ if "$INSTALLDIR" == "" then
     exit 1
 fi
 
-#INSTALLDIR=shell.berlios.de:/home/groups/extex/htdocs
-#INSTALLDIR=/serv/extex-project/www.extex.org
+mkdir -p $LOCALDIR
+mkdir -p $LOG
+mkdir -p $INSTALLDIR
 
 #--------------------------------------------------------------------
 #

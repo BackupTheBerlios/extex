@@ -25,9 +25,6 @@ LOG=$LOCALDIR/log
 # 
 export PATH=${JAVA_HOME}/bin:$PATH
 
-mkdir -p $LOCALDIR
-mkdir -p $LOG
-
 cd $LOCALDIR
 date >$LOG/export.log
 cvs -q -r -d $CVSDIR checkout -P $MODULES >>$LOG/export.log 2>&1
