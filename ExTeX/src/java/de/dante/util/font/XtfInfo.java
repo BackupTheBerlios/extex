@@ -61,7 +61,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * Print information about a ttf/otf file.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public final class XtfInfo extends AbstractFontUtil {
 
@@ -159,6 +159,11 @@ public final class XtfInfo extends AbstractFontUtil {
     }
 
     /**
+     * Encoding for the dummy text.
+     */
+    private static final String ISO8859_1 = "ISO8859-1";
+
+    /**
      * Copy the ttf file.
      * @throws IOException if an IO-error occurred.
      * @throws DocumentException from the iText system.
@@ -166,7 +171,7 @@ public final class XtfInfo extends AbstractFontUtil {
     private void copyttf() throws IOException, DocumentException {
 
         boolean group = Boolean
-                .valueOf(props.getProperty("xtf.group", "false"))
+                .valueOf(props.getProperty("xtf.ttfgroup", "false"))
                 .booleanValue();
 
         boolean printglyphs = Boolean.valueOf(
@@ -200,6 +205,7 @@ public final class XtfInfo extends AbstractFontUtil {
                         + lists[i]);
                 if (src.canRead()) {
                     try {
+                        System.out.println(src.getName());
                         parser = new XtfReader(new FileInputStream(src));
                         TtfTableNAME name = parser.getNameTable();
                         int[] platformids = name.getPlatformIDs();
@@ -215,11 +221,11 @@ public final class XtfInfo extends AbstractFontUtil {
                                 TtfTableNAME.FONTFAMILYNAME);
 
                         String ext = "ttf";
-                        if (parser.getType() == XtfReader.TTF) {
-                            ext = "ttf";
-                        } else {
-                            ext = "otf";
-                        }
+//                        if (parser.getType() == XtfReader.TTF) {
+//                            ext = "ttf";
+//                        } else {
+//                            ext = "otf";
+//                        }
 
                         File dst;
                         if (group) {
@@ -236,8 +242,8 @@ public final class XtfInfo extends AbstractFontUtil {
 
                         getLogger().severe(
                                 getLocalizer().format("XtfInfo.TtfCopy",
-                                        src.getAbsoluteFile(),
-                                        dst.getAbsoluteFile()));
+                                        src.getName(),
+                                        dst.getName()));
 
                         copy(src, dst);
                         xtffile = dst;
@@ -252,6 +258,7 @@ public final class XtfInfo extends AbstractFontUtil {
                         // Error in ttf
                         System.err.println("Font: " + src);
                         e.printStackTrace();
+                        System.exit(1);
                     }
 
                 }
@@ -575,12 +582,14 @@ public final class XtfInfo extends AbstractFontUtil {
                     BaseFont.IDENTITY_H, true);
 
             Font font = new Font(basefont, FONT_18, Font.NORMAL);
+            Font font12 = new Font(basefont, FONT_12, Font.NORMAL);
 
             // first page
 
             PdfPTable table1 = new PdfPTable(2);
             table1.getDefaultCell().setBorderWidth(0);
-            table1.addCell("XtfInfo:    (ExTeX " + ExTeX.getVersion() + ")");
+            // table1.addCell("XtfInfo:    (ExTeX " + ExTeX.getVersion() + ")");
+            table1.addCell("FontInfo");
             table1.addCell("");
             table1.addCell("Filename");
             table1.addCell(xtffile.getName());
@@ -614,11 +623,11 @@ public final class XtfInfo extends AbstractFontUtil {
             table1.addCell("Number of Glpyhs");
             table1.addCell(String.valueOf(parser.getNumberOfGlyphs()));
             table1.addCell("Numbers");
-            table1.addCell("01234567890");
+            table1.addCell(new Phrase("01234567890", font12));
             table1.addCell("Umlaute");
-            table1.addCell("Ã– Ã„ Ãœ  Ã¶ Ã¤ Ã¼ ÃŸ");
+            table1.addCell(new Phrase("Ö Ä Ü ö ä ü ß", font12));
             table1.addCell("Ligaturen");
-            table1.addCell("fi ff ffl ffi");
+            table1.addCell(new Phrase("fi ff ffl ffi", font12));
 
             document.add(table1);
 
@@ -629,7 +638,7 @@ public final class XtfInfo extends AbstractFontUtil {
                 InputStream dummyin = dummytxt.openStream();
                 if (dummyin != null) {
                     BufferedReader reader = new BufferedReader(
-                            new InputStreamReader(dummyin));
+                            new InputStreamReader(dummyin, ISO8859_1));
 
                     String zeile;
                     while ((zeile = reader.readLine()) != null) {
