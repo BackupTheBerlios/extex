@@ -29,8 +29,8 @@ import de.dante.extex.typesetter.Typesetter;
  * This class provides an implementation for the primitive
  * <code>\OutputMode</code>.
  *
- * <doc name="write">
- * <h3>The Primitive <tt>\write</tt></h3>
+ * <doc name="OutputMode">
+ * <h3>The Primitive <tt>\OutputMode</tt></h3>
  * <p>
  *  TODO missing documentation
  * </p>
@@ -52,7 +52,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class OutputMode extends AbstractModeCode {
 

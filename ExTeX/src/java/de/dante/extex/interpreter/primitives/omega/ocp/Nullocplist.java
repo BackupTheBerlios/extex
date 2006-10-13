@@ -30,10 +30,10 @@ import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.framework.logger.LogEnabled;
 
 /**
- * This class provides an implementation for the primitive <code>\popocplist</code>.
+ * This class provides an implementation for the primitive <code>\nullocplist</code>.
  *
- * <doc name="popocplist">
- * <h3>The Primitive <tt>\popocplist</tt></h3>
+ * <doc name="nullocplist">
+ * <h3>The Primitive <tt>\nullocplist</tt></h3>
  * <p>
  *  TODO missing documentation
  * </p>
@@ -41,16 +41,16 @@ import de.dante.util.framework.logger.LogEnabled;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;popocplist&rang;
- *      &rarr; <tt>\popocplist</tt>  </pre>
+ *      &rarr; <tt>\nullocplist</tt>  </pre>
  *
  * <h4>Examples</h4>
  * <pre class="TeXSample">
- * \popocplist </pre>
+ * \nullocplist </pre>
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Nullocplist extends AbstractCode implements LogEnabled {
 

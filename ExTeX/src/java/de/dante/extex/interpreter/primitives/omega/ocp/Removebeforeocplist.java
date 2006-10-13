@@ -27,27 +27,28 @@ import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.typesetter.Typesetter;
 
 /**
- * This class provides an implementation for the primitive <code>\addafterocplist</code>.
+ * This class provides an implementation for the primitive
+ * <code>\removebeforeocplist</code>.
  *
- * <doc name="addafterocplist">
- * <h3>The Primitive <tt>\addafterocplist</tt></h3>
+ * <doc name="removebeforeocplist">
+ * <h3>The Primitive <tt>\removebeforeocplist</tt></h3>
  * <p>
  *  TODO missing documentation
  * </p>
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    &lang;addafterocplist&rang;
+ *    &lang;removebeforeocplist&rang;
  *      &rarr; ...  </pre>
  *
  * <h4>Examples</h4>
  * <pre class="TeXSample">
- * \... </pre>
+ * \removebeforeocplist ... </pre>
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Removebeforeocplist extends AbstractCode {
 

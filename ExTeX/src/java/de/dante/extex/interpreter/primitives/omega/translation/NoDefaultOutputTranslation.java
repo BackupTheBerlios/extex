@@ -28,27 +28,27 @@ import de.dante.extex.typesetter.Typesetter;
 
 /**
  * This class provides an implementation for the primitive
- * <code>\noDefaultInputTranslation</code>.
+ * <code>\noDefaultOutputTranslation</code>.
  *
- * <doc name="noDefaultInputTranslation">
- * <h3>The Primitive <tt>\noDefaultInputTranslation</tt></h3>
+ * <doc name="noDefaultOutputTranslation">
+ * <h3>The Primitive <tt>\noDefaultOutputTranslation</tt></h3>
  * <p>
  *  TODO missing documentation
  * </p>
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    &lang;noDefaultInputTranslation&rang;
+ *    &lang;noDefaultOutputTranslation&rang;
  *      &rarr; ...  </pre>
  *
  * <h4>Examples</h4>
  * <pre class="TeXSample">
- * \noDefaultInputTranslation... </pre>
+ * \noDefaultOutputTranslation... </pre>
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class NoDefaultOutputTranslation extends AbstractCode {
 
