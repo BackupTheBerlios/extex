@@ -1,6 +1,6 @@
 #!/bin/perl.exe -w
 ##*****************************************************************************
-## $Id: unit-summary.pl,v 1.4 2006/10/11 12:25:44 gene Exp $
+## $Id: unit-summary.pl,v 1.5 2006/10/13 13:47:13 gene Exp $
 ##*****************************************************************************
 ## Author: Gerd Neugebauer
 ##=============================================================================
@@ -329,7 +329,7 @@ sub process_unit {
   foreach $_ (sort {return lc($$a[0]) cmp lc($$b[0])} @prim) {
     my @a = @$_;
     if ($a[3] eq '') {
-      print $fd "<a href=\"$a[2]\" target=\"infoFrame\">\\$a[0]</a><br />\n";
+      print $fd "<a href=\"$a[2].html\" target=\"infoFrame\">\\$a[0]</a><br />\n";
     } else {
       print $fd "<span class=\"undef\">\\$a[0]</span><br />\n";
     }
