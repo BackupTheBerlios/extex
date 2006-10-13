@@ -1,6 +1,6 @@
 #!/bin/perl -w
 ##*****************************************************************************
-## $Id: primitives.pl,v 1.6 2005/12/18 09:44:02 gene Exp $
+## $Id: primitives.pl,v 1.7 2006/10/13 13:32:29 gene Exp $
 ##*****************************************************************************
 ## Author: Gerd Neugebauer
 ##=============================================================================
@@ -84,7 +84,7 @@ foreach my $file (@ARGV) {
   print STDERR "--- Got configuration $_ -> $file" if $verbose;
 }
 
-my $out = ($sfile ? new FileHandle($sfile, 'w'): \*STDOUT);
+my $out = ($sfile ? new FileHandle($sfile, 'w'): \*STDOUT) || die "$sfile: $!\n";
 
 print $out "\n\\subsection{Predefined Configurations}\n";
 
