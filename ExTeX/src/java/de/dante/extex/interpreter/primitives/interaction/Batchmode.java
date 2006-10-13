@@ -38,7 +38,7 @@ import de.dante.extex.typesetter.Typesetter;
  * <p>
  *  This primitive sets the interaction mode to batch mode.
  *  In batch mode the processing is terminated if the program needs input from
- *  the terminal or n error occurs. The output to the terminal is reduced to a
+ *  the terminal or an error occurs. The output to the terminal is reduced to a
  *  minimum.
  * </p>
  * <p>
@@ -59,7 +59,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class Batchmode extends AbstractAssignment {
 
