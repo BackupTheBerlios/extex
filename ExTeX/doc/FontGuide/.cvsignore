@@ -1,0 +1,9 @@
+*.aux
+*.dvi
+*.idx
+*.out
+*.pdf
+*.toc
+*.ilg
+*.ind
+*.backup

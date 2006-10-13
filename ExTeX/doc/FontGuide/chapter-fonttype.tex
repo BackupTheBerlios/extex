@@ -1,0 +1,75 @@
+%%*****************************************************************************
+%% $Id: chapter-fonttype.tex,v 1.1 2006/10/13 03:38:34 mgn Exp $
+%%*****************************************************************************
+%% Author: Michael Niedermair
+%%-----------------------------------------------------------------------------
+
+
+\chapter{Fonttypen}
+
+Für die Verwendung von Fonts benötigt \ExTeX\ eine eigene Fontinformationsdatei (Dateieinung \emph{.emf}) im XML-Format, welche genauere Informationen über den Font enthält.
+
+Dies enthält Informationen über den Fonttype (\TeX-Font, PS-Type1-Font, True Type Font, Open Type Font, \dots), die Metriken (Breite eines Zeichens \dots), das Encoding und viele weitere Informationen .
+
+\section{\TeX-Font (TFM)}
+\index{tfm}\index{Font!tfm}
+
+Wird in \TeX\ ein Font angefordert, so wird in der \emph{map}-Datei\footnote{meist psfonts.map} nach dem Fontnamen gesucht.
+
+\begin{lstlisting}
+...
+antpr AntykwaPoltawskiego-Regular "encantp ReEncodeFont" <antp.enc <antpr.pfb
+...
+\end{lstlisting}
+
+Die Saplten haben dabei folgende Bedeutung:
+\begin{itemize}
+ \item \textbf{antpr}\\
+       Der \TeX-Fontname
+ \item \textbf{AntykwaPoltawskiego-Regular}\\
+       Der PostScript Fontname.
+ \item \textbf{encantp ReEncodeFont}\\
+       PS-Eintrag.
+ \item \textbf{<antp.enc} (optional)\\
+       Der zu verwendende Encoding-Vector. Wird hier nichts angegeben, so wird
+       das Standard-Encoding, welches im Font festgelegt ist, verwendet.
+ \item \textbf{<antpr.pfb} (optional)\\
+       Die dazugeörige \emph{pfb}-Datei. Bei pdf\LaTeX\ ist hier auch
+       eine \emph{ttf}-Datei möglich. Wird hier nichts angegeben, so handelt es sich um
+       einen der Standard-PostScript-Fonts\footnote{Die Möglichkeiten von \emph{metafont} werden hier nicht berücksichtigt.}.
+\end{itemize}
+
+Zu jedem \TeX-Font gibt es eine \emph{tfm}-Datei, welche die Metriken, die Ligaturen, Kerniginformationen und weitere Daten enthält.
+
+Den Font selbst (PS-Type1 Font) wird dabei von \TeX\ nicht benötigt\footnote{Ausnahme ist hier pdf\TeX, welches der PS-Type1 Font und auch TTF direkt in das PDF-Dokumetn einbindet}.
+
+TODO \emph{vf}-Dateien.
+
+\section{PS-Typ1-Font (AFM/PFB)}
+\index{afm}\index{Font!afm}
+\index{pfb}\index{Font!pfb}
+
+Der Ps-Type1-Font besteht aus zwei Dateien. Die \emph{afm}-Datei, welche die Metriken, die Ligaturen und die Kerninginformationen enthält und die \emph{pfb}-Datei\footnote{oder auch eine \emph{pfa}-Datei}, welche die Informationen über die Glyphen etc.\, enthält.
+
+In der \emph{afm}-Datei wird das Standard-Encoding für den Font festgelegt. Soll ein anderes Encoding verwendet werden, so muss ein Encoding-Vector verwendet werden.
+
+\section{True Type Font (TTF)}
+\index{ttf}\index{Font!ttf}
+
+Der \emph{ttf}-Font enthält alle Informationen in einer Datei. Um ein Zeichen zu verwenden, muss zuerst das entsprechende Encoding des Fonts ausgewählt werden.
+Die meisten \emph{ttf}-Fonts besitzen mindestens zwei Encodings. Erstens ein Enoding für Apple Systeme (8-bit für 256 Glyphen) und ein Endoing für Windows Systeme (16-bit für max. 65535 Glpyhen). Zusätzlich können weitere Encodings definiert sein.
+
+In der Encoding-Tabelle (CMAP) werden die Zeichen mit einem Glpyhen in Verbindung gesetzt.
+
+
+\section{Open Type Font (OTF)}
+
+TODO
+
+\section{\ExTeX-Font (EFM}
+\index{efm}\index{Font!efm}
+
+
+
+
+\endinput
