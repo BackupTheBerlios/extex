@@ -42,7 +42,7 @@ import de.dante.extex.typesetter.Typesetter;
  * <p>
  *  If the argument tokens are control sequences or active characters then the
  *  assigned values are compared. If the arguments are bound to macros then
- *  the comparison succeeds if the status of <i>outer</i> and </i>long</i> are
+ *  the comparison succeeds if the status of <i>outer</i> and <i>long</i> are
  *  the same, the patterns are the same and the body texts are equivalent
  * </p>
  * <p>
@@ -71,7 +71,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public class Ifx extends AbstractIf {
 
