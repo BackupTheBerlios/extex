@@ -22,10 +22,14 @@ package de.dante.extex.interpreter.primitives.table;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.context.group.GroupType;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.interpreter.type.box.Box;
+import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.type.NodeList;
 
 /**
  * This class provides an implementation for the primitive
@@ -41,16 +45,16 @@ import de.dante.extex.typesetter.Typesetter;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;noalign&rang;
- *       &rarr; <tt>\noalign</tt>  </pre>
+ *       &rarr; <tt>\noalign</tt> <tt>{</tt> &lang;vertical material&rang; <tt>}</tt>  </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
- *    \cr\noalign  </pre>
+ *    \cr\noalign{\vskip 4pt}  </pre>
  *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Noalign extends AbstractCode {
 
@@ -82,6 +86,28 @@ public class Noalign extends AbstractCode {
 
         throw new HelpingException(getLocalizer(), "TTP.MisplacedNoalign",
                 printableControlSequence(context));
+    }
+
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param context the interpreter context
+     * @param source the token source
+     * @param typesetter the typesetter
+     * @param start the start token
+     *
+     * @return ...
+     *
+     * @throws InterpreterException in case of an error
+     */
+    public NodeList exec(final Context context, final TokenSource source,
+            final Typesetter typesetter, final Token start)
+            throws InterpreterException {
+
+        Box b = new Box(context, source, typesetter, false, null,
+                GroupType.VBOX_GROUP, start); // TODO gene: group type
+
+        return b.getNodes();
     }
 
 }

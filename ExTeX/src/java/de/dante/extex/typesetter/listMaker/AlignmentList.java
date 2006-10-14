@@ -21,13 +21,15 @@ package de.dante.extex.typesetter.listMaker;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.exception.TypesetterException;
+import de.dante.extex.typesetter.type.NodeList;
 
 /**
  * This interface describes a list for alignments with the associated methods.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public interface AlignmentList {
 
@@ -38,10 +40,11 @@ public interface AlignmentList {
      *
      * @param context the interpreter context
      * @param source the token source
+     * @param noalign the tokens to be inserted or <code>null</code>
      *
      * @throws TypesetterException in case of an error
      */
-    void cr(Context context, TokenSource source, boolean noalign)
+    void cr(Context context, TokenSource source, NodeList noalign)
             throws TypesetterException;
 
     /**
@@ -56,7 +59,7 @@ public interface AlignmentList {
      *
      * @throws TypesetterException in case of an error
      */
-    void crcr(Context context, TokenSource source) throws TypesetterException;
+    void crcr(Context context, TokenSource source, Typesetter typesetter) throws TypesetterException;
 
     /**
      * The invocation of this method indicates that the pattern for the current

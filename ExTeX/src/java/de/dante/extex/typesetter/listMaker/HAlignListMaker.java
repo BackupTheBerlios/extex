@@ -35,6 +35,7 @@ import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.token.CodeToken;
 import de.dante.extex.scanner.type.token.Token;
+import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
@@ -48,7 +49,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [770]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class HAlignListMaker extends RestrictedHorizontalListMaker
         implements
@@ -58,7 +59,7 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
      * This inner class is a container for the cell information in an alignment.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.20 $
+     * @version $Revision: 1.21 $
      */
     protected class Cell {
 
@@ -231,6 +232,7 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
                     row.add(nl);
                 }
             }
+            result.add(row);
         }
 
         Dimen w = sum(maxWidth);
@@ -252,38 +254,46 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
      * @see de.dante.extex.typesetter.listMaker.AlignmentList#cr(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
-     *      boolean)
+     *      de.dante.extex.typesetter.type.NodeList)
      */
     public void cr(final Context context, final TokenSource source,
-            final boolean noalign) throws TypesetterException {
+            final NodeList noalign) throws TypesetterException {
 
         rows.add(line);
+        if (noalign != null) {
+            //TODO gene: insert noalign
+        }
         clearLine(context, source);
     }
 
     /**
      * @see de.dante.extex.typesetter.listMaker.AlignmentList#crcr(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
      */
-    public void crcr(final Context context, final TokenSource source)
-            throws TypesetterException {
+    public void crcr(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws TypesetterException {
 
-        if (col > 0) {
-            boolean noalign = false;
-            try {
-                Token t = source.getToken(context);
-                if (t instanceof CodeToken
-                        && context.getCode((CodeToken) t) instanceof Noalign) {
-                    noalign = true;
-                } else {
-                    source.push(t);
-                }
-            } catch (InterpreterException e) {
-                throw new TypesetterException(e);
-            }
-            cr(context, source, noalign);
+        if (col <= 0) {
+            return;
         }
+        NodeList noalign = null;
+        try {
+            Token token = source.getToken(context);
+            Code code;
+
+            if (token instanceof CodeToken
+                    && (code = context.getCode((CodeToken) token)) instanceof Noalign) {
+                noalign = ((Noalign) code).exec(context, source, typesetter,
+                        token);
+            } else {
+                source.push(token);
+            }
+        } catch (InterpreterException e) {
+            throw new TypesetterException(e);
+        }
+        cr(context, source, noalign);
     }
 
     /**
@@ -346,11 +356,11 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
      *
      * @return the sum in a new Dimen
      */
-    private Dimen sum(final Dimen[] d) {
+    public static Dimen sum(final Dimen[] d) {
 
         Dimen sum = new Dimen();
 
-        for (int i = 0; i < line.length; i++) {
+        for (int i = 0; i < d.length; i++) {
             sum.add(d[i]);
         }
         return sum;

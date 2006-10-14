@@ -50,7 +50,7 @@ import de.dante.extex.typesetter.listMaker.AlignmentList;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Crcr extends Cr {
 
@@ -82,7 +82,7 @@ public class Crcr extends Cr {
 
         ListMaker maker = typesetter.getListMaker();
         if (maker instanceof AlignmentList) {
-            ((AlignmentList) maker).crcr(context, source);
+            ((AlignmentList) maker).crcr(context, source, typesetter);
         } else {
             throw new HelpingException(getLocalizer(), "TTP.MisplacedCrSpan",
                     printableControlSequence(context));
