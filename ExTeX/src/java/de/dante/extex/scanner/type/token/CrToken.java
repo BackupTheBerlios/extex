@@ -31,7 +31,7 @@ import de.dante.util.UnicodeChar;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class CrToken extends AbstractToken implements Token {
 
@@ -91,9 +91,7 @@ public class CrToken extends AbstractToken implements Token {
      */
     public String toString() {
 
-        UnicodeChar c = getChar();
-        return getLocalizer().format("CrToken.Text",
-                (c != null ? c.toString() : ""));
+        return getLocalizer().format("CrToken.Text", super.toString());
     }
 
     /**
@@ -105,9 +103,7 @@ public class CrToken extends AbstractToken implements Token {
      */
     public void toString(final StringBuffer sb) {
 
-        UnicodeChar c = getChar();
-        sb.append(getLocalizer().format("CrToken.Text",
-                (c != null ? c.toString() : "")));
+        sb.append(getLocalizer().format("CrToken.Text", super.toString()));
     }
 
     /**

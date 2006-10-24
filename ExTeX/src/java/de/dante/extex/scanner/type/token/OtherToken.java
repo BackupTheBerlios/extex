@@ -32,7 +32,7 @@ import de.dante.util.UnicodeChar;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class OtherToken extends AbstractToken implements Token {
 
@@ -68,7 +68,7 @@ public class OtherToken extends AbstractToken implements Token {
      */
     public String toString() {
 
-        return getLocalizer().format("OtherToken.Text", getChar().toString());
+        return getLocalizer().format("OtherToken.Text", super.toString());
     }
 
     /**
@@ -80,8 +80,7 @@ public class OtherToken extends AbstractToken implements Token {
      */
     public void toString(final StringBuffer sb) {
 
-        sb.append(getLocalizer().format("OtherToken.Text", //
-                getChar().toString()));
+        sb.append(getLocalizer().format("OtherToken.Text", super.toString()));
     }
 
     /**

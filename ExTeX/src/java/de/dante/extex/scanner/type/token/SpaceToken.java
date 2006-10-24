@@ -31,7 +31,7 @@ import de.dante.util.UnicodeChar;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class SpaceToken extends AbstractToken implements Token {
 
@@ -74,7 +74,7 @@ public class SpaceToken extends AbstractToken implements Token {
      */
     public String toString() {
 
-        return getLocalizer().format("SpaceToken.Text", getChar().toString());
+        return getLocalizer().format("SpaceToken.Text", super.toString());
     }
 
     /**
@@ -86,8 +86,7 @@ public class SpaceToken extends AbstractToken implements Token {
      */
     public void toString(final StringBuffer sb) {
 
-        sb.append(getLocalizer()
-                .format("SpaceToken.Text", getChar().toString()));
+        sb.append(getLocalizer().format("SpaceToken.Text", super.toString()));
     }
 
     /**
