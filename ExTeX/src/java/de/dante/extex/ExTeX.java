@@ -480,7 +480,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.148 $
+ * @version $Revision: 1.149 $
  */
 public class ExTeX {
 
@@ -489,7 +489,7 @@ public class ExTeX {
      * from a format which needs it.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.148 $
+     * @version $Revision: 1.149 $
      */
     private class ResourceFinderInjector implements RegistrarObserver {
 
@@ -808,7 +808,7 @@ public class ExTeX {
      * to set a context as final source of information.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.148 $
+     * @version $Revision: 1.149 $
      */
     private interface MyInteractionProvider extends InteractionProvider {
 
@@ -1234,7 +1234,9 @@ public class ExTeX {
             logger.fine(localizer.format("ExTeX.FormatDate", context.getId(),
                     time));
         } else if (ini) {
-            logger.fine(localizer.format("ExTeX.NoFormatDate", time));
+            if (!noBanner) {
+                logger.fine(localizer.format("ExTeX.NoFormatDate", time));
+            }
 
             Interaction mode = context.getInteraction();
             try {
