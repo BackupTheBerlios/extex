@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for math.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class MathTest extends ExTeXLauncher {
 
@@ -45,7 +45,7 @@ public class MathTest extends ExTeXLauncher {
      * </testcase>
      * @throws Exception in case of an error
      */
-    public void _testMathError1() throws Exception {
+    public void testMathError1() throws Exception {
 
         assertFailure(//--- input code ---
                 DEFINE_MATH + "$a$ \\end",
@@ -59,7 +59,7 @@ public class MathTest extends ExTeXLauncher {
      * </testcase>
      * @throws Exception in case of an error
      */
-    public void _testMath1() throws Exception {
+    public void testMath1() throws Exception {
 
         assertSuccess(//--- input code ---
                 AbstractMathTester.DEFINE_MATH_FONTS + DEFINE_MATH
@@ -74,7 +74,7 @@ public class MathTest extends ExTeXLauncher {
      * </testcase>
      * @throws Exception in case of an error
      */
-    public void testMath2() throws Exception {
+    public void testSubscript1() throws Exception {
 
         assertSuccess(showNodesProperties(),
         //--- input code ---
@@ -82,11 +82,34 @@ public class MathTest extends ExTeXLauncher {
                 AbstractMathTester.DEFINE_MATH_FONTS + DEFINE_CATCODES
                         + "$a_b$ \\end",
                 //--- output channel ---
-                "\\vbox(4.8611pt+0.0pt)x8.80255pt\n"
-                        + ".\\hbox(4.8611pt+0.0pt)x8.80255pt\n" //
-                        + "..a\n" //
-                        + "..\\hbox(4.8611pt+0.0pt)x3.51666pt\n" //
-                        + "...b\n");
+                "\\vbox(4.8611pt+0.0pt)x100.0pt\n"
+                        + ".\\hbox(4.8611pt+0.0pt)x100.0pt\n" //
+                        + "..\\hbox(4.8611pt+0.0pt)x8.80255pt\n" //
+                        + "...a\n" //
+                        + "...\\hbox(4.8611pt+0.0pt)x3.51666pt, shifted 1.49998pt\n" //
+                        + "....b\n");
+    }
+
+    /**
+     * <testcase>
+     *  Test case checking that a simple character can be typeset in math mode.
+     * </testcase>
+     * @throws Exception in case of an error
+     */
+    public void testSuperscript1() throws Exception {
+
+        assertSuccess(showNodesProperties(),
+        //--- input code ---
+                "\\hsize=100pt" +
+                AbstractMathTester.DEFINE_MATH_FONTS + DEFINE_CATCODES
+                        + "$a^b$ \\end",
+                //--- output channel ---
+                "\\vbox(4.8611pt+0.0pt)x100.0pt\n"
+                        + ".\\hbox(4.8611pt+0.0pt)x100.0pt\n" //
+                        + "..\\hbox(4.8611pt+0.0pt)x8.80255pt\n" //
+                        + "...a\n" //
+                        + "...\\hbox(4.8611pt+0.0pt)x3.51666pt, shifted -5.93748pt\n" //
+                        + "....b\n");
     }
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsButGlobalPrimitiveTester;
  * This is a test suite for the primitive <tt>\chardef</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class ChardefTest extends NoFlagsButGlobalPrimitiveTester {
 
@@ -118,12 +118,12 @@ public class ChardefTest extends NoFlagsButGlobalPrimitiveTester {
      *
      * @throws Exception in case of an error
      */
-    public void test1() throws Exception {
+    public void testErr1() throws Exception {
 
-        assertSuccess(//--- input code ---
-                "\\chardef\\x=65 \\the\\x\\end",
-                //--- output channel ---
-                "65" + TERM);
+        assertFailure(//--- input code ---
+                "\\chardef\\x=-1",
+                //--- log message ---
+                "Bad character code (-1)");
     }
 
     /**
@@ -134,12 +134,109 @@ public class ChardefTest extends NoFlagsButGlobalPrimitiveTester {
      *
      * @throws Exception in case of an error
      */
+    public void test0() throws Exception {
+
+        assertSuccess(//--- input code ---
+                "\\chardef\\x=0 \\the\\x\\end",
+                //--- output channel ---
+                "0" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\chardef">
+     *  Test case checking that <tt>\chardef</tt> needs a code token as
+     *  first argument.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test1() throws Exception {
+
+        assertSuccess(//--- input code ---
+                "\\chardef\\x=65 \\the\\x\\end",
+                //--- output channel ---
+                "65" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\chardef">
+     *  Test case checking that <tt>\chardef</tt> defines something usable as
+     *  count.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
     public void test2() throws Exception {
 
         assertSuccess(//--- input code ---
                 "\\chardef\\x=65 \\count0=\\x\\the\\count0\\end",
                 //--- output channel ---
                 "65" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\chardef">
+     *  Test case checking that <tt>\chardef</tt> interacts with groups.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test10() throws Exception {
+
+        assertSuccess(//--- input code ---
+                DEFINE_BRACES
+                + "\\def\\x{-}{\\chardef\\x=65 }\\x\\end",
+                //--- output channel ---
+                "-" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\chardef">
+     *  Test case checking that <tt>\chardef</tt> interacts with groups.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test11() throws Exception {
+
+        assertSuccess(//--- input code ---
+                DEFINE_BRACES
+                + "{\\global\\chardef\\x=65 }\\the\\x\\end",
+                //--- output channel ---
+                "65" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\chardef">
+     *  Test case checking that <tt>\chardef</tt> interacts with groups.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test12() throws Exception {
+
+        assertSuccess(//--- input code ---
+                DEFINE_BRACES
+                + "\\globaldefs=1"
+                + "{\\chardef\\x=65 }\\the\\x\\end",
+                //--- output channel ---
+                "65" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\chardef">
+     *  Test case checking that <tt>\chardef</tt> is an assignment.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test21() throws Exception {
+
+        assertSuccess(//--- input code ---
+                "\\afterassignment abc"
+                + "\\chardef\\x=65 \\the\\x\\end",
+                //--- output channel ---
+                "bca65" + TERM);
     }
 
 }
