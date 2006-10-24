@@ -26,7 +26,7 @@ import de.dante.test.ExTeXLauncher;
  * It provides some test cases common to all dimen registers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
 
@@ -131,10 +131,10 @@ public abstract class AbstractDimenRegisterTester extends ExTeXLauncher {
     public void testDimenRegisterNoSkip1() throws Exception {
 
         assertSuccess(//--- input code ---
-                prepare + "\\" + invocation + "=123pt plus 1pt \\the\\"
+                prepare + "\\" + invocation + "=1230pt plus 1pt \\the\\"
                 + invocation + "\\end",
                 //--- output channel ---
-                "plus 1pt 123.0pt" + TERM);
+                "plus 1pt 1230.0pt" + TERM);
     }
 
     /**

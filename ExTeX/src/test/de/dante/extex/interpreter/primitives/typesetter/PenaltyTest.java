@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\penalty</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class PenaltyTest extends NoFlagsPrimitiveTester {
 
@@ -59,10 +59,13 @@ public class PenaltyTest extends NoFlagsPrimitiveTester {
 
         assertSuccess(showNodesProperties(),
         //--- input code ---
-                "\\penalty -12\\end ",
+                "x\\penalty -12 x\\end ",
                 //--- output channel ---
-                "\\vbox(0.0pt+0.0pt)x0.0pt\n" + //
-                ".\\penalty -12\n");
+                "\\vbox(8.0pt+0.0pt)x3000.0pt\n" + //
+                ".\\hbox(8.0pt+0.0pt)x3000.0pt\n" + //
+                "..x\n" + //
+                "..\\penalty -12\n" + //
+                "..x\n");
     }
 
 }
