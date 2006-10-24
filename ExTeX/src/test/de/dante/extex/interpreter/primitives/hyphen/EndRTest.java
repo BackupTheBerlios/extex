@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\endR</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class EndRTest extends NoFlagsPrimitiveTester {
 
@@ -36,7 +36,9 @@ public class EndRTest extends NoFlagsPrimitiveTester {
      */
     public EndRTest(final String arg) {
 
-        super(arg, "endR", "", "\\TeXXeTstate=1");
+        super(arg, "endR", "", "\\TeXXeTstate=1\\beginR");
     }
+
+    //TODO implement more primitive specific test cases
 
 }

@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\endL</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class EndLTest extends NoFlagsPrimitiveTester {
 
@@ -36,7 +36,9 @@ public class EndLTest extends NoFlagsPrimitiveTester {
      */
     public EndLTest(final String arg) {
 
-        super(arg, "endL", "", "\\TeXXeTstate=1");
+        super(arg, "endL", "", "\\TeXXeTstate=1\\beginL");
     }
+
+    //TODO implement more primitive specific test cases
 
 }
