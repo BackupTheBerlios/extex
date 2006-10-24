@@ -25,7 +25,7 @@ import de.dante.extex.interpreter.primitives.string.AbstractCharMapTester;
  * This is a test suite for the primitive <tt>\sfcode</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class SfcodeTest extends AbstractCharMapTester {
 
@@ -47,5 +47,16 @@ public class SfcodeTest extends AbstractCharMapTester {
 
         super(arg, "sfcode", "65", "999", "32767");
     }
+
+    /**
+     * ...
+     *
+     * @return the message
+     */
+    protected String badCodeMessage() {
+
+        return "Invalid code (-123), should be in the range 0..32767";
+    }
+
 
 }
