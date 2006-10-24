@@ -66,7 +66,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.30 $
+ * @version $Revision: 1.31 $
  */
 public class The extends AbstractCode implements ExpandableCode, CodeExpander {
 
@@ -113,7 +113,7 @@ public class The extends AbstractCode implements ExpandableCode, CodeExpander {
                 source.push(toks);
                 return;
             } else if (code == null) {
-                throw new UndefinedControlSequenceException(cs.toString());
+                throw new UndefinedControlSequenceException(cs.toText());
             }
         }
 
