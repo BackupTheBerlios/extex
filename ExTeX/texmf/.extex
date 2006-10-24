@@ -1,0 +1,6 @@
+#
+#
+#
+texinputs=../develop/lib/texmf/tex/plain/base
+extex.fonts=../develop/lib/texmf/fonts/tfm/public/cm:../develop/lib/texmf/fonts/tfm/public/misc
+#
