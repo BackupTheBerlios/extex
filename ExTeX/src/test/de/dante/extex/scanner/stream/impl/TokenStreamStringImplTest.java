@@ -43,7 +43,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * Test cases for the string implementation of a token stream.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class TokenStreamStringImplTest extends TestCase {
 
@@ -51,7 +51,7 @@ public class TokenStreamStringImplTest extends TestCase {
      * Mock configuration class.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.24 $
+     * @version $Revision: 1.25 $
      */
     private static class MockConfiguration implements Configuration {
 
@@ -328,7 +328,7 @@ public class TokenStreamStringImplTest extends TestCase {
 
         context.setCatcode(UnicodeChar.get('^'), Catcode.SUPMARK, true);
         TokenStream stream = makeStream("^^A");
-        assertEquals("the character \1", stream.get(fac, tokenizer).toString());
+        assertEquals("the character ^^1", stream.get(fac, tokenizer).toString());
         Token token = stream.get(fac, tokenizer);
         assertNotNull(token);
         assertEquals(32, token.getChar().getCodePoint());
@@ -343,7 +343,7 @@ public class TokenStreamStringImplTest extends TestCase {
 
         context.setCatcode(UnicodeChar.get('^'), Catcode.SUPMARK, true);
         TokenStream stream = makeStream("^^A;");
-        assertEquals("the character \1", stream.get(fac, tokenizer).toString());
+        assertEquals("the character ^^1", stream.get(fac, tokenizer).toString());
         assertEquals("the character ;", stream.get(fac, tokenizer).toString());
         Token token = stream.get(fac, tokenizer);
         assertNotNull(token);

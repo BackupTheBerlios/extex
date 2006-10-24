@@ -46,7 +46,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class TokenStreamStringImpl32Test extends TestCase {
 
@@ -417,7 +417,7 @@ public class TokenStreamStringImpl32Test extends TestCase {
 
         context.setCatcode(UnicodeChar.get('^'), Catcode.SUPMARK, true);
         TokenStream stream = makeStream("^^A");
-        assertEquals("the character \1", stream.get(fac, tokenizer).toString());
+        assertEquals("the character ^^1", stream.get(fac, tokenizer).toString());
         Token token = stream.get(fac, tokenizer);
         assertNotNull(token);
         assertEquals(C32, token.getChar().getCodePoint());
@@ -432,7 +432,7 @@ public class TokenStreamStringImpl32Test extends TestCase {
 
         context.setCatcode(UnicodeChar.get('^'), Catcode.SUPMARK, true);
         TokenStream stream = makeStream("^^A;");
-        assertEquals("the character \1", stream.get(fac, tokenizer).toString());
+        assertEquals("the character ^^1", stream.get(fac, tokenizer).toString());
         assertEquals("the character ;", stream.get(fac, tokenizer).toString());
         Token token = stream.get(fac, tokenizer);
         assertNotNull(token);
