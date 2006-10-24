@@ -22,14 +22,14 @@ package de.dante.extex.interpreter.primitives.register.pair;
 import junit.framework.TestCase;
 
 /**
- * A test for the pair-regsiter.
+ * A test for the pair register.
  *
  * <p>
  * use extex-extension
  * </p>
  *
  * @author <a href="mailto:m.g.sn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class PairRegisterTest extends TestCase {
 
@@ -49,6 +49,11 @@ public class PairRegisterTest extends TestCase {
     public static void main(final String[] args) {
 
         junit.textui.TestRunner.run(PairRegisterTest.class);
+    }
+
+    public void test00000000() throws Exception {
+
+        //gene: just to silence JUnit. Remove it when real tests are present
     }
 
     /**
