@@ -24,7 +24,7 @@ package de.dante.extex.typesetter.type.noad.util;
  * math mode.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public final class MathFontParameter {
 
@@ -44,13 +44,15 @@ public final class MathFontParameter {
      * The constant <tt>NUM1</tt> contains the numerator shift-up in
      * display styles.
      */
-    public static final MathFontParameter NUM1 = new MathFontParameter(true, "8");
+    public static final MathFontParameter NUM1 = new MathFontParameter(true,
+            "8");
 
     /**
      * The constant <tt>NUM2</tt> contains the numerator shift-up in non-display,
      * non-\atop.
      */
-    public static final MathFontParameter NUM2 = new MathFontParameter(true, "9");
+    public static final MathFontParameter NUM2 = new MathFontParameter(true,
+            "9");
 
     /**
      * The constant <tt>NUM3</tt> contains the numerator shift-up in non-display
@@ -112,15 +114,15 @@ public final class MathFontParameter {
      * The constant <tt>SUP_DROP</tt> contains the superscript baseline below
      * top of large box.
      */
-    public static final MathFontParameter SUP_DROP = new MathFontParameter(true,
-            "18");
+    public static final MathFontParameter SUP_DROP = new MathFontParameter(
+            true, "18");
 
     /**
      * The constant <tt>SUB_DROP</tt> contains the subscript baseline below
      * bottom of large box.
      */
-    public static final MathFontParameter SUB_DROP = new MathFontParameter(true,
-            "19");
+    public static final MathFontParameter SUB_DROP = new MathFontParameter(
+            true, "19");
 
     /**
      * The constant <tt>DELIM1</tt> contains the size of <tt>\atopwithdelims</tt>
@@ -229,6 +231,14 @@ public final class MathFontParameter {
     public String getNo() {
 
         return this.no;
+    }
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+
+        return (inSymbol ? "S" : "E") + this.no;
     }
 
 }
