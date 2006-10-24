@@ -25,7 +25,6 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.InvalidCodeException;
 import de.dante.extex.interpreter.type.AbstractAssignment;
-import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.count.CountConvertible;
@@ -57,11 +56,11 @@ import de.dante.util.UnicodeChar;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Sfcode extends AbstractAssignment
         implements
-            ExpandableCode,
+//            ExpandableCode,
             CountConvertible,
             DimenConvertible,
             Theable {
