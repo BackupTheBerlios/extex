@@ -160,14 +160,15 @@
   <!-- ==================================================================== -->
   <target name="jar"
           depends="compile"
-          description="Create ExTeX jar file containing all compiled classes except test cases.">
-    <!-- make a jar from the classes not matching magic testcase identifiers-->
+          description="Create the ExTeX jar file containing all compiled classes
+                       except test cases.">
     <mkdir dir="${target.lib}" />
+    <!-- make a jar from the classes not matching magic testcase identifiers-->
     <jar jarfile="${target.lib}/${extexjarfile}.jar">
       <fileset dir="${classes}">
         <patternset>
           <exclude name="**/*Test.class" />
-          <exclude name="**/AllTests.class" />
+          <exclude name="**/*Tests.class" />
         </patternset>
       </fileset>
       <fileset dir=".">
@@ -196,7 +197,6 @@
       </fileset>
       <manifest>
         <attribute name="Built-By" value="${user.name}" />
-        <!-- attribute name="Main-Class" value="de.dante.extex.ExTeX"/ -->
       </manifest>
     </jar>
   </target>
