@@ -35,7 +35,7 @@ import com.ibm.icu.text.UTF16;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
 public class UnicodeChar implements Serializable {
 
@@ -48,14 +48,6 @@ public class UnicodeChar implements Serializable {
      * The field <tt>cache</tt> contains the cache for Unicode characters.
      */
     private static UnicodeChar[] cache = new UnicodeChar[CACHE_SIZE];
-
-    /**
-     * The constant <tt>NULL</tt> contains the Unicode character with an invalid
-     * code point 0.
-     *
-     * @deprecated use null instead
-     */
-    public static final UnicodeChar NULL = null;
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
@@ -95,7 +87,8 @@ public class UnicodeChar implements Serializable {
      */
     public static UnicodeChar get(final String unicodeName) {
 
-        return get(UCharacter.getCharFromName(unicodeName));
+        int c = UCharacter.getCharFromName(unicodeName);
+        return (c >= 0 ? get(c) : null);
     }
 
     /**
