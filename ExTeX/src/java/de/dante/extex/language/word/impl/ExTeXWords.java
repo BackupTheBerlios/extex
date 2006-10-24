@@ -21,6 +21,8 @@ package de.dante.extex.language.word.impl;
 
 import de.dante.extex.font.Glyph;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
+import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.language.Language;
 import de.dante.extex.language.hyphenation.exception.HyphenationException;
 import de.dante.extex.language.ligature.LigatureBuilder;
@@ -44,7 +46,7 @@ import de.dante.util.UnicodeCharList;
  * <logo>ExTeX</logo>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class ExTeXWords implements WordTokenizer {
 
@@ -288,8 +290,10 @@ public class ExTeXWords implements WordTokenizer {
             if (spec[si]) {
 
                 if (prev instanceof CharNode) {
-                    Glyph g = ((CharNode) prev).getGlyph();
-                    UnicodeChar lig = g.getLigature(hyphen);
+                    CharNode charNode = (CharNode) prev;
+                    Font font = charNode.getTypesettingContext().getFont();
+                    UnicodeChar c = charNode.getCharacter();
+                    UnicodeChar lig = font.getLigature(c, hyphen);
                     if (lig != null) {
                         nodes.remove(insertion--);
                         post = new HorizontalListNode(new LigatureNode(
@@ -297,7 +301,7 @@ public class ExTeXWords implements WordTokenizer {
                                 (CharNode) prev, (CharNode) hyphenNode));
                         nobreak.add(prev);
                     } else {
-                        Dimen kern = g.getKerning(hyphen);
+                        FixedDimen kern = font.getKerning(c, hyphen);
                         if (kern != null && kern.ne(Dimen.ZERO_PT)) {
                             post = new HorizontalListNode(new ImplicitKernNode(
                                     kern, true));

@@ -38,7 +38,7 @@ import de.dante.util.UnicodeChar;
  * font.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class LigatureBuilderImpl implements LigatureBuilder {
 
@@ -81,43 +81,41 @@ public class LigatureBuilderImpl implements LigatureBuilder {
         if (i >= list.size()) {
             return i;
         }
-        CharNode charNode = (CharNode) list.get(i);
-        TypesettingContext typesettingContext = charNode
-                .getTypesettingContext();
-        Font font = typesettingContext.getFont();
+        CharNode lastNode = (CharNode) list.get(i);
+        TypesettingContext lastTc = lastNode.getTypesettingContext();
+        Font font = lastTc.getFont();
+        UnicodeChar lastC = lastNode.getCharacter();
 
         while (++i < list.size()) {
-            Node ni = list.get(i);
-            if (!(ni instanceof CharNode)) {
-                return i;
-            }
-            CharNode cni = (CharNode) ni;
-            if (cni.getTypesettingContext() != typesettingContext) {
-                return i;
-            }
 
-            if (!font.hasGlyph(charNode.getCharacter())) {
-                // undefined character
+            Node node = list.get(i);
+            if (!(node instanceof CharNode)) {
+                return i;
+            }
+            CharNode thisNode = (CharNode) node;
+            if (thisNode.getTypesettingContext() != lastTc) {
+                return i;
+            }
+            UnicodeChar thisC = thisNode.getCharacter();
+
+            UnicodeChar lig = font.getLigature(lastC, thisC);
+            if (lig != null) {
+                list.remove(i--);
+                list.remove(i);
+                lastNode = new LigatureNode(lastTc, lig, lastNode, thisNode);
+                list.add(i--, lastNode);
+                lastC = lig;
             } else {
-                UnicodeChar lig = font.getLigature(charNode.getCharacter(), cni
-                        .getCharacter());
-                if (lig != null) {
-                    list.remove(i--);
-                    list.remove(i);
-                    charNode = new LigatureNode(typesettingContext, lig,
-                            charNode, cni);
-                    list.add(i--, charNode);
-                } else {
-                    FixedDimen kern = font.getKerning(charNode.getCharacter(),
-                            cni.getCharacter());
-                    if (kern != null && kern.ne(Dimen.ZERO)) {
-                        list.add(i, new ImplicitKernNode(kern, true));
-                        i++;
-                    }
-                    charNode = cni;
+                FixedDimen kern = font.getKerning(lastC, thisC);
+                if (kern != null && kern.ne(Dimen.ZERO)) {
+                    list.add(i, new ImplicitKernNode(kern, true));
+                    i++;
                 }
+                lastNode = thisNode;
+                lastC = thisC;
             }
         }
+
         return i;
     }
 

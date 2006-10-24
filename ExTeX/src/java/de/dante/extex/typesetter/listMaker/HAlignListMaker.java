@@ -49,7 +49,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [770]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class HAlignListMaker extends RestrictedHorizontalListMaker
         implements
@@ -59,7 +59,7 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
      * This inner class is a container for the cell information in an alignment.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.21 $
+     * @version $Revision: 1.22 $
      */
     protected class Cell {
 
@@ -228,7 +228,12 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
                 Cell cell = line[i];
                 if (cell != null) {
                     nl = cell.getList();
-                    nl.spreadWidth(maxWidth[i], maxWidth[i]); //TODO gene: check
+                    if (nl instanceof HorizontalListNode) {
+                        ((HorizontalListNode) nl).hpack(new Dimen(maxWidth[i])); //TODO gene: check
+                    } else {
+                        //TODO gene: unimplemented
+                        throw new RuntimeException("unimplemented");
+                    }
                     row.add(nl);
                 }
             }

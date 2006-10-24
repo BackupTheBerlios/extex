@@ -59,7 +59,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.37 $
+ * @version $Revision: 1.38 $
  */
 public class HorizontalListMaker extends AbstractListMaker {
 
@@ -272,13 +272,14 @@ public class HorizontalListMaker extends AbstractListMaker {
                 CharNode cn = ((CharNode) n);
                 Font f = tc.getFont();
                 if (cn.getTypesettingContext().getFont().equals(f)) {
-                    UnicodeChar lig = tc.getLanguage().getLigature(
-                            cn.getCharacter(), symbol, f);
+                    UnicodeChar cnc = cn.getCharacter();
+                    UnicodeChar lig = tc.getLanguage().getLigature(cnc, symbol,
+                            f);
                     if (lig != null) {
                         nodes.remove(size - 1);
                         c = lig;
                     } else {
-                        FixedDimen kerning = f.getKerning(c, symbol);
+                        FixedDimen kerning = f.getKerning(cnc, symbol);
                         if (kerning != null && kerning.ne(Dimen.ZERO_PT)) {
                             nodes.add(new ImplicitKernNode(kerning, true));
                         }

@@ -31,7 +31,6 @@ import de.dante.extex.language.hyphenation.exception.HyphenationException;
 import de.dante.extex.language.ligature.LigatureBuilder;
 import de.dante.extex.language.word.WordTokenizer;
 import de.dante.extex.typesetter.TypesetterOptions;
-import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.node.CharNode;
 import de.dante.extex.typesetter.type.node.factory.NodeFactory;
@@ -45,7 +44,7 @@ import de.dante.util.framework.Registrar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class BaseHyphenationTable implements ModifiableLanguage, Serializable {
 
@@ -227,8 +226,8 @@ public class BaseHyphenationTable implements ModifiableLanguage, Serializable {
                 || wordTokenizer == null) {
             return false;
         }
-        Node hn = nodeFactory.getNode(context.getTypesettingContext(), hyphen);
-        CharNode hyphenNode = (CharNode) hn;
+        CharNode hyphenNode = (CharNode) (nodeFactory.getNode(context
+                .getTypesettingContext(), hyphen));
 
         boolean modified = false;
         UnicodeCharList word = new UnicodeCharList();
