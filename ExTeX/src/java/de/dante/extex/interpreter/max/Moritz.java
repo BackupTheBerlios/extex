@@ -31,10 +31,10 @@ import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.IllegalRegisterException;
 import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.exception.helping.BadCharacterException;
 import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.exception.helping.EofInToksException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
-import de.dante.extex.interpreter.exception.helping.InvalidCharacterException;
 import de.dante.extex.interpreter.exception.helping.InvalidCharacterNameException;
 import de.dante.extex.interpreter.exception.helping.MissingLeftBraceException;
 import de.dante.extex.interpreter.exception.helping.MissingNumberException;
@@ -103,11 +103,11 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </p>
  *
  *
- * <doc name="maxRegister">
+ * <doc name="maxRegister" type="register">
  * <h3>The Integer Register <tt>\maxRegister</tt></h3>
  * <p>
  *  The integer register <tt>\maxRegister</tt> controls the scanning of
- *  register names. The following interpretation for the values is given:
+ *  register names. The following interpretation for the values is used:
  * </p>
  * <ul>
  *  <li>
@@ -130,7 +130,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </p>
  * <p>
  *  The primitive <tt>\maxRegister</tt> is usually defined in the name space
- *  <tt>system</tt> thus you have to take special means to access it. 
+ *  <tt>system</tt> thus you have to take special means to access it.
  * </p>
  *
  * <h4>Examples</h4>
@@ -143,7 +143,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.105 $
+ * @version $Revision: 1.106 $
  */
 public class Moritz extends Max
         implements
@@ -196,7 +196,7 @@ public class Moritz extends Max
     /**
      * The field <tt>maxRegister</tt> contains the indicator for the max
      * register value. Positive values are interpreted literally. Negative
-     * values have a speacial meaning indicating that arbitrary token lists
+     * values have a special meaning indicating that arbitrary token lists
      * are allowed in addition to arbitrary numbers.
      */
     private IntegerCode maxRegister = new IntegerCode("maxRegister", 255);
@@ -1053,7 +1053,7 @@ public class Moritz extends Max
             cc = Count.scanInteger(context, this, typesetter);
 
             if (cc < 0 || cc > MAX_CHAR_CODE) {
-                throw new InvalidCharacterException(Long.toString(cc));
+                throw new BadCharacterException(cc);
             }
         }
 
@@ -1129,9 +1129,10 @@ public class Moritz extends Max
             return scanTokensAsString(context, primitive);
         }
 
-        long registerNumber = Count.scanNumber(context, source, typesetter,
-                token);
-        if (maxRegisterValue >= 0 && registerNumber > maxRegisterValue) {
+        source.push(token);
+        long registerNumber = Count.scanInteger(context, source, typesetter);
+        if (registerNumber < 0
+                || (maxRegisterValue >= 0 && registerNumber > maxRegisterValue)) {
             throw new IllegalRegisterException(Long.toString(registerNumber));
         }
         return Long.toString(registerNumber);
