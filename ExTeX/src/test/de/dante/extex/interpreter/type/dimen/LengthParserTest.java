@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the for the parser of data type Dimen.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class LengthParserTest extends ExTeXLauncher {
 
@@ -125,7 +125,7 @@ public class LengthParserTest extends ExTeXLauncher {
 
         assertSuccess(//
                 "\\dimen1=1.23pt"
-                + "\\dimen0=\\dimen1"
+                + "\\dimen0=\\dimen1 "
                 + "\\the\\dimen0\\end",
                 //
                 "1.23pt" + TERM);
@@ -142,7 +142,7 @@ public class LengthParserTest extends ExTeXLauncher {
 
         assertSuccess(//
                 "\\dimen1=1.23pt"
-                + "\\dimen0=-\\dimen1"
+                + "\\dimen0=-\\dimen1 "
                 + "\\the\\dimen0\\end",
                 //
                 "-1.23pt" + TERM);
@@ -159,7 +159,7 @@ public class LengthParserTest extends ExTeXLauncher {
 
         assertSuccess(//
                 "\\dimen1=1.23pt"
-                + "\\dimen0=--\\dimen1"
+                + "\\dimen0=--\\dimen1 "
                 + "\\the\\dimen0\\end",
                 //
                 "1.23pt" + TERM);

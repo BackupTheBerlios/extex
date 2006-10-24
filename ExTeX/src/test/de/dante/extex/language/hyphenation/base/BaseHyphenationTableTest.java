@@ -37,7 +37,6 @@ import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.language.Language;
 import de.dante.extex.language.word.impl.TeXWords;
-import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.type.node.CharNode;
 import de.dante.extex.typesetter.type.node.DiscretionaryNode;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
@@ -46,12 +45,13 @@ import de.dante.extex.typesetter.type.node.factory.CachingNodeFactory;
 import de.dante.extex.typesetter.type.node.factory.NodeFactory;
 import de.dante.util.UnicodeChar;
 import de.dante.util.UnicodeCharList;
+import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * Test suite for the base hyphenation table.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class BaseHyphenationTableTest extends TestCase {
 
@@ -59,7 +59,7 @@ public class BaseHyphenationTableTest extends TestCase {
      * Mock implementation of a font.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.7 $
+     * @version $Revision: 1.8 $
      */
     private class MockFont extends NullFont {
 
@@ -103,6 +103,15 @@ public class BaseHyphenationTableTest extends TestCase {
         public FixedDimen getDesignSize() {
 
             return Dimen.ONE_INCH;
+        }
+
+        /**
+         * @see de.dante.extex.interpreter.type.font.Font#getEfcode()
+         */
+        public long getEfcode(UnicodeChar uc) {
+
+            // TODO gene: getEfcode unimplemented
+            return 0;
         }
 
         /**
@@ -205,6 +214,23 @@ public class BaseHyphenationTableTest extends TestCase {
         }
 
         /**
+         * @see de.dante.extex.font.type.other.NullFont#hasGlyph(de.dante.util.UnicodeChar)
+         */
+        public boolean hasGlyph(final UnicodeChar uc) {
+
+            return true;
+        }
+
+        /**
+         * @see de.dante.extex.interpreter.type.font.Font#setEfcode(de.dante.util.UnicodeChar, long)
+         */
+        public void setEfcode(final UnicodeChar uc, final long code) {
+
+            // TODO gene: setEfcode unimplemented
+            
+        }
+
+        /**
          * @see de.dante.extex.interpreter.type.font.Font#setFontDimen(
          *      java.lang.String, de.dante.extex.interpreter.type.dimen.Dimen)
          */
@@ -229,31 +255,13 @@ public class BaseHyphenationTableTest extends TestCase {
 
         }
 
-        /**
-         * @see de.dante.extex.interpreter.type.font.Font#setEfcode(de.dante.util.UnicodeChar, long)
-         */
-        public void setEfcode(UnicodeChar uc, long code) {
-
-            // TODO gene: setEfcode unimplemented
-            
-        }
-
-        /**
-         * @see de.dante.extex.interpreter.type.font.Font#getEfcode()
-         */
-        public long getEfcode(UnicodeChar uc) {
-
-            // TODO gene: getEfcode unimplemented
-            return 0;
-        }
-
     }
 
     /**
      * This is a mock implementation of a glyph.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.7 $
+     * @version $Revision: 1.8 $
      */
     private class MockGlyph implements Glyph {
 
@@ -403,7 +411,7 @@ public class BaseHyphenationTableTest extends TestCase {
      * This mock implementation is for test purposes only.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.7 $
+     * @version $Revision: 1.8 $
      */
     private class MyMockContext extends MockContext {
 
@@ -412,6 +420,19 @@ public class BaseHyphenationTableTest extends TestCase {
          * serialization.
          */
         private static final long serialVersionUID = 1L;
+
+        /**
+         * Creates a new object.
+         */
+        protected MyMockContext() {
+
+            super();
+            try {
+                set(new MockFont(), true);
+            } catch (ConfigurationException e) {
+                throw new RuntimeException(e);
+            }
+        }
 
         /**
          * @see de.dante.extex.interpreter.context.Context#getLccode(
@@ -424,12 +445,7 @@ public class BaseHyphenationTableTest extends TestCase {
     }
 
     /**
-     * The field <tt>nodeFactory</tt> contains the node factory.
-     */
-    private NodeFactory nodeFactory = new CachingNodeFactory();
-
-    /**
-     * The field <tt>HYPHEN</tt> contains the yphen character.
+     * The field <tt>HYPHEN</tt> contains the hyphen character.
      */
     private static final UnicodeChar HYPHEN = UnicodeChar.get('-');
 
@@ -444,14 +460,39 @@ public class BaseHyphenationTableTest extends TestCase {
     }
 
     /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param s ...
+     *
+     * @return ...
+     */
+    private static UnicodeCharList makeList(final CharSequence s) {
+
+        UnicodeCharList list = new UnicodeCharList();
+        for (int i = 0; i < s.length(); i++) {
+            int c = s.charAt(i);
+            if (c == '-') {
+                c = 0xad;
+            }
+            list.add(UnicodeChar.get(c));
+        }
+        return list;
+    }
+
+    /**
      * The field <tt>context</tt> contains the mock context for the tests.
      */
-    private TypesetterOptions context;
+    private MockContext context;
 
     /**
      * The field <tt>language</tt> contains the language.
      */
     private Language language;
+
+    /**
+     * The field <tt>nodeFactory</tt> contains the node factory.
+     */
+    private NodeFactory nodeFactory = new CachingNodeFactory();
 
     /**
      * Create a hlist from a string.
@@ -499,26 +540,9 @@ public class BaseHyphenationTableTest extends TestCase {
     }
 
     /**
-     * TODO gene: missing JavaDoc
-     *
-     * @param s ...
-     * @return ...
-     */
-    private UnicodeCharList makeList(final CharSequence s) {
-
-        UnicodeCharList list = new UnicodeCharList();
-        for (int i = 0; i < s.length(); i++) {
-            int c = s.charAt(i);
-            if (c == '-') {
-                c = 0xad;
-            }
-            list.add(UnicodeChar.get(c));
-        }
-        return list;
-    }
-
-    /**
-     * TODO gene: missing JavaDoc
+     * <testcase>
+     *  Test case checking that ...
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -530,7 +554,9 @@ public class BaseHyphenationTableTest extends TestCase {
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * <testcase>
+     *  Test case checking that ...
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -542,7 +568,9 @@ public class BaseHyphenationTableTest extends TestCase {
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * <testcase>
+     *  Test case checking that ...
+     * </testcase>
      *
      * @throws Exception in case of an error
      */
@@ -555,7 +583,10 @@ public class BaseHyphenationTableTest extends TestCase {
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * <testcase>
+     *  Test case checking that ...
+     * </testcase>
+     *
      *
      * @throws Exception in case of an error
      */
@@ -567,7 +598,10 @@ public class BaseHyphenationTableTest extends TestCase {
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * <testcase>
+     *  Test case checking that ...
+     * </testcase>
+     *
      *
      * @throws Exception in case of an error
      */
@@ -576,8 +610,8 @@ public class BaseHyphenationTableTest extends TestCase {
         HorizontalListNode nodes = hlist("def");
         language.hyphenate(nodes, context, HYPHEN, 0, true, nodeFactory);
         assertEquals(5, nodes.size());
-        assertTrue(nodes.get(1) instanceof DiscretionaryNode);
-        assertTrue(nodes.get(3) instanceof DiscretionaryNode);
+        assertTrue("xxx", nodes.get(1) instanceof DiscretionaryNode);
+        assertTrue("yyy", nodes.get(3) instanceof DiscretionaryNode);
     }
 
 }

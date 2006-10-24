@@ -25,7 +25,7 @@ import de.dante.extex.interpreter.primitives.register.count.AbstractReadonlyCoun
  * This is a test suite for the primitive <tt>\lastpenalty</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class LastpenaltyTest extends AbstractReadonlyCountRegisterTester {
 
@@ -59,7 +59,7 @@ public class LastpenaltyTest extends AbstractReadonlyCountRegisterTester {
 
         assertOutput(
         //--- input code ---
-                "a\\penalty123\\showthe\\lastpenalty\\end",
+                "a\\penalty123 \\showthe\\lastpenalty\\end",
                 //--- output channel ---
                 "> 123.\n",
                 //
@@ -113,7 +113,7 @@ public class LastpenaltyTest extends AbstractReadonlyCountRegisterTester {
 
         assertOutput(
         //--- input code ---
-                "a\\penalty123\\count0=\\lastpenalty x\\showthe\\count0\\end",
+                "a\\penalty123 \\count0=\\lastpenalty x\\showthe\\count0\\end",
                 //--- output channel ---
                 "> 123.\n",
                 //

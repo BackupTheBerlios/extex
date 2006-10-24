@@ -50,7 +50,7 @@ import de.dante.util.UnicodeChar;
  * This is a test suite for the <tt>LigatureBuilderImpl</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class LigatureBuilderImplTest extends TestCase {
 
@@ -58,7 +58,7 @@ public class LigatureBuilderImplTest extends TestCase {
      * This class provides a mock implementation for a font.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.11 $
+     * @version $Revision: 1.12 $
      */
     private class MockFont extends NullFont {
 
@@ -111,13 +111,46 @@ public class LigatureBuilderImplTest extends TestCase {
             }
             return g;
         }
+
+        /**
+         * @see de.dante.extex.font.type.other.NullFont#hasGlyph(de.dante.util.UnicodeChar)
+         */
+        public boolean hasGlyph(final UnicodeChar uc) {
+
+            return getGlyph(uc) != null;
+        }
+
+        /**
+         * @see de.dante.extex.font.type.other.NullFont#getLigature(de.dante.util.UnicodeChar, de.dante.util.UnicodeChar)
+         */
+        public UnicodeChar getLigature(final UnicodeChar uc1,
+                final UnicodeChar uc2) {
+
+            switch (uc1.getCodePoint()) {
+                case 'f':
+                    if (uc2.getCodePoint() == 'f') {
+                        return UnicodeChar.get(CC_FF);
+                    } else if (uc2.getCodePoint() == 'l') {
+                        return UnicodeChar.get(CC_FL);
+                    }
+                    break;
+                case CC_FF:
+                    if (uc2.getCodePoint() == 'l') {
+                        return UnicodeChar.get(CC_FFL);
+                    }
+                    break;
+            }
+
+            return null;
+        }
+
     }
 
     /**
      * This class provides a mock implementation for a glyph.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.11 $
+     * @version $Revision: 1.12 $
      */
     private class MockGlyph implements Glyph {
 

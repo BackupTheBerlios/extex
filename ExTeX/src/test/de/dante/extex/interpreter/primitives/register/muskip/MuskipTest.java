@@ -23,7 +23,7 @@ package de.dante.extex.interpreter.primitives.register.muskip;
  * This is a test suite for the primitive <tt>\muskip</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class MuskipTest extends AbstractMuskipRegisterTester {
 
@@ -192,7 +192,7 @@ public class MuskipTest extends AbstractMuskipRegisterTester {
         assertSuccess(//--- input code ---
                 "\\muskip0=1mu"
                 + "\\muskip1=2mu"
-                + "\\advance\\muskip1\\muskip0"
+                + "\\advance\\muskip1\\muskip0 "
                 + "\\the\\muskip1\\end",
                 //--- log message ---
                 "3.0mu" + TERM);
@@ -209,7 +209,7 @@ public class MuskipTest extends AbstractMuskipRegisterTester {
 
         assertSuccess(//--- input code ---
                 "\\muskip1=2mu"
-                + "\\divide\\muskip1 2"
+                + "\\divide\\muskip1 2 "
                 + "\\the\\muskip1\\end",
                 //--- log message ---
                 "1.0mu" + TERM);
@@ -226,7 +226,7 @@ public class MuskipTest extends AbstractMuskipRegisterTester {
 
         assertSuccess(//--- input code ---
                 "\\muskip1=2mu"
-                + "\\multiply\\muskip1 2"
+                + "\\multiply\\muskip1 2 "
                 + "\\the\\muskip1\\end",
                 //--- log message ---
                 "4.0mu" + TERM);
