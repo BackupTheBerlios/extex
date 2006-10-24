@@ -40,7 +40,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class Tokens implements Serializable, FixedTokens {
 
@@ -92,11 +92,11 @@ public class Tokens implements Serializable, FixedTokens {
      * are converted into a <code>SpaceToken</code>.
      *
      * @param context the interpreter context
-     * @param s the <code>String</code> to add
+     * @param s the characters to add in a CharSequence
      *
      * @throws InterpreterException in case of an error
      */
-    public Tokens(final Context context, final String s)
+    public Tokens(final Context context, final CharSequence s)
             throws InterpreterException {
 
         this();
@@ -136,11 +136,11 @@ public class Tokens implements Serializable, FixedTokens {
      * have the catcode SPACE.
      *
      * @param factory the TokenFactory to acquire new Tokens from
-     * @param s the String to add
+     * @param s the characters to add in a CharSequence
      *
      * @throws CatcodeException in case of an error
      */
-    public void add(final TokenFactory factory, final String s)
+    public void add(final TokenFactory factory, final CharSequence s)
             throws CatcodeException {
 
         if (s == null) {
