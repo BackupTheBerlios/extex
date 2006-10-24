@@ -18,13 +18,13 @@
      <a href="&top;documentation/man/extex-users.pdf">User's Guide (PDF)</a><br />
      <a href="&top;documentation/man/extex-developers.pdf">Developer's Guide (PDF)</a><br />
      <a href="&top;documentation/faq.html">FAQ</a><br />
-     <a href="http://comedy.dante.de/~gene/javadoc/">Javadoc (Snapshot)</a><br />
+     <a href="&top;snapshot/javadoc/">Javadoc (Snapshot)</a><br />
     </div>
  
     <a href="&top;sources/index.html">Download</a><br />
     <div class="navitems">
      <i>Current Stable Release</i><br />
-     <a href="http://comedy.dante.de/~gene/snapshot/ExTeX-setup.jar">Installer (Snapshot)</a><br />
+     <a href="&top;snapshot/ExTeX-setup.jar">Installer (Snapshot)</a><br />
      <a href="&top;sources/repository.html">Repository (CVS)</a><br />
     </div>
    </div>
