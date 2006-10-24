@@ -21,6 +21,6 @@
 <Context default="ExTeX">
   <ExTeX class="de.dante.extex.interpreter.context.impl.ContextImpl">
     <Group class="de.dante.extex.interpreter.context.impl.GroupImpl"/>
-    <TypesettingContext class="de.dante.extex.interpreter.context.TypesettingContextImpl"/>
+    <TypesettingContext class="de.dante.extex.interpreter.context.tc.TypesettingContextImpl"/>
   </ExTeX>
 </Context>
