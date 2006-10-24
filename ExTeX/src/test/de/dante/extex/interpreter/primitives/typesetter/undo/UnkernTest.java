@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>&#x5c;unkern</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class UnkernTest extends NoFlagsPrimitiveTester {
 
@@ -97,8 +97,8 @@ public class UnkernTest extends NoFlagsPrimitiveTester {
                 "a\\unkern\\end ",
                 //--- output channel ---
                 "" + //
-                        "\\vbox(1.0pt+1.0pt)x0.0pt\n" + //
-                        ".\\hbox(1.0pt+1.0pt)x0.0pt\n" + //
+                        "\\vbox(8.0pt+0.0pt)x3000.0pt\n" + //
+                        ".\\hbox(8.0pt+0.0pt)x3000.0pt\n" + //
                         "..a\n");
     }
 
@@ -117,8 +117,8 @@ public class UnkernTest extends NoFlagsPrimitiveTester {
                 "a\\kern1pt\\unkern\\end ",
                 //--- output channel ---
                 "" + //
-                        "\\vbox(1.0pt+1.0pt)x0.0pt\n" + //
-                        ".\\hbox(1.0pt+1.0pt)x0.0pt\n" + //
+                        "\\vbox(8.0pt+0.0pt)x3000.0pt\n" + //
+                        ".\\hbox(8.0pt+0.0pt)x3000.0pt\n" + //
                         "..a\n");
     }
 

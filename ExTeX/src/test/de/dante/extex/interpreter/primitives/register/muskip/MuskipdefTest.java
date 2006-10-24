@@ -23,7 +23,7 @@ package de.dante.extex.interpreter.primitives.register.muskip;
  * This is a test suite for the primitive <tt>\muskipdef</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class MuskipdefTest extends AbstractMuskipRegisterTester {
 
@@ -76,7 +76,7 @@ public class MuskipdefTest extends AbstractMuskipRegisterTester {
         assertFailure(//--- input code ---
                 "\\begingroup\\muskipdef\\x=42 \\endgroup" + "\\the\\x \\end",
                 //--- error channel ---
-                "You can't use `the control sequence \\x' after \\the");
+                "Undefined control sequence \\x");
     }
 
     /**

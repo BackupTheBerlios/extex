@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -23,7 +23,7 @@ package de.dante.extex.interpreter.primitives.typesetter.spacing;
  * This is a test suite for the primitive <tt>\hfi</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class HfiTest extends AbstractHfillTester {
 
@@ -44,12 +44,13 @@ public class HfiTest extends AbstractHfillTester {
     public HfiTest(final String arg) {
 
         super(arg, "hfi", "");
+        setConfig("omega");
     }
 
     /**
      * <testcase primitive="\hfi">
-     *  Test case checking that <tt>\hfi</tt> switches to vertical mode and
-     *  inserts a glue node with 1fi.
+     *  Test case checking that <tt>\hfi</tt> is ignored at the beginning
+     *  of a paragraph.
      * </testcase>
      *
      * @throws Exception in case of an error
@@ -60,9 +61,7 @@ public class HfiTest extends AbstractHfillTester {
         //--- input code ---
                 "\\hfi\\end ",
                 //--- output channel ---
-                "\\vbox(0.0pt+0.0pt)x0.0pt\n" + //
-                ".\\hbox(0.0pt+0.0pt)x0.0pt\n" + //
-                "..\\glue0.0pt plus 1.0fi\n");
+                "");
     }
 
 }

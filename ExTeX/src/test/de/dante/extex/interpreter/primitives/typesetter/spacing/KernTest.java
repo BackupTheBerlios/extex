@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\kern</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class KernTest extends NoFlagsPrimitiveTester {
 
@@ -70,13 +70,14 @@ public class KernTest extends NoFlagsPrimitiveTester {
 
         assertSuccess(showNodesProperties(),
                 //--- input code ---
-                "x\\kern 123pt"
+                "x\\kern 123ptx"
                 + "\\end ",
                 //--- output channel ---
-                "\\vbox(1.0pt+1.0pt)x124.0pt\n"
-                + ".\\hbox(1.0pt+1.0pt)x124.0pt\n"
+                "\\vbox(8.0pt+0.0pt)x3000.0pt\n"
+                + ".\\hbox(8.0pt+0.0pt)x3000.0pt\n"
                 + "..x\n"
-                + "..\\kern123.0pt\n");
+                + "..\\kern123.0pt\n"
+                + "..x\n");
     }
 
     //TODO implement primitive specific test cases

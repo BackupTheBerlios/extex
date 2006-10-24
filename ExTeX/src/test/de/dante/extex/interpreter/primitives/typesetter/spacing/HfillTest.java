@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -23,7 +23,7 @@ package de.dante.extex.interpreter.primitives.typesetter.spacing;
  * This is a test suite for the primitive <tt>\hfill</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class HfillTest extends AbstractHfillTester {
 
@@ -48,8 +48,8 @@ public class HfillTest extends AbstractHfillTester {
 
     /**
      * <testcase primitive="\hfill">
-     *  Test case checking that <tt>\hfill</tt> switches to vertical mode and
-     *  inserts a glue node with 1fill.
+     *  Test case checking that <tt>\hfill</tt> is ignored at the beginning of
+     *  a paragraph.
      * </testcase>
      *
      * @throws Exception in case of an error
@@ -60,9 +60,7 @@ public class HfillTest extends AbstractHfillTester {
         //--- input code ---
                 "\\hfill\\end ",
                 //--- output channel ---
-                "\\vbox(0.0pt+0.0pt)x0.0pt\n" + //
-                ".\\hbox(0.0pt+0.0pt)x0.0pt\n" + //
-                "..\\glue0.0pt plus 1.0fill\n");
+                "");
     }
 
     /**
@@ -79,10 +77,10 @@ public class HfillTest extends AbstractHfillTester {
         //--- input code ---
                 "\\font\\f cmr10 \\f\\hsize=100pt x\\hfill x\\end ",
                 //--- output channel ---
-                "\\vbox(0.0pt+0.0pt)x0.0pt\n" + //
-                ".\\hbox(0.0pt+0.0pt)x0.0pt\n" + //
+                "\\vbox(4.30554pt+0.0pt)x100.0pt\n" + //
+                ".\\hbox(4.30554pt+0.0pt)x100.0pt\n" + //
                 "..x\n" + //
-                "..\\rule0.0pt plus 1.0fill\n" + //
+                "..\\glue0.0pt plus 1.0fill\n" + //
                 "..x\n");
     }
 

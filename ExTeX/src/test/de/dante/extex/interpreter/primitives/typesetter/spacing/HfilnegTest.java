@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -24,7 +24,7 @@ package de.dante.extex.interpreter.primitives.typesetter.spacing;
  * This is a test suite for the primitive <tt>\hfilneg</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class HfilnegTest extends AbstractHfillTester {
 
@@ -49,8 +49,8 @@ public class HfilnegTest extends AbstractHfillTester {
 
     /**
      * <testcase primitive="\hfilneg">
-     *  Test case checking that <tt>\hfilneg</tt> switches to vertical mode and
-     *  inserts a glue node with -1fil.
+     *  Test case checking that <tt>\hfilneg</tt> is ignored at the beginning
+     *  of a paragraph.
      * </testcase>
      *
      * @throws Exception in case of an error
@@ -61,9 +61,7 @@ public class HfilnegTest extends AbstractHfillTester {
         //--- input code ---
                 "\\hfilneg\\end ",
                 //--- output channel ---
-                "\\vbox(0.0pt+0.0pt)x0.0pt\n" + //
-                ".\\hbox(0.0pt+0.0pt)x0.0pt\n" + //
-                "..\\glue0.0pt plus -1.0fil\n");
+                "");
     }
 
 }

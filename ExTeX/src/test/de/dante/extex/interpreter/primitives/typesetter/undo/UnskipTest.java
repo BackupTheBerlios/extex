@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>&#x5c;unskip</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class UnskipTest extends NoFlagsPrimitiveTester {
 
@@ -114,8 +114,8 @@ public class UnskipTest extends NoFlagsPrimitiveTester {
                 "a\\unskip\\end ",
                 //--- output channel ---
                 "" + //
-                        "\\vbox(1.0pt+1.0pt)x0.0pt\n" + //
-                        ".\\hbox(1.0pt+1.0pt)x0.0pt\n" + //
+                        "\\vbox(8.0pt+0.0pt)x3000.0pt\n" + //
+                        ".\\hbox(8.0pt+0.0pt)x3000.0pt\n" + //
                         "..a\n");
     }
 
@@ -134,8 +134,8 @@ public class UnskipTest extends NoFlagsPrimitiveTester {
                 "a\\hfill\\unskip\\end ",
                 //--- output channel ---
                 "" + //
-                        "\\vbox(1.0pt+1.0pt)x0.0pt\n" + //
-                        ".\\hbox(1.0pt+1.0pt)x0.0pt\n" + //
+                        "\\vbox(8.0pt+0.0pt)x3000.0pt\n" + //
+                        ".\\hbox(8.0pt+0.0pt)x3000.0pt\n" + //
                         "..a\n");
     }
 

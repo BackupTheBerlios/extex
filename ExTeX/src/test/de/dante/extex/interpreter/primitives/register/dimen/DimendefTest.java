@@ -23,7 +23,7 @@ package de.dante.extex.interpreter.primitives.register.dimen;
  * This is a test suite for the primitive <tt>\dimendef</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class DimendefTest extends AbstractDimenRegisterTester {
 
@@ -75,7 +75,7 @@ public class DimendefTest extends AbstractDimenRegisterTester {
         assertFailure(//--- input code ---
                 "\\begingroup\\dimendef\\x=42 \\endgroup" + "\\the\\x \\end",
                 //--- error channel ---
-                "You can't use `the control sequence \\x' after \\the");
+                "Undefined control sequence \\x");
     }
 
     /**
