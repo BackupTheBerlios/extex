@@ -1,7 +1,27 @@
+/*
+ * Copyright (C) 2006 The ExTeX Group and individual authors listed below
+ *
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 2.1 of the License, or (at your
+ * option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation,
+ * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ *
+ */
 
 package de.dante.test.font;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 import de.dante.extex.font.FontByteArray;
 import de.dante.extex.font.FountKey;
@@ -17,30 +37,32 @@ import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.util.UnicodeChar;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This class provides a memory-only font for test cases. Since no external file
+ * is required no problem with parsing can happen.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class LauncherFont implements Font, Serializable {
 
     /**
-     * TODO gene: missing JavaDoc.
+     * This inner class contains the glyph definition for the launcher font.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.3 $
+     * @version $Revision: 1.4 $
      */
     final class LauncherGlyph implements Glyph, Serializable {
 
         /**
-         * The field <tt>serialVersionUID</tt> contains the ...
+         * The field <tt>serialVersionUID</tt> contains the version number for
+         * serialization.
          */
-        private static final long serialVersionUID = 1L;
+        protected static final long serialVersionUID = 1L;
 
         /**
-         * The field <tt>c</tt> contains the ...
+         * The field <tt>c</tt> contains the character associated with this glyph.
          */
-        final UnicodeChar c;
+        private final UnicodeChar c;
 
         /**
          * Creates a new object.
@@ -53,42 +75,73 @@ public class LauncherFont implements Font, Serializable {
             this.c = c;
         }
 
+        /**
+         * @see de.dante.extex.font.Glyph#addKerning(de.dante.extex.font.Kerning)
+         */
         public void addKerning(final Kerning kern) {
 
         }
 
+        /**
+         * @see de.dante.extex.font.Glyph#addLigature(de.dante.extex.font.Ligature)
+         */
         public void addLigature(final Ligature lig) {
 
         }
 
         /**
-         * TODO gene: missing JavaDoc
-         *
-         * @return
+         * @see de.dante.extex.font.Glyph#getDepth()
          */
         public Dimen getDepth() {
 
-            return Dimen.ONE_PT;
+            switch (c.getCodePoint()) {
+                case 'q':
+                case 'p':
+                case 'g':
+                case 'j':
+                case 'y':
+                    return new Dimen(Dimen.ONE * 2);
+                case ',':
+                case ';':
+                case '/':
+                case '(':
+                case ')':
+                    return new Dimen(Dimen.ONE);
+                default:
+                    return Dimen.ZERO_PT;
+            }
         }
 
+        /**
+         * @see de.dante.extex.font.Glyph#getExternalFile()
+         */
         public FontByteArray getExternalFile() {
 
             return null;
         }
 
+        /**
+         * @see de.dante.extex.font.Glyph#getHeight()
+         */
         public Dimen getHeight() {
 
-            return Dimen.ONE_PT;
+            return new Dimen(Dimen.ONE * 8);
         }
 
+        /**
+         * @see de.dante.extex.font.Glyph#getItalicCorrection()
+         */
         public Dimen getItalicCorrection() {
 
-            return Dimen.ZERO_PT;
+            return new Dimen(Dimen.ZERO_PT);
         }
 
+        /**
+         * @see de.dante.extex.font.Glyph#getKerning(de.dante.util.UnicodeChar)
+         */
         public Dimen getKerning(final UnicodeChar uc) {
 
-            return Dimen.ZERO_PT;
+            return new Dimen(Dimen.ZERO_PT);
         }
 
         /**
@@ -99,16 +152,30 @@ public class LauncherFont implements Font, Serializable {
             return Dimen.ZERO_PT;
         }
 
+        /**
+         * @see de.dante.extex.font.Glyph#getLigature(de.dante.util.UnicodeChar)
+         */
         public UnicodeChar getLigature(final UnicodeChar uc) {
 
+            if (c.getCodePoint() == 'f') {
+                if (uc.getCodePoint() == 'f') {
+                    return UnicodeChar.get(222); //TODO
+                }
+            }
             return null;
         }
 
+        /**
+         * @see de.dante.extex.font.Glyph#getName()
+         */
         public String getName() {
 
-            return "?";
+            return c.toString();
         }
 
+        /**
+         * @see de.dante.extex.font.Glyph#getNumber()
+         */
         public String getNumber() {
 
             return this.c.toString();
@@ -122,23 +189,38 @@ public class LauncherFont implements Font, Serializable {
             return Dimen.ZERO_PT;
         }
 
+        /**
+         * @see de.dante.extex.font.Glyph#getWidth()
+         */
         public Dimen getWidth() {
 
-            return Dimen.ONE_PT;
+            return new Dimen(Dimen.ONE * 8);
         }
 
+        /**
+         * @see de.dante.extex.font.Glyph#setDepth(de.dante.extex.interpreter.type.dimen.Dimen)
+         */
         public void setDepth(final Dimen d) {
 
         }
 
+        /**
+         * @see de.dante.extex.font.Glyph#setExternalFile(de.dante.extex.font.FontByteArray)
+         */
         public void setExternalFile(final FontByteArray file) {
 
         }
 
+        /**
+         * @see de.dante.extex.font.Glyph#setHeight(de.dante.extex.interpreter.type.dimen.Dimen)
+         */
         public void setHeight(final Dimen h) {
 
         }
 
+        /**
+         * @see de.dante.extex.font.Glyph#setItalicCorrection(de.dante.extex.interpreter.type.dimen.Dimen)
+         */
         public void setItalicCorrection(final Dimen d) {
 
         }
@@ -150,10 +232,16 @@ public class LauncherFont implements Font, Serializable {
 
         }
 
+        /**
+         * @see de.dante.extex.font.Glyph#setName(java.lang.String)
+         */
         public void setName(final String n) {
 
         }
 
+        /**
+         * @see de.dante.extex.font.Glyph#setNumber(java.lang.String)
+         */
         public void setNumber(final String nr) {
 
         }
@@ -165,15 +253,34 @@ public class LauncherFont implements Font, Serializable {
 
         }
 
+        /**
+         * @see de.dante.extex.font.Glyph#setWidth(de.dante.extex.interpreter.type.dimen.Dimen)
+         */
         public void setWidth(final Dimen w) {
 
         }
     }
 
     /**
-     * The field <tt>serialVersionUID</tt> contains the ...
+     * The field <tt>serialVersionUID</tt> contains the version number for
+     * serialization.
      */
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 1L;
+
+    /**
+     * The field <tt>hyphen</tt> contains the hyphen char.
+     */
+    private UnicodeChar hyphen = UnicodeChar.get(45);
+
+    /**
+     * The field <tt>skew</tt> contains the skew char.
+     */
+    private UnicodeChar skew = null;
+
+    /**
+     * The field <tt>fontdimen</tt> contains the font dimens.
+     */
+    private Map fontdimen = new HashMap();
 
     /**
      * @see de.dante.extex.font.type.Fount#getActualSize()
@@ -205,8 +312,7 @@ public class LauncherFont implements Font, Serializable {
      */
     public FixedGlue getDepth(final UnicodeChar uc) {
 
-        // TODO gene: getDepth unimplemented
-        return null;
+        return new Glue(Dimen.ZERO_PT);
     }
 
     /**
@@ -254,7 +360,7 @@ public class LauncherFont implements Font, Serializable {
      */
     public FixedDimen getFontDimen(final String key) {
 
-        return new Dimen(Dimen.ZERO_PT.getValue());
+        return Dimen.ZERO_PT;
     }
 
     /**
@@ -286,10 +392,9 @@ public class LauncherFont implements Font, Serializable {
      * @see de.dante.extex.interpreter.type.font.Font#getHeight(
      *      de.dante.util.UnicodeChar)
      */
-    public FixedGlue getHeight(UnicodeChar uc) {
+    public FixedGlue getHeight(final UnicodeChar uc) {
 
-        // TODO gene: getHeight unimplemented
-        return null;
+        return new Glue(getGlyph(uc).getHeight());
     }
 
     /**
@@ -297,7 +402,7 @@ public class LauncherFont implements Font, Serializable {
      */
     public UnicodeChar getHyphenChar() {
 
-        return null;
+        return hyphen;
     }
 
     /**
@@ -306,8 +411,7 @@ public class LauncherFont implements Font, Serializable {
      */
     public FixedDimen getItalicCorrection(final UnicodeChar uc) {
 
-        // TODO gene: getItalicCorrection unimplemented
-        return null;
+        return new Dimen(getGlyph(uc).getItalicCorrection());
     }
 
     /**
@@ -317,8 +421,7 @@ public class LauncherFont implements Font, Serializable {
      */
     public FixedDimen getKerning(final UnicodeChar uc1, final UnicodeChar uc2) {
 
-        // TODO gene: getKerning unimplemented
-        return null;
+        return new Dimen(getGlyph(uc1).getKerning(uc2));
     }
 
     /**
@@ -326,7 +429,7 @@ public class LauncherFont implements Font, Serializable {
      */
     public FixedGlue getLetterSpacing() {
 
-        return new Glue(Dimen.ZERO_PT.getValue());
+        return new Glue(Dimen.ZERO_PT);
     }
 
     /**
@@ -335,8 +438,7 @@ public class LauncherFont implements Font, Serializable {
      */
     public UnicodeChar getLigature(final UnicodeChar uc1, final UnicodeChar uc2) {
 
-        // TODO gene: getLigature unimplemented
-        return null;
+        return getGlyph(uc1).getLigature(uc2);
     }
 
     /**
@@ -352,7 +454,7 @@ public class LauncherFont implements Font, Serializable {
      */
     public UnicodeChar getSkewChar() {
 
-        return null;
+        return skew;
     }
 
     /**
@@ -369,8 +471,7 @@ public class LauncherFont implements Font, Serializable {
      */
     public FixedGlue getWidth(final UnicodeChar uc) {
 
-        // TODO gene: getWidth unimplemented
-        return null;
+        return new Glue(getGlyph(uc).getWidth());
     }
 
     /**
@@ -385,7 +486,7 @@ public class LauncherFont implements Font, Serializable {
     /**
      * @see de.dante.extex.interpreter.type.font.Font#setEfcode(de.dante.util.UnicodeChar, long)
      */
-    public void setEfcode(UnicodeChar uc, long code) {
+    public void setEfcode(final UnicodeChar uc, final long code) {
 
         // TODO gene: setEfcode unimplemented
 
@@ -398,6 +499,7 @@ public class LauncherFont implements Font, Serializable {
      */
     public void setFontDimen(final String key, final Dimen value) {
 
+        fontdimen.put(key, value);
     }
 
     /**
@@ -406,6 +508,7 @@ public class LauncherFont implements Font, Serializable {
      */
     public void setHyphenChar(final UnicodeChar hyphen) {
 
+        this.hyphen = hyphen;
     }
 
     /**
@@ -414,6 +517,7 @@ public class LauncherFont implements Font, Serializable {
      */
     public void setSkewChar(final UnicodeChar skew) {
 
+        this.skew = skew;
     }
 
 }
