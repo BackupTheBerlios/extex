@@ -177,7 +177,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.119 $
+ * @version $Revision: 1.120 $
  */
 public abstract class Max
         implements
@@ -595,6 +595,7 @@ public abstract class Max
 
                 handleException(token, context, (InterpreterException) x,
                         typesetter);
+                e.setProcessed(true);
 
             } catch (RuntimeException e) {
                 if (observersError != null) {
@@ -632,6 +633,7 @@ public abstract class Max
         } catch (InterpreterException e) {
 
             handleException(token, theContext, e, theTypesetter);
+            e.setProcessed(true);
 
         } catch (RuntimeException e) {
             if (observersError != null) {
@@ -710,16 +712,15 @@ public abstract class Max
         }
 
         try {
-            for (;;) {
-                Token t = stream.get(null, null);
-                if (t == null) {
-                    return result;
-                }
+            for (Token t = stream.get(null, null); t != null; t = stream.get(
+                    null, null)) {
+
                 t = (Token) t.visit(tv, stream);
                 if (t != null) {
                     result.add(t);
                 }
             }
+            return result;
         } catch (InterpreterException e) {
             throw e;
         } catch (Exception e) {
