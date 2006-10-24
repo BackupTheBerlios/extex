@@ -38,14 +38,14 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * mathematical appearance.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class MathContext {
 
     /**
      * The constant <tt>MU_UNIT</tt> contains the unit length for the math unit.
      */
-    private static final long MU_UNIT = 18 * 0xffff;
+    private static final long MU_UNIT = 18 * Dimen.ONE;
 
     /**
      * The field <tt>context</tt> contains the data object for options.
