@@ -1,6 +1,6 @@
 \nonstopmode
 %%*****************************************************************************
-%% $Id: extex-users.tex,v 1.24 2006/09/15 15:14:27 gene Exp $
+%% $Id: extex-users.tex,v 1.25 2006/10/24 09:20:01 gene Exp $
 %%*****************************************************************************
 %% Author: Gerd Neugebauer
 %%-----------------------------------------------------------------------------
@@ -33,7 +33,7 @@
 \newcommand\SyntaxOr{\>\(|\)\>}
 
 \def\setVersion$#1: #2.#3 ${\gdef\Version{0.0 (Revision #2.#3)}}
-\setVersion$Revision: 1.24 $
+\setVersion$Revision: 1.25 $
 
 \def\n{\char`\\n}
 \def\t{\char`\\t}
@@ -990,7 +990,53 @@ equivalent:
 \subsection{Creating Formats}
 %@author Gerd Neugebauer
 
-\INCOMPLETE
+The creation of formats is accomplished in the same way as is \TeX. To
+create a format you simply use \ExTeX\ in ini mode. There you can
+define macros and set parameters which should make it into the format
+file. Finally you use the primitive \macro{dump} to write out the
+format file.
+
+Several restrictions should be taken into account:
+\begin{itemize}
+\item The group level has to be 0 when the format is dumped.
+\item No output has been made yet when the format is dumped.
+\end{itemize}
+
+
+As an example we consider the macros contained in \texttt{plain.tex}.
+The following log shows the interaction wit the user:
+
+{\lstset{morecomment=[l]{*}}%
+\begin{lstlisting}{}
+# extex -ini plain.tex
+This is ExTeX, Version 0.0 (ExTeX mode)
+(plain Preloading the plain format: codes, registers, parameters, fonts, more
+fonts, macros, math definitions, output routines, hyphenation(hyphen))
+*\dump
+
+Beginning to dump on file ./plain.fmt
+*\end
+
+No pages of output.
+Transcript written on ./plain.log.
+\end{lstlisting}
+
+The file \texttt{plain.tex} does not contain an \macro{end}. Thus
+after the file is processed the user is asked for more input. Here
+additional files can be loaded or other changes can be made before the
+\macro{dump} is invoked. In the example above no additional settings
+are performed. When the writing of the format file is completed the
+user is queried for further instructions. Since we are finished we
+complete the run with \macro{end} here.
+
+
+In the example above we have used the command line flag \CLI{ini}.
+This flag is not really needed for format cretion.It just supresses
+the preloading of a format file. Thus it is necessary when
+bootstrapping, i.e. when the first format is created. Later on you can
+load an existing format and make some modifications before writing out
+a new format. In such a situation the flag \CLI{ini} is not needed.
+
 
 
 %------------------------------------------------------------------------------
