@@ -20,6 +20,14 @@ rem  Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 rem 
 rem ---------------------------------------------------------------------------
 
+if "%E_X_T_E_X%"=="yes" goto start
+
+cmd /V /C "SET E_X_T_E_X=yes&&extex %*"
+
+goto end
+
+:start
+
 if "%JAVA_HOME%"=="" (
   echo ERROR: JAVA_HOME not found in your environment.
   echo.
@@ -33,10 +41,10 @@ set LIBDIR=%EXTEX_HOME%\lib
 set LOCALCLASSPATH=%EXTEX_HOME%\classes
 
 for %%i in (%LIBDIR%\*.jar) do (
-  set LOCALCLASSPATH=%LOCALCLASSPATH%;%%i
+  set LOCALCLASSPATH=!LOCALCLASSPATH!;%%i
 )
 
-java -classpath LOCALCLASSPATH de.dante.extex.main.TeX %*
+java -classpath %LOCALCLASSPATH% de.dante.extex.main.TeX %*
 
 :end
 
