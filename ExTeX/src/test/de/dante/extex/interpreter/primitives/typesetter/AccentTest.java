@@ -20,14 +20,15 @@
 package de.dante.extex.interpreter.primitives.typesetter;
 
 import de.dante.test.ExTeXLauncher;
+import de.dante.test.NoFlagsPrimitiveTester;
 
 /**
  * This is a test suite for the primitive <tt>\accent</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class AccentTest extends ExTeXLauncher {
+public class AccentTest extends NoFlagsPrimitiveTester {
 
     /**
      * Command line interface.
@@ -45,20 +46,40 @@ public class AccentTest extends ExTeXLauncher {
      */
     public AccentTest(final String arg) {
 
-        super(arg);
+        super(arg,"accent","13 a");
     }
 
     /**
-     * Test case checking that \accent does not work in math mode.
+     * <testcase>
+     *  Test case checking that <tt>\accent</tt> does not work in math mode.
+     * </testcase>
+     *
      * @throws Exception in case of an error
      */
     public void testAccentInMathMode() throws Exception {
 
         assertFailure(//--- input code ---
-                "\\catcode`$=3 \\relax"
+                DEFINE_MATH
                 + "$\\accent $\\end",
                 //--- log message ---
-                "?");
+                "Please use \\mathaccent for accents in math mode");
+    }
+
+    /**
+     * <testcase>
+     *  Test case checking that <tt>\accent</tt> does not work in display math
+     *  mode.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testAccentInDisplayMathMode() throws Exception {
+
+        assertFailure(//--- input code ---
+                DEFINE_MATH
+                + "$$\\accent ",
+                //--- log message ---
+                "Please use \\mathaccent for accents in math mode");
     }
 
 }
