@@ -23,7 +23,7 @@ package de.dante.extex.interpreter.primitives.register.count;
  * This is a test suite for the primitive <tt>\localinterlinepenalty</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class LocalinterlinepenaltyTest extends AbstractCountRegisterTester {
 
@@ -44,6 +44,7 @@ public class LocalinterlinepenaltyTest extends AbstractCountRegisterTester {
     public LocalinterlinepenaltyTest(final String arg) {
 
         super(arg, "localinterlinepenalty", " ", "0");
+        setConfig("omega");
     }
 
     //TODO implement the primitive specific test cases
