@@ -77,12 +77,7 @@
     <fmt prefix="texmf/">
       <extension>.fmt</extension>
     </fmt>
-    <default skip="true">
-      <path property="extex.texinputs"/>
-      <path property="texinputs"/>
-      <path>.</path>
-      <extension></extension>
-    </default>
+    <default skip="true"/>
   </Finder>
 
   <Finder class="de.dante.util.resource.LsrFinder"
@@ -90,7 +85,6 @@
           capacity="88888"
           default="default">
     <path property="extex.fonts"/>
-    <path property="texmf.path"/>
     <path property="extex.texinputs"/>
     <path property="texinputs"/>
 
