@@ -90,7 +90,7 @@
             class="de.dante.extex.interpreter.primitives.omega.mode.OutputMode"/>
     <define name="OutputTranslation"
             class="de.dante.extex.interpreter.primitives.omega.translation.OutputTranslation"/>
-    <Define name="pagedir"
+    <define name="pagedir"
             class="de.dante.extex.interpreter.primitives.omega.dir.Pagedir"/>
     <Define name="pagedirHL"
             class=""/>
