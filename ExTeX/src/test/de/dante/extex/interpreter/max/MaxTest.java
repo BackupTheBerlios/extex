@@ -26,20 +26,19 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the interpreter Max.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class MaxTest extends ExTeXLauncher {
 
     /**
      * <testcase>
-     *  Test case checking that the prefix leads to the
-     *  expected error message
+     *  Test case checking that the prefix leads to the expected error message
      * </testcase>
      *
-     * @param prefix ...
-     * @param tag ....
-     * @param catcode ...
-     * @param longName ...
+     * @param prefix the prefix code
+     * @param tag the character to be assigned
+     * @param catcode the category
+     * @param longName the name of tag
      *
      * @throws Exception in case of an error
      */
@@ -74,10 +73,7 @@ public class MaxTest extends ExTeXLauncher {
         assertFailure(//--- input code ---
                 "\\catcode`&=4\\relax" + "&" + "\\end ",
                 //--- log message ---
-                "Misplaced alignment tab character &"
-                + "Misplaced alignment tab character &");
-        // Note the doubling of the output comes from the test driver.
-        // Thus I accept it for the moment
+                "Misplaced alignment tab character &");
     }
 
     /**

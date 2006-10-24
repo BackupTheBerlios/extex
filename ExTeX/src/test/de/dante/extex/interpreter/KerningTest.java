@@ -19,15 +19,13 @@
 
 package de.dante.extex.interpreter;
 
-import java.util.Properties;
-
 import de.dante.test.ExTeXLauncher;
 
 /**
  * This is a test suite for the kerning.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class KerningTest extends ExTeXLauncher {
 
@@ -59,23 +57,17 @@ public class KerningTest extends ExTeXLauncher {
      */
     public void testAVAV() throws Exception {
 
-        Properties properties = getProps();
-        properties.setProperty("extex.jobname", "job");
-        properties.setProperty("extex.output", "dump");
-
-        assertSuccess(properties,
+        assertSuccess(showNodesProperties(),
         //--- input code ---
-                "\\font\\f=cmr10 \\f " + "AVAV",
+                "\\font\\f=cmr10 \\f " + "AVA",
                 //--- output channel ---
-                "\\vbox(6.83331pt+0.0pt)x26.66667pt\n" //
-                        + ".\\hbox(6.83331pt+0.0pt)x26.66667pt\n" //
+                "\\vbox(6.83331pt+0.0pt)x3000.0pt\n" //
+                        + ".\\hbox(6.83331pt+0.0pt)x3000.0pt\n" //
                         + "..A\n" //
                         + "..\\kern -1.11113pt\n" //
                         + "..V\n" //
                         + "..\\kern -1.11113pt\n" //
-                        + "..A\n" //
-                        + "..\\kern -1.11113pt\n" //
-                        + "..V\n");
+                        + "..A\n");
     }
 
     /**
@@ -87,16 +79,12 @@ public class KerningTest extends ExTeXLauncher {
      */
     public void testXyz() throws Exception {
 
-        Properties properties = getProps();
-        properties.setProperty("extex.jobname", "job");
-        properties.setProperty("extex.output", "dump");
-
-        assertSuccess(properties,
+        assertSuccess(showNodesProperties(),
         //--- input code ---
                 "\\font\\f=cmr10 \\f " + "xyz",
                 //--- output channel ---
-                "\\vbox(4.30554pt+1.94444pt)x15.00005pt\n" //
-                        + ".\\hbox(4.30554pt+1.94444pt)x15.00005pt\n" //
+                "\\vbox(4.30554pt+1.94444pt)x3000.0pt\n" //
+                        + ".\\hbox(4.30554pt+1.94444pt)x3000.0pt\n" //
                         + "..x\n" //
                         + "..y\n" //
                         + "..z\n");

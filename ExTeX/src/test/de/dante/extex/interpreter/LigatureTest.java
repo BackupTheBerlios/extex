@@ -27,7 +27,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the ligature.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class LigatureTest extends ExTeXLauncher {
 
@@ -67,8 +67,8 @@ public class LigatureTest extends ExTeXLauncher {
         //--- input code ---
                 "\\font\\f=cmr10 \\f " + "Affe",
                 //--- output channel ---
-                "\\vbox(6.94444pt+0.0pt)x17.77782pt\n" //
-                + ".\\hbox(6.94444pt+0.0pt)x17.77782pt\n" //
+                "\\vbox(6.94444pt+0.0pt)x3000.0pt\n" //
+                + ".\\hbox(6.94444pt+0.0pt)x3000.0pt\n" //
                 + "..A\n" //
                 + "..\n" //
                 + "..e\n");

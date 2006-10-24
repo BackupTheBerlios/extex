@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\begingroup</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class BegingroupTest extends NoFlagsPrimitiveTester {
 
@@ -61,7 +61,7 @@ public class BegingroupTest extends NoFlagsPrimitiveTester {
         assertFailure(//--- input code ---
                 "\\begingroup",
                 //--- log message ---
-                "(\\end occurred inside a group at level 1)");
+                "(\\end occurred inside a group at level 1)\n");
     }
 
     /**

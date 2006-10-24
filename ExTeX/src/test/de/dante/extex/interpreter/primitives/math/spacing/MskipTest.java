@@ -25,7 +25,7 @@ import de.dante.extex.interpreter.primitives.math.AbstractMathTester;
  * This is a test suite for the primitive <tt>\mskip</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class MskipTest extends AbstractMathTester {
 
@@ -53,8 +53,8 @@ public class MskipTest extends AbstractMathTester {
                 AbstractMathTester.DEFINE_MATH_FONTS + DEFINE_MATH
                         + "$a\\mskip12mu b$\\end",
                 //--- output message ---
-                "\\vbox(6.94444pt+0.0pt)x21.57755pt\n"
-                        + ".\\hbox(6.94444pt+0.0pt)x21.57755pt\n" //
+                "\\vbox(6.94444pt+0.0pt)x3000.0pt\n"
+                        + ".\\hbox(6.94444pt+0.0pt)x3000.0pt\n" //
                         + "..a\n" //
                         + "..\\glue12.0pt\n" // TODO gene: convert mu to sp
                         + "..b\n");

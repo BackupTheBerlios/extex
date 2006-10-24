@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\meaning</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class MeaningTest extends NoFlagsPrimitiveTester {
 
@@ -210,7 +210,7 @@ public class MeaningTest extends NoFlagsPrimitiveTester {
         assertSuccess(//--- input code ---
                 DEFINE_CATCODES + "\\catcode`~=13" + "\\def~{}" + "\\meaning ~\\end",
                 //--- output channel ---
-                "~=macro:\n ->" + TERM);
+                "~=macro:\n->" + TERM);
     }
 
     /**
@@ -226,7 +226,7 @@ public class MeaningTest extends NoFlagsPrimitiveTester {
         assertSuccess(//--- input code ---
                 DEFINE_CATCODES + "\\catcode`~=13" + "\\def~{abc}" + "\\meaning ~\\end",
                 //--- output channel ---
-                "~=macro:\n ->abc" + TERM);
+                "~=macro:\n->abc" + TERM);
     }
 
     /**
@@ -288,7 +288,7 @@ public class MeaningTest extends NoFlagsPrimitiveTester {
         assertSuccess(//--- input code ---
                 DEFINE_CATCODES + "\\def\\x{abc}" + "\\meaning \\x \\end",
                 //--- output channel ---
-                "\\x=macro:\n ->abc" + TERM);
+                "\\x=macro:\n->abc" + TERM);
     }
 
     /**
@@ -304,7 +304,7 @@ public class MeaningTest extends NoFlagsPrimitiveTester {
         assertSuccess(//--- input code ---
                 DEFINE_CATCODES + "\\def\\x#1{ab#1cd}" + "\\meaning \\x \\end",
                 //--- output channel ---
-                "\\x=macro:\n#1 ->ab#1cd" + TERM);
+                "\\x=macro:\n#1->ab#1cd" + TERM);
     }
 
     /**
@@ -320,7 +320,7 @@ public class MeaningTest extends NoFlagsPrimitiveTester {
         assertSuccess(//--- input code ---
                 DEFINE_CATCODES + "\\def\\x A#1B#2{ab#1cd}" + "\\meaning \\x \\end",
                 //--- output channel ---
-                "\\x=macro:\nA#1B#2 ->ab#1cd" + TERM);
+                "\\x=macro:\nA#1B#2->ab#1cd" + TERM);
     }
 
     /**

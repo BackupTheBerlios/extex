@@ -36,7 +36,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\dump</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class DumpTest extends NoFlagsPrimitiveTester {
 
@@ -57,7 +57,8 @@ public class DumpTest extends NoFlagsPrimitiveTester {
      */
     public DumpTest(final String arg) {
 
-        super(arg, "dump", "", "", "Beginning to dump on file texput.fmt\n");
+        super(arg, "dump", "", "", "Beginning to dump on file ."
+                + System.getProperty("file.separator") + "texput.fmt\n");
         new File("texput.fmt").delete();
     }
 
@@ -73,7 +74,8 @@ public class DumpTest extends NoFlagsPrimitiveTester {
         assertOutput(//--- input code ---
                 "\\dump \\end",
                 //--- log message ---
-                "Beginning to dump on file texput.fmt\n", "");
+                "Beginning to dump on file ."
+                + System.getProperty("file.separator") + "texput.fmt\n", "");
     }
 
     /**
@@ -88,7 +90,8 @@ public class DumpTest extends NoFlagsPrimitiveTester {
         assertOutput(//--- input code ---
                 "\\font\\x= cmr10 \\count1=123 \\dump \\end",
                 //--- log message ---
-                "Beginning to dump on file texput.fmt\n", "");
+                "Beginning to dump on file ."
+                + System.getProperty("file.separator") + "texput.fmt\n", "");
 
         File fmt = new File("texput.fmt");
         Context context = new SerialLoader().load(new FileInputStream(fmt));

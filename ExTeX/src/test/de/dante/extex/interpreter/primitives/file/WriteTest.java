@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsButImmediatePrimitiveTester;
  * This is a test suite for the primitive <tt>\write</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class WriteTest extends NoFlagsButImmediatePrimitiveTester {
 
@@ -140,7 +140,7 @@ public class WriteTest extends NoFlagsButImmediatePrimitiveTester {
         assertFailure(//--- input code ---
                 DEFINE_BRACES + "\\catcode`\\~=13" + "x\\write 2{a~c} \\end",
                 //--- log message ---
-                "Undefined control sequence ~");
+                "Undefined control sequence ~\n");
     }
 
     /**

@@ -25,7 +25,7 @@ import de.dante.extex.interpreter.primitives.math.AbstractMathTester;
  * This is a test suite for the primitive <tt>\mkern</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class MkernTest extends AbstractMathTester {
 
@@ -53,10 +53,10 @@ public class MkernTest extends AbstractMathTester {
                 AbstractMathTester.DEFINE_MATH_FONTS + DEFINE_MATH
                         + "$a\\mkern12mu b$\\end",
                 //--- output message ---
-                "\\vbox(6.94444pt+0.0pt)x16.24431pt\n"
-                        + ".\\hbox(6.94444pt+0.0pt)x16.24431pt\n" //
+                "\\vbox(6.94444pt+0.0pt)x3000.0pt\n"
+                        + ".\\hbox(6.94444pt+0.0pt)x3000.0pt\n" //
                         + "..a\n" //
-                        + "..\\kern6.66676pt\n" //
+                        + "..\\kern6.66667pt\n" //
                         + "..b\n");
     }
 
