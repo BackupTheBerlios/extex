@@ -54,7 +54,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Pdfximage extends AbstractPdftexCode {
 
@@ -108,10 +108,21 @@ public class Pdfximage extends AbstractPdftexCode {
             }
         }
 
+        if (width == null) {
+            width = Dimen.ONE_PT; //TODO gene:provide correct default
+        }
+        if (height == null) {
+            height = Dimen.ONE_PT; //TODO gene:provide correct default
+        }
+        if (depth == null) {
+            depth = Dimen.ONE_PT; //TODO gene:provide correct default
+        }
+
         String resource = source.scanTokensAsString(context, getName());
 
         PdfRefXImage image = writer.getXImage(resource, new RuleNode(width,
-                height, depth, null, true), attr, page, prefix.isImmediate());
+                height, depth, context.getTypesettingContext(), true), attr,
+                page, prefix.isImmediate());
 
         try {
             typesetter.add(image);
