@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\fontdimen</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class FontdimenTest extends NoFlagsPrimitiveTester {
 
@@ -104,6 +104,24 @@ public class FontdimenTest extends NoFlagsPrimitiveTester {
                 + "\\end",
                 //--- output channel ---
                 "42.0pt" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\fontdimen">
+     *  Test case checking that \fontdimen is an assignment.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testAssign1() throws Exception {
+
+        assertSuccess(//--- input code ---
+                "\\afterassignment abc"
+                + "\\fontdimen0\\nullfont=42pt"
+                + "\\the\\fontdimen0\\nullfont "
+                + "\\end",
+                //--- output channel ---
+                "bca42.0pt" + TERM);
     }
 
 }
