@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a base test class containing tests for array of counts.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public abstract class AbstractCharMapTester extends ExTeXLauncher {
 
@@ -186,10 +186,19 @@ public abstract class AbstractCharMapTester extends ExTeXLauncher {
     public void testCountRegisterAssign3() throws Exception {
 
         assertFailure(//--- input code ---
-                prepare + "\\" + invocation + "=-123 \\the\\" + invocation
-                        + "\\end",
+                prepare + "\\" + invocation + "=-123" + "\\end",
                 //--- output channel ---
-                "Invalid code (-123), should be in the range 0.." + max);
+                badCodeMessage());
+    }
+
+    /**
+     * ...
+     *
+     * @return the message
+     */
+    protected String badCodeMessage() {
+
+        return "Bad character code (-123)";
     }
 
     /**
@@ -203,10 +212,8 @@ public abstract class AbstractCharMapTester extends ExTeXLauncher {
     public void testCountRegisterAssign4() throws Exception {
 
         assertFailure(//--- input code ---
-                prepare + "\\" + invocation + "-123 \\the\\" + invocation
-                        + "\\end",
-                //--- output channel ---
-                "Invalid code (-123), should be in the range 0.." + max);
+                prepare + "\\" + invocation + "-123 " + "\\end",
+                badCodeMessage());
     }
 
     /**
@@ -364,9 +371,9 @@ public abstract class AbstractCharMapTester extends ExTeXLauncher {
      */
     public void testAfterassignment1() throws Exception {
 
-        assertFailure(//--- input code ---
-                prepare + "\\afterassignment\\xx\\" + primitive
-                        + "`A=`a \\end",
+        assertFailure(
+                //--- input code ---
+                prepare + "\\afterassignment\\xx\\" + primitive + "`A=`a \\end",
                 //--- output channel ---
                 "Undefined control sequence \\xx");
     }
