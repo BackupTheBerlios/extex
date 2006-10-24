@@ -1,6 +1,6 @@
 #!/bin/perl -w
 ##*****************************************************************************
-## $Id: primitives.pl,v 1.7 2006/10/13 13:32:29 gene Exp $
+## $Id: primitives.pl,v 1.8 2006/10/24 09:20:55 gene Exp $
 ##*****************************************************************************
 ## Author: Gerd Neugebauer
 ##=============================================================================
@@ -153,7 +153,8 @@ sub processPrimitive {
   }
   $_ = ($name eq ' '? '\\[': $name);
   $_ = ($_ eq '\\'? '\\char`\\\\': $_);
-  print $out "The primitive \\macro{$_} is defined in the unit \\texttt{$primUse{$name}}.\n";
+  print $out
+      "The primitive \\macro{$_} is defined in the unit \\texttt{$primUse{$name}}.\n\n";
 }
 
 #------------------------------------------------------------------------------
@@ -254,6 +255,8 @@ sub processConfig {
 
 \\subsubsection{The Configuration \\texttt{$name}}\\index{$name}
 
+__EOF__
+  print $out <<__EOF__ if defined $banner;
 The configuration \\texttt{$name} identifies itself as
 ``$banner''.
 __EOF__
