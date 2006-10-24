@@ -106,7 +106,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class Showbox extends AbstractBox implements LogEnabled {
 
@@ -155,12 +155,15 @@ public class Showbox extends AbstractBox implements LogEnabled {
 
         if (b == null) {
             logger.info(getLocalizer().format("TTP.Show.void", //
-                    context.esc(key)));
+                    context.esc("box" + key)));
         } else {
             long depth = context.getCount("showboxdepth").getValue();
             long width = context.getCount("showboxbreadth").getValue();
             StringBuffer sb = new StringBuffer();
+            sb.append(context.esc("box" + key));
+            sb.append("=\n");
             b.getNodes().toString(sb, "", (int) depth, (int) width);
+            sb.append("\n");
             logger.info(sb.toString());
         }
         logger.info(getLocalizer().format("TTP.Show.OK"));
