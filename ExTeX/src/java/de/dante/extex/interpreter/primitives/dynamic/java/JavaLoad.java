@@ -49,13 +49,11 @@ import de.dante.extex.typesetter.Typesetter;
  *       &rarr; <tt>\javaload</tt> &lang;tokens&rang;  </pre>
  * <p>
  *  The <i>&lang;tokens&rang;</i> is any specification of a list of
- *  tokens like a constant list enclosed in braces or a toks register.
+ *  tokens like a constant list enclosed in braces or a token register.
  *  The value of these tokens are taken and interpreted as the name of
  *  a Java class. This class is loaded if needed, instantiated, and its
  *  method
- *  {@link de.dante.extex.interpreter.primitives.dynamic.java.Loadable#init(
- *    de.dante.extex.interpreter.context.Context,
- *    de.dante.extex.typesetter.Typesetter) init()}
+ *  {@link de.dante.extex.interpreter.primitives.dynamic.java.Loadable#init(de.dante.extex.interpreter.context.Context,de.dante.extex.typesetter.Typesetter) init()}
  *  is invoked. The instantiation requires the empty constructor to be visible.
  * </p>
  *
@@ -94,7 +92,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class JavaLoad extends AbstractCode implements Loader {
 

@@ -94,8 +94,8 @@ import de.dante.extex.typesetter.Typesetter;
  * Now we come to the Java side of the definition. The class given as
  * <i>&lang;tokens&rang;</i> must implement the interface {@link
  * de.dante.extex.interpreter.type.Code Code}. The easiest way to achieve
- * this is by declaring a class derived from {@link
- * de.dante.extex.interpreter.type.AbstractCode AbstractCode}.
+ * this is by declaring a class derived from
+ * {@link de.dante.extex.interpreter.type.AbstractCode AbstractCode}.
  * <pre class="JavaSample">
  *   <b>package</b> my.package;
  *
@@ -131,7 +131,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.31 $
+ * @version $Revision: 1.32 $
  */
 public class JavaDef extends AbstractAssignment implements Definer {
 
