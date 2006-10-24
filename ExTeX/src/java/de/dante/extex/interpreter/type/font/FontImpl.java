@@ -45,7 +45,7 @@ import de.dante.util.framework.Registrar;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class FontImpl extends NullFont {
 
@@ -112,15 +112,6 @@ public class FontImpl extends NullFont {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.font.Font#hasGlyph(
-     *      de.dante.util.UnicodeChar)
-     */
-    public boolean hasGlyph(final UnicodeChar uc) {
-
-        return getGlyph(uc) != null;
-    }
-
-    /**
      * @see de.dante.extex.font.type.Fount#getBoundingBox()
      */
     public BoundingBox getBoundingBox() {
@@ -183,6 +174,10 @@ public class FontImpl extends NullFont {
      */
     public FixedDimen getFontDimen(final String key) {
 
+        FixedDimen fd = super.getFontDimen(key);
+        if (fd != null) {
+            return fd;
+        }
         return fount.getFontDimen(key);
     }
 
@@ -304,13 +299,12 @@ public class FontImpl extends NullFont {
     }
 
     /**
-     * Setter for the fount.
-     *
-     * @param fount the fount to set
+     * @see de.dante.extex.interpreter.type.font.Font#hasGlyph(
+     *      de.dante.util.UnicodeChar)
      */
-    public void setFount(final InternalFount fount) {
+    public boolean hasGlyph(final UnicodeChar uc) {
 
-        this.fount = fount;
+        return getGlyph(uc) != null;
     }
 
     /**
@@ -325,4 +319,22 @@ public class FontImpl extends NullFont {
         return Registrar.reconnect(this);
     }
 
+    /**
+     * Setter for the fount.
+     *
+     * @param fount the fount to set
+     */
+    public void setFount(final InternalFount fount) {
+
+        this.fount = fount;
+    }
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+
+        return fount.getFontName();
+    }
+    
 }
