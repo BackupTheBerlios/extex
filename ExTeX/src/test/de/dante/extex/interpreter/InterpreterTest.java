@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the the interpreter.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class InterpreterTest extends ExTeXLauncher {
 
@@ -50,7 +50,7 @@ public class InterpreterTest extends ExTeXLauncher {
                 "\\begingroup"
                 + "\\end ",
                 //--- log message ---
-                "(\\end occurred inside a group at level 1)");
+                "(\\end occurred inside a group at level 1)\n");
     }
 
     /**
@@ -65,7 +65,7 @@ public class InterpreterTest extends ExTeXLauncher {
                 + "\\begingroup"
                 + "\\end ",
                 //--- log message ---
-                "(\\end occurred inside a group at level 2)");
+                "(\\end occurred inside a group at level 2)\n");
     }
 
     /**
@@ -79,7 +79,8 @@ public class InterpreterTest extends ExTeXLauncher {
                 "\\iftrue"
                 + "\\end ",
                 //--- log message ---
-                "(\\end occurred when \\iftrue was incomplete)");
+                "(\\end occurred when \\iftrue was incomplete)\n"
+                + "(\\end occurred when \\iftrue was incomplete)\n");//TODO ???
     }
 
 }
