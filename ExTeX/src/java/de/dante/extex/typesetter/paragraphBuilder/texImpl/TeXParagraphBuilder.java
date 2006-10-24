@@ -119,7 +119,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </i>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class TeXParagraphBuilder
         implements
@@ -2576,8 +2576,9 @@ public class TeXParagraphBuilder
             // prev_p <-- cur_p; {glue at beginning is not a legal breakpoint}
             prevP = curBreak;
 
+            int nodesSize = nodes.size();
             // while (cur_p != null) && (link(active) != last_active) do
-            while (curBreak < nodes.size() && active.size() > 0) {
+            while (curBreak < nodesSize && active.size() > 0) {
                 // «Call try_break if cur_p is a legal breakpoint; on the second
                 // pass, also try to hyphenate the next word, if cur_p is a glue node; then
                 // advance cur_p to the next node of the paragraph that could possibly be a
@@ -2586,7 +2587,7 @@ public class TeXParagraphBuilder
             }
 
             // if cur_p=null then
-            if (curBreak >= nodes.size()) {
+            if (curBreak >= nodesSize) {
                 // «Try the final line break at the end of the paragraph, and goto
                 // done if the desired breakpoints have been found 873»;
                 if (tryTheFinalLineBreak(nodes)) {
@@ -2746,8 +2747,7 @@ public class TeXParagraphBuilder
         // kern_node: if subtype(cur_p)=explicit then
         // kern_break
         // else act_width <-- act_width+width(cur_p);
-        // ligature_node: begin f <-- font(lig_char(cur
-        // _p));
+        // ligature_node: begin f <-- font(lig_char(cur_p));
         // act_width <-- act_width+char_width(f)(char_info(f)(
         // character(lig_char(cur_p))));
         // end ;
