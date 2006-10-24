@@ -45,8 +45,22 @@ import de.dante.util.framework.logger.LogEnabled;
  * <doc name="show">
  * <h3>The Primitive <tt>\show</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The primitive <tt>\show</tt> consumes the following token and prints the
+ *  definition of the token to the output stream an into the log file.
  * </p>
+ * <ul>
+ *  <li>If the token is a control sequence or active character and it is
+ *   undefined then it is reported as <i>undefined</i>.
+ *  </li>
+ *  <li>If the token is a control sequence or active character and it is
+ *   a primitive then it is reported with the original name of the primitive.
+ *   This applies even if is redefined with <tt>\let</tt> to another name.
+ *  </li>
+ *  <li>If the token is a control sequence or active character and it is
+ *   a macro then it is reported with the pattern and expansion text.
+ *  </li>
+ *  <li>Otherwise the long descriptive form of the token is reported.</li>
+ * </ul>
  *
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
@@ -59,12 +73,31 @@ import de.dante.util.framework.logger.LogEnabled;
  * <h4>Examples</h4>
  *  Examples:
  *  <pre class="TeXSample">
- *    \show\abc  </pre>
+ *    \show\abc
+ *    > \abc=undefined
+ *  </pre>
+ *  <pre class="TeXSample">
+ *    \show \def
+ *    > \def=\def.
+ *  </pre>
+ *  <pre class="TeXSample">
+ *    \let\xxx=\def\show \xxx
+ *    > \xxx=\def.
+ *  </pre>
+ *  <pre class="TeXSample">
+ *    \def\m{abc}\show \m
+ *    > \m=macro:
+ *    ->abc.
+ *  </pre>
+ *  <pre class="TeXSample">
+ *    \show a
+ *    > the letter a.
+ *  </pre>
  *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
 public class Show extends AbstractCode implements LogEnabled {
 
@@ -159,14 +192,13 @@ public class Show extends AbstractCode implements LogEnabled {
 
             toks.add(((Showable) code).show(context));
 
-        } else if (t instanceof ControlSequenceToken) {
-
-            toks.add(new Tokens(context, context.esc(t)));
-
         } else {
 
-            toks.add(new Tokens(context, t.getChar().getCodePoint()));
+            toks.add(new Tokens(context, context.esc(code.getName())));
 
+//        } else {
+//
+//            toks.add(new Tokens(context, t.getChar().getCodePoint()));
         }
         return toks;
     }

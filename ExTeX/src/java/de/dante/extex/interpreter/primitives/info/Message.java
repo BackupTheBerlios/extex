@@ -37,14 +37,16 @@ import de.dante.util.framework.logger.LogEnabled;
  * <doc name="message">
  * <h3>The Primitive <tt>\message</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The primitive <tt>\message</tt> takes as argument a list of tokens enclosed
+ *  in braces and writes them to output stream and into the log file.
  * </p>
  *
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;message&rang;
- *      &rarr; <tt>\message</tt> ... </pre>
+ *      &rarr; <tt>\message</tt> <tt>{</tt> &lang;unprotected tokens&rang; <tt>}</tt>
+ *       </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
@@ -55,7 +57,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class Message extends AbstractCode implements LogEnabled {
 
