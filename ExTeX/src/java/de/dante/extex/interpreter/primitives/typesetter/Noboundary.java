@@ -27,9 +27,9 @@ import de.dante.extex.interpreter.primitives.register.box.AbstractBox;
 import de.dante.extex.typesetter.Typesetter;
 
 /**
- * This class provides an implementation for the primitive <code>\\</code>.
+ * This class provides an implementation for the primitive <code>\noboundary</code>.
  *
- * <doc name="\\">
+ * <doc name="\noboundary">
  * <h3>The Primitive <tt>\\</tt></h3>
  * <p>
  *  TODO missing documentation
@@ -43,12 +43,12 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
- *    \\  </pre>
+ *    \noboundary  </pre>
  *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Noboundary extends AbstractBox {
 

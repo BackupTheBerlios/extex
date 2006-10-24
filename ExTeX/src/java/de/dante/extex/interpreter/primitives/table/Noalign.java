@@ -54,7 +54,7 @@ import de.dante.extex.typesetter.type.NodeList;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Noalign extends AbstractCode {
 
@@ -89,14 +89,14 @@ public class Noalign extends AbstractCode {
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * Acquire the vbox to be inserted as alignment.
      *
      * @param context the interpreter context
      * @param source the token source
      * @param typesetter the typesetter
      * @param start the start token
      *
-     * @return ...
+     * @return the vbox acquired
      *
      * @throws InterpreterException in case of an error
      */
