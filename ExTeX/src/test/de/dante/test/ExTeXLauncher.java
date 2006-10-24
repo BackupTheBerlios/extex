@@ -57,7 +57,7 @@ import de.dante.util.resource.ResourceFinder;
  * running an instance of <logo>ExTeX</logo>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.52 $
+ * @version $Revision: 1.53 $
  */
 public class ExTeXLauncher extends TestCase {
 
@@ -65,7 +65,7 @@ public class ExTeXLauncher extends TestCase {
      * Inner class for the error handler.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.52 $
+     * @version $Revision: 1.53 $
      */
     private class EHandler implements ErrorHandler {
 
@@ -110,14 +110,14 @@ public class ExTeXLauncher extends TestCase {
 
     /**
      * The constant <tt>DEFINE_BRACES</tt> contains the definition of the
-     * usual category codes for braces.
+     * usual category codes for braces { and }.
      */
     public static final String DEFINE_BRACES = "\\catcode`\\{=1 "
             + "\\catcode`\\}=2 ";
 
     /**
      * The constant <tt>DEFINE_CATCODES</tt> contains the definition of the
-     * usual category codes.
+     * usual category codes for {, }, $, &, #, ^, _, and ^^10.
      */
     public static final String DEFINE_CATCODES = "\\catcode`\\{=1 "
             + "\\catcode`\\}=2 " + "\\catcode`\\$=3 " + "\\catcode`\\&=4 "
@@ -126,13 +126,13 @@ public class ExTeXLauncher extends TestCase {
 
     /**
      * The constant <tt>DEFINE_HASH</tt> contains the definition of the
-     * usual category codes.
+     * category code for #.
      */
     public static final String DEFINE_HASH = "\\catcode`\\#=6 ";
 
     /**
      * The constant <tt>DEFINE_MATH</tt> contains the definition of the
-     * catcode for math shift.
+     * catcode for math shift $.
      */
     public static final String DEFINE_MATH = "\\catcode`\\$=3 ";
 
@@ -532,7 +532,7 @@ public class ExTeXLauncher extends TestCase {
      */
     public String runFile(final String file) throws Exception {
 
-        return runFile1(file, System.getProperties());
+        return runFile(file, System.getProperties());
     }
 
     /**
@@ -545,7 +545,7 @@ public class ExTeXLauncher extends TestCase {
      *
      * @throws Exception in case of an error
      */
-    public String runFile1(final String file, final Properties properties)
+    public String runFile(final String file, final Properties properties)
             throws Exception {
 
         prepareProperties(properties);
@@ -591,7 +591,7 @@ public class ExTeXLauncher extends TestCase {
      *
      * @param defaultLog the defaultLog to set
      */
-    protected void setDefaultLog(String defaultLog) {
+    protected void setDefaultLog(final String defaultLog) {
 
         this.defaultLog = defaultLog;
     }
@@ -601,7 +601,7 @@ public class ExTeXLauncher extends TestCase {
      *
      * @param setHsize the setHsize to set
      */
-    protected void setHsize(boolean setHsize) {
+    protected void setHsize(final boolean setHsize) {
 
         this.setHsize = setHsize;
     }
