@@ -48,7 +48,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @see de.dante.extex.scanner.stream.impl.TokenStreamImpl
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 
 public class TokenStreamImpl32 extends TokenStreamImpl {
@@ -69,8 +69,9 @@ public class TokenStreamImpl32 extends TokenStreamImpl {
      */
     public TokenStreamImpl32(final Configuration config,
             final TokenStreamOptions options, final InputStream stream,
-            final String theSource, final String encoding) throws IOException,
-            ConfigurationException {
+            final String theSource, final String encoding)
+            throws IOException,
+                ConfigurationException {
 
         super(config, options, stream, theSource, encoding);
     }
@@ -146,7 +147,7 @@ public class TokenStreamImpl32 extends TokenStreamImpl {
             if (uc.equals(c)) {
                 c = getRawChar();
                 if (c == null) {
-                    return UnicodeChar.NULL;
+                    return null;
                 } else if (tokenizer.getCatcode(c) == Catcode.SUPMARK) {
                     c = getRawChar();
                     if (tokenizer.getCatcode(c) == Catcode.SUPMARK) {
@@ -159,10 +160,10 @@ public class TokenStreamImpl32 extends TokenStreamImpl {
                         String unicodename = scanUnicodeName();
                         UnicodeChar ucn = UnicodeChar.get(unicodename);
 
-                        if (ucn.getCodePoint() < 0) {
+                        if (ucn == null) {
                             throw new ScannerNoUnicodeNameException(unicodename);
                         }
-                        uc = UnicodeChar.get(ucn.getCodePoint());
+                        uc = ucn;
                     }
                 } else {
                     // '^^'
@@ -239,7 +240,7 @@ public class TokenStreamImpl32 extends TokenStreamImpl {
      */
     private char hex2char(final int c) {
 
-        char ch = (char) Character.toLowerCase((char)c);
+        char ch = (char) Character.toLowerCase((char) c);
 
         if ('0' <= ch && ch <= '9' || 'a' <= ch && ch <= 'f') {
             return ch;
