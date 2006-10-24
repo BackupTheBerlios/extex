@@ -21,12 +21,11 @@ package de.dante.extex.interpreter.primitives.pdftex;
 
 import de.dante.test.NoFlagsButImmediateAndProtectedPrimitiveTester;
 
-
 /**
  * This is a test suite for the primitive <tt>\pdfannot</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class PdfannotTest
         extends
