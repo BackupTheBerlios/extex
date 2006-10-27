@@ -43,7 +43,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * Test cases for the string implementation of a token stream.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public class TokenStreamStringImplTest extends TestCase {
 
@@ -51,7 +51,7 @@ public class TokenStreamStringImplTest extends TestCase {
      * Mock configuration class.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.25 $
+     * @version $Revision: 1.26 $
      */
     private static class MockConfiguration implements Configuration {
 
@@ -186,6 +186,15 @@ public class TokenStreamStringImplTest extends TestCase {
          */
         public Iterator iterator(final String key) {
 
+            return null;
+        }
+
+        /**
+         * @see de.dante.util.framework.configuration.Configuration#iterator()
+         */
+        public Iterator iterator() {
+
+            // TODO gene: iterator unimplemented
             return null;
         }
     }

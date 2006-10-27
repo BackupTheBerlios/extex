@@ -46,7 +46,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class TokenStreamStringImpl32Test extends TestCase {
 
@@ -186,6 +186,15 @@ public class TokenStreamStringImpl32Test extends TestCase {
          */
         public Iterator iterator(final String key) {
 
+            return null;
+        }
+
+        /**
+         * @see de.dante.util.framework.configuration.Configuration#iterator()
+         */
+        public Iterator iterator() {
+
+            // TODO gene: iterator unimplemented
             return null;
         }
     }
