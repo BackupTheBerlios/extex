@@ -89,7 +89,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class BackendFactory extends AbstractFactory {
 
@@ -129,6 +129,7 @@ public class BackendFactory extends AbstractFactory {
             final DocumentWriterOptions options,
             final OutputStreamFactory outFactory, final ResourceFinder finder,
             final Properties properties, final String creator,
+            final FontFactory fontFactory,
             final ColorConverter colorConverter)
             throws DocumentWriterException,
                 ConfigurationException {
@@ -153,7 +154,6 @@ public class BackendFactory extends AbstractFactory {
             ((ResourceConsumer) docWriter).setResourceFinder(finder);
         }
         if (docWriter instanceof FontFactoryConsumer) {
-            FontFactory fontFactory = null; //TODO gene: provide factory
             ((FontFactoryConsumer) docWriter).setFontFactory(fontFactory );
         }
         docWriter.setParameter("Creator", creator);

@@ -480,7 +480,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.149 $
+ * @version $Revision: 1.150 $
  */
 public class ExTeX {
 
@@ -489,7 +489,7 @@ public class ExTeX {
      * from a format which needs it.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.149 $
+     * @version $Revision: 1.150 $
      */
     private class ResourceFinderInjector implements RegistrarObserver {
 
@@ -808,7 +808,7 @@ public class ExTeX {
      * to set a context as final source of information.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.149 $
+     * @version $Revision: 1.150 $
      */
     private interface MyInteractionProvider extends InteractionProvider {
 
@@ -1336,6 +1336,7 @@ public class ExTeX {
      * @param options the options to be passed to the document writer
      * @param colorConfig the configuration for the color converter
      * @param finder the resource finder if one is requested
+     * @param fontFactory the font factory
      *
      * @return the new document writer
      *
@@ -1345,7 +1346,8 @@ public class ExTeX {
     protected BackendDriver makeBackend(final Configuration config,
             final OutputStreamFactory outFactory,
             final DocumentWriterOptions options,
-            final Configuration colorConfig, final ResourceFinder finder)
+            final Configuration colorConfig, final ResourceFinder finder,
+            final FontFactory fontFactory)
             throws DocumentWriterException,
                 ConfigurationException {
 
@@ -1356,6 +1358,7 @@ public class ExTeX {
                 finder, //
                 properties, //
                 properties.getProperty(PROP_NAME) + " " + EXTEX_VERSION, //
+                fontFactory, //
                 makeColorConverter(colorConfig));
     }
 
@@ -1597,7 +1600,7 @@ public class ExTeX {
         initializeStreams(interpreter, properties);
 
         interpreter.setTypesetter(makeTypesetter(interpreter, config,
-                outFactory, finder));
+                outFactory, finder, fontFactory));
 
         return interpreter;
     }
@@ -1855,6 +1858,7 @@ public class ExTeX {
      * @param config the global configuration object
      * @param outFactory the output stream factory
      * @param finder the resource finder
+     * @param fontFactory the font factory
      *
      * @return the new typesetter
      *
@@ -1866,7 +1870,7 @@ public class ExTeX {
      */
     protected Typesetter makeTypesetter(final Interpreter interpreter,
             final Configuration config, final OutputStreamFactory outFactory,
-            final ResourceFinder finder)
+            final ResourceFinder finder, final FontFactory fontFactory)
             throws TypesetterException,
                 ConfigurationException,
                 CatcodeException,
@@ -1879,7 +1883,7 @@ public class ExTeX {
                 outFactory, //
                 (DocumentWriterOptions) context, //
                 config.getConfiguration("ColorConverter"), //
-                finder);
+                finder, fontFactory);
 
         TypesetterFactory factory = new TypesetterFactory();
         factory.configure(config.getConfiguration("Typesetter"));
