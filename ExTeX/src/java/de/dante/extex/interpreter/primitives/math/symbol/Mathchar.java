@@ -31,11 +31,12 @@ import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.primitives.math.AbstractMathCode;
 import de.dante.extex.interpreter.type.count.Count;
+import de.dante.extex.interpreter.type.math.MathClass;
+import de.dante.extex.interpreter.type.math.MathCode;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
-import de.dante.extex.typesetter.type.math.MathClass;
 import de.dante.extex.typesetter.type.noad.MathGlyph;
 import de.dante.util.UnicodeChar;
 
@@ -66,7 +67,7 @@ import de.dante.util.UnicodeChar;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Mathchar extends AbstractMathCode {
 
@@ -151,8 +152,10 @@ public class Mathchar extends AbstractMathCode {
             nc.add(mc, mg, context.getTypesettingContext());
         } else {
             source.push(t);
-            insert(nc, Count.scanInteger(context, source, typesetter), context
-                    .getTypesettingContext());
+            long mathChar = Count.scanInteger(context, source, typesetter);
+            nc.add(MathClass.getMathClass((int) ((mathChar >> 12) & 0xf)), //
+                    MathGlyph.get8(mathChar & GLYPH_MASK), //
+                    context.getTypesettingContext());
         }
     }
 
@@ -170,7 +173,25 @@ public class Mathchar extends AbstractMathCode {
             final TypesettingContext tc) throws InterpreterException {
 
         nc.add(MathClass.getMathClass((int) ((mathchar >> 12) & 0xf)), //
-                new MathGlyph((int) (mathchar & GLYPH_MASK)), tc);
+                MathGlyph.get8(mathchar & GLYPH_MASK), tc);
+    }
+
+    /**
+     * Insert a mathematical character into the noad list of the current
+     * list maker.
+     *
+     * @param nc the interface to the list maker
+     * @param mathchar the mathematical character
+     * @param tc the typesetting context
+     *
+     * @throws InterpreterException in case of an error
+     */
+    protected void insert(final NoadConsumer nc, final MathCode mathchar,
+            final TypesettingContext tc) throws InterpreterException {
+
+        nc.add(mathchar.getMathClass(), //
+                new MathGlyph(mathchar.getMathFamily(), //
+                        mathchar.getMathChar()), tc);
     }
 
 }

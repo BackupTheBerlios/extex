@@ -22,7 +22,6 @@ package de.dante.extex.typesetter.listMaker.math;
 import java.util.Stack;
 import java.util.logging.Logger;
 
-import de.dante.extex.font.type.other.NullFont;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -36,6 +35,9 @@ import de.dante.extex.interpreter.primitives.register.font.NumberedFont;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.font.Font;
+import de.dante.extex.interpreter.type.math.MathClass;
+import de.dante.extex.interpreter.type.math.MathCode;
+import de.dante.extex.interpreter.type.math.MathDelimiter;
 import de.dante.extex.interpreter.type.muskip.Mudimen;
 import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.interpreter.type.tokens.Tokens;
@@ -50,8 +52,6 @@ import de.dante.extex.typesetter.listMaker.HorizontalListMaker;
 import de.dante.extex.typesetter.listMaker.ListManager;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
-import de.dante.extex.typesetter.type.math.MathClass;
-import de.dante.extex.typesetter.type.math.MathDelimiter;
 import de.dante.extex.typesetter.type.noad.FractionNoad;
 import de.dante.extex.typesetter.type.noad.GlueNoad;
 import de.dante.extex.typesetter.type.noad.KernNoad;
@@ -140,7 +140,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.51 $
+ * @version $Revision: 1.52 $
  */
 public class MathListMaker extends HorizontalListMaker
         implements
@@ -152,7 +152,7 @@ public class MathListMaker extends HorizontalListMaker
      * It is used to store to the stack and restore the state from the stack.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.51 $
+     * @version $Revision: 1.52 $
      */
     private class MathMemento {
 
@@ -629,9 +629,8 @@ public class MathListMaker extends HorizontalListMaker
     public boolean letter(final Context context, final TypesettingContext tc,
             final UnicodeChar symbol, final Locator locator) {
 
-        Count mcode = context.getMathcode(symbol);
-        insertionPoint.add(NOAD_FACTORY.getNoad((mcode == null ? 0 : mcode
-                .getValue()), tc));
+        MathCode mcode = context.getMathcode(symbol);
+        insertionPoint.add(NOAD_FACTORY.getNoad(mcode, tc));
         return false;
     }
 
