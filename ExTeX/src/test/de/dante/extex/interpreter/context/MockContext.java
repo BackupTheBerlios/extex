@@ -48,6 +48,8 @@ import de.dante.extex.interpreter.type.file.OutFile;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.type.math.MathCode;
+import de.dante.extex.interpreter.type.math.MathDelimiter;
 import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.interpreter.unit.UnitInfo;
@@ -62,7 +64,6 @@ import de.dante.extex.scanner.type.token.TokenFactoryImpl;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
-import de.dante.extex.typesetter.type.math.MathDelimiter;
 import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
 import de.dante.util.exception.GeneralException;
@@ -74,7 +75,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * classes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.37 $
+ * @version $Revision: 1.38 $
  */
 public class MockContext implements Context, TypesetterOptions {
 
@@ -450,9 +451,10 @@ public class MockContext implements Context, TypesetterOptions {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#getMathcode(de.dante.util.UnicodeChar)
+     * @see de.dante.extex.interpreter.context.Context#getMathcode(
+     *      de.dante.util.UnicodeChar)
      */
-    public Count getMathcode(final UnicodeChar uc) {
+    public MathCode getMathcode(final UnicodeChar uc) {
 
         throw new RuntimeException("unimplemented");
     }
@@ -881,10 +883,10 @@ public class MockContext implements Context, TypesetterOptions {
     /**
      * @see de.dante.extex.interpreter.context.Context#setMathcode(
      *      de.dante.util.UnicodeChar,
-     *      de.dante.extex.interpreter.type.count.Count,
+     *      MathCode,
      *      boolean)
      */
-    public void setMathcode(final UnicodeChar uc, final Count code,
+    public void setMathcode(final UnicodeChar uc, final MathCode code,
             final boolean global) {
 
         throw new RuntimeException("unimplemented");
