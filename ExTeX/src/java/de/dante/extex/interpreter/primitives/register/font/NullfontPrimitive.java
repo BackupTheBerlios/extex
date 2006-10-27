@@ -25,9 +25,11 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.ComparableCode;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.font.FontConvertible;
+import de.dante.extex.scanner.type.token.CodeToken;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
@@ -54,7 +56,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class NullfontPrimitive extends AbstractCode
         implements
@@ -87,10 +89,11 @@ public class NullfontPrimitive extends AbstractCode
      *      de.dante.extex.scanner.type.token.Token,
      *      de.dante.extex.interpreter.context.Context)
      */
-    public boolean compare(final Token token, final Context context) {
+    public boolean compare(final Token token, final Context context)
+            throws InterpreterException {
 
-        // TODO gene: compare unimplemented
-        throw new RuntimeException("unimplemented");
+        return (token instanceof CodeToken)
+                && context.getCode((CodeToken) token) == this;
     }
 
     /**
