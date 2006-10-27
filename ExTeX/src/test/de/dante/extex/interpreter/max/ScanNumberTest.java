@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the scanner routines.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class ScanNumberTest extends ExTeXLauncher {
 
@@ -419,7 +419,7 @@ public class ScanNumberTest extends ExTeXLauncher {
      *
      * @throws Exception in case of an error
      */
-    public void testscanNumber43() throws Exception {
+    public void testScanNumber43() throws Exception {
 
         assertSuccess(//--- input code ---
                 DEFINE_BRACES
@@ -438,7 +438,7 @@ public class ScanNumberTest extends ExTeXLauncher {
      *
      * @throws Exception in case of an error
      */
-    public void testscanNumber44() throws Exception {
+    public void testScanNumber44() throws Exception {
 
         assertSuccess(//--- input code ---
                 DEFINE_BRACES
@@ -457,7 +457,7 @@ public class ScanNumberTest extends ExTeXLauncher {
      *
      * @throws Exception in case of an error
      */
-    public void testscanNumber45() throws Exception {
+    public void testScanNumber45() throws Exception {
 
         assertSuccess(//--- input code ---
                 DEFINE_BRACES
@@ -467,6 +467,25 @@ public class ScanNumberTest extends ExTeXLauncher {
                 + "\\end",
                 //--- output channel ---
                 "-14516" + TERM);
+    }
+
+    /**
+     * <testcase >
+     *  This test case checks that the parser expands macros on the way.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testScanNumber46() throws Exception {
+
+        assertSuccess(//--- input code ---
+                DEFINE_BRACES
+                + "\\def\\mac{1}"
+                + "\\escapechar=\"\\mac45\\mac6\\relax"
+                + "\\the\\escapechar"
+                + "\\end",
+                //--- output channel ---
+                "83222" + TERM);
     }
 
 }
