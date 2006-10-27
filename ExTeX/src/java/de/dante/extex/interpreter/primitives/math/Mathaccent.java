@@ -54,7 +54,7 @@ import de.dante.extex.typesetter.type.noad.Noad;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class Mathaccent extends AbstractMathCode {
 
@@ -97,7 +97,7 @@ public class Mathaccent extends AbstractMathCode {
                     Long.toHexString(accent));
         }
         Noad noad = nc.scanNoad(prefix, context, source, typesetter, getName());
-        nc.add(new AccentNoad(new MathGlyph((int) accent), noad, context
+        nc.add(new AccentNoad(MathGlyph.get8(accent), noad, context
                 .getTypesettingContext()));
     }
 
