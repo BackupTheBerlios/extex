@@ -19,14 +19,17 @@
 
 package de.dante.extex.interpreter.type.math;
 
+import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.util.UnicodeChar;
+import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
  * This class represents a mathematical character. It consists of a class, a
  * family and a character code.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class MathCode {
 
@@ -55,7 +58,7 @@ public class MathCode {
     /**
      * The field <tt>mathClass</tt> contains the class.
      */
-    private int mathClass;
+    private MathClass mathClass;
 
     /**
      * The field <tt>mathFamily</tt> contains the family.
@@ -69,7 +72,7 @@ public class MathCode {
      * @param mathFamily the family
      * @param mathChar the character
      */
-    public MathCode(final int mathClass, final int mathFamily,
+    public MathCode(final MathClass mathClass, final int mathFamily,
             final UnicodeChar mathChar) {
 
         super();
@@ -83,10 +86,15 @@ public class MathCode {
      *
      * @param code the integer to analyze for the desired field values
      */
-    public MathCode(final long code) {
+    public MathCode(final long code) throws InterpreterException {
 
         super();
-        mathClass = (int) (code >> CLASS_SHIFT);
+        if (code < 0 || code > 0x8000) {
+            throw new HelpingException(LocalizerFactory
+                    .getLocalizer(MathCode.class), "TTP.InvalidCode", //
+                    Long.toString(code));
+        }
+        mathClass = MathClass.getMathClass((int) (code >> CLASS_SHIFT));
         mathFamily = (int) (code >> 8) & FAMILY_MASK;
         mathChar = UnicodeChar.get((int) (code & CHAR_MASK));
     }
@@ -106,7 +114,7 @@ public class MathCode {
      *
      * @return the mathClass.
      */
-    public int getMathClass() {
+    public MathClass getMathClass() {
 
         return mathClass;
     }
@@ -119,6 +127,15 @@ public class MathCode {
     public int getMathFamily() {
 
         return mathFamily;
+    }
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+
+        return mathClass.toString() + " " + Integer.toString(mathFamily) + " "
+                + mathChar.toString();
     }
 
 }
