@@ -26,7 +26,7 @@ import de.dante.extex.font.type.efm.EfmReader;
  * Test the EfmReader class.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class EfmReaderTest extends TestCase {
@@ -53,7 +53,7 @@ public class EfmReaderTest extends TestCase {
      */
     protected void setUp() throws Exception {
 
-        reader = new EfmReader("tmp/cmr12.efm");
+        reader = new EfmReader("develop/test/font/cmr12.efm");
 
     }
 
