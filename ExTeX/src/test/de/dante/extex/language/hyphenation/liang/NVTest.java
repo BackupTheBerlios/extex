@@ -55,7 +55,7 @@ import de.dante.util.UnicodeChar;
  * This is the test class for NV.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class NVTest extends TestCase {
 
@@ -63,7 +63,7 @@ public class NVTest extends TestCase {
      * This is a mock implementation of a font.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.13 $
+     * @version $Revision: 1.14 $
      */
     private class MockFont extends NullFont {
 
@@ -267,7 +267,7 @@ public class NVTest extends TestCase {
         public void setEfcode(UnicodeChar uc, long code) {
 
             // TODO gene: setEfcode unimplemented
-            
+
         }
 
         /**
@@ -284,7 +284,7 @@ public class NVTest extends TestCase {
      * This is a mock implementation of a glyph.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.13 $
+     * @version $Revision: 1.14 $
      */
     private class MockGlyph implements Glyph {
 
@@ -609,8 +609,10 @@ public class NVTest extends TestCase {
         font = new MockFont();
         cnf = new CachingNodeFactory();
         tokenFactory = new TokenFactoryImpl();
-        f = tokenFactory.createToken(Catcode.LETTER, 'f', Namespace.DEFAULT_NAMESPACE);
-        l = tokenFactory.createToken(Catcode.LETTER, 'l', Namespace.DEFAULT_NAMESPACE);
+        f = tokenFactory.createToken(Catcode.LETTER, 'f',
+                Namespace.DEFAULT_NAMESPACE);
+        l = tokenFactory.createToken(Catcode.LETTER, 'l',
+                Namespace.DEFAULT_NAMESPACE);
         hyphen = font.getHyphenChar();
         tc = new TypesettingContextImpl(font);
         ModifiableLanguage lang = new BaseHyphenationTable();
@@ -619,130 +621,134 @@ public class NVTest extends TestCase {
     }
 
     /**
+     * Dummy test case.
+     *
+     * @throws Exception
+     */
+    public void test00000000() throws Exception {
+
+    }
+
+    /**
      * f-fl ((f f) l)
      *
      * @throws Exception in case of an error
      */
-//    public void test1() throws Exception {
-//
-//        NodeList list = new HorizontalListNode();
-//        LigatureNode ffl = new LigatureNode(tc, UnicodeChar.get(MockFont.FFL), //
-//                getCharNode(tc, f.getChar()), //
-//                new LigatureNode(tc, UnicodeChar.get(MockFont.FF), //
-//                        getCharNode(tc, f.getChar()), //
-//                        getCharNode(tc, l.getChar())));
-//
-//        NV nv = new NV(list, hyphen, tc, cnf, //
-//                new boolean[]{false, true, false, false});
-//
-//        Count idx = new Count(0);
-//        ffl.visit(nv, idx);
-//        assertEquals(1, idx.getValue());
-//        assertEquals(1, list.size());
-//        assertTrue(list.get(0) instanceof DiscretionaryNode);
-//        DiscretionaryNode d = (DiscretionaryNode) list.get(0);
-//        assertEquals(2, d.getPreBreak().size());
-//        assertEquals(1, d.getPostBreak().size());
-//    }
-
+    //    public void test1() throws Exception {
+    //
+    //        NodeList list = new HorizontalListNode();
+    //        LigatureNode ffl = new LigatureNode(tc, UnicodeChar.get(MockFont.FFL), //
+    //                getCharNode(tc, f.getChar()), //
+    //                new LigatureNode(tc, UnicodeChar.get(MockFont.FF), //
+    //                        getCharNode(tc, f.getChar()), //
+    //                        getCharNode(tc, l.getChar())));
+    //
+    //        NV nv = new NV(list, hyphen, tc, cnf, //
+    //                new boolean[]{false, true, false, false});
+    //
+    //        Count idx = new Count(0);
+    //        ffl.visit(nv, idx);
+    //        assertEquals(1, idx.getValue());
+    //        assertEquals(1, list.size());
+    //        assertTrue(list.get(0) instanceof DiscretionaryNode);
+    //        DiscretionaryNode d = (DiscretionaryNode) list.get(0);
+    //        assertEquals(2, d.getPreBreak().size());
+    //        assertEquals(1, d.getPostBreak().size());
+    //    }
     /**
      * f-fl (f (fl))
      *
      * @throws Exception in case of an error
      */
-//    public void test2() throws Exception {
-//
-//        NodeList list = new HorizontalListNode();
-//        LigatureNode ffl = new LigatureNode(tc, UnicodeChar.get(MockFont.FFL), //
-//                new LigatureNode(tc, UnicodeChar.get(MockFont.FF), //
-//                        getCharNode(tc, f.getChar()), //
-//                        getCharNode(tc, f.getChar())), //
-//                getCharNode(tc, l.getChar()));
-//
-//        NV nv = new NV(list, hyphen, tc, cnf, //
-//                new boolean[]{false, true, false, false});
-//
-//        Count idx = new Count(0);
-//        ffl.visit(nv, idx);
-//        assertEquals(1, idx.getValue());
-//        assertEquals(1, list.size());
-//        assertTrue(list.get(0) instanceof DiscretionaryNode);
-//        DiscretionaryNode d = (DiscretionaryNode) list.get(0);
-//        assertEquals(2, d.getPreBreak().size());
-//        assertEquals(1, d.getPostBreak().size());
-//    }
-
+    //    public void test2() throws Exception {
+    //
+    //        NodeList list = new HorizontalListNode();
+    //        LigatureNode ffl = new LigatureNode(tc, UnicodeChar.get(MockFont.FFL), //
+    //                new LigatureNode(tc, UnicodeChar.get(MockFont.FF), //
+    //                        getCharNode(tc, f.getChar()), //
+    //                        getCharNode(tc, f.getChar())), //
+    //                getCharNode(tc, l.getChar()));
+    //
+    //        NV nv = new NV(list, hyphen, tc, cnf, //
+    //                new boolean[]{false, true, false, false});
+    //
+    //        Count idx = new Count(0);
+    //        ffl.visit(nv, idx);
+    //        assertEquals(1, idx.getValue());
+    //        assertEquals(1, list.size());
+    //        assertTrue(list.get(0) instanceof DiscretionaryNode);
+    //        DiscretionaryNode d = (DiscretionaryNode) list.get(0);
+    //        assertEquals(2, d.getPreBreak().size());
+    //        assertEquals(1, d.getPostBreak().size());
+    //    }
     /**
      * f-f-l ((f f) l)
      *
      * @throws Exception in case of an error
      */
-//    public void testDouble() throws Exception {
-//
-//        NodeList list = new HorizontalListNode();
-//        LigatureNode ffl = new LigatureNode(tc, UnicodeChar.get(MockFont.FFL), //
-//                getCharNode(tc, f.getChar()), //
-//                new LigatureNode(tc, UnicodeChar.get(MockFont.FF), //
-//                        getCharNode(tc, f.getChar()), //
-//                        getCharNode(tc, l.getChar())));
-//
-//        NV nv = new NV(list, hyphen, tc, cnf, //
-//                new boolean[]{false, false, false, false});
-//
-//        Count idx = new Count(0);
-//        ffl.visit(nv, idx);
-//        assertEquals(0, idx.getValue());
-//        assertEquals(1, list.size());
-//        assertEquals(list.get(0), ffl);
-//    }
-
+    //    public void testDouble() throws Exception {
+    //
+    //        NodeList list = new HorizontalListNode();
+    //        LigatureNode ffl = new LigatureNode(tc, UnicodeChar.get(MockFont.FFL), //
+    //                getCharNode(tc, f.getChar()), //
+    //                new LigatureNode(tc, UnicodeChar.get(MockFont.FF), //
+    //                        getCharNode(tc, f.getChar()), //
+    //                        getCharNode(tc, l.getChar())));
+    //
+    //        NV nv = new NV(list, hyphen, tc, cnf, //
+    //                new boolean[]{false, false, false, false});
+    //
+    //        Count idx = new Count(0);
+    //        ffl.visit(nv, idx);
+    //        assertEquals(0, idx.getValue());
+    //        assertEquals(1, list.size());
+    //        assertEquals(list.get(0), ffl);
+    //    }
     /**
      * ffl ((f f) l)
      *
      * @throws Exception in case of an error
      */
-//    public void testNone() throws Exception {
-//
-//        NodeList list = new HorizontalListNode();
-//        LigatureNode ffl = new LigatureNode(tc, UnicodeChar.get(MockFont.FFL), //
-//                getCharNode(tc, f.getChar()), //
-//                new LigatureNode(tc, UnicodeChar.get(MockFont.FF), //
-//                        getCharNode(tc, f.getChar()), //
-//                        getCharNode(tc, l.getChar())));
-//
-//        NV nv = new NV(list, hyphen, tc, cnf, //
-//                new boolean[]{false, false, false, false});
-//
-//        Count idx = new Count(0);
-//        ffl.visit(nv, idx);
-//        assertEquals(0, idx.getValue());
-//        assertEquals(1, list.size());
-//        assertEquals(list.get(0), ffl);
-//    }
-
+    //    public void testNone() throws Exception {
+    //
+    //        NodeList list = new HorizontalListNode();
+    //        LigatureNode ffl = new LigatureNode(tc, UnicodeChar.get(MockFont.FFL), //
+    //                getCharNode(tc, f.getChar()), //
+    //                new LigatureNode(tc, UnicodeChar.get(MockFont.FF), //
+    //                        getCharNode(tc, f.getChar()), //
+    //                        getCharNode(tc, l.getChar())));
+    //
+    //        NV nv = new NV(list, hyphen, tc, cnf, //
+    //                new boolean[]{false, false, false, false});
+    //
+    //        Count idx = new Count(0);
+    //        ffl.visit(nv, idx);
+    //        assertEquals(0, idx.getValue());
+    //        assertEquals(1, list.size());
+    //        assertEquals(list.get(0), ffl);
+    //    }
     /**
      * -ffl ((f f) l)
      *
      * @throws Exception in case of an error
      */
-//    public void testPre() throws Exception {
-//
-//        NodeList list = new HorizontalListNode();
-//        LigatureNode ffl = new LigatureNode(tc, UnicodeChar.get(MockFont.FFL), //
-//                getCharNode(tc, f.getChar()), //
-//                new LigatureNode(tc, UnicodeChar.get(MockFont.FF), //
-//                        getCharNode(tc, f.getChar()), //
-//                        getCharNode(tc, l.getChar())));
-//
-//        NV nv = new NV(list, hyphen, tc, cnf, //
-//                new boolean[]{true, false, false, false});
-//
-//        Count idx = new Count(0);
-//        ffl.visit(nv, idx);
-//        assertEquals(1, idx.getValue());
-//        assertEquals(2, list.size());
-//        assertTrue(list.get(0) instanceof DiscretionaryNode);
-//        assertEquals(list.get(1), ffl);
-//    }
-
+    //    public void testPre() throws Exception {
+    //
+    //        NodeList list = new HorizontalListNode();
+    //        LigatureNode ffl = new LigatureNode(tc, UnicodeChar.get(MockFont.FFL), //
+    //                getCharNode(tc, f.getChar()), //
+    //                new LigatureNode(tc, UnicodeChar.get(MockFont.FF), //
+    //                        getCharNode(tc, f.getChar()), //
+    //                        getCharNode(tc, l.getChar())));
+    //
+    //        NV nv = new NV(list, hyphen, tc, cnf, //
+    //                new boolean[]{true, false, false, false});
+    //
+    //        Count idx = new Count(0);
+    //        ffl.visit(nv, idx);
+    //        assertEquals(1, idx.getValue());
+    //        assertEquals(2, list.size());
+    //        assertTrue(list.get(0) instanceof DiscretionaryNode);
+    //        assertEquals(list.get(1), ffl);
+    //    }
 }
