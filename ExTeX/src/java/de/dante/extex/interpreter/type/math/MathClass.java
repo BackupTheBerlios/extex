@@ -17,17 +17,18 @@
  *
  */
 
-package de.dante.extex.typesetter.type.math;
+package de.dante.extex.interpreter.type.math;
 
 import java.io.ObjectStreamException;
 import java.io.Serializable;
+
 
 /**
  * This class provides the classification of mathematical characters.
  * In fact it is a finite enumeration which exposes the values as constants.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.1 $
  */
 public abstract class MathClass implements Serializable {
 
@@ -35,7 +36,7 @@ public abstract class MathClass implements Serializable {
      * This is a inner class for a binary operator.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.4 $
+     * @version $Revision: 1.1 $
      */
     private static final class BinaryMathClass extends MathClass {
 
@@ -83,7 +84,7 @@ public abstract class MathClass implements Serializable {
      * This is a inner class for closing.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.4 $
+     * @version $Revision: 1.1 $
      */
     private static final class ClosingMathClass extends MathClass {
 
@@ -131,7 +132,7 @@ public abstract class MathClass implements Serializable {
      * This is a inner class for large operators.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.4 $
+     * @version $Revision: 1.1 $
      */
     private static final class LargeMathClass extends MathClass {
 
@@ -179,7 +180,7 @@ public abstract class MathClass implements Serializable {
      * This is a inner class for opening.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.4 $
+     * @version $Revision: 1.1 $
      */
     private static final class OpeningMathClass extends MathClass {
 
@@ -227,7 +228,7 @@ public abstract class MathClass implements Serializable {
      * This is a inner class for ordinary characters.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.4 $
+     * @version $Revision: 1.1 $
      */
     private static final class OrdinaryMathClass extends MathClass {
 
@@ -275,7 +276,7 @@ public abstract class MathClass implements Serializable {
      * This is a inner class for punctation marks.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.4 $
+     * @version $Revision: 1.1 $
      */
     private static final class PunctationMathClass extends MathClass {
 
@@ -323,7 +324,7 @@ public abstract class MathClass implements Serializable {
      * This is a inner class for relation symbols.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.4 $
+     * @version $Revision: 1.1 $
      */
     private static final class RelationMathClass extends MathClass {
 
@@ -371,7 +372,7 @@ public abstract class MathClass implements Serializable {
      * This is a inner class for variable width characters.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.4 $
+     * @version $Revision: 1.1 $
      */
     private static final class VariableMathClass extends MathClass {
 
@@ -470,7 +471,7 @@ public abstract class MathClass implements Serializable {
      * @see MathClass#getMathClass(int)
      */
     private static final MathClass[] MC = {ORDINARY, LARGE, BINARY, RELATION,
-            OPENING, CLOSING, PUNCTUATION, VARIABLE};
+            OPENING, CLOSING, PUNCTUATION, VARIABLE, null};
 
     /**
      * Factory method for the math class which maps the <logo>TeX</logo>
