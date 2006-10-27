@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -57,7 +57,7 @@ import java.util.Iterator;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface Configuration {
 
@@ -305,9 +305,18 @@ public interface Configuration {
      * configuration and append them to a given StringList.
      *
      * @param key the name of the tags
-     * @param list the list tol append the values to
+     * @param list the list to append the values to
      */
     void getValues(StringList list, String key);
+
+    /**
+     * Get an iterator for all sub-configurations.
+     *
+     * @return an iterator for all sub-configurations
+     *
+     * @throws ConfigurationException in case that something went wrong
+     */
+    Iterator iterator() throws ConfigurationException;
 
     /**
      * Retrieve an iterator over all items of a sub-configuration.

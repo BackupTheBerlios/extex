@@ -48,14 +48,60 @@ import de.dante.util.framework.configuration.exception.ConfigurationSyntaxExcept
  * This class provides means to deal with configurations stored as XML files.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class ConfigurationXMLImpl implements Configuration, Serializable {
 
     /**
-     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     * TODO gene: missing JavaDoc.
+     *
+     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+     * @version $Revision: 1.7 $
      */
-    protected static final long serialVersionUID = 1L;
+    private class ConfigIterator implements Iterator {
+
+        /**
+         * The field <tt>node</tt> contains the ...
+         */
+        private Node node;
+
+        /**
+         * Creates a new object.
+         *
+         * @param node
+         */
+        protected ConfigIterator(final Node node) {
+
+            super();
+            this.node = node;
+        }
+
+        /**
+         * @see java.util.Iterator#hasNext()
+         */
+        public boolean hasNext() {
+
+            return node.getNextSibling() != null;
+        }
+
+        /**
+         * @see java.util.Iterator#next()
+         */
+        public Object next() {
+
+            node = node.getNextSibling();
+            return node;
+        }
+
+        /**
+         * @see java.util.Iterator#remove()
+         */
+        public void remove() {
+
+            throw new UnsupportedOperationException();
+        }
+
+    }
 
     /**
      * The field <tt>ext</tt> contains extensions to use when searching for
@@ -68,6 +114,11 @@ public class ConfigurationXMLImpl implements Configuration, Serializable {
      * configuration files.
      */
     private static final String[] PATHS = {"", "config/"};
+
+    /**
+     * The constant <tt>serialVersionUID</tt> contains the id for serialization.
+     */
+    protected static final long serialVersionUID = 1L;
 
     /**
      * Recursively collect the Xpath from the root to the given node.
@@ -288,40 +339,6 @@ public class ConfigurationXMLImpl implements Configuration, Serializable {
         }
 
         return null;
-    }
-
-    /**
-     * Recursively follow the src attribute if present.
-     *
-     * @param name the name of the current tag
-     * @param node the current DOM node
-     *
-     * @return the configuration
-     *
-     * @throws ConfigurationInvalidResourceException in case of an invalid
-     *  resource
-     * @throws ConfigurationNotFoundException in case of a missing
-     *  configuration
-     * @throws ConfigurationSyntaxException in case of an syntax error
-     * @throws ConfigurationIOException in case of an IO error
-     */
-    protected Configuration src(final String name, final Node node)
-            throws ConfigurationInvalidResourceException,
-                ConfigurationNotFoundException,
-                ConfigurationSyntaxException,
-                ConfigurationIOException {
-
-        String src = ((Element) root).getAttribute("src");
-
-        if (src == null || src.equals("")) {
-            return this;
-        }
-        Configuration cfg = new ConfigurationXMLImpl(base + src)
-                .src(name, root);
-        if (!((ConfigurationXMLImpl) cfg).root.getNodeName().equals(name) ) {
-            throw new ConfigurationNotFoundException(name, src);
-        }
-        return cfg;
     }
 
     /**
@@ -654,6 +671,18 @@ public class ConfigurationXMLImpl implements Configuration, Serializable {
     }
 
     /**
+     * Get an iterator for all sub-configurations.
+     *
+     * @return an iterator for all sub-configurations
+     *
+     * @see de.dante.util.framework.configuration.Configuration#iterator()
+     */
+    public Iterator iterator() {
+
+        return new ConfigIterator(root.getFirstChild());
+    }
+
+    /**
      * Retrieve an iterator over all items of a sub-configuration.
      *
      * @param key the name of the sub-configuration
@@ -766,6 +795,40 @@ public class ConfigurationXMLImpl implements Configuration, Serializable {
             throw new ConfigurationSyntaxException(e.getLocalizedMessage(),
                     theResource);
         }
+    }
+
+    /**
+     * Recursively follow the src attribute if present.
+     *
+     * @param name the name of the current tag
+     * @param node the current DOM node
+     *
+     * @return the configuration
+     *
+     * @throws ConfigurationInvalidResourceException in case of an invalid
+     *  resource
+     * @throws ConfigurationNotFoundException in case of a missing
+     *  configuration
+     * @throws ConfigurationSyntaxException in case of an syntax error
+     * @throws ConfigurationIOException in case of an IO error
+     */
+    protected Configuration src(final String name, final Node node)
+            throws ConfigurationInvalidResourceException,
+                ConfigurationNotFoundException,
+                ConfigurationSyntaxException,
+                ConfigurationIOException {
+
+        String src = ((Element) root).getAttribute("src");
+
+        if (src == null || src.equals("")) {
+            return this;
+        }
+        Configuration cfg = new ConfigurationXMLImpl(base + src)
+                .src(name, root);
+        if (!((ConfigurationXMLImpl) cfg).root.getNodeName().equals(name)) {
+            throw new ConfigurationNotFoundException(name, src);
+        }
+        return cfg;
     }
 
     /**

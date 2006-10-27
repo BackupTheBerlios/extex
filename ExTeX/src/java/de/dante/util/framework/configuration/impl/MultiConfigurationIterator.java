@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.util.framework.configuration.impl;
 
 import java.util.Iterator;
@@ -27,7 +28,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This class provides an Iterator over multiple Configurations.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class MultiConfigurationIterator implements Iterator {
 
@@ -62,7 +63,7 @@ public class MultiConfigurationIterator implements Iterator {
      * @throws ConfigurationException in case of an error in a sub-iterator
      */
     public MultiConfigurationIterator(final Configuration[] theConfigs,
-        final String theKey) throws ConfigurationException {
+            final String theKey) throws ConfigurationException {
 
         super();
         this.configs = theConfigs;
@@ -117,7 +118,11 @@ public class MultiConfigurationIterator implements Iterator {
 
         while (++ptr < configs.length) {
             try {
-                iter = configs[ptr].iterator(key);
+                if (key != null) {
+                    iter = configs[ptr].iterator(key);
+                } else {
+                    iter = configs[ptr].iterator();
+                }
             } catch (ConfigurationException e) {
                 throw new RuntimeException(e);
             }
