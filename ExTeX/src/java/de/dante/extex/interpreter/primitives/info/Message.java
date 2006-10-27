@@ -25,6 +25,7 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
@@ -40,24 +41,32 @@ import de.dante.util.framework.logger.LogEnabled;
  *  The primitive <tt>\message</tt> takes as argument a list of tokens enclosed
  *  in braces and writes them to output stream and into the log file.
  * </p>
+ * <p>
+ *  If the keywords <tt>to log</tt> are given then the message is written to the
+ *  log file only. This is an extension not present in <logo>TeX</logo> and
+ *  friends.
+ * </p>
  *
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;message&rang;
  *      &rarr; <tt>\message</tt> <tt>{</tt> &lang;unprotected tokens&rang; <tt>}</tt>
+ *       |   <tt>\message</tt> <tt>to</tt> <tt>log</tt> <tt>{</tt> &lang;unprotected tokens&rang; <tt>}</tt>
  *       </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \message{Hello World!}  </pre>
+ *  <pre class="TeXSample">
+ *    \message to log {Hello World!}  </pre>
  *
  *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class Message extends AbstractCode implements LogEnabled {
 
@@ -105,9 +114,24 @@ public class Message extends AbstractCode implements LogEnabled {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
+        boolean log = false;
+
+        if (source.getKeyword(context, "to")) {
+
+            if (source.getKeyword(context, "log")) {
+                log = true;
+            } else {
+                throw new HelpingException(getLocalizer(), "logMissing");
+            }
+        }
+
         Tokens toks = source.scanUnprotectedTokens(context, true, false,
                 getName());
-        logger.severe(" " + toks.toText());
+        if (log) {
+            logger.fine(" " + toks.toText());
+        } else {
+            logger.severe(" " + toks.toText());
+        }
     }
 
 }
