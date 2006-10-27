@@ -77,6 +77,8 @@ import de.dante.extex.interpreter.type.file.OutFile;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.type.math.MathCode;
+import de.dante.extex.interpreter.type.math.MathDelimiter;
 import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.interpreter.type.tokens.FixedTokens;
 import de.dante.extex.interpreter.type.tokens.Tokens;
@@ -92,7 +94,6 @@ import de.dante.extex.scanner.type.token.TokenFactory;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
-import de.dante.extex.typesetter.type.math.MathDelimiter;
 import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
 import de.dante.util.exception.GeneralException;
@@ -141,7 +142,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.120 $
+ * @version $Revision: 1.121 $
  */
 public class ContextImpl
         implements
@@ -876,7 +877,7 @@ public class ContextImpl
      * @see de.dante.extex.interpreter.context.Context#getMathcode(
      *      de.dante.util.UnicodeChar)
      */
-    public Count getMathcode(final UnicodeChar c) {
+    public MathCode getMathcode(final UnicodeChar c) {
 
         return group.getMathcode(c);
     }
@@ -1813,9 +1814,9 @@ public class ContextImpl
     /**
      * @see de.dante.extex.interpreter.context.Context#setMathcode(
      *      de.dante.util.UnicodeChar,
-     *      Count, boolean)
+     *      MathCode, boolean)
      */
-    public void setMathcode(final UnicodeChar c, final Count code,
+    public void setMathcode(final UnicodeChar c, final MathCode code,
             final boolean global) {
 
         group.setMathcode(c, code, global);

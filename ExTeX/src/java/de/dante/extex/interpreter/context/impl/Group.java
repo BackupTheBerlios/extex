@@ -34,13 +34,14 @@ import de.dante.extex.interpreter.type.file.InFile;
 import de.dante.extex.interpreter.type.file.OutFile;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.type.math.MathCode;
+import de.dante.extex.interpreter.type.math.MathDelimiter;
 import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.token.CodeToken;
 import de.dante.extex.scanner.type.token.Token;
-import de.dante.extex.typesetter.type.math.MathDelimiter;
 import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
 
@@ -55,7 +56,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.41 $
+ * @version $Revision: 1.42 $
  */
 public interface Group extends Tokenizer, Serializable {
 
@@ -219,7 +220,7 @@ public interface Group extends Tokenizer, Serializable {
      *
      * @return the math code for the given character
      */
-    Count getMathcode(UnicodeChar uc);
+    MathCode getMathcode(UnicodeChar uc);
 
     /**
      * Getter for the named muskip register in the current group. The name can
@@ -493,7 +494,7 @@ public interface Group extends Tokenizer, Serializable {
      * @param global the indicator for the scope; <code>true</code> means all
      *  groups; otherwise the current group is affected only
      */
-    void setMathcode(UnicodeChar uc, Count code, boolean global);
+    void setMathcode(UnicodeChar uc, MathCode code, boolean global);
 
     /**
      * Setter for the muskip register in the requested groups.

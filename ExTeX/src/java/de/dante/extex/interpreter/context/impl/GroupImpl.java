@@ -38,13 +38,15 @@ import de.dante.extex.interpreter.type.file.InFile;
 import de.dante.extex.interpreter.type.file.OutFile;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.type.math.MathClass;
+import de.dante.extex.interpreter.type.math.MathCode;
+import de.dante.extex.interpreter.type.math.MathDelimiter;
 import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.token.CodeToken;
 import de.dante.extex.scanner.type.token.Token;
-import de.dante.extex.typesetter.type.math.MathDelimiter;
 import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
 
@@ -55,7 +57,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.69 $
+ * @version $Revision: 1.70 $
  */
 public class GroupImpl implements Group {
 
@@ -616,24 +618,31 @@ public class GroupImpl implements Group {
      * @see de.dante.extex.interpreter.context.impl.Group#getMathcode(
      *      de.dante.util.UnicodeChar)
      */
-    public Count getMathcode(final UnicodeChar c) {
+    public MathCode getMathcode(final UnicodeChar c) {
 
         if (mathcodeMap != null) {
-            Count mathcode = (Count) (mathcodeMap.get(c));
+            MathCode mathcode = (MathCode) (mathcodeMap.get(c));
             if (mathcode != null) {
                 return mathcode;
             }
         }
 
+        MathCode mc = null;
+
         if (next != null) {
             return next.getMathcode(c);
         } else if (c.isDigit()) {
-            return new Count(c.getCodePoint() + MATHCODE_DIGIT_OFFSET);
+            //return new Count(c.getCodePoint() + MATHCODE_DIGIT_OFFSET);
+            mc = new MathCode(MathClass.VARIABLE, 0, c);
         } else if (c.isLetter()) {
-            return new Count(c.getCodePoint() + MATHCODE_LETTER_OFFSET);
+            //return new Count(c.getCodePoint() + MATHCODE_LETTER_OFFSET);
+            mc = new MathCode(MathClass.VARIABLE, 1, c);
         } else {
-            return new Count(c.getCodePoint());
+            mc = new MathCode(MathClass.ORDINARY, 0, c);
         }
+
+        mathcodeMap.put(c, mc);
+        return mc;
     }
 
     /**
@@ -1065,9 +1074,9 @@ public class GroupImpl implements Group {
     /**
      * @see de.dante.extex.interpreter.context.impl.Group#setMathcode(
      *      de.dante.util.UnicodeChar,
-     *      de.dante.extex.interpreter.type.count.Count, boolean)
+     *      MathCode, boolean)
      */
-    public void setMathcode(final UnicodeChar c, final Count code,
+    public void setMathcode(final UnicodeChar c, final MathCode code,
             final boolean global) {
 
         if (mathcodeMap == null) {

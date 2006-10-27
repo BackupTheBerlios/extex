@@ -33,6 +33,8 @@ import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.type.math.MathCode;
+import de.dante.extex.interpreter.type.math.MathDelimiter;
 import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.interpreter.unit.UnitInfo;
 import de.dante.extex.language.Language;
@@ -42,7 +44,6 @@ import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.scanner.type.token.TokenFactory;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
-import de.dante.extex.typesetter.type.math.MathDelimiter;
 import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
@@ -53,7 +54,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.77 $
+ * @version $Revision: 1.78 $
  */
 public interface Context
         extends
@@ -297,9 +298,9 @@ public interface Context
      *
      * @return the math code
      *
-     * @see #setMathcode(UnicodeChar, Count, boolean)
+     * @see #setMathcode(UnicodeChar, MathCode, boolean)
      */
-    Count getMathcode(UnicodeChar uc);
+    MathCode getMathcode(UnicodeChar uc);
 
     /**
      * Getter for a muskip register.
@@ -655,7 +656,7 @@ public interface Context
      *
      * @see #getMathcode(UnicodeChar)
      */
-    void setMathcode(UnicodeChar uc, Count code, boolean global);
+    void setMathcode(UnicodeChar uc, MathCode code, boolean global);
 
     /**
      * Setter for a muskip register.
