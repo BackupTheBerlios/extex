@@ -366,7 +366,7 @@
     <define name="mathclose"
             class="de.dante.extex.interpreter.primitives.math.symbol.Mathclose"/>
     <define name="mathcode"
-            class="de.dante.extex.interpreter.primitives.math.Mathcode"/>
+            class="de.dante.extex.interpreter.primitives.math.MathcodePrimitive"/>
     <define name="mathinner"
             class="de.dante.extex.interpreter.primitives.math.symbol.Mathinner"/>
     <define name="mathop"
