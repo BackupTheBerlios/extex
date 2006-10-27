@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -16,32 +16,33 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.arithmetic;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-
 /**
- * TODO gene: missing JavaDoc.
+ * This is a test suite for arithmetic primitives.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class AllTests {
 
-    public static void main(final String[] args) {
-
-    }
-
+    /**
+     * Define the test suite
+     *
+     * @return the tests
+     */
     public static Test suite() {
 
         TestSuite suite = new TestSuite(
                 "Test for de.dante.extex.interpreter.primitives.arithmetic");
         //$JUnit-BEGIN$
-        suite.addTestSuite(MultiplyTest.class);
-        suite.addTestSuite(DivideTest.class);
         suite.addTestSuite(AdvanceTest.class);
+        suite.addTestSuite(DivideTest.class);
+        suite.addTestSuite(MultiplyTest.class);
         //$JUnit-END$
         return suite;
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -16,29 +16,35 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.group;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-
 /**
  * Test suite for the group primitives.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class AllTests {
 
+    /**
+     * Define the test suite
+     *
+     * @return the tests
+     */
     public static Test suite() {
 
         TestSuite suite = new TestSuite(
                 "Test for de.dante.extex.interpreter.primitives.group");
         //$JUnit-BEGIN$
-        suite.addTestSuite(EndgroupTest.class);
         suite.addTestSuite(AftergroupTest.class);
-        suite.addTestSuite(CurrentgrouplevelTest.class);
         suite.addTestSuite(BegingroupTest.class);
+        suite.addTestSuite(CurrentgrouplevelTest.class);
+        suite.addTestSuite(CurrentgrouptypeTest.class);
+        suite.addTestSuite(EndgroupTest.class);
         //$JUnit-END$
         return suite;
     }
