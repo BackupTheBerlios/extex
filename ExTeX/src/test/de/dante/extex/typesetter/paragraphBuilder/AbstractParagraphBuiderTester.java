@@ -70,7 +70,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * This is the abstract base class to test a paragraph builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public abstract class AbstractParagraphBuiderTester extends TestCase {
 
@@ -78,7 +78,7 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
      * Inner class for the typesetter options.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.10 $
+     * @version $Revision: 1.11 $
      */
     private class MockOptions implements TypesetterOptions {
 
@@ -242,113 +242,6 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
      * The field <tt>tc</tt> contains the mock typesetting context.
      */
     private TypesettingContextImpl tc = new TypesettingContextImpl(new Font() {
-
-        {
-            tc.setLanguage(new Language() {
-
-                /**
-                 * The field <tt>serialVersionUID</tt> contains the ...
-                 */
-                private static final long serialVersionUID = 1L;
-
-                public void addHyphenation(final UnicodeCharList word,
-                        final TypesetterOptions context)
-                        throws HyphenationException {
-
-                    throw new RuntimeException("unimplemented");
-                }
-
-                public void addPattern(final Tokens pattern)
-                        throws HyphenationException {
-
-                    throw new RuntimeException("unimplemented");
-                }
-
-                public int findWord(final NodeList nodes, final int start,
-                        final UnicodeCharList word) throws HyphenationException {
-
-                    throw new RuntimeException("unimplemented");
-                }
-
-                public long getLeftHyphenmin() throws HyphenationException {
-
-                    return 0;
-                }
-
-                public UnicodeChar getLigature(final UnicodeChar c1,
-                        final UnicodeChar c2, Font f)
-                        throws HyphenationException {
-
-                    return f.getLigature(c1, c2);
-                }
-
-                public String getName() {
-
-                    throw new RuntimeException("unimplemented");
-                }
-
-                public long getRightHyphenmin() throws HyphenationException {
-
-                    return 0;
-                }
-
-                public boolean hyphenate(NodeList nodelist,
-                        TypesetterOptions context, UnicodeChar hyphen,
-                        int start, boolean forall, NodeFactory nodeFactory)
-                        throws HyphenationException {
-
-                    // TODO gene: hyphenate unimplemented
-                    return false;
-                }
-
-                public int insertLigatures(final NodeList list, final int start)
-                        throws HyphenationException {
-
-                    // TODO gene: insertLigatures unimplemented
-                    return 0;
-                }
-
-                public void insertShy(final NodeList nodes,
-                        final int insertionPoint, final boolean[] spec,
-                        final CharNode hyphenNode) throws HyphenationException {
-
-                    throw new RuntimeException("unimplemented");
-                }
-
-                public boolean isHyphenActive() throws HyphenationException {
-
-                    return false;
-                }
-
-                public UnicodeCharList normalize(final UnicodeCharList word,
-                        final TypesetterOptions options)
-                        throws HyphenationException {
-
-                    throw new RuntimeException("unimplemented");
-                }
-
-                public void setHyphenActive(final boolean active)
-                        throws HyphenationException {
-
-                }
-
-                public void setLeftHyphenmin(final long left)
-                        throws HyphenationException {
-
-                }
-
-                public void setName(final String name) {
-
-                    throw new RuntimeException("unimplemented");
-                }
-
-                public void setRightHyphenmin(final long right)
-                        throws HyphenationException {
-
-                }
-
-            });
-        }
 
         /**
          * The field <tt>hyphenChar</tt> contains the ...
@@ -755,6 +648,111 @@ public abstract class AbstractParagraphBuiderTester extends TestCase {
             skewChar = skew;
         }
     });
+    {
+        tc.setLanguage(new Language() {
+
+            /**
+             * The field <tt>serialVersionUID</tt> contains the ...
+             */
+            private static final long serialVersionUID = 1L;
+
+            public void addHyphenation(final UnicodeCharList word,
+                    final TypesetterOptions context)
+                    throws HyphenationException {
+
+                throw new RuntimeException("unimplemented");
+            }
+
+            public void addPattern(final Tokens pattern)
+                    throws HyphenationException {
+
+                throw new RuntimeException("unimplemented");
+            }
+
+            public int findWord(final NodeList nodes, final int start,
+                    final UnicodeCharList word) throws HyphenationException {
+
+                throw new RuntimeException("unimplemented");
+            }
+
+            public long getLeftHyphenmin() throws HyphenationException {
+
+                return 0;
+            }
+
+            public UnicodeChar getLigature(final UnicodeChar c1,
+                    final UnicodeChar c2, Font f) throws HyphenationException {
+
+                return f.getLigature(c1, c2);
+            }
+
+            public String getName() {
+
+                throw new RuntimeException("unimplemented");
+            }
+
+            public long getRightHyphenmin() throws HyphenationException {
+
+                return 0;
+            }
+
+            public boolean hyphenate(NodeList nodelist,
+                    TypesetterOptions context, UnicodeChar hyphen, int start,
+                    boolean forall, NodeFactory nodeFactory)
+                    throws HyphenationException {
+
+                // TODO gene: hyphenate unimplemented
+                return false;
+            }
+
+            public int insertLigatures(final NodeList list, final int start)
+                    throws HyphenationException {
+
+                // TODO gene: insertLigatures unimplemented
+                return 0;
+            }
+
+            public void insertShy(final NodeList nodes,
+                    final int insertionPoint, final boolean[] spec,
+                    final CharNode hyphenNode) throws HyphenationException {
+
+                throw new RuntimeException("unimplemented");
+            }
+
+            public boolean isHyphenActive() throws HyphenationException {
+
+                return false;
+            }
+
+            public UnicodeCharList normalize(final UnicodeCharList word,
+                    final TypesetterOptions options)
+                    throws HyphenationException {
+
+                throw new RuntimeException("unimplemented");
+            }
+
+            public void setHyphenActive(final boolean active)
+                    throws HyphenationException {
+
+            }
+
+            public void setLeftHyphenmin(final long left)
+                    throws HyphenationException {
+
+            }
+
+            public void setName(final String name) {
+
+                throw new RuntimeException("unimplemented");
+            }
+
+            public void setRightHyphenmin(final long right)
+                    throws HyphenationException {
+
+            }
+
+        });
+    }
 
     /**
      * <testcase>
