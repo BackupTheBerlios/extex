@@ -34,6 +34,7 @@ import de.dante.extex.scanner.type.token.TokenFactory;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
+import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
 import de.dante.util.UnicodeChar;
 import de.dante.util.exception.GeneralException;
@@ -42,7 +43,7 @@ import de.dante.util.exception.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class ParagraphBuilderImplTest extends TestCase {
 
@@ -50,7 +51,7 @@ public class ParagraphBuilderImplTest extends TestCase {
      * Inner class for the typesetter options.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.13 $
+     * @version $Revision: 1.14 $
      */
     private class MockOptions implements TypesetterOptions {
 
@@ -193,13 +194,21 @@ public class ParagraphBuilderImplTest extends TestCase {
     }
 
     /**
-     * ...
+     * TODO gene: missing JavaDoc
+     *
+     * @throws Exception
      */
     public void test1() throws Exception {
 
         ParagraphBuilder builder = new ParagraphBuilderImpl();
         builder.setOptions(new MockOptions());
         HorizontalListNode nodes = new HorizontalListNode();
-        assertEquals(0, builder.build(nodes).size());
+        NodeList n = builder.build(nodes);
+        assertEquals(//
+                "\\vbox(0.0pt+0.0pt)x0.01526pt\n"
+                + ".\\hbox(0.0pt+0.0pt)x0.01526pt\n"
+                + "..\\penalty 10000\n"
+                + "..\\glue0.01526pt",
+                n.toString());
     }
 }
