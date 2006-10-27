@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\message</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class MessageTest extends NoFlagsPrimitiveTester {
 
@@ -235,4 +235,39 @@ public class MessageTest extends NoFlagsPrimitiveTester {
                 //--- log message ---
                 "abc");
     }
+
+    /**
+     * <testcase primitive="\message">
+     *  Test case checking that \message ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testMessageUndef1() throws Exception {
+
+        assertFailure(//--- input code ---
+                DEFINE_BRACES
+                + "\\message{\\x}",
+                //--- log message ---
+                "Undefined control sequence the control sequence \\x");
+    }
+
+
+    /**
+     * <testcase primitive="\message">
+     *  Test case checking that \message ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testMessageProtected1() throws Exception {
+
+        assertFailure(//--- input code ---
+                DEFINE_BRACES
+                + "\\protected\\def\\x{abc}"
+                + "\\message{\\x}",
+                //--- log message ---
+                "\\x");
+    }
+
 }
