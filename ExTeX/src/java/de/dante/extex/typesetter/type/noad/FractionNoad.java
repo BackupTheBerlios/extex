@@ -25,9 +25,9 @@ import de.dante.extex.interpreter.context.tc.TypesettingContext;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
+import de.dante.extex.interpreter.type.math.MathDelimiter;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
-import de.dante.extex.typesetter.type.math.MathDelimiter;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
 import de.dante.extex.typesetter.type.noad.util.MathFontParameter;
 import de.dante.extex.typesetter.type.node.GlueNode;
@@ -43,7 +43,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [683]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class FractionNoad extends AbstractNoad {
 

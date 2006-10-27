@@ -22,9 +22,9 @@ package de.dante.extex.typesetter.type.noad;
 import java.util.logging.Logger;
 
 import de.dante.extex.interpreter.context.tc.TypesettingContext;
+import de.dante.extex.interpreter.type.math.MathDelimiter;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
-import de.dante.extex.typesetter.type.math.MathDelimiter;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
@@ -32,7 +32,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This noad represents mathematical material under a radical sign.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class RadicalNoad extends AbstractNucleusNoad {
 

@@ -22,9 +22,9 @@ package de.dante.extex.typesetter.type.noad;
 import java.util.logging.Logger;
 
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.math.MathDelimiter;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
-import de.dante.extex.typesetter.type.math.MathDelimiter;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
@@ -35,7 +35,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * the surrounding material.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class MiddleNoad extends LeftNoad {
 

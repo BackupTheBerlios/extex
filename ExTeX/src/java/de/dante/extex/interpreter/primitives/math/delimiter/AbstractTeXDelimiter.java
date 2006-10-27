@@ -30,13 +30,13 @@ import de.dante.extex.interpreter.primitives.math.AbstractMathCode;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.count.Count;
+import de.dante.extex.interpreter.type.math.MathClass;
+import de.dante.extex.interpreter.type.math.MathClassVisitor;
+import de.dante.extex.interpreter.type.math.MathDelimiter;
 import de.dante.extex.scanner.type.token.CodeToken;
 import de.dante.extex.scanner.type.token.OtherToken;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.extex.typesetter.type.math.MathClass;
-import de.dante.extex.typesetter.type.math.MathClassVisitor;
-import de.dante.extex.typesetter.type.math.MathDelimiter;
 import de.dante.extex.typesetter.type.noad.MathGlyph;
 import de.dante.util.UnicodeChar;
 import de.dante.util.framework.i18n.Localizer;
@@ -48,7 +48,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * to and from their <logo>TeX</logo> encoding as numbers to abstract math code.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public abstract class AbstractTeXDelimiter extends AbstractMathCode {
 
