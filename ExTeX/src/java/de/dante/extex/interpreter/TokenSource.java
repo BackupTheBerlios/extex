@@ -47,7 +47,7 @@ import de.dante.util.exception.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.78 $
+ * @version $Revision: 1.79 $
  */
 public interface TokenSource {
 
@@ -427,7 +427,7 @@ public interface TokenSource {
      * </p>
      *
      * <doc type="syntax" name="character">
-     * <h3>A Character</h3>
+     * <h3>A Character Code</h3>
      *
      * <pre class="syntax">
      *   &lang;character code&rang; </pre>
