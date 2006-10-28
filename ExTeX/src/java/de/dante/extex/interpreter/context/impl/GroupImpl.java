@@ -47,6 +47,7 @@ import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.token.CodeToken;
 import de.dante.extex.scanner.type.token.Token;
+import de.dante.extex.typesetter.type.noad.MathGlyph;
 import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
 
@@ -57,7 +58,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.70 $
+ * @version $Revision: 1.71 $
  */
 public class GroupImpl implements Group {
 
@@ -627,20 +628,24 @@ public class GroupImpl implements Group {
             }
         }
 
-        MathCode mc = null;
+        MathCode mc;
 
         if (next != null) {
             return next.getMathcode(c);
+
         } else if (c.isDigit()) {
             //return new Count(c.getCodePoint() + MATHCODE_DIGIT_OFFSET);
-            mc = new MathCode(MathClass.VARIABLE, 0, c);
+            mc = new MathCode(MathClass.VARIABLE, new MathGlyph(0, c));
         } else if (c.isLetter()) {
             //return new Count(c.getCodePoint() + MATHCODE_LETTER_OFFSET);
-            mc = new MathCode(MathClass.VARIABLE, 1, c);
+            mc = new MathCode(MathClass.VARIABLE, new MathGlyph(1, c));
         } else {
-            mc = new MathCode(MathClass.ORDINARY, 0, c);
+            mc = new MathCode(MathClass.ORDINARY, new MathGlyph(0, c));
         }
 
+        if (mathcodeMap == null) {
+            mathcodeMap = new HashMap();
+        }
         mathcodeMap.put(c, mc);
         return mc;
     }
