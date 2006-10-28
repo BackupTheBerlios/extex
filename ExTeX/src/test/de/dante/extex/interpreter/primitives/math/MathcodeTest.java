@@ -29,7 +29,7 @@ import de.dante.util.UnicodeChar;
  * This is a test suite for the primitive <tt>\mathcode</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class MathcodeTest extends NoFlagsButGlobalPrimitiveTester {
 
@@ -56,7 +56,7 @@ public class MathcodeTest extends NoFlagsButGlobalPrimitiveTester {
         //--- input code ---
                 "\\mathcode`. \"10041" + " \\end",
                 //--- output message ---
-                "Invalid code (65601), should be in the range 0..32768");
+                "Bad mathchar (65601)");
     }
 
     /**
@@ -72,7 +72,7 @@ public class MathcodeTest extends NoFlagsButGlobalPrimitiveTester {
         //--- input code ---
                 "\\mathcode`. 32769" + " \\end",
                 //--- output message ---
-                "Invalid code (32769), should be in the range 0..32768");
+                "Bad mathchar (32769)");
     }
 
     /**
@@ -136,7 +136,7 @@ public class MathcodeTest extends NoFlagsButGlobalPrimitiveTester {
         //--- input code ---
                 "\\mathcode`. -1" + " \\end",
                 //--- output message ---
-                "Invalid code (-1), should be in the range 0..32768");
+                "Bad mathchar (-1)");
     }
 
     /**
@@ -156,8 +156,8 @@ public class MathcodeTest extends NoFlagsButGlobalPrimitiveTester {
         MathCode mc = interpreter.getContext()
                 .getMathcode(UnicodeChar.get('.'));
         assertEquals(MathClass.ORDINARY, mc.getMathClass());
-        assertEquals(0, mc.getMathFamily());
-        assertEquals('A', mc.getMathChar().getCodePoint());
+        assertEquals(0, mc.getMathGlyph().getFamily());
+        assertEquals('A', mc.getMathGlyph().getCharacter().getCodePoint());
     }
 
     /**
@@ -177,8 +177,8 @@ public class MathcodeTest extends NoFlagsButGlobalPrimitiveTester {
         MathCode mc = interpreter.getContext()
                 .getMathcode(UnicodeChar.get('.'));
         assertEquals(MathClass.LARGE, mc.getMathClass());
-        assertEquals(0, mc.getMathFamily());
-        assertEquals('A', mc.getMathChar().getCodePoint());
+        assertEquals(0, mc.getMathGlyph().getFamily());
+        assertEquals('A', mc.getMathGlyph().getCharacter().getCodePoint());
     }
 
     /**
@@ -198,8 +198,8 @@ public class MathcodeTest extends NoFlagsButGlobalPrimitiveTester {
         MathCode mc = interpreter.getContext()
                 .getMathcode(UnicodeChar.get('.'));
         assertEquals(MathClass.BINARY, mc.getMathClass());
-        assertEquals(0, mc.getMathFamily());
-        assertEquals('A', mc.getMathChar().getCodePoint());
+        assertEquals(0, mc.getMathGlyph().getFamily());
+        assertEquals('A', mc.getMathGlyph().getCharacter().getCodePoint());
     }
 
     /**
@@ -219,8 +219,8 @@ public class MathcodeTest extends NoFlagsButGlobalPrimitiveTester {
         MathCode mc = interpreter.getContext()
                 .getMathcode(UnicodeChar.get('.'));
         assertEquals(MathClass.RELATION, mc.getMathClass());
-        assertEquals(0, mc.getMathFamily());
-        assertEquals('A', mc.getMathChar().getCodePoint());
+        assertEquals(0, mc.getMathGlyph().getFamily());
+        assertEquals('A', mc.getMathGlyph().getCharacter().getCodePoint());
     }
 
     /**
@@ -240,8 +240,8 @@ public class MathcodeTest extends NoFlagsButGlobalPrimitiveTester {
         MathCode mc = interpreter.getContext()
                 .getMathcode(UnicodeChar.get('.'));
         assertEquals(MathClass.OPENING, mc.getMathClass());
-        assertEquals(0, mc.getMathFamily());
-        assertEquals('A', mc.getMathChar().getCodePoint());
+        assertEquals(0, mc.getMathGlyph().getFamily());
+        assertEquals('A', mc.getMathGlyph().getCharacter().getCodePoint());
     }
 
     /**
@@ -261,8 +261,8 @@ public class MathcodeTest extends NoFlagsButGlobalPrimitiveTester {
         MathCode mc = interpreter.getContext()
                 .getMathcode(UnicodeChar.get('.'));
         assertEquals(MathClass.CLOSING, mc.getMathClass());
-        assertEquals(0, mc.getMathFamily());
-        assertEquals('A', mc.getMathChar().getCodePoint());
+        assertEquals(0, mc.getMathGlyph().getFamily());
+        assertEquals('A', mc.getMathGlyph().getCharacter().getCodePoint());
     }
 
     /**
@@ -282,8 +282,8 @@ public class MathcodeTest extends NoFlagsButGlobalPrimitiveTester {
         MathCode mc = interpreter.getContext()
                 .getMathcode(UnicodeChar.get('.'));
         assertEquals(MathClass.PUNCTUATION, mc.getMathClass());
-        assertEquals(0, mc.getMathFamily());
-        assertEquals('A', mc.getMathChar().getCodePoint());
+        assertEquals(0, mc.getMathGlyph().getFamily());
+        assertEquals('A', mc.getMathGlyph().getCharacter().getCodePoint());
     }
 
     /**
@@ -303,8 +303,8 @@ public class MathcodeTest extends NoFlagsButGlobalPrimitiveTester {
         MathCode mc = interpreter.getContext()
                 .getMathcode(UnicodeChar.get('.'));
         assertEquals(MathClass.VARIABLE, mc.getMathClass());
-        assertEquals(0, mc.getMathFamily());
-        assertEquals('A', mc.getMathChar().getCodePoint());
+        assertEquals(0, mc.getMathGlyph().getFamily());
+        assertEquals('A', mc.getMathGlyph().getCharacter().getCodePoint());
     }
 
     /**
