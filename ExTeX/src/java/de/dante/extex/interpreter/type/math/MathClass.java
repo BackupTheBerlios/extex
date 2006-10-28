@@ -22,13 +22,25 @@ package de.dante.extex.interpreter.type.math;
 import java.io.ObjectStreamException;
 import java.io.Serializable;
 
+import de.dante.extex.interpreter.TokenSource;
+import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.exception.helping.EofException;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
+import de.dante.extex.interpreter.exception.helping.MissingNumberException;
+import de.dante.extex.interpreter.type.count.Count;
+import de.dante.extex.scanner.type.token.LetterToken;
+import de.dante.extex.scanner.type.token.OtherToken;
+import de.dante.extex.scanner.type.token.Token;
+import de.dante.extex.typesetter.Typesetter;
+import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
  * This class provides the classification of mathematical characters.
  * In fact it is a finite enumeration which exposes the values as constants.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class MathClass implements Serializable {
 
@@ -36,7 +48,7 @@ public abstract class MathClass implements Serializable {
      * This is a inner class for a binary operator.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static final class BinaryMathClass extends MathClass {
 
@@ -84,7 +96,7 @@ public abstract class MathClass implements Serializable {
      * This is a inner class for closing.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static final class ClosingMathClass extends MathClass {
 
@@ -132,7 +144,7 @@ public abstract class MathClass implements Serializable {
      * This is a inner class for large operators.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static final class LargeMathClass extends MathClass {
 
@@ -180,7 +192,7 @@ public abstract class MathClass implements Serializable {
      * This is a inner class for opening.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static final class OpeningMathClass extends MathClass {
 
@@ -228,7 +240,7 @@ public abstract class MathClass implements Serializable {
      * This is a inner class for ordinary characters.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static final class OrdinaryMathClass extends MathClass {
 
@@ -276,7 +288,7 @@ public abstract class MathClass implements Serializable {
      * This is a inner class for punctation marks.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static final class PunctationMathClass extends MathClass {
 
@@ -324,7 +336,7 @@ public abstract class MathClass implements Serializable {
      * This is a inner class for relation symbols.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static final class RelationMathClass extends MathClass {
 
@@ -372,7 +384,7 @@ public abstract class MathClass implements Serializable {
      * This is a inner class for variable width characters.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static final class VariableMathClass extends MathClass {
 
@@ -524,7 +536,93 @@ public abstract class MathClass implements Serializable {
     }
 
     /**
+     * Parse a math class.
+     *
+     * <pre>
+     *  open 22 `[ 1 `(
+     * </pre>
+     *
+     * @param context the interpreter context
+     * @param source the token source to read from
+     * @param typesetter the typesetter
+     * @param primitive the name of the primitive for error handling
+     *
+     * @return the MathDelimiter acquired
+     *
+     * @throws InterpreterException in case of an error
+     */
+    public static MathClass parse(final Context context,
+            final TokenSource source, final Typesetter typesetter,
+            final String primitive) throws InterpreterException {
+
+        Token t = source.getToken(context);
+
+        if (t instanceof OtherToken) {
+            source.push(t);
+            try {
+                long n = Count.scanNumber(context, source, typesetter);
+                if (n >= 0 && n <= MC.length) {
+                    return MC[(int) n];
+                }
+                //TODO gene: unimplemented
+                throw new RuntimeException("unimplemented");
+
+            } catch (MissingNumberException e) {
+                throw new HelpingException(LocalizerFactory
+                        .getLocalizer(MathClass.class), "TTP.MissingDelim");
+            }
+        } else if (t instanceof LetterToken) {
+            source.push(t);
+            switch (t.getChar().getCodePoint()) {
+                case 'b':
+                    if (source.getKeyword(context, "bin")) {
+                        return MathClass.BINARY;
+                    }
+                    break;
+                case 'c':
+                    if (source.getKeyword(context, "close")) {
+                        return MathClass.CLOSING;
+                    }
+                    break;
+                case 'l':
+                    if (source.getKeyword(context, "large")) {
+                        return MathClass.LARGE;
+                    }
+                    break;
+                case 'o':
+                    if (source.getKeyword(context, "open")) {
+                        return MathClass.OPENING;
+                    } else if (source.getKeyword(context, "ord")) {
+                        return MathClass.ORDINARY;
+                    }
+                    break;
+                case 'p':
+                    if (source.getKeyword(context, "punct")) {
+                        return MathClass.PUNCTUATION;
+                    }
+                    break;
+                case 'r':
+                    if (source.getKeyword(context, "rel")) {
+                        return MathClass.RELATION;
+                    }
+                    break;
+                case 'v':
+                    if (source.getKeyword(context, "var")) {
+                        return MathClass.VARIABLE;
+                    }
+                    break;
+                default:
+            }
+            throw new HelpingException(LocalizerFactory
+                    .getLocalizer(MathClass.class), "TTP.MissingDelim");
+        }
+
+        throw new EofException();
+    }
+
+    /**
      * Creates a new object.
+     * The constructor is protected to be open for extensions in the future.
      */
     protected MathClass() {
 
