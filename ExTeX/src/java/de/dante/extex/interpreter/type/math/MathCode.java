@@ -21,6 +21,7 @@ package de.dante.extex.interpreter.type.math;
 
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
+import de.dante.extex.typesetter.type.noad.MathGlyph;
 import de.dante.util.UnicodeChar;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
@@ -29,7 +30,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * family and a character code.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class MathCode {
 
@@ -51,9 +52,9 @@ public class MathCode {
     private static final int FAMILY_MASK = 0xf;
 
     /**
-     * The field <tt>mathChar</tt> contains the character.
+     * The field <tt>mathGlyph</tt> contains the glyph.
      */
-    private UnicodeChar mathChar;
+    private MathGlyph mathGlyph;
 
     /**
      * The field <tt>mathClass</tt> contains the class.
@@ -61,24 +62,16 @@ public class MathCode {
     private MathClass mathClass;
 
     /**
-     * The field <tt>mathFamily</tt> contains the family.
-     */
-    private int mathFamily;
-
-    /**
      * Creates a new object.
      *
      * @param mathClass the class
-     * @param mathFamily the family
-     * @param mathChar the character
+     * @param mathGlyph the glyph
      */
-    public MathCode(final MathClass mathClass, final int mathFamily,
-            final UnicodeChar mathChar) {
+    public MathCode(final MathClass mathClass, final MathGlyph mathGlyph) {
 
         super();
         this.mathClass = mathClass;
-        this.mathFamily = mathFamily;
-        this.mathChar = mathChar;
+        this.mathGlyph = mathGlyph;
     }
 
     /**
@@ -93,20 +86,24 @@ public class MathCode {
             throw new HelpingException(LocalizerFactory
                     .getLocalizer(MathCode.class), "TTP.InvalidCode", //
                     Long.toString(code));
+        } else if (code == 0x8000) {
+            mathClass = null;
+            mathGlyph = null;
+        } else {
+            mathClass = MathClass.getMathClass((int) (code >> CLASS_SHIFT));
+            mathGlyph = new MathGlyph((int) (code >> 8) & FAMILY_MASK,
+                    UnicodeChar.get((int) (code & CHAR_MASK)));
         }
-        mathClass = MathClass.getMathClass((int) (code >> CLASS_SHIFT));
-        mathFamily = (int) (code >> 8) & FAMILY_MASK;
-        mathChar = UnicodeChar.get((int) (code & CHAR_MASK));
     }
 
     /**
-     * Getter for mathChar.
+     * Getter for mathGlyph.
      *
-     * @return the mathChar.
+     * @return the mathGlyph
      */
-    public UnicodeChar getMathChar() {
+    public MathGlyph getMathGlyph() {
 
-        return mathChar;
+        return this.mathGlyph;
     }
 
     /**
@@ -120,22 +117,23 @@ public class MathCode {
     }
 
     /**
-     * Getter for mathFamily.
-     *
-     * @return the mathFamily.
-     */
-    public int getMathFamily() {
-
-        return mathFamily;
-    }
-
-    /**
      * @see java.lang.Object#toString()
      */
     public String toString() {
 
-        return mathClass.toString() + " " + Integer.toString(mathFamily) + " "
-                + mathChar.toString();
+        return mathClass.toString() + " " + mathGlyph.toString();
+    }
+
+    /**
+     * Print the instance to a StringBuffer.
+     *
+     * @param sb the target string buffer
+     */
+    public void toString(final StringBuffer sb) {
+
+        mathClass.toString(sb);
+        sb.append(' ');
+        mathGlyph.toString(sb);
     }
 
 }

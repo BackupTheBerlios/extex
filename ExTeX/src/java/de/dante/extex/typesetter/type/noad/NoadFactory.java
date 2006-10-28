@@ -29,24 +29,9 @@ import de.dante.extex.interpreter.type.math.MathDelimiter;
  * This class is a factory for CharNoades.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class NoadFactory {
-
-    /**
-     * The constant <tt>CLASS_MASK</tt> contains the mask for the class value.
-     */
-    private static final int CLASS_MASK = 0xf;
-
-    /**
-     * The constant <tt>CLASS_SHIFT</tt> contains the shift for the class value.
-     */
-    private static final int CLASS_SHIFT = 12;
-
-    /**
-     * The constant <tt>GLYPH_MASK</tt> contains the mask for the math glyph.
-     */
-    private static final int GLYPH_MASK = 0xfff;
 
     /**
      * The constant <tt>VISITOR</tt> contains the math class visitor.
@@ -149,41 +134,22 @@ public class NoadFactory {
      *
      * @return an instance of a CharNoad
      */
-    public Noad getNoad(final long mc, final TypesettingContext tc) {
-
-        return (Noad) MathClass.getMathClass(
-                (int) ((mc >> CLASS_SHIFT) & CLASS_MASK)).visit(VISITOR,
-                MathGlyph.get8(mc & GLYPH_MASK), tc);
-
-    }
-
-    /**
-     * Provides an instance of a {@link Noad Noad} of the appropriate type.
-     *
-     * @param mc the code of the character to use
-     * @param tc the typesetting context
-     *
-     * @return an instance of a CharNoad
-     */
     public Noad getNoad(final MathCode mc, final TypesettingContext tc) {
 
-        MathGlyph mathGlyph = new MathGlyph(mc.getMathFamily(), mc
-                .getMathChar());
-        return (Noad) mc.getMathClass().visit(VISITOR, mathGlyph, tc);
-
+        return (Noad) mc.getMathClass().visit(VISITOR, mc.getMathGlyph(), tc);
     }
 
     /**
      * Provides an instance of a {@link Noad Noad} of the appropriate type.
      *
      * @param mathClass the math class
-     * @param tc the typesetting context
      * @param glyph the character
+     * @param tc the typesetting context
      *
      * @return an instance of a CharNoad
      */
-    public Noad getNoad(final MathClass mathClass, final TypesettingContext tc,
-            final MathGlyph glyph) {
+    public Noad getNoad(final MathClass mathClass, final MathGlyph glyph,
+            final TypesettingContext tc) {
 
         return (Noad) mathClass.visit(VISITOR, glyph, tc);
     }
