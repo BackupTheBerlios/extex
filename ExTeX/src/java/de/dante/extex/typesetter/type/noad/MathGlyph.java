@@ -33,27 +33,9 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This class provides a container for a mathematical glyph.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class MathGlyph implements Noad, Serializable {
-
-    /**
-     * The constant <tt>CHARACTER_MASK</tt> contains the mask for the character
-     * value in the <logo>TeX</logo> encoding.
-     */
-    private static final int CHARACTER_MASK = 0xff;
-
-    /**
-     * The constant <tt>FAMILY_MASK</tt> contains the mask for the family in the
-     * <logo>TeX</logo> encoding.
-     */
-    private static final int FAMILY_MASK = 0xf;
-
-    /**
-     * The constant <tt>FAMILY_OFFSET</tt> contains the offset for the family in
-     * the <logo>TeX</logo> encoding.
-     */
-    private static final int FAMILY_OFFSET = 8;
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
@@ -69,32 +51,6 @@ public class MathGlyph implements Noad, Serializable {
      * The field <tt>family</tt> contains the math family.
      */
     private int family;
-
-    /**
-     * TODO gene: missing JavaDoc
-     *
-     * @param code the <logo>TeX</logo> encoded math glyph
-     *
-     * @return the new glyph
-     */
-    public static final MathGlyph get8(final long code) {
-
-        return new MathGlyph((int) ((code >> 8) & FAMILY_MASK),
-                UnicodeChar.get((int) (code & CHARACTER_MASK)));
-    }
-
-    /**
-     * TODO gene: missing JavaDoc
-     *
-     * @param code the <logo>TeX</logo> encoded math glyph
-     *
-     * @return the new glyph
-     */
-    public static final MathGlyph get16(final long code) {
-
-        return new MathGlyph((int) ((code >> 16) & FAMILY_MASK),
-                UnicodeChar.get((int) (code & 0xffff)));
-    }
 
     /**
      * Creates a new object.
@@ -196,7 +152,7 @@ public class MathGlyph implements Noad, Serializable {
 
         if (depth >= 0) {
             sb.append("\\fam");
-            sb.append(Integer.toHexString(family));
+            sb.append(Integer.toString(family));
             sb.append(' ');
             if (character.isPrintable()) {
                 sb.append(character.toString());
