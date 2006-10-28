@@ -22,6 +22,7 @@ package de.dante.extex.typesetter.type.noad;
 import java.util.logging.Logger;
 
 import de.dante.extex.interpreter.context.tc.TypesettingContext;
+import de.dante.extex.interpreter.type.math.MathCode;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
@@ -33,14 +34,14 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [687]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class AccentNoad extends AbstractNucleusNoad {
 
     /**
      * The field <tt>accent</tt> contains the specification for the accent.
      */
-    private MathGlyph accent;
+    private MathCode accent;
 
     /**
      * Creates a new object.
@@ -49,7 +50,7 @@ public class AccentNoad extends AbstractNucleusNoad {
      * @param nucleus the nucleus
      * @param tc the typesetting context for the color
      */
-    public AccentNoad(final MathGlyph accent, final Noad nucleus,
+    public AccentNoad(final MathCode accent, final Noad nucleus,
             final TypesettingContext tc) {
 
         super(nucleus, tc);
