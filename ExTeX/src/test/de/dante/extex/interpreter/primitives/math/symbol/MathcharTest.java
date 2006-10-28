@@ -25,7 +25,7 @@ import de.dante.extex.interpreter.primitives.math.AbstractMathTester;
  * This is a test suite for the primitive <tt>\mathchar</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class MathcharTest extends AbstractMathTester {
 
@@ -39,5 +39,105 @@ public class MathcharTest extends AbstractMathTester {
         super(arg, "mathchar", "123 ");
     }
 
+    /**
+     * <testcase primitive="\mathchar">
+     *  Test case checking that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testErr1() throws Exception {
+
+        assertFailure(
+        //--- input code ---
+                DEFINE_MATH + "$\\mathchar-1 " //
+                        + "\\alpha\\end",
+                //--- output message ---
+                "Bad mathchar (-1)");
+    }
+
+    /**
+     * <testcase primitive="\mathchar">
+     *  Test case checking that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testErr2() throws Exception {
+
+        assertFailure(
+        //--- input code ---
+                DEFINE_MATH + "$\\mathchar32769 ",
+                //--- output message ---
+                "Bad mathchar (32769)");
+    }
+
+    /**
+     * <testcase primitive="\mathchar">
+     *  Test case checking that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test1() throws Exception {
+
+        assertSuccess(
+        //--- input code ---
+                AbstractMathTester.DEFINE_MATH_FONTS + DEFINE_MATH
+                        + "$a\\mathchar\"010B b$\\end",
+                //--- output message ---
+                "a\013b" + TERM);
+    }
+
+//    /**
+//     * <testcase primitive="\mathchar">
+//     *  Test case checking that ...
+//     * </testcase>
+//     *
+//     * @throws Exception in case of an error
+//     */
+//    public void testDM1() throws Exception {
+//
+//        assertSuccess(
+//        //--- input code ---
+//                AbstractMathTester.DEFINE_MATH_FONTS + DEFINE_MATH
+//                        + "$$a\\mathchar\"010B b$$\\end",
+//                //--- output message ---
+//                "a\013b" + TERM);
+//    }
+//
+//    /**
+//     * <testcase primitive="\mathchar">
+//     *  Test case checking that ...
+//     * </testcase>
+//     *
+//     * @throws Exception in case of an error
+//     */
+//    public void testDMExt1() throws Exception {
+//
+//        assertSuccess(
+//        //--- input code ---
+//                AbstractMathTester.DEFINE_MATH_FONTS + DEFINE_BRACES
+//                        + DEFINE_MATH + "$$\\mathchar{ord 1 `A}$$\\end ",
+//                //--- output message ---
+//                "A" + TERM);
+//    }
+
+    /**
+     * <testcase primitive="\mathchar">
+     *  Test case checking that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testExt1() throws Exception {
+
+        assertSuccess(
+        //--- input code ---
+                AbstractMathTester.DEFINE_MATH_FONTS + DEFINE_BRACES
+                        + DEFINE_MATH + "$\\mathchar{ord 1 `A}$\\end ",
+                //--- output message ---
+                "A" + TERM);
+    }
 
 }
