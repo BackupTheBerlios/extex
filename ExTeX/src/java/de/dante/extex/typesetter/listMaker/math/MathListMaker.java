@@ -35,7 +35,6 @@ import de.dante.extex.interpreter.primitives.register.font.NumberedFont;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.font.Font;
-import de.dante.extex.interpreter.type.math.MathClass;
 import de.dante.extex.interpreter.type.math.MathCode;
 import de.dante.extex.interpreter.type.math.MathDelimiter;
 import de.dante.extex.interpreter.type.muskip.Mudimen;
@@ -140,7 +139,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.52 $
+ * @version $Revision: 1.53 $
  */
 public class MathListMaker extends HorizontalListMaker
         implements
@@ -152,7 +151,7 @@ public class MathListMaker extends HorizontalListMaker
      * It is used to store to the stack and restore the state from the stack.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.52 $
+     * @version $Revision: 1.53 $
      */
     private class MathMemento {
 
@@ -350,14 +349,13 @@ public class MathListMaker extends HorizontalListMaker
 
     /**
      * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#add(
-     *      de.dante.extex.typesetter.type.math.MathClass,
-     *      de.dante.extex.typesetter.type.noad.MathGlyph,
-     *      de.dante.extex.interpreter.context.TypesettingContext)
+     *      de.dante.extex.interpreter.type.math.MathCode,
+     *      de.dante.extex.interpreter.context.tc.TypesettingContext)
      */
-    public void add(final MathClass mclass, final MathGlyph mg,
-            final TypesettingContext tc) throws TypesetterException {
+    public void add(final MathCode mc, final TypesettingContext tc)
+            throws TypesetterException {
 
-        insertionPoint.add(NOAD_FACTORY.getNoad(mclass, tc, mg));
+        insertionPoint.add(NOAD_FACTORY.getNoad(mc, tc));
     }
 
     /**
@@ -369,8 +367,8 @@ public class MathListMaker extends HorizontalListMaker
             throws TypesetterException {
 
         MathGlyph smallChar = delimiter.getSmallChar(); // TODO: gene why???
-        insertionPoint.add(NOAD_FACTORY.getNoad(delimiter.getMathClass(), tc,
-                smallChar));
+        insertionPoint.add(NOAD_FACTORY.getNoad(delimiter.getMathClass(),
+                smallChar, tc));
     }
 
     /**

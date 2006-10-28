@@ -24,7 +24,7 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.tc.TypesettingContext;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
-import de.dante.extex.interpreter.type.math.MathClass;
+import de.dante.extex.interpreter.type.math.MathCode;
 import de.dante.extex.interpreter.type.math.MathDelimiter;
 import de.dante.extex.interpreter.type.muskip.Mudimen;
 import de.dante.extex.interpreter.type.muskip.Muskip;
@@ -39,20 +39,19 @@ import de.dante.extex.typesetter.type.noad.Noad;
  * This is usually the case for math list makers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public interface NoadConsumer extends ListMaker {
 
     /**
      * Add a mathematical glyph.
      *
-     * @param mclass the class
+     * @param mcl the math code
      * @param tc the typesetting context
-     * @param mg the glyph
      *
      * @throws TypesetterException in case of an error
      */
-    void add(MathClass mclass, MathGlyph mg, TypesettingContext tc)
+    void add(MathCode mc, TypesettingContext tc)
             throws TypesetterException;
 
     /**

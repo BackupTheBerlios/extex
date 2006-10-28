@@ -25,10 +25,7 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.interpreter.type.Theable;
-import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.count.CountConvertible;
-import de.dante.extex.interpreter.type.math.MathClass;
-import de.dante.extex.interpreter.type.math.MathClassVisitor;
 import de.dante.extex.interpreter.type.math.MathCode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
@@ -62,7 +59,7 @@ import de.dante.util.UnicodeChar;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class MathcodePrimitive extends AbstractAssignment
         implements
@@ -73,76 +70,6 @@ public class MathcodePrimitive extends AbstractAssignment
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
     protected static final long serialVersionUID = 2006L;
-
-    /**
-     * The field <tt>VISITOR</tt> contains the ...
-     */
-    private static final MathClassVisitor VISITOR = new MathClassVisitor() {
-
-        /**
-         * @see de.dante.extex.interpreter.type.math.MathClassVisitor#visitBinary(java.lang.Object, java.lang.Object)
-         */
-        public Object visitBinary(final Object arg, final Object arg2) {
-
-            return new Integer(2);
-        }
-
-        /**
-         * @see de.dante.extex.interpreter.type.math.MathClassVisitor#visitClosing(java.lang.Object, java.lang.Object)
-         */
-        public Object visitClosing(final Object arg, final Object arg2) {
-
-            return new Integer(5);
-        }
-
-        /**
-         * @see de.dante.extex.interpreter.type.math.MathClassVisitor#visitLarge(java.lang.Object, java.lang.Object)
-         */
-        public Object visitLarge(final Object arg, final Object arg2) {
-
-            return new Integer(1);
-        }
-
-        /**
-         * @see de.dante.extex.interpreter.type.math.MathClassVisitor#visitOpening(java.lang.Object, java.lang.Object)
-         */
-        public Object visitOpening(final Object arg, final Object arg2) {
-
-            return new Integer(4);
-        }
-
-        /**
-         * @see de.dante.extex.interpreter.type.math.MathClassVisitor#visitOrdinary(java.lang.Object, java.lang.Object)
-         */
-        public Object visitOrdinary(final Object arg, final Object arg2) {
-
-            return new Integer(0);
-        }
-
-        /**
-         * @see de.dante.extex.interpreter.type.math.MathClassVisitor#visitPunctation(java.lang.Object, java.lang.Object)
-         */
-        public Object visitPunctation(final Object arg, final Object arg2) {
-
-            return new Integer(6);
-        }
-
-        /**
-         * @see de.dante.extex.interpreter.type.math.MathClassVisitor#visitRelation(java.lang.Object, java.lang.Object)
-         */
-        public Object visitRelation(final Object arg, final Object arg2) {
-
-            return new Integer(3);
-        }
-
-        /**
-         * @see de.dante.extex.interpreter.type.math.MathClassVisitor#visitVariable(java.lang.Object, java.lang.Object)
-         */
-        public Object visitVariable(final Object arg, final Object arg2) {
-
-            return new Integer(7);
-        }
-    };
 
     /**
      * Creates a new object.
@@ -168,15 +95,9 @@ public class MathcodePrimitive extends AbstractAssignment
         UnicodeChar charCode = source.scanCharacterCode(context, typesetter,
                 getName());
         source.getOptionalEquals(context);
-        Count mathCode = Count.parse(context, source, typesetter);
-
-        if (mathCode.getValue() == 0x8000) {
-            context.setMathcode(charCode, new MathCode(null, 0, null), //
-                    prefix.clearGlobal());
-        } else {
-            context.setMathcode(charCode, new MathCode(mathCode.getValue()), //
-                    prefix.clearGlobal());
-        }
+        MathCode mathchar = AbstractMathCode.parseTeXMathCode(context, source,
+                typesetter, getName());
+        context.setMathcode(charCode, mathchar, prefix.clearGlobal());
     }
 
     /**
@@ -190,24 +111,7 @@ public class MathcodePrimitive extends AbstractAssignment
 
         UnicodeChar charCode = source.scanCharacterCode(context, typesetter,
                 getName());
-        MathCode mc = context.getMathcode(charCode);
-
-        int codePoint = mc.getMathChar().getCodePoint();
-        if (codePoint > 0xff) {
-            //TODO gene: unimplemented
-            throw new RuntimeException("unimplemented");
-        }
-        int mathFamily = mc.getMathFamily();
-        if (mathFamily > 0xf) {
-            //TODO gene: unimplemented
-            throw new RuntimeException("unimplemented");
-        }
-        MathClass mathClass = mc.getMathClass();
-        if (mc == null) {
-            return 0x8000;
-        }
-        return (((Integer) mathClass.visit(VISITOR, null, null)).intValue() << 12)
-                | (mathFamily << 8) | codePoint;
+        return AbstractMathCode.mathCodeToTeX(context.getMathcode(charCode));
     }
 
     /**

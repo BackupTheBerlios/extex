@@ -19,26 +19,14 @@
 
 package de.dante.extex.interpreter.primitives.math.symbol;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.context.tc.TypesettingContext;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.exception.helping.EofException;
-import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.primitives.math.AbstractMathCode;
-import de.dante.extex.interpreter.type.count.Count;
-import de.dante.extex.interpreter.type.math.MathClass;
 import de.dante.extex.interpreter.type.math.MathCode;
-import de.dante.extex.scanner.type.Catcode;
-import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
-import de.dante.extex.typesetter.type.noad.MathGlyph;
-import de.dante.util.UnicodeChar;
 
 /**
  * This class provides an implementation for the primitive
@@ -56,18 +44,19 @@ import de.dante.util.UnicodeChar;
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\mathchar ...</tt>  </pre>
+ *    &lang;mathchar&rang;
+ *       &rarr; <tt>\mathchar ...</tt>  </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
  *    \mathchar"041  </pre>
  *  <pre class="TeXSample">
- *    \mathchar{ordinary}0 `A  </pre>
+ *    \mathchar{ordinary 0 `A}  </pre>
  *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Mathchar extends AbstractMathCode {
 
@@ -75,43 +64,6 @@ public class Mathchar extends AbstractMathCode {
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
     protected static final long serialVersionUID = 2005L;
-
-    /**
-     * The constant <tt>GLYPH_MASK</tt> contains the mask for a math glyph.
-     */
-    private static final int GLYPH_MASK = 0xfff;
-
-    /**
-     * The field <tt>mathClassMap</tt> contains the mapping from symbolic names
-     * the the corresponding math class.
-     */
-    private static Map mathClassMap = new HashMap();
-
-    static {
-        mathClassMap.put("0", MathClass.getMathClass(0));
-        mathClassMap.put("1", MathClass.getMathClass(1));
-        mathClassMap.put("2", MathClass.getMathClass(2));
-        mathClassMap.put("3", MathClass.getMathClass(3));
-        mathClassMap.put("4", MathClass.getMathClass(4));
-        mathClassMap.put("5", MathClass.getMathClass(5));
-        mathClassMap.put("6", MathClass.getMathClass(6));
-        mathClassMap.put("7", MathClass.getMathClass(7));
-        mathClassMap.put("ordinary", MathClass.ORDINARY);
-        mathClassMap.put("large", MathClass.LARGE);
-        mathClassMap.put("binary", MathClass.BINARY);
-        mathClassMap.put("relation", MathClass.RELATION);
-        mathClassMap.put("opening", MathClass.OPENING);
-        mathClassMap.put("closing", MathClass.CLOSING);
-        mathClassMap.put("punctation", MathClass.PUNCTUATION);
-        mathClassMap.put("variable", MathClass.VARIABLE);
-        mathClassMap.put("ord", MathClass.ORDINARY);
-        mathClassMap.put("bin", MathClass.BINARY);
-        mathClassMap.put("rel", MathClass.RELATION);
-        mathClassMap.put("open", MathClass.OPENING);
-        mathClassMap.put("close", MathClass.CLOSING);
-        mathClassMap.put("punct", MathClass.PUNCTUATION);
-        mathClassMap.put("var", MathClass.VARIABLE);
-    }
 
     /**
      * Creates a new object.
@@ -135,63 +87,10 @@ public class Mathchar extends AbstractMathCode {
             throws InterpreterException {
 
         NoadConsumer nc = getListMaker(context, typesetter);
+        MathCode mc = parseTeXMathCode(context, source, typesetter,
+                printableControlSequence(context));
 
-        Token t = source.getToken(context);
-        if (t == null) {
-            throw new EofException(printableControlSequence(context));
-        } else if (t.isa(Catcode.LEFTBRACE)) {
-            source.push(t);
-            String mclass = source.scanTokensAsString(context, getName());
-            MathClass mc = (MathClass) (mathClassMap.get(mclass));
-            if (mc == null) {
-                throw new HelpingException(getLocalizer(), "MathClass", mclass);
-            }
-            int fam = (int) Count.scanNumber(context, source, typesetter);
-            int code = (int) Count.scanNumber(context, source, typesetter);
-            MathGlyph mg = new MathGlyph(fam, UnicodeChar.get(code));
-            nc.add(mc, mg, context.getTypesettingContext());
-        } else {
-            source.push(t);
-            long mathChar = Count.scanInteger(context, source, typesetter);
-            nc.add(MathClass.getMathClass((int) ((mathChar >> 12) & 0xf)), //
-                    MathGlyph.get8(mathChar & GLYPH_MASK), //
-                    context.getTypesettingContext());
-        }
-    }
-
-    /**
-     * Insert a mathematical character into the noad list of the current
-     * list maker.
-     *
-     * @param nc the interface to the list maker
-     * @param mathchar the mathematical character
-     * @param tc the typesetting context
-     *
-     * @throws InterpreterException in case of an error
-     */
-    protected void insert(final NoadConsumer nc, final long mathchar,
-            final TypesettingContext tc) throws InterpreterException {
-
-        nc.add(MathClass.getMathClass((int) ((mathchar >> 12) & 0xf)), //
-                MathGlyph.get8(mathchar & GLYPH_MASK), tc);
-    }
-
-    /**
-     * Insert a mathematical character into the noad list of the current
-     * list maker.
-     *
-     * @param nc the interface to the list maker
-     * @param mathchar the mathematical character
-     * @param tc the typesetting context
-     *
-     * @throws InterpreterException in case of an error
-     */
-    protected void insert(final NoadConsumer nc, final MathCode mathchar,
-            final TypesettingContext tc) throws InterpreterException {
-
-        nc.add(mathchar.getMathClass(), //
-                new MathGlyph(mathchar.getMathFamily(), //
-                        mathchar.getMathChar()), tc);
+        nc.add(mc, context.getTypesettingContext());
     }
 
 }
