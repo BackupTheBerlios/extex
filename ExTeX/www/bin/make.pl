@@ -1,19 +1,19 @@
 #!/bin/perl.exe -w
 ##*****************************************************************************
-## $Id: .make.pl,v 1.10 2006/06/11 20:20:26 gene Exp $
+## $Id: make.pl,v 1.1 2006/10/28 22:24:34 gene Exp $
 ##*****************************************************************************
 ## Author: Gerd Neugebauer
 ##=============================================================================
 
 =head1 NAME
 
-.make.pl - Create a web site
+make.pl - Create a web site
 
 =head1 SYNOPSIS
 
-.make.pl [-v|--verbose] 
+make.pl [-v|--verbose] 
 
-.make.pl [-h|-help]
+make.pl [-h|-help]
 
 =head1 DESCRIPTION
 
