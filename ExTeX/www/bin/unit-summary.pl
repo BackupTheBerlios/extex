@@ -1,6 +1,6 @@
 #!/bin/perl.exe -w
 ##*****************************************************************************
-## $Id: unit-summary.pl,v 1.6 2006/10/13 13:53:15 gene Exp $
+## $Id: unit-summary.pl,v 1.1 2006/10/28 22:25:07 gene Exp $
 ##*****************************************************************************
 ## Author: Gerd Neugebauer
 ##=============================================================================
@@ -67,7 +67,7 @@ GetOptions("h|help"	=> \&usage,
 my @d    = localtime;
 my $date = $d[5] + 1900;
 
-my $BASEDIR = dirname($0) . '/../';
+my $BASEDIR = '../';
 $BASEDIR    =~ s|^./||;
 
 my %info;
@@ -84,6 +84,7 @@ my $targetdir  = $BASEDIR . "target/www/unit";
 mkdir $targetdir if not -e $targetdir;
 
 chdir dirname($0);
+chdir '..';
 
 print STDERR "Scanning sources [${BASEDIR}src/java]..." if $verbose;
 find({no_chdir => 1, wanted => \&analyze}, $BASEDIR . 'src/java');

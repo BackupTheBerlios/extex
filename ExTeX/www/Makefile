@@ -26,16 +26,16 @@ UFLAGS = -verbose
 all: test-summary site rss units
 
 site:
-	@perl .make.pl $(FLAGS)
+	@perl bin/make.pl $(FLAGS)
 
 units:
-	@perl unit-summary.pl $(UFLAGS)
+	@perl bin/unit-summary.pl $(UFLAGS)
 
 rss:
-	@perl make-rss.pl
+	@perl bin/make-rss.pl
 
 test-summary:
-	@perl make-test-summary.pl
+	@perl bin/make-test-summary.pl
 
 
 clean:

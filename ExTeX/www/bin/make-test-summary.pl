@@ -1,6 +1,6 @@
 #!/bin/perl.exe -w
 ##*****************************************************************************
-## $Id: make-test-summary.pl,v 1.3 2006/10/11 12:32:52 gene Exp $
+## $Id: make-test-summary.pl,v 1.1 2006/10/28 22:25:07 gene Exp $
 ##*****************************************************************************
 ## Author: Gerd Neugebauer
 ##=============================================================================
@@ -50,7 +50,7 @@ sub usage
   Pod::Text->new()->parse_from_filehandle(new FileHandle($0,'r'),\*STDERR);
 }
 
-my $target = dirname($0) . "/../target/www/reports/test-summary.html";
+my $target = dirname($0) . "/../../target/www/reports/test-summary.html";
 #my $target = '';
 
 #------------------------------------------------------------------------------
@@ -79,7 +79,7 @@ my $o	 = 0;
 my $r 	 = $w;
 
 { local $/=undef;
-  my $file = dirname($0) . "/../target/www/reports/tests/overview-summary.html";
+  my $file = dirname($0) . "/../../target/www/reports/tests/overview-summary.html";
   my $fd = new FileHandle($file, 'r');
   if (defined $fd) {
     $_ = <$fd>;

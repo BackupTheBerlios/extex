@@ -44,7 +44,7 @@
           description="Create the web site">
     <mkdir dir="${target.www}" />
     <exec executable="perl">
-      <arg line=".make.pl" />
+      <arg line="bin/make.pl" />
       <arg line="-verbose" />
       <arg line="-src=src" />
       <arg line="-dest=${target.www}" />
