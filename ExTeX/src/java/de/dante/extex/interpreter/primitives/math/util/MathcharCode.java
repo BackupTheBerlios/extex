@@ -24,8 +24,10 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.primitives.math.symbol.Mathchar;
-import de.dante.extex.interpreter.type.count.Count;
+import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.count.CountConvertible;
+import de.dante.extex.interpreter.type.math.MathCode;
+import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
 
@@ -33,9 +35,9 @@ import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
  * This class is used to dynamically define mathematical characters.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
-public class MathcharCode extends Mathchar implements CountConvertible {
+public class MathcharCode extends Mathchar implements CountConvertible, Theable {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
@@ -44,9 +46,9 @@ public class MathcharCode extends Mathchar implements CountConvertible {
 
     /**
      * The field <tt>mathchar</tt> contains the actual character in the form
-     * of a Count which can immediately be passed to the typesetter.
+     * of a MathCode which can immediately be passed to the typesetter.
      */
-    private Count mathchar;
+    private MathCode mathchar;
 
     /**
      * Creates a new object.
@@ -54,7 +56,7 @@ public class MathcharCode extends Mathchar implements CountConvertible {
      * @param name the name for debugging
      * @param charCode the code of the math char
      */
-    public MathcharCode(final String name, final Count charCode) {
+    public MathcharCode(final String name, final MathCode charCode) {
 
         super(name);
         mathchar = charCode;
@@ -72,7 +74,7 @@ public class MathcharCode extends Mathchar implements CountConvertible {
             throws InterpreterException {
 
         NoadConsumer nc = getListMaker(context, typesetter);
-        insert(nc, mathchar.getValue(), context.getTypesettingContext());
+        nc.add(mathchar, context.getTypesettingContext());
     }
 
     /**
@@ -84,7 +86,19 @@ public class MathcharCode extends Mathchar implements CountConvertible {
     public long convertCount(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        return mathchar.getValue();
+        return mathCodeToTeX(mathchar);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.Theable#the(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public Tokens the(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
+
+        return new Tokens(context, mathCodeToTeX(mathchar));
     }
 
 }

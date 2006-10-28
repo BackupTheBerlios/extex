@@ -25,7 +25,7 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.primitives.math.util.MathcharCode;
 import de.dante.extex.interpreter.type.AbstractAssignment;
-import de.dante.extex.interpreter.type.count.Count;
+import de.dante.extex.interpreter.type.math.MathCode;
 import de.dante.extex.scanner.type.token.CodeToken;
 import de.dante.extex.typesetter.Typesetter;
 
@@ -36,13 +36,18 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="mathchardef">
  * <h3>The Math Primitive <tt>\mathchardef</tt></h3>
  * <p>
+ *  The math primitive <tt>\mathchardef</tt> defines a control sequence or
+ *  active character as equivalent to a math character.
+ * </p>
+ * <p>
  *  TODO missing documentation
  * </p>
  *
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\mathchardef</tt> ...  </pre>
+ *    &lang;mathchardef&rang;
+ *       &rarr; <tt>\mathchardef</tt> ...  </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
@@ -51,14 +56,14 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class Mathchardef extends AbstractAssignment {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 2006L;
 
     /**
      * Creates a new object.
@@ -83,9 +88,12 @@ public class Mathchardef extends AbstractAssignment {
 
         CodeToken cs = source.getControlSequence(context);
         source.getOptionalEquals(context);
-        Count mathchar = Count.parse(context, source, typesetter);
-        context.setCode(cs, new MathcharCode(cs.toString(), mathchar), prefix
-                .clearGlobal());
+        MathCode mathchar = AbstractMathCode.parseTeXMathCode(context, source,
+                typesetter, getName());
+
+        context.setCode(cs, //
+                new MathcharCode(cs.toString(), mathchar), //
+                prefix.clearGlobal());
     }
 
 }

@@ -23,12 +23,10 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.exception.helping.HelpingException;
-import de.dante.extex.interpreter.type.count.Count;
+import de.dante.extex.interpreter.type.math.MathCode;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
 import de.dante.extex.typesetter.type.noad.AccentNoad;
-import de.dante.extex.typesetter.type.noad.MathGlyph;
 import de.dante.extex.typesetter.type.noad.Noad;
 
 /**
@@ -49,12 +47,12 @@ import de.dante.extex.typesetter.type.noad.Noad;
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
- *    \mathaccent  </pre>
+ *    \mathaccent ... </pre>
  *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class Mathaccent extends AbstractMathCode {
 
@@ -62,12 +60,6 @@ public class Mathaccent extends AbstractMathCode {
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
     protected static final long serialVersionUID = 2005L;
-
-    /**
-     * The field <tt>CHARCODE_MAX</tt> contains the maximum of the character
-     * code. If this value is exceeded then an error should be raised.
-     */
-    private static final int CHARCODE_MAX = 0xfff;
 
     /**
      * Creates a new object.
@@ -91,14 +83,12 @@ public class Mathaccent extends AbstractMathCode {
             throws InterpreterException {
 
         NoadConsumer nc = getListMaker(context, typesetter);
-        long accent = Count.scanNumber(context, source, typesetter);
-        if (accent > CHARCODE_MAX) {
-            throw new HelpingException(getLocalizer(), "TTP.BadMathCharCode",
-                    Long.toHexString(accent));
-        }
+
+        MathCode accent = parseTeXMathCode(context, source, typesetter,
+                printableControlSequence(context));
+
         Noad noad = nc.scanNoad(prefix, context, source, typesetter, getName());
-        nc.add(new AccentNoad(MathGlyph.get8(accent), noad, context
-                .getTypesettingContext()));
+        nc.add(new AccentNoad(accent, noad, context.getTypesettingContext()));
     }
 
 }
