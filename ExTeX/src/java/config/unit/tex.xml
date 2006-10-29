@@ -498,7 +498,7 @@
     <define name="prevgraf"
             class="de.dante.extex.interpreter.primitives.register.count.Prevgraf"/>
     <define name="radical"
-            class="de.dante.extex.interpreter.primitives.math.Radical"/>
+            class="de.dante.extex.interpreter.primitives.math.delimiter.Radical"/>
     <define name="raise"
             class="de.dante.extex.interpreter.primitives.typesetter.displace.Raise"/>
     <define name="read"

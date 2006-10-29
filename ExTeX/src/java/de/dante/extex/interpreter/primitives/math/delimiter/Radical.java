@@ -17,13 +17,12 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.math;
+package de.dante.extex.interpreter.primitives.math.delimiter;
 
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.primitives.math.delimiter.AbstractTeXDelimiter;
 import de.dante.extex.interpreter.type.math.MathDelimiter;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
@@ -53,7 +52,7 @@ import de.dante.extex.typesetter.type.noad.RadicalNoad;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.1 $
  */
 public class Radical extends AbstractTeXDelimiter {
 

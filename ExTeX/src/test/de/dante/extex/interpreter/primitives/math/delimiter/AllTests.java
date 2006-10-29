@@ -26,7 +26,7 @@ import junit.framework.TestSuite;
  * TODO gene: missing JavaDoc.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class AllTests {
 
@@ -39,6 +39,7 @@ public class AllTests {
         suite.addTestSuite(DelimiterTest.class);
         suite.addTestSuite(LeftTest.class);
         suite.addTestSuite(MiddleTest.class);
+        suite.addTestSuite(RadicalTest.class);
         suite.addTestSuite(RightTest.class);
         //$JUnit-END$
         return suite;
