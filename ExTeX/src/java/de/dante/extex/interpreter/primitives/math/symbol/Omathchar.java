@@ -24,6 +24,7 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.primitives.math.AbstractOmegaMathCode;
+import de.dante.extex.interpreter.primitives.math.util.MathCodeConvertible;
 import de.dante.extex.interpreter.type.math.MathCode;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
@@ -56,9 +57,11 @@ import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class Omathchar extends AbstractOmegaMathCode {
+public class Omathchar extends AbstractOmegaMathCode
+        implements
+            MathCodeConvertible {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
@@ -73,6 +76,20 @@ public class Omathchar extends AbstractOmegaMathCode {
     public Omathchar(final String name) {
 
         super(name);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.primitives.math.util.MathCodeConvertible#convertMathCode(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public MathCode convertMathCode(final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws InterpreterException {
+
+        return parseMathCode(context, source, typesetter,
+                printableControlSequence(context));
     }
 
     /**
