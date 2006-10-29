@@ -48,20 +48,21 @@ import de.dante.util.framework.configuration.exception.ConfigurationSyntaxExcept
  * This class provides means to deal with configurations stored as XML files.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class ConfigurationXMLImpl implements Configuration, Serializable {
 
     /**
-     * TODO gene: missing JavaDoc.
+     * This inner class provides an iterator for all sub-configurations of a
+     * given node.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.7 $
+     * @version $Revision: 1.8 $
      */
     private class ConfigIterator implements Iterator {
 
         /**
-         * The field <tt>node</tt> contains the ...
+         * The field <tt>node</tt> contains the current node.
          */
         private Node node;
 
