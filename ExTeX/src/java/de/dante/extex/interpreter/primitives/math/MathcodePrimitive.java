@@ -59,7 +59,7 @@ import de.dante.util.UnicodeChar;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class MathcodePrimitive extends AbstractAssignment
         implements
@@ -95,7 +95,7 @@ public class MathcodePrimitive extends AbstractAssignment
         UnicodeChar charCode = source.scanCharacterCode(context, typesetter,
                 getName());
         source.getOptionalEquals(context);
-        MathCode mathchar = AbstractMathCode.parseTeXMathCode(context, source,
+        MathCode mathchar = AbstractTeXMathCode.parseMathCode(context, source,
                 typesetter, getName());
         context.setMathcode(charCode, mathchar, prefix.clearGlobal());
     }
@@ -111,7 +111,7 @@ public class MathcodePrimitive extends AbstractAssignment
 
         UnicodeChar charCode = source.scanCharacterCode(context, typesetter,
                 getName());
-        return AbstractMathCode.mathCodeToTeX(context.getMathcode(charCode));
+        return AbstractTeXMathCode.mathCodeToLong(context.getMathcode(charCode));
     }
 
     /**

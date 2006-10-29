@@ -23,7 +23,7 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.primitives.math.AbstractMathCode;
+import de.dante.extex.interpreter.primitives.math.AbstractTeXMathCode;
 import de.dante.extex.interpreter.type.math.MathCode;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
@@ -56,14 +56,14 @@ import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
-public class Mathchar extends AbstractMathCode {
+public class Mathchar extends AbstractTeXMathCode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 2006L;
 
     /**
      * Creates a new object.
@@ -87,7 +87,7 @@ public class Mathchar extends AbstractMathCode {
             throws InterpreterException {
 
         NoadConsumer nc = getListMaker(context, typesetter);
-        MathCode mc = parseTeXMathCode(context, source, typesetter,
+        MathCode mc = parseMathCode(context, source, typesetter,
                 printableControlSequence(context));
 
         nc.add(mc, context.getTypesettingContext());

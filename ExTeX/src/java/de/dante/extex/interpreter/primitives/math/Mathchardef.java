@@ -23,7 +23,7 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.primitives.math.util.MathcharCode;
+import de.dante.extex.interpreter.primitives.math.util.TeXMathcharCode;
 import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.interpreter.type.math.MathCode;
 import de.dante.extex.scanner.type.token.CodeToken;
@@ -56,7 +56,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class Mathchardef extends AbstractAssignment {
 
@@ -88,11 +88,11 @@ public class Mathchardef extends AbstractAssignment {
 
         CodeToken cs = source.getControlSequence(context);
         source.getOptionalEquals(context);
-        MathCode mathchar = AbstractMathCode.parseTeXMathCode(context, source,
+        MathCode mathchar = AbstractTeXMathCode.parseMathCode(context, source,
                 typesetter, getName());
 
         context.setCode(cs, //
-                new MathcharCode(cs.toString(), mathchar), //
+                new TeXMathcharCode(cs.toString(), mathchar), //
                 prefix.clearGlobal());
     }
 

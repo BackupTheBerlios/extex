@@ -52,14 +52,14 @@ import de.dante.extex.typesetter.type.noad.Noad;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
-public class Mathaccent extends AbstractMathCode {
+public class Mathaccent extends AbstractTeXMathCode {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 2006L;
 
     /**
      * Creates a new object.
@@ -84,7 +84,7 @@ public class Mathaccent extends AbstractMathCode {
 
         NoadConsumer nc = getListMaker(context, typesetter);
 
-        MathCode accent = parseTeXMathCode(context, source, typesetter,
+        MathCode accent = parseMathCode(context, source, typesetter,
                 printableControlSequence(context));
 
         Noad noad = nc.scanNoad(prefix, context, source, typesetter, getName());
