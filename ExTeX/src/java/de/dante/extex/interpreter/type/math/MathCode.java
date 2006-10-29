@@ -19,6 +19,8 @@
 
 package de.dante.extex.interpreter.type.math;
 
+import java.io.Serializable;
+
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.typesetter.type.noad.MathGlyph;
@@ -30,9 +32,15 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * family and a character code.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
-public class MathCode {
+public class MathCode implements Serializable {
+
+    /**
+     * The field <tt>serialVersionUID</tt> contains the version number for
+     * serialization.
+     */
+    private static final long serialVersionUID = 2006L;
 
     /**
      * The constant <tt>CHAR_MASK</tt> contains the mask for filtering a
