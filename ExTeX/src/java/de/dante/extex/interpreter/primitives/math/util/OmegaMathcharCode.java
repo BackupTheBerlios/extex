@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2006 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -23,7 +23,7 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.primitives.math.symbol.Mathchar;
+import de.dante.extex.interpreter.primitives.math.AbstractOmegaMathCode;
 import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.math.MathCode;
@@ -32,17 +32,22 @@ import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
 
 /**
- * This class is used to dynamically define mathematical characters.
+ * This class is used to dynamically define mathematical characters having the
+ * Omega encoding into a count value.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.1 $
  */
-public class MathcharCode extends Mathchar implements CountConvertible, Theable {
+public class OmegaMathcharCode extends AbstractOmegaMathCode
+        implements
+            MathCodeConvertible,
+            CountConvertible,
+            Theable {
 
     /**
      * The constant <tt>serialVersionUID</tt> contains the id for serialization.
      */
-    protected static final long serialVersionUID = 2005L;
+    protected static final long serialVersionUID = 2006L;
 
     /**
      * The field <tt>mathchar</tt> contains the actual character in the form
@@ -56,10 +61,35 @@ public class MathcharCode extends Mathchar implements CountConvertible, Theable 
      * @param name the name for debugging
      * @param charCode the code of the math char
      */
-    public MathcharCode(final String name, final MathCode charCode) {
+    public OmegaMathcharCode(final String name, final MathCode charCode) {
 
         super(name);
         mathchar = charCode;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.count.CountConvertible#convertCount(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public long convertCount(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
+
+        return mathCodeToLong(mathchar);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.primitives.math.util.MathCodeConvertible#convertMathCode(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public MathCode convertMathCode(final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws InterpreterException {
+
+        return mathchar;
     }
 
     /**
@@ -78,18 +108,6 @@ public class MathcharCode extends Mathchar implements CountConvertible, Theable 
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.count.CountConvertible#convertCount(
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.typesetter.Typesetter)
-     */
-    public long convertCount(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws InterpreterException {
-
-        return mathCodeToTeX(mathchar);
-    }
-
-    /**
      * @see de.dante.extex.interpreter.type.Theable#the(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
@@ -98,7 +116,7 @@ public class MathcharCode extends Mathchar implements CountConvertible, Theable 
     public Tokens the(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        return new Tokens(context, mathCodeToTeX(mathchar));
+        return new Tokens(context, mathCodeToLong(mathchar));
     }
 
 }
