@@ -48,7 +48,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * to and from their <logo>TeX</logo> encoding as numbers to abstract math code.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public abstract class AbstractTeXDelimiter extends AbstractMathCode {
 
@@ -407,7 +407,8 @@ public abstract class AbstractTeXDelimiter extends AbstractMathCode {
      *
      * @throws HelpingException in case of an error
      */
-    public static long toTeX(final MathDelimiter del) throws HelpingException {
+    public static long delimiterToLong(final MathDelimiter del)
+            throws HelpingException {
 
         if (del == null) {
             return -1;

@@ -49,7 +49,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * code.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class AbstractOmegaDelimiter extends AbstractMathCode {
 
@@ -217,7 +217,7 @@ public abstract class AbstractOmegaDelimiter extends AbstractMathCode {
     }
 
     /**
-     * Creates a new MathDelimiter object from the <logo>TeX</logo> encoding.
+     * Creates a new MathDelimiter object from the <logo>Omega</logo> encoding.
      * <p>
      * The <logo>TeX</logo> encoding interprets the number as 27 bit hex number:
      * <tt>"cssyyyyllxxxx</tt>. Here the digits have the following meaning:
@@ -399,16 +399,17 @@ public abstract class AbstractOmegaDelimiter extends AbstractMathCode {
     }
 
     /**
-     * Translate the delimiter into a <logo>TeX</logo> encoded number or throw
+     * Translate the delimiter into a <logo>Omega</logo> encoded number or throw
      * an exception if this is not possible.
      *
      * @param del the delimiter to encode
      *
-     * @return the <logo>TeX</logo> encoded delimiter
+     * @return the <logo>Omega</logo> encoded delimiter
      *
      * @throws HelpingException in case of an error
      */
-    public static long toTeX(final MathDelimiter del) throws HelpingException {
+    public static long delimiterToLong(final MathDelimiter del)
+            throws HelpingException {
 
         if (del == null) {
             return -1;

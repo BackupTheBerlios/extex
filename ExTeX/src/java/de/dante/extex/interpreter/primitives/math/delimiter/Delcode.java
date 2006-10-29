@@ -111,7 +111,7 @@ import de.dante.util.UnicodeChar;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Delcode extends AbstractAssignment
         implements
@@ -153,7 +153,7 @@ public class Delcode extends AbstractAssignment
 
         long value = Count.scanInteger(context, source, null);
         MathDelimiter delcode = context.getDelcode(charCode);
-        value += AbstractTeXDelimiter.toTeX(delcode);
+        value += AbstractTeXDelimiter.delimiterToLong(delcode);
 
         assign(prefix, context, source, charCode, value);
     }
@@ -220,7 +220,7 @@ public class Delcode extends AbstractAssignment
         UnicodeChar charCode = source.scanCharacterCode(context, typesetter,
                 getName());
         MathDelimiter delcode = context.getDelcode(charCode);
-        return AbstractTeXDelimiter.toTeX(delcode);
+        return AbstractTeXDelimiter.delimiterToLong(delcode);
     }
 
     /**
@@ -245,7 +245,7 @@ public class Delcode extends AbstractAssignment
                     printableControlSequence(context));
         }
 
-        value = AbstractTeXDelimiter.toTeX(delcode) / value;
+        value = AbstractTeXDelimiter.delimiterToLong(delcode) / value;
         assign(prefix, context, source, charCode, value);
     }
 
@@ -266,7 +266,7 @@ public class Delcode extends AbstractAssignment
 
         long value = Count.scanInteger(context, source, null);
         MathDelimiter delcode = context.getDelcode(charCode);
-        value *= AbstractTeXDelimiter.toTeX(delcode);
+        value *= AbstractTeXDelimiter.delimiterToLong(delcode);
         assign(prefix, context, source, charCode, value);
     }
 
@@ -282,7 +282,7 @@ public class Delcode extends AbstractAssignment
         UnicodeChar charCode = source.scanCharacterCode(context, typesetter,
                 getName());
         MathDelimiter delcode = context.getDelcode(charCode);
-        long value = AbstractTeXDelimiter.toTeX(delcode);
+        long value = AbstractTeXDelimiter.delimiterToLong(delcode);
         return new Tokens(context, value);
     }
 
