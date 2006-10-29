@@ -19,12 +19,13 @@
 
 package de.dante.extex.interpreter.primitives.register.dimen;
 
+import de.dante.extex.interpreter.primitives.math.AbstractMathTester;
 
 /**
  * This is a test suite for the primitive <tt>\mathsurround</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class MathsurroundTest extends AbstractDimenRegisterTester {
 
@@ -47,6 +48,51 @@ public class MathsurroundTest extends AbstractDimenRegisterTester {
         super(arg, "mathsurround", "", "0.0pt");
     }
 
-    //TODO implement the primitive specific test cases
+    /**
+     * <testcase>
+     *  Test case checking that <tt>\mathsurround</tt> is inserted before and
+     *  after math.
+     * </testcase>
+     * @throws Exception in case of an error
+     */
+    public void test1() throws Exception {
+
+        assertSuccess(showNodesProperties(),
+        //--- input code ---
+                AbstractMathTester.DEFINE_MATH_FONTS + DEFINE_CATCODES
+                + "\\mathsurround=10pt"
+                + "o$x$o \\end",
+                //--- output channel ---
+                "\\vbox(8.0pt+0.0pt)x3000.0pt\n"
+                + ".\\hbox(8.0pt+0.0pt)x3000.0pt\n"
+                + "..o\n"
+                + "..\\mathon, surrounded 10.0pt\n"
+                + "..x\n"
+                + "..\\mathoff, surrounded 10.0pt\n"
+                + "..o\n");
+    }
+
+    /**
+     * <testcase>
+     *  Test case checking that <tt>\mathsurround</tt> is inserted before and
+     *  after math &ndash; even when set within the math environment.
+     * </testcase>
+     * @throws Exception in case of an error
+     */
+    public void test2() throws Exception {
+
+        assertSuccess(showNodesProperties(),
+        //--- input code ---
+                AbstractMathTester.DEFINE_MATH_FONTS + DEFINE_CATCODES
+                + "o$x\\mathsurround=10pt$o \\end",
+                //--- output channel ---
+                "\\vbox(8.0pt+0.0pt)x3000.0pt\n"
+                + ".\\hbox(8.0pt+0.0pt)x3000.0pt\n"
+                + "..o\n"
+                + "..\\mathon, surrounded 10.0pt\n"
+                + "..x\n"
+                + "..\\mathoff, surrounded 10.0pt\n"
+                + "..o\n");
+    }
 
 }
