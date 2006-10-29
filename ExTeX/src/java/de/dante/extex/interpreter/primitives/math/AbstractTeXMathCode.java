@@ -24,10 +24,13 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
+import de.dante.extex.interpreter.primitives.math.util.MathCodeConvertible;
+import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.math.MathClass;
 import de.dante.extex.interpreter.type.math.MathClassVisitor;
 import de.dante.extex.interpreter.type.math.MathCode;
+import de.dante.extex.scanner.type.token.CodeToken;
 import de.dante.extex.scanner.type.token.LeftBraceToken;
 import de.dante.extex.scanner.type.token.RightBraceToken;
 import de.dante.extex.scanner.type.token.Token;
@@ -41,7 +44,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * It tries to ensure that the primitive is invoked in math mode only.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class AbstractTeXMathCode extends AbstractMathCode {
 
@@ -212,6 +215,12 @@ public abstract class AbstractTeXMathCode extends AbstractMathCode {
                         "MissingRightBrace");
             }
             return new MathCode(mc, new MathGlyph((int) family, c));
+        } else if (t instanceof CodeToken) {
+            Code code = context.getCode((CodeToken) t);
+            if (code instanceof MathCodeConvertible) {
+                return ((MathCodeConvertible) code).convertMathCode(context,
+                        source, typesetter);
+            }
         }
 
         source.push(t);
