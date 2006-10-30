@@ -23,6 +23,7 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.primitives.omega.OmegaExtension;
 import de.dante.extex.typesetter.Typesetter;
 
 /**
@@ -52,7 +53,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class OutputMode extends AbstractModeCode {
 
@@ -60,7 +61,7 @@ public class OutputMode extends AbstractModeCode {
      * The field <tt>serialVersionUID</tt> contains the version number for
      * serialization.
      */
-    private static final long serialVersionUID = 2006L;
+    protected static final long serialVersionUID = 2006L;
 
     /**
      * Creates a new object.
@@ -83,8 +84,9 @@ public class OutputMode extends AbstractModeCode {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        //TODO gene: unimplemented
-        throw new RuntimeException("unimplemented");
+        OmegaMode mode = scanInputMode(context, source);
+        context.set(OmegaExtension.NAME, OUTPUT_MODE, mode, //
+                prefix.clearGlobal());
     }
 
 }
