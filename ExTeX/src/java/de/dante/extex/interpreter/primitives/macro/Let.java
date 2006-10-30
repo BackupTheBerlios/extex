@@ -54,7 +54,10 @@ import de.dante.util.exception.GeneralException;
  * <doc name="let">
  * <h3>The Primitive <tt>\let</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The primitive <tt>\let</tt> defined a control sequence or active character.
+ *  The value is taken from the meaning of another token. If the token is a
+ *  control sequence or active character then the meaning is used. If the other
+ *  definition is changed the newly defined binding remains intact.
  * </p>
  *
  * <h4>Syntax</h4>
@@ -77,7 +80,7 @@ import de.dante.util.exception.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.38 $
+ * @version $Revision: 1.39 $
  */
 public class Let extends AbstractAssignment {
 
@@ -362,7 +365,6 @@ public class Let extends AbstractAssignment {
         if (t == null) {
             throw new EofException(printableControlSequence(context));
         }
-        
 
         let(prefix, context, cs, t);
     }
