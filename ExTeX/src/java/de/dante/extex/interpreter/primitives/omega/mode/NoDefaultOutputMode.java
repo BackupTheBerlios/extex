@@ -48,7 +48,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class NoDefaultOutputMode extends AbstractModeCode {
 
@@ -56,7 +56,7 @@ public class NoDefaultOutputMode extends AbstractModeCode {
      * The field <tt>serialVersionUID</tt> contains the version number for
      * serialization.
      */
-    private static final long serialVersionUID = 2006L;
+    protected static final long serialVersionUID = 2006L;
 
     /**
      * Creates a new object.
@@ -79,8 +79,8 @@ public class NoDefaultOutputMode extends AbstractModeCode {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        context.set(OmegaExtension.NAME, OUTPUT_MODE, null, prefix
-                .clearGlobal());
+        context.set(OmegaExtension.NAME, DEFAULT_OUTPUT_MODE, null, //
+                prefix.clearGlobal());
     }
 
 }

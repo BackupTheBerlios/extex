@@ -48,7 +48,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class DefaultOutputMode extends AbstractModeCode {
 
@@ -80,7 +80,7 @@ public class DefaultOutputMode extends AbstractModeCode {
             throws InterpreterException {
 
         OmegaMode mode = scanOutputMode(context, source);
-        context.set(OmegaExtension.NAME, OUTPUT_MODE, mode, prefix
+        context.set(OmegaExtension.NAME, DEFAULT_OUTPUT_MODE, mode, prefix
                 .clearGlobal());
     }
 

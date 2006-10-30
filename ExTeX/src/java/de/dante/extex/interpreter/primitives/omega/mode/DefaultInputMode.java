@@ -54,7 +54,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class DefaultInputMode extends AbstractModeCode {
 
@@ -86,9 +86,8 @@ public class DefaultInputMode extends AbstractModeCode {
             throws InterpreterException {
 
         OmegaMode mode = scanInputMode(context, source);
-        context
-                .set(OmegaExtension.NAME, INPUT_MODE, mode, prefix
-                        .clearGlobal());
+        context.set(OmegaExtension.NAME, DEFAULT_INPUT_MODE, mode, //
+                prefix.clearGlobal());
     }
 
 }
