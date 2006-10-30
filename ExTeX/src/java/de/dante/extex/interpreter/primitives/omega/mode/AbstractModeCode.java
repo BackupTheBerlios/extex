@@ -29,9 +29,19 @@ import de.dante.extex.interpreter.type.AbstractCode;
  * output mode as defined by Omega.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class AbstractModeCode extends AbstractCode {
+
+    /**
+     * The constant <tt>INPUT_MODE</tt> contains the key for the input mode.
+     */
+    protected static final String DEFAULT_INPUT_MODE = "defaultInputMode";
+
+    /**
+     * The constant <tt>OUTPUT_MODE</tt> contains the key for the output mode.
+     */
+    protected static final String DEFAULT_OUTPUT_MODE = "defaultOutputMode";
 
     /**
      * The constant <tt>INPUT_MODE</tt> contains the key for the input mode.
