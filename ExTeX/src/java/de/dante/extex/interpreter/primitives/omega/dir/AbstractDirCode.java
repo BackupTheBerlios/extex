@@ -24,6 +24,7 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.tc.Direction;
 import de.dante.extex.interpreter.context.tc.Direction.Dir;
 import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.token.Token;
@@ -32,7 +33,7 @@ import de.dante.extex.scanner.type.token.Token;
  * This is the abstract base class for primitives acquiring a direction.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class AbstractDirCode extends AbstractCode {
 
@@ -95,7 +96,9 @@ public class AbstractDirCode extends AbstractCode {
 
         Token t = source.scanToken(context);
 
-        if (t.equals(Catcode.LETTER, 'L')) {
+        if (t == null) {
+            throw new EofException();
+        } else if (t.equals(Catcode.LETTER, 'L')) {
             return Direction.L;
         } else if (t.equals(Catcode.LETTER, 'R')) {
             return Direction.R;
