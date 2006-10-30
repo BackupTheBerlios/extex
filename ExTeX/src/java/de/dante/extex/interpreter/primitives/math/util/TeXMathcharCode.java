@@ -24,6 +24,7 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.primitives.math.AbstractTeXMathCode;
+import de.dante.extex.interpreter.type.Showable;
 import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.math.MathCode;
@@ -36,12 +37,13 @@ import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
  * TeX encoding into a count value.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TeXMathcharCode extends AbstractTeXMathCode
         implements
-        MathCodeConvertible,
+            MathCodeConvertible,
             CountConvertible,
+            Showable,
             Theable {
 
     /**
@@ -105,6 +107,16 @@ public class TeXMathcharCode extends AbstractTeXMathCode
 
         NoadConsumer nc = getListMaker(context, typesetter);
         nc.add(mathchar, context.getTypesettingContext());
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.Showable#show(
+     *      de.dante.extex.interpreter.context.Context)
+     */
+    public Tokens show(final Context context) throws InterpreterException {
+
+        return new Tokens(context, context.esc("mathchar") + "\""
+                + Long.toHexString(mathCodeToLong(mathchar)).toUpperCase());
     }
 
     /**
