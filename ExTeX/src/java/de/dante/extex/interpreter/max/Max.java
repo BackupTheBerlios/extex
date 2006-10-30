@@ -177,7 +177,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.120 $
+ * @version $Revision: 1.121 $
  */
 public abstract class Max
         implements
@@ -310,9 +310,9 @@ public abstract class Max
     private transient OutputStreamFactory outFactory = null;
 
     /**
-     * This is the prefix for the next invocations.
+     * This is the prefix for the next invocation.
      */
-    private Flags prefix = new FlagsImpl();
+    private Flags prefix;
 
     /**
      * The field <tt>tv</tt> contains the token visitor for expansion.
@@ -520,6 +520,7 @@ public abstract class Max
                 }
             }
         });
+        prefix = new FlagsImpl(); // TODO: use factory
     }
 
     /**
@@ -842,8 +843,6 @@ public abstract class Max
             throws InterpreterException {
 
         if (e.isProcessed()) {
-            // TODO gene: why???
-            //ts.getManager().pop();
             return;
         }
         e.setProcessed(true);
