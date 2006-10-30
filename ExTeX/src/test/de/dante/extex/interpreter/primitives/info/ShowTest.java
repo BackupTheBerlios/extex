@@ -25,12 +25,12 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\show</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class ShowTest extends NoFlagsPrimitiveTester {
 
     /**
-     * Constructor for JobnameTest.
+     * Creates a new object.
      *
      * @param arg the name
      */
@@ -446,7 +446,43 @@ public class ShowTest extends NoFlagsPrimitiveTester {
                 "> \\x=\\char\"7B.\n");
     }
 
+    /**
+     * <testcase primitive="\show">
+     *  Test case checking that <tt>\show</tt> works with
+     *  a defined math character.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testMathchardef1() throws Exception {
 
-    //TODO implement more primitive specific test cases (\mathchardef)
+        assertFailure(//--- input code ---
+                "\\mathchardef\\x=123 \\show\\x"
+                + "\\end",
+                //--- output channel ---
+                "> \\x=\\mathchar\"7B.\n");
+    }
+
+    /**
+     * <testcase primitive="\show">
+     *  Test case checking that <tt>\show</tt> works with
+     *  a defined math character.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testOmathchardef1() throws Exception {
+
+        setConfig("omega");
+        assertFailure(//--- input code ---
+                "\\omathchardef\\x=123 \\show\\x"
+                + "\\end",
+                //--- output channel ---
+                "> \\x=\\omathchar\"7B.\n");
+        setConfig("extex");
+    }
+
+
+    //TODO implement more primitive specific test cases
 
 }

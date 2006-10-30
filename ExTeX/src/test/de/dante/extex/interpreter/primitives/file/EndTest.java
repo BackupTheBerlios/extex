@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -19,15 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.file;
 
-import de.dante.test.NoFlagsButGlobalAndImmediatePrimitiveTester;
+import de.dante.test.NoFlagsPrimitiveTester;
 
 /**
  * This is a test suite for the primitive <tt>\end</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class EndTest extends NoFlagsButGlobalAndImmediatePrimitiveTester {
+public class EndTest extends NoFlagsPrimitiveTester {
 
     /**
      * Method for running the tests standalone.
@@ -75,6 +75,21 @@ public class EndTest extends NoFlagsButGlobalAndImmediatePrimitiveTester {
 
         assertSuccess(//--- input code ---
                 "\\end abc",
+                //--- output channel ---
+                "");
+    }
+
+    /**
+     * <testcase primitive="\end">
+     *  Test case checking that any tokens after <tt>\end</tt> are ignored.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test2() throws Exception {
+
+        assertSuccess(//--- input code ---
+                "\\end \nabc",
                 //--- output channel ---
                 "");
     }
