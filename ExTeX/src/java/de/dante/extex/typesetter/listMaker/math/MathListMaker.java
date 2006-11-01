@@ -23,6 +23,7 @@ import java.util.Stack;
 import java.util.logging.Logger;
 
 import de.dante.extex.interpreter.Flags;
+import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.group.GroupType;
@@ -41,6 +42,8 @@ import de.dante.extex.interpreter.type.muskip.Mudimen;
 import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.Catcode;
+import de.dante.extex.scanner.type.CatcodeException;
+import de.dante.extex.scanner.type.token.ActiveCharacterToken;
 import de.dante.extex.scanner.type.token.Token;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Typesetter;
@@ -139,7 +142,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.53 $
+ * @version $Revision: 1.54 $
  */
 public class MathListMaker extends HorizontalListMaker
         implements
@@ -151,7 +154,7 @@ public class MathListMaker extends HorizontalListMaker
      * It is used to store to the stack and restore the state from the stack.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.53 $
+     * @version $Revision: 1.54 $
      */
     private class MathMemento {
 
@@ -610,25 +613,37 @@ public class MathListMaker extends HorizontalListMaker
     }
 
     /**
-     * Add a math character node to the list.
-     *
-     * @param context the interpreter context
-     * @param tc the typesetting context for the symbol. This parameter is
-     *  partially ignored in math mode.
-     * @param symbol the symbol to add
-     * @param locator the locator
-     *
      * @see de.dante.extex.typesetter.ListMaker#letter(
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.context.TypesettingContext,
      *      de.dante.util.UnicodeChar,
+     *      de.dante.extex.interpreter.context.tc.TypesettingContext,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.util.Locator)
      */
-    public boolean letter(final Context context, final TypesettingContext tc,
-            final UnicodeChar symbol, final Locator locator) {
+    public boolean letter(final UnicodeChar symbol,
+            final TypesettingContext tc, final Context context,
+            final TokenSource source, final Locator locator)
+            throws TypesetterException {
 
         MathCode mcode = context.getMathcode(symbol);
-        insertionPoint.add(NOAD_FACTORY.getNoad(mcode, tc));
+
+        if (mcode.getMathClass() != null) {
+
+            insertionPoint.add(NOAD_FACTORY.getNoad(mcode, tc));
+
+        } else {
+            try {
+                ActiveCharacterToken t = (ActiveCharacterToken) context
+                        .getTokenFactory().createToken(Catcode.ACTIVE, symbol,
+                                Namespace.DEFAULT_NAMESPACE);
+                source.push(t);
+
+            } catch (CatcodeException e) {
+                throw new TypesetterException(e);
+            } catch (InterpreterException e) {
+                throw new TypesetterException(e);
+            }
+        }
         return false;
     }
 
