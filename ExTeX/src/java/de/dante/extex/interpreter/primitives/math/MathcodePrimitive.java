@@ -40,6 +40,10 @@ import de.dante.util.UnicodeChar;
  * <p>
  *  TODO missing documentation
  * </p>
+ * <p>
+ *  If the math code of a character has the special value "8000 then it is
+ *  treated like an active character. In this case the expansion is intiated.
+ * </p>
  *
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
@@ -59,7 +63,7 @@ import de.dante.util.UnicodeChar;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class MathcodePrimitive extends AbstractAssignment
         implements
