@@ -66,7 +66,7 @@ import de.dante.util.UnicodeChar;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.30 $
+ * @version $Revision: 1.31 $
  */
 public class Char extends AbstractCode implements ExpandableCode {
 
@@ -113,8 +113,8 @@ public class Char extends AbstractCode implements ExpandableCode {
         UnicodeChar uc = source.scanCharacterCode(context, typesetter,
                 getName());
         try {
-            typesetter.letter(context, context.getTypesettingContext(), uc,
-                    source.getLocator());
+            typesetter.letter(uc, context.getTypesettingContext(), context,
+                    source, source.getLocator());
         } catch (TypesetterException e) {
             throw new InterpreterException(e);
         }

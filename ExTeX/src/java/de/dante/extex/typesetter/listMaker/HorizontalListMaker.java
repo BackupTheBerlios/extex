@@ -22,6 +22,7 @@ package de.dante.extex.typesetter.listMaker;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.tc.TypesettingContext;
 import de.dante.extex.interpreter.exception.InterpreterException;
@@ -59,7 +60,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.38 $
+ * @version $Revision: 1.39 $
  */
 public class HorizontalListMaker extends AbstractListMaker {
 
@@ -247,20 +248,23 @@ public class HorizontalListMaker extends AbstractListMaker {
     /**
      * Add a character node to the list.
      *
-     * @param context the interpreter context
-     * @param tc the typesetting context for the symbol
      * @param symbol the symbol to add
+     * @param tc the typesetting context for the symbol
+     * @param context the interpreter context
+     * @param source the source of new tokens
      * @param locator the locator
      *
      * @see de.dante.extex.typesetter.ListMaker#letter(
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.context.TypesettingContext,
      *      de.dante.util.UnicodeChar,
+     *      de.dante.extex.interpreter.context.TypesettingContext,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource;
      *      de.dante.util.Locator)
      * @see "The TeXbook [p.76]"
      */
-    public boolean letter(final Context context, final TypesettingContext tc,
-            final UnicodeChar symbol, final Locator locator)
+    public boolean letter(final UnicodeChar symbol,
+            final TypesettingContext tc, final Context context,
+            final TokenSource source, final Locator locator)
             throws TypesetterException {
 
         UnicodeChar c = symbol;

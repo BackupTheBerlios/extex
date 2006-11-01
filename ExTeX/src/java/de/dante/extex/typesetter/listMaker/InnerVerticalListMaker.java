@@ -22,6 +22,7 @@ package de.dante.extex.typesetter.listMaker;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.tc.TypesettingContext;
 import de.dante.extex.interpreter.exception.InterpreterException;
@@ -45,7 +46,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * This is the derived class for a list maker in inner vertical list mode.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class InnerVerticalListMaker extends AbstractListMaker {
 
@@ -185,17 +186,19 @@ public class InnerVerticalListMaker extends AbstractListMaker {
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#letter(
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.context.TypesettingContext,
      *      de.dante.util.UnicodeChar,
+     *      de.dante.extex.interpreter.context.TypesettingContext,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource;
      *      de.dante.util.Locator)
      */
-    public boolean letter(final Context context, final TypesettingContext tc,
-            final UnicodeChar symbol, final Locator locator)
+    public boolean letter(final UnicodeChar symbol,
+            final TypesettingContext tc, final Context context,
+            final TokenSource source, final Locator locator)
             throws TypesetterException {
 
-        return getManager().ensureHorizontalMode(locator).letter(context, tc,
-                symbol, locator);
+        return getManager().ensureHorizontalMode(locator).letter(symbol, tc,
+                context, source, locator);
     }
 
     /**

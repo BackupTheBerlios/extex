@@ -74,7 +74,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
 public class Discretionary extends AbstractCode {
 
@@ -112,10 +112,10 @@ public class Discretionary extends AbstractCode {
         Locator locator = source.getLocator();
 
         try {
-            typesetter.add(new DiscretionaryNode(fill(pre, tc, typesetter,
-                    context, locator), //
-                    fill(post, tc, typesetter, context, locator), //
-                    fill(nobreak, tc, typesetter, context, locator)));
+            typesetter.add(new DiscretionaryNode(fill(pre, tc, context,
+                    source, typesetter, locator), //
+                    fill(post, tc, context, source, typesetter, locator), //
+                    fill(nobreak, tc, context, source, typesetter, locator)));
         } catch (ConfigurationException e) {
             throw new InterpreterException(e);
         }
@@ -126,8 +126,9 @@ public class Discretionary extends AbstractCode {
      *
      * @param tokens the tokens to put into a NodeList
      * @param tc the typesetting context
-     * @param typesetter the typesetter
      * @param context the interpreter context
+     * @param source the source for new tokens
+     * @param typesetter the typesetter
      * @param locator the locator pointing to the start
      *
      * @return the node list or <code>null</code> if there are no tokens to
@@ -137,8 +138,8 @@ public class Discretionary extends AbstractCode {
      * @throws ConfigurationException in case of a configuration error
      */
     private NodeList fill(final Tokens tokens, final TypesettingContext tc,
-            final Typesetter typesetter, final Context context,
-            final Locator locator)
+            final Context context, TokenSource source,
+            final Typesetter typesetter, final Locator locator)
             throws TypesetterException,
                 ConfigurationException {
 
@@ -151,7 +152,7 @@ public class Discretionary extends AbstractCode {
         //NodeList nodes = new HorizontalListNode();
 
         for (int i = 0; i < tokens.length(); i++) {
-            hlist.letter(context, tc, tokens.get(i).getChar(), locator);
+            hlist.letter(tokens.get(i).getChar(), tc, context, source, locator);
         }
         return hlist.complete((TypesetterOptions) context);
     }

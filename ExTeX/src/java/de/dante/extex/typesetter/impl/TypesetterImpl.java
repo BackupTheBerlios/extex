@@ -68,7 +68,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.96 $
+ * @version $Revision: 1.97 $
  */
 public class TypesetterImpl
         implements
@@ -449,11 +449,11 @@ public class TypesetterImpl
      *      de.dante.util.UnicodeChar,
      *      de.dante.util.Locator)
      */
-    public boolean letter(final Context context, final TypesettingContext tc,
-            final UnicodeChar uc, final Locator locator)
+    public boolean letter(final UnicodeChar uc, final TypesettingContext tc,
+            final Context context, TokenSource source, final Locator locator)
             throws TypesetterException {
 
-        return listMaker.letter(context, tc, uc, locator);
+        return listMaker.letter(uc, tc, context, source, locator);
     }
 
     /**

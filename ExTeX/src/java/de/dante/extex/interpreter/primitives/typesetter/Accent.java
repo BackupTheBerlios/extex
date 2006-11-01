@@ -62,7 +62,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [1123]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class Accent extends AbstractCode {
 
@@ -134,7 +134,7 @@ public class Accent extends AbstractCode {
 
             if (currentFont.hasGlyph(accent)) {
                 if (!currentFont.hasGlyph(c)) {
-                    typesetter.letter(context, tc, accent, source.getLocator());
+                    typesetter.letter(accent, tc, context, source, source.getLocator());
                 } else {
                     Node node = typesetter.getNodeFactory().getNode(tc, accent);
                     if (node == null) {
@@ -158,13 +158,13 @@ public class Accent extends AbstractCode {
                         typesetter.add(node);
                         d.set(-a - delta);
                         typesetter.add(new AccentKernNode(d));
-                        typesetter.letter(context, tc, c, source.getLocator());
+                        typesetter.letter(c, tc, context, source, source.getLocator());
                     } catch (ConfigurationException e) {
                         throw new InterpreterException(e);
                     }
                 }
             } else if (currentFont.hasGlyph(c)) {
-                typesetter.letter(context, tc, c, source.getLocator());
+                typesetter.letter(c, tc, context, source, source.getLocator());
             } else {
                 //TODO gene: letter and accent are undefined
                 throw new RuntimeException("unimplemented");

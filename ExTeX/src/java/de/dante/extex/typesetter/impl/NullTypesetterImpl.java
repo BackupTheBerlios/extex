@@ -54,7 +54,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public class NullTypesetterImpl implements Typesetter {
 
@@ -277,8 +277,8 @@ public class NullTypesetterImpl implements Typesetter {
      *      de.dante.util.UnicodeChar,
      *      de.dante.util.Locator)
      */
-    public boolean letter(final Context context, final TypesettingContext tc,
-            final UnicodeChar uc, final Locator locator)
+    public boolean letter(final UnicodeChar uc, final TypesettingContext tc,
+            final Context context, TokenSource source, final Locator locator)
             throws TypesetterException {
 
         return false;

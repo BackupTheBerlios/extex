@@ -177,7 +177,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.121 $
+ * @version $Revision: 1.122 $
  */
 public abstract class Max
         implements
@@ -1519,8 +1519,8 @@ public abstract class Max
         if (prefix.isDirty()) {
             reportDirtyFlag(token);
         }
-        if (typesetter.letter(context, context.getTypesettingContext(), token
-                .getChar(), getLocator())
+        if (typesetter.letter(token
+                .getChar(), context.getTypesettingContext(), context, this, getLocator())
                 && context.getCount("tracinglostchars").gt(Count.ZERO)) {
             logger.info(getLocalizer().format("TTP.MissingChar",
                     token.getChar().toString(),
@@ -1603,9 +1603,9 @@ public abstract class Max
         if (prefix.isDirty()) {
             reportDirtyFlag(token);
         }
-        typesetter.letter(context, //
+        typesetter.letter(token.getChar(), //
                 context.getTypesettingContext(), //
-                token.getChar(), getLocator());
+                context, this, getLocator());
         return null;
     }
 

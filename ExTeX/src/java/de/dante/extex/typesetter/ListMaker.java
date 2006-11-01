@@ -42,7 +42,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "<logo>TeX</logo> &ndash; The Program [211]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.52 $
+ * @version $Revision: 1.53 $
  */
 public interface ListMaker {
 
@@ -186,9 +186,10 @@ public interface ListMaker {
      * Add a letter to the current list or treat it in some other appropriate
      * way.
      *
-     * @param context the interpreter context
      * @param tc the typesetting context
      * @param uc the character
+     * @param context the interpreter context
+     * @param source the source for new tokens
      * @param locator the locator
      *
      * @return <code>true</code> iff the character has been discarded because
@@ -196,8 +197,8 @@ public interface ListMaker {
      *
      * @throws TypesetterException in case of an error
      */
-    boolean letter(Context context, TypesettingContext tc, UnicodeChar uc,
-            Locator locator) throws TypesetterException;
+    boolean letter(UnicodeChar uc, TypesettingContext tc, Context context,
+            TokenSource source, Locator locator) throws TypesetterException;
 
     /**
      * Treat a math shift character.
