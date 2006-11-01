@@ -29,7 +29,7 @@ import de.dante.util.UnicodeChar;
  * This is a test suite for the primitive <tt>\omathcode</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class OmathcodeTest extends NoFlagsButGlobalPrimitiveTester {
 
@@ -355,6 +355,42 @@ public class OmathcodeTest extends NoFlagsButGlobalPrimitiveTester {
                         + "\\omathcode`. \"41" + "$a.b$\\end",
                 //--- output message ---
                 "aAb" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\omathcode">
+     *  Test case checking that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testActiveErr1() throws Exception {
+
+        assertFailure(
+        //--- input code ---
+                AbstractMathTester.DEFINE_MATH_FONTS + DEFINE_MATH + DEFINE_BRACES
+                + "\\omathcode`. \"8000000" + "$a.b$\\end",
+                //--- output message ---
+                "Undefined control sequence .");
+    }
+
+    /**
+     * <testcase primitive="\omathcode">
+     *  Test case checking that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testActive1() throws Exception {
+
+        assertSuccess(
+        //--- input code ---
+                AbstractMathTester.DEFINE_MATH_FONTS + DEFINE_MATH + DEFINE_BRACES
+                + "\\catcode`\\.=13 \\def.{xxx}"
+                + "\\catcode`\\.=12 "
+                + "\\omathcode`. \"8000000" + "$a.b$\\end",
+                //--- output message ---
+                "axxxb" + TERM);
     }
 
     //TODO implement more primitive specific test cases
