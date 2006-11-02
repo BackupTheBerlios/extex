@@ -29,7 +29,7 @@ import de.dante.extex.typesetter.type.NodeList;
  * This interface describes a list for alignments with the associated methods.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public interface AlignmentList {
 
@@ -59,7 +59,8 @@ public interface AlignmentList {
      *
      * @throws TypesetterException in case of an error
      */
-    void crcr(Context context, TokenSource source, Typesetter typesetter) throws TypesetterException;
+    void crcr(Context context, TokenSource source, Typesetter typesetter)
+            throws TypesetterException;
 
     /**
      * The invocation of this method indicates that the pattern for the current
