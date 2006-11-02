@@ -25,6 +25,7 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.tc.Direction;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.ExtensionDisabledException;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.typesetter.Typesetter;
@@ -60,7 +61,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class EndR extends AbstractCode {
 
@@ -96,8 +97,7 @@ public class EndR extends AbstractCode {
         }
         Direction dir = context.popDirection();
         if (dir == null) {
-            //TODO gene: unimplemented
-            throw new RuntimeException("unimplemented");
+            throw new HelpingException(getLocalizer(), "Problem");
         }
         try {
             context.set(dir, false);
