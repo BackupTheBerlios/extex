@@ -31,7 +31,6 @@ import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.exception.TypesetterException;
-import de.dante.extex.typesetter.type.noad.MathGlyph;
 import de.dante.extex.typesetter.type.noad.Noad;
 
 /**
@@ -39,14 +38,14 @@ import de.dante.extex.typesetter.type.noad.Noad;
  * This is usually the case for math list makers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public interface NoadConsumer extends ListMaker {
 
     /**
      * Add a mathematical glyph.
      *
-     * @param mcl the math code
+     * @param mc the math code
      * @param tc the typesetting context
      *
      * @throws TypesetterException in case of an error
@@ -121,7 +120,7 @@ public interface NoadConsumer extends ListMaker {
     void middle(MathDelimiter delimiter) throws TypesetterException;
 
     /**
-     * Close the group for a \left-\right construction.
+     * Close the group for a <tt>\left</tt>-<tt>\right</tt> construction.
      *
      * @param delimiter the delimiter to typeset on the right side
      *
@@ -131,7 +130,7 @@ public interface NoadConsumer extends ListMaker {
 
     /**
      * Process the input until a Noad is completed. A Noad is either a single
-     * Noad or a list of Noades resulting from the processing of a block.
+     * Noad or a list of Noads resulting from the processing of a block.
      *
      * @param flags the flags to restore after processing
      * @param context the interpreter context
