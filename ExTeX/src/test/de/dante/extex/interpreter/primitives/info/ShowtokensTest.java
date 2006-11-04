@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\showtokens</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ShowtokensTest extends NoFlagsPrimitiveTester {
 
@@ -72,6 +72,78 @@ public class ShowtokensTest extends NoFlagsPrimitiveTester {
                 + "\\end",
                 //--- output channel ---
                 "> \\jobname.\n",
+                "");
+    }
+
+    /**
+     * <testcase primitive="\showtokens">
+     *  Test case checking that <tt>\showtokens</tt> ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test3() throws Exception {
+
+        assertOutput(//--- input code ---
+                DEFINE_BRACES + "\\catcode`\\~=13 "
+                + "\\showtokens{x~x}"
+                + "\\end",
+                //--- output channel ---
+                "> x~x.\n",
+                "");
+    }
+
+    /**
+     * <testcase primitive="\showtokens">
+     *  Test case checking that <tt>\showtokens</tt> ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test4() throws Exception {
+
+        assertOutput(//--- input code ---
+                DEFINE_CATCODES
+                + "\\showtokens{x#x}"
+                + "\\end",
+                //--- output channel ---
+                "> x#x.\n",
+                "");
+    }
+
+    /**
+     * <testcase primitive="\showtokens">
+     *  Test case checking that <tt>\showtokens</tt> ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test5() throws Exception {
+
+        assertOutput(//--- input code ---
+                DEFINE_CATCODES
+                + "\\showtokens{x_x}"
+                + "\\end",
+                //--- output channel ---
+                "> x_x.\n",
+                "");
+    }
+
+    /**
+     * <testcase primitive="\showtokens">
+     *  Test case checking that <tt>\showtokens</tt> ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test6() throws Exception {
+
+        assertOutput(//--- input code ---
+                DEFINE_CATCODES
+                + "\\showtokens{x^x}"
+                + "\\end",
+                //--- output channel ---
+                "> x^x.\n",
                 "");
     }
 
