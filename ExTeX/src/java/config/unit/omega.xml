@@ -59,9 +59,9 @@
     <define name="naturaldir"
             class="de.dante.extex.interpreter.primitives.omega.dir.Naturaldir"/>
     <define name="noDefaultInputMode"
-            class="de.dante.extex.interpreter.primitives.omega.mode.DefaultInputMode"/>
+            class="de.dante.extex.interpreter.primitives.omega.mode.NoDefaultInputMode"/>
     <define name="noDefaultInputTranslation"
-            class="de.dante.extex.interpreter.primitives.omega.translation.DefaultInputTranslation"/>
+            class="de.dante.extex.interpreter.primitives.omega.translation.NoDefaultInputTranslation"/>
     <define name="noDefaultOutputMode"
             class="de.dante.extex.interpreter.primitives.omega.mode.NoDefaultOutputMode"/>
     <define name="noDefaultOutputTranslation"
