@@ -39,7 +39,13 @@ import de.dante.extex.typesetter.Typesetter;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;DefaultOutputMode&rang;
- *      &rarr; ...  </pre>
+ *      &rarr; <tt>\DefaultOutputMode</tt> &lang;mode&rang;
+ *
+ *    &lang;mode&rang;
+ *      &rarr; <tt>onebyte</tt>
+ *       |  <tt>ebcdic</tt>
+ *       |  <tt>twobyte</tt>
+ *       |  <tt>twobyteLE</tt>     </pre>
  *
  * <h4>Examples</h4>
  * <pre class="TeXSample">
@@ -48,7 +54,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class DefaultOutputMode extends AbstractModeCode {
 

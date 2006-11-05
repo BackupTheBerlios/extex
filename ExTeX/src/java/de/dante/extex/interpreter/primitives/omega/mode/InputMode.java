@@ -49,12 +49,12 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * <h4>Examples</h4>
  * <pre class="TeXSample">
- * \InputMode ...  </pre>
+ *   \InputMode onebyte  </pre>
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class InputMode extends AbstractModeCode {
 
