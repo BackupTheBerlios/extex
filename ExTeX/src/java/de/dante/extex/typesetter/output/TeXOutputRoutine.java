@@ -154,7 +154,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class TeXOutputRoutine implements OutputRoutine {
 
@@ -234,8 +234,8 @@ public class TeXOutputRoutine implements OutputRoutine {
         interpreter.push(rightBrace);
         interpreter.push(output);
         try {
-            //TODO gene: provide reasonable value
-            context.openGroup(GroupType.OUTPUT_GROUP, null, this.outputToken);
+            context.openGroup(GroupType.OUTPUT_GROUP, interpreter.getLocator(),
+                    this.outputToken);
             context.setBox(OUTPUT_BOX, new Box(page.getNodes()), false);
         } catch (ConfigurationException e) {
             throw new GeneralException(e);
