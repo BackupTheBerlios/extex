@@ -35,15 +35,15 @@ import de.dante.util.resource.ResourceFinder;
  * TODO gene: missing JavaDoc.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
-public class Ocp implements Code, Serializable {
+public class Ocp implements Code, OcpConvertible, Serializable {
 
     /**
      * The field <tt>serialVersionUID</tt> contains the version number for
      * serialization.
      */
-    private static final long serialVersionUID = 2006;
+    protected static final long serialVersionUID = 2006;
 
     /**
      * This is a factory method for OCPs.
@@ -52,6 +52,8 @@ public class Ocp implements Code, Serializable {
      * @param finder the resource finder
      *
      * @return the OCP encountered
+     *
+     * @throws InterpreterException in case of an error
      */
     public static Ocp load(final String resource, final ResourceFinder finder)
             throws InterpreterException {
@@ -61,7 +63,6 @@ public class Ocp implements Code, Serializable {
         } catch (ConfigurationException e) {
             throw new InterpreterException(e);
         }
-        // TODO gene: load unimplemented
         return new Ocp(resource);
     }
 
@@ -71,6 +72,11 @@ public class Ocp implements Code, Serializable {
     private String name;
 
     /**
+     * The field <tt>ocp</tt> contains the ...
+     */
+    private Ocp ocp;
+
+    /**
      * Creates a new object.
      *
      * @param resource the name of the resource
@@ -78,6 +84,19 @@ public class Ocp implements Code, Serializable {
     public Ocp(final String resource) {
 
         super();
+        // TODO gene: load unimplemented
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.primitives.omega.ocp.util.OcpConvertible#convertOcp(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public Ocp convertOcp(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
+
+        return ocp;
     }
 
     /**
