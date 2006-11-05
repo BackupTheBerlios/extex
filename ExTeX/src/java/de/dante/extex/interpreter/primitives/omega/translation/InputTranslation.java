@@ -26,6 +26,7 @@ import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.primitives.file.AbstractFileCode;
 import de.dante.extex.interpreter.primitives.omega.mode.AbstractModeCode;
 import de.dante.extex.interpreter.primitives.omega.ocp.util.OcpUtil;
+import de.dante.extex.interpreter.type.file.InFile;
 import de.dante.extex.typesetter.Typesetter;
 
 /**
@@ -50,7 +51,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class InputTranslation extends AbstractModeCode {
 
@@ -88,6 +89,7 @@ public class InputTranslation extends AbstractModeCode {
             file = AbstractFileCode.scanInFileKey(context,source,typesetter);
         }
         String resource = OcpUtil.scanOcpFileName(source, context);
+        InFile inFile = context.getInFile(file);
 
         //TODO gene: unimplemented
         throw new RuntimeException("unimplemented");

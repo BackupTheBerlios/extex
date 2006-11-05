@@ -23,7 +23,10 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.primitives.file.AbstractFileCode;
+import de.dante.extex.interpreter.primitives.omega.ocp.util.OcpUtil;
 import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.interpreter.type.file.OutFile;
 import de.dante.extex.typesetter.Typesetter;
 
 /**
@@ -39,16 +42,19 @@ import de.dante.extex.typesetter.Typesetter;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;OutputTranslation&rang;
- *      &rarr; ...  </pre>
+ *      &rarr; <tt>\OutputTranslation</tt> &lang;file&rang; &lang;ocp file&rang;
+ *
+ *        ...
+ *        </pre>
  *
  * <h4>Examples</h4>
  * <pre class="TeXSample">
- * \OutputTranslation... </pre>
+ *   \OutputTranslation 1 unicode8 </pre>
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class OutputTranslation extends AbstractCode {
 
@@ -78,6 +84,11 @@ public class OutputTranslation extends AbstractCode {
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
+
+        String file = AbstractFileCode.scanOutFileKey(context, source,
+                typesetter);
+        String resource = OcpUtil.scanOcpFileName(source, context);
+        OutFile outFile = context.getOutFile(file);
 
         //TODO gene: unimplemented
         throw new RuntimeException("unimplemented");
