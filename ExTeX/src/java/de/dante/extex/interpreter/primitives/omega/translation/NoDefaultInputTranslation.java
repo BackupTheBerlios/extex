@@ -23,7 +23,9 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.interpreter.primitives.omega.OmegaExtension;
+import de.dante.extex.interpreter.primitives.omega.mode.AbstractModeCode;
+import de.dante.extex.interpreter.primitives.omega.mode.OmegaMode;
 import de.dante.extex.typesetter.Typesetter;
 
 /**
@@ -39,18 +41,24 @@ import de.dante.extex.typesetter.Typesetter;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;noDefaultInputTranslation&rang;
- *      &rarr; ...  </pre>
+ *      &rarr; <tt>\noDefaultInputTranslation</tt> &lang;mode&rang;
+ *
+ *    &lang;mode&rang;
+ *      &rarr; <tt>onebyte</tt>
+ *        |  <tt>ebcdic</tt>
+ *        |  <tt>twobyte</tt>
+ *        |  <tt>twobyteLE</tt>    </pre>
  *
  * <h4>Examples</h4>
  * <pre class="TeXSample">
- * \noDefaultInputTranslation... </pre>
+ *   \noDefaultInputTranslation onebyte </pre>
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class NoDefaultInputTranslation extends AbstractCode {
+public class NoDefaultInputTranslation extends AbstractModeCode {
 
     /**
      * The field <tt>serialVersionUID</tt> contains the version number for
@@ -79,8 +87,10 @@ public class NoDefaultInputTranslation extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        //TODO gene: unimplemented
-        throw new RuntimeException("unimplemented");
-    }
+        OmegaMode mode = scanInputMode(context, source);
 
+        context.set(OmegaExtension.NAME, //
+                DEFAULT_INPUT_TRANSLATION + mode.toString(), //
+                null, prefix.clearGlobal());
+    }
 }

@@ -23,8 +23,10 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.primitives.omega.OmegaExtension;
 import de.dante.extex.interpreter.primitives.omega.mode.AbstractModeCode;
 import de.dante.extex.interpreter.primitives.omega.mode.OmegaMode;
+import de.dante.extex.interpreter.primitives.omega.ocp.util.Ocp;
 import de.dante.extex.interpreter.primitives.omega.ocp.util.OcpUtil;
 import de.dante.extex.typesetter.Typesetter;
 
@@ -41,16 +43,22 @@ import de.dante.extex.typesetter.Typesetter;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;DefaultOutputTranslation&rang;
- *      &rarr; ...  </pre>
+ *      &rarr; <tt>\DefaultOutputTranslation</tt> &lang;mode&rang; &lang;ocp&rang;
+ *
+ *    &lang;mode&rang;
+ *      &rarr; <tt>onebyte</tt>
+ *       |  <tt>ebcdic</tt>
+ *       |  <tt>twobyte</tt>
+ *       |  <tt>twobyteLE</tt>   </pre>
  *
  * <h4>Examples</h4>
  * <pre class="TeXSample">
- * \DefaultOutputTranslation ... </pre>
+ *   \DefaultOutputTranslation onebyte \OCPebcdic  </pre>
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class DefaultOutputTranslation extends AbstractModeCode {
 
@@ -58,7 +66,7 @@ public class DefaultOutputTranslation extends AbstractModeCode {
      * The field <tt>serialVersionUID</tt> contains the version number for
      * serialization.
      */
-    private static final long serialVersionUID = 2006L;
+    protected static final long serialVersionUID = 2006L;
 
     /**
      * Creates a new object.
@@ -82,10 +90,11 @@ public class DefaultOutputTranslation extends AbstractModeCode {
             throws InterpreterException {
 
         OmegaMode mode = scanOutputMode(context, source);
-        String resource = OcpUtil.scanOcpFileName(source, context);
+        Ocp ocp = OcpUtil.scanOcp(source, context, typesetter);
 
-        //TODO gene: unimplemented
-        throw new RuntimeException("unimplemented");
+        context.set(OmegaExtension.NAME, //
+                DEFAULT_OUTPUT_TRANSLATION + mode.toString(), //
+                ocp, prefix.clearGlobal());
     }
 
 }

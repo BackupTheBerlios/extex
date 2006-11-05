@@ -23,7 +23,9 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.interpreter.primitives.omega.OmegaExtension;
+import de.dante.extex.interpreter.primitives.omega.mode.AbstractModeCode;
+import de.dante.extex.interpreter.primitives.omega.mode.OmegaMode;
 import de.dante.extex.typesetter.Typesetter;
 
 /**
@@ -39,24 +41,30 @@ import de.dante.extex.typesetter.Typesetter;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;noDefaultOutputTranslation&rang;
- *      &rarr; ...  </pre>
+ *      &rarr; <tt>\noDefaultOutputTranslation</tt> &lang;mode&rang;
+ *
+ *    &lang;mode&rang;
+ *      &rarr; <tt>onebyte</tt>
+ *        |  <tt>ebcdic</tt>
+ *        |  <tt>twobyte</tt>
+ *        |  <tt>twobyteLE</tt>    </pre>
  *
  * <h4>Examples</h4>
  * <pre class="TeXSample">
- * \noDefaultOutputTranslation... </pre>
+ *   \noDefaultOutputTranslation onebyte  </pre>
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class NoDefaultOutputTranslation extends AbstractCode {
+public class NoDefaultOutputTranslation extends AbstractModeCode {
 
     /**
      * The field <tt>serialVersionUID</tt> contains the version number for
      * serialization.
      */
-    private static final long serialVersionUID = 2006L;
+    protected static final long serialVersionUID = 2006L;
 
     /**
      * Creates a new object.
@@ -79,8 +87,11 @@ public class NoDefaultOutputTranslation extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        //TODO gene: unimplemented
-        throw new RuntimeException("unimplemented");
+        OmegaMode mode = scanInputMode(context, source);
+
+        context.set(OmegaExtension.NAME, //
+                DEFAULT_OUTPUT_TRANSLATION + mode.toString(), //
+                null, prefix.clearGlobal());
     }
 
 }
