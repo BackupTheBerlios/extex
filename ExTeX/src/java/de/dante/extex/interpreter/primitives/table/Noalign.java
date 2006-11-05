@@ -54,7 +54,7 @@ import de.dante.extex.typesetter.type.NodeList;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Noalign extends AbstractCode {
 
@@ -105,7 +105,7 @@ public class Noalign extends AbstractCode {
             throws InterpreterException {
 
         Box b = new Box(context, source, typesetter, false, null,
-                GroupType.VBOX_GROUP, start); // TODO gene: group type
+                GroupType.NO_ALIGN_GROUP, start);
 
         return b.getNodes();
     }
