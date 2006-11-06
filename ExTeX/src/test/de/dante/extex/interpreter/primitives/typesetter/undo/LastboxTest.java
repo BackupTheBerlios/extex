@@ -26,7 +26,7 @@ import de.dante.test.NoFlagsPrimitiveTester;
  * This is a test suite for the primitive <tt>\lastbox</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class LastboxTest extends NoFlagsPrimitiveTester {
 
@@ -96,7 +96,7 @@ public class LastboxTest extends NoFlagsPrimitiveTester {
         assertFailure(
         //--- input code ---
                 DEFINE_MATH + AbstractMathTester.DEFINE_MATH_FONTS +
-                "$$\\setbox0=\\lastbox $",
+                "$$\\setbox0=\\lastbox $$",
                 //--- error channel ---
                 "You can't use `\\lastbox' in displaymath mode");
     }
@@ -114,12 +114,29 @@ public class LastboxTest extends NoFlagsPrimitiveTester {
         assertFailure(
         //--- input code ---
                 DEFINE_MATH + AbstractMathTester.DEFINE_MATH_FONTS +
-                "$$\\lastbox $",
+                "$$\\lastbox $$",
                 //--- error channel ---
                 "You can't use `\\lastbox' in displaymath mode");
     }
 
+    /**
+     * <testcase primitive="\lastbox">
+     *  Test case checking that <tt>\lastbox</tt> can not be used in horizontal
+     *  mode.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testErr21() throws Exception {
 
-    //TODO implement primitive specific test cases
+        assertFailure(
+        //--- input code ---
+                "\\lastbox ",
+                //--- error channel ---
+                "You can't use `\\lastbox' in verticalal mode");
+    }
+
+
+    //TODO implement more primitive specific test cases
 
 }
