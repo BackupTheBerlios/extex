@@ -42,18 +42,19 @@ import de.dante.extex.typesetter.Typesetter;
  *      &rarr; <tt>\OutputMode</tt> &lang;mode&rang;
  *
  *    &lang;mode&rang;
- *      &rarr; ...
- *      
- *        </pre>
+ *      &rarr; <tt>onebyte</tt>
+ *       |  <tt>ebcdic</tt>
+ *       |  <tt>twobyte</tt>
+ *       |  <tt>twobyteLE</tt>     </pre>
  *
  * <h4>Examples</h4>
  * <pre class="TeXSample">
- * \OutputMode ...  </pre>
+ *   \OutputMode onebyte  </pre>
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class OutputMode extends AbstractModeCode {
 
@@ -84,7 +85,7 @@ public class OutputMode extends AbstractModeCode {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        OmegaMode mode = scanInputMode(context, source);
+        OmegaMode mode = scanOutputMode(context, source);
         context.set(OmegaExtension.NAME, OUTPUT_MODE, mode, //
                 prefix.clearGlobal());
     }
