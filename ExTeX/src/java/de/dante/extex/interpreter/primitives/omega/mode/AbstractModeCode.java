@@ -31,7 +31,7 @@ import de.dante.extex.scanner.type.token.Token;
  * output mode as defined by Omega.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public abstract class AbstractModeCode extends AbstractCode {
 
@@ -159,6 +159,12 @@ public abstract class AbstractModeCode extends AbstractCode {
         OmegaMode mode = scanMode(context, source);
 
         if (mode == null) {
+            Token token = source.getToken(context);
+            if (token == null) {
+                throw new EofException();
+            }
+            source.push(token);
+
             throw new BadOutputModeException();
         }
 
