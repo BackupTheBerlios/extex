@@ -57,7 +57,7 @@ import de.dante.extex.typesetter.type.NodeList;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Lastbox extends AbstractCode implements Boxable {
 
@@ -88,12 +88,13 @@ public class Lastbox extends AbstractCode implements Boxable {
             throws InterpreterException {
 
         Mode mode = typesetter.getMode();
-        if (mode == Mode.MATH || mode == Mode.DISPLAYMATH) {
+        if (mode.isMath() || mode == Mode.VERTICAL) {
             throw new HelpingException(getLocalizer(), "TTP.LastBoxIn", //
                     context.esc(getName()), mode.toString());
         }
 
         //TODO gene: what's to do?
+        //throw new RuntimeException("unimplemented");
     }
 
     /**
@@ -106,7 +107,7 @@ public class Lastbox extends AbstractCode implements Boxable {
             final Typesetter typesetter) throws InterpreterException {
 
         Mode mode = typesetter.getMode();
-        if (mode == Mode.MATH || mode == Mode.DISPLAYMATH) {
+        if (mode.isMath() || mode == Mode.VERTICAL) {
             throw new HelpingException(getLocalizer(), "TTP.LastBoxIn", //
                     context.esc(getName()), mode.toString());
         }
