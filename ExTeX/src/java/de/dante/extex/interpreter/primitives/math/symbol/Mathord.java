@@ -35,23 +35,35 @@ import de.dante.extex.typesetter.type.noad.OrdinaryNoad;
  * <doc name="mathord">
  * <h3>The Math Primitive <tt>\mathord</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The primitive <tt>\mathord</tt> takes an argument and treats it as
+ *  an ordinary symbol. It works in math mode only. The argument can either
+ *  be a single letter of a math expression enclosed in braces.
  * </p>
  *
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;mathord&rang;
- *       &rarr; <tt>\mathord</tt>  </pre>
+ *       &rarr; <tt>\mathord</tt> &lang;formula&rang;
+ *
+ *    &lang;formula&rang;
+ *       &rarr;  &lang;letter&rang;
+ *         |  <tt>{</tt> &lang;math material&rang; <tt>}</tt>  </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
- *    \mathord  </pre>
+ *    \mathord x </pre>
+ *
+ *  <pre class="TeXSample">
+ *    \mathord\mathchar"1234  </pre>
+ *
+ *  <pre class="TeXSample">
+ *    \mathord {abc} </pre>
  *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Mathord extends AbstractMathCode {
 
@@ -82,7 +94,8 @@ public class Mathord extends AbstractMathCode {
             throws InterpreterException {
 
         NoadConsumer nc = getListMaker(context, typesetter);
-        Noad noad = nc.scanNoad(prefix, context, source, typesetter, getName());
+        Noad noad = nc.scanNoad(prefix, context, source, typesetter,
+                printableControlSequence(context));
         nc.add(new OrdinaryNoad(noad, context.getTypesettingContext()));
     }
 

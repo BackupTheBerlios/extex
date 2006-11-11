@@ -35,23 +35,35 @@ import de.dante.extex.typesetter.type.noad.Noad;
  * <doc name="mathclose">
  * <h3>The Math Primitive <tt>\mathclose</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The primitive <tt>\mathclose</tt> takes an argument and treats it as
+ *  a closing symbol. It works in math mode only. The argument can either
+ *  be a single letter of a math expression enclosed in braces.
  * </p>
  *
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;mathclose&rang;
- *       &rarr; <tt>\mathclose</tt>  </pre>
+ *       &rarr; <tt>\mathclose</tt> &lang;formula&rang;
+ *
+ *    &lang;formula&rang;
+ *       &rarr;  &lang;letter&rang;
+ *         |  <tt>{</tt> &lang;math material&rang; <tt>}</tt>  </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
- *    \mathclose  </pre>
+ *    \mathclose x </pre>
+ *
+ *  <pre class="TeXSample">
+ *    \mathclose\mathchar"1234  </pre>
+ *
+ *  <pre class="TeXSample">
+ *    \mathclose {abc} </pre>
  *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Mathclose extends AbstractMathCode {
 
@@ -82,7 +94,8 @@ public class Mathclose extends AbstractMathCode {
             throws InterpreterException {
 
         NoadConsumer nc = getListMaker(context, typesetter);
-        Noad noad = nc.scanNoad(prefix, context, source, typesetter, getName());
+        Noad noad = nc.scanNoad(prefix, context, source, typesetter,
+                printableControlSequence(context));
         nc.add(new CloseNoad(noad, context.getTypesettingContext()));
     }
 
