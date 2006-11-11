@@ -38,7 +38,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * @see "TTP [682]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class OrdinaryNoad extends AbstractNucleusNoad implements SimpleNoad {
 
@@ -85,8 +85,10 @@ public class OrdinaryNoad extends AbstractNucleusNoad implements SimpleNoad {
                 (previousNoad != null ? previousNoad.getSpacingClass() : null),
                 list, mathContext);
 
-        getNucleus().typeset(previousNoad, noads, index, list, mathContext,
-                logger);
+        Noad n = getNucleus();
+        if (n != null) {
+            n.typeset(previousNoad, noads, index, list, mathContext, logger);
+        }
 
         ImmutableDimen delta = Dimen.ZERO_PT; // TODO gene: determine delta
         Node node = makeScripts(new HorizontalListNode(), mathContext, delta,
