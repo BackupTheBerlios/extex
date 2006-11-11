@@ -27,7 +27,6 @@ import de.dante.extex.interpreter.primitives.math.AbstractMathCode;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
 import de.dante.extex.typesetter.type.noad.BinaryNoad;
-import de.dante.extex.typesetter.type.noad.MathGlyph;
 import de.dante.extex.typesetter.type.noad.Noad;
 
 /**
@@ -37,25 +36,35 @@ import de.dante.extex.typesetter.type.noad.Noad;
  * <doc name="mathbin">
  * <h3>The Math Primitive <tt>\mathbin</tt></h3>
  * <p>
- *  TODO missing documentation
+ *  The primitive <tt>\mathbin</tt> takes an argument and treats it as
+ *  a binary symbol. It works in math mode only. The argument can either
+ *  be a single letter of a math expression enclosed in braces.
  * </p>
  *
  * <h4>Syntax</h4>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;mathbin&rang;
- *       &rarr; <tt>\mathbin</tt>  </pre>
+ *       &rarr; <tt>\mathbin</tt> &lang;formula&rang;
+ *
+ *    &lang;formula&rang;
+ *       &rarr;  &lang;letter&rang;
+ *         |  <tt>{</tt> &lang;math material&rang; <tt>}</tt>  </pre>
  *
  * <h4>Examples</h4>
  *  <pre class="TeXSample">
+ *    \mathbin x  </pre>
+ *
+ *  <pre class="TeXSample">
  *    \mathbin\mathchar"1234  </pre>
+ *
  *  <pre class="TeXSample">
  *    \mathbin{::}  </pre>
  *
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Mathbin extends AbstractMathCode {
 
@@ -86,11 +95,8 @@ public class Mathbin extends AbstractMathCode {
             throws InterpreterException {
 
         NoadConsumer nc = getListMaker(context, typesetter);
-        Noad noad = nc.scanNoad(prefix, context, source, typesetter, getName());
-        if (noad instanceof MathGlyph) {
-            //TODO gene: unimplemented
-            throw new RuntimeException("unimplemented");
-        }
+        Noad noad = nc.scanNoad(prefix, context, source, typesetter,
+                printableControlSequence(context));
         nc.add(new BinaryNoad(noad, context.getTypesettingContext()));
     }
 
