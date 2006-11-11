@@ -26,13 +26,15 @@ import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
 import de.dante.extex.typesetter.type.noad.util.MathSpacing;
+import de.dante.extex.typesetter.type.node.GlueNode;
+import de.dante.extex.typesetter.type.node.KernNode;
 import de.dante.util.framework.configuration.exception.ConfigurationException;
 
 /**
  * This noad contains a node which is passed through the math apparatus.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class NodeNoad implements Noad {
 
@@ -126,6 +128,17 @@ public class NodeNoad implements Noad {
             final MathContext mathContext, final Logger logger)
             throws TypesetterException,
                 ConfigurationException {
+
+        if (node instanceof GlueNode || node instanceof KernNode) {
+            if (previousNoad instanceof GlueNoad
+                    && ((GlueNoad) previousNoad).isKill()) {
+                StyleNoad style = mathContext.getStyle();
+                if (style == StyleNoad.SCRIPTSTYLE
+                        || style == StyleNoad.SCRIPTSCRIPTSTYLE) {
+                    return;
+                }
+            }
+        }
 
         getSpacingClass().addClearance(
                 (previousNoad != null ? previousNoad.getSpacingClass() : null),

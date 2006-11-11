@@ -21,6 +21,7 @@ package de.dante.extex.typesetter.type.noad;
 
 import java.util.logging.Logger;
 
+import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
@@ -33,7 +34,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * with the translated glue value.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class GlueNoad extends AbstractNoad {
 
@@ -54,6 +55,24 @@ public class GlueNoad extends AbstractNoad {
     }
 
     /**
+     * Getter for muglue.
+     *
+     * @return the muglue
+     */
+    public Muskip getMuglue() {
+
+        return this.muglue;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.muskip.Muskip#isKill()
+     */
+    public boolean isKill() {
+
+        return this.muglue.isKill();
+    }
+
+    /**
      * @see de.dante.extex.typesetter.type.noad.Noad#typeset(
      *      de.dante.extex.typesetter.type.noad.Noad,
      *      de.dante.extex.typesetter.type.noad.NoadList,
@@ -68,8 +87,20 @@ public class GlueNoad extends AbstractNoad {
             throws TypesetterException,
                 ConfigurationException {
 
+        if (previousNoad instanceof GlueNoad
+                && ((GlueNoad) previousNoad).isKill()) {
+            StyleNoad style = mathContext.getStyle();
+            if (style == StyleNoad.SCRIPTSTYLE
+                    || style == StyleNoad.SCRIPTSCRIPTSTYLE) {
+                return;
+            }
+        }
+
         setSpacingClass(previousNoad.getSpacingClass());
-        list.add(new GlueNode(mathContext.convert(muglue), true));
+        Glue glue = mathContext.convert(muglue);
+        if (!glue.eq(Glue.ZERO)) {
+            list.add(new GlueNode(glue, true));
+        }
     }
 
 }
