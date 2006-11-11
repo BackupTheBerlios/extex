@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -19,16 +19,13 @@
 
 package de.dante.extex.interpreter.primitives.math.symbol;
 
-import de.dante.extex.interpreter.primitives.math.AbstractMathTester;
-
-
 /**
  * This is a test suite for the primitive <tt>\mathbin</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class MathbinTest extends AbstractMathTester {
+public class MathbinTest extends AbstractOperatorTester {
 
     /**
      * Constructor for MathbinTest.
@@ -37,9 +34,9 @@ public class MathbinTest extends AbstractMathTester {
      */
     public MathbinTest(final String arg) {
 
-        super(arg, "mathbin", " x");
+        super(arg, "mathbin");
     }
 
-    //TODO implement the primitive specific test cases
+    //TODO implement more primitive specific test cases
 
 }

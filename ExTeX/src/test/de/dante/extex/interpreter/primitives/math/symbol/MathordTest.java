@@ -19,15 +19,13 @@
 
 package de.dante.extex.interpreter.primitives.math.symbol;
 
-import de.dante.extex.interpreter.primitives.math.AbstractMathTester;
-
 /**
  * This is a test suite for the primitive <tt>\mathord</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class MathordTest extends AbstractMathTester {
+public class MathordTest extends AbstractOperatorTester {
 
     /**
      * Constructor for MathordTest.
@@ -36,7 +34,7 @@ public class MathordTest extends AbstractMathTester {
      */
     public MathordTest(final String arg) {
 
-        super(arg, "mathord", " x");
+        super(arg, "mathord");
     }
 
     /**
@@ -49,14 +47,11 @@ public class MathordTest extends AbstractMathTester {
     public void testLetter1() throws Exception {
 
         assertSuccess(showNodesProperties(),
-                //--- input code ---
-                DEFINE_MATH + DEFINE_MATH_FONTS
-                + "$\\mathord a$"
-                + "\\end ",
+        //--- input code ---
+                DEFINE_MATH + DEFINE_MATH_FONTS + "$\\mathord a$" + "\\end ",
                 //--- output channel ---
                 "\\vbox(4.30554pt+0.0pt)x3000.0pt\n"
-                + ".\\hbox(4.30554pt+0.0pt)x3000.0pt\n"
-                + "..a\n");
+                        + ".\\hbox(4.30554pt+0.0pt)x3000.0pt\n" + "..a\n");
     }
 
 }
