@@ -42,7 +42,7 @@ import de.dante.util.exception.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.32 $
+ * @version $Revision: 1.33 $
  */
 public class Glue implements Serializable, FixedGlue {
 
@@ -241,7 +241,7 @@ public class Glue implements Serializable, FixedGlue {
      *
      * @param glue the glue to compare with
      *
-     * @return <code>true</code> iff they are different
+     * @return <code>true</code> iff they are the same
      *
      * @see de.dante.extex.interpreter.type.glue.FixedGlue#eq(
      *      de.dante.extex.interpreter.type.glue.FixedGlue)
