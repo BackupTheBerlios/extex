@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -25,7 +25,7 @@ import de.dante.extex.interpreter.primitives.math.AbstractMathTester;
  * This is a test suite for the primitive <tt>\nonscript</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class NonscriptTest extends AbstractMathTester {
 
@@ -38,5 +38,266 @@ public class NonscriptTest extends AbstractMathTester {
 
         super(arg, "nonscript", "");
     }
+
+    /**
+     * <testcase primitive="\nonscript">
+     *  Test case checking that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test1() throws Exception {
+
+        assertSuccess(showNodesProperties(),
+        //--- input code ---
+                DEFINE_MATH_FONTS + DEFINE_MATH
+                + "$x\\nonscript\\mskip 1mux$" //
+                + "\\end",
+                //--- output message ---
+                "\\vbox(4.30554pt+0.0pt)x3000.0pt\n"
+                + ".\\hbox(4.30554pt+0.0pt)x3000.0pt\n"
+                + "..x\n"
+                + "..\\glue1.0pt\n"
+                + "..x\n");
+    }
+
+    /**
+     * <testcase primitive="\nonscript">
+     *  Test case checking that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test2() throws Exception {
+
+        assertSuccess(showNodesProperties(),
+        //--- input code ---
+                DEFINE_MATH_FONTS + DEFINE_MATH
+                + "$\\displaystyle x\\nonscript\\mskip 1mux$" //
+                + "\\end",
+                //--- output message ---
+                "\\vbox(4.30554pt+0.0pt)x3000.0pt\n"
+                + ".\\hbox(4.30554pt+0.0pt)x3000.0pt\n"
+                + "..x\n"
+                + "..\\glue1.0pt\n"
+                + "..x\n");
+    }
+
+    /**
+     * <testcase primitive="\nonscript">
+     *  Test case checking that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test3() throws Exception {
+
+        assertSuccess(showNodesProperties(),
+        //--- input code ---
+                DEFINE_MATH_FONTS + DEFINE_MATH
+                + "$\\scriptstyle x\\nonscript\\mskip 1mux$" //
+                + "\\end",
+                //--- output message ---
+                "\\vbox(3.01389pt+0.0pt)x3000.0pt\n"
+                + ".\\hbox(3.01389pt+0.0pt)x3000.0pt\n"
+                + "..x\n"
+                + "..x\n");
+    }
+
+    /**
+     * <testcase primitive="\nonscript">
+     *  Test case checking that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test4() throws Exception {
+
+        assertSuccess(showNodesProperties(),
+        //--- input code ---
+                DEFINE_MATH_FONTS + DEFINE_MATH
+                + "$\\scriptscriptstyle x\\nonscript\\mskip 1mux$" //
+                + "\\end",
+                //--- output message ---
+                "\\vbox(2.15277pt+0.0pt)x3000.0pt\n"
+                + ".\\hbox(2.15277pt+0.0pt)x3000.0pt\n"
+                + "..x\n"
+                + "..x\n");
+    }
+
+    /**
+     * <testcase primitive="\nonscript">
+     *  Test case checking that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testMKern1() throws Exception {
+
+        assertSuccess(showNodesProperties(),
+        //--- input code ---
+                DEFINE_MATH_FONTS + DEFINE_MATH
+                + "$x\\nonscript\\mkern 1mux$" //
+                + "\\end",
+                //--- output message ---
+                "\\vbox(4.30554pt+0.0pt)x3000.0pt\n"
+                + ".\\hbox(4.30554pt+0.0pt)x3000.0pt\n"
+                + "..x\n"
+                + "..\\kern0.55554pt\n"
+                + "..x\n");
+    }
+
+    /**
+     * <testcase primitive="\nonscript">
+     *  Test case checking that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testMKern2() throws Exception {
+
+        assertSuccess(showNodesProperties(),
+        //--- input code ---
+                DEFINE_MATH_FONTS + DEFINE_MATH
+                + "$\\displaystyle x\\nonscript\\mkern 1mux$" //
+                + "\\end",
+                //--- output message ---
+                "\\vbox(4.30554pt+0.0pt)x3000.0pt\n"
+                + ".\\hbox(4.30554pt+0.0pt)x3000.0pt\n"
+                + "..x\n"
+                + "..\\kern0.55554pt\n"
+                + "..x\n");
+    }
+
+    /**
+     * <testcase primitive="\nonscript">
+     *  Test case checking that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testMKern3() throws Exception {
+
+        assertSuccess(showNodesProperties(),
+        //--- input code ---
+                DEFINE_MATH_FONTS + DEFINE_MATH
+                + "$\\scriptstyle x\\nonscript\\mkern 1mux$" //
+                + "\\end",
+                //--- output message ---
+                "\\vbox(3.01389pt+0.0pt)x3000.0pt\n"
+                + ".\\hbox(3.01389pt+0.0pt)x3000.0pt\n"
+                + "..x\n"
+                + "..x\n");
+    }
+
+    /**
+     * <testcase primitive="\nonscript">
+     *  Test case checking that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testMKern4() throws Exception {
+
+        assertSuccess(showNodesProperties(),
+        //--- input code ---
+                DEFINE_MATH_FONTS + DEFINE_MATH
+                + "$\\scriptscriptstyle x\\nonscript\\mkern 1mux$" //
+                + "\\end",
+                //--- output message ---
+                "\\vbox(2.15277pt+0.0pt)x3000.0pt\n"
+                + ".\\hbox(2.15277pt+0.0pt)x3000.0pt\n"
+                + "..x\n"
+                + "..x\n");
+    }
+
+
+    /**
+     * <testcase primitive="\nonscript">
+     *  Test case checking that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testKern1() throws Exception {
+
+        assertSuccess(showNodesProperties(),
+        //--- input code ---
+                DEFINE_MATH_FONTS + DEFINE_MATH
+                + "$x\\nonscript\\kern 1ptx$" //
+                + "\\end",
+                //--- output message ---
+                "\\vbox(4.30554pt+0.0pt)x3000.0pt\n"
+                + ".\\hbox(4.30554pt+0.0pt)x3000.0pt\n"
+                + "..x\n"
+                + "..\\kern1.0pt\n"
+                + "..x\n");
+    }
+
+    /**
+     * <testcase primitive="\nonscript">
+     *  Test case checking that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testKern2() throws Exception {
+
+        assertSuccess(showNodesProperties(),
+        //--- input code ---
+                DEFINE_MATH_FONTS + DEFINE_MATH
+                + "$\\displaystyle x\\nonscript\\kern 1ptx$" //
+                + "\\end",
+                //--- output message ---
+                "\\vbox(4.30554pt+0.0pt)x3000.0pt\n"
+                + ".\\hbox(4.30554pt+0.0pt)x3000.0pt\n"
+                + "..x\n"
+                + "..\\kern1.0pt\n"
+                + "..x\n");
+    }
+
+    /**
+     * <testcase primitive="\nonscript">
+     *  Test case checking that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testKern3() throws Exception {
+
+        assertSuccess(showNodesProperties(),
+        //--- input code ---
+                DEFINE_MATH_FONTS + DEFINE_MATH
+                + "$\\scriptstyle x\\nonscript\\kern 1ptx$" //
+                + "\\end",
+                //--- output message ---
+                "\\vbox(3.01389pt+0.0pt)x3000.0pt\n"
+                + ".\\hbox(3.01389pt+0.0pt)x3000.0pt\n"
+                + "..x\n"
+                + "..x\n");
+    }
+
+    /**
+     * <testcase primitive="\nonscript">
+     *  Test case checking that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void testKern4() throws Exception {
+
+        assertSuccess(showNodesProperties(),
+        //--- input code ---
+                DEFINE_MATH_FONTS + DEFINE_MATH
+                + "$\\scriptscriptstyle x\\nonscript\\kern 1ptx$" //
+                + "\\end",
+                //--- output message ---
+                "\\vbox(2.15277pt+0.0pt)x3000.0pt\n"
+                + ".\\hbox(2.15277pt+0.0pt)x3000.0pt\n"
+                + "..x\n"
+                + "..x\n");
+    }
+
+    //TODO implement more primitive specific test cases (displaymath?, cramped?)
 
 }
