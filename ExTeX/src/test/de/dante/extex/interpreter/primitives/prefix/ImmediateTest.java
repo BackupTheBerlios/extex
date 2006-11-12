@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -19,12 +19,11 @@
 
 package de.dante.extex.interpreter.primitives.prefix;
 
-
 /**
  * This is a test suite for the primitive <tt>\immediate</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ImmediateTest extends PrefixTester {
 
@@ -46,6 +45,61 @@ public class ImmediateTest extends PrefixTester {
     public ImmediateTest(final String arg) {
 
         super(arg, "immediate");
+    }
+
+    /**
+     * <testcase primitive="\immediate">
+     *  Test case checking that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test10() throws Exception {
+
+        assertOutput(showPrefixProperties(),
+        //--- input code ---
+                "\\immediate\\showprefix\\end",
+                //--- error channel ---
+                "immediate\n",
+                //--- output channel ---
+                "");
+    }
+
+    /**
+     * <testcase primitive="\immediate">
+     *  Test case checking that double <tt>\immediate</tt> has the same effect as
+     *  one.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test11() throws Exception {
+
+        assertOutput(showPrefixProperties(),
+        //--- input code ---
+                "\\immediate\\immediate\\showprefix\\end",
+                //--- error channel ---
+                "immediate\n",
+                //--- output channel ---
+                "");
+    }
+
+    /**
+     * <testcase primitive="\immediate">
+     *  Test case checking that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test12() throws Exception {
+
+        assertOutput(showPrefixProperties(),
+        //--- input code ---
+                "\\immediate\\long\\showprefix\\end",
+                //--- error channel ---
+                "long and immediate\n",
+                //--- output channel ---
+                "");
     }
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -23,7 +23,7 @@ package de.dante.extex.interpreter.primitives.prefix;
  * This is a test suite for the primitive <tt>\global</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class GlobalTest extends PrefixTester {
 
@@ -62,6 +62,61 @@ public class GlobalTest extends PrefixTester {
                         + "\\the\\count0\\end",
                 //--- output channel ---
                 "123" + TERM);
+    }
+
+    /**
+     * <testcase primitive="\global">
+     *  Test case checking that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test10() throws Exception {
+
+        assertOutput(showPrefixProperties(),
+        //--- input code ---
+                "\\global\\showprefix\\end",
+                //--- error channel ---
+                "global\n",
+                //--- output channel ---
+                "");
+    }
+
+    /**
+     * <testcase primitive="\global">
+     *  Test case checking that double <tt>\global</tt> has the same effect as
+     *  one.
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test11() throws Exception {
+
+        assertOutput(showPrefixProperties(),
+        //--- input code ---
+                "\\global\\global\\showprefix\\end",
+                //--- error channel ---
+                "global\n",
+                //--- output channel ---
+                "");
+    }
+
+    /**
+     * <testcase primitive="\global">
+     *  Test case checking that ...
+     * </testcase>
+     *
+     * @throws Exception in case of an error
+     */
+    public void test12() throws Exception {
+
+        assertOutput(showPrefixProperties(),
+        //--- input code ---
+                "\\global\\long\\showprefix\\end",
+                //--- error channel ---
+                "global and long\n",
+                //--- output channel ---
+                "");
     }
 
 }
