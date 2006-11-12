@@ -40,7 +40,7 @@ import de.dante.util.resource.ResourceFinder;
  * Test the pdf parser.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class PfbParserTest extends TestCase {
 
@@ -61,6 +61,8 @@ public class PfbParserTest extends TestCase {
      */
     public void test01() throws Exception {
 
+        assertNotNull("font not found", parser);
+
         String[] enc = parser.getEncoding();
 
         assertEquals(enc[32], "space");
@@ -80,6 +82,8 @@ public class PfbParserTest extends TestCase {
      */
     public void test02() throws Exception {
 
+        assertNotNull("font not found", parser);
+
         ByteArrayOutputStream out = new ByteArrayOutputStream(parser.size());
         parser.toPfa(out);
         byte[] pfa = out.toByteArray();
@@ -87,7 +91,7 @@ public class PfbParserTest extends TestCase {
 
         InputStream in = extex.getResourceFinder()
                 .findResource("lmr12.pfa", "");
-        assertNotNull(in);
+        assertNotNull("font not found", in);
 
         int c;
         int pos = 0;
@@ -99,7 +103,7 @@ public class PfbParserTest extends TestCase {
     /**
      * the parser.
      */
-    private PfbParser parser;
+    private PfbParser parser = null;
 
     /**
      * @see TestCase#setUp()
@@ -110,8 +114,10 @@ public class PfbParserTest extends TestCase {
             extex = new MyExTeX(System.getProperties(), ".extex-test");
 
             InputStream in = extex.getResourceFinder().findResource(
-                    "lmr12.pfb", "");
-            parser = new PfbParser(in);
+                    "lmr12", "pfb");
+            if (in != null) {
+                parser = new PfbParser(in);
+            }
         }
     }
 
@@ -195,13 +201,13 @@ public class PfbParserTest extends TestCase {
         public ResourceFinder getResourceFinder() throws ConfigurationException {
 
             if (finder == null) {
-                finder = makeResourceFinder(config);
+                finder = makeResourceFinder(config.getConfiguration("Resource"));
             }
             return finder;
         }
 
         /**
-         * the font factroy.
+         * the font factory.
          */
         private FontFactory fontFactory;
 

@@ -39,7 +39,7 @@ import de.dante.util.resource.ResourceFinder;
  * Test for the EncFactory.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 
 public class EncFactoryTest extends TestCase {
@@ -86,7 +86,12 @@ public class EncFactoryTest extends TestCase {
      */
     public void test02() throws Exception {
 
-        String[] et = encFactory.getEncodingTable("8r.enc");
+        String[] et = null;
+        try {
+            et = encFactory.getEncodingTable("8r.enc");
+        } catch (Exception e) {
+            assertTrue(e.getMessage(), false);
+        }
 
         assertEquals(256, et.length);
         assertEquals("/.notdef", et[0]);
@@ -373,7 +378,12 @@ public class EncFactoryTest extends TestCase {
      */
     public void test03() throws Exception {
 
-        String[] et = encFactory.getEncodingTable("texnansi.enc");
+        String[] et = null;
+        try {
+            et = encFactory.getEncodingTable("texnansi.enc");
+        } catch (Exception e) {
+            assertTrue(e.getMessage(), false);
+        }
 
         assertEquals(256, et.length);
         assertEquals(256, TEXNANSI_ENC.length);
@@ -461,7 +471,7 @@ public class EncFactoryTest extends TestCase {
         public ResourceFinder getResourceFinder() throws ConfigurationException {
 
             if (finder == null) {
-                finder = makeResourceFinder(config);
+                finder = makeResourceFinder(config.getConfiguration("Resource"));
             }
             return finder;
         }

@@ -41,7 +41,7 @@ import de.dante.util.resource.ResourceFinder;
  * Test for the psfonts.map reader.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 
 public class PsFontsMapReaderTest extends TestCase {
@@ -71,7 +71,7 @@ public class PsFontsMapReaderTest extends TestCase {
 
             InputStream in = extex.getResourceFinder().findResource(
                     "psfonts.map", "");
-
+            assertNotNull("psfonts.map not found", in);
             reader = new PsFontsMapReader(in);
         }
     }
@@ -93,6 +93,7 @@ public class PsFontsMapReaderTest extends TestCase {
     public void test02() throws Exception {
 
         PsFontEncoding entry = reader.getPSFontEncoding("cmr12");
+        assertNotNull("encoding not found", entry);
         assertEquals("cmr12", entry.getFilename());
         assertEquals("CMR12", entry.getFontname());
         assertEquals("cmr12.pfb", entry.getFontfile());
@@ -109,6 +110,7 @@ public class PsFontsMapReaderTest extends TestCase {
     public void test03() throws Exception {
 
         PsFontEncoding entry = reader.getPSFontEncoding("hlcrin8r");
+        assertNotNull("encoding not found", entry);
         assertEquals("hlcrin8r", entry.getFilename());
         assertEquals("LucidaCasual-Italic", entry.getFontname());
         assertEquals("TeXBase1Encoding ReEncodeFont", entry.getEncodingtxt());
@@ -194,7 +196,7 @@ public class PsFontsMapReaderTest extends TestCase {
         public ResourceFinder getResourceFinder() throws ConfigurationException {
 
             if (finder == null) {
-                finder = makeResourceFinder(config);
+                finder = makeResourceFinder(config.getConfiguration("Resource"));
             }
             return finder;
         }

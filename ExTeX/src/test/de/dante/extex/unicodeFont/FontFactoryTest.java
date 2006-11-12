@@ -42,7 +42,7 @@ import de.dante.util.resource.ResourceFinder;
  * Test for the font factory.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 
 public class FontFactoryTest extends TestCase {
@@ -86,9 +86,7 @@ public class FontFactoryTest extends TestCase {
     public void test01() throws Exception {
 
         assertEquals("cmr12", font.getFontName());
-        if (font instanceof FontPfb) {
-            assertTrue(true);
-        }
+        assertTrue(font instanceof FontPfb);
     }
 
     // -----------------------------------------------------------
@@ -171,13 +169,13 @@ public class FontFactoryTest extends TestCase {
         public ResourceFinder getResourceFinder() throws ConfigurationException {
 
             if (finder == null) {
-                finder = makeResourceFinder(config);
+                finder = makeResourceFinder(config.getConfiguration("Resource"));
             }
             return finder;
         }
 
         /**
-         * the font factroy.
+         * the font factory.
          */
         private FontFactory fontFactory;
 

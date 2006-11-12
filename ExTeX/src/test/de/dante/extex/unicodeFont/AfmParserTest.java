@@ -42,7 +42,7 @@ import de.dante.util.resource.ResourceFinder;
  * Test the afm parser.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class AfmParserTest extends TestCase {
 
@@ -220,7 +220,7 @@ public class AfmParserTest extends TestCase {
         // KPX ygrave oacute -27.192
         AfmCharMetric cm = parser.getAfmCharMetric("ygrave");
         AfmKernPairs kp = cm.getAfmKernPair("oacute");
-        assertNotNull(kp);
+        assertNotNull("kern missing", kp);
         assertEquals("ygrave", kp.getCharpre());
         assertEquals("oacute", kp.getCharpost());
         assertEquals(-27.192f, kp.getKerningsize(), C0001F);
@@ -243,7 +243,8 @@ public class AfmParserTest extends TestCase {
             extex = new MyExTeX(System.getProperties(), ".extex-test");
 
             InputStream in = extex.getResourceFinder().findResource(
-                    "lmr12.afm", "");
+                    "lmr12", "afm");
+            assertNotNull("font not found", in);
             parser = new AfmParser(in);
         }
     }
@@ -327,7 +328,7 @@ public class AfmParserTest extends TestCase {
         public ResourceFinder getResourceFinder() throws ConfigurationException {
 
             if (finder == null) {
-                finder = makeResourceFinder(config);
+                finder = makeResourceFinder(config.getConfiguration("Resource"));
             }
             return finder;
         }
