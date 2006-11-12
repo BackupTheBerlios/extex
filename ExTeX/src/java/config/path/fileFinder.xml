@@ -45,6 +45,18 @@
       <path property="extex.fonts"/>
       <path property="texinputs"/>
     </pfb>
+    <pfa>
+      <extension>.pfa</extension>
+      <path>.</path>
+      <path property="extex.fonts"/>
+      <path property="texinputs"/>
+    </pfa>
+    <afm>
+      <extension>.afm</extension>
+      <path>.</path>
+      <path property="extex.fonts"/>
+      <path property="texinputs"/>
+    </afm>
     <ttf>
       <extension>.ttf</extension>
       <path>.</path>
@@ -63,9 +75,16 @@
       <path property="extex.fonts"/>
       <path property="texinputs"/>
     </tfm>
+    <enc>
+      <extension>.enc</extension>
+      <path>.</path>
+      <path property="extex.fonts"/>
+      <path property="texinputs"/>
+    </enc>
     <default>
       <path property="extex.texinputs"/>
       <path property="texinputs"/>
+      <path property="extex.fonts"/>
       <path>.</path>
       <extension></extension>
     </default>
