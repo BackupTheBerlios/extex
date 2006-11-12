@@ -31,7 +31,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * as one.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class ResourceFinderList implements ResourceFinder, RecursiveFinder {
 
@@ -75,9 +75,8 @@ public class ResourceFinderList implements ResourceFinder, RecursiveFinder {
      */
     public void enableTracing(final boolean flag) {
 
-        Iterator iterator = list.iterator();
-        while (iterator.hasNext()) {
-            ((ResourceFinder) iterator.next()).enableTracing(flag);
+        for (int i = 0; i < list.size(); i++) {
+            ((ResourceFinder) list.get(i)).enableTracing(flag);
         }
     }
 
@@ -88,13 +87,13 @@ public class ResourceFinderList implements ResourceFinder, RecursiveFinder {
     public InputStream findResource(final String name, final String type)
             throws ConfigurationException {
 
-        Iterator iterator = list.iterator();
-        while (iterator.hasNext()) {
-            InputStream stream = ((ResourceFinder) iterator.next())
-                    .findResource(name, type);
+        for (int i = 0; i < list.size(); i++) {
+            InputStream stream = ((ResourceFinder) list.get(i)).findResource(
+                    name, type);
             if (stream != null) {
                 return stream;
             }
+
         }
 
         return null;
@@ -110,9 +109,8 @@ public class ResourceFinderList implements ResourceFinder, RecursiveFinder {
      */
     public void setParent(final ResourceFinder theParent) {
 
-        Iterator iterator = list.iterator();
-        while (iterator.hasNext()) {
-            ResourceFinder finder = (ResourceFinder) iterator.next();
+        for (int i = 0; i < list.size(); i++) {
+            ResourceFinder finder = (ResourceFinder) list.get(i);
             if (finder instanceof RecursiveFinder) {
                 ((RecursiveFinder) finder).setParent(theParent);
             }
