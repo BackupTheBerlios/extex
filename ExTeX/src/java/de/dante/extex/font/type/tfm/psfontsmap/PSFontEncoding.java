@@ -24,7 +24,7 @@ import java.io.Serializable;
  * Container for a psfonts.map-line
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 
 public class PSFontEncoding implements Serializable {
@@ -92,7 +92,12 @@ public class PSFontEncoding implements Serializable {
      */
     public void addEncodingtxt(final String s) {
 
-        encodingtxt += s + " ";
+        //gene: slight improvement
+        if (encodingtxt.equals("")) {
+            encodingtxt = s;
+        } else {
+            encodingtxt += " " + s;
+        }
     }
 
     /**
