@@ -89,7 +89,7 @@ import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Parshape extends AbstractCode implements CountConvertible, Theable {
 
@@ -117,7 +117,7 @@ public class Parshape extends AbstractCode implements CountConvertible, Theable 
             final Typesetter typesetter) throws InterpreterException {
 
         ParagraphShape parshape = context.getParshape();
-        return (parshape != null ? parshape.getSize() : 0);
+        return (parshape != null ? parshape.getSize() / 2 : 0);
     }
 
     /**
@@ -155,7 +155,7 @@ public class Parshape extends AbstractCode implements CountConvertible, Theable 
 
         ParagraphShape parshape = context.getParshape();
         return new Tokens(context, parshape != null ? Long.toString(parshape
-                .getSize()) : "0");
+                .getSize() / 2) : "0");
     }
 
 }
