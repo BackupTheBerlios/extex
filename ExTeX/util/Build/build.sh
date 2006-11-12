@@ -31,7 +31,8 @@ mkdir -p $LOCALDIR $LOG $INSTALLDIR $INSTALLDIR/snapshot
 cd $LOCALDIR/ExTeX
 echo > .extex-test<<EOF
 #
-texmf.path=/usr/share/texmf-tetex
+texinputs=develop/lib/texmf
+extex.fonts=develop/test/font
 #
 EOF
 date >$LOG/installer.log
