@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -19,30 +19,47 @@
 
 package de.dante.extex.interpreter.primitives.prefix;
 
+import java.util.Properties;
+
+import de.dante.extex.interpreter.Flags;
 import de.dante.test.ExTeXLauncher;
 
 /**
  * This is a test suite for the prefix primitives.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public abstract class PrefixTester extends ExTeXLauncher {
 
     /**
-     * The field <tt>primitive</tt> contains the ...
+     * The field <tt>primitive</tt> contains the name of the primitive to be
+     * tested.
      */
     private String primitive;
-
+    
     /**
      * Constructor for PrefixTester.
      *
      * @param name the name of the test suite
+     * @param primitive the name of the primitive to be tested
      */
     public PrefixTester(final String name, final String primitive) {
 
         super(name);
         this.primitive = primitive;
+    }
+
+    /**
+     * construct the properties with the unit <tt>showprefix</tt> added.
+     *
+     * @return the properties
+     */
+    protected Properties showPrefixProperties() {
+
+        Properties p = getProps();
+        p.put("extex.units", "showprefix");
+        return p;
     }
 
     /**
