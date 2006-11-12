@@ -46,7 +46,7 @@ import de.dante.util.UnicodeCharList;
  * <logo>ExTeX</logo>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class ExTeXWords implements WordTokenizer {
 
@@ -313,7 +313,7 @@ public class ExTeXWords implements WordTokenizer {
                 } else {
                     post = new HorizontalListNode(hyphenNode);
                 }
-                nodes.add(insertion, //
+                nodes.add(insertion++, //
                         new DiscretionaryNode(post, null, nobreak));
                 nobreak = null;
             }
