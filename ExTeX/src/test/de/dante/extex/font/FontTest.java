@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2006 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -37,18 +37,17 @@ import de.dante.util.resource.ResourceFinderFactory;
  * Test the font-system
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class FontTest extends TestCase {
 
     /**
      * main
-     * @param args ...
+     * @param args the command line arguments
      */
     public static void main(final String[] args) {
 
         junit.textui.TestRunner.run(FontTest.class);
-
     }
 
     /**
@@ -73,8 +72,7 @@ public class FontTest extends TestCase {
                 .newInstance("config/extex.xml");
 
         Configuration fontConfig = config.getConfiguration("Fonts");
-        Configuration resource = new ConfigurationFactory()
-                .newInstance("config/path/fileFinder.xml");
+        Configuration resource = config.getConfiguration("Resource");
 
         String fontClass = fontConfig.getAttribute("class");
 
@@ -97,7 +95,7 @@ public class FontTest extends TestCase {
 
     /**
      * test 01
-     * @throws Exception ...
+     * @throws Exception in case of an error
      */
     public void test01() throws Exception {
 
@@ -105,7 +103,7 @@ public class FontTest extends TestCase {
 
         Font font = factory.getInstance(new FountKey("tfmcmr12", DIM12, null,
                 new Glue(0), false, false));
-
+        assertNotNull("font not found", font);
         assertEquals("tfmcmr12", font.getFontName());
         assertTrue(DIM12.eq(font.getEm()));
     }
