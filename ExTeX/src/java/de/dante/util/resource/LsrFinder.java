@@ -19,6 +19,7 @@
 
 package de.dante.util.resource;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -127,7 +128,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class LsrFinder
         implements
@@ -155,9 +156,9 @@ public class LsrFinder
 
     /**
      * The field <tt>INITIAL_LIST_SIZE</tt> contains the initial size of the
-     * list items in the cache.
+     * collision list items in the cache.
      */
-    private static final int INITIAL_LIST_SIZE = 2;
+    private static final int INITIAL_LIST_SIZE = 3;
 
     /**
      * The field <tt>LSR_FILE_NAME</tt> contains the name of the ls-R file.
@@ -300,12 +301,11 @@ public class LsrFinder
         StringListIterator it = cfg.getValues(EXTENSION_TAG).getIterator();
 
         while (it.hasNext()) {
-            List l = (List) cache.get(name + it.next());
-            if (l == null) {
+            Object c = cache.get(name + it.next());
+            if (c == null) {
                 continue;
-            }
-            for (int i = 0; i < l.size(); i++) {
-                File file = (File) l.get(i);
+            } else if (c instanceof File) {
+                File file = (File) c;
                 if (verbose) {
                     trace("Try", file.toString(), null, null);
                 }
@@ -323,6 +323,31 @@ public class LsrFinder
                                     null);
                         }
                         continue;
+                    }
+                }
+            } else {
+
+                List l = (List) c;
+                for (int i = 0; i < l.size(); i++) {
+                    File file = (File) l.get(i);
+                    if (verbose) {
+                        trace("Try", file.toString(), null, null);
+                    }
+                    if (file != null && file.canRead()) {
+                        try {
+                            InputStream stream = new FileInputStream(file);
+                            if (verbose) {
+                                trace("Found", file.toString(), null, null);
+                            }
+                            return stream;
+                        } catch (FileNotFoundException e) {
+                            // ignore unreadable files
+                            if (verbose) {
+                                trace("FoundUnreadable", file.toString(), null,
+                                        null);
+                            }
+                            continue;
+                        }
                     }
                 }
             }
@@ -364,8 +389,7 @@ public class LsrFinder
                     StringListIterator sit = new StringList(name, System
                             .getProperty("path.separator", ":")).getIterator();
                     while (sit.hasNext()) {
-                        String file = sit.next();
-                        load(file);
+                        load(sit.next());
                     }
                 }
             } else {
@@ -396,30 +420,76 @@ public class LsrFinder
         }
 
         File directory = new File(path);
-        List list;
 
         try {
-            BufferedReader in = new BufferedReader(new FileReader(file));
-            int len;
-
-            for (String line = in.readLine(); line != null; line = in
-                    .readLine()) {
-                len = line.length();
-                if (len == 0 || line.charAt(0) == '%') {
-                    continue;
-                } else if (line.charAt(len - 1) == ':') {
-                    directory = new File(path, //
-                            line.substring((line.startsWith("./") ? 2 : 0),
-                                    len - 1));
-                } else {
-                    list = (List) cache.get(line);
-                    if (list == null) {
-                        list = new ArrayList(INITIAL_LIST_SIZE);
-                        cache.put(line, list);
+            BufferedInputStream in = new BufferedInputStream(
+                    new FileInputStream(file));
+            for (int c = in.read(); c >= 0; c = in.read()) {
+                if (c == '%') {
+                    do {
+                        c = in.read();
+                    } while (c >= 0 && c != 10 && c != 13);
+                } else if (c >= ' ') {
+                    StringBuffer line = new StringBuffer();
+                    do {
+                        line.append((char) c);
+                        c = in.read();
+                    } while (c >= 0 && c != 10 && c != 13);
+                    int len = line.length();
+                    if (len != 0) {
+                        if (line.charAt(len - 1) == ':') {
+                            line.deleteCharAt(len - 1);
+                            if (line.charAt(0) == '.' && line.charAt(1) == '/') {
+                                line.delete(0, 2);
+                            }
+                            directory = new File(path, line.toString());
+                        } else {
+                            String key = line.toString();
+                            Object cc = cache.get(key);
+                            File value = new File(directory, line.toString());
+                            if (cc == null) {
+                                cache.put(key, value);
+                            } else if (cc instanceof File) {
+                                List list = new ArrayList(INITIAL_LIST_SIZE);
+                                cache.put(key, list);
+                                list.add(cc);
+                                list.add(value);
+                            } else {
+                                List list = (List) cc;
+                                list.add(value);
+                            }
+                        }
                     }
-                    list.add(new File(directory, line));
                 }
             }
+
+            //            BufferedReader in = new BufferedReader(new FileReader(file));
+            //            int len;
+            //
+            //            for (String line = in.readLine(); line != null; line = in
+            //                    .readLine()) {
+            //                len = line.length();
+            //                if (len == 0 || line.charAt(0) == '%') {
+            //                    continue;
+            //                } else if (line.charAt(len - 1) == ':') {
+            //                    directory = new File(path, //
+            //                            line.substring((line.startsWith("./") ? 2 : 0),
+            //                                    len - 1));
+            //                } else {
+            //                    Object c = cache.get(line);
+            //                    if (c == null) {
+            //                        cache.put(line, new File(directory, line));
+            //                    } else if (c instanceof File) {
+            //                        List list = new ArrayList(INITIAL_LIST_SIZE);
+            //                        list.add(c);
+            //                        list.add(new File(directory, line));
+            //                        cache.put(line, list);
+            //                    } else {
+            //                        List list = (List) c;
+            //                        list.add(new File(directory, line));
+            //                    }
+            //                }
+            //            }
             in.close();
 
         } catch (FileNotFoundException e) {
@@ -433,6 +503,9 @@ public class LsrFinder
                     Long.toString(System.currentTimeMillis() - start), //
                     Integer.toString(cache.size()));
         }
+        //        System.err.print(file);
+        //        System.err.print('\t');
+        //        System.err.println(System.currentTimeMillis() - start);
     }
 
     /**
