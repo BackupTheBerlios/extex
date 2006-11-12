@@ -22,6 +22,7 @@ package de.dante.extex.font;
 import de.dante.extex.ExTeXRunner;
 import de.dante.extex.font.type.tfm.TFMFont;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.util.UnicodeChar;
@@ -30,7 +31,7 @@ import de.dante.util.UnicodeChar;
  * Test for the tfm class.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 
 public class TfmTest extends ExTeXRunner {
@@ -61,7 +62,7 @@ public class TfmTest extends ExTeXRunner {
     public void testdesignsize() throws Exception {
 
         TFMFont font = fontFactory.readTFMFont("cmr12");
-
+        assertNotNull("font not found", font);
         assertEquals(font.getDesignSizeAsDouble(), SIZE12, 0);
 
     }
@@ -100,8 +101,8 @@ public class TfmTest extends ExTeXRunner {
 
         // A - V
 
-        Glyph g = cmr12.getGlyph(new UnicodeChar('A'));
-        Dimen k = g.getKerning(new UnicodeChar('V'));
+        FixedDimen k = cmr12.getKerning(UnicodeChar.get('A'), UnicodeChar
+                .get('V'));
 
         assertEquals("-1.30554pt", k.toString());
     }
