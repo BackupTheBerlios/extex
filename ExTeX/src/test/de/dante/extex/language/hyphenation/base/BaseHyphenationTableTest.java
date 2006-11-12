@@ -51,7 +51,7 @@ import de.dante.util.framework.configuration.exception.ConfigurationException;
  * Test suite for the base hyphenation table.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class BaseHyphenationTableTest extends TestCase {
 
@@ -59,7 +59,7 @@ public class BaseHyphenationTableTest extends TestCase {
      * Mock implementation of a font.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.8 $
+     * @version $Revision: 1.9 $
      */
     private class MockFont extends NullFont {
 
@@ -227,7 +227,7 @@ public class BaseHyphenationTableTest extends TestCase {
         public void setEfcode(final UnicodeChar uc, final long code) {
 
             // TODO gene: setEfcode unimplemented
-            
+
         }
 
         /**
@@ -261,7 +261,7 @@ public class BaseHyphenationTableTest extends TestCase {
      * This is a mock implementation of a glyph.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.8 $
+     * @version $Revision: 1.9 $
      */
     private class MockGlyph implements Glyph {
 
@@ -411,7 +411,7 @@ public class BaseHyphenationTableTest extends TestCase {
      * This mock implementation is for test purposes only.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.8 $
+     * @version $Revision: 1.9 $
      */
     private class MyMockContext extends MockContext {
 
@@ -602,16 +602,22 @@ public class BaseHyphenationTableTest extends TestCase {
      *  Test case checking that ...
      * </testcase>
      *
-     *
      * @throws Exception in case of an error
      */
     public void test5() throws Exception {
 
         HorizontalListNode nodes = hlist("def");
         language.hyphenate(nodes, context, HYPHEN, 0, true, nodeFactory);
-        assertEquals(5, nodes.size());
-        assertTrue("xxx", nodes.get(1) instanceof DiscretionaryNode);
-        assertTrue("yyy", nodes.get(3) instanceof DiscretionaryNode);
+
+        assertEquals("\\hbox(0.0pt+0.0pt)x0.0pt\n"
+                + ".d\n"
+                + ".\\discretionary{\\hbox(0.0pt+0.0pt)x0.0pt\n"
+                + "...-}{}{}\n"
+                + ".e\n"
+                + ".\\discretionary{\\hbox(0.0pt+0.0pt)x0.0pt\n"
+                + "...-}{}{}\n"
+                + ".f", //
+                nodes.toString());
     }
 
 }
