@@ -24,7 +24,7 @@ package de.dante.test;
  * global flag lead to an error.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public abstract class NoFlagsButGlobalPrimitiveTester extends ExTeXLauncher {
 
@@ -130,7 +130,7 @@ public abstract class NoFlagsButGlobalPrimitiveTester extends ExTeXLauncher {
                 //--- log message ---
                 out + "You can\'t use the prefix `\\long\' "
                         + "with the control sequence"
-                        + (primitive.length() > 18 ? "\n" : " ") + "\\"
+                        + (primitive.length() > 19 ? "\n" : " ") + "\\"
                         + primitive);
     }
 

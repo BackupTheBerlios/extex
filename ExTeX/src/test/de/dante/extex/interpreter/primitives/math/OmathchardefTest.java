@@ -25,7 +25,7 @@ import de.dante.test.NoFlagsButGlobalPrimitiveTester;
  * This is a test suite for the primitive <tt>\omathchardef</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class OmathchardefTest extends NoFlagsButGlobalPrimitiveTester {
 
@@ -140,7 +140,7 @@ public class OmathchardefTest extends NoFlagsButGlobalPrimitiveTester {
                 + "\\omathchardef\\beta=\\alpha " //
                 + "\\the\\beta\\end",
                 //--- output message ---
-                "267" + TERM);
+                "65547" + TERM);
     }
 
     /**
@@ -154,7 +154,7 @@ public class OmathchardefTest extends NoFlagsButGlobalPrimitiveTester {
 
         assertSuccess(
         //--- input code ---
-                "\\omathchardef\\alpha=\"010B " //
+                "\\omathchardef\\alpha=\"01000B " //
                 + "\\mathchardef\\beta=\\alpha " //
                 + "\\the\\beta\\end",
                 //--- output message ---

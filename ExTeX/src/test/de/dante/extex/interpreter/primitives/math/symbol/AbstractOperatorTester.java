@@ -25,7 +25,7 @@ import de.dante.extex.interpreter.primitives.math.AbstractMathTester;
  * This is an abstract tester for a symbol primitive.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class AbstractOperatorTester extends AbstractMathTester {
 
@@ -42,7 +42,8 @@ public class AbstractOperatorTester extends AbstractMathTester {
 
     /**
      * <testcase>
-     *  Test case checking that ...
+     *  Test case checking that the primitive complains when the argument is
+     *  missing.
      * </testcase>
      *
      * @throws Exception in case of an error
@@ -54,7 +55,7 @@ public class AbstractOperatorTester extends AbstractMathTester {
                 DEFINE_MATH_FONTS + DEFINE_MATH
                 + "$\\" + getPrimitive(),
                 //--- output message ---
-                "Unexpected end of file while processing \\mathrel");
+                "Unexpected end of file while processing \\" + getPrimitive());
     }
 
     /**
@@ -69,9 +70,10 @@ public class AbstractOperatorTester extends AbstractMathTester {
         assertFailure(
         //--- input code ---
                 DEFINE_MATH_FONTS + DEFINE_MATH
-                + "$\\" + getPrimitive() + "\\undef$",
+                + "$\\" + getPrimitive() + "\\undef$\\end",
                 //--- output message ---
-                "Undefined control sequence \\undef");
+                "Undefined control sequence \\undef\n"
+                + "Missing $ inserted\n");
     }
 
     /**
@@ -124,4 +126,5 @@ public class AbstractOperatorTester extends AbstractMathTester {
                 //--- output message ---
                 "x" + TERM);
     }
+
 }
