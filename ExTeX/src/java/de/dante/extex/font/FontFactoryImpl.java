@@ -59,7 +59,7 @@ import de.dante.util.xml.XMLStreamWriter;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.35 $
+ * @version $Revision: 1.36 $
  */
 public class FontFactoryImpl implements FontFactory, PropertyConfigurable {
 
@@ -172,8 +172,7 @@ public class FontFactoryImpl implements FontFactory, PropertyConfigurable {
             throws ConfigurationException,
                 FontException {
 
-        if (key == null || key.getName() == null
-                || key.getName().trim().length() == 0) {
+        if (key == null || key.getName() == null || key.getName().length() == 0) {
             return NULLFONT;
         }
 
@@ -428,7 +427,9 @@ public class FontFactoryImpl implements FontFactory, PropertyConfigurable {
             }
 
             // cache the font ?
-            String cachedir = prop.getProperty("fonts.cache");
+            String cachedir = (prop != null
+                    ? prop.getProperty("fonts.cache")
+                    : null);
             if (cachedir != null) {
                 StringBuffer buf = new StringBuffer();
                 buf.append(cachedir).append("/");
